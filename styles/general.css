@@ -1,0 +1,189 @@
+/*********************************************
+ * MArcomage CSS stylesheet - general styles *
+ *********************************************/
+
+html
+{
+	background-image: url('../img/layout.jpg');
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-color: black;
+	background-attachment: fixed;
+	
+	/* we abandoned IE support completely */
+	/*scrollbar-3dlight-color: black;
+	scrollbar-arrow-color: yellow;
+	scrollbar-darkshadow-color: black;
+	scrollbar-face-color: black;
+	scrollbar-highlight-color: yellow;
+	scrollbar-shadow-color: yellow;
+	scrollbar-track-color: black;
+	 - we abandoned IE support
+	*/
+	
+	padding: 0ex;
+	margin: 0ex;
+}
+
+/*div
+{
+	we abandoned IE support completely 
+	scrollbar-3dlight-color: black;
+	scrollbar-arrow-color: yellow;
+	scrollbar-darkshadow-color: black;
+	scrollbar-face-color: black;
+	scrollbar-highlight-color: yellow;
+	scrollbar-shadow-color: yellow;
+	scrollbar-track-color: black;	
+}*/
+
+hr
+{
+	border-color: yellow;
+	color: yellow;
+	padding: 0ex;
+	margin: 0ex;
+	/* override defaults */
+}
+
+input
+{
+	font-size: x-small;
+	color: yellow;
+	background-color: black;
+	border: 2px outset #6495ed;
+	padding: 0.4ex 1.2ex 0.4ex 1.2ex;
+	vertical-align: middle;
+}
+
+body,p,h5 /* override defaults */
+{
+	padding: 0ex;
+	margin: 0ex;
+}
+
+h1,h2
+{
+	color: red;
+	text-align: center;
+}
+
+h3
+{
+	color: #6699ff;
+	text-align: center;
+}
+
+h4
+{
+	color: #ffff66;
+}
+
+ul
+{
+	padding-left: 0ex;
+	margin-left: 2ex;
+}
+
+select
+{
+	font-size: x-small;
+	color: yellow;
+	background-color: black;
+	border: 2px outset #6495ed;
+	vertical-align: middle;
+}
+
+th
+{
+	margin: 0ex;
+	padding: 0ex;
+	font-weight: normal;
+}
+
+th input /* ordering buttons in the table header */
+{
+	margin-left: 2ex;
+}
+
+a:link
+{
+	color: yellow;
+}
+
+a:visited
+{
+	color: #ee82ee;
+}
+
+table.centered /* centered table */
+{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+tr.table_row:hover /* highlight table row */
+{
+	background-color: rgb(80,80,80);
+}
+
+p.information_line /* information text */
+{
+	text-align: center;
+	color: lime;
+	padding-bottom: 0.5ex;
+	background-color: black;
+}
+
+p.information_trans /* information text with transparent background */
+{
+	text-align: center;
+	color: lime;
+	margin-bottom: 1ex;
+}
+
+p.blank_line /* when no information is displayed, display blank line */
+{
+	background-color: black;
+	padding-bottom: 0.5ex;
+	margin: 0ex;
+	height: 1.2em;
+	/*min-width: 120ex;*/
+	min-width: 1045px;
+}
+
+div.clear_floats /* clear both floats */
+{
+	clear: both;
+}
+
+input.text_data /* input text fields */
+{
+	color: yellow;
+	border-style: inset;
+}
+
+img.avatar /* avatar picture */
+{
+	border: thin solid #00bfff;
+	margin-bottom: 0.2ex;
+	margin-right: 0.5ex;
+	background-color: black;
+}
+
+input.details /* small input button */
+{
+	border-width: thin;
+	border-style: solid;
+	padding: 0ex 0.9ex 0ex 0.9ex;
+}
+
+div.filters_trans /* filters with transparent background */
+{
+	margin: 1ex 0ex 2ex 2ex;
+}
+
+div.filters_trans > input /* set distance between filter buttons */
+{
+	margin-right: 2ex;
+}

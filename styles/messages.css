@@ -1,0 +1,158 @@
+/***********************************************
+ * MArcomage CSS stylesheet - messages section *
+ ***********************************************/
+
+/* begin challenges */
+
+div#message_section /* challenge section (soon to be renamed to messages) */
+{
+	border-top: thin solid yellow;
+	border-bottom: thin solid yellow;
+	min-width: 1045px;
+	color: white;
+	margin-top: 1ex;
+	text-align: center;
+}
+
+div#challenges /* challenges oriented messages subsection */
+{
+	float: left;
+	width: 50%;
+}
+
+div#challenges > p /* challenge message */
+{
+	color: lime;
+	font-size: medium;
+	margin-bottom: 1ex;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+div#challenges > p > input, div#challenges > p > select /* distance between button end select elements */
+{
+	margin-left: 2ex;
+}
+
+/* end challenges */
+
+/* begin messages */
+
+div#messages /* private messages subsection */
+{
+	float: right;
+	width: 49%;
+	border-left: thin solid yellow;
+	color: lime;
+}
+
+div#messages th > p, div#messages td > p /* table cell text */
+{
+	margin: 0.5ex 1ex 0.5ex 1ex;
+}
+
+div#messages > table /* private messages table */
+{
+	color: lime;
+	margin: 0ex 1ex 2ex 2ex;
+	border: thin solid yellow;
+}
+
+div#messages > table th /* table header */
+{
+	color: white;
+	border-bottom: thin solid yellow;
+}
+
+div#messages > table th + th, div#messages > table td + td /* table header column borders */
+{
+	border-left: thin solid yellow;
+}
+
+/* end messages */
+
+/* begin message details */
+
+div#mes_details /* private message details subsection */
+{
+	min-width: 1045px;
+}
+
+div#mes_details > div /* private message layout */
+{
+	margin-right: auto;
+	margin-left: auto;
+	color: white;
+	width: 50%;
+	font-weight: bold;
+	padding: 1ex;
+	border: medium ridge yellow;
+	background-image: url('../img/novels_content.jpg');
+	background-color: black;
+	color: #dddddd; /* light gray */
+}
+
+div#mes_details > div > * /* set distance between elements */
+{
+	margin-bottom: 1ex;
+	margin-top: 1ex;
+}
+
+div#mes_details > div > p /* justifiy private message text */
+{
+	text-align: justify;
+}
+
+div#mes_details > div > p > span /* highlight private message information (author, recipient...) */
+{
+	color: lime;
+	margin-right: 1ex;
+}
+
+div#mes_details textarea /* private message text input area */
+{
+	width: 100%;
+	background-color: black;
+	color: #dddddd; /* light gray */
+}
+
+img.stamp_picture
+{
+	float: right;
+}
+
+div.challenge_box /* challenge box (containing multiple challenges) layout */
+{
+	background-color: black;
+	color: #dddddd; /* light gray */
+	padding: 0.5ex;
+	margin: 2ex;
+	border: thin solid #6495ed;
+}
+
+div.challenge_box > div /* challenge layout */
+{
+	padding: 1ex;
+	margin: 1ex;
+	border: thin solid lime;
+}
+
+div.challenge_box > div > p + p /* set distance between elements within a challenge */
+{
+	margin-top: 1ex;
+}
+
+div.challenge_box > div > p > span /* highlight important information in a challenge */
+{
+	color: #00bfff; /* sky blue */
+}
+
+p.challenge_content /* challenge text layout */
+{
+	font-style: italic;
+	text-align: justify;
+	margin-left: 2ex;
+	margin-right: 2ex;
+}
+
+/* end message details */

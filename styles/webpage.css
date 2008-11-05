@@ -1,0 +1,170 @@
+/**********************************************
+ * MArcomage CSS stylesheet - webpage section *
+ **********************************************/
+
+/* begin webpage */
+
+div#webpage p img /* set distance of images from the rest of the content */
+{
+	margin: 1ex;
+	border-style: none; /* turn off IE7 deafult blue solid image borders O_o */
+}
+
+div#webpg_float_left /* menu part of wepage section */
+{
+	float: left;
+	width: 10%;
+	background-color: black;
+}
+
+div#webpg_float_left > div /* inner part of the menu */
+{
+	background-image: url('../img/login_menu.jpg');
+	background-repeat: repeat;
+	text-align: center;
+	margin: 0ex 1ex 1ex 1ex;
+}
+
+div#webpg_float_left input:first-child /* set distance of the first button from the upper border */
+{
+	margin-top: 13ex;
+}
+
+div#webpg_float_left div:first-child input /* set distance between buttons in the menu */
+{
+	margin-bottom: 10ex;
+}
+
+div#webpg_float_right /* content part of wepage section */
+{
+	float: right;
+	width: 90%;
+	color: aqua;
+	text-align: justify;
+	margin-top: 1ex;
+}
+
+div#webpg_float_right > div /* set distance of the content part from the left and right border */
+{
+	margin: 0ex 2ex 0ex 2ex;
+}
+
+div#webpg_float_right hr /* set distance of the horizontal line from the upper and lower part of the content */
+{
+	margin: 1ex 0ex 1ex 0ex;
+}
+
+div.date_time + h3 + div h3 /* heading layout in the modified cards section */
+{
+	text-align: left;
+}
+
+div.date_time /* date-time info layout */
+{
+	text-align: center;
+}
+
+div#webpage li > span /* highlighted text */
+{
+	color:  #ffd700; /* light gold */
+}
+
+/* end webpage */
+
+/* begin login menu */
+
+div#login_box h1 /* game title */
+{
+	font-size: xx-large;
+	text-align: center;
+}
+
+div#login_box h2 /* game subtitle */
+{
+	font-size: medium;
+	text-align: center;
+	color: lime;
+}
+
+div#login_box /* login box layout */
+{
+	padding: 1ex;
+	background-color: black;
+	/*min-width: 120ex;*/
+	min-width: 1045px;
+}
+
+div#lbox_float_left /* left part of the login box - login inputs */
+{
+	float: left;
+	width: 25%;
+}
+
+div#lbox_float_left > div /* content layout for left part of the login box */
+{
+	color: white;
+	text-align: center;
+	padding: 2ex 0ex 1ex 0ex;
+}
+
+div#lbox_float_left > div > * + * /* set distance between any two neighbouring elements in the left part of the login box */
+{
+	margin-top: 0.5ex;
+}
+
+div#lbox_float_left input + input /* set distance between two buttons in the left part of the login box */
+{
+	margin-left: 2ex;
+}
+
+div#lbox_float_left > div /* layout for the left part of the login box */
+{
+	background-image: url('../img/login_menu.jpg');
+	background-repeat: repeat;
+	margin-right: 1ex;
+}
+
+div#lbox_float_right /* right part of the login box - game title */
+{
+	width: 75%;
+	float: right;
+}
+
+div#lbox_float_right > div /* right part of the login box layout */
+{
+	background-color: black;
+	background-image: url('../img/title.jpg');
+	background-position: center center;
+	background-repeat: no-repeat;
+	padding: 3.5ex 0ex 3.5ex 0ex;
+}
+
+/* end login menu */
+
+/* begin registration */
+
+div#registration /* registration layout */
+{
+	color: white;
+	text-align: center;
+	padding: 2ex 0ex 2ex 0ex;
+	padding-top: 10ex;
+}
+
+div#registration div > input + input /* set distance between inputs in the registration */
+{
+	margin-left: 3ex;
+}
+
+div#registration > * + * /* set distance between any two neighbouring elements in the registration */
+{
+	margin-top: 0.5ex;
+}
+
+div#registration > h3 /* registration title */
+{
+	color: lime;
+	font-size: large;
+}
+
+/* end registration */

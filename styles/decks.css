@@ -1,0 +1,94 @@
+/********************************************
+ * MArcomage CSS stylesheet - decks section *
+ ********************************************/
+
+/* begin decklist */
+
+div#decks /* center buttons in deck list */
+{
+	text-align: center;
+}
+
+div#decks input /* set distance between deck access buttons */
+{
+	margin-top: 3ex;
+}
+
+/* end decklist */
+
+/* begin filters */
+
+div.filters /* filters subsection*/
+{
+	text-align: center;
+	color: white;
+	/*min-width: 120ex;*/
+	min-width: 1045px;
+	background-color: black;
+	padding-bottom: 1ex;
+}
+
+div.filters + hr /* horizontal line that separates the filters from the rest of the section*/
+{
+	/*min-width: 120ex;*/
+	min-width: 1045px;
+	margin: 0ex;
+}
+
+div.filters > input
+{
+	margin-right: 1ex;
+}
+
+/* end filters */
+
+/* begin deck */
+
+div.scroll > table /* set distance of the card pool from the rest of the content */
+{
+	margin-bottom: 1ex;	
+}
+
+div.scroll /* card pool layot */
+{
+	overflow: auto;
+	text-align: center;
+	width: 94%;
+	margin: 0% 3% 0% 3%;
+	/*min-width: 114ex;*/
+	min-width: 950px;
+}
+
+table.deck /* deck table layout */
+{
+	text-align: center;
+	border: thin solid yellow;
+	margin: 1ex 3% 0% 3%;
+	width: 94%;
+}
+
+table.deck th > p /* deck table header */
+{
+	font-weight: bold;
+	font-size: large;
+	background-color: black;
+	border-bottom: thin solid yellow;
+	padding: 1ex;
+}
+
+table.deck input /* set distance of "return" buttons in the deck table */
+{
+	margin-bottom: 1ex;
+}
+
+table.deck th + th, table.deck td + td /* deck table column borders */
+{
+	border-left: thin solid yellow;
+}
+
+table.deck table td + td /* disbale column borders between cards in deck table */
+{
+	border-style: none;
+}
+
+/* end deck */

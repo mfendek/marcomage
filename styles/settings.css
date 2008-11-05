@@ -1,0 +1,97 @@
+/***********************************************
+ * MArcomage CSS stylesheet - settings section *
+ ***********************************************/
+
+div#settings /* settings layout */
+{
+	border-top: thin solid yellow;
+	border-bottom: thin solid yellow;
+	min-width: 1045px;
+	color: white;
+	margin-top: 1ex;
+}
+
+div#sett_float_left /* user settings layout */
+{
+	float: left;
+	width: 50%;
+}
+
+div#sett_float_left > div /* set distance of user settings from the left border*/
+{
+	margin-left: 10%;
+}
+
+div#sett_float_left h4 + img /* avatar and zodiac sign pictures */
+{
+	background-color: black;
+	padding: 0.5ex;
+	margin: 0.5ex 1ex 0.5ex 1ex;
+	border: medium ridge #00bfff;
+}
+
+div#settings img + h4 /* zodiac sign text */
+{
+	color: lime;
+}
+
+div#sett_float_left h3 + div, div#sett_float_left h3 + div + div /* avatar and zodiac sign are floated to the right */
+{
+	float: right;
+	text-align: center;
+}
+
+div#settings h4 /* avatar and zodiac sign header text */
+{
+	margin: 0ex;
+	padding: 0ex;
+	text-align: center;
+}
+
+div#sett_float_left > div > div + div + div /* set distance of user settings from the upper and lower border */
+{
+	margin-top: 1ex;
+	margin-bottom: 1ex;
+}
+
+div#settings input /* set distance of inputs from the text */
+{
+	margin-left: 2ex;
+}
+
+div#settings input + input /* set distance of inputs from the other inputs */
+{
+	margin-left: 0.5ex;
+}
+
+div#settings select /* set distance of selects from other elements */
+{
+	margin-left: 2ex;
+	margin-right: 2ex;
+}
+
+div#sett_float_right /* game settings layout */
+{
+	float: right;
+	width: 49%;
+	border-left: thin solid yellow;
+}
+
+div#sett_float_right div /* set distance of game settings from the upper and lower border */
+{
+	margin-top: 1ex;
+	margin-bottom: 1ex;
+}
+
+div#sett_float_right > div /* set distance of game settings from the left border */
+{
+	margin-left: 2ex;
+}
+
+div#sett_float_right h4 + div > div > input /* checkbox layout */
+{
+	padding: 0ex;
+	margin: 0ex 2ex 0ex 0ex;
+	border-style: solid;
+	border-width: thin;
+}

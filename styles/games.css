@@ -1,0 +1,187 @@
+/********************************************
+ * MArcomage CSS stylesheet - games section *
+ ********************************************/
+
+/* begin gamelist */
+
+div#games /* center buttons in game list */
+{
+	text-align: center;
+}
+
+div#games input /* set distance between game access buttons */
+{
+	margin-top: 3ex;
+}
+
+p.ended_game /* color for text information about the game ("game has ended") */
+{
+	color: white;
+}
+
+p.aborted_game /* color for text information about the game ("game can be aborted") */
+{
+	color: gray;
+}
+
+/* end gamelist */
+
+/* begin newcard flag */
+
+p.newcard_flag /* new card flag (indicated above a new card) */
+{
+	color: orange;
+	border-color: white;
+	margin: 1ex 0ex 1ex 0ex;
+	border-style: ridge;
+	background-color: black;
+	font-size: x-small;
+	width: 86px;
+}
+
+p.history_flag /* discard or played flag above a card in the card history*/
+{
+	border-color: yellow;
+}
+
+/* end newcard flag */
+
+/* begin game */
+
+td.stats > div > p:first-child /* facilites text */
+{
+	color: white;
+	padding: 0.9ex 0ex 0ex 1ex;
+	font-size: x-large;
+}
+
+td.stats > div > p + p /* resources text */
+{
+	color: black;
+	margin: 2ex 0ex 0ex 1.5ex;
+	font-weight: bold;
+	font-size: medium;
+}
+
+td.stats > div /* facilites/resources layout */
+{
+	background-position: center center;
+	background-repeat: no-repeat;
+	height: 70px;
+	width: 78px;
+	text-align: left;
+}
+
+td.stats > div + h5, td.minstats > div + h5 /* player and opponent names */
+{
+	color: lime;
+	margin: 1ex 0ex 0.5ex 0ex;
+	font-size: medium;
+	font-weight: normal;
+	text-align: center;
+}
+
+td.stats > div:first-child /* quarry/bricks layout image */
+{
+	background-image: url('../img/bricks.jpg');
+}
+
+td.stats > div:first-child + div /* magic/gems layout image */
+{
+	background-image: url('../img/gems.jpg');
+}
+
+td.stats > div:first-child + div + div /* dungeon/recruits layout image */
+{
+	background-image: url('../img/recruits.jpg');
+}
+
+td.stats > h5 > img, td.minstats > h5 > img /* flag image*/
+{
+	margin-left: 0.5ex;
+	margin-right: 0.5ex;
+}
+
+td.stats > h5 > input, td.minstats > h5 > input /* shortcut button to player's details */
+{
+	margin-left: 1ex;
+}
+
+td.minstats > div /* minimized game view layout */
+{
+	color: white;
+	text-align: center;
+	font-size: small;
+}
+
+p.info_label /* information label used in multiple instances in game section */
+{
+	text-align: center;
+	border: medium ridge yellow;
+	background-color: black;
+	font-size: medium;
+	color: white;
+}
+
+p.info_label + p.info_label /* disable double label border */
+{
+	border-top-style: none;
+}
+
+div.history /* history of played cards */
+{
+	/* we abandoned IE support completely */
+	/*overflow-y: hide;
+	overflow-x: scroll;*/
+	overflow: auto;
+	width: 98px;
+}
+
+div.chatbox /* chatbox window */
+{
+	overflow: auto;
+	max-height: 11.5ex;
+	margin: 0.5ex 0ex 1ex 0ex;
+	border: medium ridge yellow;
+	padding: 0ex 0.5ex 0.5ex 0.5ex;
+	text-align: left;
+	width: 51em;
+}
+
+div.chatbox > p > span:first-child /* date-time info in chatbox */
+{
+	color : rgb(219,142,179); /* light pink */
+}
+
+div.chatbox > p > span:first-child + span + span /* chat message color */
+{
+	color : white;
+}
+
+input.chatboard /* chatbox input elements */
+{
+	font-size: small;
+	color: white;
+	background-color: black;
+	padding: 0ex 0.5ex 0ex 0.5ex;
+}
+
+div.towerbody /* body part of the tower */
+{
+	background-image: url('../img/towerb.jpg');
+	background-position: bottom left;
+	background-repeat: repeat-y;
+	background-color: black;
+	width: 37px;
+}
+
+div.wallbody /* body part of the wall */
+{
+	background-image: url('../img/wall.jpg');
+	background-position: bottom left;
+	background-repeat: repeat-y;
+	background-color: black;
+	width: 19px;
+}
+
+/* end game */

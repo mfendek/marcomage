@@ -1,0 +1,108 @@
+/***********************************
+ * MArcomage CSS stylesheet - card *
+ ***********************************/
+
+div.karta h5 /* card title */
+{
+	font-weight: normal;
+	font-size: x-small;
+	margin-top: 0.5ex;
+}
+
+div.karta /* card */
+{
+	width: 86px;
+	border-color: white;
+	margin: 1.5ex 0.5ex 0.7ex 0.5ex;
+	font-size: x-small;
+	text-align: left;
+	color: black;
+	min-height: 18px;
+}
+
+div.karta > div /* card cost (resources) */
+{
+	padding: 2px 0px 0px 0px;
+	font-weight: bold;
+	background-position: center center;
+	background-repeat: no-repeat;
+	height: 16px;
+	width: 16px;
+	text-align: center;
+	float: right;	
+}
+
+p + table div.karta /* add extra margin when cards are displayed in the "hand" part of the game section*/
+{
+	margin: 1.5ex 3ex 0.7ex 3ex;
+}
+
+p + table div.history div.karta /* add extra margin when cards are displayed in the "history" part of the game section*/
+{
+	margin: 1.5ex 0.5ex 0.7ex 0.5ex;
+}
+
+div.karta > img /* card image */
+{
+	border-style: ridge;
+}
+
+div.karta > p /* set distance of the card text from the card border (left and right) */
+{
+	padding: 0ex 0.5ex 0ex 0.5ex;
+}
+
+div.karta > p + p /* set bottom distance of the card text from the card border */
+{
+	padding-bottom: 0.5ex;
+}
+
+div.tehla /* resource cost icons for card cost - bricks */
+{
+	background-image: url('../img/tehly.png');
+}
+
+div.all /* resource cost icons for card cost - mixed */
+{
+	background-image: url('../img/all.png');
+}
+
+div.null /* resource cost icons for card cost - zero */
+{
+	background-image: url('../img/null.png');
+}
+
+div.gemy /* resource cost icons for card cost - gems */
+{
+	background-image: url('../img/gemy.png');
+}
+
+div.rek /* resource cost icons for card cost - recruits */
+{
+	background-image: url('../img/reckuts.png');
+}
+
+div.bricks_cost /* background image for bricks cost only cards */
+{
+	background-image: url('../img/bricks_cost.jpg');
+}
+
+div.gem_cost /* background image for gems cost only cards */
+{
+	background-image: url('../img/gem_cost.jpg');
+}
+
+div.rec_cost /* background image for recruits cost only cards */
+{
+	background-image: url('../img/rec_cost.jpg');
+}
+
+div.mixed_cost /* background image for mixed cost cards */
+{
+	background-image: url('../img/mixed_cost.jpg');
+}
+
+div.zero_cost /* background image for zero cost cards */
+{
+	background-image: url('../img/zero_cost.jpg');
+}

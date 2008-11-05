@@ -1,0 +1,86 @@
+/**********************************************
+ * MArcomage CSS stylesheet - players section *
+ **********************************************/
+ 
+/* begin playerslist */
+
+div#players p /* color and distance of all texts in players list */
+{
+	color: lime;
+	margin: 0ex 1ex 0ex 1ex;
+}
+
+div#players th input /* set distance for ordering buttons from header texts in the table header */
+{
+	margin-left: 1ex;
+}
+
+/* end playerslist */
+
+/* begin user details */
+
+div#details /* set minimum width to whole section (grants immunity to resize) */
+{
+	min-width: 1045px;
+}
+
+div#details > div /* center the content */
+{
+	margin-left: auto;
+	margin-right: auto;
+	color: white;
+	width: 50%;
+	font-weight: bold;
+}
+
+.detail_value /* player's detail attribute color */
+{
+	color: lime;
+}
+
+div#details /* set distance between separate lines */
+{
+	line-height: 1.6;
+}
+
+div.details_float_right /* float both avatar and zodiac to the right */
+{
+	float: right;
+	text-align: center;
+}
+
+div.details_float_right img /* avatar and zodiac pictures */
+{
+	background-color: black;
+	padding: 0.5ex;
+	margin: 0.5ex 1ex 0.5ex 1ex;
+	border: medium ridge #00bfff;
+}
+
+div.details_float_right p /* avatar and zodiac text color */
+{
+	color: lime;
+}
+
+div#details * + h4 /* special messages formatting */
+{
+	margin-top: 5ex;
+	margin-bottom: 2ex;
+}
+
+div#details select /* special messages formatting */
+{
+	margin-left: 2ex;
+}
+
+.challenge_text /* challenge text input and display layout */
+{
+	background-color: black;
+	color: #dddddd; /* light gray */
+	padding: 0.5ex;
+	margin-top: 1ex;
+	margin-bottom: 1ex;
+	border: thin solid #6495ed;
+}
+
+/* end user details */

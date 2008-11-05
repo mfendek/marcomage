@@ -1,0 +1,301 @@
+/********************************************
+ * MArcomage CSS stylesheet - forum section *
+ ********************************************/
+
+/* begin section */
+
+div#forum /* forum layout */
+{
+	background-image: url('../img/novels_content.jpg');
+	background-repeat: repeat;
+	text-align: center;
+	color: white;
+	min-height: 500px;
+	min-width: 1045px;
+	border: thin solid yellow;
+}
+
+div#forum input, div#forum select /* input and select elements layout */
+{
+	border-color: lime;
+}
+
+div#forum h4 + div /* forum content layout */
+{
+	margin: 2ex 1ex 1ex 1ex;
+	border: medium ridge #6495ed;
+}
+
+div#forum > h3 /* forum title layout */
+{
+	margin: 1ex 0ex 0ex 0ex;
+	padding-bottom: 1ex;
+	border-bottom: thin solid yellow;
+}
+
+div#forum > h4 /* forum subtitle layout */
+{
+	margin: 1ex 0ex 0ex 0ex;
+	color: lime;
+	font-size: large;
+}
+
+div#forum tr div > h5 /* section heading layout - description */
+{
+	font-size: medium;
+	float: left;
+	width: 73%;
+	text-align: left;
+	margin: 1ex 0ex 1ex 1ex;
+	color: lime;
+}
+
+div#forum tr div > h5 > span /* section heading layout - title */
+{
+	font-size: large;
+	color: yellow;
+	margin-left: 1ex;
+}
+
+div#forum tr div > h5 + p /* section heading layout - right side with buttons */
+{
+	float: right;
+	width: 25%;
+	text-align: right;
+	margin: 1ex 1ex 1ex 0ex;
+}
+
+div#forum tr div > h5 + p > input + input  /* section heading layout - right side with buttons - set distance between inputs */
+{
+	margin-left: 2ex;
+}
+
+div#forum tr div > h5 + p > select /* set distance of select from inputs in the right side of section heading*/
+{
+	margin: 0ex 0ex 0ex 2ex;
+}
+
+div#forum tr div > h5 + p + div /* end section heading */
+{
+	clear: both;
+	border-top: medium ridge #6495ed;
+}
+
+div#forum tr td > div /* forum section top border */
+{
+	border-top: medium ridge #6495ed;
+}
+
+div#forum table /* forum layout */
+{
+	width: 100%;
+}
+
+div#forum th > p /* forum table header layout */
+{
+	margin: 1ex;
+	color: #f4a460; /*SandyBrown*/
+}
+
+div#forum td > p /* forum table cell layout */
+{
+	margin-bottom: 0.5ex;
+	margin-top: 0.5ex;
+}
+
+div#forum th + th, div#forum td + td /* forum table column borders */
+{
+	border-left: medium ridge #6495ed;
+}
+
+/* end section */
+
+/* begin forum_new_edit */
+/* same CSS for new post, new thread, edit post, edit thread */
+
+div#forum_new_edit /* forum edit layout */
+{
+	min-width: 1045px;
+}
+
+div#forum_new_edit > div /* forum edit layout */
+{
+	margin-right: auto;
+	margin-left: auto;
+	color: white;
+	width: 50%;
+	font-weight: bold;
+	padding: 1ex;
+	border: medium ridge yellow;
+	background-image: url('../img/novels_content.jpg');
+	background-color: black;
+	color: lime;
+}
+
+div#forum_new_edit > div > * /* set distance between elements */
+{
+	margin-bottom: 1ex;
+	margin-top: 1ex;
+}
+
+div#forum_new_edit > h3 > span /* heading layout */
+{
+	color: lime;
+}
+
+div#forum_new_edit p > span /* text layout */
+{
+	color: #dddddd; /* light gray */
+}
+
+div#forum_new_edit > div > p > input /* input layout */
+{
+	margin-left: 1ex;
+	font-size: medium;
+}
+
+div#forum_new_edit textarea /* textarea layout */
+{
+	width: 100%;
+	background-color: black;
+	color: #dddddd; /* light gray */
+}
+
+/* end forum_new_edit */
+
+/* begin thread details */
+
+div#thread_details /* thread details layout */
+{
+	background-image: url('../img/novels_content.jpg');
+	background-repeat: repeat;
+	text-align: center;
+	color: #dddddd; /* light gray */
+	min-height: 500px;
+	min-width: 1045px;
+	border: thin solid yellow;
+}
+
+div#thread_details input, div#thread_details select /* input and select layout in thread details */
+{
+	border-color: lime;
+}
+
+div#post_list /* post list layout */
+{
+	margin: 2ex 1ex 1ex 1ex;
+	border: medium ridge #6495ed;
+}
+
+div#thread_details > h3 /* thread details heading layout */
+{
+	margin: 1ex 0ex 0ex 0ex;
+	padding-bottom: 1ex;
+	border-bottom: thin solid yellow;
+}
+
+div#thread_details > h4 /* thread details subtitle layout */
+{
+	margin: 1ex 0ex 2ex 0ex;
+	color: lime;
+	font-size: large;
+}
+
+div.thread_bar /* thread navigation menu layout (top and bottom) */
+{
+	border: medium ridge #6495ed;
+	margin: 1ex;
+}
+
+div.thread_bar > h5 /* thread navigation menu - heading description */
+{
+	float: left;
+	width: 57%;
+	font-size: medium;
+	color: lime;
+	text-align: left;
+	margin: 1ex 0ex 1ex 1ex;
+}
+
+div.thread_bar > h5 > span  /* thread navigation menu - heading text */
+{
+	font-size: large;
+	color: yellow;
+	margin-left: 1ex;
+}
+
+div.thread_bar > p /* thread navigation menu - right part with buttons */
+{
+	float: right;
+	width: 40%;
+	text-align: right;
+	margin: 1ex 1ex 1ex 0ex;
+}
+
+div.thread_bar > p > input + input /* set distance between inputs in the right part of the thread navigation menu */
+{
+	margin-left: 2ex;
+}
+
+div.thread_bar > p > select/* set distance between select and other inputs in the right part of the thread navigation menu */
+{
+	margin-left: 2ex;
+	margin: 0ex 0ex 0ex 2ex;
+}
+
+div#post_list > div + div /* post list layout */
+{
+	border-top: medium ridge #6495ed;
+}
+
+div#post_list > div > div:first-child /* post layout - part with avatar */
+{
+	float: left;
+	width: 14%;
+	text-align: left;
+	margin: 1ex 0ex 1ex 1ex;
+}
+
+div#post_list > div > div:first-child > h5 /* post layout - part with avatar - heading */
+{
+	font-size: medium;
+	color: lime;
+	margin-bottom: 1ex;
+}
+
+div#post_list > div > div:first-child > p /* post layout - part with avatar - text */
+{
+	font-size: small;
+	margin-top: 1ex;
+}
+
+div#post_list > div > div:first-child + div /* post layout - content part */
+{
+	float: right;
+	width: 84%;
+	text-align: justify;
+}
+
+div#post_list > div > div:first-child + div p  /* post layout - content part - set distance between posts */
+{
+	margin: 1ex 2ex 2ex 0ex;
+}
+
+div#post_list > div > div:first-child + div > div /* post layout - post side borders */
+{
+	border-bottom: medium ridge #6495ed;
+	border-left: medium ridge #6495ed;
+}
+
+div#post_list > div > div:first-child + div > div > input /* post layout - post inputs */
+{
+	margin: 1.5ex;
+}
+
+p.highlighted
+{
+	color: yellow;
+	font-weight: bold;
+}
+
+/* end thread details */

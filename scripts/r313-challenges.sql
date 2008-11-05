@@ -1,0 +1,1 @@
+ALTER TABLE `messages` ADD `GameID` INT UNSIGNED NOT NULL DEFAULT '0' AFTER `Unread` ;

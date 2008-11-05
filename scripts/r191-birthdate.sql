@@ -1,0 +1,1 @@
+UPDATE `settings` SET `Birthdate` = FROM_UNIXTIME(`Birthdate`, "%d-%m-%Y") WHERE `Birthdate` != ''
