@@ -2318,10 +2318,6 @@
 		
 		$content.= '</form>'."\n";
 		
-		$querytime_end = microtime(TRUE);
-		//$content.= '<p>'.'in '.(int)(1000*($querytime_end - $querytime_start)).' ms'.'</p>'."\n";
-		//$content.= '<p>'.$db->queries.' queries used</p>'."\n";
-		
 		$content.= '</body>'."\n";
 		$content.= "\n";
 		$content.= '</html>'."\n";

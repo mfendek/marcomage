@@ -2613,4 +2613,6 @@
 	$param['sessionstring'] = (($session && !$session->hasCookies()) ? $session->SessionString() : "");
 	echo Generate_Footer($param);
 	
+	$querytime_end = microtime(TRUE);
+	echo '<!-- Page generated in '.(int)(1000*($querytime_end - $querytime_start)).' ms. '.$db->queries.' queries used. -->';
 ?>
