@@ -225,7 +225,7 @@
 			if ($param['Game']['Winner'] == $param['Game']['PlayerName'])
 				$content.= 'You have won'.' in round '.$param['Game']['Round'].'. '.$param['Game']['Outcome'].'.';
 			elseif ($param['Game']['Winner'] == $param['Game']['OpponentName'])
-				$content.= $param['Game']['Winner'].' has won'.' in round '.$param['Game']['Round'].'. '.$param['Game']['Outcome'].'.';
+				$content.= htmlencode($param['Game']['Winner']).' has won'.' in round '.$param['Game']['Round'].'. '.$param['Game']['Outcome'].'.';
 			elseif ($param['Game']['Winner'] == '' and $param['Game']['Outcome'] == 'Draw')
 				$content.= 'Game ended in a draw in round '.$param['Game']['Round'].'.';
 			elseif ($param['Game']['Winner'] == '' and $param['Game']['Outcome'] == 'Aborted')
