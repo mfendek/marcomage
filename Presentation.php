@@ -908,7 +908,7 @@
 			$content.= '<td><p>'.$data['Wins'].'</p></td>'."\n";
 			$content.= '<td><p>'.$data['Losses'].'</p></td>'."\n";
 			$content.= '<td><p>'.$data['Draws'].'</p></td>'."\n";
-			$content.= '<td><p>'.((isset($data['Free slots'])) ? (MAX_GAMES - $data['Free slots']) : MAX_GAMES).'</p></td>'."\n";
+			$content.= '<td><p>'.$data['Free slots'].'</p></td>'."\n";
 			$content.= '<td style="text-align: left;">'."\n";
 			$content.= '<input class="details" type = "submit" name = "user_details['.postencode($opponent).']" value = "i" />'."\n";
 			if ($param['Players']['messages']) $content.= '<input class="details" type = "submit" name = "message_create['.postencode($opponent).']" value = "m" />'."\n";
@@ -1718,7 +1718,7 @@
 				$content.= '<tr><td colspan="6">'."\n";
 				$content.= '<div>'."\n";
 				
-				$content.= '<h5><input type = "submit" name="section_details['.$data['SectionID'].']" value="&crarr;" /><span>'.$data['SectionName'].'</span> ( '.(($data['count'] == null) ? 0 : $data['count']).' ) - '.$data['Description'].'</h5>'."\n";
+				$content.= '<h5><input type = "submit" name="section_details['.$data['SectionID'].']" value="&crarr;" /><span>'.$data['SectionName'].'</span> ( '.$data['count'].' ) - '.$data['Description'].'</h5>'."\n";
 				$content.= '<p></p>'."\n";
 				$content.= '<div></div>'."\n";	
 				$content.= '</div>'."\n";
@@ -1749,7 +1749,7 @@
 						$content.= '<td><p><input class="details" type = "submit" name="thread_details['.$thread_data['ThreadID'].']" value="+" /></p></td>'."\n";
 						$content.= '<td><p'.$style.'>'.htmlencode($thread_data['Title']).$locked.'</p></td>'."\n";
 						$content.= '<td><p>'.htmlencode($thread_data['Author']).'</p></td>'."\n";
-						$content.= '<td><p>'.(($thread_data['post_count'] == null) ? 0 : $thread_data['post_count']).'</p></td>'."\n";
+						$content.= '<td><p>'.$thread_data['post_count'].'</p></td>'."\n";
 						$content.= '<td><p>'.$create_date.'</p></td>'."\n";
 						$content.= '<td><p>'.(($thread_data['last_post'] == null) ? 'n/a' : $post_date." by ".htmlencode($thread_data['PostAuthor']).' <input class="details" type = "submit" name="thread_last_page['.$thread_data['ThreadID'].']" value="&rarr;" '.(($param['PreviousLogin'] < $time) ? ' style="border-color: red;" ' : "").'/>').'</p></td>'."\n";
 						$content.= '</tr>'."\n";
@@ -1844,7 +1844,7 @@
 				$content.= '<td><p><input class="details" type = "submit" name="thread_details['.$thread_data['ThreadID'].']" value="+" /></p></td>'."\n";
 				$content.= '<td><p'.$style.'>'.htmlencode($thread_data['Title']).$locked.'</p></td>'."\n";
 				$content.= '<td><p>'.htmlencode($thread_data['Author']).'</p></td>'."\n";
-				$content.= '<td><p>'.(($thread_data['post_count'] == null) ? 0 : $thread_data['post_count']).'</p></td>'."\n";
+				$content.= '<td><p>'.$thread_data['post_count'].'</p></td>'."\n";
 				$content.= '<td><p>'.$create_date.'</p></td>'."\n";
 				$content.= '<td><p>'.(($thread_data['last_post'] == null) ? 'n/a' : $post_date." by ".htmlencode($thread_data['PostAuthor']).' <input class="details" type = "submit" name="thread_last_page['.$thread_data['ThreadID'].']" value="&rarr;" '.(($param['PreviousLogin'] < $time) ? ' style="border-color: red;" ' : "").'/>').'</p></td>'."\n";
 				$content.= '</tr>'."\n";
