@@ -105,13 +105,17 @@
 			
 			$mixed = 'SELECT `Username`, COUNT(`Username`) as `Free slots` FROM ('.$active_games.' UNION ALL '.$challenges_from.') as `tmp` GROUP BY `Username`';
 			
-			$nondead = 'SELECT `scores`.`Username`, `Wins`, `Losses`, `Draws`, 1 AS `Rank1`, `Wins`*3+`Draws` AS `Rank2`, `Last Query`, `Free slots`, `Avatar`, `Country` FROM `scores` INNER JOIN (SELECT `Username`, `Last Query` FROM `logins` WHERE (UNIX_TIMESTAMP() - `Last Query` <= '.$activity_q.')) as `logins` ON `scores`.`Username` = `logins`.`Username` INNER JOIN (SELECT `Username`, `Avatar`, `Country` FROM `settings`) as `settings` ON `scores`.`Username` = `settings`.`Username` LEFT OUTER JOIN ('.$mixed.') as `temp` ON `scores`.`Username` = `temp`.`Username`';
+			$nondead = 'SELECT `scores`.`Username`, `Wins`, `Losses`, `Draws`, 1 AS `Rank1`, `Wins`*3+`Draws` AS `Rank2`, `Last Query`, '.MAX_GAMES.' - COALESCE(`Free slots`, 0) as `Free slots`, `Avatar`, `Country` FROM `scores` INNER JOIN (SELECT `Username`, `Last Query` FROM `logins` WHERE (UNIX_TIMESTAMP() - `Last Query` <= '.$activity_q.')) as `logins` ON `scores`.`Username` = `logins`.`Username` INNER JOIN (SELECT `Username`, `Avatar`, `Country` FROM `settings`) as `settings` ON `scores`.`Username` = `settings`.`Username` LEFT OUTER JOIN ('.$mixed.') as `temp` ON `scores`.`Username` = `temp`.`Username`';
 			
-			$dead = 'SELECT `scores`.`Username`, `Wins`, `Losses`, `Draws`, 0 AS `Rank1`, `Wins`*3+`Draws` AS `Rank2`, `Last Query`, `Free slots`, `Avatar`, `Country` FROM `scores` INNER JOIN (SELECT `Username`, `Last Query` FROM `logins` WHERE (UNIX_TIMESTAMP() - `Last Query` > 60*60*24*7*3)) as `logins` ON `scores`.`Username` = `logins`.`Username` INNER JOIN (SELECT `Username`, `Avatar`, `Country` FROM `settings`) as `settings` ON `scores`.`Username` = `settings`.`Username` LEFT OUTER JOIN ('.$mixed.') as `temp` ON `scores`.`Username` = `temp`.`Username`';
+			$dead = 'SELECT `scores`.`Username`, `Wins`, `Losses`, `Draws`, 0 AS `Rank1`, `Wins`*3+`Draws` AS `Rank2`, `Last Query`, '.MAX_GAMES.' - COALESCE(`Free slots`, 0) as `Free slots`, `Avatar`, `Country` FROM `scores` INNER JOIN (SELECT `Username`, `Last Query` FROM `logins` WHERE (UNIX_TIMESTAMP() - `Last Query` > 60*60*24*7*3)) as `logins` ON `scores`.`Username` = `logins`.`Username` INNER JOIN (SELECT `Username`, `Avatar`, `Country` FROM `settings`) as `settings` ON `scores`.`Username` = `settings`.`Username` LEFT OUTER JOIN ('.$mixed.') as `temp` ON `scores`.`Username` = `temp`.`Username`';
 			
-			$list_q = (($showdead == "yes") ? $nondead.' UNION '.$dead : $nondead);
+			if ($showdead == "yes")
+			{
+				$main_qeury = 'SELECT `Username`, `Wins`, `Losses`, `Draws`, `Last Query`, `Rank1`, `Rank2`, `Free slots`, `Avatar`, `Country` FROM ('.$nondead.' UNION '.$dead .') as `t` ORDER BY `Rank1` DESC, `'.$condition.'` '.$order.'';
+			}
+			else $main_qeury = $nondead.' ORDER BY `Rank1` DESC, `'.$condition.'` '.$order.'';
 			
-			$result = $db->Query('SELECT `Username`, `Wins`, `Losses`, `Draws`, `Last Query`, `Rank1`, `Rank2`, '.MAX_GAMES.' - COALESCE(`Free slots`, 0) as `Free slots`, `Avatar`, `Country` FROM ('.$list_q.') as `t` ORDER BY `Rank1` DESC, `'.$condition.'` '.$order.'');
+			$result = $db->Query($main_qeury);
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
