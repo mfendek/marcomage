@@ -2021,7 +2021,7 @@
 		// begin ordering
 		
 		// create defaults for not used ordering
-		$columns = array(1 => "Rank2", 2 => "Username", 3 => "Country", 4 => "Free slots");
+		$columns = array(1 => "Rank", 2 => "Username", 3 => "Country", 4 => "Free slots");
 		
 		foreach($columns as $index => $column_name)
 		{
@@ -2030,8 +2030,8 @@
 		}
 		
 		// defaults for list ordering
-		if ($order == "") $order = "DESC";
-		if ($condition == "") $condition = "Rank2";
+		if (!isset($order) or $order == "") $order = "DESC";
+		if (!isset($condition) or $condition == "") $condition = "Rank";
 		
 		if ($order == "ASC")
 		{

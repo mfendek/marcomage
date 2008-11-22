@@ -864,7 +864,7 @@
 		if ($show_nationality == "yes") $content.= '<th></th>'."\n";
 		$content.= '<th><p>Flag<input type = "submit" class="details" '.(($condition == "Country") ? ' style="border-color: lime;" ' : '').'name = "players_ord_'.$bname["Country"].'['.postencode("Country").']" value = "'.$val["Country"].'" /></p></th>'."\n";
 		$content.= '<th><p>Username<input type = "submit" class="details" '.(($condition == "Username") ? ' style="border-color: lime;" ' : '').'name = "players_ord_'.$bname["Username"].'['.postencode("Username").']" value = "'.$val["Username"].'" /></p></th>'."\n";
-		$content.= '<th><p>Wins<input type = "submit" class="details" '.(($condition == "Rank2") ? ' style="border-color: lime;" ' : '').'name = "players_ord_'.$bname["Rank2"].'['.postencode("Rank2").']" value = "'.$val["Rank2"].'" /></p></th>'."\n";
+		$content.= '<th><p>Wins<input type = "submit" class="details" '.(($condition == "Rank") ? ' style="border-color: lime;" ' : '').'name = "players_ord_'.$bname["Rank"].'['.postencode("Rank").']" value = "'.$val["Rank"].'" /></p></th>'."\n";
 		$content.= '<th><p>Losses</p></th>'."\n";
 		$content.= '<th><p>Draws</p></th>'."\n";
 		$content.= '<th><p>Free slots<input type = "submit" class="details" '.(($condition == "Free slots") ? ' style="border-color: lime;" ' : '').'name = "players_ord_'.$bname["Free slots"].'['.postencode("Free slots").']" value = "'.$val["Free slots"].'" /></p></th>'."\n";

@@ -89,31 +89,21 @@
 		public function ListPlayers($showdead, $filter_cond, $condition, $order)
 		{
 			$db = $this->db;
-			//$result = $db->Query('SELECT `Username`, `Wins`, `Losses`, `Draws`, `Last Query` FROM ((SELECT `Username`, `Wins`, `Losses`, `Draws`, 0 AS `Rank1`, `Wins`/`Losses` AS `Rank2` FROM `scores` WHERE `Losses` != 0) UNION (SELECT `Username`, `Wins`, `Losses`, `Draws`, 1 AS `Rank1`, `Wins` AS `Rank2` FROM `scores` WHERE `Losses` = 0 AND `Draws` = 0 AND `Wins` > 0) UNION (SELECT `Username`, `Wins`, `Losses`, `Draws`, -1 AS `Rank1`, 0 AS `Rank2` FROM `scores` WHERE `Wins` = 0 AND `Losses` = 0 AND `Draws` = 0)) AS t1 JOIN `logins` AS t2 USING (`Username`) ORDER BY `Rank1` DESC, `Rank2` DESC, `Draws` ASC, `Username` ASC');
-			
-			if ($filter_cond == "active") $activity_q = "60*10";
-			elseif ($filter_cond == "offline") $activity_q = "60*60*24*7*1";
-			else $activity_q = "60*60*24*7*3";
-			
-			$p1_part = 'SELECT `Player1` as `Username` FROM `games` WHERE (`State` != "waiting" AND `State` != "P1 over")';
-			
-			$p2_part = 'SELECT `Player2` as `Username` FROM `games` WHERE (`State` != "waiting" AND `State` != "P2 over")';
-			
-			$active_games = $p1_part.' UNION ALL '.$p2_part;
-			
-			$challenges_from = 'SELECT `Player1` as `Username` FROM `games` WHERE `State` = "waiting"';	
-			
-			$mixed = 'SELECT `Username`, COUNT(`Username`) as `Free slots` FROM ('.$active_games.' UNION ALL '.$challenges_from.') as `tmp` GROUP BY `Username`';
-			
-			$nondead = 'SELECT `scores`.`Username`, `Wins`, `Losses`, `Draws`, 1 AS `Rank1`, `Wins`*3+`Draws` AS `Rank2`, `Last Query`, '.MAX_GAMES.' - COALESCE(`Free slots`, 0) as `Free slots`, `Avatar`, `Country` FROM `scores` INNER JOIN (SELECT `Username`, `Last Query` FROM `logins` WHERE (UNIX_TIMESTAMP() - `Last Query` <= '.$activity_q.')) as `logins` ON `scores`.`Username` = `logins`.`Username` INNER JOIN (SELECT `Username`, `Avatar`, `Country` FROM `settings`) as `settings` ON `scores`.`Username` = `settings`.`Username` LEFT OUTER JOIN ('.$mixed.') as `temp` ON `scores`.`Username` = `temp`.`Username`';
-			
-			$dead = 'SELECT `scores`.`Username`, `Wins`, `Losses`, `Draws`, 0 AS `Rank1`, `Wins`*3+`Draws` AS `Rank2`, `Last Query`, '.MAX_GAMES.' - COALESCE(`Free slots`, 0) as `Free slots`, `Avatar`, `Country` FROM `scores` INNER JOIN (SELECT `Username`, `Last Query` FROM `logins` WHERE (UNIX_TIMESTAMP() - `Last Query` > 60*60*24*7*3)) as `logins` ON `scores`.`Username` = `logins`.`Username` INNER JOIN (SELECT `Username`, `Avatar`, `Country` FROM `settings`) as `settings` ON `scores`.`Username` = `settings`.`Username` LEFT OUTER JOIN ('.$mixed.') as `temp` ON `scores`.`Username` = `temp`.`Username`';
-			
-			$list_q = ( $showdead == "yes" ) ? $nondead.' UNION '.$dead : $nondead;
 
-			$result = $db->Query('SELECT `Username`, `Wins`, `Losses`, `Draws`, `Last Query`, `Rank1`, `Rank2`, `Free slots`, `Avatar`, `Country` FROM ('.$list_q.') as `t` ORDER BY `Rank1` DESC, `'.$condition.'` '.$order); 
+			$activity_q = ( $filter_cond == "none"    ? ( $showdead == "yes" ? "UNIX_TIMESTAMP()" : "60*60*24*7*3" )
+			            : ( $filter_cond == "active"  ? "60*10"
+			            : ( $filter_cond == "offline" ? "60*60*24*7*1"
+			            :                               "60*60*24*7*3" )));
+
+			$games_p1 = 'SELECT `Player1` as `Username` FROM `games` WHERE `State` != "waiting" AND `State` != "P1 over"';
+			$games_p2 = 'SELECT `Player2` as `Username` FROM `games` WHERE `State` != "waiting" AND `State` != "P2 over"';
+			$challenges = 'SELECT `Player1` as `Username` FROM `games` WHERE `State` = "waiting"';
+			$slots_q = "SELECT `Username`, COUNT(`Username`) as `Slots` FROM ((".$games_p1.") UNION ALL (".$games_p2.") UNION ALL (".$challenges.")) as t GROUP BY `Username`";
+
+			$query = "SELECT `logins`.`Username`, `scores`.`Wins`, `scores`.`Losses`, `scores`.`Draws`, `settings`.`Avatar`, `settings`.`Country`, `logins`.`Last Query`, ".MAX_GAMES." - COALESCE(`Slots`, 0) as `Free slots`, (CASE WHEN `Last Query` >= UNIX_TIMESTAMP() - 60*60*24*7*3 THEN `Wins`*3+`Draws` ELSE -(`Wins`*3+`Draws`) END) as `Rank` FROM (`logins` JOIN `settings` USING (`Username`) JOIN `scores` USING (`Username`) LEFT OUTER JOIN (".$slots_q.") as `slots` USING (`Username`)) WHERE `Last Query` >= UNIX_TIMESTAMP() - ".$activity_q." ORDER BY `".$condition."` ".$order."";
+
+			$result = $db->Query($query);
 			if (!$result) return false;
-			if (!$result->Rows()) return false;
 			
 			$list = array();
 			while( $data = $result->Next() )
