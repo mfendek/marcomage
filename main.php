@@ -2541,7 +2541,7 @@
 		$param['Thread_details']['Thread'] = $thread_data = $forum->Threads->GetThread($thread_id);
 		
 		// retrieve section_id - cannot rely on hidden, because we allow to access threads direct from main page		
-		$param['Thread_details']['Section'] = $forum->GetSection($thread_data['Section']);
+		$param['Thread_details']['Section'] = $forum->GetSection($thread_data['SectionID']);
 		
 		$param['Thread_details']['Pages'] = $forum->Threads->Posts->CountPages($thread_id);
 		$param['Thread_details']['CurrentPage'] = $current_page;
@@ -2574,8 +2574,8 @@
 	{
 		$param['Edit_post']['Post'] = $post_data;
 		$param['Edit_post']['CurrentPage'] = $current_page;
-		$param['Edit_post']['ThreadList'] = $forum->Threads->ListTargetThreads($post_data['Thread']);
-		$param['Edit_post']['Thread'] = $forum->Threads->GetThread($post_data['Thread']);
+		$param['Edit_post']['ThreadList'] = $forum->Threads->ListTargetThreads($post_data['ThreadID']);
+		$param['Edit_post']['Thread'] = $forum->Threads->GetThread($post_data['ThreadID']);
 		$param['Edit_post']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : $post_data['Content']);
 		
 		$param['Edit_post']['move_post'] = ($access_rights[$player->Type()]["move_post"]);
@@ -2586,8 +2586,8 @@
 	elseif ($current == "Edit_thread")
 	{
 		$param['Edit_thread']['Thread'] = $thread_data = $forum->Threads->GetThread($thread_id);
-		$param['Edit_thread']['Section'] = $forum->GetSection($thread_data['Section']);
-		$param['Edit_thread']['SectionList'] = $forum->ListTargetSections($thread_data['Section']);
+		$param['Edit_thread']['Section'] = $forum->GetSection($thread_data['SectionID']);
+		$param['Edit_thread']['SectionList'] = $forum->ListTargetSections($thread_data['SectionID']);
 		
 		$param['Edit_thread']['chng_priority'] = ($access_rights[$player->Type()]["chng_priority"]);
 		$param['Edit_thread']['move_thread'] = ($access_rights[$player->Type()]["move_thread"]);

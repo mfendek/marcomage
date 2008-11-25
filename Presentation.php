@@ -2024,7 +2024,7 @@
 		
 		$content.= $nav_bar_code[2]; // generate lower thread navigation bar
 		
-		$content.= '<input type = "hidden" name = "CurrentSection" value = "'.$thread['Section'].'"/>'."\n";
+		$content.= '<input type = "hidden" name = "CurrentSection" value = "'.$thread['SectionID'].'"/>'."\n";
 		$content.= '<input type = "hidden" name = "CurrentThread" value = "'.$thread['ThreadID'].'"/>'."\n";
 		$content.= '<input type = "hidden" name = "CurrentPage" value = "'.$current_page.'"/>'."\n";
 		
@@ -2076,7 +2076,7 @@
 		$content.= '<div>'."\n";	
 				
 		$content.= '<input type = "submit" name = "modify_post" value="Save" />'."\n";
-		$content.= '<input type = "submit" name="thread_details['.$post['Thread'].']" value="Back" />'."\n";
+		$content.= '<input type = "submit" name="thread_details['.$post['ThreadID'].']" value="Back" />'."\n";
 		$content.= '<hr/>'."\n";
 		
 		$content.= '<textarea name="Content" rows="10" cols="50">'.htmlencode($param['Edit_post']['Content']).'</textarea>'."\n";
@@ -2103,7 +2103,7 @@
 		
 		$content.= '</div>'."\n";
 		
-		$content.= '<input type = "hidden" name = "CurrentThread" value = "'.$post['Thread'].'"/>'."\n";
+		$content.= '<input type = "hidden" name = "CurrentThread" value = "'.$post['ThreadID'].'"/>'."\n";
 		$content.= '<input type = "hidden" name = "CurrentPage" value = "'.$current_page.'"/>'."\n";
 		$content.= '<input type = "hidden" name = "CurrentPost" value = "'.$post['PostID'].'"/>'."\n";
 				

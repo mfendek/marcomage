@@ -24,7 +24,7 @@
 		{	
 			$db = $this->db;
 			
-			$result = $db->Query('INSERT INTO `forum_threads` (`Title`, `Author`, `Priority`, `Section`, `Created`) VALUES ("'.$db->Escape($title).'", "'.$db->Escape($author).'", "'.$priority.'", "'.$section.'", NOW())');
+			$result = $db->Query('INSERT INTO `forum_threads` (`Title`, `Author`, `Priority`, `SectionID`, `Created`) VALUES ("'.$db->Escape($title).'", "'.$db->Escape($author).'", "'.$priority.'", "'.$section.'", NOW())');
 			if (!$result) return false;
 			
 			return $db->LastID();
@@ -35,7 +35,7 @@
 			$db = $this->db;
 			
 			// delete all posts that are inside this thread
-			$result = $db->Query('UPDATE `forum_posts` SET `Deleted` = "yes" WHERE `Thread` = "'.$thread_id.'"');
+			$result = $db->Query('UPDATE `forum_posts` SET `Deleted` = "yes" WHERE `ThreadID` = "'.$thread_id.'"');
 			
 			if (!$result) return false;
 			
@@ -51,7 +51,7 @@
 		{	
 			$db = $this->db;
 						
-			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Section`, `Created` FROM `forum_threads` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = "no"');
+			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `SectionID`, `Created` FROM `forum_threads` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = "no"');
 			
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
@@ -123,7 +123,7 @@
 		{	
 			$db = $this->db;
 									
-			$result = $db->Query('SELECT COUNT(`PostID`) as `Count` FROM `forum_posts` WHERE `Thread` = "'.$thread_id.'"');
+			$result = $db->Query('SELECT COUNT(`PostID`) as `Count` FROM `forum_posts` WHERE `ThreadID` = "'.$thread_id.'"');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
@@ -145,7 +145,7 @@
 				$flag = 1;
 			}
 			
-			return 'SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostAuthor`, `last_post`, COALESCE(`post_count`, 0) as `post_count`, `flag` FROM (SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, '.$flag.' as `flag` FROM `forum_threads` WHERE `Section` = "'.$section.'" AND `Deleted` = "no" AND `Priority` '.$sign.'= "sticky") as `threads` LEFT OUTER JOIN (SELECT `PostAuthor`, `posts1`.`Thread`, `last_post`, `post_count` FROM (SELECT `Author` as `PostAuthor`, `Thread`, `Created` FROM `forum_posts` WHERE `Deleted` = "no") as `posts1` INNER JOIN (SELECT `Thread`, MAX(`Created`) as `last_post`, COUNT(`PostID`) as `post_count` FROM `forum_posts` WHERE `Deleted` = "no" GROUP BY `Thread`) as `posts2` ON `posts1`.`Thread` = `posts2`.`Thread` AND `posts1`.`Created` = `posts2`.`last_post`) as `posts` ON `threads`.`ThreadID` = `posts`.`Thread`';
+			return 'SELECT `threads`.`ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostAuthor`, `last_post`, COALESCE(`post_count`, 0) as `post_count`, `flag` FROM (SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, '.$flag.' as `flag` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = "no" AND `Priority` '.$sign.'= "sticky") as `threads` LEFT OUTER JOIN (SELECT `PostAuthor`, `posts1`.`ThreadID`, `last_post`, `post_count` FROM (SELECT `Author` as `PostAuthor`, `ThreadID`, `Created` FROM `forum_posts` WHERE `Deleted` = "no") as `posts1` INNER JOIN (SELECT `ThreadID`, MAX(`Created`) as `last_post`, COUNT(`PostID`) as `post_count` FROM `forum_posts` WHERE `Deleted` = "no" GROUP BY `ThreadID`) as `posts2` ON `posts1`.`ThreadID` = `posts2`.`ThreadID` AND `posts1`.`Created` = `posts2`.`last_post`) as `posts` USING (`ThreadID`)';
 		}
 				
 		public function ListThreads($section, $page, $limit)
@@ -177,8 +177,8 @@
 		public function ListThreadsMain($section)
 		{	// lists threads in one specific section, ignoring sticky flag. Used in Forum main page.
 			$db = $this->db;
-						
-			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostAuthor`, `last_post`, COALESCE(`post_count`, 0) as `post_count` FROM (SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created` FROM `forum_threads` WHERE `Section` = "'.$section.'" AND `Deleted` = "no") as `threads` LEFT OUTER JOIN (SELECT `PostAuthor`, `posts1`.`Thread`, `last_post`, `post_count` FROM (SELECT `Author` as `PostAuthor`, `Thread`, `Created` FROM `forum_posts` WHERE `Deleted` = "no") as `posts1` INNER JOIN (SELECT `Thread`, MAX(`Created`) as `last_post`, COUNT(`PostID`) as `post_count` FROM `forum_posts` WHERE `Deleted` = "no" GROUP BY `Thread`) as `posts2` ON `posts1`.`Thread` = `posts2`.`Thread` AND `posts1`.`Created` = `posts2`.`last_post`) as `posts` ON `threads`.`ThreadID` = `posts`.`Thread` ORDER BY `last_post` DESC, `Created` DESC LIMIT 0 , '.NUM_THREADS.'');
+			
+			$result = $db->Query('SELECT `threads`.`ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostAuthor`, `last_post`, COALESCE(`post_count`, 0) as `post_count` FROM (SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = "no") as `threads` LEFT OUTER JOIN (SELECT `PostAuthor`, `posts1`.`ThreadID`, `last_post`, `post_count` FROM (SELECT `Author` as `PostAuthor`, `ThreadID`, `Created` FROM `forum_posts` WHERE `Deleted` = "no") as `posts1` INNER JOIN (SELECT `ThreadID`, MAX(`Created`) as `last_post`, COUNT(`PostID`) as `post_count` FROM `forum_posts` WHERE `Deleted` = "no" GROUP BY `ThreadID`) as `posts2` ON `posts1`.`ThreadID` = `posts2`.`ThreadID` AND `posts1`.`Created` = `posts2`.`last_post`) as `posts` USING(`ThreadID`) ORDER BY `last_post` DESC, `Created` DESC LIMIT 0 , '.NUM_THREADS.'');
 			
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
@@ -212,7 +212,7 @@
 		{	
 			$db = $this->db;
 			
-			$result = $db->Query('UPDATE `forum_threads` SET `Section` = "'.$new_section.'" WHERE `ThreadID` = "'.$thread_id.'"');
+			$result = $db->Query('UPDATE `forum_threads` SET `SectionID` = "'.$new_section.'" WHERE `ThreadID` = "'.$thread_id.'"');
 			if (!$result) return false;
 			
 			return true;
@@ -222,7 +222,7 @@
 		{	
 			$db = $this->db;
 						
-			$result = $db->Query('SELECT COUNT(`ThreadID`) as `Count` FROM `forum_threads` WHERE `Section` = "'.$section.'" AND `Deleted` = "no"');
+			$result = $db->Query('SELECT COUNT(`ThreadID`) as `Count` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = "no"');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
