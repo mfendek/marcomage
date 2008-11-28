@@ -178,7 +178,9 @@
 		{	// lists threads in one specific section, ignoring sticky flag. Used in Forum main page.
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `threads`.`ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostAuthor`, `last_post`, COALESCE(`post_count`, 0) as `post_count` FROM (SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = "no") as `threads` LEFT OUTER JOIN (SELECT `PostAuthor`, `posts1`.`ThreadID`, `last_post`, `post_count` FROM (SELECT `Author` as `PostAuthor`, `ThreadID`, `Created` FROM `forum_posts` WHERE `Deleted` = "no") as `posts1` INNER JOIN (SELECT `ThreadID`, MAX(`Created`) as `last_post`, COUNT(`PostID`) as `post_count` FROM `forum_posts` WHERE `Deleted` = "no" GROUP BY `ThreadID`) as `posts2` ON `posts1`.`ThreadID` = `posts2`.`ThreadID` AND `posts1`.`Created` = `posts2`.`last_post`) as `posts` USING(`ThreadID`) ORDER BY `last_post` DESC, `Created` DESC LIMIT 0 , '.NUM_THREADS.'');
+			$posts_q = "SELECT `ThreadID`, COUNT(`PostID`) as `post_count`, SUBSTRING(MAX(CONCAT(`Created`,`Author`)), 19+1) as `PostAuthor`, MAX(`Created`) as `last_post` FROM `forum_posts` WHERE `Deleted` = 'no' GROUP BY `ThreadID`";
+			$query = "SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, COALESCE(`PostAuthor`,'n/a') as `PostAuthor`, COALESCE(`last_post`,'n/a') as `last_post`, COALESCE(`post_count`, 0) as `post_count` FROM `forum_threads` LEFT OUTER JOIN (".$posts_q.") as `posts` USING(`ThreadID`) WHERE `SectionID` = '".$section."' AND `Deleted` = 'no' ORDER BY `last_post` DESC, `Created` DESC LIMIT 0 , ".NUM_THREADS."";
+			$result = $db->Query($query);
 			
 			if (!$result) return false;
 			if (!$result->Rows()) return false;

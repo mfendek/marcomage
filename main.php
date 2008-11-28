@@ -2501,9 +2501,7 @@
 		$param['Forum']['Timezone'] = $player->GetSetting("Timezone");
 		
 		foreach($list as $index => $data)
-		{
 			$param['Forum']['threadlist'][$index] = $forum->Threads->ListThreadsMain($data['SectionID']);
-		}
 		
 		$content = Generate_Forum($param);
 	}

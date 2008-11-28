@@ -1689,7 +1689,6 @@
 	{
 		$content = "";
 		
-		$timezone = $param['Forum']['Timezone'];
 		$list = $param['Forum']['sections'];
 		
 		$content.= '<div id="forum">'."\n";
@@ -1702,66 +1701,70 @@
 		
 		$content.= '<table cellspacing="0" cellpadding="0">'."\n";
 			
-			$content.= '<tr>'."\n";
-			$content.= '<th><p></p></th>'."\n";
-			$content.= '<th><p>Topic</p></th>'."\n";
-			$content.= '<th><p>Author</p></th>'."\n";
-			$content.= '<th><p>Posts</p></th>'."\n";
-			$content.= '<th><p>Created</p></th>'."\n";
-			$content.= '<th><p>Last post</p></th>'."\n";
-			$content.= '</tr>'."\n";
+		$content.= '<tr>'."\n";
+		$content.= '<th><p></p></th>'."\n";
+		$content.= '<th><p>Topic</p></th>'."\n";
+		$content.= '<th><p>Author</p></th>'."\n";
+		$content.= '<th><p>Posts</p></th>'."\n";
+		$content.= '<th><p>Created</p></th>'."\n";
+		$content.= '<th><p>Last post</p></th>'."\n";
+		$content.= '</tr>'."\n";
 		
-		if ($list)
+		foreach($list as $index => $data)
 		{
-			foreach($list as $index => $data)
+			$content.= '<tr><td colspan="6">'."\n";
+			$content.= '<div>'."\n";
+			
+			$content.= '<h5><input type = "submit" name="section_details['.$data['SectionID'].']" value="&crarr;" /><span>'.$data['SectionName'].'</span> ( '.$data['count'].' ) - '.$data['Description'].'</h5>'."\n";
+			$content.= '<p></p>'."\n";
+			$content.= '<div></div>'."\n";	
+			$content.= '</div>'."\n";
+					
+			$content.= '</td></tr>'."\n";		
+			
+			foreach($param['Forum']['threadlist'][$index] as $thread_data)
 			{
-				$content.= '<tr><td colspan="6">'."\n";
-				$content.= '<div>'."\n";
+				$hasposts = ( $thread_data['post_count'] > 0 );
+
+				$time = strtotime($thread_data['Created']);
+				$timezone = $param['Forum']['Timezone'];
+				$offset = abs($timezone);
+				$sign = ($timezone > 0) ? '-' : (($timezone < 0) ? '+' : '');
+				$create_date = ZoneTime($time, "Etc/GMT".$sign.$offset, "G:i | j. F, Y");
 				
-				$content.= '<h5><input type = "submit" name="section_details['.$data['SectionID'].']" value="&crarr;" /><span>'.$data['SectionName'].'</span> ( '.$data['count'].' ) - '.$data['Description'].'</h5>'."\n";
-				$content.= '<p></p>'."\n";
-				$content.= '<div></div>'."\n";	
-				$content.= '</div>'."\n";
-						
-				$content.= '</td></tr>'."\n";		
-				
-				if ($param['Forum']['threadlist'][$index])
+				if( $hasposts )
 				{
-					foreach($param['Forum']['threadlist'][$index] as $thread_data)
-					{
-						$time = strtotime($thread_data['Created']);
-						$offset = abs($timezone);
-						$sign = ($timezone > 0) ? '-' : (($timezone < 0) ? '+' : '');
-						$create_date = ZoneTime($time, "Etc/GMT".$sign.$offset, "G:i | j. F, Y");
-						
-						if ($thread_data['last_post'] != null)
-						{
-							$time = strtotime($thread_data['last_post']);
-							$offset = abs($timezone);
-							$sign = ($timezone > 0) ? '-' : (($timezone < 0) ? '+' : '');
-							$post_date = ZoneTime($time, "Etc/GMT".$sign.$offset, "G:i | j. F, Y");
-						}
-											
-						$style = (($thread_data['Priority'] == "sticky") ? ' style="color: red" ' : (($thread_data['Priority'] == "important") ? ' style="color: orange" ' : ''));						
-						$locked = (($thread_data['Locked'] == "yes") ? ' (locked)' : '');					
-						
-						$content.= '<tr class="table_row">'."\n";
-						$content.= '<td><p><input class="details" type = "submit" name="thread_details['.$thread_data['ThreadID'].']" value="+" /></p></td>'."\n";
-						$content.= '<td><p'.$style.'>'.htmlencode($thread_data['Title']).$locked.'</p></td>'."\n";
-						$content.= '<td><p>'.htmlencode($thread_data['Author']).'</p></td>'."\n";
-						$content.= '<td><p>'.$thread_data['post_count'].'</p></td>'."\n";
-						$content.= '<td><p>'.$create_date.'</p></td>'."\n";
-						$content.= '<td><p>'.(($thread_data['last_post'] == null) ? 'n/a' : $post_date." by ".htmlencode($thread_data['PostAuthor']).' <input class="details" type = "submit" name="thread_last_page['.$thread_data['ThreadID'].']" value="&rarr;" '.(($param['PreviousLogin'] < $time) ? ' style="border-color: red;" ' : "").'/>').'</p></td>'."\n";
-						$content.= '</tr>'."\n";
-					}
+					$time = strtotime($thread_data['last_post']);
+					$timezone = $param['Forum']['Timezone'];
+					$offset = abs($timezone);
+					$sign = ($timezone > 0) ? '-' : (($timezone < 0) ? '+' : '');
+					$post_date = ZoneTime($time, "Etc/GMT".$sign.$offset, "G:i | j. F, Y");
 				}
+									
+				$style = (($thread_data['Priority'] == "sticky") ? ' style="color: red" ' : (($thread_data['Priority'] == "important") ? ' style="color: orange" ' : ''));
+				$locked = (($thread_data['Locked'] == "yes") ? ' (locked)' : '');
+				
+				$content.= '<tr class="table_row">'."\n";
+				$content.= '<td><p><input class="details" type = "submit" name="thread_details['.$thread_data['ThreadID'].']" value="+" /></p></td>'."\n";
+				$content.= '<td><p'.$style.'>'.htmlencode($thread_data['Title']).$locked.'</p></td>'."\n";
+				$content.= '<td><p>'.htmlencode($thread_data['Author']).'</p></td>'."\n";
+				$content.= '<td><p>'.$thread_data['post_count'].'</p></td>'."\n";
+				$content.= '<td><p>'.$create_date.'</p></td>'."\n";
+				$content.= '<td><p>';
+				if( $hasposts )
+				{
+					$content.= $post_date." by ".htmlencode($thread_data['PostAuthor']);
+					$content.= ' <input class="details" type="submit" name="thread_last_page['.$thread_data['ThreadID'].']" value="&rarr;" '.(($param['PreviousLogin'] < $time) ? ' style="border-color: red;" ' : "").'/>';
+				}
+				else
+					$content.= 'n/a';
+				$content.= '</p></td>'."\n";
+				$content.= '</tr>'."\n";
 			}
 		}
 		
 		$content.= '</table>'."\n";
-		
 		$content.= '</div>'."\n";
-		
 		$content.= '</div>'."\n";
 			
 		return $content;
