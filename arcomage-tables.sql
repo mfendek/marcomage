@@ -195,7 +195,7 @@ CREATE TABLE `forum_posts` (
   `PostID` int(10) unsigned NOT NULL,
   `Author` char(20) collate utf8_unicode_ci NOT NULL,
   `Content` text collate utf8_unicode_ci NOT NULL,
-  `Thread` int(10) NOT NULL,
+  `ThreadID` int(10) NOT NULL,
   `Deleted` char(3) collate utf8_unicode_ci NOT NULL default 'no',
   `Created` datetime NOT NULL,
   PRIMARY KEY  (`PostID`)
@@ -214,7 +214,7 @@ CREATE TABLE `forum_threads` (
   `Priority` char(15) collate utf8_unicode_ci NOT NULL default 'normal',
   `Locked` char(3) collate utf8_unicode_ci NOT NULL default 'no',
   `Deleted` char(3) collate utf8_unicode_ci NOT NULL default 'no',
-  `Section` int(10) NOT NULL,
+  `SectionID` int(10) NOT NULL,
   `Created` datetime NOT NULL,
   PRIMARY KEY  (`ThreadID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
