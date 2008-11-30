@@ -183,7 +183,6 @@
 			$result = $db->Query($query);
 			
 			if (!$result) return false;
-			if (!$result->Rows()) return false;
 			
 			$threads = array();
 			for ($i = 1; $i <= $result->Rows(); $i++)
