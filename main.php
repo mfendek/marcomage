@@ -55,6 +55,8 @@
 	$current = "Page"; // set a meaningful default
 
 	$session = $logindb->Login();
+
+	do { // dummy scope
 	
 	if( !$session )
 	{
@@ -120,7 +122,7 @@
 			$session = false;
 			$current = "Page";
 			$error = "Failed to load player data! Please report this!";
-			goto Presentation;
+			break;
 		}
 
 		// verify login privilege
@@ -129,7 +131,7 @@
 			$session = false;
 			$current = "Page";
 			$warning = "This user is not permitted to log in.";
-			goto Presentation;
+			break;
 		}
 
 		// login page messages
@@ -1841,6 +1843,8 @@
 		} // inner-page messages
 	} // else ($session)
 
+	} while(0); // end dummy scope
+
 	// clear all used temporary variables ... because php uses weird variable scope -_-
 	unset($list);
 	unset($deck);
@@ -1851,7 +1855,6 @@
 	
 	/*	</section>	*/
 
-Presentation:	
 	/*	<section: PRESENTATION>	*/
 		
 	$param['error'] = ((isset($error)) ? $error : "");
