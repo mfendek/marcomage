@@ -628,30 +628,23 @@
 		
 		if (($display_avatar  == "yes") AND ($correction == "no"))
 		{
-			$content.= "\t".'<img style="float: left;	margin: 0.5ex 0ex 0ex 0ex;" class="avatar" height="60px" width="60px" src="img/avatars/'.htmlencode($param['Game']['myavatar']).'" alt="avatar" />'."\n";
-			
+			$content.= "\t".'<img style="float: left;  margin: 0.5ex 0ex 0ex 0ex;" class="avatar" height="60px" width="60px" src="img/avatars/'.htmlencode($param['Game']['myavatar']).'" alt="avatar" />'."\n";
 			$content.= "\t".'<img style="float: right; margin: 0.5ex 0ex 0ex 0ex;" class="avatar" height="60px" width="60px" src="img/avatars/'.htmlencode($param['Game']['hisavatar']).'" alt="avatar" />'."\n";
 		}
 		
 		$messagelist = $param['Game']['messagelist'];
-		if ($messagelist != NULL)
+		if( count($messagelist) > 0 )
 		{
 			$content.= '<div class="chatbox">'."\n";
-			$messagecount = count($messagelist);
 
-			$order = $param['Game']['Chatorder'];
 			$timezone = $param['Game']['Timezone'];
-			
-			for ($j = 1; $j <= $messagecount; $j++)
+
+			foreach( $messagelist as $data )
 			{
-				if ( $order == "yes")
-					$i = $messagecount - $j + 1;
-				else
-					$i = $j;
-				
-				$name = $messagelist[$i]['Name'];
-				$message = $messagelist[$i]['Message'];
-				$time = $messagelist[$i]['Timestamp'];
+				$name = $data['Name'];
+				$message = $data['Message'];
+				$time = $data['Timestamp'];
+
 				$color = ($name == $param['Game']['PlayerName']) ? $all_colors["LightBlue"] : (($name == $param['Game']['OpponentName']) ? $all_colors["LightGreen"] : 'red');
 				
 				//recalculate time to players perspective
@@ -665,6 +658,7 @@
 				$content.= '<span>'.htmlencode($message).'</span>'."\n";
 				$content.= '</p>'."\n";
 			}
+			
 			$content.= '</div>'."\n";
 		}
 		else
@@ -673,7 +667,6 @@
 		if (($display_avatar  == "yes") AND ($correction == "yes"))
 		{
 			$content.= '<img style="float: left;  margin: 0.5ex 0ex 0ex 0ex;" class="avatar" height="60px" width="60px" src="img/avatars/'.$param['Game']['myavatar'].'" alt="avatar" />'."\n";
-			
 			$content.= '<img style="float: right; margin: 0.5ex 0ex 0ex 0ex;" class="avatar" height="60px" width="60px" src="img/avatars/'.$param['Game']['hisavatar'].'" alt="avatar" />'."\n";
 		}
 		

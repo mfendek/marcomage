@@ -2409,12 +2409,10 @@
 		$param['Game']['myavatar'] = $player->GetSetting("Avatar");
 		$param['Game']['hisavatar'] = $opponent->GetSetting("Avatar");
 		
-		$messagelist = $param['Game']['messagelist'] = $chatdb->ListChatMessages($game->ID());
-		if ($messagelist != NULL)
-		{
-			$order = $param['Game']['Chatorder'] = $player->GetSetting("Chatorder");
-			$timezone = $param['Game']['Timezone'] = $player->GetSetting("Timezone");
-		}
+		$param['Game']['Timezone'] = $player->GetSetting("Timezone");
+
+		$order = ( $player->GetSetting("Chatorder") == "yes" ) ? "ASC" : "DESC";
+		$param['Game']['messagelist'] = $chatdb->ListChatMessages($game->ID(), $order);
 		
 		$content = Generate_Game($param);
 	}

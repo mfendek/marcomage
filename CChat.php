@@ -41,21 +41,16 @@
 			return true;
 		}
 		
-		public function ListChatMessages($gameid)
+		public function ListChatMessages($gameid, $order = "DESC")
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `Number`, `Name`, `Message`, `Timestamp` FROM `chats` WHERE `GameID` = "'.$gameid.'" ORDER BY `Number` DESC LIMIT 0 , 21');
+			$result = $db->Query('SELECT `Name`, `Message`, `Timestamp` FROM `chats` WHERE `GameID` = "'.$gameid.'" ORDER BY `Number` '.$order.' LIMIT 0 , 21');
 			if (!$result) return false;
 			
 			$messages = array();
-			for ($i = 1; $i <= $result->Rows(); $i++)
-			{
-				$temp = $result->Next();
-				$messages[$i]['Name'] = $temp['Name'];
-				$messages[$i]['Message'] = $temp['Message'];
-				$messages[$i]['Timestamp'] = $temp['Timestamp'];
-			}
+			while( $data = $result->Next() )
+				$messages[] = $data;
 			
 			return $messages;
 		}
