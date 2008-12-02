@@ -120,8 +120,8 @@
 			$session = false;
 			$current = "Page";
 			$error = "Failed to load player data! Please report this!";
+			goto Presentation;
 		}
-		else
 
 		// verify login privilege
 		if( !$access_rights[$player->Type()]["login"] )
@@ -129,9 +129,9 @@
 			$session = false;
 			$current = "Page";
 			$warning = "This user is not permitted to log in.";
+			goto Presentation;
 		}
-		else
-	
+
 		// login page messages
 		if (isset($_POST['Login']))
 		{
@@ -1850,7 +1850,8 @@
 	unset($opponent);
 	
 	/*	</section>	*/
-	
+
+Presentation:	
 	/*	<section: PRESENTATION>	*/
 		
 	$param['error'] = ((isset($error)) ? $error : "");
