@@ -165,7 +165,6 @@
 			$result = $db->Query(''.$sticky_query.' UNION '.$nonsticky_query.' ORDER BY `Flag` ASC, `last_post` DESC, `Created` DESC LIMIT '.$limit_query.'');
 			
 			if (!$result) return false;
-			if (!$result->Rows()) return false;
 			
 			$threads = array();
 			for ($i = 1; $i <= $result->Rows(); $i++)
@@ -198,13 +197,10 @@
 			$result = $db->Query('SELECT `ThreadID`, `Title` FROM `forum_threads` WHERE `ThreadID` != "'.$current_thread.'" AND `Deleted` = "no" ORDER BY `Title` ASC');
 			
 			if (!$result) return false;
-			if (!$result->Rows()) return false;
 			
 			$threads = array();
 			while( $data = $result->Next() )
-			{
 				$threads[$data['ThreadID']] = $data['Title'];				
-			}
 			
 			return $threads;
 		}

@@ -26,7 +26,7 @@
 			$data = $result->Next();
 			$number = (int)$data['number'];
 			
-			$result = $db->Query('INSERT INTO `chats` (`GameID`, `Number`, `Name`, `Message`, `Timestamp`) VALUES ("'.$gameid.'", "'.$number.'", "'.$db->Escape($name).'", "'.$db->Escape($message).'", UNIX_TIMESTAMP())');
+			$result = $db->Query('INSERT INTO `chats` (`GameID`, `Number`, `Name`, `Message`) VALUES ("'.$gameid.'", "'.$number.'", "'.$db->Escape($name).'", "'.$db->Escape($message).'")');
 			if (!$result) return false;
 			
 			return true;

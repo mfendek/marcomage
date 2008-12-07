@@ -140,7 +140,7 @@
 			"-3" => "Brassila, Buenos Aires, Georgetown, Falkland Is",
 			"-2" => "Mid-Atlantic, Ascension Is., St. Helena",
 			"-1" => "Azores, Cape Verde Islands",
-			"0" => "Casablanca, Dublin, Edinburgh, London, Lisbon, Monrovia",
+			"+0" => "Casablanca, Dublin, Edinburgh, London, Lisbon, Monrovia",
 			"+1" => "Prague, Amsterdam, Berlin, Brussels, Madrid, Paris",
 			"+2" => "Cairo, Helsinki, Kaliningrad, South Africa",
 			"+3" => "Baghdad, Riyadh, Moscow, Nairobi",

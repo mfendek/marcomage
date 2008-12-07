@@ -133,7 +133,6 @@
 			$result = $db->Query('SELECT `PostID`, `Author`, `Content`, `Created` FROM `forum_posts` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = "no" ORDER BY `Created` ASC LIMIT '.(POSTS_PER_PAGE * $page).' , '.POSTS_PER_PAGE.'');
 			
 			if (!$result) return false;
-			if (!$result->Rows()) return false;
 			
 			$posts = array();
 			for ($i = 1; $i <= $result->Rows(); $i++)
@@ -150,13 +149,10 @@
 			$result = $db->Query('SELECT `Author`, `Avatar` FROM (SELECT DISTINCT `Author` FROM (SELECT `Author` FROM `forum_posts` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = "no" LIMIT '.(POSTS_PER_PAGE * $page).' , '.POSTS_PER_PAGE.') as `posts_temp`) as `posts` INNER JOIN (SELECT `Username`, `Avatar` FROM `settings`) as `settings` ON `posts`.`Author` = `settings`.`Username`');
 			
 			if (!$result) return false;
-			if (!$result->Rows()) return false;
 			
 			$avatars = array();
 			while( $data = $result->Next() )
-			{
 				$avatars[$data['Author']] = $data['Avatar'];				
-			}
 			
 			return $avatars;
 		}

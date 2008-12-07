@@ -134,6 +134,9 @@
 			break;
 		}
 
+		$timezone = $player->GetSetting("Timezone");
+		$db->Query("SET time_zone='".$timezone.":00'");
+
 		// login page messages
 		if (isset($_POST['Login']))
 		{
@@ -2128,7 +2131,6 @@
 		$param['Details']['change_rights'] = ($access_rights[$player->Type()]["change_rights"]);
 		$param['Details']['system_notification'] = ($access_rights[$player->Type()]["system_notification"]);
 		$param['Details']['change_all_avatar'] = ($access_rights[$player->Type()]["change_all_avatar"]);
-		$param['Details']['Timezone'] = $player->GetSetting("Timezone");
 		
 		$param['Details']['decks'] = $player->ListReadyDecks();
 		
@@ -2169,7 +2171,6 @@
 	{
 		$decks = $param['Challenges']['decks'] = $player->ListReadyDecks();
 		$param['Challenges']['startedgames'] = count($gamedb->ListActiveGames($player->Name())) + count($gamedb->ListChallengesFrom($player->Name()));
-		$param['Challenges']['Timezone'] = $player->GetSetting("Timezone");
 		
 		if (isset($_POST['incoming'])) $current_subsection = "incoming";
 		elseif (isset($_POST['outgoing'])) $current_subsection = "outgoing";
@@ -2227,14 +2228,8 @@
 		
 		$timezone = $player->GetSetting("Timezone");
 		
-		//recalculate time to players perspective
-		$time = strtotime($message['Created']);
-		$offset = abs($timezone);
-		$sign = ($timezone > 0) ? '-' : (($timezone < 0) ? '+' : '');
-		$date = ZoneTime($time, "Etc/GMT".$sign.$offset, "G:i:s | F j, y");
-		
-		$param['Message_details']['Created'] = $date;
-		$param['Message_details']['Stamp'] = ($time % 4) + 1; // hash function - assign stamp picture
+		$param['Message_details']['Created'] = $message['Created'];
+		$param['Message_details']['Stamp'] = 1 + strtotime($message['Created']) % 4; // hash function - assign stamp picture
 		
 		$content = Generate_Message_details($param);
 	}
@@ -2413,8 +2408,6 @@
 		$param['Game']['myavatar'] = $player->GetSetting("Avatar");
 		$param['Game']['hisavatar'] = $opponent->GetSetting("Avatar");
 		
-		$param['Game']['Timezone'] = $player->GetSetting("Timezone");
-
 		$order = ( $player->GetSetting("Chatorder") == "yes" ) ? "ASC" : "DESC";
 		$param['Game']['messagelist'] = $chatdb->ListChatMessages($game->ID(), $order);
 		
@@ -2499,10 +2492,9 @@
 	 
 	elseif ($current == "Forum")
 	{
-		$list = $param['Forum']['sections'] = $forum->ListSections();
-		$param['Forum']['Timezone'] = $player->GetSetting("Timezone");
+		$param['Forum']['sections'] = $forum->ListSections();
 		
-		foreach($list as $index => $data)
+		foreach($param['Forum']['sections'] as $index => $data)
 			$param['Forum']['threadlist'][$index] = $forum->Threads->ListThreadsMain($data['SectionID']);
 		
 		$content = Generate_Forum($param);
@@ -2515,7 +2507,6 @@
 		$param['Section_details']['Section'] = $forum->GetSection($section_id);
 		$param['Section_details']['Pages'] = $forum->Threads->CountPages($section_id);
 		$param['Section_details']['CurrentPage'] = $current_page;
-		$param['Section_details']['Timezone'] = $player->GetSetting("Timezone");		
 		$param['Section_details']['threadlist'] = $forum->Threads->ListThreads($section_id, $current_page, "");
 		
 		$param['Section_details']['create_thread'] = ($access_rights[$player->Type()]["create_thread"]);
@@ -2545,7 +2536,6 @@
 		
 		$param['Thread_details']['Pages'] = $forum->Threads->Posts->CountPages($thread_id);
 		$param['Thread_details']['CurrentPage'] = $current_page;
-		$param['Thread_details']['Timezone'] = $player->GetSetting("Timezone");		
 		$param['Thread_details']['PostList'] = $forum->Threads->Posts->ListPosts($thread_id, $current_page);
 		$param['Thread_details']['AvatarsList'] = $forum->Threads->Posts->ListPosts_Avatars($thread_id, $current_page);
 		$param['Thread_details']['Delete'] = (isset($_POST['thread_delete']));

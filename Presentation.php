@@ -637,8 +637,6 @@
 		{
 			$content.= '<div class="chatbox">'."\n";
 
-			$timezone = $param['Game']['Timezone'];
-
 			foreach( $messagelist as $data )
 			{
 				$name = $data['Name'];
@@ -647,13 +645,8 @@
 
 				$color = ($name == $param['Game']['PlayerName']) ? $all_colors["LightBlue"] : (($name == $param['Game']['OpponentName']) ? $all_colors["LightGreen"] : 'red');
 				
-				//recalculate time to players perspective
-				$offset = abs($timezone);
-				$sign = ($timezone > 0) ? '-' : (($timezone < 0) ? '+' : '');
-				$date = ZoneTime($time, "Etc/GMT".$sign.$offset, "G:i:s | d-M");
-				
 				$content.= '<p>'."\n";
-				$content.= '<span>'.$date."</span>"."\n";
+				$content.= '<span>'.strftime("%H:%M:%S | %d-%b", strtotime($time))."</span>"."\n";
 				$content.= '<span style="color : '.$color.'">'.htmlencode($name).' : </span>'."\n";
 				$content.= '<span>'.htmlencode($message).'</span>'."\n";
 				$content.= '</p>'."\n";
@@ -1016,9 +1009,7 @@
 				
 				//recalculate time to players perspective
 				$time = strtotime($param['Details']['challenge']['Created']);
-				$offset = abs($timezone);
-				$sign = ($timezone > 0) ? '-' : (($timezone < 0) ? '+' : '');
-				$challenge_time = ZoneTime($time, "Etc/GMT".$sign.$offset, "G:i:s | F j, y");
+				$challenge_time = strftime("%H:%M:%S | %B %d, %y", $time);
 				
 				$content.= '<p>'."\n";
 				$content.= '<span style="color: red;">waiting for answer</span>'."\n";
@@ -1103,7 +1094,6 @@
 		$content = "";
 	
 		$decks = $param['Challenges']['decks'];
-		$timezone = $param['Challenges']['Timezone'];
 		
 		$content.= '<div id="message_section">'."\n";
 		
@@ -1141,9 +1131,7 @@
 			{
 				//recalculate time to players perspective
 				$time = strtotime($challenge['Created']);
-				$offset = abs($timezone);
-				$sign = ($timezone > 0) ? '-' : (($timezone < 0) ? '+' : '');
-				$date = ZoneTime($time, "Etc/GMT".$sign.$offset, "G:i:s | F j, Y");
+				$date = strftime("%H:%M:%S | %B %d, %y", $time);
 			
 				$opponent = $challenge[$target];
 			
@@ -1271,9 +1259,7 @@
 			{
 				//recalculate time to players perspective
 				$time = strtotime($data['Created']);
-				$offset = abs($timezone);
-				$sign = ($timezone > 0) ? '-' : (($timezone < 0) ? '+' : '');
-				$date = ZoneTime($time, "Etc/GMT".$sign.$offset, "G:i:s | F j, y");
+				$date = strftime("%H:%M:%S | %B %d, %y", $time);
 				
 				$reply_button = (($location == "inbox") AND ($data[$target] != $param['PlayerName'])) ? '<input class="details" type = "submit" name = "message_create['.postencode($data['Author']).']" value = "R" />'."\n" : '';
 				
@@ -1720,18 +1706,12 @@
 				$hasposts = ( $thread_data['post_count'] > 0 );
 
 				$time = strtotime($thread_data['Created']);
-				$timezone = $param['Forum']['Timezone'];
-				$offset = abs($timezone);
-				$sign = ($timezone > 0) ? '-' : (($timezone < 0) ? '+' : '');
-				$create_date = ZoneTime($time, "Etc/GMT".$sign.$offset, "G:i | j. F, Y");
+				$create_date = strftime("%H:%M | %e. %B, %Y", $time);
 				
 				if( $hasposts )
 				{
 					$time = strtotime($thread_data['last_post']);
-					$timezone = $param['Forum']['Timezone'];
-					$offset = abs($timezone);
-					$sign = ($timezone > 0) ? '-' : (($timezone < 0) ? '+' : '');
-					$post_date = ZoneTime($time, "Etc/GMT".$sign.$offset, "G:i | j. F, Y");
+					$post_date = strftime("%H:%M | %e. %B, %Y", $time);
 				}
 									
 				$style = (($thread_data['Priority'] == "sticky") ? ' style="color: red" ' : (($thread_data['Priority'] == "important") ? ' style="color: orange" ' : ''));
@@ -1767,7 +1747,6 @@
 	{
 		$content = "";
 		
-		$timezone = $param['Section_details']['Timezone'];
 		$list = $param['Section_details']['threadlist'];
 		$section = $param['Section_details']['Section'];
 		$pages = $param['Section_details']['Pages'];
@@ -1816,35 +1795,28 @@
 				
 		$content.= '</td></tr>'."\n";		
 		
-		if ($list)
-		{
-			foreach($list as $thread_data)
-			{					
-				$time = strtotime($thread_data['Created']);
-				$offset = abs($timezone);
-				$sign = ($timezone > 0) ? '-' : (($timezone < 0) ? '+' : '');
-				$create_date = ZoneTime($time, "Etc/GMT".$sign.$offset, "G:i | j. F, Y");
-				
-				if ($thread_data['last_post'] != null)
-				{
-					$time = strtotime($thread_data['last_post']);
-					$offset = abs($timezone);
-					$sign = ($timezone > 0) ? '-' : (($timezone < 0) ? '+' : '');
-					$post_date = ZoneTime($time, "Etc/GMT".$sign.$offset, "G:i | j. F, Y");
-				}
+		foreach($list as $thread_data)
+		{					
+			$time = strtotime($thread_data['Created']);
+			$create_date = strftime("%H:%M | %e. %B, %Y", $time);
 			
-				$style = (($thread_data['Priority'] == "sticky") ? ' style="color: red" ' : (($thread_data['Priority'] == "important") ? ' style="color: orange" ' : ''));						
-				$locked = (($thread_data['Locked'] == "yes") ? ' (locked)' : '');					
-				
-				$content.= '<tr class="table_row">'."\n";
-				$content.= '<td><p><input class="details" type = "submit" name="thread_details['.$thread_data['ThreadID'].']" value="+" /></p></td>'."\n";
-				$content.= '<td><p'.$style.'>'.htmlencode($thread_data['Title']).$locked.'</p></td>'."\n";
-				$content.= '<td><p>'.htmlencode($thread_data['Author']).'</p></td>'."\n";
-				$content.= '<td><p>'.$thread_data['post_count'].'</p></td>'."\n";
-				$content.= '<td><p>'.$create_date.'</p></td>'."\n";
-				$content.= '<td><p>'.(($thread_data['last_post'] == null) ? 'n/a' : $post_date." by ".htmlencode($thread_data['PostAuthor']).' <input class="details" type = "submit" name="thread_last_page['.$thread_data['ThreadID'].']" value="&rarr;" '.(($param['PreviousLogin'] < $time) ? ' style="border-color: red;" ' : "").'/>').'</p></td>'."\n";
-				$content.= '</tr>'."\n";
+			if ($thread_data['last_post'] != null)
+			{
+				$time = strtotime($thread_data['last_post']);
+				$post_date = strftime("%H:%M | %e. %B, %Y", $time);
 			}
+			
+			$style = (($thread_data['Priority'] == "sticky") ? ' style="color: red" ' : (($thread_data['Priority'] == "important") ? ' style="color: orange" ' : ''));						
+			$locked = (($thread_data['Locked'] == "yes") ? ' (locked)' : '');					
+			
+			$content.= '<tr class="table_row">'."\n";
+			$content.= '<td><p><input class="details" type = "submit" name="thread_details['.$thread_data['ThreadID'].']" value="+" /></p></td>'."\n";
+			$content.= '<td><p'.$style.'>'.htmlencode($thread_data['Title']).$locked.'</p></td>'."\n";
+			$content.= '<td><p>'.htmlencode($thread_data['Author']).'</p></td>'."\n";
+			$content.= '<td><p>'.$thread_data['post_count'].'</p></td>'."\n";
+			$content.= '<td><p>'.$create_date.'</p></td>'."\n";
+			$content.= '<td><p>'.(($thread_data['last_post'] == null) ? 'n/a' : $post_date." by ".htmlencode($thread_data['PostAuthor']).' <input class="details" type = "submit" name="thread_last_page['.$thread_data['ThreadID'].']" value="&rarr;" '.(($param['PreviousLogin'] < $time) ? ' style="border-color: red;" ' : "").'/>').'</p></td>'."\n";
+			$content.= '</tr>'."\n";
 		}
 		
 		$content.= '</table>'."\n";
@@ -1907,7 +1879,6 @@
 		$thread = $param['Thread_details']['Thread'];
 		$pages = $param['Thread_details']['Pages'];
 		$current_page = $param['Thread_details']['CurrentPage'];
-		$timezone = $param['Thread_details']['Timezone'];		
 		$post_list = $param['Thread_details']['PostList'];
 		$avatars = $param['Thread_details']['AvatarsList'];
 		$deleted_post = $param['Thread_details']['DeletePost'];
@@ -1959,61 +1930,57 @@
 		
 		$nav_bar_end.= '</div>'."\n";
 		
-		for ($i = 1; $i <= 2; $i++)	$nav_bar_code[$i] = $nav_bar.$nav_bar_selector[$i].$nav_bar_temp.$nav_bar_submit[$i].$nav_bar_end;
+		for ($i = 1; $i <= 2; $i++)
+			$nav_bar_code[$i] = $nav_bar.$nav_bar_selector[$i].$nav_bar_temp.$nav_bar_submit[$i].$nav_bar_end;
 		
 		$content.= $nav_bar_code[1]; // generate upper thread navigation bar
 				
 		$content.= '<div id="post_list">'."\n";
 		
-		if ($post_list)
+		foreach ($post_list as $post_data)
 		{
-			foreach ($post_list as $post_data)
-			{
-				$time = strtotime($post_data['Created']);
-				$offset = abs($timezone);
-				$sign = ($timezone > 0) ? '-' : (($timezone < 0) ? '+' : '');
-				$create_date = ZoneTime($time, "Etc/GMT".$sign.$offset, "G:i - j. M, Y");
+			$time = strtotime($post_data['Created']);
+			$create_date = strftime("%H:%M - %e. %b, %Y", $time);
 			
-				$content.= '<div>'."\n";
-				
-				$content.= '<div>'."\n";
-								
-				$content.= "\t".'<h5>'.htmlencode($post_data['Author']).'</h5>'."\n";
-				
-				$content.= "\t".'<img class="avatar" height="60px" width="60px" src="img/avatars/'.htmlencode($avatars[$post_data['Author']]).'" alt="avatar" />'."\n";
-				
-				$content.= '<p>'."\n";
-				$content.= "\t".'<input class="details" type = "submit" name = "user_details['.postencode($post_data['Author']).']" value = "i" />'."\n";
-				$content.= "\t".'<input class="details" type = "submit" name = "message_create['.postencode($post_data['Author']).']" value = "m" />'."\n";
-				
-				$content.= '</p>'."\n";
-				
-				$content.= '<p'.(($param['PreviousLogin'] < $time) ? ' class="highlighted" ' : "").'>'.$create_date.'</p>'."\n";
-				
-				$content.= '</div>'."\n";
-				
-				$content.= '<div>'."\n";
-				
-				$content.= '<div>'."\n";
-				
-				$disabled = (((($param['Thread_details']['edit_all_post']) OR (($param['Thread_details']['edit_own_post']) AND ($param['PlayerName'] == $post_data['Author']))) AND ($can_modify)) ? '' : ' disabled="disabled" ');
-				
-				$content.= '<input type = "submit" name = "edit_post['.$post_data['PostID'].']" value="Edit" '.$disabled.'/>'."\n";
-				
-				$delete_button = ((($deleted_post) AND ($deleted_post == $post_data['PostID'])) ? 'name = "delete_post_confirm['.$post_data['PostID'].']" value="Confirm delete"' : 'name = "delete_post['.$post_data['PostID'].']" value="Delete"');
-				
-				if (($param['Thread_details']['del_all_post']) AND ($can_modify)) $content.= '<input type = "submit" '.$delete_button.' />'."\n";
-								
-				$content.= '</div>'."\n";
-				
-				$content.= "\t".'<p>'.textencode($post_data['Content']).'</p>'."\n";
-				
-				$content.= '</div>'."\n";
-				
-				$content.= '<div class="clear_floats"></div>'."\n";
-				
-				$content.= '</div>'."\n";
-			}
+			$content.= '<div>'."\n";
+			
+			$content.= '<div>'."\n";
+							
+			$content.= "\t".'<h5>'.htmlencode($post_data['Author']).'</h5>'."\n";
+			
+			$content.= "\t".'<img class="avatar" height="60px" width="60px" src="img/avatars/'.htmlencode($avatars[$post_data['Author']]).'" alt="avatar" />'."\n";
+			
+			$content.= '<p>'."\n";
+			$content.= "\t".'<input class="details" type = "submit" name = "user_details['.postencode($post_data['Author']).']" value = "i" />'."\n";
+			$content.= "\t".'<input class="details" type = "submit" name = "message_create['.postencode($post_data['Author']).']" value = "m" />'."\n";
+			
+			$content.= '</p>'."\n";
+			
+			$content.= '<p'.(($param['PreviousLogin'] < $time) ? ' class="highlighted" ' : "").'>'.$create_date.'</p>'."\n";
+			
+			$content.= '</div>'."\n";
+			
+			$content.= '<div>'."\n";
+			
+			$content.= '<div>'."\n";
+			
+			$disabled = (((($param['Thread_details']['edit_all_post']) OR (($param['Thread_details']['edit_own_post']) AND ($param['PlayerName'] == $post_data['Author']))) AND ($can_modify)) ? '' : ' disabled="disabled" ');
+			
+			$content.= '<input type = "submit" name = "edit_post['.$post_data['PostID'].']" value="Edit" '.$disabled.'/>'."\n";
+			
+			$delete_button = ((($deleted_post) AND ($deleted_post == $post_data['PostID'])) ? 'name = "delete_post_confirm['.$post_data['PostID'].']" value="Confirm delete"' : 'name = "delete_post['.$post_data['PostID'].']" value="Delete"');
+			
+			if (($param['Thread_details']['del_all_post']) AND ($can_modify)) $content.= '<input type = "submit" '.$delete_button.' />'."\n";
+							
+			$content.= '</div>'."\n";
+			
+			$content.= "\t".'<p>'.textencode($post_data['Content']).'</p>'."\n";
+			
+			$content.= '</div>'."\n";
+			
+			$content.= '<div class="clear_floats"></div>'."\n";
+			
+			$content.= '</div>'."\n";
 		}
 		
 		$content.= '</div>'."\n";
