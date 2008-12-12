@@ -72,7 +72,7 @@
 		}
 
 
-//		$deck->SaveDeck();
+		$deck->SaveDeck();
 	};
 
 	echo "Done.";
