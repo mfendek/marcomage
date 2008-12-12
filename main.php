@@ -1126,6 +1126,11 @@
 					$uncommon_cards = $carddb->GetList("Uncommon");
 					$rare_cards = $carddb->GetList("Rare");
 					
+					// array_diff ensures that cards already in the deck won't be added again
+					$common_cards = array_diff($common_cards, $deck->DeckData->Common);
+					$uncommon_cards = array_diff($uncommon_cards, $deck->DeckData->Uncommon);
+					$rare_cards = array_diff($rare_cards, $deck->DeckData->Rare);
+					
 					Shuffle($common_cards); //shuffle will create an array with index starting from 0, but we need to start from 1
 					Shuffle($uncommon_cards);
 					Shuffle($rare_cards);
