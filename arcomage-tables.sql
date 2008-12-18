@@ -82,7 +82,7 @@ CREATE TABLE `chats` (
   `Number` int(10) unsigned NOT NULL,
   `Name` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `Message` text COLLATE utf8_unicode_ci NOT NULL,
-  `Timestamp` int(10) UNSIGNED ZEROFILL NOT NULL,
+  `Timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`GameID`,`Number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -197,7 +197,7 @@ CREATE TABLE `forum_posts` (
   `Content` text collate utf8_unicode_ci NOT NULL,
   `ThreadID` int(10) NOT NULL,
   `Deleted` char(3) collate utf8_unicode_ci NOT NULL default 'no',
-  `Created` datetime NOT NULL,
+  `Created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY  (`PostID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -215,7 +215,7 @@ CREATE TABLE `forum_threads` (
   `Locked` char(3) collate utf8_unicode_ci NOT NULL default 'no',
   `Deleted` char(3) collate utf8_unicode_ci NOT NULL default 'no',
   `SectionID` int(10) NOT NULL,
-  `Created` datetime NOT NULL,
+  `Created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY  (`ThreadID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
