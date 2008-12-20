@@ -22,6 +22,7 @@ DELETE FROM `logins` WHERE `Username` IN (SELECT `Username` FROM tmp);
 DELETE FROM `scores` WHERE `Username` IN (SELECT `Username` FROM tmp);
 DELETE FROM `decks` WHERE `Username` IN (SELECT `Username` FROM tmp);
 DELETE FROM `chats` WHERE `Name` IN (SELECT `Username` FROM tmp);
+DELETE FROM `settings` WHERE `Username` IN (SELECT `Username` FROM tmp);
 DELETE FROM `games` WHERE `Player1` IN (SELECT `Username` FROM tmp);
 DELETE FROM `games` WHERE `Player2` IN (SELECT `Username` FROM tmp);
 
