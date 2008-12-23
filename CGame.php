@@ -1454,6 +1454,7 @@
 			global $carddb;
 			
 			$first = true;
+			$keywords_list = "";
 			
 			foreach ($hand as $cardid)
 			{
@@ -1466,6 +1467,8 @@
 					}
 					else $keywords_list.= " ".$carddb->GetCard($cardid)->CardData->Keywords;
 			}
+			
+			if ($keywords_list == "") return 0; // no keywords in hand
 			
 			$words = preg_split("/\. ?/", $keywords_list, -1, PREG_SPLIT_NO_EMPTY); // split individual keywords
 			foreach($words as $word)
