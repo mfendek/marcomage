@@ -615,7 +615,7 @@
 					case 248: $mydata->Bricks-= 2; $mydata->Gems-= 2; $mydata->Recruits-= 2; $mydata->Tower-= 2; $mydata->Wall-= 5; $hisdata->Bricks-= 2; $hisdata->Gems-= 2; $hisdata->Recruits-= 2; $hisdata->Tower-= 2; $hisdata->Wall-= 5; break;
 					case 249: $tmp = $mydata->Wall; $mydata->Wall= $hisdata->Wall; $hisdata->Wall= $tmp; break;
 					case 250: $this->Attack(5, $hisdata->Tower, $hisdata->Wall); break;
-					case 251: $mydata->Hand[$cardpos] = $nextcard; $mydata->NewCards[$cardpos] = 1; $temp_array1 = $temp_array2 = array(0 => 1, 2, 3, 4); shuffle($temp_array1); shuffle($temp_array2);
+					case 251: $mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $mydata->NewCards[$cardpos] = 1; $temp_array1 = $temp_array2 = array(0 => 1, 2, 3, 4); shuffle($temp_array1); shuffle($temp_array2);
 							for ($k = 0; $k <= 1; $k++)
 							{
 								$i = $temp_array1[$k];
@@ -628,7 +628,7 @@
 								$hisdata->NewCards[$j] = 1;
 							}
 							$nextcard = 0; break;
-					case 252: $mydata->Hand[$cardpos] = $nextcard; $mydata->NewCards[$cardpos] = 1; $temp_array1 = $temp_array2 = array(0 => 1, 2, 3, 4); shuffle($temp_array1); shuffle($temp_array2);
+					case 252: $mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $mydata->NewCards[$cardpos] = 1; $temp_array1 = $temp_array2 = array(0 => 1, 2, 3, 4); shuffle($temp_array1); shuffle($temp_array2);
 							for ($k = 0; $k <= 1; $k++)
 							{
 								$i = $temp_array1[$k];
@@ -771,7 +771,7 @@
 					case 339: $tmp = min(20, max(5, $hisdata->Bricks - $mydata->Bricks)); $mydata->Bricks+= $tmp; $hisdata->Bricks-= $tmp; $tmp = min(20, max(5, $hisdata->Gems - $mydata->Gems)); $mydata->Gems+= $tmp; $hisdata->Gems-= $tmp; $tmp = min(20, max(5, $hisdata->Recruits - $mydata->Recruits)); $mydata->Recruits+= $tmp; $hisdata->Recruits-= $tmp; break;
 					case 340: if ($mydata->Tower < $hisdata->Tower) $this->Attack(12, $hisdata->Tower, $hisdata->Wall); else $this->Attack(6, $hisdata->Tower, $hisdata->Wall); break;
 					case 341: $tmp = $this->KeyWordCount($mydata->Hand, "Barbarian") + $this->KeyWordCount($mydata->Hand, "Holy"); $this->Attack(10 + 3*$tmp, $hisdata->Tower, $hisdata->Wall); break;
-					case 342: $mydata->Hand[$cardpos] = $nextcard; $nextcard = 0; $tmp = mt_rand(1, 8); $mydata->Hand[$tmp] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $mydata->NewCards[$tmp] = 1;
+					case 342: $mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $nextcard = 0; $tmp = mt_rand(1, 8); $mydata->Hand[$tmp] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $mydata->NewCards[$tmp] = 1;
 								$i = 1;
 								for ($j = 1; $j <= 3; $j++)
 									{
@@ -785,7 +785,7 @@
 					case 344: $mydata->Wall+= 15; if (($this->HasKeyword($mydata->LastCard[$mylastcardindex], "Barbarian")) and ($mydata->LastAction[$mylastcardindex] == 'play')) $this->Attack($this->GetResources($mydata->LastCard[$mylastcardindex], "Recruits"), $hisdata->Tower, $hisdata->Wall); break;
 					case 345: $tmp = $this->KeyWordCount($mydata->Hand, "Barbarian"); $hisdata->Wall-= $tmp * 10; $this->Attack(40, $hisdata->Tower, $hisdata->Wall); break;
 					case 346: $i = 1; while ((($this->GetResources($mydata->Hand[$i], "Recruits") >= 11) or ($this->GetClass($mydata->Hand[$i]) != "Rare") or (!$this->HasKeyword($mydata->Hand[$i], "Beast"))) and ($i <= 8)) $i++; if ($i < 9) { $mydata->Hand[$i] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $mydata->NewCards[$i] = 1; $this->Attack(42, $hisdata->Tower, $hisdata->Wall); } else $mydata->Recruits+= 9; break;
-					case 347: $mydata->Hand[$cardpos] = $nextcard; $nextcard = 0; $j = 0;
+					case 347: $mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $nextcard = 0; $j = 0;
 								for ($i = 1; $i <= 8; $i++)
 									if (!$this->HasKeyword($mydata->Hand[$i], "Beast"))
 									{
@@ -802,7 +802,7 @@
 					case 352: if ($mydata->Magic > $hisdata->Magic) $this->Attack(34, $hisdata->Tower, $hisdata->Wall); else $this->Attack(15, $hisdata->Tower, $hisdata->Wall); break;
 					case 353: $mydata->Magic-= 1; if ($mode == 1) $mydata->Quarry+= 1; elseif ($mode == 2) $mydata->Dungeons+= 1; break;
 					case 354: $mydata->Tower+= 9; $mydata->Wall+= 15; if ($this->KeywordCount($mydata->Hand, "Legend") > 0) $mydata->Magic+= 1; break;
-					case 355: $j = 0; $mydata->Hand[$cardpos] = $nextcard; $nextcard = 0;
+					case 355: $j = 0; $mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $nextcard = 0;
 								for ($i = 1; $i <= 8; $i++)
 									if ($this->HasKeyword($mydata->Hand[$i], "any"))
 									{
