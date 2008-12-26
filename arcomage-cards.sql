@@ -383,7 +383,7 @@ VALUES
 (365, 'Don''t be hasty', 'Common', 0, 0, 0, 'Each player that played a <b>Quick</b> card last turn discards all new cards and pays 1 stock for each one', '', 0),
 (366, 'Graceful charity', 'Common', 0, 0, 0, 'Tower: +1<br />Gives you same amount of resources as was lost during opponent''s last turn (max 6)', 'Holy.', 0),
 (367, 'Light infantry', 'Common', 0, 0, 5, 'If there are no <b>Charge</b> cards in opponent''s hand<br />Attack: 10<br />else<br />Attack: 4', 'Soldier.', 0),
-(368, 'Goblin saboteur', 'Common', 0, 0, 4, 'If opponent raised his wall by more then 8 last turn<br />Enemy wall: -12<br />Always:<br />Attack: 4', '', 0),
+(368, 'Goblin saboteur', 'Common', 0, 0, 4, 'If opponent raised his wall by more than 8 last turn<br />Enemy wall: -12<br />Always:<br />Attack: 4', '', 0),
 (369, 'Keeper of souls', 'Uncommon', 0, 16, 10, 'Attack: 13 + 2N<br />Recruits: + N<br />N = <b>#Burning</b> + <b>#Beast</b> cards in game', 'Beast. Burning.', 0),
 (370, 'Dragon patrol', 'Uncommon', 0, 16, 16, 'Attack: 27<br />If there is a <b>Soldier</b> and a <b>Dragon</b> in hand (other then this card)<br />Enemy tower: -14', 'Dragon. Soldier.', 0),
 (371, 'Frost unicorn', 'Uncommon', 0, 32, 0, 'Attack: 35<br />If there is a <b>Legend</b> card and a <b>Mage</b> in hand (other then this card)<br />Gems: +20<br />Magic: +1', 'Legend.', 0),

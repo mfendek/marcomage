@@ -1005,7 +1005,6 @@
 			elseif ($challenged)
 			{
 				$challenge_text = $param['Details']['challenge']['Content'];
-				$timezone = $param['Details']['Timezone'];
 				
 				//recalculate time to players perspective
 				$time = strtotime($param['Details']['challenge']['Created']);
