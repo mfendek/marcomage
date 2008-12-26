@@ -325,9 +325,8 @@
 			// by default, opponent goes next (but this may change via card)
 			$nextplayer = $opponent;
 			
-			// reduce the chance of getting the same card many times
-			$drawfunc = ( $action == 'play' ) ? 'DrawCard_random' : 'DrawCard_different';
-			$nextcard = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, $drawfunc);
+			// next card drawn will be decided randomly unless this changes
+			$nextcard = -1;
 			
 			$production_factor = 1; // default production factor
 			
@@ -1287,7 +1286,18 @@
 			$mydata->Recruits+= $production_factor * $mydata->Dungeons;
 										
 			// draw card at the end of turn
-			if ($nextcard != 0) $mydata->Hand[$cardpos] = $nextcard;  // 0 - some cards might disable drawing this turn
+			if( $nextcard > 0 )
+			{// value was decided by a card effect
+				$mydata->Hand[$cardpos] = $nextcard;
+			}
+			elseif( $nextcard == 0 )
+			{// drawing was disabled entirely by a card effect
+			}
+			elseif( $nextcard == -1 )
+			{// normal drawing
+				$drawfunc = ( $action == 'play' ) ? 'DrawCard_random' : 'DrawCard_different';
+				$mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, $drawfunc);
+			}
 			
 			// store info about this current action, updating history as needed
 			if ($this->IsPlayAgainCard($mydata->LastCard[$mylastcardindex]) and $mydata->LastAction[$mylastcardindex] == 'play') 
