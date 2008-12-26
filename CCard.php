@@ -131,7 +131,7 @@
 			$result = $db->Query('SELECT `Name`, `Class`, `Bricks`, `Gems`, `Recruits`, `Effect`, `Keywords`, `Modes` FROM `cards` WHERE `CardID` = '.$this->CardID.'');
 			
 			if( !$result || !$result->Rows() )
-                $arr = array ('Invalid Card', 'None', 0, 0, 0, '', 0);
+                $arr = array ('Invalid Card', 'None', 0, 0, 0, '', '', 0);
 			else
 			{
 				$data = $result->Next();
