@@ -108,19 +108,18 @@
 			// produce a session object with valid values for the specified user
 			
 			// first, retrieve the real, case-sensitive `Username`
-			$result = $db->Query('SELECT `Username`, `Last Query` FROM `logins` WHERE `Username` = "'.$db->Escape($username).'"');
+			$result = $db->Query('SELECT `Username` FROM `logins` WHERE `Username` = "'.$db->Escape($username).'"');
 			if (!$result) { $status = $db->status; return false; };
 			if (!$result->Rows()) { $status = 'ERROR_NO_SUCH_USER'; return false; };
 			$data = $result->Next();
 			$username = $data['Username'];
-			$previous_login = $data['Last Query'];
 			
 			// test if a new session is needed
 			if ($sessionid == 0)
 			{
 				// generate and store a new unitialized session for the user
 				$sessionid = mt_rand(1, pow(2,31)-1);
-				$result = $db->Query('UPDATE `logins` SET `SessionID` = '.$sessionid.', `PreviousLogin` = '.$previous_login.' WHERE `Username` = "'.$db->Escape($username).'"');
+				$result = $db->Query('UPDATE `logins` SET `SessionID` = '.$sessionid.', `PreviousLogin` = `Last Query` WHERE `Username` = "'.$db->Escape($username).'"');
 				if (!$result) { $status = $db->status; return false; };
 				
 				//if ($result->Rows() == 0) { $status = 'ERROR_NO_SUCH_USER'; return false; };  // not yet implemented for UPDATE queries :|
