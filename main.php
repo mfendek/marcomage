@@ -356,7 +356,11 @@
 					// the rest of the checks are done internally
 					$result = $game->PlayCard($player->Name(), $cardpos, 0, 'discard');
 					
-					if ($result == 'OK') $information = "You have discarded a card.";
+					if ($result == 'OK')
+					{
+						$game->SaveGame();
+						$information = "You have discarded a card.";
+					}
 					/*else $error = $result;*/
 					
 					$current = "Game";
@@ -382,10 +386,14 @@
 					
 					if ($result == 'OK')
 					{
+						$game->SaveGame();
+
 						if ($game->State == 'finished')
 						{
 							$player1 = $game->Name1();
 							$player2 = $game->Name2();
+
+							// update score
 							$score1 = $scoredb->GetScore($player1);
 							$score2 = $scoredb->GetScore($player2);
 							$data = &$game->GameData;
@@ -396,6 +404,10 @@
 							
 							$score1->SaveScore();
 							$score2->SaveScore();
+
+							// send battle report messages
+							$messagedb->SendMessage("MArcomage", $player1, "Battle report", "Opponent: $player2\nOutcome: {$game->GameData->Outcome}\n");
+							$messagedb->SendMessage("MArcomage", $player2, "Battle report", "Opponent: $player1\nOutcome: {$game->GameData->Outcome}\n");
 						}
 						else
 						{

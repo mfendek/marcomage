@@ -281,7 +281,6 @@
 		public function PlayCard($playername, $cardpos, $mode, $action)
 		{
 			global $carddb;
-			global $messagedb;
 			
 			$data = &$this->GameData;
 			
@@ -1406,30 +1405,6 @@
 				$data->Round++;
 			}
 			
-			if ($this->State == 'finished') // send battle report messages
-			{
-				if ($data->Winner == '')
-				{
-					$player1 = $playername;
-					$player2 = $opponent;
-					
-					$message1 = 'You have found a worthy adversary, indeed. Game with '.$opponent.' ended in a '.$data->Outcome.'.';
-					$message2 = 'You have found a worthy adversary, indeed. Game with '.$playername.' ended in a '.$data->Outcome.'.';
-				}
-				else
-				{
-					$player1 = (($data->Winner == $playername) ? $playername : $opponent);
-					$player2 = (($data->Winner == $playername) ? $opponent : $playername);
-					
-					$message1 = 'Congratulations, you have beaten '.$player2.'. Game has ended by '.$data->Outcome.'.';
-					$message2 = 'You have been beaten by '.$player1.'. Don\'t worry, you\'ll get him/her next time. Game has ended by '.$data->Outcome.'.';
-				}
-				
-				$messagedb->SendMessage("MArcomage", $player1, "Battle report", $message1);
-				$messagedb->SendMessage("MArcomage", $player2, "Battle report", $message2);
-			}
-			
-			$this->SaveGame();
 			return 'OK';
 		}
 		
