@@ -149,6 +149,44 @@
 			$this->CardData = false;
 		}
 		
+		public function IsPlayAgainCard()
+		{
+			return ($this->HasKeyWord("Quick") or $this->HasKeyWord("Swift"));
+		}
+		
+		public function HasKeyword($keyword)
+		{
+			if( $keyword != "any" )
+				return (strpos($this->CardData->Keywords, $keyword) !== FALSE);
+			else // search for any keywords
+				return ($this->CardData->Keywords != "");
+		}
+		
+		public function GetResources($type)
+		{
+			if ($type !="")
+				$resource = $this->CardData->$type;
+			else
+			{
+				$resources = array("Bricks" => 0, "Gems" => 0, "Recruits" => 0);
+				$resource = 0;
+				foreach ($resources as $r_name => $r_value)
+					$resource+= $this->CardData->$r_name;
+			}
+		
+			return $resource;
+		}
+		
+		public function GetClass()
+		{
+			return $this->CardData->Class;
+		}
+		
+		public function GetKeywords()
+		{
+			return $this->CardData->Keywords;
+		}
+		
 		public function CardString($c_text, $c_img, $c_keyword, $c_oldlook)
 		{
 			global $all_colors;
