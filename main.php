@@ -2087,10 +2087,7 @@
 		
 		//retrieve layout setting
 		$param['Players']['show_nationality'] = $player->GetSetting("Nationality");
-		$show["Online"] = $param['Players']['Online'] = $player->GetSetting("Online");
-		$show["Offline"] = $param['Players']['Offline'] = $player->GetSetting("Offline");
-		$show["Inactive"] = $param['Players']['Inactive'] = $player->GetSetting("Inactive");
-		$show["Dead"] = $param['Players']['Dead'] = $player->GetSetting("Dead");
+		$param['Players']['show_avatars'] = $player->GetSetting("Avatarlist");
 		
 		$activegames = $gamedb->ListActiveGames($player->Name());
 		$challengesfrom = $gamedb->ListChallengesFrom($player->Name());

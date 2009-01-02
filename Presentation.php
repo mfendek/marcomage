@@ -807,14 +807,9 @@
 		
 		//retrieve layout setting
 		$show_nationality = $param['Players']['show_nationality'];
-		
-		$show["Online"] = $param['Players']['Online'];
-		$show["Offline"] = $param['Players']['Offline'];
-		$show["Inactive"] = $param['Players']['Inactive'];
-		$show["Dead"] = $param['Players']['Dead'];
+		$show_avatars = $param['Players']['show_avatars'];
 		
 		//if there is at least one group of avatars displayed, create column
-		$avatar_col = (($show["Online"] == "yes") OR ($show["Offline"] == "yes")  OR ($show["Inactive"] == "yes") OR ($show["Dead"] == "yes"));
 		if (!$param['Players']['active']) $content.= '<p class="information_line" style = "color: yellow;">You need at least one ready deck to challenge other players.</p>'."\n";
 		
 		$pendinggames = $param['Players']['pendinggames'];
@@ -846,7 +841,7 @@
 		$content.= '<table class="centered" cellspacing="0">'."\n";
 		
 		$content.= '<tr>'."\n";
-		if ($avatar_col) $content.= '<th></th>'."\n";
+		if ($show_avatars == "yes") $content.= '<th></th>'."\n";
 		if ($show_nationality == "yes") $content.= '<th></th>'."\n";
 		$content.= '<th><p>Flag<input type = "submit" class="details" '.(($condition == "Country") ? ' style="border-color: lime;" ' : '').'name = "players_ord_'.$bname["Country"].'['.postencode("Country").']" value = "'.$val["Country"].'" /></p></th>'."\n";
 		$content.= '<th><p>Username<input type = "submit" class="details" '.(($condition == "Username") ? ' style="border-color: lime;" ' : '').'name = "players_ord_'.$bname["Username"].'['.postencode("Username").']" value = "'.$val["Username"].'" /></p></th>'."\n";
@@ -872,14 +867,13 @@
 			$playingagainst = $param['Players'][$opponent]['playingagainst'];
 			$waitingforack = $param['Players'][$opponent]['waitingforack'];
 			
-			if ($show[$player_type] =="yes")
+			if( $show_avatars == "yes" )
 			{
+				$content.= '<td>';
 				if ($data['Avatar'] != "noavatar.jpg")
-					$content.= '<td><img class="avatar" height="60px" width="60px" src="img/avatars/'.htmlencode($data['Avatar']).'" alt="avatar" /></td>'."\n";
-				else
-					$content.= '<td></td>'."\n";
+					$content.= '<img class="avatar" height="60px" width="60px" src="img/avatars/'.htmlencode($data['Avatar']).'" alt="avatar" />';
+				$content.= '</td>';
 			}
-			elseif ($avatar_col) $content.= '<td></td>'."\n";
 			
 			$challenge_ok = (!$waitingforack AND !$playingagainst AND !$challenged);
 			$player_ok = (($opponent != $param['Players']['PlayerName']) AND ($param['Players']['active']) AND ($pendinggames < MAX_GAMES));
@@ -1632,15 +1626,12 @@
 		$content.= '<div><input type="checkbox" name="Images" '.(($current_settings['Images'] == "yes") ? ' checked="checked" ' : '').'/>Show card images</div>'."\n";
 		$content.= '<div><input type="checkbox" name="Keywords" '.(($current_settings['Keywords'] == "yes") ? ' checked="checked" ' : '').'/>Show card keywords</div>'."\n";
 		
-		$content.= '<div><input type="checkbox" name="Online" '.(($current_settings['Online'] == "yes") ? ' checked="checked" ' : '').'/>Show avatar for on-line users</div>'."\n";
-		$content.= '<div><input type="checkbox" name="Offline" '.(($current_settings['Offline'] == "yes") ? ' checked="checked" ' : '').'/>Show avatar for off-line users</div>'."\n";
-		$content.= '<div><input type="checkbox" name="Inactive" '.(($current_settings['Inactive'] == "yes") ? ' checked="checked" ' : '').'/>Show avatar for inactive users</div>'."\n";
-		$content.= '<div><input type="checkbox" name="Dead" '.(($current_settings['Dead'] == "yes") ? ' checked="checked" ' : '').'/>Show avatar for dead users</div>'."\n";
 		$content.= '<div><input type="checkbox" name="Nationality" '.(($current_settings['Nationality'] == "yes") ? ' checked="checked" ' : '').'/>Show nationality in players list</div>'."\n";
 				
 		$content.= '<div><input type="checkbox" name="Chatorder" '.(($current_settings['Chatorder'] == "yes") ? ' checked="checked" ' : '').'/>Reverse chat message order</div>'."\n";
 		
-		$content.= '<div><input type="checkbox" name="Avatargame" '.(($current_settings['Avatargame'] == "yes") ? ' checked="checked" ' : '').'/>Show avatar in game</div>'."\n";
+		$content.= '<div><input type="checkbox" name="Avatargame" '.(($current_settings['Avatargame'] == "yes") ? ' checked="checked" ' : '').'/>Show avatars in game</div>'."\n";
+		$content.= '<div><input type="checkbox" name="Avatarlist" '.(($current_settings['Avatarlist'] == "yes") ? ' checked="checked" ' : '').'/>Show avatars in players list</div>'."\n";
 
 		$content.= '<div><input type="checkbox" name="Showdead" '.(($current_settings['Showdead'] == "yes") ? ' checked="checked" ' : '').'/>Show dead users in players list</div>'."\n";
 

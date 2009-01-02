@@ -59,7 +59,7 @@
 		public function GameSettingsList() //returns list of all game setting names
 		{			
 			//translates input names to settings names
-			$settings = array("Timezone" => "Timezone", "Minimize" => "Minimize", "Cardtext" => "Cardtext", "Images" => "Images", "Keywords" => "Keywords", "Online" => "Online", "Offline" => "Offline", "Inactive" => "Inactive", "Dead" => "Dead", "Nationality" => "Nationality", "Chatorder" => "Chatorder", "Avatargame" => "Avatargame", "Showdead" => "Showdead", "Correction" => "Correction", "OldCardLook" => "OldCardLook");
+			$settings = array("Timezone" => "Timezone", "Minimize" => "Minimize", "Cardtext" => "Cardtext", "Images" => "Images", "Keywords" => "Keywords", "Nationality" => "Nationality", "Chatorder" => "Chatorder", "Avatargame" => "Avatargame", "Avatarlist" => "Avatarlist", "Showdead" => "Showdead", "Correction" => "Correction", "OldCardLook" => "OldCardLook");
 			
 			return $settings;
 		}		
