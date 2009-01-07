@@ -22,7 +22,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('INSERT INTO `messages` (`Author`, `Recipient`, `Subject`, `Content`, `Created`) VALUES ("'.$db->Escape($author).'", "'.$db->Escape($recipient).'", "'.$db->Escape($subject).'", "'.$db->Escape($content).'", NOW())');
+			$result = $db->Query('INSERT INTO `messages` (`Author`, `Recipient`, `Subject`, `Content`) VALUES ("'.$db->Escape($author).'", "'.$db->Escape($recipient).'", "'.$db->Escape($subject).'", "'.$db->Escape($content).'")');
 			if (!$result) return false;
 			
 			return true;
