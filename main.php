@@ -306,7 +306,7 @@
 					$game = $gamedb->GetGame($gameid);
 					
 					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Game'; break; }
+					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
 					
 					// check if this user is allowed to perform game actions
 					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
@@ -323,7 +323,7 @@
 					$game = $gamedb->GetGame($gameid);
 					
 					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Game'; break; }
+					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
 					
 					// check if this user is allowed to send messages in this game
 					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
