@@ -569,7 +569,7 @@
 					case 202: $this->Attack(17, $hisdata->Tower, $hisdata->Wall); $mydata->Bricks+= 5; $hisdata->Bricks-= 5; break;
 					case 203: $mydata->Tower+= 6; $nextcard = $this->DrawCard(array_merge($carddb->GetList("Uncommon", "Undead"), $carddb->GetList("Rare", "Undead")), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
 					case 204: $hisdata->Tower-= 9; break;
-					case 205: $hisdata->Bricks+= 10; $hisdata->Gems+= 10; $hisdata->Recruits+= 10; $hisdata->Hand = $this->DrawHand_list($carddb->GetList("", "none", "Zero")); $hisdata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); break;
+					case 205: $hisdata->Bricks+= 10; $hisdata->Gems+= 10; $hisdata->Recruits+= 10; $hisdata->Hand = $this->DrawHand_list($carddb->GetList("", "", "Zero")); $hisdata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); break;
 					case 206: $mydata->Bricks-= 8; $mydata->Gems-= 8; $mydata->Recruits-= 8; $hisdata->Bricks-= 8; $hisdata->Gems-= 8; $hisdata->Recruits-= 8; break;
 					case 207: $tmp = max(0, $hisdata->Recruits - $hisdata->Gems); $tmp = min(23, $tmp); $this->Attack($tmp, $hisdata->Tower, $hisdata->Wall); if ($tmp > 15) { $hisdata->Recruits-= $tmp; } break;
 					case 208: $mydata->Wall+= 38; $mydata->Quarry-= 1; break;
