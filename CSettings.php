@@ -218,7 +218,7 @@
 				"Kenya" => "Kenya",
 				"Laos" => "Laos",
 				"Latvia" => "Latvia",
-				"Lichtenstein" => "Lichtenstein",
+				"Liechtenstein" => "Liechtenstein",
 				"Lithuania" => "Lithuania",
 				"Macedonia" => "Macedonia",
 				"Malaysia" => "Malaysia",
