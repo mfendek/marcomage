@@ -1166,10 +1166,25 @@
 					$storage = array();
 					for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Durable")) $storage[$i] = $i;
 					if (count($storage) > 0)
-					{					
+					{
 						$discarded_pos = array_rand($storage);
-						$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, 0, 'DrawCard_random');
-						$hisdata->NewCards[$discarded_pos] = 1;
+						
+						// with better the discarded card rarity, it is harder to discard it, but with better rarity of the played card the chances are getting better
+						
+						// semantics: $chances[played_card_rarity][target_card_rarity] = discard_chance
+						$chances = array(
+						"Common" => array("Common" => 100, "Uncommon" => 50, "Rare" => 25), 
+						"Uncommon" => array("Common" => 100, "Uncommon" => 100, "Rare" => 50), 
+						"Rare" => array("Common" => 100, "Uncommon" => 100, "Rare" => 100)
+						);
+						
+						$class = $carddb->GetCard($hisdata->Hand[$discarded_pos])->GetClass();
+						
+						if (mt_rand(1, 100) <= $chances[$card->GetClass()][$class])
+						{
+							$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, 0, 'DrawCard_random');
+							$hisdata->NewCards[$discarded_pos] = 1;
+						}
 					}
 				}
 				
