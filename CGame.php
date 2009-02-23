@@ -802,15 +802,15 @@
 					case 352: if ($mydata->Magic > $hisdata->Magic) $this->Attack(34, $hisdata->Tower, $hisdata->Wall); else $this->Attack(15, $hisdata->Tower, $hisdata->Wall); break;
 					case 353: $mydata->Magic-= 1; if ($mode == 1) $mydata->Quarry+= 1; elseif ($mode == 2) $mydata->Dungeons+= 1; break;
 					case 354: $mydata->Tower+= 9; $mydata->Wall+= 15; if ($this->KeywordCount($mydata->Hand, "Legend") > 0) $mydata->Magic+= 1; break;
-					case 355: $j = 0; $mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $nextcard = 0;
+					case 355: $j = 0;
 								for ($i = 1; $i <= 8; $i++)
-									if ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("any"))
+									if (($carddb->GetCard($mydata->Hand[$i])->HasKeyword("any")) AND ($i != $cardpos))
 									{
 										$mydata->Hand[$i] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random');
 										$mydata->NewCards[$i] = 1;
 										$j++;
 									}
-								$this->Attack($j * 7, $mydata->Tower, $mydata->Wall);								
+								$this->Attack($j * 7, $mydata->Tower, $mydata->Wall);
 								$j = 0;
 								for ($i = 1; $i <= 8; $i++)
 									if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("any"))
