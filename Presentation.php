@@ -659,8 +659,8 @@
 		
 		if (($display_avatar  == "yes") AND ($correction == "yes"))
 		{
-			$content.= '<img style="float: left;  margin: 0.5ex 0ex 0ex 0ex;" class="avatar" height="60px" width="60px" src="img/avatars/'.$param['Game']['myavatar'].'" alt="avatar" />'."\n";
-			$content.= '<img style="float: right; margin: 0.5ex 0ex 0ex 0ex;" class="avatar" height="60px" width="60px" src="img/avatars/'.$param['Game']['hisavatar'].'" alt="avatar" />'."\n";
+			$content.= '<img style="float: left;  margin: 0.5ex 0ex 0ex 0ex;" class="avatar" height="60px" width="60px" src="img/avatars/'.htmlencode($param['Game']['myavatar']).'" alt="avatar" />'."\n";
+			$content.= '<img style="float: right; margin: 0.5ex 0ex 0ex 0ex;" class="avatar" height="60px" width="60px" src="img/avatars/'.htmlencode($param['Game']['hisavatar']).'" alt="avatar" />'."\n";
 		}
 		
 		if ($param['Game']['chat'])
