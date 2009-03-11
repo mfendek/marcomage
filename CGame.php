@@ -1164,27 +1164,24 @@
 				if ($card->HasKeyWord("Banish"))
 				{
 					$storage = array();
-					for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Durable")) $storage[$i] = $i;
+					// target card is discarded only if it has same or lower rarity then the played card
+					$rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
+					
+					for ($i = 1; $i <= 8; $i++)
+					{
+						$dis_card = $carddb->GetCard($hisdata->Hand[$i]);
+						$dis_rank = $rarities[$dis_card->GetClass()];
+						$played_rank = $rarities[$card->GetClass()];
+						
+						// pick only cards that can be discarded by played card
+						if (($dis_card->HasKeyword("Durable")) AND ($dis_rank <= $played_rank))	$storage[$i] = $i;
+					}
+					
 					if (count($storage) > 0)
 					{
 						$discarded_pos = array_rand($storage);
-						
-						// with better the discarded card rarity, it is harder to discard it, but with better rarity of the played card the chances are getting better
-						
-						// semantics: $chances[played_card_rarity][target_card_rarity] = discard_chance
-						$chances = array(
-						"Common" => array("Common" => 100, "Uncommon" => 50, "Rare" => 25), 
-						"Uncommon" => array("Common" => 100, "Uncommon" => 100, "Rare" => 50), 
-						"Rare" => array("Common" => 100, "Uncommon" => 100, "Rare" => 100)
-						);
-						
-						$class = $carddb->GetCard($hisdata->Hand[$discarded_pos])->GetClass();
-						
-						if (mt_rand(1, 100) <= $chances[$card->GetClass()][$class])
-						{
-							$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, 0, 'DrawCard_random');
-							$hisdata->NewCards[$discarded_pos] = 1;
-						}
+						$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, 0, 'DrawCard_random');
+						$hisdata->NewCards[$discarded_pos] = 1;
 					}
 				}
 				
