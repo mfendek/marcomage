@@ -178,6 +178,7 @@ CREATE TABLE `messages` (
   `AuthorDelete` char(3) collate utf8_unicode_ci NOT NULL default 'no',
   `RecipientDelete` char(3) collate utf8_unicode_ci NOT NULL default 'no',
   `Unread` char(3) collate utf8_unicode_ci NOT NULL default 'yes',
+  `GameID` int(10) unsigned NOT NULL DEFAULT '0',
   `Created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY  (`MessageID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
