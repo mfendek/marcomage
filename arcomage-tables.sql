@@ -170,7 +170,7 @@ CREATE TABLE `settings` (
 -- 
 
 CREATE TABLE `messages` (
-  `MessageID` int(10) unsigned NOT NULL,
+  `MessageID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Author` char(20) collate utf8_unicode_ci NOT NULL,
   `Recipient` char(20) collate utf8_unicode_ci NOT NULL,
   `Subject` varchar(30) collate utf8_unicode_ci NOT NULL,
@@ -181,7 +181,7 @@ CREATE TABLE `messages` (
   `GameID` int(10) unsigned NOT NULL DEFAULT '0',
   `Created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY  (`MessageID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -190,14 +190,14 @@ CREATE TABLE `messages` (
 -- 
 
 CREATE TABLE `forum_posts` (
-  `PostID` int(10) unsigned NOT NULL,
+  `PostID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Author` char(20) collate utf8_unicode_ci NOT NULL,
   `Content` text collate utf8_unicode_ci NOT NULL,
   `ThreadID` int(10) NOT NULL,
   `Deleted` char(3) collate utf8_unicode_ci NOT NULL default 'no',
   `Created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY  (`PostID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
@@ -206,7 +206,7 @@ CREATE TABLE `forum_posts` (
 -- 
 
 CREATE TABLE `forum_threads` (
-  `ThreadID` int(10) unsigned NOT NULL,
+  `ThreadID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Title` varchar(50) collate utf8_unicode_ci NOT NULL,
   `Author` char(20) collate utf8_unicode_ci NOT NULL,
   `Priority` char(15) collate utf8_unicode_ci NOT NULL default 'normal',
@@ -215,7 +215,7 @@ CREATE TABLE `forum_threads` (
   `SectionID` int(10) NOT NULL,
   `Created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY  (`ThreadID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
 
