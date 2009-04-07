@@ -1321,7 +1321,7 @@
 					$pos = strrpos($type, "/") + 1;
 					
 					$code_type = substr($type, $pos, strlen($type) - $pos);
-					$filtered_name = preg_replace("(<|>|/|\"|:|\||\?|\\|\*)", "_", $player->Name());
+					$filtered_name = preg_replace("/[^a-zA-Z0-9_-]/i", "_", $player->Name());
 					
 					$code_name = time().$filtered_name.'.'.$code_type;
 					$target_path = 'img/avatars/'.$code_name;
