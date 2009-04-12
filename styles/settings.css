@@ -90,7 +90,7 @@ div#sett_float_right > div /* set distance of game settings from the left border
 
 div#sett_float_right h4 + div > div > input /* checkbox layout */
 {
-	padding: 0ex;
+	padding: 0.5ex;
 	margin: 0ex 2ex 0ex 0ex;
 	border-style: solid;
 	border-width: thin;

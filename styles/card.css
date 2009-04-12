@@ -6,7 +6,7 @@ div.karta h5 /* card title */
 {
 	font-weight: normal;
 	font-size: x-small;
-	margin-top: 0.5ex;
+	margin: 0.5ex;
 }
 
 div.karta /* card */

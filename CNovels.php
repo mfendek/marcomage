@@ -51,7 +51,6 @@
 			$db = $this->db;
 			$result = $db->Query('SELECT `Page`, `Part` FROM ('.$part_query.' UNION '.$nonpart_query.') as `temp` ORDER BY `Page` ASC');
 			if (!$result) return false;
-			if (!$result->Rows()) return false;
 			
 			$pages = array();
 			while( $data = $result->Next() )

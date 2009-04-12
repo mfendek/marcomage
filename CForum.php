@@ -25,12 +25,12 @@
 			$db = $this->db;
 			
 			// return section list with thread count, ordered by sectionID (alphabetical order is not suited for our needs)
-			$result = $db->Query('SELECT `forum_sections`.`SectionID`, `SectionName`, `Description`, COALESCE(`count`, 0) as `count` FROM `forum_sections` LEFT OUTER JOIN (SELECT `SectionID`, COUNT(`ThreadID`) as `count` FROM `forum_threads` GROUP BY `SectionID`) as `threads` USING (`SectionID`) ORDER BY `SectionID`');
+			$result = $db->Query('SELECT `forum_sections`.`SectionID`, `SectionName`, `Description`, IFNULL(`count`, 0) as `count` FROM `forum_sections` LEFT OUTER JOIN (SELECT `SectionID`, COUNT(`ThreadID`) as `count` FROM `forum_threads` GROUP BY `SectionID`) as `threads` USING (`SectionID`) ORDER BY `SectionID`');
 			if (!$result) return false;
 			
 			$sections = array();
-			for ($i = 1; $i <= $result->Rows(); $i++)
-				$sections[$i] = $result->Next();
+			while( $data = $result->Next() )
+				$sections[$data['SectionID']] = $data;
 			
 			return $sections;
 		}
@@ -41,13 +41,10 @@
 			
 			$result = $db->Query('SELECT `SectionID`, `SectionName` FROM `forum_sections` WHERE `SectionID` != "'.$current_section.'" ORDER BY `SectionID`');
 			if (!$result) return false;
-			if (!$result->Rows()) return false;
 			
 			$sections = array();
 			while( $data = $result->Next() )
-			{
-				$sections[$data['SectionID']] = $data['SectionName'];				
-			}
+				$sections[$data['SectionID']] = $data;
 						
 			return $sections;
 		}
@@ -71,7 +68,7 @@
 		{	
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT 1 FROM `forum_posts` WHERE UNIX_TIMESTAMP(`Created`) > '.$time.'');
+			$result = $db->Query('SELECT 1 FROM `forum_posts` WHERE `Created` > "'.$time.'"');
 			
 			if (!$result) return false;
 			if (!$result->Rows()) return false;

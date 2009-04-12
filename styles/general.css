@@ -178,6 +178,13 @@ input.details /* small input button */
 	padding: 0ex 0.9ex 0ex 0.9ex;
 }
 
+input.table_checkbox /* checkbox layout */
+{
+	border-width: thin;
+	border-style: solid;
+	padding: 0.7ex;
+}
+
 div.filters_trans /* filters with transparent background */
 {
 	margin: 1ex 0ex 2ex 2ex;

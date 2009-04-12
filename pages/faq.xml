@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<am:entry xmlns:am="http://arcomage.netvor.sk">
+<am:content xmlns="http://www.w3.org/1999/xhtml">
+
+<h2>Frequently Asked Questions</h2>
+<hr />
+
+<h4>Q1: I have noticed some unexpected behaviour from the system, I think I have found a bug. What should I do now?</h4>
+<p>A: Go trough F.A.Q. first and if you can't find your answer there please document the bug (screenshot, page source) and send it to either <a href="mailto:illuminati@pobox.sk">Mojko</a> or <a href="mailto:theultramage@gmail.com">theultramage</a>. In the e-mail, try to describe the bug itself, then the circumstances in which the bug appeared. Another option is to either discuss the issue on our forum, in the support section, or use our bug tracking system at <a href="https://netvor.sk/trac/arcomage">https://netvor.sk/trac/arcomage</a>. We will do what we can to solve the problem.</p>
+<h4>Q2: I can't log in. How do I fix that?</h4>
+<p>A: If you are sure you have used the right login and password, try to delete cookies for our site in your browser. You should find cookie management in options/preferences/advanced options.</p>
+<h4>Q3: My browser doesn't display your site properly. You have errors in your website. Can you fix it?</h4>
+<p>A: We made this website according to <a href="http://www.w3.org/">W3C</a> standards, so the cause is most likely the browser you're using. We know that <a href="http://www.mozilla.com/en-US/firefox/?from=getfirefox">Firefox</a>, <a href="http://www.opera.com/">Opera</a> or <a href="http://www.google.com/chrome/">Chrome</a> have no problems displaying it, perhaps you could try using one. Writing a report might not be a bad idea, too - it would help us make future plans.</p>
+<h4>Q4: When I play a card, its cost should be subtracted from my stock, but it isn't. I ended up with more resources than I should have. Why is that?</h4>
+<p>A: The card cost is always the same as it is displayed on the card. There is no way these two values would differ. So you probably didn't realize that after the card is played (at the end of your turn), you get resources from your facilities. This is probably the reason why you ended up with more resources than you expected.</p>
+<h4>Q5: What is a turn anyway? How it works?</h4>
+<p>A: Turn is one elementary step in a game you are playing. A turn consits of these steps:</p>
+<ol>
+	<li>Cost of a card is substracted</li>
+	<li>Effect of the card takes place</li>
+	<li>Keywords with side-effects apply</li>
+	<li>Game limits apply (resources cannot be lower then 0, wall below 0, facitlies below 1...)</li>
+	<li>Resource production</li>
+	<li>End game condition is checked</li>
+</ol>
+<h4>Q6: I played an if-then-else card, fulfilling the condition, but instead the secondary effect took place. Why?</h4>
+<p>A: Remember that this condition is evaluated AFTER the card cost is subtracted from your stock. This may be the reason why the secondary effect was chosen.</p>
+<h4>Q7: I played a "Swift" card and I got an unexpected increase of resources. How does a "Swift" card work?</h4>
+<p>A: Simple - by playing a "Swift" card you get a full extra turn, including resource production.</p>
+<h4>Q8: Is the number of "Swift"/"Quick" cards played in a row limited?</h4>
+<p>A: No. You can make arbitrarily long chains of "Swift"/"Quick" cards.</p>
+<h4>Q9: I used F5 to refresh the game and for some reason a card was played by itself.</h4>
+<p>A: Use OUR refresh button (located on the upper right part of the screen), not the one on the browser. For quick access use shorcut ALT+w.</p>
+<h4>Q10: I played a card ("Master of past" for example) that reverses or undos some effect of opponents last played card and it didn't work like it should have.</h4>
+<p>A: You probably played such card after "Swift"/"Quick" card(s). So when you played it, the system no longer had the information what effect was caused by opponent's last turn. There is an easy rule for these cards - if you want them to work fine, don't play them after any "Swift"/"Quick" cards.</p>
+<h4>Q11: Some cards have "recently discarded cards" in their effect. What does that mean?</h4>
+<p>A: Recently discarded cards are following cards:</p>
+<ul>
+	<li>Card discarded by you with discard button last turn</li>
+	<li>Cards that were discarded by you last turn by some card effect</li>
+	<li>Cards that were discarded by opponent last turn by some card effect</li>
+</ul>
+
+</am:content>
+</am:entry>

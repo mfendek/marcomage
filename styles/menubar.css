@@ -31,7 +31,6 @@ div#menu_center > input + input /* set distance between buttons in center part o
 div#menu_center > img /* set distance for images that appear in the menubar */
 {
 	margin-right: 1.7ex;
-	margin-left: 0.5ex;
 }
 
 div#menubar + hr /* horizontal line that is separating the menubar from the rest of the content */

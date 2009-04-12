@@ -21,7 +21,7 @@
 		public function CreateGame($player1, $player2, $deck1)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT MAX(`GameID`)+1 as `max` FROM `games`');
+			$result = $db->Query('SELECT IFNULL(MAX(`GameID`)+1, 1) as `max` FROM `games`');
 			$data = $result->Next();
 			$gameid = (int)$data['max'];
 			
@@ -234,6 +234,13 @@
 			$p1->Gems = $p2->Gems = 5;
 			$p1->Recruits = $p2->Recruits = 10;
 			
+			// initialize tokens
+			$p1->TokenNames = $p1->Deck->Tokens;
+			$p2->TokenNames = $p2->Deck->Tokens;
+			
+			$p1->TokenValues = $p1->TokenChanges = array_fill_keys(array_keys($p1->TokenNames), 0);
+			$p2->TokenValues = $p2->TokenChanges = array_fill_keys(array_keys($p2->TokenNames), 0);
+			
 			$p1->Hand = $this->DrawHand_initial($p1->Deck);
 			$p2->Hand = $this->DrawHand_initial($p2->Deck);
 		}
@@ -310,6 +317,8 @@
 			//we need to store this information, because some cards will need it to make their effect, however after effect this information is not stored
 			$mychanges = $mydata->Changes;
 			$hischanges = $hisdata->Changes;
+			$mynewflags = $mydata->NewCards;
+			$hisnewflags = $hisdata->NewCards;
 			$discarded_cards[0] = $mydata->DisCards[0];
 			$discarded_cards[1] = $mydata->DisCards[1];
 			
@@ -319,6 +328,7 @@
 				$mydata->NewCards = null;
 				$mydata->Changes = $hisdata->Changes = array ('Quarry'=> 0, 'Magic'=> 0, 'Dungeons'=> 0, 'Bricks'=> 0, 'Gems'=> 0, 'Recruits'=> 0, 'Tower'=> 0, 'Wall'=> 0);
 				$mydata->DisCards[0] = $mydata->DisCards[1] = null;
+				$mydata->TokenChanges = $hisdata->TokenChanges = array_fill_keys(array_keys($mydata->TokenNames), 0);
 			}
 			
 			// by default, opponent goes next (but this may change via card)
@@ -328,7 +338,9 @@
 			$nextcard = -1;
 			
 			// default production factor
-			$production_factor = 1;
+			$bricks_production = 1;
+			$gems_production = 1;
+			$recruits_production = 1;
 			
 			// branch here according to $action
 			if ($action == 'play')
@@ -356,7 +368,11 @@
 					$hisdata_temp[$attribute] = $hisdata->$attribute;
 				}
 				
-				//create a copy of both players' hands and newcards flags
+				// create a copy of token counters
+				$mytokens_temp = $mydata->TokenValues;
+				$histokens_temp = $hisdata->TokenValues;
+				
+				//create a copy of both players' hands and newcards flags (for difference computations only)
 				$myhand = $mydata->Hand;
 				$hishand = $hisdata->Hand;
 				$mynewcards = $mydata->NewCards;
@@ -371,7 +387,7 @@
 					case   4: $mydata->Wall+= 75; break;
 					case   5: $mydata->Quarry+= 1; $mydata->Magic+= 1; $mydata->Dungeons+= 1; $hisdata->Quarry-= 1; $hisdata->Magic-= 1; $hisdata->Dungeons-= 1; break;
 					case   6: $this->Attack(50, $hisdata->Tower, $hisdata->Wall); break;
-					case   7: $this->Attack(7, $hisdata->Tower, $hisdata->Wall); if ($hisdata->Wall == 0) $hisdata->Tower-= 3; break;
+					case   7: $this->Attack(7, $hisdata->Tower, $hisdata->Wall); break;
 					case   8: $mydata->Gems+= 7; $hisdata->Gems-= 7; break;
 					case   9: $mydata->Magic+= 2; $nextcard = $this->DrawCard($carddb->GetList("Rare", "Mage"), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
 					case  10: $this->Attack(21, $hisdata->Tower, $hisdata->Wall); break;
@@ -400,7 +416,7 @@
 					case  33: $mydata->Wall+=5; $nextcard = $this->DrawCard($carddb->GetList("Rare", "Beast"), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
 					case  34: $mydata->Magic+= 1; break;
 					case  35: $mydata->Tower+= 15; $mydata->Gems+= 5; break;
-					case  36: $this->Attack(16, $hisdata->Tower, $hisdata->Wall); if ($hisdata->Wall == 0) $hisdata->Tower-= 9; break;
+					case  36: $this->Attack(16, $hisdata->Tower, $hisdata->Wall); break;
 					case  37: $hisdata->Gems-= 12; break;
 					case  38: $tmp = $this->KeywordCount($mydata->Hand, "Brigand") + 4; $mydata->Bricks+= $tmp; $mydata->Gems+= $tmp; $mydata->Recruits+= $tmp; $hisdata->Bricks-= $tmp; $hisdata->Gems-= $tmp; $hisdata->Recruits-= $tmp; break;
 					case  39: $mydata->Tower+= 2; $mydata->Wall+= 2; break;
@@ -413,9 +429,9 @@
 					case  46: $this->Attack(6, $hisdata->Tower, $hisdata->Wall); break;
 					case  47: $mydata->Wall+= 31; break;
 					case  48: $mydata->Tower+= 4; $mydata->Bricks+= 1; $mydata->Gems+= 1; $mydata->Recruits+= 1; $nextcard = $this->DrawCard($carddb->GetList("", "Restoration"), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
-					case  49: $mydata->Bricks+= 10; break;
-					case  50: $mydata->Recruits+= 10; break;
-					case  51: $temp_array = array(); for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("any")) $temp_array[] = $i; if( count($temp_array) > 0 ) { $position = $temp_array[array_rand($temp_array)]; $mydata->Bricks+= min($carddb->GetCard($hisdata->Hand[$position])->GetResources("Bricks"),5); $mydata->Gems+= min($carddb->GetCard($hisdata->Hand[$position])->GetResources("Gems"),5); $mydata->Recruits+= min($carddb->GetCard($hisdata->Hand[$position])->GetResources("Recruits"),5); $hisdata->Hand[$position] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, 0, 'DrawCard_random'); $hisdata->NewCards[$position] = 1; }; break;
+					case  49: $mydata->Bricks+= 10; if (($carddb->GetCard($mydata->LastCard[$mylastcardindex])->HasKeyword("Mage")) and ($mydata->LastAction[$mylastcardindex] == 'play')) $mydata->Bricks+= 5; break;
+					case  50: $mydata->Recruits+= 10; if (($carddb->GetCard($mydata->LastCard[$mylastcardindex])->HasKeyword("Mage")) and ($mydata->LastAction[$mylastcardindex] == 'play')) $mydata->Recruits+= 5; break;
+					case  51: $temp_array = array(); for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("any")) $temp_array[] = $i; if( count($temp_array) > 0 ) { $position = $temp_array[array_rand($temp_array)]; $mydata->Bricks+= min($carddb->GetCard($hisdata->Hand[$position])->GetResources("Bricks"),5); $mydata->Gems+= min($carddb->GetCard($hisdata->Hand[$position])->GetResources("Gems"),5); $mydata->Recruits+= min($carddb->GetCard($hisdata->Hand[$position])->GetResources("Recruits"),5); $hisdata->Hand[$position] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $position, 'DrawCard_random'); $hisdata->NewCards[$position] = 1; }; break;
 					case  52: $this->Attack(12, $hisdata->Tower, $hisdata->Wall); $hisdata->Bricks-= 3; $hisdata->Gems-= 3; $hisdata->Recruits-= 3; break;
 					case  53: $this->Attack((6 + $mydata->Magic), $hisdata->Tower, $hisdata->Wall); break;
 					case  54: $hisdata->Wall-= 11; break;
@@ -442,12 +458,12 @@
 					case  75: $this->Attack(15, $hisdata->Tower, $hisdata->Wall); break;
 					case  76: $temp_array = array("Bricks", "Gems", "Recruits"); $mydata->$temp_array[array_rand($temp_array)]-= 1; $hisdata->Tower-= 3; break;
 					case  77: $this->Attack(6, $hisdata->Tower, $hisdata->Wall); $mydata->Bricks-= 1; $mydata->Gems-= 1; $mydata->Recruits-= 1; break;
-					case  78: $this->Attack(5, $hisdata->Tower, $hisdata->Wall); if ($hisdata->Wall == 0) $hisdata->Tower-= 2; $mydata->Gems+= 3; break;
+					case  78: $this->Attack(5, $hisdata->Tower, $hisdata->Wall); $mydata->Gems+= 3; break;
 					case  79: $hisdata->Bricks-= 10; break;
 					case  80: $my_fac = $mydata->Quarry + $mydata->Magic + $mydata->Dungeons; $his_fac = $hisdata->Quarry + $hisdata->Magic + $hisdata->Dungeons; if (($my_fac) >= ($his_fac)) { $mydata->Quarry-= 2; $mydata->Magic-= 2; $mydata->Dungeons-= 2; } if (($my_fac) <= ($his_fac)) { $hisdata->Quarry-= 2; $hisdata->Magic-= 2; $hisdata->Dungeons-= 2; } break;
 					case  81: $mydata->Quarry+= 2; $mydata->Magic+= 2; $mydata->Dungeons+= 2; $hisdata->Quarry+= 2; $hisdata->Magic+= 2; $hisdata->Dungeons+= 2; $mydata->Bricks= 0; $mydata->Gems= 0; $mydata->Recruits= 0; $hisdata->Bricks= 0; $hisdata->Gems= 0; $hisdata->Recruits= 0; break;
 					case  82: $this->Attack($mydata->Magic, $hisdata->Tower, $hisdata->Wall); break;
-					case  83: $this->Attack(15, $hisdata->Tower, $hisdata->Wall); if ($hisdata->Wall == 0) $hisdata->Tower-= 7; $mydata->Dungeons+= 1; $hisdata->Dungeons+= 1; break;
+					case  83: $this->Attack(15, $hisdata->Tower, $hisdata->Wall); $mydata->Dungeons+= 1; $hisdata->Dungeons+= 1; break;
 					case  84: $this->Attack(8, $hisdata->Tower, $hisdata->Wall); $hisdata->Gems-= 8; break;
 					case  85: $this->Attack(10, $hisdata->Tower, $hisdata->Wall); $hisdata->Gems-= 8; break;
 					case  86: $this->Attack(40, $hisdata->Tower, $hisdata->Wall); $hisdata->Gems-= 20; break;
@@ -460,7 +476,7 @@
 					case  93: if ($mode == 1) $this->Attack(25, $hisdata->Tower, $hisdata->Wall); elseif ($mode == 2) $mydata->Wall+= 32; elseif ($mode == 3) $hisdata->Wall-= 35; break;
 					case  94: if ($mode == 1) $this->Attack(12, $hisdata->Tower, $hisdata->Wall); elseif ($mode == 2) $hisdata->Tower-= 7; break;
 					case  95: $hisdata->Tower-= 3; break;
-					case  96: $this->Attack(1, $hisdata->Tower, $hisdata->Wall); if ($hisdata->Wall == 0) $hisdata->Tower-= 4; $mydata->Gems+= 3; break;
+					case  96: $this->Attack(1, $hisdata->Tower, $hisdata->Wall); $mydata->Gems+= 3; break;
 					case  97: $this->Attack(1, $hisdata->Tower, $hisdata->Wall); $last_card = $mydata->LastCard[$mylastcardindex]; if ((($carddb->GetCard($last_card)->GetResources("Bricks") + $carddb->GetCard($last_card)->GetResources("Gems") + $carddb->GetCard($last_card)->GetResources("Recruits")) == 0) and ($mydata->LastAction[$mylastcardindex] == 'play')) $nextcard = $this->DrawCard(array_merge($carddb->GetList("Uncommon", "", "Zero"), $carddb->GetList("Rare", "", "Zero")), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
 					case  98: $this->Attack(10, $hisdata->Tower, $hisdata->Wall); $hisdata->Magic-= 1; break;
 					case  99: $mydata->Dungeons+= 1; $mydata->Magic+= 1; $hisdata->Dungeons+= 1; $hisdata->Magic+= 1; $hisdata->Gems-= 15; $hisdata->Recruits-= 10; break;
@@ -470,7 +486,7 @@
 					case 103: $tempnum = $this->KeywordCount($mydata->Hand, "Undead"); $mydata->Bricks+= $tempnum; $mydata->Gems+= $tempnum; $mydata->Recruits+= $tempnum; if ($tempnum > 6) $mydata->Magic+= 1; break;
 					case 104: $mydata->Wall+= 10; break;
 					case 105: $nextcard = $mydata->LastCard[$mylastcardindex]; break;
-					case 106: $this->Attack(7, $hisdata->Tower, $hisdata->Wall); break;
+					case 106: $this->Attack(5, $hisdata->Tower, $hisdata->Wall); break;
 					case 107: $mydata->Bricks+= 2; $mydata->Recruits+= 2; break;
 					case 108: $this->Attack(20, $hisdata->Tower, $hisdata->Wall); $hisdata->Bricks-= 7; $hisdata->Gems-= 7; $hisdata->Recruits-= 7; $nextcard = $mydata->LastCard[$mylastcardindex]; break;
 					case 109: $this->Attack(8, $hisdata->Tower, $hisdata->Wall); $hisdata->Bricks-= 3; $hisdata->Gems-= 3; $hisdata->Recruits-= 3; break;
@@ -483,24 +499,24 @@
 					case 116: $mydata->Tower+= 5; $hisdata->Tower-= 5; break;
 					case 117: $this->Attack(5, $hisdata->Tower, $hisdata->Wall); $mydata->Gems-= 3; break;
 					case 118: $mydata->Quarry+= 5; $mydata->Magic+= 5; $mydata->Dungeons+= 5; break;
-					case 119: $production_factor*= 2; break;
+					case 119: $bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2; break;
 					case 120: $this->Attack(11, $hisdata->Tower, $hisdata->Wall); $mydata->Gems+= 5; $hisdata->Gems-= 5; break;
 					case 121: $this->Attack(30, $hisdata->Tower, $hisdata->Wall); $mydata->Magic+= 1; break;
 					case 122: $this->Attack(3, $hisdata->Tower, $hisdata->Wall); $mydata->Gems+= 1; break;
-					case 123: $mydata->Tower+= 7; $production_factor*= 2; break;
+					case 123: $mydata->Tower+= 7; $bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2; break;
 					case 124: $this->Attack(70, $hisdata->Tower, $hisdata->Wall); $mydata->Tower-= 30; $mydata->Wall-= 50; break;
 					case 125: $mydata->Tower+= 15; $mydata->Wall+= 15; $mydata->Bricks+= 15; $mydata->Gems+= 15; $mydata->Recruits+= 15; break;
 					case 126: $this->Attack(40, $hisdata->Tower, $hisdata->Wall); break;
 					case 127: $this->Attack(60, $hisdata->Tower, $hisdata->Wall); $hisdata->Recruits-= 15; break;
 					case 128: $this->Attack(45, $hisdata->Tower, $hisdata->Wall); $hisdata->Gems-= 10; break;
 					case 129: $mydata->Bricks+= 7; $mydata->Gems+= 7; $mydata->Recruits+= 7; $hisdata->Bricks+= 10; $hisdata->Gems+= 10; $hisdata->Recruits+= 10; break;
-					case 130: $this->Attack(30, $hisdata->Tower, $hisdata->Wall);  $hisdata->Bricks-= 8; $hisdata->Recruits-= 8; break;
+					case 130: $this->Attack(30, $hisdata->Tower, $hisdata->Wall); if ($hisdata->Wall <= 0) $mydata->Recruits+= 20; break;
 					case 131: $nextcard = $this->DrawCard($carddb->GetList("", "Dragon"), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
-					case 132: if (($mydata->Quarry + $mydata->Magic + $mydata->Dungeons) > ($hisdata->Quarry + $hisdata->Magic + $hisdata->Dungeons)) { $mydata->Bricks-= 15; $mydata->Gems-= 15; $mydata->Recruits-= 15; } $mydata->Quarry+= 1; $mydata->Magic+= 1; $mydata->Dungeons+= 1; break;
+					case 132: if (($mydata->Quarry + $mydata->Magic + $mydata->Dungeons) >= ($hisdata->Quarry + $hisdata->Magic + $hisdata->Dungeons)) { $mydata->Bricks-= 15; $mydata->Gems-= 15; $mydata->Recruits-= 15; } $mydata->Quarry+= 1; $mydata->Magic+= 1; $mydata->Dungeons+= 1; break;
 					case 133: $tempnum = $this->KeywordCount($mydata->Hand, "Undead"); $this->Attack((($tempnum * 4) + 4), $hisdata->Tower, $hisdata->Wall); break;
 					case 134: $mydata->Dungeons+= 2; $nextcard = $this->DrawCard($carddb->GetList("Rare", "Beast"), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
 					case 135: if ($mydata->Bricks > $hisdata->Bricks) { $this->Attack(10, $hisdata->Tower, $hisdata->Wall); } else { $mydata->Bricks+= 8; } break;
-					case 136: $this->Attack(9, $hisdata->Tower, $hisdata->Wall); $production_factor*= 2; break;
+					case 136: $this->Attack(9, $hisdata->Tower, $hisdata->Wall); $bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2; break;
 					case 137: $this->Attack(10, $hisdata->Tower, $hisdata->Wall); $mydata->Tower+= 10; break;
 					case 138: $this->Attack(50, $hisdata->Tower, $hisdata->Wall); $hisdata->Bricks-= 50; $hisdata->Gems-= 50; $hisdata->Recruits-= 50; break;
 					case 139: if ($mydata->Recruits > $hisdata->Recruits) { $this->Attack(10, $hisdata->Tower, $hisdata->Wall); } else { $mydata->Recruits+= 7; } break;
@@ -530,7 +546,7 @@
 					case 163: $mydata->Quarry+= 1; break;
 					case 164: $mydata->Dungeons+= 1; break;
 					case 165: if ($mydata->Dungeons < $hisdata->Dungeons) { $mydata->Dungeons+= 1; } else { $mydata->Recruits+= 11; } break;
-					case 166: $this->Attack(33, $hisdata->Tower, $hisdata->Wall); if ($hisdata->Wall == 0) $hisdata->Tower-= 12; $mydata->Gems+= 5; $mydata->Recruits+= 5; break;
+					case 166: $this->Attack(33, $hisdata->Tower, $hisdata->Wall); $mydata->Gems+= 5; $mydata->Recruits+= 5; break;
 					case 167: $this->Attack(200, $hisdata->Tower, $hisdata->Wall); break;
 					case 168: $nextcard = $hisdata->LastCard[$hislastcardindex]; break;
 					case 169: $mydata->Tower-= 20; $mydata->Tower = max(1, $mydata->Tower); $mydata->Wall+= 70; break;
@@ -538,7 +554,7 @@
 					case 171: if (!($carddb->GetCard($mydata->LastCard[$mylastcardindex])->IsPlayAgainCard() and $mydata->LastAction[$mylastcardindex] == 'play')) { $mydata->Tower-= $mychanges['Tower']; $mydata->Wall-= $mychanges['Wall']; $mydata->Quarry-= $mychanges['Quarry']; $mydata->Magic-= $mychanges['Magic']; $mydata->Dungeons-= $mychanges['Dungeons']; $mydata->Bricks-= $mychanges['Bricks']; $mydata->Gems-= $mychanges['Gems']; $mydata->Recruits-= $mychanges['Recruits']; } break;
 					case 172: $this->Attack(14, $hisdata->Tower, $hisdata->Wall); break;
 					case 173: $this->Attack(25, $hisdata->Tower, $hisdata->Wall); break;
-					case 174: $production_factor*= 2; break;
+					case 174: $bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2; break;
 					case 175: $mydata->Tower+= 13; $mydata->Bricks+= 7; $mydata->Gems+= 7; $mydata->Recruits+= 7; break;
 					case 176: $mydata->Tower+= 3; $mydata->Bricks+= 1; $mydata->Gems+= 1; $mydata->Recruits+= 1; break;
 					case 177: $nextcard = $this->DrawCard($carddb->GetList("", "Holy"), $mydata->Hand, $cardpos, 'DrawCard_list'); $tmp = min($this->KeywordCount($mydata->Hand, "Holy"),2); $mydata->Bricks+= $tmp; $mydata->Gems+= $tmp; $mydata->Recruits+= $tmp; break;
@@ -548,20 +564,20 @@
 					case 181: $this->Attack(35, $hisdata->Tower, $hisdata->Wall); $mydata->Bricks+= 5; $mydata->Gems+= 5; $mydata->Recruits+= 5; $hisdata->Bricks-= 5; $hisdata->Gems-= 5; $hisdata->Recruits-= 5; break;
 					case 182: $this->Attack(55, $hisdata->Tower, $hisdata->Wall); $mydata->Bricks-= 10; $mydata->Gems-= 10; $mydata->Recruits-= 10; $hisdata->Bricks-= 10; $hisdata->Gems-= 10; $hisdata->Recruits-= 10; break;
 					case 183: $nextcard = $this->DrawCard(array(181, 182, 183), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
-					case 184: $mydata->Tower+= 5; $mydata->Bricks+= 4; $mydata->Gems+= 4; $mydata->Recruits+= 4; $nextcard = $this->DrawCard(array(181, 182, 183), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
+					case 184: $mydata->Tower+= 5; $mydata->Bricks+= 4; $mydata->Gems+= 4; $mydata->Recruits+= 4; $nextcard = $this->DrawCard(array(181, 182, 159), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
 					case 185: if ($mydata->Magic < $hisdata->Magic) { $mydata->Magic+= 1; } else { $mydata->Gems+= 11; } break;
 					case 186: $hisdata->Wall-= 40; break;
 					case 187: if ($mydata->Quarry < $hisdata->Quarry) { $mydata->Quarry+= 1; } else { $mydata->Bricks+= 12; } break;
 					case 188: $mydata->Wall+= 5; break;
-					case 189: $mydata->Tower+= 5; $mydata->Recruits+= ($mydata->Dungeons * 2); break;
+					case 189: $mydata->Tower+= 5; $recruits_production*= 3; break;
 					case 190: $hisdata->Tower-= 7; $hisdata->Wall-= 7; break;
 					case 191: $mydata->Tower+= 15; break;
 					case 192: $mydata->Tower+= 45; break;
 					case 193: $this->Attack(16, $hisdata->Tower, $hisdata->Wall); break;
 					case 194: $tempnum = $this->KeywordCount($mydata->Hand, "Soldier"); if ($tempnum < 4) $nextcard = $this->DrawCard($carddb->GetList("", "Soldier"), $mydata->Hand, $cardpos, 'DrawCard_list'); else $mydata->Recruits+= 7; break;
-					case 195: if ($this->KeywordCount($hisdata->Hand, "Dragon") == 0) { $mydata->Bricks+= 6; $mydata->Gems+= 6; $mydata->Recruits+= 6; } else for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Dragon")) { $mydata->Hand[$i] = $hisdata->Hand[$i]; $mydata->NewCards[$i] = 1; $hisdata->Hand[$i] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, 0, 'DrawCard_random'); $hisdata->NewCards[$i] = 1; if ($cardpos == $i) $nextcard = 0; } break;
+					case 195: if ($this->KeywordCount($hisdata->Hand, "Dragon") == 0) { $mydata->Bricks+= 6; $mydata->Gems+= 6; $mydata->Recruits+= 6; } else for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Dragon")) { $mydata->Hand[$i] = $hisdata->Hand[$i]; $mydata->NewCards[$i] = 1; $hisdata->Hand[$i] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $i, 'DrawCard_random'); $hisdata->NewCards[$i] = 1; if ($cardpos == $i) $nextcard = 0; } break;
 					case 196: $mydata->Tower+= 12; $nextcard = $this->DrawCard($carddb->GetList("", "Holy"), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
-					case 197: $this->Attack(20, $hisdata->Tower, $hisdata->Wall); if ($hisdata->Wall == 0) $hisdata->Tower-= 10; $hisdata->Quarry-= 1; break;
+					case 197: $this->Attack(20, $hisdata->Tower, $hisdata->Wall); $hisdata->Quarry-= 1; break;
 					case 198: $hisdata->Wall-= 60; if ($hisdata->Wall <= 0) { $hisdata->Quarry-= 1; $hisdata->Magic-= 1; $hisdata->Dungeons-= 1; } break;
 					case 199: $mydata->Bricks= ($mydata->Bricks * 2); $mydata->Gems= ($mydata->Gems * 2); $mydata->Recruits= ($mydata->Recruits * 2); break;
 					case 200: $mydata->Tower+= 20; $hisdata->Tower+= 30; break;
@@ -596,11 +612,11 @@
 					case 229: $this->Attack($mydata->Bricks, $hisdata->Tower, $hisdata->Wall); $mydata->Bricks= 0; break;
 					case 230: if ($hisdata->Wall == 0) { $this->Attack(35, $hisdata->Tower, $hisdata->Wall); } else { $this->Attack(11, $hisdata->Tower, $hisdata->Wall); } break;
 					case 231: $mydata->Tower+= 10; break;
-					case 232: $this->Attack(20, $hisdata->Tower, $hisdata->Wall); $mydata->Tower+= 10; $mydata->Wall+= 10; $production_factor*= 2; break;
+					case 232: $this->Attack(20, $hisdata->Tower, $hisdata->Wall); $mydata->Tower+= 10; $mydata->Wall+= 10; $bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2; break;
 					case 233: $mydata->Tower+= 15; $mydata->Magic+= 1; break;
 					case 234: $mydata->Tower+= 15; $mydata->Dungeons+= 1; break;
 					case 235: $mydata->Tower+= 15; $mydata->Quarry+= 1; break;
-					case 236: $this->Attack(5, $hisdata->Tower, $hisdata->Wall); if ($hisdata->Wall == 0) $hisdata->Tower-= 1; $mydata->Tower-= 1; break;
+					case 236: $this->Attack(5, $hisdata->Tower, $hisdata->Wall); $mydata->Tower-= 1; break;
 					case 237: $mydata->Tower+= 3; break;
 					case 238: $mydata->Wall+= 8; break;
 					case 239: $this->Attack(80, $hisdata->Tower, $hisdata->Wall); break;
@@ -615,32 +631,50 @@
 					case 248: $mydata->Bricks-= 2; $mydata->Gems-= 2; $mydata->Recruits-= 2; $mydata->Tower-= 2; $mydata->Wall-= 5; $hisdata->Bricks-= 2; $hisdata->Gems-= 2; $hisdata->Recruits-= 2; $hisdata->Tower-= 2; $hisdata->Wall-= 5; break;
 					case 249: $tmp = $mydata->Wall; $mydata->Wall= $hisdata->Wall; $hisdata->Wall= $tmp; break;
 					case 250: $this->Attack(5, $hisdata->Tower, $hisdata->Wall); break;
-					case 251: $mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $mydata->NewCards[$cardpos] = 1; $temp_array1 = $temp_array2 = array(0 => 1, 2, 3, 4); shuffle($temp_array1); shuffle($temp_array2);
-							for ($k = 0; $k <= 1; $k++)
-							{
-								$i = $temp_array1[$k];
-								$j = $temp_array2[$k];
-								if ($mode == 1) {$i = $i * 2; $j = ($j * 2) - 1;}
-								elseif ($mode == 2) {$i = ($i * 2) - 1; $j = $j * 2;}
-								$mydata->Hand[$i] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random');
-								$hisdata->Hand[$j] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $cardpos, 'DrawCard_random');
-								$mydata->NewCards[$i] = 1;
-								$hisdata->NewCards[$j] = 1;
-							}
+					case 251: $mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random');
+								$mydata->NewCards[$cardpos] = 1;
+								$my_storage = $his_storage = array();
+								for ($i = 1; $i <= 8; $i++)
+								{
+									if ($carddb->GetCard($mydata->Hand[$i])->GetClass() != "Rare") $my_storage[] = $i;
+									if ($carddb->GetCard($hisdata->Hand[$i])->GetClass() != "Rare") $his_storage[] = $i;
+								}
+								$count = min(count($my_storage), count($his_storage), 3);
+								if ($count > 0)
+								{
+									shuffle($my_storage); shuffle($his_storage);
+									for ($k = 0; $k < $count; $k++)
+									{
+										$i = $my_storage[$k]; $j = $his_storage[$k];
+										$mydata->Hand[$i] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random');
+										$hisdata->Hand[$j] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $cardpos, 'DrawCard_random');
+										$mydata->NewCards[$i] = 1;
+										$hisdata->NewCards[$j] = 1;
+									}
+								}
 							$nextcard = 0; break;
-					case 252: $mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $mydata->NewCards[$cardpos] = 1; $temp_array1 = $temp_array2 = array(0 => 1, 2, 3, 4); shuffle($temp_array1); shuffle($temp_array2);
-							for ($k = 0; $k <= 1; $k++)
-							{
-								$i = $temp_array1[$k];
-								$j = $temp_array2[$k];
-								if ($mode == 1) {$i = $i * 2; $j = ($j * 2) - 1;}
-								elseif ($mode == 2) {$i = ($i * 2) - 1; $j = $j * 2;}
-								$tempcard = $mydata->Hand[$i];
-								$mydata->Hand[$i] = $hisdata->Hand[$j];
-								$hisdata->Hand[$j] = $tempcard;
-								$mydata->NewCards[$i] = 1;
-								$hisdata->NewCards[$j] = 1;
-							}
+					case 252: $mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random');
+								$mydata->NewCards[$cardpos] = 1;
+								$my_storage = $his_storage = array();
+								for ($i = 1; $i <= 8; $i++)
+								{
+									if ($carddb->GetCard($mydata->Hand[$i])->GetClass() != "Rare") $my_storage[] = $i;
+									if ($carddb->GetCard($hisdata->Hand[$i])->GetClass() != "Rare") $his_storage[] = $i;
+								}
+								$count = min(count($my_storage), count($his_storage), 3);
+								if ($count > 0)
+								{
+									shuffle($my_storage); shuffle($his_storage);
+									for ($k = 0; $k < $count; $k++)
+									{
+										$i = $my_storage[$k]; $j = $his_storage[$k];
+										$tempcard = $mydata->Hand[$i];
+										$mydata->Hand[$i] = $hisdata->Hand[$j];
+										$hisdata->Hand[$j] = $tempcard;
+										$mydata->NewCards[$i] = 1;
+										$hisdata->NewCards[$j] = 1;
+									}
+								}
 							$nextcard = 0; break;
 					case 253: $mydata->Hand = array (1=> 114, 113, 112, 120, 133, 330, 28, 103); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0; break;
 					case 254: $this->Attack(10, $hisdata->Tower, $hisdata->Wall); if ($this->KeywordCount($mydata->Hand, "Burning") > 3) $hisdata->Magic-= 1; break;
@@ -648,40 +682,40 @@
 					case 256: $hisdata->Wall-= 6; break;
 					case 257: $mydata->Tower+= 2; $hisdata->Tower-= 2; break;
 					case 258: $this->Attack(4, $hisdata->Tower, $hisdata->Wall); $mydata->Bricks-= 3; break;
-					case 259: $this->Attack(9, $hisdata->Tower, $hisdata->Wall); $production_factor = 0; break;
+					case 259: $this->Attack(9, $hisdata->Tower, $hisdata->Wall); $bricks_production = 0; $gems_production = 0; $recruits_production = 0; break;
 					case 260: $this->Attack(4, $hisdata->Tower, $hisdata->Wall); $mydata->Bricks+= 2; $mydata->Gems+= 2; $mydata->Recruits+= 2; $hisdata->Bricks-= 2; $hisdata->Gems-= 2; $hisdata->Recruits-= 2; break;
 					case 261: $mydata->Recruits+= 3; $hisdata->Recruits-= 3; break;
 					case 262: $mydata->Wall+= 6; break;
-					case 263: $mydata->Bricks+= 4; $mydata->Gems+= 4; $mydata->Recruits+= 4; $production_factor = 0; break;
+					case 263: $mydata->Bricks+= 4; $mydata->Gems+= 4; $mydata->Recruits+= 4; $bricks_production = 0; $gems_production = 0; $recruits_production = 0; break;
 					case 264: $mydata->Hand = $this->DrawHand_random($mydata->Deck); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0; break;
 					case 265: $mydata->Tower+= 99; break;
 					case 266: if ($mode == 1) $mydata->Wall+= 20; elseif ($mode == 2) $mydata->Tower+= 10; break;
 					case 267: if ($mode == 1) $mydata->Quarry+= 1; elseif ($mode == 2) $mydata->Magic+= 1; elseif ($mode == 3) $mydata->Dungeons+= 1; break;
 					case 268: if ($mode == 1) $this->Attack(30, $hisdata->Tower, $hisdata->Wall); elseif ($mode == 2) $mydata->Wall+= 33; break;
 					case 269: $mydata->Bricks-= 1; $mydata->Gems-= 1; $mydata->Recruits-= 1; $mydata->Wall+= 1; $mydata->Hand[$mode] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $mydata->NewCards[$mode] = 1; break;
-					case 270: $hisdata->Hand[$mode] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, 0, 'DrawCard_random'); $hisdata->NewCards[$mode] = 1; break;
+					case 270: $hisdata->Hand[$mode] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $mode, 'DrawCard_random'); $hisdata->NewCards[$mode] = 1; break;
 					case 271: $hisdata->Tower-= 2; $mydata->Bricks+= 1; $mydata->Gems+= 1; $mydata->Recruits+= 1; break;
 					case 272: if ($mydata->Wall > $hisdata->Wall) $hisdata->Tower-= 7; else $this->Attack(6, $hisdata->Tower, $hisdata->Wall); break;
 					case 273: if ($mode == 1) $mydata->Bricks+= 6; elseif ($mode == 2) $mydata->Gems+= 5; elseif ($mode == 3) $mydata->Recruits+= 5; break;  
 					case 274: $last_card = $mydata->LastCard[$mylastcardindex]; if ((($carddb->GetCard($last_card)->GetResources("Bricks") + $carddb->GetCard($last_card)->GetResources("Gems") + $carddb->GetCard($last_card)->GetResources("Recruits")) == 0) and ($mydata->LastAction[$mylastcardindex] == 'play')) { $mydata->Gems+= 3; $mydata->Recruits+= 2; } else { $mydata->Gems+= 2; $mydata->Recruits+= 1; } break;
-					case 275: $mydata->Bricks+= $mydata->Quarry; break;
+					case 275: $bricks_production*= 2; break;
 					case 276: $mydata->Wall+= 60; break;
 					case 277: $mydata->Tower+= 35; break;
 					case 278: if ($mode == 1) $mydata->Wall+= 8; elseif ($mode == 2) $mydata->Tower+= 5; break;
 					case 279: if ($mode == 1) $mydata->Wall+= 5; elseif ($mode == 2) $this->Attack(6, $hisdata->Tower, $hisdata->Wall); elseif ($mode == 3) $hisdata->Tower-= 4; break;
-					case 280: $mydata->Hand[$mode] = $hisdata->Hand[$mode]; $hisdata->Hand[$mode] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, 0, 'DrawCard_random'); $mydata->NewCards[$mode] = 1; $hisdata->NewCards[$mode] = 1; break;
-					case 281: $this->Attack(11 - (int)floor($mydata->Tower/20), $hisdata->Tower, $hisdata->Wall); break;
-					case 282: $mydata->Bricks-= (int)floor($mydata->Bricks * (($mydata->Tower)/100)); $mydata->Gems-= (int)floor($mydata->Gems * (($mydata->Tower)/100)); $mydata->Recruits-= (int)floor($mydata->Recruits * (($mydata->Tower)/100)); $hisdata->Bricks-= (int)floor($hisdata->Bricks * (($hisdata->Tower)/100)); $hisdata->Gems-= (int)floor($hisdata->Gems * (($hisdata->Tower)/100)); $hisdata->Recruits-= (int)floor($hisdata->Recruits * (($hisdata->Tower)/100)); break;
+					case 280: $mydata->Hand[$mode] = $hisdata->Hand[$mode]; $hisdata->Hand[$mode] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $mode, 'DrawCard_random'); $mydata->NewCards[$mode] = 1; $hisdata->NewCards[$mode] = 1; break;
+					case 281: $this->Attack(11 - (int)round($mydata->Tower/20), $hisdata->Tower, $hisdata->Wall); break;
+					case 282: $mydata->Bricks-= (int)round($mydata->Bricks * (($mydata->Tower)/100)); $mydata->Gems-= (int)round($mydata->Gems * (($mydata->Tower)/100)); $mydata->Recruits-= (int)round($mydata->Recruits * (($mydata->Tower)/100)); $hisdata->Bricks-= (int)round($hisdata->Bricks * (($hisdata->Tower)/100)); $hisdata->Gems-= (int)round($hisdata->Gems * (($hisdata->Tower)/100)); $hisdata->Recruits-= (int)round($hisdata->Recruits * (($hisdata->Tower)/100)); break;
 					case 283: $mydata->Tower= 30; $mydata->Wall= 20; $hisdata->Tower= 30; $hisdata->Wall= 20; break;
 					case 284: if (($mydata->Tower < 50)&&($hisdata->Tower > 60)) $hisdata->Tower-= 25; else $hisdata->Tower-= 10; break;
 					case 285: $this->Attack(($mydata->Bricks + $mydata->Gems + $mydata->Recruits), $hisdata->Tower, $hisdata->Wall); $mydata->Bricks= 0; $mydata->Gems= 0; $mydata->Recruits= 0; break;
-					case 286: $hisdata->Tower-= (int)ceil($hisdata->Tower/2); break;
+					case 286: $hisdata->Tower-= (int)round($hisdata->Tower/2); break;
 					case 287: $mydata->Hand = $this->DrawHand_list(array(97, 95, 13, 42, 51, 20, 76, 68)); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $mydata->Bricks+= 10; $mydata->Gems+= 10; $mydata->Recruits+= 10; $nextcard = 0; break;
 					case 288: $hisdata->Bricks+= 10; $hisdata->Gems+= 10; $hisdata->Recruits+= 10; $hisdata->Hand[$mode] = 288; $hisdata->NewCards[$mode] = 1; break;
 					case 289: $mydata->Tower+= 3; $mydata->Wall+= 7; break;
 					case 290: $mydata->Tower+= 15; $mydata->Wall+= 30; break;
 					case 291: $mydata->Hand = array (1=> 367, 279, 7, 305, 193, 36, 322, 166); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $mydata->Recruits+= 35; $nextcard = 0; break;
-					case 292: $production_factor*= 2; $mydata->Hand = array (1=> 122, 122, 111, 111, 272, 272, 190, 136); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0; break;
+					case 292: $bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2; $mydata->Hand = array (1=> 122, 122, 111, 111, 272, 272, 190, 136); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0; break;
 					case 293: $hisdata->Bricks-= 1; $hisdata->Gems-= 1; $hisdata->Recruits-= 1; $hisdata->Tower-= 12; break;
 					case 294: $mydata->Hand = array (1=> 1, 238, 238, 149, 149, 19, 47, 276); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $mydata->Bricks+= 20; $nextcard = 0; break;
 					case 295: $mydata->Hand = array (1=> 2, 2, 18, 18, 191, 155, 228, 87); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $mydata->Bricks+= 40; $nextcard = 0; break;
@@ -693,7 +727,7 @@
 					case 301: if (($mydata->Tower < $mydata->Wall) and ($mydata->Tower < 45)) $mydata->Tower+= 15; else $mydata->Tower+= 6; break;
 					case 302: $tempnum = $this->KeywordCount($mydata->Hand, "Unliving"); $mydata->Bricks+= $tempnum; $mydata->Gems+= $tempnum; $mydata->Recruits+= $tempnum; break;
 					case 303: $tempnum = $this->KeywordCount($mydata->Hand, "Unliving"); $mydata->Tower+= $tempnum; $mydata->Wall+= $tempnum; break;
-					case 304: $this->Attack(20, $hisdata->Tower, $hisdata->Wall); if ($hisdata->Wall == 0) $hisdata->Tower-= 10; break;
+					case 304: $this->Attack(20, $hisdata->Tower, $hisdata->Wall); break;
 					case 305: $this->Attack(12, $hisdata->Tower, $hisdata->Wall); $tempnum = $this->KeywordCount($mydata->Hand, "Soldier"); if ($tempnum > 3) $hisdata->Dungeons-= 1; break;
 					case 306: $this->Attack(13, $hisdata->Tower, $hisdata->Wall); $tempnum = $this->KeywordCount($mydata->Hand, "Unliving"); if ($tempnum > 4) $hisdata->Quarry-= 1; break;
 					case 307: $rarities = array(); $upgrades = array("Common" => "Uncommon", "Uncommon" => "Rare"); $rare = true;
@@ -714,9 +748,9 @@
 					case 313: $nextcard = $this->DrawCard(array_merge($carddb->GetList("Uncommon", "Titan"), $carddb->GetList("Rare", "Titan")), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
 					case 314: $tmp = $this->KeywordCount($mydata->Hand, "Barbarian"); $hisdata->Tower-= 6*$tmp;  $hisdata->Wall-= 9*$tmp; break;
 					case 315: if (in_array(302, $mydata->Hand) and in_array(303, $mydata->Hand) and in_array(310, $mydata->Hand) and in_array(311, $mydata->Hand) and in_array(312, $mydata->Hand)) { $hisdata->Tower= 0; $hisdata->Wall= 0; } break;
-					case 316: $rarity = $carddb->GetCard($hisdata->Hand[$mode])->GetClass(); $hisdata->Hand[$mode] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, 0, 'DrawCard_random'); $mydata->Hand[$mode] = $this->DrawCard($carddb->GetList($rarity, "Undead"), $mydata->Hand, $cardpos, 'DrawCard_list'); if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1; $hisdata->NewCards[$mode] = 1; break;
-					case 317: $this->Attack(22, $hisdata->Tower, $hisdata->Wall); $tempnum = $this->KeywordCount($mydata->Hand, "Charge"); $tempnum = min(4, $tempnum); if ($hisdata->Wall == 0) $hisdata->Tower-= 7*$tempnum; break;
-					case 318: $this->Attack(10, $hisdata->Tower, $hisdata->Wall); if ($hisdata->Wall == 0) $hisdata->Tower-= 7; $mydata->Hand[$mode] = 318; if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1; break;
+					case 316: $rarity = $carddb->GetCard($hisdata->Hand[$mode])->GetClass(); $hisdata->Hand[$mode] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $mode, 'DrawCard_random'); $mydata->Hand[$mode] = $this->DrawCard($carddb->GetList($rarity, "Undead"), $mydata->Hand, $cardpos, 'DrawCard_list'); if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1; $hisdata->NewCards[$mode] = 1; break;
+					case 317: $this->Attack(22, $hisdata->Tower, $hisdata->Wall); break;
+					case 318: $this->Attack(10, $hisdata->Tower, $hisdata->Wall); $mydata->Hand[$mode] = 318; if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1; break;
 					case 319: $mydata->Gems-= 3; $hisdata->Wall-= 4; $hisdata->Tower-= 4; break;
 					case 320: if (($mydata->Tower < 10) && ($mydata->Wall == 0)) { $mydata->Tower= 25; $mydata->Wall= 15; } else { $mydata->Bricks+= 2; $mydata->Gems+= 2; $mydata->Recruits+= 2; } break;
 					case 321: $storage = array(); for ($i = 1; $i <= 8; $i++) if (($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Undead")) AND ($i != $mode)) $storage[$i] = $i; shuffle($storage); $tmp = 0; for ($i = 0; ($i < count($storage) AND ($i < 4)); $i++) { $mydata->Hand[$storage[$i]] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $mydata->NewCards[$storage[$i]] = 1; $tmp++; } $mydata->Wall+= $tmp*10;
@@ -724,11 +758,11 @@
 					case 322: $tempnum = min(4, $this->KeywordCount($mydata->Hand, "Soldier")); $this->Attack(8*$tempnum, $hisdata->Tower, $hisdata->Wall); if ($tempnum > 3) $mydata->Wall+= 15; break;
 					case 323: if ($mode == 1) { $hisdata->Hand = $this->DrawHand_list(array_merge($carddb->GetList("Common", "Beast"), $carddb->GetList("Uncommon", "Beast"))); $hisdata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); } elseif ($mode == 2) { $tempnum = $this->KeywordCount($mydata->Hand, "Beast"); $tempnum+= $this->KeywordCount($hisdata->Hand, "Beast"); $this->Attack(5*$tempnum, $hisdata->Tower, $hisdata->Wall);} break;
 					case 324: $tempnum = $this->KeywordCount($mydata->Hand, "Beast") + $this->KeywordCount($hisdata->Hand, "Beast"); if ($mode == 1) { $mydata->Bricks+= $tempnum; $mydata->Gems+= $tempnum; $mydata->Recruits+= $tempnum; } elseif ($mode == 2) $this->Attack(3*$tempnum, $hisdata->Tower, $hisdata->Wall); break;
-					case 325: $temp_array = array(); for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Undead")) $temp_array[$i] = $i; shuffle($temp_array); $tmp = 0; for ($i = 0; ($i < count($temp_array)) AND ($i < 4); $i++) { $hisdata->Hand[$temp_array[$i]] = 381; $hisdata->NewCards[$temp_array[$i]] = 1; $tmp++; } $hisdata->Tower-= $tmp*3; break;
-					case 326: for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Soldier")) { $mydata->Hand[$i] = $this->DrawCard(array(85, 90, 137), $mydata->Hand, $cardpos, 'DrawCard_list'); $mydata->NewCards[$i] = 1; } break;
+					case 325: $temp_array = array(); for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Undead")) $temp_array[$i] = $i; shuffle($temp_array); for ($i = 0; ($i < count($temp_array)) AND ($i < 4); $i++) { $hisdata->Hand[$temp_array[$i]] = 381; $hisdata->NewCards[$temp_array[$i]] = 1; } break;
+					case 326: for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Soldier")) { $mydata->Hand[$i] = $this->DrawCard(array_merge($carddb->GetList("Uncommon", "Holy"), $carddb->GetList("Rare", "Holy")), $mydata->Hand, $cardpos, 'DrawCard_list'); $mydata->NewCards[$i] = 1; } break;
 					case 327: $mydata->Tower+= 3; $mydata->Hand[$mode] = $this->DrawCard($carddb->GetList("", "Holy"), $mydata->Hand, $cardpos, 'DrawCard_list'); if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1; break;
 					case 328: $nextcard = $this->DrawCard($carddb->GetList("", "Barbarian"), $mydata->Hand, $cardpos, 'DrawCard_list'); $tempnum = $this->KeywordCount($mydata->Hand, "Barbarian"); if ($tempnum > 3) { $mydata->Bricks+= 3; $mydata->Gems+= 3; $mydata->Recruits+= 3; } break;
-					case 329: $mydata->Gems+= 6; $mydata->Wall+= 3; $production_factor = 0; $mydata->Hand[$mode] = 329; if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1; break;
+					case 329: $mydata->Gems+= 6; $mydata->Wall+= 3; $bricks_production = 0; $gems_production = 0; $recruits_production = 0; $mydata->Hand[$mode] = 329; if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1; break;
 					case 330: $tmp = 0; $temparray = array(); $j = 1;
 						if ($mydata->LastAction[$mylastcardindex] == 'discard') $temparray[0] = $mydata->LastCard[$mylastcardindex];
 						if (count($discarded_cards[0]) > 0) $temparray = array_merge($discarded_cards[0], $temparray);
@@ -747,7 +781,7 @@
 							if ($trans_array[$i] == $cardpos) $nextcard = 0;
 						}
 						$this->Attack(count($temparray)*10, $hisdata->Tower, $hisdata->Wall); break;
-					case 331: $tmp = $this->KeywordCount($mydata->Hand, "Holy"); $tmp = ceil($tmp/2); $mydata->Bricks+= $tmp; $mydata->Gems+= $tmp; $mydata->Recruits+= $tmp; $tmp = $this->KeywordCount($hisdata->Hand, "Holy"); $tmp = ceil($tmp/2); $hisdata->Bricks+= $tmp; $hisdata->Gems+= $tmp; $hisdata->Recruits+= $tmp; break;
+					case 331: $tmp = $this->KeywordCount($mydata->Hand, "Holy"); $tmp = min($tmp,4); $mydata->Bricks+= $tmp; $mydata->Gems+= $tmp; $mydata->Recruits+= $tmp; $tmp = $this->KeywordCount($hisdata->Hand, "Holy"); $tmp = min($tmp,4); $hisdata->Bricks+= $tmp; $hisdata->Gems+= $tmp; $hisdata->Recruits+= $tmp; break;
 					case 332: $tmp = $this->KeywordCount($mydata->Hand, "Undead"); $tmp = min($tmp,4); $mydata->Bricks-= $tmp; $mydata->Gems-= $tmp; $mydata->Recruits-= $tmp; $tmp = $this->KeywordCount($hisdata->Hand, "Undead"); $tmp = min($tmp,4); $hisdata->Bricks-= $tmp; $hisdata->Gems-= $tmp; $hisdata->Recruits-= $tmp; break;
 					case 333: $tmp = $this->KeywordCount($mydata->Hand, "Undead"); $tmp = max(5 - $tmp,0); $this->Attack($tmp*4, $mydata->Tower, $mydata->Wall); $tmp = $this->KeywordCount($hisdata->Hand, "Undead"); $tmp = max(5 - $tmp,0); $this->Attack($tmp*4, $hisdata->Tower, $hisdata->Wall); break;
 					case 334: if (($carddb->GetCard($mydata->LastCard[$mylastcardindex])->HasKeyword("Barbarian")) and ($mydata->LastAction[$mylastcardindex] == 'play')) $hisdata->Wall-= 7; $this->Attack(7, $hisdata->Tower, $hisdata->Wall); break;
@@ -768,19 +802,10 @@
 							  else $nextcard = $this->DrawCard($carddb->GetList("", "Burning"), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
 					case 337: if (($carddb->GetCard($mydata->LastCard[$mylastcardindex])->HasKeyword("Barbarian")) and ($mydata->LastAction[$mylastcardindex] == 'play')) $hisdata->Wall-= 17; $this->Attack(20, $hisdata->Tower, $hisdata->Wall); break;
 					case 338: if (($carddb->GetCard($mydata->LastCard[$mylastcardindex])->HasKeyword("Mage")) and ($mydata->LastAction[$mylastcardindex] == 'play')) $mydata->Gems+= $mydata->Magic * 3; $this->Attack(26, $hisdata->Tower, $hisdata->Wall); break;
-					case 339: $tmp = min(20, max(5, $hisdata->Bricks - $mydata->Bricks)); $mydata->Bricks+= $tmp; $hisdata->Bricks-= $tmp; $tmp = min(20, max(5, $hisdata->Gems - $mydata->Gems)); $mydata->Gems+= $tmp; $hisdata->Gems-= $tmp; $tmp = min(20, max(5, $hisdata->Recruits - $mydata->Recruits)); $mydata->Recruits+= $tmp; $hisdata->Recruits-= $tmp; break;
+					case 339: if (!isset($mynewflags[$cardpos])) { $tmp = min(15, max(5, $hisdata->Bricks - $mydata->Bricks)); $mydata->Bricks+= $tmp; $hisdata->Bricks-= $tmp; $tmp = min(15, max(5, $hisdata->Gems - $mydata->Gems)); $mydata->Gems+= $tmp; $hisdata->Gems-= $tmp; $tmp = min(15, max(5, $hisdata->Recruits - $mydata->Recruits)); $mydata->Recruits+= $tmp; $hisdata->Recruits-= $tmp; } break;
 					case 340: if ($mydata->Tower < $hisdata->Tower) $this->Attack(12, $hisdata->Tower, $hisdata->Wall); else $this->Attack(6, $hisdata->Tower, $hisdata->Wall); break;
 					case 341: $tmp = $this->KeyWordCount($mydata->Hand, "Barbarian") + $this->KeyWordCount($mydata->Hand, "Holy"); $this->Attack(10 + 3*$tmp, $hisdata->Tower, $hisdata->Wall); break;
-					case 342: $mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $nextcard = 0; $tmp = mt_rand(1, 8); $mydata->Hand[$tmp] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $mydata->NewCards[$tmp] = 1;
-								$i = 1;
-								for ($j = 1; $j <= 3; $j++)
-									{
-										while (($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Holy")) and ($i <= 8)) $i++;
-										if ($i > 8) break;//no "free" slots in hand
-										$mydata->Hand[$i] = 340;
-										$mydata->NewCards[$i] = 1;
-									}
-								break;
+					case 342: $mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $nextcard = 0; $tmp = mt_rand(1, 8); $mydata->Hand[$tmp] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $mydata->NewCards[$tmp] = 1; $temp_array = array(); for ($i = 1; $i <= 8; $i++) if (!$carddb->GetCard($mydata->Hand[$i])->HasKeyword("Holy")) $temp_array[$i] = $i; shuffle($temp_array); for ($i = 0; ($i < count($temp_array)) AND ($i < 3); $i++) { $mydata->Hand[$temp_array[$i]] = 340; $mydata->NewCards[$temp_array[$i]] = 1; } break;
 					case 343: for ($i = 1; $i <= 8; $i++) if ($mydata->Hand[$i] == 340) { $mydata->Hand[$i] = 341; $mydata->NewCards[$i] = 1; }  elseif ($mydata->Hand[$i] == 341) { $mydata->Hand[$i] = 31; $mydata->NewCards[$i] = 1; } break;
 					case 344: $mydata->Wall+= 15; if (($carddb->GetCard($mydata->LastCard[$mylastcardindex])->HasKeyword("Barbarian")) and ($mydata->LastAction[$mylastcardindex] == 'play')) $this->Attack($carddb->GetCard($mydata->LastCard[$mylastcardindex])->GetResources("Recruits"), $hisdata->Tower, $hisdata->Wall); break;
 					case 345: $tmp = $this->KeyWordCount($mydata->Hand, "Barbarian"); $hisdata->Wall-= $tmp * 10; $this->Attack(40, $hisdata->Tower, $hisdata->Wall); break;
@@ -796,9 +821,9 @@
 								$mydata->Bricks-= $j * 2; $mydata->Gems-= $j * 2; $mydata->Recruits-= $j * 2;
 								break;
 					case 348: $found = false; for ($i = 1; $i <= $hislastcardindex; $i++) if ($carddb->GetCard($hisdata->LastCard[$i])->HasKeyword("Swift")) { $found = true; break; } if ($found) { $hisdata->Bricks-= 12; $hisdata->Gems-= 12; $hisdata->Recruits-= 12; } else { $hisdata->Bricks-= 3; $hisdata->Gems-= 3; $hisdata->Recruits-= 3; } break;
-					case 349: if ($carddb->GetCard($mydata->LastCard[$mylastcardindex])->HasKeyword("Unliving")) { $tmp = $carddb->GetCard($mydata->LastCard[$mylastcardindex])->GetResources("Bricks"); $mydata->Tower+= ceil($tmp / 3); $mydata->Wall+= ceil($tmp / 2); } break;
-					case 350: if (($carddb->GetCard($mydata->LastCard[$mylastcardindex])->HasKeyword("Undead")) and ($mydata->LastAction[$mylastcardindex] == 'play')) { $tmp = $carddb->GetCard($mydata->LastCard[$mylastcardindex])->GetResources(""); $this->Attack(ceil($tmp / 2), $hisdata->Tower, $hisdata->Wall); $mydata->Tower+= ceil($tmp / 3); $mydata->Wall+= ceil($tmp / 2); } break;
-					case 351: $nextcard = $this->DrawCard(array(351, 159), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
+					case 349: if ($carddb->GetCard($mydata->LastCard[$mylastcardindex])->HasKeyword("Unliving")) { $tmp = $carddb->GetCard($mydata->LastCard[$mylastcardindex])->GetResources("Bricks"); $mydata->Tower+= round($tmp / 3); $mydata->Wall+= round($tmp / 2); } break;
+					case 350: if (($carddb->GetCard($mydata->LastCard[$mylastcardindex])->HasKeyword("Undead")) and ($mydata->LastAction[$mylastcardindex] == 'play')) { $tmp = $carddb->GetCard($mydata->LastCard[$mylastcardindex])->GetResources(""); $this->Attack(round($tmp / 2), $hisdata->Tower, $hisdata->Wall); $mydata->Tower+= round($tmp / 3); $mydata->Wall+= round($tmp / 2); } break;
+					case 351: $nextcard = (isset($mynewflags[$cardpos])) ? 159 : 351; break;
 					case 352: if ($mydata->Magic > $hisdata->Magic) $this->Attack(34, $hisdata->Tower, $hisdata->Wall); else $this->Attack(15, $hisdata->Tower, $hisdata->Wall); break;
 					case 353: $mydata->Magic-= 1; if ($mode == 1) $mydata->Quarry+= 1; elseif ($mode == 2) $mydata->Dungeons+= 1; break;
 					case 354: $mydata->Tower+= 9; $mydata->Wall+= 15; if ($this->KeywordCount($mydata->Hand, "Legend") > 0) $mydata->Magic+= 1; break;
@@ -824,7 +849,7 @@
 					case 356: $hisdata->Gems-= 3;  $hisdata->Recruits-= 2; break;
 					case 357: $this->Attack(3, $hisdata->Tower, $hisdata->Wall); $hisdata->Gems-= 1;  $hisdata->Recruits-= 3; break;
 					case 358: $hisdata->Tower-= 16; $hisdata->Wall-= 19; break;
-					case 359: if (($carddb->GetCard($hisdata->LastCard[$hislastcardindex])->HasKeyword("Charge")) and ($hisdata->LastAction[$hislastcardindex] == 'play')) $mydata->Wall+= 18; else $mydata->Wall+= 10; break;
+					case 359: $found = false; for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Charge")) { $found = true; break; } $mydata->Wall+= ($found) ? 18 : 10; break;
 					case 360: $mydata->Bricks-= 2; $mydata->Gems-= 2; $mydata->Recruits-= 2; break;
 					case 361: $this->Attack(7, $hisdata->Tower, $hisdata->Wall); if (($carddb->GetCard($mydata->LastCard[$mylastcardindex])->HasKeyword("Mage")) and ($mydata->LastAction[$mylastcardindex] == 'play')) { $hisdata->Bricks-= 3; $hisdata->Gems-= 3; $hisdata->Recruits-= 3; }break;
 					case 362: $mydata->Wall+= 5; $hisdata->Wall-= 5; $this->Attack(5, $hisdata->Tower, $hisdata->Wall); break;
@@ -841,7 +866,7 @@
 								$min_array = array();
 								foreach ($storage as $c_pos => $c_cost) if ($c_cost == $min) $min_array[$c_pos] = $min;
 								$discarded_pos = array_rand($min_array);
-								$mydata->Hand[$discarded_pos] = $this->DrawCard($mydata->Deck, $mydata->Hand, 0, 'DrawCard_random');
+								$mydata->Hand[$discarded_pos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $discarded_pos, 'DrawCard_random');
 								$mydata->NewCards[$discarded_pos] = 1;
 								$mydata->Bricks+= 3; $mydata->Gems+= 3; $mydata->Recruits+= 3;
 							}
@@ -853,7 +878,7 @@
 							for ($i = 1; $i <= 8; $i++)
 								if ($mydata->NewCards[$i] == 1)
 								{
-									$mydata->Hand[$i] = $this->DrawCard($mydata->Deck, $mydata->Hand, 0, 'DrawCard_random');
+									$mydata->Hand[$i] = $this->DrawCard($mydata->Deck, $mydata->Hand, $i, 'DrawCard_random');
 									if ($i == $cardpos) $nextcard = 0;
 									$tmp++;
 								}
@@ -864,7 +889,7 @@
 							for ($i = 1; $i <= 8; $i++)
 								if ($hisdata->NewCards[$i] == 1)
 								{
-									$hisdata->Hand[$i] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, 0, 'DrawCard_random');
+									$hisdata->Hand[$i] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $i, 'DrawCard_random');
 									if ($i == $cardpos) $nextcard = 0;
 									$tmp++;
 								}
@@ -877,14 +902,14 @@
 					case 370: $this->Attack(27, $hisdata->Tower, $hisdata->Wall); $d_found = $s_found = false; for ($i = 1; $i <= 8; $i++) if ($i != $cardpos) { if ((!$d_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Dragon"))) $d_found = true; if ((!$s_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Soldier"))) $s_found = true; } if ($d_found AND $s_found) $hisdata->Tower-= 14; break;
 					case 371: $this->Attack(35, $hisdata->Tower, $hisdata->Wall); $l_found = $m_found = false; for ($i = 1; $i <= 8; $i++) if ($i != $cardpos) { if ((!$l_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Legend"))) $l_found = true; if ((!$m_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Mage"))) $m_found = true; } if ($l_found AND $m_found) { $mydata->Magic+= 1; $mydata->Gems+= 20; } break;
 					case 372: $tmp = 0; for ($i = 1; $i <= 8; $i++) if (($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Undead")) AND ($i != $mode) AND ($i != $cardpos)) { $mydata->Hand[$i] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $mydata->NewCards[$i] = 1; $tmp++; } $this->Attack($tmp*9, $hisdata->Tower, $hisdata->Wall); break;
-					case 373: $tmp = $this->KeywordCount($mydata->Hand, "Unliving"); if ($tmp > 3) { $mydata->Bricks+= min(ceil($carddb->GetCard($hisdata->Hand[$mode])->GetResources("Bricks") / 2),20); $mydata->Gems+= min(ceil($carddb->GetCard($hisdata->Hand[$mode])->GetResources("Gems") / 2),20); $mydata->Recruits+= min(ceil($carddb->GetCard($hisdata->Hand[$mode])->GetResources("Recruits") / 2),20); } $hisdata->Hand[$mode] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, 0, 'DrawCard_random'); $hisdata->NewCards[$mode] = 1; break;
+					case 373: $tmp = $this->KeywordCount($mydata->Hand, "Unliving"); if ($tmp > 3) { $mydata->Bricks+= min(round($carddb->GetCard($hisdata->Hand[$mode])->GetResources("Bricks") / 2),20); $mydata->Gems+= min(round($carddb->GetCard($hisdata->Hand[$mode])->GetResources("Gems") / 2),20); $mydata->Recruits+= min(round($carddb->GetCard($hisdata->Hand[$mode])->GetResources("Recruits") / 2),20); } $hisdata->Hand[$mode] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $mode, 'DrawCard_random'); $hisdata->NewCards[$mode] = 1; break;
 					case 374: $hisdata->Tower-= 11; if (($carddb->GetCard($mydata->LastCard[$mylastcardindex])->HasKeyword("Mage")) and ($mydata->LastAction[$mylastcardindex] == 'play')) { $hisdata->Bricks-= 5; $hisdata->Gems-= 5; $hisdata->Recruits-= 5; } break;
-					case 375: $mydata->Tower+= 7; $mydata->Wall+= 11; $production_factor*= 3; break;
+					case 375: $mydata->Tower+= 7; $mydata->Wall+= 11; $bricks_production*= 3; $gems_production*= 3; $recruits_production*= 3; break;
 					case 376: $b_found = $s_found = false; for ($i = 1; $i <= 8; $i++) if ($i != $cardpos) { if ((!$b_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Beast"))) $b_found = true; if ((!$s_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Soldier"))) $s_found = true; } $this->Attack(19 + (($b_found) ? 15 : 0) + (($s_found) ? 15 : 0), $hisdata->Tower, $hisdata->Wall); break;
 					case 377: $tmp = $this->KeywordCount($mydata->Hand, "Alliance"); $this->Attack(20 + $tmp * 5, $hisdata->Tower, $hisdata->Wall); $mydata->Wall+= $tmp * 4; $mydata->Tower+= $tmp * 3; $mydata->Bricks+= $tmp; $mydata->Gems+= $tmp; $mydata->Recruits+= $tmp; break;
 					case 378: $bonus = false; $temp_array = array(203, 307, 316); if (in_array($mydata->LastCard[$mylastcardindex], $temp_array) and ($mydata->LastAction[$mylastcardindex] == 'play')) $bonus = true; $this->Attack(56 + (($bonus) ? 36 : 0), $hisdata->Tower, $hisdata->Wall); break;
 					case 379: $mydata->Tower = 50; $mydata->Wall = 70; $mydata->Bricks+= 10; $mydata->Gems+= 10; $mydata->Recruits+= 10; break;
-					case 380: $temp_array = array("Tower", "Wall", "Quarry", "Magic", "Dungeons", "Bricks", "Gems", "Recruits"); foreach($temp_array as $attribute) $mydata->$attribute = $hisdata->$attribute = ceil(($mydata->$attribute + $hisdata->$attribute) / 2); break;
+					case 380: if (!isset($mynewflags[$cardpos])) { $temp_array = array("Tower", "Wall", "Quarry", "Magic", "Dungeons", "Bricks", "Gems", "Recruits"); foreach($temp_array as $attribute) $mydata->$attribute = $hisdata->$attribute = round(($mydata->$attribute + $hisdata->$attribute) / 2); } break;
 					case 381: $found = false; for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Holy")) { $found = true; break; } if ($found) $mydata->Gems+= 1; break;
 					case 382:
 							$storage = array(); $j = 0;
@@ -897,37 +922,49 @@
 							if ($j > 0)
 							{
 								$discarded_pos = $storage[array_rand($storage)];
-								$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, 0, 'DrawCard_random');
+								$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_random');
 								$hisdata->NewCards[$discarded_pos] = 1;
 								$mydata->Bricks+= 3; $mydata->Gems+= 3; $mydata->Recruits+= 3;
+								$hisdata->Bricks-= 3; $hisdata->Gems-= 3; $hisdata->Recruits-= 3;
 							}
 							break;
 					case 383: $mydata->Hand = array (1=> 410, 27, 85, 90, 175, 341, 137, 44); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0; break;
 					case 384: if ($mode == 1) $nextcard = 227; elseif ($mode == 2) $nextcard = 226; elseif ($mode == 3) $nextcard = 225; break;
 					case 385: if ($mode == 1) $hisdata->Recruits-= 15; elseif ($mode == 2) $hisdata->Tower-= 10; break;
 					case 386: for ($i = 1; $i <= 8; $i++) if (($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Soldier")) OR ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Barbarian")) OR ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Brigand"))) { $mydata->Hand[$i] = $this->DrawCard(array(23, 273, 297), $mydata->Hand, $cardpos, 'DrawCard_list'); $mydata->NewCards[$i] = 1; } for ($i = 1; $i <= 8; $i++) if (($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Soldier")) OR ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Barbarian")) OR ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Brigand"))) { $hisdata->Hand[$i] = $this->DrawCard(array(23, 273, 297), $hisdata->Hand, $cardpos, 'DrawCard_list'); $hisdata->NewCards[$i] = 1; } break;
-					case 387: $storage = array(); $min = 1000;
+					case 387: $storage = array();
 							for ($i = 1; $i <= 8; $i++)
-								if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Unliving"))
-								{
-									$storage[$i] = $carddb->GetCard($hisdata->Hand[$i])->GetResources("Bricks");
-									$min = min($storage[$i], $min);									
-								}
+							{
+								$cur_card = $carddb->GetCard($mydata->Hand[$i]);
+								if (($cur_card->HasKeyword("Unliving")) AND ($cur_card->GetClass() != 'Rare')) $storage[] = $i;
+							}
 							if (count($storage) > 0)
 							{
-								$min_array = array();
-								foreach ($storage as $c_pos => $c_cost) if ($c_cost == $min) $min_array[$c_pos] = $min;
-								$discarded_pos = array_rand($min_array);
-								$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, 0, 'DrawCard_random');
+								$discarded_pos = $storage[array_rand($storage)];
+								if ($carddb->GetCard($mydata->Hand[$discarded_pos])->GetClass() == 'Uncommon') $mydata->Quarry-= 1;
+								$mydata->Hand[$discarded_pos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $discarded_pos, 'DrawCard_random');
+								$mydata->NewCards[$discarded_pos] = 1;
+							}
+							
+							$storage = array();
+							for ($i = 1; $i <= 8; $i++)
+							{
+								$cur_card = $carddb->GetCard($hisdata->Hand[$i]);
+								if (($cur_card->HasKeyword("Unliving")) AND ($cur_card->GetClass() != 'Rare')) $storage[] = $i;
+							}
+							if (count($storage) > 0)
+							{
+								$discarded_pos = $storage[array_rand($storage)];
+								if ($carddb->GetCard($hisdata->Hand[$discarded_pos])->GetClass() == 'Uncommon') $hisdata->Quarry-= 1;
+								$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_random');
 								$hisdata->NewCards[$discarded_pos] = 1;
-								$hisdata->Bricks-= $storage[$discarded_pos];
 							}
 							break;
-					case 388: $my_res = $mydata->Bricks + $mydata->Gems + $mydata->Recruits; $his_res = $hisdata->Bricks + $hisdata->Gems + $hisdata->Recruits; if (($my_res) >= ($his_res)) { $mydata->Bricks+= ceil($mydata->Bricks * 0.25); $mydata->Gems+= ceil($mydata->Gems * 0.25); $mydata->Recruits+= ceil($mydata->Recruits * 0.25); } if (($my_res) <= ($his_res)) { $hisdata->Bricks+= ceil($hisdata->Bricks * 0.25); $hisdata->Gems+= ceil($hisdata->Gems * 0.25); $hisdata->Recruits+= ceil($hisdata->Recruits * 0.25); } break;
-					case 389: $mydata->Tower+= 4; $mydata->Bricks+= ceil($mydata->Bricks * 0.25); $mydata->Gems+= ceil($mydata->Gems * 0.25); $mydata->Recruits+= ceil($mydata->Recruits * 0.25); break;
+					case 388: $my_res = $mydata->Bricks + $mydata->Gems + $mydata->Recruits; $his_res = $hisdata->Bricks + $hisdata->Gems + $hisdata->Recruits; if (($my_res) >= ($his_res)) { $mydata->Bricks+= round($mydata->Bricks * 0.25); $mydata->Gems+= round($mydata->Gems * 0.25); $mydata->Recruits+= round($mydata->Recruits * 0.25); } if (($my_res) <= ($his_res)) { $hisdata->Bricks+= round($hisdata->Bricks * 0.25); $hisdata->Gems+= round($hisdata->Gems * 0.25); $hisdata->Recruits+= round($hisdata->Recruits * 0.25); } break;
+					case 389: $mydata->Tower+= 4; $mydata->Bricks+= round($mydata->Bricks * 0.25); $mydata->Gems+= round($mydata->Gems * 0.25); $mydata->Recruits+= round($mydata->Recruits * 0.25); break;
 					case 390: if (!($carddb->GetCard($mydata->LastCard[$mylastcardindex])->IsPlayAgainCard() and $mydata->LastAction[$mylastcardindex] == 'play')) { $hisdata->Tower-= $hischanges['Tower']; $hisdata->Wall-= $hischanges['Wall']; $hisdata->Quarry-= $hischanges['Quarry']; $hisdata->Magic-= $hischanges['Magic']; $hisdata->Dungeons-= $hischanges['Dungeons']; $hisdata->Bricks-= $hischanges['Bricks']; $hisdata->Gems-= $hischanges['Gems']; $hisdata->Recruits-= $hischanges['Recruits']; } break;
 					case 391: $mydata->Tower-= 10; $mydata->Wall+= 20; break;
-					case 392: $nextcard = $this->DrawCard(array(392, 313), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
+					case 392: $nextcard = 313; break;
 					case 393: $this->Attack(5, $hisdata->Tower, $hisdata->Wall); $mydata->Hand[$mode] = $this->DrawCard(array_merge($carddb->GetList("", "Restoration"), $carddb->GetList("", "Nature")), $mydata->Hand, $cardpos, 'DrawCard_list'); if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1; break;
 					case 394: $this->Attack(7, $hisdata->Tower, $hisdata->Wall); $mydata->Hand[$mode] = $this->DrawCard($carddb->GetList("", "Alliance"), $mydata->Hand, $cardpos, 'DrawCard_list'); if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1; break;
 					case 395: if ($mydata->Wall > 7) { $mydata->Wall-= 7; $mydata->Tower+= 13; } else $mydata->Wall+= 7; break;
@@ -944,20 +981,20 @@
 							if ($j > 0)
 							{
 								$discarded_pos = $storage[array_rand($storage)];
-								$mydata->Hand[$discarded_pos] = $this->DrawCard($mydata->Deck, $mydata->Hand, 0, 'DrawCard_random');
+								$mydata->Hand[$discarded_pos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $discarded_pos, 'DrawCard_random');
 								$mydata->NewCards[$discarded_pos] = 1;
 								$mydata->Gems+= 30;
 							}
 							break;
 					case 399: $mydata->Tower+= 2; $mydata->Wall+= 3; $nextcard = $this->DrawCard(array_merge($carddb->GetList("Common", "Mage"), $carddb->GetList("Uncommon", "Mage")), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
 					case 400: if ($mode != $cardpos) $nextcard = $mydata->Hand[$mode]; break;
-					case 401: $tmp = ceil($mydata->Bricks / 5); $mydata->Tower+= $tmp; $mydata->Wall+= $tmp; $tmp = ceil($mydata->Gems / 5); $hisdata->Bricks-= $tmp; $hisdata->Gems-= $tmp; $hisdata->Recruits-= $tmp; break;
-					case 402: $tmp = $hisdata->LastCard[$hislastcardindex]; $mydata->Bricks+= min(floor($carddb->GetCard($tmp)->GetResources("Bricks") / 4), 3); $mydata->Gems+= min(floor($carddb->GetCard($tmp)->GetResources("Gems") / 4), 3); $mydata->Recruits+= min(floor($carddb->GetCard($tmp)->GetResources("Recruits") / 4), 3); break;
+					case 401: $tmp = round($mydata->Bricks / 5); $mydata->Tower+= $tmp; $mydata->Wall+= $tmp; $tmp = round($mydata->Gems / 5); $hisdata->Bricks-= $tmp; $hisdata->Gems-= $tmp; $hisdata->Recruits-= $tmp; break;
+					case 402: $tmp_card = $carddb->GetCard($hisdata->LastCard[$hislastcardindex]); $mydata->Bricks+= min(round($tmp_card->GetResources("Bricks") / 3), 4); $mydata->Gems+= min(round($tmp_card->GetResources("Gems") / 3), 4); $mydata->Recruits+= min(round($tmp_card->GetResources("Recruits") / 3), 4); break;
 					case 403: $mydata->Hand = array (1=> 13, 13, 240, 240, 368, 46, 106, 89); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0; $mydata->Dungeons+= 2; break;
 					case 404: $this->Attack(20, $hisdata->Tower, $hisdata->Wall); $hisdata->Tower-= 15; $nextcard = 374; break;
 					case 405: $tmp = $this->KeywordCount($mydata->Hand, "Alliance"); $mydata->Wall+= $tmp * 5; $mydata->Recruits+= $tmp * 3; break;
-					case 406: $this->Attack(35, $hisdata->Tower, $hisdata->Wall); $b_found = $s_found = false; for ($i = 1; $i <= 8; $i++) if ($i != $cardpos) { if ((!$b_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Beast"))) $b_found = true; if ((!$s_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Soldier"))) $s_found = true; } if ($b_found AND $s_found) $hisdata->Tower-= 26; break;
-					case 407: $mydata->Tower+= 14; $mydata->Wall = max(($mydata->Wall * 2), 44); $tmp = $this->KeywordCount($mydata->Hand, "Alliance"); $mydata->Bricks+= $tmp; $mydata->Gems+= $tmp; $mydata->Recruits+= $tmp; break;
+					case 406: $b_found = $s_found = false; for ($i = 1; $i <= 8; $i++) if ($i != $cardpos) { if ((!$b_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Beast"))) $b_found = true; if ((!$s_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Soldier"))) $s_found = true; } if ($b_found AND $s_found) $hisdata->Wall = 0; $this->Attack(35, $hisdata->Tower, $hisdata->Wall); break;
+					case 407: $mydata->Tower = 40; $tmp = $this->KeywordCount($mydata->Hand, "Alliance"); if ($tmp > 4) { $mydata->Wall = 150; } else $mydata->Wall+= 50; break;
 					case 408: $this->Attack(13, $hisdata->Tower, $hisdata->Wall);
 							$storage = array(); $j = 0;
 							for ($i = 1; $i <= 8; $i++)
@@ -969,7 +1006,7 @@
 							if ($j > 0)
 							{
 								$discarded_pos = $storage[array_rand($storage)];
-								$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, 0, 'DrawCard_random');
+								$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_random');
 								$hisdata->NewCards[$discarded_pos] = 1;
 								$hisdata->Magic-= 1;
 							}
@@ -985,17 +1022,183 @@
 							if ($j > 0)
 							{
 								$discarded_pos = $storage[array_rand($storage)];
-								$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, 0, 'DrawCard_random');
+								$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_random');
 								$hisdata->NewCards[$discarded_pos] = 1;
 								$nextcard = 131;
 							}
 							break;
 					case 410: $found = false; for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Holy")) { $found = true; break; } if (!$found) { $mydata->Bricks+= 1; $mydata->Gems+= 1; $mydata->Recruits+= 1; $hisdata->Bricks-= 1; $hisdata->Gems-= 1; $hisdata->Recruits-= 1; } else $hisdata->Tower-= 1; break;
 					case 411: $this->Attack(5, $hisdata->Tower, $hisdata->Wall); if (($carddb->GetCard($mydata->LastCard[$mylastcardindex])->HasKeyword("Beast")) and ($mydata->LastAction[$mylastcardindex] == 'play')) $mydata->Recruits+= 3; break;
+					case 412: if (isset($mynewflags[$cardpos])) $hisdata->Wall-= 5; else { $mydata->Bricks+= 4; $mydata->Gems+= 4; $mydata->Recruits+= 4; $hisdata->Bricks-= 4; $hisdata->Gems-= 4; $hisdata->Recruits-= 4; } break;
+					case 413: if ($mydata->Recruits < 8) $mydata->Recruits = ($mydata->Recruits * 2); else $mydata->Recruits+= 5; break;
+					case 414: $dis_card = $carddb->GetCard($hisdata->Hand[$mode]); $hisdata->Hand[$mode] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $mode, 'DrawCard_random'); $hisdata->NewCards[$mode] = 1; $resources = array('Quarry' => 'Bricks', 'Magic' => 'Gems', 'Dungeons' => 'Recruits'); foreach ($resources as $facility => $resource) { $mydata->$resource-= $dis_card->GetResources($resource); if ($mydata->$resource < 0) $mydata->$facility-= 1; } break;
+					case 415: $this->Attack(4, $hisdata->Tower, $hisdata->Wall);
+							$storage = array();
+							for ($i = 1; $i <= 8; $i++)
+							{
+								$current_card = $carddb->GetCard($hisdata->Hand[$i]);
+								if (($current_card->HasKeyword("Alliance")) AND ($current_card->GetClass() != 'Rare')) $storage[] = $i;
+							}
+							
+							if (count($storage) > 0)
+							{
+								$selected_pos = $storage[array_rand($storage)];
+								$hisdata->Hand[$selected_pos] = 415;
+								$hisdata->NewCards[$selected_pos] = 1;
+							} break;
+					case 416: if (isset($mynewflags[$cardpos])) $hisdata->Tower-= 6; else $this->Attack(6, $hisdata->Tower, $hisdata->Wall); break;
+					case 417: if (isset($mynewflags[$cardpos])) { $mydata->Tower+= 10; $mydata->Bricks+= 3; } else $mydata->Tower+= 7; break;
+					case 418: $mydata->Tower-= 8; if (isset($mynewflags[$cardpos])) $mydata->Magic+= 1; else $mydata->Gems+= 12; break;
+					case 419: $my_temp = $his_temp = array();
+							for ($i = 1; $i <= 8; $i++)
+							{
+								if ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Unliving")) $my_temp[$i] = $i;
+								if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Unliving")) $his_temp[$i] = $i;
+							}
+							shuffle($my_temp); shuffle($his_temp);
+							if (count($my_temp) > 0)
+							{
+								for ($i = 0; ($i < count($my_temp)) AND ($i < 6); $i++)
+								{
+									$mydata->Hand[$my_temp[$i]] = $this->DrawCard($mydata->Deck, $mydata->Hand, $my_temp[$i], 'DrawCard_random');
+									$mydata->NewCards[$my_temp[$i]] = 1;
+								}
+								$amount = max(($i - 4), 0); $mydata->Bricks-= $amount * 10; $mydata->Quarry-= $amount;
+							}
+							if (count($his_temp) > 0)
+							{
+								for ($j = 0; ($j < count($his_temp)) AND ($j < 6); $j++)
+								{
+									$hisdata->Hand[$his_temp[$j]] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $his_temp[$j], 'DrawCard_random');
+									$hisdata->NewCards[$his_temp[$j]] = 1;
+								}
+								$amount = max(($j - 4), 0); $hisdata->Bricks-= $amount * 10; $hisdata->Quarry-= $amount;
+							} break;
+					case 420: if (($mydata->Wall % 10) == 0) {$mydata->Wall+= 9; $mydata->Gems+= 4; } else $mydata->Wall+= 4; break;
+					case 421: $maximum = max($hisdata->Quarry, $hisdata->Magic, $hisdata->Dungeons);
+						$facilities = array('Quarry' => 'Bricks', 'Magic' => 'Gems', 'Dungeons' => 'Recruits'); $temp = array();
+						foreach ($facilities as $facility => $resource) if ($hisdata->$facility == $maximum) $temp[] = $facility;
+						$chosen_facility = $temp[array_rand($temp)];
+						$mydata->$facilities[$chosen_facility]+= $hisdata->$chosen_facility;
+							  break;
+					case 422: $mydata->Bricks-= 3; $mydata->Gems-= 3; $mydata->Recruits-= 3; $nextcard = $this->DrawCard(array(15, 80, 422), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
+					case 423: $nextcard = $this->DrawCard($carddb->GetList("", "Brigand"), $mydata->Hand, $cardpos, 'DrawCard_list'); if ($this->KeywordCount($mydata->Hand, "Undead") > 0) { $mydata->Bricks+= 2; $mydata->Gems+= 2; $mydata->Recruits+= 2; $hisdata->Bricks-= 2; $hisdata->Gems-= 2; $hisdata->Recruits-= 2; } break;
+					case 424: $this->Attack(11, $hisdata->Tower, $hisdata->Wall);
+							$resources = array('Quarry' => 'Bricks', 'Magic' => 'Gems', 'Dungeons' => 'Recruits');
+							foreach ($resources as $facility => $resource)
+							{
+								$mydata->$resource+= $hisdata->$facility;
+								$hisdata->$resource-= $hisdata->$facility;
+							}
+							$nextcard = $this->DrawCard(array_merge($carddb->GetList("Uncommon", "Brigand"), $carddb->GetList("Rare", "Brigand")), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
+					case 425: $my_counter = $his_counter = 0;
+							for ($i = 1; $i <= 8; $i++)
+							{
+								if (($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Mage")) AND ($i != $cardpos))
+								{
+									$mydata->Hand[$i] = $this->DrawCard($mydata->Deck, $mydata->Hand, $i, 'DrawCard_random');
+									$mydata->NewCards[$i] = 1;
+									$my_counter++;
+								}
+								if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Mage"))
+								{
+									$hisdata->Hand[$i] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $i, 'DrawCard_random');
+									$hisdata->NewCards[$i] = 1;
+									$his_counter++;
+								}
+							}
+							$mydata->Tower+= $my_counter * 5; $mydata->Wall+= $my_counter * 10; $mydata->Gems+= $my_counter * 5;
+							$hisdata->Tower+= $his_counter * 5; $hisdata->Wall+= $his_counter * 10; $hisdata->Gems+= $his_counter * 5;
+							break;
+					case 426: $this->Attack(15, $hisdata->Tower, $hisdata->Wall); break;
+					case 427: $recruits_production*= 10; break;
+					case 428: $this->Attack(150, $hisdata->Tower, $hisdata->Wall); $mydata->Gems+= 20; break;
+					case 429: $my_count = $this->KeywordCount($mydata->Hand, "Alliance") + $this->KeywordCount($mydata->Hand, "Legend") + $this->KeywordCount($mydata->Hand, "Mage"); $his_count = $this->KeywordCount($hisdata->Hand, "Alliance") + $this->KeywordCount($hisdata->Hand, "Legend") + $this->KeywordCount($hisdata->Hand, "Mage");
+							if ($my_count >= $his_count)
+							{
+								$min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
+								$facilities = array('Quarry', 'Magic', 'Dungeons'); $temp = array();
+								foreach ($facilities as $facility) if ($mydata->$facility == $min) $temp[] = $facility;
+								$chosen_facility = $temp[array_rand($temp)];
+								$mydata->$chosen_facility+= 1;
+							}
+							if ($my_count <= $his_count)
+							{
+								$min = min($hisdata->Quarry, $hisdata->Magic, $hisdata->Dungeons);
+								$facilities = array('Quarry', 'Magic', 'Dungeons'); $temp = array();
+								foreach ($facilities as $facility) if ($hisdata->$facility == $min) $temp[] = $facility;
+								$chosen_facility = $temp[array_rand($temp)];
+								$hisdata->$chosen_facility+= 1;
+							} break;
+					case 430: $nextcard = $this->DrawCard(array_diff($carddb->GetList("Uncommon"), $mydata->Deck->Uncommon), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
+					case 431: $my_count = $this->KeywordCount($mydata->Hand, "Holy"); $his_count = $this->KeywordCount($hisdata->Hand, "Holy"); if ($my_count >= $his_count) { $mydata->Tower+= 10; $mydata->Wall+= 20; } if ($my_count <= $his_count) { $hisdata->Tower+= 10; $hisdata->Wall+= 20; } break;
+					case 432: $my_count = $mydata->Bricks + $mydata->Gems + $mydata->Recruits; $his_count = $hisdata->Bricks + $hisdata->Gems + $hisdata->Recruits; if ($my_count >= $his_count) { $mydata->Quarry+= 1; $mydata->Magic+= 1; $mydata->Dungeons+= 1; $hisdata->Bricks+= 20; $hisdata->Gems+= 20; $hisdata->Recruits+= 20; } if ($my_count <= $his_count) { $hisdata->Quarry+= 1; $hisdata->Magic+= 1; $hisdata->Dungeons+= 1; $mydata->Bricks+= 20; $mydata->Gems+= 20; $mydata->Recruits+= 20; } break;
+					case 433: $my_low = $my_high = $his_low = $his_high = $my_costs = $his_costs = array();
+							$my_min = $his_min = 1000; $my_max = $his_max = 0;
+							for ($i = 1; $i <= 8; $i++)
+							{
+								$cur_cost = $my_costs[$i] = $carddb->GetCard($mydata->Hand[$i])->GetResources("");
+								if ($cur_cost < $my_min) $my_min = $cur_cost;
+								if ($cur_cost > $my_max) $my_max = $cur_cost;
+								$cur_cost = $his_costs[$i] = $carddb->GetCard($hisdata->Hand[$i])->GetResources("");
+								if ($cur_cost < $his_min) $his_min = $cur_cost;
+								if ($cur_cost > $his_max) $his_max = $cur_cost;
+							}
+							for ($i = 1; $i <= 8; $i++)
+							{
+								$cur_cost = $my_costs[$i];
+								if ($cur_cost == $my_min) $my_low[$i] = $i;
+								elseif ($cur_cost == $my_max) $my_high[$i] = $i;
+								$cur_cost = $his_costs[$i];
+								if ($cur_cost == $his_min) $his_low[$i] = $i;
+								elseif ($cur_cost == $his_max) $his_high[$i] = $i;
+							}
+							$my_dis = array_rand($my_low);
+							$his_dis = array_rand($his_low);
+							$mydata->Hand[$my_dis] = $this->DrawCard($mydata->Deck, $mydata->Hand, $my_dis, 'DrawCard_random');
+							$mydata->NewCards[$my_dis] = 1;
+							$hisdata->Hand[$his_dis] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $his_dis, 'DrawCard_random');
+							$hisdata->NewCards[$his_dis] = 1;
+							if ($my_max > 0)
+							{
+								$my_dis = array_rand($my_high);
+								$mydata->Hand[$my_dis] = $this->DrawCard($mydata->Deck, $mydata->Hand, $my_dis, 'DrawCard_random');
+								$mydata->NewCards[$my_dis] = 1;
+							}
+							if ($his_max > 0)
+							{
+								$his_dis = array_rand($his_high);
+								$hisdata->Hand[$his_dis] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $his_dis, 'DrawCard_random');
+								$hisdata->NewCards[$his_dis] = 1;
+							} break;
+					case 434: if (($mydata->Recruits - $hisdata->Recruits) > 52) { $mydata->Recruits = $hisdata->Recruits; $hisdata->Tower = 1; $hisdata->Wall = 0; } break;
+					case 435: $mydata->Gems+= 50; $mydata->Magic+= 1; break;
+					case 436: $mydata->Tower+= 16; if ($this->KeywordCount($mydata->Hand, "Soldier") > 0) $hisdata->Tower-= 16; else $hisdata->Tower-= 10; break;
+					case 437: $mydata->Tower+= 7; if ($this->KeywordCount($mydata->Hand, "Soldier") > 0) $hisdata->Tower-= 4; break;
+					case 438: if ($this->KeywordCount($mydata->Hand, "Burning") == 2) $nextcard = 223; else $mydata->Gems+= 14; break;
+					case 439: $my_count = $this->KeywordCount($mydata->Hand, "Undead"); $his_count = $this->KeywordCount($hisdata->Hand, "Undead");
+							if ($my_count <= $his_count)
+							{
+								$max = max($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
+								$facilities = array('Quarry', 'Magic', 'Dungeons'); $temp = array();
+								foreach ($facilities as $facility) if ($mydata->$facility == $max) $temp[] = $facility;
+								$chosen_facility = $temp[array_rand($temp)];
+								$mydata->$chosen_facility-= 1;
+							}
+							if ($my_count >= $his_count)
+							{
+								$max = max($hisdata->Quarry, $hisdata->Magic, $hisdata->Dungeons);
+								$facilities = array('Quarry', 'Magic', 'Dungeons'); $temp = array();
+								foreach ($facilities as $facility) if ($hisdata->$facility == $max) $temp[] = $facility;
+								$chosen_facility = $temp[array_rand($temp)];
+								$hisdata->$chosen_facility-= 1;
+							} break;
 					
 				}
 				
 				//begin keyword processing
+				
+				//begin order independent keywords
 				
 				//process Durable cards - they stays on hand
 				if ($card->HasKeyWord("Durable"))
@@ -1005,127 +1208,245 @@
 				if ($card->HasKeyWord("Quick"))
 				{
 					$nextplayer = $playername;
-					$production_factor = 0;
+					$bricks_production = 0;
+					$gems_production = 0;
+					$recruits_production = 0;
 				}
 				
 				//process Swift cards - play again with production
-				if ($card->HasKeyWord("Swift")) $nextplayer = $playername;
+				if ($card->HasKeyWord("Swift"))
+				{
+					$nextplayer = $playername;
+				}
 				
-				//process Unliving cards - chance for Bricks cost return
+				//process Unliving cards - Bricks cost return
 				if ($card->HasKeyWord("Unliving"))
 				{
 					$ammount = $this->KeywordCount($mydata->Hand, "Unliving") - 1; // we don't count the played card
-					if (mt_rand(1, 100) <= ($ammount * 8)) $mydata->Bricks+= ceil($card->CardData->Bricks / 2);
-				}
-				
-				//process Soldier cards - chance for Recruits cost return
-				if ($card->HasKeyWord("Soldier"))
-				{
-					$ammount = $this->KeywordCount($mydata->Hand, "Soldier") - 1; // we don't count the played card
-					if (mt_rand(1, 100) <= ($ammount * 8)) $mydata->Recruits+= ceil($card->CardData->Recruits / 2);
-				}
-				
-				//process Mage cards - chance for Gems cost return
-				if ($card->HasKeyWord("Mage"))
-				{
-					$ammount = $this->KeywordCount($mydata->Hand, "Mage") - 1; // we don't count the played card
-					if (mt_rand(1, 100) <= ($ammount * 8)) $mydata->Gems+= ceil($card->CardData->Gems / 2);
-				}
-				
-				//process Undead cards - chance for extra cost
-				if ($card->HasKeyWord("Undead"))
-				{
-					$ammount = $this->KeywordCount($mydata->Hand, "Undead") - 1; // we don't count the played card
-					if (mt_rand(1, 100) <= ($ammount * 6))
+					$token_index = array_search("Unliving", $mydata->TokenNames);
+					
+					if ($token_index)
 					{
-						$stock = array("Common" => 1, "Uncommon" => 3, "Rare" => 5);
-						$lost = $stock[$card->CardData->Class];						
-						$mydata->Bricks-= $lost;
-						$mydata->Gems-= $lost;
-						$mydata->Recruits-= $lost;
-					}
-				}
-				
-				//process Burning cards - chance for discarding one random card from enemy hand and additional damage to enemy tower
-				if ($card->HasKeyWord("Burning"))
-				{
-					$ammount = $this->KeywordCount($mydata->Hand, "Burning") - 1; // we don't count the played card
-					if (mt_rand(1, 100) <= ($ammount * 8))
-					{
-						$discarded_pos = array_rand($hisdata->Hand);
-						$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, 0, 'DrawCard_random');
-						$hisdata->NewCards[$discarded_pos] = 1;
-						$damage = array("Common" => 1, "Uncommon" => 3, "Rare" => 5);
-						$hisdata->Tower-= $damage[$card->CardData->Class];
-					}
-				}
-				
-				//process Holy cards - chance for discarding one random undead card from enemy hand and get additional stock
-				if ($card->HasKeyWord("Holy"))
-				{
-					$ammount = $this->KeywordCount($mydata->Hand, "Holy") - 1; // we don't count the played card
-					if (mt_rand(1, 100) <= ($ammount * 12))
-					{
-						$storage = array();
-						for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Undead")) $storage[$i] = $i;
-						if (count($storage) > 0)
+						$mydata->TokenValues[$token_index]+= $ammount * 8;
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
 						{
-							$discarded_pos = array_rand($storage);
-							$dis_rarity = $carddb->GetCard($hisdata->Hand[$discarded_pos])->GetClass();
-							$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, 0, 'DrawCard_random');
-							$hisdata->NewCards[$discarded_pos] = 1;
-							$stock = array("Common" => 1, "Uncommon" => 2, "Rare" => 3);
-							$gained = $stock[$dis_rarity];						
-							$mydata->Bricks+= $gained;
-							$mydata->Gems+= $gained;
-							$mydata->Recruits+= $gained;
+							$mydata->Bricks+= round($card->CardData->Bricks / 2);
+							
+							$mydata->TokenValues[$token_index] = 0;
 						}
 					}
 				}
 				
-				//process Brigand cards - chance for stealing additional stock
+				//process Soldier cards - Recruits cost return
+				if ($card->HasKeyWord("Soldier"))
+				{
+					$ammount = $this->KeywordCount($mydata->Hand, "Soldier") - 1; // we don't count the played card
+					$token_index = array_search("Soldier", $mydata->TokenNames);
+					
+					if ($token_index)
+					{
+						$mydata->TokenValues[$token_index]+= $ammount * 8;
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$mydata->Recruits+= round($card->CardData->Recruits / 2);
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
+					}
+				}
+				
+				//process Mage cards - Gems cost return
+				if ($card->HasKeyWord("Mage"))
+				{
+					$ammount = $this->KeywordCount($mydata->Hand, "Mage") - 1; // we don't count the played card
+					$token_index = array_search("Mage", $mydata->TokenNames);
+					
+					if ($token_index)
+					{
+						$mydata->TokenValues[$token_index]+= $ammount * 8;
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$mydata->Gems+= round($card->CardData->Gems / 2);
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
+					}
+				}
+				
+				//process Undead cards - Upgrades random undead card
+				if ($card->HasKeyWord("Undead"))
+				{
+					$ammount = $this->KeywordCount($mydata->Hand, "Undead") - 1; // we don't count the played card
+					$token_index = array_search("Undead", $mydata->TokenNames);
+					
+					if ($token_index)
+					{
+						$mydata->TokenValues[$token_index]+= $ammount * 6;
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$storage = array();
+							for ($i = 1; $i <= 8; $i++)
+							{
+								$current_card = $carddb->GetCard($mydata->Hand[$i]);
+								if (($current_card->HasKeyword("Undead")) AND ($current_card->GetClass() != 'Rare') AND ($i != $cardpos))
+									$storage[$i] = $i;
+							}
+							
+							if (count($storage) > 0)
+							{
+								$upgrades = array("Common" => "Uncommon", "Uncommon" => "Rare");
+								
+								$upgrade_pos = array_rand($storage);
+								$upg_rarity = $carddb->GetCard($mydata->Hand[$upgrade_pos])->GetClass();
+								$mydata->Hand[$upgrade_pos] = $this->DrawCard($carddb->GetList($upgrades[$upg_rarity], "Undead"), $mydata->Hand, $cardpos, 'DrawCard_list');
+								$mydata->NewCards[$upgrade_pos] = 1;
+							}
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
+					}
+				}
+				
+				//process Burning cards - Discard one card from enemy hand and do additional damage to enemy tower
+				if ($card->HasKeyWord("Burning"))
+				{
+					$ammount = $this->KeywordCount($mydata->Hand, "Burning") - 1; // we don't count the played card
+					$token_index = array_search("Burning", $mydata->TokenNames);
+					
+					if ($token_index)
+					{
+						$mydata->TokenValues[$token_index]+= $ammount * 8;
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$storage = array();
+							
+							for ($i = 1; $i <= 8; $i++)
+							{
+								// pick only non Burning cards
+								if (!$carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Burning")) $storage[$i] = $i;
+							}
+							
+							if (count($storage) > 0)
+							{
+								$discarded_pos = array_rand($storage);
+								$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_random');
+								$hisdata->NewCards[$discarded_pos] = 1;
+								$damage = array("Common" => 1, "Uncommon" => 3, "Rare" => 5);
+								$hisdata->Tower-= $damage[$card->GetClass()];
+							}
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
+					}
+				}
+				
+				//process Holy cards - Discarding one random undead card from enemy hand and get additional stock
+				if ($card->HasKeyWord("Holy"))
+				{
+					$ammount = $this->KeywordCount($mydata->Hand, "Holy") - 1; // we don't count the played card
+					$token_index = array_search("Holy", $mydata->TokenNames);
+					
+					if ($token_index)
+					{
+						$mydata->TokenValues[$token_index]+= $ammount * 12;
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$storage = array();
+							for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Undead")) $storage[$i] = $i;
+							if (count($storage) > 0)
+							{
+								$discarded_pos = array_rand($storage);
+								$dis_rarity = $carddb->GetCard($hisdata->Hand[$discarded_pos])->GetClass();
+								$hisdata->Hand[$discarded_pos] = 381;
+								$hisdata->NewCards[$discarded_pos] = 1;
+								$stock = array("Common" => 1, "Uncommon" => 2, "Rare" => 3);
+								$gained = $stock[$dis_rarity];
+								$mydata->Bricks+= $gained;
+								$mydata->Gems+= $gained;
+								$mydata->Recruits+= $gained;
+							}
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
+					}
+				}
+				
+				//process Brigand cards - Steal additional stock
 				if ($card->HasKeyWord("Brigand"))
 				{
 					$ammount = $this->KeywordCount($mydata->Hand, "Brigand") - 1; // we don't count the played card
-					if (mt_rand(1, 100) <= ($ammount * 7))
+					$token_index = array_search("Brigand", $mydata->TokenNames);
+					
+					if ($token_index)
 					{
-						$stock = array("Common" => 1, "Uncommon" => 2, "Rare" => 3);
-						$gained = $stock[$card->CardData->Class];
-						$mydata->Bricks+= $gained;
-						$mydata->Gems+= $gained;
-						$mydata->Recruits+= $gained;
-						$hisdata->Bricks-= $gained;
-						$hisdata->Gems-= $gained;
-						$hisdata->Recruits-= $gained;
+						$mydata->TokenValues[$token_index]+= $ammount * 7;
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$stock = array("Common" => 1, "Uncommon" => 2, "Rare" => 3);
+							$gained = $stock[$card->GetClass()];
+							$mydata->Bricks+= $gained;
+							$mydata->Gems+= $gained;
+							$mydata->Recruits+= $gained;
+							$hisdata->Bricks-= $gained;
+							$hisdata->Gems-= $gained;
+							$hisdata->Recruits-= $gained;
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
 					}
 				}
 				
-				//process Barbarian cards - chance for additional damage to enemy wall
+				//process Barbarian cards - Additional damage to enemy wall
 				if ($card->HasKeyWord("Barbarian"))
 				{
 					$ammount = $this->KeywordCount($mydata->Hand, "Barbarian") - 1; // we don't count the played card
-					if (mt_rand(1, 100) <= ($ammount * 9))
+					$token_index = array_search("Barbarian", $mydata->TokenNames);
+					
+					if ($token_index)
 					{
-						$damage = array("Common" => 3, "Uncommon" => 8, "Rare" => 15);
-						$hisdata->Wall-= $damage[$card->CardData->Class];
+						$mydata->TokenValues[$token_index]+= $ammount * 9;
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$damage = array("Common" => 3, "Uncommon" => 8, "Rare" => 15);
+							$hisdata->Wall-= $damage[$card->GetClass()];
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
 					}
 				}
 				
-				//process Beast cards - chance for additional damage to enemy
+				//process Beast cards - Additional damage to enemy
 				if ($card->HasKeyWord("Beast"))
 				{
 					$ammount = $this->KeywordCount($mydata->Hand, "Beast") - 1; // we don't count the played card
-					if (mt_rand(1, 100) <= ($ammount * 8))
+					$token_index = array_search("Beast", $mydata->TokenNames);
+					
+					if ($token_index)
 					{
-						$damage = array("Common" => 2, "Uncommon" => 5, "Rare" => 10);
-						$this->Attack($damage[$card->CardData->Class], $hisdata->Tower, $hisdata->Wall);
+						$mydata->TokenValues[$token_index]+= $ammount * 8;
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$damage = array("Common" => 2, "Uncommon" => 5, "Rare" => 10);
+							$this->Attack($damage[$card->GetClass()], $hisdata->Tower, $hisdata->Wall);
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
 					}
 				}
 				
 				//process Dragon cards - chance for getting a rare dragon card (only if played card wasn't a rare dragon)
 				if ($card->HasKeyWord("Dragon"))
 				{
-					if (($card->CardData->Class != "Rare") AND (mt_rand(1, 100) <= 11))
+					if (($card->GetClass() != "Rare") AND (mt_rand(1, 100) <= 11))
 					{
 						$nextcard = $this->DrawCard($carddb->GetList("Rare", "Dragon"), $mydata->Hand, $cardpos, 'DrawCard_list');
 					}
@@ -1145,17 +1466,29 @@
 				if ($card->HasKeyWord("Flare attack"))
 				{
 					$selector = mt_rand(0,1);
-					for ($i = 1; $i <= 8; $i++)
+					for ($i = 1; $i <= 4; $i++)
 					{
-						if ((($i % 2) == $selector) AND ($i != $cardpos) AND (!$carddb->GetCard($mydata->Hand[$i])->HasKeyword("Burning")))// the position of the played card is ignored
+						// current index (odd and even positions)
+						$mine = 2*$i - $selector;
+						$his = 2*$i - (1 - $selector);
+						
+						$mytarget = $carddb->GetCard($mydata->Hand[$mine]);
+						$histarget = $carddb->GetCard($hisdata->Hand[$his]);
+						
+						$my_rarity = $mytarget->GetClass();
+						$his_rarity = $histarget->GetClass();
+						
+						// played card position is ignored, does not discard burning cards (rares cards can only be rares)
+						if (($mine != $cardpos) AND (!$mytarget->HasKeyword("Burning")) AND (($my_rarity != 'Rare') OR ($my_rarity == $card->GetClass())))
 						{
-							$mydata->Hand[$i] = 248;
-							$mydata->NewCards[$i] = 1;
+							$mydata->Hand[$mine] = 248;
+							$mydata->NewCards[$mine] = 1;
 						}
-						elseif ((($i % 2) != $selector)	AND (!$carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Burning")))
+						
+						if ((!$histarget->HasKeyword("Burning")) AND (($his_rarity != 'Rare') OR ($his_rarity == $card->GetClass())))
 						{
-							$hisdata->Hand[$i] = 248;
-							$hisdata->NewCards[$i] = 1;
+							$hisdata->Hand[$his] = 248;
+							$hisdata->NewCards[$his] = 1;
 						}
 					}
 				}
@@ -1163,45 +1496,69 @@
 				//process Banish cards - discard one random Durable card from enemy hand, if there is one
 				if ($card->HasKeyWord("Banish"))
 				{
-					$storage = array();
 					// target card is discarded only if it has same or lower rarity then the played card
 					$rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
+					$storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
+					$played_rank = $rarities[$card->GetClass()];
 					
 					for ($i = 1; $i <= 8; $i++)
 					{
 						$dis_card = $carddb->GetCard($hisdata->Hand[$i]);
-						$dis_rank = $rarities[$dis_card->GetClass()];
-						$played_rank = $rarities[$card->GetClass()];
+						$dis_class = $dis_card->GetClass();
+						$dis_rank = $rarities[$dis_class];
 						
 						// pick only cards that can be discarded by played card
-						if (($dis_card->HasKeyword("Durable")) AND ($dis_rank <= $played_rank))	$storage[$i] = $i;
+						if (($dis_card->HasKeyword("Durable")) AND ($dis_rank <= $played_rank)) $storage[$dis_class][] = $i;
 					}
 					
-					if (count($storage) > 0)
+					if ((count($storage['Common']) + count($storage['Uncommon']) + count($storage['Rare'])) > 0)
 					{
-						$discarded_pos = array_rand($storage);
-						$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, 0, 'DrawCard_random');
+						// pick preferably cards with higher rarity, but choose random card within the rarity group
+						shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
+						$storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
+						$discarded_pos = array_pop($storage_temp);
+						$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_random');
 						$hisdata->NewCards[$discarded_pos] = 1;
 					}
 				}
 				
-				//process Titan cards - chance for getting a Titan card more often
+				//process Titan cards - Draw a Titan card
 				if ($card->HasKeyWord("Titan"))
 				{
 					$ammount = $this->KeywordCount($mydata->Hand, "Titan") - 1; // we don't count the played card
-					if (mt_rand(1, 100) <= ($ammount * 9))
+					$token_index = array_search("Titan", $mydata->TokenNames);
+					
+					if ($token_index)
 					{
-						$nextcard = $this->DrawCard($carddb->GetList("", "Titan"), $mydata->Hand, $cardpos, 'DrawCard_list');
+						$mydata->TokenValues[$token_index]+= $ammount * 9;
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$nextcard = $this->DrawCard($carddb->GetList("", "Titan"), $mydata->Hand, $cardpos, 'DrawCard_list');
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
 					}
 				}
 				
-				//process Alliance cards - chance for getting additional Production X2
+				//process Alliance cards - Additional Production X2
 				if ($card->HasKeyWord("Alliance"))
 				{
 					$ammount = $this->KeywordCount($mydata->Hand, "Alliance") - 1; // we don't count the played card
-					if (mt_rand(1, 100) <= ($ammount * 8))
+					$token_index = array_search("Alliance", $mydata->TokenNames);
+					
+					if ($token_index)
 					{
-						$production_factor*= 2;
+						$mydata->TokenValues[$token_index]+= $ammount * 8;
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$bricks_production*= 2;
+							$gems_production*= 2;
+							$recruits_production*= 2;
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
 					}
 				}
 				
@@ -1223,16 +1580,55 @@
 				//process Skirmisher cards - discard one random Charge card from enemy hand, if there is one
 				if ($card->HasKeyWord("Skirmisher"))
 				{
-					$storage = array();
-					for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Charge")) $storage[$i] = $i;
-					if (count($storage) > 0)
-					{					
-						$discarded_pos = array_rand($storage);
-						$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, 0, 'DrawCard_random');
+					// target card is discarded only if it has same or lower rarity then the played card
+					$rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
+					$storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
+					$played_rank = $rarities[$card->GetClass()];
+					
+					for ($i = 1; $i <= 8; $i++)
+					{
+						$dis_card = $carddb->GetCard($hisdata->Hand[$i]);
+						$dis_class = $dis_card->GetClass();
+						$dis_rank = $rarities[$dis_class];
+						
+						// pick only cards that can be discarded by played card
+						if (($dis_card->HasKeyword("Charge")) AND ($dis_rank <= $played_rank)) $storage[$dis_class][] = $i;
+					}
+					
+					if ((count($storage['Common']) + count($storage['Uncommon']) + count($storage['Rare'])) > 0)
+					{
+						// pick preferably cards with higher rarity, but choose random card within the rarity group
+						shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
+						$storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
+						$discarded_pos = array_pop($storage_temp);
+						$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_random');
 						$hisdata->NewCards[$discarded_pos] = 1;
 					}
 				}
-								
+				
+				//end order independent keywords
+				
+				//begin order dependent keywords
+				
+				//process Enduring cards - if last card played was the same card, bonus attack
+				if ($card->HasKeyWord("Enduring"))
+				{
+					if (($mydata->LastCard[$mylastcardindex] == $cardid) AND ($mydata->LastAction[$mylastcardindex] == 'play'))
+					{
+						$bonus_damage = $this->KeywordValue($card->GetKeywords(), 'Enduring');
+						$this->Attack($bonus_damage, $hisdata->Tower, $hisdata->Wall);
+					}
+				}
+				
+				//process Charge cards - if enemy wall is 0, bonus damage to enemy tower
+				if ($card->HasKeyWord("Charge"))
+				{
+					$charge_damage = $this->KeywordValue($card->GetKeywords(), 'Charge');
+					if ($hisdata->Wall == 0) $hisdata->Tower-= $charge_damage;
+				}
+				
+				//end order dependent keywords
+				
 				//end keyword processing
 				
 				//process discarded cards
@@ -1280,9 +1676,9 @@
 				}
 				
 				// production is applied to copy of the game attributes only (for changes array needs), production factor is descresed because normal production is a default card effect, thus it doesn't need to be highlighted - only abnormal productions (production X0, X2, X3...) are displayed via changes array
-				$mydata_copy['Bricks']+= ($production_factor - 1) * $mydata->Quarry;
-				$mydata_copy['Gems']+= ($production_factor - 1) * $mydata->Magic;
-				$mydata_copy['Recruits']+= ($production_factor - 1) * $mydata->Dungeons;
+				$mydata_copy['Bricks']+= ($bricks_production - 1) * $mydata->Quarry;
+				$mydata_copy['Gems']+= ($gems_production - 1) * $mydata->Magic;
+				$mydata_copy['Recruits']+= ($recruits_production - 1) * $mydata->Dungeons;
 				
 				// add the new difference to the changes arrays
 				foreach ($mydata_temp as $attribute => $value)
@@ -1290,12 +1686,26 @@
 					$mydata->Changes[$attribute] += $mydata_copy[$attribute] - $mydata_temp[$attribute];
 					$hisdata->Changes[$attribute] += $hisdata_copy[$attribute] - $hisdata_temp[$attribute];
 				}
+				
+				// compute changes on token counters
+				foreach ($mytokens_temp as $index => $token_val)
+				{
+					$mydata->TokenChanges[$index] += $mydata->TokenValues[$index] - $mytokens_temp[$index];
+					$hisdata->TokenChanges[$index] += $hisdata->TokenValues[$index] - $histokens_temp[$index];
+				}
+				
+				// apply limits to token counters
+				foreach ($mytokens_temp as $index => $token_val)
+				{
+					$mydata->TokenValues[$index] = max(min($mydata->TokenValues[$index], 100), 0);
+					$hisdata->TokenValues[$index] = max(min($hisdata->TokenValues[$index], 100), 0);
+				}
 			}
 			
 			// add production at the end of turn
-			$mydata->Bricks+= $production_factor * $mydata->Quarry;
-			$mydata->Gems+= $production_factor * $mydata->Magic;
-			$mydata->Recruits+= $production_factor * $mydata->Dungeons;
+			$mydata->Bricks+= $bricks_production * $mydata->Quarry;
+			$mydata->Gems+= $gems_production * $mydata->Magic;
+			$mydata->Recruits+= $recruits_production * $mydata->Dungeons;
 										
 			// draw card at the end of turn
 			if( $nextcard > 0 )
@@ -1307,7 +1717,10 @@
 			}
 			elseif( $nextcard == -1 )
 			{// normal drawing
-				$drawfunc = ( $action == 'play' ) ? 'DrawCard_random' : 'DrawCard_different';
+				if (($action == 'play') AND ($card->IsPlayAgainCard())) $drawfunc = 'DrawCard_norare';
+				elseif ($action == 'play') $drawfunc = 'DrawCard_random';
+				else $drawfunc = 'DrawCard_different';
+				
 				$mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, $drawfunc);
 			}
 			
@@ -1415,7 +1828,8 @@
 			{	//game continues
 				$data->Current = $nextplayer;
 				$data->Timestamp = time();
-				$data->Round++;
+				if( $nextplayer != $playername )
+					$data->Round++;
 			}
 			
 			return 'OK';
@@ -1432,6 +1846,14 @@
 					$count++;
 			
 			return $count;
+		}
+		
+		private function KeywordValue($keywords, $target_keyword)
+		{
+			$result = preg_match('/'.$target_keyword.' \((\d+)\)/', $keywords, $matches);
+			if ($result == 0) return 0;
+			
+			return (int)$matches[1];
 		}
 		
 		private function CountDistinctKeywords(array $hand)
@@ -1488,8 +1910,8 @@
 		private function DrawHand($source, $draw_function)
 		{
 			$hand = array(1=> 0, 0, 0, 0, 0, 0, 0, 0);
-			$card_pos = 0; //card position is in this case irrelevant
-			for ($i = 1; $i <= 8; $i++) $hand[$i] = $this->DrawCard($source, $hand, $card_pos, $draw_function);
+			//card position is in this case irrelevant - send current position (it contains empty slot anyway)
+			for ($i = 1; $i <= 8; $i++) $hand[$i] = $this->DrawCard($source, $hand, $i, $draw_function);
  			return $hand;
  		}
 		
@@ -1601,6 +2023,9 @@
 		public $NewCards; // associative array, where keys are card positions which have changed (values are arbitrary at the moment)
 		public $Changes; // associative array, where keys are game atributes (resources, facilties, tower and wall). Values are ammount of difference
 		public $DisCards; //array of two lists, one for each player. List contais all cards that where discarded during player's turn(s). Can be empty.
+		public $TokenNames;
+		public $TokenValues;
+		public $TokenChanges;
 		public $Tower;
 		public $Wall;
 		public $Quarry;

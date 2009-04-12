@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<am:entry xmlns:am="http://arcomage.netvor.sk">
+<am:date>2008-01-25T00:00:00+01:00</am:date>
+<am:content xmlns="http://www.w3.org/1999/xhtml">
+
+<h2>Hall of fame</h2>
+<hr />
+
+<p style="text-align: center; font-size:large;">
+<img style="float: left; margin-top: 0ex" src="img/unicorn_left.jpg" alt="unicorn"/>
+<img style="float: right; margin-top: 0ex" src="img/unicorn_right.jpg" alt="unicorn"/>
+Names of all people who contributed to this site in some way, will be forever remembered in this section.
+</p>
+
+<div style="clear: both;"></div>
+
+<ul>
+<li><span>Lukáš Čajági</span> - author of our fantasy novels</li>
+<li><span>Cassiraa</span> - design and new features ideas</li>
+<li><span>Igniteice</span> - balance changes and new cards suggestions</li>
+<li><span>Sylonus</span> - new game mechanics and new cards suggestions</li>
+<li><span>Viperio</span> - balance changes and new cards suggestions</li>
+<li><span><a href="http://www.x-factor.tym.sk">X-Factor</a></span> - images refinement (cards and others), new card images design</li>
+</ul>
+
+</am:content>
+</am:entry>

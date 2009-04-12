@@ -1,41 +1,6 @@
 <?php
 /*
 	CLogin - authentication class
-	
-	Requires:
-		CDatabase.php
-	
-	Table structure:
-	- `logins`
-		Username		char(20) key
-		Password		char(32)
-		SessionID		int(10) unsigned default 0
-		Last IP			char(15) default '0.0.0.0'
-		Last Query		int(10) unsigned default 0
-	
-	Reacts to inputs:
-		$_POST['Username']
-		$_POST['Password']
-		$_POST['SessionID']
-		$_POST['Remember']
-		$_COOKIE['Username']
-		$_COOKIE['SessionID']
-	
-	Interface:
-	- CLogin
-		string		$status
-		CTOR		__construct(CDatabase &$database)
-		bool		Register(string $username, string $password)
-		bool		Unregister(string $username)
-		CSession	Login()
-		bool		Logout(CSession &$session)
-	- CSession	
-		CTOR		__construct(string $username, int/string $sessionid, bool $cookies)
-		DTOR		__destruct()
-		string		Username()
-		int			SessionID()
-		bool		hasCookies()
-		string		SessionString()
 */
 ?>
 <?php
@@ -94,7 +59,7 @@
 			
 			if ($_SERVER['REMOTE_ADDR'] != $data['Last IP']) { $status = 'ERROR_WRONG_IP'; return false; };
 			
-			if ($_SERVER['REQUEST_TIME'] - $data['Last Query'] > $this->sessiontimeout) { $status = 'ERROR_SESSION_EXPIRED'; return false; };
+			if ($_SERVER['REQUEST_TIME'] - strtotime($data['Last Query']) > $this->sessiontimeout) { $status = 'ERROR_SESSION_EXPIRED'; return false; };
 			
 			$status = 'SUCCESS';
 			return true;
@@ -128,7 +93,7 @@
 			// store current `Last IP` and `Last Query`, refresh cookies
 			$now = time();
 			$addr = $_SERVER["REMOTE_ADDR"];
-			$result = $db->Query('UPDATE `logins` SET `Last IP` = "'.$addr.'", `Last Query` = '.$now.' WHERE `Username` = "'.$username.'" AND `SessionID` = '.$sessionid);
+			$result = $db->Query('UPDATE `logins` SET `Last IP` = "'.$addr.'", `Last Query` = FROM_UNIXTIME('.$now.') WHERE `Username` = "'.$username.'" AND `SessionID` = '.$sessionid);
 			if (!$result) { $status = $db->status; return false; };
 			
 			//if ($result->Rows() == 0) { $status = 'ERROR_NO_SUCH_SESSION'; }; // still not implemented for UPDATE queries :(
@@ -138,8 +103,6 @@
 				$timeout = $now + $this->cookietimeout;
 				setcookie('Username', $username, $timeout);
 				setcookie('SessionID', $sessionid, $timeout);
-//				$_COOKIE['Username'] = $username;   // don't need these variables anymore, we have CSession :)
-//				$_COOKIE['SessionID'] = $sessionid;
 			}
 			
 			$hascookies = ($cookies == 'yes'); // (yes -> 1, maybe -> 0, no -> 0)
@@ -326,16 +289,5 @@
 		public function Username() { return $this->Username; }
 		public function SessionID() { return $this->SessionID; }
 		public function hasCookies() { return $this->hasCookies; }
-		
-		public function SessionString()
-		{
-			// helps maintain the session across pages when cookies are turned off
-			$ss = '<div>'."\n";
-			$ss.= '<input type = "hidden" name = "Username" value = "'.htmlencode($this->Username).'" />'."\n";
-			$ss.= '<input type = "hidden" name = "SessionID" value = "'.$this->SessionID.'" />'."\n";
-			$ss.= '</div>'."\n";
-			
-			return $ss;
-		}
 	}
 ?>

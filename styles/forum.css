@@ -44,7 +44,7 @@ div#forum tr div > h5 /* section heading layout - description */
 {
 	font-size: medium;
 	float: left;
-	width: 73%;
+	width: 45%;
 	text-align: left;
 	margin: 1ex 0ex 1ex 1ex;
 	color: lime;
@@ -60,7 +60,7 @@ div#forum tr div > h5 > span /* section heading layout - title */
 div#forum tr div > h5 + p /* section heading layout - right side with buttons */
 {
 	float: right;
-	width: 25%;
+	width: 52%;
 	text-align: right;
 	margin: 1ex 1ex 1ex 0ex;
 }
@@ -106,6 +106,11 @@ div#forum td > p /* forum table cell layout */
 div#forum th + th, div#forum td + td /* forum table column borders */
 {
 	border-left: medium ridge #6495ed;
+}
+
+div#forum tr.table_row > td > p > input /* set distance of the "jump to last post" button and other text*/
+{
+	margin-left: 1ex;
 }
 
 /* end section */
@@ -210,7 +215,7 @@ div.thread_bar /* thread navigation menu layout (top and bottom) */
 div.thread_bar > h5 /* thread navigation menu - heading description */
 {
 	float: left;
-	width: 57%;
+	width: 35%;
 	font-size: medium;
 	color: lime;
 	text-align: left;
@@ -227,7 +232,7 @@ div.thread_bar > h5 > span  /* thread navigation menu - heading text */
 div.thread_bar > p /* thread navigation menu - right part with buttons */
 {
 	float: right;
-	width: 40%;
+	width: 62%;
 	text-align: right;
 	margin: 1ex 1ex 1ex 0ex;
 }
@@ -281,15 +286,15 @@ div#post_list > div > div:first-child + div p  /* post layout - content part - s
 	margin: 1ex 2ex 2ex 0ex;
 }
 
-div#post_list > div > div:first-child + div > div /* post layout - post side borders */
+div#post_list > div > div.clear_floats + div /* post layout - post side borders */
 {
-	border-bottom: medium ridge #6495ed;
-	border-left: medium ridge #6495ed;
+	text-align: right;
+	margin: 0.5ex 1ex 1ex 0ex;
 }
 
-div#post_list > div > div:first-child + div > div > input /* post layout - post inputs */
+div#post_list > div > div.clear_floats + div > input + input /* post layout - post inputs */
 {
-	margin: 1.5ex;
+	margin-left: 1ex;
 }
 
 p.highlighted

@@ -4,6 +4,11 @@
 
 /* begin webpage */
 
+div#webpage /* prevents resize errors */
+{
+	min-width: 1045px;
+}
+
 div#webpage p img /* set distance of images from the rest of the content */
 {
 	margin: 1ex;
@@ -44,14 +49,21 @@ div#webpg_float_right /* content part of wepage section */
 	margin-top: 1ex;
 }
 
-div#webpg_float_right > div /* set distance of the content part from the left and right border */
+div#webpg_float_right > div /* webpage content layout */
 {
-	margin: 0ex 2ex 0ex 2ex;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 50em;
 }
 
 div#webpg_float_right hr /* set distance of the horizontal line from the upper and lower part of the content */
 {
 	margin: 1ex 0ex 1ex 0ex;
+}
+
+div#webpg_float_right > div > div > p + p /* set distance between paragraphs */
+{
+	margin-top: 2ex;
 }
 
 div.date_time + h3 + div h3 /* heading layout in the modified cards section */

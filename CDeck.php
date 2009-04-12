@@ -147,6 +147,48 @@
 		{
 			return (($this->DeckData->Count('Common') == 15) && ($this->DeckData->Count('Uncommon') == 15) && ($this->DeckData->Count('Rare') == 15));
 		}
+		
+		public function CalculateKeywords() // find token keywords most present in the deck
+		{
+			global $carddb;
+			
+			$tokens = count($this->DeckData->Tokens);
+			
+			// initialize token keyword counter array
+			$token_keywords = $carddb->TokenKeywords();
+			$token_values = array_fill(0, count($token_keywords), 0);
+			
+			$distict_keywords = array_combine($token_keywords, $token_values);
+			
+			// count token keywords
+			foreach (array('Common', 'Uncommon', 'Rare') as $rarity)
+				foreach ($this->DeckData->$rarity as $card_id)
+					if ($card_id > 0)
+					{
+						$keywords = $carddb->GetCard($card_id)->GetKeywords();
+						$words = preg_split("/\. ?/", $keywords, -1, PREG_SPLIT_NO_EMPTY);
+						
+						foreach($words as $word)
+						{
+							$word = preg_split("/ \(/", $word, 0); // remove parameter if present
+							$word = $word[0];
+							
+							if (in_array($word, $token_keywords)) $distict_keywords[$word]++;
+						}
+					}
+			
+			// get most present token keywords
+			arsort($distict_keywords);
+			
+			$distict_keywords = array_diff($distict_keywords, array(0)); // remove keywords with zero presence
+			
+			$new_tokens = array_keys(array_slice($distict_keywords, 0, $tokens));
+			
+			// add empty tokens when there are not enough token keywords
+			if (count($new_tokens) < $tokens) $new_tokens = array_pad($new_tokens, $tokens, 'none');
+			
+			return $new_tokens;
+		}
 	}
 	
 	
@@ -155,12 +197,14 @@
 		public $Common;
 		public $Uncommon;
 		public $Rare;
+		public $Tokens;
 		
 		public function __construct()
 		{
 			$this->Common = array(1=>0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 			$this->Uncommon = array(1=>0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 			$this->Rare = array(1=>0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+			$this->Tokens = array(1 => 'none', 'none', 'none');
 		}
 		
 		public function Count($class)

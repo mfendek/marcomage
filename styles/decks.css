@@ -20,12 +20,13 @@ div#decks input /* set distance between deck access buttons */
 
 div.filters /* filters subsection*/
 {
-	text-align: center;
+	text-align: left;
 	color: white;
 	/*min-width: 120ex;*/
 	min-width: 1045px;
 	background-color: black;
-	padding-bottom: 1ex;
+	padding-bottom: 0.5ex;
+	margin-left: 5ex;
 }
 
 div.filters + hr /* horizontal line that separates the filters from the rest of the section*/
@@ -38,6 +39,23 @@ div.filters + hr /* horizontal line that separates the filters from the rest of 
 div.filters > input
 {
 	margin-right: 1ex;
+}
+
+div#cost_per_turn /* avg cost per turn indicator layout */
+{
+	float: right;
+	margin-right: 5ex;
+}
+
+div#cost_per_turn > b + b
+{
+	margin-left: 0.5ex;
+}
+
+div#tokens /* tokens layout */
+{
+	float: right;
+	margin-right: 5ex;
 }
 
 /* end filters */

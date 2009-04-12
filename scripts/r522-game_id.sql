@@ -1,0 +1,10 @@
+START TRANSACTION;
+
+UPDATE `games` SET `GameID` = `GameID` + 1 ORDER BY `GameID` DESC;
+ALTER TABLE `games` CHANGE `GameID` `GameID` INT( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+UPDATE `chats` SET `GameID` = `GameID` + 1 ORDER BY `GameID` DESC;
+
+UPDATE `messages` SET `GameID` = `GameID` + 1 WHERE `GameID` > 0 ORDER BY `GameID` DESC;
+
+COMMIT;

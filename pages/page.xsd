@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://arcomage.netvor.sk"
+           targetNamespace="http://arcomage.netvor.sk"
+           elementFormDefault="qualified">
+
+<xs:element name="entry" type="entry" />
+
+<xs:complexType name="entry">
+  <xs:sequence>
+    <xs:element name="title" type="xs:string" minOccurs="0" />
+    <xs:element name="date" type="xs:dateTime" minOccurs="0" />
+    <xs:element name="content" type="foreign" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="foreign" mixed="true">
+  <xs:sequence>
+    <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+  </xs:sequence>
+</xs:complexType>
+
+</xs:schema>

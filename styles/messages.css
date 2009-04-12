@@ -56,6 +56,7 @@ div#messages > table /* private messages table */
 	color: lime;
 	margin: 0ex 1ex 2ex 2ex;
 	border: thin solid yellow;
+	max-width: 32em;
 }
 
 div#messages > table th /* table header */

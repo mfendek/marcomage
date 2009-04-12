@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<colors xmlns="http://arcomage.netvor.sk">
+	<color><name>RosyBrown</name><code>#bc8f8f</code></color>
+	<color><name>DeepSkyBlue</name><code>#00bfff</code></color>
+	<color><name>DarkSeaGreen</name><code>#8fbc8f</code></color>
+	<color><name>DarkRed</name><code>#8b0000</code></color>
+	<color><name>HotPink</name><code>#ff69b4</code></color>
+	<color><name>LightBlue</name><code>#add8e6</code></color>
+	<color><name>LightGreen</name><code>#90ee90</code></color>
+	<color><name>Gainsboro</name><code>#dcdcdc</code></color>
+	<color><name>DeepSkyBlue</name><code>#00bfff</code></color>
+	<color><name>DarkGoldenRod</name><code>#b8860b</code></color>
+	<color><name>Lime</name><code>Lime</code></color>
+	<color><name>Yellow</name><code>Yellow</code></color>
+</colors>

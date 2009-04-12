@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<am:entry xmlns:am="http://arcomage.netvor.sk">
+<am:content xmlns="http://www.w3.org/1999/xhtml">
+
+<h2>Game manual</h2>
+<hr />
+
+<p>
+Arcomage is a fantasy turn-based card game.
+This card game simulates an epic battle between two empires including features such as constructing new buildings, training troops and decimating the enemy empire with standard attacks or sneaky tactics such as intigue or spells.
+MArcomage is its online version for two human players.
+</p>
+
+<h4>Overview</h4>
+<p>
+<a style="float: right;" href="img/screen_start_game.png"><img src="img/screen_start_game_s.png" alt="start game screen"/></a>
+The game consists of rounds. Round consists of turns. In most cases one round consists of only one turn, but some cards allow player to make additional turns in the same round. In one turn a player can play one card. Then the next turn follows. After end of player's round it's his opponent's round, where he gets to play card(s).
+This way the players play the game - always one playing cards and the other one waiting for the next round where he can play cards.
+The cards themselves modify some attributes of the game (such as tower and wall height, resources ...).
+The game is very simple and easy to operate. There is much information on the game screen, we will now describe some basic information, in the picture to the right. In the upper left of the screen, your login name is written. In the upper part you can see the navigation bar, which is used to travel between sections. Right below the navigation bar you can see the round indicator, that keeps you informed in which round the game currently is. In the center-left part there is a game list manager. You can use it to jump to another game or you can traverse trough games, in which your turn is, via "Next game" button. In the center of the screen you can see card history. There are no cards there yet, but later it will hold the card(s) recently played by you and your opponent. Above card history is the notice which informs you which player's turn currently is. Furthermore if opponent's name is colored white it means that he is currently on-line. When waiting for opponent's turn, you need to refresh the game with our refresh button.
+</p>
+
+<p>For practice you can <a href="http://www.x-factor.tym.sk/Arcomage/Arcomage.rar">download</a> and play single player Arcomage to learn the basics.</p>
+
+<h4>Game attributes: Resources, facilities, resource production, tower and wall</h4>
+<p>
+<a style="float: right;" href="img/screen_resources.png"><img src="img/screen_resources_s.png" alt="resources"/></a>
+Every player has three types of resources: Bricks, Gems and Recruits, and three types of resource production facilities: Quarry, Magic and Dungeon (generating resources in the corresponding order).
+Bricks are the basic building material, used mostly for constructing buildings.
+Magic powered soul gems (shortly gems) represent the magical power at your disposal.
+And finally, recruits represent your living or fighting power (ammount of creatures, soldiers and weapons).
+At the end of round, for each facility of certain type, one resource of the corresponding type is added to the active player's stock.
+Example: If Quarry = 3, at the end of round, three Bricks will be added to the stock.
+The number of facilities of any kind cannot drop below one, and the ammount of a resource of a certain type cannot be lower than zero. In the picture you can see where resources and facilities info is displayed. Your resources and facilities are to the left and opponent's  are to the right. Every player has his/her own tower and wall, each having a height. Tower height can be at most 100, wall has height limit 150. In the case of a standard enemy attack, the attack will first lower the wall. Only after the wall height is zero and some attack power still remains will the tower be lowered. Example: Enemy attacks with an attack power of 25, wall height is 10, tower height is 20. After the attack, the wall height will be zero and the tower height will be 5. There are some cards that do damage to the tower directly, bypassing the wall. Tower and wall information are located in the bottom-left part (yours) and bottom-right (opponent's). Moreover, if some of these game attributes were changed due to effect of some card, it will be indicated. When the game attribute was increased, it will be highlighted with limegreen color, if it was decreased in will be highlighted in orange color.
+</p>
+
+<h4>Victory types</h4>			
+<p>
+The goal of the game is to defeat your opponent by reaching one or more victory conditions.
+The following outcomes are possible:
+</p>
+<ul>
+<li>
+<b>tower destruction</b><br/>
+Raze the enemy tower to the ground to win - meaning, lower the enemy tower to zero height. Usually achieved by green cards and standard attacks.
+</li>
+<li>
+<b>tower building</b><br/>
+Build up your tower to height 100 to win. Usually achieved by delaying enemy attacks while building your tower.
+</li>
+<li>
+<b>resource accumulation</b><br/>
+Accumulate 400 of resources (total sum) to win. Beware of cards that cripple your stock.
+</li>
+<li>
+<b>timeout</b><br/>
+Each game is limited to 250 rounds. Afterwards, both players' states are compared (in the order: tower, wall, no. of facilities, sum of resources). Whoever has more (in that order), wins. Otherwise the game is declared a draw.
+</li>
+</ul>
+<p>
+Special rules apply in the case where both players achieve a victory condition simultaneously.
+<br/>
+If the victory type for both is the same, the result is, logically, a draw.
+<br/>
+If the victory types are different, the following rule is used to determine the winner:
+Destruction victory > Tower bulding victory > Resource victory > Timeout victory.
+</p>
+<p>After the game is finished and a player leaves the game, his opponent is informed about this with "player has left the game" message in the chat window.</p>
+
+<h4>Special game end types</h4>
+
+<p>Game can be ended in different way when certain conditions are met.</p>
+<ul>
+<li>
+<b>surrender</b><br/>
+Each player can use the "Surrender" button to end the game at any time. If your opponent surrenders, the game will be ended, you'll get one victory point and opponent one loss point.
+</li>
+<li>
+<b>abort</b><br/>
+When your opponent becomes dead, i.e. does not log in for more than three weeks, you may use the "Abort game" button to end the game. In this case neither you nor your opponent gain victory or loss points - the score remains unchanged.
+</li>
+<li>
+<b>finish</b><br/>
+If your opponent doesn't make his turn for more than three weeks and he doesn't become dead, you may use the "Finish game" button to end the game. In this case you'll get one victory point and opponent one loss point.
+</li>
+</ul>
+
+<h4>Cards</h4>
+<p><img style="float: right" src="img/screen_card.png" alt="card"/>Every card has a name, a price and an effect. The name and the price are found in the upper part of the card, the effect in the lower part, below the card picture. The price is the ammount of resources needed for a card to be played, each type of resource represented by the color related to the resource. This ammount will be subtracted from the resource stock when the card is played. The card can only be played if you have enough resources to pay for its price. After a card is played, its effect will take place. Every card belongs to some group, indicated by the card's border color. There are three groups: Common, Uncommon and Rare. Common cards have green border, Uncommon brown and Rare yellow. Every player has exactly eight cards in his or hers hand. Your cards are located at the upper part of the screen. Opponent's cards are located in the bottom part of the screen. You can see enemy's cards in his or hers hand. Some cards in yours/opponent's hand are marked with "New card" flag. This indicates that this card has been received to the hand only recently. You may want to pay close attention to these cards. In the middle of the game screen are cards last played by each player (it can be very important). In one turn one player plays one card or a player can discard a card instead of playing it. When a card is discarded, its cost is not payed, but its effect will not happen. After a card(s) has been played or discarded a new card(s) will be added to player's hand. The new card will be chosen randomly from the card groups with probabilities 65% for Common, 29% for Uncommon and 6% for Rare, unless a played card says otherwise. Some cards have modes. If a card has more modes, it means it can be played with different effects. The effects are described on the card. For example card Merchant will add 6 bricks, when played in Mode1, 5 gems when played in Mode2 or 5 recruits, when played in mode3. When you can play such card, there is a mode selector next to the play button. Simply select the chosen mode of the card and play it. Some cards discard other cards from yours or opponents hand. Cards that where discarded during your last round are located to the left of the card history. Cards that were discarded during opponent's last round are shown to the right of the card history. One pile of discarded cards are further divided into cards that were discarded from your hand (located on the left of yellow vertical line) and cards that were discarded from opponent's hand (located on the right of yellow vertical line). Both card history and discarded cards are ordered in this fashion: last played/discarded are the leftmost.
+</p>
+
+<h4>Turn - actions</h4>
+<ol>
+	<li>Cost of a card is substracted</li>
+	<li>Effect of the card takes place</li>
+	<li>Keywords with side-effects apply</li>
+	<li>Game limits apply (resources cannot be lower then 0, wall below 0, facitlies below 1...)</li>
+	<li>Resource production</li>
+	<li>End game condition is checked</li>
+</ol>
+
+<h4>Chat</h4>
+<p>
+You can chat with other players in the game screen.
+Simply write the text in the bottom part of the game and then click the "Send message" button.
+For more comfort you can use some hot keys.
+Push Tab (or Alt+a when your browser support keybord shortcuts) to jump into chat window, write the message and then push Tab+Enter (or Alt+s).
+The message itself contains the date and time when it was written and also name of the player who wrote it.
+</p>
+
+<h4>Deck building</h4>
+<p>
+<a style="float: right;" href="img/screen_deck_building.png"><img src="img/screen_deck_building_s.png" alt="deck building section"/></a>
+Deck consists of 15 different cards from each group. A deck name must be different to all your other decks. Deck building section consits of control bar, where buttons that provide deck modifications and card pool modifications (filters), are located. On the left part this bar, there are filters. You can use them to filter out the unnecessary cards from the card pool. When a filter is active, it's border color is highlighted with lime color. There are five filters (all of them can be combined):</p>
+
+<ul>
+	<li>Class filter - selects either Common, Uncommon or Rare cards</li>
+	<li>Keyword filter - selects cards that have specified keyword</li>
+	<li>Cost filter - selects cards that have specified cost</li>
+	<li>Advanced filter - selects cards that have specified card effect</li>
+	<li>Support filter - selects cards that are supportive for selected keyword (i.e. they have the selected keyword mentioned in the card effect text)</li>
+</ul>
+
+<p>Just set the filters and then push the "Apply filters" button. On the right part of the bar, there are following buttons: Rename, Reset, Randomize and Finish. To rename deck, simply write the name in the text window and click the "Rename deck" button. If you want to empty your deck just push the "Reset" button. When you don't want to build the deck yourself you can generate a random deck by pressing the "Randomize" button. "Finish" button will fill all remaining empty slots in your deck with random cards. Finnaly the rightmost is the average cost indicator. It shows you the average price of card per turn. Please do note that this calculation does only take into account card cost, not it's effect. Below is your deck.  When bulding a deck, each of the 45 card slots is occupied either by some card or just with an 'Empty' card (signalling an empty card slot). You can transfer a card from card pool by pushing Take button under the card you want to select. If you want to remove a card from your deck push the Return button under the card you whish to be removed. Any changes to the deck are immediately recorded, so it is possible to leave the deck incomplete. Such a deck cannot be used to play a game, though. When starting a game you must choose a deck from the deck list by selecting its name. There is a maximum of eight decks total for one player.
+</p>
+	
+<h4>New game</h4>
+<p>
+You can start a new game in two ways.
+First, you can challenge someone to a game by selecting the challenge button in the User screen, which is in the same line as the player, who you want to challenge. The other option is to go to player's details and challenge him from there.
+Then you need to choose the deck with which you want to play the game.
+Second, you can wait until someone else challenges you and then accept the challenge.
+Before accepting the challenge you also need to choose a deck, with which you want to play.
+The player Which goes first is randomly chosen.
+There is a limit of max. 15 <i>simultaneous</i> games, and only one game per opponent which you initiated (this implies that you can only have 2 parallel games against each person).
+Unreplied challenges in your challenge box count as games, so try to accept or reject them as soon as possible.
+There is no restriction to the number of games played per day or against someone, you can play any way you like.
+</p>
+<p>When you have a game where your turn is, it is indicated by animated image ("crossed swords") in the upper part of the screen (navigation bar).</p>
+
+<h4>Messages</h4>
+<p>
+In the section "Challenges" all challenges and messages that you received are located. When a new challenge/message arrives, you are informed about this in the upper menu bar with a animated image ("letter"). New messages can be written in the players section by selecting the [m] button or in the player's details section. Also you can reply to any message by selecting the reply button.
+</p>
+
+<h4>Avatar</h4>
+<p>
+In the settings section you can upload your own avatar. Avatar must be a jpg, jpeg, png or gif image type, must have at most 10kB and should be 60px X 60px large. If it isn't, it will be resized to this size. Avatars with inappropriate content will be deleted and could also lead to ban.
+</p>
+
+<h4>Card terminology</h4>
+<ul>
+	<li>Stock - all three types of resource (Bricks, Gems, Recruits)</li>
+	<li>Facilities - all three types of production (Quarry, Magic, Dungeon)</li>
+	<li>If we are talking about Tower, Wall, Stock, Facilites ... etc. we are talking about your Tower Wall ... . Opponent's Tower, Wall ... are addresed as Enemy tower, Enemy wall ...</li>
+	<li>Last card played means last card played by you not the opponent. Opponents last card played is addresed as last card played by opponent</li>
+	<li>Production X0, Production X2, Production X3 - you will get zero production, double production, triple production this turn. Note that with the combination of some keyword effect (<b>Alliance</b>) you may get Production X2 two times (one becuase of card effect and one becuase of keyword effect). In this case the production factor is multiplied, so the result is Production X4.</li>
+	<li>"Last card" means last card played or discarded by you (if more cards were played this round then it is the most recent one)</li>
+	<li>"Last card played" means last card played by you (if more cards were played this round then it is the most recent one)</li>
+	<li>"Last card played by opponent" means last card played by opponent (if opponent played more cards in his round then it is the most recent one)</li>
+	<li>"Recently discarded" means cards discarded by you last round or by opponent (during his last round)</li>
+	<li>"Last round" is a round recently made by some player</li>
+	<li>"(max N), (min N)" these are limits applied to each resource type (Bricks, Gems, Recruits). It means that you cannot get more then N of each resource for example.</li>
+	<li>"#Keyword" means number of such keywords either in card present in your hand or in both player's hands (this is specified in the card effect description)</li>
+	<li>"#Keyword1 + #Keyword2" means number of keywords1 plus number of keywords2, note that they are counted independently</li>
+	<li>All decimal numbers are always rounded standard fashion way</li>
+	<li>"If New" condition is satysfied when the played card had the "NEW CARD" flag above</li>
+</ul>
+
+<h4>Forum</h4>
+<p>
+Please use English only at all times. Forum is divided into sections. Section contains threads - discussions about some topic. There are 3 types of threads:
+</p>
+<ul>
+	<li>Sticky - (red color) these are always at the top of the threadds list</li>
+	<li>Important - (orange color) these are more important then other threads</li>
+	<li>Normal - (white color) all other threads</li>
+</ul>
+
+<h4>Keywords</h4>
+<p>
+Keywords represent information about the card that is too big to fit in the card box, or some property that other cards may look for while performing their effect. Below, all keywords are listed and explained.
+</p>
+
+<ul>
+	<li><b>Alliance</b> - gain 8 Alliance tokens for each <b>Alliance</b> card in hand (not counting the played one), side-effect: additional Production X2.</li>
+	<li><b>Banish</b> - discards one random <b>Durable</b> card from enemy hand (if there is one). Can only discard a card with same or lower rarity as was the played card, but cards with highest discardable rarity are preferred. Cards that cannot be discarded by played card are not considered targets for discard.</li>
+	<li><b>Barbarian</b> - gain 9 Barbarian tokens for each <b>Barbarian</b> card in hand (not counting the played one), side-effect: enemy wall will be additionally lowered by ammount based on played card rarity (Common - 3 , Uncommon -  8, Rare - 15).</li>
+	<li><b>Brigand</b> - gain 7 Brigand tokens for each <b>Brigand</b> card in hand (not counting the played one), side-effect: additional stock will be stolen from opponent, ammount based on played card rarity (Common - 1 stock, Uncommon -  2 stock, Rare - 3 stock).</li>
+	<li><b>Beast</b> - gain 8 Beast tokens for each <b>Beast</b> card in hand (not counting the played one), side-effect: additional damage will be inflicted upon your enemy based on played card rarity (Common - 2 , Uncommon -  5, Rare - 10).</li>
+	<li><b>Burning</b> - gain 8 Burning tokens for each <b>Burning</b> card in hand (not counting the played one), side-effect: one random card from enemy hand will be discarded and bonus damage will be inflicted upon enemy tower based on played card rarity (Common - 1 dmg, Uncommon -  3 dmg, Rare - 5 dmg). Does not discard <b>Burning</b> cards (they are not considered as targets for discard).</li>
+	<li><b>Charge</b> - when card has this keyword, it also has a number next to this keyword. When such card is played and the opponent's wall (after the standard attack) is 0, he will receive additional damage equal to number next to charge.</li>
+	<li><b>Destruction</b> - it is a Destruction card.</li>
+	<li><b>Dragon</b> - there is a 11% chance that next card will be a rare <b>Dragon</b>. Does not apply when played card is rare.</li>
+	<li><b>Durable</b> - card stays on hand.</li>
+	<li><b>Enduring</b> - when card has this keyword, it also has a number next to this keyword. When such card is played and the last card played was same as this one, opponent will suffer additional damage equal to number next to Enduring.</li>
+	<li><b>Flare attack</b> - when played, one player receives Searing fire cards at odd card positions, while the other player receives Searing fire cards at even card positions. Who receives odd and who even positions is resolved randomly. The position of the played card is ignored and <b>Burning</b> cards are not replaced by Searing fires. Rare cards aren't replaced, unless the played card is a rare.</li>
+	<li><b>Holy</b> - gain 12 Holy tokens for each <b>Holy</b> card in hand (not counting the played one), side-effect: one random <b>Undead</b> card from enemy hand will be replaced by Purified ashes card and you will get additional stock based on discarded card rarity (Common - 1 stock, Uncommon -  2 stock, Rare - 3 stock).</li>
+	<li><b>Illusion</b> - it is a Illusion card.</li>
+	<li><b>Legend</b> - there is a 25% chance that one of your facilities (lowest) will be raised by one. When there are more candidates, it is resolved randomly.</li>
+	<li><b>Mage</b> - gain 8 Mage tokens for each <b>Mage</b> card in hand (not counting the played one), side-effect: half of the gems cost of the played card will be returned.</li>
+	<li><b>Nature</b> - it is a Nature card.</li>
+	<li><b>Quick</b> - player gets an additional turn, but no production this turn.</li>
+	<li><b>Rebirth</b> - when played and number of <b>Burning</b> cards in game is greater then 3, the card stays on hand and you will get additional 16 gems.</li>
+	<li><b>Restoration</b> - it is a Restoration card.</li>
+	<li><b>Skirmisher</b> - discards one random <b>Charge</b> card from enemy hand (if there is one). Can only discard a card with same or lower rarity as was the played card, but cards with highest discardable rarity are preferred. Cards that cannot be discarded by played card are not considered targets for discard.</li>
+	<li><b>Soldier</b> - gain 8 Soldier tokens for each <b>Soldier</b> card in hand (not counting the played one), side-effect: half of the recruits cost of the played card will be returned.</li>
+	<li><b>Swift</b> - player gets additional turn, also with production.</li>
+	<li><b>Titan</b> - gain 9 Titan tokens for each <b>Titan</b> card in hand (not counting the played one), side-effect: next card received will be a <b>Titan</b>.</li>
+	<li><b>Undead</b> - gain 6 Undead tokens for each <b>Undead</b> card in hand (not counting the played one), side-effect: upgrades rarity of one random <b>Undead</b> card in hand.</li>
+	<li><b>Unliving</b> - gain 8 Unliving tokens for each <b>Unliving</b> card in hand (not counting the played one), side-effect: half of the bricks cost of the played card will be returned.</li>
+</ul>
+
+<h4>Tokens</h4>
+<p>
+Some keywords have a side-effect, that requires a token counter. Player can choose up to three token counters for each deck in the deck section. It is possible to assign the token counters automatically by selecting the "Auto" button. Playing a card with keyword, which is associated with the token counter, will raise the value of the token counter. When a token counter reaches 100 a side-effect will happen and the token counter will be reseted to 0. This side-effect takes place directly after the card effect of the played card.
+</p>
+
+<p>
+Let's take the <b>Alliance</b> keyword for example. First you need to set one token counter to <b>Alliance</b> keyword (in the deck section). Then you normally start a game with this deck. When you play a card that has <b>Alliance</b> keyword, it will raise the <b>Alliance</b> token counter. When the counter reaches 100, it will add a Production X2 to the effect of the played card and will be reseted to 0. By paying close attention to the token counters, you will be able to make good combos of card effects and keyword side-effects. For example <b>Soldier</b> and Ceremonial guard or <b>Alliance</b> and Stilshrine of Miriam can make good stock boosting combos.
+</p>
+
+<h4>Color information</h4>
+
+<p>Some information is not presented in a text form, but is encoded into text color. Here is a list of the semantics of different text colors you may encounter throughout the game.</p>
+
+<ul>
+	<li>In the players section, player name color holds the information about player's activity
+		<ul>
+			<li><b>Lime</b> (online) means that player was active in last 10 minutes. This kind of information can be found in other sections too, for example challenges and games (in here the border color of the buttons are colored)</li>
+			<li><b>Red</b> (offline) means that player was active in last 7 days</li>
+			<li><b>Dark red</b> (not interested) means that player was active in last 21 days</li>
+			<li><b>Gray</b> (dead) means that player was inactive for more than 21 days</li>
+		</ul>
+	</li>
+	<li>In the game section color holds information about player activity and game attributes changes (tower, wall, stock and facilities)
+		<ul>
+			<li>Opponent's name is in white color, when he is online</li>
+			<li>If a game attribute was raised last round, it will be highlighted in lime color</li>
+			<li>If a game attribute was lowered last round, it will be highlighted in orange color</li>
+		</ul>
+	</li>
+</ul>
+
+<h4>System notification</h4>
+
+<p>There is a possibility to turn system notification on in the settings section. If you do this, system will automaticaly send you information messages about some events. If you are bothered by this, you can turn it off again. Default setting is off. You get system notification messages when:</p>
+
+<ul>
+	<li>someone accepts or rejects your challenge</li>
+	<li>the game ends (it informs you about the game outcome)</li>
+</ul>
+
+<h4>Keyboard shortcuts</h4>
+(might not work in some browsers without re-configuring them)
+<ul>
+	<li>ALT+s - send chat message</li>
+	<li>ALT+a - set focus to chat window</li>
+	<li>ALT+w - refresh button</li>
+	<li>ALT+q - logout</li>
+</ul>
+
+</am:content>
+</am:entry>

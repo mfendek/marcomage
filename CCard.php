@@ -23,7 +23,7 @@
 			return new CCard($cardid, $this);
 		}
 		
-		public function GetList($class = "", $keyword = "", $cost = "", $advanced = "")
+		public function GetList($class = "", $keyword = "", $cost = "", $advanced = "", $support = "")
 		{
 			$db = $this->db;
 			
@@ -35,6 +35,12 @@
 			
 			$advanced_query = (($advanced != "none") ? '`Effect` LIKE "%'.$db->Escape($advanced).'%"' : "1");
 			
+			// TODO find a better way to look for keywords in the effect (we are now searching for "<b>", becuase every keyword has them)
+			if ($support == "Any keyword") $support_query = '`Effect` LIKE "%<b>%"';
+			elseif ($support == "No keywords") $support_query = '`Effect` NOT LIKE "%<b>%"';
+			elseif ($support != "none") $support_query = '`Effect` LIKE "%'.$db->Escape($support).'%"';
+			else $support_query = "1";
+			
 			switch ($cost)
 			{
 				case "Red": $cost_query = "`Gems` = 0 AND `Recruits` = 0 AND `Bricks` > 0"; break;
@@ -45,7 +51,7 @@
 				default: $cost_query = "1"; break;
 			}
 			
-			$result = $db->Query("SELECT `cards`.`CardID` FROM `cards` WHERE ".$class_query." AND ".$advanced_query." AND ".$keyword_query." AND ".$cost_query." ORDER BY `Name` ASC");
+			$result = $db->Query("SELECT `cards`.`CardID` FROM `cards` WHERE ".$class_query." AND ".$advanced_query." AND ".$keyword_query." AND ".$cost_query." AND ".$support_query." ORDER BY `Name` ASC");
 			
 			if (!$result) return false;
 			
@@ -75,39 +81,15 @@
 					$keywords[$word] = $word; // removes duplicates
 				}
 			}
-			asort($keywords);
+			sort($keywords);
 			
 			return $keywords;
 		}
 		
-		// returns all advanced filter options
-		public function ListAdvanced()
+		// returns token keywords
+		public function TokenKeywords()
 		{
-			// left column contains option values, right column contains option names		
-			$advanced_options = array(
-			"none" => "No adv. filters",
-			"Attack:" => "Attack",
-			"Wall: +" => "Wall +", 
-			"Wall: -" => "Wall -", 
-			"Tower: +" => "Tower +", 
-			"Tower: -" => "Tower -", 
-			"Stock: +" => "Stock +", 
-			"Stock: -" => "Stock -", 
-			"Magic: +" => "Magic +", 
-			"Magic: -" => "Magic -", 
-			"Quarry: +" => "Quarry +", 
-			"Quarry: -" => "Quarry -", 
-			"Dungeon: +" => "Dungeon +", 
-			"Dungeon: -" => "Dungeon -", 
-			"Gems: +" => "Gems +", 
-			"Gems: -" => "Gems -", 
-			"Bricks: +" => "Bricks +", 
-			"Bricks: -" => "Bricks -", 
-			"Recruits: +" => "Recruits +", 
-			"Recruits: -" => "Recruits -"
-			);
-			
-			return $advanced_options;
+			return array('Alliance', 'Barbarian', 'Brigand', 'Beast', 'Burning', 'Holy', 'Mage', 'Soldier', 'Titan', 'Undead', 'Unliving');
 		}
 	}
 	
@@ -189,7 +171,7 @@
 		
 		public function CardString($c_text, $c_img, $c_keyword, $c_oldlook)
 		{
-			global $all_colors;
+			$all_colors = array("RosyBrown"=>"#bc8f8f", "DeepSkyBlue"=>"#00bfff", "DarkSeaGreen"=>"#8fbc8f", "DarkRed"=>"#8b0000", "HotPink"=>"#ff69b4", "LightBlue"=>"#add8e6", "LightGreen"=>"#90ee90", "Gainsboro"=>"#dcdcdc", "DeepSkyBlue"=>"#00bfff", "DarkGoldenRod"=>"#b8860b");
 			
 			$cs = '';
 		

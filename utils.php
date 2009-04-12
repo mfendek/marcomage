@@ -17,23 +17,68 @@
 	/// date and time manipulation
 
 	/// Returns zone-adjusted and date-formatted time.
-	/// $time is the unix timestamp, normalized to UTC
-	/// $zone is the time zone string (preferably "Etc/GMT+?")
+	/// $time is the datetime string (in a strtotime() compatible format)
+	/// $zone is the time zone string (Etc/UTC and such)
 	/// $format is the format string for date()
 	/// NOTE: If using Etc/GMT, see http://bugs.php.net/bug.php?id=34710 !
 	function ZoneTime($time, $zone, $format)
 	{
-		$date = new DateTime("@".$time, new DateTimeZone('UTC'));
+		$date = new DateTime($time, new DateTimeZone('UTC'));
 		$date->setTimeZone(new DateTimeZone($zone));
 		return $date->format($format);
 	}
 	
 	function CheckDateInput($year, $month, $day) // check date input
 	{
-		if (($year == "") OR ($month == "") OR ($day == "")) return "Invalid input";
+		if( $year == '0000' and $month == '00' and $day == '00' ) return "";
 		elseif (!(is_numeric($year) AND is_numeric($month) AND is_numeric($day))) return "Invalid numeric input";
 		elseif (!checkdate((int)$month, (int)$day, (int)$year)) return "Invalid date";
 		else return "";
+	}
+
+	////////////////////////
+	/// XSL Transformations
+
+	function array2xml(array $array)
+	{
+		$text = "";
+		foreach($array as $key => $value)
+		{
+			if( is_numeric($key) )
+				$key = "k".$key;
+
+			if( !is_array($value) ) 
+				$text .= "<$key>".htmlencode($value)."</$key>"; 
+			else
+				$text .= "<$key>".array2xml($value)."</$key>";
+		}
+		return $text;
+	}
+
+	function XSLT($xslpath, array $params)
+	{
+		// set up xslt
+		$xsldoc = new DOMDocument();
+		$xsldoc->load($xslpath);
+		$xsl = new XSLTProcessor();
+		$xsl->importStyleSheet($xsldoc);
+		$xsl->registerPHPFunctions();
+
+		// set up the params tree
+		$tree = '<?xml version="1.0" encoding="UTF-8"?>'.'<params>'.array2xml($params).'</params>';
+
+		// convert tree into xml document
+		$xmldoc = new DOMDocument();
+		$xmldoc->loadXML($tree, LIBXML_NOERROR);
+		if( $xmldoc->hasChildNodes() == FALSE )
+		{
+			echo 'utils::XSLT : failed to load $params, check if there aren\'t any invalid characters in key names.'."\n\n";
+			print_r($params);
+			die();
+		}
+	
+		// generate output
+		return $xsl->transformToXML($xmldoc);
 	}
 
 ?>

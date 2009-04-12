@@ -22,11 +22,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT MAX(`Number`)+1 as number FROM `chats` WHERE `GameID` = "'.$gameid.'"');
-			$data = $result->Next();
-			$number = (int)$data['number'];
-			
-			$result = $db->Query('INSERT INTO `chats` (`GameID`, `Number`, `Name`, `Message`) VALUES ("'.$gameid.'", "'.$number.'", "'.$db->Escape($name).'", "'.$db->Escape($message).'")');
+			$result = $db->Query('INSERT INTO `chats` (`GameID`, `Name`, `Message`) VALUES ("'.$gameid.'", "'.$db->Escape($name).'", "'.$db->Escape($message).'")');
 			if (!$result) return false;
 			
 			return true;
@@ -45,7 +41,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `Name`, `Message`, `Timestamp` FROM `chats` WHERE `GameID` = "'.$gameid.'" ORDER BY `Number` '.$order.' LIMIT 0 , 21');
+			$result = $db->Query('SELECT `Name`, `Message`, `Timestamp` FROM `chats` WHERE `GameID` = "'.$gameid.'" ORDER BY `Timestamp` '.$order.' LIMIT 0 , 21');
 			if (!$result) return false;
 			
 			$messages = array();

@@ -60,30 +60,16 @@ CREATE TABLE `games` (
 
 -- --------------------------------------------------------
 
--- 
--- Table structure for table `html`
--- 
-
-CREATE TABLE `html` (
-  `Section` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `Date` datetime NOT NULL,
-  `Title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `Content` text COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`Section`,`Date`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
+--
 -- Table structure for table `chats`
 -- 
 
 CREATE TABLE `chats` (
   `GameID` int(10) unsigned NOT NULL,
-  `Number` int(10) unsigned NOT NULL,
+  `Timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Name` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `Message` text COLLATE utf8_unicode_ci NOT NULL,
-  `Timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`GameID`,`Number`)
+  PRIMARY KEY (`GameID`,`Timestamp`,`Name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -96,10 +82,10 @@ CREATE TABLE `logins` (
   `Username` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `Password` char(32) COLLATE utf8_unicode_ci NOT NULL,
   `SessionID` int(10) unsigned NOT NULL DEFAULT '0',
-  `UserType` char(10) collate utf8_unicode_ci NOT NULL default 'user',
+  `UserType` char(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'user',
   `Last IP` char(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0.0.0.0',
-  `Last Query` int(10) unsigned NOT NULL DEFAULT '0',
-  `PreviousLogin` int(10) unsigned NOT NULL default '0',
+  `Last Query` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `PreviousLogin` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -110,10 +96,10 @@ CREATE TABLE `logins` (
 -- 
 
 CREATE TABLE `novels` (
-  `Novelname` char(30) collate utf8_unicode_ci NOT NULL,
-  `Chapter` char(30) collate utf8_unicode_ci NOT NULL,
+  `Novelname` char(30) COLLATE utf8_unicode_ci NOT NULL,
+  `Chapter` char(30) COLLATE utf8_unicode_ci NOT NULL,
   `Page` int(10) unsigned NOT NULL,
-  `Content` text collate utf8_unicode_ci NOT NULL,
+  `Content` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`Novelname`,`Chapter`,`Page`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -138,28 +124,28 @@ CREATE TABLE `scores` (
 -- 
 
 CREATE TABLE `settings` (
-  `Username` char(20) collate utf8_unicode_ci NOT NULL,
-  `Firstname` char(20) collate utf8_unicode_ci NOT NULL,
-  `Surname` char(20) collate utf8_unicode_ci NOT NULL,
-  `Birthdate` date NOT NULL default '0000-00-00',
-  `Gender` char(10) collate utf8_unicode_ci NOT NULL,
-  `Email` char(30) collate utf8_unicode_ci NOT NULL,
-  `Imnumber` char(20) collate utf8_unicode_ci NOT NULL,
-  `Country` char(30) collate utf8_unicode_ci NOT NULL default 'Unknown',
-  `Hobby` varchar(100) collate utf8_unicode_ci NOT NULL,
-  `Avatar` char(50) collate utf8_unicode_ci NOT NULL default 'noavatar.jpg',
-  `Timezone` char(3) collate utf8_unicode_ci NOT NULL default '0',
-  `Minimize` char(3) collate utf8_unicode_ci NOT NULL default 'no',
-  `Cardtext` char(3) collate utf8_unicode_ci NOT NULL default 'yes',
-  `Images` char(3) collate utf8_unicode_ci NOT NULL default 'yes',
-  `Keywords` char(3) collate utf8_unicode_ci NOT NULL default 'yes',
-  `Nationality` char(3) collate utf8_unicode_ci NOT NULL default 'no',
-  `Chatorder` char(3) collate utf8_unicode_ci NOT NULL default 'no',
-  `Avatargame` char(3) collate utf8_unicode_ci NOT NULL default 'yes',
-  `Avatarlist` char(3) collate utf8_unicode_ci NOT NULL default 'yes',
-  `Showdead` char(3) collate utf8_unicode_ci NOT NULL default 'no',
-  `Correction` char(3) collate utf8_unicode_ci NOT NULL default 'no',
-  `OldCardLook` char(3) collate utf8_unicode_ci NOT NULL default 'no',
+  `Username` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `Firstname` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `Surname` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `Birthdate` date NOT NULL DEFAULT '0000-00-00',
+  `Gender` char(10) COLLATE utf8_unicode_ci NOT NULL,
+  `Email` char(30) COLLATE utf8_unicode_ci NOT NULL,
+  `Imnumber` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `Country` char(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Unknown',
+  `Hobby` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `Avatar` char(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'noavatar.jpg',
+  `Timezone` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `Minimize` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `Cardtext` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
+  `Images` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
+  `Keywords` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
+  `Nationality` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `Chatorder` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `Avatargame` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
+  `Avatarlist` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
+  `Showdead` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `Correction` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `OldCardLook` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY  (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -171,13 +157,13 @@ CREATE TABLE `settings` (
 
 CREATE TABLE `messages` (
   `MessageID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `Author` char(20) collate utf8_unicode_ci NOT NULL,
-  `Recipient` char(20) collate utf8_unicode_ci NOT NULL,
-  `Subject` varchar(30) collate utf8_unicode_ci NOT NULL,
-  `Content` text collate utf8_unicode_ci NOT NULL,
-  `AuthorDelete` char(3) collate utf8_unicode_ci NOT NULL default 'no',
-  `RecipientDelete` char(3) collate utf8_unicode_ci NOT NULL default 'no',
-  `Unread` char(3) collate utf8_unicode_ci NOT NULL default 'yes',
+  `Author` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `Recipient` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `Subject` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `Content` text COLLATE utf8_unicode_ci NOT NULL,
+  `AuthorDelete` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `RecipientDelete` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `Unread` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
   `GameID` int(10) unsigned NOT NULL DEFAULT '0',
   `Created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY  (`MessageID`)
@@ -191,10 +177,10 @@ CREATE TABLE `messages` (
 
 CREATE TABLE `forum_posts` (
   `PostID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `Author` char(20) collate utf8_unicode_ci NOT NULL,
-  `Content` text collate utf8_unicode_ci NOT NULL,
+  `Author` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `Content` text COLLATE utf8_unicode_ci NOT NULL,
   `ThreadID` int(10) NOT NULL,
-  `Deleted` char(3) collate utf8_unicode_ci NOT NULL default 'no',
+  `Deleted` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `Created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY  (`PostID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
@@ -207,11 +193,11 @@ CREATE TABLE `forum_posts` (
 
 CREATE TABLE `forum_threads` (
   `ThreadID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `Title` varchar(50) collate utf8_unicode_ci NOT NULL,
-  `Author` char(20) collate utf8_unicode_ci NOT NULL,
-  `Priority` char(15) collate utf8_unicode_ci NOT NULL default 'normal',
-  `Locked` char(3) collate utf8_unicode_ci NOT NULL default 'no',
-  `Deleted` char(3) collate utf8_unicode_ci NOT NULL default 'no',
+  `Title` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `Author` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `Priority` char(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'normal',
+  `Locked` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `Deleted` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `SectionID` int(10) NOT NULL,
   `Created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY  (`ThreadID`)
@@ -225,8 +211,8 @@ CREATE TABLE `forum_threads` (
 
 CREATE TABLE `forum_sections` (
   `SectionID` int(10) unsigned NOT NULL,
-  `SectionName` varchar(50) collate utf8_unicode_ci NOT NULL,
-  `Description` varchar(80) collate utf8_unicode_ci NOT NULL,
+  `SectionName` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `Description` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`SectionID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

@@ -130,31 +130,15 @@
 		{	
 			$db = $this->db;
 						
-			$result = $db->Query('SELECT `PostID`, `Author`, `Content`, `Created` FROM `forum_posts` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = "no" ORDER BY `Created` ASC LIMIT '.(POSTS_PER_PAGE * $page).' , '.POSTS_PER_PAGE.'');
+			$result = $db->Query('SELECT `PostID`, `Author`, `Content`, `Created`, `Avatar` FROM `forum_posts` JOIN `settings` ON `forum_posts`.`Author` = `settings`.`Username` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = "no" ORDER BY `Created` ASC LIMIT '.(POSTS_PER_PAGE * $page).' , '.POSTS_PER_PAGE.'');
 			
 			if (!$result) return false;
 			
 			$posts = array();
-			for ($i = 1; $i <= $result->Rows(); $i++)
-				$posts[$i] = $result->Next();
+			while( $data = $result->Next() )
+				$posts[] = $data;
 			
 			return $posts;
-		}
-		
-		public function ListPosts_Avatars($thread_id, $page)
-		{	
-			$db = $this->db;
-			
-			// query optimized - only neccesary	data is retrieved
-			$result = $db->Query('SELECT `Author`, `Avatar` FROM (SELECT DISTINCT `Author` FROM (SELECT `Author` FROM `forum_posts` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = "no" LIMIT '.(POSTS_PER_PAGE * $page).' , '.POSTS_PER_PAGE.') as `posts_temp`) as `posts` INNER JOIN (SELECT `Username`, `Avatar` FROM `settings`) as `settings` ON `posts`.`Author` = `settings`.`Username`');
-			
-			if (!$result) return false;
-			
-			$avatars = array();
-			while( $data = $result->Next() )
-				$avatars[$data['Author']] = $data['Avatar'];				
-			
-			return $avatars;
 		}
 		
 		public function CountPages($thread_id)

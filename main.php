@@ -16,7 +16,8 @@
 	define("THREADS_PER_PAGE", 30);
 	define("POSTS_PER_PAGE", 20);
 	define("POST_LENGTH", 4000);
-	$all_colors = array("RosyBrown"=>"#bc8f8f", "DeepSkyBlue"=>"#00bfff", "DarkSeaGreen"=>"#8fbc8f", "DarkRed"=>"#8b0000", "HotPink"=>"#ff69b4", "LightBlue"=>"#add8e6", "LightGreen"=>"#90ee90", "Gainsboro"=>"#dcdcdc", "DeepSkyBlue"=>"#00bfff", "DarkGoldenRod"=>"#b8860b");
+	define("PLAYERS_PER_PAGE", 50);
+	define("MESSAGES_PER_PAGE", 15);
 	
 	require_once('CDatabase.php');
 	require_once('CLogin.php');
@@ -34,7 +35,6 @@
 	require_once('CThread.php');
 	require_once('CForum.php');
 	require_once('utils.php');
-	require_once('Presentation.php');
 	require_once('Access.php');
 	
 	$db = new CDatabase("localhost", "arcomage", "", "arcomage");
@@ -75,7 +75,7 @@
 			{
 				$current = "Registration";
 			}
-			elseif (!isset($_POST['NewUsername']) || !isset($_POST['NewPassword']) || !isset ($_POST['NewPassword2']) || $_POST['NewUsername'] == '' || $_POST['NewPassword'] == '' || $_POST['NewPassword2'] == '')
+			elseif (!isset($_POST['NewUsername']) || !isset($_POST['NewPassword']) || !isset ($_POST['NewPassword2']) || trim($_POST['NewUsername']) == '' || trim($_POST['NewPassword']) == '' || trim($_POST['NewPassword2']) == '')
 			{
 				$current = "Registration";
 				$error = "Please enter all required inputs.";
@@ -134,8 +134,8 @@
 			break;
 		}
 
-		$timezone = $player->GetSetting("Timezone");
-		$db->Query("SET time_zone='".$timezone.":00'");
+		date_default_timezone_set("Etc/UTC");
+		$db->Query("SET time_zone='Etc/UTC'");
 
 		// login page messages
 		if (isset($_POST['Login']))
@@ -329,7 +329,7 @@
 					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
 					
 					// do not post empty messages (prevents accidental send)
-					if ($msg == '') { /*$error = 'You can't send empty chat messages.';*/ $current = 'Game'; break; }
+					if (trim($msg) == '') { /*$error = 'You can't send empty chat messages.';*/ $current = 'Game'; break; }
 					
 					// check access rights
 					if (!$access_rights[$player->Type()]["chat"]) { $error = 'Access denied.'; $current = 'Game'; break; }
@@ -405,9 +405,13 @@
 							$score1->SaveScore();
 							$score2->SaveScore();
 
-							// send battle report messages
-							$messagedb->SendMessage("MArcomage", $player1, "Battle report", "Opponent: $player2\nOutcome: {$game->GameData->Outcome}\n");
-							$messagedb->SendMessage("MArcomage", $player2, "Battle report", "Opponent: $player1\nOutcome: {$game->GameData->Outcome}\n");
+							// send battle report message
+							$opponent = $playerdb->GetPlayer(($player1 != $player->Name()) ? $player1 : $player2);
+							$opponent_rep = $opponent->GetSetting("Reports");
+							$player_rep = $player->GetSetting("Reports");
+							$outcome = $game->GameData->Outcome;
+
+							$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome);
 						}
 						else
 						{
@@ -450,6 +454,17 @@
 						$score = $scoredb->GetScore($data->Winner);
 						$score->ScoreData->Wins++;
 						$score->SaveScore();
+
+						$player1 = $game->Name1();
+						$player2 = $game->Name2();
+
+						// send battle report message
+						$opponent = $playerdb->GetPlayer(($player1 != $player->Name()) ? $player1 : $player2);
+						$opponent_rep = $opponent->GetSetting("Reports");
+						$player_rep = $player->GetSetting("Reports");
+						$outcome = $game->GameData->Outcome;
+
+						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome);
 					}
 					/*else $error = $result;*/
 					
@@ -477,6 +492,16 @@
 					
 					if ($result == 'OK')
 					{
+						$player1 = $game->Name1();
+						$player2 = $game->Name2();
+
+						// send battle report message
+						$opponent = $playerdb->GetPlayer(($player1 != $player->Name()) ? $player1 : $player2);
+						$opponent_rep = $opponent->GetSetting("Reports");
+						$player_rep = $player->GetSetting("Reports");
+						$outcome = $game->GameData->Outcome;
+
+						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome);
 					}
 					/*else $error = $result;*/
 					
@@ -519,6 +544,14 @@
 						
 						$score1->SaveScore();
 						$score2->SaveScore();
+
+						// send battle report message
+						$opponent = $playerdb->GetPlayer(($player1 != $player->Name()) ? $player1 : $player2);
+						$opponent_rep = $opponent->GetSetting("Reports");
+						$player_rep = $player->GetSetting("Reports");
+						$outcome = $game->GameData->Outcome;
+
+						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome);
 					}
 					/*else $error = $result;*/
 					
@@ -601,7 +634,9 @@
 					$game->StartGame();
 					$game->SaveGame();
 					$messagedb->CancelChallenge($game->ID());
-					$messagedb->SendMessage("MArcomage", $opponent, "Challenge accepted", 'Player '.$player->Name().' has accepted your challenge.');
+
+					if ($playerdb->GetPlayer($opponent)->GetSetting("Reports") == "yes")
+						$messagedb->SendMessage("MArcomage", $opponent, "Challenge accepted", 'Player '.$player->Name().' has accepted your challenge.');
 					
 					$information = 'You have accepted a challenge from '.htmlencode($opponent).'.';
 					$current = 'Challenges';
@@ -629,7 +664,9 @@
 					$gamedb->DeleteGame2($opponent, $player->Name());
 					$chatdb->DeleteChat($game->ID());
 					$messagedb->CancelChallenge($game->ID());
-					$messagedb->SendMessage("MArcomage", $opponent, "Challenge rejected", 'Player '.$player->Name().' has rejected your challenge.');
+
+					if ($playerdb->GetPlayer($opponent)->GetSetting("Reports") == "yes")
+						$messagedb->SendMessage("MArcomage", $opponent, "Challenge rejected", 'Player '.$player->Name().' has rejected your challenge.');
 					
 					$information = 'You have rejected a challenge.';
 					$current = 'Challenges';
@@ -645,7 +682,7 @@
 				
 					// this is only used to assist the function below
 					// do not remove two-step challenging mechanism, we will make use of it when challenges will be transformed to messages
-					$current = 'Details';
+					$current = 'Profile';
 					break;
 				}
 				
@@ -663,13 +700,13 @@
 					$deck = $deckdb->GetDeck($player->Name(), $deckname);
 					
 					// check if such deck exists
-					if (!$deck) { $error = 'Deck '.$deckname.' does not exist!'; $current = 'Details'; break; }
+					if (!$deck) { $error = 'Deck '.$deckname.' does not exist!'; $current = 'Profile'; break; }
 					
 					// check if the deck is ready (all 45 cards)
-					if (!$deck->isReady()) { $error = 'Deck '.$deckname.' is not yet ready for gameplay!'; $current = 'Details'; break; }
+					if (!$deck->isReady()) { $error = 'Deck '.$deckname.' is not yet ready for gameplay!'; $current = 'Profile'; break; }
 					
 					// check if such opponent exists
-					if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Details'; break; }
+					if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Profile'; break; }
 					
 					// check if that opponent was already challenged, or if there is a game already in progress
 					if ($gamedb->GetGame2($player->Name(), $opponent)) { $error = 'You are already playing against '.htmlencode($opponent).'!'; $current = 'Games'; break; }
@@ -682,13 +719,13 @@
 					
 					// create a new challenge
 					$game = $gamedb->CreateGame($player->Name(), $opponent, $deck->DeckData);
-					if (!$game) { $error = 'Failed to create new game!'; $current = 'Details'; break; }
+					if (!$game) { $error = 'Failed to create new game!'; $current = 'Profile'; break; }
 					
 					$res = $messagedb->SendChallenge($player->Name(), $opponent, $_POST['Content'], $game->ID());
-					if (!$res) { $error = 'Failed to create new challenge!'; $current = 'Details'; break; }
+					if (!$res) { $error = 'Failed to create new challenge!'; $current = 'Profile'; break; }
 					
 					$information = 'You have challenged '.htmlencode($opponent).'. Waiting for reply.';
-					$current = 'Details';
+					$current = 'Profile';
 					break;
 				}
 				
@@ -700,15 +737,15 @@
 					$_POST['cur_player'] = $opponent;
 					
 					// check if such opponent exists
-					if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Details'; break; }
+					if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Profile'; break; }
 					
 					$game = $gamedb->GetGame2($player->Name(), $opponent);
 					
 					// check if the challenge exists
-					if (!$game) { $error = 'No such challenge!'; $current = 'Details'; break; }
+					if (!$game) { $error = 'No such challenge!'; $current = 'Profile'; break; }
 					
 					// check if the game is a a challenge (and not a game in progress)
-					if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Details'; break; }
+					if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Profile'; break; }
 					
 					// delete t3h challenge/game entry
 					$gamedb->DeleteGame2($player->Name(), $opponent);
@@ -716,7 +753,7 @@
 					$messagedb->CancelChallenge($game->ID());
 					
 					$information = 'You have withdrawn a challenge.';
-					$current = 'Details';
+					$current = 'Profile';
 					break;
 				}
 				
@@ -728,7 +765,7 @@
 					$_POST['cur_player'] = $opponent;
 					
 					// check if such opponent exists
-					if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Details'; break; }
+					if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Profile'; break; }
 					
 					$game = $gamedb->GetGame2($player->Name(), $opponent);
 					
@@ -771,8 +808,6 @@
 					
 					if (!$message) { $error = "No such message!"; $current = "Challenges"; break; }
 					
-					$current_location = $_POST['CurrentLocation'];
-					
 					$current = 'Message_details';
 					break;
 				}
@@ -788,8 +823,6 @@
 					
 					if (!$message) { $error = "No such message!"; $current = "Challenges"; break; }
 					
-					$current_location = $_POST['CurrentLocation'];
-					
 					$current = 'Message_details';
 					break;
 				}
@@ -801,8 +834,6 @@
 					$message = $messagedb->GetMessage($messageid, $player->Name());
 					
 					if (!$message) { $error = "No such message!"; $current = "Challenges"; break; }
-					
-					$current_location = $_POST['CurrentLocation'];
 					
 					$current = 'Message_details';
 					break;
@@ -816,7 +847,6 @@
 					
 					if (!$message) { $error = "No such message!"; $current = "Challenges"; break; }
 					
-					$current_location = $_POST['CurrentLocation'];
 					$information = "Message deleted";
 					
 					$current = 'Challenges';
@@ -825,8 +855,6 @@
 				
 				if ($message == 'message_cancel') // cancel new message creation
 				{
-					$current_location = $_POST['CurrentLocation'];
-					
 					$current = 'Challenges';
 					break;
 				}
@@ -839,7 +867,7 @@
 					// check access rights
 					if (!$access_rights[$player->Type()]["messages"]) { $error = 'Access denied.'; $current = 'Challenges'; break; }
 				
-					if (($_POST['Subject'] == "") AND ($_POST['Content'] == "")) { $error = "No message input specified"; $current = "Message_new"; break; }
+					if ((trim($_POST['Subject']) == "") AND (trim($_POST['Content']) == "")) { $error = "No message input specified"; $current = "Message_new"; break; }
 					
 					if (strlen($_POST['Content']) > MESSAGE_LENGTH) { $error = "Message too long"; $current = "Message_new"; break; }
 				
@@ -847,7 +875,7 @@
 					
 					if (!$message) { $error = "Failed to send message"; $current = "Challenges"; break; }
 					
-					$current_location = "sent_mail";
+					$_POST['CurrentLocation'] = "sent_mail";
 					$information = "Message sent";
 					
 					$current = 'Challenges';
@@ -880,12 +908,20 @@
 				
 				if ($message == 'inbox') // view messages to player
 				{
+					$_POST['CurrentLocation'] = "inbox";
+					$_POST['CurrentFilterDate'] = "none";
+					$_POST['CurrentFilterName'] = "none";
+					$_POST['CurrentMesPage'] = 0;
 					$current = 'Challenges';
 					break;
 				}
 				
 				if ($message == 'sent_mail') // view messages from player
 				{
+					$_POST['CurrentLocation'] = "sent_mail";
+					$_POST['CurrentFilterDate'] = "none";
+					$_POST['CurrentFilterName'] = "none";
+					$_POST['CurrentMesPage'] = 0;
 					$current = 'Challenges';
 					break;
 				}
@@ -894,7 +930,10 @@
  				{
  					// check access rights
  					if (!$access_rights[$player->Type()]["see_all_messages"]) { $error = 'Access denied.'; $current = 'Challenges'; break; }
- 																										
+					$_POST['CurrentLocation'] = "all_mail";
+ 					$_POST['CurrentFilterDate'] = "none";
+					$_POST['CurrentFilterName'] = "none";
+					$_POST['CurrentMesPage'] = 0;
  					$current = 'Challenges';
  					break;
  				}
@@ -907,35 +946,59 @@
 						$condition = array_shift(array_keys($value));
 						$order = $order_val;
 						
-						// preserve filter configuration
-						$cur_filter = $_POST['CurrentFilter'];
-						$cur_filter_val = $_POST['CurrentFilterVal'];
-						$current_location = $_POST['CurrentLocation'];
-						
 						$current = "Challenges";
 						
 						break;
 					}
 				}
 				
-				if ($message == 'message_filter_name') // use name filter
+				if ($message == 'message_filter') // use filter
 				{
-					$cur_filter = "Name";
-					$cur_filter_val = postdecode($_POST['name_filter']);
-					$current_location = $_POST['CurrentLocation'];
+					$_POST['CurrentFilterDate'] = $_POST['date_filter'];
+					$_POST['CurrentFilterName'] = ((isset($_POST['name_filter'])) ? postdecode($_POST['name_filter']) : "none");
+					$_POST['CurrentMesPage'] = 0;
 					
 					$current = 'Challenges';
 					break;
 				}
 				
-				if ($message == 'message_filter_date') // use name filter
+				if ($message == 'select_page_mes') // Messages -> select page (previous and next button)
 				{
-				
-					$cur_filter = "Created";
-					$cur_filter_val = postdecode($_POST['date_filter']);
-					$current_location = $_POST['CurrentLocation'];
+					$_POST['CurrentMesPage'] = array_shift(array_keys($value));
+					$current = "Challenges";
 					
-					$current = 'Challenges';
+					break;
+				}
+				
+				if ($message == 'Jump_messages') // Messages -> select page (Jump to page)
+				{
+					$_POST['CurrentMesPage'] = $_POST['jump_to_page'];
+					$current = "Challenges";
+					
+					break;
+				}
+				
+				if ($message == 'Delete_mass') // Messages -> delete selected messages
+				{
+					$deleted_messages = array();
+					
+					for ($i = 1; $i<= MESSAGES_PER_PAGE; $i++)
+						if (isset($_POST['Mass_delete_'.$i]))
+						{
+							$current_message = array_shift(array_keys($_POST['Mass_delete_'.$i]));
+							array_push($deleted_messages, $current_message);
+						}
+					
+					if (count($deleted_messages) > 0)
+					{
+						$result = $messagedb->MassDeleteMessage($deleted_messages, $player->Name());
+						if (!$result) { $error = "Failed to delete messages"; $current = "Challenges"; break; }
+						
+						$information = "Messages deleted";
+					}
+					else $warning = "No messages selected";
+					
+					$current = "Challenges";
 					break;
 				}
 				// end message-related messages
@@ -945,8 +1008,8 @@
 				{
 					$opponent = postdecode(array_shift(array_keys($value)));
 					
-					$_POST['Details'] = $opponent;
-					$current = 'Details';
+					$_POST['Profile'] = $opponent;
+					$current = 'Profile';
 					break;
 				}
 				
@@ -954,17 +1017,17 @@
 				{
 					$opponent = postdecode(array_shift(array_keys($value)));
 					
-					$_POST['Details'] = $opponent;
+					$_POST['Profile'] = $opponent;
 					
 					// check access rights
-					if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Details'; break; }
+					if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Profile'; break; }
 										
 					$target = $playerdb->GetPlayer($opponent);
 					$target->ChangeAccessRights($_POST['new_access']);
 					
 					$information = 'Access rights changed.';
 								
-					$current = 'Details';
+					$current = 'Profile';
 					break;
 				}
 				// end view user details
@@ -979,7 +1042,8 @@
 					$_POST['CostFilter'] = 'none';
 					$_POST['KeywordFilter'] = 'none';
 					$_POST['AdvancedFilter'] = 'none';
-					$current = 'Deck';
+					$_POST['SupportFilter'] = 'none';
+					$current = 'Deck_edit';
 					break;
 				}
 				
@@ -993,7 +1057,7 @@
 					$card = $carddb->GetCard($cardid);
 					$classname = $card->CardData->Class;
 					
-					$current = 'Deck';
+					$current = 'Deck_edit';
 					
 					// verify if the card id is valid
 					if ($classname == 'None') break;
@@ -1017,14 +1081,87 @@
 					break;
 				}
 				
+				if ($message == 'set_tokens') // Decks -> Set tokens
+				{
+					$deckname = $_POST['CurrentDeck'];
+					$deck = $player->GetDeck($deckname);
+					
+					$current = 'Deck_edit';
+					
+					// read tokens from inputs
+					$tokens = array();
+					foreach ($deck->DeckData->Tokens as $token_index => $token)
+						$tokens[$token_index] = $_POST['Token'.$token_index];
+					
+					$length = count($tokens);
+					
+					// remove empty tokens
+					$tokens = array_diff($tokens, array('none'));
+					
+					// remove duplicates
+					$tokens = array_unique($tokens);
+					$tokens = array_pad($tokens, $length, 'none');
+					
+					// sort tokens, add consistent keys
+					$i = 1;
+					$sorted_tokens = array();
+					foreach ($tokens as $token)
+					{
+						$sorted_tokens[$i] = $token;
+						$i++;
+					}
+					
+					// save token data
+					$deck->DeckData->Tokens = $sorted_tokens;
+					
+					$deck->SaveDeck();
+					
+					break;
+				}
+				
+				if ($message == 'reset_tokens') // Decks -> Reset tokens
+				{
+					$deckname = $_POST['CurrentDeck'];
+					$deck = $player->GetDeck($deckname);
+					
+					$current = 'Deck_edit';
+					
+					$deck->DeckData->Tokens = array(1 => 'none', 'none', 'none');
+					
+					$deck->SaveDeck();
+					
+					break;
+				}
+				
+				if ($message == 'auto_tokens') // Decks -> Assign tokens automatically
+				{
+					$deckname = $_POST['CurrentDeck'];
+					$deck = $player->GetDeck($deckname);
+					
+					$current = 'Deck_edit';
+					
+					$tokens_temp = $deck->CalculateKeywords();
+					$tokens = array();
+					
+					// adjust array keys
+					foreach ($tokens_temp as $key => $value) $tokens[$key + 1] = $value;
+					
+					$deck->DeckData->Tokens = $tokens;
+					
+					$deck->SaveDeck();
+					
+					break;
+				}
+				
 				if ($message == 'filter') // Decks -> Modify this deck -> Apply filters
 				{
 					$_POST['CostFilter'] = $_POST['selected_cost'];
 					$_POST['KeywordFilter'] = $_POST['selected_keyword'];
 					$_POST['ClassFilter'] = $_POST['selected_rarity'];
 					$_POST['AdvancedFilter'] = $_POST['advanced_filter'];
+					$_POST['SupportFilter'] = $_POST['support_filter'];
                     
-					$current = 'Deck';
+					$current = 'Deck_edit';
 					
 					break;
 				}
@@ -1038,7 +1175,7 @@
 					$deck = $player->GetDeck($deckname);
 					$card = $carddb->GetCard($cardid);
 					
-					$current = 'Deck';
+					$current = 'Deck_edit';
 					
 					$cardclass = $card->CardData->Class;
 					
@@ -1061,7 +1198,7 @@
 				{
 					// only symbolic functionality... rest is handled below
 					$deckname = $_POST['CurrentDeck'];
-					$current = 'Deck';
+					$current = 'Deck_edit';
 					
 					break;
 				}
@@ -1071,11 +1208,13 @@
 					$deckname = $_POST['CurrentDeck'];
 					$deck = $player->GetDeck($deckname);
 					
-					$current = 'Deck';
+					$current = 'Deck_edit';
 					
 					$deck->DeckData->Common   = array(1=>0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 					$deck->DeckData->Uncommon = array(1=>0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 					$deck->DeckData->Rare     = array(1=>0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+					
+					$deck->DeckData->Tokens = array(1 => 'none', 'none', 'none');
 					
 					$deck->SaveDeck();
 					
@@ -1086,7 +1225,7 @@
 				{
 					// only symbolic functionality... rest is handled below
 					$deckname = $_POST['CurrentDeck'];
-					$current = 'Deck';
+					$current = 'Deck_edit';
 					
 					break;
 				}
@@ -1096,7 +1235,7 @@
 					$deckname = $_POST['CurrentDeck'];
 					$deck = $player->GetDeck($deckname);
 					
-					$current = 'Deck';
+					$current = 'Deck_edit';
 					
 					$common_cards = $carddb->GetList("Common");
 					$uncommon_cards = $carddb->GetList("Uncommon");
@@ -1132,7 +1271,7 @@
 					$deckname = $_POST['CurrentDeck'];
 					$deck = $player->GetDeck($deckname);
 					
-					$current = 'Deck';
+					$current = 'Deck_edit';
 					
 					$common_cards = $carddb->GetList("Common");
 					$uncommon_cards = $carddb->GetList("Uncommon");
@@ -1172,12 +1311,12 @@
 					if ($pos !== false)
 					{
 						$error = 'Cannot change deck name, it is already used by another deck.';
-						$current = 'Deck';
+						$current = 'Deck_edit';
 					}
-					elseif ($newname == '')
+					elseif (trim($newname) == '')
 					{
 						$error = 'Cannot change deck name, invalid input.';
-						$current = 'Deck';
+						$current = 'Deck_edit';
 					}
 					else
 					{
@@ -1189,7 +1328,7 @@
 							$_POST['CurrentDeck'] = $newname;
 							
 							$information = "Deck saved.";
-							$current = 'Deck';
+							$current = 'Deck_edit';
 						}
 						else
 						{
@@ -1242,16 +1381,14 @@
 					break;
 				}
 				
-				//these two cases are similiar - one is the page navigation that is at the top and the other one is at the bottom. We cannot use same input buttons a selects for both navigations, because then user would have to select desired page at BOTH select elements, otherwise a conflict is inevitable. Therefore we split this similiar case into two, separate ones.				
-				for ($i = 1; $i <= 2; $i++)
-					if ($message == 'Jump'.$i) // Novels -> select page (Jump to page)
-					{
-						$_POST['current_page'] = $_POST['jump_to_page'.$i];
-						
-						$current = 'Novels';
-						
-						break;
-					}
+				if ($message == 'Jump') // Novels -> select page (Jump to page)
+				{
+					$_POST['current_page'] = $_POST['jump_to_page'];
+					
+					$current = 'Novels';
+					
+					break;
+				}
 				
 				// end novels related messages
 				
@@ -1263,24 +1400,21 @@
 					foreach($settings as $input => $setting)
 						if (isset($_POST[$input]) and $input != 'Birthdate')
 							$player->ChangeSetting($setting, $_POST[$input]);
-					
+
 					//birthdate is handled separately
-					if ((@$_POST['Birthyear'] != "") AND (@$_POST['Birthmonth'] != "") AND (@$_POST['Birthday'] != ""))
-					{
-						$temp_error = CheckDateInput($_POST['Birthyear'], $_POST['Birthmonth'], $_POST['Birthday']);
-						
-						if ($temp_error != "") $error = $temp_error;
-						elseif (intval(date("Y")) <= $_POST['Birthyear'])
-							$error = "Invalid birthdate";
-						else
-						{
-							$player->ChangeSetting("Birthdate", $_POST['Birthyear']."-".$_POST['Birthmonth']."-".$_POST['Birthday']);
-							$information = "Settings saved";
-						}
-					}
+					if( $_POST['Birthyear'] == "" ) $_POST['Birthyear'] = '0000';
+					if( $_POST['Birthmonth'] == "" ) $_POST['Birthmonth'] = '00';
+					if( $_POST['Birthday'] == "" ) $_POST['Birthday'] = '00';
+
+					$result = CheckDateInput($_POST['Birthyear'], $_POST['Birthmonth'], $_POST['Birthday']);
+					if( $result != "" )
+						$error = $result;
+					elseif( intval(date("Y")) <= $_POST['Birthyear'] )
+						$error = "Invalid birthdate";
 					else
-						$information = "User settings saved";
-					
+						$player->ChangeSetting("Birthdate", $_POST['Birthyear']."-".$_POST['Birthmonth']."-".$_POST['Birthday']);
+
+					$information = "User settings saved";
 					$current = 'Settings';
 					
 					break;
@@ -1375,7 +1509,7 @@
 					$opponent = $playerdb->GetPlayer($_POST['cur_player']);
 					
 					// check access rights
-					if (!$access_rights[$player->Type()]["change_all_avatar"]) { $error = 'Access denied.'; $current = 'Details'; break; }
+					if (!$access_rights[$player->Type()]["change_all_avatar"]) { $error = 'Access denied.'; $current = 'Profile'; break; }
 					
 					$former_name = $opponent->GetSetting("Avatar");
 					$former_path = 'img/avatars/'.$former_name;
@@ -1384,14 +1518,14 @@
 					$opponent->ChangeSetting("Avatar", "noavatar.jpg");
 					$information = "Avatar cleared";
 					
-					$current = 'Details';
+					$current = 'Profile';
 					
 					break;
 				}
 				
 				if ($message == 'changepasswd') //change password
 				{
-					if (!isset($_POST['NewPassword']) || !isset ($_POST['NewPassword2']) || $_POST['NewPassword'] == '' || $_POST['NewPassword2'] == '')
+					if (!isset($_POST['NewPassword']) || !isset ($_POST['NewPassword2']) || trim($_POST['NewPassword']) == '' || trim($_POST['NewPassword2']) == '')
 						$error = "Please enter all required inputs.";
 					
 					elseif ($_POST['NewPassword'] != $_POST['NewPassword2'])
@@ -1425,7 +1559,7 @@
 				if ($message == 'section_select_page') // forum -> section -> select page with select element
 				{
 					$section_id = $_POST['CurrentSection'];
-					$current_page = $_POST['page_selector'];
+					$current_page = $_POST['section_select_page'];
 					
 					$current = 'Section_details';
 					
@@ -1463,7 +1597,7 @@
 					// check access rights
 					if ((!$access_rights[$player->Type()]["chng_priority"]) AND ($_POST['Priority'] != "normal")) { $error = 'Access denied.'; $current = 'Section_details'; break; }
 					
-					if (($_POST['Title'] == "") OR ($_POST['Content'] == "")) { $error = "Invalid input"; $current = "New_thread"; break; }
+					if ((trim($_POST['Title']) == "") OR (trim($_POST['Content']) == "")) { $error = "Invalid input"; $current = "New_thread"; break; }
 					
 					if (strlen($_POST['Content']) > POST_LENGTH) { $error = "Thread text is too long"; $current = "New_thread"; break; }
 					
@@ -1508,17 +1642,15 @@
 					break;
 				}
 				
-				//these two cases are similiar - one is the page navigation that is at the top and the other one is at the bottom. We cannot use same input buttons a selects for both navigations, because then user would have to select desired page at BOTH select elements, otherwise a conflict is inevitable. Therefore we split this similiar case into two, separate ones.
-				for ($i = 1; $i <= 2; $i++)
-					if ($message == 'thread_select_page'.$i) // forum -> section -> thread -> select page with select element
-					{
-						$thread_id = $_POST['CurrentThread'];
-						$current_page = $_POST['thread_page_selector'.$i];
-						
-						$current = 'Thread_details';
-						
-						break;
-					}
+				if ($message == 'thread_select_page') // forum -> section -> thread -> select page with select element
+				{
+					$thread_id = $_POST['CurrentThread'];
+					$current_page = $_POST['thread_select_page'];
+					
+					$current = 'Thread_details';
+					
+					break;
+				}
 				
 				if ($message == 'thread_page_jump') // forum -> section -> thread -> select page with previous or next button
 				{
@@ -1625,7 +1757,7 @@
 					// check access rights
 					if (!$access_rights[$player->Type()]["create_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
 														
-					if ($_POST['Content'] == "") { $error = "Invalid input"; $current = "New_post"; break; }
+					if (trim($_POST['Content']) == "") { $error = "Invalid input"; $current = "New_post"; break; }
 					
 					if (strlen($_POST['Content']) > POST_LENGTH) { $error = "Post text is too long"; $current = "New_post"; break; }
 									
@@ -1673,7 +1805,7 @@
 					// check access rights
 					if ((!$access_rights[$player->Type()]["chng_priority"]) AND (isset($_POST['Priority'])) AND ($_POST['Priority'] != $thread_data['Priority'])) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
 														
-					if ($_POST['Title'] == "") { $error = "Invalid input"; $current = "Thread_details"; break; }
+					if (trim($_POST['Title']) == "") { $error = "Invalid input"; $current = "Thread_details"; break; }
 					
 					$new_priority = ((isset($_POST['Priority'])) ? $_POST['Priority'] : $thread_data['Priority']);
 									
@@ -1740,7 +1872,7 @@
 					
 					if (!(($access_rights[$player->Type()]["edit_all_post"]) OR ($access_rights[$player->Type()]["edit_own_post"] AND $post_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
 														
-					if ($_POST['Content'] == "") { $error = "Invalid input"; $current = "Edit_post"; break; }
+					if (trim($_POST['Content']) == "") { $error = "Invalid input"; $current = "Edit_post"; break; }
 					
 					if (strlen($_POST['Content']) > POST_LENGTH) { $error = "Post text is too long"; $current = "Edit_post"; break; }
 									
@@ -1766,7 +1898,9 @@
 					
 					// check access rights
 					if (!$access_rights[$player->Type()]["del_all_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
-										
+					
+					$information = "Please confirm post deletion";
+					
 					$current = 'Thread_details';
 					break;
 				}
@@ -1834,9 +1968,6 @@
 						$condition = postdecode(array_shift(array_keys($value)));
 						$order = $order_val;
 						
-						// preserve filter configuration
-						$filter_cond = $_POST['CurrentFilter'];
-						
 						$current = "Players";
 						
 						break;
@@ -1845,7 +1976,26 @@
 				
 				if ($message == 'filter_players') // use player filter in players list
 				{
-					$filter_cond  = $_POST['player_filter'];
+					$_POST['CurrentFilter'] = $_POST['player_filter'];
+					$_POST['CurrentPlayersPage'] = 0;
+					
+					$current = "Players";
+					
+					break;
+				}
+				
+				if ($message == 'select_page_players') // Players -> select page (previous and next button)
+				{
+					$_POST['CurrentPlayersPage'] = array_shift(array_keys($value));
+					
+					$current = "Players";
+					
+					break;
+				}
+				
+				if ($message == 'Jump_players') // Players -> select page (Jump to page)
+				{
+					$_POST['CurrentPlayersPage'] = $_POST['jump_to_page'];
 					
 					$current = "Players";
 					
@@ -1878,22 +2028,37 @@
 
 	/*	<section: PRESENTATION>	*/
 		
-	$param['error'] = ((isset($error)) ? $error : "");
-	$param['warning'] = ((isset($warning)) ? $warning : "");
-	$param['information'] = ((isset($information)) ? $information : "");
-	
-	if (!$session)
+	// whether to display the login box or navigation bar
+	$params["main"]["is_logged_in"] = ($session) ? 'yes' : 'no';
+
+	// which section to display
+	$params["main"]["section"] = $current;
+
+	// session information, if necessary
+	if( $session and !$session->hasCookies() )
 	{
-		$menu = Generate_LoginBox($param);
+		$params["main"]["username"] = $session->Username();
+		$params["main"]["sessionid"] = $session->SessionID();
+	}
+
+	if( !$session )
+	{
+		// login box params
+		$params["loginbox"]["error_msg"] = @$error;
+		$params["loginbox"]["warning_msg"] = @$warning;
+		$params["loginbox"]["info_msg"] = @$information;
 	}
 	else
 	{
-		$param['PlayerName'] = $player->Name();
-		$param['PreviousLogin'] = $player->PreviousLogin();
-		$param['Current'] = $current;
-		$param['NumChallenges'] = count($gamedb->ListChallengesTo($player->Name()));
-		$param['NumUnread'] = $messagedb->CountUndreadMessages($player->Name());
-		$param['IsSomethingNew'] = $forum->IsSomethingNew($player->PreviousLogin());
+		// navbar params
+		$params["navbar"]["player_name"] = $player->Name();
+		$params["navbar"]["current"] = $current;
+		$params["navbar"]["error_msg"] = @$error;
+		$params["navbar"]["warning_msg"] = @$warning;
+		$params["navbar"]["info_msg"] = @$information;
+		$params["navbar"]['NumChallenges'] = count($gamedb->ListChallengesTo($player->Name()));
+		$params["navbar"]['NumUnread'] = $messagedb->CountUnreadMessages($player->Name());
+		$params["navbar"]['IsSomethingNew'] = (($forum->IsSomethingNew($player->PreviousLogin())) ? 'yes' : 'no');
 		
 		$list = $gamedb->ListActiveGames($player->Name());
 		$temp = 0;
@@ -1908,716 +2073,834 @@
 			}
 		}
 		
-		$param['NumGames'] = $temp;
-		
-		$menu = Generate_NavigationBar($param);
+		$params["navbar"]['NumGames'] = $temp;
 	}
 	
-	// now display current inner-page contents
-	
-	/* -------- *
-	 * | PAGE | *
-	 * -------- */
-	if ($current == "Page")
+// now display current inner-page contents
+switch( $current )
+{
+case 'Page':
+	// decide what screen is default (depends on whether the user is logged in)
+	$default_page = ( !$session ) ? 'Main' : 'News';
+	$selected = isset($_POST['WebPage']) ? postdecode(array_shift(array_keys($_POST['WebPage']))) : $default_page;
+
+	// list the names of the files to display
+	// (all files whose name matches up to the first space character)
+	$files = preg_grep('/^'.$selected.'( .*)?\.xml/i', scandir('pages',1));
+
+	$params['website']['selected'] = $selected;
+	$params['website']['files'] = $files;
+	$params['website']['timezone'] = ( isset($player) ) ? $player->GetSetting("Timezone") : '+0';
+	break;
+
+
+case 'Deck_edit':
+	$currentdeck = $params['deck_edit']['CurrentDeck'] = $_POST['CurrentDeck'];
+	$classfilter = $params['deck_edit']['ClassFilter'] = $_POST['ClassFilter'];
+	$costfilter = $params['deck_edit']['CostFilter'] = $_POST['CostFilter'];
+	$keywordfilter = $params['deck_edit']['KeywordFilter'] = $_POST['KeywordFilter'];
+	$advancedfilter = $params['deck_edit']['AdvancedFilter'] = $_POST['AdvancedFilter'];
+	$supportfilter = $params['deck_edit']['SupportFilter'] = $_POST['SupportFilter'];
+
+	$params['deck_edit']['keywords'] = $carddb->Keywords();
+
+	// download the neccessary data
+	$deck = $player->GetDeck($currentdeck);
+
+	$params['deck_edit']['reset'] = ( (isset($_POST["reset_deck_prepare"] )) ? 'yes' : 'no');
+	$params['deck_edit']['randomize'] = ( (isset($_POST["randomize_deck_prepare"] )) ? 'yes' : 'no');
+
+	// load card display settings
+	$c_text = $player->GetSetting("Cardtext");
+	$c_img = $player->GetSetting("Images");
+	$c_keywords = $player->GetSetting("Keywords");
+	$c_oldlook = $player->GetSetting("OldCardLook");
+
+	// calculate average cost per turn
+
+	// define a data structure for our needs
+	$sub_array = array('Common' => 0, 'Uncommon' => 0, 'Rare' => 0);
+
+	$sum = array('Bricks' => $sub_array ,'Gems' => $sub_array, 'Recruits' => $sub_array, 'Count' => $sub_array);
+	$avg = array('Bricks' => $sub_array ,'Gems' => $sub_array, 'Recruits' => $sub_array);
+	$res = array('Bricks' => 0 ,'Gems' => 0, 'Recruits' => 0);
+
+	foreach ($sub_array as $class => $value)
 	{
-		//decide what screen is default (depends on whether the user is logged in)
-		$default_page = ( !$session ) ? 'Main' : 'News';
-		$selected = isset($_POST['WebPage']) ? postdecode(array_shift(array_keys($_POST['WebPage']))) : $default_page;
-		$param['Page']['selected'] = $selected;
-		
-		if     ($selected == 'Main'   ) $param['Page']['html'] = $html->MainPage();
-		elseif ($selected == 'News'   ) $param['Page']['html'] = $html->NewsPage();
-		elseif ($selected == 'Cardmod') $param['Page']['html'] = $html->ModCardsPage();
-		elseif ($selected == 'Help'   ) $param['Page']['html'] = $html->HelpPage();
-		elseif ($selected == 'Faq'    ) $param['Page']['html'] = $html->FaqPage();
-		elseif ($selected == 'Credits') $param['Page']['html'] = $html->Credits();
-				
-		$content = Generate_Page($param);
-	}
-	
-	/* ---------------- *
-	 * | REGISTRATION | *
-	 * ---------------- */
-	elseif ($current == "Registration")
-	{
-		$content = Generate_Registration();
-	}
-	
-	/* -------- *
-	 * | DECK | *
-	 * -------- */
-	elseif ($current == "Deck")
-	{
-		$param['Colors'] = $all_colors;
-		
-		$currentdeck = $param['Deck']['CurrentDeck'] = $_POST['CurrentDeck'];
-		$classfilter = $param['Deck']['ClassFilter'] = $_POST['ClassFilter'];
-		$costfilter = $param['Deck']['CostFilter'] = $_POST['CostFilter'];
-		$keywordfilter = $param['Deck']['KeywordFilter'] = $_POST['KeywordFilter'];
-		$advancedfilter = $param['Deck']['AdvancedFilter'] = $_POST['AdvancedFilter'];
-		
-		// download the neccessary data
-		$deck = $player->GetDeck($currentdeck);
-		
-		$param['Deck']['reset'] = isset($_POST["reset_deck_prepare"]);
-		$param['Deck']['randomize'] = isset($_POST["randomize_deck_prepare"]);
-		
-		// load card display settings
-		$param['Deck']['c_text'] = $player->GetSetting("Cardtext");
-		$param['Deck']['c_img'] = $player->GetSetting("Images");
-		$param['Deck']['c_keywords'] = $player->GetSetting("Keywords");
-		$param['Deck']['c_oldlook'] = $player->GetSetting("OldCardLook");
-		
-		// calculate average cost per turn
-		
-		// define a data structure for our needs
-		$sub_array = array('Common' => 0, 'Uncommon' => 0, 'Rare' => 0);
-		
-		$sum = array('Bricks' => $sub_array ,'Gems' => $sub_array, 'Recruits' => $sub_array, 'Count' => $sub_array);
-		$avg = array('Bricks' => $sub_array ,'Gems' => $sub_array, 'Recruits' => $sub_array);
-		$res = array('Bricks' => 0 ,'Gems' => 0, 'Recruits' => 0);
-		
-		foreach ($sub_array as $class => $value)
+		foreach ($deck->DeckData->$class as $index => $cardid)
 		{
-			foreach ($deck->DeckData->$class as $index => $cardid)
+			if ($cardid != 0)
 			{
-				if ($cardid != 0)
-				{
-					$card = $carddb->GetCard($cardid);
-					$sum['Bricks'][$class]+= $card->CardData->Bricks;
-					$sum['Gems'][$class]+= $card->CardData->Gems;
-					$sum['Recruits'][$class]+= $card->CardData->Recruits;
-					$sum['Count'][$class]+= 1;
-				}
+				$card = $carddb->GetCard($cardid);
+				$sum['Bricks'][$class]+= $card->CardData->Bricks;
+				$sum['Gems'][$class]+= $card->CardData->Gems;
+				$sum['Recruits'][$class]+= $card->CardData->Recruits;
+				$sum['Count'][$class]+= 1;
 			}
 		}
-		
-		foreach ($avg as $type => $value)
+	}
+
+	foreach ($avg as $type => $value)
+	{
+		if ($sum['Count']['Common'] == 0) $avg[$type]['Common'] = 0;
+		else $avg[$type]['Common'] = ($sum[$type]['Common'] * 0.65)/$sum['Count']['Common'];
+
+		if ($sum['Count']['Uncommon'] == 0) $avg[$type]['Uncommon'] = 0;
+		else $avg[$type]['Uncommon'] = ($sum[$type]['Uncommon'] * 0.29)/$sum['Count']['Uncommon'];
+
+		if ($sum['Count']['Rare'] == 0) $avg[$type]['Rare'] = 0;
+		else $avg[$type]['Rare'] = (($sum[$type]['Rare'] * 0.06)/$sum['Count']['Rare']);
+	}
+
+	foreach ($avg as $type => $value) $res[$type] = round($avg[$type]['Common'] + $avg[$type]['Uncommon'] + $avg[$type]['Rare'],2);
+
+	$params['deck_edit']['Res'] = $res;
+
+	$list = $carddb->GetList($classfilter, $keywordfilter, $costfilter, $advancedfilter, $supportfilter);
+	
+	foreach($list as $list_index => $cardid)
+	{
+		// check if the card isn't already present in the deck
+		if (!(array_search($cardid, $deck->DeckData->$classfilter) !== false))
 		{
-			if ($sum['Count']['Common'] == 0) $avg[$type]['Common'] = 0;
-			else $avg[$type]['Common'] = ($sum[$type]['Common'] * 0.65)/$sum['Count']['Common'];
+			$params['deck_edit']['CardList'][$list_index]['CardID'] = $cardid;
+			$params['deck_edit']['CardList'][$list_index]['CardString'] = $carddb->GetCard($cardid)->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
+		}
+	}
+	
+	$params['deck_edit']['ListCount'] = count($list);
+
+	$params['deck_edit']['Take'] = ( $deck->DeckData->Count($classfilter) < 15 ) ? 'yes' : 'no';
+
+	foreach (array('Common', 'Uncommon', 'Rare') as $class)
+	{
+		$cards = array();
+		
+		foreach ($deck->DeckData->$class as $index => $cardid)
+		{
+			// index manipulation, due to the fact that we count from 1, instead of 0
+			// PHP does not have div function, so we must use floor and standard division
+			$row = floor(($index - 1) / 3);
+			$column = ($index - 1) % 3;
 			
-			if ($sum['Count']['Uncommon'] == 0) $avg[$type]['Uncommon'] = 0;
-			else $avg[$type]['Uncommon'] = ($sum[$type]['Uncommon'] * 0.29)/$sum['Count']['Uncommon'];
-			
-			if ($sum['Count']['Rare'] == 0) $avg[$type]['Rare'] = 0;
-			else $avg[$type]['Rare'] = (($sum[$type]['Rare'] * 0.06)/$sum['Count']['Rare']);
+			$cards[$row][$column]['CardID'] = $cardid;
+			$cards[$row][$column]['CardString'] = $carddb->GetCard($cardid)->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
 		}
 		
-		foreach ($avg as $type => $value) $res[$type] = $avg[$type]['Common'] + $avg[$type]['Uncommon'] + $avg[$type]['Rare'];
-		
-		$param['Deck']['Res'] = $res;
-		
-		$list = $carddb->GetList($classfilter, $keywordfilter, $costfilter, $advancedfilter);
-		
-		foreach($list as $list_index => $cardid)
-		{
-			// check if the card isn't already present in the deck
-			if (!(array_search($cardid, $deck->DeckData->$classfilter) !== false))
-				$param['Deck']['CardList'][$list_index] = $cardid;
-		}
-		
-		if ($deck->DeckData->Count($classfilter) < 15) $param['Deck']['Take'] = true;
-		else $param['Deck']['Take'] = false;
-		
-		foreach (array('Common'=>'Lime', 'Uncommon'=>$all_colors["DarkRed"], 'Rare'=>'Yellow') as $class => $classcolor)
-		{
-			$param['Deck']['DeckCards'][$class] = $deck->DeckData->$class;
-		}
-		
-		$content = Generate_Deck($param);
+		$params['deck_edit']['DeckCards'][$class] = $cards;
 	}
-	
-	/* --------- *
-	 * | DECKS | *
-	 * --------- */
-	elseif ($current == "Decks")
+
+	$params['deck_edit']['Tokens'] = $deck->DeckData->Tokens;
+	$params['deck_edit']['TokenKeywords'] = $carddb->TokenKeywords();
+
+	break;
+
+
+case 'Decks':
+	$params['decks']['list'] = $player->ListDecks();
+
+	break;
+
+
+case 'Players':	
+
+	// defaults for list ordering
+	if (!isset($order) or $order == "") $order = "DESC";
+	if (!isset($condition) or $condition == "") $condition = "Rank";
+
+	$params['players']['order'] = $order;
+	$params['players']['condition'] = $condition;
+
+	$params['players']['CurrentFilter'] = $filter = ((isset($_POST['CurrentFilter'])) ? $_POST['CurrentFilter'] : "none");
+
+	$params['players']['PlayerName'] = $player->Name();
+
+	// check for active decks
+	$params['players']['active_decks'] = count($player->ListReadyDecks());
+
+	//retrieve layout setting
+	$params['players']['show_nationality'] = $player->GetSetting("Nationality");
+	$params['players']['show_avatars'] = $player->GetSetting("Avatarlist");
+
+	$activegames = $gamedb->ListActiveGames($player->Name());
+	$challengesfrom = $gamedb->ListChallengesFrom($player->Name());
+	$challengesto = $gamedb->ListChallengesTo($player->Name());
+	$endedgames = $gamedb->ListEndedGames($player->Name());
+
+	$params['players']['free_slots'] = MAX_GAMES - (count($activegames) + count($challengesfrom) + count($challengesto));
+
+	$params['players']['messages'] = ($access_rights[$player->Type()]["messages"]) ? 'yes' : 'no';
+	$params['players']['send_challenges'] = ($access_rights[$player->Type()]["send_challenges"]) ? 'yes' : 'no';
+
+	$current_page = ((isset($_POST['CurrentPlayersPage'])) ? $_POST['CurrentPlayersPage'] : 0);
+	$params['players']['current_page'] = $current_page;
+
+	$page_count = $playerdb->CountPages($filter);
+	$pages = array();
+	if ($page_count > 0) for ($i = 0; $i < $page_count; $i++) $pages[$i] = $i;
+	$params['players']['pages'] = $pages;
+	$params['players']['page_count'] = $page_count;
+
+	// get the list of all existing players; (Username, Wins, Losses, Draws, Last Query, Free slots, Avatar, Country)
+	$list = $playerdb->ListPlayers($filter, $condition, $order, $current_page);
+
+	// for each player, display their name, score, and if conditions are met, also display the challenge button
+	foreach ($list as $i => $data)
 	{
-		$param['Decks']['list'] = $player->ListDecks();
-		
-		$content = Generate_Decks($param);
+		$last_query = strtotime($data['Last Query']);
+		// choose name color according to inactivity time
+		if     (time() - $last_query > (60*60*24*7*3))
+		{ $namecolor ='gray'; $player_type = "Dead"; } // 'dead' after 3 weeks of inactivity
+		elseif (time() - $last_query > (60*60*24*7*1))
+		{ $namecolor ='maroon'; $player_type = "Inactive"; } // 'not interested' after 1 week of inactivity
+		elseif (time() - $last_query > (60*10))
+		{ $namecolor ='red'; $player_type = "Offline"; } // 'offline' after 10 minutes of inactivity
+		else //(time(0 - $last_query <= (60*10))
+		{ $namecolor ='lime'; $player_type = "Online"; } // default 'online' players
+
+		$opponent = $data['Username'];
+
+		$entry = array();
+		$entry['name'] = $data['Username'];
+		$entry['wins'] = $data['Wins'];
+		$entry['losses'] = $data['Losses'];
+		$entry['draws'] = $data['Draws'];
+		$entry['avatar'] = $data['Avatar'];
+		$entry['country'] = $data['Country'];
+		$entry['last_query'] = $data['Last Query'];
+		$entry['free_slots'] = $data['Free slots'];
+		$entry['rank'] = $data['Rank'];
+		$entry['player_type'] = $player_type; // unused
+		$entry['namecolor'] = $namecolor;
+		$entry['challenged'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $opponent), $challengesfrom) !== false) ? 'yes' : 'no';
+		$entry['playingagainst'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $opponent), $activegames) !== false) ? 'yes' : 'no';
+		$entry['waitingforack'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $opponent), $endedgames) !== false) ? 'yes' : 'no';
+
+		$params['players']['list'][] = $entry;
 	}
 	
-	/* ----------- *
-	 * | PLAYERS | *
-	 * ----------- */
-	elseif ($current == "Players")
+	break;
+
+
+case 'Profile':
+
+	// retrieve name of a player we are currently viewing
+	$cur_player = (isset($_POST['Profile'])) ? $_POST['Profile'] : $_POST['cur_player'];
+
+	$p = $playerdb->GetPlayer($cur_player);
+	$settings = $p->GetUserSettings();
+
+	$params['profile']['PlayerName'] = $p->Name();
+	$params['profile']['PlayerType'] = $p->Type();
+	$params['profile']['Firstname'] = $settings['Firstname'];
+	$params['profile']['Surname'] = $settings['Surname'];
+	$params['profile']['Gender'] = $settings['Gender'];
+	$params['profile']['Country'] = $settings['Country'];
+	$params['profile']['Avatar'] = $settings['Avatar'];
+	$params['profile']['Email'] = $settings['Email'];
+	$params['profile']['Imnumber'] = $settings['Imnumber'];
+	$params['profile']['Hobby'] = $settings['Hobby'];
+
+	if( $settings["Birthdate"] != "0000-00-00" )
 	{
-		// begin ordering
-		
-		// create defaults for not used ordering
-		$columns = array(1 => "Rank", 2 => "Username", 3 => "Country", 4 => "Free slots");
-		
-		foreach($columns as $index => $column_name)
-		{
-			$bname[$column_name] = "desc";
-			$val[$column_name] = "\/";
-		}
-		
-		// defaults for list ordering
-		if (!isset($order) or $order == "") $order = "DESC";
-		if (!isset($condition) or $condition == "") $condition = "Rank";
-		
-		if ($order == "ASC")
-		{
-			$bname[$condition] = "desc";
-			$val[$condition] = "\/";
-		}
-		elseif ($order == "DESC")
-		{
-			$bname[$condition] = "asc";
-			$val[$condition] = "/\\";
-		}
-		
-		$param['Players']['order'] = $order;
-		$param['Players']['condition'] = $condition;
-		$param['Players']['bname'] = $bname;
-		$param['Players']['val'] = $val;
-		
-		// end ordering
-		
-		$param['Players']['CurrentFilter'] = $filter = ((isset($filter_cond)) ? $filter_cond : "none");
-		
-		$param['Players']['PlayerName'] = $player->Name();
-		
-		// get the list of all existing players; the contents are a numbered array of (Username, Wins, Losses, Draws, Last Query, Free slots, Avatar, Country)
-		$param['Players']['list'] = $list = $playerdb->ListPlayers($player->GetSetting("Showdead"), $filter, $condition, $order);
-		
-		// check for active decks
-		$param['Players']['active'] = ( count($player->ListReadyDecks()) > 0 );
-		
-		//retrieve layout setting
-		$param['Players']['show_nationality'] = $player->GetSetting("Nationality");
-		$param['Players']['show_avatars'] = $player->GetSetting("Avatarlist");
-		
-		$activegames = $gamedb->ListActiveGames($player->Name());
-		$challengesfrom = $gamedb->ListChallengesFrom($player->Name());
-		$challengesto = $gamedb->ListChallengesTo($player->Name());
-		$endedgames = $gamedb->ListEndedGames($player->Name());
-		$pendinggames = count($activegames) + count($challengesfrom) + count($challengesto);
-		
-		$param['Players']['pendinggames'] = $pendinggames;
-		
-		$param['Players']['messages'] = ($access_rights[$player->Type()]["messages"]);
-		$param['Players']['send_challenges'] = ($access_rights[$player->Type()]["send_challenges"]);
-		
-		// for each player, display their name, score, and if conditions are met, also display the challenge button
-		foreach ($list as $i => $data)
-		{
-			// choose name color according to inactivity time
-			if     (time() - $data['Last Query'] > (60*60*24*7*3))
-			{ $namecolor ='style="color: gray;"'; $player_type = "Dead"; } // players are considered 'dead' after 3 weeks of inactivity
-			elseif (time() - $data['Last Query'] > (60*60*24*7*1))
-			{ $namecolor ='style="color: maroon;"'; $player_type = "Inactive"; } // players are considered 'not interested' after 1 week of inactivity
-			elseif (time() - $data['Last Query'] > (60*10))
-			{ $namecolor ='style="color: red;"'; $player_type = "Offline"; } // players are considered 'offline' after 10 minutes of inactivity
-			else //(time(0 - $data['Last Query'] <= (60*10))
-			{ $namecolor ='style="color: lime;"'; $player_type = "Online"; } // default 'online' players
-							
-			$opponent = $data['Username'];
-			$param['Players'][$opponent]['player_type'] = $player_type;
-			$param['Players'][$opponent]['namecolor'] = $namecolor;
-									
-			$param['Players'][$opponent]['challenged'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $opponent), $challengesfrom) !== false);
-			$param['Players'][$opponent]['playingagainst'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $opponent), $activegames) !== false);
-			$param['Players'][$opponent]['waitingforack'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $opponent), $endedgames) !== false);
-		}
-		
-		$content = Generate_Players($param);
+		$params['profile']['Age'] = $settingdb->CalculateAge($settings['Birthdate']);
+		$params['profile']['Sign'] = $settingdb->CalculateSign($settings['Birthdate']);
+		$params['profile']['Birthdate'] = date("d-m-Y", strtotime($settings['Birthdate']));
 	}
-	
-	/* ----------- *
-	 * | DETAILS | *
-	 * ----------- */
-	 
-	elseif ($current == "Details")
-	{
-		$param['Colors'] = $all_colors;
-		
-		// retrieve name of a player we are currently viewing
-		$cur_player = (isset($_POST['Details'])) ? $_POST['Details'] : $_POST['cur_player'];
-	
-		$p = $playerdb->GetPlayer($cur_player);
-		$param['Details']['PlayerName'] = $p->Name();
-		$param['Details']['PlayerType'] = $p->Type();
-		$param['Details']['CurPlayerName'] = $player->Name();
-		$param['Details']['messages'] = ($access_rights[$player->Type()]["messages"]);
-		$param['Details']['send_challenges'] = ($access_rights[$player->Type()]["send_challenges"]);
-		$param['Details']['change_rights'] = ($access_rights[$player->Type()]["change_rights"]);
-		$param['Details']['system_notification'] = ($access_rights[$player->Type()]["system_notification"]);
-		$param['Details']['change_all_avatar'] = ($access_rights[$player->Type()]["change_all_avatar"]);
-		
-		$param['Details']['decks'] = $player->ListReadyDecks();
-		
-		$activegames = $gamedb->ListActiveGames($player->Name());
-		$challengesfrom = $gamedb->ListChallengesFrom($player->Name());
-		$challengesto = $gamedb->ListChallengesTo($player->Name());
-		$endedgames = $gamedb->ListEndedGames($player->Name());
-		
-		$param['Details']['pendinggames'] = count($activegames) + count($challengesfrom) + count($challengesto);
-		
-		$param['Details']['challenged'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $cur_player), $challengesfrom) !== false);
-		$param['Details']['playingagainst'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $cur_player), $activegames) !== false);
-		$param['Details']['waitingforack'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $cur_player), $endedgames) !== false);
-		
-		if ($param['Details']['challenged']) $param['Details']['challenge'] = $messagedb->GetChallenge($player->Name(), $cur_player);
-		
-		$current_settings = $param['Details']['current_settings'] = $p->GetUserSettings();
-		if ($current_settings["Birthdate"] != "0000-00-00")
-		{
-			$param['Details']['current_settings']["Age"] = $settingdb->CalculateAge($current_settings["Birthdate"]);
-			$param['Details']['current_settings']["Sign"] = $settingdb->CalculateSign($current_settings["Birthdate"]);
-			$param['Details']['current_settings']["Birthdate"] = date("d-m-Y", strtotime($current_settings["Birthdate"]));
-		}
-		else
-		{
-			$param['Details']['current_settings']["Age"] = "Unknown";
-			$param['Details']['current_settings']["Sign"] = "Unknown";
-			$param['Details']['current_settings']["Birthdate"] = "Unknown";
-		}
-		
-		$content = Generate_Details($param);
-	}
-	
-	/* -------------- *
-	 * | CHALLENGES | *
-	 * -------------- */
-	elseif ($current == "Challenges")
-	{
-		$decks = $param['Challenges']['decks'] = $player->ListReadyDecks();
-		$param['Challenges']['startedgames'] = count($gamedb->ListActiveGames($player->Name())) + count($gamedb->ListChallengesFrom($player->Name()));
-		
-		if (isset($_POST['incoming'])) $current_subsection = "incoming";
-		elseif (isset($_POST['outgoing'])) $current_subsection = "outgoing";
-		elseif (!isset($current_subsection)) $current_subsection = "incoming";
-		
-		$function_type = (($current_subsection == "incoming") ? "ListChallengesTo" : "ListChallengesFrom");
-		$param['Challenges']['challenges'] = $messagedb->$function_type($player->Name());
-		$param['Challenges']['current_subsection'] = $current_subsection;
-		
-		if (isset($_POST['inbox'])) $current_location = "inbox";
-		elseif (isset($_POST['sent_mail'])) $current_location = "sent_mail";
-		elseif (isset($_POST['all_mail'])) $current_location = "all_mail";
-		elseif (!isset($current_location)) $current_location = "inbox";
-		
-		$current_order = (isset($order)) ? $order : "DESC"; // default ordering
-		$current_condition = (isset($condition)) ? $condition : "Created"; // default order condition
-		$current_filter = (isset($cur_filter)) ? $cur_filter : ""; // default filter
-		$filter_val = (isset($cur_filter_val)) ? $cur_filter_val : ""; // default filter value
-		
- 		$list_type = ($current_location == "all_mail") ? "ListAllMessages" : (($current_location == "sent_mail") ? "ListMessagesFrom" : "ListMessagesTo");
- 		$name_type = ($current_location == "all_mail") ? "ListAllNames" : (($current_location == "sent_mail") ? "ListNamesFrom" : "ListNamesTo");
-		
-		$list = $messagedb->$list_type($player->Name(), $current_filter, $filter_val, $current_condition, $current_order);
-		$name_list = $messagedb->$name_type($player->Name());
-		
-		$param['Challenges']['messages'] = $list;
-		$param['Challenges']['current_location'] = $current_location;
-		$param['Challenges']['current_filter'] = $current_filter;
-		$param['Challenges']['current_filter_val'] = $filter_val;
-		$param['Challenges']['current_order'] = $current_order;
-		$param['Challenges']['current_condition'] = $current_condition;
-		$param['Challenges']['timesections'] = $messagedb->Timesections();
-		$param['Challenges']['name_filter'] = $name_list;
-		
-		$param['Challenges']['send_messages'] = ($access_rights[$player->Type()]["messages"]);
-		$param['Challenges']['accept_challenges'] = ($access_rights[$player->Type()]["accept_challenges"]);
-		$param['Challenges']['see_all_messages'] = ($access_rights[$player->Type()]["see_all_messages"]);
-		
-		$content = Generate_Challenges($param);
-	}
-	
-	elseif ($current == "Message_details")
-	{
-		$param['Message_details']['Author'] = $message['Author'];
-		$param['Message_details']['Recipient'] = $message['Recipient'];
-		$param['Message_details']['Subject'] = $message['Subject'];
-		$param['Message_details']['Content'] = $message['Content'];
-		$param['Message_details']['MessageID'] = $messageid;
-		$param['Message_details']['delete'] = !isset($_POST["message_delete"]);
-		$param['Message_details']['messages'] = ($access_rights[$player->Type()]["messages"]);
-		
-		if (!isset($current_location)) $current_location = "inbox";
-		
-		$param['Message_details']['current_location'] = $current_location;
-		
-		$timezone = $player->GetSetting("Timezone");
-		
-		$param['Message_details']['Created'] = $message['Created'];
-		$param['Message_details']['Stamp'] = 1 + strtotime($message['Created']) % 4; // hash function - assign stamp picture
-		
-		$content = Generate_Message_details($param);
-	}
-	
-	elseif ($current == "Message_new")
-	{
-		$param['Message_new']['Author'] = $author;
-		$param['Message_new']['Recipient'] = $recipient;
-		$param['Message_new']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : '');
- 		$param['Message_new']['Subject'] = ((isset($_POST['Subject'])) ? $_POST['Subject'] : '');
-		
-		$content = Generate_Message_new($param);
-	}
-	
-	/* --------- *
-	 * | GAMES | *
-	 * --------- */
-	elseif ($current == "Games")
-	{
-		$param['Games']['PlayerName'] = $player->Name();
-		$list = $gamedb->ListActiveGames($player->Name());
-		
-		if (count($list) > 0)
-		{
-			foreach ($list as $i => $data)
-			{
-				$game = $gamedb->GetGame2($data['Player1'], $data['Player2']);
-				$opponent = ($data['Player1'] != $player->Name()) ? $data['Player1'] : $data['Player2'];
-				
-				$param['Games']['list'][$i]['opponent'] = $opponent;
-				$param['Games']['list'][$i]['active'] = $playerdb->GetPlayer($opponent)->isOnline();
-				$param['Games']['list'][$i]['ready'] = $game->GameData->Current == $player->Name();
-				$param['Games']['list'][$i]['gameid'] = $game->ID();
-				$param['Games']['list'][$i]['gamestate'] = $game->State;
-				$param['Games']['list'][$i]['isdead'] = $playerdb->isDead($opponent);
-			}
-		}
-		
-		$content = Generate_Games($param);
-	}
-	
-	/* -------- *
-	 * | GAME | *
-	 * -------- */
-	elseif ($current == "Game") 
-	{
-		$gameid = $_POST['CurrentGame'];
-		
-		// prepare the neccessary data
-		$game = $gamedb->GetGame($gameid);
-		$player1 = $game->Name1();
-		$player2 = $game->Name2();
-		$data = &$game->GameData;
-		
-		$opponent = $playerdb->GetPlayer(($player1 != $player->Name()) ? $player1 : $player2);
-		$mydata = &$data->Player[$player->Name()];
-		$hisdata = &$data->Player[$opponent->Name()];
-		
-		$param['Colors'] = $all_colors;
-		$param['Game']['CurrentGame'] = $gameid;
-		
- 		$param['Game']['chat'] = ($access_rights[$player->Type()]["chat"]);
-		
-		//load needed settings
-		$param['Game']['c_text'] = $player->GetSetting("Cardtext");
-		$param['Game']['c_img'] = $player->GetSetting("Images");
-		$param['Game']['c_keywords'] = $player->GetSetting("Keywords");
-		$param['Game']['c_oldlook'] = $player->GetSetting("OldCardLook");
-		
-		$param['Game']['minimize'] = $player->GetSetting("Minimize");
-		$param['Game']['mycountry'] = $player->GetSetting("Country");
-		$param['Game']['hiscountry'] = $opponent->GetSetting("Country");
-		
-		$param['Game']['GameState'] = $game->State;
-		$param['Game']['Round'] = $data->Round;
-		$param['Game']['Outcome'] = $data->Outcome;
-		$param['Game']['Winner'] = $data->Winner;
-		$param['Game']['PlayerName'] = $player->Name();
-		$param['Game']['OpponentName'] = $opponent->Name();
-		$param['Game']['Current'] = $data->Current;
-		$param['Game']['Timestamp'] = $data->Timestamp;
-		
-		$param['Game']['MyHand'] = $mydata->Hand;
-		$param['Game']['MyNewCards'] = $mydata->NewCards;
-		$param['Game']['MyBricks'] = $mydata->Bricks;
-		$param['Game']['MyGems'] = $mydata->Gems;
-		$param['Game']['MyRecruits'] = $mydata->Recruits;
-		$param['Game']['MyQuarry'] = $mydata->Quarry;
-		$param['Game']['MyMagic'] = $mydata->Magic;
-		$param['Game']['MyDungeons'] = $mydata->Dungeons;
-		$param['Game']['MyTower'] = $mydata->Tower;
-		$param['Game']['MyWall'] = $mydata->Wall;
-		$param['Game']['MyDisCards'] = $mydata->DisCards;
-		$param['Game']['MyLastCard'] = $mydata->LastCard;
-		$param['Game']['MyLastAction'] = $mydata->LastAction;
-		$param['Game']['MyLastMode'] = $mydata->LastMode;
-		
-		$param['Game']['HisHand'] = $hisdata->Hand;
-		$param['Game']['HisNewCards'] = $hisdata->NewCards;
-		$param['Game']['HisBricks'] = $hisdata->Bricks;
-		$param['Game']['HisGems'] = $hisdata->Gems;
-		$param['Game']['HisRecruits'] = $hisdata->Recruits;
-		$param['Game']['HisQuarry'] = $hisdata->Quarry;
-		$param['Game']['HisMagic'] = $hisdata->Magic;
-		$param['Game']['HisDungeons'] = $hisdata->Dungeons;
-		$param['Game']['HisTower'] = $hisdata->Tower;
-		$param['Game']['HisWall'] = $hisdata->Wall;
-		$param['Game']['HisDisCards'] = $hisdata->DisCards;
-		$param['Game']['HisLastCard'] = $hisdata->LastCard;
-		$param['Game']['HisLastAction'] = $hisdata->LastAction;
-		$param['Game']['HisLastMode'] = $hisdata->LastMode;
-		
-		// - <quick game switching menu>
-		$list = $gamedb->ListActiveGames($player->Name());
-		
-		foreach ($list as $i => $names)
-		{
-			$game_list = $gamedb->GetGame2($names['Player1'], $names['Player2']);
-			$opponent_list = ($names['Player1'] != $player->Name()) ? $names['Player1'] : $names['Player2'];
-			$opponent_object = $playerdb->GetPlayer($opponent_list);
-			
-			$color = ''; // no extra color default
-			if ($game_list->GameData->Current == $player->Name()) $color = 'lime'; // when it is your turn
-			if ($game_list->State == 'in progress' and $playerdb->isDead($opponent_list)) $color = 'gray'; // when game can be aborted
-			if ($game_list->State == 'finished') $color = $all_colors["HotPink"]; // when game is finished
-			
-			$param['Game']['GameList'][$i]['Value'] = $game_list->ID();
-			$param['Game']['GameList'][$i]['Content'] = 'vs. '.htmlencode($opponent_list);
-			$param['Game']['GameList'][$i]['Selected'] = ($game_list->ID() == $_POST['CurrentGame']);
-			$param['Game']['GameList'][$i]['Color'] = $color;
-		}
-		// - </quick game switching menu>
-		
-		// - <'jump to next game' button>
-		
-		$list = $gamedb->ListActiveGames($player->Name());
-		
-		$num_games_your_turn = 0;
-		foreach ($list as $i => $names)
-			if ($gamedb->GetGame2($names['Player1'], $names['Player2'])->GameData->Current == $player->Name()) $num_games_your_turn++;
-		$param['Game']['num_games_your_turn'] = $num_games_your_turn;
-		
-		// - </'jump to next game' button>
-		
-		// - <game state indicator>
-		$param['Game']['opp_isOnline'] = $opponent->isOnline();
-		$param['Game']['opp_isDead'] = $opponent->isDead();
-		$param['Game']['surrender'] = !isset($_POST["surrender"]);
-		
-		// your resources and tower
-		$colors = array ('Quarry'=> '', 'Magic'=> '', 'Dungeons'=> '', 'Bricks'=> '', 'Gems'=> '', 'Recruits'=> '', 'Tower'=> '', 'Wall'=> '');
-		foreach ($colors as $attribute => $color)
-		{
-			if ($mydata->Changes[$attribute] > 0) $colors[$attribute] = ' style="color: lime"';
-			elseif ($mydata->Changes[$attribute] < 0) $colors[$attribute] = ' style="color: orange"';
-		}
-		
-		$param['Game']['mycolors'] = $colors;
-		
-		// opponent's resources and tower
-		
-		$colors = array ('Quarry'=> '', 'Magic'=> '', 'Dungeons'=> '', 'Bricks'=> '', 'Gems'=> '', 'Recruits'=> '', 'Tower'=> '', 'Wall'=> '');
-		foreach ($colors as $attribute => $color)
-		{
-			if ($hisdata->Changes[$attribute] > 0) $colors[$attribute] = ' style="color: lime"';
-			elseif ($hisdata->Changes[$attribute] < 0) $colors[$attribute] = ' style="color: orange"';
-		}
-		
-		$param['Game']['hiscolors'] = $colors;	
-		
-		// chatboard
-		
-		$param['Game']['display_avatar'] = $player->GetSetting("Avatargame");
-		$param['Game']['correction'] = $player->GetSetting("Correction");
-		
-		$param['Game']['myavatar'] = $player->GetSetting("Avatar");
-		$param['Game']['hisavatar'] = $opponent->GetSetting("Avatar");
-		
-		$order = ( $player->GetSetting("Chatorder") == "yes" ) ? "ASC" : "DESC";
-		$param['Game']['messagelist'] = $chatdb->ListChatMessages($game->ID(), $order);
-		
-		$content = Generate_Game($param);
-	}
-	
-	elseif ($current == "Deck_view") 
-	{
-		$gameid = $_POST['CurrentGame'];
-		$game = $gamedb->GetGame($gameid);
-		
-		$param['Colors'] = $all_colors;
-		
-		$param['Deck_view']['CurrentGame'] = $gameid;
-		$param['Deck_view']['deck']['Common'] = $game->GameData->Player[$player->Name()]->Deck->Common;
-		$param['Deck_view']['deck']['Uncommon'] = $game->GameData->Player[$player->Name()]->Deck->Uncommon;
-		$param['Deck_view']['deck']['Rare'] = $game->GameData->Player[$player->Name()]->Deck->Rare;
-		
-		//load needed settings
-		$param['Deck_view']['c_text'] = $player->GetSetting("Cardtext");
-		$param['Deck_view']['c_img'] = $player->GetSetting("Images");
-		$param['Deck_view']['c_keywords'] = $player->GetSetting("Keywords");
-		$param['Deck_view']['c_oldlook'] = $player->GetSetting("OldCardLook");
-		
-		$content = Generate_Deck_view($param);
-	}
-	
-	/* ---------- *
-	 * | NOVELS | *
-	 * ---------- */
-	 
-	elseif ($current == "Novels")
-	{
-		$current_novel = ((isset($_POST['current_novel'])) ? $_POST['current_novel'] : "");
-		$current_chapter = ((isset($_POST['current_chapter'])) ? $_POST['current_chapter'] : "");
-		$current_page = ((isset($_POST['current_page'])) ? $_POST['current_page'] : "");
-		
-		$param['Novels']['current_novel'] = $current_novel;
-		$param['Novels']['current_chapter'] = $current_chapter;
-		$param['Novels']['current_page'] = $current_page;
-		$param['Novels']['novelslist'] = $noveldb->GetNovelsList();		
-		$param['Novels']['chapterslist'] = (($current_novel != "") ? $noveldb->GetChaptersList($current_novel) : null);
-		$param['Novels']['ListPages'] = $noveldb->ListPages($current_novel, $current_chapter);
-		$param['Novels']['PageContent']	= $noveldb->GetPageContent($current_novel, $current_chapter, $current_page);
-		
-		$content = Generate_Novels($param);
-	}
-	
-	/* ------------ *
-	 * | SETTINGS | *
-	 * ------------ */
-	 
-	elseif ($current == "Settings")
-	{
-		$param['Settings']['current_settings'] = $player->GetSettings();
-		$param['Settings']['countries'] = $settingdb->CountryNames();
-		$param['Settings']['timezones'] = $settingdb->TimeZones();
-		$param['Settings']['PlayerType'] = $player->Type();
-		$param['Settings']['change_own_avatar'] = ($access_rights[$player->Type()]["change_own_avatar"]);
-		
-		//date is handled separately
-		$birthdate = $param['Settings']['current_settings']["Birthdate"];
-		if( $birthdate != "0000-00-00" )
-		{
-			$param['Settings']['current_settings']["Age"] = $settingdb->CalculateAge($birthdate);
-			$param['Settings']['current_settings']["Sign"] = $settingdb->CalculateSign($birthdate);
-			$param['Settings']['current_settings']["Birthdate"] = date("d-m-Y", strtotime($birthdate));
-		}
-		else
-		{
-			$param['Settings']['current_settings']["Age"] = "Unknown";
-			$param['Settings']['current_settings']["Sign"] = "Unknown";
-			$param['Settings']['current_settings']["Birthdate"] = "Unknown";
-		}
-		
-		$content = Generate_Settings($param);
-	}
-	
-	/* --------- *
-	 * | FORUM | *
-	 * --------- */
-	 
-	elseif ($current == "Forum")
-	{
-		$param['Forum']['sections'] = $forum->ListSections();
-		
-		foreach($param['Forum']['sections'] as $index => $data)
-			$param['Forum']['threadlist'][$index] = $forum->Threads->ListThreadsMain($data['SectionID']);
-		
-		$content = Generate_Forum($param);
-	}
-	
-	elseif ($current == "Section_details")
-	{
-		if (!isset($current_page)) $current_page = 0;
-	
-		$param['Section_details']['Section'] = $forum->GetSection($section_id);
-		$param['Section_details']['Pages'] = $forum->Threads->CountPages($section_id);
-		$param['Section_details']['CurrentPage'] = $current_page;
-		$param['Section_details']['threadlist'] = $forum->Threads->ListThreads($section_id, $current_page, "");
-		
-		$param['Section_details']['create_thread'] = ($access_rights[$player->Type()]["create_thread"]);
-		
-		$content = Generate_Section_details($param);
-	}
-	
-	elseif ($current == "New_thread")
-	{
-		$param['New_thread']['Section'] = $forum->GetSection($section_id);
-		$param['New_thread']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : "");
-		$param['New_thread']['Title'] = ((isset($_POST['Title'])) ? $_POST['Title'] : "");
-		
-		$param['New_thread']['chng_priority'] = ($access_rights[$player->Type()]["chng_priority"]);
-										
-		$content = Generate_New_thread($param);
-	}
-	
-	elseif ($current == "Thread_details")
-	{
-		if (!isset($current_page)) $current_page = 0;
-	
-		$param['Thread_details']['Thread'] = $thread_data = $forum->Threads->GetThread($thread_id);
-		
-		// retrieve section_id - cannot rely on hidden, because we allow to access threads direct from main page		
-		$param['Thread_details']['Section'] = $forum->GetSection($thread_data['SectionID']);
-		
-		$param['Thread_details']['Pages'] = $forum->Threads->Posts->CountPages($thread_id);
-		$param['Thread_details']['CurrentPage'] = $current_page;
-		$param['Thread_details']['PostList'] = $forum->Threads->Posts->ListPosts($thread_id, $current_page);
-		$param['Thread_details']['AvatarsList'] = $forum->Threads->Posts->ListPosts_Avatars($thread_id, $current_page);
-		$param['Thread_details']['Delete'] = (isset($_POST['thread_delete']));
-		$param['Thread_details']['DeletePost'] = ((isset($deleting_post)) ? $deleting_post : false);
-		
-		$param['Thread_details']['lock_thread'] = ($access_rights[$player->Type()]["lock_thread"]);
-		$param['Thread_details']['del_all_thread'] = ($access_rights[$player->Type()]["del_all_thread"]);
-		$param['Thread_details']['edit_thread'] = (($access_rights[$player->Type()]["edit_all_thread"]) OR ($access_rights[$player->Type()]["edit_own_thread"] AND $thread_data['Author'] == $player->Name()));
-		$param['Thread_details']['create_post'] = ($access_rights[$player->Type()]["create_post"]);
-		$param['Thread_details']['del_all_post'] = ($access_rights[$player->Type()]["del_all_post"]);
-		$param['Thread_details']['edit_all_post'] = ($access_rights[$player->Type()]["edit_all_post"]);
-		$param['Thread_details']['edit_own_post'] = ($access_rights[$player->Type()]["edit_own_post"]);
-		
-		$content = Generate_Thread_details($param);
-	}
-	
-	elseif ($current == "New_post")
-	{
-		$param['New_post']['Thread'] = $forum->Threads->GetThread($thread_id);
-		$param['New_post']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : "");
-											
-		$content = Generate_New_post($param);
-	}
-	
-	elseif ($current == "Edit_post")
-	{
-		$param['Edit_post']['Post'] = $post_data;
-		$param['Edit_post']['CurrentPage'] = $current_page;
-		$param['Edit_post']['ThreadList'] = $forum->Threads->ListTargetThreads($post_data['ThreadID']);
-		$param['Edit_post']['Thread'] = $forum->Threads->GetThread($post_data['ThreadID']);
-		$param['Edit_post']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : $post_data['Content']);
-		
-		$param['Edit_post']['move_post'] = ($access_rights[$player->Type()]["move_post"]);
-											
-		$content = Generate_Edit_post($param);
-	}
-	
-	elseif ($current == "Edit_thread")
-	{
-		$param['Edit_thread']['Thread'] = $thread_data = $forum->Threads->GetThread($thread_id);
-		$param['Edit_thread']['Section'] = $forum->GetSection($thread_data['SectionID']);
-		$param['Edit_thread']['SectionList'] = $forum->ListTargetSections($thread_data['SectionID']);
-		
-		$param['Edit_thread']['chng_priority'] = ($access_rights[$player->Type()]["chng_priority"]);
-		$param['Edit_thread']['move_thread'] = ($access_rights[$player->Type()]["move_thread"]);
-											
-		$content = Generate_Edit_thread($param);
-	}
-	
-	/* ----------- *
-	 * | NOWHERE | *
-	 * ----------- */
 	else
 	{
-		$content = Generate_Nowhere();
+		$params['profile']['Age'] = 'Unknown';
+		$params['profile']['Sign'] = 'Unknown';
+		$params['profile']['Birthdate'] = 'Unknown';
+	}
+
+	$params['profile']['CurPlayerName'] = $player->Name();
+	$params['profile']['timezone'] = $player->GetSetting("Timezone");
+	$params['profile']['send_challenges'] = ($access_rights[$player->Type()]["send_challenges"]) ? 'yes' : 'no';
+	$params['profile']['messages'] = ($access_rights[$player->Type()]["messages"]) ? 'yes' : 'no';
+	$params['profile']['change_rights'] = ($access_rights[$player->Type()]["change_rights"]) ? 'yes' : 'no';
+	$params['profile']['system_notification'] = ($access_rights[$player->Type()]["system_notification"]) ? 'yes' : 'no';
+	$params['profile']['change_all_avatar'] = ($access_rights[$player->Type()]["change_all_avatar"]) ? 'yes' : 'no';
+
+	$activegames = $gamedb->ListActiveGames($player->Name());
+	$challengesfrom = $gamedb->ListChallengesFrom($player->Name());
+	$challengesto = $gamedb->ListChallengesTo($player->Name());
+	$endedgames = $gamedb->ListEndedGames($player->Name());
+	$params['profile']['free_slots'] = MAX_GAMES - (count($activegames) + count($challengesfrom) + count($challengesto));
+	$params['profile']['decks'] = $player->ListReadyDecks();
+
+	$params['profile']['challenged'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $cur_player), $challengesfrom) !== false) ? 'yes' : 'no';
+	$params['profile']['playingagainst'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $cur_player), $activegames) !== false) ? 'yes' : 'no';
+	$params['profile']['waitingforack'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $cur_player), $endedgames) !== false) ? 'yes' : 'no';
+
+	$params['profile']['challenging'] = (isset($_POST['prepare_challenge'])) ? 'yes' : 'no';
+
+	if ($params['profile']['challenged'])
+	{
+		$params['profile']['challenge'] = $messagedb->GetChallenge($player->Name(), $cur_player);
+		$params['profile']['challenge']['Content'] = textencode($params['profile']['challenge']['Content']);
+	}
+
+	break;
+
+
+case 'Challenges':
+	$params['challenges']['PlayerName'] = $player->Name();
+	$params['challenges']['PreviousLogin'] = $player->PreviousLogin();
+	$params['challenges']['timezone'] = $player->GetSetting("Timezone"); 
+	$params['challenges']['max_games'] = MAX_GAMES;
+	$params['challenges']['system_name'] = SYSTEM_NAME;
+
+	$decks = $params['challenges']['decks'] = $player->ListReadyDecks();
+	$params['challenges']['deck_count'] = count($decks);
+	$params['challenges']['startedgames'] = count($gamedb->ListActiveGames($player->Name())) + count($gamedb->ListChallengesFrom($player->Name()));
+
+	if (isset($_POST['incoming'])) $current_subsection = "incoming";
+	elseif (isset($_POST['outgoing'])) $current_subsection = "outgoing";
+	elseif (!isset($current_subsection)) $current_subsection = "incoming";
+
+	$function_type = (($current_subsection == "incoming") ? "ListChallengesTo" : "ListChallengesFrom");
+	$params['challenges']['challenges'] = $messagedb->$function_type($player->Name());
+	$params['challenges']['challenges_count'] = count($params['challenges']['challenges']);
+	$params['challenges']['current_subsection'] = $current_subsection;
+
+	$current_location = ((isset($_POST['CurrentLocation'])) ? $_POST['CurrentLocation'] : "inbox");
+
+	$current_order = (isset($order)) ? $order : "DESC"; // default ordering
+	$current_condition = (isset($condition)) ? $condition : "Created"; // default order condition
+
+	$current_page = ((isset($_POST['CurrentMesPage'])) ? $_POST['CurrentMesPage'] : 0);
+	$params['challenges']['current_page'] = $current_page;
+
+	// filter initialization
+	if (!isset($_POST['CurrentFilterDate'])) $_POST['CurrentFilterDate'] = "none";
+	if (!isset($_POST['CurrentFilterName'])) $_POST['CurrentFilterName'] = "none";
+
+	$params['challenges']['date_val'] = $date = $_POST['CurrentFilterDate'];
+	$params['challenges']['name_val'] = $name = $_POST['CurrentFilterName'];
+
+	if ($current_location == "all_mail")
+	{
+		$list_type = "ListAllMessages";
+		$name_type = "ListAllNames";
+		$pages_type = "CountPagesAll";
+	}
+	elseif ($current_location == "sent_mail")
+	{
+		$list_type = "ListMessagesFrom";
+		$name_type = "ListNamesFrom";
+		$pages_type = "CountPagesFrom";
+	}
+	else
+	{
+		$list_type = "ListMessagesTo";
+		$name_type = "ListNamesTo";
+		$pages_type = "CountPagesTo";
+	}
+
+	$list = $messagedb->$list_type($player->Name(), $date, $name, $current_condition, $current_order, $current_page);
+	$name_list = $messagedb->$name_type($player->Name(), $date);
+
+	$page_count = $messagedb->$pages_type($player->Name(), $date, $name);
+	$pages = array();
+	if ($page_count > 0) for ($i = 0; $i < $page_count; $i++) $pages[$i] = $i;
+	$params['challenges']['pages'] = $pages;
+	$params['challenges']['page_count'] = $page_count;
+
+	$params['challenges']['messages'] = $list;
+	$params['challenges']['messages_count'] = count($list);
+	$params['challenges']['current_location'] = $current_location;
+	$params['challenges']['current_order'] = $current_order;
+	$params['challenges']['current_condition'] = $current_condition;
+	$params['challenges']['timesections'] = $messagedb->Timesections();
+	$params['challenges']['name_filter'] = $name_list;
+	$params['challenges']['current_page'] = $current_page;
+
+	$params['challenges']['send_messages'] = (($access_rights[$player->Type()]["messages"]) ? 'yes' : 'no');
+	$params['challenges']['accept_challenges'] = (($access_rights[$player->Type()]["accept_challenges"]) ? 'yes' : 'no');
+	$params['challenges']['see_all_messages'] = (($access_rights[$player->Type()]["see_all_messages"]) ? 'yes' : 'no');
+
+	break;
+
+
+case 'Message_details':
+	$params['message_details']['PlayerName'] = $player->Name();
+	$params['message_details']['system_name'] = SYSTEM_NAME;
+	$params['message_details']['timezone'] = $player->GetSetting("Timezone"); 
+
+	$params['message_details']['Author'] = $message['Author'];
+	$params['message_details']['Recipient'] = $message['Recipient'];
+	$params['message_details']['Subject'] = $message['Subject'];
+	$params['message_details']['Content'] = $message['Content'];
+	$params['message_details']['MessageID'] = $messageid;
+	$params['message_details']['delete'] = ((isset($_POST["message_delete"])) ? 'yes' : 'no');
+	$params['message_details']['messages'] = (($access_rights[$player->Type()]["messages"]) ? 'yes' : 'no');
+
+	$current_location = ((isset($_POST['CurrentLocation'])) ? $_POST['CurrentLocation'] : "inbox");
+
+	$params['message_details']['current_location'] = $current_location;
+
+	$params['message_details']['Created'] = $message['Created'];
+	$params['message_details']['Stamp'] = 1 + strtotime($message['Created']) % 4; // hash function - assign stamp picture
+
+	break;
+
+
+case 'Message_new':
+	$params['message_new']['Author'] = $author;
+	$params['message_new']['Recipient'] = $recipient;
+	$params['message_new']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : '');
+ 	$params['message_new']['Subject'] = ((isset($_POST['Subject'])) ? $_POST['Subject'] : '');
+
+	break;
+
+
+case 'Games':
+	$params['games']['PlayerName'] = $player->Name();
+
+	$list = $gamedb->ListActiveGames($player->Name());
+	if (count($list) > 0)
+	{
+		foreach ($list as $i => $data)
+		{
+			$game = $gamedb->GetGame2($data['Player1'], $data['Player2']);
+			$opponent = ($data['Player1'] != $player->Name()) ? $data['Player1'] : $data['Player2'];
+
+			$params['games']['list'][$i]['opponent'] = $opponent;
+			$params['games']['list'][$i]['active'] = (($playerdb->GetPlayer($opponent)->isOnline()) ? 'yes' : 'no');
+			$params['games']['list'][$i]['ready'] = (($game->GameData->Current == $player->Name()) ? 'yes' : 'no');
+			$params['games']['list'][$i]['gameid'] = $game->ID();
+			$params['games']['list'][$i]['gamestate'] = $game->State;
+			$params['games']['list'][$i]['isdead'] = (($playerdb->isDead($opponent)) ? 'yes' : 'no');
+		}
+	}
+
+	break;
+
+
+case 'Game':
+	$gameid = $_POST['CurrentGame'];
+
+	// prepare the neccessary data
+	$game = $gamedb->GetGame($gameid);
+	$player1 = $game->Name1();
+	$player2 = $game->Name2();
+	$data = &$game->GameData;
+
+	$opponent = $playerdb->GetPlayer(($player1 != $player->Name()) ? $player1 : $player2);
+	$mydata = &$data->Player[$player->Name()];
+	$hisdata = &$data->Player[$opponent->Name()];
+
+	$params['game']['CurrentGame'] = $gameid;
+
+	$params['game']['chat'] = (($access_rights[$player->Type()]["chat"]) ? 'yes' : 'no');
+
+	// load needed settings
+	$c_text = $player->GetSetting("Cardtext");
+	$c_img = $player->GetSetting("Images");
+	$c_keywords = $player->GetSetting("Keywords");
+	$c_oldlook = $player->GetSetting("OldCardLook");
+
+	$params['game']['minimize'] = $player->GetSetting("Minimize");
+	$params['game']['mycountry'] = $player->GetSetting("Country");
+	$params['game']['hiscountry'] = $opponent->GetSetting("Country");
+	$params['game']['timezone'] = $player->GetSetting("Timezone");
+
+	$params['game']['GameState'] = $game->State;
+	$params['game']['Round'] = $data->Round;
+	$params['game']['Outcome'] = $data->Outcome;
+	$params['game']['Winner'] = $data->Winner;
+	$params['game']['PlayerName'] = $player->Name();
+	$params['game']['OpponentName'] = $opponent->Name();
+	$params['game']['Current'] = $data->Current;
+	$params['game']['Timestamp'] = $data->Timestamp;
+
+	// my hand
+	$myhand = $mydata->Hand;
+	foreach ($myhand as $list_index => $cardid)
+	{
+		$card = $carddb->GetCard($cardid);
+
+		$params['game']['MyHand'][$list_index]['CardID'] = $cardid;
+		$params['game']['MyHand'][$list_index]['CardString'] = $card->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
+		$params['game']['MyHand'][$list_index]['Playable'] = ((($mydata->Bricks >= $card->CardData->Bricks) and ($mydata->Gems >= $card->CardData->Gems) and ($mydata->Recruits >= $card->CardData->Recruits) and ($game->State == 'in progress') and ($data->Current == $player->Name())) ? 'yes' : 'no');
+		
+		$modes = array();
+		// hack to skip special cases of several cards when the card could target itself even though it's against the rules
+		$mode_count = $card->CardData->Modes;
+		if ($mode_count > 0) for ($i = 1; $i <= $mode_count; $i++) if (!(($list_index == $i) and (($cardid == 269) or ($cardid == 298)))) $modes[$i] = $i;
+		
+		$params['game']['MyHand'][$list_index]['Modes'] = $modes;
+		$params['game']['MyHand'][$list_index]['NewCard'] = (isset($mydata->NewCards[$list_index]) ? 'yes' : 'no');
+	}
+
+	$params['game']['MyBricks'] = $mydata->Bricks;
+	$params['game']['MyGems'] = $mydata->Gems;
+	$params['game']['MyRecruits'] = $mydata->Recruits;
+	$params['game']['MyQuarry'] = $mydata->Quarry;
+	$params['game']['MyMagic'] = $mydata->Magic;
+	$params['game']['MyDungeons'] = $mydata->Dungeons;
+	$params['game']['MyTower'] = $mydata->Tower;
+	$params['game']['MyTowerBody'] = (170 * ($mydata->Tower/100));
+	$params['game']['MyWall'] = $mydata->Wall;
+	$params['game']['MyWallBody'] = (270 * ($mydata->Wall/150));
+	
+	// my discarded cards
+	$mydiscards0 = array();
+	$mydiscards1 = array();
+
+	if (count($mydata->DisCards[0]) > 0)
+		foreach ($mydata->DisCards[0] as $index => $cardid)
+			$mydiscards0[$index] = $carddb->GetCard($cardid)->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
+	if (count($mydata->DisCards[1]) > 0)
+		foreach ($mydata->DisCards[1] as $index => $cardid)
+			$mydiscards1[$index] = $carddb->GetCard($cardid)->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
+
+	$params['game']['MyDisCards0'] = $mydiscards0;// cards discarded from my hand
+	$params['game']['MyDisCards1'] = $mydiscards1;// cards discarded from his hand
+
+	// my last played cards
+	$mylastcard = array();
+	for( $i = 1; $i <= count($mydata->LastCard); $i++ )
+	{
+		$mylastcard[$i]['CardString'] = $carddb->GetCard($mydata->LastCard[$i])->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
+		$mylastcard[$i]['CardAction'] = $mydata->LastAction[$i];
+		$mylastcard[$i]['CardMode'] = $mydata->LastMode[$i];
+	}
+
+	$params['game']['MyLastCard'] = $mylastcard;
+
+	// my tokens
+	$my_token_names = $mydata->TokenNames;
+	$my_token_values = $mydata->TokenValues;
+	$my_token_changes = $mydata->TokenChanges;
+
+	$my_tokens = array();
+	foreach ($my_token_names as $index => $value)
+	{
+		$my_tokens[$index]['Name'] = $my_token_names[$index];
+		$my_tokens[$index]['Value'] = $my_token_values[$index];
+		$my_tokens[$index]['Change'] = $my_token_changes[$index];
+	}
+
+	$params['game']['MyTokens'] = $my_tokens;
+
+	// his hand
+	$hishand = $hisdata->Hand;
+	foreach ($hishand as $list_index => $cardid)
+	{
+		$card = $carddb->GetCard($cardid);
+		
+		$params['game']['HisHand'][$list_index]['CardString'] = $card->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
+		$params['game']['HisHand'][$list_index]['NewCard'] = (isset($hisdata->NewCards[$list_index]) ? 'yes' : 'no');
+	}
+
+	$params['game']['HisBricks'] = $hisdata->Bricks;
+	$params['game']['HisGems'] = $hisdata->Gems;
+	$params['game']['HisRecruits'] = $hisdata->Recruits;
+	$params['game']['HisQuarry'] = $hisdata->Quarry;
+	$params['game']['HisMagic'] = $hisdata->Magic;
+	$params['game']['HisDungeons'] = $hisdata->Dungeons;
+	$params['game']['HisTower'] = $hisdata->Tower;
+	$params['game']['HisTowerBody'] = (170 * ($hisdata->Tower/100));
+	$params['game']['HisWall'] = $hisdata->Wall;
+	$params['game']['HisWallBody'] = (270 * ($hisdata->Wall/150));
+
+	// his discarded cards
+	$hisdiscards0 = array();
+	$hisdiscards1 = array();
+
+	if (count($hisdata->DisCards[0]) > 0)
+		foreach ($hisdata->DisCards[0] as $index => $cardid)
+			$hisdiscards0[$index] = $carddb->GetCard($cardid)->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
+	if (count($hisdata->DisCards[1]) > 0)
+		foreach ($hisdata->DisCards[1] as $index => $cardid)
+			$hisdiscards1[$index] = $carddb->GetCard($cardid)->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
+
+	$params['game']['HisDisCards0'] = $hisdiscards0;// cards discarded from my hand
+	$params['game']['HisDisCards1'] = $hisdiscards1;// cards discarded from his hand
+	
+	// his last played cards
+	$hislastcard = array();
+	for( $i = 1; $i <= count($hisdata->LastCard); $i++ )
+	{
+		$hislastcard[$i]['CardString'] = $carddb->GetCard($hisdata->LastCard[$i])->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
+		$hislastcard[$i]['CardAction'] = $hisdata->LastAction[$i];
+		$hislastcard[$i]['CardMode'] = $hisdata->LastMode[$i];
+	}
+
+	$params['game']['HisLastCard'] = $hislastcard;
+
+	// his tokens
+	$his_token_names = $hisdata->TokenNames;
+	$his_token_values = $hisdata->TokenValues;
+	$his_token_changes = $hisdata->TokenChanges;
+
+	$his_tokens = array();
+	foreach ($his_token_names as $index => $value)
+	{
+		$his_tokens[$index]['Name'] = $his_token_names[$index];
+		$his_tokens[$index]['Value'] = $his_token_values[$index];
+		$his_tokens[$index]['Change'] = $his_token_changes[$index];
+	}
+
+	$params['game']['HisTokens'] = array_reverse($his_tokens);
+
+	// - <quick game switching menu>
+	$list = $gamedb->ListActiveGames($player->Name());
+
+	foreach ($list as $i => $names)
+	{
+		$game_list = $gamedb->GetGame2($names['Player1'], $names['Player2']);
+		$opponent_list = ($names['Player1'] != $player->Name()) ? $names['Player1'] : $names['Player2'];
+		$opponent_object = $playerdb->GetPlayer($opponent_list);
+
+		$color = ''; // no extra color default
+		if ($game_list->GameData->Current == $player->Name()) $color = 'lime'; // when it is your turn
+		if ($game_list->State == 'in progress' and $playerdb->isDead($opponent_list)) $color = 'gray'; // when game can be aborted
+		if ($game_list->State == 'finished') $color = '#ff69b4'; // when game is finished color HotPink
+
+		$params['game']['GameList'][$i]['Value'] = $game_list->ID();
+		$params['game']['GameList'][$i]['Content'] = 'vs. '.htmlencode($opponent_list);
+		$params['game']['GameList'][$i]['Selected'] = (($game_list->ID() == $_POST['CurrentGame']) ? 'yes' : 'no');
+		$params['game']['GameList'][$i]['Color'] = $color;
+	}
+	// - </quick game switching menu>
+
+	// - <'jump to next game' button>
+
+	$list = $gamedb->ListActiveGames($player->Name());
+
+	$num_games_your_turn = 0;
+	foreach ($list as $i => $names)
+		if ($gamedb->GetGame2($names['Player1'], $names['Player2'])->GameData->Current == $player->Name())
+			$num_games_your_turn++;
+	$params['game']['num_games_your_turn'] = $num_games_your_turn;
+
+	// - </'jump to next game' button>
+
+	// - <game state indicator>
+	$params['game']['opp_isOnline'] = (($opponent->isOnline()) ? 'yes' : 'no');
+	$params['game']['opp_isDead'] = (($opponent->isDead()) ? 'yes' : 'no');
+	$params['game']['surrender'] = ((isset($_POST["surrender"])) ? 'yes' : 'no');
+	$params['game']['finish_game'] = ((time() - $data->Timestamp >= 60*60*24*7*3 and $data->Current != $player->Name()) ? 'yes' : 'no');
+
+	// your resources and tower
+	$colors = array ('Quarry'=> '', 'Magic'=> '', 'Dungeons'=> '', 'Bricks'=> '', 'Gems'=> '', 'Recruits'=> '', 'Tower'=> '', 'Wall'=> '');
+	foreach ($colors as $attribute => $color)
+	{
+		if ($mydata->Changes[$attribute] > 0) $colors[$attribute] = 'color: lime';
+		elseif ($mydata->Changes[$attribute] < 0) $colors[$attribute] = 'color: orange';
+		else $colors[$attribute] = '';
+	}
+
+	$params['game']['mycolors'] = $colors;
+
+	// opponent's resources and tower
+	$colors = array ('Quarry'=> '', 'Magic'=> '', 'Dungeons'=> '', 'Bricks'=> '', 'Gems'=> '', 'Recruits'=> '', 'Tower'=> '', 'Wall'=> '');
+	foreach ($colors as $attribute => $color)
+	{
+		if ($hisdata->Changes[$attribute] > 0) $colors[$attribute] = 'color: lime';
+		elseif ($hisdata->Changes[$attribute] < 0) $colors[$attribute] = 'color: orange';
+	}
+
+	$params['game']['hiscolors'] = $colors;	
+
+	// chatboard
+
+	$params['game']['display_avatar'] = $player->GetSetting("Avatargame");
+	$params['game']['correction'] = $player->GetSetting("Correction");
+
+	$params['game']['myavatar'] = $player->GetSetting("Avatar");
+	$params['game']['hisavatar'] = $opponent->GetSetting("Avatar");
+
+	$order = ( $player->GetSetting("Chatorder") == "yes" ) ? "ASC" : "DESC";
+	$params['game']['messagelist'] = $message_list = $chatdb->ListChatMessages($game->ID(), $order);
+
+	break;
+
+
+case 'Deck_view':
+	$gameid = $_POST['CurrentGame'];
+	$game = $gamedb->GetGame($gameid);
+
+	$params['deck_view']['CurrentGame'] = $gameid;
+	$deck_data['Common'] = $game->GameData->Player[$player->Name()]->Deck->Common;
+	$deck_data['Uncommon'] = $game->GameData->Player[$player->Name()]->Deck->Uncommon;
+	$deck_data['Rare'] = $game->GameData->Player[$player->Name()]->Deck->Rare;
+
+	//load needed settings
+	$c_text = $player->GetSetting("Cardtext");
+	$c_img = $player->GetSetting("Images");
+	$c_keywords = $player->GetSetting("Keywords");
+	$c_oldlook = $player->GetSetting("OldCardLook");
+	
+	foreach (array('Common', 'Uncommon', 'Rare') as $class)
+	{
+		$cards = array();
+		
+		foreach ($deck_data[$class] as $index => $cardid)
+		{
+			// index manipulation, due to the fact that we count from 1, instead of 0
+			// PHP does not have div function, so we must use floor and standard division
+			$row = floor(($index - 1) / 3);
+			$column = ($index - 1) % 3;
+			
+			$cards[$row][$column]['CardID'] = $cardid;
+			$cards[$row][$column]['CardString'] = $carddb->GetCard($cardid)->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
+		}
+		
+		$params['deck_view']['DeckCards'][$class] = $cards;
 	}
 	
+	break;
+
+
+case 'Novels':
+	$current_novel = ( isset($_POST['current_novel']) ) ? $_POST['current_novel'] : "";
+	$current_chapter = ( isset($_POST['current_chapter']) ) ? $_POST['current_chapter'] : "";
+	$current_page = ( isset($_POST['current_page']) ) ? $_POST['current_page'] : "";
+
+	$params['novels']['current_novel'] = $current_novel;
+	$params['novels']['current_chapter'] = $current_chapter;
+	$params['novels']['current_page'] = $current_page;
+	$params['novels']['novelslist'] = $noveldb->GetNovelsList();
+	$params['novels']['chapterslist'] = ($current_novel != "") ? $noveldb->GetChaptersList($current_novel) : null;
+	$params['novels']['ListPages'] = $noveldb->ListPages($current_novel, $current_chapter);
+	$params['novels']['PageContent'] = $noveldb->GetPageContent($current_novel, $current_chapter, $current_page);
+
+	break;
+
+
+case 'Settings':
+	$params['settings']['current_settings'] = $player->GetSettings();
+	$params['settings']['PlayerType'] = $player->Type();
+	$params['settings']['change_own_avatar'] = (($access_rights[$player->Type()]["change_own_avatar"]) ? 'yes' : 'no');
+
+	//date is handled separately
+	$birthdate = $params['settings']['current_settings']["Birthdate"];
+	list($year, $month, $day) = explode("-", $birthdate);
+
+	if( $birthdate != "0000-00-00" )
+	{
+		$params['settings']['current_settings']["Age"] = $settingdb->CalculateAge($birthdate);
+		$params['settings']['current_settings']["Sign"] = $settingdb->CalculateSign($birthdate);
+		$params['settings']['current_settings']["Birthdate"] = array('year'=>$year, 'month'=>$month, 'day'=>$day);
+	}
+	else
+	{
+		$params['settings']['current_settings']["Age"] = "Unknown";
+		$params['settings']['current_settings']["Sign"] = "Unknown";
+		$params['settings']['current_settings']["Birthdate"] = array('year'=>'', 'month'=>'', 'day'=>'');
+	}
+
+	break;
+
+
+case 'Forum':
+	$params['forum_overview']['sections'] = $forum->ListSections();	
+	$params['forum_overview']['PreviousLogin'] = $player->PreviousLogin();
+	$params['forum_overview']['timezone'] = $player->GetSetting("Timezone");
+
+	foreach($params['forum_overview']['sections'] as $index => $data)
+		$params['forum_overview']['sections'][$index]['threadlist'] = $forum->Threads->ListThreadsMain($index);
+
+	break;
+
+
+case 'Section_details':
+	// uses: $current_page, $section_id
+	if (!isset($current_page)) $current_page = 0;
+
+	$params['forum_section']['section'] = $forum->GetSection($section_id);
+	$params['forum_section']['threads'] = $forum->Threads->ListThreads($section_id, $current_page, "");
+	$params['forum_section']['pages'] = $forum->Threads->CountPages($section_id);
+	$params['forum_section']['current_page'] = $current_page;
+	$params['forum_section']['create_thread'] = (($access_rights[$player->Type()]["create_thread"]) ? 'yes' : 'no');
+	$params['forum_section']['PreviousLogin'] = $player->PreviousLogin();
+	$params['forum_section']['timezone'] = $player->GetSetting("Timezone");
+
+	break;
+
+
+case 'Thread_details':
+	if (!isset($current_page)) $current_page = 0;
+
+	$params['forum_thread']['Thread'] = $thread_data = $forum->Threads->GetThread($thread_id);
+	$params['forum_thread']['Section'] = $forum->GetSection($thread_data['SectionID']);
+	$params['forum_thread']['Pages'] = $forum->Threads->Posts->CountPages($thread_id);
+	$params['forum_thread']['CurrentPage'] = $current_page;
+	$params['forum_thread']['PostList'] = $forum->Threads->Posts->ListPosts($thread_id, $current_page);
+	$params['forum_thread']['Delete'] = ((isset($_POST['thread_delete'])) ? 'yes' : 'no');
+	$params['forum_thread']['DeletePost'] = ((isset($deleting_post)) ? $deleting_post : 0);
+	$params['forum_thread']['PlayerName'] = $player->Name();
+	$params['forum_thread']['PreviousLogin'] = $player->PreviousLogin();
+	$params['forum_thread']['timezone'] = $player->GetSetting("Timezone");
+
+	$params['forum_thread']['lock_thread'] = (($access_rights[$player->Type()]["lock_thread"]) ? 'yes' : 'no');
+	$params['forum_thread']['del_all_thread'] = (($access_rights[$player->Type()]["del_all_thread"]) ? 'yes' : 'no');
+	$params['forum_thread']['edit_thread'] = ((($access_rights[$player->Type()]["edit_all_thread"]) OR ($access_rights[$player->Type()]["edit_own_thread"] AND $thread_data['Author'] == $player->Name())) ? 'yes' : 'no');
+	$params['forum_thread']['create_post'] = (($access_rights[$player->Type()]["create_post"]) ? 'yes' : 'no');
+	$params['forum_thread']['del_all_post'] = (($access_rights[$player->Type()]["del_all_post"]) ? 'yes' : 'no');
+	$params['forum_thread']['edit_all_post'] = (($access_rights[$player->Type()]["edit_all_post"]) ? 'yes' : 'no');
+	$params['forum_thread']['edit_own_post'] = (($access_rights[$player->Type()]["edit_own_post"]) ? 'yes' : 'no');
+
+	break;
+
+
+case 'New_thread':
+	$params['forum_thread_new']['Section'] = $forum->GetSection($section_id);
+	$params['forum_thread_new']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : "");
+	$params['forum_thread_new']['Title'] = ((isset($_POST['Title'])) ? $_POST['Title'] : "");
+	$params['forum_thread_new']['chng_priority'] = (($access_rights[$player->Type()]["chng_priority"]) ? 'yes' : 'no');
+
+	break;
+
+
+case 'New_post':
+	$params['forum_post_new']['Thread'] = $forum->Threads->GetThread($thread_id);
+	$params['forum_post_new']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : "");
+
+	break;
+
+
+case 'Edit_thread':
+	$params['forum_thread_edit']['Thread'] = $thread_data = $forum->Threads->GetThread($thread_id);
+	$params['forum_thread_edit']['Section'] = $forum->GetSection($thread_data['SectionID']);
+	$params['forum_thread_edit']['SectionList'] = $forum->ListTargetSections($thread_data['SectionID']);
+	$params['forum_thread_edit']['chng_priority'] = (($access_rights[$player->Type()]["chng_priority"]) ? 'yes' : 'no');
+	$params['forum_thread_edit']['move_thread'] = (($access_rights[$player->Type()]["move_thread"]) ? 'yes' : 'no');
+
+	break;
+
+
+case 'Edit_post':
+	$params['forum_post_edit']['Post'] = $post_data;
+	$params['forum_post_edit']['CurrentPage'] = $current_page;
+	$params['forum_post_edit']['ThreadList'] = $forum->Threads->ListTargetThreads($post_data['ThreadID']);
+	$params['forum_post_edit']['Thread'] = $forum->Threads->GetThread($post_data['ThreadID']);
+	$params['forum_post_edit']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : $post_data['Content']);
+	$params['forum_post_edit']['move_post'] = (($access_rights[$player->Type()]["move_post"]) ? 'yes' : 'no');
+
+	break;
+
+
+default:
+	break;
+}
+
+
 	// HTML code generation
-	
-	echo Generate_Header();
-	
-	echo $menu;
-	echo $content;
-	
-	$param['sessionstring'] = (($session && !$session->hasCookies()) ? $session->SessionString() : "");
-	echo Generate_Footer($param);
-	
+
 	$querytime_end = microtime(TRUE);
-	echo '<!-- Page generated in '.(int)(1000*($querytime_end - $querytime_start)).' ms. '.$db->queries.' queries used. -->';
+	$xslttime_start = $querytime_end;
+
+	echo XSLT("templates/arcomage.xsl", $params);
+
+	$xslttime_end = microtime(TRUE);
+
+	$logic = (int)(1000*($querytime_end - $querytime_start));
+	$transform = (int)(1000*($xslttime_end - $xslttime_start));
+	$total = (int)(1000*($xslttime_end - $querytime_start));
+	echo "<!-- Page generated in {$total} ({$logic} + {$transform}) ms. {$db->queries} queries used. -->";
 ?>

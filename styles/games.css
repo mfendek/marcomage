@@ -128,6 +128,11 @@ p.info_label + p.info_label /* disable double label border */
 	border-top-style: none;
 }
 
+select.card_modes
+{
+	margin-left: 2.5ex;
+}
+
 div.history /* history of played cards */
 {
 	/* we abandoned IE support completely */
@@ -141,7 +146,7 @@ div.chatbox /* chatbox window */
 {
 	overflow: auto;
 	max-height: 11.5ex;
-	margin: 0.5ex 0ex 1ex 0ex;
+	margin-top: 0.5ex;
 	border: medium ridge yellow;
 	padding: 0ex 0.5ex 0.5ex 0.5ex;
 	text-align: left;
@@ -166,6 +171,11 @@ input.chatboard /* chatbox input elements */
 	padding: 0ex 0.5ex 0ex 0.5ex;
 }
 
+div#chat_inputs /* chatbox inputs */
+{
+	margin-top: 1ex;
+}
+
 div.towerbody /* body part of the tower */
 {
 	background-image: url('../img/towerb.jpg');
@@ -182,6 +192,22 @@ div.wallbody /* body part of the wall */
 	background-repeat: repeat-y;
 	background-color: black;
 	width: 19px;
+}
+
+p.token_counter /* token counter layout */
+{
+	color: white;
+	padding: 0.3ex 0.2ex 0.3ex 0.2ex;
+	margin: 1ex 0.5ex 0ex 0.5ex;
+	background-color: black;
+	border: thin solid yellow;
+	font-size: small;
+	text-align: center;
+}
+
+p.token_counter > span /* token counter value */
+{
+	margin-left: 1ex;
 }
 
 /* end game */
