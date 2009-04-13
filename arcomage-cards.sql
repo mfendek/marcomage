@@ -444,7 +444,7 @@ VALUES
 (426, 'Arthoria the Saber', 'Rare', 0, 22, 22, 'Attack: 15', 'Swift. Durable. Banish. Enduring (25).', 0),
 (427, 'Darkforge', 'Rare', 18, 9, 0, 'Recruits production X10', 'Alliance.', 0),
 (428, 'Spectral dragon', 'Rare', 0, 40, 50, 'Attack: 150<br />Gems: +20', 'Dragon. Undead.', 0),
-(429, 'Valley of thousand rivers', 'Uncommon', 0, 11, 0, 'Player with most <b>Alliance</b>, <b>Legend</b> and <b>Mage</b> cards gets 1 lowest facility', '', 0),
+(429, 'Valley of thousand rivers', 'Uncommon', 0, 6, 0, 'Player with most <b>Alliance</b>, <b>Legend</b> and <b>Mage</b> cards gets 1 lowest facility', '', 0),
 (430, 'Messenger', 'Common', 0, 0, 0, 'Next card received will be an uncommon card not from player''s deck', '', 0),
 (431, 'Divine intervention', 'Uncommon', 0, 10, 0, 'Player with most <b>Holy</b> cards in hand gets<br />Tower: +10<br />Wall: +20', 'Holy.', 0),
 (432, 'Fair trade', 'Uncommon', 0, 0, 0, 'Player with lowest stock gains 20 stock<br />His opponent gains +1 facilities', '', 0),
@@ -454,4 +454,4 @@ VALUES
 (436, 'Watchtower', 'Uncommon', 18, 0, 13, 'Tower: +16<br />If there is a <b>Soldier</b> card in hand<br />Enemy tower: -16<br />else<br />Enemy tower: -10', '', 0),
 (437, 'Battlements', 'Common', 7, 0, 2, 'Tower: +7<br />If there is a <b>Soldier</b> card in hand<br />Enemy tower: -4', '', 0),
 (438, 'Phoenix feather', 'Common', 5, 5, 5, 'If #<b>Burning</b> cards in hand = 2<br />Next card received will be Phoenix<br />else<br />Gems: +14', 'Burning.', 0),
-(439, 'Revenge of the fallen', 'Uncommon', 0, 13, 0, 'Player with fewest <b>Undead</b> cards in hand loses 1 highest facility', '', 0);
+(439, 'Revenge of the fallen', 'Uncommon', 0, 7, 0, 'Player with fewest <b>Undead</b> cards in hand loses 1 highest facility', '', 0);
