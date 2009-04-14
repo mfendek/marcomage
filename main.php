@@ -912,6 +912,8 @@
 					$_POST['CurrentFilterDate'] = "none";
 					$_POST['CurrentFilterName'] = "none";
 					$_POST['CurrentMesPage'] = 0;
+					unset($_POST['CurrentCond']);
+					unset($_POST['CurrentOrd']);
 					$current = 'Challenges';
 					break;
 				}
@@ -922,6 +924,8 @@
 					$_POST['CurrentFilterDate'] = "none";
 					$_POST['CurrentFilterName'] = "none";
 					$_POST['CurrentMesPage'] = 0;
+					unset($_POST['CurrentCond']);
+					unset($_POST['CurrentOrd']);
 					$current = 'Challenges';
 					break;
 				}
@@ -934,6 +938,8 @@
  					$_POST['CurrentFilterDate'] = "none";
 					$_POST['CurrentFilterName'] = "none";
 					$_POST['CurrentMesPage'] = 0;
+					unset($_POST['CurrentCond']);
+					unset($_POST['CurrentOrd']);
  					$current = 'Challenges';
  					break;
  				}
@@ -943,8 +949,8 @@
 				{
 					if ($message == 'mes_ord_'.$type) // select ascending or descending order in message list
 					{
-						$condition = array_shift(array_keys($value));
-						$order = $order_val;
+						$_POST['CurrentCond'] = array_shift(array_keys($value));
+						$_POST['CurrentOrd'] = $order_val;
 						
 						$current = "Challenges";
 						
@@ -1965,8 +1971,8 @@
 				{
 					if ($message == 'players_ord_'.$type) // select ascending or descending order in players list
 					{
-						$condition = postdecode(array_shift(array_keys($value)));
-						$order = $order_val;
+						$_POST['CurrentCondition'] = postdecode(array_shift(array_keys($value)));
+						$_POST['CurrentOrder'] = $order_val;
 						
 						$current = "Players";
 						
@@ -2205,11 +2211,11 @@ case 'Decks':
 case 'Players':	
 
 	// defaults for list ordering
-	if (!isset($order) or $order == "") $order = "DESC";
-	if (!isset($condition) or $condition == "") $condition = "Rank";
+	if (!isset($_POST['CurrentOrder'])) $_POST['CurrentOrder'] = "DESC";
+	if (!isset($_POST['CurrentCondition'])) $_POST['CurrentCondition'] = "Rank";
 
-	$params['players']['order'] = $order;
-	$params['players']['condition'] = $condition;
+	$params['players']['order'] = $order = $_POST['CurrentOrder'];
+	$params['players']['condition'] = $condition = $_POST['CurrentCondition'];
 
 	$params['players']['CurrentFilter'] = $filter = ((isset($_POST['CurrentFilter'])) ? $_POST['CurrentFilter'] : "none");
 
@@ -2366,8 +2372,11 @@ case 'Challenges':
 
 	$current_location = ((isset($_POST['CurrentLocation'])) ? $_POST['CurrentLocation'] : "inbox");
 
-	$current_order = (isset($order)) ? $order : "DESC"; // default ordering
-	$current_condition = (isset($condition)) ? $condition : "Created"; // default order condition
+	if (!isset($_POST['CurrentOrd'])) $_POST['CurrentOrd'] = "DESC"; // default ordering
+	if (!isset($_POST['CurrentCond'])) $_POST['CurrentCond'] =  "Created"; // default order condition
+
+	$params['challenges']['current_order'] = $current_order = $_POST['CurrentOrd'];
+	$params['challenges']['current_condition'] = $current_condition = $_POST['CurrentCond'];
 
 	$current_page = ((isset($_POST['CurrentMesPage'])) ? $_POST['CurrentMesPage'] : 0);
 	$params['challenges']['current_page'] = $current_page;
@@ -2410,8 +2419,6 @@ case 'Challenges':
 	$params['challenges']['messages'] = $list;
 	$params['challenges']['messages_count'] = count($list);
 	$params['challenges']['current_location'] = $current_location;
-	$params['challenges']['current_order'] = $current_order;
-	$params['challenges']['current_condition'] = $current_condition;
 	$params['challenges']['timesections'] = $messagedb->Timesections();
 	$params['challenges']['name_filter'] = $name_list;
 	$params['challenges']['current_page'] = $current_page;

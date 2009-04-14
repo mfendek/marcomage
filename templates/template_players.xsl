@@ -167,6 +167,8 @@
 			<input type ="hidden" name="CurrentFilter" value="{$param/CurrentFilter}" />
 		</xsl:if>
 		<input type ="hidden" name="CurrentPlayersPage" value="{$param/current_page}" />
+		<input type ="hidden" name="CurrentOrder" value="{$param/order}" />
+		<input type ="hidden" name="CurrentCondition" value="{$param/condition}" />
 
 	</div>
 </xsl:template>
