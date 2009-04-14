@@ -542,8 +542,9 @@
 						</span>
 					</div>
 					<h5>
-						<xsl:value-of select="$param/OpponentName"/>
 						<img width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" />
+						<xsl:value-of select="$param/OpponentName"/>
+						<input class="details" type="submit" name="user_details[{$param/OpponentName}]" value="i" />
 					</h5>
 					<p class="info_label">Tower: <span>
 						<xsl:if test="$param/hiscolors/Tower != ''">
@@ -606,8 +607,9 @@
 						</p>
 					</div>
 					<h5>
-						<xsl:value-of select="$param/OpponentName"/>
 						<img width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" />
+						<xsl:value-of select="$param/OpponentName"/>
+						<input class="details" type="submit" name="user_details[{$param/OpponentName}]" value="i" />
 					</h5>
 					<p class="info_label">Tower: <span>
 						<xsl:if test="$param/hiscolors/Tower != ''">
