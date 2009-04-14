@@ -1137,18 +1137,24 @@
 							$my_min = $his_min = 1000; $my_max = $his_max = 0;
 							for ($i = 1; $i <= 8; $i++)
 							{
-								$cur_cost = $my_costs[$i] = $carddb->GetCard($mydata->Hand[$i])->GetResources("");
-								if ($cur_cost < $my_min) $my_min = $cur_cost;
-								if ($cur_cost > $my_max) $my_max = $cur_cost;
+								if ($i != $cardpos)
+								{
+									$cur_cost = $my_costs[$i] = $carddb->GetCard($mydata->Hand[$i])->GetResources("");
+									if ($cur_cost < $my_min) $my_min = $cur_cost;
+									if ($cur_cost > $my_max) $my_max = $cur_cost;
+								}
 								$cur_cost = $his_costs[$i] = $carddb->GetCard($hisdata->Hand[$i])->GetResources("");
 								if ($cur_cost < $his_min) $his_min = $cur_cost;
 								if ($cur_cost > $his_max) $his_max = $cur_cost;
 							}
 							for ($i = 1; $i <= 8; $i++)
 							{
-								$cur_cost = $my_costs[$i];
-								if ($cur_cost == $my_min) $my_low[$i] = $i;
-								elseif ($cur_cost == $my_max) $my_high[$i] = $i;
+								if ($i != $cardpos)
+								{
+									$cur_cost = $my_costs[$i];
+									if ($cur_cost == $my_min) $my_low[$i] = $i;
+									elseif ($cur_cost == $my_max) $my_high[$i] = $i;
+								}
 								$cur_cost = $his_costs[$i];
 								if ($cur_cost == $his_min) $his_low[$i] = $i;
 								elseif ($cur_cost == $his_max) $his_high[$i] = $i;
