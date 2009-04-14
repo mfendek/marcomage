@@ -200,12 +200,12 @@ Keywords represent information about the card that is too big to fit in the card
 	<li><b>Legend</b> - there is a 25% chance that one of your facilities (lowest) will be raised by one. When there are more candidates, it is resolved randomly.</li>
 	<li><b>Mage</b> - gain 8 Mage tokens for each <b>Mage</b> card in hand (not counting the played one), side-effect: half of the gems cost of the played card will be returned.</li>
 	<li><b>Nature</b> - it is a Nature card.</li>
-	<li><b>Quick</b> - player gets an additional turn, but no production this turn, it is impossible to draw a rare card after a <b>Quick</b> card is played</li>
+	<li><b>Quick</b> - player gets an additional turn, but no production this turn, it is impossible to draw a rare card after a <b>Quick</b> card is played.</li>
 	<li><b>Rebirth</b> - when played and number of <b>Burning</b> cards in game is greater then 3, the card stays on hand and you will get additional 16 gems.</li>
 	<li><b>Restoration</b> - it is a Restoration card.</li>
 	<li><b>Skirmisher</b> - discards one random <b>Charge</b> card from enemy hand (if there is one). Can only discard a card with same or lower rarity as was the played card, but cards with highest discardable rarity are preferred. Cards that cannot be discarded by played card are not considered targets for discard.</li>
 	<li><b>Soldier</b> - gain 8 Soldier tokens for each <b>Soldier</b> card in hand (not counting the played one), side-effect: half of the recruits cost of the played card will be returned.</li>
-	<li><b>Swift</b> - player gets additional turn, also with production, it is impossible to draw a rare card after a <b>Swift</b> card is played</li>
+	<li><b>Swift</b> - player gets additional turn, also with production, it is impossible to draw a rare card after a <b>Swift</b> card is played.</li>
 	<li><b>Titan</b> - gain 9 Titan tokens for each <b>Titan</b> card in hand (not counting the played one), side-effect: next card received will be a <b>Titan</b>.</li>
 	<li><b>Undead</b> - gain 6 Undead tokens for each <b>Undead</b> card in hand (not counting the played one), side-effect: upgrades rarity of one random <b>Undead</b> card in hand.</li>
 	<li><b>Unliving</b> - gain 8 Unliving tokens for each <b>Unliving</b> card in hand (not counting the played one), side-effect: half of the bricks cost of the played card will be returned.</li>
