@@ -427,7 +427,7 @@ VALUES
 (409, 'Dragon slayer', 'Uncommon', 0, 0, 15, 'Attack: 14<br />Discards a rare <b>Dragon</b> card from enemy hand to add a Dragon egg into your hand', 'Soldier.', 0),
 (410, 'Shadow fairy', 'Common', 0, 1, 0, 'If there is a no <b>Holy</b> card in enemy hand<br />Stock: +1<br />Enemy stock: -1<br />else<br />Enemy tower: -1', 'Holy.', 0),
 (411, 'Wolf spirit', 'Common', 0, 4, 0, 'Attack: 5<br />If last card played was a <b>Beast</b> card<br />Recruits: +3', 'Beast. Illusion.', 0),
-(412, 'Hungry dead', 'Uncommon', 0, 8, 8, 'If New<br />Enemy wall: -5<br />else<br />Stock: +4<br />Enemy stock: -4', 'Brigand. Undead. Durable. Enduring (10).', 0),
+(412, 'Hungry dead', 'Uncommon', 0, 8, 8, 'If New<br />Enemy wall: -5<br />else<br />Enemy stock: -4', 'Brigand. Undead. Durable. Enduring (12).', 0),
 (413, 'Colonialism', 'Common', 3, 0, 2, 'If Recruits < 8<br /> Recruits X2<br />else<br />Recruits: +5', '', 0),
 (414, 'Mediator', 'Uncommon', 0, 0, 0, 'Discard one card from enemy hand and pay its cost<br />If not enough stock<br />Matching facility: -1', '', 8),
 (415, 'Goblin intruder', 'Common', 1, 1, 1, 'Attack: 4<br />Replace a random non-rare <b>Alliance</b> card from enemy hand with Goblin intruder', '', 0),

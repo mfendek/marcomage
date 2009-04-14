@@ -1029,7 +1029,7 @@
 							break;
 					case 410: $found = false; for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Holy")) { $found = true; break; } if (!$found) { $mydata->Bricks+= 1; $mydata->Gems+= 1; $mydata->Recruits+= 1; $hisdata->Bricks-= 1; $hisdata->Gems-= 1; $hisdata->Recruits-= 1; } else $hisdata->Tower-= 1; break;
 					case 411: $this->Attack(5, $hisdata->Tower, $hisdata->Wall); if (($carddb->GetCard($mydata->LastCard[$mylastcardindex])->HasKeyword("Beast")) and ($mydata->LastAction[$mylastcardindex] == 'play')) $mydata->Recruits+= 3; break;
-					case 412: if (isset($mynewflags[$cardpos])) $hisdata->Wall-= 5; else { $mydata->Bricks+= 4; $mydata->Gems+= 4; $mydata->Recruits+= 4; $hisdata->Bricks-= 4; $hisdata->Gems-= 4; $hisdata->Recruits-= 4; } break;
+					case 412: if (isset($mynewflags[$cardpos])) $hisdata->Wall-= 5; else { $hisdata->Bricks-= 4; $hisdata->Gems-= 4; $hisdata->Recruits-= 4; } break;
 					case 413: if ($mydata->Recruits < 8) $mydata->Recruits = ($mydata->Recruits * 2); else $mydata->Recruits+= 5; break;
 					case 414: $dis_card = $carddb->GetCard($hisdata->Hand[$mode]); $hisdata->Hand[$mode] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $mode, 'DrawCard_random'); $hisdata->NewCards[$mode] = 1; $resources = array('Quarry' => 'Bricks', 'Magic' => 'Gems', 'Dungeons' => 'Recruits'); foreach ($resources as $facility => $resource) { $mydata->$resource-= $dis_card->GetResources($resource); if ($mydata->$resource < 0) $mydata->$facility-= 1; } break;
 					case 415: $this->Attack(4, $hisdata->Tower, $hisdata->Wall);
