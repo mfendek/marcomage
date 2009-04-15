@@ -483,7 +483,7 @@
 					case  94: if ($mode == 1) $this->Attack(12, $hisdata->Tower, $hisdata->Wall); elseif ($mode == 2) $hisdata->Tower-= 7; break;
 					case  95: $hisdata->Tower-= 3; break;
 					case  96: $this->Attack(1, $hisdata->Tower, $hisdata->Wall); $mydata->Gems+= 3; break;
-					case  97: $this->Attack(1, $hisdata->Tower, $hisdata->Wall); $last_card = $mydata->LastCard[$mylastcardindex]; if ((($carddb->GetCard($last_card)->GetResources("Bricks") + $carddb->GetCard($last_card)->GetResources("Gems") + $carddb->GetCard($last_card)->GetResources("Recruits")) == 0) and ($mylast_action == 'play')) $nextcard = $this->DrawCard(array_merge($carddb->GetList("Uncommon", "", "Zero"), $carddb->GetList("Rare", "", "Zero")), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
+					case  97: $this->Attack(1, $hisdata->Tower, $hisdata->Wall); if ((($mylast_card->GetResources("Bricks") + $mylast_card->GetResources("Gems") + $mylast_card->GetResources("Recruits")) == 0) and ($mylast_action == 'play')) $nextcard = $this->DrawCard(array_merge($carddb->GetList("Uncommon", "", "Zero"), $carddb->GetList("Rare", "", "Zero")), $mydata->Hand, $cardpos, 'DrawCard_list'); break;
 					case  98: $this->Attack(10, $hisdata->Tower, $hisdata->Wall); $hisdata->Magic-= 1; break;
 					case  99: $mydata->Dungeons+= 1; $mydata->Magic+= 1; $hisdata->Dungeons+= 1; $hisdata->Magic+= 1; $hisdata->Gems-= 15; $hisdata->Recruits-= 10; break;
 					case 100: $mydata->Quarry+= 5; $hisdata->Quarry+= 5; break;
@@ -703,7 +703,7 @@
 					case 271: $hisdata->Tower-= 2; $mydata->Bricks+= 1; $mydata->Gems+= 1; $mydata->Recruits+= 1; break;
 					case 272: if ($mydata->Wall > $hisdata->Wall) $hisdata->Tower-= 7; else $this->Attack(6, $hisdata->Tower, $hisdata->Wall); break;
 					case 273: if ($mode == 1) $mydata->Bricks+= 6; elseif ($mode == 2) $mydata->Gems+= 5; elseif ($mode == 3) $mydata->Recruits+= 5; break;  
-					case 274: $last_card = $mydata->LastCard[$mylastcardindex]; if ((($carddb->GetCard($last_card)->GetResources("Bricks") + $carddb->GetCard($last_card)->GetResources("Gems") + $carddb->GetCard($last_card)->GetResources("Recruits")) == 0) and ($mylast_action == 'play')) { $mydata->Gems+= 3; $mydata->Recruits+= 2; } else { $mydata->Gems+= 2; $mydata->Recruits+= 1; } break;
+					case 274: if ((($mylast_card->GetResources("Bricks") + $mylast_card->GetResources("Gems") + $mylast_card->GetResources("Recruits")) == 0) and ($mylast_action == 'play')) { $mydata->Gems+= 3; $mydata->Recruits+= 2; } else { $mydata->Gems+= 2; $mydata->Recruits+= 1; } break;
 					case 275: $bricks_production*= 2; break;
 					case 276: $mydata->Wall+= 60; break;
 					case 277: $mydata->Tower+= 35; break;
