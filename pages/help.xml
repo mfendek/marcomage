@@ -143,6 +143,17 @@ There is no restriction to the number of games played per day or against someone
 In the section "Challenges" all challenges and messages that you received are located. When a new challenge/message arrives, you are informed about this in the upper menu bar with a animated image ("letter"). New messages can be written in the players section by selecting the [m] button or in the player's details section. Also you can reply to any message by selecting the reply button.
 </p>
 
+<p>
+Messages have a "new message" notification system. New messages are highlighted in red color, but this only works correctly if you logout every time you finish your stay at our site. The messages can have various color information:
+</p>
+
+<ul>
+	<li>Red - new messages</li>
+	<li>Orange - unread messages</li>
+	<li>Blue - system messages</li>
+	<li>Lime - other messages</li>
+</ul>
+
 <h4>Avatar</h4>
 <p>
 In the settings section you can upload your own avatar. Avatar must be a jpg, jpeg, png or gif image type, must have at most 10kB and should be 60px X 60px large. If it isn't, it will be resized to this size. Avatars with inappropriate content will be deleted and could also lead to ban.
@@ -176,6 +187,10 @@ Please use English only at all times. Forum is divided into sections. Section co
 	<li>Important - (orange color) these are more important then other threads</li>
 	<li>Normal - (white color) all other threads</li>
 </ul>
+
+<p>
+Forum has a "new post" notification system. If there are new posts in the forum there is an animated image ("book") in the upper menu bar. Threads that contain new posts have the quick access buttons highlighted in red border color. In the threads details, new posts have their date highlighted in yellow color. This system works correctly only if you logout every time you finish your stay at our site.
+</p>
 
 <h4>Keywords</h4>
 <p>
