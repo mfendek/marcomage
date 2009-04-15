@@ -350,7 +350,7 @@ VALUES
 (332, 'Retribution', 'Common', 0, 1, 0, 'Each player''s stock lowered by <b>#Undead</b> cards in his or her hand (max 4)', 'Holy.', 0),
 (333, 'Death wave', 'Common', 0, 7, 0, 'Each player suffers 4 damage for each non-<b>Undead</b> card in his or her hand<br/>First 3 non-<b>Undead</b> cards aren''t counted', '', 0),
 (334, 'Tarkhan', 'Common', 0, 0, 7, 'If last card played was a <b>Barbarian</b><br />Enemy wall: -7<br />Always:<br />Attack: 7', 'Barbarian.', 0),
-(335, 'Flaming mirage', 'Uncommon', 0, 11, 11, 'Attack: 21<br />If last card was a <b>Burning</b> card, two copies of that card will replace the first two non-<b>Burning</b> cards in your hand', 'Burning.', 0),
+(335, 'Flaming mirage', 'Uncommon', 0, 11, 11, 'Attack: 21<br />If last card was a <b>Burning</b> card, up to 2 copies of that card will replace random non-<b>Burning</b> cards in your hand', 'Burning.', 0),
 (336, 'Eternal flame', 'Common', 2, 2, 2, 'Next card will be a <b>Burning</b> card<br />If last card played was a <b>Burning</b> card, it will be that card', 'Burning.', 0),
 (337, 'Warlord', 'Uncommon', 0, 0, 19, 'If last card played was a <b>Barbarian</b><br />Enemy wall: -17<br />Always:<br />Attack: 20', 'Barbarian.', 0),
 (338, 'Moonlight unicorn', 'Uncommon', 0, 30, 0, 'Attack: 26<br />If last card played was a <b>Mage</b><br />Gems: +#Magic*3', 'Legend. Swift.', 0),
