@@ -53,8 +53,10 @@
 
 	<!-- session string -->
 	<xsl:if test="$param/sessionid">
-		<input type="hidden" name="Username" value="{$param/username}" />
-		<input type="hidden" name="SessionID" value="{$param/sessionid}" />
+		<div>
+			<input type="hidden" name="Username" value="{$param/username}" />
+			<input type="hidden" name="SessionID" value="{$param/sessionid}" />
+		</div>
 	</xsl:if>
 
 	</form>
