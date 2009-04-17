@@ -367,11 +367,9 @@
 			
 			<div>
 			
-			<input type="submit" name="edit_post[{PostID}]" value="Edit">
-				<xsl:if test="not(($param/edit_all_post = 'yes' or ($param/edit_own_post = 'yes' and $param/PlayerName = Author)) and $can_modify = true())">
-					<xsl:attribute name="disabled">disabled</xsl:attribute>
-				</xsl:if>
-			</input>
+			<xsl:if test="($param/edit_all_post = 'yes' or ($param/edit_own_post = 'yes' and $param/PlayerName = Author)) and $can_modify = true()">
+				<input type="submit" name="edit_post[{PostID}]" value="Edit" />
+			</xsl:if>
 
 			<xsl:if test="$param/del_all_post = 'yes' and $can_modify = true()">
 				<xsl:choose>

@@ -289,12 +289,11 @@ div#post_list > div > div:first-child + div p  /* post layout - content part - s
 div#post_list > div > div.clear_floats + div /* post layout - post side borders */
 {
 	text-align: right;
-	margin: 0.5ex 1ex 1ex 0ex;
 }
 
-div#post_list > div > div.clear_floats + div > input + input /* post layout - post inputs */
+div#post_list > div > div.clear_floats + div > input /* post layout - post inputs */
 {
-	margin-left: 1ex;
+	margin: 0.5ex 1ex 1ex 0ex;
 }
 
 p.highlighted
