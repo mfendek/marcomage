@@ -152,13 +152,13 @@
 	</xsl:for-each>
 
 	<input type="submit" name="section_page_jump[{$pages - 1}]" value="Last">
-		<xsl:if test="$current = $pages - 1">
+		<xsl:if test="$current = am:max($pages - 1, 0)">
 			<xsl:attribute name="disabled">disabled</xsl:attribute>
 		</xsl:if>
 	</input>
 
 	<input type="submit" name="section_page_jump[{am:min($current + 1, $pages - 1)}]" value="&gt;">
-		<xsl:if test="$current = $pages - 1">
+		<xsl:if test="$current = am:max($pages - 1, 0)">
 			<xsl:attribute name="disabled">disabled</xsl:attribute>
 		</xsl:if>
 	</input>
@@ -308,13 +308,13 @@
 			</xsl:for-each>
 
 			<input type="submit" name="thread_page_jump[{$pages - 1}]" value="Last">
-				<xsl:if test="$current_page = $pages - 1">
+				<xsl:if test="$current_page = am:max($pages - 1, 0)">
 					<xsl:attribute name="disabled">disabled</xsl:attribute>
 				</xsl:if>
 			</input>
 
 			<input type="submit" name="thread_page_jump[{am:min($current_page + 1, $pages - 1)}]" value="&gt;">
-				<xsl:if test="$current_page = $pages - 1">
+				<xsl:if test="$current_page = am:max($pages - 1, 0)">
 					<xsl:attribute name="disabled">disabled</xsl:attribute>
 				</xsl:if>
 			</input>
