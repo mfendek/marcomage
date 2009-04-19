@@ -51,7 +51,7 @@
 				default: $cost_query = "1"; break;
 			}
 			
-			$result = $db->Query("SELECT `cards`.`CardID` FROM `cards` WHERE ".$class_query." AND ".$advanced_query." AND ".$keyword_query." AND ".$cost_query." AND ".$support_query." ORDER BY `Name` ASC");
+			$result = $db->Query("SELECT `cards`.`CardID` FROM `cards` WHERE `CardID` > 0 AND ".$class_query." AND ".$advanced_query." AND ".$keyword_query." AND ".$cost_query." AND ".$support_query." ORDER BY `Name` ASC");
 			
 			if (!$result) return false;
 			
