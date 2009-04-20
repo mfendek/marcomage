@@ -2,7 +2,9 @@
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:exsl="http://exslt.org/common"
+                extension-element-prefixes="exsl">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
@@ -54,9 +56,15 @@
 				<!-- play button and card modes -->
 				<xsl:if test="Playable = 'yes'">
 					<input type="submit" name="play_card[{position()}]" value="Play"/>
-					<xsl:if test="count(Modes/*) &gt; 0">
+					<xsl:if test="Modes &gt; 0">
 						<select name="card_mode[{position()}]" class="card_modes" size="1">
-							<xsl:for-each select="Modes/*">
+							<xsl:variable name="numbers">
+								<xsl:call-template name="numbers">
+									<xsl:with-param name="from" select="1"/>
+									<xsl:with-param name="to" select="Modes"/>
+								</xsl:call-template>
+							</xsl:variable>
+							<xsl:for-each select="exsl:node-set($numbers)/*">
 								<option value="{.}"><xsl:value-of select="."/></option>
 							</xsl:for-each>
 						</select>

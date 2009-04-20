@@ -351,11 +351,10 @@
 			// branch here according to $action
 			if ($action == 'play')
 			{
-				// verify mode (depends on card and on those two special cards)
+				// verify mode (depends on card)
 				if( $mode < 0
 				||  $mode > $card->CardData->Modes
 				||  $mode == 0 && $card->CardData->Modes > 0
-				||  $cardpos == $mode && ($cardid == 269 || $cardid == 298)
 				  ) return 'Bad mode!';
 				
 				// verify if there are enough resources

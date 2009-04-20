@@ -41,5 +41,16 @@
 	<li>Cards that were discarded by opponent last turn by some card effect</li>
 </ul>
 
+<h4>Q12: Some cards with modes like Militia, Vampire lord or Ranger for example can target their own position in hand. What will happen if I do that?</h4>
+<p>A: It depends on the card, when card is played, card related actions are executed in this order:</p>
+
+<ol>
+	<li>Card effect</li>
+	<li>Keyword effect</li>
+	<li>Normal drawing - new card is added in place of the played one (can be disabled or effected by card effect or keyword effect)</li>
+</ol>
+
+<p>When Militia or Ranger are played with mode that targets their own position, the card effect is overridden by normal drawing, because it happens as the last action. When Vampire lord is played with mode that targets his own position, it is different. Card effect adds a Vampire into the postion of the played card, but <b>Durable</b> keyword makes sure, that next card received by normal drawing will be the Vampire lord, so it will undo the card efect. In most cases it doesn't make much sense to play the mode that targets such position, but there can be situations when you may want to play it this way (for example, when you don't want to discard any of the cards from your hand).</p>
+
 </am:content>
 </am:entry>

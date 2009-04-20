@@ -2531,13 +2531,7 @@ case 'Game':
 		$params['game']['MyHand'][$list_index]['CardID'] = $cardid;
 		$params['game']['MyHand'][$list_index]['CardString'] = $card->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
 		$params['game']['MyHand'][$list_index]['Playable'] = ((($mydata->Bricks >= $card->CardData->Bricks) and ($mydata->Gems >= $card->CardData->Gems) and ($mydata->Recruits >= $card->CardData->Recruits) and ($game->State == 'in progress') and ($data->Current == $player->Name())) ? 'yes' : 'no');
-		
-		$modes = array();
-		// hack to skip special cases of several cards when the card could target itself even though it's against the rules
-		$mode_count = $card->CardData->Modes;
-		if ($mode_count > 0) for ($i = 1; $i <= $mode_count; $i++) if (!(($list_index == $i) and (($cardid == 269) or ($cardid == 298)))) $modes[$i] = $i;
-		
-		$params['game']['MyHand'][$list_index]['Modes'] = $modes;
+		$params['game']['MyHand'][$list_index]['Modes'] = $card->CardData->Modes;
 		$params['game']['MyHand'][$list_index]['NewCard'] = (isset($mydata->NewCards[$list_index]) ? 'yes' : 'no');
 	}
 
