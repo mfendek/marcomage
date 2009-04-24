@@ -28,7 +28,6 @@
 	require_once('CNovels.php');
 	require_once('CSettings.php');
 	require_once('CChat.php');
-	require_once('CHtml.php');
 	require_once('CPlayer.php');
 	require_once('CMessage.php');
 	require_once('CPost.php');
@@ -48,7 +47,6 @@
 	$settingdb = new CSettings($db);
 	$playerdb = new CPlayers($db);
 	$messagedb = new CMessage($db);
-	$html = new CHtml($db);
 	$noveldb = new CNovels($db);
 	$forum = new CForum($db);
 
