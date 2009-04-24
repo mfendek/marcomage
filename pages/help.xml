@@ -228,11 +228,11 @@ Keywords represent information about the card that is too big to fit in the card
 
 <h4>Tokens</h4>
 <p>
-Some keywords have a side-effect, that requires a token counter. Player can choose up to three token counters for each deck in the deck section. It is possible to assign the token counters automatically by selecting the "Auto" button. Playing a card with keyword, which is associated with the token counter, will raise the value of the token counter. When a token counter reaches 100 a side-effect will happen and the token counter will be reseted to 0. This side-effect takes place directly after the card effect of the played card.
+Some keywords have a side-effect, that requires a token counter. Player can choose up to three token counters for each deck in the deck section. It is possible to assign the token counters automatically by selecting the "Auto" button. Playing a card with keyword, which is associated with the token counter, will raise the value of the token counter. The number of tokens received varies with each keyword (see the Keyword section above). When a token counter reaches 100 a side-effect will happen and the token counter will be reseted to 0. This side-effect takes place directly after the card effect of the played card.
 </p>
 
 <p>
-Let's take the <b>Alliance</b> keyword for example. First you need to set one token counter to <b>Alliance</b> keyword (in the deck section). Then you normally start a game with this deck. When you play a card that has <b>Alliance</b> keyword, it will raise the <b>Alliance</b> token counter. When the counter reaches 100, it will add a Production X2 to the effect of the played card and will be reseted to 0. By paying close attention to the token counters, you will be able to make good combos of card effects and keyword side-effects. For example <b>Soldier</b> and Ceremonial guard or <b>Alliance</b> and Stilshrine of Miriam can make good stock boosting combos.
+Let's take the <b>Alliance</b> keyword for example. First you need to set one token counter to <b>Alliance</b> keyword (in the deck section). Then you normally start a game with this deck. When you play a card that has <b>Alliance</b> keyword, it will raise the <b>Alliance</b> token counter for each additional Alliance card in hand (if there is at least one other). The played card does not count toward the total. When the counter reaches 100, it will add a Production X2 to the effect of the played card and will be reseted to 0. By paying close attention to the token counters, you will be able to make good combos of card effects and keyword side-effects. For example <b>Soldier</b> and Ceremonial guard or <b>Alliance</b> and Stilshrine of Miriam can make good stock boosting combos.
 </p>
 
 <h4>Color information</h4>
