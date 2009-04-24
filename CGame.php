@@ -887,7 +887,7 @@
 						for ($i = 1; $i <= $mylastcardindex; $i++) if (($carddb->GetCard($mydata->LastCard[$i])->HasKeyword("Quick")) AND ($mydata->LastAction[$i] == 'play')) { $found = true; break; }
 						if ($found)
 							for ($i = 1; $i <= 8; $i++)
-								if ($mydata->NewCards[$i] == 1)
+								if (isset($mydata->NewCards[$i]))
 								{
 									$mydata->Hand[$i] = $this->DrawCard($mydata->Deck, $mydata->Hand, $i, 'DrawCard_random');
 									if ($i == $cardpos) $nextcard = 0;
@@ -898,10 +898,9 @@
 						for ($i = 1; $i <= $hislastcardindex; $i++) if (($carddb->GetCard($hisdata->LastCard[$i])->HasKeyword("Quick")) AND ($hisdata->LastAction[$i] == 'play')) { $found = true; break; }
 						if ($found)
 							for ($i = 1; $i <= 8; $i++)
-								if ($hisdata->NewCards[$i] == 1)
+								if (isset($hisdata->NewCards[$i]))
 								{
 									$hisdata->Hand[$i] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $i, 'DrawCard_random');
-									if ($i == $cardpos) $nextcard = 0;
 									$tmp++;
 								}
 						if ($tmp > 0) { $hisdata->Bricks-= $tmp; $hisdata->Gems-= $tmp; $hisdata->Recruits-= $tmp; }
