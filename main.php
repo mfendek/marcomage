@@ -1042,11 +1042,6 @@
 					$deckname = postdecode(array_shift(array_keys($value)));
 					
 					$_POST['CurrentDeck'] = $deckname;
-					$_POST['ClassFilter'] = 'Common';
-					$_POST['CostFilter'] = 'none';
-					$_POST['KeywordFilter'] = 'none';
-					$_POST['AdvancedFilter'] = 'none';
-					$_POST['SupportFilter'] = 'none';
 					$current = 'Deck_edit';
 					break;
 				}
@@ -1159,12 +1154,6 @@
 				
 				if ($message == 'filter') // Decks -> Modify this deck -> Apply filters
 				{
-					$_POST['CostFilter'] = $_POST['selected_cost'];
-					$_POST['KeywordFilter'] = $_POST['selected_keyword'];
-					$_POST['ClassFilter'] = $_POST['selected_rarity'];
-					$_POST['AdvancedFilter'] = $_POST['advanced_filter'];
-					$_POST['SupportFilter'] = $_POST['support_filter'];
-                    
 					$current = 'Deck_edit';
 					
 					break;
@@ -2100,11 +2089,11 @@ case 'Page':
 
 case 'Deck_edit':
 	$currentdeck = $params['deck_edit']['CurrentDeck'] = $_POST['CurrentDeck'];
-	$classfilter = $params['deck_edit']['ClassFilter'] = $_POST['ClassFilter'];
-	$costfilter = $params['deck_edit']['CostFilter'] = $_POST['CostFilter'];
-	$keywordfilter = $params['deck_edit']['KeywordFilter'] = $_POST['KeywordFilter'];
-	$advancedfilter = $params['deck_edit']['AdvancedFilter'] = $_POST['AdvancedFilter'];
-	$supportfilter = $params['deck_edit']['SupportFilter'] = $_POST['SupportFilter'];
+	$classfilter = $params['deck_edit']['ClassFilter'] = isset($_POST['ClassFilter']) ? $_POST['ClassFilter'] : 'Common';
+	$costfilter = $params['deck_edit']['CostFilter'] = isset($_POST['CostFilter']) ? $_POST['CostFilter'] : 'none';
+	$keywordfilter = $params['deck_edit']['KeywordFilter'] = isset($_POST['KeywordFilter']) ? $_POST['KeywordFilter'] : 'none';
+	$advancedfilter = $params['deck_edit']['AdvancedFilter'] = isset($_POST['AdvancedFilter']) ? $_POST['AdvancedFilter'] : 'none';
+	$supportfilter = $params['deck_edit']['SupportFilter'] = isset($_POST['SupportFilter']) ? $_POST['SupportFilter'] : 'none';
 
 	$params['deck_edit']['keywords'] = $carddb->Keywords();
 

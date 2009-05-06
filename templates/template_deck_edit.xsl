@@ -15,11 +15,6 @@
 	<!-- remember the current location across pages -->
 	<div>
 		<input type="hidden" name="CurrentDeck" value="{$param/CurrentDeck}"/>
-		<input type="hidden" name="ClassFilter" value="{$param/ClassFilter}"/>
-		<input type="hidden" name="CostFilter" value="{$param/CostFilter}"/>
-		<input type="hidden" name="KeywordFilter" value="{$param/KeywordFilter}"/>
-		<input type="hidden" name="AdvancedFilter" value="{$param/AdvancedFilter}"/>
-		<input type="hidden" name="SupportFilter" value="{$param/SupportFilter}"/>
 	</div>
 
 	<div class="filters">
@@ -46,7 +41,7 @@
 		<class name="Rare"     />
 	</xsl:variable>
 
-	<select name="selected_rarity">
+	<select name="ClassFilter">
 		<xsl:if test="$param/ClassFilter != 'none'">
 			<xsl:attribute name="style">border-color: lime</xsl:attribute>
 		</xsl:if>
@@ -60,7 +55,7 @@
 		</xsl:for-each>
 	</select>
 
-	<select name="selected_keyword">
+	<select name="KeywordFilter">
 		<xsl:if test="$param/KeywordFilter != 'none'">
 				<xsl:attribute name="style">border-color: lime</xsl:attribute>
 		</xsl:if>
@@ -101,7 +96,7 @@
 		<cost name="Mixed" text="Mixed cost"      />
 	</xsl:variable>
 
-	<select name="selected_cost">
+	<select name="CostFilter">
 		<xsl:if test="$param/CostFilter != 'none'">
 			<xsl:attribute name="style">border-color: lime</xsl:attribute>
 		</xsl:if>
@@ -141,7 +136,7 @@
 		<adv name="Recruits: -" text="Recruits -"      />
 	</xsl:variable>
 
-	<select name="advanced_filter">
+	<select name="AdvancedFilter">
 		<xsl:if test="$param/AdvancedFilter != 'none'">
 			<xsl:attribute name="style">border-color: lime</xsl:attribute>
 		</xsl:if>
@@ -155,7 +150,7 @@
 		</xsl:for-each>
 	</select>
 
-	<select name="support_filter">
+	<select name="SupportFilter">
 		<xsl:if test="$param/SupportFilter != 'none'">
 				<xsl:attribute name="style">border-color: lime</xsl:attribute>
 		</xsl:if>
