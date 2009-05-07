@@ -28,7 +28,7 @@
 			$db = $this->db;
 			
 			$class_query = (($class) ? "`Class` = '".$db->Escape($class)."'" : "1");
-			if ($keyword == "All keywords") $keyword_query = '`Keywords` !=""';
+			if ($keyword == "Any keyword") $keyword_query = '`Keywords` !=""';
 			elseif ($keyword == "No keywords") $keyword_query = '`Keywords` =""';
 			elseif ($keyword != "none") $keyword_query = "`Keywords` LIKE '%".$db->Escape($keyword)."%'";
 			else $keyword_query = "1";

@@ -65,11 +65,11 @@
 			</xsl:if>
 			No keyword filters
 		</option>
-		<option value="All keywords">
-			<xsl:if test="$param/KeywordFilter = 'All keywords'">
+		<option value="Any keyword">
+			<xsl:if test="$param/KeywordFilter = 'Any keyword'">
 				<xsl:attribute name="selected">selected</xsl:attribute>
 			</xsl:if>
-			All keywords
+			Any keyword
 		</option>
 		<option value="No keywords">
 			<xsl:if test="$param/KeywordFilter = 'No keywords'">
@@ -164,7 +164,7 @@
 			<xsl:if test="$param/SupportFilter = 'Any keyword'">
 				<xsl:attribute name="selected">selected</xsl:attribute>
 			</xsl:if>
-			Any keywords
+			Any keyword
 		</option>
 		<option value="No keywords">
 			<xsl:if test="$param/SupportFilter = 'No keywords'">
