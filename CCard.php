@@ -23,35 +23,71 @@
 			return new CCard($cardid, $this);
 		}
 		
-		public function GetList($class = "", $keyword = "", $cost = "", $advanced = "", $support = "")
+		/// Filters cards according to the provided filtering instructions.
+		/// Available filters are:
+		///   'class'    => { None | Common | Uncommon | Rare }, queries `Class`
+		///   'keyword'  => { Any keyword | No keywords | <a specific keyword> }, queries `Keywords`
+		///   'cost'     => { Red | Blue | Green | Zero | Mixed }, queries `Bricks`, `Gems` and `Recruits`
+		///   'advanced' => { <a specific substring> }, queries `Effect`
+		///   'support'  => { Any keyword | No keywords | <a specific keyword> }, queries `Effect`
+		/// @param filters an array of chosen filters and their parameters
+		/// @return an array of matching card ids
+		public function GetList(array $filters)
 		{
 			$db = $this->db;
 			
-			$class_query = (($class) ? "`Class` = '".$db->Escape($class)."'" : "1");
-			if ($keyword == "Any keyword") $keyword_query = '`Keywords` !=""';
-			elseif ($keyword == "No keywords") $keyword_query = '`Keywords` =""';
-			elseif ($keyword != "none") $keyword_query = "`Keywords` LIKE '%".$db->Escape($keyword)."%'";
-			else $keyword_query = "1";
-			
-			$advanced_query = (($advanced != "none") ? '`Effect` LIKE "%'.$db->Escape($advanced).'%"' : "1");
-			
-			// TODO find a better way to look for keywords in the effect (we are now searching for "<b>", becuase every keyword has them)
-			if ($support == "Any keyword") $support_query = '`Effect` LIKE "%<b>%"';
-			elseif ($support == "No keywords") $support_query = '`Effect` NOT LIKE "%<b>%"';
-			elseif ($support != "none") $support_query = '`Effect` LIKE "%'.$db->Escape($support).'%"';
-			else $support_query = "1";
-			
-			switch ($cost)
+			$query = "true"; // sentinel
+
+			if( isset($filters['class']) )
 			{
-				case "Red": $cost_query = "`Gems` = 0 AND `Recruits` = 0 AND `Bricks` > 0"; break;
-				case "Blue": $cost_query = "`Recruits` = 0 AND `Bricks` = 0 AND `Gems` > 0"; break;
-				case "Green": $cost_query = "`Gems` = 0 AND `Bricks` = 0 AND `Recruits` > 0"; break;
-				case "Zero": $cost_query = "`Bricks` = 0 AND `Gems` = 0 AND `Recruits` = 0"; break;
-				case "Mixed": $cost_query = "((`Bricks` > 0 AND `Gems` > 0 AND `Recruits` >= 0) OR (`Bricks` >= 0 AND `Gems` > 0 AND `Recruits` > 0) OR (`Bricks` > 0 AND `Gems` >= 0 AND `Recruits` > 0))"; break;
-				default: $cost_query = "1"; break;
+				$query .= " and ";
+				$query .= "`Class` = '".$db->Escape($filters['class'])."'";
+			}
+
+			if( isset($filters['keyword']) )
+			{
+				$query .= " and ";
+				switch( $filters['keyword'] )
+				{
+				case 'Any keyword': $query .= "`Keywords` != ''"; break;
+				case 'No keywords': $query .= "`Keywords` = ''"; break;
+				default           : $query .= "`Keywords` LIKE '%".$db->Escape($filters['keyword'])."%'"; break;
+				}
+			}
+
+			if( isset($filters['cost']) )
+			{
+				$query .= " and ";
+				switch( $filters['cost'] )
+				{
+				case 'Red'  : $query .= "`Gems` = 0 AND `Recruits` = 0 AND `Bricks` > 0"; break;
+				case 'Blue' : $query .= "`Recruits` = 0 AND `Bricks` = 0 AND `Gems` > 0"; break;
+				case 'Green': $query .= "`Gems` = 0 AND `Bricks` = 0 AND `Recruits` > 0"; break;
+				case 'Zero' : $query .= "`Bricks` = 0 AND `Gems` = 0 AND `Recruits` = 0"; break;
+				case 'Mixed': $query .= "(`Bricks` > 0) + (`Gems` > 0) + (`Recruits` > 0) >= 2"; break;
+				default     : $query .= "true"; //FIXME: should never happen
+				}
+			}
+
+			if( isset($filters['advanced']) )
+			{
+				$query .= " and ";
+				$query .= "`Effect` LIKE '%".$db->Escape($filters['advanced'])."%'";
+			}
+
+			if( isset($filters['support']) )
+			{
+				$query .= " and ";
+				// TODO find a better way to look for keywords in the effect (we are now searching for "<b>", becuase every keyword has them)
+				switch( $filters['support'] )
+				{
+				case 'Any keyword': $query .= "`Effect` LIKE '%<b>%'"; break;
+				case 'No keywords': $query .= "`Effect` NOT LIKE '%<b>%'"; break;
+				default           : $query .= "`Effect` LIKE '%".$db->Escape($filters['support'])."%'"; break;
+				}
 			}
 			
-			$result = $db->Query("SELECT `cards`.`CardID` FROM `cards` WHERE `CardID` > 0 AND ".$class_query." AND ".$advanced_query." AND ".$keyword_query." AND ".$cost_query." AND ".$support_query." ORDER BY `Name` ASC");
+			$result = $db->Query("SELECT `cards`.`CardID` FROM `cards` WHERE `CardID` > 0 AND ".$query." ORDER BY `Name` ASC");
 			
 			if (!$result) return false;
 			

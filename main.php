@@ -1230,9 +1230,9 @@
 					
 					$current = 'Deck_edit';
 					
-					$common_cards = $carddb->GetList("Common");
-					$uncommon_cards = $carddb->GetList("Uncommon");
-					$rare_cards = $carddb->GetList("Rare");
+					$common_cards = $carddb->GetList(array('class'=>"Common"));
+					$uncommon_cards = $carddb->GetList(array('class'=>"Uncommon"));
+					$rare_cards = $carddb->GetList(array('class'=>"Rare"));
 					
 					Shuffle($common_cards); //shuffle will create an array with index starting from 0, but we need to start from 1
 					Shuffle($uncommon_cards);
@@ -1266,9 +1266,9 @@
 					
 					$current = 'Deck_edit';
 					
-					$common_cards = $carddb->GetList("Common");
-					$uncommon_cards = $carddb->GetList("Uncommon");
-					$rare_cards = $carddb->GetList("Rare");
+					$common_cards = $carddb->GetList(array('class'=>"Common"));
+					$uncommon_cards = $carddb->GetList(array('class'=>"Uncommon"));
+					$rare_cards = $carddb->GetList(array('class'=>"Rare"));
 					
 					// array_diff ensures that cards already in the deck won't be added again
 					$common_cards = array_diff($common_cards, $deck->DeckData->Common);
@@ -2149,7 +2149,13 @@ case 'Deck_edit':
 
 	$params['deck_edit']['Res'] = $res;
 
-	$list = $carddb->GetList($classfilter, $keywordfilter, $costfilter, $advancedfilter, $supportfilter);
+	$filter = array();
+	if( $classfilter != 'none' ) $filter['class'] = $classfilter;
+	if( $keywordfilter != 'none' ) $filter['keyword'] = $keywordfilter;
+	if( $costfilter != 'none' ) $filter['cost'] = $costfilter;
+	if( $advancedfilter != 'none' ) $filter['advanced'] = $advancedfilter;
+	if( $supportfilter != 'none' ) $filter['support'] = $supportfilter;
+	$list = $carddb->GetList($filter);
 	
 	foreach($list as $list_index => $cardid)
 	{
