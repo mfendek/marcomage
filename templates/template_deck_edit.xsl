@@ -210,7 +210,6 @@
 		</xsl:for-each>
 
 		<input type="submit" name="set_tokens" value="Set" />
-		<input type="submit" name="reset_tokens" value="Reset" />
 		<input type="submit" name="auto_tokens" value="Auto" />
 	</div>
 

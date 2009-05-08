@@ -1118,20 +1118,6 @@
 					break;
 				}
 				
-				if ($message == 'reset_tokens') // Decks -> Reset tokens
-				{
-					$deckname = $_POST['CurrentDeck'];
-					$deck = $player->GetDeck($deckname);
-					
-					$current = 'Deck_edit';
-					
-					$deck->DeckData->Tokens = array(1 => 'none', 'none', 'none');
-					
-					$deck->SaveDeck();
-					
-					break;
-				}
-				
 				if ($message == 'auto_tokens') // Decks -> Assign tokens automatically
 				{
 					$deckname = $_POST['CurrentDeck'];
