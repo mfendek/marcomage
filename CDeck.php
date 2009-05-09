@@ -143,6 +143,71 @@
 			return true;
 		}
 		
+		/**
+		 * Adds the card to an appropriate empty slot in the deck.
+		 * Looks up the specified card's data and attempts to insert the card into an empty slot in $DeckData's corresponding array.
+		 * Will fail if the operation is invalid (bad card id, no room in deck, card already present, etc).
+		 * @param int $cardid the id of the card to insert
+		 * @return bool true if the operation succeeds, false if it fails
+		*/
+		public function AddCard($cardid)
+		{
+			global $carddb;
+
+			// retrieve the card's data
+			$card = $carddb->GetCard($cardid);
+			$class = $card->CardData->Class;
+
+			// verify if the card id is valid
+			if( $cardid == 0 or $class == 'None' )
+				return false;
+
+			// check if the card isn't already in the deck
+			$pos = array_search($cardid, $this->DeckData->$class);
+			if( $pos !== false )
+				return false;
+
+			// check if the deck's corresponding section isn't already full
+			if( $this->DeckData->Count($class) == 15 )
+				return false;
+
+			// success
+			// find an empty spot in the section
+			$pos = array_search(0, $this->DeckData->$class);
+
+			// record the new card
+			$this->DeckData->{$class}[$pos] = $cardid;
+
+			return true;
+		}
+		
+		/**
+		 * Removes the card from the deck.
+		 * Looks up the specified card's data and attempts to remove the card from $DeckData's corresponding array.
+		 * Will fail if the card is not found in the deck.
+		 * @param int $cardid the id of the card to remove
+		 * @return bool true if the operation succeeds, false if it fails
+		*/
+		public function ReturnCard($cardid)
+		{
+			global $carddb;
+
+			// retrieve the card's data
+			$card = $carddb->GetCard($cardid);
+			$class = $card->CardData->Class;
+			
+			// check if the card is present in the deck
+			$pos = array_search($cardid, $this->DeckData->$class);
+			if( $pos === false )
+				return false;
+			
+			// success
+			// remove the card from the deck
+			$this->DeckData->{$class}[$pos] = 0;
+
+			return true;
+		}
+		
 		public function isReady()
 		{
 			return (($this->DeckData->Count('Common') == 15) && ($this->DeckData->Count('Uncommon') == 15) && ($this->DeckData->Count('Rare') == 15));

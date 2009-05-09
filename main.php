@@ -1049,34 +1049,36 @@
 				if ($message == 'add_card') // Decks -> Modify this deck -> Take
 				{
 					$cardid = (int)postdecode(array_shift(array_keys($value)));
-					
-					//download deck, download card
 					$deckname = $_POST['CurrentDeck'];
+					
+					//download deck
 					$deck = $player->GetDeck($deckname);
-					$card = $carddb->GetCard($cardid);
-					$classname = $card->CardData->Class;
+					
+					// add card, saving the deck on success
+					if( $deck->AddCard($cardid) )
+						$deck->SaveDeck();
+					else
+						$error = 'Unable to add the chosen card to this deck.';
 					
 					$current = 'Deck_edit';
+					break;
+				}
+				
+				if ($message == 'return_card') // Decks -> Modify this deck -> Return
+				{
+					$cardid = (int)postdecode(array_shift(array_keys($value)));
+					$deckname = $_POST['CurrentDeck'];
 					
-					// verify if the card id is valid
-					if ($classname == 'None') break;
+					// download deck
+					$deck = $player->GetDeck($deckname);
 					
-					// check if the card isn't already there
-					$pos = array_search($cardid, $deck->DeckData->$classname);
-					if ($pos !== false) break;
+					// remove card, saving the deck on success
+					if( $deck->ReturnCard($cardid) )
+						$deck->SaveDeck();
+					else
+						$error = 'Unable to remove the chosen card from this deck.';
 					
-					// check if the deck's corresponding section isn't already full
-					if ($deck->DeckData->Count($classname) == 15) break;
-					
-					// success, find an empty spot in the section, write the cardid there and upload the deck with new values
-					$pos = array_search(0, $deck->DeckData->$classname);
-					
-					// workaround: PHP interpretes $classname[$pos] as a character in the string $classname instead of an element of the array {$classname}[]
-					//$deck->DeckData->$classname[$pos] = $cardid;
-					$aaargh = &$deck->DeckData->$classname;
-					$aaargh[$pos] = $cardid;
-					
-					$deck->SaveDeck();
+					$current = 'Deck_edit';
 					break;
 				}
 				
@@ -1142,34 +1144,6 @@
 				{
 					$current = 'Deck_edit';
 					
-					break;
-				}
-				
-				if ($message == 'return_card') // Decks -> Modify this deck -> Return
-				{
-					$cardid = (int)postdecode(array_shift(array_keys($value)));
-					
-					// download deck, download card
-					$deckname = $_POST['CurrentDeck'];
-					$deck = $player->GetDeck($deckname);
-					$card = $carddb->GetCard($cardid);
-					
-					$current = 'Deck_edit';
-					
-					$cardclass = $card->CardData->Class;
-					
-					// check if the card is present in the deck
-					$pos = array_search($cardid, $deck->DeckData->$cardclass);
-					if ($pos === false) break;
-					
-					// success, write a 0, and upload the deck with new values
-					
-					// can't do this nicely, see the previous comment
-					//$deck->DeckData->$cardclass[$pos] = 0;
-					$aaargh = &$deck->DeckData->$cardclass;
-					$aaargh[$pos] = 0;
-					
-					$deck->SaveDeck();
 					break;
 				}
 				
