@@ -1174,51 +1174,6 @@
 					break;
 				}
 				
-				if ($message == 'randomize_deck_prepare') // Decks -> Randomize
-				{
-					// only symbolic functionality... rest is handled below
-					$deckname = $_POST['CurrentDeck'];
-					$current = 'Deck_edit';
-					
-					break;
-				}
-				
-				if ($message == 'randomize_deck_confirm') // Decks -> Modify this deck -> Confirm randomize
-				{
-					$deckname = $_POST['CurrentDeck'];
-					$deck = $player->GetDeck($deckname);
-					
-					$current = 'Deck_edit';
-					
-					$common_cards = $carddb->GetList(array('class'=>"Common"));
-					$uncommon_cards = $carddb->GetList(array('class'=>"Uncommon"));
-					$rare_cards = $carddb->GetList(array('class'=>"Rare"));
-					
-					Shuffle($common_cards); //shuffle will create an array with index starting from 0, but we need to start from 1
-					Shuffle($uncommon_cards);
-					Shuffle($rare_cards);
-					
-					$common_cards = array_slice($common_cards,0,15);
-					$uncommon_cards = array_slice($uncommon_cards, 0,15);
-					$rare_cards = array_slice($rare_cards,0,15);
-					
-					$c_cards = array();//we make this whole mess only because we use arrays indexed starting with 1 and all PHP functions returns arrays starting with 0
-					$u_cards = array();
-					$r_cards = array();
-					
-					for ($i = 1; $i <= 15; $i++) { $c_cards[$i] = $common_cards[$i-1]; }
-					for ($i = 1; $i <= 15; $i++) { $u_cards[$i] = $uncommon_cards[$i-1]; }
-					for ($i = 1; $i <= 15; $i++) { $r_cards[$i] = $rare_cards[$i-1]; }
-					
-					$deck->DeckData->Common = $c_cards;
-					$deck->DeckData->Uncommon = $u_cards;
-					$deck->DeckData->Rare = $r_cards;
-					
-					$deck->SaveDeck();
-					
-					break;
-				}
-				
 				if ($message == 'finish_deck') // Decks -> Modify this deck -> Finish
 				{
 					$deckname = $_POST['CurrentDeck'];
@@ -2061,7 +2016,6 @@ case 'Deck_edit':
 	$deck = $player->GetDeck($currentdeck);
 
 	$params['deck_edit']['reset'] = ( (isset($_POST["reset_deck_prepare"] )) ? 'yes' : 'no');
-	$params['deck_edit']['randomize'] = ( (isset($_POST["randomize_deck_prepare"] )) ? 'yes' : 'no');
 
 	// load card display settings
 	$c_text = $player->GetSetting("Cardtext");

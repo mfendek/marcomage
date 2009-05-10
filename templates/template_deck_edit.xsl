@@ -225,15 +225,6 @@
 		</xsl:otherwise>
 	</xsl:choose>
 
-	<xsl:choose>
-		<xsl:when test="$param/randomize = 'no'">
-			<input type="submit" name="randomize_deck_prepare" value="Randomize" />
-		</xsl:when>
-		<xsl:otherwise>
-			<input type="submit" name="randomize_deck_confirm" value="Confirm randomize" />
-		</xsl:otherwise>
-	</xsl:choose>
-
 	<input type="submit" name="finish_deck" value="Finish" />
 
 	</div>
