@@ -142,6 +142,54 @@
 			
 			return true;
 		}
+
+		/**
+		 * Removes all cards and resets tokens.
+		 * Zeroes out all three class arrays and sets the token options to 'none'.
+		 * @return bool true if the operation succeeds, false if it fails
+		*/
+		public function ResetDeck()
+		{
+			$this->DeckData->Common   = array(1=> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+			$this->DeckData->Uncommon = array(1=> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+			$this->DeckData->Rare     = array(1=> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+			$this->DeckData->Tokens   = array(1=> 'none', 'none', 'none');
+			
+			return true;
+		}
+		
+		public function FinishDeck()
+		{
+			global $carddb;
+			
+			$cards_c = $carddb->GetList(array('class'=>"Common"));
+			$cards_u = $carddb->GetList(array('class'=>"Uncommon"));
+			$cards_r = $carddb->GetList(array('class'=>"Rare"));
+			
+			// array_diff ensures that cards already in the deck won't be added again
+			$cards_c = array_diff($cards_c, $this->DeckData->Common);
+			$cards_u = array_diff($cards_u, $this->DeckData->Uncommon);
+			$cards_r = array_diff($cards_r, $this->DeckData->Rare);
+			
+			// array_rand picks K random elements and returns their keys
+			$keys_c = array_rand($cards_c, 15);
+			$keys_u = array_rand($cards_u, 15);
+			$keys_r = array_rand($cards_r, 15);
+			
+			// shuffle ensures that the cards will get filled in a random order
+			shuffle($keys_c);
+			shuffle($keys_u);
+			shuffle($keys_r);
+			
+			for( $i = 1; $i <= 15; $i++ )
+			{
+				if( $this->DeckData->Common[$i]   == 0 ) $this->DeckData->Common[$i]   = $cards_c[$keys_c[$i-1]];
+				if( $this->DeckData->Uncommon[$i] == 0 ) $this->DeckData->Uncommon[$i] = $cards_u[$keys_u[$i-1]];
+				if( $this->DeckData->Rare[$i]     == 0 ) $this->DeckData->Rare[$i]     = $cards_r[$keys_r[$i-1]];
+			}
+
+			return true;
+		}
 		
 		/**
 		 * Adds the card to an appropriate empty slot in the deck.
@@ -156,7 +204,7 @@
 
 			// retrieve the card's data
 			$card = $carddb->GetCard($cardid);
-			$class = $card->CardData->Class;
+			$class = $card->GetClass();
 
 			// verify if the card id is valid
 			if( $cardid == 0 or $class == 'None' )
@@ -174,6 +222,8 @@
 			// success
 			// find an empty spot in the section
 			$pos = array_search(0, $this->DeckData->$class);
+			if( $pos === false )
+				return false; // should never happen!
 
 			// record the new card
 			$this->DeckData->{$class}[$pos] = $cardid;
@@ -194,7 +244,7 @@
 
 			// retrieve the card's data
 			$card = $carddb->GetCard($cardid);
-			$class = $card->CardData->Class;
+			$class = $card->GetClass();
 			
 			// check if the card is present in the deck
 			$pos = array_search($cardid, $this->DeckData->$class);

@@ -1161,16 +1161,13 @@
 					$deckname = $_POST['CurrentDeck'];
 					$deck = $player->GetDeck($deckname);
 					
+					// reset deck, saving it on success
+					if( $deck->ResetDeck() )
+						$deck->SaveDeck();
+					else
+						$error = 'Failed to reset this deck.';
+				
 					$current = 'Deck_edit';
-					
-					$deck->DeckData->Common   = array(1=>0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-					$deck->DeckData->Uncommon = array(1=>0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-					$deck->DeckData->Rare     = array(1=>0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-					
-					$deck->DeckData->Tokens = array(1 => 'none', 'none', 'none');
-					
-					$deck->SaveDeck();
-					
 					break;
 				}
 				
@@ -1179,34 +1176,13 @@
 					$deckname = $_POST['CurrentDeck'];
 					$deck = $player->GetDeck($deckname);
 					
+					// finish deck, saving it on success
+					if( $deck->FinishDeck() )
+						$deck->SaveDeck();
+					else
+						$error = 'Failed to finish this deck.';
+
 					$current = 'Deck_edit';
-					
-					$common_cards = $carddb->GetList(array('class'=>"Common"));
-					$uncommon_cards = $carddb->GetList(array('class'=>"Uncommon"));
-					$rare_cards = $carddb->GetList(array('class'=>"Rare"));
-					
-					// array_diff ensures that cards already in the deck won't be added again
-					$common_cards = array_diff($common_cards, $deck->DeckData->Common);
-					$uncommon_cards = array_diff($uncommon_cards, $deck->DeckData->Uncommon);
-					$rare_cards = array_diff($rare_cards, $deck->DeckData->Rare);
-					
-					Shuffle($common_cards); //shuffle will create an array with index starting from 0, but we need to start from 1
-					Shuffle($uncommon_cards);
-					Shuffle($rare_cards);
-					
-					$common_cards = array_slice($common_cards,0,15);
-					$uncommon_cards = array_slice($uncommon_cards, 0,15);
-					$rare_cards = array_slice($rare_cards,0,15);
-					
-					for ($i = 1; $i <= 15; $i++)
-					{
-						if ($deck->DeckData->Common[$i] == 0) $deck->DeckData->Common[$i] = $common_cards[$i-1];
-						if ($deck->DeckData->Uncommon[$i] == 0) $deck->DeckData->Uncommon[$i] = $uncommon_cards[$i-1];
-						if ($deck->DeckData->Rare[$i] == 0) $deck->DeckData->Rare[$i] = $rare_cards[$i-1];
-					}
-					
-					$deck->SaveDeck();
-					
 					break;
 				}
 				
