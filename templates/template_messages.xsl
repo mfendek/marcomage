@@ -395,7 +395,7 @@
 			<input type="submit" name="message_cancel" value="Back" />
 		</p>
 		<hr/>
-		<p><xsl:value-of select="$param/Content"/></p>
+		<p><xsl:value-of select="am:textencode($param/Content)" disable-output-escaping="yes" /></p>
 	</div>
 	<input type="hidden" name="CurrentLocation" value="{$param/current_location}" />
 
