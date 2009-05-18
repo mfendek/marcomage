@@ -143,9 +143,9 @@ CREATE TABLE `settings` (
   `Chatorder` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `Avatargame` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
   `Avatarlist` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
-  `Showdead` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `Correction` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `OldCardLook` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `Reports` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY  (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
