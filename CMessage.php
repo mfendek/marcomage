@@ -28,13 +28,15 @@
 			return true;
 		}
 		
-		public function SendBattleReport($player1, $player2, $player1_reports, $player2_reports, $outcome)
+		public function SendBattleReport($player1, $player2, $player1_reports, $player2_reports, $outcome, $winner = '')
 		{
+			$winner = ($winner != '') ? 'Winner: '.$winner : '';
+			
 			if ($player1_reports == "yes")
-				$this->SendMessage("MArcomage", $player1, "Battle report", "Opponent: $player2\nOutcome: {$outcome}\n");
+				$this->SendMessage("MArcomage", $player1, "Battle report", "Opponent: $player2\nOutcome: {$outcome}\n".$winner);
 			
 			if ($player2_reports == "yes")
-				$this->SendMessage("MArcomage", $player2, "Battle report", "Opponent: $player1\nOutcome: {$outcome}\n");
+				$this->SendMessage("MArcomage", $player2, "Battle report", "Opponent: $player1\nOutcome: {$outcome}\n".$winner);
 			
 			return true;
 		}

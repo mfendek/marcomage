@@ -408,8 +408,9 @@
 							$opponent_rep = $opponent->GetSetting("Reports");
 							$player_rep = $player->GetSetting("Reports");
 							$outcome = $game->GameData->Outcome;
+							$winner = $game->GameData->Winner;
 
-							$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome);
+							$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $winner);
 						}
 						else
 						{
@@ -461,8 +462,9 @@
 						$opponent_rep = $opponent->GetSetting("Reports");
 						$player_rep = $player->GetSetting("Reports");
 						$outcome = $game->GameData->Outcome;
+						$winner = $game->GameData->Winner;
 
-						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome);
+						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $winner);
 					}
 					/*else $error = $result;*/
 					
@@ -548,8 +550,9 @@
 						$opponent_rep = $opponent->GetSetting("Reports");
 						$player_rep = $player->GetSetting("Reports");
 						$outcome = $game->GameData->Outcome;
+						$winner = $game->GameData->Winner;
 
-						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome);
+						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $winner);
 					}
 					/*else $error = $result;*/
 					
