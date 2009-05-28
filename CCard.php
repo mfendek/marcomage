@@ -8,11 +8,17 @@
 	{
 		private $db;
 		
-		public function __construct(CDatabase &$database)
+		public function __construct()
 		{
-			$this->db = &$database;
+			$this->db = new SimpleXMLElement('cards.xml', 0, TRUE);
+			$this->db->registerXPathNamespace('am', 'http://arcomage.netvor.sk');
 		}
 		
+		public function __destruct()
+		{
+			$this->db = false;
+		}
+
 		public function GetDB()
 		{
 			return $this->db;
@@ -36,12 +42,12 @@
 		{
 			$db = $this->db;
 			
-			$query = "true"; // sentinel
+			$query = "@id > 0"; // sentinel
 
 			if( isset($filters['class']) )
 			{
 				$query .= " and ";
-				$query .= "`Class` = '".$db->Escape($filters['class'])."'";
+				$query .= "am:class = '".$filters['class']."'"; //FIXME: no escaping
 			}
 
 			if( isset($filters['keyword']) )
@@ -49,9 +55,9 @@
 				$query .= " and ";
 				switch( $filters['keyword'] )
 				{
-				case 'Any keyword': $query .= "`Keywords` != ''"; break;
-				case 'No keywords': $query .= "`Keywords` = ''"; break;
-				default           : $query .= "`Keywords` LIKE '%".$db->Escape($filters['keyword'])."%'"; break;
+				case 'Any keyword': $query .= "am:keywords != ''"; break;
+				case 'No keywords': $query .= "am:keywords = ''"; break;
+				default           : $query .= "contains(am:keywords, '".$filters['keyword']."')"; break; //FIXME: no escaping
 				}
 			}
 
@@ -60,11 +66,11 @@
 				$query .= " and ";
 				switch( $filters['cost'] )
 				{
-				case 'Red'  : $query .= "`Gems` = 0 AND `Recruits` = 0 AND `Bricks` > 0"; break;
-				case 'Blue' : $query .= "`Recruits` = 0 AND `Bricks` = 0 AND `Gems` > 0"; break;
-				case 'Green': $query .= "`Gems` = 0 AND `Bricks` = 0 AND `Recruits` > 0"; break;
-				case 'Zero' : $query .= "`Bricks` = 0 AND `Gems` = 0 AND `Recruits` = 0"; break;
-				case 'Mixed': $query .= "(`Bricks` > 0) + (`Gems` > 0) + (`Recruits` > 0) >= 2"; break;
+				case 'Red'  : $query .= "am:cost/am:gems = 0 and am:cost/am:recruits = 0 and am:cost/am:bricks > 0"; break;
+				case 'Blue' : $query .= "am:cost/am:recruits = 0 and am:cost/am:bricks = 0 and am:cost/am:gems > 0"; break;
+				case 'Green': $query .= "am:cost/am:gems = 0 and am:cost/am:bricks = 0 and am:cost/am:recruits > 0"; break;
+				case 'Zero' : $query .= "am:cost/am:bricks = 0 and am:cost/am:gems = 0 and am:cost/am:recruits = 0"; break;
+				case 'Mixed': $query .= "(am:cost/am:bricks > 0) + (am:cost/am:gems > 0) + (am:cost/am:recruits > 0) >= 2"; break;
 				default     : $query .= "true"; //FIXME: should never happen
 				}
 			}
@@ -72,7 +78,7 @@
 			if( isset($filters['advanced']) )
 			{
 				$query .= " and ";
-				$query .= "`Effect` LIKE '%".$db->Escape($filters['advanced'])."%'";
+				$query .= "contains(am:effect, '".$filters['advanced']."')"; //FIXME: no escaping
 			}
 
 			if( isset($filters['support']) )
@@ -81,19 +87,20 @@
 				// TODO find a better way to look for keywords in the effect (we are now searching for "<b>", becuase every keyword has them)
 				switch( $filters['support'] )
 				{
-				case 'Any keyword': $query .= "`Effect` LIKE '%<b>%'"; break;
-				case 'No keywords': $query .= "`Effect` NOT LIKE '%<b>%'"; break;
-				default           : $query .= "`Effect` LIKE '%".$db->Escape($filters['support'])."%'"; break;
+				case 'Any keyword': $query .= "contains(am:effect, '<b>')"; break;
+				case 'No keywords': $query .= "!contains(am:effect, '<b>')"; break;
+				default           : $query .= "contains(am:effect, '".$filters['support']."')"; //FIXME: no escaping
 				}
 			}
 			
-			$result = $db->Query("SELECT `cards`.`CardID` FROM `cards` WHERE `CardID` > 0 AND ".$query." ORDER BY `Name` ASC");
+			//FIXME: cannot sort by name... do the sorting elsewhere (." ORDER BY `Name` ASC")
+			$result = $db->xpath("/am:cards/am:card[$query]/@id");
 			
-			if (!$result) return false;
+			if( $result === false ) return false;
 			
 			$cards = array();
-			for ($i = 1; $i <= $result->Rows(), $card = $result->Next(); $i++)
-				$cards[$i] = $card['CardID'];
+			foreach( $result as $card )
+				$cards[] = (int)$card;
 			
 			return $cards;
 		}
@@ -104,12 +111,12 @@
 			$keywords = array();
 			
 			$db = $this->db;
-			$result = $db->Query('SELECT DISTINCT `Keywords` FROM `cards`');
-			if (!$result) return $keywords;
+			$result = $db->xpath('/am:cards/am:card/am:keywords');
+			if( $result === false ) return $keywords;
 			
-			while ($entry = $result->Next())
+			foreach($result as $entry)
 			{
-				$words = preg_split("/\. ?/", $entry['Keywords'], -1, PREG_SPLIT_NO_EMPTY); // split individual keywords
+				$words = preg_split("/\. ?/", (string)$entry, -1, PREG_SPLIT_NO_EMPTY); // split individual keywords
 				foreach($words as $word)
 				{
 					$word = preg_split("/ \(/", $word, 0); // remove parameter if present
@@ -117,6 +124,7 @@
 					$keywords[$word] = $word; // removes duplicates
 				}
 			}
+
 			sort($keywords);
 			
 			return $keywords;
@@ -146,14 +154,14 @@
 			$cd = &$this->CardData;
 			
 			$db = $this->Cards->getDB();
-			$result = $db->Query('SELECT `Name`, `Class`, `Bricks`, `Gems`, `Recruits`, `Effect`, `Keywords`, `Modes` FROM `cards` WHERE `CardID` = '.$this->CardID.'');
+			$result = $db->xpath("/am:cards/am:card[@id={$this->CardID}]");
 			
-			if( !$result || !$result->Rows() )
+			if( $result === false || count($result) == 0 )
                 $arr = array ('Invalid Card', 'None', 0, 0, 0, '', '', 0);
 			else
 			{
-				$data = $result->Next();
-				$arr = array ($data['Name'], $data['Class'], $data['Bricks'], $data['Gems'], $data['Recruits'], $data['Effect'], $data['Keywords'], $data['Modes']);
+				$data = &$result[0];
+				$arr = array ((string)$data->name, (string)$data->class, (int)$data->cost->bricks, (int)$data->cost->gems, (int)$data->cost->recruits, (string)$data->effect, (string)$data->keywords, (int)$data->modes);
 			}
 			
 			// initialize self

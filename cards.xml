@@ -1,0 +1,5284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--MArcomage cards database (XML)-->
+<cards xmlns="http://arcomage.netvor.sk" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <card id="0">
+    <name>Empty</name>
+    <class>None</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect/>
+  </card>
+  <card id="1">
+    <name>Basic wall</name>
+    <class>Common</class>
+    <cost>
+      <bricks>1</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If Wall = 0<br />Wall: +10<br />else<br />Wall: +3]]></effect>
+  </card>
+  <card id="2">
+    <name>Foundations</name>
+    <class>Common</class>
+    <cost>
+      <bricks>1</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If Tower < 15<br />Tower: +7<br />else<br />Tower: +2]]></effect>
+  </card>
+  <card id="3">
+    <name>Lightning strike</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>11</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Destruction.</keywords>
+    <effect><![CDATA[Enemy quarry: -1]]></effect>
+  </card>
+  <card id="4">
+    <name>Great Wall of China</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>35</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Wall: +75]]></effect>
+  </card>
+  <card id="5">
+    <name>Curse</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>45</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Illusion.</keywords>
+    <effect><![CDATA[Facilities: +1<br />Enemy facilities: -1]]></effect>
+  </card>
+  <card id="6">
+    <name>Red dragon</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>30</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Dragon.</keywords>
+    <effect><![CDATA[Attack: 50]]></effect>
+  </card>
+  <card id="7">
+    <name>Knight</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Soldier. Charge (3).</keywords>
+    <effect><![CDATA[Attack: 7]]></effect>
+  </card>
+  <card id="8">
+    <name>Soulstealer</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Gems: +7<br />Enemy gems: -7]]></effect>
+  </card>
+  <card id="9">
+    <name>Stonehenge</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>17</bricks>
+      <gems>13</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Magic: +2<br />Next card received will be a rare <b>Mage</b>]]></effect>
+  </card>
+  <card id="10">
+    <name>Iron golem</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>16</bricks>
+      <gems>0</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Unliving.</keywords>
+    <effect><![CDATA[Attack: 21]]></effect>
+  </card>
+  <card id="11">
+    <name>Meditation</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>15</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Restoration.</keywords>
+    <effect><![CDATA[Gems: +25<br />If last card played was a <b>Mage</b><br />you get 8 additional gems]]></effect>
+  </card>
+  <card id="12">
+    <name>Blacksmith</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Dungeon: +1]]></effect>
+  </card>
+  <card id="13">
+    <name>Goblin</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Attack: 3]]></effect>
+  </card>
+  <card id="14">
+    <name>Immolation</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>13</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Destruction.</keywords>
+    <effect><![CDATA[Enemy magic: -1]]></effect>
+  </card>
+  <card id="15">
+    <name>Plague</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>15</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Facilities: -1<br />Enemy facilities: -1]]></effect>
+  </card>
+  <card id="16">
+    <name>Mage guild</name>
+    <class>Common</class>
+    <cost>
+      <bricks>5</bricks>
+      <gems>2</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +3<br />Stock: +1<br />Next card received will be a <b>Mage</b>]]></effect>
+  </card>
+  <card id="17">
+    <name>Earthquake</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>16</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Nature.</keywords>
+    <effect><![CDATA[Tower: -15<br />Wall: -30<br />Enemy tower: -15<br />Enemy wall: -30]]></effect>
+  </card>
+  <card id="18">
+    <name>Tower</name>
+    <class>Common</class>
+    <cost>
+      <bricks>4</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +5]]></effect>
+  </card>
+  <card id="19">
+    <name>Fortification</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>10</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Wall: +21]]></effect>
+  </card>
+  <card id="20">
+    <name>Swordsman</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Soldier.</keywords>
+    <effect><![CDATA[Attack: 2<br />Enemy gems: -1]]></effect>
+  </card>
+  <card id="21">
+    <name>Stronghold</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>20</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +30]]></effect>
+  </card>
+  <card id="22">
+    <name>Master bricklayer</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>9</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Quarry: +1]]></effect>
+  </card>
+  <card id="23">
+    <name>Caravan</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If opponent lowered your stock last round<br />Stock: +2<br />else<br />Stock: +1]]></effect>
+  </card>
+  <card id="24">
+    <name>Minotaur</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>3</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast. Skirmisher.</keywords>
+    <effect><![CDATA[Attack: 5]]></effect>
+  </card>
+  <card id="25">
+    <name>Griffin</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance. Beast.</keywords>
+    <effect><![CDATA[Attack: 14]]></effect>
+  </card>
+  <card id="26">
+    <name>Thief</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>2</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Brigand.</keywords>
+    <effect><![CDATA[Attack: 1<br />Stock: +1<br />Enemy stock: -1]]></effect>
+  </card>
+  <card id="27">
+    <name>Fairy</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>6</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Holy. Swift.</keywords>
+    <effect><![CDATA[Stock: +#<b>Holy</b> cards in your hand]]></effect>
+  </card>
+  <card id="28">
+    <name>Vampire</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>17</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Undead.</keywords>
+    <effect><![CDATA[Attack: 29<br />Gems: -7<br />Magic: -1]]></effect>
+  </card>
+  <card id="29">
+    <name>Bloody moon</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>12</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Destruction.</keywords>
+    <effect><![CDATA[Enemy dungeon: -1]]></effect>
+  </card>
+  <card id="30">
+    <name>Magic maelstrom</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>5</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Dungeon: -1<br />Magic: +1<br />Recruits: -10<br />Gems: +25]]></effect>
+  </card>
+  <card id="31">
+    <name>Fallen angel</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>9</gems>
+      <recruits>11</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Attack: 22 + N<br />Enemy stock: -N<br />N =  <b>#Holy</b> cards in enemy's hand (max 4)]]></effect>
+  </card>
+  <card id="32">
+    <name>Crimson hawk</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>8</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast.</keywords>
+    <effect><![CDATA[Attack: 16]]></effect>
+  </card>
+  <card id="33">
+    <name>Beastiary</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>10</bricks>
+      <gems>0</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Wall: +5<br />Next card received will be a rare <b>Beast</b> card]]></effect>
+  </card>
+  <card id="34">
+    <name>Book of magic</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>12</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Magic: +1]]></effect>
+  </card>
+  <card id="35">
+    <name>Magical tower</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>16</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +15<br />Gems: +5]]></effect>
+  </card>
+  <card id="36">
+    <name>Light cavalry</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>15</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Soldier. Charge (9).</keywords>
+    <effect><![CDATA[Attack: 16]]></effect>
+  </card>
+  <card id="37">
+    <name>Mystic strike</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>6</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Destruction.</keywords>
+    <effect><![CDATA[Enemy gems: -12]]></effect>
+  </card>
+  <card id="38">
+    <name>Thievery</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>13</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Stock: +N<br />Enemy stock: -N where N is #<b>Brigand</b> cards in your hand +4]]></effect>
+  </card>
+  <card id="39">
+    <name>Reinforced wall</name>
+    <class>Common</class>
+    <cost>
+      <bricks>2</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +2<br />Wall: +2]]></effect>
+  </card>
+  <card id="40">
+    <name>Sorrow</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>12</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Illusion.</keywords>
+    <effect><![CDATA[Enemy recruits: -20]]></effect>
+  </card>
+  <card id="41">
+    <name>Stone golem</name>
+    <class>Common</class>
+    <cost>
+      <bricks>8</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>2</modes>
+    <keywords>Unliving.</keywords>
+    <effect><![CDATA[Mode1:<br />Wall: +8<br />Mode2:<br />Enemy wall: -9]]></effect>
+  </card>
+  <card id="42">
+    <name>Lady Ellena</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Soldier.</keywords>
+    <effect><![CDATA[Attack: 2<br />Recruits: +1]]></effect>
+  </card>
+  <card id="43">
+    <name>Sacrifice</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Magic: -1<br />Gems: +25]]></effect>
+  </card>
+  <card id="44">
+    <name>Angel</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>8</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Holy. Swift.</keywords>
+    <effect><![CDATA[Stock: +3*#<b>Holy</b> cards in your hand]]></effect>
+  </card>
+  <card id="45">
+    <name>Barbarian</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>3</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Barbarian.</keywords>
+    <effect><![CDATA[Attack: 4<br />Enemy recruits: -1]]></effect>
+  </card>
+  <card id="46">
+    <name>Ogre</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>4</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Banish.</keywords>
+    <effect><![CDATA[Attack: 6]]></effect>
+  </card>
+  <card id="47">
+    <name>Great wall</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>20</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Wall: +31]]></effect>
+  </card>
+  <card id="48">
+    <name>School of Restoration</name>
+    <class>Common</class>
+    <cost>
+      <bricks>7</bricks>
+      <gems>4</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +4<br />Stock: +1<br />Next card received will be a <b>Restoration</b> spell]]></effect>
+  </card>
+  <card id="49">
+    <name>Conjure bricks</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>5</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Restoration.</keywords>
+    <effect><![CDATA[Bricks: +10<br />If last card played was a <b>Mage</b><br />you get 5 additional bricks]]></effect>
+  </card>
+  <card id="50">
+    <name>Magical steel</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>6</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Restoration.</keywords>
+    <effect><![CDATA[Recruits: +10<br />If last card played was a <b>Mage</b><br />you get 5 additional recruits]]></effect>
+  </card>
+  <card id="51">
+    <name>Samurai</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Discards one random card with keyword from enemy hand<br />You get resources equal to cost of discarded card (max 5)]]></effect>
+  </card>
+  <card id="52">
+    <name>Pirates</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Brigand.</keywords>
+    <effect><![CDATA[Attack: 12<br />Enemy stock: -3]]></effect>
+  </card>
+  <card id="53">
+    <name>Sorceress</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>8</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Mage. Swift.</keywords>
+    <effect><![CDATA[Attack: 6 + # Magic]]></effect>
+  </card>
+  <card id="54">
+    <name>Battering ram</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Enemy wall: -11]]></effect>
+  </card>
+  <card id="55">
+    <name>School of Nature magic</name>
+    <class>Common</class>
+    <cost>
+      <bricks>8</bricks>
+      <gems>6</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +5<br />Stock: +1<br />Next card received will be a <b>Nature</b> spell]]></effect>
+  </card>
+  <card id="56">
+    <name>Fortress</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>7</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +10]]></effect>
+  </card>
+  <card id="57">
+    <name>Gate</name>
+    <class>Common</class>
+    <cost>
+      <bricks>3</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Wall: +7]]></effect>
+  </card>
+  <card id="58">
+    <name>Academy of Destruction</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>10</bricks>
+      <gems>7</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +6<br />Stock: +2<br />Next card received will be a <b>Destruction</b> spell]]></effect>
+  </card>
+  <card id="59">
+    <name>Flame spitter</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>8</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Enemy tower: -9]]></effect>
+  </card>
+  <card id="60">
+    <name>Dwarven warriors</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>3</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance.</keywords>
+    <effect><![CDATA[Attack: 4<br />Bricks: +3]]></effect>
+  </card>
+  <card id="61">
+    <name>Ether dragon</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>25</gems>
+      <recruits>15</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Dragon.</keywords>
+    <effect><![CDATA[Attack: 50]]></effect>
+  </card>
+  <card id="62">
+    <name>Catapult</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>16</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Enemy tower: -15]]></effect>
+  </card>
+  <card id="63">
+    <name>Dark ritual</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>15</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Facilities: -1<br />Enemy tower: -24]]></effect>
+  </card>
+  <card id="64">
+    <name>Enlightenment</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>17</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +25<br />Facilities: +1<br />Enemy tower: +25<br />Enemy facilities: +1]]></effect>
+  </card>
+  <card id="65">
+    <name>Academy of Illusion</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>12</bricks>
+      <gems>8</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +7<br />Stock: +2<br />Next card received will be a <b>Illusion</b> spell]]></effect>
+  </card>
+  <card id="66">
+    <name>Manticore</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast.</keywords>
+    <effect><![CDATA[Attack: 18]]></effect>
+  </card>
+  <card id="67">
+    <name>Magical palace</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>35</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +40]]></effect>
+  </card>
+  <card id="68">
+    <name>Gladiator</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Barbarian.</keywords>
+    <effect><![CDATA[Attack: 3<br />Recruits: +2<br />Next card will be a non-common <b>Barbarian</b>]]></effect>
+  </card>
+  <card id="69">
+    <name>Beast mistress</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast.</keywords>
+    <effect><![CDATA[Attack: 12]]></effect>
+  </card>
+  <card id="70">
+    <name>Stormwind</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>20</bricks>
+      <gems>10</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +20<br />Magic: +1]]></effect>
+  </card>
+  <card id="71">
+    <name>Dwarven miners</name>
+    <class>Common</class>
+    <cost>
+      <bricks>3</bricks>
+      <gems>0</gems>
+      <recruits>2</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance.</keywords>
+    <effect><![CDATA[Attack: 3<br />Wall: +5]]></effect>
+  </card>
+  <card id="72">
+    <name>Tower guards</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>9</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Soldier.</keywords>
+    <effect><![CDATA[Tower: +10]]></effect>
+  </card>
+  <card id="73">
+    <name>Giant spider</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>7</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast.</keywords>
+    <effect><![CDATA[Attack: 10<br />Enemy bricks: -5]]></effect>
+  </card>
+  <card id="74">
+    <name>Highlander</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>14</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Barbarian. Skirmisher.</keywords>
+    <effect><![CDATA[Attack: 25]]></effect>
+  </card>
+  <card id="75">
+    <name>White crocodile</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>7</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast.</keywords>
+    <effect><![CDATA[Attack: 15]]></effect>
+  </card>
+  <card id="76">
+    <name>Ninja</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Durable.</keywords>
+    <effect><![CDATA[-1 random resource<br />Enemy tower: -3]]></effect>
+  </card>
+  <card id="77">
+    <name>Amazon tribe</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>2</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Barbarian. Skirmisher.</keywords>
+    <effect><![CDATA[Attack: 6<br />Stock: -1]]></effect>
+  </card>
+  <card id="78">
+    <name>Unicorn</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Charge (2).</keywords>
+    <effect><![CDATA[Attack: 5<br />Gems: +3]]></effect>
+  </card>
+  <card id="79">
+    <name>Erosion</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>6</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Nature.</keywords>
+    <effect><![CDATA[Enemy bricks: -10]]></effect>
+  </card>
+  <card id="80">
+    <name>Catastrophe</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>24</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Player(s) with most Facilities gets Facilities: -2]]></effect>
+  </card>
+  <card id="81">
+    <name>New era</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>1</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Facilities: +2<br />Enemy facilities: +2<br />Destroys all of your and enemy's resources]]></effect>
+  </card>
+  <card id="82">
+    <name>Wizard</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>1</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Mage.</keywords>
+    <effect><![CDATA[Attack: # Magic]]></effect>
+  </card>
+  <card id="83">
+    <name>Valkyrie</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>14</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Charge (7).</keywords>
+    <effect><![CDATA[Attack: 15<br />Dungeon: +1<br />Enemy dungeon: +1]]></effect>
+  </card>
+  <card id="84">
+    <name>Cold arrow</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>8</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Destruction.</keywords>
+    <effect><![CDATA[Attack: 8<br />Enemy gems: -8]]></effect>
+  </card>
+  <card id="85">
+    <name>Heavenly warrior</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Holy.</keywords>
+    <effect><![CDATA[Attack: 10<br />Enemy gems: -8]]></effect>
+  </card>
+  <card id="86">
+    <name>Bone dragon</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>30</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Dragon. Undead.</keywords>
+    <effect><![CDATA[Attack: 40<br />Enemy gems: -20]]></effect>
+  </card>
+  <card id="87">
+    <name>Pyramids</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>80</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +80]]></effect>
+  </card>
+  <card id="88">
+    <name>Undead host</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>40</gems>
+      <recruits>40</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Undead.</keywords>
+    <effect><![CDATA[Attack: 40 + 8N<br />N is <b>#Undead</b> cards in your hand]]></effect>
+  </card>
+  <card id="89">
+    <name>Orc regiment</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>60</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Attack: 100]]></effect>
+  </card>
+  <card id="90">
+    <name>Paladin</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Banish. Holy.</keywords>
+    <effect><![CDATA[Attack: 10<br />Gems: +6]]></effect>
+  </card>
+  <card id="91">
+    <name>Corrosion</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>3</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Illusion.</keywords>
+    <effect><![CDATA[Enemy recruits: -6]]></effect>
+  </card>
+  <card id="92">
+    <name>Dragon golem</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>60</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>3</modes>
+    <keywords>Dragon. Unliving.</keywords>
+    <effect><![CDATA[Mode1:<br />Attack: 50<br />Mode2:<br />Wall: +60<br />Mode3:<br />Enemy wall: -70]]></effect>
+  </card>
+  <card id="93">
+    <name>Clay golem</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>29</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>3</modes>
+    <keywords>Unliving.</keywords>
+    <effect><![CDATA[Mode1:<br />Attack: 25<br />Mode2:<br />Wall: +32<br />Mode3:<br />Enemy wall: -35]]></effect>
+  </card>
+  <card id="94">
+    <name>Stone gargoyle</name>
+    <class>Common</class>
+    <cost>
+      <bricks>16</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>2</modes>
+    <keywords>Unliving.</keywords>
+    <effect><![CDATA[Mode1:<br />Attack: 12<br />Mode2:<br />Enemy tower: -7]]></effect>
+  </card>
+  <card id="95">
+    <name>Archer</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>2</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Soldier.</keywords>
+    <effect><![CDATA[Enemy tower: -3]]></effect>
+  </card>
+  <card id="96">
+    <name>Pegasus</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Charge (4). Quick.</keywords>
+    <effect><![CDATA[Attack: 1<br />Gems: +3]]></effect>
+  </card>
+  <card id="97">
+    <name>Volunteer</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Attack: 1<br />If last card played was a zero cost card<br />Next card received will be a non-common zero cost card]]></effect>
+  </card>
+  <card id="98">
+    <name>Murderer</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>18</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Brigand.</keywords>
+    <effect><![CDATA[Attack: 10<br />Enemy magic: -1]]></effect>
+  </card>
+  <card id="99">
+    <name>Magic rift</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>21</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Dungeon: +1<br />Magic: +1<br />Enemy dungeon: +1<br />Enemy magic: +1<br />Enemy gems: -15<br />Enemy recruits: -10]]></effect>
+  </card>
+  <card id="100">
+    <name>Wonder</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>15</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Quarry: +5<br />Enemy quarry: +5]]></effect>
+  </card>
+  <card id="101">
+    <name>Undead raid</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>4</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Enemy stock: -N<br />N is #<b>Undead</b> cards in your hand]]></effect>
+  </card>
+  <card id="102">
+    <name>Ceremonial guard</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>20</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Soldier.</keywords>
+    <effect><![CDATA[Attack: 10<br />Recruits: +20]]></effect>
+  </card>
+  <card id="103">
+    <name>Vampire countess</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>3</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Undead.</keywords>
+    <effect><![CDATA[Stock: +N<br />If N > 6<br />Magic: +1<br />N is #<b>Undead</b> cards in your hand]]></effect>
+  </card>
+  <card id="104">
+    <name>Moat</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>10</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Durable.</keywords>
+    <effect><![CDATA[Wall: +10]]></effect>
+  </card>
+  <card id="105">
+    <name>Restoration</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>8</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Restoration.</keywords>
+    <effect><![CDATA[Next card received will be last card played]]></effect>
+  </card>
+  <card id="106">
+    <name>Troll</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>6</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Durable. Enduring (5).</keywords>
+    <effect><![CDATA[Attack: 5]]></effect>
+  </card>
+  <card id="107">
+    <name>Alchemy</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>1</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Restoration. Durable.</keywords>
+    <effect><![CDATA[Bricks: +2<br />Recruits: +2]]></effect>
+  </card>
+  <card id="108">
+    <name>Archmage</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>25</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Mage.</keywords>
+    <effect><![CDATA[Attack: 20<br />Enemy stock: -7<br />Next card received will be last card played]]></effect>
+  </card>
+  <card id="109">
+    <name>Mage</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>14</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Mage. Swift.</keywords>
+    <effect><![CDATA[Attack: 8<br />Enemy stock: -3]]></effect>
+  </card>
+  <card id="110">
+    <name>Dark knight</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>15</gems>
+      <recruits>15</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Attack: 35<br />Enemy recruits: -10]]></effect>
+  </card>
+  <card id="111">
+    <name>Elite elf</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance.</keywords>
+    <effect><![CDATA[Attack: 7<br />Gems: +2]]></effect>
+  </card>
+  <card id="112">
+    <name>Ghoul</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>5</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Undead.</keywords>
+    <effect><![CDATA[Attack: 10]]></effect>
+  </card>
+  <card id="113">
+    <name>Skeleton warriors</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>3</gems>
+      <recruits>3</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Undead.</keywords>
+    <effect><![CDATA[Attack: 7]]></effect>
+  </card>
+  <card id="114">
+    <name>Zombie</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>2</gems>
+      <recruits>2</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Undead.</keywords>
+    <effect><![CDATA[Attack: 5]]></effect>
+  </card>
+  <card id="115">
+    <name>Angel of destruction</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>20</gems>
+      <recruits>20</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Attack: 30<br />Destroys all of your and enemy's resources]]></effect>
+  </card>
+  <card id="116">
+    <name>Telekinesis</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>9</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Nature.</keywords>
+    <effect><![CDATA[Tower: +5<br />Enemy tower: -5]]></effect>
+  </card>
+  <card id="117">
+    <name>Mummy</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Undead. Banish.</keywords>
+    <effect><![CDATA[Attack: 5<br />Gems: -3]]></effect>
+  </card>
+  <card id="118">
+    <name>Gateway</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>75</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Facilities: +5]]></effect>
+  </card>
+  <card id="119">
+    <name>Haste</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>5</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Restoration.</keywords>
+    <effect><![CDATA[Production X2]]></effect>
+  </card>
+  <card id="120">
+    <name>Stalker</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>11</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Undead.</keywords>
+    <effect><![CDATA[Attack: 11<br />Gems: +5<br />Enemy gems: -5]]></effect>
+  </card>
+  <card id="121">
+    <name>Luna the Sorceress</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>25</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Mage.</keywords>
+    <effect><![CDATA[Attack: 30<br />Magic: +1]]></effect>
+  </card>
+  <card id="122">
+    <name>Elf</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>2</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance.</keywords>
+    <effect><![CDATA[Attack: 3<br />Gems: +1]]></effect>
+  </card>
+  <card id="123">
+    <name>Magic fountain</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>5</bricks>
+      <gems>5</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance.</keywords>
+    <effect><![CDATA[Tower: +7<br />Production X2]]></effect>
+  </card>
+  <card id="124">
+    <name>Death pact</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>25</gems>
+      <recruits>25</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Attack: 70<br />Tower: -30<br />Wall: -50]]></effect>
+  </card>
+  <card id="125">
+    <name>Archangel</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>40</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Restoration.</keywords>
+    <effect><![CDATA[Tower: +15<br />Wall: +15<br />Stock: +15]]></effect>
+  </card>
+  <card id="126">
+    <name>Green dragon</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>25</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Dragon.</keywords>
+    <effect><![CDATA[Attack: 40]]></effect>
+  </card>
+  <card id="127">
+    <name>Black dragon</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>43</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Dragon.</keywords>
+    <effect><![CDATA[Attack: 60<br />Enemy recruits: -15]]></effect>
+  </card>
+  <card id="128">
+    <name>Ice dragon</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>10</gems>
+      <recruits>25</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Dragon.</keywords>
+    <effect><![CDATA[Attack: 45<br />Enemy gems: -10]]></effect>
+  </card>
+  <card id="129">
+    <name>Wealth</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Stock: +7<br />Enemy stock: +10]]></effect>
+  </card>
+  <card id="130">
+    <name>Sea monster</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>30</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Banish.</keywords>
+    <effect><![CDATA[Attack: 30<br />If Enemy wall = 0<br />Recruits: +20]]></effect>
+  </card>
+  <card id="131">
+    <name>Dragon egg</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>12</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Next card received will be a <b>Dragon</b>]]></effect>
+  </card>
+  <card id="132">
+    <name>Tubular bells</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If #Facilities >= #Enemy facilities<br />Stock: -15<br />Always:<br />Facilities: +1]]></effect>
+  </card>
+  <card id="133">
+    <name>Banshee</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>9</gems>
+      <recruits>9</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Undead.</keywords>
+    <effect><![CDATA[Attack: 4N + 4<br />N is #<b>Undead</b> cards in your hand]]></effect>
+  </card>
+  <card id="134">
+    <name>Centaur trainer</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>13</gems>
+      <recruits>17</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast.</keywords>
+    <effect><![CDATA[Dungeon: +2<br />Next card received will be a rare <b>Beast</b>]]></effect>
+  </card>
+  <card id="135">
+    <name>Stone atronarch</name>
+    <class>Common</class>
+    <cost>
+      <bricks>2</bricks>
+      <gems>5</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Unliving.</keywords>
+    <effect><![CDATA[If Bricks > Enemy bricks<br />Attack: 10<br />else<br/>Bricks: +8]]></effect>
+  </card>
+  <card id="136">
+    <name>Elf enchantress</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>10</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance. Mage.</keywords>
+    <effect><![CDATA[Attack: 9<br />Production X2]]></effect>
+  </card>
+  <card id="137">
+    <name>Seraphim</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>17</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Holy.</keywords>
+    <effect><![CDATA[Attack: 10<br />Tower: +10]]></effect>
+  </card>
+  <card id="138">
+    <name>Devil</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>30</gems>
+      <recruits>30</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Attack: 50<br />Enemy stock: -50]]></effect>
+  </card>
+  <card id="139">
+    <name>Avenger</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>5</gems>
+      <recruits>2</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Holy.</keywords>
+    <effect><![CDATA[If Recruits > Enemy recruits<br />Attack: 10<br />else<br/>Recruits: +7]]></effect>
+  </card>
+  <card id="140">
+    <name>Forest hunter</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Brigand.</keywords>
+    <effect><![CDATA[Attack: 5<br />Enemy stock: -2]]></effect>
+  </card>
+  <card id="141">
+    <name>Tower of Babylon</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>10</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Durable.</keywords>
+    <effect><![CDATA[Tower: +10]]></effect>
+  </card>
+  <card id="142">
+    <name>Basilisk</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast.</keywords>
+    <effect><![CDATA[Attack: 20<br />Wall: +10<br />Quarry: -1<br />Enemy wall: +10<br />Enemy quarry: -1]]></effect>
+  </card>
+  <card id="143">
+    <name>Clay fabric</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>11</gems>
+      <recruits>11</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Bricks: +60]]></effect>
+  </card>
+  <card id="144">
+    <name>Necromancer</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>20</gems>
+      <recruits>8</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Undead.</keywords>
+    <effect><![CDATA[Attack: 30<br />Next card received will be a non-common <b>Undead</b>]]></effect>
+  </card>
+  <card id="145">
+    <name>Necromancy</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>1</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Quick.</keywords>
+    <effect><![CDATA[Next card received will be a non-rare <b>Undead</b>]]></effect>
+  </card>
+  <card id="146">
+    <name>Ancient ruins</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Bricks: +5<br />Gems: +2<br />Recruits: +1]]></effect>
+  </card>
+  <card id="147">
+    <name>Werewolf</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>3</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast. Skirmisher.</keywords>
+    <effect><![CDATA[Attack: 6<br />Gems: -3<br />Enemy gems: -3]]></effect>
+  </card>
+  <card id="148">
+    <name>Two towers</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Wall: +50<br />Enemy wall: +50]]></effect>
+  </card>
+  <card id="149">
+    <name>Double wall</name>
+    <class>Common</class>
+    <cost>
+      <bricks>6</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Wall: +10]]></effect>
+  </card>
+  <card id="150">
+    <name>Army of volunteers</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Attack: 12<br />Stock: -5]]></effect>
+  </card>
+  <card id="151">
+    <name>Trebuchet</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>6</bricks>
+      <gems>0</gems>
+      <recruits>9</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Durable.</keywords>
+    <effect><![CDATA[Enemy tower: -7]]></effect>
+  </card>
+  <card id="152">
+    <name>Micramix</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>10</bricks>
+      <gems>10</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Switches all cards in your hand with opponent's hand]]></effect>
+  </card>
+  <card id="153">
+    <name>Acolyte</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>2</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Mage.</keywords>
+    <effect><![CDATA[If Gems > Enemy gems<br />Attack: 10<br />else<br/>Gems: +7]]></effect>
+  </card>
+  <card id="154">
+    <name>Dwarven fortification</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>32</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance.</keywords>
+    <effect><![CDATA[If #<b>Alliance</b> cards in hand > 3<br />Wall: +50<br />Bricks: +8<br />else<br />Wall: +40]]></effect>
+  </card>
+  <card id="155">
+    <name>Citadel</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>22</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +20]]></effect>
+  </card>
+  <card id="156">
+    <name>Magic barrier</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>25</bricks>
+      <gems>10</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Converts all of your gems into wall and bricks into tower]]></effect>
+  </card>
+  <card id="157">
+    <name>Volcano</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>30</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Nature.</keywords>
+    <effect><![CDATA[Enemy tower: -15<br />Enemy wall: -15<br />Enemy stock: -10]]></effect>
+  </card>
+  <card id="158">
+    <name>Flood</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>20</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Nature.</keywords>
+    <effect><![CDATA[Enemy bricks: -50]]></effect>
+  </card>
+  <card id="159">
+    <name>Scepter of summoning</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>15</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Next card received will be a rare card from your deck]]></effect>
+  </card>
+  <card id="160">
+    <name>Phantom lancer</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>3</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Brigand.</keywords>
+    <effect><![CDATA[Attack: 1<br />Recruits: +1<br />Gems: +2<br />Enemy recruits: -1<br />Enemy gems: -2]]></effect>
+  </card>
+  <card id="161">
+    <name>Damnation</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>60</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Enemy tower: -20<br />Enemy wall: -20<br />Enemy facilities: -2<br />Enemy stock: -20]]></effect>
+  </card>
+  <card id="162">
+    <name>Apprentice</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>5</bricks>
+      <gems>0</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Magic: +1]]></effect>
+  </card>
+  <card id="163">
+    <name>Architect</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>5</bricks>
+      <gems>5</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Quarry: +1]]></effect>
+  </card>
+  <card id="164">
+    <name>Legendary smith</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>6</gems>
+      <recruits>6</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Dungeon: +1]]></effect>
+  </card>
+  <card id="165">
+    <name>Preparations</name>
+    <class>Common</class>
+    <cost>
+      <bricks>7</bricks>
+      <gems>0</gems>
+      <recruits>7</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If Dungeon < Enemy dungeon<br />Dungeon: +1<br />else<br />Recruits: +11]]></effect>
+  </card>
+  <card id="166">
+    <name>Dragon knights</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>40</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Soldier. Charge (12).</keywords>
+    <effect><![CDATA[Attack: 33<br />Gems: +5<br />Recruits: +5]]></effect>
+  </card>
+  <card id="167">
+    <name>Dragon squadron</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>70</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Dragon.</keywords>
+    <effect><![CDATA[Attack: 200]]></effect>
+  </card>
+  <card id="168">
+    <name>Mirror strike</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>12</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Illusion.</keywords>
+    <effect><![CDATA[Next card received will be opponent's last card]]></effect>
+  </card>
+  <card id="169">
+    <name>Valhalla</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>10</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: -20<br />Wall: +70<br/>Won't lower tower below 1]]></effect>
+  </card>
+  <card id="170">
+    <name>Gift from the heavens</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Holy.</keywords>
+    <effect><![CDATA[Stock: +15<br />Enemy stock: +20]]></effect>
+  </card>
+  <card id="171">
+    <name>Master of the past</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>10</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Mage.</keywords>
+    <effect><![CDATA[Negates the effect of opponent's last round on your tower, wall, facilities and stock]]></effect>
+  </card>
+  <card id="172">
+    <name>Knight of time</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>11</gems>
+      <recruits>11</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Mage. Swift.</keywords>
+    <effect><![CDATA[Attack: 14]]></effect>
+  </card>
+  <card id="173">
+    <name>Lord of time</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>20</gems>
+      <recruits>20</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Mage. Swift. Durable.</keywords>
+    <effect><![CDATA[Attack: 25]]></effect>
+  </card>
+  <card id="174">
+    <name>Time warp</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>11</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Swift.</keywords>
+    <effect><![CDATA[Production X2]]></effect>
+  </card>
+  <card id="175">
+    <name>Cathedral</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>27</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Holy.</keywords>
+    <effect><![CDATA[Tower: +13<br />Stock: +7]]></effect>
+  </card>
+  <card id="176">
+    <name>Chapel</name>
+    <class>Common</class>
+    <cost>
+      <bricks>5</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Holy.</keywords>
+    <effect><![CDATA[Tower: +3<br />Stock: +1]]></effect>
+  </card>
+  <card id="177">
+    <name>Prayer</name>
+    <class>Common</class>
+    <cost>
+      <bricks>1</bricks>
+      <gems>1</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Stock: +#<b>Holy</b> cards in hand (max 2)<br />Next card received will be a <b>Holy</b> card]]></effect>
+  </card>
+  <card id="178">
+    <name>Battalion of fear</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>5</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Undead.</keywords>
+    <effect><![CDATA[Converts all of your recruits into attack]]></effect>
+  </card>
+  <card id="179">
+    <name>Redesign</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>15</bricks>
+      <gems>15</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Transforms your wall into tower]]></effect>
+  </card>
+  <card id="180">
+    <name>Mercenaries</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>7</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Brigand.</keywords>
+    <effect><![CDATA[Attack: 15<br />Recruits: -4]]></effect>
+  </card>
+  <card id="181">
+    <name>Genie</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>30</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Attack: 35<br />Stock: +5<br />Enemy stock: -5]]></effect>
+  </card>
+  <card id="182">
+    <name>Efreet</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>35</gems>
+      <recruits>15</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Burning.</keywords>
+    <effect><![CDATA[Attack: 55<br />Stock: -10<br />Enemy stock: -10]]></effect>
+  </card>
+  <card id="183">
+    <name>Magic lamp</name>
+    <class>Common</class>
+    <cost>
+      <bricks>5</bricks>
+      <gems>5</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Next card received will be Genie, Efreet or Magic lamp]]></effect>
+  </card>
+  <card id="184">
+    <name>Lost city</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>15</bricks>
+      <gems>7</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +5<br />Stock: +4<br />Next card received will be Genie, Efreet or Scepter of summoning]]></effect>
+  </card>
+  <card id="185">
+    <name>Magic well</name>
+    <class>Common</class>
+    <cost>
+      <bricks>7</bricks>
+      <gems>7</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If Magic < Enemy magic<br />Magic: +1<br />else<br />Gems: +11]]></effect>
+  </card>
+  <card id="186">
+    <name>Ent</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>14</gems>
+      <recruits>7</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance.</keywords>
+    <effect><![CDATA[Enemy wall: -40]]></effect>
+  </card>
+  <card id="187">
+    <name>Mithril mine</name>
+    <class>Common</class>
+    <cost>
+      <bricks>7</bricks>
+      <gems>7</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If Quarry < Enemy quarry<br />Quarry: +1<br />else<br />Bricks: +12]]></effect>
+  </card>
+  <card id="188">
+    <name>Crenellation</name>
+    <class>Common</class>
+    <cost>
+      <bricks>2</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Wall: +5]]></effect>
+  </card>
+  <card id="189">
+    <name>Foundry</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>11</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance.</keywords>
+    <effect><![CDATA[Tower: +5<br />Recruits production X3]]></effect>
+  </card>
+  <card id="190">
+    <name>Elf commando</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>11</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance.</keywords>
+    <effect><![CDATA[Enemy tower: -7<br />Enemy wall: -7]]></effect>
+  </card>
+  <card id="191">
+    <name>Ivory tower</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>14</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +15]]></effect>
+  </card>
+  <card id="192">
+    <name>Fortified castle</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>40</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +45]]></effect>
+  </card>
+  <card id="193">
+    <name>Royal pikemen</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>12</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Skirmisher. Soldier.</keywords>
+    <effect><![CDATA[Attack: 16]]></effect>
+  </card>
+  <card id="194">
+    <name>Draft</name>
+    <class>Common</class>
+    <cost>
+      <bricks>1</bricks>
+      <gems>1</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If #<b>Soldier</b> cards in hand < 4<br />Next card received will be a <b>Soldier</b><br />else<br />Recruits: +7]]></effect>
+  </card>
+  <card id="195">
+    <name>Fairy dragon</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>15</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Dragon. Quick.</keywords>
+    <effect><![CDATA[Transfers all <b>Dragon</b> cards from enemy's hand into your hand (to matching positions)<br />If there are none<br />Stock: +6]]></effect>
+  </card>
+  <card id="196">
+    <name>Monastery</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>10</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +12<br />Next card received will be a <b>Holy</b> card]]></effect>
+  </card>
+  <card id="197">
+    <name>Daemon</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>13</gems>
+      <recruits>13</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Charge (10).</keywords>
+    <effect><![CDATA[Attack: 20<br />Enemy quarry: -1]]></effect>
+  </card>
+  <card id="198">
+    <name>Demolition troop</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>19</gems>
+      <recruits>19</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Enemy wall: -60<br />If Enemy wall is reduced to 0<br />Enemy facilities: -1]]></effect>
+  </card>
+  <card id="199">
+    <name>Duplication</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>35</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Illusion. Swift.</keywords>
+    <effect><![CDATA[Stock X2]]></effect>
+  </card>
+  <card id="200">
+    <name>Inspiration</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>5</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +20<br />Enemy tower: +30]]></effect>
+  </card>
+  <card id="201">
+    <name>Ballistae</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>15</bricks>
+      <gems>0</gems>
+      <recruits>15</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Wall: +30<br />If there is a <b>Soldier</b> card in hand<br />Enemy tower: -11]]></effect>
+  </card>
+  <card id="202">
+    <name>Roc</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>15</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance. Beast.</keywords>
+    <effect><![CDATA[Attack: 17<br />Bricks: +5<br />Enemy bricks: -5]]></effect>
+  </card>
+  <card id="203">
+    <name>Crypt</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>5</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +6<br />Next card received will be a non-common <b>Undead</b>]]></effect>
+  </card>
+  <card id="204">
+    <name>Invisible squad</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>10</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Enemy tower: -9]]></effect>
+  </card>
+  <card id="205">
+    <name>Danai present</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Enemy stock: +10<br />Every card in opponent's hand is replaced by a random zero cost card]]></effect>
+  </card>
+  <card id="206">
+    <name>Difficult times</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Stock: -8<br />Enemy stock: -8]]></effect>
+  </card>
+  <card id="207">
+    <name>Shapeshifter</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>7</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Attack: #Enemy recruits - #Enemy gems (max 23)<br />If attack > 15<br/>Enemy recruits lowered by attack power]]></effect>
+  </card>
+  <card id="208">
+    <name>Work overtime</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>10</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Wall: +38<br />Quarry: -1]]></effect>
+  </card>
+  <card id="209">
+    <name>Forced labor</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>15</bricks>
+      <gems>10</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Wall: +105<br />Quarry: -1<br />Dungeon: -1]]></effect>
+  </card>
+  <card id="210">
+    <name>Rescue and resistance</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If Enemy tower < Tower<br />Tower: -10 <br />Enemy tower: -10<br />else<br />Tower: +10<br />Enemy tower: +10]]></effect>
+  </card>
+  <card id="211">
+    <name>Hectic offensive</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>13</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If Enemy wall > Wall<br />Attack: 25<br />else<br />Attack: 13]]></effect>
+  </card>
+  <card id="212">
+    <name>Rogue</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Brigand.</keywords>
+    <effect><![CDATA[Attack: 2<br />Enemy recruits: -1]]></effect>
+  </card>
+  <card id="213">
+    <name>Kidnap</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>20</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Quarry: +1 <br />Enemy quarry: -1]]></effect>
+  </card>
+  <card id="214">
+    <name>Mind control</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>26</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Illusion.</keywords>
+    <effect><![CDATA[Magic: +1<br />Enemy magic: -1]]></effect>
+  </card>
+  <card id="215">
+    <name>Treacherous artifact</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>11</bricks>
+      <gems>11</gems>
+      <recruits>11</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Dungeon: +1<br />Enemy dungeon: -1]]></effect>
+  </card>
+  <card id="216">
+    <name>Salvation</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>4</bricks>
+      <gems>4</gems>
+      <recruits>4</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Swift.</keywords>
+    <effect><![CDATA[If Tower < 10<br />Tower: +15<br />else<br />Tower: +3]]></effect>
+  </card>
+  <card id="217">
+    <name>Auxilia</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>4</bricks>
+      <gems>4</gems>
+      <recruits>4</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords/>
+    <effect><![CDATA[Select a card from hand, the rest is discarded<br />Wall: +2]]></effect>
+  </card>
+  <card id="218">
+    <name>Mana burn</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>27</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Converts all of enemy gems into attack]]></effect>
+  </card>
+  <card id="219">
+    <name>Earth eater</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>5</bricks>
+      <gems>0</gems>
+      <recruits>7</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Unliving.</keywords>
+    <effect><![CDATA[Attack: #Enemy bricks - #Enemy recruits (max 23)<br />If attack > 15<br />Enemy bricks lowered by attack power]]></effect>
+  </card>
+  <card id="220">
+    <name>Enforcer</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>7</bricks>
+      <gems>5</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Attack: #Enemy gems - #Enemy bricks (max 23)<br />If attack > 15<br/>Enemy gems lowered by attack power]]></effect>
+  </card>
+  <card id="221">
+    <name>Implosion</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>40</gems>
+      <recruits>25</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Enemy tower lowered by #Enemy quarry*7 + #Enemy bricks<br />Enemy wall lowered by same amount]]></effect>
+  </card>
+  <card id="222">
+    <name>Water elemental</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>19</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Unliving.</keywords>
+    <effect><![CDATA[If #Facilities > #Enemy facilities<br />Enemy wall = 0<br />Always:<br />Attack: #Resources - #Enemy resources]]></effect>
+  </card>
+  <card id="223">
+    <name>Phoenix</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>31</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Burning. Flare attack. Rebirth.</keywords>
+    <effect><![CDATA[Attack: 10N where N is #<b>Burning</b> cards in the game]]></effect>
+  </card>
+  <card id="224">
+    <name>Tidal wave</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>17</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Player with lowest wall is -1 Quarry and -1 Dungeon]]></effect>
+  </card>
+  <card id="225">
+    <name>Cultists</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>15</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If Dungeon < Enemy dungeon<br />Enemy dungeon: -2<br />else<br />Enemy recruits: -13]]></effect>
+  </card>
+  <card id="226">
+    <name>Soul cleaver</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>15</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If Magic < Enemy magic<br />Enemy magic: -2<br />else<br />Enemy gems: -13]]></effect>
+  </card>
+  <card id="227">
+    <name>Earth elemental</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>20</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Unliving.</keywords>
+    <effect><![CDATA[If Quarry < Enemy quarry<br />Enemy quarry: -2<br />else<br />Enemy bricks: -14]]></effect>
+  </card>
+  <card id="228">
+    <name>Forgotten castle</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>50</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +35<br/>Stock: +10]]></effect>
+  </card>
+  <card id="229">
+    <name>Storm of bricks</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>30</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Converts all of your bricks into attack]]></effect>
+  </card>
+  <card id="230">
+    <name>Locust swarm</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>16</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If Enemy wall = 0<br />Attack: 35<br />else<br />Attack: 11]]></effect>
+  </card>
+  <card id="231">
+    <name>Blind guardian</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>4</bricks>
+      <gems>4</gems>
+      <recruits>4</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +10]]></effect>
+  </card>
+  <card id="232">
+    <name>Tyran's pride</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>20</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Attack: 20<br />Tower: +10<br />Wall: +10<br />Production X2]]></effect>
+  </card>
+  <card id="233">
+    <name>Magic academy</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>15</bricks>
+      <gems>15</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Durable.</keywords>
+    <effect><![CDATA[Tower: +15<br />Magic: +1]]></effect>
+  </card>
+  <card id="234">
+    <name>Manufactory</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>15</bricks>
+      <gems>0</gems>
+      <recruits>15</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Durable.</keywords>
+    <effect><![CDATA[Tower: +15<br />Dungeon: +1]]></effect>
+  </card>
+  <card id="235">
+    <name>Architect academy</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>30</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Durable.</keywords>
+    <effect><![CDATA[Tower: +15<br />Quarry: +1]]></effect>
+  </card>
+  <card id="236">
+    <name>Centaur patrol troop</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>2</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast. Charge (1).</keywords>
+    <effect><![CDATA[Attack: 5<br />Tower: -1]]></effect>
+  </card>
+  <card id="237">
+    <name>Guard post</name>
+    <class>Common</class>
+    <cost>
+      <bricks>2</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +3]]></effect>
+  </card>
+  <card id="238">
+    <name>Fortified wall</name>
+    <class>Common</class>
+    <cost>
+      <bricks>4</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Wall: +8]]></effect>
+  </card>
+  <card id="239">
+    <name>Golden dragon</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>35</gems>
+      <recruits>35</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Dragon.</keywords>
+    <effect><![CDATA[Attack: 80]]></effect>
+  </card>
+  <card id="240">
+    <name>Elite orc</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>6</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Attack: 9]]></effect>
+  </card>
+  <card id="241">
+    <name>Blizzard</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>30</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Nature.</keywords>
+    <effect><![CDATA[Enemy stock: -20]]></effect>
+  </card>
+  <card id="242">
+    <name>Tornado</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>33</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Destroys all of enemy's resources]]></effect>
+  </card>
+  <card id="243">
+    <name>Thieves with honor</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Brigand.</keywords>
+    <effect><![CDATA[Attack: 8<br />Enemy stock: +2]]></effect>
+  </card>
+  <card id="244">
+    <name>Assassins</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>7</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Brigand.</keywords>
+    <effect><![CDATA[Enemy tower: -5<br />Enemy wall: -5]]></effect>
+  </card>
+  <card id="245">
+    <name>Sabotage tunnel</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>35</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Enemy tower: -20<br />Enemy bricks: -10<br />Enemy recruits: -10]]></effect>
+  </card>
+  <card id="246">
+    <name>Avalanche</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>20</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Durable.</keywords>
+    <effect><![CDATA[Enemy tower: -10<br />Enemy wall: -10]]></effect>
+  </card>
+  <card id="247">
+    <name>Wind</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Quick.</keywords>
+    <effect><![CDATA[Enemy wall: -1<br />Enemy stock: -1<br />Next card received will be a common card not from player's deck]]></effect>
+  </card>
+  <card id="248">
+    <name>Searing fire</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Burning.</keywords>
+    <effect><![CDATA[Tower: -2<br />Wall: -5<br />Stock: -2<br />Enemy tower: -2<br />Enemy wall: -5<br />Enemy stock: -2]]></effect>
+  </card>
+  <card id="249">
+    <name>Wall shift</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>23</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Switches your wall with enemy wall]]></effect>
+  </card>
+  <card id="250">
+    <name>Dragon whelp</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>3</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Burning. Dragon.</keywords>
+    <effect><![CDATA[Attack: 5]]></effect>
+  </card>
+  <card id="251">
+    <name>Tribute</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Players discard up to 3 randomly chosen non-rare cards]]></effect>
+  </card>
+  <card id="252">
+    <name>Black market</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Players switch up to 3 randomly chosen non-rare cards]]></effect>
+  </card>
+  <card id="253">
+    <name>Necropolis</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>13</bricks>
+      <gems>13</gems>
+      <recruits>13</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Discards your hand and receive Zombie, Skeleton warriors, Ghoul, Stalker, Banshee, Emissary of the afterlife, Vampire, and Vampire countess]]></effect>
+  </card>
+  <card id="254">
+    <name>Lava spectre</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>11</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Burning.</keywords>
+    <effect><![CDATA[Attack: 10<br />If #<b>Burning</b> cards in your hand > 3<br />Enemy magic: -1]]></effect>
+  </card>
+  <card id="255">
+    <name>Evolution</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>10</bricks>
+      <gems>10</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Swift.</keywords>
+    <effect><![CDATA[Both players discard all cards in hand and receive 8 new cards]]></effect>
+  </card>
+  <card id="256">
+    <name>Bronze golem</name>
+    <class>Common</class>
+    <cost>
+      <bricks>4</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Banish. Unliving.</keywords>
+    <effect><![CDATA[Enemy wall: -6]]></effect>
+  </card>
+  <card id="257">
+    <name>Wisp</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>5</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Burning.</keywords>
+    <effect><![CDATA[Tower: +2<br />Enemy tower: -2]]></effect>
+  </card>
+  <card id="258">
+    <name>Giant bear</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance. Beast.</keywords>
+    <effect><![CDATA[Attack: 4<br />Bricks: -3]]></effect>
+  </card>
+  <card id="259">
+    <name>Dire wolves</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>2</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast.</keywords>
+    <effect><![CDATA[Attack: 9<br />Production X0]]></effect>
+  </card>
+  <card id="260">
+    <name>Burglars</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>8</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Brigand.</keywords>
+    <effect><![CDATA[Attack: 4<br />Stock: +2<br />Enemy stock: -2]]></effect>
+  </card>
+  <card id="261">
+    <name>Magnetic whirpool</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>4</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Recruits: +3<br />Enemy recruits: -3]]></effect>
+  </card>
+  <card id="262">
+    <name>Magical forge</name>
+    <class>Common</class>
+    <cost>
+      <bricks>1</bricks>
+      <gems>1</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Wall: +6]]></effect>
+  </card>
+  <card id="263">
+    <name>Saints Day</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Stock: +4<br />Production X0]]></effect>
+  </card>
+  <card id="264">
+    <name>Second chance</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>3</bricks>
+      <gems>3</gems>
+      <recruits>3</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Discards your hand and receive eight new cards]]></effect>
+  </card>
+  <card id="265">
+    <name>Residence of Gods</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>51</bricks>
+      <gems>51</gems>
+      <recruits>51</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Instant tower victory]]></effect>
+  </card>
+  <card id="266">
+    <name>Defense improvement</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>11</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>2</modes>
+    <keywords/>
+    <effect><![CDATA[Mode1:<br />Wall: +20<br />Mode2:<br />Tower: +10]]></effect>
+  </card>
+  <card id="267">
+    <name>University</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>6</bricks>
+      <gems>6</gems>
+      <recruits>6</recruits>
+    </cost>
+    <modes>3</modes>
+    <keywords/>
+    <effect><![CDATA[Mode1:<br />Quarry: +1<br />Mode2:<br />Magic: +1<br />Mode3:<br />Dungeon: +1]]></effect>
+  </card>
+  <card id="268">
+    <name>Reserve forces</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>17</bricks>
+      <gems>0</gems>
+      <recruits>17</recruits>
+    </cost>
+    <modes>2</modes>
+    <keywords/>
+    <effect><![CDATA[Mode1:<br />Attack: 30<br />Mode2:<br />Wall: +33]]></effect>
+  </card>
+  <card id="269">
+    <name>Militia</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords>Quick.</keywords>
+    <effect><![CDATA[Wall: +1<br />Stock: -1<br />Select an extra card to be discarded]]></effect>
+  </card>
+  <card id="270">
+    <name>Intrigue</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>8</bricks>
+      <gems>8</gems>
+      <recruits>8</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords/>
+    <effect><![CDATA[Discard one card from enemy hand]]></effect>
+  </card>
+  <card id="271">
+    <name>Stone archer</name>
+    <class>Common</class>
+    <cost>
+      <bricks>3</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Unliving.</keywords>
+    <effect><![CDATA[Enemy tower: -2<br />Stock: +1]]></effect>
+  </card>
+  <card id="272">
+    <name>Elven archer</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance.</keywords>
+    <effect><![CDATA[If Wall > Enemy wall<br />Enemy tower: -7<br />else<br />Attack: 6]]></effect>
+  </card>
+  <card id="273">
+    <name>Merchant</name>
+    <class>Common</class>
+    <cost>
+      <bricks>1</bricks>
+      <gems>1</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>3</modes>
+    <keywords/>
+    <effect><![CDATA[Mode1:<br />Bricks: +6<br />Mode2:<br />Gems: +5<br />Mode3:<br />Recruits: +5]]></effect>
+  </card>
+  <card id="274">
+    <name>Hidden treasure</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If last card played was a zero cost card<br />Gems: +3<br />Recruits: +2<br />else<br />Gems: +2<br />Recruits: +1]]></effect>
+  </card>
+  <card id="275">
+    <name>Clay overproduction</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Bricks production X2]]></effect>
+  </card>
+  <card id="276">
+    <name>Border fortress</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>42</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Wall: +60]]></effect>
+  </card>
+  <card id="277">
+    <name>King's elite guard</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>30</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Soldier.</keywords>
+    <effect><![CDATA[Tower: +35]]></effect>
+  </card>
+  <card id="278">
+    <name>Guard tower</name>
+    <class>Common</class>
+    <cost>
+      <bricks>5</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>2</modes>
+    <keywords/>
+    <effect><![CDATA[Mode1:<br />Wall: +8<br />Mode2:<br />Tower: +5]]></effect>
+  </card>
+  <card id="279">
+    <name>Heavy infantry</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>6</recruits>
+    </cost>
+    <modes>3</modes>
+    <keywords>Soldier.</keywords>
+    <effect><![CDATA[Mode1:<br />Wall +5<br />Mode2:<br />Attack: 6<br />Mode3:<br />Enemy tower: -4]]></effect>
+  </card>
+  <card id="280">
+    <name>Word of power</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>25</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords>Durable.</keywords>
+    <effect><![CDATA[Transfers one card from enemy hand into yours (to the matching position)]]></effect>
+  </card>
+  <card id="281">
+    <name>Berserker</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>6</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Barbarian.</keywords>
+    <effect><![CDATA[Attack: 11-N where N is Tower height / 20]]></effect>
+  </card>
+  <card id="282">
+    <name>Tax</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Each player's stock loses N% of each resource, N is his tower height]]></effect>
+  </card>
+  <card id="283">
+    <name>Return to the beginning</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: =30<br />Wall: =20<br />Enemy tower: =30<br />Enemy wall: =20]]></effect>
+  </card>
+  <card id="284">
+    <name>Jealousy</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>13</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If Tower < 50 and Enemy tower > 60<br />Enemy tower: -25<br />else<br />Enemy tower: -10]]></effect>
+  </card>
+  <card id="285">
+    <name>All-elemental attack</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>18</bricks>
+      <gems>18</gems>
+      <recruits>18</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Destruction.</keywords>
+    <effect><![CDATA[Converts all of your resources into attack]]></effect>
+  </card>
+  <card id="286">
+    <name>Sabotage</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>30</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Enemy tower is halved]]></effect>
+  </card>
+  <card id="287">
+    <name>Revolt</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Stock: +10<br />Dicards your hand and receive cards randomly chosen from Volunteer, Archer, Goblin, Lady Ellena, Swordsman, Ninja, Gladiator, Samurai]]></effect>
+  </card>
+  <card id="288">
+    <name>Cursed amulet</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords/>
+    <effect><![CDATA[Enemy stock: +10<br />Discard a card from enemy hand to add cursed amulet to enemy hand]]></effect>
+  </card>
+  <card id="289">
+    <name>Baron's keep</name>
+    <class>Common</class>
+    <cost>
+      <bricks>8</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +3<br />Wall: +7]]></effect>
+  </card>
+  <card id="290">
+    <name>Warlord's keep</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>31</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +15<br />Wall: +30]]></effect>
+  </card>
+  <card id="291">
+    <name>General's army</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>20</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Discards your hand and receive Light and Heavy infantry, Knight, Crusader, Royal pikemen, Light cavalry, Battle formations, and Dragon knights<br />Recruits: +35]]></effect>
+  </card>
+  <card id="292">
+    <name>Elven reinforcements</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Swift.</keywords>
+    <effect><![CDATA[Production X2<br />Discards your hand and receive two Elves, two Elite elves, two Elven archers, Elf commando and Elf enchantress]]></effect>
+  </card>
+  <card id="293">
+    <name>Under siege</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>15</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Durable.</keywords>
+    <effect><![CDATA[Enemy stock: -1<br />Enemy tower: -12]]></effect>
+  </card>
+  <card id="294">
+    <name>Plan of salvation</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>5</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Discards your hand and receive Basic wall, two Fortified walls, two Double walls, Fortification, Great wall, and Border fortress<br />Bricks: +20]]></effect>
+  </card>
+  <card id="295">
+    <name>Architectural improvement</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>25</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Discards your hand and receive two Foundations, two Towers, Ivory tower, Citadel, Forgotten castle and Pyramids<br />Bricks: +40]]></effect>
+  </card>
+  <card id="296">
+    <name>Hidden traps</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>5</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Wall: +14]]></effect>
+  </card>
+  <card id="297">
+    <name>Palisade wall</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Wall: +2]]></effect>
+  </card>
+  <card id="298">
+    <name>Vampire lord</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>10</gems>
+      <recruits>20</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords>Undead. Durable. Quick.</keywords>
+    <effect><![CDATA[Attack: 25<br />Magic: -1<br />Select a card from hand to be replaced with Vampire]]></effect>
+  </card>
+  <card id="299">
+    <name>Furious crowd</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>7</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Attack: number of facilities]]></effect>
+  </card>
+  <card id="300">
+    <name>Tremors</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>2</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Nature.</keywords>
+    <effect><![CDATA[Enemy bricks: -5]]></effect>
+  </card>
+  <card id="301">
+    <name>Lookout towers</name>
+    <class>Common</class>
+    <cost>
+      <bricks>7</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If Tower < Wall and Tower < 45<br />Tower: +15<br />else<br />Tower: +6]]></effect>
+  </card>
+  <card id="302">
+    <name>Titan's left arm</name>
+    <class>Common</class>
+    <cost>
+      <bricks>7</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Titan. Unliving.</keywords>
+    <effect><![CDATA[Stock: +#<b>Unliving</b> cards in your hand]]></effect>
+  </card>
+  <card id="303">
+    <name>Titan's right arm</name>
+    <class>Common</class>
+    <cost>
+      <bricks>7</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Titan. Unliving.</keywords>
+    <effect><![CDATA[Tower: +N<br />Wall: +N<br />N = #<b>Unliving</b> cards in your hand]]></effect>
+  </card>
+  <card id="304">
+    <name>Nightmare</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>14</gems>
+      <recruits>14</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Burning. Charge (10).</keywords>
+    <effect><![CDATA[Attack: 20]]></effect>
+  </card>
+  <card id="305">
+    <name>Crusader</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>13</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Soldier.</keywords>
+    <effect><![CDATA[Attack: 12<br />If #<b>Soldier</b> cards in your hand > 3<br />Enemy dungeon: -1]]></effect>
+  </card>
+  <card id="306">
+    <name>Obsidian gargoyle</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>15</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Unliving.</keywords>
+    <effect><![CDATA[Attack: 13<br />If #<b>Unliving</b> cards in your hand > 4<br />Enemy quarry: -1]]></effect>
+  </card>
+  <card id="307">
+    <name>Necromancy amplifier</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>9</bricks>
+      <gems>9</gems>
+      <recruits>9</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Upgrades rarities of all <b>Undead</b> cards in your hand<br />Can upgrade at most one Uncommon to Rare]]></effect>
+  </card>
+  <card id="308">
+    <name>Mud elemental</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>18</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Unliving.</keywords>
+    <effect><![CDATA[Wall: +9*N<br />where N = #<b>Unliving</b> cards in your hand (max 5)]]></effect>
+  </card>
+  <card id="309">
+    <name>Rock elemental</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>20</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Unliving.</keywords>
+    <effect><![CDATA[Tower: +6*N<br />where N = #<b>Unliving</b> cards in your hand (max 5)]]></effect>
+  </card>
+  <card id="310">
+    <name>Titan's head</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>8</bricks>
+      <gems>8</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Titan. Unliving.</keywords>
+    <effect><![CDATA[Tower:+ 8<br />If #<b>Unliving</b> cards in your hand > 4<br />Magic: +1]]></effect>
+  </card>
+  <card id="311">
+    <name>Titan's legs</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>12</bricks>
+      <gems>12</gems>
+      <recruits>12</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Titan. Unliving.</keywords>
+    <effect><![CDATA[Tower: +11<br />Wall: +16<br />Stock: +2]]></effect>
+  </card>
+  <card id="312">
+    <name>Titan's heart</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>7</bricks>
+      <gems>7</gems>
+      <recruits>7</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Titan. Unliving.</keywords>
+    <effect><![CDATA[Tower: +6<br />Wall: +9<br />If #<b>Unliving</b> cards in your hand > 4<br />Quarry: +1]]></effect>
+  </card>
+  <card id="313">
+    <name>Tartarus gate</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>4</bricks>
+      <gems>4</gems>
+      <recruits>4</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Next card received will be a non-common <b>Titan</b>]]></effect>
+  </card>
+  <card id="314">
+    <name>Crugg the Destroyer</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>26</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Barbarian.</keywords>
+    <effect><![CDATA[Enemy tower: -6*N<br />Enemy wall: -9*N<br />where N = #<b>Barbarian</b> cards in your hand]]></effect>
+  </card>
+  <card id="315">
+    <name>Completion ritual</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>11</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Titan.</keywords>
+    <effect><![CDATA[If all <b>Titan</b> cards are in your hand<br />Instant destruction victory]]></effect>
+  </card>
+  <card id="316">
+    <name>Lich</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>9</bricks>
+      <gems>9</gems>
+      <recruits>9</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords>Undead.</keywords>
+    <effect><![CDATA[Discard a card from enemy hand to receive an <b>Undead</b> of the same rarity as discarded card (to the matching position)]]></effect>
+  </card>
+  <card id="317">
+    <name>Heavy cavalry</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>25</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Soldier. Charge (18).</keywords>
+    <effect><![CDATA[Attack: 22]]></effect>
+  </card>
+  <card id="318">
+    <name>Fallen knight</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>14</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords>Soldier. Undead. Enduring (6). Charge (7).</keywords>
+    <effect><![CDATA[Attack: 10<br />Select a card from your hand to be replaced by Fallen knight]]></effect>
+  </card>
+  <card id="319">
+    <name>Fire guardian</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>8</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Mage. Burning.</keywords>
+    <effect><![CDATA[Gems: -3<br />Enemy wall: -4<br />Enemy tower: -4]]></effect>
+  </card>
+  <card id="320">
+    <name>Last hope</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>1</bricks>
+      <gems>1</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Quick.</keywords>
+    <effect><![CDATA[If Tower < 10 and Wall = 0<br />Tower = 25<br />Wall = 15<br />else<br />Stock: +2]]></effect>
+  </card>
+  <card id="321">
+    <name>Unholy shrine</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>7</bricks>
+      <gems>7</gems>
+      <recruits>7</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords/>
+    <effect><![CDATA[Discards up to 4 random <b>Undead</b> cards from your hand except the selected one<br />Wall: +10 for each card discarded this way]]></effect>
+  </card>
+  <card id="322">
+    <name>Battle formations</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>18</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Attack: 8*N <br />If N > 3<br />Wall: +15<br />N = #<b>Soldier</b> cards in your hand (max 4)]]></effect>
+  </card>
+  <card id="323">
+    <name>Beastmaster</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>11</gems>
+      <recruits>16</recruits>
+    </cost>
+    <modes>2</modes>
+    <keywords>Beast. Durable.</keywords>
+    <effect><![CDATA[Mode1:<br />Fill opponent's hand with non-rare <b>Beast</b> cards<br />Mode2:<br />Attack: 5*#<b>Beast</b> cards in game]]></effect>
+  </card>
+  <card id="324">
+    <name>Wolf raiders</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>9</recruits>
+    </cost>
+    <modes>2</modes>
+    <keywords>Beast.</keywords>
+    <effect><![CDATA[Mode1:<br />Stock: +N<br />Mode2:<br />Attack: 3*N<br />N = #<b>Beast</b> cards in game]]></effect>
+  </card>
+  <card id="325">
+    <name>Cleansing</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>7</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Holy.</keywords>
+    <effect><![CDATA[Replaces up to 4 random <b>Undead</b> cards from enemy hand with Purified Ashes]]></effect>
+  </card>
+  <card id="326">
+    <name>Guardian angel</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>8</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Holy.</keywords>
+    <effect><![CDATA[Replaces every <b>Soldier</b> card in your hand with non-common <b>Holy</b>]]></effect>
+  </card>
+  <card id="327">
+    <name>Temple of light</name>
+    <class>Common</class>
+    <cost>
+      <bricks>3</bricks>
+      <gems>3</gems>
+      <recruits>3</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords>Holy.</keywords>
+    <effect><![CDATA[Tower: +3<br />Select a card from hand to be replaced by a <b>Holy</b> card]]></effect>
+  </card>
+  <card id="328">
+    <name>Tribes of east</name>
+    <class>Common</class>
+    <cost>
+      <bricks>2</bricks>
+      <gems>2</gems>
+      <recruits>2</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Next card will be a <b>Barbarian</b> card<br />If #<b>Barbarian</b> cards in hand > 3<br />Stock: +3]]></effect>
+  </card>
+  <card id="329">
+    <name>Conjurer</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>1</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords>Mage. Nature.</keywords>
+    <effect><![CDATA[Gems: +6<br />Wall: +3<br />Production X0<br />Select a card from hand to be replaced with Conjurer]]></effect>
+  </card>
+  <card id="330">
+    <name>Emissary of the afterlife</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>12</gems>
+      <recruits>12</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Undead.</keywords>
+    <effect><![CDATA[Returns your recently discarded <b>Undead</b> cards to your hand (random positions)<br />Attack: 10 for each card replaced this way]]></effect>
+  </card>
+  <card id="331">
+    <name>Benediction</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>1</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Holy. Restoration.</keywords>
+    <effect><![CDATA[Each player's stock raised by #<b>Holy</b> cards in his or her hand (max 4)]]></effect>
+  </card>
+  <card id="332">
+    <name>Retribution</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>1</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Holy.</keywords>
+    <effect><![CDATA[Each player's stock lowered by <b>#Undead</b> cards in his or her hand (max 4)]]></effect>
+  </card>
+  <card id="333">
+    <name>Death wave</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>7</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Each player suffers 4 damage for each non-<b>Undead</b> card in his or her hand<br/>First 3 non-<b>Undead</b> cards aren't counted]]></effect>
+  </card>
+  <card id="334">
+    <name>Tarkhan</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>7</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Barbarian.</keywords>
+    <effect><![CDATA[If last card played was a <b>Barbarian</b><br />Enemy wall: -7<br />Always:<br />Attack: 7]]></effect>
+  </card>
+  <card id="335">
+    <name>Flaming mirage</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>11</gems>
+      <recruits>11</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Burning.</keywords>
+    <effect><![CDATA[Attack: 21<br />If last card was a <b>Burning</b> card, up to 2 copies of that card will replace random non-<b>Burning</b> cards in your hand]]></effect>
+  </card>
+  <card id="336">
+    <name>Eternal flame</name>
+    <class>Common</class>
+    <cost>
+      <bricks>2</bricks>
+      <gems>2</gems>
+      <recruits>2</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Burning.</keywords>
+    <effect><![CDATA[Next card will be a <b>Burning</b> card<br />If last card played was a <b>Burning</b> card, it will be that card]]></effect>
+  </card>
+  <card id="337">
+    <name>Warlord</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>19</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Barbarian.</keywords>
+    <effect><![CDATA[If last card played was a <b>Barbarian</b><br />Enemy wall: -17<br />Always:<br />Attack: 20]]></effect>
+  </card>
+  <card id="338">
+    <name>Moonlight unicorn</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>30</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Legend. Swift.</keywords>
+    <effect><![CDATA[Attack: 26<br />If last card played was a <b>Mage</b><br />Gems: +#Magic*3]]></effect>
+  </card>
+  <card id="339">
+    <name>Prince of thieves</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Brigand.</keywords>
+    <effect><![CDATA[Steals the difference between your resources and enemy's resources (max 15, min 5)<br />No effect if New]]></effect>
+  </card>
+  <card id="340">
+    <name>Fanatic</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>1</gems>
+      <recruits>6</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Barbarian. Holy.</keywords>
+    <effect><![CDATA[If Tower < Enemy tower<br />Attack: 12<br />else<br />Attack: 6]]></effect>
+  </card>
+  <card id="341">
+    <name>Zealot</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>11</gems>
+      <recruits>15</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Barbarian. Holy.</keywords>
+    <effect><![CDATA[Attack: 10 + 3N<br />N = #<b>Barbarian</b> + #<b>Holy</b> cards on hand]]></effect>
+  </card>
+  <card id="342">
+    <name>Heresy</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Randomly discards one card from hand<br />Replaces up to 3 random non-<b>Holy</b> cards from hand by Fanatics]]></effect>
+  </card>
+  <card id="343">
+    <name>Death before dishonor</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>10</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Replaces all Fanatics with Zealots and all Zealots with Fallen angels]]></effect>
+  </card>
+  <card id="344">
+    <name>Warchief</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Barbarian.</keywords>
+    <effect><![CDATA[Wall: +15<br />If last card played was a <b>Barbarian</b><br />Attack: Recruits cost of last played  card]]></effect>
+  </card>
+  <card id="345">
+    <name>Devastator</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>46</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Barbarian.</keywords>
+    <effect><![CDATA[Enemy wall -10 for each <b>Barbarian</b> in hand<br />Attack: 40]]></effect>
+  </card>
+  <card id="346">
+    <name>Overpower</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Discards a rare <b>Beast</b> card with cost < 11 recruits from hand<br />Attack: 42<br />If none found<br />Recruits: +9]]></effect>
+  </card>
+  <card id="347">
+    <name>Call of the wilds</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Replaces all non-<b>Beast</b> cards with <b>Beast</b> cards<br />Stock: -2 for each card replaced]]></effect>
+  </card>
+  <card id="348">
+    <name>Time lock</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>9</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Nature.</keywords>
+    <effect><![CDATA[If opponent played a <b>Swift</b> card last round<br />Enemy stock: -12<br />else<br />Enemy stock: -3]]></effect>
+  </card>
+  <card id="349">
+    <name>Reuse the rubble</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If last card was an <b>Unliving</b> card<br />Tower: +N / 3<br />Wall: +N / 2<br />N = bricks cost of last card]]></effect>
+  </card>
+  <card id="350">
+    <name>Eternal guardian</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>1</bricks>
+      <gems>1</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Undead. Durable.</keywords>
+    <effect><![CDATA[If last card played was an <b>Undead</b><br />Attack: N / 2<br />Tower: +N / 3<br />Wall: +N / 2<br />N = total cost of last card played]]></effect>
+  </card>
+  <card id="351">
+    <name>Golden scepter</name>
+    <class>Common</class>
+    <cost>
+      <bricks>1</bricks>
+      <gems>1</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Next card received will be<br />If New<br />Scepter of summoning<br />else<br />Golden scepter]]></effect>
+  </card>
+  <card id="352">
+    <name>Azure unicorn</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>12</gems>
+      <recruits>15</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Legend.</keywords>
+    <effect><![CDATA[If Magic > Enemy magic<br />Attack: 34<br />else<br />Attack: 15]]></effect>
+  </card>
+  <card id="353">
+    <name>Glacial temple</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>2</modes>
+    <keywords/>
+    <effect><![CDATA[Magic: -1<br />Mode1:<br />Quarry: +1<br />Mode2:<br />Dungeon: +1]]></effect>
+  </card>
+  <card id="354">
+    <name>Sorcerer's outpost</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>10</bricks>
+      <gems>10</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +9<br />Wall: +15<br />If there is a  <b>Legend</b> card in hand<br />Magic: +1]]></effect>
+  </card>
+  <card id="355">
+    <name>Witcher</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Both players discard all cards with keywords<br />Each player receives 7 damage for each card discarded]]></effect>
+  </card>
+  <card id="356">
+    <name>Abyssal viper</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>2</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast.</keywords>
+    <effect><![CDATA[Enemy gems: -3<br />Enemy recruits: -2]]></effect>
+  </card>
+  <card id="357">
+    <name>Warlock</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>3</gems>
+      <recruits>2</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Mage. Undead.</keywords>
+    <effect><![CDATA[Attack: 3<br />Enemy gems: -1<br />Enemy recruits: -3]]></effect>
+  </card>
+  <card id="358">
+    <name>Sandworm</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>20</bricks>
+      <gems>0</gems>
+      <recruits>20</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Enemy tower: -16<br />Enemy wall: -19]]></effect>
+  </card>
+  <card id="359">
+    <name>Determined defense</name>
+    <class>Common</class>
+    <cost>
+      <bricks>8</bricks>
+      <gems>0</gems>
+      <recruits>2</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If there is a <b>Charge</b> card in opponent's hand<br />Wall: +18<br />else<br />Wall:+ 10]]></effect>
+  </card>
+  <card id="360">
+    <name>Wildfire gem</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>1</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Flare attack.</keywords>
+    <effect><![CDATA[Stock: -2<br />]]></effect>
+  </card>
+  <card id="361">
+    <name>Pyrobolus</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>8</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Burning.</keywords>
+    <effect><![CDATA[Attack: 7<br />If last card played was a <b>Mage</b><br />Enemy stock: -3]]></effect>
+  </card>
+  <card id="362">
+    <name>Petrified minotaur</name>
+    <class>Common</class>
+    <cost>
+      <bricks>7</bricks>
+      <gems>0</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast. Unliving.</keywords>
+    <effect><![CDATA[Wall: +5<br />Enemy wall: -5<br />Attack: 5]]></effect>
+  </card>
+  <card id="363">
+    <name>Supply units</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Discards a <b>Soldier</b> card with lowest recruits cost from hand<br />Stock: +3<br />No effect if none found]]></effect>
+  </card>
+  <card id="364">
+    <name>Judge</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If opponent lowered your stock last round<br />Opponent loses same amount of resources (max 6)]]></effect>
+  </card>
+  <card id="365">
+    <name>Don't be hasty</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Each player that played a <b>Quick</b> card last round discards all new cards and pays 1 stock for each one]]></effect>
+  </card>
+  <card id="366">
+    <name>Graceful charity</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Holy.</keywords>
+    <effect><![CDATA[Tower: +1<br />Gives you same amount of resources as was lost during opponent's last round (max 6)]]></effect>
+  </card>
+  <card id="367">
+    <name>Light infantry</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Soldier.</keywords>
+    <effect><![CDATA[If there are no <b>Charge</b> cards in opponent's hand<br />Attack: 10<br />else<br />Attack: 4]]></effect>
+  </card>
+  <card id="368">
+    <name>Goblin saboteur</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>4</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If opponent raised his wall by more than 8 last round<br />Enemy wall: -12<br />Always:<br />Attack: 4]]></effect>
+  </card>
+  <card id="369">
+    <name>Keeper of souls</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>16</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast. Burning.</keywords>
+    <effect><![CDATA[Attack: 13 + 2N<br />Recruits: + N<br />N = <b>#Burning</b> + <b>#Beast</b> cards in game]]></effect>
+  </card>
+  <card id="370">
+    <name>Dragon patrol</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>16</gems>
+      <recruits>16</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Dragon. Soldier.</keywords>
+    <effect><![CDATA[Attack: 27<br />If there is a <b>Soldier</b> and a <b>Dragon</b> in hand (other then this card)<br />Enemy tower: -14]]></effect>
+  </card>
+  <card id="371">
+    <name>Frost unicorn</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>32</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Legend.</keywords>
+    <effect><![CDATA[Attack: 35<br />If there is a <b>Legend</b> card and a <b>Mage</b> in hand (other then this card)<br />Gems: +20<br />Magic: +1]]></effect>
+  </card>
+  <card id="372">
+    <name>Corpses behemoth</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>22</gems>
+      <recruits>22</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords>Undead.</keywords>
+    <effect><![CDATA[Discards all <b>Undead</b> cards from hand, except the selected one<br />Attack: 9 for each card discarded this way]]></effect>
+  </card>
+  <card id="373">
+    <name>Sphinx</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>16</bricks>
+      <gems>12</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords>Unliving.</keywords>
+    <effect><![CDATA[Discard a card from enemy hand<br />If #<b>Unliving</b> cards in hand > 3<br />Receive half of the cost of discarded card (max 20)]]></effect>
+  </card>
+  <card id="374">
+    <name>Chain lightning</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>16</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Destruction. Nature.</keywords>
+    <effect><![CDATA[Enemy tower: -11<br />If last card played was a <b>Mage</b><br />Enemy stock: -5]]></effect>
+  </card>
+  <card id="375">
+    <name>Stilshrine of Miriam</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>13</bricks>
+      <gems>12</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance.</keywords>
+    <effect><![CDATA[Tower: +7<br />Wall: +11<br />Production X3]]></effect>
+  </card>
+  <card id="376">
+    <name>Imperial griffin</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>31</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast. Soldier.</keywords>
+    <effect><![CDATA[Attack: 19<br />Bonus 15 attack for a <b>Beast</b> card in hand<br />Bonus 15 attack for a <b>Soldier</b> card in hand (other then this card)]]></effect>
+  </card>
+  <card id="377">
+    <name>Mountain king</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>26</gems>
+      <recruits>26</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance.</keywords>
+    <effect><![CDATA[Attack: 20 + 5N<br />Tower: +3N<br />Wall: +4N<br />Stock: +N<br />N = <b>#Alliance</b> cards in hand]]></effect>
+  </card>
+  <card id="378">
+    <name>Ice revenant</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>31</gems>
+      <recruits>31</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Undead.</keywords>
+    <effect><![CDATA[Attack: 56<br />If last card played was either Crypt, Lich or Necromancy amplifier<br />Additional 36 attack]]></effect>
+  </card>
+  <card id="379">
+    <name>Castle beyond looking glass</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>25</bricks>
+      <gems>25</gems>
+      <recruits>25</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: = 50<br />Wall: = 70<br />Stock: +10]]></effect>
+  </card>
+  <card id="380">
+    <name>Order of the White Lotus</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Balances (average) both players' tower, wall, facilities and stock<br />No effect if New]]></effect>
+  </card>
+  <card id="381">
+    <name>Purified ashes</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If there is a <b>Holy</b> card in hand<br />Gems: +1]]></effect>
+  </card>
+  <card id="382">
+    <name>Priest</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>1</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Holy. Durable.</keywords>
+    <effect><![CDATA[Discards one Purified ashes card from enemy hand<br />Stock: +3<br />Enemy stock: -3<br />No effect if none found]]></effect>
+  </card>
+  <card id="383">
+    <name>Mountain of faith</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>14</bricks>
+      <gems>14</gems>
+      <recruits>14</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Replace your hand with Shadow fairy, Fairy, Heavenly warrior, Paladin, Cathedral, Zealot, Seraphim and Angel]]></effect>
+  </card>
+  <card id="384">
+    <name>Last order</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>3</modes>
+    <keywords/>
+    <effect><![CDATA[Next card will be<br />Mode1:<br />Earth elemental<br />Mode2:<br />Soul cleaver<br />Mode3:<br />Cultists]]></effect>
+  </card>
+  <card id="385">
+    <name>Sharpshooters</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>13</recruits>
+    </cost>
+    <modes>2</modes>
+    <keywords>Soldier.</keywords>
+    <effect><![CDATA[Mode1:<br />Enemy recruits: -15<br />Mode2:<br />Enemy tower: -10]]></effect>
+  </card>
+  <card id="386">
+    <name>Sheath your swords</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Replaces all <b>Barbarian</b>, <b>Brigand</b> and <b>Soldier</b> cards with cards randomly chosen from Merchant, Caravan or Palisade]]></effect>
+  </card>
+  <card id="387">
+    <name>Corrosion cloud</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>6</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Destruction.</keywords>
+    <effect><![CDATA[Both players discard a random non-rare <b>Unliving</b> card from hand<br />If that card was uncommon<br />Owner's quarry: -1]]></effect>
+  </card>
+  <card id="388">
+    <name>Greed is good</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Player with highest stock (total sum) receives 25% of his current stock]]></effect>
+  </card>
+  <card id="389">
+    <name>Bank</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>10</bricks>
+      <gems>0</gems>
+      <recruits>4</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance. Durable.</keywords>
+    <effect><![CDATA[Tower: +4<br />Player receives 25% of his current stock]]></effect>
+  </card>
+  <card id="390">
+    <name>Anomaly sphere</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>10</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Negates the effect of opponent's last round on his tower, wall, facilities and stock]]></effect>
+  </card>
+  <card id="391">
+    <name>Road to Valhalla</name>
+    <class>Common</class>
+    <cost>
+      <bricks>7</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: -10<br />Wall: +20]]></effect>
+  </card>
+  <card id="392">
+    <name>Road to Tartarus</name>
+    <class>Common</class>
+    <cost>
+      <bricks>1</bricks>
+      <gems>1</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Next card received will be Tartarus gate]]></effect>
+  </card>
+  <card id="393">
+    <name>Druid</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>6</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords>Alliance. Mage.</keywords>
+    <effect><![CDATA[Attack: 5<br />Discard a card from hand to be replaced with a <b>Restoration</b> or a <b>Nature</b> card]]></effect>
+  </card>
+  <card id="394">
+    <name>Ranger</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>5</gems>
+      <recruits>3</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords>Alliance. Soldier.</keywords>
+    <effect><![CDATA[Attack: 7<br />Discard a card from hand to be replaced with an <b>Alliance</b> card]]></effect>
+  </card>
+  <card id="395">
+    <name>Frontier outpost</name>
+    <class>Common</class>
+    <cost>
+      <bricks>5</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If Wall > 7<br />Tower: +13<br />Wall: -7<br />else<br />Wall: +7]]></effect>
+  </card>
+  <card id="396">
+    <name>Crystal golem</name>
+    <class>Common</class>
+    <cost>
+      <bricks>10</bricks>
+      <gems>5</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Holy. Unliving.</keywords>
+    <effect><![CDATA[Attack: N<br />Wall: +3N<br />N = #<b>Holy</b> + #<b>Unliving</b> cards in hand]]></effect>
+  </card>
+  <card id="397">
+    <name>Rainbow dragon</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>26</gems>
+      <recruits>26</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Dragon. Legend.</keywords>
+    <effect><![CDATA[Attack: 8N<br />Stock: +2N<br />N = # different keywords in hand]]></effect>
+  </card>
+  <card id="398">
+    <name>Shadow unicorn</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>15</gems>
+      <recruits>15</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Legend.</keywords>
+    <effect><![CDATA[Attack: 25<br />Magic: +1<br />Enemy magic: -1<br />Discards a <b>Mage</b> card from hand to receive 30 gems]]></effect>
+  </card>
+  <card id="399">
+    <name>Wizard's cottage</name>
+    <class>Common</class>
+    <cost>
+      <bricks>3</bricks>
+      <gems>1</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +2<br />Wall: +3<br />Next card received will be a non-rare <b>Mage</b>]]></effect>
+  </card>
+  <card id="400">
+    <name>Mask of the phantasm</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>12</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords>Illusion.</keywords>
+    <effect><![CDATA[Select a card from hand<br />Next card received will be that card (cannot target self)]]></effect>
+  </card>
+  <card id="401">
+    <name>Invocation</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[For each 5 bricks:<br />Tower: +1<br />Wall: +1<br />For each 5 gems<br />Enemy stock: -1]]></effect>
+  </card>
+  <card id="402">
+    <name>Abyssal scavenger</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Returns 1/3 of total cost of opponent's last card (max 4)]]></effect>
+  </card>
+  <card id="403">
+    <name>Dark horde</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>18</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Discards your hand and receive 2 Goblins, 2 Elite orcs, Goblin saboteur, Ogre, Troll and Orc regiment<br />Dungeon: +2]]></effect>
+  </card>
+  <card id="404">
+    <name>Thor</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>12</gems>
+      <recruits>21</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Barbarian. Mage. Swift.</keywords>
+    <effect><![CDATA[Attack: 20<br />Enemy tower: -15<br />Next card received will be Chain lightning]]></effect>
+  </card>
+  <card id="405">
+    <name>Mountain sentry</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>9</bricks>
+      <gems>9</gems>
+      <recruits>9</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance. Durable. Skirmisher.</keywords>
+    <effect><![CDATA[Wall: +5N<br />Recruits: +3N<br />N = #<b>Alliance</b> cards in hand]]></effect>
+  </card>
+  <card id="406">
+    <name>War elephant</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>39</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast. Skirmisher. Soldier.</keywords>
+    <effect><![CDATA[If there is a <b>Beast</b> and a <b>Soldier</b> card in hand (not counting this one)<br />Enemy wall: = 0<br />Always:<br />Attack: 35]]></effect>
+  </card>
+  <card id="407">
+    <name>Dwarven fortress</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>32</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance.</keywords>
+    <effect><![CDATA[Tower: = 40<br />If #<b>Alliance</b> cards in hand > 4<br />Wall: = 150<br />else<br />Wall: +50]]></effect>
+  </card>
+  <card id="408">
+    <name>Bounty hunter</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>14</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Barbarian.</keywords>
+    <effect><![CDATA[Attack: 13<br />Discards a <b>Legend</b> card from enemy hand to cause Enemy magic: -1]]></effect>
+  </card>
+  <card id="409">
+    <name>Dragon slayer</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>15</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Soldier.</keywords>
+    <effect><![CDATA[Attack: 14<br />Discards a rare <b>Dragon</b> card from enemy hand to add a Dragon egg into your hand]]></effect>
+  </card>
+  <card id="410">
+    <name>Shadow fairy</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>1</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Holy.</keywords>
+    <effect><![CDATA[If there is a no <b>Holy</b> card in enemy hand<br />Stock: +1<br />Enemy stock: -1<br />else<br />Enemy tower: -1]]></effect>
+  </card>
+  <card id="411">
+    <name>Wolf spirit</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>4</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast. Illusion.</keywords>
+    <effect><![CDATA[Attack: 5<br />If last card played was a <b>Beast</b> card<br />Recruits: +3]]></effect>
+  </card>
+  <card id="412">
+    <name>Hungry dead</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>8</gems>
+      <recruits>8</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Brigand. Undead. Durable. Enduring (12).</keywords>
+    <effect><![CDATA[If New<br />Enemy wall: -5<br />else<br />Enemy stock: -4]]></effect>
+  </card>
+  <card id="413">
+    <name>Colonialism</name>
+    <class>Common</class>
+    <cost>
+      <bricks>3</bricks>
+      <gems>0</gems>
+      <recruits>2</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If Recruits < 8<br /> Recruits X2<br />else<br />Recruits: +5]]></effect>
+  </card>
+  <card id="414">
+    <name>Mediator</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords/>
+    <effect><![CDATA[Discard one card from enemy hand and pay its cost<br />If not enough stock<br />Matching facility: -1]]></effect>
+  </card>
+  <card id="415">
+    <name>Goblin intruder</name>
+    <class>Common</class>
+    <cost>
+      <bricks>1</bricks>
+      <gems>1</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Attack: 4<br />Replace a random non-rare <b>Alliance</b> card from enemy hand with Goblin intruder]]></effect>
+  </card>
+  <card id="416">
+    <name>Perfect shot</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>7</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If New<br />Enemy tower: -6<br />else<br />Attack: 6]]></effect>
+  </card>
+  <card id="417">
+    <name>New development</name>
+    <class>Common</class>
+    <cost>
+      <bricks>10</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If New<br />Tower: +10<br />Bricks: +3<br />else<br />Tower: +7]]></effect>
+  </card>
+  <card id="418">
+    <name>Power surge</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>1</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: -8<br />If New<br />Magic: +1<br />else<br />Gems: +12]]></effect>
+  </card>
+  <card id="419">
+    <name>Elementalist</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>11</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Mage.</keywords>
+    <effect><![CDATA[Both players discard up to 6 random <b>Unliving</b> cards<br />Each player loses 10 bricks and 1 quarry for each card discarded from his hand above 4]]></effect>
+  </card>
+  <card id="420">
+    <name>Shrine</name>
+    <class>Common</class>
+    <cost>
+      <bricks>2</bricks>
+      <gems>1</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If Wall is divisible by 10<br />Wall: +9<br />Gems: +4<br />else<br />Wall: +4]]></effect>
+  </card>
+  <card id="421">
+    <name>Gleaners</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Gain resources equal to opponent's highest facility (matching type only)]]></effect>
+  </card>
+  <card id="422">
+    <name>Death prophet</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Stock: -3<br />Next card received will be Plague, Catastrophe or Death prophet]]></effect>
+  </card>
+  <card id="423">
+    <name>Pirate ghostship</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>5</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Brigand.</keywords>
+    <effect><![CDATA[Next card received will be a <b>Brigand</b><br />If there is an <b>Undead</b> card in hand<br />Stock: +2<br />Enemy stock: -2]]></effect>
+  </card>
+  <card id="424">
+    <name>Corsairs</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>4</gems>
+      <recruits>13</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Brigand.</keywords>
+    <effect><![CDATA[Attack: 11<br />Steals stock equal to enemy facilities<br />Next card recieved will be a non-common <b>Brigand</b>]]></effect>
+  </card>
+  <card id="425">
+    <name>Ice queen</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>12</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Discards all <b>Mage</b> cards<br />Each player gains 5 gems, 5 tower and 10 wall for each card discarded from his hand ]]></effect>
+  </card>
+  <card id="426">
+    <name>Arthoria the Saber</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>22</gems>
+      <recruits>22</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Swift. Durable. Banish. Enduring (25).</keywords>
+    <effect><![CDATA[Attack: 15]]></effect>
+  </card>
+  <card id="427">
+    <name>Darkforge</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>18</bricks>
+      <gems>9</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance.</keywords>
+    <effect><![CDATA[Recruits production X10]]></effect>
+  </card>
+  <card id="428">
+    <name>Spectral dragon</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>40</gems>
+      <recruits>50</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Dragon. Undead.</keywords>
+    <effect><![CDATA[Attack: 150<br />Gems: +20]]></effect>
+  </card>
+  <card id="429">
+    <name>Valley of thousand rivers</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>6</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Player with most <b>Alliance</b>, <b>Legend</b> and <b>Mage</b> cards gets 1 lowest facility]]></effect>
+  </card>
+  <card id="430">
+    <name>Messenger</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Next card received will be an uncommon card not from player's deck]]></effect>
+  </card>
+  <card id="431">
+    <name>Divine intervention</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>10</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Holy.</keywords>
+    <effect><![CDATA[Player with most <b>Holy</b> cards in hand gets<br />Tower: +10<br />Wall: +20]]></effect>
+  </card>
+  <card id="432">
+    <name>Fair trade</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Player with lowest stock gains 20 stock<br />His opponent gains +1 facilities]]></effect>
+  </card>
+  <card id="433">
+    <name>Moon priestess</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>1</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Both players discard highest and lowest cost card]]></effect>
+  </card>
+  <card id="434">
+    <name>Outnumbered and outmatched</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[If Recruits - Enemy recruits > 52<br />Recruits: = Enemy recruits<br />Enemy tower: = 1<br />Enemy wall: = 0]]></effect>
+  </card>
+  <card id="435">
+    <name>Alastor flame of heavens</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>20</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Burning. Holy. Banish.</keywords>
+    <effect><![CDATA[Gems: +50<br />Magic: +1]]></effect>
+  </card>
+  <card id="436">
+    <name>Watchtower</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>18</bricks>
+      <gems>0</gems>
+      <recruits>13</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +16<br />If there is a <b>Soldier</b> card in hand<br />Enemy tower: -16<br />else<br />Enemy tower: -10]]></effect>
+  </card>
+  <card id="437">
+    <name>Battlements</name>
+    <class>Common</class>
+    <cost>
+      <bricks>7</bricks>
+      <gems>0</gems>
+      <recruits>2</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +7<br />If there is a <b>Soldier</b> card in hand<br />Enemy tower: -4]]></effect>
+  </card>
+  <card id="438">
+    <name>Phoenix feather</name>
+    <class>Common</class>
+    <cost>
+      <bricks>5</bricks>
+      <gems>5</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Burning.</keywords>
+    <effect><![CDATA[If #<b>Burning</b> cards in hand = 2<br />Next card received will be Phoenix<br />else<br />Gems: +14]]></effect>
+  </card>
+  <card id="439">
+    <name>Revenge of the fallen</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>7</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Player with fewest <b>Undead</b> cards in hand loses 1 highest facility]]></effect>
+  </card>
+</cards>
