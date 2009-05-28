@@ -234,11 +234,11 @@
 	<div class="scroll">
 	<table cellpadding="0" cellspacing="0">
 		<xsl:choose>
-			<xsl:when test="count($param/CardList/*) &gt; 0">
+			<xsl:when test="$param/ListCount &gt; 0">
 				<tr valign="top">
 					<xsl:for-each select="$param/CardList/*">
 						<td>
-							<xsl:copy-of select="am:cardstring(current())" disable-output-escaping="yes" />
+							<xsl:value-of select="CardString" disable-output-escaping="yes" />
 						</td>
 					</xsl:for-each>
 				</tr>
@@ -246,7 +246,7 @@
 				<tr>
 					<xsl:for-each select="$param/CardList/*">
 						<!-- if the deck's $classfilter section isn't full yet, display the button that adds the card -->
-						<td><input type="submit" name="add_card[{id}]" value="Take" /></td>
+						<td><input type="submit" name="add_card[{CardID}]" value="Take" /></td>
 					</xsl:for-each>
 				</tr>
 				</xsl:if>
