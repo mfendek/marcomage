@@ -10,7 +10,6 @@
 
 <xsl:template match="section[. = 'Game']">
 	<xsl:variable name="param" select="$params/game" />
-	<xsl:variable name="colors" select="document('colors.xml')/am:colors"/>
 
 	<!-- remember the current location across pages -->
 	<div><input type="hidden" name="CurrentGame" value="{$param/CurrentGame}"/></div>
@@ -116,11 +115,11 @@
 								It is your turn
 							</xsl:when>
 							<xsl:when test="$param/opp_isOnline = 'yes'">
-								<xsl:attribute name="style">color: <xsl:value-of select="$colors/am:color[am:name='HotPink']/am:code"/></xsl:attribute>
+								<xsl:attribute name="style">color: <xsl:value-of select="am:color('HotPink')"/></xsl:attribute>
 								It is <span style="color: white;"><xsl:value-of select="$param/OpponentName"/></span>'s turn
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:attribute name="style">color: <xsl:value-of select="$colors/am:color[am:name='HotPink']/am:code"/></xsl:attribute>
+								<xsl:attribute name="style">color: <xsl:value-of select="am:color('HotPink')"/></xsl:attribute>
 								It is <xsl:value-of select="$param/OpponentName"/>'s turn
 							</xsl:otherwise>
 						</xsl:choose>
@@ -736,10 +735,10 @@
 								<span>
 									<xsl:choose>
 										<xsl:when test="Name = $param/PlayerName">
-											<xsl:attribute name="style">color: <xsl:value-of select="$colors/am:color[am:name='LightBlue']/am:code"/></xsl:attribute>
+											<xsl:attribute name="style">color: <xsl:value-of select="am:color('LightBlue')"/></xsl:attribute>
 										</xsl:when>
 										<xsl:when test="Name = $param/OpponentName">
-											<xsl:attribute name="style">color: <xsl:value-of select="$colors/am:color[am:name='LightGreen']/am:code"/></xsl:attribute>
+											<xsl:attribute name="style">color: <xsl:value-of select="am:color('LightGreen')"/></xsl:attribute>
 										</xsl:when>
 										<xsl:otherwise>
 											<xsl:attribute name="style">color: red</xsl:attribute>

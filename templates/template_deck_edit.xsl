@@ -10,7 +10,6 @@
 
 <xsl:template match="section[. = 'Deck_edit']">
 	<xsl:variable name="param" select="$params/deck_edit" />
-	<xsl:variable name="colors" select="document('colors.xml')/am:colors"/>		
 
 	<!-- remember the current location across pages -->
 	<div>
@@ -22,15 +21,15 @@
 	<div id="cost_per_turn">
 		Avg cost / turn:
 		<b>
-			<xsl:attribute name="style">color: <xsl:value-of select="$colors/am:color[am:name='RosyBrown']/am:code"/></xsl:attribute>
+			<xsl:attribute name="style">color: <xsl:value-of select="am:color('RosyBrown')"/></xsl:attribute>
 			<xsl:value-of select="$param/Res/Bricks"/>
 		</b>
 		<b>
-			<xsl:attribute name="style">color: <xsl:value-of select="$colors/am:color[am:name='DeepSkyBlue']/am:code"/></xsl:attribute>
+			<xsl:attribute name="style">color: <xsl:value-of select="am:color('DeepSkyBlue')"/></xsl:attribute>
 			<xsl:value-of select="$param/Res/Gems"/>
 		</b>
 		<b>
-			<xsl:attribute name="style">color: <xsl:value-of select="$colors/am:color[am:name='DarkSeaGreen']/am:code"/></xsl:attribute>
+			<xsl:attribute name="style">color: <xsl:value-of select="am:color('DarkSeaGreen')"/></xsl:attribute>
 			<xsl:value-of select="$param/Res/Recruits"/>
 		</b>
 	</div>
@@ -271,7 +270,7 @@
 			<th>
 				<p>
 				<xsl:variable name="color" select="@text" />
-				<xsl:attribute name="style">color: <xsl:value-of select="$colors/am:color[am:name = $color]/am:code"/></xsl:attribute>
+				<xsl:attribute name="style">color: <xsl:value-of select="am:color($color)"/></xsl:attribute>
 				<xsl:value-of select="@name"/>
 				</p>
 			</th>

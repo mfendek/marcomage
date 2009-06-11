@@ -10,7 +10,6 @@
 
 <xsl:template match="section[. = 'Profile']">
 	<xsl:variable name="param" select="$params/profile" />
-	<xsl:variable name="colors" select="document('colors.xml')/am:colors" />
 	<xsl:variable name="opponent" select="$param/PlayerName" />
 	<xsl:variable name="activedecks" select="count($param/decks)" />
 

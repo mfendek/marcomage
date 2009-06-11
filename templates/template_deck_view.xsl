@@ -10,7 +10,6 @@
 
 <xsl:template match="section[. = 'Deck_view']">
 	<xsl:variable name="param" select="$params/deck_view" />
-	<xsl:variable name="colors" select="document('colors.xml')/am:colors"/>		
 
 	<!-- remember the current location across pages -->
 	<div>
@@ -34,7 +33,7 @@
 			<th>
 				<p>
 				<xsl:variable name="color" select="@text" />
-				<xsl:attribute name="style">color: <xsl:value-of select="$colors/am:color[am:name = $color]/am:code"/></xsl:attribute>
+				<xsl:attribute name="style">color: <xsl:value-of select="am:color($color)"/></xsl:attribute>
 				<xsl:value-of select="@name"/>
 				</p>
 			</th>
