@@ -50,7 +50,7 @@
 				</xsl:if>
 
 				<!-- display card -->
-				<xsl:value-of select="CardString" disable-output-escaping="yes" />
+				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
 				
 				<!-- play button and card modes -->
 				<xsl:if test="Playable = 'yes'">
@@ -344,17 +344,13 @@
 					<div class="history" style="width: 99px;">
 						<table cellpadding="0" cellspacing="0">
 							<tr>
-								<xsl:if test="count($param/MyDisCards0/*) &gt; 0">
-									<xsl:for-each select="$param/MyDisCards0/*">
-										<td align="center"><xsl:value-of select="." disable-output-escaping="yes" /></td>
-									</xsl:for-each>
-								</xsl:if>
+								<xsl:for-each select="$param/MyDisCards0/*">
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></td>
+								</xsl:for-each>
 								<td style="border-right: thin solid yellow"></td>
-								<xsl:if test="count($param/MyDisCards1/*) &gt; 0">
-									<xsl:for-each select="$param/MyDisCards1/*">
-										<td align="center"><xsl:value-of select="." disable-output-escaping="yes" /></td>
-									</xsl:for-each>
-								</xsl:if>
+								<xsl:for-each select="$param/MyDisCards1/*">
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></td>
+								</xsl:for-each>
 							</tr>
 						</table>
 					</div>
@@ -387,7 +383,7 @@
 											</xsl:otherwise>
 										</xsl:choose>
 									</p>
-									<xsl:value-of select="CardString" disable-output-escaping="yes" />
+									<xsl:copy-of select="am:cardstring(CardData, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
 								</td>
 							</xsl:for-each>
 						</xsl:if>
@@ -421,7 +417,7 @@
 											</xsl:otherwise>
 										</xsl:choose>
 									</p>
-									<xsl:value-of select="CardString" disable-output-escaping="yes" />
+									<xsl:copy-of select="am:cardstring(CardData, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
 								</td>
 							</xsl:for-each>
 						</xsl:if>
@@ -442,17 +438,13 @@
 					<div class="history" style="width: 99px;">
 						<table cellpadding="0" cellspacing="0">
 							<tr>
-								<xsl:if test="count($param/HisDisCards1/*) &gt; 0">
-									<xsl:for-each select="$param/HisDisCards1/*">
-										<td align="center"><xsl:value-of select="." disable-output-escaping="yes" /></td>
-									</xsl:for-each>
-								</xsl:if>
+								<xsl:for-each select="$param/HisDisCards1/*">
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></td>
+								</xsl:for-each>
 								<td style="border-right: thin solid yellow"></td>
-								<xsl:if test="count($param/HisDisCards0/*) &gt; 0">
-									<xsl:for-each select="$param/HisDisCards0/*">
-										<td align="center"><xsl:value-of select="." disable-output-escaping="yes" /></td>
-									</xsl:for-each>
-								</xsl:if>
+								<xsl:for-each select="$param/HisDisCards0/*">
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></td>
+								</xsl:for-each>
 							</tr>
 						</table>
 					</div>
@@ -710,7 +702,7 @@
 				</xsl:if>
 
 				<!-- display card -->
-				<xsl:value-of select="CardString" disable-output-escaping="yes" />
+				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
 			</td>
 		</xsl:for-each>
 	</tr>

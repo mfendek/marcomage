@@ -2,9 +2,7 @@
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:exsl="http://exslt.org/common"
-                extension-element-prefixes="exsl">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
@@ -22,33 +20,26 @@
 
 	<table class="deck" cellpadding="0" cellspacing="0" >
 
-		<xsl:variable name="rows">
-			<adv name="Common"   text="Lime"    />
-			<adv name="Uncommon" text="DarkRed" />
-			<adv name="Rare"     text="Yellow"  />
-		</xsl:variable>
-
 		<tr>
-		<xsl:for-each select="exsl:node-set($rows)/*">
-			<th>
-				<p>
-				<xsl:variable name="color" select="@text" />
-				<xsl:attribute name="style">color: <xsl:value-of select="am:color($color)"/></xsl:attribute>
-				<xsl:value-of select="@name"/>
-				</p>
-			</th>
-		</xsl:for-each>
+			<th><p style="color: {am:color('Lime')}">Common</p></th>
+			<th><p style="color: {am:color('DarkRed')}">Uncommon</p></th>
+			<th><p style="color: {am:color('Yellow')}">Rare</p></th>
 		</tr>
 
 		<tr valign="top">
-		<xsl:for-each select="$param/DeckCards/*">
+		<xsl:for-each select="$param/DeckCards/*"> <!-- Common, Uncommon, Rare sections -->
 			<td>
 				<table class="centered" cellpadding="0" cellspacing="0">
-				<xsl:for-each select="./*">
+				<xsl:variable name="cards" select="."/>
+				<xsl:for-each select="$cards/*[position() &lt;= 5]"> <!-- row counting hack -->
 				<tr>
-					<xsl:for-each select="./*">
+					<xsl:variable name="i" select="position()"/>
+					<xsl:for-each select="$cards/*[position() &gt;= $i*3-2 and position() &lt;= $i*3]">
 						<td>
-							<xsl:value-of select="CardString" disable-output-escaping="yes" />
+							<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
+							<xsl:if test="id != 0">
+								<input type="submit" name="return_card[{id}]" value="Return" />
+							</xsl:if>
 						</td>
 					</xsl:for-each>
 				</tr>

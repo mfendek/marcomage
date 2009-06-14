@@ -4,6 +4,7 @@
                 xmlns:am="http://arcomage.netvor.sk"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:date="http://exslt.org/dates-and-times"
+                xmlns:exsl="http://exslt.org/common"
                 xmlns:func="http://exslt.org/functions"
                 xmlns:php="http://php.net/xsl"
                 xmlns:str="http://exslt.org/strings"
@@ -70,6 +71,103 @@
 <func:function name="am:color">
 	<xsl:param name="color" as="xs:string" />
 	<func:result select="document('colors.xml')/am:colors/am:color[am:name=$color]/am:code" />
+</func:function>
+
+
+<func:function name="am:cardstring">
+	<xsl:param name="card" />
+	<xsl:param name="c_img" select="'yes'" />
+	<xsl:param name="c_keywords" select="'yes'" />
+	<xsl:param name="c_text" select="'yes'" />
+	<xsl:param name="c_oldlook" select="'no'" />
+
+	<xsl:variable name="cardstring">
+
+		<xsl:variable name="class">
+			<xsl:choose>
+				<xsl:when test="$card/class = 'Common'"> common_class</xsl:when>
+				<xsl:when test="$card/class = 'Uncommon'"> uncommon_class</xsl:when>
+				<xsl:when test="$card/class = 'Rare'"> rare_class</xsl:when>
+				<xsl:otherwise> no_class</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="type">
+			<xsl:choose>
+				<xsl:when test="$card/bricks = 0 and $card/gems = 0 and $card/recruits = 0">
+					<xsl:text> zero_cost</xsl:text>
+				</xsl:when>
+				<xsl:when test="$card/bricks &gt; 0 and $card/gems = 0 and $card/recruits = 0">
+					<xsl:text> bricks_cost</xsl:text>
+				</xsl:when>
+				<xsl:when test="$card/bricks = 0 and $card/gems &gt; 0 and $card/recruits = 0">
+					<xsl:text> gem_cost</xsl:text>
+				</xsl:when>
+				<xsl:when test="$card/bricks = 0 and $card/gems = 0 and $card/recruits &gt; 0">
+					<xsl:text> rec_cost</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text> mixed_cost</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="bgimage">
+			<xsl:if test="$c_oldlook = 'no'"> with_bgimage</xsl:if>
+		</xsl:variable>
+		<xsl:variable name="border">
+			<xsl:if test="$c_oldlook = 'no'"> with_3dborder</xsl:if>
+		</xsl:variable>
+
+		<div class="karta{$class}{$type}{$bgimage}{$border}">
+
+			<!-- display the cost (spheres with numbers in the center) -->
+			<xsl:choose>
+				<xsl:when test="$card/bricks &gt; 0 and $card/gems = $card/bricks and $card/recruits = $card/bricks">
+					<div class="all"><xsl:value-of select="$card/bricks"/></div>
+				</xsl:when>
+				<xsl:when test="$card/bricks = 0 and $card/gems = 0 and $card/recruits = 0">
+					<div class="null">0</div>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:if test="$card/recruits &gt; 0">
+						<div class="rek"><xsl:value-of select="$card/recruits"/></div>
+					</xsl:if>
+					<xsl:if test="$card/gems &gt; 0">
+						<div class="gemy"><xsl:value-of select="$card/gems"/></div>
+					</xsl:if>
+					<xsl:if test="$card/bricks &gt; 0">
+						<div class="tehla"><xsl:value-of select="$card/bricks"/></div>
+					</xsl:if>
+				</xsl:otherwise>
+			</xsl:choose>
+
+			<!-- name -->
+			<h5><xsl:value-of select="$card/name"/></h5>
+
+			<!-- card's image and its border (colored via CSS according to class) -->
+			<xsl:if test="$c_img = 'yes'">
+				<img src="img/cards/g{$card/id}.jpg" width="80px" height="60px" alt="" />
+			</xsl:if>
+
+			<!-- keywords -->
+			<xsl:if test="$c_keywords = 'yes'">
+				<p><b><xsl:value-of select="$card/keywords"/></b></p>
+			</xsl:if>
+
+			<!-- card effect -->
+			<xsl:if test="$c_text = 'yes'">
+				<!-- ad-hoc html entity corrections -->
+				<xsl:variable name="replace">
+					<from> &lt; </from><to> &amp;lt; </to>
+					<from> &gt; </from><to> &amp;gt; </to>
+					<from> &lt;= </from><to> &amp;lt;= </to>
+					<from> &gt;= </from><to> &amp;gt;= </to>
+				</xsl:variable>
+				<p><xsl:value-of select="str:replace($card/effect, exsl:node-set($replace)/*[local-name()='from'], exsl:node-set($replace)/*[local-name()='to'])" disable-output-escaping="yes"/></p>
+			</xsl:if>
+
+		</div>
+	</xsl:variable>
+	<func:result select="exsl:node-set($cardstring)"/>
 </func:function>
 
 

@@ -230,14 +230,16 @@
 
 	<hr />
 
+	<!-- cards in card pool -->
 	<div class="scroll">
 	<table cellpadding="0" cellspacing="0">
 		<xsl:choose>
-			<xsl:when test="$param/ListCount &gt; 0">
+			<xsl:when test="count($param/CardList/*) &gt; 0">
 				<tr valign="top">
 					<xsl:for-each select="$param/CardList/*">
+						<xsl:sort select="name" order="ascending"/>
 						<td>
-							<xsl:value-of select="CardString" disable-output-escaping="yes" />
+							<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
 						</td>
 					</xsl:for-each>
 				</tr>
@@ -245,7 +247,7 @@
 				<tr>
 					<xsl:for-each select="$param/CardList/*">
 						<!-- if the deck's $classfilter section isn't full yet, display the button that adds the card -->
-						<td><input type="submit" name="add_card[{CardID}]" value="Take" /></td>
+						<td><input type="submit" name="add_card[{id}]" value="Take" /></td>
 					</xsl:for-each>
 				</tr>
 				</xsl:if>
@@ -257,37 +259,28 @@
 	</table>
 	</div>
 
+	<!-- cards in deck -->
 	<table class="deck" cellpadding="0" cellspacing="0" >
 
-		<xsl:variable name="rows">
-			<adv name="Common"   text="Lime"    />
-			<adv name="Uncommon" text="DarkRed" />
-			<adv name="Rare"     text="Yellow"  />
-		</xsl:variable>
-
 		<tr>
-		<xsl:for-each select="exsl:node-set($rows)/*">
-			<th>
-				<p>
-				<xsl:variable name="color" select="@text" />
-				<xsl:attribute name="style">color: <xsl:value-of select="am:color($color)"/></xsl:attribute>
-				<xsl:value-of select="@name"/>
-				</p>
-			</th>
-		</xsl:for-each>
+			<th><p style="color: {am:color('Lime')}">Common</p></th>
+			<th><p style="color: {am:color('DarkRed')}">Uncommon</p></th>
+			<th><p style="color: {am:color('Yellow')}">Rare</p></th>
 		</tr>
 
 		<tr valign="top">
-		<xsl:for-each select="$param/DeckCards/*">
+		<xsl:for-each select="$param/DeckCards/*"> <!-- Common, Uncommon, Rare sections -->
 			<td>
 				<table class="centered" cellpadding="0" cellspacing="0">
-				<xsl:for-each select="./*">
+				<xsl:variable name="cards" select="."/>
+				<xsl:for-each select="$cards/*[position() &lt;= 5]"> <!-- row counting hack -->
 				<tr>
-					<xsl:for-each select="./*">
+					<xsl:variable name="i" select="position()"/>
+					<xsl:for-each select="$cards/*[position() &gt;= $i*3-2 and position() &lt;= $i*3]">
 						<td>
-							<xsl:value-of select="CardString" disable-output-escaping="yes" />
-							<xsl:if test="CardID != 0">
-								<input type="submit" name="return_card[{CardID}]" value="Return" />
+							<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
+							<xsl:if test="id != 0">
+								<input type="submit" name="return_card[{id}]" value="Return" />
 							</xsl:if>
 						</td>
 					</xsl:for-each>

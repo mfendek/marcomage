@@ -29,7 +29,7 @@
 			return new CCard($cardid, $this);
 		}
 		
-		/// Filters cards according to the provided filtering instructions.
+		/// Constructs a filtering query based on the specified filters.
 		/// Available filters are:
 		///   'class'    => { None | Common | Uncommon | Rare }, queries `Class`
 		///   'keyword'  => { Any keyword | No keywords | <a specific keyword> }, queries `Keywords`
@@ -37,11 +37,9 @@
 		///   'advanced' => { <a specific substring> }, queries `Effect`
 		///   'support'  => { Any keyword | No keywords | <a specific keyword> }, queries `Effect`
 		/// @param filters an array of chosen filters and their parameters
-		/// @return an array of matching card ids
-		public function GetList(array $filters)
+		/// @return a boolean xpath expression suitable for use in a card retrieval query
+		private function makeFilterQuery(array $filters)
 		{
-			$db = $this->db;
-			
 			$query = "@id > 0"; // sentinel
 
 			if( isset($filters['class']) )
@@ -93,8 +91,20 @@
 				}
 			}
 			
-			//FIXME: cannot sort by name... do the sorting elsewhere (." ORDER BY `Name` ASC")
-			$result = $db->xpath("/am:cards/am:card[$query]/@id");
+			return $query;
+		}
+
+		/**
+		 * Filters cards according to the provided filtering instructions.
+		 * @see CCards::makeFilterQuery()
+		 * @param array $filters an array of chosen filters and their parameters
+		 * @return array an array of ids for cards that match the filters
+		*/
+		public function GetList(array $filters)
+		{
+			$db = $this->db;
+
+			$result = $db->xpath("/am:cards/am:card[".$this->makeFilterQuery($filters)."]/@id");
 			
 			if( $result === false ) return false;
 			
@@ -103,6 +113,49 @@
 				$cards[] = (int)$card;
 			
 			return $cards;
+		}
+
+		/**
+		 * Retrieves data for the specified card ids.
+		 * Can be used in combination with CCards::GetList().
+		 * The same card id may be specified multiple times.
+		 * The result will use the same keys and key order as the input.
+		 * @param array $ids an array of card ids to retrieve
+		 * @return array an array of the requested cards' data
+		*/
+		public function GetData(array $ids)
+		{
+			$db = $this->db;
+
+			// since xpath is too slow for this task, just grab everything and process it in php
+			$result = $db->xpath("/am:cards/am:card");
+			if( $result === false ) return false;
+			
+			$cards = array();
+			foreach( $result as $card )
+			{
+				$data['id']       = (int)$card->attributes()->id;
+				$data['name']     = (string)$card->name;
+				$data['class']    = (string)$card->class;
+				$data['bricks']   = (int)$card->cost->bricks;
+				$data['gems']     = (int)$card->cost->gems;
+				$data['recruits'] = (int)$card->cost->recruits;
+				$data['modes']    = (int)$card->modes;
+				$data['keywords'] = (string)$card->keywords;
+				$data['effect']   = (string)$card->effect;
+				$cards[$data['id']] = $data;
+			}
+
+			$out = array();
+			foreach( $ids as $index => $id )
+			{
+				if( !isset($cards[$id]) )
+					return NULL; // nonexistent card
+				
+				$out[$index] = $cards[$id];
+			}
+
+			return $out;
 		}
 		
 		// returns all distinct keywords
@@ -211,91 +264,6 @@
 		public function GetKeywords()
 		{
 			return $this->CardData->Keywords;
-		}
-		
-		public function CardString($c_text, $c_img, $c_keyword, $c_oldlook)
-		{
-			$all_colors = array("RosyBrown"=>"#bc8f8f", "DeepSkyBlue"=>"#00bfff", "DarkSeaGreen"=>"#8fbc8f", "DarkRed"=>"#8b0000", "HotPink"=>"#ff69b4", "LightBlue"=>"#add8e6", "LightGreen"=>"#90ee90", "Gainsboro"=>"#dcdcdc", "DeepSkyBlue"=>"#00bfff", "DarkGoldenRod"=>"#b8860b");
-			
-			$cs = '';
-		
-			$card = $this->CardData;
-						
-			// display the proper card background color and background image, with respect to its cost and current setting
-			if     (($card->Bricks == 0) and ($card->Gems == 0) and ($card->Recruits == 0))
-			{
-				$bgcolor = $all_colors["Gainsboro"];// no cost -> Gainsboro
-				$bgimage = "zero_cost";
-			}
-			elseif (($card->Bricks >  0) and ($card->Gems == 0) and ($card->Recruits == 0))
-			{
-				$bgcolor = $all_colors["RosyBrown"];// only bricks -> RosyBrown
-				$bgimage = "bricks_cost";
-			}
-			elseif (($card->Bricks == 0) and ($card->Gems >  0) and ($card->Recruits == 0))
-			{
-				$bgcolor = $all_colors["DeepSkyBlue"];// only gems -> DeepSkyBlue
-				$bgimage = "gem_cost";
-			}
-			elseif (($card->Bricks == 0) and ($card->Gems == 0) and ($card->Recruits >  0))
-			{
-				$bgcolor = $all_colors["DarkSeaGreen"];// only recruits -> DarkSeaGreen
-				$bgimage = "rec_cost";
-			}
-			else
-			{
-				$bgcolor = $all_colors["DarkGoldenRod"];// mixed -> DarkGoldenRod
-				$bgimage = "mixed_cost";
-			}
-			
-			if ($c_oldlook == "no") { $bgimage = " ".$bgimage; $bgstyle = "; border-style: outset;"; }
-			else { $bgimage = ""; $bgstyle = "; border-style: ridge;"; }
-			
-			$cs.= '<div class="karta'.$bgimage.'" style="background-color: '.$bgcolor.$bgstyle.'" >'."\n";
-			
-			// display the cost (spheres with numbers in the center)
-			if (($card->Bricks > 0) and ($card->Gems == $card->Bricks) and ($card->Recruits == $card->Bricks))
-			{
-				$cs.= '<div class="all">'.$card->Bricks.'</div>'."\n";
-			}
-			elseif (($card->Bricks == 0) and ($card->Gems == 0) and ($card->Recruits == 0))
-			{
-				$cs.= '<div class="null">0</div>'."\n";
-			}
-			else
-			{
-				if ($card->Recruits > 0) $cs.= '<div class="rek">'.$card->Recruits.'</div>'."\n";
-				if ($card->Gems > 0) $cs.= '<div class="gemy">'.$card->Gems.'</div>'."\n";
-				if ($card->Bricks > 0) $cs.= '<div class="tehla">'.$card->Bricks.'</div>'."\n";
-			}
-			
-			// display the name
-			$cs.= '<h5>'.$card->Name.'</h5>'."\n";
-			
-			if ($c_img == "yes")
-			{
-				// display the card's image and its border, with respect to the card's class
-				if ($card->Class == 'Common') $border = 'Lime'; elseif ($card->Class == 'Uncommon') $border = $all_colors["DarkRed"]; elseif ($card->Class == 'Rare') $border = 'Yellow'; else $border = 'White';
-				$cs.= '<img src="img/cards/g'.$this->CardID.'.jpg" width="80px" height="60px" style="border-color: '.$border.'" alt="" />'."\n";
-			}
-			
-			if ($c_keyword == "yes")
-			{		
-				//display keywords
-				$cs.= '<p><b>'.$card->Keywords.'</b></p>'."\n";
-			}
-			
-			if ($c_text == "yes")
-			{
-				// display the card's text (with '<' '>' properly escaped)
-				//FIXME: this is not such a good idea
-				$effect = str_replace(array(' < ', ' > '), array(' &lt; ', ' &gt; '), $card->Effect);
-				$cs.= '<p>'.$effect.'</p>'."\n";
-			}
-			
-			$cs.= '</div>'."\n";
-			
-			return $cs;
 		}
 	}
 	

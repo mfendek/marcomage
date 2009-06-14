@@ -1997,10 +1997,10 @@ case 'Deck_edit':
 	$params['deck_edit']['reset'] = ( (isset($_POST["reset_deck_prepare"] )) ? 'yes' : 'no');
 
 	// load card display settings
-	$c_text = $player->GetSetting("Cardtext");
-	$c_img = $player->GetSetting("Images");
-	$c_keywords = $player->GetSetting("Keywords");
-	$c_oldlook = $player->GetSetting("OldCardLook");
+	$params['deck_edit']['c_text'] = $player->GetSetting("Cardtext");
+	$params['deck_edit']['c_img'] = $player->GetSetting("Images");
+	$params['deck_edit']['c_keywords'] = $player->GetSetting("Keywords");
+	$params['deck_edit']['c_oldlook'] = $player->GetSetting("OldCardLook");
 
 	// calculate average cost per turn
 
@@ -2039,8 +2039,9 @@ case 'Deck_edit':
 	}
 
 	foreach ($avg as $type => $value) $res[$type] = round($avg[$type]['Common'] + $avg[$type]['Uncommon'] + $avg[$type]['Rare'],2);
-
 	$params['deck_edit']['Res'] = $res;
+
+	$params['deck_edit']['Take'] = ( $deck->DeckData->Count($classfilter) < 15 ) ? 'yes' : 'no';
 
 	$filter = array();
 	if( $classfilter != 'none' ) $filter['class'] = $classfilter;
@@ -2048,39 +2049,11 @@ case 'Deck_edit':
 	if( $costfilter != 'none' ) $filter['cost'] = $costfilter;
 	if( $advancedfilter != 'none' ) $filter['advanced'] = $advancedfilter;
 	if( $supportfilter != 'none' ) $filter['support'] = $supportfilter;
-	$list = $carddb->GetList($filter);
-	
-	foreach($list as $list_index => $cardid)
-	{
-		// check if the card isn't already present in the deck
-		if (!(array_search($cardid, $deck->DeckData->$classfilter) !== false))
-		{
-			$params['deck_edit']['CardList'][$list_index]['CardID'] = $cardid;
-			$params['deck_edit']['CardList'][$list_index]['CardString'] = $carddb->GetCard($cardid)->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
-		}
-	}
-	
-	$params['deck_edit']['ListCount'] = count($list);
-
-	$params['deck_edit']['Take'] = ( $deck->DeckData->Count($classfilter) < 15 ) ? 'yes' : 'no';
+	$ids = array_diff($carddb->GetList($filter), $deck->DeckData->$classfilter); // cards not present in the deck
+	$params['deck_edit']['CardList'] = $carddb->GetData($ids);
 
 	foreach (array('Common', 'Uncommon', 'Rare') as $class)
-	{
-		$cards = array();
-		
-		foreach ($deck->DeckData->$class as $index => $cardid)
-		{
-			// index manipulation, due to the fact that we count from 1, instead of 0
-			// PHP does not have div function, so we must use floor and standard division
-			$row = floor(($index - 1) / 3);
-			$column = ($index - 1) % 3;
-			
-			$cards[$row][$column]['CardID'] = $cardid;
-			$cards[$row][$column]['CardString'] = $carddb->GetCard($cardid)->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
-		}
-		
-		$params['deck_edit']['DeckCards'][$class] = $cards;
-	}
+		$params['deck_edit']['DeckCards'][$class] = $carddb->GetData($deck->DeckData->$class);
 
 	$params['deck_edit']['Tokens'] = $deck->DeckData->Tokens;
 	$params['deck_edit']['TokenKeywords'] = $carddb->TokenKeywords();
@@ -2389,10 +2362,10 @@ case 'Game':
 	$params['game']['chat'] = (($access_rights[$player->Type()]["chat"]) ? 'yes' : 'no');
 
 	// load needed settings
-	$c_text = $player->GetSetting("Cardtext");
-	$c_img = $player->GetSetting("Images");
-	$c_keywords = $player->GetSetting("Keywords");
-	$c_oldlook = $player->GetSetting("OldCardLook");
+	$params['game']['c_text'] = $player->GetSetting("Cardtext");
+	$params['game']['c_img'] = $player->GetSetting("Images");
+	$params['game']['c_keywords'] = $player->GetSetting("Keywords");
+	$params['game']['c_oldlook'] = $player->GetSetting("OldCardLook");
 
 	$params['game']['minimize'] = $player->GetSetting("Minimize");
 	$params['game']['mycountry'] = $player->GetSetting("Country");
@@ -2410,15 +2383,16 @@ case 'Game':
 
 	// my hand
 	$myhand = $mydata->Hand;
-	foreach ($myhand as $list_index => $cardid)
+	$handdata = $carddb->GetData($myhand);
+	foreach( $handdata as $i => $card )
 	{
-		$card = $carddb->GetCard($cardid);
-
-		$params['game']['MyHand'][$list_index]['CardID'] = $cardid;
-		$params['game']['MyHand'][$list_index]['CardString'] = $card->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
-		$params['game']['MyHand'][$list_index]['Playable'] = ((($mydata->Bricks >= $card->CardData->Bricks) and ($mydata->Gems >= $card->CardData->Gems) and ($mydata->Recruits >= $card->CardData->Recruits) and ($game->State == 'in progress') and ($data->Current == $player->Name())) ? 'yes' : 'no');
-		$params['game']['MyHand'][$list_index]['Modes'] = $card->CardData->Modes;
-		$params['game']['MyHand'][$list_index]['NewCard'] = (isset($mydata->NewCards[$list_index]) ? 'yes' : 'no');
+		$entry = array();
+		$entry['CardID'] = $card['id'];
+		$entry['Data'] = $card;
+		$entry['Playable'] = ( $mydata->Bricks >= $card['bricks'] and $mydata->Gems >= $card['gems'] and $mydata->Recruits >= $card['recruits'] and $game->State == 'in progress' and $data->Current == $player->Name() ) ? 'yes' : 'no';
+		$entry['Modes'] = $card['modes'];
+		$entry['NewCard'] = ( isset($mydata->NewCards[$i]) ) ? 'yes' : 'no';
+		$params['game']['MyHand'][$i] = $entry;
 	}
 
 	$params['game']['MyBricks'] = $mydata->Bricks;
@@ -2433,28 +2407,20 @@ case 'Game':
 	$params['game']['MyWallBody'] = (270 * ($mydata->Wall/150));
 	
 	// my discarded cards
-	$mydiscards0 = array();
-	$mydiscards1 = array();
-
-	if (count($mydata->DisCards[0]) > 0)
-		foreach ($mydata->DisCards[0] as $index => $cardid)
-			$mydiscards0[$index] = $carddb->GetCard($cardid)->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
-	if (count($mydata->DisCards[1]) > 0)
-		foreach ($mydata->DisCards[1] as $index => $cardid)
-			$mydiscards1[$index] = $carddb->GetCard($cardid)->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
-
-	$params['game']['MyDisCards0'] = $mydiscards0;// cards discarded from my hand
-	$params['game']['MyDisCards1'] = $mydiscards1;// cards discarded from his hand
+	if( count($mydata->DisCards[0]) > 0 )
+		$params['game']['MyDisCards0'] = $carddb->GetData($mydata->DisCards[0]); // cards discarded from my hand
+	if( count($mydata->DisCards[1]) > 0 )
+		$params['game']['MyDisCards1'] = $carddb->GetData($mydata->DisCards[1]); // cards discarded from his hand
 
 	// my last played cards
 	$mylastcard = array();
-	for( $i = 1; $i <= count($mydata->LastCard); $i++ )
+	$tmp = $carddb->GetData($mydata->LastCard);
+	foreach( $tmp as $i => $card )
 	{
-		$mylastcard[$i]['CardString'] = $carddb->GetCard($mydata->LastCard[$i])->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
+		$mylastcard[$i]['CardData'] = $card;
 		$mylastcard[$i]['CardAction'] = $mydata->LastAction[$i];
 		$mylastcard[$i]['CardMode'] = $mydata->LastMode[$i];
 	}
-
 	$params['game']['MyLastCard'] = $mylastcard;
 
 	// my tokens
@@ -2474,12 +2440,13 @@ case 'Game':
 
 	// his hand
 	$hishand = $hisdata->Hand;
-	foreach ($hishand as $list_index => $cardid)
+	$handdata = $carddb->GetData($hishand);
+	foreach( $handdata as $i => $card )
 	{
-		$card = $carddb->GetCard($cardid);
-		
-		$params['game']['HisHand'][$list_index]['CardString'] = $card->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
-		$params['game']['HisHand'][$list_index]['NewCard'] = (isset($hisdata->NewCards[$list_index]) ? 'yes' : 'no');
+		$entry = array();
+		$entry['Data'] = $card;
+		$entry['NewCard'] = ( isset($hisdata->NewCards[$i]) ) ? 'yes' : 'no';
+		$params['game']['HisHand'][$i] = $entry;
 	}
 
 	$params['game']['HisBricks'] = $hisdata->Bricks;
@@ -2494,28 +2461,20 @@ case 'Game':
 	$params['game']['HisWallBody'] = (270 * ($hisdata->Wall/150));
 
 	// his discarded cards
-	$hisdiscards0 = array();
-	$hisdiscards1 = array();
-
-	if (count($hisdata->DisCards[0]) > 0)
-		foreach ($hisdata->DisCards[0] as $index => $cardid)
-			$hisdiscards0[$index] = $carddb->GetCard($cardid)->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
-	if (count($hisdata->DisCards[1]) > 0)
-		foreach ($hisdata->DisCards[1] as $index => $cardid)
-			$hisdiscards1[$index] = $carddb->GetCard($cardid)->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
-
-	$params['game']['HisDisCards0'] = $hisdiscards0;// cards discarded from my hand
-	$params['game']['HisDisCards1'] = $hisdiscards1;// cards discarded from his hand
+	if( count($hisdata->DisCards[0]) > 0 )
+		$params['game']['HisDisCards0'] = $carddb->GetData($hisdata->DisCards[0]); // cards discarded from my hand
+	if( count($hisdata->DisCards[1]) > 0 )
+		$params['game']['HisDisCards1'] = $carddb->GetData($hisdata->DisCards[1]); // cards discarded from his hand
 	
 	// his last played cards
 	$hislastcard = array();
-	for( $i = 1; $i <= count($hisdata->LastCard); $i++ )
+	$tmp = $carddb->GetData($hisdata->LastCard);
+	foreach( $tmp as $i => $card )
 	{
-		$hislastcard[$i]['CardString'] = $carddb->GetCard($hisdata->LastCard[$i])->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
+		$hislastcard[$i]['CardData'] = $card;
 		$hislastcard[$i]['CardAction'] = $hisdata->LastAction[$i];
 		$hislastcard[$i]['CardMode'] = $hisdata->LastMode[$i];
 	}
-
 	$params['game']['HisLastCard'] = $hislastcard;
 
 	// his tokens
@@ -2610,35 +2569,18 @@ case 'Game':
 case 'Deck_view':
 	$gameid = $_POST['CurrentGame'];
 	$game = $gamedb->GetGame($gameid);
-
-	$params['deck_view']['CurrentGame'] = $gameid;
-	$deck_data['Common'] = $game->GameData->Player[$player->Name()]->Deck->Common;
-	$deck_data['Uncommon'] = $game->GameData->Player[$player->Name()]->Deck->Uncommon;
-	$deck_data['Rare'] = $game->GameData->Player[$player->Name()]->Deck->Rare;
+	$deck = $game->GameData->Player[$player->Name()]->Deck;
 
 	//load needed settings
-	$c_text = $player->GetSetting("Cardtext");
-	$c_img = $player->GetSetting("Images");
-	$c_keywords = $player->GetSetting("Keywords");
-	$c_oldlook = $player->GetSetting("OldCardLook");
-	
+	$params['deck_view']['c_text'] = $player->GetSetting("Cardtext");
+	$params['deck_view']['c_img'] = $player->GetSetting("Images");
+	$params['deck_view']['c_keywords'] = $player->GetSetting("Keywords");
+	$params['deck_view']['c_oldlook'] = $player->GetSetting("OldCardLook");
+
+	$params['deck_view']['CurrentGame'] = $gameid;
+
 	foreach (array('Common', 'Uncommon', 'Rare') as $class)
-	{
-		$cards = array();
-		
-		foreach ($deck_data[$class] as $index => $cardid)
-		{
-			// index manipulation, due to the fact that we count from 1, instead of 0
-			// PHP does not have div function, so we must use floor and standard division
-			$row = floor(($index - 1) / 3);
-			$column = ($index - 1) % 3;
-			
-			$cards[$row][$column]['CardID'] = $cardid;
-			$cards[$row][$column]['CardString'] = $carddb->GetCard($cardid)->CardString($c_text, $c_img, $c_keywords, $c_oldlook);
-		}
-		
-		$params['deck_view']['DeckCards'][$class] = $cards;
-	}
+		$params['deck_view']['DeckCards'][$class] = $carddb->GetData($deck->$class);
 	
 	break;
 

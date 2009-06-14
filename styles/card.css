@@ -2,34 +2,29 @@
  * MArcomage CSS stylesheet - card *
  ***********************************/
 
-div.karta h5 /* card title */
-{
-	font-weight: normal;
-	font-size: x-small;
-	margin: 0.5ex;
-}
+/*
+	card layout: 
+
+	<div class="karta [?]_class [?]_cost {with_bgimage} {with_3dborder}">
+		<div class="[cost]">[value]</div> {+}
+		<h5>[name]</h5>
+		<img src="[path]" width="80px" height="60px" alt="" />
+		<p><b>[keywords]</b></p>
+		<p>[effect]</p>
+	</div>
+*/
+
 
 div.karta /* card */
 {
 	width: 86px;
 	border-color: white;
+	border-style: ridge;
 	margin: 1.5ex 0.5ex 0.7ex 0.5ex;
 	font-size: x-small;
 	text-align: left;
 	color: black;
 	min-height: 18px;
-}
-
-div.karta > div /* card cost (resources) */
-{
-	padding: 2px 0px 0px 0px;
-	font-weight: bold;
-	background-position: center center;
-	background-repeat: no-repeat;
-	height: 16px;
-	width: 16px;
-	text-align: center;
-	float: right;	
 }
 
 p + table div.karta /* add extra margin when cards are displayed in the "hand" part of the game section*/
@@ -42,67 +37,70 @@ p + table div.history div.karta /* add extra margin when cards are displayed in 
 	margin: 1.5ex 0.5ex 0.7ex 0.5ex;
 }
 
-div.karta > img /* card image */
+
+/* background color, based on cost */
+div.karta.bricks_cost { background-color: #bc8f8f; } /* RosyBrown */
+div.karta.gem_cost    { background-color: #00bfff; } /* DeepSkyBlue */
+div.karta.rec_cost    { background-color: #8fbc8f; } /* DarkSeaGreen */
+div.karta.mixed_cost  { background-color: #b8860b; } /* DarkGoldenRod */
+div.karta.zero_cost   { background-color: #dcdcdc; } /* Gainsboro */
+
+/* background image, based on cost */
+div.karta.bricks_cost.with_bgimage { background-image: url('../img/bricks_cost.jpg'); }
+div.karta.gem_cost.with_bgimage    { background-image: url('../img/gem_cost.jpg');    }
+div.karta.rec_cost.with_bgimage    { background-image: url('../img/rec_cost.jpg');    }
+div.karta.mixed_cost.with_bgimage  { background-image: url('../img/mixed_cost.jpg');  }
+div.karta.zero_cost.with_bgimage   { background-image: url('../img/zero_cost.jpg');   }
+
+/* 3d border around card */
+div.karta.with_3dborder { border-style: outset; }
+
+
+/* card title */
+div.karta > h5
 {
-	border-style: ridge;
+	font-weight: normal;
+	font-size: x-small;
+	margin: 0.5ex;
 }
 
-div.karta > p /* set distance of the card text from the card border (left and right) */
+
+/* resource cost */
+div.karta > div
+{
+	padding: 2px 0px 0px 0px;
+	font-weight: bold;
+	background-position: center center;
+	background-repeat: no-repeat;
+	height: 16px;
+	width: 16px;
+	text-align: center;
+	float: right;	
+}
+div.karta > div.tehla { background-image: url('../img/tehly.png');   }
+div.karta > div.all   { background-image: url('../img/all.png');     }
+div.karta > div.null  { background-image: url('../img/null.png');    }
+div.karta > div.gemy  { background-image: url('../img/gemy.png');    }
+div.karta > div.rek   { background-image: url('../img/reckuts.png'); }
+
+
+/* border around the card image, based on rarity */
+div.karta                > img { border-style: ridge; }
+div.karta.common_class   > img { border-color: Lime; }
+div.karta.uncommon_class > img { border-color: #8b0000; } /* DarkRed */
+div.karta.rare_class     > img { border-color: Yellow; }
+div.karta.no_class       > img { border-color: White; }
+
+
+/* set distance of the card text from the card border (left and right) */
+div.karta > p
 {
 	padding: 0ex 0.5ex 0ex 0.5ex;
 }
 
-div.karta > p + p /* set bottom distance of the card text from the card border */
+
+/* set bottom distance of the card text from the card border */
+div.karta > p + p
 {
 	padding-bottom: 0.5ex;
-}
-
-div.tehla /* resource cost icons for card cost - bricks */
-{
-	background-image: url('../img/tehly.png');
-}
-
-div.all /* resource cost icons for card cost - mixed */
-{
-	background-image: url('../img/all.png');
-}
-
-div.null /* resource cost icons for card cost - zero */
-{
-	background-image: url('../img/null.png');
-}
-
-div.gemy /* resource cost icons for card cost - gems */
-{
-	background-image: url('../img/gemy.png');
-}
-
-div.rek /* resource cost icons for card cost - recruits */
-{
-	background-image: url('../img/reckuts.png');
-}
-
-div.bricks_cost /* background image for bricks cost only cards */
-{
-	background-image: url('../img/bricks_cost.jpg');
-}
-
-div.gem_cost /* background image for gems cost only cards */
-{
-	background-image: url('../img/gem_cost.jpg');
-}
-
-div.rec_cost /* background image for recruits cost only cards */
-{
-	background-image: url('../img/rec_cost.jpg');
-}
-
-div.mixed_cost /* background image for mixed cost cards */
-{
-	background-image: url('../img/mixed_cost.jpg');
-}
-
-div.zero_cost /* background image for zero cost cards */
-{
-	background-image: url('../img/zero_cost.jpg');
 }
