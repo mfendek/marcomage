@@ -86,11 +86,11 @@
 									<xsl:choose>
 										<xsl:when test="$param/condition = @name and $param/order = 'DESC'">
 											<xsl:attribute name="name">players_ord_asc[<xsl:value-of select="@name"/>]</xsl:attribute>
-											<xsl:attribute name="value">/\</xsl:attribute>
+											<xsl:attribute name="value">\/</xsl:attribute>
 										</xsl:when>
 										<xsl:otherwise>
 											<xsl:attribute name="name">players_ord_desc[<xsl:value-of select="@name"/>]</xsl:attribute>
-											<xsl:attribute name="value">\/</xsl:attribute>
+											<xsl:attribute name="value">/\</xsl:attribute>
 										</xsl:otherwise>
 									</xsl:choose>
 								</input>
