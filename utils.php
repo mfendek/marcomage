@@ -16,11 +16,13 @@
 	///////////////////////////////
 	/// date and time manipulation
 
-	/// Returns zone-adjusted and date-formatted time.
-	/// $time is the datetime string (in a strtotime() compatible format)
-	/// $zone is the time zone string (Etc/UTC and such)
-	/// $format is the format string for date()
-	/// NOTE: If using Etc/GMT, see http://bugs.php.net/bug.php?id=34710 !
+	/**
+	 * Returns zone-adjusted and date-formatted time.
+	 * NOTE: If using Etc/GMT, see http://bugs.php.net/bug.php?id=34710 !
+	 * @param string $time the datetime string (in a strtotime() compatible format)
+	 * @param string $zone the time zone string (Etc/UTC and such)
+	 * @param string $format the format string for date()
+	*/
 	function ZoneTime($time, $zone, $format)
 	{
 		$date = new DateTime($time, new DateTimeZone('UTC'));

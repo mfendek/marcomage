@@ -29,15 +29,19 @@
 			return new CCard($cardid, $this);
 		}
 		
-		/// Constructs a filtering query based on the specified filters.
-		/// Available filters are:
-		///   'class'    => { None | Common | Uncommon | Rare }, queries `Class`
-		///   'keyword'  => { Any keyword | No keywords | <a specific keyword> }, queries `Keywords`
-		///   'cost'     => { Red | Blue | Green | Zero | Mixed }, queries `Bricks`, `Gems` and `Recruits`
-		///   'advanced' => { <a specific substring> }, queries `Effect`
-		///   'support'  => { Any keyword | No keywords | <a specific keyword> }, queries `Effect`
-		/// @param filters an array of chosen filters and their parameters
-		/// @return a boolean xpath expression suitable for use in a card retrieval query
+		/**
+		 * Constructs a filtering query based on the specified filters.
+		 * Available filters are:
+		 * <ul>
+		 * <li> 'class'    => { None | Common | Uncommon | Rare }, queries `Class` </li>
+		 * <li> 'keyword'  => { Any keyword | No keywords | <a specific keyword> }, queries `Keywords` </li>
+		 * <li> 'cost'     => { Red | Blue | Green | Zero | Mixed }, queries `Bricks`, `Gems` and `Recruits` </li>
+		 * <li> 'advanced' => { <a specific substring> }, queries `Effect` </li>
+		 * <li> 'support'  => { Any keyword | No keywords | <a specific keyword> }, queries `Effect` </li>
+		 * </ul>
+		 * @param array $filters an array of chosen filters and their parameters
+		 * @return string a boolean expression to be used in a card retrieval query
+		*/
 		private function makeFilterQuery(array $filters)
 		{
 			$query = "@id > 0"; // sentinel
