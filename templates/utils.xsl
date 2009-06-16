@@ -145,7 +145,16 @@
 
 			<!-- card's image and its border (colored via CSS according to class) -->
 			<xsl:if test="$c_img = 'yes'">
-				<img src="img/cards/g{$card/id}.jpg" width="80px" height="60px" alt="" />
+				<img src="img/concepts/{$card/picture}" width="80px" height="60px" alt="" >
+					<xsl:choose>
+						<xsl:when test="$card/picture">
+							<xsl:attribute name="src">img/concepts/<xsl:value-of select="$card/picture"/></xsl:attribute>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:attribute name="src">img/cards/g<xsl:value-of select="$card/id"/>.jpg</xsl:attribute>
+						</xsl:otherwise>
+					</xsl:choose>
+				</img>
 			</xsl:if>
 
 			<!-- keywords -->
@@ -155,14 +164,23 @@
 
 			<!-- card effect -->
 			<xsl:if test="$c_text = 'yes'">
-				<!-- ad-hoc html entity corrections -->
-				<xsl:variable name="replace">
-					<from> &lt; </from><to> &amp;lt; </to>
-					<from> &gt; </from><to> &amp;gt; </to>
-					<from> &lt;= </from><to> &amp;lt;= </to>
-					<from> &gt;= </from><to> &amp;gt;= </to>
-				</xsl:variable>
-				<p><xsl:value-of select="str:replace($card/effect, exsl:node-set($replace)/*[local-name()='from'], exsl:node-set($replace)/*[local-name()='to'])" disable-output-escaping="yes"/></p>
+				<p>
+					<xsl:choose>
+						<xsl:when test="$card/picture">
+							<xsl:value-of select="am:textencode($card/effect)" disable-output-escaping="yes"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<!-- ad-hoc html entity corrections -->
+							<xsl:variable name="replace">
+								<from> &lt; </from><to> &amp;lt; </to>
+								<from> &gt; </from><to> &amp;gt; </to>
+								<from> &lt;= </from><to> &amp;lt;= </to>
+								<from> &gt;= </from><to> &amp;gt;= </to>
+							</xsl:variable>
+							<xsl:value-of select="str:replace($card/effect, exsl:node-set($replace)/*[local-name()='from'], exsl:node-set($replace)/*[local-name()='to'])" disable-output-escaping="yes"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</p>
 			</xsl:if>
 
 		</div>

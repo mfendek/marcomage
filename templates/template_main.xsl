@@ -29,6 +29,7 @@
 	<link rel="stylesheet" href="styles/settings.css" type="text/css" title="standard style" />
 	<link rel="stylesheet" href="styles/novels.css" type="text/css" title="standard style" />
 	<link rel="stylesheet" href="styles/forum.css" type="text/css" title="standard style" />
+	<link rel="stylesheet" href="styles/concepts.css" type="text/css" title="standard style" />
 	<link rel="icon" href="img/favicon.png" type="image/png" />
 	<title>MArcomage</title>
 	</head>

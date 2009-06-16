@@ -68,6 +68,14 @@
 			<xsl:attribute name="class">menuselected</xsl:attribute>
 		</xsl:if>
 	</input>
+	<input type="submit" name="Concepts" value="Concepts" >
+		<xsl:if test="($param/current = 'Concepts') or ($param/current = 'Concepts_new') or ($param/current = 'Concepts_edit')">
+			<xsl:attribute name="class">menuselected</xsl:attribute>
+		</xsl:if>
+	</input>
+	<xsl:if test="$param/NewConcepts = 'yes'">
+		<img src="img/new_card.gif" alt="" width="17px" height="12px" />
+	</xsl:if>
 	<input type="submit" name="Novels" value="Novels" >
 		<xsl:if test="$param/current = 'Novels'">
 			<xsl:attribute name="class">menuselected</xsl:attribute>
