@@ -9,6 +9,7 @@ html
 	background-repeat: no-repeat;
 	background-color: black;
 	background-attachment: fixed;
+	font-family: times, serif;
 	
 	/* we abandoned IE support completely */
 	/*scrollbar-3dlight-color: black;
