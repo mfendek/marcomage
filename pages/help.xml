@@ -244,7 +244,7 @@ Let's take the <b>Alliance</b> keyword for example. First you need to set one to
 		<ul>
 			<li><b>Lime</b> (online) means that player was active in last 10 minutes. This kind of information can be found in other sections too, for example challenges and games (in here the border color of the buttons are colored)</li>
 			<li><b>Red</b> (offline) means that player was active in last 7 days</li>
-			<li><b>Dark red</b> (not interested) means that player was active in last 21 days</li>
+			<li><b>Dark red</b> (inactive) means that player was active in last 21 days</li>
 			<li><b>Gray</b> (dead) means that player was inactive for more than 21 days</li>
 		</ul>
 	</li>

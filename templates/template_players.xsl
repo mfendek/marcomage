@@ -122,7 +122,7 @@
 					<xsl:variable name="namecolor">
 						<xsl:choose> <!-- choose name color according to inactivity time -->
 							<xsl:when test="inactivity &gt; 60*60*24*7*3">gray</xsl:when> <!-- 3 weeks = dead -->
-							<xsl:when test="inactivity &gt; 60*60*24*7*1">maroon</xsl:when> <!-- 1 week = not interested -->
+							<xsl:when test="inactivity &gt; 60*60*24*7*1">maroon</xsl:when> <!-- 1 week = inactive -->
 							<xsl:when test="inactivity &gt; 60*10       ">red</xsl:when> <!-- 10 minutes = offline -->
 							<xsl:otherwise                               >lime</xsl:otherwise> <!-- online -->
 						</xsl:choose>
