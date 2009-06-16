@@ -212,7 +212,7 @@
 		<input type="submit" name="auto_tokens" value="Auto" />
 	</div>
 
-	<input type="text" class="text_data" name="NewDeckName" value="{$param/CurrentDeck}" maxlength="20" />
+	<input type="text" name="NewDeckName" value="{$param/CurrentDeck}" maxlength="20" />
 	<input type="submit" name="rename_deck" value="Rename" />
 
 	<xsl:choose>

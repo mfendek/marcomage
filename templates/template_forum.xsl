@@ -409,7 +409,7 @@
 	<h3>Create new thread to the section <span><xsl:value-of select="$section/SectionName"/></span></h3>
 	
 	<div>
-		<p>Topic:<input class="text_data" type="text" name="Title" maxlength="50" size="45" value="{$param/Title}" /></p>
+		<p>Topic:<input type="text" name="Title" maxlength="50" size="45" value="{$param/Title}" /></p>
 		<p>Priority:
 		
 		<select name="Priority">
@@ -472,7 +472,7 @@
 		<h3>Edit thread</h3>
 	
 		<div>
-			<p>Topic:<input class="text_data" type="text" name="Title" maxlength="50" size="45" value="{$thread/Title}" /></p>
+			<p>Topic:<input type="text" name="Title" maxlength="50" size="45" value="{$thread/Title}" /></p>
 
 			<p>Priority:
 			<select name="Priority">

@@ -253,7 +253,7 @@
 			<div class="limit">
 				<p>
 					<span>
-						<input class="text_data" type="text" name="name" maxlength="64" size="35" >
+						<input type="text" name="name" maxlength="64" size="35" >
 							<xsl:if test="$param/stored = 'yes'">
 								<xsl:attribute name="value"><xsl:value-of select="$param/data/name"/></xsl:attribute>
 							</xsl:if>
@@ -281,7 +281,7 @@
 				Rarity</p>
 				<p>
 					<span>
-						<input class="text_data" type="text" name="bricks" maxlength="2" size="2" >
+						<input type="text" name="bricks" maxlength="2" size="2" >
 							<xsl:attribute name="value">
 								<xsl:choose>
 									<xsl:when test="$param/stored = 'yes'">
@@ -291,7 +291,7 @@
 								</xsl:choose>
 							</xsl:attribute>
 						</input>
-						<input class="text_data" type="text" name="gems" maxlength="2" size="2" >
+						<input type="text" name="gems" maxlength="2" size="2" >
 							<xsl:attribute name="value">
 								<xsl:choose>
 									<xsl:when test="$param/stored = 'yes'">
@@ -301,7 +301,7 @@
 								</xsl:choose>
 							</xsl:attribute>
 						</input>
-						<input class="text_data" type="text" name="recruits" maxlength="2" size="2" >
+						<input type="text" name="recruits" maxlength="2" size="2" >
 							<xsl:attribute name="value">
 								<xsl:choose>
 									<xsl:when test="$param/stored = 'yes'">
@@ -314,7 +314,7 @@
 					</span>
 				Cost (B/G/R)</p>
 				<p><span>
-					<input class="text_data" type="text" name="keywords" maxlength="100" size="35" >
+					<input type="text" name="keywords" maxlength="100" size="35" >
 						<xsl:if test="$param/stored = 'yes'">
 							<xsl:attribute name="value"><xsl:value-of select="$param/data/keywords"/></xsl:attribute>
 						</xsl:if>
@@ -370,7 +370,7 @@
 			<div class="limit">
 				<p>
 					<span>
-						<input class="text_data" type="text" name="name" maxlength="64" size="35" value="{$param/data/name}" />
+						<input type="text" name="name" maxlength="64" size="35" value="{$param/data/name}" />
 					</span>Name</p>
 				<p>
 					<span>
@@ -394,13 +394,13 @@
 				Rarity</p>
 				<p>
 					<span>
-						<input class="text_data" type="text" name="bricks" maxlength="2" size="2" value="{$param/data/bricks}" />
-						<input class="text_data" type="text" name="gems" maxlength="2" size="2" value="{$param/data/gems}" />
-						<input class="text_data" type="text" name="recruits" maxlength="2" size="2" value="{$param/data/recruits}" />
+						<input type="text" name="bricks" maxlength="2" size="2" value="{$param/data/bricks}" />
+						<input type="text" name="gems" maxlength="2" size="2" value="{$param/data/gems}" />
+						<input type="text" name="recruits" maxlength="2" size="2" value="{$param/data/recruits}" />
 					</span>
 				Cost (B/G/R)</p>
 				<p><span>
-					<input class="text_data" type="text" name="keywords" maxlength="100" size="35" value="{$param/data/keywords}" />
+					<input type="text" name="keywords" maxlength="100" size="35" value="{$param/data/keywords}" />
 					</span>Keywords</p>
 				<p>
 					<span>

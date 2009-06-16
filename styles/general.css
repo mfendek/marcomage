@@ -157,7 +157,7 @@ div.clear_floats /* clear both floats */
 	clear: both;
 }
 
-input.text_data /* input text fields */
+input[type="text"], input[type="password"] /* input text fields */
 {
 	color: yellow;
 	border-style: inset;

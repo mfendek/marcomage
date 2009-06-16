@@ -24,8 +24,8 @@
 			<div><h4>Zodiac sign</h4><img height="100px" width="100px" src="img/zodiac/{$settings/Sign}.jpg" alt="sign" /><h4><xsl:value-of select="$settings/Sign"/></h4></div>
 
 			<div><h4>Avatar</h4><img height="60px" width="60px" src="img/avatars/{$settings/Avatar}" alt="avatar" /></div>
-			<div>First name: <input class="text_data" type="text" name="Firstname" maxlength="20" value="{$settings/Firstname}" /></div>
-			<div>Surname: <input class="text_data" type="text" name="Surname" maxlength="20" value="{$settings/Surname}" /></div>
+			<div>First name: <input type="text" name="Firstname" maxlength="20" value="{$settings/Firstname}" /></div>
+			<div>Surname: <input type="text" name="Surname" maxlength="20" value="{$settings/Surname}" /></div>
 		
 			<div>Gender:
 				<select name="Gender">
@@ -35,14 +35,14 @@
 				</select>
 			</div>
 		
-			<div>E-mail:<input class="text_data" type="text" name="Email" maxlength="30" value="{$settings/Email}" /></div>
+			<div>E-mail:<input type="text" name="Email" maxlength="30" value="{$settings/Email}" /></div>
 		
-			<div>ICQ / IM number:<input class="text_data" type="text" name="Imnumber" maxlength="20" value="{$settings/Imnumber}" /></div>
+			<div>ICQ / IM number:<input type="text" name="Imnumber" maxlength="20" value="{$settings/Imnumber}" /></div>
 
 			<div>Date of birth (DD-MM-YYYY):
-				<input class="text_data" type="text" name="Birthday" maxlength="2" size="2" value="{$settings/Birthdate/day}"/>
-				<input class="text_data" type="text" name="Birthmonth" maxlength="2" size="2" value="{$settings/Birthdate/month}"/>
-				<input class="text_data" type="text" name="Birthyear" maxlength="4" size="4" value="{$settings/Birthdate/year}"/>
+				<input type="text" name="Birthday" maxlength="2" size="2" value="{$settings/Birthdate/day}"/>
+				<input type="text" name="Birthmonth" maxlength="2" size="2" value="{$settings/Birthdate/month}"/>
+				<input type="text" name="Birthyear" maxlength="4" size="4" value="{$settings/Birthdate/year}"/>
 			</div>
 
 			<div>Age: <xsl:value-of select="$settings/Age"/></div>
@@ -79,8 +79,8 @@
 		<div>
 			<h3>Account settings</h3>
 
-			<div>New password:<input class="text_data" type="password" name="NewPassword" maxlength="20" /></div>
-			<div>Confirm password:<input class="text_data" type="password" name="NewPassword2" maxlength="20" /></div>
+			<div>New password:<input type="password" name="NewPassword" maxlength="20" /></div>
+			<div>Confirm password:<input type="password" name="NewPassword2" maxlength="20" /></div>
 			<div>Change password:<input type = "submit" name= "changepasswd" value= "Change" /></div>
 
 			<div>Time zone:

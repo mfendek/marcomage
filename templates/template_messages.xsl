@@ -417,7 +417,7 @@
 		<p><span>To:</span><xsl:value-of select="$param/Recipient"/></p>
 		<p>
 			<span>Subject:</span>
-			<input class="text_data" type="text" name="Subject" maxlength="30" size="25" value="{$param/Subject}" />
+			<input type="text" name="Subject" maxlength="30" size="25" value="{$param/Subject}" />
 		</p>
 		<input type="submit" name="message_send" value="Send" />
 		<input type="submit" name="message_cancel" value="Discard" />

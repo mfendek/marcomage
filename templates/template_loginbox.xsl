@@ -16,9 +16,9 @@
 	<div>
 
 	<p>Login name</p>
-	<div><input class="text_data" type="text" name="Username" maxlength="20" tabindex="1" /></div>
+	<div><input type="text" name="Username" maxlength="20" tabindex="1" /></div>
 	<p>Password</p>
-	<div><input class="text_data" type="password" name="Password" maxlength="20" tabindex="2" /></div>
+	<div><input type="password" name="Password" maxlength="20" tabindex="2" /></div>
 	<div><input type="hidden" name="Remember" value="yes" /></div>
 	<div>
 	<input type="submit" name="Login" value="Login" tabindex="3" />

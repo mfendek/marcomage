@@ -13,11 +13,11 @@
 		
 	<h3>Registration</h3>
 	<p>Login name</p>
-	<div><input class="text_data" type="text" name="NewUsername" maxlength="20" /></div>
+	<div><input type="text" name="NewUsername" maxlength="20" /></div>
 	<p>Password</p>
-	<div><input class="text_data" type="password" name="NewPassword" maxlength="20" /></div>
+	<div><input type="password" name="NewPassword" maxlength="20" /></div>
 	<p>Confirm password</p>
-	<div><input class="text_data" type="password" name="NewPassword2" maxlength="20" /></div>
+	<div><input type="password" name="NewPassword2" maxlength="20" /></div>
 	<div>
 	<input type="submit" name="Register" value="Register" />
 	<input type="submit" name="ReturnToLogin" value="Back" />
