@@ -2112,17 +2112,6 @@ case 'Players':
 	// for each player, display their name, score, and if conditions are met, also display the challenge button
 	foreach ($list as $i => $data)
 	{
-		$last_query = strtotime($data['Last Query']);
-		// choose name color according to inactivity time
-		if     (time() - $last_query > (60*60*24*7*3))
-		{ $namecolor ='gray'; $player_type = "Dead"; } // 'dead' after 3 weeks of inactivity
-		elseif (time() - $last_query > (60*60*24*7*1))
-		{ $namecolor ='maroon'; $player_type = "Inactive"; } // 'not interested' after 1 week of inactivity
-		elseif (time() - $last_query > (60*10))
-		{ $namecolor ='red'; $player_type = "Offline"; } // 'offline' after 10 minutes of inactivity
-		else //(time(0 - $last_query <= (60*10))
-		{ $namecolor ='lime'; $player_type = "Online"; } // default 'online' players
-
 		$opponent = $data['Username'];
 
 		$entry = array();
@@ -2135,8 +2124,7 @@ case 'Players':
 		$entry['last_query'] = $data['Last Query'];
 		$entry['free_slots'] = $data['Free slots'];
 		$entry['rank'] = $data['Rank'];
-		$entry['player_type'] = $player_type; // unused
-		$entry['namecolor'] = $namecolor;
+		$entry['inactivity'] = time() - strtotime($data['Last Query']);
 		$entry['challenged'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $opponent), $challengesfrom) !== false) ? 'yes' : 'no';
 		$entry['playingagainst'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $opponent), $activegames) !== false) ? 'yes' : 'no';
 		$entry['waitingforack'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $opponent), $endedgames) !== false) ? 'yes' : 'no';
@@ -2402,9 +2390,7 @@ case 'Game':
 	$params['game']['MyMagic'] = $mydata->Magic;
 	$params['game']['MyDungeons'] = $mydata->Dungeons;
 	$params['game']['MyTower'] = $mydata->Tower;
-	$params['game']['MyTowerBody'] = (170 * ($mydata->Tower/100));
 	$params['game']['MyWall'] = $mydata->Wall;
-	$params['game']['MyWallBody'] = (270 * ($mydata->Wall/150));
 	
 	// my discarded cards
 	if( count($mydata->DisCards[0]) > 0 )
@@ -2456,9 +2442,7 @@ case 'Game':
 	$params['game']['HisMagic'] = $hisdata->Magic;
 	$params['game']['HisDungeons'] = $hisdata->Dungeons;
 	$params['game']['HisTower'] = $hisdata->Tower;
-	$params['game']['HisTowerBody'] = (170 * ($hisdata->Tower/100));
 	$params['game']['HisWall'] = $hisdata->Wall;
-	$params['game']['HisWallBody'] = (270 * ($hisdata->Wall/150));
 
 	// his discarded cards
 	if( count($hisdata->DisCards[0]) > 0 )

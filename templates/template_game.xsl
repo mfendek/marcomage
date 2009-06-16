@@ -315,14 +315,14 @@
 											</xsl:otherwise>
 										</xsl:choose>
 									</img>
-									<div class="towerbody" style="margin-left: 14px; height: {$param/MyTowerBody}px;"></div>
+									<div class="towerbody" style="margin-left: 14px; height: {170 * $param/MyTower div 100}px;"></div>
 								</div>
 							</td>
 							<td valign="bottom">
 								<xsl:if test="$param/MyWall &gt; 0">
 									<div>
 										<img src="img/korunka.png" width="19px" height="11px" style="display:block" alt="" />
-										<div class="wallbody" style="height: {$param/MyWallBody}px;"></div>
+										<div class="wallbody" style="height: {270 * $param/MyWall div 150}px;"></div>
 									</div>
 								</xsl:if>
 							</td>
@@ -466,7 +466,7 @@
 								<xsl:if test="$param/HisWall &gt; 0">
 									<div>
 										<img src="img/korunka.png" width="19px" height="11px" style="display:block" alt="" />
-										<div class="wallbody" style="height: {$param/HisWallBody}px;"></div>
+										<div class="wallbody" style="height: {270 * $param/HisWall div 150}px;"></div>
 									</div>
 								</xsl:if>
 							</td>
@@ -484,7 +484,7 @@
 											</xsl:otherwise>
 										</xsl:choose>
 									</img>
-									<div class="towerbody" style="margin-left: 14px; height: {$param/HisTowerBody}px;"></div>
+									<div class="towerbody" style="margin-left: 14px; height: {170 * $param/HisTower div 100}px;"></div>
 								</div>
 							</td>
 						</tr>

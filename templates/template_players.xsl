@@ -118,7 +118,17 @@
 					</xsl:if>
 					
 					<td><img width="18px" height="12px" src="img/flags/{country}.gif" alt="country flag" /></td>
-					<td><p style="color: {namecolor}"><xsl:value-of select="name"/></p></td>
+
+					<xsl:variable name="namecolor">
+						<xsl:choose> <!-- choose name color according to inactivity time -->
+							<xsl:when test="inactivity &gt; 60*60*24*7*3">gray</xsl:when> <!-- 3 weeks = dead -->
+							<xsl:when test="inactivity &gt; 60*60*24*7*1">maroon</xsl:when> <!-- 1 week = not interested -->
+							<xsl:when test="inactivity &gt; 60*10       ">red</xsl:when> <!-- 10 minutes = offline -->
+							<xsl:otherwise                               >lime</xsl:otherwise> <!-- online -->
+						</xsl:choose>
+					</xsl:variable>
+					<td><p style="color: {$namecolor}"><xsl:value-of select="name"/></p></td>
+
 					<td><p><xsl:value-of select="wins"/></p></td>
 					<td><p><xsl:value-of select="losses"/></p></td>
 					<td><p><xsl:value-of select="draws"/></p></td>
