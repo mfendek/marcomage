@@ -147,6 +147,7 @@
 				$data['modes']    = (int)$card->modes;
 				$data['keywords'] = (string)$card->keywords;
 				$data['effect']   = (string)$card->effect;
+				$data['code']     = (string)$card->code;
 				$cards[$data['id']] = $data;
 			}
 
@@ -218,11 +219,11 @@
 			else
 			{
 				$data = &$result[0];
-				$arr = array ((string)$data->name, (string)$data->class, (int)$data->cost->bricks, (int)$data->cost->gems, (int)$data->cost->recruits, (string)$data->effect, (string)$data->keywords, (int)$data->modes);
+				$arr = array ((string)$data->name, (string)$data->class, (int)$data->cost->bricks, (int)$data->cost->gems, (int)$data->cost->recruits, (int)$data->modes, (string)$data->keywords, (string)$data->effect, (string)$data->code);
 			}
 			
 			// initialize self
-			list($cd->Name, $cd->Class, $cd->Bricks, $cd->Gems, $cd->Recruits, $cd->Effect, $cd->Keywords, $cd->Modes) = $arr;
+			list($cd->Name, $cd->Class, $cd->Bricks, $cd->Gems, $cd->Recruits, $cd->Modes, $cd->Keywords, $cd->Effect, $cd->Code) = $arr;
 		}
 		
 		public function __destruct()
@@ -279,8 +280,9 @@
 		public $Bricks;
 		public $Gems;
 		public $Recruits;
-		public $Effect;
-		public $Keywords;
 		public $Modes;
+		public $Keywords;
+		public $Effect;
+		public $Code;
 	}
 ?>
