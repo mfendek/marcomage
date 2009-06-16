@@ -234,6 +234,20 @@
 			$p1->Gems = $p2->Gems = 5;
 			$p1->Recruits = $p2->Recruits = 10;
 			
+			// add starting bonus to second player
+			if ($this->GameData->Current == $this->Player1)
+			{
+				$p2->Bricks+= 1;
+				$p2->Gems+= 1;
+				$p2->Recruits+= 1;
+			}
+			else
+			{
+				$p1->Bricks+= 1;
+				$p1->Gems+= 1;
+				$p1->Recruits+= 1;
+			}
+			
 			// initialize tokens
 			$p1->TokenNames = $p1->Deck->Tokens;
 			$p2->TokenNames = $p2->Deck->Tokens;
