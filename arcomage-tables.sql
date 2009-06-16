@@ -12,25 +12,6 @@ USE `arcomage`;
 -- --------------------------------------------------------
 
 -- 
--- Table structure for table `cards`
--- 
-
-CREATE TABLE `cards` (
-  `CardID` int(3) unsigned NOT NULL DEFAULT '0',
-  `Name` char(64) COLLATE utf8_unicode_ci NOT NULL,
-  `Class` char(8) COLLATE utf8_unicode_ci NOT NULL,
-  `Bricks` int(3) unsigned NOT NULL DEFAULT '0',
-  `Gems` int(3) unsigned NOT NULL DEFAULT '0',
-  `Recruits` int(3) unsigned NOT NULL DEFAULT '0',
-  `Effect` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `Keywords` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `Modes` int(1) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`CardID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
--- 
 -- Table structure for table `decks`
 -- 
 
