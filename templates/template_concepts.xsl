@@ -168,7 +168,7 @@
 								<xsl:attribute name="value">/\</xsl:attribute>
 							</xsl:otherwise>
 						</xsl:choose>
-						<xsl:if test="$param/current_condition = ''">
+						<xsl:if test="$param/current_condition = 'LastChange'">
 							<xsl:attribute name="style">border-color: lime</xsl:attribute>
 						</xsl:if>
 					</input></p>
