@@ -131,7 +131,7 @@ First, you can challenge someone to a game by selecting the challenge button in 
 Then you need to choose the deck with which you want to play the game.
 Second, you can wait until someone else challenges you and then accept the challenge.
 Before accepting the challenge you also need to choose a deck, with which you want to play.
-The player Which goes first is randomly chosen.
+The player which goes first is randomly chosen. To compensate for disadvantage of going second, the other player is given one from each resource in addition to his starting stock.
 There is a limit of max. 15 <i>simultaneous</i> games, and only one game per opponent which you initiated (this implies that you can only have 2 parallel games against each person).
 Unreplied challenges in your challenge box count as games, so try to accept or reject them as soon as possible.
 There is no restriction to the number of games played per day or against someone, you can play any way you like.
@@ -191,6 +191,16 @@ Please use English only at all times. Forum is divided into sections. Section co
 <p>
 Forum has a "new post" notification system. If there are new posts in the forum there is an animated image ("book") in the upper menu bar. Threads that contain new posts have the quick access buttons highlighted in red border color. In the threads details, new posts have their date highlighted in yellow color. This system works correctly only if you logout every time you finish your stay at our site.
 </p>
+
+<h4>Concepts</h4>
+<p>
+This section provides a tool for managing card suggestion in a structured form. This includes creating new cards, editing or deleting the existing ones. To provide more comfort, while searching for a specific card, there are filters and orderings available. You can even read the developer's feedback from the card state. There are 3 possible card states:
+</p>
+<ul>
+	<li>Waiting - this is the initial state, card is waiting for analysis</li>
+	<li>Implemented - card has already been implemented</li>
+	<li>Rejected - card will not be implemented in current form</li>
+</ul>
 
 <h4>Keywords</h4>
 <p>
