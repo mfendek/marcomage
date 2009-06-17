@@ -15,7 +15,7 @@ USE `arcomage`;
 -- Table structure for table `concepts`
 --
 
-CREATE TABLE IF NOT EXISTS `concepts` (
+CREATE TABLE `concepts` (
   `CardID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Name` char(64) COLLATE utf8_unicode_ci NOT NULL,
   `Class` char(8) COLLATE utf8_unicode_ci NOT NULL,
