@@ -321,6 +321,61 @@
 					break;
 				}
 				
+				if ($message == 'view_note')
+				{	// show current's player game note
+					$gameid = $_POST['CurrentGame'];
+					$game = $gamedb->GetGame($gameid);
+					
+					// check if the game exists
+					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
+					
+					// check if this user is allowed to perform game actions
+					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
+					
+					$current = 'Game_note';
+					break;
+				}
+				
+				if ($message == 'save_note')
+				{	// save current's player game note
+					$gameid = $_POST['CurrentGame'];
+					$game = $gamedb->GetGame($gameid);
+					
+					// check if the game exists
+					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
+					
+					// check if this user is allowed to perform game actions
+					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
+					
+					$new_note = $_POST['Content'];
+					
+					if (strlen($new_note) > MESSAGE_LENGTH) { $error = "Game note is too long"; $current = "Game_note"; break; }
+					
+					$game->SetNote($player->Name(), $new_note);
+					$game->SaveGame();
+					
+					$current = 'Game_note';
+					break;
+				}
+				
+				if ($message == 'clear_note')
+				{	// clear current's player game note
+					$gameid = $_POST['CurrentGame'];
+					$game = $gamedb->GetGame($gameid);
+					
+					// check if the game exists
+					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
+					
+					// check if this user is allowed to perform game actions
+					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
+					
+					$game->ClearNote($player->Name());
+					$game->SaveGame();
+					
+					$current = 'Game_note';
+					break;
+				}
+				
 				if ($message == 'send_message')
 				{	// message contains no data itself
 					$msg = $_POST['ChatMessage'];
@@ -2725,6 +2780,7 @@ case 'Game':
 	$params['game']['OpponentName'] = $opponent->Name();
 	$params['game']['Current'] = $data->Current;
 	$params['game']['Timestamp'] = $data->Timestamp;
+	$params['game']['has_note'] = ($game->GetNote($player->Name()) != "") ? 'yes' : 'no';
 
 	// my hand
 	$myhand = $mydata->Hand;
@@ -2923,6 +2979,16 @@ case 'Deck_view':
 	foreach (array('Common', 'Uncommon', 'Rare') as $class)
 		$params['deck_view']['DeckCards'][$class] = $carddb->GetData($deck->$class);
 	
+	break;
+
+
+case 'Game_note':
+	$gameid = $_POST['CurrentGame'];
+	$game = $gamedb->GetGame($gameid);
+
+	$params['game_note']['CurrentGame'] = $gameid;
+	$params['game_note']['text'] = (isset($new_note)) ? $new_note : $game->GetNote($player->Name());
+
 	break;
 
 

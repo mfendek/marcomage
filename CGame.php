@@ -149,6 +149,8 @@
 		private $GameID;
 		private $Player1;
 		private $Player2;
+		private $Note1;
+		private $Note2;
 		public $State; // 'waiting' / 'in progress' / 'finished' / 'P1 over' / 'P2 over'
 		public $GameData;
 		
@@ -183,15 +185,34 @@
 			return $this->Player2;
 		}
 		
+		public function GetNote($player)
+		{
+			return (($this->Player1 == $player) ? $this->Note1 : $this->Note2);
+		}
+		
+		public function SetNote($player, $new_content)
+		{
+			if ($this->Player1 == $player) $this->Note1 = $new_content;
+			else $this->Note2 = $new_content;
+		}
+		
+		public function ClearNote($player)
+		{
+			if ($this->Player1 == $player) $this->Note1 = '';
+			else $this->Note2 = '';
+		}
+		
 		public function LoadGame()
 		{
 			$db = $this->Games->getDB();
-			$result = $db->Query('SELECT `State`, `Data` FROM `games` WHERE `Player1` = "'.$db->Escape($this->Player1).'" AND `Player2` = "'.$db->Escape($this->Player2).'"');
+			$result = $db->Query('SELECT `State`, `Data`, `Note1`, `Note2` FROM `games` WHERE `Player1` = "'.$db->Escape($this->Player1).'" AND `Player2` = "'.$db->Escape($this->Player2).'"');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
 			$data = $result->Next();
 			$this->State = $data['State'];
+			$this->Note1 = $data['Note1'];
+			$this->Note2 = $data['Note2'];
 			$this->GameData = unserialize($data['Data']);
 			
 			return true;
@@ -200,7 +221,7 @@
 		public function SaveGame()
 		{
 			$db = $this->Games->getDB();
-			$result = $db->Query('UPDATE `games` SET `State` = "'.$db->Escape($this->State).'", `Data` = "'.$db->Escape(serialize($this->GameData)).'" WHERE `Player1` = "'.$db->Escape($this->Player1).'" AND `Player2` = "'.$db->Escape($this->Player2).'"');
+			$result = $db->Query('UPDATE `games` SET `State` = "'.$db->Escape($this->State).'", `Data` = "'.$db->Escape(serialize($this->GameData)).'", `Note1` = "'.$db->Escape($this->Note1).'", `Note2` = "'.$db->Escape($this->Note2).'" WHERE `Player1` = "'.$db->Escape($this->Player1).'" AND `Player2` = "'.$db->Escape($this->Player2).'"');
 			if (!$result) return false;
 			
 			return true;

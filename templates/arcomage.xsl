@@ -19,6 +19,7 @@
 <xsl:include href="template_decks.xsl" />
 <xsl:include href="template_forum.xsl" />
 <xsl:include href="template_game.xsl" />
+<xsl:include href="template_game_note.xsl" />
 <xsl:include href="template_games.xsl" />
 <xsl:include href="template_messages.xsl" />
 <xsl:include href="template_novels.xsl" />

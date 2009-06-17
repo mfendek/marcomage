@@ -1,0 +1,2 @@
+ALTER TABLE `games` ADD `Note1` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `games` ADD `Note2` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;

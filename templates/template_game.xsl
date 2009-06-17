@@ -126,7 +126,14 @@
 					</p>
 				</td>
 				<td></td>
-				<td><input type="submit" name="view_deck" value="Deck" /></td>
+				<td>
+					<input type="submit" name="view_deck" value="Deck" />
+					<input type="submit" name="view_note" value="Note" >
+						<xsl:if test="$param/has_note = 'yes'">
+							<xsl:attribute name="class">menuselected</xsl:attribute>
+						</xsl:if>
+					</input>
+				</td>
 
 				<!-- begin surrender/abort button -->
 				<td style="text-align: right">
