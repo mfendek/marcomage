@@ -156,6 +156,7 @@
 					</input></p>
 				</th>
 				<th><p>Author</p></th>
+				<th><p>Rarity</p></th>
 				<th>
 					<p>Last change<input class="details" type="submit" >
 						<xsl:choose>
@@ -182,6 +183,7 @@
 					<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></td>
 					<td><p><xsl:value-of select="name"/></p></td>
 					<td><p><xsl:value-of select="author"/></p></td>
+					<td><p><xsl:value-of select="class"/></p></td>
 					<td>
 						<p>
 							<xsl:if test="am:datediff(lastchange, $param/PreviousLogin) &lt; 0">
