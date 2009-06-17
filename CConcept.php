@@ -27,7 +27,7 @@
 		{
 			$db = $this->db;
 
-			$result = $db->Query('INSERT INTO `concepts` (`Name`, `Class`, `Bricks`, `Gems`, `Recruits`, `Effect`, `Keywords`, `Note`, `Owner`) VALUES ("'.$db->Escape($data['name']).'", "'.$db->Escape($data['class']).'", "'.$db->Escape($data['bricks']).'", "'.$db->Escape($data['gems']).'", "'.$data['recruits'].'", "'.$db->Escape($data['effect']).'", "'.$db->Escape($data['keywords']).'", "'.$db->Escape($data['note']).'", "'.$db->Escape($data['owner']).'")');
+			$result = $db->Query('INSERT INTO `concepts` (`Name`, `Class`, `Bricks`, `Gems`, `Recruits`, `Effect`, `Keywords`, `Note`, `Author`) VALUES ("'.$db->Escape($data['name']).'", "'.$db->Escape($data['class']).'", "'.$db->Escape($data['bricks']).'", "'.$db->Escape($data['gems']).'", "'.$data['recruits'].'", "'.$db->Escape($data['effect']).'", "'.$db->Escape($data['keywords']).'", "'.$db->Escape($data['note']).'", "'.$db->Escape($data['author']).'")');
 
 			if (!$result) return false;
 
@@ -89,15 +89,15 @@
 			return true;
 		}
 
-		public function GetList($owner, $date, $state, $condition, $order, $page)
+		public function GetList($author, $date, $state, $condition, $order, $page)
 		{
 			$db = $this->db;
 
-			$owner_query = (($owner != "none") ? ' AND `Owner` = "'.$db->Escape($owner).'"' : '');
+			$author_query = (($author != "none") ? ' AND `Author` = "'.$db->Escape($author).'"' : '');
 			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`LastChange`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$date.')' : '');
 			$state_query = (($state != "none") ? ' AND `State` = "'.$db->Escape($state).'"' : '');
 
-			$result = $db->Query('SELECT `CardID` as `id`, `Name` as `name`, `Class` as `class`, `Bricks` as `bricks`, `Gems` as `gems`, `Recruits` as `recruits`, `Effect` as `effect`, `Keywords` as `keywords`, `Picture` as `picture`, `Note` as `note`, `State` as `state`, `Owner` as `owner`, `LastChange` as `lastchange` FROM `concepts` WHERE 1'.$owner_query.$date_query.$state_query.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(CARDS_PER_PAGE * $page).' , '.CARDS_PER_PAGE.'');
+			$result = $db->Query('SELECT `CardID` as `id`, `Name` as `name`, `Class` as `class`, `Bricks` as `bricks`, `Gems` as `gems`, `Recruits` as `recruits`, `Effect` as `effect`, `Keywords` as `keywords`, `Picture` as `picture`, `Note` as `note`, `State` as `state`, `Author` as `author`, `LastChange` as `lastchange` FROM `concepts` WHERE 1'.$author_query.$date_query.$state_query.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(CARDS_PER_PAGE * $page).' , '.CARDS_PER_PAGE.'');
 
 			if (!$result) return false;
 
@@ -109,15 +109,15 @@
 			return $cards;
 		}
 
-		public function CountPages($owner, $date, $state)
+		public function CountPages($author, $date, $state)
 		{
 			$db = $this->db;
 
-			$owner_query = (($owner != "none") ? ' AND `Owner` = "'.$db->Escape($owner).'"' : '');
+			$author_query = (($author != "none") ? ' AND `Author` = "'.$db->Escape($author).'"' : '');
 			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`LastChange`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$date.')' : '');
 			$state_query = (($state != "none") ? ' AND `State` = "'.$db->Escape($state).'"' : '');
 
-			$result = $db->Query('SELECT COUNT(`CardID`) as `Count` FROM `concepts` WHERE 1'.$owner_query.$date_query.$state_query.'');
+			$result = $db->Query('SELECT COUNT(`CardID`) as `Count` FROM `concepts` WHERE 1'.$author_query.$date_query.$state_query.'');
 
 			if (!$result) return false;
 
@@ -128,22 +128,22 @@
 			return $pages;
 		}
 
-		public function ListOwners($date)
+		public function ListAuthors($date)
 		{
 			$db = $this->db;
 
 			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`LastChange`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$date.')' : '');
 
-			$result = $db->Query('SELECT DISTINCT `Owner` FROM `concepts` WHERE 1'.$date_query.'');
+			$result = $db->Query('SELECT DISTINCT `Author` FROM `concepts` WHERE 1'.$date_query.'');
 
 			if (!$result) return false;
 
-			$owners = array();
+			$authors = array();
 
 			while ($data = $result->Next())
-				$owners[] = $data['Owner'];
+				$authors[] = $data['Author'];
 
-			return $owners;
+			return $authors;
 		}
 
 		public function Exists($cardid)
@@ -214,15 +214,15 @@
 			$cd = &$this->ConceptData;
 
 			$db = $this->Concepts->getDB();
-			$result = $db->Query('SELECT `Name`, `Class`, `Bricks`, `Gems`, `Recruits`, `Effect`, `Keywords`, `Picture`, `Note`, `State`, `Owner`, `LastChange` FROM `concepts` WHERE `CardID` = '.$this->CardID.'');
+			$result = $db->Query('SELECT `Name`, `Class`, `Bricks`, `Gems`, `Recruits`, `Effect`, `Keywords`, `Picture`, `Note`, `State`, `Author`, `LastChange` FROM `concepts` WHERE `CardID` = '.$this->CardID.'');
 
 			if( !$result OR !$result->Rows() ) return false;
 
 			$data = $result->Next();
-			$arr = array ($data['Name'], $data['Class'], $data['Bricks'], $data['Gems'], $data['Recruits'], $data['Effect'], $data['Keywords'], $data['Picture'], $data['Note'], $data['State'], $data['Owner'], $data['LastChange']);
+			$arr = array ($data['Name'], $data['Class'], $data['Bricks'], $data['Gems'], $data['Recruits'], $data['Effect'], $data['Keywords'], $data['Picture'], $data['Note'], $data['State'], $data['Author'], $data['LastChange']);
 
 			// initialize self
-			list($cd->Name, $cd->Class, $cd->Bricks, $cd->Gems, $cd->Recruits, $cd->Effect, $cd->Keywords, $cd->Picture, $cd->Note, $cd->State, $cd->Owner, $cd->LastChange) = $arr;
+			list($cd->Name, $cd->Class, $cd->Bricks, $cd->Gems, $cd->Recruits, $cd->Effect, $cd->Keywords, $cd->Picture, $cd->Note, $cd->State, $cd->Author, $cd->LastChange) = $arr;
 		}
 
 		public function __destruct()
@@ -271,7 +271,7 @@
 		public $Picture;
 		public $Note;
 		public $State;
-		public $Owner;
+		public $Author;
 		public $LastChange;
 	}
 ?>

@@ -1308,7 +1308,7 @@
 				if ($message == 'concepts_filter') // use filter
 				{
 					$_POST['CurrentFilterChange'] = $_POST['date_filter'];
-					$_POST['CurrentFilterOwner'] = ((isset($_POST['owner_filter'])) ? postdecode($_POST['owner_filter']) : "none");
+					$_POST['CurrentFilterAuthor'] = ((isset($_POST['author_filter'])) ? postdecode($_POST['author_filter']) : "none");
 					$_POST['CurrentFilterState'] = $_POST['state_filter'];
 					$_POST['CurrentConPage'] = 0;
 					
@@ -1319,7 +1319,7 @@
 				if ($message == 'my_concepts') // use "my cards" quick button
 				{
 					$_POST['CurrentFilterChange'] = "none";
-					$_POST['CurrentFilterOwner'] = $player->Name();
+					$_POST['CurrentFilterAuthor'] = $player->Name();
 					$_POST['CurrentFilterState'] = "none";
 					$_POST['CurrentConPage'] = 0;
 					
@@ -1365,7 +1365,7 @@
 					$data = array();
 					$inputs = array('name', 'class', 'bricks', 'gems', 'recruits', 'effect', 'keywords', 'note');
 					foreach ($inputs as $input) $data[$input] = $_POST[$input];
-					$data['owner'] = $player->Name();
+					$data['author'] = $player->Name();
 					
 					// input checks
 					$check = $conceptdb->CheckInputs($data);
@@ -1389,7 +1389,7 @@
 					$concept = $conceptdb->GetConcept($concept_id);
 					
 					// check access rights
-					if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Owner))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+					if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 					
 					$current = "Concepts_edit";
 					
@@ -1404,7 +1404,7 @@
 					$concept = $conceptdb->GetConcept($concept_id);
 					
 					// check access rights
-					if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Owner))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+					if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 					
 					// add default cost values
 					if (trim($_POST['bricks']) == "") $_POST['bricks'] = 0;
@@ -1470,7 +1470,7 @@
 					$concept = $conceptdb->GetConcept($concept_id);
 					
 					// check access rights
-					if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Owner))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+					if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 					
 					$former_name = $concept->ConceptData->Picture;
 					$former_path = 'img/concepts/'.$former_name;
@@ -1517,7 +1517,7 @@
 					$concept = $conceptdb->GetConcept($concept_id);
 					
 					// check access rights
-					if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Owner))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+					if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 					
 					$former_name = $concept->ConceptData->Picture;
 					$former_path = 'img/concepts/'.$former_name;
@@ -1539,7 +1539,7 @@
 					$concept = $conceptdb->GetConcept($concept_id);
 					
 					// check access rights
-					if (!($access_rights[$player->Type()]["delete_all_card"] OR ($access_rights[$player->Type()]["delete_own_card"] AND $player->Name() == $concept->ConceptData->Owner))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+					if (!($access_rights[$player->Type()]["delete_all_card"] OR ($access_rights[$player->Type()]["delete_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 					
 					$current = "Concepts_edit";
 					
@@ -1554,7 +1554,7 @@
 					$concept = $conceptdb->GetConcept($concept_id);
 					
 					// check access rights
-					if (!($access_rights[$player->Type()]["delete_all_card"] OR ($access_rights[$player->Type()]["delete_own_card"] AND $player->Name() == $concept->ConceptData->Owner))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+					if (!($access_rights[$player->Type()]["delete_all_card"] OR ($access_rights[$player->Type()]["delete_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 					
 					$result = $concept->DeleteConcept();
 					if (!$result) { $error = "Failed to delete card"; $current = "Concepts_edit"; break; }
@@ -2409,11 +2409,11 @@ case 'Decks':
 case 'Concepts':
 	// filter initialization
 	if (!isset($_POST['CurrentFilterChange'])) $_POST['CurrentFilterChange'] = "none";
-	if (!isset($_POST['CurrentFilterOwner'])) $_POST['CurrentFilterOwner'] = "none";
+	if (!isset($_POST['CurrentFilterAuthor'])) $_POST['CurrentFilterAuthor'] = "none";
 	if (!isset($_POST['CurrentFilterState'])) $_POST['CurrentFilterState'] = "none";
 
 	$params['concepts']['date_val'] = $date = $_POST['CurrentFilterChange'];
-	$params['concepts']['owner_val'] = $owner = $_POST['CurrentFilterOwner'];
+	$params['concepts']['author_val'] = $author = $_POST['CurrentFilterAuthor'];
 	$params['concepts']['state_val'] = $state = $_POST['CurrentFilterState'];
 
 	if (!isset($_POST['CurrentOrder'])) $_POST['CurrentOrder'] = "DESC"; // default ordering
@@ -2425,8 +2425,8 @@ case 'Concepts':
 	$current_page = ((isset($_POST['CurrentConPage'])) ? $_POST['CurrentConPage'] : 0);
 	$params['concepts']['current_page'] = $current_page;
 
-	$params['concepts']['list'] = $conceptdb->GetList($owner, $date, $state, $condition, $order, $current_page);
-	$page_count = $conceptdb->CountPages($owner, $date, $state);
+	$params['concepts']['list'] = $conceptdb->GetList($author, $date, $state, $condition, $order, $current_page);
+	$page_count = $conceptdb->CountPages($author, $date, $state);
 	$pages = array();
 	if ($page_count > 0) for ($i = 0; $i < $page_count; $i++) $pages[$i] = $i;
 	$params['concepts']['pages'] = $pages;
@@ -2434,8 +2434,8 @@ case 'Concepts':
 
 	$params['concepts']['timesections'] = $messagedb->Timesections();
 	$params['concepts']['PreviousLogin'] = $player->PreviousLogin();
-	$params['concepts']['owners'] = $owners = $conceptdb->ListOwners($date);
-	$params['concepts']['mycards'] = (in_array($player->Name(), $owners) ? 'yes' : 'no');
+	$params['concepts']['authors'] = $authors = $conceptdb->ListAuthors($date);
+	$params['concepts']['mycards'] = (in_array($player->Name(), $authors) ? 'yes' : 'no');
 	$params['concepts']['timezone'] = $player->GetSetting("Timezone");
 	$params['concepts']['PlayerName'] = $player->Name();
 	$params['concepts']['create_card'] = (($access_rights[$player->Type()]["create_card"]) ? 'yes' : 'no');
@@ -2460,7 +2460,7 @@ case 'Concepts_new':
 
 case 'Concepts_edit':
 	$concept = $conceptdb->GetConcept($concept_id);
-	$inputs = array('Name', 'Class', 'Bricks', 'Gems', 'Recruits', 'Effect', 'Keywords', 'Picture', 'Note', 'State', 'Owner');
+	$inputs = array('Name', 'Class', 'Bricks', 'Gems', 'Recruits', 'Effect', 'Keywords', 'Picture', 'Note', 'State', 'Author');
 	$data = array();
 	foreach ($inputs as $input) $data[strtolower($input)] = $concept->ConceptData->$input;
 	$data['id'] = $concept_id;

@@ -49,22 +49,22 @@
 
 			<!-- end date filter -->
 
-			<xsl:if test="count($param/owners/*) &gt; 0">
-			<!-- begin owner filter -->
+			<xsl:if test="count($param/authors/*) &gt; 0">
+			<!-- begin author filter -->
 
-			<select name="owner_filter">
-				<xsl:if test="$param/owner_val != 'none'">
+			<select name="author_filter">
+				<xsl:if test="$param/author_val != 'none'">
 					<xsl:attribute name="style">border-color: lime</xsl:attribute>
 				</xsl:if>
 				<option value="none">
-					<xsl:if test="$param/owner_val = 'none'">
+					<xsl:if test="$param/author_val = 'none'">
 						<xsl:attribute name="selected">selected</xsl:attribute>
 					</xsl:if>
-					No owner filter
+					No author filter
 				</option>
-				<xsl:for-each select="$param/owners/*">
+				<xsl:for-each select="$param/authors/*">
 					<option value="{am:urlencode(.)}">
-						<xsl:if test="$param/owner_val = .">
+						<xsl:if test="$param/author_val = .">
 							<xsl:attribute name="selected">selected</xsl:attribute>
 						</xsl:if>
 						<xsl:value-of select="text()"/>
@@ -72,7 +72,7 @@
 				</xsl:for-each>
 			</select>
 
-			<!-- end owner filter -->
+			<!-- end author filter -->
 			</xsl:if>
 
 			<!-- begin state filter -->
@@ -155,7 +155,7 @@
 						</xsl:if>
 					</input></p>
 				</th>
-				<th><p>Owner</p></th>
+				<th><p>Author</p></th>
 				<th>
 					<p>Last change<input class="details" type="submit" >
 						<xsl:choose>
@@ -181,7 +181,7 @@
 				<tr class="table_row">
 					<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></td>
 					<td><p><xsl:value-of select="name"/></p></td>
-					<td><p><xsl:value-of select="owner"/></p></td>
+					<td><p><xsl:value-of select="author"/></p></td>
 					<td>
 						<p>
 							<xsl:if test="am:datediff(lastchange, $param/PreviousLogin) &lt; 0">
@@ -194,10 +194,10 @@
 					<td><p><xsl:value-of select="state"/></p></td>
 					<td>
 						<p>
-							<xsl:if test="$param/edit_all_card = 'yes' or ($param/edit_own_card = 'yes' and ($param/PlayerName = owner))">
+							<xsl:if test="$param/edit_all_card = 'yes' or ($param/edit_own_card = 'yes' and ($param/PlayerName = author))">
 								<input class="details" type="submit" name="edit_card[{id}]" value="E" />
 							</xsl:if>
-							<xsl:if test="$param/delete_all_card = 'yes' or ($param/delete_own_card = 'yes' and ($param/PlayerName = owner))">
+							<xsl:if test="$param/delete_all_card = 'yes' or ($param/delete_own_card = 'yes' and ($param/PlayerName = author))">
 								<input class="details" type="submit" name="delete_card[{id}]" value="D" />
 							</xsl:if>
 						</p>
@@ -228,7 +228,7 @@
 		</div>
 
 		<input type="hidden" name="CurrentFilterChange" value="{$param/date_val}" />
-		<input type="hidden" name="CurrentFilterOwner" value="{$param/owner_val}" />
+		<input type="hidden" name="CurrentFilterAuthor" value="{$param/author_val}" />
 		<input type="hidden" name="CurrentFilterState" value="{$param/state_val}" />
 		<input type="hidden" name="CurrentConPage" value="{$param/current_page}" />
 		<input type="hidden" name="CurrentOrder" value="{$param/current_order}" />
@@ -348,13 +348,13 @@
 
 		<div id="card_edit">
 			<input type="submit" name="Concepts" value="Back" />
-			<xsl:if test="$param/data/owner = $param/PlayerName">
+			<xsl:if test="$param/data/author = $param/PlayerName">
 				<input type="submit" name="save_card" value="Save" />
 			</xsl:if>
 			<xsl:if test="$param/edit_all_card = 'yes'">
 				<input type="submit" name="save_card_special" value="Special save" />
 			</xsl:if>
-			<xsl:if test="$param/delete_all_card = 'yes' or ($param/delete_own_card = 'yes' and $param/data/owner = $param/PlayerName)">
+			<xsl:if test="$param/delete_all_card = 'yes' or ($param/delete_own_card = 'yes' and $param/data/author = $param/PlayerName)">
 				<xsl:choose>
 					<xsl:when test="$param/delete = 'no'">
 						<input type="submit" name="delete_card[{$param/data/id}]" value="Delete" />
