@@ -40,6 +40,9 @@
 	require_once('Access.php');
 	
 	$db = new CDatabase("localhost", "arcomage", "", "arcomage");
+
+	date_default_timezone_set("Etc/UTC");
+	$db->Query("SET time_zone='Etc/UTC'");
 	
 	$logindb = new CLogin($db);
 	$scoredb = new CScores($db);
@@ -135,9 +138,6 @@
 			$warning = "This user is not permitted to log in.";
 			break;
 		}
-
-		date_default_timezone_set("Etc/UTC");
-		$db->Query("SET time_zone='Etc/UTC'");
 
 		// login page messages
 		if (isset($_POST['Login']))
