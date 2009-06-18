@@ -246,6 +246,7 @@
 				<xsl:if test="$param/Take = 'yes'">
 				<tr>
 					<xsl:for-each select="$param/CardList/*">
+						<xsl:sort select="name" order="ascending"/>
 						<!-- if the deck's $classfilter section isn't full yet, display the button that adds the card -->
 						<td><input type="submit" name="add_card[{id}]" value="Take" /></td>
 					</xsl:for-each>
