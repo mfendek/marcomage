@@ -46,7 +46,7 @@
 	
 	$logindb = new CLogin($db);
 	$scoredb = new CScores($db);
-	$carddb = new CCards($db);
+	$carddb = new CCards();
 	$conceptdb = new CConcepts($db);
 	$deckdb = new CDecks($db);
 	$gamedb = new CGames($db);

@@ -10,8 +10,7 @@
 		
 		public function __construct()
 		{
-			$this->db = new SimpleXMLElement('cards.xml', 0, TRUE);
-			$this->db->registerXPathNamespace('am', 'http://arcomage.netvor.sk');
+			$this->db = false;
 		}
 		
 		public function __destruct()
@@ -19,8 +18,15 @@
 			$this->db = false;
 		}
 
-		public function GetDB()
+		public function getDB()
 		{
+			// initialize on first use
+			if( $this->db === false )
+			{
+				$this->db = new SimpleXMLElement('cards.xml', 0, TRUE);
+				$this->db->registerXPathNamespace('am', 'http://arcomage.netvor.sk');
+			}
+
 			return $this->db;
 		}
 		
@@ -106,7 +112,7 @@
 		*/
 		public function GetList(array $filters)
 		{
-			$db = $this->db;
+			$db = $this->getDB();
 
 			$result = $db->xpath("/am:cards/am:card[".$this->makeFilterQuery($filters)."]/@id");
 			
@@ -129,7 +135,7 @@
 		*/
 		public function GetData(array $ids)
 		{
-			$db = $this->db;
+			$db = $this->getDB();
 
 			// since xpath is too slow for this task, just grab everything and process it in php
 			$result = $db->xpath("/am:cards/am:card");
@@ -168,7 +174,7 @@
 		{
 			$keywords = array();
 			
-			$db = $this->db;
+			$db = $this->getDB();
 			$result = $db->xpath('/am:cards/am:card/am:keywords');
 			if( $result === false ) return $keywords;
 			
