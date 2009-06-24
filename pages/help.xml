@@ -202,6 +202,47 @@ This section provides a tool for managing card suggestion in a structured form. 
 	<li>Rejected - card will not be implemented in current form</li>
 </ul>
 
+<h4>Card template</h4>
+
+<p>To create new cards in the Concepts section, that are actually implementable, you need to follow certain restrictions. For example a card effect must be done in a single turn. Continuous effects are not supported. A card can only use/effect data described below:</p>
+
+<p>Game data (both player and opponent has their own data with the exception of round)</p>
+
+<ul>
+	<li>Tower</li>
+	<li>Wall</li>
+	<li>Quarry</li>
+	<li>Magic</li>
+	<li>Dungeon</li>
+	<li>Bricks</li>
+	<li>Gems</li>
+	<li>Recruits</li>
+	<li>Round</li>
+	<li>Changes done previous round (can be used only at the start of each round, contains data about Tower, Wall Facilities and resources)</li>
+	<li>Tokens</li>
+	<li>Production factor for each facility (default value is 1, multiplies with keyword side-effects)</li>
+</ul>
+
+<p>Card history - cards played during this/previous round</p>
+<p>Discarded cards:</p>
+
+<ul>
+	<li>dicarded by card effect during last round from player's hand</li>
+	<li>dicarded by card effect during last round from opponent's hand</li>
+	<li>dicarded by standard discard action</li>
+</ul>
+
+<p>Card data</p>
+
+<ul>
+	<li>Bricks</li>
+	<li>Gems</li>
+	<li>Recruits</li>
+	<li>Keywords and effect (supports all filter conditions that are in the deck section). Keywords can have one parameter (like Charge), but it cannot by dynamic.</li>
+	<li>New card flag (whether the card is new or not)</li>
+	<li>Tokens</li>
+</ul>
+
 <h4>Keywords</h4>
 <p>
 Keywords represent information about the card that is too big to fit in the card box, or some property that other cards may look for while performing their effect. Below, all keywords are listed and explained.
