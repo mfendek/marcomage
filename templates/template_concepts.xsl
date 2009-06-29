@@ -79,6 +79,7 @@
 			<xsl:variable name="states">
 				<class name="waiting"     />
 				<class name="rejected"    />
+				<class name="interesting" />
 				<class name="implemented" />
 			</xsl:variable>
 
@@ -409,6 +410,7 @@
 						<xsl:variable name="states">
 							<class name="waiting"     />
 							<class name="rejected"    />
+							<class name="interesting" />
 							<class name="implemented" />
 						</xsl:variable>
 
