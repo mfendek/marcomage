@@ -86,7 +86,7 @@
 			if( isset($filters['advanced']) )
 			{
 				$query .= " and ";
-				$query .= "contains(am:effect, '".$filters['advanced']."')"; //FIXME: no escaping
+				$query .= "(contains(am:effect, '".$filters['advanced']."') or contains(am:effect, '".strtolower($filters['advanced'])."'))"; //FIXME: no escaping
 			}
 
 			if( isset($filters['support']) )
