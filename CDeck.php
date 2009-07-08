@@ -305,7 +305,7 @@
 			return $new_tokens;
 		}
 		
-		public function ExportDeck()
+		public function ToCSV()
 		{
 			$data = '';
 			
@@ -316,6 +316,72 @@
 			$data.= implode(",", $this->DeckData->Tokens)."\n";
 			
 			return $data;
+		}
+		
+		public function FromCSV($file)
+		{
+			global $carddb;
+			
+			// load data
+			$lines = explode("\n", $file);
+			
+			$newname = trim($lines[0]);
+			$deck_cards = array();
+			$deck_cards['Common'] = explode(",", $lines[1]);
+			$deck_cards['Uncommon'] = explode(",", $lines[2]);
+			$deck_cards['Rare'] = explode(",", $lines[3]);
+			$tokens = explode(",", $lines[4]);
+			
+			// check deckname
+			if (strlen($newname) > 20) return "Deck name is too long.";
+			
+			// check if the deckname can be used (will not violate deck name uniqueness)
+			$list = $this->Decks->ListDecks($this->Username);
+			$pos = array_search($newname, $list);
+			if (($this->Deckname != $newname) AND ($pos !== false)) return 'Cannot change deck name, it is already used by another deck.';
+			if (trim($newname) == '') return 'Cannot change deck name, invalid input.';
+			
+			// check deck cards
+			foreach ($deck_cards as $rarity => $card_ids)
+			{
+				if (count($card_ids) != 15) return $rarity." cards data is corrupted.";
+				
+				$cards = array_diff($card_ids, array(0)); // remove empty slots
+				
+				// check for duplicates
+				if (count($cards) != count(array_unique($cards))) return $rarity." cards data contains duplicates.";
+				
+				// check ids
+				$all_cards = $carddb->GetList(array('class' => $rarity));
+				if (count(array_diff($cards, $all_cards)) > 0) return $rarity." cards data contians non ".$rarity." cards.";
+			}
+			
+			// check tokens
+			if (count($tokens) != 3) return "Token data is corrupted.";
+			
+			// check for duplicates
+			$non_empty = array_diff($tokens, array("none")); // remove empty tokens
+			
+			if (count($non_empty) != count(array_unique($non_empty))) return " Token data contains duplicates.";
+			
+			// check token names
+			$all_tokens = array_merge($carddb->TokenKeywords(), array("none"));
+			
+			if (count(array_diff($tokens, $all_tokens)) > 0) return "Token data contains non token keywords.";
+			
+			// import verfied data
+			
+			$this->RenameDeck($newname);
+			
+			// adjust key numbering
+			$card_keys = array_keys(array_fill(1, 15, 0));
+			
+			$this->DeckData->Common = array_combine($card_keys, $deck_cards['Common']);
+			$this->DeckData->Uncommon = array_combine($card_keys, $deck_cards['Uncommon']);
+			$this->DeckData->Rare = array_combine($card_keys, $deck_cards['Rare']);
+			$this->DeckData->Tokens = array_combine(array(1, 2, 3), $tokens);
+			
+			return "Success";
 		}
 		
 	}

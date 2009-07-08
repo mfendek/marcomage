@@ -1292,9 +1292,19 @@
 				if ($message == 'export_deck') // Decks -> Modify this deck -> Export
 				{
 					$curname = $_POST['CurrentDeck'];
-					$current = 'Deck_export';
+					$deck = $player->GetDeck($curname);
+					$file = $deck->ToCSV();
 					
-					break;
+					$content_type = 'text/csv';
+					$file_name = preg_replace("/[^a-zA-Z0-9_-]/i", "_", $deck->Deckname()).'.csv';
+					$file_length = strlen($file);
+					
+					header('Content-Type: '.$content_type.'');
+					header('Content-Disposition: attachment; filename="'.$file_name.'"');
+					header('Content-Length: '.$file_length);
+					echo $file;
+					
+					return; // skip the presentation layer
 				}
 				
 				if ($message == 'import_deck') // Decks -> Modify this deck -> Import
@@ -1302,83 +1312,34 @@
 					$curname = $_POST['CurrentDeck'];
 					$current = 'Deck_edit';
 					
-					$supported_types = array("text/plain");
+					$supported_types = array("text/csv", "text/comma-separated-values");
 					
 					if (($_FILES['uploadedfile']['tmp_name'] == ""))
 						$error = "Invalid input file";
-					elseif (!in_array($_FILES['uploadedfile']['type'], $supported_types))
+					else
+					if (!in_array($_FILES['uploadedfile']['type'], $supported_types))
 						$error = "Unsupported input file";
+					else
+					if (($_FILES['uploadedfile']['size'] > 1*1000 ))
+						$error = "File is too big";
 					else
 					{
 						// load file
 						$file = file_get_contents($_FILES['uploadedfile']['tmp_name']);
 						
-						// load data
-						$lines = explode("\n", $file);
-						
-						$newname = trim($lines[0]);
-						$deck_cards = array();
-						$deck_cards['Common'] = explode(",", $lines[1]);
-						$deck_cards['Uncommon'] = explode(",", $lines[2]);
-						$deck_cards['Rare'] = explode(",", $lines[3]);
-						$tokens = explode(",", $lines[4]);
-						
-						// check deckname
-						if (strlen($newname) > 20) { $error = "Deck name is too long."; break; }
-						
-						// check if the deckname can be used (will not violate deck name uniqueness)
-						$list = $player->ListDecks();
-						$pos = array_search($newname, $list);
-						if (($curname != $newname) AND ($pos !== false)) {	$error = 'Cannot change deck name, it is already used by another deck.'; break; }
-						if (trim($newname) == '') { $error = 'Cannot change deck name, invalid input.'; break; }
-						
-						// check deck cards
-						foreach ($deck_cards as $rarity => $card_ids)
-						{
-							if (count($card_ids) != 15) { $error = $rarity." cards data is corrupted."; break; }
-							
-							$cards = array_diff($card_ids, array(0)); // remove empty slots
-							
-							// check for duplicates
-							if (count($cards) != count(array_unique($cards))) { $error = $rarity." cards data contains duplicates."; break; }
-							
-							// check ids
-							$all_cards = $carddb->GetList(array('class' => $rarity));
-							if (count(array_diff($cards, $all_cards)) > 0) { $error = $rarity." cards data contians non ".$rarity." cards."; break; }
-						}
-						
-						// check tokens
-						if (count($tokens) != 3) { $error = "Token data is corrupted."; break; }
-						
-						// check for duplicates
-						$non_empty = array_diff($tokens, array("none")); // remove empty tokens
-						
-						if (count($non_empty) != count(array_unique($non_empty))) { $error = " Token data contains duplicates."; break; }
-						
-						// check token names
-						$all_tokens = array_merge($carddb->TokenKeywords(), array("none"));
-						
-						if (count(array_diff($tokens, $all_tokens)) > 0) { $error = "Token data contains non token keywords."; break; }
-						
-						// import verfied data
+						// import data
 						$deck = $player->GetDeck($curname);
 						
 						if ($deck != false)
 						{
-							$deck->RenameDeck($newname);
-							$_POST['CurrentDeck'] = $newname;
-							
-							// adjust key numbering
-							$card_keys = array_keys(array_fill(1, 15, 0));
-							
-							$deck->DeckData->Common = array_combine($card_keys, $deck_cards['Common']);
-							$deck->DeckData->Uncommon = array_combine($card_keys, $deck_cards['Uncommon']);
-							$deck->DeckData->Rare = array_combine($card_keys, $deck_cards['Rare']);
-							$deck->DeckData->Tokens = array_combine(array(1, 2, 3), $tokens);
-							
-							$deck->SaveDeck();
-							
-							$information = "Deck successfully imported.";
+							$result = $deck->FromCSV($file);
+							if ($result != "Success")	$error = $result;
+							else
+							{
+								$deck->SaveDeck();
+								$_POST['CurrentDeck'] = $deck->Deckname();
+								$information = "Deck successfully imported.";
+							}
 						}
 						else
 						{
@@ -2507,19 +2468,6 @@ case 'Deck_edit':
 	break;
 
 
-case 'Deck_export':
-	$currentdeck = $_POST['CurrentDeck'];
-	$deck = $player->GetDeck($currentdeck);
-	$file = $deck->ExportDeck();
-
-	$params['Export']['content_type'] = 'text/plain';
-	$params['Export']['file_name'] = preg_replace("/[^a-zA-Z0-9_-]/i", "_", $deck->Deckname()).'.txt';
-	$params['Export']['file_length'] = strlen($file);
-	$params['Export']['file'] = $file;
-
-	break;
-
-
 case 'Decks':
 	$params['decks']['list'] = $player->ListDecks();
 
@@ -3244,27 +3192,18 @@ default:
 	break;
 }
 
-	if (isset($params['Export'])) // file export generation
-	{
-		header('Content-Type: '.$params['Export']['content_type'].'');
-		header('Content-Disposition: attachment; filename="'.$params['Export']['file_name'].'"');
-		header('Content-Length: '.$params['Export']['file_length']);
-		echo $params['Export']['file'];
-	}
-	else
-	{
-		// HTML code generation
 
-		$querytime_end = microtime(TRUE);
-		$xslttime_start = $querytime_end;
+	// HTML code generation
 
-		echo XSLT("templates/arcomage.xsl", $params);
+	$querytime_end = microtime(TRUE);
+	$xslttime_start = $querytime_end;
 
-		$xslttime_end = microtime(TRUE);
+	echo XSLT("templates/arcomage.xsl", $params);
 
-		$logic = (int)(1000*($querytime_end - $querytime_start));
-		$transform = (int)(1000*($xslttime_end - $xslttime_start));
-		$total = (int)(1000*($xslttime_end - $querytime_start));
-		echo "<!-- Page generated in {$total} ({$logic} + {$transform}) ms. {$db->queries} queries used. -->";
-	}
+	$xslttime_end = microtime(TRUE);
+
+	$logic = (int)(1000*($querytime_end - $querytime_start));
+	$transform = (int)(1000*($xslttime_end - $xslttime_start));
+	$total = (int)(1000*($xslttime_end - $querytime_start));
+	echo "<!-- Page generated in {$total} ({$logic} + {$transform}) ms. {$db->queries} queries used. -->";
 ?>
