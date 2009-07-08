@@ -152,6 +152,8 @@ CREATE TABLE `settings` (
   `Correction` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `OldCardLook` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `Reports` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `Forum_notification` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
+  `Concepts_notification` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
   PRIMARY KEY  (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

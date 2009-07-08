@@ -2284,8 +2284,12 @@
 		$params["navbar"]["info_msg"] = @$information;
 		$params["navbar"]['NumChallenges'] = count($gamedb->ListChallengesTo($player->Name()));
 		$params["navbar"]['NumUnread'] = $messagedb->CountUnreadMessages($player->Name());
-		$params["navbar"]['IsSomethingNew'] = (($forum->IsSomethingNew($player->PreviousLogin())) ? 'yes' : 'no');
-		$params["navbar"]['NewConcepts'] = ($conceptdb->NewConcepts($player->PreviousLogin())) ? 'yes' : 'no';
+
+		// menubar notification (depends on current user's game settings)
+		$forum_not = ($player->GetSetting("Forum_notification") == 'yes');
+		$concepts_not = ($player->GetSetting("Concepts_notification") == 'yes');
+		$params["navbar"]['IsSomethingNew'] = ($forum_not AND $forum->IsSomethingNew($player->PreviousLogin())) ? 'yes' : 'no';
+		$params["navbar"]['NewConcepts'] = ($concepts_not AND $conceptdb->NewConcepts($player->PreviousLogin())) ? 'yes' : 'no';
 		
 		$list = $gamedb->ListActiveGames($player->Name());
 		$temp = 0;

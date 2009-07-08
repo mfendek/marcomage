@@ -108,6 +108,8 @@
 				<div><input type="checkbox" name="Correction" ><xsl:if test="$settings/Correction  = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Avatar display correction for chat (Firefox 2.x only)</div>
 				<div><input type="checkbox" name="OldCardLook"><xsl:if test="$settings/OldCardLook = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Old card appearance</div>
 				<div><input type="checkbox" name="Reports"><xsl:if test="$settings/Reports = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>System messages</div>
+				<div><input type="checkbox" name="Forum_notification"><xsl:if test="$settings/Forum_notification = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Forum notification</div>
+				<div><input type="checkbox" name="Concepts_notification"><xsl:if test="$settings/Concepts_notification = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Concepts notification</div>
 			</div>
 
 			<div>Save game settings:<input type="submit" name="game_settings" value="Save" /></div>
