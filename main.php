@@ -1316,7 +1316,7 @@
 						// load data
 						$lines = explode("\n", $file);
 						
-						$newname = $lines[0];
+						$newname = trim($lines[0]);
 						$deck_cards = array();
 						$deck_cards['Common'] = explode(",", $lines[1]);
 						$deck_cards['Uncommon'] = explode(",", $lines[2]);
