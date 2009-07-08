@@ -304,6 +304,20 @@
 			
 			return $new_tokens;
 		}
+		
+		public function ExportDeck()
+		{
+			$data = '';
+			
+			$data.= $this->Deckname."\n";
+			$data.= implode(",", $this->DeckData->Common)."\n";
+			$data.= implode(",", $this->DeckData->Uncommon)."\n";
+			$data.= implode(",", $this->DeckData->Rare)."\n";
+			$data.= implode(",", $this->DeckData->Tokens)."\n";
+			
+			return $data;
+		}
+		
 	}
 	
 	
