@@ -76,13 +76,16 @@
 			<td>
 				<p>
 					<xsl:choose>
-					<xsl:when test="$hasposts"><xsl:value-of select="concat(am:datetime(last_post, $param/timezone), ' by ', PostAuthor)" /></xsl:when>
-					<xsl:otherwise>n/a</xsl:otherwise>
+						<xsl:when test="$hasposts">
+							<xsl:value-of select="concat(am:datetime(last_post, $param/timezone), ' by ', PostAuthor)" />
+							<input class="details" type="submit" name="thread_last_page[{ThreadID}]" value="&rarr;" >
+								<xsl:if test="am:datediff(last_post, $param/PreviousLogin) &lt; 0">
+									<xsl:attribute name="style">border-color: red</xsl:attribute>
+								</xsl:if>
+							</input>
+						</xsl:when>
+						<xsl:otherwise>n/a</xsl:otherwise>
 					</xsl:choose>
-					
-					<input class="details" type="submit" name="thread_last_page[{ThreadID}]" value="&rarr;" >
-						<xsl:if test="am:datediff(last_post, $param/PreviousLogin) &lt; 0"><xsl:attribute name="style">border-color: red</xsl:attribute></xsl:if>
-					</input>
 				</p>
 			</td>
 			</tr>
@@ -206,13 +209,16 @@
 		<td>
 			<p>
 				<xsl:choose>
-				<xsl:when test="$hasposts"><xsl:value-of select="concat(am:datetime(last_post, $param/timezone), ' by ', PostAuthor)" /></xsl:when>
-				<xsl:otherwise>n/a</xsl:otherwise>
+					<xsl:when test="$hasposts">
+						<xsl:value-of select="concat(am:datetime(last_post, $param/timezone), ' by ', PostAuthor)" />
+						<input class="details" type="submit" name="thread_last_page[{ThreadID}]" value="&rarr;" >
+							<xsl:if test="am:datediff(last_post, $param/PreviousLogin) &lt; 0">
+								<xsl:attribute name="style">border-color: red</xsl:attribute>
+							</xsl:if>
+						</input>
+					</xsl:when>
+					<xsl:otherwise>n/a</xsl:otherwise>
 				</xsl:choose>
-				
-				<input class="details" type="submit" name="thread_last_page[{ThreadID}]" value="&rarr;">
-					<xsl:if test="am:datediff(last_post, $param/PreviousLogin) &lt; 0"><xsl:attribute name="style">border-color: red</xsl:attribute></xsl:if>
-				</input>
 			</p>
 		</td>
 		</tr>

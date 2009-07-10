@@ -2537,7 +2537,7 @@ case 'Concepts_edit':
 	$params['concepts_edit']['delete_own_card'] = (($access_rights[$player->Type()]["delete_own_card"]) ? 'yes' : 'no');
 	$params['concepts_edit']['delete_all_card'] = (($access_rights[$player->Type()]["delete_all_card"]) ? 'yes' : 'no');
 	$params['concepts_edit']['PlayerName'] = $player->Name();
-	$params['concepts_edit']['delete'] = ((isset($_POST["delete_card"])) ? 'yes' : 'no');;
+	$params['concepts_edit']['delete'] = ((isset($_POST["delete_card"])) ? 'yes' : 'no');
 	$params['concepts_edit']['c_text'] = $player->GetSetting("Cardtext");
 	$params['concepts_edit']['c_img'] = $player->GetSetting("Images");
 	$params['concepts_edit']['c_keywords'] = $player->GetSetting("Keywords");
