@@ -16,7 +16,7 @@
 	</div>
 
 	<div id="menu_float_right">
-	<input type="submit" name="Refresh[{am:urlencode($param/current)}]" value="Refresh" accesskey="w" />
+	<input type="submit" name="Logout" value="Logout" accesskey="q" />
 	</div>
 
 	<div id="menu_center">
@@ -86,7 +86,6 @@
 			<xsl:attribute name="class">menuselected</xsl:attribute>
 		</xsl:if>
 	</input>
-	<input type="submit" name="Logout" value="Logout" accesskey="q" />
 
 	</div>
 

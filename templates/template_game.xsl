@@ -102,7 +102,10 @@
 			</xsl:if>
 		</td>
 		<!-- end 'jump to next game' button -->
-		<td></td>
+		<td>
+			<!-- 'refresh' button -->
+			<input type="submit" name="Refresh[{am:urlencode($param/current)}]" value="Refresh" accesskey="w" />
+		</td>
 
 		<!-- begin game state indicator -->
 		<xsl:choose>

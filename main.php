@@ -2825,6 +2825,7 @@ case 'Game':
 	$hisdata = &$data->Player[$opponent->Name()];
 
 	$params['game']['CurrentGame'] = $gameid;
+	$params['game']['current'] = $current;
 
 	$params['game']['chat'] = (($access_rights[$player->Type()]["chat"]) ? 'yes' : 'no');
 
