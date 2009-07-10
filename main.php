@@ -1444,6 +1444,18 @@
 					break;
 				}
 				
+				if ($message == 'view_card') // go to card details
+				{
+					$concept_id = array_shift(array_keys($value));
+					
+					if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
+					$concept = $conceptdb->GetConcept($concept_id);
+					
+					$current = "Concepts_details";
+					
+					break;
+				}
+				
 				if ($message == 'edit_card') // go to card edit formaular
 				{
 					$concept_id = array_shift(array_keys($value));
@@ -1469,6 +1481,10 @@
 					// check access rights
 					if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 					
+					$old_name = $concept->Name();
+					$new_name = $_POST['name'];
+					$thread_id = $concept->ThreadID();
+					
 					// add default cost values
 					if (trim($_POST['bricks']) == "") $_POST['bricks'] = 0;
 					if (trim($_POST['gems']) == "") $_POST['gems'] = 0;
@@ -1486,6 +1502,13 @@
 					$result = $concept->EditConcept($data);
 					if (!$result) { $error = "Failed to save changes"; $current = "Concepts_edit"; break; }
 					
+					// update corresponding thread name if necessary
+					if ((trim($old_name) != trim($new_name)) AND ($thread_id > 0))
+					{
+						$result = $forum->Threads->EditThread($thread_id, $new_name, 'normal');					
+						if (!$result) { $error = "Failed to rename thread"; $current = "Concepts_edit"; break; }
+					}
+					
 					$information = "Changes saved";
 					$current = "Concepts_edit";
 					
@@ -1501,6 +1524,10 @@
 					
 					// check access rights
 					if (!$access_rights[$player->Type()]["edit_all_card"]) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+					
+					$old_name = $concept->Name();
+					$new_name = $_POST['name'];
+					$thread_id = $concept->ThreadID();
 					
 					// add default cost values
 					if (trim($_POST['bricks']) == "") $_POST['bricks'] = 0;
@@ -1518,6 +1545,13 @@
 					
 					$result = $concept->EditConceptSpecial($data);
 					if (!$result) { $error = "Failed to save changes"; $current = "Concepts_edit"; break; }
+					
+					// update corresponding thread name if necessary
+					if ((trim($old_name) != trim($new_name)) AND ($thread_id > 0))
+					{
+						$result = $forum->Threads->EditThread($thread_id, $new_name, 'normal');					
+						if (!$result) { $error = "Failed to rename thread"; $current = "Concepts_edit"; break; }
+					}
 					
 					$information = "Changes saved";
 					$current = "Concepts_edit";
@@ -1627,6 +1661,36 @@
 					
 					break;
 				}
+				
+				if ($message == 'concept_thread') // create new thread for specified card concept
+				{
+					$concept_id = $_POST['CurrentConcept'];
+					$section_id = 6; // section for discussing concepts
+					
+					// check access rights
+					if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Concepts_details'; break; }
+					
+					$concept = $conceptdb->GetConcept($concept_id);
+					$thread_id = $concept->ThreadID();
+					if ($thread_id > 0) { $error = "Thread already exists"; $current = "Thread_details"; break; }
+					
+					$concept_name = $concept->Name();
+					
+					$new_thread = $forum->Threads->CreateThread($concept_name, $player->Name(), 'normal', $section_id);
+					if ($new_thread === false) { $error = "Failed to create new thread"; $current = "Concepts_details"; break; }
+					// $new_thread contains ID of currently created thread, which can be 0
+					
+					$result = $concept->AssignThread($new_thread);
+					if (!$result) { $error = "Failed to assign new thread"; $current = "Concepts_details"; break; }
+					
+					$information = "Thread created";
+					$thread_id = $new_thread;
+					
+					$current = 'Thread_details';
+					
+					break;
+				}
+				
 				// end concepts-related messages
 				
 				// novels-related messages
@@ -2546,6 +2610,26 @@ case 'Concepts_edit':
 	break;
 
 
+case 'Concepts_details':
+	$concept = $conceptdb->GetConcept($concept_id);
+	$inputs = array('Name', 'Class', 'Bricks', 'Gems', 'Recruits', 'Effect', 'Keywords', 'Picture', 'Note', 'State', 'Author', 'ThreadID');
+	$data = array();
+	foreach ($inputs as $input) $data[strtolower($input)] = $concept->ConceptData->$input;
+	$data['id'] = $concept_id;
+	$params['concepts_details']['data'] = $data;
+
+	$params['concepts_details']['create_thread'] = ($access_rights[$player->Type()]["create_thread"]) ? 'yes' : 'no';
+	$params['concepts_details']['edit_all_card'] = ($access_rights[$player->Type()]["edit_all_card"]) ? 'yes' : 'no';
+	$params['concepts_details']['delete_own_card'] = ($access_rights[$player->Type()]["delete_own_card"]) ? 'yes' : 'no';
+	$params['concepts_details']['delete_all_card'] = ($access_rights[$player->Type()]["delete_all_card"]) ? 'yes' : 'no';
+	$params['concepts_details']['c_text'] = $player->GetSetting("Cardtext");
+	$params['concepts_details']['c_img'] = $player->GetSetting("Images");
+	$params['concepts_details']['c_keywords'] = $player->GetSetting("Keywords");
+	$params['concepts_details']['c_oldlook'] = $player->GetSetting("OldCardLook");
+
+	break;
+
+
 case 'Players':	
 
 	// defaults for list ordering
@@ -3140,6 +3224,7 @@ case 'Thread_details':
 	$params['forum_thread']['PlayerName'] = $player->Name();
 	$params['forum_thread']['PreviousLogin'] = $player->PreviousLogin();
 	$params['forum_thread']['timezone'] = $player->GetSetting("Timezone");
+	$params['forum_thread']['concept'] = $conceptdb->FindConcept($thread_id);
 
 	$params['forum_thread']['lock_thread'] = (($access_rights[$player->Type()]["lock_thread"]) ? 'yes' : 'no');
 	$params['forum_thread']['del_all_thread'] = (($access_rights[$player->Type()]["del_all_thread"]) ? 'yes' : 'no');

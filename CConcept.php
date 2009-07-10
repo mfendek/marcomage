@@ -195,6 +195,28 @@
 			return $error;
 		}
 
+		public function AssignThread($concept_id, $thread_id)
+		{
+			$db = $this->db;
+
+			$result = $db->Query('UPDATE `concepts` SET `ThreadID` = "'.$thread_id.'" WHERE `CardID` = "'.$concept_id.'"');
+
+			if (!$result) return false;
+
+			return true;
+		}
+
+		public function FindConcept($thread_id)
+		{
+			$db = $this->db;
+
+			$result = $db->Query('SELECT `CardID` FROM `concepts` WHERE `ThreadID` = "'.$thread_id.'"');
+			if (!$result OR !$result->Rows()) return 0;
+
+			$data = $result->Next();
+
+			return $data['CardID'];
+		}
 	}
 
 
@@ -214,15 +236,15 @@
 			$cd = &$this->ConceptData;
 
 			$db = $this->Concepts->getDB();
-			$result = $db->Query('SELECT `Name`, `Class`, `Bricks`, `Gems`, `Recruits`, `Effect`, `Keywords`, `Picture`, `Note`, `State`, `Author`, `LastChange` FROM `concepts` WHERE `CardID` = '.$this->CardID.'');
+			$result = $db->Query('SELECT `Name`, `Class`, `Bricks`, `Gems`, `Recruits`, `Effect`, `Keywords`, `Picture`, `Note`, `State`, `Author`, `LastChange`, `ThreadID` FROM `concepts` WHERE `CardID` = '.$this->CardID.'');
 
 			if( !$result OR !$result->Rows() ) return false;
 
 			$data = $result->Next();
-			$arr = array ($data['Name'], $data['Class'], $data['Bricks'], $data['Gems'], $data['Recruits'], $data['Effect'], $data['Keywords'], $data['Picture'], $data['Note'], $data['State'], $data['Author'], $data['LastChange']);
+			$arr = array ($data['Name'], $data['Class'], $data['Bricks'], $data['Gems'], $data['Recruits'], $data['Effect'], $data['Keywords'], $data['Picture'], $data['Note'], $data['State'], $data['Author'], $data['LastChange'], $data['ThreadID']);
 
 			// initialize self
-			list($cd->Name, $cd->Class, $cd->Bricks, $cd->Gems, $cd->Recruits, $cd->Effect, $cd->Keywords, $cd->Picture, $cd->Note, $cd->State, $cd->Author, $cd->LastChange) = $arr;
+			list($cd->Name, $cd->Class, $cd->Bricks, $cd->Gems, $cd->Recruits, $cd->Effect, $cd->Keywords, $cd->Picture, $cd->Note, $cd->State, $cd->Author, $cd->LastChange, $cd->ThreadID) = $arr;
 		}
 
 		public function __destruct()
@@ -256,6 +278,21 @@
 		{
 			return $this->Concepts->DeleteConcept($this->CardID);
 		}
+
+		public function AssignThread($thread_id)
+		{
+			return $this->Concepts->AssignThread($this->CardID, $thread_id);
+		}
+
+		public function Name()
+		{
+			return $this->ConceptData->Name;
+		}
+
+		public function ThreadID()
+		{
+			return $this->ConceptData->ThreadID;
+		}
 	}
 
 
@@ -273,5 +310,6 @@
 		public $State;
 		public $Author;
 		public $LastChange;
+		public $ThreadID;
 	}
 ?>

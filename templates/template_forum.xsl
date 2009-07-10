@@ -260,6 +260,9 @@
 				<xsl:if test="$thread/Locked = 'yes'">(Locked)</xsl:if>
 			</h5>
 			<p>
+			<xsl:if test="$thread/CardID &gt; 0">
+				<input type="submit" name="view_card[{$thread/CardID}]" value="Go to concept" />
+			</xsl:if>
 
 			<xsl:if test="$param/lock_thread = 'yes'">
 				<xsl:choose>

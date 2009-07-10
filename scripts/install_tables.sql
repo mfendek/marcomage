@@ -29,6 +29,7 @@ CREATE TABLE `concepts` (
   `State` char(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'waiting',
   `Author` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `LastChange` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ThreadID` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`CardID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
@@ -233,4 +234,5 @@ INSERT INTO `forum_sections` (`SectionID`, `SectionName`, `Description`) VALUES
 (2, 'Development', 'suggest and discuss new features that could be added'),
 (3, 'Support', 'report bugs, exploits and technical difficulties'),
 (4, 'Contests', 'help MArcomage to become a better site'),
-(5, 'Novels', 'discuss our fantasy novels section');
+(5, 'Novels', 'discuss our fantasy novels section'),
+(6, 'Concepts', 'discuss card suggestions');

@@ -175,7 +175,6 @@
 						</xsl:if>
 					</input></p>
 				</th>
-				<th><p>Note</p></th>
 				<th><p>State</p></th>
 				<th></th>
 			</tr>
@@ -193,10 +192,10 @@
 							<xsl:value-of select="am:datetime(lastchange, $param/timezone)"/>
 						</p>
 					</td>
-					<td><p class="note"><xsl:value-of select="am:textencode(note)" disable-output-escaping="yes" /></p></td>
 					<td><p><xsl:value-of select="state"/></p></td>
 					<td>
 						<p>
+							<input class="details" type="submit" name="view_card[{id}]" value="+" />
 							<xsl:if test="$param/edit_all_card = 'yes' or ($param/edit_own_card = 'yes' and ($param/PlayerName = author))">
 								<input class="details" type="submit" name="edit_card[{id}]" value="E" />
 							</xsl:if>
@@ -351,6 +350,7 @@
 
 		<div id="card_edit">
 			<input type="submit" name="Concepts" value="Back" />
+			<input type="submit" name="view_card[{$param/data/id}]" value="Details" />
 			<xsl:if test="$param/data/author = $param/PlayerName">
 				<input type="submit" name="save_card" value="Save" />
 			</xsl:if>
@@ -440,6 +440,46 @@
 			</p>
 		</div>
 
+		<input type="hidden" name="CurrentConcept" value="{$param/data/id}" />
+	</div>
+
+</xsl:template>
+
+
+<xsl:template match="section[. = 'Concepts_details']">
+	<xsl:variable name="param" select="$params/concepts_details" />
+
+	<div id="concepts_edit">
+
+		<h3>Card details</h3>
+
+		<div id="card_edit">
+			<input type="submit" name="Concepts" value="Back" />
+			<xsl:if test="$param/edit_all_card = 'yes' or ($param/edit_own_card = 'yes' and ($param/PlayerName = author))">
+				<input type="submit" name="edit_card[{$param/data/id}]" value="Edit" />
+			</xsl:if>
+			<hr />
+
+			<div class="card_preview"><xsl:copy-of select="am:cardstring($param/data, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></div>
+			<div class="limit">
+				<p><span><xsl:value-of select="$param/data/name"/></span>Name</p>
+				<p><span><xsl:value-of select="$param/data/class"/></span>Rarity</p>
+				<p><span><xsl:value-of select="$param/data/keywords"/></span>Keywords</p>
+				<p><span><xsl:value-of select="$param/data/state"/></span>State</p>
+			</div>
+			<p>Note</p>
+			<p><xsl:value-of select="am:textencode($param/data/note)" disable-output-escaping="yes" /></p>
+			<p>
+				<xsl:choose>
+					<xsl:when test="$param/data/threadid = 0 and $param/create_thread = 'yes'">
+						<input type="submit" name="concept_thread" value="Start discussion" />
+					</xsl:when>
+					<xsl:when test="$param/data/threadid &gt; 0">
+						<input type="submit" name="thread_details[{$param/data/threadid}]" value="Go to discussion" />
+					</xsl:when>
+				</xsl:choose>
+			</p>
+		</div>
 		<input type="hidden" name="CurrentConcept" value="{$param/data/id}" />
 	</div>
 

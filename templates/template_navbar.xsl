@@ -69,7 +69,7 @@
 		</xsl:if>
 	</input>
 	<input type="submit" name="Concepts" value="Concepts" >
-		<xsl:if test="($param/current = 'Concepts') or ($param/current = 'Concepts_new') or ($param/current = 'Concepts_edit')">
+		<xsl:if test="($param/current = 'Concepts') or ($param/current = 'Concepts_new') or ($param/current = 'Concepts_edit') or ($param/current = 'Concepts_details')">
 			<xsl:attribute name="class">menuselected</xsl:attribute>
 		</xsl:if>
 	</input>
