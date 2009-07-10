@@ -27,7 +27,7 @@ CREATE TABLE `concepts` (
   `Picture` char(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'blank.jpg',
   `Note` text COLLATE utf8_unicode_ci NOT NULL,
   `State` char(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'waiting',
-  `Owner` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `Author` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `LastChange` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`CardID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
