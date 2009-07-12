@@ -678,47 +678,6 @@
 					}
 				}
 				
-				//process Rebirth cards - if there are enough Burning cards in game the card stays on hand and player get additional gems
-				if ($card->HasKeyWord("Rebirth"))
-				{
-					if (($this->KeywordCount($mydata->Hand, "Burning") + $this->KeywordCount($hisdata->Hand, "Burning")) > 3)
-					{
-						$nextcard = $cardid;
-						$mydata->Gems+= 16;
-					}
-				}
-				
-				//process Flare attack cards - place searing fire cards to both players hands (odd and even positions randomly selected)
-				if ($card->HasKeyWord("Flare attack"))
-				{
-					$selector = mt_rand(0,1);
-					for ($i = 1; $i <= 4; $i++)
-					{
-						// current index (odd and even positions)
-						$mine = 2*$i - $selector;
-						$his = 2*$i - (1 - $selector);
-						
-						$mytarget = $carddb->GetCard($mydata->Hand[$mine]);
-						$histarget = $carddb->GetCard($hisdata->Hand[$his]);
-						
-						$my_rarity = $mytarget->GetClass();
-						$his_rarity = $histarget->GetClass();
-						
-						// played card position is ignored, does not discard burning cards (rares cards can only be rares)
-						if (($mine != $cardpos) AND (!$mytarget->HasKeyword("Burning")) AND (($my_rarity != 'Rare') OR ($my_rarity == $card->GetClass())))
-						{
-							$mydata->Hand[$mine] = 248;
-							$mydata->NewCards[$mine] = 1;
-						}
-						
-						if ((!$histarget->HasKeyword("Burning")) AND (($his_rarity != 'Rare') OR ($his_rarity == $card->GetClass())))
-						{
-							$hisdata->Hand[$his] = 248;
-							$hisdata->NewCards[$his] = 1;
-						}
-					}
-				}
-				
 				//process Banish cards - discard one random Durable card from enemy hand, if there is one
 				if ($card->HasKeyWord("Banish"))
 				{
@@ -835,6 +794,47 @@
 				//end order independent keywords
 				
 				//begin order dependent keywords
+				
+				//process Rebirth cards - if there are enough Burning cards in game the card stays on hand and player get additional gems
+				if ($card->HasKeyWord("Rebirth"))
+				{
+					if (($this->KeywordCount($mydata->Hand, "Burning") + $this->KeywordCount($hisdata->Hand, "Burning")) > 3)
+					{
+						$nextcard = $cardid;
+						$mydata->Gems+= 16;
+					}
+				}
+				
+				//process Flare attack cards - place searing fire cards to both players hands (odd and even positions randomly selected)
+				if ($card->HasKeyWord("Flare attack"))
+				{
+					$selector = mt_rand(0,1);
+					for ($i = 1; $i <= 4; $i++)
+					{
+						// current index (odd and even positions)
+						$mine = 2*$i - $selector;
+						$his = 2*$i - (1 - $selector);
+						
+						$mytarget = $carddb->GetCard($mydata->Hand[$mine]);
+						$histarget = $carddb->GetCard($hisdata->Hand[$his]);
+						
+						$my_rarity = $mytarget->GetClass();
+						$his_rarity = $histarget->GetClass();
+						
+						// played card position is ignored, does not discard burning cards (rares cards can only be rares)
+						if (($mine != $cardpos) AND (!$mytarget->HasKeyword("Burning")) AND (($my_rarity != 'Rare') OR ($my_rarity == $card->GetClass())))
+						{
+							$mydata->Hand[$mine] = 248;
+							$mydata->NewCards[$mine] = 1;
+						}
+						
+						if ((!$histarget->HasKeyword("Burning")) AND (($his_rarity != 'Rare') OR ($his_rarity == $card->GetClass())))
+						{
+							$hisdata->Hand[$his] = 248;
+							$hisdata->NewCards[$his] = 1;
+						}
+					}
+				}
 				
 				//process Enduring cards - if last card played was the same card, bonus attack
 				if ($card->HasKeyWord("Enduring"))
