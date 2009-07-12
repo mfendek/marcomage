@@ -1406,7 +1406,7 @@
 					break;
 				}
 				
-				if ($message == 'new_card') // go to new card formular
+				if ($message == 'new_concept') // go to new card formular
 				{
 					// check access rights
 					if (!$access_rights[$player->Type()]["create_card"]) { $error = 'Access denied.'; $current = 'Concepts'; break; }
@@ -1415,7 +1415,7 @@
 					break;
 				}
 				
-				if ($message == 'create_card') // create new card concept
+				if ($message == 'create_concept') // create new card concept
 				{
 					// check access rights
 					if (!$access_rights[$player->Type()]["create_card"]) { $error = 'Access denied.'; $current = 'Concepts'; break; }
@@ -1444,7 +1444,7 @@
 					break;
 				}
 				
-				if ($message == 'view_card') // go to card details
+				if ($message == 'view_concept') // go to card details
 				{
 					$concept_id = array_shift(array_keys($value));
 					
@@ -1456,7 +1456,7 @@
 					break;
 				}
 				
-				if ($message == 'edit_card') // go to card edit formaular
+				if ($message == 'edit_concept') // go to card edit formaular
 				{
 					$concept_id = array_shift(array_keys($value));
 					
@@ -1471,7 +1471,7 @@
 					break;
 				}
 				
-				if ($message == 'save_card') // save edited changes
+				if ($message == 'save_concept') // save edited changes
 				{
 					$concept_id = $_POST['CurrentConcept'];
 					
@@ -1515,7 +1515,7 @@
 					break;
 				}
 				
-				if ($message == 'save_card_special') // save edited changes (special access)
+				if ($message == 'save_concept_special') // save edited changes (special access)
 				{
 					$concept_id = $_POST['CurrentConcept'];
 					
@@ -1628,7 +1628,7 @@
 					break;
 				}
 				
-				if ($message == 'delete_card') // delete card concept
+				if ($message == 'delete_concept') // delete card concept
 				{
 					$concept_id = array_shift(array_keys($value));
 					
@@ -1643,7 +1643,7 @@
 					break;
 				}
 				
-				if ($message == 'delete_card_confirm') // delete card concept confirmation
+				if ($message == 'delete_concept_confirm') // delete card concept confirmation
 				{
 					$concept_id = $_POST['CurrentConcept'];
 					
@@ -2601,7 +2601,7 @@ case 'Concepts_edit':
 	$params['concepts_edit']['delete_own_card'] = (($access_rights[$player->Type()]["delete_own_card"]) ? 'yes' : 'no');
 	$params['concepts_edit']['delete_all_card'] = (($access_rights[$player->Type()]["delete_all_card"]) ? 'yes' : 'no');
 	$params['concepts_edit']['PlayerName'] = $player->Name();
-	$params['concepts_edit']['delete'] = ((isset($_POST["delete_card"])) ? 'yes' : 'no');
+	$params['concepts_edit']['delete'] = ((isset($_POST["delete_concept"])) ? 'yes' : 'no');
 	$params['concepts_edit']['c_text'] = $player->GetSetting("Cardtext");
 	$params['concepts_edit']['c_img'] = $player->GetSetting("Images");
 	$params['concepts_edit']['c_keywords'] = $player->GetSetting("Keywords");

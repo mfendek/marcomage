@@ -22,7 +22,7 @@
 
 		<div class="filters_trans">
 			<xsl:if test="$param/create_card = 'yes'">
-				<input type="submit" name="new_card" value="New card" />
+				<input type="submit" name="new_concept" value="New card" />
 			</xsl:if>
 
 			<!-- begin date filter -->
@@ -195,9 +195,9 @@
 					<td><p><xsl:value-of select="state"/></p></td>
 					<td>
 						<p>
-							<input class="details" type="submit" name="view_card[{id}]" value="+" />
+							<input class="details" type="submit" name="view_concept[{id}]" value="+" />
 							<xsl:if test="$param/edit_all_card = 'yes' or ($param/edit_own_card = 'yes' and ($param/PlayerName = author))">
-								<input class="details" type="submit" name="edit_card[{id}]" value="E" />
+								<input class="details" type="submit" name="edit_concept[{id}]" value="E" />
 							</xsl:if>
 							<xsl:if test="$param/delete_all_card = 'yes' or ($param/delete_own_card = 'yes' and ($param/PlayerName = author))">
 								<input class="details" type="submit" name="delete_card[{id}]" value="D" />
@@ -248,7 +248,7 @@
 
 		<div id="card_edit">
 			<input type="submit" name="Concepts" value="Back" />
-			<input type="submit" name="create_card" value="Create card" />
+			<input type="submit" name="create_concept" value="Create card" />
 
 			<hr />
 
@@ -350,20 +350,20 @@
 
 		<div id="card_edit">
 			<input type="submit" name="Concepts" value="Back" />
-			<input type="submit" name="view_card[{$param/data/id}]" value="Details" />
+			<input type="submit" name="view_concept[{$param/data/id}]" value="Details" />
 			<xsl:if test="$param/data/author = $param/PlayerName">
-				<input type="submit" name="save_card" value="Save" />
+				<input type="submit" name="save_concept" value="Save" />
 			</xsl:if>
 			<xsl:if test="$param/edit_all_card = 'yes'">
-				<input type="submit" name="save_card_special" value="Special save" />
+				<input type="submit" name="save_concept_special" value="Special save" />
 			</xsl:if>
 			<xsl:if test="$param/delete_all_card = 'yes' or ($param/delete_own_card = 'yes' and $param/data/author = $param/PlayerName)">
 				<xsl:choose>
 					<xsl:when test="$param/delete = 'no'">
-						<input type="submit" name="delete_card[{$param/data/id}]" value="Delete" />
+						<input type="submit" name="delete_concept[{$param/data/id}]" value="Delete" />
 					</xsl:when>
 					<xsl:otherwise>
-						<input type="submit" name="delete_card_confirm" value="Confirm delete" class="menuselected" />
+						<input type="submit" name="delete_concept_confirm" value="Confirm delete" class="menuselected" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:if>
@@ -456,7 +456,7 @@
 		<div id="card_edit">
 			<input type="submit" name="Concepts" value="Back" />
 			<xsl:if test="$param/edit_all_card = 'yes' or ($param/edit_own_card = 'yes' and ($param/PlayerName = author))">
-				<input type="submit" name="edit_card[{$param/data/id}]" value="Edit" />
+				<input type="submit" name="edit_concept[{$param/data/id}]" value="Edit" />
 			</xsl:if>
 			<hr />
 
