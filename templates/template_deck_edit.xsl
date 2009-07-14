@@ -113,7 +113,7 @@
 	<xsl:variable name="advanced">
 		<adv name="none"        text="No adv. filters" />
 		<adv name="Attack:"     text="Attack"          />
-		<adv name="discard"     text="Discard"         />
+		<adv name="Discard"     text="Discard"         />
 		<adv name="Production"  text="Production"      />
 		<adv name="Wall: +"     text="Wall +"          />
 		<adv name="Wall: -"     text="Wall -"          />
