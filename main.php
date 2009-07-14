@@ -155,9 +155,9 @@
 		{
 			$current = "Forum";
 		}
-		elseif (isset($_POST['Challenges']))
+		elseif (isset($_POST['Messages']))
 		{
-			$current = "Challenges";
+			$current = "Messages";
 		}
 		elseif (isset($_POST['Players'])) 
 		{
@@ -691,7 +691,7 @@
 					}
 					
 					// check access rights
-					if (!$access_rights[$player->Type()]["accept_challenges"]) { $error = 'Access denied.'; $current = 'Challenges'; break; }
+					if (!$access_rights[$player->Type()]["accept_challenges"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
 					
 					// accept the challenge
 					$game->GameData->Player[$player->Name()]->Deck = $deck->DeckData;
@@ -703,7 +703,7 @@
 						$messagedb->SendMessage("MArcomage", $opponent, "Challenge accepted", 'Player '.$player->Name().' has accepted your challenge.');
 					
 					$information = 'You have accepted a challenge from '.htmlencode($opponent).'.';
-					$current = 'Challenges';
+					$current = 'Messages';
 					break;
 				}
 				
@@ -733,7 +733,7 @@
 						$messagedb->SendMessage("MArcomage", $opponent, "Challenge rejected", 'Player '.$player->Name().' has rejected your challenge.');
 					
 					$information = 'You have rejected a challenge.';
-					$current = 'Challenges';
+					$current = 'Messages';
 					break;
 				}
 				
@@ -776,7 +776,7 @@
 					if ($gamedb->GetGame2($player->Name(), $opponent)) { $error = 'You are already playing against '.htmlencode($opponent).'!'; $current = 'Games'; break; }
 					
 					// check if you are within the MAX_GAMES limit
-					if (count($gamedb->ListActiveGames($player->Name())) + count($gamedb->ListChallengesFrom($player->Name())) + count($gamedb->ListChallengesTo($player->Name())) >= MAX_GAMES) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Challenges'; break; }
+					if (count($gamedb->ListActiveGames($player->Name())) + count($gamedb->ListChallengesFrom($player->Name())) + count($gamedb->ListChallengesTo($player->Name())) >= MAX_GAMES) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Messages'; break; }
 					
 					// check challenge text length
 					if (strlen($_POST['Content']) > CHALLENGE_LENGTH) { $error = "Message too long"; $current = "Details"; break; }
@@ -834,10 +834,10 @@
 					$game = $gamedb->GetGame2($player->Name(), $opponent);
 					
 					// check if the challenge exists
-					if (!$game) { $error = 'No such challenge!'; $current = 'Challenges'; break; }
+					if (!$game) { $error = 'No such challenge!'; $current = 'Messages'; break; }
 					
 					// check if the game is a a challenge (and not a game in progress)
-					if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Challenges'; break; }
+					if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Messages'; break; }
 					
 					// delete t3h challenge/game entry
 					$gamedb->DeleteGame2($player->Name(), $opponent);
@@ -846,19 +846,19 @@
 					
 					$information = 'You have withdrawn a challenge.';
 					$_POST['outgoing'] = "outgoing"; // stay in "Outgoing" subsection
-					$current = 'Challenges';
+					$current = 'Messages';
 					break;
 				}
 				
 				if ($message == 'incoming') // view challenges to player
 				{
-					$current = 'Challenges';
+					$current = 'Messages';
 					break;
 				}
 				
 				if ($message == 'outgoing') // view challenges from player
 				{
-					$current = 'Challenges';
+					$current = 'Messages';
 					break;
 				}
 				// end challenge-related messages
@@ -870,7 +870,7 @@
 					
 					$message = $messagedb->GetMessage($messageid, $player->Name());
 					
-					if (!$message) { $error = "No such message!"; $current = "Challenges"; break; }
+					if (!$message) { $error = "No such message!"; $current = "Messages"; break; }
 					
 					$current = 'Message_details';
 					break;
@@ -881,11 +881,11 @@
 					$messageid = array_shift(array_keys($value));
 					
 					// check access rights
-					if (!$access_rights[$player->Type()]["see_all_messages"]) { $error = 'Access denied.'; $current = 'Challenges'; break; }
+					if (!$access_rights[$player->Type()]["see_all_messages"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
 						
 					$message = $messagedb->RetrieveMessage($messageid);
 					
-					if (!$message) { $error = "No such message!"; $current = "Challenges"; break; }
+					if (!$message) { $error = "No such message!"; $current = "Messages"; break; }
 					
 					$current = 'Message_details';
 					break;
@@ -897,7 +897,7 @@
 					
 					$message = $messagedb->GetMessage($messageid, $player->Name());
 					
-					if (!$message) { $error = "No such message!"; $current = "Challenges"; break; }
+					if (!$message) { $error = "No such message!"; $current = "Messages"; break; }
 					
 					$current = 'Message_details';
 					break;
@@ -909,17 +909,17 @@
 					
 					$message = $messagedb->DeleteMessage($messageid, $player->Name());
 					
-					if (!$message) { $error = "No such message!"; $current = "Challenges"; break; }
+					if (!$message) { $error = "No such message!"; $current = "Messages"; break; }
 					
 					$information = "Message deleted";
 					
-					$current = 'Challenges';
+					$current = 'Messages';
 					break;
 				}
 				
 				if ($message == 'message_cancel') // cancel new message creation
 				{
-					$current = 'Challenges';
+					$current = 'Messages';
 					break;
 				}
 				
@@ -929,7 +929,7 @@
 					$author = $_POST['Author'];
 					
 					// check access rights
-					if (!$access_rights[$player->Type()]["messages"]) { $error = 'Access denied.'; $current = 'Challenges'; break; }
+					if (!$access_rights[$player->Type()]["messages"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
 				
 					if ((trim($_POST['Subject']) == "") AND (trim($_POST['Content']) == "")) { $error = "No message input specified"; $current = "Message_new"; break; }
 					
@@ -937,19 +937,19 @@
 				
 					$message = $messagedb->SendMessage($_POST['Author'], $_POST['Recipient'], $_POST['Subject'], $_POST['Content']);
 					
-					if (!$message) { $error = "Failed to send message"; $current = "Challenges"; break; }
+					if (!$message) { $error = "Failed to send message"; $current = "Messages"; break; }
 					
 					$_POST['CurrentLocation'] = "sent_mail";
 					$information = "Message sent";
 					
-					$current = 'Challenges';
+					$current = 'Messages';
 					break;
 				}
 				
 				if ($message == 'message_create') // go to new message screen
 				{
 					// check access rights
-					if (!$access_rights[$player->Type()]["messages"]) { $error = 'Access denied.'; $current = 'Challenges'; break; }
+					if (!$access_rights[$player->Type()]["messages"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
 				
 					$recipient = postdecode(array_shift(array_keys($value)));
 					$author = $player->Name();
@@ -978,7 +978,7 @@
 					$_POST['CurrentMesPage'] = 0;
 					unset($_POST['CurrentCond']);
 					unset($_POST['CurrentOrd']);
-					$current = 'Challenges';
+					$current = 'Messages';
 					break;
 				}
 				
@@ -990,21 +990,21 @@
 					$_POST['CurrentMesPage'] = 0;
 					unset($_POST['CurrentCond']);
 					unset($_POST['CurrentOrd']);
-					$current = 'Challenges';
+					$current = 'Messages';
 					break;
 				}
 				
  				if ($message == 'all_mail') // view messages from player
  				{
  					// check access rights
- 					if (!$access_rights[$player->Type()]["see_all_messages"]) { $error = 'Access denied.'; $current = 'Challenges'; break; }
+ 					if (!$access_rights[$player->Type()]["see_all_messages"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
 					$_POST['CurrentLocation'] = "all_mail";
  					$_POST['CurrentFilterDate'] = "none";
 					$_POST['CurrentFilterName'] = "none";
 					$_POST['CurrentMesPage'] = 0;
 					unset($_POST['CurrentCond']);
 					unset($_POST['CurrentOrd']);
- 					$current = 'Challenges';
+ 					$current = 'Messages';
  					break;
  				}
 				
@@ -1016,7 +1016,7 @@
 						$_POST['CurrentCond'] = array_shift(array_keys($value));
 						$_POST['CurrentOrd'] = $order_val;
 						
-						$current = "Challenges";
+						$current = "Messages";
 						
 						break;
 					}
@@ -1028,14 +1028,14 @@
 					$_POST['CurrentFilterName'] = ((isset($_POST['name_filter'])) ? postdecode($_POST['name_filter']) : "none");
 					$_POST['CurrentMesPage'] = 0;
 					
-					$current = 'Challenges';
+					$current = 'Messages';
 					break;
 				}
 				
 				if ($message == 'select_page_mes') // Messages -> select page (previous and next button)
 				{
 					$_POST['CurrentMesPage'] = array_shift(array_keys($value));
-					$current = "Challenges";
+					$current = "Messages";
 					
 					break;
 				}
@@ -1043,7 +1043,7 @@
 				if ($message == 'Jump_messages') // Messages -> select page (Jump to page)
 				{
 					$_POST['CurrentMesPage'] = $_POST['jump_to_page'];
-					$current = "Challenges";
+					$current = "Messages";
 					
 					break;
 				}
@@ -1062,13 +1062,13 @@
 					if (count($deleted_messages) > 0)
 					{
 						$result = $messagedb->MassDeleteMessage($deleted_messages, $player->Name());
-						if (!$result) { $error = "Failed to delete messages"; $current = "Challenges"; break; }
+						if (!$result) { $error = "Failed to delete messages"; $current = "Messages"; break; }
 						
 						$information = "Messages deleted";
 					}
 					else $warning = "No messages selected";
 					
-					$current = "Challenges";
+					$current = "Messages";
 					break;
 				}
 				// end message-related messages
@@ -2409,7 +2409,7 @@
 		$params["navbar"]["error_msg"] = @$error;
 		$params["navbar"]["warning_msg"] = @$warning;
 		$params["navbar"]["info_msg"] = @$information;
-		$params["navbar"]['NumChallenges'] = count($gamedb->ListChallengesTo($player->Name()));
+		$params["navbar"]['NumMessages'] = count($gamedb->ListChallengesTo($player->Name()));
 		$params["navbar"]['NumUnread'] = $messagedb->CountUnreadMessages($player->Name());
 
 		// menubar notification (depends on current user's game settings)
@@ -2760,43 +2760,43 @@ case 'Profile':
 	break;
 
 
-case 'Challenges':
-	$params['challenges']['PlayerName'] = $player->Name();
-	$params['challenges']['PreviousLogin'] = $player->PreviousLogin();
-	$params['challenges']['timezone'] = $player->GetSetting("Timezone"); 
-	$params['challenges']['max_games'] = MAX_GAMES;
-	$params['challenges']['system_name'] = SYSTEM_NAME;
+case 'Messages':
+	$params['messages']['PlayerName'] = $player->Name();
+	$params['messages']['PreviousLogin'] = $player->PreviousLogin();
+	$params['messages']['timezone'] = $player->GetSetting("Timezone"); 
+	$params['messages']['max_games'] = MAX_GAMES;
+	$params['messages']['system_name'] = SYSTEM_NAME;
 
-	$decks = $params['challenges']['decks'] = $player->ListReadyDecks();
-	$params['challenges']['deck_count'] = count($decks);
-	$params['challenges']['startedgames'] = count($gamedb->ListActiveGames($player->Name())) + count($gamedb->ListChallengesFrom($player->Name()));
+	$decks = $params['messages']['decks'] = $player->ListReadyDecks();
+	$params['messages']['deck_count'] = count($decks);
+	$params['messages']['startedgames'] = count($gamedb->ListActiveGames($player->Name())) + count($gamedb->ListChallengesFrom($player->Name()));
 
 	if (isset($_POST['incoming'])) $current_subsection = "incoming";
 	elseif (isset($_POST['outgoing'])) $current_subsection = "outgoing";
 	elseif (!isset($current_subsection)) $current_subsection = "incoming";
 
 	$function_type = (($current_subsection == "incoming") ? "ListChallengesTo" : "ListChallengesFrom");
-	$params['challenges']['challenges'] = $messagedb->$function_type($player->Name());
-	$params['challenges']['challenges_count'] = count($params['challenges']['challenges']);
-	$params['challenges']['current_subsection'] = $current_subsection;
+	$params['messages']['challenges'] = $messagedb->$function_type($player->Name());
+	$params['messages']['challenges_count'] = count($params['messages']['challenges']);
+	$params['messages']['current_subsection'] = $current_subsection;
 
 	$current_location = ((isset($_POST['CurrentLocation'])) ? $_POST['CurrentLocation'] : "inbox");
 
 	if (!isset($_POST['CurrentOrd'])) $_POST['CurrentOrd'] = "DESC"; // default ordering
 	if (!isset($_POST['CurrentCond'])) $_POST['CurrentCond'] =  "Created"; // default order condition
 
-	$params['challenges']['current_order'] = $current_order = $_POST['CurrentOrd'];
-	$params['challenges']['current_condition'] = $current_condition = $_POST['CurrentCond'];
+	$params['messages']['current_order'] = $current_order = $_POST['CurrentOrd'];
+	$params['messages']['current_condition'] = $current_condition = $_POST['CurrentCond'];
 
 	$current_page = ((isset($_POST['CurrentMesPage'])) ? $_POST['CurrentMesPage'] : 0);
-	$params['challenges']['current_page'] = $current_page;
+	$params['messages']['current_page'] = $current_page;
 
 	// filter initialization
 	if (!isset($_POST['CurrentFilterDate'])) $_POST['CurrentFilterDate'] = "none";
 	if (!isset($_POST['CurrentFilterName'])) $_POST['CurrentFilterName'] = "none";
 
-	$params['challenges']['date_val'] = $date = $_POST['CurrentFilterDate'];
-	$params['challenges']['name_val'] = $name = $_POST['CurrentFilterName'];
+	$params['messages']['date_val'] = $date = $_POST['CurrentFilterDate'];
+	$params['messages']['name_val'] = $name = $_POST['CurrentFilterName'];
 
 	if ($current_location == "all_mail")
 	{
@@ -2823,19 +2823,19 @@ case 'Challenges':
 	$page_count = $messagedb->$pages_type($player->Name(), $date, $name);
 	$pages = array();
 	if ($page_count > 0) for ($i = 0; $i < $page_count; $i++) $pages[$i] = $i;
-	$params['challenges']['pages'] = $pages;
-	$params['challenges']['page_count'] = $page_count;
+	$params['messages']['pages'] = $pages;
+	$params['messages']['page_count'] = $page_count;
 
-	$params['challenges']['messages'] = $list;
-	$params['challenges']['messages_count'] = count($list);
-	$params['challenges']['current_location'] = $current_location;
-	$params['challenges']['timesections'] = $messagedb->Timesections();
-	$params['challenges']['name_filter'] = $name_list;
-	$params['challenges']['current_page'] = $current_page;
+	$params['messages']['messages'] = $list;
+	$params['messages']['messages_count'] = count($list);
+	$params['messages']['current_location'] = $current_location;
+	$params['messages']['timesections'] = $messagedb->Timesections();
+	$params['messages']['name_filter'] = $name_list;
+	$params['messages']['current_page'] = $current_page;
 
-	$params['challenges']['send_messages'] = (($access_rights[$player->Type()]["messages"]) ? 'yes' : 'no');
-	$params['challenges']['accept_challenges'] = (($access_rights[$player->Type()]["accept_challenges"]) ? 'yes' : 'no');
-	$params['challenges']['see_all_messages'] = (($access_rights[$player->Type()]["see_all_messages"]) ? 'yes' : 'no');
+	$params['messages']['send_messages'] = (($access_rights[$player->Type()]["messages"]) ? 'yes' : 'no');
+	$params['messages']['accept_challenges'] = (($access_rights[$player->Type()]["accept_challenges"]) ? 'yes' : 'no');
+	$params['messages']['see_all_messages'] = (($access_rights[$player->Type()]["see_all_messages"]) ? 'yes' : 'no');
 
 	break;
 

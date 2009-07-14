@@ -42,12 +42,12 @@
 	<xsl:if test="$param/IsSomethingNew = 'yes'">
 		<img src="img/book.gif" alt="" width="18px" height="14px" />
 	</xsl:if>
-	<input type="submit" name="Challenges" value="Challenges" >
-		<xsl:if test="($param/current = 'Challenges') or ($param/current = 'Message_details') or ($param/current = 'Message_new')">
+	<input type="submit" name="Messages" value="Messages" >
+		<xsl:if test="($param/current = 'Messages') or ($param/current = 'Message_details') or ($param/current = 'Message_new')">
 			<xsl:attribute name="class">menuselected</xsl:attribute>
 		</xsl:if>
 	</input>
-	<xsl:if test="($param/NumChallenges &gt; 0) or ($param/NumUnread &gt; 0)">
+	<xsl:if test="($param/NumMessages &gt; 0) or ($param/NumUnread &gt; 0)">
 		<img src="img/new_post.gif" alt="" width="15px" height="10px" />
 	</xsl:if>
 	<input type="submit" name="Players" value="Players" >

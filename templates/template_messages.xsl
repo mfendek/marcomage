@@ -6,8 +6,8 @@
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
-<xsl:template match="section[. = 'Challenges']">
-	<xsl:variable name="param" select="$params/challenges" />
+<xsl:template match="section[. = 'Messages']">
+	<xsl:variable name="param" select="$params/messages" />
 
 	<div id="message_section">
 
