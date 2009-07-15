@@ -267,6 +267,11 @@
 			return $resource;
 		}
 		
+		public function GetID()
+		{
+			return $this->CardID;
+		}
+		
 		public function GetClass()
 		{
 			return $this->CardData->Class;
