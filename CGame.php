@@ -1269,6 +1269,7 @@
 		// returns one card at random from the specified list of card ids
 		private function DrawCard_list(array $list)
 		{
+			if (count($list) == 0) return 0; // "empty slot" card
 			return $list[array_rand($list)];
 		}
 		
