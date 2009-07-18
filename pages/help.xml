@@ -123,7 +123,9 @@ Deck consists of 15 different cards from each group. A deck name must be differe
 
 <p>Just set the filters and then push the "Apply filters" button. On the right part of the bar, there are following buttons: Rename, Reset and Finish. To rename deck, simply write the name in the text window and click the "Rename deck" button. If you want to empty your deck just push the "Reset" button. When you don't want to build the deck yourself you can generate a random deck by pressing the "Randomize" button. "Finish" button will fill all remaining empty slots in your deck with random cards. Finnaly the rightmost is the average cost indicator. It shows you the average price of card per turn. Please do note that this calculation does only take into account card cost, not it's effect. Below is your deck.  When bulding a deck, each of the 45 card slots is occupied either by some card or just with an 'Empty' card (signalling an empty card slot). You can transfer a card from card pool by pushing Take button under the card you want to select. If you want to remove a card from your deck push the Return button under the card you whish to be removed. Any changes to the deck are immediately recorded, so it is possible to leave the deck incomplete. Such a deck cannot be used to play a game, though. When starting a game you must choose a deck from the deck list by selecting its name. There is a maximum of eight decks total for one player.
 </p>
-	
+
+<p>To save deck slots, player can export decks into data files with "Export" button. When such exported deck is needed, player can load it from data file with "Import" button.</p>
+
 <h4>New game</h4>
 <p>
 You can start a new game in two ways.
@@ -140,7 +142,7 @@ There is no restriction to the number of games played per day or against someone
 
 <h4>Messages</h4>
 <p>
-In the section "Challenges" all challenges and messages that you received are located. When a new challenge/message arrives, you are informed about this in the upper menu bar with a animated image ("letter"). New messages can be written in the players section by selecting the [m] button or in the player's details section. Also you can reply to any message by selecting the reply button.
+In the section "Messages" all challenges and messages that you received are located. When a new challenge/message arrives, you are informed about this in the upper menu bar with a animated image ("letter"). New messages can be written in the players section by selecting the [m] button or in the player's details section. Also you can reply to any message by selecting the reply button.
 </p>
 
 <p>
@@ -198,6 +200,7 @@ This section provides a tool for managing card suggestion in a structured form. 
 </p>
 <ul>
 	<li>Waiting - this is the initial state, card is waiting for analysis</li>
+	<li>Interesting - card has a higher probability of beeing implemented</li>
 	<li>Implemented - card has already been implemented</li>
 	<li>Rejected - card will not be implemented in current form</li>
 </ul>
@@ -249,41 +252,42 @@ Keywords represent information about the card that is too big to fit in the card
 </p>
 
 <ul>
-	<li><b>Alliance</b> - gain 8 Alliance tokens for each <b>Alliance</b> card in hand (not counting the played one), side-effect: additional Production X2.</li>
+	<li><b>Alliance</b> - basic gain 17, bonus gain 3, side-effect (Arcane knowledge): additional Production X2.</li>
 	<li><b>Banish</b> - discards one random <b>Durable</b> card from enemy hand (if there is one). Can only discard a card with same or lower rarity as was the played card, but cards with highest discardable rarity are preferred. Cards that cannot be discarded by played card are not considered targets for discard.</li>
-	<li><b>Barbarian</b> - gain 9 Barbarian tokens for each <b>Barbarian</b> card in hand (not counting the played one), side-effect: enemy wall will be additionally lowered by ammount based on played card rarity (Common - 3 , Uncommon -  8, Rare - 15).</li>
-	<li><b>Brigand</b> - gain 7 Brigand tokens for each <b>Brigand</b> card in hand (not counting the played one), side-effect: additional stock will be stolen from opponent, ammount based on played card rarity (Common - 1 stock, Uncommon -  2 stock, Rare - 3 stock).</li>
-	<li><b>Beast</b> - gain 8 Beast tokens for each <b>Beast</b> card in hand (not counting the played one), side-effect: additional damage will be inflicted upon your enemy based on played card rarity (Common - 2 , Uncommon -  5, Rare - 10).</li>
-	<li><b>Burning</b> - gain 8 Burning tokens for each <b>Burning</b> card in hand (not counting the played one), side-effect: one random card from enemy hand will be discarded and bonus damage will be inflicted upon enemy tower based on played card rarity (Common - 1 dmg, Uncommon -  3 dmg, Rare - 5 dmg). Does not discard <b>Burning</b> cards (they are not considered as targets for discard).</li>
+	<li><b>Barbarian</b> - basic gain 4, bonus gain 15, side-effect (Devastation): enemy wall will be additionally lowered by ammount based on played card rarity (Common - 3 , Uncommon -  8, Rare - 15).</li>
+	<li><b>Brigand</b> - basic gain 10, bonus gain 10, side-effect (Robbery): additional stock will be stolen from opponent, ammount based on played card rarity (Common - 1 stock, Uncommon -  2 stock, Rare - 3 stock).</li>
+	<li><b>Beast</b> - basic gain 14, bonus gain 10, side-effect (Fierce attack): additional damage will be inflicted upon your enemy based on played card rarity (Common - 2 , Uncommon -  5, Rare - 10).</li>
+	<li><b>Burning</b> - basic gain 3, bonus gain 11, side-effect (Fire blast): replaces one random non-<b>Burning</b> card from enemy hand (if there is one) with Searing fire. Can only replace a card with same or lower rarity as was the played card, but cards with highest replacable rarity are preferred. Cards that cannot be replaced by played card are not considered targets for replace.</li>
 	<li><b>Charge</b> - when card has this keyword, it also has a number next to this keyword. When such card is played and the opponent's wall (after the standard attack) is 0, he will receive additional damage equal to number next to charge.</li>
-	<li><b>Destruction</b> - it is a Destruction card.</li>
-	<li><b>Dragon</b> - there is a 11% chance that next card will be a rare <b>Dragon</b>. Does not apply when played card is rare.</li>
+	<li><b>Destruction</b> - if last card played was non-common <b>Destruction</b> card (different from the played card) reduces enemy's highest facility by 1 when it is greater then 3, otherwise it reduces opponent's highest resurce by 10.</li>
+	<li><b>Dragon</b> - if there is another <b>Dragon</b> in hand, next card will be Dragon egg.</li>
 	<li><b>Durable</b> - card stays on hand.</li>
 	<li><b>Enduring</b> - when card has this keyword, it also has a number next to this keyword. When such card is played and the last card played was same as this one, opponent will suffer additional damage equal to number next to Enduring.</li>
 	<li><b>Flare attack</b> - when played, one player receives Searing fire cards at odd card positions, while the other player receives Searing fire cards at even card positions. Who receives odd and who even positions is resolved randomly. The position of the played card is ignored and <b>Burning</b> cards are not replaced by Searing fires. Rare cards aren't replaced, unless the played card is a rare.</li>
-	<li><b>Holy</b> - gain 12 Holy tokens for each <b>Holy</b> card in hand (not counting the played one), side-effect: one random <b>Undead</b> card from enemy hand will be replaced by Purified ashes card and you will get additional stock based on discarded card rarity (Common - 1 stock, Uncommon -  2 stock, Rare - 3 stock).</li>
-	<li><b>Illusion</b> - it is a Illusion card.</li>
-	<li><b>Legend</b> - there is a 25% chance that one of your facilities (lowest) will be raised by one. When there are more candidates, it is resolved randomly.</li>
-	<li><b>Mage</b> - gain 8 Mage tokens for each <b>Mage</b> card in hand (not counting the played one), side-effect: half of the gems cost of the played card will be returned.</li>
-	<li><b>Nature</b> - it is a Nature card.</li>
+	<li><b>Frenzy</b> - if there is another <b>Frenzy</b> card in hand, opponent receives bonus damage (recruits cost of the played card).</li>
+	<li><b>Holy</b> - basic gain 25, bonus gain 5, side-effect (Purification): replaces one random <b>Undead</b> card from enemy hand (if there is one) with Purified ashes. Can only replace a card with same or lower rarity as was the played card, but cards with highest replacable rarity are preferred. Cards that cannot be replaced by played card are not considered targets for replace. You will get additional stock based on replaced card rarity (Common - 1 stock, Uncommon -  2 stock, Rare - 3 stock).</li>
+	<li><b>Illusion</b> - if last card played was a non-common <b>Illusion</b> card (different from the played card) next card will be a rare card from enemy deck.</li>
+	<li><b>Legend</b> - if there is a rare card in hand (other then played card) Facilities: +1.</li>
+	<li><b>Mage</b> - basic gain 10, bonus gain 6, side-effect (Willpower): Magic: +1</li>
+	<li><b>Nature</b> - if last card played was non-common <b>Nature</b> card (different from the played card), next card will be a rare <b>Nature</b> card.</li>
 	<li><b>Quick</b> - player gets an additional turn, but no production this turn, it is impossible to draw a rare card after a <b>Quick</b> card is played.</li>
 	<li><b>Rebirth</b> - when played and number of <b>Burning</b> cards in game is greater then 3, the card stays on hand and you will get additional 16 gems.</li>
-	<li><b>Restoration</b> - it is a Restoration card.</li>
+	<li><b>Restoration</b> - if last card played was a non-common <b>Restoration</b> card (different from the played card) raises your lowest facility by 1 when your facility is below 3, otherwise it gives you 10 of your lowest resource.</li>
 	<li><b>Skirmisher</b> - discards one random <b>Charge</b> card from enemy hand (if there is one). Can only discard a card with same or lower rarity as was the played card, but cards with highest discardable rarity are preferred. Cards that cannot be discarded by played card are not considered targets for discard.</li>
-	<li><b>Soldier</b> - gain 8 Soldier tokens for each <b>Soldier</b> card in hand (not counting the played one), side-effect: half of the recruits cost of the played card will be returned.</li>
+	<li><b>Soldier</b> - basic gain 15, bonus gain 10, side-effect (Veteran troops): half of the recruits cost of the played card will be returned.</li>
 	<li><b>Swift</b> - player gets additional turn, also with production, it is impossible to draw a rare card after a <b>Swift</b> card is played.</li>
-	<li><b>Titan</b> - gain 9 Titan tokens for each <b>Titan</b> card in hand (not counting the played one), side-effect: next card received will be a <b>Titan</b>.</li>
-	<li><b>Undead</b> - gain 6 Undead tokens for each <b>Undead</b> card in hand (not counting the played one), side-effect: upgrades rarity of one random <b>Undead</b> card in hand.</li>
-	<li><b>Unliving</b> - gain 8 Unliving tokens for each <b>Unliving</b> card in hand (not counting the played one), side-effect: half of the bricks cost of the played card will be returned.</li>
+	<li><b>Titan</b> - basic gain 22, bonus gain 5, side-effect (Titan's will): next card received will be a <b>Titan</b>.</li>
+	<li><b>Undead</b> - basic gain 5, bonus gain 5, side-effect (Unholy sacrifice): discards an <b>Undead</b> card with highest cost from hand to receive cost of the discarded card (max 20 of each).</li>
+	<li><b>Unliving</b> - basic gain 9, bonus gain 8, side-effect (Sturdiness): third of the total cost of the played card will be returned.</li>
 </ul>
 
 <h4>Tokens</h4>
 <p>
-Some keywords have a side-effect, that requires a token counter. Player can choose up to three token counters for each deck in the deck section. It is possible to assign the token counters automatically by selecting the "Auto" button. Playing a card with keyword, which is associated with the token counter, will raise the value of the token counter. The number of tokens received varies with each keyword (see the Keyword section above). When a token counter reaches 100 a side-effect will happen and the token counter will be reseted to 0. This side-effect takes place directly after the card effect of the played card.
+Some keywords have a side-effect, that requires a token counter. Player can choose up to three token counters for each deck in the deck section. It is possible to assign the token counters automatically by selecting the "Auto" button. Playing a card with keyword, which is associated with the token counter, will raise the value of the token counter. The number of tokens received varies with each keyword (see the Keyword section above). When a token counter reaches 100 a side-effect will happen and the token counter will be reseted to 0. This side-effect takes place directly after the card effect of the played card. Each token-associated keyword has a token gain. This information tells you how many tokens are gained when card with such keyword is played. Token gain consists of basic gain (number of tokens you get for the played card) and bonus gain (number of tokens you gain for each additional card in hand with the same keyword as the played card). Keywords with high basic gain are generally better used as support keywords, since they don't require to have many cards with the same keyword in hand, however their token gains might not be very high. Keywords with high bonus gain require many cards with the same keyword, but when there are such cards in hand, token gains can be very high.
 </p>
 
 <p>
-Let's take the <b>Alliance</b> keyword for example. First you need to set one token counter to <b>Alliance</b> keyword (in the deck section). Then you normally start a game with this deck. When you play a card that has <b>Alliance</b> keyword, it will raise the <b>Alliance</b> token counter for each additional Alliance card in hand (if there is at least one other). The played card does not count toward the total. When the counter reaches 100, it will add a Production X2 to the effect of the played card and will be reseted to 0. By paying close attention to the token counters, you will be able to make good combos of card effects and keyword side-effects. For example <b>Soldier</b> and Ceremonial guard or <b>Alliance</b> and Stilshrine of Miriam can make good stock boosting combos.
+Let's take the <b>Alliance</b> keyword for example. First you need to set one token counter to <b>Alliance</b> keyword (in the deck section). Then you normally start a game with this deck. <b>Alliance</b> keyword has 17 basic gain and 3 bonus gain. So, when you play a card that has <b>Alliance</b> keyword, it will raise the <b>Alliance</b> token counter by 17 plus 3 for each additional <b>Alliance</b> card in hand. When the counter reaches 100, it will add a Production X2 to the effect of the played card and will be reseted to 0. By paying close attention to the token counters, you will be able to make good combos of card effects and keyword side-effects. For example <b>Soldier</b> and Ceremonial guard or <b>Alliance</b> and Stilshrine of Miriam can make good stock boosting combos.
 </p>
 
 <h4>Color information</h4>
@@ -316,6 +320,10 @@ Let's take the <b>Alliance</b> keyword for example. First you need to set one to
 	<li>someone accepts or rejects your challenge</li>
 	<li>the game ends (it informs you about the game outcome)</li>
 </ul>
+
+<h4>Menubar notification</h4>
+
+<p>By default, player is informed about new posts in the forum and new card concepts in the concepts section with small animated images in the upper navigation bar. This can be turned off in the settings section.</p>
 
 <h4>Keyboard shortcuts</h4>
 (might not work in some browsers without re-configuring them)
