@@ -116,14 +116,7 @@
 
 			$result = $db->xpath("/am:cards/am:card[".$this->makeFilterQuery($filters)."]/@id");
 			
-			if( $result === false ) return array(); // in general we are not able to determine if an error occured or the xpath query had an empty result set (see notes below), therefore when false is the result, we return an empty array
-			
-			/*
-			(from PHP manual)
-			Whether it returns a false or empty array for a non-existing path seems to depend on libxml version.
-			On a machine with libxml 2.6.16 and PHP 5.2.8 I got back boolean.
-			On a different machine with libxml 2.7.3 and PHP 5.2.8/5.2.9 I got back empty array.
-			*/
+			if( $result === false ) return array(); // workaround for http://bugs.php.net/bug.php?id=48601
 			
 			$cards = array();
 			foreach( $result as $card )
