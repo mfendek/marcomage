@@ -2481,8 +2481,8 @@
     </cost>
     <modes>0</modes>
     <keywords>Alliance.</keywords>
-    <effect><![CDATA[Attack: 11<br />Gems production X3]]></effect>
-    <code><![CDATA[$this->Attack(11, $hisdata->Tower, $hisdata->Wall); $gems_production*= 3;]]></code>
+    <effect><![CDATA[Attack: 11<br />Gems production X2]]></effect>
+    <code><![CDATA[$this->Attack(11, $hisdata->Tower, $hisdata->Wall); $gems_production*= 2;]]></code>
   </card>
   <card id="191">
     <name>Ivory tower</name>
