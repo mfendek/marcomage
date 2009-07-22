@@ -6098,4 +6098,427 @@
 								$hisdata->$chosen_facility-= 1;
 							}]]></code>
   </card>
+  <card id="440">
+    <name>Dragonling</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>2</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Dragon.</keywords>
+    <effect><![CDATA[Gems production X2]]></effect>
+    <code><![CDATA[$gems_production*= 2;]]></code>
+  </card>
+  <card id="441">
+    <name>Troll bridge</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>20</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Wall: +15<br />Dungeon: +1<br />If there is a Troll card in hand<br />Recruits: +10]]></effect>
+    <code><![CDATA[$mydata->Wall+= 15; $mydata->Dungeons+= 1; $found = false; for ($i = 1; $i <= 8; $i++) if ((!$found) AND ($mydata->Hand[$i] == 106)) $found = true; if ($found) $mydata->Recruits+= 10;]]></code>
+  </card>
+  <card id="442">
+    <name>Dark forest</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>17</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Nature.</keywords>
+    <effect><![CDATA[Wall: +20<br />Recruits: +2N<br />N = #<b>Beast</b> + #<b>Nature</b> cards on hand]]></effect>
+    <code><![CDATA[$mydata->Wall+= 20; $mydata->Recruits+= ($this->KeywordCount($mydata->Hand, "Beast") + $this->KeywordCount($mydata->Hand, "Nature")) * 2;]]></code>
+  </card>
+  <card id="443">
+    <name>Vulture</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>11</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast.</keywords>
+    <effect><![CDATA[Attack: 10<br />If last card was discarded bonus damage based on discarded card rarity (C-8, U-16, R-28)]]></effect>
+    <code><![CDATA[$this->Attack(10, $hisdata->Tower, $hisdata->Wall); if ($mylast_action == 'discard') { $damage = array('Common' => 8, 'Uncommon' => 16, 'Rare' => 28); $this->Attack($damage[$mylast_card->GetClass()], $hisdata->Tower, $hisdata->Wall); }]]></code>
+  </card>
+  <card id="444">
+    <name>Firewall</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>36</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Burning.</keywords>
+    <effect><![CDATA[Wall: +40<br />Attack: 5N<br />N = #<b>Burning</b> cards on hand]]></effect>
+    <code><![CDATA[$mydata->Wall+= 40; $this->Attack(($this->KeywordCount($mydata->Hand, "Burning") * 5), $hisdata->Tower, $hisdata->Wall);]]></code>
+  </card>
+  <card id="445">
+    <name>Poltergeist</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>5</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Illusion. Undead.</keywords>
+    <effect><![CDATA[Enemy lowest resource: -8]]></effect>
+    <code><![CDATA[$min = min($hisdata->Bricks, $hisdata->Gems, $hisdata->Recruits);
+							$res = array("Bricks" => $hisdata->Bricks, "Gems" => $hisdata->Gems, "Recruits" => $hisdata->Recruits);
+							$temp = array();
+							foreach ($res as $resource => $r_value)
+								if ($r_value == $min) $temp[$resource] = $r_value;
+							$chosen = array_rand($temp);
+							$hisdata->$chosen-= 8;
+						]]>
+		</code>
+  </card>
+  <card id="446">
+    <name>Treant</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>25</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Nature.</keywords>
+    <effect><![CDATA[Enemy wall: -20<br />Attack: 15]]></effect>
+    <code><![CDATA[$hisdata->Wall-= 20; $this->Attack(15, $hisdata->Tower, $hisdata->Wall);]]></code>
+  </card>
+  <card id="447">
+    <name>Imperial army</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>45</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Soldier. Skirmisher. Charge (45).</keywords>
+    <effect><![CDATA[Attack: 45]]></effect>
+    <code><![CDATA[$this->Attack(45, $hisdata->Tower, $hisdata->Wall);]]></code>
+  </card>
+  <card id="448">
+    <name>Giant</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>35</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Attack: 35<br />Recruits: +10<br />Both players discard all common cards]]></effect>
+    <code><![CDATA[$this->Attack(35, $hisdata->Tower, $hisdata->Wall); $mydata->Recruits+= 10; for ($i = 1; $i <= 8; $i++) if (($i != $cardpos) AND ($carddb->GetCard($mydata->Hand[$i])->GetClass() == 'Common')) { $mydata->Hand[$i] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $mydata->NewCards[$i] = 1; } for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($hisdata->Hand[$i])->GetClass() == 'Common') { $hisdata->Hand[$i] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $i, 'DrawCard_random'); $hisdata->NewCards[$i] = 1; }]]></code>
+  </card>
+  <card id="449">
+    <name>Halfling Rogue</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords/>
+    <effect><![CDATA[Select a card from your hand to be replaced by Halfling Rogue<br />Next card received will be Hidden treasure]]></effect>
+    <code><![CDATA[$mydata->Hand[$mode] = 449; $mydata->NewCards[$mode] = 1; $nextcard = 274;]]></code>
+  </card>
+  <card id="450">
+    <name>White shrine</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>25</bricks>
+      <gems>20</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Holy. Restoration.</keywords>
+    <effect><![CDATA[Tower: +10<br />Highest facility: +1<br />Lowest facility: +2]]></effect>
+    <code><![CDATA[$mydata->Tower+= 10;
+							$min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
+							$max = max($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
+							$fac = array("Quarry" => $mydata->Quarry, "Magic" => $mydata->Magic, "Dungeons" => $mydata->Dungeons);
+							$temp_min = $temp_max = array();
+							foreach ($fac as $facility => $f_value)
+							{
+								if ($f_value == $min) $temp_min[$facility] = $f_value;
+								if ($f_value == $max) $temp_max[$facility] = $f_value;
+							}
+							$chosen_min = array_rand($temp_min);
+							$chosen_max = array_rand($temp_max);
+							$mydata->$chosen_min+= 2;
+							$mydata->$chosen_max+= 1;
+						]]>
+		</code>
+  </card>
+  <card id="451">
+    <name>Siege Preparations</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>2</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Recruits: +9<br />Enemy wall: +8]]></effect>
+    <code><![CDATA[$mydata->Recruits+= 9; $hisdata->Wall-= 8;]]></code>
+  </card>
+  <card id="452">
+    <name>Invaders</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>2</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords>Durable. Enduring (3).</keywords>
+    <effect><![CDATA[Select an extra card to be discarded]]></effect>
+    <code><![CDATA[$mydata->Hand[$mode] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $mydata->NewCards[$mode] = 1;]]></code>
+  </card>
+  <card id="453">
+    <name>Ancient sage</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>10</bricks>
+      <gems>10</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance. Legend. Nature.</keywords>
+    <effect><![CDATA[Production XN<br />N = #<b>Nature</b> cards on hand]]></effect>
+    <code><![CDATA[$tmp = $this->KeywordCount($mydata->Hand, "Nature"); $bricks_production*= $tmp; $gems_production*= $tmp; $recruits_production*= $tmp;]]></code>
+  </card>
+  <card id="454">
+    <name>Dryad</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>2</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Nature.</keywords>
+    <effect><![CDATA[Enemy wall: -6]]></effect>
+    <code><![CDATA[$hisdata->Wall-= 6;]]></code>
+  </card>
+  <card id="455">
+    <name>Imp</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>2</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Burning.</keywords>
+    <effect><![CDATA[Attack: 2<br />Enemy gems: -2]]></effect>
+    <code><![CDATA[$this->Attack(2, $hisdata->Tower, $hisdata->Wall); $hisdata->Gems-= 2;]]></code>
+  </card>
+  <card id="456">
+    <name>Prosperity</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Restoration.</keywords>
+    <effect><![CDATA[Stock: +17]]></effect>
+    <code><![CDATA[$mydata->Bricks+= 17; $mydata->Gems+= 17; $mydata->Recruits+= 17;]]></code>
+  </card>
+  <card id="457">
+    <name>Chaos Wizard</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>4</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Mage. Durable.</keywords>
+    <effect><![CDATA[Attack: 5<br />Randomly discards one common card from hand]]></effect>
+    <code><![CDATA[$this->Attack(5, $hisdata->Tower, $hisdata->Wall);
+							$storage = array();
+							for ($i = 1; $i <= 8; $i++)
+								if (($i != $cardpos) AND ($carddb->GetCard($mydata->Hand[$i])->GetClass() == 'Common')) $storage[] = $i;
+							if (count($storage) > 0)
+							{
+								$dis_index = $storage[array_rand($storage)];
+								$mydata->Hand[$dis_index] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random');
+								$mydata->NewCards[$dis_index] = 1;
+							}
+						]]>
+		</code>
+  </card>
+  <card id="458">
+    <name>Dark Warrior</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>6</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Attack: Enemy lowest resource (max 12, min 6)]]></effect>
+    <code><![CDATA[$this->Attack(max(min($hisdata->Bricks, $hisdata->Gems, $hisdata->Recruits, 12), 6), $hisdata->Tower, $hisdata->Wall);]]></code>
+  </card>
+  <card id="459">
+    <name>Dark flame</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>1</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Burning.</keywords>
+    <effect><![CDATA[Discard all common zero cost cards]]></effect>
+    <code><![CDATA[
+							for ($i = 1; $i <= 8; $i++)
+								if ($i != $cardpos)
+								{
+									$cur_card = $carddb->GetCard($mydata->Hand[$i]);
+									if (($cur_card->GetResources('') == 0) AND ($cur_card->GetClass() == 'Common'))
+									{
+										$mydata->Hand[$i] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random');
+										$mydata->NewCards[$i] = 1;
+									}
+								}
+							for ($i = 1; $i <= 8; $i++)
+							{
+								$cur_card = $carddb->GetCard($hisdata->Hand[$i])
+								if (($cur_card->GetResources('') == 0) AND ($cur_card->GetClass() == 'Common'))
+								{
+									$hisdata->Hand[$i] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $i, 'DrawCard_random');
+									$hisdata->NewCards[$i] = 1;
+								}
+							}
+						]]>
+		</code>
+  </card>
+  <card id="460">
+    <name>Work in progress</name>
+    <class>Common</class>
+    <cost>
+      <bricks>3</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Durable.</keywords>
+    <effect><![CDATA[Tower: +3]]></effect>
+    <code><![CDATA[$mydata->Tower+= 3;]]></code>
+  </card>
+  <card id="461">
+    <name>Avenging angel</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>25</gems>
+      <recruits>35</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Holy. Banish.</keywords>
+    <effect><![CDATA[Attack: 100 - N<br />N = Tower height]]></effect>
+    <code><![CDATA[$this->Attack(100 - $mydata->Tower, $hisdata->Tower, $hisdata->Wall);]]></code>
+  </card>
+  <card id="462">
+    <name>Relic hunter</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>4</bricks>
+      <gems>4</gems>
+      <recruits>4</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Discards all non-<b>Titan</b> cards from hand]]></effect>
+    <code><![CDATA[for ($i = 1; $i <= 8; $i++) if (($i != $cardpos) AND !$carddb->GetCard($mydata->Hand[$i])->HasKeyword('Titan')) { $mydata->Hand[$i] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $mydata->NewCards[$i] = 1; }]]></code>
+  </card>
+  <card id="463">
+    <name>Fire elemental</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>20</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Burning. Rebirth. Enduring (8).</keywords>
+    <effect><![CDATA[Attack: 17]]></effect>
+    <code><![CDATA[$this->Attack(17, $hisdata->Tower, $hisdata->Wall);]]></code>
+  </card>
+  <card id="464">
+    <name>Chimera</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>30</gems>
+      <recruits>20</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast. Frenzy.</keywords>
+    <effect><![CDATA[Enemy tower: -20<br />Enemy wall: -20<br />Attack: 20]]></effect>
+    <code><![CDATA[$hisdata->Tower-= 20; $hisdata->Wall-= 20; $this->Attack(20, $hisdata->Tower, $hisdata->Wall);]]></code>
+  </card>
+  <card id="465">
+    <name>Merchant ship</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>9</bricks>
+      <gems>9</gems>
+      <recruits>9</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Lowest facility: +1<br />Lowest resource production X3]]></effect>
+    <code><![CDATA[$min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
+							$fac = array("Quarry" => $mydata->Quarry, "Magic" => $mydata->Magic, "Dungeons" => $mydata->Dungeons);
+							$temp = array();
+							foreach ($fac as $facility => $f_value)
+								if ($f_value == $min) $temp[$facility] = $f_value;
+							$chosen = array_rand($temp);
+							$mydata->$chosen+= 1;
+							$min = min($mydata->Bricks, $mydata->Gems, $mydata->Recruits);
+							$res = array("Bricks" => $mydata->Bricks, "Gems" => $mydata->Gems, "Recruits" => $mydata->Recruits);
+							$temp = array();
+							foreach ($res as $resource => $r_value)
+								if ($r_value == $min) $temp[$resource] = $r_value;
+							$chosen = array_rand($temp);
+							if ($chosen == 'Bricks') $bricks_production*= 3;
+							elseif ($chosen == 'Gems') $gems_production*= 3;
+							elseif ($chosen == 'Recruits') $recruits_production*= 3;
+						]]>
+		</code>
+  </card>
+  <card id="466">
+    <name>Oasis</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>3</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Player with lowest wall gains stock +6]]></effect>
+    <code><![CDATA[if ($mydata->Wall <= $hisdata->Wall) { $mydata->Bricks+= 6; $mydata->Gems+= 6; $mydata->Recruits+= 6; } if ($mydata->Wall >= $hisdata->Wall) { $hisdata->Bricks+= 6; $hisdata->Gems+= 6; $hisdata->Recruits+= 6; }]]></code>
+  </card>
 </cards>
