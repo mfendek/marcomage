@@ -2533,7 +2533,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Next card received will be a <b>Soldier</b><br />If <b>Soldier</b> tokens<br />Gain recruits cost of summoned card (max 6)]]></effect>
+    <effect><![CDATA[Next card received will be a <b>Soldier</b><br />If <b>Soldier</b> tokens are set<br />Gain recruits cost of summoned card (max 6)]]></effect>
     <code><![CDATA[$nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Soldier")), $mydata->Hand, $cardpos, 'DrawCard_list'); if (array_search("Soldier", $mydata->TokenNames)) $mydata->Recruits+= min($carddb->GetCard($nextcard)->GetResources("Recruits"), 6);]]></code>
   </card>
   <card id="195">
@@ -4327,7 +4327,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Next card will be a <b>Barbarian</b><br />If <b>Barbarian</b> tokens<br />Stock: +3]]></effect>
+    <effect><![CDATA[Next card will be a <b>Barbarian</b><br />If <b>Barbarian</b> tokens are set<br />Stock: +3]]></effect>
     <code><![CDATA[$nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Barbarian")), $mydata->Hand, $cardpos, 'DrawCard_list'); if (array_search("Barbarian", $mydata->TokenNames)) { $mydata->Bricks+= 3; $mydata->Gems+= 3; $mydata->Recruits+= 3; }]]></code>
   </card>
   <card id="329">
@@ -5272,8 +5272,8 @@
     </cost>
     <modes>0</modes>
     <keywords>Alliance. Durable.</keywords>
-    <effect><![CDATA[Tower: +4<br />Player receives 25% of his current stock (max 20 of each)]]></effect>
-    <code><![CDATA[$mydata->Tower+= 4; $mydata->Bricks+= min(round($mydata->Bricks * 0.25), 20); $mydata->Gems+= min(round($mydata->Gems * 0.25), 20); $mydata->Recruits+= min(round($mydata->Recruits * 0.25), 20);]]></code>
+    <effect><![CDATA[Tower: +4<br />Player receives 25% of his current stock (max 25 of each)]]></effect>
+    <code><![CDATA[$mydata->Tower+= 4; $mydata->Bricks+= min(round($mydata->Bricks * 0.25), 25); $mydata->Gems+= min(round($mydata->Gems * 0.25), 25); $mydata->Recruits+= min(round($mydata->Recruits * 0.25), 25);]]></code>
   </card>
   <card id="390">
     <name>Anomaly sphere</name>
@@ -6115,14 +6115,14 @@
     <name>Troll bridge</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>20</bricks>
+      <bricks>22</bricks>
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Wall: +15<br />Dungeon: +1<br />If there is a Troll card in hand<br />Recruits: +10]]></effect>
-    <code><![CDATA[$mydata->Wall+= 15; $mydata->Dungeons+= 1; $found = false; for ($i = 1; $i <= 8; $i++) if ((!$found) AND ($mydata->Hand[$i] == 106)) $found = true; if ($found) $mydata->Recruits+= 10;]]></code>
+    <effect><![CDATA[Wall: +15<br />Dungeon: +1<br />If there is a Troll card in hand<br />Recruits: +8]]></effect>
+    <code><![CDATA[$mydata->Wall+= 15; $mydata->Dungeons+= 1; $found = false; for ($i = 1; $i <= 8; $i++) if ((!$found) AND ($mydata->Hand[$i] == 106)) $found = true; if ($found) $mydata->Recruits+= 8;]]></code>
   </card>
   <card id="442">
     <name>Dark forest</name>
@@ -6224,7 +6224,7 @@
     <code><![CDATA[$this->Attack(35, $hisdata->Tower, $hisdata->Wall); $mydata->Recruits+= 10; for ($i = 1; $i <= 8; $i++) if (($i != $cardpos) AND ($carddb->GetCard($mydata->Hand[$i])->GetClass() == 'Common')) { $mydata->Hand[$i] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $mydata->NewCards[$i] = 1; } for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($hisdata->Hand[$i])->GetClass() == 'Common') { $hisdata->Hand[$i] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $i, 'DrawCard_random'); $hisdata->NewCards[$i] = 1; }]]></code>
   </card>
   <card id="449">
-    <name>Halfling Rogue</name>
+    <name>Halfling rogue</name>
     <class>Common</class>
     <cost>
       <bricks>0</bricks>
@@ -6232,9 +6232,9 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
-    <keywords/>
-    <effect><![CDATA[Select a card from your hand to be replaced by Halfling Rogue<br />Next card received will be Hidden treasure]]></effect>
-    <code><![CDATA[$mydata->Hand[$mode] = 449; $mydata->NewCards[$mode] = 1; $nextcard = 274;]]></code>
+    <keywords>Quick.</keywords>
+    <effect><![CDATA[Select an extra card to be discarded (cannot draw rare card)<br />Next card received will be Hidden treasure]]></effect>
+    <code><![CDATA[$mydata->Hand[$mode] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_norare'); $mydata->NewCards[$mode] = 1; $nextcard = 274;]]></code>
   </card>
   <card id="450">
     <name>White shrine</name>
@@ -6265,7 +6265,7 @@
 		</code>
   </card>
   <card id="451">
-    <name>Siege Preparations</name>
+    <name>Siege preparations</name>
     <class>Common</class>
     <cost>
       <bricks>0</bricks>
@@ -6343,7 +6343,7 @@
     <code><![CDATA[$mydata->Bricks+= 17; $mydata->Gems+= 17; $mydata->Recruits+= 17;]]></code>
   </card>
   <card id="457">
-    <name>Chaos Wizard</name>
+    <name>Chaos wizard</name>
     <class>Common</class>
     <cost>
       <bricks>0</bricks>
@@ -6367,7 +6367,7 @@
 		</code>
   </card>
   <card id="458">
-    <name>Dark Warrior</name>
+    <name>Dark warrior</name>
     <class>Common</class>
     <cost>
       <bricks>0</bricks>
