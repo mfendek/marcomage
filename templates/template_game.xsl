@@ -36,7 +36,7 @@
 	<table class="centered" cellpadding="0" cellspacing="0">
 
 	<!-- begin your cards -->
-	<tr valign="top">
+	<tr valign="top" class="hand">
 		<xsl:for-each select="$param/MyHand/*">
 			<td align="center">
 				<!--  display discard button -->
@@ -703,7 +703,7 @@
 	<!-- end tokens -->
 
 	<!-- begin his cards -->
-	<tr valign="top">
+	<tr valign="top" class="hand">
 		<xsl:for-each select="$param/HisHand/*">
 			<td align="center">
 				<!--  display new card indicator, if set -->

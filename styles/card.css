@@ -27,12 +27,12 @@ div.karta /* card */
 	min-height: 18px;
 }
 
-p + table div.karta /* add extra margin when cards are displayed in the "hand" part of the game section*/
+tr.hand div.karta /* add extra margin when cards are displayed in the "hand" part of the game section*/
 {
 	margin: 1.5ex 3ex 0.7ex 3ex;
 }
 
-p + table div.history div.karta /* add extra margin when cards are displayed in the "history" part of the game section*/
+div.history div.karta /* add extra margin when cards are displayed in the "history" part of the game section*/
 {
 	margin: 1.5ex 0.5ex 0.7ex 0.5ex;
 }
