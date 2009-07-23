@@ -6403,7 +6403,7 @@
 								}
 							for ($i = 1; $i <= 8; $i++)
 							{
-								$cur_card = $carddb->GetCard($hisdata->Hand[$i])
+								$cur_card = $carddb->GetCard($hisdata->Hand[$i]);
 								if (($cur_card->GetResources('') == 0) AND ($cur_card->GetClass() == 'Common'))
 								{
 									$hisdata->Hand[$i] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $i, 'DrawCard_random');
