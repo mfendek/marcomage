@@ -6275,7 +6275,7 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Recruits: +9<br />Enemy wall: +8]]></effect>
-    <code><![CDATA[$mydata->Recruits+= 9; $hisdata->Wall-= 8;]]></code>
+    <code><![CDATA[$mydata->Recruits+= 9; $hisdata->Wall+= 8;]]></code>
   </card>
   <card id="452">
     <name>Invaders</name>
