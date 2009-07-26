@@ -6233,8 +6233,8 @@
     </cost>
     <modes>8</modes>
     <keywords>Quick.</keywords>
-    <effect><![CDATA[Select an extra card to be discarded (cannot draw rare card)<br />Next card received will be Hidden treasure]]></effect>
-    <code><![CDATA[$mydata->Hand[$mode] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_norare'); $mydata->NewCards[$mode] = 1; $nextcard = 274;]]></code>
+    <effect><![CDATA[Select a card to be replaced with Hidden treasure]]></effect>
+    <code><![CDATA[$mydata->Hand[$mode] = 274; $mydata->NewCards[$mode] = 1; if ($cardpos == $mode) $nextcard = 0;]]></code>
   </card>
   <card id="450">
     <name>White shrine</name>
