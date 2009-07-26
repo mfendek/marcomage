@@ -1312,12 +1312,18 @@
 					$curname = $_POST['CurrentDeck'];
 					$current = 'Deck_edit';
 					
-					$supported_types = array("text/csv", "text/comma-separated-values");
+					//$supported_types = array("text/csv", "text/comma-separated-values");
+					$supported_types = array("csv");
 					
 					if (($_FILES['uploadedfile']['tmp_name'] == ""))
 						$error = "Invalid input file";
 					else
+					/* MIME file type checking cannot be used, there are browser specific issues (Firefox, Chrome), instead use file extension check
 					if (!in_array($_FILES['uploadedfile']['type'], $supported_types))
+						$error = "Unsupported input file";
+					else
+					*/
+					if (!in_array(end(explode(".", $_FILES['uploadedfile']['name'])), $supported_types))
 						$error = "Unsupported input file";
 					else
 					if (($_FILES['uploadedfile']['size'] > 1*1000 ))
