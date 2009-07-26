@@ -145,7 +145,7 @@
 				$flag = 1;
 			}
 			
-			return 'SELECT `threads`.`ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostAuthor`, `last_post`, IFNULL(`post_count`, 0) as `post_count`, `flag` FROM (SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, '.$flag.' as `flag` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = "no" AND `Priority` '.$sign.'= "sticky") as `threads` LEFT OUTER JOIN (SELECT `PostAuthor`, `posts1`.`ThreadID`, `last_post`, `post_count` FROM (SELECT `Author` as `PostAuthor`, `ThreadID`, `Created` FROM `forum_posts` WHERE `Deleted` = "no") as `posts1` INNER JOIN (SELECT `ThreadID`, MAX(`Created`) as `last_post`, COUNT(`PostID`) as `post_count` FROM `forum_posts` WHERE `Deleted` = "no" GROUP BY `ThreadID`) as `posts2` ON `posts1`.`ThreadID` = `posts2`.`ThreadID` AND `posts1`.`Created` = `posts2`.`last_post`) as `posts` USING (`ThreadID`)';
+			return 'SELECT `threads`.`ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostAuthor`, IFNULL(`last_post`,`Created`) as `last_post`, IFNULL(`post_count`, 0) as `post_count`, `flag` FROM (SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, '.$flag.' as `flag` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = "no" AND `Priority` '.$sign.'= "sticky") as `threads` LEFT OUTER JOIN (SELECT `PostAuthor`, `posts1`.`ThreadID`, `last_post`, `post_count` FROM (SELECT `Author` as `PostAuthor`, `ThreadID`, `Created` FROM `forum_posts` WHERE `Deleted` = "no") as `posts1` INNER JOIN (SELECT `ThreadID`, MAX(`Created`) as `last_post`, COUNT(`PostID`) as `post_count` FROM `forum_posts` WHERE `Deleted` = "no" GROUP BY `ThreadID`) as `posts2` ON `posts1`.`ThreadID` = `posts2`.`ThreadID` AND `posts1`.`Created` = `posts2`.`last_post`) as `posts` USING (`ThreadID`)';
 		}
 				
 		public function ListThreads($section, $page, $limit)
@@ -178,7 +178,7 @@
 			$db = $this->db;
 			
 			$posts_q = "SELECT `ThreadID`, COUNT(`PostID`) as `post_count`, SUBSTRING(MAX(CONCAT(`Created`,`Author`)), 19+1) as `PostAuthor`, MAX(`Created`) as `last_post` FROM `forum_posts` WHERE `Deleted` = 'no' GROUP BY `ThreadID`";
-			$query = "SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, IFNULL(`PostAuthor`,'n/a') as `PostAuthor`, IFNULL(`last_post`,'n/a') as `last_post`, IFNULL(`post_count`, 0) as `post_count`, (CASE WHEN `post_count` > 0 THEN 1 ELSE 0 END) as `flag` FROM `forum_threads` LEFT OUTER JOIN (".$posts_q.") as `posts` USING(`ThreadID`) WHERE `SectionID` = '".$section."' AND `Deleted` = 'no' ORDER BY `flag` DESC, `last_post` DESC, `Created` DESC LIMIT 0 , ".NUM_THREADS."";
+			$query = "SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, IFNULL(`PostAuthor`,'n/a') as `PostAuthor`, IFNULL(`last_post`,`Created`) as `last_post`, IFNULL(`post_count`, 0) as `post_count` FROM `forum_threads` LEFT OUTER JOIN (".$posts_q.") as `posts` USING(`ThreadID`) WHERE `SectionID` = '".$section."' AND `Deleted` = 'no' ORDER BY `last_post` DESC, `Created` DESC LIMIT 0 , ".NUM_THREADS."";
 			$result = $db->Query($query);
 			
 			if (!$result) return false;
