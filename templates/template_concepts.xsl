@@ -200,7 +200,7 @@
 								<input class="details" type="submit" name="edit_concept[{id}]" value="E" />
 							</xsl:if>
 							<xsl:if test="$param/delete_all_card = 'yes' or ($param/delete_own_card = 'yes' and ($param/PlayerName = author))">
-								<input class="details" type="submit" name="delete_card[{id}]" value="D" />
+								<input class="details" type="submit" name="delete_concept[{id}]" value="D" />
 							</xsl:if>
 						</p>
 					</td>
