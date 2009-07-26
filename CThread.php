@@ -178,7 +178,7 @@
 			$db = $this->db;
 			
 			$posts_q = "SELECT `ThreadID`, COUNT(`PostID`) as `post_count`, SUBSTRING(MAX(CONCAT(`Created`,`Author`)), 19+1) as `PostAuthor`, MAX(`Created`) as `last_post` FROM `forum_posts` WHERE `Deleted` = 'no' GROUP BY `ThreadID`";
-			$query = "SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, IFNULL(`PostAuthor`,'n/a') as `PostAuthor`, IFNULL(`last_post`,'n/a') as `last_post`, IFNULL(`post_count`, 0) as `post_count` FROM `forum_threads` LEFT OUTER JOIN (".$posts_q.") as `posts` USING(`ThreadID`) WHERE `SectionID` = '".$section."' AND `Deleted` = 'no' ORDER BY `last_post` DESC, `Created` DESC LIMIT 0 , ".NUM_THREADS."";
+			$query = "SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, IFNULL(`PostAuthor`,'n/a') as `PostAuthor`, IFNULL(`last_post`,'n/a') as `last_post`, IFNULL(`post_count`, 0) as `post_count`, (CASE WHEN `post_count` > 0 THEN 1 ELSE 0 END) as `flag` FROM `forum_threads` LEFT OUTER JOIN (".$posts_q.") as `posts` USING(`ThreadID`) WHERE `SectionID` = '".$section."' AND `Deleted` = 'no' ORDER BY `flag` DESC, `last_post` DESC, `Created` DESC LIMIT 0 , ".NUM_THREADS."";
 			$result = $db->Query($query);
 			
 			if (!$result) return false;
