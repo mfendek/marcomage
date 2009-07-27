@@ -519,23 +519,29 @@
 							$high = $costs = array();
 							$max = 0;
 							for ($i = 1; $i <= 8; $i++)
-								if ($i != $cardpos)
+							{
+								$cur_card = $carddb->GetCard($mydata->Hand[$i]);
+								if (($i != $cardpos) AND $cur_card->HasKeyword('Undead'))
 								{
-									$costs[$i] = $carddb->GetCard($mydata->Hand[$i])->GetResources('');
+									$costs[$i] = $cur_card->GetResources('');
 									if ($costs[$i] > $max) $max = $costs[$i];
 								}
+							}
 							
-							for ($i = 1; $i <= 8; $i++)
-								if (($i != $cardpos) AND ($costs[$i] == $max)) $high[$i] = $i;
-							
-							$target = array_rand($high);
-							$discarded_card = $carddb->GetCard($mydata->Hand[$target]);
-							$mydata->Hand[$target] = $this->DrawCard($mydata->Deck, $mydata->Hand, $target, 'DrawCard_random');
-							$mydata->NewCards[$target] = 1;
-							
-							$mydata->Bricks+= min($discarded_card->GetResources('Bricks'), 20);
-							$mydata->Gems+= min($discarded_card->GetResources('Gems'), 20);
-							$mydata->Recruits+= min($discarded_card->GetResources('Recruits'), 20);
+							if (count($costs) > 0)
+							{
+								foreach ($costs as $i => $cur_cost)
+									if (($i != $cardpos) AND ($cur_cost == $max)) $high[$i] = $i;
+								
+								$target = array_rand($high);
+								$discarded_card = $carddb->GetCard($mydata->Hand[$target]);
+								$mydata->Hand[$target] = $this->DrawCard($mydata->Deck, $mydata->Hand, $target, 'DrawCard_random');
+								$mydata->NewCards[$target] = 1;
+								
+								$mydata->Bricks+= min($discarded_card->GetResources('Bricks'), 20);
+								$mydata->Gems+= min($discarded_card->GetResources('Gems'), 20);
+								$mydata->Recruits+= min($discarded_card->GetResources('Recruits'), 20);
+							}
 							
 							$mydata->TokenValues[$token_index] = 0;
 						}
