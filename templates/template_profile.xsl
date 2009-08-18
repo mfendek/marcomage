@@ -47,6 +47,14 @@
 		<p>Age: <span class="detail_value"><xsl:value-of select="$param/Age"/></span></p>
 		<p>Rank: <span class="detail_value"><xsl:value-of select="$param/PlayerType"/></span></p>
 		<p>Country: <img width="18px" height="12px" src="img/flags/{$param/Country}.gif" alt="country flag" /> <span class="detail_value"><xsl:value-of select="$param/Country"/></span></p>
+		<p>Registered on: 
+			<span class="detail_value">
+				<xsl:choose>
+					<xsl:when test="$param/Registered != '0000-00-00 00:00:00'"><xsl:value-of select="am:datetime($param/Registered, $param/timezone)"/></xsl:when>
+				<xsl:otherwise>Before 18. August, 2009</xsl:otherwise>
+				</xsl:choose>
+			</span>
+		</p>
 		<p>Last seen on: 
 			<span class="detail_value">
 				<xsl:choose>

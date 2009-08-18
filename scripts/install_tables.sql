@@ -90,6 +90,7 @@ CREATE TABLE `logins` (
   `Password` char(32) COLLATE utf8_unicode_ci NOT NULL,
   `SessionID` int(10) unsigned NOT NULL DEFAULT '0',
   `UserType` char(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'user',
+  `Registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Last IP` char(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0.0.0.0',
   `Last Query` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `PreviousLogin` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',

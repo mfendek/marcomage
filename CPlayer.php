@@ -183,6 +183,17 @@
 			$data = $result->Next();
 			return $data['Last Query'];
 		}
+		
+		public function Registered($playername)
+		{
+			$db = $this->db;
+			$result = $db->Query('SELECT `Registered` FROM `logins` WHERE `Username` = "'.$db->Escape($playername).'"');
+			if (!$result) return false;
+			if (!$result->Rows()) return false;
+			
+			$data = $result->Next();
+			return $data['Registered'];
+		}
 	}
 	
 	
@@ -233,6 +244,11 @@
 		public function LastQuery()
 		{
 			return $this->Players->LastQuery($this->Name);
+		}
+		
+		public function Registered()
+		{
+			return $this->Players->Registered($this->Name);
 		}
 		
 		public function GetScore()
