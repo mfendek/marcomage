@@ -114,6 +114,7 @@
 		<adv name="none"        text="No adv. filters" />
 		<adv name="Attack:"     text="Attack"          />
 		<adv name="Discard"     text="Discard"         />
+		<adv name="Replace"     text="Replace"         />
 		<adv name="Production"  text="Production"      />
 		<adv name="Wall: +"     text="Wall +"          />
 		<adv name="Wall: -"     text="Wall -"          />

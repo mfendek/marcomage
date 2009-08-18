@@ -2676,7 +2676,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Enemy stock: +10<br />Every card in opponent's hand is replaced by a random zero cost card]]></effect>
+    <effect><![CDATA[Enemy stock: +10<br />Every card in opponent's hand is replaced with a random zero cost card]]></effect>
     <code><![CDATA[$hisdata->Bricks+= 10; $hisdata->Gems+= 10; $hisdata->Recruits+= 10; $hisdata->Hand = $this->DrawHand_list($carddb->GetList(array('cost'=>"Zero"))); $hisdata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1);]]></code>
   </card>
   <card id="206">
@@ -3343,7 +3343,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Discards your hand and receive Zombie, Skeleton warriors, Ghoul, Stalker, Banshee, Emissary of the afterlife, Vampire, and Vampire countess]]></effect>
+    <effect><![CDATA[Replaces your hand with Zombie, Skeleton warriors, Ghoul, Stalker, Banshee, Emissary of the afterlife, Vampire, and Vampire countess]]></effect>
     <code><![CDATA[$mydata->Hand = array (1=> 114, 113, 112, 120, 133, 330, 28, 103); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;]]></code>
   </card>
   <card id="254">
@@ -3798,7 +3798,7 @@
     </cost>
     <modes>8</modes>
     <keywords/>
-    <effect><![CDATA[Enemy stock: +10<br />Discard a card from enemy hand to add cursed amulet to enemy hand]]></effect>
+    <effect><![CDATA[Enemy stock: +10<br />Replace a card from enemy hand (at selected position) with Cursed amulet]]></effect>
     <code><![CDATA[$hisdata->Bricks+= 10; $hisdata->Gems+= 10; $hisdata->Recruits+= 10; $hisdata->Hand[$mode] = 288; $hisdata->NewCards[$mode] = 1;]]></code>
   </card>
   <card id="289">
@@ -3837,7 +3837,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Discards your hand and receive Light and Heavy infantry, Knight, Crusader, Royal pikemen, Light cavalry, Battle formations, and Dragon knights<br />Recruits: +35]]></effect>
+    <effect><![CDATA[Replaces your hand with Light and Heavy infantry, Knight, Crusader, Royal pikemen, Light cavalry, Battle formations, and Dragon knights<br />Recruits: +35]]></effect>
     <code><![CDATA[$mydata->Hand = array (1=> 367, 279, 7, 305, 193, 36, 322, 166); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $mydata->Recruits+= 35; $nextcard = 0;]]></code>
   </card>
   <card id="292">
@@ -3850,7 +3850,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Swift.</keywords>
-    <effect><![CDATA[Production X2<br />Discards your hand and receive two Elves, two Elite elves, two Elven archers, Elf commando and Elf enchantress]]></effect>
+    <effect><![CDATA[Production X2<br />Replaces your hand with two Elves, two Elite elves, two Elven archers, Elf commando and Elf enchantress]]></effect>
     <code><![CDATA[$bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2; $mydata->Hand = array (1=> 122, 122, 111, 111, 272, 272, 190, 136); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;]]></code>
   </card>
   <card id="293">
@@ -3876,7 +3876,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Discards your hand and receive Basic wall, two Fortified walls, two Double walls, Fortification, Great wall, and Border fortress<br />Bricks: +20]]></effect>
+    <effect><![CDATA[Replaces your hand with Basic wall, two Fortified walls, two Double walls, Fortification, Great wall, and Border fortress<br />Bricks: +20]]></effect>
     <code><![CDATA[$mydata->Hand = array (1=> 1, 238, 238, 149, 149, 19, 47, 276); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $mydata->Bricks+= 20; $nextcard = 0;]]></code>
   </card>
   <card id="295">
@@ -3889,7 +3889,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Discards your hand and receive two Foundations, two Towers, Ivory tower, Citadel, Forgotten castle and Pyramids<br />Bricks: +40]]></effect>
+    <effect><![CDATA[Replaces your hand with two Foundations, two Towers, Ivory tower, Citadel, Forgotten castle and Pyramids<br />Bricks: +40]]></effect>
     <code><![CDATA[$mydata->Hand = array (1=> 2, 2, 18, 18, 191, 155, 228, 87); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $mydata->Bricks+= 40; $nextcard = 0;]]></code>
   </card>
   <card id="296">
@@ -4171,7 +4171,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Undead.</keywords>
-    <effect><![CDATA[Discard a card from enemy hand to receive an <b>Undead</b> of the same rarity as discarded card (to the matching position)]]></effect>
+    <effect><![CDATA[Discard a card from enemy hand to replace card in your hand at selected position with an <b>Undead</b> of the same rarity as discarded card]]></effect>
     <code><![CDATA[$rarity = $carddb->GetCard($hisdata->Hand[$mode])->GetClass(); $hisdata->Hand[$mode] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $mode, 'DrawCard_random'); $mydata->Hand[$mode] = $this->DrawCard($carddb->GetList(array('class'=>$rarity, 'keyword'=>"Undead")), $mydata->Hand, $cardpos, 'DrawCard_list'); if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1; $hisdata->NewCards[$mode] = 1;]]></code>
   </card>
   <card id="317">
@@ -4197,7 +4197,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Soldier. Undead. Enduring (6). Charge (7).</keywords>
-    <effect><![CDATA[Attack: 10<br />Select a card from your hand to be replaced by Fallen knight]]></effect>
+    <effect><![CDATA[Attack: 10<br />Select a card from hand to be replaced with Fallen knight]]></effect>
     <code><![CDATA[$this->Attack(10, $hisdata->Tower, $hisdata->Wall); $mydata->Hand[$mode] = 318; if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;]]></code>
   </card>
   <card id="319">
@@ -4314,7 +4314,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Holy.</keywords>
-    <effect><![CDATA[Tower: +3<br />Select a card from hand to be replaced by a <b>Holy</b> card]]></effect>
+    <effect><![CDATA[Tower: +3<br />Select a card from hand to be replaced with a <b>Holy</b> card]]></effect>
     <code><![CDATA[$mydata->Tower+= 3; $mydata->Hand[$mode] = $this->DrawCard($carddb->GetList(array('keyword'=>"Holy")), $mydata->Hand, $cardpos, 'DrawCard_list'); if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;]]></code>
   </card>
   <card id="328">
@@ -4548,7 +4548,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Randomly discards one card from hand<br />Replaces up to 3 random non-<b>Holy</b> cards from hand by Fanatics]]></effect>
+    <effect><![CDATA[Randomly discards one card from hand<br />Replaces up to 3 random non-<b>Holy</b> cards from hand with Fanatics]]></effect>
     <code><![CDATA[$mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $nextcard = 0; $tmp = mt_rand(1, 8); $mydata->Hand[$tmp] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $mydata->NewCards[$tmp] = 1; $temp_array = array(); for ($i = 1; $i <= 8; $i++) if (!$carddb->GetCard($mydata->Hand[$i])->HasKeyword("Holy")) $temp_array[$i] = $i; shuffle($temp_array); for ($i = 0; ($i < count($temp_array)) AND ($i < 3); $i++) { $mydata->Hand[$temp_array[$i]] = 340; $mydata->NewCards[$temp_array[$i]] = 1; }]]></code>
   </card>
   <card id="343">
@@ -5167,7 +5167,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Discards your hand and recieve Shadow fairy, Fairy, Heavenly warrior, Paladin, Cathedral, Zealot, Seraphim and Angel]]></effect>
+    <effect><![CDATA[Replaces your hand with Shadow fairy, Fairy, Heavenly warrior, Paladin, Cathedral, Zealot, Seraphim and Angel]]></effect>
     <code><![CDATA[$mydata->Hand = array (1=> 410, 27, 85, 90, 175, 341, 137, 44); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;]]></code>
   </card>
   <card id="384">
@@ -5324,7 +5324,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Alliance. Mage.</keywords>
-    <effect><![CDATA[Attack: 5<br />Discard a card from hand to be replaced with a <b>Restoration</b> or a <b>Nature</b> card]]></effect>
+    <effect><![CDATA[Attack: 5<br />Select a card from hand to be replaced with a <b>Restoration</b> or a <b>Nature</b> card]]></effect>
     <code><![CDATA[$this->Attack(5, $hisdata->Tower, $hisdata->Wall); $mydata->Hand[$mode] = $this->DrawCard(array_merge($carddb->GetList(array('keyword'=>"Restoration")), $carddb->GetList(array('keyword'=>"Nature"))), $mydata->Hand, $cardpos, 'DrawCard_list'); if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;]]></code>
   </card>
   <card id="394">
@@ -5337,7 +5337,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Alliance. Soldier.</keywords>
-    <effect><![CDATA[Attack: 7<br />Discard a card from hand to be replaced with an <b>Alliance</b> card]]></effect>
+    <effect><![CDATA[Attack: 7<br />Select a card from hand to be replaced with an <b>Alliance</b> card]]></effect>
     <code><![CDATA[$this->Attack(7, $hisdata->Tower, $hisdata->Wall); $mydata->Hand[$mode] = $this->DrawCard($carddb->GetList(array('keyword'=>"Alliance")), $mydata->Hand, $cardpos, 'DrawCard_list'); if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;]]></code>
   </card>
   <card id="395">
@@ -5464,7 +5464,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Discards your hand and receive 2 Goblins, 2 Elite orcs, Goblin saboteur, Ogre, Troll and Orc regiment<br />Dungeon: +2]]></effect>
+    <effect><![CDATA[Replaces your hand with 2 Goblins, 2 Elite orcs, Goblin saboteur, Ogre, Troll and Orc regiment<br />Dungeon: +2]]></effect>
     <code><![CDATA[$mydata->Hand = array (1=> 13, 13, 240, 240, 368, 46, 106, 89); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0; $mydata->Dungeons+= 2;]]></code>
   </card>
   <card id="404">
