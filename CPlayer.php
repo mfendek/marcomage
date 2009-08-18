@@ -140,6 +140,17 @@
 			return true;
 		}
 		
+		public function ResetNotification($playername)
+		{
+			$db = $this->db;
+			
+			$result = $db->Query('UPDATE `logins` SET `PreviousLogin` = `Last Query` WHERE `Username` = "'.$db->Escape($playername).'"');
+			
+			if (!$result) return false;
+			
+			return true;
+		}
+		
 		public function isOnline($playername)
 		{
 			$db = $this->db;
@@ -224,6 +235,11 @@
 		public function Type()
 		{
 			return $this->Type;
+		}
+		
+		public function ResetNotification()
+		{
+			return $this->Players->ResetNotification($this->Name);
 		}
 		
 		public function isOnline()

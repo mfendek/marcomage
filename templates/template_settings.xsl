@@ -82,6 +82,7 @@
 			<div>New password:<input type="password" name="NewPassword" maxlength="20" /></div>
 			<div>Confirm password:<input type="password" name="NewPassword2" maxlength="20" /></div>
 			<div>Change password:<input type = "submit" name= "changepasswd" value= "Change" /></div>
+			<div>Reset notification:<input type="submit" name="reset_notification" value= "Reset" /></div>
 
 			<div>Time zone:
 				<select name="Timezone">

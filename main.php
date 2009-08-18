@@ -1900,6 +1900,16 @@
 					break;
 				}
 				
+				if ($message == 'reset_notification') //reset notification
+				{
+					if ($player->ResetNotification()) $information = 'Notification successfully reset';
+					else $error = 'Failed to reset notification';
+					
+					$current = 'Settings';
+					
+					break;
+				}
+				
 				// end settings-related messages
 				
 				// begin forum oriented messages
