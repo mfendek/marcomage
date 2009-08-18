@@ -172,6 +172,17 @@
 			$data = $result->Next();
 			return $data['PreviousLogin'];
 		}
+		
+		public function LastQuery($playername)
+		{
+			$db = $this->db;
+			$result = $db->Query('SELECT `Last Query` FROM `logins` WHERE `Username` = "'.$db->Escape($playername).'"');
+			if (!$result) return false;
+			if (!$result->Rows()) return false;
+			
+			$data = $result->Next();
+			return $data['Last Query'];
+		}
 	}
 	
 	
@@ -217,6 +228,11 @@
 		public function PreviousLogin()
 		{
 			return $this->Players->PreviousLogin($this->Name);
+		}
+		
+		public function LastQuery()
+		{
+			return $this->Players->LastQuery($this->Name);
 		}
 		
 		public function GetScore()

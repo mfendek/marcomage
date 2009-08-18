@@ -2714,6 +2714,7 @@ case 'Profile':
 
 	$params['profile']['PlayerName'] = $p->Name();
 	$params['profile']['PlayerType'] = $p->Type();
+	$params['profile']['LastQuery'] = $p->LastQuery();
 	$params['profile']['Firstname'] = $settings['Firstname'];
 	$params['profile']['Surname'] = $settings['Surname'];
 	$params['profile']['Gender'] = $settings['Gender'];

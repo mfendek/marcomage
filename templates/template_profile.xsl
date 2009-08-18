@@ -3,8 +3,9 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:date="http://exslt.org/dates-and-times"
                 xmlns:exsl="http://exslt.org/common"
-                extension-element-prefixes="exsl">
+                extension-element-prefixes="date exsl">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
@@ -46,6 +47,7 @@
 		<p>Age: <span class="detail_value"><xsl:value-of select="$param/Age"/></span></p>
 		<p>Rank: <span class="detail_value"><xsl:value-of select="$param/PlayerType"/></span></p>
 		<p>Country: <img width="18px" height="12px" src="img/flags/{$param/Country}.gif" alt="country flag" /> <span class="detail_value"><xsl:value-of select="$param/Country"/></span></p>
+		<p>Last seen on: <span class="detail_value"><xsl:value-of select="am:datetime($param/LastQuery, $param/timezone)"/></span></p>
 
 		<p>Hobbies, Interests:</p>
 		<p class="detail_value" style="max-width: 30ex;"><xsl:value-of select="am:textencode($param/Hobby)" disable-output-escaping="yes"/></p>
