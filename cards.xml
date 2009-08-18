@@ -5167,7 +5167,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Replace your hand with Shadow fairy, Fairy, Heavenly warrior, Paladin, Cathedral, Zealot, Seraphim and Angel]]></effect>
+    <effect><![CDATA[Discards your hand and recieve Shadow fairy, Fairy, Heavenly warrior, Paladin, Cathedral, Zealot, Seraphim and Angel]]></effect>
     <code><![CDATA[$mydata->Hand = array (1=> 410, 27, 85, 90, 175, 341, 137, 44); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;]]></code>
   </card>
   <card id="384">
