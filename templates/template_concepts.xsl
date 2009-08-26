@@ -462,13 +462,14 @@
 
 			<div class="card_preview"><xsl:copy-of select="am:cardstring($param/data, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></div>
 			<div class="limit">
+				<p><span><xsl:value-of select="$param/data/author"/></span>Author</p>
 				<p><span><xsl:value-of select="$param/data/name"/></span>Name</p>
 				<p><span><xsl:value-of select="$param/data/class"/></span>Rarity</p>
 				<p><span><xsl:value-of select="$param/data/keywords"/></span>Keywords</p>
 				<p><span><xsl:value-of select="$param/data/state"/></span>State</p>
 			</div>
 			<p>Note</p>
-			<p><xsl:value-of select="am:textencode($param/data/note)" disable-output-escaping="yes" /></p>
+			<p class="note"><xsl:value-of select="am:textencode($param/data/note)" disable-output-escaping="yes" /></p>
 			<p>
 				<xsl:choose>
 					<xsl:when test="$param/data/threadid = 0 and $param/create_thread = 'yes'">
