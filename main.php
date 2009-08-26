@@ -354,6 +354,8 @@
 					$game->SetNote($player->Name(), $new_note);
 					$game->SaveGame();
 					
+					$information = 'Game note saved.';
+					
 					$current = 'Game_note';
 					break;
 				}
@@ -371,6 +373,8 @@
 					
 					$game->ClearNote($player->Name());
 					$game->SaveGame();
+					
+					$information = 'Game note cleared.';
 					
 					$current = 'Game_note';
 					break;
@@ -1183,6 +1187,8 @@
 					
 					$deck->SaveDeck();
 					
+					$information = 'Tokens set.';
+					
 					break;
 				}
 				
@@ -1202,6 +1208,8 @@
 					$deck->DeckData->Tokens = $tokens;
 					
 					$deck->SaveDeck();
+					
+					$information = 'Tokens set.';
 					
 					break;
 				}
