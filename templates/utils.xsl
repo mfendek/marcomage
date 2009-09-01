@@ -57,7 +57,7 @@
 	<xsl:param name="timezone" as="xs:string" select="'+0'" />
 	<xsl:variable name="date" select="str:replace($datetime, ' ', 'T')" />
 	<xsl:variable name="zone" select="concat('Etc/GMT', str:replace(str:replace(str:replace($timezone, '+', '*'), '-', '+'), '*', '-'))" />
-	<func:result select="php:functionString('ZoneTime', $date, $zone, 'H:i | j. F, Y')" />
+	<func:result select="php:functionString('ZoneTime', $date, $zone, 'H:i, j. F, Y')" />
 </func:function>
 
 
@@ -113,11 +113,8 @@
 		<xsl:variable name="bgimage">
 			<xsl:if test="$c_oldlook = 'no'"> with_bgimage</xsl:if>
 		</xsl:variable>
-		<xsl:variable name="border">
-			<xsl:if test="$c_oldlook = 'no'"> with_3dborder</xsl:if>
-		</xsl:variable>
 
-		<div class="karta{$class}{$type}{$bgimage}{$border}">
+		<div class="karta{$class}{$type}{$bgimage}">
 
 			<!-- display the cost (spheres with numbers in the center) -->
 			<xsl:choose>

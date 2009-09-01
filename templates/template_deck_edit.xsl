@@ -21,15 +21,15 @@
 	<div id="cost_per_turn">
 		Avg cost / turn:
 		<b>
-			<xsl:attribute name="style">color: <xsl:value-of select="am:color('RosyBrown')"/></xsl:attribute>
+			<xsl:attribute name="style">color: red</xsl:attribute>
 			<xsl:value-of select="$param/Res/Bricks"/>
 		</b>
 		<b>
-			<xsl:attribute name="style">color: <xsl:value-of select="am:color('DeepSkyBlue')"/></xsl:attribute>
+			<xsl:attribute name="style">color: blue</xsl:attribute>
 			<xsl:value-of select="$param/Res/Gems"/>
 		</b>
 		<b>
-			<xsl:attribute name="style">color: <xsl:value-of select="am:color('DarkSeaGreen')"/></xsl:attribute>
+			<xsl:attribute name="style">color: green</xsl:attribute>
 			<xsl:value-of select="$param/Res/Recruits"/>
 		</b>
 	</div>
@@ -42,7 +42,7 @@
 
 	<select name="ClassFilter">
 		<xsl:if test="$param/ClassFilter != 'none'">
-			<xsl:attribute name="style">border-color: lime</xsl:attribute>
+			<xsl:attribute name="class">filter_active</xsl:attribute>
 		</xsl:if>
 		<xsl:for-each select="exsl:node-set($classes)/*">
 		<option value="{@name}">
@@ -56,7 +56,7 @@
 
 	<select name="KeywordFilter">
 		<xsl:if test="$param/KeywordFilter != 'none'">
-				<xsl:attribute name="style">border-color: lime</xsl:attribute>
+				<xsl:attribute name="class">filter_active</xsl:attribute>
 		</xsl:if>
 		<option value="none">
 			<xsl:if test="$param/KeywordFilter = 'none'">
@@ -97,7 +97,7 @@
 
 	<select name="CostFilter">
 		<xsl:if test="$param/CostFilter != 'none'">
-			<xsl:attribute name="style">border-color: lime</xsl:attribute>
+			<xsl:attribute name="class">filter_active</xsl:attribute>
 		</xsl:if>
 		<xsl:for-each select="exsl:node-set($costs)/*">
 			<option value="{@name}">
@@ -138,7 +138,7 @@
 
 	<select name="AdvancedFilter">
 		<xsl:if test="$param/AdvancedFilter != 'none'">
-			<xsl:attribute name="style">border-color: lime</xsl:attribute>
+			<xsl:attribute name="class">filter_active</xsl:attribute>
 		</xsl:if>
 		<xsl:for-each select="exsl:node-set($advanced)/*">
 			<option value="{@name}">
@@ -152,7 +152,7 @@
 
 	<select name="SupportFilter">
 		<xsl:if test="$param/SupportFilter != 'none'">
-				<xsl:attribute name="style">border-color: lime</xsl:attribute>
+				<xsl:attribute name="class">filter_active</xsl:attribute>
 		</xsl:if>
 		<option value="none">
 			<xsl:if test="$param/SupportFilter = 'none'">
@@ -232,8 +232,6 @@
 
 	</div>
 
-	<hr />
-
 	<!-- cards in card pool -->
 	<div class="scroll">
 	<table cellpadding="0" cellspacing="0">
@@ -265,7 +263,7 @@
 	</div>
 
 	<!-- cards in deck -->
-	<table class="deck" cellpadding="0" cellspacing="0" >
+	<table class="deck skin_label" cellpadding="0" cellspacing="0" >
 
 		<tr>
 			<th><p style="color: {am:color('Lime')}">Common</p></th>

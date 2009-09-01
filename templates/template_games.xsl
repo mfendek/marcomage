@@ -18,10 +18,10 @@
 				<div>
 					<input type = "submit" name="view_game[{gameid}]" value="vs. {opponent}">
 						<xsl:if test="active = 'yes'">
-							<xsl:attribute name="style">border-color: lime</xsl:attribute>
+							<xsl:attribute name="style">font-style: italic</xsl:attribute>
 						</xsl:if>
 						<xsl:if test="ready = 'yes'">
-							<xsl:attribute name="class">menuselected</xsl:attribute>
+							<xsl:attribute name="class">marked_button</xsl:attribute>
 						</xsl:if>
 					</input>
 				</div>
@@ -29,7 +29,7 @@
 				<xsl:choose>
 				<xsl:when test="gamestate = 'in progress'">
 					<xsl:if test="isdead = 'yes'">
-						<p class="aborted_game" style="color: gray">Game can be aborted</p>
+						<p class="ended_game" >Game can be aborted</p>
 					</xsl:if>
 				</xsl:when>
 				<xsl:otherwise>
@@ -40,7 +40,7 @@
 		</div>
 	</xsl:when>
 	<xsl:otherwise>
-			<p class="information_trans">You have no active games.</p>
+			<p class="information_line warning">You have no active games.</p>
 	</xsl:otherwise>
 	</xsl:choose>
 	

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skins xmlns="http://arcomage.netvor.sk">
+	<skin><name>blue (dark)</name><value>0</value></skin>
+	<skin><name>rain (light)</name><value>1</value></skin>
+	<skin><name>purple (light)</name><value>2</value></skin>
+	<skin><name>green (dark)</name><value>3</value></skin>
+	<skin><name>stars (dark)</name><value>4</value></skin>
+	<skin><name>clouds (light)</name><value>5</value></skin>
+	<skin><name>old theme (dark)</name><value>6</value></skin>
+</skins>

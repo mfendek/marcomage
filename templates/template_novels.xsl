@@ -17,21 +17,24 @@
 	<xsl:variable name="content" select="$param/PageContent" />
 
 	<div id="novels">
-	
+
 		<!-- novel menu -->
-		<div id="nov_float_left">
+		<div id="nov_float_left" class="skin_label">
 			<h3>Novels menu</h3>
 			<ul>
 				<xsl:for-each select="$param/novelslist/*">
 					<li>
 						<xsl:choose>
 						<xsl:when test="$novel = text()">
-							<input type="submit" name="collapse_novel" value="&minus;" /><span class="novel_selected"><xsl:value-of select="text()"/></span>
+							<input type="submit" name="collapse_novel" value="&minus;" class="pushed" />
+							<xsl:value-of select="text()"/>
 							<ul>
 								<xsl:for-each select="$param/chapterslist/*">
 									<li>
-										<input type="submit" name="view_chapter[{text()}]" value=">" />
-										<span><xsl:if test="$chapter = text()"><xsl:attribute name="class">chapter_selected</xsl:attribute></xsl:if><xsl:value-of select="text()"/></span>
+										<input type="submit" name="view_chapter[{text()}]" value=">">
+											<xsl:if test="$chapter = text()"><xsl:attribute name="class">pushed</xsl:attribute></xsl:if>
+										</input>
+										<xsl:value-of select="text()"/>
 									</li>
 								</xsl:for-each>
 							</ul>
@@ -47,7 +50,7 @@
 		</div>
 
 		<!-- novel content -->
-		<div id="nov_float_right">
+		<div id="nov_float_right" class="skin_text">
 
 			<xsl:choose>
 			<xsl:when test="$chapter = ''">

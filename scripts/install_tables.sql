@@ -156,6 +156,8 @@ CREATE TABLE `settings` (
   `Reports` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `Forum_notification` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
   `Concepts_notification` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
+  `Skin` int(2) unsigned NOT NULL DEFAULT '0',
+  `Background` int(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY  (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

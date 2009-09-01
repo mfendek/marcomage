@@ -23,7 +23,7 @@
 
 	<input type="submit" name="Page" value="Webpage" >
 		<xsl:if test="$param/current = 'Page'">
-			<xsl:attribute name="class">menuselected</xsl:attribute>
+			<xsl:attribute name="class">pushed</xsl:attribute>
 		</xsl:if>
 	</input>
 	<input type="submit" name="Forum" value="Forum" >
@@ -36,7 +36,7 @@
 			($param/current = 'Edit_post') or 
 			($param/current = 'Edit_thread')
 		)">
-			<xsl:attribute name="class">menuselected</xsl:attribute>
+			<xsl:attribute name="class">pushed</xsl:attribute>
 		</xsl:if>
 	</input>
 	<xsl:if test="$param/IsSomethingNew = 'yes'">
@@ -44,7 +44,7 @@
 	</xsl:if>
 	<input type="submit" name="Messages" value="Messages" >
 		<xsl:if test="($param/current = 'Messages') or ($param/current = 'Message_details') or ($param/current = 'Message_new')">
-			<xsl:attribute name="class">menuselected</xsl:attribute>
+			<xsl:attribute name="class">pushed</xsl:attribute>
 		</xsl:if>
 	</input>
 	<xsl:if test="($param/NumMessages &gt; 0) or ($param/NumUnread &gt; 0)">
@@ -52,12 +52,12 @@
 	</xsl:if>
 	<input type="submit" name="Players" value="Players" >
 		<xsl:if test="($param/current = 'Players') or ($param/current = 'Profile')">
-			<xsl:attribute name="class">menuselected</xsl:attribute>
+			<xsl:attribute name="class">pushed</xsl:attribute>
 		</xsl:if>
 	</input>
 	<input type="submit" name="Games" value="Games" >
 		<xsl:if test="($param/current = 'Games') or ($param/current = 'Game') or ($param/current = 'Deck_view')">
-			<xsl:attribute name="class">menuselected</xsl:attribute>
+			<xsl:attribute name="class">pushed</xsl:attribute>
 		</xsl:if>
 	</input>
 	<xsl:if test="$param/NumGames &gt; 0">
@@ -65,12 +65,12 @@
 	</xsl:if>
 	<input type="submit" name="Decks" value="Decks" >
 		<xsl:if test="($param/current = 'Decks') or ($param/current = 'Deck_edit')">
-			<xsl:attribute name="class">menuselected</xsl:attribute>
+			<xsl:attribute name="class">pushed</xsl:attribute>
 		</xsl:if>
 	</input>
 	<input type="submit" name="Concepts" value="Concepts" >
 		<xsl:if test="($param/current = 'Concepts') or ($param/current = 'Concepts_new') or ($param/current = 'Concepts_edit') or ($param/current = 'Concepts_details')">
-			<xsl:attribute name="class">menuselected</xsl:attribute>
+			<xsl:attribute name="class">pushed</xsl:attribute>
 		</xsl:if>
 	</input>
 	<xsl:if test="$param/NewConcepts = 'yes'">
@@ -78,12 +78,12 @@
 	</xsl:if>
 	<input type="submit" name="Novels" value="Novels" >
 		<xsl:if test="$param/current = 'Novels'">
-			<xsl:attribute name="class">menuselected</xsl:attribute>
+			<xsl:attribute name="class">pushed</xsl:attribute>
 		</xsl:if>
 	</input>
 	<input type="submit" name="Settings" value="Settings" >
 		<xsl:if test="$param/current = 'Settings'">
-			<xsl:attribute name="class">menuselected</xsl:attribute>
+			<xsl:attribute name="class">pushed</xsl:attribute>
 		</xsl:if>
 	</input>
 
@@ -94,13 +94,13 @@
 	<hr />
 
 	<xsl:if test="$param/error_msg != ''">
-		<p class="information_line" style="color: red"><xsl:value-of select="$param/error_msg"/></p>
+		<p class="information_line error"><xsl:value-of select="$param/error_msg"/></p>
 	</xsl:if>
 	<xsl:if test="$param/warning_msg != ''">
-		<p class="information_line" style="color: yellow"><xsl:value-of select="$param/warning_msg"/></p>
+		<p class="information_line warning"><xsl:value-of select="$param/warning_msg"/></p>
 	</xsl:if>
 	<xsl:if test="$param/info_msg != ''">
-		<p class="information_line" style="color: lime"><xsl:value-of select="$param/info_msg"/></p>
+		<p class="information_line info"><xsl:value-of select="$param/info_msg"/></p>
 	</xsl:if>
 	<xsl:if test="($param/error_msg = '') and ($param/warning_msg = '') and ($param/info_msg = '')">
 		<p class="blank_line"></p>

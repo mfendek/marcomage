@@ -1,0 +1,165 @@
+/************************************************
+ * MArcomage CSS stylesheet - skins - old theme *
+ ************************************************/
+
+.skin_text /* text element layout */
+{
+	background-color: rgb(40, 40, 65); /* dark blue */
+	color: #cccccc; /* light gray */
+}
+
+.skin_label /* label element layout */
+{
+	background-image: url('../../img/skins/old_label.jpg');
+	background-repeat: repeat;
+	color: #cccccc; /* light gray */
+}
+
+.skin_text, .skin_label /* border layout */
+{
+	border: 2px outset #cccccc;
+	-moz-border-radius: 7px;
+}
+
+html /* general background layout */
+{
+	background-image: url('../../img/skins/bg_old.jpg');
+	background-repeat: repeat;
+	color: #cccccc; /* light gray */
+}
+
+div#menubar /* navigation bar layout */
+{
+	background-image: url('../../img/skins/old_label.jpg');
+	background-repeat: repeat;
+}
+
+div#login_box /* login box layout */
+{
+	background-image: url('../../img/skins/old_label.jpg');
+	background-repeat: repeat;
+	border: 2px outset #cccccc;
+	-moz-border-radius: 7px;
+}
+
+input, textarea /* input text fields */
+{
+	background-color: #dddddd; /* very light gray */
+}
+
+hr /* horizontal line layout */
+{
+	border-color: #eeeeee; /* very light gray */
+}
+
+a:link /* unvisited link */
+{
+	color: #87cefa; /* light sky blue */
+}
+
+a:visited /* visited link */
+{
+	color: #6495ed; /* light blue */
+}
+
+tr.table_row:hover /* highlight table row */
+{
+	background-color: rgb(80, 110, 180); /* dark blue */
+	color: white;
+}
+
+h2,h3,h4,h5 /* heading layout */
+{
+	color: #ffff66; /* sandy yellow */
+}
+
+.new_message /* new message */
+{
+	color: red;
+	font-weight: bold;
+}
+
+.unread /* unread message */
+{
+	color: orange;
+	font-weight: bold;
+}
+
+.system_message /* system message */
+{
+	color: #6495ed; /* light blue */
+	font-weight: bold;
+}
+
+input[type="submit"] /* submit input layout */
+{
+	background-color: black;
+	border-color: #6495ed; /* light blue */
+	color: #ffff66; /* sandy yellow */
+}
+
+input.marked_button /* highlighted button */
+{
+	background-color: green;
+}
+
+.info /* information message layout */
+{
+	color: lime;
+}
+
+.warning /* warning message layout */
+{
+	color: yellow;
+}
+
+.error /* error message layout */
+{
+	color: red;
+}
+
+.p_online /* online player layout */
+{
+	color: lime;
+}
+
+.p_offline /* offline player layout */
+{
+	color: red;
+}
+
+.p_inactive /* inactive player layout */
+{
+	color: maroon;
+}
+
+.p_dead /* dead player layout */
+{
+	color: gray;
+}
+
+p.info_label /* information label used in multiple instances in game section */
+{
+	border: medium ridge #6495ed;
+	background-color: rgb(40, 40, 65); /* dark blue */
+	color: #dddddd; /* very light gray */
+}
+
+.online /* highlight player name if he is online */
+{
+	color: lime;
+}
+
+p.token_counter /* token counter layout */
+{
+	border: thin solid #6495ed;
+	background-color: rgb(40, 40, 65); /* dark blue */
+	color: #dddddd; /* very light gray */
+}
+
+div.chatbox /* chatbox window */
+{
+	border: medium ridge #6495ed;
+	background-color: rgb(40, 40, 65); /* dark blue */
+	color: #dddddd; /* very light gray */
+}

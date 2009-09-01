@@ -16,7 +16,7 @@
 	<input type="hidden" name="CurrentPage" value="{$param/selected}" />
 
 	<div id="webpg_float_left">
-	<div>
+	<div class="skin_label">
 	<input type="submit" name="WebPage[Main]" value="Main page" />
 	<input type="submit" name="WebPage[News]" value="Latest news" />
 	<input type="submit" name="WebPage[Modified]" value="Modified cards" />
@@ -27,8 +27,7 @@
 	</div>
 	</div>
 
-	<div id="webpg_float_right">
-		<div>
+	<div id="webpg_float_right" class="skin_text">
 		<xsl:for-each select="$param/files/*">
 
 			<!-- TODO: check if file exists and print error if not -->
@@ -52,12 +51,10 @@
 			</div>
 
 		</xsl:for-each>
-		</div>
 	</div>
-
-	</div>
-
 	<div class="clear_floats"></div>
+
+	</div>
 </xsl:template>
 
 

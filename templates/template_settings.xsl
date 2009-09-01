@@ -12,12 +12,13 @@
 	<xsl:variable name="settings" select="$param/current_settings" />
 	<xsl:variable name="countries" select="document('countries.xml')/am:countries" />
 	<xsl:variable name="timezones" select="document('timezones.xml')/am:timezones" />
+	<xsl:variable name="skins" select="document('skins.xml')/am:skins" />
+	<xsl:variable name="backgrounds" select="document('backgrounds.xml')/am:backgrounds" />
 
 	<div id="settings">
 
 		<!-- user settings -->
-		<div id="sett_float_left">
-		<div>
+		<div id="sett_float_left" class="skin_text">
 
 			<h3>Profile settings</h3>
 
@@ -50,7 +51,7 @@
 			<div>Rank: <xsl:value-of select="$param/PlayerType"/></div>
 
 			<div>
-				Choose your country: <img width="18px" height="12px" src="img/flags/{$settings/Country}.gif" alt="country flag" />
+				Choose your country: <img width="18px" height="12px" src="img/flags/{$settings/Country}.gif" alt="country flag" class="country_flag" />
 				<select name="Country">
 					<option value="Unknown">I'm a pirate - no country</option>
 					<xsl:for-each select="$countries/am:country">
@@ -72,10 +73,9 @@
 				<div>Clear avatar:<input type="submit" name="reset_avatar" value="Reset" /></div>
 			</xsl:if>
 		</div>
-		</div>
 
 		<!-- game settings -->
-		<div id="sett_float_right">
+		<div id="sett_float_right" class="skin_text">
 		<div>
 			<h3>Account settings</h3>
 
@@ -96,6 +96,34 @@
 			</div>
 
 			<h4>Layout options</h4>
+
+			<div>Skin selection:
+				<select name="Skin">
+					<xsl:for-each select="$skins/am:skin">
+						<xsl:sort select="am:name" order="ascending"/>
+						<option value="{am:value}">
+							<xsl:if test="$settings/Skin = am:value">
+								<xsl:attribute name="selected">selected</xsl:attribute>
+							</xsl:if>
+							<xsl:value-of select="am:name"/>
+						</option>
+					</xsl:for-each>
+				</select>
+			</div>
+
+			<div>Game background:
+				<select name="Background">
+					<xsl:for-each select="$backgrounds/am:background">
+						<xsl:sort select="am:name" order="ascending"/>
+						<option value="{am:value}">
+							<xsl:if test="$settings/Background = am:value">
+								<xsl:attribute name="selected">selected</xsl:attribute>
+							</xsl:if>
+							<xsl:value-of select="am:name"/>
+						</option>
+					</xsl:for-each>
+				</select>
+			</div>
 
 			<div>
 				<div><input type="checkbox" name="Minimize"   ><xsl:if test="$settings/Minimize    = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Minimized game view</div>

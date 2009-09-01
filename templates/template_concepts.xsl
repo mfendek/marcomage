@@ -29,7 +29,7 @@
 
 			<select name="date_filter">
 				<xsl:if test="$param/date_val != 'none'">
-						<xsl:attribute name="style">border-color: lime</xsl:attribute>
+						<xsl:attribute name="class">filter_active</xsl:attribute>
 				</xsl:if>
 				<option value="none">
 					<xsl:if test="$param/date_val = 'none'">
@@ -54,7 +54,7 @@
 
 			<select name="author_filter">
 				<xsl:if test="$param/author_val != 'none'">
-					<xsl:attribute name="style">border-color: lime</xsl:attribute>
+					<xsl:attribute name="class">filter_active</xsl:attribute>
 				</xsl:if>
 				<option value="none">
 					<xsl:if test="$param/author_val = 'none'">
@@ -85,7 +85,7 @@
 
 			<select name="state_filter">
 				<xsl:if test="$param/state_val != 'none'">
-					<xsl:attribute name="style">border-color: lime</xsl:attribute>
+					<xsl:attribute name="class">filter_active</xsl:attribute>
 				</xsl:if>
 				<option value="none">
 					<xsl:if test="$param/state_val = 'none'">
@@ -136,7 +136,7 @@
 		<!-- end buttons and filters -->
 		</div>
 		
-		<table cellspacing="0">
+		<table cellspacing="0" class="skin_text">
 			<tr>
 				<th>Card</th>
 				<th>
@@ -152,7 +152,7 @@
 							</xsl:otherwise>
 						</xsl:choose>
 						<xsl:if test="$param/current_condition = 'Name'">
-							<xsl:attribute name="style">border-color: lime</xsl:attribute>
+							<xsl:attribute name="class">details pushed</xsl:attribute>
 						</xsl:if>
 					</input></p>
 				</th>
@@ -171,7 +171,7 @@
 							</xsl:otherwise>
 						</xsl:choose>
 						<xsl:if test="$param/current_condition = 'LastChange'">
-							<xsl:attribute name="style">border-color: lime</xsl:attribute>
+							<xsl:attribute name="class">details pushed</xsl:attribute>
 						</xsl:if>
 					</input></p>
 				</th>
@@ -179,7 +179,7 @@
 				<th></th>
 			</tr>
 			<xsl:for-each select="$param/list/*">
-				<tr class="table_row">
+				<tr>
 					<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></td>
 					<td><p><xsl:value-of select="name"/></p></td>
 					<td><p><xsl:value-of select="author"/></p></td>
@@ -187,7 +187,7 @@
 					<td>
 						<p>
 							<xsl:if test="am:datediff(lastchange, $param/PreviousLogin) &lt; 0">
-								<xsl:attribute name="style">color: orange</xsl:attribute>
+								<xsl:attribute name="class">highlighted</xsl:attribute>
 							</xsl:if>
 							<xsl:value-of select="am:datetime(lastchange, $param/timezone)"/>
 						</p>
@@ -246,7 +246,7 @@
 
 		<h3>New card</h3>
 
-		<div id="card_edit">
+		<div id="card_edit" class="skin_text">
 			<input type="submit" name="Concepts" value="Back" />
 			<input type="submit" name="create_concept" value="Create card" />
 
@@ -348,7 +348,7 @@
 
 		<h3>Edit card</h3>
 
-		<div id="card_edit">
+		<div id="card_edit" class="skin_text">
 			<input type="submit" name="Concepts" value="Back" />
 			<input type="submit" name="view_concept[{$param/data/id}]" value="Details" />
 			<xsl:if test="$param/data/author = $param/PlayerName">
@@ -363,7 +363,7 @@
 						<input type="submit" name="delete_concept[{$param/data/id}]" value="Delete" />
 					</xsl:when>
 					<xsl:otherwise>
-						<input type="submit" name="delete_concept_confirm" value="Confirm delete" class="menuselected" />
+						<input type="submit" name="delete_concept_confirm" value="Confirm delete" class="marked_button" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:if>
@@ -453,7 +453,7 @@
 
 		<h3>Card details</h3>
 
-		<div id="card_edit">
+		<div id="card_edit" class="skin_text">
 			<input type="submit" name="Concepts" value="Back" />
 			<xsl:if test="$param/edit_all_card = 'yes' or ($param/edit_own_card = 'yes' and ($param/PlayerName = author))">
 				<input type="submit" name="edit_concept[{$param/data/id}]" value="Edit" />

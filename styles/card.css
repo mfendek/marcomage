@@ -5,7 +5,7 @@
 /*
 	card layout: 
 
-	<div class="karta [?]_class [?]_cost {with_bgimage} {with_3dborder}">
+	<div class="karta [?]_class [?]_cost {with_bgimage}">
 		<div class="[cost]">[value]</div> {+}
 		<h5>[name]</h5>
 		<img src="[path]" width="80px" height="60px" alt="" />
@@ -20,6 +20,7 @@ div.karta /* card */
 	width: 86px;
 	border-color: white;
 	border-style: ridge;
+	-moz-border-radius: 7px;
 	margin: 1.5ex 0.5ex 0.7ex 0.5ex;
 	font-size: x-small;
 	text-align: left;
@@ -52,9 +53,6 @@ div.karta.rec_cost.with_bgimage    { background-image: url('../img/rec_cost.jpg'
 div.karta.mixed_cost.with_bgimage  { background-image: url('../img/mixed_cost.jpg');  }
 div.karta.zero_cost.with_bgimage   { background-image: url('../img/zero_cost.jpg');   }
 
-/* 3d border around card */
-div.karta.with_3dborder { border-style: outset; }
-
 
 /* card title */
 div.karta > h5
@@ -62,6 +60,8 @@ div.karta > h5
 	font-weight: normal;
 	font-size: x-small;
 	margin: 0.5ex;
+	color: black;
+	text-shadow: none;
 }
 
 
@@ -85,7 +85,7 @@ div.karta > div.rek   { background-image: url('../img/reckuts.png'); }
 
 
 /* border around the card image, based on rarity */
-div.karta                > img { border-style: ridge; }
+div.karta                > img { border-style: ridge; -moz-border-radius: 5px; }
 div.karta.common_class   > img { border-color: Lime; }
 div.karta.uncommon_class > img { border-color: #8b0000; } /* DarkRed */
 div.karta.rare_class     > img { border-color: Yellow; }

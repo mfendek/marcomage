@@ -18,7 +18,7 @@
 		<input type="submit" name="view_game[{$param/CurrentGame}]" value="Back to game"/>
 	</div>
 
-	<table class="deck" cellpadding="0" cellspacing="0" >
+	<table class="deck skin_label" cellpadding="0" cellspacing="0" >
 
 		<tr>
 			<th><p style="color: {am:color('Lime')}">Common</p></th>

@@ -5,10 +5,8 @@
 div#menubar /* upper navigation bar containing section access buttons */
 {
 	text-align: center;
-	color: lime;
 	/*min-width: 120ex;*/
-	min-width: 1045px;	
-	background-color: black;
+	min-width: 1045px;
 	padding: 1ex 0ex 1.5ex 0ex;
 }
 
@@ -31,13 +29,13 @@ div#menu_center > input + input /* set distance between buttons in center part o
 div#menu_center > img /* set distance for images that appear in the menubar */
 {
 	margin-right: 1.7ex;
+	vertical-align: middle;
 }
 
 div#menubar + hr /* horizontal line that is separating the menubar from the rest of the content */
 {
 	/*min-width: 120ex;*/
 	min-width: 1045px;
-	background-color: black;
 }
 
 div#menu_float_left /* one part is floated to the left */
@@ -49,10 +47,5 @@ div#menu_float_left /* one part is floated to the left */
 div#menu_float_left > p /* set the distance from the left border of the screen for player name */
 {
 	margin-left: 1ex;
-}
-
-input.menuselected /* selected section access button */
-{
-	color: black;
-	background-color: yellow;
+	font-weight: bold;
 }

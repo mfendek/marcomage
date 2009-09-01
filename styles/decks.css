@@ -18,36 +18,34 @@ div#decks input /* set distance between deck access buttons */
 
 /* begin filters */
 
-div.filters /* filters subsection*/
+div.filters /* filters subsection */
 {
 	text-align: left;
-	color: white;
 	/*min-width: 120ex;*/
 	min-width: 1045px;
-	background-color: black;
 	padding-bottom: 0.5ex;
 	margin-left: 5ex;
 }
 
-div.filters + hr /* horizontal line that separates the filters from the rest of the section*/
+div.filters + hr /* horizontal line that separates the filters from the rest of the section */
 {
 	/*min-width: 120ex;*/
 	min-width: 1045px;
 	margin: 0ex;
 }
 
-div.filters > input
-{
-	margin-right: 1ex;
-}
-
 div#cost_per_turn /* avg cost per turn indicator layout */
 {
 	float: right;
 	margin-right: 5ex;
+	border: 2px outset black;
+	-moz-border-radius: 7px;
+	padding: 0ex 0.5ex 0ex 0.5ex;
+	background-color: #eeeeee; /* very light gray */
+	color: black;
 }
 
-div#cost_per_turn > b + b
+div#cost_per_turn > b + b /* set distance between avg cost per turn indicators */
 {
 	margin-left: 0.5ex;
 }
@@ -80,33 +78,20 @@ div.scroll /* card pool layot */
 table.deck /* deck table layout */
 {
 	text-align: center;
-	border: thin solid yellow;
-	margin: 1ex 3% 0% 3%;
+	margin: 1ex 3% 1ex 3%;
 	width: 94%;
 }
 
 table.deck th > p /* deck table header */
 {
-	font-weight: bold;
 	font-size: large;
-	background-color: black;
-	border-bottom: thin solid yellow;
 	padding: 1ex;
+	background-color: #6495ed; /* light blue */
 }
 
 table.deck input /* set distance of "return" buttons in the deck table */
 {
 	margin-bottom: 1ex;
-}
-
-table.deck th + th, table.deck td + td /* deck table column borders */
-{
-	border-left: thin solid yellow;
-}
-
-table.deck table td + td /* disbale column borders between cards in deck table */
-{
-	border-style: none;
 }
 
 /* end deck */

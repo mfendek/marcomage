@@ -4,9 +4,14 @@
  
 /* begin playerslist */
 
-div#players p /* color and distance of all texts in players list */
+
+div#players > table /* players table */
 {
-	color: lime;
+	padding: 1ex;
+}
+
+div#players p /* players table row layout */
+{
 	margin: 0ex 1ex 0ex 1ex;
 }
 
@@ -24,23 +29,29 @@ div#details /* set minimum width to whole section (grants immunity to resize) */
 	min-width: 1045px;
 }
 
-div#details > div /* center the content */
+div#details > div /* user details content layout */
 {
 	margin-left: auto;
 	margin-right: auto;
-	color: white;
 	width: 50%;
 	font-weight: bold;
+	padding: 0ex 1ex 1ex 1ex;
+	margin-bottom: 1ex;
 }
 
 .detail_value /* player's detail attribute color */
 {
-	color: lime;
+	color: green;
 }
 
 div#details /* set distance between separate lines */
 {
 	line-height: 1.6;
+}
+
+div#details h3 /* section name layout */
+{
+	margin: 0ex;
 }
 
 div.details_float_right /* float both avatar and zodiac to the right */
@@ -54,12 +65,12 @@ div.details_float_right img /* avatar and zodiac pictures */
 	background-color: black;
 	padding: 0.5ex;
 	margin: 0.5ex 1ex 0.5ex 1ex;
-	border: medium ridge #00bfff;
+	border: medium ridge white;
 }
 
 div.details_float_right p /* avatar and zodiac text color */
 {
-	color: lime;
+	color: green;
 }
 
 div#details * + h4 /* special messages formatting */
@@ -75,12 +86,12 @@ div#details select /* special messages formatting */
 
 .challenge_text /* challenge text input and display layout */
 {
-	background-color: black;
-	color: #dddddd; /* light gray */
 	padding: 0.5ex;
 	margin-top: 1ex;
 	margin-bottom: 1ex;
 	border: thin solid #6495ed;
+	background-color: white;
+	-moz-border-radius: 7px;
 }
 
 /* end user details */

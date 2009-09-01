@@ -4,44 +4,15 @@
 
 html
 {
-	background-image: url('../img/layout.jpg');
-	background-position: center center;
-	background-repeat: no-repeat;
-	background-color: black;
-	background-attachment: fixed;
 	font-family: times, serif;
-	
-	/* we abandoned IE support completely */
-	/*scrollbar-3dlight-color: black;
-	scrollbar-arrow-color: yellow;
-	scrollbar-darkshadow-color: black;
-	scrollbar-face-color: black;
-	scrollbar-highlight-color: yellow;
-	scrollbar-shadow-color: yellow;
-	scrollbar-track-color: black;
-	 - we abandoned IE support
-	*/
-	
 	padding: 0ex;
 	margin: 0ex;
 }
 
-/*div
-{
-	we abandoned IE support completely 
-	scrollbar-3dlight-color: black;
-	scrollbar-arrow-color: yellow;
-	scrollbar-darkshadow-color: black;
-	scrollbar-face-color: black;
-	scrollbar-highlight-color: yellow;
-	scrollbar-shadow-color: yellow;
-	scrollbar-track-color: black;	
-}*/
-
 hr
 {
-	border-color: yellow;
-	color: yellow;
+	border-style: solid;
+	border-width: thin;
 	padding: 0ex;
 	margin: 0ex;
 	/* override defaults */
@@ -50,9 +21,9 @@ hr
 input
 {
 	font-size: x-small;
-	color: yellow;
-	background-color: black;
-	border: 2px outset #6495ed;
+	color: black;
+	border: 2px outset black;
+	-moz-border-radius: 7px;
 	padding: 0.4ex 1.2ex 0.4ex 1.2ex;
 	vertical-align: middle;
 }
@@ -63,21 +34,15 @@ body,p,h5 /* override defaults */
 	margin: 0ex;
 }
 
-h1,h2
+h1
 {
 	color: red;
 	text-align: center;
 }
 
-h3
+h2,h3
 {
-	color: #6699ff;
 	text-align: center;
-}
-
-h4
-{
-	color: #ffff66;
 }
 
 ul
@@ -89,17 +54,18 @@ ul
 select
 {
 	font-size: x-small;
-	color: yellow;
-	background-color: black;
-	border: 2px outset #6495ed;
+	color: black;
+	background-color: #6495ed;
+	border: thin solid black;
 	vertical-align: middle;
+	font-weight: bold;
+	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
 }
 
 th
 {
 	margin: 0ex;
 	padding: 0ex;
-	font-weight: normal;
 }
 
 th input /* ordering buttons in the table header */
@@ -107,14 +73,11 @@ th input /* ordering buttons in the table header */
 	margin-left: 2ex;
 }
 
-a:link
+textarea /* textarea layout */
 {
-	color: yellow;
-}
-
-a:visited
-{
-	color: #ee82ee;
+	width: 100%;
+	border: 2px inset black;
+	-moz-border-radius: 7px;
 }
 
 table.centered /* centered table */
@@ -123,29 +86,15 @@ table.centered /* centered table */
 	margin-right: auto;
 }
 
-tr.table_row:hover /* highlight table row */
-{
-	background-color: rgb(80,80,80);
-}
-
-p.information_line /* information text */
+p.information_line /* information message layout */
 {
 	text-align: center;
-	color: lime;
 	padding-bottom: 0.5ex;
-	background-color: black;
-}
-
-p.information_trans /* information text with transparent background */
-{
-	text-align: center;
-	color: lime;
-	margin-bottom: 1ex;
+	font-weight: bold;
 }
 
 p.blank_line /* when no information is displayed, display blank line */
 {
-	background-color: black;
 	padding-bottom: 0.5ex;
 	margin: 0ex;
 	height: 1.2em;
@@ -160,23 +109,27 @@ div.clear_floats /* clear both floats */
 
 input[type="text"], input[type="password"] /* input text fields */
 {
-	color: yellow;
 	border-style: inset;
+}
+
+input[type="submit"] /* submit input layout */
+{
+	font-weight: bold;
 }
 
 img.avatar /* avatar picture */
 {
-	border: thin solid #00bfff;
+	border: thin solid white;
 	margin-bottom: 0.2ex;
 	margin-right: 0.5ex;
 	background-color: black;
+	vertical-align: middle;
 }
 
 input.details /* small input button */
 {
-	border-width: thin;
-	border-style: solid;
-	padding: 0ex 0.9ex 0ex 0.9ex;
+	padding: 0ex 0.5ex 0ex 0.5ex;
+	font-size: x-small;
 }
 
 input.table_checkbox /* checkbox layout */
@@ -194,4 +147,29 @@ div.filters_trans /* filters with transparent background */
 div.filters_trans > input /* set distance between filter buttons */
 {
 	margin-right: 2ex;
+}
+
+.online /* highlight player name if he is online */
+{
+	font-weight: bold;
+}
+
+.filter_active /* highlight filter when active */
+{
+	background-color: green;
+}
+
+input.pushed /* selected button */
+{
+	border-style: inset;
+}
+
+img.country_flag /* country flag image layout */
+{
+	vertical-align: middle;
+}
+
+.p_online,.p_offline,.p_inactive,.p_dead /* player name layout */
+{
+	font-weight: bold;
 }

@@ -1790,7 +1790,10 @@
 				if ($message == 'game_settings') //upload game settings
 				{
 					$settings = $settingdb->GameSettingsList();
-					unset($settings['Timezone']); //handle timezone separately
+					// handle timezone, skin and background separately
+					unset($settings['Timezone']);
+					unset($settings['Skin']);					
+					unset($settings['Background']);
 					
 					foreach($settings as $input => $setting)
 					{
@@ -1802,6 +1805,9 @@
 					
 					if( isset($_POST['Timezone']) and (int)$_POST['Timezone'] >= -12 and (int)$_POST['Timezone'] <= +12 )
 						$player->ChangeSetting("Timezone", $_POST['Timezone']);
+					
+					$player->ChangeSetting("Skin", $_POST['Skin']);
+					$player->ChangeSetting("Background", $_POST['Background']);
 					
 					$information = "Game settings saved";
 					
@@ -2424,6 +2430,7 @@
 		$params["loginbox"]["error_msg"] = @$error;
 		$params["loginbox"]["warning_msg"] = @$warning;
 		$params["loginbox"]["info_msg"] = @$information;
+		$params["main"]["skin"] = 0; // default skin (user is not logged in, can't retrieve his settings)
 	}
 	else
 	{
@@ -2456,6 +2463,7 @@
 		}
 		
 		$params["navbar"]['NumGames'] = $temp;
+		$params["main"]["skin"] = $player->GetSetting("Skin");
 	}
 	
 // now display current inner-page contents
@@ -2949,6 +2957,7 @@ case 'Game':
 	$params['game']['mycountry'] = $player->GetSetting("Country");
 	$params['game']['hiscountry'] = $opponent->GetSetting("Country");
 	$params['game']['timezone'] = $player->GetSetting("Timezone");
+	$params['game']['Background'] = $player->GetSetting("Background");
 
 	$params['game']['GameState'] = $game->State;
 	$params['game']['Round'] = $data->Round;

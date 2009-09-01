@@ -13,7 +13,7 @@
 
 	<!-- begin challenges -->
 
-	<div id="challenges">
+	<div id="challenges" class="skin_label">
 
 	<h3>Challenges</h3>
 
@@ -28,13 +28,13 @@
 	<p>	
 		<input type="submit" name="incoming" value="Incoming">
 			<xsl:if test="$param/current_subsection = 'incoming'">
-				<xsl:attribute name="style">border-color: lime</xsl:attribute>
+				<xsl:attribute name="class">pushed</xsl:attribute>
 			</xsl:if>
 		</input>
 
 		<input type="submit" name="outgoing" value="Outgoing">
 			<xsl:if test="$param/current_subsection = 'outgoing'">
-				<xsl:attribute name="style">border-color: lime</xsl:attribute>
+				<xsl:attribute name="class">pushed</xsl:attribute>
 			</xsl:if>
 		</input>
 	</p>
@@ -43,12 +43,12 @@
 		<xsl:when test="$param/challenges_count &gt; 0">
 			<div class="challenge_box">
 				<xsl:for-each select="$param/challenges/*">
-					<div>
+					<div class="skin_text">
 						<xsl:choose>
 							<xsl:when test="$param/current_subsection = 'incoming'">
 								<p><span>
 									<xsl:if test="Online = 'yes'">
-										<xsl:attribute name="style">color: lime</xsl:attribute>
+										<xsl:attribute name="class">online</xsl:attribute>
 									</xsl:if>
 									<xsl:value-of select="Author"/>
 									</span> has challenged you on <span><xsl:value-of select="am:datetime(Created, $param/timezone)"/></span>.</p>
@@ -73,7 +73,7 @@
 								<p>You challenged 
 								<span>
 									<xsl:if test="Online = 'yes'">
-										<xsl:attribute name="style">color: lime</xsl:attribute>
+										<xsl:attribute name="class">online</xsl:attribute>
 									</xsl:if>
 									<xsl:value-of select="Recipient"/></span> on <span><xsl:value-of select="am:datetime(Created, $param/timezone)"/>
 								</span>.</p>
@@ -98,7 +98,7 @@
 
 	<!-- begin messages -->
 
-	<div id="messages">
+	<div id="messages" class="skin_label">
 
 	<h3>Messages</h3>
 
@@ -107,18 +107,18 @@
 	<div class="filters_trans" style="text-align: left;">
 		<input type="submit" name="inbox" value="Inbox" >
 			<xsl:if test="$param/current_location = 'inbox'">
-				<xsl:attribute name="style">border-color: lime</xsl:attribute>
+				<xsl:attribute name="class">pushed</xsl:attribute>
 			</xsl:if>
 		</input>
 		<input type="submit" name="sent_mail" value="Sent mail" >
 			<xsl:if test="$param/current_location = 'sent_mail'">
-				<xsl:attribute name="style">border-color: lime</xsl:attribute>
+				<xsl:attribute name="class">pushed</xsl:attribute>
 			</xsl:if>
 		</input>
 		<xsl:if test="$param/see_all_messages = 'yes'" >
 			<input type="submit" name="all_mail" value="All mail" >
 				<xsl:if test="$param/current_location = 'all_mail'">
-					<xsl:attribute name="style">border-color: lime</xsl:attribute>
+					<xsl:attribute name="class">pushed</xsl:attribute>
 				</xsl:if>
 			</input>
 		</xsl:if>
@@ -127,7 +127,7 @@
 
 		<select name="date_filter">
 			<xsl:if test="$param/date_val != 'none'">
-					<xsl:attribute name="style">border-color: lime</xsl:attribute>
+					<xsl:attribute name="class">filter_active</xsl:attribute>
 			</xsl:if>
 			<option value="none">
 				<xsl:if test="$param/date_val = 'none'">
@@ -152,7 +152,7 @@
 
 		<select name="name_filter">
 			<xsl:if test="$param/name_val != 'none'">
-				<xsl:attribute name="style">border-color: lime</xsl:attribute>
+				<xsl:attribute name="class">filter_active</xsl:attribute>
 			</xsl:if>
 			<option value="none">
 				<xsl:if test="$param/name_val = 'none'">
@@ -208,17 +208,17 @@
 	</div>
 
 	<xsl:if test="($param/messages_count = 0) and (($param/date_val != 'none') or ($param/name_val != 'none'))">
-		<p class="information_trans">No messages matched selected criteria.</p>
+		<p class="information_line warning">No messages matched selected criteria.</p>
 	</xsl:if>
 
 	<xsl:if test="($param/messages_count = 0) and ($param/date_val = 'none') and ($param/name_val = 'none')">
-		<p class="information_trans">You have no messages.</p>
+		<p class="information_line warning">You have no messages.</p>
 	</xsl:if>
 
 	<!-- begin messages table -->
 
 	<xsl:if test="$param/messages_count &gt; 0">
-		<table cellspacing="0">
+		<table cellspacing="0" class="skin_text">
 			<!-- begin table header -->
 			<tr>
 				<th>
@@ -236,7 +236,7 @@
 										</xsl:otherwise>
 									</xsl:choose>
 									<xsl:if test="$param/current_condition = 'Recipient'">
-										<xsl:attribute name="style">border-color: lime</xsl:attribute>
+										<xsl:attribute name="class">details pushed</xsl:attribute>
 									</xsl:if>
 								</input></p>
 						</xsl:when>
@@ -253,7 +253,7 @@
 										</xsl:otherwise>
 									</xsl:choose>
 									<xsl:if test="$param/current_condition = 'Author'">
-										<xsl:attribute name="style">border-color: lime</xsl:attribute>
+										<xsl:attribute name="class">details pushed</xsl:attribute>
 									</xsl:if>
 								</input></p>
 						</xsl:otherwise>
@@ -276,7 +276,7 @@
 						</xsl:otherwise>
 					</xsl:choose>
 					<xsl:if test="$param/current_condition = 'Created'">
-						<xsl:attribute name="style">border-color: lime</xsl:attribute>
+						<xsl:attribute name="class">details pushed</xsl:attribute>
 					</xsl:if>
 					</input></p>
 				</th>
@@ -291,13 +291,13 @@
 						<xsl:choose>
 							<!-- TODO format time to seconds and independant of user timezone -->
 							<xsl:when test="Unread = 'yes' and am:datediff(Created, $param/PreviousLogin) &lt;= 0">
-								<xsl:attribute name="style">color: red</xsl:attribute>
+								<xsl:attribute name="class">table_row new_message</xsl:attribute>
 							</xsl:when>
 							<xsl:when test="Unread = 'yes'">
-								<xsl:attribute name="style">color: orange</xsl:attribute>
+								<xsl:attribute name="class">table_row unread</xsl:attribute>
 							</xsl:when>
 							<xsl:when test="Author = $param/system_name">
-								<xsl:attribute name="style">color: #00bfff</xsl:attribute>
+								<xsl:attribute name="class">table_row system_message</xsl:attribute>
 							</xsl:when>
 						</xsl:choose>
 					</xsl:if>
@@ -372,7 +372,7 @@
 
 	<h3>Message details</h3>
 
-	<div>
+	<div class="skin_text">
 		<img class="stamp_picture" src="img/stamps/stamp{$param/Stamp}.png" width="100px" height="100px" alt="Marcopost stamp" />
 		<p><span>From:</span><xsl:value-of select="$param/Author"/></p>
 		<p><span>To:</span><xsl:value-of select="$param/Recipient"/></p>
@@ -411,7 +411,7 @@
 
 	<h3>New message</h3>
 
-	<div>
+	<div class="skin_text">
 		<img class="stamp_picture" src="img/stamps/stamp0.png" width="100px" height="100px" alt="Marcopost stamp" />
 		<p><span>From:</span><xsl:value-of select="$param/Author"/></p>
 		<p><span>To:</span><xsl:value-of select="$param/Recipient"/></p>

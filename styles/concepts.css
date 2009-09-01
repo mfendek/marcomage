@@ -6,19 +6,20 @@
 
 div#concepts /* concepts section layout */
 {
-	border-top: thin solid yellow;
-	border-bottom: thin solid yellow;
 	min-width: 1045px;
-	color: white;
-	margin-top: 1ex;
 	text-align: center;
 }
 
-div#concepts_table /* concepts list */
+div#concepts > h3, div#concepts_edit > h3 /* concepts heading layout */
+{
+	margin: 0ex;
+}
+
+div#concepts_table /* concepts list layout */
 {
 	margin-left: auto;
 	margin-right: auto;
-	width: 70%;
+	width: 75%;
 }
 
 div#concepts_table th > p, div#concepts td > p /* table cell text */
@@ -28,25 +29,7 @@ div#concepts_table th > p, div#concepts td > p /* table cell text */
 
 div#concepts_table > table /* concepts table */
 {
-	color: lime;
-	background-color: black;
-	border: thin solid yellow;
 	width: 100%;
-}
-
-div#concepts_table > table th /* table header */
-{
-	color: white;
-}
-
-div#concepts_table > table th + th, div#concepts_table > table td + td /* table header column borders */
-{
-	border-left: thin solid yellow;
-}
-
-div#concepts_table > table > tr + tr > td /* table cell */
-{
-	border-top: thin solid yellow;
 }
 
 p.note /* note layout */
@@ -54,9 +37,10 @@ p.note /* note layout */
 	text-align: justify;
 }
 
-p.highlighted /* new cards layout */
+p.highlighted /* highlight new concept */
 {
 	color: red;
+	font-weight: bold;
 }
 
 /* end concepts */
@@ -72,25 +56,16 @@ div#card_edit /* card edit formular */
 {
 	margin-right: auto;
 	margin-left: auto;
-	color: white;
+	margin-top: 1ex;
 	width: 50%;
 	font-weight: bold;
 	padding: 1ex;
-	border: medium ridge yellow;
-	background-color: black;
-	color: #dddddd; /* light gray */
 }
 
 div#card_edit > p, div#card_edit > div > p, div#card_edit hr /* set distance between elements */
 {
 	margin-top: 1ex;
 	margin-bottom: 1ex;
-}
-
-div#card_edit textarea /* textarea layout */
-{
-	background-color: black;
-	color: #dddddd; /* light gray */
 }
 
 div#card_edit input + input /* set distance between elements */

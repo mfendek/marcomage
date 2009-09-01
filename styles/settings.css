@@ -4,22 +4,15 @@
 
 div#settings /* settings layout */
 {
-	border-top: thin solid yellow;
-	border-bottom: thin solid yellow;
 	min-width: 1045px;
-	color: white;
-	margin-top: 1ex;
 }
 
 div#sett_float_left /* user settings layout */
 {
 	float: left;
-	width: 50%;
-}
-
-div#sett_float_left > div /* set distance of user settings from the left border*/
-{
-	margin-left: 10%;
+	width: 46%;
+	padding: 0ex 2ex 1ex 2ex;
+	margin: 0ex 0ex 1ex 1ex;
 }
 
 div#sett_float_left h4 + img /* avatar and zodiac sign pictures */
@@ -27,12 +20,7 @@ div#sett_float_left h4 + img /* avatar and zodiac sign pictures */
 	background-color: black;
 	padding: 0.5ex;
 	margin: 0.5ex 1ex 0.5ex 1ex;
-	border: medium ridge #00bfff;
-}
-
-div#settings img + h4 /* zodiac sign text */
-{
-	color: lime;
+	border: medium ridge white;
 }
 
 div#sett_float_left h3 + div, div#sett_float_left h3 + div + div /* avatar and zodiac sign are floated to the right */
@@ -48,7 +36,7 @@ div#settings h4 /* avatar and zodiac sign header text */
 	text-align: center;
 }
 
-div#sett_float_left > div > div + div + div /* set distance of user settings from the upper and lower border */
+div#sett_float_left > div + div + div /* line spacing */
 {
 	margin-top: 1ex;
 	margin-bottom: 1ex;
@@ -73,8 +61,9 @@ div#settings select /* set distance of selects from other elements */
 div#sett_float_right /* game settings layout */
 {
 	float: right;
-	width: 49%;
-	border-left: thin solid yellow;
+	width: 46%;
+	padding: 0ex 2ex 1ex 2ex;
+	margin: 0ex 1ex 1ex 0ex;
 }
 
 div#sett_float_right div /* set distance of game settings from the upper and lower border */
@@ -83,12 +72,7 @@ div#sett_float_right div /* set distance of game settings from the upper and low
 	margin-bottom: 1ex;
 }
 
-div#sett_float_right > div /* set distance of game settings from the left border */
-{
-	margin-left: 2ex;
-}
-
-div#sett_float_right h4 + div > div > input /* checkbox layout */
+div#sett_float_right input[type="checkbox"] /* checkbox layout */
 {
 	padding: 0.5ex;
 	margin: 0ex 2ex 0ex 0ex;

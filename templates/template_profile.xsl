@@ -14,7 +14,7 @@
 	<xsl:variable name="activedecks" select="count($param/decks)" />
 
 	<div id="details">
-	<div>
+	<div class="skin_text">
 		<h3><xsl:value-of select="$param/PlayerName"/>'s details</h3>
 
 		<div class="details_float_right">
@@ -33,9 +33,9 @@
 
 		<xsl:variable name="gender_color">
 			<xsl:choose>
-				<xsl:when test="$param/Gender = 'male'">DeepSkyBlue</xsl:when>
+				<xsl:when test="$param/Gender = 'male'">blue</xsl:when>
 				<xsl:when test="$param/Gender = 'female'">HotPink</xsl:when>
-				<xsl:otherwise>lime</xsl:otherwise>
+				<xsl:otherwise>green</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		
@@ -45,7 +45,7 @@
 		<p>Date of birth (DD-MM-YYYY): <span class="detail_value"><xsl:value-of select="$param/Birthdate"/></span></p>
 		<p>Age: <span class="detail_value"><xsl:value-of select="$param/Age"/></span></p>
 		<p>Rank: <span class="detail_value"><xsl:value-of select="$param/PlayerType"/></span></p>
-		<p>Country: <img width="18px" height="12px" src="img/flags/{$param/Country}.gif" alt="country flag" /> <span class="detail_value"><xsl:value-of select="$param/Country"/></span></p>
+		<p>Country: <img width="18px" height="12px" src="img/flags/{$param/Country}.gif" alt="country flag" class="country_flag" /> <span class="detail_value"><xsl:value-of select="$param/Country"/></span></p>
 		<p>Registered on: 
 			<span class="detail_value">
 				<xsl:choose>
@@ -83,7 +83,7 @@
 				</xsl:when>
 				
 				<xsl:when test="$param/playingagainst = 'yes'">
-					<p style="color: lime">game already in progress</p>
+					<p style="color: green">game already in progress</p>
 				</xsl:when>
 				
 				<xsl:when test="$param/challenged = 'yes'">
@@ -98,7 +98,7 @@
 							<xsl:value-of select="$param/challenge/Content"/>
 						</p>
 					</xsl:if>
-					<p style="color: lime">Challenged on <xsl:value-of select="am:datetime($param/challenge/Created, $param/timezone)"/></p>
+					<p style="color: green">Challenged on <xsl:value-of select="am:datetime($param/challenge/Created, $param/timezone)"/></p>
 				</xsl:when>
 				
 				<xsl:when test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
@@ -114,14 +114,14 @@
 										<option value="{am:urlencode(text())}"><xsl:value-of select="text()"/></option>
 									</xsl:for-each>
 								</select>
-								<textarea class="challenge_text" name="Content" rows="10" cols="50"></textarea>
+								<textarea name="Content" rows="10" cols="50"></textarea>
 							</xsl:otherwise>
 						</xsl:choose>
 					</p>
 				</xsl:when>
 				
 				<xsl:when test="$activedecks = 0">
-					<p class="information_line" style="color: yellow">You need at least one ready deck to challenge other players.</p>
+					<p class="information_line warning">You need at least one ready deck to challenge other players.</p>
 				</xsl:when>
 				
 				<xsl:when test="$param/free_slots = 0">

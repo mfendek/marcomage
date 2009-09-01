@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<backgrounds xmlns="http://arcomage.netvor.sk">
+	<background><name>- transparent -</name><value>0</value></background>
+	<background><name>hill castle</name><value>1</value></background>
+	<background><name>cloud castle</name><value>2</value></background>
+	<background><name>dark forest</name><value>3</value></background>
+	<background><name>deamon</name><value>4</value></background>
+	<background><name>thief</name><value>5</value></background>
+	<background><name>black dragon</name><value>6</value></background>
+	<background><name>elven city</name><value>7</value></background>
+	<background><name>wolf</name><value>8</value></background>
+	<background><name>forest castle</name><value>9</value></background>
+	<background><name>rider</name><value>10</value></background>
+	<background><name>azure shore</name><value>11</value></background>
+	<background><name>lost city</name><value>12</value></background>
+	<background><name>flowers</name><value>13</value></background>
+	<background><name>night sky</name><value>14</value></background>
+	<background><name>snow bunny</name><value>15</value></background>
+	<background><name>still water</name><value>16</value></background>
+	<background><name>moon lake</name><value>17</value></background>
+	<background><name>ghostship</name><value>18</value></background>
+	<background><name>fortress</name><value>19</value></background>
+	<background><name>lost castle</name><value>20</value></background>
+	<background><name>castle silhouette</name><value>21</value></background>
+	<background><name>fairy castle</name><value>22</value></background>
+	<background><name>fairy forest</name><value>23</value></background>
+	<background><name>dragon lady</name><value>24</value></background>
+	<background><name>azure unicorn</name><value>25</value></background>
+	<background><name>phoenix nebula</name><value>26</value></background>
+	<background><name>shadow priestess</name><value>27</value></background>
+	<background><name>marcomage</name><value>28</value></background>
+	<background><name>troll bridge</name><value>29</value></background>
+	<background><name>arcomage</name><value>30</value></background>
+</backgrounds>

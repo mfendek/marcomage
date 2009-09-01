@@ -16,37 +16,48 @@ div#games input /* set distance between game access buttons */
 
 p.ended_game /* color for text information about the game ("game has ended") */
 {
-	color: white;
-}
-
-p.aborted_game /* color for text information about the game ("game can be aborted") */
-{
-	color: gray;
+	font-style: italic;
 }
 
 /* end gamelist */
 
-/* begin newcard flag */
+/* begin card flags */
 
-p.newcard_flag /* new card flag (indicated above a new card) */
+p.flag /* new card flag (indicated above a new card) */
 {
-	color: orange;
-	border-color: white;
-	margin: 1ex 0ex 1ex 0ex;
+	border-color: #6495ed;
+	margin-top: 1ex;
 	border-style: ridge;
-	background-color: black;
+	-moz-border-radius: 7px;
+	background-color: white;
 	font-size: x-small;
 	width: 86px;
+	color: white;
+	text-shadow: 0 0 1px blue, 0 0 2px blue, 0 0 3px blue, 0 0 4px blue, 0 0 5px blue;
 }
 
-p.history_flag /* discard or played flag above a card in the card history*/
+p.played /* played card tag */
 {
-	border-color: yellow;
+	text-shadow: 0 0 1px green, 0 0 2px green, 0 0 3px green, 0 0 4px green, 0 0 5px green;
 }
 
-/* end newcard flag */
+p.discarded /* discarded card flag */
+{
+	text-shadow: 0 0 1px red, 0 0 2px red, 0 0 3px red, 0 0 4px red, 0 0 5px red;
+}
+
+/* end card flags */
 
 /* begin game */
+
+div#game
+{
+	min-width: 1045px;
+	color: black;
+	padding-top: 1ex;
+	padding-bottom: 1ex;
+	-o-background-size: 100% 100%; /* only Opera supports background image resizing */
+}
 
 td.stats > div > p:first-child /* facilites text */
 {
@@ -74,10 +85,9 @@ td.stats > div /* facilites/resources layout */
 
 td.stats > div + h5, td.minstats > div + h5 /* player and opponent names */
 {
-	color: lime;
+	font-weight: bold;
 	margin: 1ex 0ex 0.5ex 0ex;
 	font-size: medium;
-	font-weight: normal;
 	text-align: center;
 }
 
@@ -109,7 +119,6 @@ td.stats > h5 > input, td.minstats > h5 > input /* shortcut button to player's d
 
 td.minstats > div /* minimized game view layout */
 {
-	color: white;
 	text-align: center;
 	font-size: small;
 }
@@ -117,27 +126,18 @@ td.minstats > div /* minimized game view layout */
 p.info_label /* information label used in multiple instances in game section */
 {
 	text-align: center;
-	border: medium ridge yellow;
-	background-color: black;
+	-moz-border-radius: 7px;
 	font-size: medium;
-	color: white;
+	font-weight: bold;
 }
 
-p.info_label + p.info_label /* disable double label border */
-{
-	border-top-style: none;
-}
-
-select.card_modes
+select.card_modes /* card mode selector */
 {
 	margin-left: 2.5ex;
 }
 
 div.history /* history of played cards */
 {
-	/* we abandoned IE support completely */
-	/*overflow-y: hide;
-	overflow-x: scroll;*/
 	overflow: auto;
 	width: 98px;
 }
@@ -147,7 +147,7 @@ div.chatbox /* chatbox window */
 	overflow: auto;
 	max-height: 11.5ex;
 	margin-top: 0.5ex;
-	border: medium ridge yellow;
+	-moz-border-radius: 7px;
 	padding: 0ex 0.5ex 0.5ex 0.5ex;
 	text-align: left;
 	width: 51em;
@@ -155,19 +155,12 @@ div.chatbox /* chatbox window */
 
 div.chatbox > p > span:first-child /* date-time info in chatbox */
 {
-	color : rgb(219,142,179); /* light pink */
-}
-
-div.chatbox > p > span:first-child + span + span /* chat message color */
-{
-	color : white;
+	font-weight: bold;
 }
 
 input.chatboard /* chatbox input elements */
 {
 	font-size: small;
-	color: white;
-	background-color: black;
 	padding: 0ex 0.5ex 0ex 0.5ex;
 }
 
@@ -181,7 +174,6 @@ div.towerbody /* body part of the tower */
 	background-image: url('../img/towerb.jpg');
 	background-position: bottom left;
 	background-repeat: repeat-y;
-	background-color: black;
 	width: 37px;
 }
 
@@ -190,17 +182,14 @@ div.wallbody /* body part of the wall */
 	background-image: url('../img/wall.jpg');
 	background-position: bottom left;
 	background-repeat: repeat-y;
-	background-color: black;
 	width: 19px;
 }
 
 p.token_counter /* token counter layout */
 {
-	color: white;
 	padding: 0.3ex 0.2ex 0.3ex 0.2ex;
 	margin: 1ex 0.5ex 0ex 0.5ex;
-	background-color: black;
-	border: thin solid yellow;
+	-moz-border-radius: 7px;
 	font-size: small;
 	text-align: center;
 }

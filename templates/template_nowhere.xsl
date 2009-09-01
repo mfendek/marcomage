@@ -8,9 +8,9 @@
 
 <xsl:template match="*">
 	<xsl:variable name="param" select="$params/content" />
-	<p class="information_trans" style = "color: yellow;">Welcome to no-man's land...</p>
-	<p class="information_trans" style = "color: yellow;">You are seeing this page because the template for section '<xsl:value-of select="."/>' is missing.</p>
-	<p class="information_trans" style = "color: yellow;">Please notify us about this issue.</p>
+	<p class="information_line warning" >Welcome to no-man's land...</p>
+	<p class="information_line warning" >You are seeing this page because the template for section '<xsl:value-of select="."/>' is missing.</p>
+	<p class="information_line warning" >Please notify us about this issue.</p>
 </xsl:template>
 
 

@@ -7,27 +7,26 @@
 div#webpage /* prevents resize errors */
 {
 	min-width: 1045px;
+	margin-bottom: 1ex;
 }
 
-div#webpage p img /* set distance of images from the rest of the content */
+div#webpg_float_right > div > p > img, div#webpg_float_right > div > p > a > img /* image bordering */
 {
 	margin: 1ex;
-	border-style: none; /* turn off IE7 deafult blue solid image borders O_o */
+	border: medium solid white;
+	-moz-border-radius: 7px;
 }
 
 div#webpg_float_left /* menu part of wepage section */
 {
 	float: left;
-	width: 10%;
-	background-color: black;
+	width: 12%;
 }
 
 div#webpg_float_left > div /* inner part of the menu */
 {
-	background-image: url('../img/login_menu.jpg');
-	background-repeat: repeat;
 	text-align: center;
-	margin: 0ex 1ex 1ex 1ex;
+	margin: 0ex 0ex 1ex 1ex;
 }
 
 div#webpg_float_left input:first-child /* set distance of the first button from the upper border */
@@ -43,10 +42,9 @@ div#webpg_float_left div:first-child input /* set distance between buttons in th
 div#webpg_float_right /* content part of wepage section */
 {
 	float: right;
-	width: 90%;
-	color: aqua;
+	width: 86%;
 	text-align: justify;
-	margin-top: 1ex;
+	margin-right: 1ex;
 }
 
 div#webpg_float_right > div /* webpage content layout */
@@ -61,7 +59,7 @@ div#webpg_float_right hr /* set distance of the horizontal line from the upper a
 	margin: 1ex 0ex 1ex 0ex;
 }
 
-div#webpg_float_right > div > div > p + p /* set distance between paragraphs */
+div#webpg_float_right > div > p + p /* set distance between paragraphs */
 {
 	margin-top: 2ex;
 }
@@ -78,77 +76,64 @@ div.date_time /* date-time info layout */
 
 div#webpage li > span /* highlighted text */
 {
-	color:  #ffd700; /* light gold */
+	color: green;
 }
 
 /* end webpage */
 
 /* begin login menu */
 
+div#login_box /* login box layout */
+{
+	padding: 1ex;
+	margin: 1ex 1ex 1ex 1ex;
+	/*min-width: 120ex;*/
+	min-width: 1045px;
+	min-height: 100px; /* prevent interface jumps when there is no login message */
+}
+
 div#login_box h1 /* game title */
 {
 	font-size: xx-large;
+	margin: 1ex 0ex 0ex 0ex;
 	text-align: center;
+	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white, 0 0 4px white, 0 -5px 4px #ff3, 2px -10px 6px #fd3, -2px -15px 11px #f80, 2px -25px 18px #f20;
 }
 
 div#login_box h2 /* game subtitle */
 {
-	font-size: medium;
+	font-size: large;
 	text-align: center;
-	color: lime;
+	margin: 1ex 0ex 0ex 0ex;
 }
 
-div#login_box /* login box layout */
-{
-	padding: 1ex;
-	background-color: black;
-	/*min-width: 120ex;*/
-	min-width: 1045px;
-}
-
-div#lbox_float_left /* left part of the login box - login inputs */
+div#login_inputs /* login inputs layout */
 {
 	float: left;
-	width: 25%;
+	text-align: left;
+	margin-left: 1ex;
 }
 
-div#lbox_float_left > div /* content layout for left part of the login box */
+div#login_inputs > p > input[type="submit"] /* login box spacing */
 {
-	color: white;
-	text-align: center;
-	padding: 2ex 0ex 1ex 0ex;
+	margin-top: 1ex;
 }
 
-div#lbox_float_left > div > * + * /* set distance between any two neighbouring elements in the left part of the login box */
+div#login_inputs > p > input + input /* register button layout */
 {
-	margin-top: 0.5ex;
-}
-
-div#lbox_float_left input + input /* set distance between two buttons in the left part of the login box */
-{
-	margin-left: 2ex;
-}
-
-div#lbox_float_left > div /* layout for the left part of the login box */
-{
-	background-image: url('../img/login_menu.jpg');
-	background-repeat: repeat;
-	margin-right: 1ex;
-}
-
-div#lbox_float_right /* right part of the login box - game title */
-{
-	width: 75%;
 	float: right;
 }
 
-div#lbox_float_right > div /* right part of the login box layout */
+div#login_inputs > p > img /* login box image align */
 {
-	background-color: black;
-	background-image: url('../img/title.jpg');
-	background-position: center center;
-	background-repeat: no-repeat;
-	padding: 3.5ex 0ex 3.5ex 0ex;
+	vertical-align: middle;
+}
+
+div#login_message /* login message layout */
+{
+	text-align: left;
+	margin-left: 1ex;
+	font-weight: bold;
 }
 
 /* end login menu */
@@ -157,7 +142,6 @@ div#lbox_float_right > div /* right part of the login box layout */
 
 div#registration /* registration layout */
 {
-	color: white;
 	text-align: center;
 	padding: 2ex 0ex 2ex 0ex;
 	padding-top: 10ex;
@@ -175,7 +159,6 @@ div#registration > * + * /* set distance between any two neighbouring elements i
 
 div#registration > h3 /* registration title */
 {
-	color: lime;
 	font-size: large;
 }
 

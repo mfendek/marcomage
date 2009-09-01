@@ -11,17 +11,22 @@
 <xsl:template match="section[. = 'Game']">
 	<xsl:variable name="param" select="$params/game" />
 
+	<div id="game">
+	<xsl:if test="$param/Background != 0">
+		<xsl:attribute name="style">background-image: url('img/backgrounds/bg_<xsl:value-of select="$param/Background"/>.jpg'); background-position: center center; background-repeat: no-repeat;</xsl:attribute>
+	</xsl:if>
+
 	<!-- remember the current location across pages -->
 	<div><input type="hidden" name="CurrentGame" value="{$param/CurrentGame}"/></div>
 
 	<xsl:choose>
 		<!-- display supportive information -->
 		<xsl:when test="$param/GameState = 'in progress'">
-			<p class="information_line">Round <xsl:value-of select="$param/Round"/></p>
+			<p class="information_line info">Round <xsl:value-of select="$param/Round"/></p>
 		</xsl:when>
 		<!-- finished -->
 		<xsl:otherwise>
-			<p class="information_trans">
+			<p class="information_line info">
 				<xsl:choose>
 					<xsl:when test="$param/Winner = $param/PlayerName">You have won in round <xsl:value-of select="$param/Round"/>. <xsl:value-of select="$param/Outcome"/>.</xsl:when>
 					<xsl:when test="$param/Winner = $param/OpponentName"><xsl:value-of select="$param/Winner"/> has won in round <xsl:value-of select="$param/Round"/>. <xsl:value-of select="$param/Outcome"/>.</xsl:when>
@@ -46,7 +51,7 @@
 
 				<!--  display new card indicator, if set -->
 				<xsl:if test="NewCard = 'yes'">
-					<p class="newcard_flag">NEW CARD</p>
+					<p class="flag">NEW CARD</p>
 				</xsl:if>
 
 				<!-- display card -->
@@ -114,15 +119,13 @@
 					<p class="info_label">
 						<xsl:choose>
 							<xsl:when test="$param/Current = $param/PlayerName">
-								<xsl:attribute name="style">color: lime</xsl:attribute>
+								<xsl:attribute name="style">color: green</xsl:attribute>
 								It is your turn
 							</xsl:when>
 							<xsl:when test="$param/opp_isOnline = 'yes'">
-								<xsl:attribute name="style">color: <xsl:value-of select="am:color('HotPink')"/></xsl:attribute>
-								It is <span style="color: white;"><xsl:value-of select="$param/OpponentName"/></span>'s turn
+								It is <span class="online"><xsl:value-of select="$param/OpponentName"/></span>'s turn
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:attribute name="style">color: <xsl:value-of select="am:color('HotPink')"/></xsl:attribute>
 								It is <xsl:value-of select="$param/OpponentName"/>'s turn
 							</xsl:otherwise>
 						</xsl:choose>
@@ -133,7 +136,7 @@
 					<input type="submit" name="view_deck" value="Deck" />
 					<input type="submit" name="view_note" value="Note" >
 						<xsl:if test="$param/has_note = 'yes'">
-							<xsl:attribute name="class">menuselected</xsl:attribute>
+							<xsl:attribute name="class">marked_button</xsl:attribute>
 						</xsl:if>
 					</input>
 				</td>
@@ -217,7 +220,7 @@
 					</div>
 					<h5>
 						<xsl:value-of select="$param/PlayerName"/>
-						<img width="18px" height="12px" src="img/flags/{$param/mycountry}.gif" alt="country flag" />
+						<img width="18px" height="12px" src="img/flags/{$param/mycountry}.gif" alt="country flag" class="country_flag" />
 					</h5>
 					<p class="info_label">Tower: <span>
 						<xsl:if test="$param/mycolors/Tower != ''">
@@ -281,7 +284,7 @@
 					</div>
 					<h5>
 						<xsl:value-of select="$param/PlayerName"/>
-						<img width="18px" height="12px" src="img/flags/{$param/mycountry}.gif" alt="country flag" />
+						<img width="18px" height="12px" src="img/flags/{$param/mycountry}.gif" alt="country flag" class="country_flag" />
 					</h5>
 					<p class="info_label">Tower: <span>
 						<xsl:if test="$param/mycolors/Tower != ''">
@@ -378,17 +381,17 @@
 							<xsl:for-each select="$param/MyLastCard/*">
 								<xsl:sort select="name()" order="descending"/>
 								<td align="center">
-									<p class="newcard_flag history_flag">
+									<p>
 										<xsl:choose>
 											<xsl:when test="CardAction = 'play'">
-												<xsl:attribute name="style">color: lime</xsl:attribute>
+												<xsl:attribute name="class">flag played</xsl:attribute>
 												PLAYED
 												<xsl:if test="CardMode != 0">
 													 mode <xsl:value-of select="CardMode"/>
 												</xsl:if>
 											</xsl:when>
 											<xsl:otherwise>
-												<xsl:attribute name="style">color: red</xsl:attribute>
+												<xsl:attribute name="class">flag discarded</xsl:attribute>
 												DISCARDED!
 											</xsl:otherwise>
 										</xsl:choose>
@@ -412,17 +415,17 @@
 							<xsl:for-each select="$param/HisLastCard/*">
 								<xsl:sort select="name()" order="descending"/>
 								<td align="center">
-									<p class="newcard_flag history_flag">
+									<p>
 										<xsl:choose>
 											<xsl:when test="CardAction = 'play'">
-												<xsl:attribute name="style">color: lime</xsl:attribute>
+												<xsl:attribute name="class">flag played</xsl:attribute>
 												PLAYED
 												<xsl:if test="CardMode != 0">
 													 mode <xsl:value-of select="CardMode"/>
 												</xsl:if>
 											</xsl:when>
 											<xsl:otherwise>
-												<xsl:attribute name="style">color: red</xsl:attribute>
+												<xsl:attribute name="class">flag discarded</xsl:attribute>
 												DISCARDED!
 											</xsl:otherwise>
 										</xsl:choose>
@@ -551,7 +554,7 @@
 						</span>
 					</div>
 					<h5>
-						<img width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" />
+						<img width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" class="country_flag" />
 						<xsl:value-of select="$param/OpponentName"/>
 						<input class="details" type="submit" name="user_details[{$param/OpponentName}]" value="i" />
 					</h5>
@@ -616,7 +619,7 @@
 						</p>
 					</div>
 					<h5>
-						<img width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" />
+						<img width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" class="country_flag" />
 						<xsl:value-of select="$param/OpponentName"/>
 						<input class="details" type="submit" name="user_details[{$param/OpponentName}]" value="i" />
 					</h5>
@@ -708,7 +711,7 @@
 			<td align="center">
 				<!--  display new card indicator, if set -->
 				<xsl:if test="NewCard = 'yes'">
-					<p class="newcard_flag">NEW CARD</p>
+					<p class="flag">NEW CARD</p>
 				</xsl:if>
 
 				<!-- display card -->
@@ -737,13 +740,13 @@
 								<span>
 									<xsl:choose>
 										<xsl:when test="Name = $param/PlayerName">
-											<xsl:attribute name="style">color: <xsl:value-of select="am:color('LightBlue')"/></xsl:attribute>
+											<xsl:attribute name="class">info</xsl:attribute>
 										</xsl:when>
 										<xsl:when test="Name = $param/OpponentName">
-											<xsl:attribute name="style">color: <xsl:value-of select="am:color('LightGreen')"/></xsl:attribute>
+											<xsl:attribute name="class">warning</xsl:attribute>
 										</xsl:when>
 										<xsl:otherwise>
-											<xsl:attribute name="style">color: red</xsl:attribute>
+											<xsl:attribute name="class">error</xsl:attribute>
 										</xsl:otherwise>
 									</xsl:choose>
 									<xsl:value-of select="Name"/> : 
@@ -775,6 +778,8 @@
 	<!-- end chatboard -->
 
 	</table>
+
+	</div>
 
 </xsl:template>
 

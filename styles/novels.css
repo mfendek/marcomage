@@ -6,19 +6,13 @@ div#novels /* novels layout */
 {
 	text-align: left;
 	min-width: 1045px;
-	background-color: black;
-	background-image: url('../img/novels_menu.jpg');
-	border-bottom: thin solid yellow;
-	border-top: thin solid yellow;
-	color: white;
-	padding-bottom: 0ex;
 }
 
 div#nov_float_left /* menu part of novels section */
 {
 	float: left;
 	width: 20%;
-	margin-left: 1ex;	
+	margin-left: 1ex;
 }
 
 div#nov_float_left ul /* menu layout */
@@ -34,8 +28,6 @@ div#nov_float_left > ul > li /* set distance between list items */
 
 div#nov_float_left > ul input /* menu button layout */
 {
-	border-style: solid;
-	border-width: thin;
 	padding: 0.1ex 0.9ex 0.1ex 0.9ex;
 	margin-right: 3ex;
 	margin-bottom: 0.5ex;
@@ -49,28 +41,14 @@ div#nov_float_left > ul ul > li /* second level menu layout */
 	font-style: normal;
 }
 
-span.novel_selected /* book that is currently selected */
-{
-	color: lime;
-}
-
-span.chapter_selected /* chapter that is currently selected */
-{
-	color: orange;
-}
-
-
 div#nov_float_right /* content part of novels section */
 {
 	float: right;
 	width: 70%;
-	border-left: thin solid yellow;
 	text-align: justify;
 	padding: 1ex 5ex 2ex 5ex;
 	line-height: 3.5ex;
 	min-height: 420px;
-	background-image: url('../img/novels_content.jpg');
-	color: #dddddd; /* light gray */
 }
 
 div.navigation /* top and bottom navigation bar */

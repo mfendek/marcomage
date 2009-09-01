@@ -18,7 +18,7 @@
 	<h3>MArcomage discussion forum</h3>
 	<h4>Sections list</h4>
 
-	<div>
+	<div class="skin_text">
 	<table cellspacing="0" cellpadding="0">
 
 	<tr>
@@ -33,7 +33,7 @@
 	<xsl:for-each select="$param/sections/*">
 
 		<tr><td colspan="6">
-		<div>
+		<div class="skin_label">
 		<h5>
 			<input type="submit" name="section_details[{SectionID}]" value="&crarr;" />
 			<span><xsl:value-of select="SectionName"/></span>
@@ -74,19 +74,18 @@
 				<p><xsl:value-of select="am:datetime(Created, $param/timezone)"/></p>
 			</td>
 			<td>
-				<p>
-					<xsl:choose>
-						<xsl:when test="$hasposts">
+				<xsl:choose>
+					<xsl:when test="$hasposts">
+						<p>
+							<xsl:if test="am:datediff(last_post, $param/PreviousLogin) &lt; 0">
+								<xsl:attribute name="class">new</xsl:attribute>
+							</xsl:if>
 							<xsl:value-of select="concat(am:datetime(last_post, $param/timezone), ' by ', PostAuthor)" />
-							<input class="details" type="submit" name="thread_last_page[{ThreadID}]" value="&rarr;" >
-								<xsl:if test="am:datediff(last_post, $param/PreviousLogin) &lt; 0">
-									<xsl:attribute name="style">border-color: red</xsl:attribute>
-								</xsl:if>
-							</input>
-						</xsl:when>
-						<xsl:otherwise>n/a</xsl:otherwise>
-					</xsl:choose>
-				</p>
+							<input class="details" type="submit" name="thread_last_page[{ThreadID}]" value="&rarr;" />
+						</p>
+					</xsl:when>
+					<xsl:otherwise><p>n/a</p></xsl:otherwise>
+				</xsl:choose>
 			</td>
 			</tr>
 		</xsl:for-each>
@@ -109,7 +108,7 @@
 	<h3>MArcomage discussion forum</h3>
 	<h4>Section details</h4>
 
-	<div>
+	<div class="skin_text">
 
 	<table cellspacing="0" cellpadding="0">
 
@@ -123,7 +122,7 @@
 	</tr>
 
 	<tr><td colspan="6">
-	<div>
+	<div class="skin_label">
 
 	<h5><input type="submit" name="Forum" value="&uarr;" /><span><xsl:value-of select="$param/section/SectionName"/></span> - <xsl:value-of select="$param/section/Description"/></h5>
 	<p>
@@ -207,19 +206,18 @@
 			<p><xsl:value-of select="am:datetime(Created, $param/timezone)"/></p>
 		</td>
 		<td>
-			<p>
-				<xsl:choose>
-					<xsl:when test="$hasposts">
+			<xsl:choose>
+				<xsl:when test="$hasposts">
+					<p>
+						<xsl:if test="am:datediff(last_post, $param/PreviousLogin) &lt; 0">
+							<xsl:attribute name="class">new</xsl:attribute>
+						</xsl:if>
 						<xsl:value-of select="concat(am:datetime(last_post, $param/timezone), ' by ', PostAuthor)" />
-						<input class="details" type="submit" name="thread_last_page[{ThreadID}]" value="&rarr;" >
-							<xsl:if test="am:datediff(last_post, $param/PreviousLogin) &lt; 0">
-								<xsl:attribute name="style">border-color: red</xsl:attribute>
-							</xsl:if>
-						</input>
-					</xsl:when>
-					<xsl:otherwise>n/a</xsl:otherwise>
-				</xsl:choose>
-			</p>
+						<input class="details" type="submit" name="thread_last_page[{ThreadID}]" value="&rarr;" />
+					</p>
+				</xsl:when>
+				<xsl:otherwise><p>n/a</p></xsl:otherwise>
+			</xsl:choose>
 		</td>
 		</tr>
 
@@ -253,7 +251,7 @@
 	<h4>Thread details</h4>
 
 	<xsl:variable name="nav_bar">
-		<div class="thread_bar">
+		<div class="thread_bar skin_label">
 			<h5>
 				<input type="submit" name="section_details[{$section/SectionID}]" value="&uarr;" />
 				<span><xsl:value-of select="$section/SectionName"/></span> - <xsl:value-of select="$thread/Title"/>
@@ -343,7 +341,7 @@
 
 		<xsl:for-each select="$param/PostList/*">
 
-			<div>
+			<div class="skin_text">
 			
 			<div>
 							
@@ -359,7 +357,7 @@
 			
 			<p>
 				<xsl:if test="am:datediff(Created, $param/PreviousLogin) &lt; 0">
-					<xsl:attribute name="class">highlighted</xsl:attribute>
+					<xsl:attribute name="class">new</xsl:attribute>
 				</xsl:if>
 				<xsl:value-of select="am:datetime(Created, $param/timezone)" />
 			</p>
@@ -417,7 +415,7 @@
 	
 	<h3>Create new thread to the section <span><xsl:value-of select="$section/SectionName"/></span></h3>
 	
-	<div>
+	<div class="skin_text">
 		<p>Topic:<input type="text" name="Title" maxlength="50" size="45" value="{$param/Title}" /></p>
 		<p>Priority:
 		
@@ -453,7 +451,7 @@
 
 	<h3>New post in thread - <span><xsl:value-of select="$thread/Title"/></span></h3>
 
-	<div>
+	<div class="skin_text">
 	
 	<input type="submit" name="create_post" value="Create post" />
 	<input type="submit" name="thread_details[{$thread/ThreadID}]" value="Back" />
@@ -530,7 +528,7 @@
 	
 	<div id="forum_new_edit">
 		<h3>Edit post</h3>
-		<div>	
+		<div class="skin_text">	
 		<input type="submit" name="modify_post" value="Save" />
 		<input type="submit" name="thread_details[{$post/ThreadID}]" value="Back" />
 		<hr/>

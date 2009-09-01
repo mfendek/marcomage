@@ -14,18 +14,18 @@
 	<xsl:variable name="list" select="$param/list" />
 	
 	<xsl:if test="$param/active_decks = 0">
-		<p class="information_line" style="color: yellow;">You need at least one ready deck to challenge other players.</p>
+		<p class="information_line warning">You need at least one ready deck to challenge other players.</p>
 	</xsl:if>
 	
 	<xsl:if test="$param/free_slots = 0">
-		<p class="information_trans" style = "color: yellow;">You cannot initiate any more games.</p>
+		<p class="information_line warning" >You cannot initiate any more games.</p>
 	</xsl:if> 
 
 	<div id="players">
 		<div class="filters_trans" style="text-align: center;">
 			<!-- begin player filter -->
 			<select name="player_filter">
-				<xsl:if test="$param/CurrentFilter != 'none'"><xsl:attribute name="style">border-color: lime</xsl:attribute></xsl:if>
+				<xsl:if test="$param/CurrentFilter != 'none'"><xsl:attribute name="class">filter_active</xsl:attribute></xsl:if>
 				<option value="none" >No players filters</option>
 				<option value="active"><xsl:if test="$param/CurrentFilter = 'active'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Active players</option>
 				<option value="offline"><xsl:if test="$param/CurrentFilter = 'offline'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Active and offline players</option>
@@ -59,7 +59,7 @@
 		</div>
 
 		<!-- begin players list -->
-		<table class="centered" cellspacing="0">
+		<table class="centered skin_text" cellspacing="0">
 			<tr>
 				<xsl:if test="$param/show_avatars = 'yes'"><th></th></xsl:if>
 				<xsl:if test="$param/show_nationality = 'yes'"><th></th></xsl:if>			
@@ -81,7 +81,7 @@
 							<xsl:if test="@sortable = 'yes'">
 								<input type="submit" class="details">
 									<xsl:if test="$param/condition = @name">
-										<xsl:attribute name="style">border-color: lime</xsl:attribute>
+										<xsl:attribute name="class">details pushed</xsl:attribute>
 									</xsl:if>
 									<xsl:choose>
 										<xsl:when test="$param/condition = @name and $param/order = 'DESC'">
@@ -117,17 +117,17 @@
 						</td>
 					</xsl:if>
 					
-					<td><img width="18px" height="12px" src="img/flags/{country}.gif" alt="country flag" /></td>
+					<td><img width="18px" height="12px" src="img/flags/{country}.gif" alt="country flag" class="country_flag" /></td>
 
-					<xsl:variable name="namecolor">
+					<xsl:variable name="player_class">
 						<xsl:choose> <!-- choose name color according to inactivity time -->
-							<xsl:when test="inactivity &gt; 60*60*24*7*3">gray</xsl:when> <!-- 3 weeks = dead -->
-							<xsl:when test="inactivity &gt; 60*60*24*7*1">maroon</xsl:when> <!-- 1 week = inactive -->
-							<xsl:when test="inactivity &gt; 60*10       ">red</xsl:when> <!-- 10 minutes = offline -->
-							<xsl:otherwise                               >lime</xsl:otherwise> <!-- online -->
+							<xsl:when test="inactivity &gt; 60*60*24*7*3">p_dead</xsl:when> <!-- 3 weeks = dead -->
+							<xsl:when test="inactivity &gt; 60*60*24*7*1">p_inactive</xsl:when> <!-- 1 week = inactive -->
+							<xsl:when test="inactivity &gt; 60*10       ">p_offline</xsl:when> <!-- 10 minutes = offline -->
+							<xsl:otherwise                               >p_online</xsl:otherwise> <!-- online -->
 						</xsl:choose>
 					</xsl:variable>
-					<td><p style="color: {$namecolor}"><xsl:value-of select="name"/></p></td>
+					<td><p class="{$player_class}"><xsl:value-of select="name"/></p></td>
 
 					<td><p><xsl:value-of select="wins"/></p></td>
 					<td><p><xsl:value-of select="losses"/></p></td>
