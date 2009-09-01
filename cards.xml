@@ -4509,7 +4509,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Brigand.</keywords>
-    <effect><![CDATA[If not New<br />Steals the difference between your resources and enemy's resources (max 15, min 5)]]></effect>
+    <effect><![CDATA[If not New<br />Steals the difference between enemy's resources and your resources (max 15, min 5)]]></effect>
     <code><![CDATA[if (!isset($mynewflags[$cardpos])) { $tmp = min(15, max(5, $hisdata->Bricks - $mydata->Bricks)); $mydata->Bricks+= $tmp; $hisdata->Bricks-= $tmp; $tmp = min(15, max(5, $hisdata->Gems - $mydata->Gems)); $mydata->Gems+= $tmp; $hisdata->Gems-= $tmp; $tmp = min(15, max(5, $hisdata->Recruits - $mydata->Recruits)); $mydata->Recruits+= $tmp; $hisdata->Recruits-= $tmp; }]]></code>
   </card>
   <card id="340">
