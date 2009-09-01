@@ -29,14 +29,14 @@ div#webpg_float_left > div /* inner part of the menu */
 	margin: 0ex 0ex 1ex 1ex;
 }
 
-div#webpg_float_left input:first-child /* set distance of the first button from the upper border */
+div#webpg_float_left p:first-child /* set distance of the first button from the upper border */
 {
-	margin-top: 13ex;
+	margin-top: 7ex;
 }
 
-div#webpg_float_left div:first-child input /* set distance between buttons in the menu */
+div#webpg_float_left div:first-child > p /* set distance between buttons in the menu */
 {
-	margin-bottom: 10ex;
+	margin-bottom: 6ex;
 }
 
 div#webpg_float_right /* content part of wepage section */

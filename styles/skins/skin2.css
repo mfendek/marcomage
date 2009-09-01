@@ -149,3 +149,9 @@ div.chatbox /* chatbox window */
 	background-image: url('../../img/skins/blue_text.jpg');
 	background-repeat: repeat;
 }
+
+p.flag /* new card flag (indicated above a new card) */
+{
+	background-image: url('../../img/skins/blue_text.jpg');
+	background-repeat: repeat;
+}

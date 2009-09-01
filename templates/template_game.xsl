@@ -119,7 +119,6 @@
 					<p class="info_label">
 						<xsl:choose>
 							<xsl:when test="$param/Current = $param/PlayerName">
-								<xsl:attribute name="style">color: green</xsl:attribute>
 								It is your turn
 							</xsl:when>
 							<xsl:when test="$param/opp_isOnline = 'yes'">

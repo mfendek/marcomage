@@ -168,3 +168,9 @@ div.chatbox /* chatbox window */
 	background-color: rgb(39, 73, 45); /* dark green */
 	color: #dddddd; /* very light gray */
 }
+
+p.flag /* new card flag (indicated above a new card) */
+{
+	background-color: rgb(39, 73, 45); /* dark green */
+	color: #dddddd; /* very light gray */
+}

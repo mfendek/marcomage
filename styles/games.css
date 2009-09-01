@@ -29,21 +29,18 @@ p.flag /* new card flag (indicated above a new card) */
 	margin-top: 1ex;
 	border-style: ridge;
 	-moz-border-radius: 7px;
-	background-color: white;
 	font-size: x-small;
 	width: 86px;
-	color: white;
-	text-shadow: 0 0 1px blue, 0 0 2px blue, 0 0 3px blue, 0 0 4px blue, 0 0 5px blue;
 }
 
 p.played /* played card tag */
 {
-	text-shadow: 0 0 1px green, 0 0 2px green, 0 0 3px green, 0 0 4px green, 0 0 5px green;
+	border-color: green;
 }
 
 p.discarded /* discarded card flag */
 {
-	text-shadow: 0 0 1px red, 0 0 2px red, 0 0 3px red, 0 0 4px red, 0 0 5px red;
+	border-color: red;
 }
 
 /* end card flags */

@@ -17,13 +17,13 @@
 
 	<div id="webpg_float_left">
 	<div class="skin_label">
-	<input type="submit" name="WebPage[Main]" value="Main page" />
-	<input type="submit" name="WebPage[News]" value="Latest news" />
-	<input type="submit" name="WebPage[Modified]" value="Modified cards" />
-	<input type="submit" name="WebPage[Help]" value="Game manual" />
-	<input type="submit" name="WebPage[Faq]" value="F .   A .   Q . " />
-	<input type="submit" name="WebPage[Credits]" value="Hall of fame" />
-	<input type="submit" name="WebPage[History]" value="Project history" />
+	<p><input type="submit" name="WebPage[Main]" value="Main page" /></p>
+	<p><input type="submit" name="WebPage[News]" value="Latest news" /></p>
+	<p><input type="submit" name="WebPage[Modified]" value="Modified cards" /></p>
+	<p><input type="submit" name="WebPage[Help]" value="Game manual" /></p>
+	<p><input type="submit" name="WebPage[Faq]" value="F .   A .   Q . " /></p>
+	<p><input type="submit" name="WebPage[Credits]" value="Hall of fame" /></p>
+	<p><input type="submit" name="WebPage[History]" value="Project history" /></p>
 	</div>
 	</div>
 

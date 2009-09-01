@@ -146,3 +146,8 @@ div.chatbox /* chatbox window */
 	border: medium ridge #6495ed;
 	background-color: rgb(191, 223, 255); /* light blue */
 }
+
+p.flag /* new card flag (indicated above a new card) */
+{
+	background-color: rgb(191, 223, 255); /* light blue */
+}
