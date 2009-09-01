@@ -10,7 +10,7 @@ div#settings /* settings layout */
 div#sett_float_left /* user settings layout */
 {
 	float: left;
-	width: 46%;
+	width: 45%;
 	padding: 0ex 2ex 1ex 2ex;
 	margin: 0ex 0ex 1ex 1ex;
 }
@@ -19,11 +19,11 @@ div#sett_float_left h4 + img /* avatar and zodiac sign pictures */
 {
 	background-color: black;
 	padding: 0.5ex;
-	margin: 0.5ex 1ex 0.5ex 1ex;
+	margin: 0.5ex 1ex 0ex 1ex;
 	border: medium ridge white;
 }
 
-div#sett_float_left h3 + div, div#sett_float_left h3 + div + div /* avatar and zodiac sign are floated to the right */
+div#sett_float_left h3 + p, div#sett_float_left h3 + p + p /* avatar and zodiac sign are floated to the right */
 {
 	float: right;
 	text-align: center;
@@ -36,25 +36,24 @@ div#settings h4 /* avatar and zodiac sign header text */
 	text-align: center;
 }
 
-div#sett_float_left > div + div + div /* line spacing */
+div#settings > div > h4 /* settings header layout */
 {
-	margin-top: 1ex;
-	margin-bottom: 1ex;
+	margin: 1ex 0ex 1ex 0ex;
+}
+
+div#sett_float_left > p + p + p, div#sett_float_right > div > p /* line spacing */
+{
+	margin-top: 0.8ex;
+	margin-bottom: 0.8ex;
 }
 
 div#settings input /* set distance of inputs from the text */
 {
-	margin-left: 2ex;
-}
-
-div#settings input + input /* set distance of inputs from the other inputs */
-{
-	margin-left: 0.5ex;
+	margin-right: 2ex;
 }
 
 div#settings select /* set distance of selects from other elements */
 {
-	margin-left: 2ex;
 	margin-right: 2ex;
 }
 
@@ -64,12 +63,6 @@ div#sett_float_right /* game settings layout */
 	width: 46%;
 	padding: 0ex 2ex 1ex 2ex;
 	margin: 0ex 1ex 1ex 0ex;
-}
-
-div#sett_float_right div /* set distance of game settings from the upper and lower border */
-{
-	margin-top: 1ex;
-	margin-bottom: 1ex;
 }
 
 div#sett_float_right input[type="checkbox"] /* checkbox layout */
