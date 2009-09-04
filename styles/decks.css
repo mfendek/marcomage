@@ -38,11 +38,8 @@ div#cost_per_turn /* avg cost per turn indicator layout */
 {
 	float: right;
 	margin-right: 5ex;
-	border: 2px outset black;
 	-moz-border-radius: 7px;
 	padding: 0ex 0.5ex 0ex 0.5ex;
-	background-color: #eeeeee; /* very light gray */
-	color: black;
 }
 
 div#cost_per_turn > b + b /* set distance between avg cost per turn indicators */

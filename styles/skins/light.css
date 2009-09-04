@@ -130,3 +130,24 @@ div.chatbox > p > span:first-child /* date-time info in chatbox */
 {
 	color: blue;
 }
+
+div#cost_per_turn /* avg cost per turn indicator layout */
+{
+	border: 2px outset black;
+	color: black;
+}
+
+div#cost_per_turn > b:first-child /* bricks */
+{
+	color: red;
+}
+
+div#cost_per_turn > b:first-child + b /* gems */
+{
+	color: blue;
+}
+
+div#cost_per_turn > b:first-child + b + b /* recruits */
+{
+	color: green;
+}

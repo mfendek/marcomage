@@ -20,18 +20,9 @@
 
 	<div id="cost_per_turn">
 		Avg cost / turn:
-		<b>
-			<xsl:attribute name="style">color: red</xsl:attribute>
-			<xsl:value-of select="$param/Res/Bricks"/>
-		</b>
-		<b>
-			<xsl:attribute name="style">color: blue</xsl:attribute>
-			<xsl:value-of select="$param/Res/Gems"/>
-		</b>
-		<b>
-			<xsl:attribute name="style">color: green</xsl:attribute>
-			<xsl:value-of select="$param/Res/Recruits"/>
-		</b>
+		<b><xsl:value-of select="$param/Res/Bricks"/></b>
+		<b><xsl:value-of select="$param/Res/Gems"/></b>
+		<b><xsl:value-of select="$param/Res/Recruits"/></b>
 	</div>
 
 	<xsl:variable name="classes">

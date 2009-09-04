@@ -69,3 +69,8 @@ p.flag /* new card flag (indicated above a new card) */
 {
 	background-color: rgb(191, 223, 255); /* light blue */
 }
+
+div#cost_per_turn /* avg cost per turn indicator layout */
+{
+	background-color: rgb(191, 223, 255); /* light blue */
+}

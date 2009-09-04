@@ -104,6 +104,11 @@ p.flag /* new card flag (indicated above a new card) */
 	background-color: rgb(40, 40, 65); /* dark blue */
 }
 
+div#cost_per_turn /* avg cost per turn indicator layout */
+{
+	background-color: rgb(40, 40, 65); /* dark blue */
+}
+
 /* backwards compatibility hacks start here */
 
 

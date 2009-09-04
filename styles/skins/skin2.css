@@ -73,3 +73,9 @@ p.flag /* new card flag (indicated above a new card) */
 	background-image: url('../../img/skins/blue_text.jpg');
 	background-repeat: repeat;
 }
+
+div#cost_per_turn /* avg cost per turn indicator layout */
+{
+	background-image: url('../../img/skins/blue_text.jpg');
+	background-repeat: repeat;
+}

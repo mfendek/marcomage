@@ -154,3 +154,24 @@ div#game div.chatbox > p > span:first-child /* date-time info in chatbox */
 {
 	color : rgb(219,142,179); /* light pink */
 }
+
+div#cost_per_turn /* avg cost per turn indicator layout */
+{
+	border: 2px outset #cccccc;
+	color: #cccccc; /* light gray */
+}
+
+div#cost_per_turn > b:first-child /* bricks */
+{
+	color: #bc8f8f; /* RosyBrown */
+}
+
+div#cost_per_turn > b:first-child + b /* gems */
+{
+	color: #00bfff; /* DeepSkyBlue */
+}
+
+div#cost_per_turn > b:first-child + b + b /* recruits */
+{
+	color: #8fbc8f; /* DarkSeaGreen */
+}
