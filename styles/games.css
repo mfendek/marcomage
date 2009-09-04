@@ -52,7 +52,6 @@ div#game
 	min-width: 1045px;
 	padding-top: 1ex;
 	padding-bottom: 1ex;
-	-o-background-size: 100% 100%; /* only Opera supports background image resizing */
 }
 
 td.stats > div > p:first-child /* facilites text */
@@ -147,11 +146,6 @@ div.chatbox /* chatbox window */
 	padding: 0ex 0.5ex 0.5ex 0.5ex;
 	text-align: left;
 	width: 51em;
-}
-
-div.chatbox > p > span:first-child /* date-time info in chatbox */
-{
-	font-weight: bold;
 }
 
 input.chatboard /* chatbox input elements */

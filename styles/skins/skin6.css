@@ -5,40 +5,39 @@
 .skin_text /* text element layout */
 {
 	background-color: rgb(40, 40, 65); /* dark blue */
-	color: #cccccc; /* light gray */
+	color: white;
 }
 
 .skin_label /* label element layout */
 {
 	background-image: url('../../img/skins/old_label.jpg');
 	background-repeat: repeat;
-	color: #cccccc; /* light gray */
+	color: white;
 }
 
 .skin_text, .skin_label /* border layout */
 {
-	border: 2px outset #cccccc;
+	border: thin solid yellow;
 	-moz-border-radius: 7px;
 }
 
 html /* general background layout */
 {
-	background-image: url('../../img/skins/bg_old.jpg');
-	background-repeat: repeat;
-	color: #cccccc; /* light gray */
+	background-color: black;
+	color: white;
 }
 
 div#menubar /* navigation bar layout */
 {
-	background-image: url('../../img/skins/old_label.jpg');
-	background-repeat: repeat;
+	background-color: black;
+	color: lime;
 }
 
 div#login_box /* login box layout */
 {
 	background-image: url('../../img/skins/old_label.jpg');
 	background-repeat: repeat;
-	border: 2px outset #cccccc;
+	border: 2px outset yellow;
 	-moz-border-radius: 7px;
 }
 
@@ -49,22 +48,23 @@ input, textarea /* input text fields */
 
 hr /* horizontal line layout */
 {
-	border-color: #eeeeee; /* very light gray */
+	color: yellow;
+	border-style: inset; /* override */
 }
 
 a:link /* unvisited link */
 {
-	color: #87cefa; /* light sky blue */
+	color: yellow;
 }
 
 a:visited /* visited link */
 {
-	color: #6495ed; /* light blue */
+	color: #ee82ee; /* purple */
 }
 
 tr.table_row:hover /* highlight table row */
 {
-	background-color: rgb(80, 110, 180); /* dark blue */
+	background-color: rgb(80,80,80); /* gray */
 	color: white;
 }
 
@@ -76,19 +76,16 @@ h2,h3,h4,h5 /* heading layout */
 .new_message /* new message */
 {
 	color: red;
-	font-weight: bold;
 }
 
 .unread /* unread message */
 {
 	color: orange;
-	font-weight: bold;
 }
 
 .system_message /* system message */
 {
 	color: #6495ed; /* light blue */
-	font-weight: bold;
 }
 
 input[type="submit"] /* submit input layout */
@@ -100,7 +97,8 @@ input[type="submit"] /* submit input layout */
 
 input.marked_button /* highlighted button */
 {
-	background-color: green;
+	background-color: yellow;
+	color: black;
 }
 
 .info /* information message layout */
@@ -141,20 +139,26 @@ input.marked_button /* highlighted button */
 p.info_label /* information label used in multiple instances in game section */
 {
 	border: medium ridge #6495ed;
-	background-color: rgb(40, 40, 65); /* dark blue */
-	color: #dddddd; /* very light gray */
+	background-color: black;
+	color: white;
+	font-weight: normal;
 }
 
-.online /* highlight player name if he is online */
+.player
 {
 	color: lime;
+}
+
+p.info_label .opponent
+{
+	color: #ff69b4; /* hot pink */
 }
 
 p.token_counter /* token counter layout */
 {
 	border: thin solid #6495ed;
-	background-color: rgb(40, 40, 65); /* dark blue */
-	color: #dddddd; /* very light gray */
+	background-color: black;
+	color: white;
 }
 
 div.chatbox /* chatbox window */
@@ -168,4 +172,92 @@ p.flag /* new card flag (indicated above a new card) */
 {
 	background-color: rgb(40, 40, 65); /* dark blue */
 	color: #dddddd; /* very light gray */
+}
+
+div#game .chatbox_player
+{
+	color: #add8e6; /* light blue */
+}
+
+div#game .chatbox_opponent
+{
+	color: #90ee90; /* light green */
+}
+
+div#game .chatbox_system
+{
+	color: red;
+}
+
+div#game div.chatbox > p > span:first-child /* date-time info in chatbox */
+{
+	color : rgb(219,142,179); /* light pink */
+}
+
+/* backwards compatibility hacks start here */
+
+
+div#forum .skin_text
+{
+	border-style: none;
+}
+
+div#forum .skin_label
+{
+	border-color: #6495ed; /* light blue */
+	border-style: ridge;
+	border-width: 3px;
+}
+
+div#forum > h3 /* forum title layout */
+{
+	color: #6699ff; /* light blue */
+}
+
+div#forum table /* forum table layout */
+{
+	border-color: #6495ed; /* light blue */
+	border-style: ridge;
+	border-width: 3px;
+	background-color: #050529; /* very dark blue */
+}
+
+div#forum input
+{
+	border-color: lime;
+	border-style: outset;
+	border-width: 1px;
+	padding: 0.4ex 1.2ex 0.4ex 1.2ex;
+}
+
+div#forum input.details
+{
+	border-style: solid;
+	padding: 0ex 0.9ex 0ex 0.9ex;
+}
+
+div#forum th > p
+{
+	color: #f4a460; /* salmon brown */
+}
+
+div#game .flag
+{
+	color: orange;
+	border-color: white;
+	margin: 1ex 0ex 1ex 0ex;
+	border-style: ridge;
+	background-color: black;
+	font-size: x-small;
+	width: 86px;
+}
+
+div#game select
+{
+	font-size: x-small;
+	color: yellow;
+	background-color: black;
+	border: 2px outset #6495ed; /* light blue */
+	vertical-align: middle;
+	text-shadow: none;
 }

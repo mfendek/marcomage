@@ -150,9 +150,14 @@ p.info_label /* information label used in multiple instances in game section */
 	color: #dddddd; /* very light gray */
 }
 
-.online /* highlight player name if he is online */
+.player
 {
 	color: lime;
+}
+
+p.info_label .opponent
+{
+	color: #ff69b4; /* hot pink */
 }
 
 p.token_counter /* token counter layout */
@@ -173,4 +178,24 @@ p.flag /* new card flag (indicated above a new card) */
 {
 	background-color: rgb(39, 73, 45); /* dark green */
 	color: #dddddd; /* very light gray */
+}
+
+div#game .chatbox_player
+{
+	color: #add8e6; /* light blue */
+}
+
+div#game .chatbox_opponent
+{
+	color: #90ee90; /* light green */
+}
+
+div#game .chatbox_system
+{
+	color: red;
+}
+
+div#game div.chatbox > p > span:first-child /* date-time info in chatbox */
+{
+	color : rgb(219,142,179); /* light pink */
 }

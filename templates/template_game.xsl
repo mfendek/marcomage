@@ -119,13 +119,10 @@
 					<p class="info_label">
 						<xsl:choose>
 							<xsl:when test="$param/Current = $param/PlayerName">
-								It is your turn
-							</xsl:when>
-							<xsl:when test="$param/opp_isOnline = 'yes'">
-								It is <span class="online"><xsl:value-of select="$param/OpponentName"/></span>'s turn
+								<span class="player"><xsl:text>It is your turn</xsl:text></span>
 							</xsl:when>
 							<xsl:otherwise>
-								It is <xsl:value-of select="$param/OpponentName"/>'s turn
+								<span class="opponent"><xsl:text>It is </xsl:text><xsl:value-of select="$param/OpponentName"/><xsl:text>'s turn</xsl:text></span>
 							</xsl:otherwise>
 						</xsl:choose>
 					</p>
@@ -618,6 +615,9 @@
 						</p>
 					</div>
 					<h5>
+						<xsl:if test="$param/opp_isOnline = 'yes'">
+							<xsl:attribute name="class">player</xsl:attribute>
+						</xsl:if>
 						<img width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" class="country_flag" />
 						<xsl:value-of select="$param/OpponentName"/>
 						<input class="details" type="submit" name="user_details[{$param/OpponentName}]" value="i" />
@@ -739,16 +739,17 @@
 								<span>
 									<xsl:choose>
 										<xsl:when test="Name = $param/PlayerName">
-											<xsl:attribute name="class">info</xsl:attribute>
+											<xsl:attribute name="class">chatbox_player</xsl:attribute>
 										</xsl:when>
 										<xsl:when test="Name = $param/OpponentName">
-											<xsl:attribute name="class">warning</xsl:attribute>
+											<xsl:attribute name="class">chatbox_opponent</xsl:attribute>
 										</xsl:when>
 										<xsl:otherwise>
-											<xsl:attribute name="class">error</xsl:attribute>
+											<xsl:attribute name="class">chatbox_system</xsl:attribute>
 										</xsl:otherwise>
 									</xsl:choose>
-									<xsl:value-of select="Name"/> : 
+									<xsl:value-of select="Name"/>
+									<xsl:text> : </xsl:text>
 								</span>
 								<span><xsl:value-of select="Message"/></span>
 							</p>

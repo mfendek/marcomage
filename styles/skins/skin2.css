@@ -131,9 +131,14 @@ p.info_label /* information label used in multiple instances in game section */
 	background-repeat: repeat;
 }
 
-.online /* highlight player name if he is online */
+.player
 {
 	color: green;
+}
+
+p.info_label .opponent
+{
+	color: red;
 }
 
 p.token_counter /* token counter layout */
@@ -154,4 +159,24 @@ p.flag /* new card flag (indicated above a new card) */
 {
 	background-image: url('../../img/skins/blue_text.jpg');
 	background-repeat: repeat;
+}
+
+div#game .chatbox_player
+{
+	color: green;
+}
+
+div#game .chatbox_opponent
+{
+	color: purple;
+}
+
+div#game .chatbox_system
+{
+	color: red;
+}
+
+div.chatbox > p > span:first-child /* date-time info in chatbox */
+{
+	color: blue;
 }
