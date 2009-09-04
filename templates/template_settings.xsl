@@ -95,6 +95,12 @@
 			</p>
 
 			<h4>Layout options</h4>
+			<xsl:if test="$settings/Background != 0">
+				<p id="preview">
+					<h4>Background image</h4>
+					<img width="204px" height="152px" src="img/backgrounds/bg_{$settings/Background}.jpg" alt="" />
+				</p>
+			</xsl:if>
 
 			<p>
 				<select name="Skin">

@@ -72,3 +72,16 @@ div#sett_float_right input[type="checkbox"] /* checkbox layout */
 	border-style: solid;
 	border-width: thin;
 }
+
+p#preview /* background image preview */
+{
+	float: right;
+	text-align: center;
+	margin-right: 5ex;
+}
+
+p#preview > img /* background image preview - image layout */
+{
+	border: medium ridge white;
+	margin-top: 0.5ex;
+}
