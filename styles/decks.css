@@ -91,4 +91,19 @@ table.deck input /* set distance of "return" buttons in the deck table */
 	margin-bottom: 1ex;
 }
 
+table.deck th:first-child > p /* common cards heading */
+{
+	color: lime;
+}
+
+table.deck th:first-child + th > p /* uncommon cards heading */
+{
+	color: #8b0000; /* DarkRed */
+}
+
+table.deck th:first-child + th + th > p /* rare cards heading */
+{
+	color: yellow;
+}
+
 /* end deck */

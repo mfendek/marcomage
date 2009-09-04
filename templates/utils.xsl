@@ -68,12 +68,6 @@
 </func:function>
 
 
-<func:function name="am:color">
-	<xsl:param name="color" as="xs:string" />
-	<func:result select="document('colors.xml')/am:colors/am:color[am:name=$color]/am:code" />
-</func:function>
-
-
 <func:function name="am:cardstring">
 	<xsl:param name="card" />
 	<xsl:param name="c_img" select="'yes'" />

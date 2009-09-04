@@ -257,9 +257,9 @@
 	<table class="deck skin_label" cellpadding="0" cellspacing="0" >
 
 		<tr>
-			<th><p style="color: {am:color('Lime')}">Common</p></th>
-			<th><p style="color: {am:color('DarkRed')}">Uncommon</p></th>
-			<th><p style="color: {am:color('Yellow')}">Rare</p></th>
+			<th><p>Common</p></th>
+			<th><p>Uncommon</p></th>
+			<th><p>Rare</p></th>
 		</tr>
 
 		<tr valign="top">
