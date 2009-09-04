@@ -2,6 +2,8 @@
  * MArcomage CSS stylesheet - skins - old theme *
  ************************************************/
 
+@import url("dark.css"); /* import dark skin template */
+
 .skin_text /* text element layout */
 {
 	background-color: rgb(40, 40, 65); /* dark blue */
@@ -11,14 +13,12 @@
 .skin_label /* label element layout */
 {
 	background-image: url('../../img/skins/old_label.jpg');
-	background-repeat: repeat;
 	color: white;
 }
 
 .skin_text, .skin_label /* border layout */
 {
 	border: thin solid yellow;
-	-moz-border-radius: 7px;
 }
 
 html /* general background layout */
@@ -36,14 +36,6 @@ div#menubar /* navigation bar layout */
 div#login_box /* login box layout */
 {
 	background-image: url('../../img/skins/old_label.jpg');
-	background-repeat: repeat;
-	border: 2px outset yellow;
-	-moz-border-radius: 7px;
-}
-
-input, textarea /* input text fields */
-{
-	background-color: #dddddd; /* very light gray */
 }
 
 hr /* horizontal line layout */
@@ -73,21 +65,6 @@ h2,h3,h4,h5 /* heading layout */
 	color: #ffff66; /* sandy yellow */
 }
 
-.new_message /* new message */
-{
-	color: red;
-}
-
-.unread /* unread message */
-{
-	color: orange;
-}
-
-.system_message /* system message */
-{
-	color: #6495ed; /* light blue */
-}
-
 input[type="submit"] /* submit input layout */
 {
 	background-color: black;
@@ -101,57 +78,12 @@ input.marked_button /* highlighted button */
 	color: black;
 }
 
-.info /* information message layout */
-{
-	color: lime;
-}
-
-.warning /* warning message layout */
-{
-	color: yellow;
-}
-
-.error /* error message layout */
-{
-	color: red;
-}
-
-.p_online /* online player layout */
-{
-	color: lime;
-}
-
-.p_offline /* offline player layout */
-{
-	color: red;
-}
-
-.p_inactive /* inactive player layout */
-{
-	color: maroon;
-}
-
-.p_dead /* dead player layout */
-{
-	color: gray;
-}
-
 p.info_label /* information label used in multiple instances in game section */
 {
 	border: medium ridge #6495ed;
 	background-color: black;
 	color: white;
 	font-weight: normal;
-}
-
-.player
-{
-	color: lime;
-}
-
-p.info_label .opponent
-{
-	color: #ff69b4; /* hot pink */
 }
 
 p.token_counter /* token counter layout */
@@ -165,33 +97,11 @@ div.chatbox /* chatbox window */
 {
 	border: medium ridge #6495ed;
 	background-color: rgb(40, 40, 65); /* dark blue */
-	color: #dddddd; /* very light gray */
 }
 
 p.flag /* new card flag (indicated above a new card) */
 {
 	background-color: rgb(40, 40, 65); /* dark blue */
-	color: #dddddd; /* very light gray */
-}
-
-div#game .chatbox_player
-{
-	color: #add8e6; /* light blue */
-}
-
-div#game .chatbox_opponent
-{
-	color: #90ee90; /* light green */
-}
-
-div#game .chatbox_system
-{
-	color: red;
-}
-
-div#game div.chatbox > p > span:first-child /* date-time info in chatbox */
-{
-	color : rgb(219,142,179); /* light pink */
 }
 
 /* backwards compatibility hacks start here */

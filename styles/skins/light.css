@@ -1,0 +1,132 @@
+/**********************************************************
+ * MArcomage CSS stylesheet - skins - light skin template *
+ **********************************************************/
+
+.skin_label /* label element layout */
+{
+	background-repeat: repeat;
+}
+
+.skin_text, .skin_label /* border layout */
+{
+	border: 2px outset black;
+	-moz-border-radius: 7px;
+}
+
+html /* general background layout */
+{
+	background-repeat: repeat;
+}
+
+div#menubar /* navigation bar layout */
+{
+	background-repeat: repeat;
+}
+
+div#login_box /* login box layout */
+{
+	background-repeat: repeat;
+	border: 2px outset black;
+	-moz-border-radius: 7px;
+}
+
+hr /* horizontal line layout */
+{
+	border-color: black;
+}
+
+.new_message /* new message */
+{
+	color: red;
+	font-weight: bold;
+	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
+}
+
+.unread /* unread message */
+{
+	color: orange;
+	font-weight: bold;
+	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
+}
+
+.system_message /* system message */
+{
+	color: #6495ed; /* light blue */
+	font-weight: bold;
+	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
+}
+
+input[type="submit"] /* submit input layout */
+{
+	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
+}
+
+input.marked_button /* highlighted button */
+{
+	background-color: green;
+}
+
+.info /* information message layout */
+{
+	color: green;
+}
+
+.warning /* warning message layout */
+{
+	color: purple;
+}
+
+.error /* error message layout */
+{
+	color: red;
+}
+
+.p_online /* online player layout */
+{
+	color: green;
+}
+
+.p_offline /* offline player layout */
+{
+	color: red;
+}
+
+.p_inactive /* inactive player layout */
+{
+	color: maroon;
+}
+
+.p_dead /* dead player layout */
+{
+	color: gray;
+}
+
+.player
+{
+	color: green;
+}
+
+p.info_label .opponent
+{
+	color: red;
+}
+
+div#game .chatbox_player
+{
+	color: green;
+}
+
+div#game .chatbox_opponent
+{
+	color: purple;
+}
+
+div#game .chatbox_system
+{
+	color: red;
+}
+
+div.chatbox > p > span:first-child /* date-time info in chatbox */
+{
+	color: blue;
+}

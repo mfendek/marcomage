@@ -1,0 +1,156 @@
+/*********************************************************
+ * MArcomage CSS stylesheet - skins - dark skin template *
+ *********************************************************/
+
+.skin_text /* text element layout */
+{
+	color: #cccccc; /* light gray */
+}
+
+.skin_label /* label element layout */
+{
+	background-repeat: repeat;
+	color: #cccccc; /* light gray */
+}
+
+.skin_text, .skin_label /* border layout */
+{
+	border: 2px outset #cccccc;
+	-moz-border-radius: 7px;
+}
+
+html /* general background layout */
+{
+	background-repeat: repeat;
+	color: #cccccc; /* light gray */
+}
+
+div#menubar /* navigation bar layout */
+{
+	background-repeat: repeat;
+}
+
+div#login_box /* login box layout */
+{
+	background-repeat: repeat;
+	border: 2px outset #cccccc;
+	-moz-border-radius: 7px;
+}
+
+input, textarea /* input text fields */
+{
+	background-color: #dddddd; /* very light gray */
+}
+
+.new_message /* new message */
+{
+	color: red;
+	font-weight: bold;
+}
+
+.unread /* unread message */
+{
+	color: orange;
+	font-weight: bold;
+}
+
+.system_message /* system message */
+{
+	color: #6495ed; /* light blue */
+	font-weight: bold;
+}
+
+input[type="submit"] /* submit input layout */
+{
+	color: #dddddd; /* very light gray */
+}
+
+input.marked_button /* highlighted button */
+{
+	background-color: green;
+}
+
+.info /* information message layout */
+{
+	color: lime;
+}
+
+.warning /* warning message layout */
+{
+	color: yellow;
+}
+
+.error /* error message layout */
+{
+	color: red;
+}
+
+.p_online /* online player layout */
+{
+	color: lime;
+}
+
+.p_offline /* offline player layout */
+{
+	color: red;
+}
+
+.p_inactive /* inactive player layout */
+{
+	color: maroon;
+}
+
+.p_dead /* dead player layout */
+{
+	color: gray;
+}
+
+p.info_label /* information label used in multiple instances in game section */
+{
+	color: #dddddd; /* very light gray */
+}
+
+.player
+{
+	color: lime;
+}
+
+p.info_label .opponent
+{
+	color: #ff69b4; /* hot pink */
+}
+
+p.token_counter /* token counter layout */
+{
+	color: #dddddd; /* very light gray */
+}
+
+div.chatbox /* chatbox window */
+{
+	color: #dddddd; /* very light gray */
+}
+
+p.flag /* new card flag (indicated above a new card) */
+{
+	color: #dddddd; /* very light gray */
+}
+
+div#game .chatbox_player
+{
+	color: #add8e6; /* light blue */
+}
+
+div#game .chatbox_opponent
+{
+	color: #90ee90; /* light green */
+}
+
+div#game .chatbox_system
+{
+	color: red;
+}
+
+div#game div.chatbox > p > span:first-child /* date-time info in chatbox */
+{
+	color : rgb(219,142,179); /* light pink */
+}
