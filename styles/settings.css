@@ -23,7 +23,7 @@ div#sett_float_left h4 + img /* avatar and zodiac sign pictures */
 	border: medium ridge white;
 }
 
-div#sett_float_left h3 + p, div#sett_float_left h3 + p + p /* avatar and zodiac sign are floated to the right */
+div#sett_float_left h3 + div, div#sett_float_left h3 + div + div /* avatar and zodiac sign are floated to the right */
 {
 	float: right;
 	text-align: center;
@@ -41,7 +41,7 @@ div#settings > div > h4 /* settings header layout */
 	margin: 1ex 0ex 1ex 0ex;
 }
 
-div#sett_float_left > p + p + p, div#sett_float_right > div > p /* line spacing */
+div#sett_float_left > p, div#sett_float_right > div > p /* line spacing */
 {
 	margin-top: 0.8ex;
 	margin-bottom: 0.8ex;
@@ -73,14 +73,14 @@ div#sett_float_right input[type="checkbox"] /* checkbox layout */
 	border-width: thin;
 }
 
-p#preview /* background image preview */
+div#preview /* background image preview */
 {
 	float: right;
 	text-align: center;
 	margin-right: 5ex;
 }
 
-p#preview > img /* background image preview - image layout */
+div#preview > img /* background image preview - image layout */
 {
 	border: medium ridge white;
 	margin-top: 0.5ex;

@@ -22,9 +22,9 @@
 
 			<h3>Profile settings</h3>
 
-			<p><h4>Zodiac sign</h4><img height="100px" width="100px" src="img/zodiac/{$settings/Sign}.jpg" alt="sign" /><h4><xsl:value-of select="$settings/Sign"/></h4></p>
+			<div><h4>Zodiac sign</h4><img height="100px" width="100px" src="img/zodiac/{$settings/Sign}.jpg" alt="sign" /><h4><xsl:value-of select="$settings/Sign"/></h4></div>
 
-			<p><h4>Avatar</h4><img height="60px" width="60px" src="img/avatars/{$settings/Avatar}" alt="avatar" /></p>
+			<div><h4>Avatar</h4><img height="60px" width="60px" src="img/avatars/{$settings/Avatar}" alt="avatar" /></div>
 			<p><input type="submit" name="user_settings" value="Save user settings" /></p>
 			<p><input type="text" name="Firstname" maxlength="20" value="{$settings/Firstname}" />First name</p>
 			<p><input type="text" name="Surname" maxlength="20" value="{$settings/Surname}" />Surname</p>
@@ -96,10 +96,10 @@
 
 			<h4>Layout options</h4>
 			<xsl:if test="$settings/Background != 0">
-				<p id="preview">
+				<div id="preview">
 					<h4>Background image</h4>
 					<img width="204px" height="152px" src="img/backgrounds/bg_{$settings/Background}.jpg" alt="" />
-				</p>
+				</div>
 			</xsl:if>
 
 			<p>
