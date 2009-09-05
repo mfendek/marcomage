@@ -297,7 +297,7 @@ Let's take the <b>Alliance</b> keyword for example. First you need to set one to
 <ul>
 	<li>In the players section, player name color holds the information about player's activity
 		<ul>
-			<li><b>Lime</b> (online) means that player was active in last 10 minutes. This kind of information can be found in other sections too, for example challenges and games (in here the border color of the buttons are colored)</li>
+			<li><b>Lime</b> (or <b>Green</b>) (online) means that player was active in last 10 minutes. This kind of information can be found in other sections too, for example challenges and games (in here game buttons have italic font style)</li>
 			<li><b>Red</b> (offline) means that player was active in last 7 days</li>
 			<li><b>Dark red</b> (inactive) means that player was active in last 21 days</li>
 			<li><b>Gray</b> (dead) means that player was inactive for more than 21 days</li>
@@ -305,7 +305,7 @@ Let's take the <b>Alliance</b> keyword for example. First you need to set one to
 	</li>
 	<li>In the game section color holds information about player activity and game attributes changes (tower, wall, stock and facilities)
 		<ul>
-			<li>Opponent's name is in white color, when he is online</li>
+			<li>Opponent's name (located above tower and wall info) is in <b>Lime</b> (or <b>Green</b>) color, when he is online</li>
 			<li>If a game attribute was raised last round, it will be highlighted in lime color</li>
 			<li>If a game attribute was lowered last round, it will be highlighted in orange color</li>
 		</ul>

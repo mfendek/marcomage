@@ -48,7 +48,7 @@
 							<xsl:when test="$param/current_subsection = 'incoming'">
 								<p><span>
 									<xsl:if test="Online = 'yes'">
-										<xsl:attribute name="class">online</xsl:attribute>
+										<xsl:attribute name="class">p_online</xsl:attribute>
 									</xsl:if>
 									<xsl:value-of select="Author"/>
 									</span> has challenged you on <span><xsl:value-of select="am:datetime(Created, $param/timezone)"/></span>.</p>
@@ -73,7 +73,7 @@
 								<p>You challenged 
 								<span>
 									<xsl:if test="Online = 'yes'">
-										<xsl:attribute name="class">online</xsl:attribute>
+										<xsl:attribute name="class">p_online</xsl:attribute>
 									</xsl:if>
 									<xsl:value-of select="Recipient"/></span> on <span><xsl:value-of select="am:datetime(Created, $param/timezone)"/>
 								</span>.</p>
