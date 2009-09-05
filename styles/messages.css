@@ -13,7 +13,7 @@ div#message_section /* challenge section (soon to be renamed to messages) */
 div#challenges /* challenges oriented messages subsection */
 {
 	float: left;
-	width: 48%;
+	width: 46%;
 	margin: 0ex 0ex 1ex 1ex;
 }
 
@@ -37,7 +37,7 @@ div#challenges > p > input, div#challenges > p > select /* distance between butt
 div#messages /* private messages subsection */
 {
 	float: right;
-	width: 49%;
+	width: 51%;
 	margin: 0ex 1ex 1ex 0ex;
 }
 
