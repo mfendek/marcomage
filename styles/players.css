@@ -86,12 +86,8 @@ div#details select /* special messages formatting */
 
 .challenge_text /* challenge text input and display layout */
 {
-	padding: 0.5ex;
 	margin-top: 1ex;
 	margin-bottom: 1ex;
-	border: thin solid #6495ed;
-	background-color: white;
-	-moz-border-radius: 7px;
 }
 
 /* end user details */
