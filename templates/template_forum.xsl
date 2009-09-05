@@ -480,7 +480,7 @@
 	
 		<h3>Edit thread</h3>
 	
-		<div>
+		<div class="skin_text">
 			<p>Topic:<input type="text" name="Title" maxlength="50" size="45" value="{$thread/Title}" /></p>
 
 			<p>
