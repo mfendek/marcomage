@@ -35,7 +35,7 @@
 					<xsl:if test="$param/date_val = 'none'">
 						<xsl:attribute name="selected">selected</xsl:attribute>
 					</xsl:if>
-					No date filter
+					<xsl:text>No date filter</xsl:text>
 				</option>
 				<xsl:for-each select="$param/timesections/*">
 					<option value="{time}">
@@ -60,7 +60,7 @@
 					<xsl:if test="$param/author_val = 'none'">
 						<xsl:attribute name="selected">selected</xsl:attribute>
 					</xsl:if>
-					No author filter
+					<xsl:text>No author filter</xsl:text>
 				</option>
 				<xsl:for-each select="$param/authors/*">
 					<option value="{am:urlencode(.)}">
@@ -91,7 +91,7 @@
 					<xsl:if test="$param/state_val = 'none'">
 						<xsl:attribute name="selected">selected</xsl:attribute>
 					</xsl:if>
-					No state filter
+					<xsl:text>No state filter</xsl:text>
 				</option>
 				<xsl:for-each select="exsl:node-set($states)/*">
 				<option value="{@name}">
@@ -260,7 +260,9 @@
 								<xsl:attribute name="value"><xsl:value-of select="$param/data/name"/></xsl:attribute>
 							</xsl:if>
 						</input>
-					</span>Name</p>
+					</span>
+					<xsl:text>Name</xsl:text>
+				</p>
 				<p>
 					<span>
 						<xsl:variable name="classes">
@@ -280,7 +282,8 @@
 							</xsl:for-each>
 						</select>
 					</span>
-				Rarity</p>
+					<xsl:text>Rarity</xsl:text>
+				</p>
 				<p>
 					<span>
 						<input type="text" name="bricks" maxlength="2" size="2" >
@@ -314,14 +317,18 @@
 							</xsl:attribute>
 						</input>
 					</span>
-				Cost (B/G/R)</p>
-				<p><span>
-					<input type="text" name="keywords" maxlength="100" size="35" >
-						<xsl:if test="$param/stored = 'yes'">
-							<xsl:attribute name="value"><xsl:value-of select="$param/data/keywords"/></xsl:attribute>
-						</xsl:if>
-					</input>
-					</span>Keywords</p>
+					<xsl:text>Cost (B/G/R)</xsl:text>
+				</p>
+				<p>
+					<span>
+						<input type="text" name="keywords" maxlength="100" size="35" >
+							<xsl:if test="$param/stored = 'yes'">
+								<xsl:attribute name="value"><xsl:value-of select="$param/data/keywords"/></xsl:attribute>
+							</xsl:if>
+						</input>
+					</span>
+					<xsl:text>Keywords</xsl:text>
+				</p>
 			</div>
 			<p>Effect</p>
 			<textarea name="effect" rows="6" cols="50">
@@ -374,7 +381,9 @@
 				<p>
 					<span>
 						<input type="text" name="name" maxlength="64" size="35" value="{$param/data/name}" />
-					</span>Name</p>
+					</span>
+					<xsl:text>Name</xsl:text>
+				</p>
 				<p>
 					<span>
 						<xsl:variable name="classes">
@@ -394,17 +403,22 @@
 							</xsl:for-each>
 						</select>
 					</span>
-				Rarity</p>
+					<xsl:text>Rarity</xsl:text>
+				</p>
 				<p>
 					<span>
 						<input type="text" name="bricks" maxlength="2" size="2" value="{$param/data/bricks}" />
 						<input type="text" name="gems" maxlength="2" size="2" value="{$param/data/gems}" />
 						<input type="text" name="recruits" maxlength="2" size="2" value="{$param/data/recruits}" />
 					</span>
-				Cost (B/G/R)</p>
-				<p><span>
-					<input type="text" name="keywords" maxlength="100" size="35" value="{$param/data/keywords}" />
-					</span>Keywords</p>
+					<xsl:text>Cost (B/G/R)</xsl:text>
+				</p>
+				<p>
+					<span>
+						<input type="text" name="keywords" maxlength="100" size="35" value="{$param/data/keywords}" />
+					</span>
+					<xsl:text>Keywords</xsl:text>
+				</p>
 				<p>
 					<span>
 						<xsl:variable name="states">
@@ -428,7 +442,8 @@
 							</xsl:for-each>
 						</select>
 					</span>
-				State</p>
+					<xsl:text>State</xsl:text>
+				</p>
 			</div>
 			<p>Effect</p>
 			<textarea name="effect" rows="6" cols="50"><xsl:value-of select="$param/data/effect"/></textarea>

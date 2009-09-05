@@ -19,7 +19,7 @@
 	<div class="filters">
 
 	<div id="cost_per_turn">
-		Avg cost / turn:
+		<xsl:text>Avg cost / turn</xsl:text>
 		<b><xsl:value-of select="$param/Res/Bricks"/></b>
 		<b><xsl:value-of select="$param/Res/Gems"/></b>
 		<b><xsl:value-of select="$param/Res/Recruits"/></b>
@@ -53,19 +53,19 @@
 			<xsl:if test="$param/KeywordFilter = 'none'">
 				<xsl:attribute name="selected">selected</xsl:attribute>
 			</xsl:if>
-			No keyword filters
+			<xsl:text>No keyword filters</xsl:text>
 		</option>
 		<option value="Any keyword">
 			<xsl:if test="$param/KeywordFilter = 'Any keyword'">
 				<xsl:attribute name="selected">selected</xsl:attribute>
 			</xsl:if>
-			Any keyword
+			<xsl:text>Any keyword</xsl:text>
 		</option>
 		<option value="No keywords">
 			<xsl:if test="$param/KeywordFilter = 'No keywords'">
 				<xsl:attribute name="selected">selected</xsl:attribute>
 			</xsl:if>
-			No keywords
+			<xsl:text>No keywords</xsl:text>
 		</option>	
 		<xsl:for-each select="$param/keywords/*">
 			<option value="{text()}">
@@ -149,19 +149,19 @@
 			<xsl:if test="$param/SupportFilter = 'none'">
 				<xsl:attribute name="selected">selected</xsl:attribute>
 			</xsl:if>
-			No support filters
+			<xsl:text>No support filters</xsl:text>
 		</option>
 		<option value="Any keyword">
 			<xsl:if test="$param/SupportFilter = 'Any keyword'">
 				<xsl:attribute name="selected">selected</xsl:attribute>
 			</xsl:if>
-			Any keyword
+			<xsl:text>Any keyword</xsl:text>
 		</option>
 		<option value="No keywords">
 			<xsl:if test="$param/SupportFilter = 'No keywords'">
 				<xsl:attribute name="selected">selected</xsl:attribute>
 			</xsl:if>
-			No keywords
+			<xsl:text>No keywords</xsl:text>
 		</option>	
 		<xsl:for-each select="$param/keywords/*">
 			<option value="{text()}">
@@ -187,7 +187,7 @@
 					<xsl:if test="$token = 'none'">
 						<xsl:attribute name="selected">selected</xsl:attribute>
 					</xsl:if>
-					None
+					<xsl:text>None</xsl:text>
 				</option>
 				<xsl:for-each select="$param/TokenKeywords/*">
 					<option value="{text()}">

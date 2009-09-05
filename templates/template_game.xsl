@@ -381,14 +381,14 @@
 										<xsl:choose>
 											<xsl:when test="CardAction = 'play'">
 												<xsl:attribute name="class">flag played</xsl:attribute>
-												PLAYED
+												<xsl:text>PLAYED</xsl:text>
 												<xsl:if test="CardMode != 0">
-													 mode <xsl:value-of select="CardMode"/>
+													<xsl:text> mode </xsl:text><xsl:value-of select="CardMode"/>
 												</xsl:if>
 											</xsl:when>
 											<xsl:otherwise>
 												<xsl:attribute name="class">flag discarded</xsl:attribute>
-												DISCARDED!
+												<xsl:text>DISCARDED!</xsl:text>
 											</xsl:otherwise>
 										</xsl:choose>
 									</p>
@@ -415,14 +415,14 @@
 										<xsl:choose>
 											<xsl:when test="CardAction = 'play'">
 												<xsl:attribute name="class">flag played</xsl:attribute>
-												PLAYED
+												<xsl:text>PLAYED</xsl:text>
 												<xsl:if test="CardMode != 0">
-													 mode <xsl:value-of select="CardMode"/>
+													<xsl:text> mode </xsl:text><xsl:value-of select="CardMode"/>
 												</xsl:if>
 											</xsl:when>
 											<xsl:otherwise>
 												<xsl:attribute name="class">flag discarded</xsl:attribute>
-												DISCARDED!
+												<xsl:text>DISCARDED!</xsl:text>
 											</xsl:otherwise>
 										</xsl:choose>
 									</p>

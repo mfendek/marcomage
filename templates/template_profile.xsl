@@ -42,7 +42,7 @@
 		<p>Gender: <span style="color: {$gender_color}"><xsl:value-of select="$param/Gender"/></span></p>
 		<p>E-mail: <span class="detail_value"><xsl:value-of select="$param/Email"/></span></p>
 		<p>ICQ / IM: <span class="detail_value"><xsl:value-of select="$param/Imnumber"/></span></p>
-		<p>Date of birth (DD-MM-YYYY): <span class="detail_value"><xsl:value-of select="$param/Birthdate"/></span></p>
+		<p>Date of birth (dd-mm-yyyy): <span class="detail_value"><xsl:value-of select="$param/Birthdate"/></span></p>
 		<p>Age: <span class="detail_value"><xsl:value-of select="$param/Age"/></span></p>
 		<p>Rank: <span class="detail_value"><xsl:value-of select="$param/PlayerType"/></span></p>
 		<p>Country: <img width="18px" height="12px" src="img/flags/{$param/Country}.gif" alt="country flag" class="country_flag" /> <span class="detail_value"><xsl:value-of select="$param/Country"/></span></p>

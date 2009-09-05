@@ -417,8 +417,10 @@
 	
 	<div class="skin_text">
 		<p>Topic:<input type="text" name="Title" maxlength="50" size="45" value="{$param/Title}" /></p>
-		<p>Priority:
-		
+		<p>
+
+		<xsl:text>Priority:</xsl:text>
+
 		<select name="Priority">
 		<option value="normal" selected="selected" >Normal</option>
 		<xsl:if test="$param/chng_priority = 'yes'">
@@ -481,7 +483,10 @@
 		<div>
 			<p>Topic:<input type="text" name="Title" maxlength="50" size="45" value="{$thread/Title}" /></p>
 
-			<p>Priority:
+			<p>
+
+			<xsl:text>Priority:</xsl:text>
+
 			<select name="Priority">
 				<xsl:if test="$param/chng_priority = 'no'">
 					<xsl:attribute name="disabled">disabled</xsl:attribute>
@@ -500,8 +505,10 @@
 				
 				<p>Current section: <span><xsl:value-of select="$section/SectionName"/></span></p>
 				
-				<p>Target section:
-						
+				<p>
+
+				<xsl:text>Target section:</xsl:text>
+
 				<select name="section_select">
 					<xsl:for-each select="$section_list/*">
 						<option value="{SectionID}"><xsl:value-of select="SectionName"/></option>
@@ -541,7 +548,8 @@
 			<hr/>
 			<p>Current thread: <span><xsl:value-of select="$thread/Title"/></span></p>
 			<xsl:if test="count($thread_list/*) &gt; 0">
-				<p>Target thread:
+				<p>
+					<xsl:text>Target thread:</xsl:text>
 					<select name="thread_select">
 						<xsl:for-each select="$thread_list/*">
 							<option value="{ThreadID}"><xsl:value-of select="Title"/></option>

@@ -38,14 +38,15 @@
 					<option value=""><xsl:if test="$settings/Gender = 'none'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>select</option>
 					<option value="male"><xsl:if test="$settings/Gender = 'male'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>male</option>
 					<option value="female"><xsl:if test="$settings/Gender = 'female'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>female</option>
-				</select>Gender
+				</select>
+				<xsl:text>Gender</xsl:text>
 			</p>
 
 			<p>
 				<input type="text" name="Birthday" maxlength="2" size="2" value="{$settings/Birthdate/day}"/>
 				<input type="text" name="Birthmonth" maxlength="2" size="2" value="{$settings/Birthdate/month}"/>
 				<input type="text" name="Birthyear" maxlength="4" size="4" value="{$settings/Birthdate/year}"/>
-				Date of birth (dd-mm-yyyy)
+				<xsl:text>Date of birth (dd-mm-yyyy)</xsl:text>
 			</p>
 
 			<p>Age: <xsl:value-of select="$settings/Age"/></p>
@@ -61,7 +62,8 @@
 							<xsl:value-of select="text()"/>
 						</option>
 					</xsl:for-each>
-				</select>Choose your country
+				</select>
+				<xsl:text>Choose your country</xsl:text>
 				<img width="18px" height="12px" src="img/flags/{$settings/Country}.gif" alt="country flag" class="country_flag" />
 			</p>
 
@@ -88,10 +90,11 @@
 					<xsl:for-each select="$timezones/am:timezone">
 						<option value="{am:offset}">
 							<xsl:if test="$settings/Timezone = am:offset"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-							GMT <xsl:value-of select="am:offset"/> (<xsl:value-of select="am:name"/>)
+							<xsl:text>GMT </xsl:text><xsl:value-of select="am:offset"/> (<xsl:value-of select="am:name"/>)
 					</option>
 					</xsl:for-each>
-				</select>Time zone
+				</select>
+				<xsl:text>Time zone</xsl:text>
 			</p>
 
 			<h4>Layout options</h4>
@@ -113,7 +116,8 @@
 							<xsl:value-of select="am:name"/>
 						</option>
 					</xsl:for-each>
-				</select>Skin selection
+				</select>
+				<xsl:text>Skin selection</xsl:text>
 			</p>
 
 			<p>
@@ -127,7 +131,8 @@
 							<xsl:value-of select="am:name"/>
 						</option>
 					</xsl:for-each>
-				</select>Game background
+				</select>
+				<xsl:text>Game background</xsl:text>
 			</p>
 
 			<p><input type="checkbox" name="Minimize"   ><xsl:if test="$settings/Minimize    = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Minimized game view</p>

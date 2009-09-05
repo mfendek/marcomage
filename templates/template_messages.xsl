@@ -133,7 +133,7 @@
 				<xsl:if test="$param/date_val = 'none'">
 					<xsl:attribute name="selected">selected</xsl:attribute>
 				</xsl:if>
-				No date filter
+				<xsl:text>No date filter</xsl:text>
 			</option>
 			<xsl:for-each select="$param/timesections/*">
 				<option value="{time}">
@@ -158,7 +158,7 @@
 				<xsl:if test="$param/name_val = 'none'">
 					<xsl:attribute name="selected">selected</xsl:attribute>
 				</xsl:if>
-				No name filter
+				<xsl:text>No name filter</xsl:text>
 			</option>
 			<xsl:for-each select="$param/name_filter/*">
 				<option value="{am:urlencode(.)}">
