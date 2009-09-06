@@ -32,7 +32,7 @@ div#concepts_table > table /* concepts table */
 	width: 100%;
 }
 
-p.note /* note layout */
+div.note /* note layout */
 {
 	text-align: justify;
 }
@@ -62,7 +62,7 @@ div#card_edit /* card edit formular */
 	padding: 1ex;
 }
 
-div#card_edit > p, div#card_edit > div > p, div#card_edit hr /* set distance between elements */
+div#card_edit > p, div#card_edit > div.limit > p, div#card_edit hr /* set distance between elements */
 {
 	margin-top: 1ex;
 	margin-bottom: 1ex;

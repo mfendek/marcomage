@@ -211,9 +211,9 @@ div#post_list > div > div:first-child + div /* post layout - content part */
 	text-align: justify;
 }
 
-div#post_list > div > div:first-child + div p  /* post layout - content part - set distance between posts */
+div#post_list > div > div:first-child + div > p  /* post layout - content part - set distance between posts */
 {
-	margin: 1ex 2ex 2ex 0ex;
+	margin: 0.5ex 2ex 0.5ex 0ex;
 }
 
 div#post_list > div > div.clear_floats + div /* post layout - post side borders */

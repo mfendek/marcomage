@@ -53,7 +53,7 @@
 									<xsl:value-of select="Author"/>
 									</span> has challenged you on <span><xsl:value-of select="am:datetime(Created, $param/timezone)"/></span>.</p>
 								<xsl:if test="Content != ''">
-									<p class="challenge_content"><xsl:value-of select="Content"/></p>
+									<div class="challenge_content"><xsl:value-of select="am:textencode(Content)" disable-output-escaping="yes" /></div>
 								</xsl:if>
 								<p>
 									<xsl:if test="($param/deck_count &gt; 0) and ($param/max_games &gt; $param/startedgames)">
@@ -78,7 +78,7 @@
 									<xsl:value-of select="Recipient"/></span> on <span><xsl:value-of select="am:datetime(Created, $param/timezone)"/>
 								</span>.</p>
 								<xsl:if test="Content != ''">
-									<p class="challenge_content"><xsl:value-of select="Content"/></p>
+									<div class="challenge_content"><xsl:value-of select="am:textencode(Content)" disable-output-escaping="yes" /></div>
 								</xsl:if>
 								<p><input type="submit" name="withdraw_challenge2[{am:urlencode(Recipient)}]" value="Withdraw challenge" /></p>
 							</xsl:when>
@@ -395,7 +395,7 @@
 			<input type="submit" name="message_cancel" value="Back" />
 		</p>
 		<hr/>
-		<p><xsl:value-of select="am:textencode($param/Content)" disable-output-escaping="yes" /></p>
+		<div><xsl:value-of select="am:textencode($param/Content)" disable-output-escaping="yes" /></div>
 	</div>
 	<input type="hidden" name="CurrentLocation" value="{$param/current_location}" />
 

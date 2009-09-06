@@ -2788,7 +2788,6 @@ case 'Profile':
 	if ($params['profile']['challenged'])
 	{
 		$params['profile']['challenge'] = $messagedb->GetChallenge($player->Name(), $cur_player);
-		$params['profile']['challenge']['Content'] = textencode($params['profile']['challenge']['Content']);
 	}
 
 	break;

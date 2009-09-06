@@ -108,7 +108,7 @@ div.challenge_box > div > p > span /* highlight important information in a chall
 	font-weight: bold;
 }
 
-p.challenge_content /* challenge text layout */
+div.challenge_content /* challenge text layout */
 {
 	font-style: italic;
 	text-align: justify;

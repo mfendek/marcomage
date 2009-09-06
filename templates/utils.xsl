@@ -155,7 +155,7 @@
 
 			<!-- card effect -->
 			<xsl:if test="$c_text = 'yes'">
-				<p>
+				<div>
 					<xsl:choose>
 						<xsl:when test="$card/picture">
 							<xsl:value-of select="am:textencode($card/effect)" disable-output-escaping="yes"/>
@@ -171,7 +171,7 @@
 							<xsl:value-of select="str:replace($card/effect, exsl:node-set($replace)/*[local-name()='from'], exsl:node-set($replace)/*[local-name()='to'])" disable-output-escaping="yes"/>
 						</xsl:otherwise>
 					</xsl:choose>
-				</p>
+				</div>
 			</xsl:if>
 
 		</div>

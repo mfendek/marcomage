@@ -11,7 +11,7 @@
 	function htmldecode($string) { return htmlspecialchars_decode($string, ENT_COMPAT); }
 	function postencode($string) { return rawurlencode($string); }
 	function postdecode($string) { return rawurldecode($string); }
-	function textencode($string) { return str_replace("\n", "\n<br />\n", htmlencode($string)); }
+	function textencode($string) { return "<p>".str_replace("\n", "</p>\n<p>", htmlencode($string))."</p>"; }
 
 	///////////////////////////////
 	/// date and time manipulation
