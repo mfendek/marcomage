@@ -91,6 +91,11 @@ table.deck input /* set distance of "return" buttons in the deck table */
 	margin-bottom: 1ex;
 }
 
+table.deck > tr > td + td /* deck inner borders */
+{
+	border-left: thin solid #6495ed; /* light blue */
+}
+
 table.deck th:first-child > p /* common cards heading */
 {
 	color: lime;
