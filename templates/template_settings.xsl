@@ -63,7 +63,7 @@
 						</option>
 					</xsl:for-each>
 				</select>
-				<xsl:text>Choose your country</xsl:text>
+				<xsl:text>Country</xsl:text>
 				<img width="18px" height="12px" src="img/flags/{$settings/Country}.gif" alt="country flag" class="country_flag" />
 			</p>
 
