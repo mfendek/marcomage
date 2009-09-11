@@ -366,7 +366,7 @@
 			
 			<div>
 			
-			<xsl:value-of select="am:textencode(Content)" disable-output-escaping="yes" />
+			<xsl:copy-of select="am:textencode(Content)" />
 			
 			</div>
 			

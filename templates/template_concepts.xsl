@@ -484,7 +484,7 @@
 				<p><span><xsl:value-of select="$param/data/state"/></span>State</p>
 			</div>
 			<p>Note</p>
-			<div class="note"><xsl:value-of select="am:textencode($param/data/note)" disable-output-escaping="yes" /></div>
+			<div class="note"><xsl:copy-of select="am:textencode($param/data/note)" /></div>
 			<p>
 				<xsl:choose>
 					<xsl:when test="$param/data/threadid = 0 and $param/create_thread = 'yes'">

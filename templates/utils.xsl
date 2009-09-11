@@ -24,7 +24,19 @@
 
 <func:function name="am:textencode">
 	<xsl:param name="text" as="xs:string" />
-	<func:result select="php:functionString('textencode', $text)" />
+
+	<!-- change newlines into html paragraphs -->
+	<xsl:variable name="lines" select="str:split($text, '&#10;')" />
+	<xsl:variable name="output">
+		<xsl:for-each select="$lines">
+			<p>
+				<!-- change urls into html hyperlinks -->
+				<xsl:value-of select="php:functionString('preg_replace', &quot;/(https?:\/\/[0-9a-zA-Z\$\-\_\.\+\!\*\;\(\)\,\&amp;\/\=\?\@\:\']*)/i&quot;, '&lt;a href=&quot;${1}&quot;&gt;${1}&lt;/a&gt;', text())" disable-output-escaping="yes" />
+			</p>
+		</xsl:for-each>
+	</xsl:variable>
+
+	<func:result select="$output" />
 </func:function>
 
 
@@ -158,7 +170,7 @@
 				<div>
 					<xsl:choose>
 						<xsl:when test="$card/picture">
-							<xsl:value-of select="am:textencode($card/effect)" disable-output-escaping="yes"/>
+							<xsl:copy-of select="am:textencode($card/effect)" />
 						</xsl:when>
 						<xsl:otherwise>
 							<!-- ad-hoc html entity corrections -->

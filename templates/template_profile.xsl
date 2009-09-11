@@ -64,7 +64,7 @@
 		</p>
 
 		<p>Hobbies, Interests:</p>
-		<div class="detail_value" style="max-width: 30ex;"><xsl:value-of select="am:textencode($param/Hobby)" disable-output-escaping="yes"/></div>
+		<div class="detail_value" style="max-width: 30ex;"><xsl:copy-of select="am:textencode($param/Hobby)"/></div>
 
 <!--		
 		check if the player is allowed to challenge this opponent:
@@ -95,7 +95,7 @@
 					
 					<xsl:if test="$param/challenge/Content != ''">
 						<div class="challenge_text">
-							<xsl:value-of select="am:textencode($param/challenge/Content)" disable-output-escaping="yes"/>
+							<xsl:copy-of select="am:textencode($param/challenge/Content)" />
 						</div>
 					</xsl:if>
 					<p style="color: green">Challenged on <xsl:value-of select="am:datetime($param/challenge/Created, $param/timezone)"/></p>

@@ -751,7 +751,7 @@
 									<xsl:value-of select="Name"/>
 									<xsl:text> : </xsl:text>
 								</span>
-								<span><xsl:value-of select="Message"/></span>
+								<span><xsl:copy-of select="am:textencode(Message)"/></span>
 							</p>
 						</xsl:for-each>
 					</div>
