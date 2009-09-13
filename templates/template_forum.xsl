@@ -366,7 +366,7 @@
 			
 			<div>
 			
-			<xsl:copy-of select="am:textencode(Content)" />
+			<div><xsl:copy-of select="am:textencode(Content)" /></div>
 			
 			</div>
 			

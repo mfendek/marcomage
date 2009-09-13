@@ -29,10 +29,27 @@
 	<xsl:variable name="lines" select="str:split($text, '&#10;')" />
 	<xsl:variable name="output">
 		<xsl:for-each select="$lines">
-			<p>
-				<!-- change urls into html hyperlinks -->
-				<xsl:value-of select="php:functionString('preg_replace', &quot;/(https?:\/\/[0-9a-zA-Z\$\-\_\.\+\!\*\;\(\)\,\&amp;\/\=\?\@\:\']*)/i&quot;, '&lt;a href=&quot;${1}&quot;&gt;${1}&lt;/a&gt;', text())" disable-output-escaping="yes" />
-			</p>
+			<!-- change urls into html hyperlinks -->
+			<xsl:variable name="words" select="str:split(text(), ' ')"/>
+			<xsl:for-each select="$words">
+				<xsl:if test="position() != 1">
+					<xsl:text> </xsl:text>
+				</xsl:if>
+				<xsl:choose>
+					<xsl:when test="contains(text(), 'http://')">
+						<xsl:value-of select="substring-before(text(), 'http://')"/>
+						<a href="http://{substring-after(text(), 'http://')}">http://<xsl:value-of select="substring-after(text(), 'http://')"/></a>
+					</xsl:when>
+					<xsl:when test="contains(text(), 'https://')">
+						<xsl:value-of select="substring-before(text(), 'https://')"/>
+						<a href="https://{substring-after(text(), 'https://')}">https://<xsl:value-of select="substring-after(text(), 'https://')"/></a>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="text()"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:for-each>
+			<br/>
 		</xsl:for-each>
 	</xsl:variable>
 
