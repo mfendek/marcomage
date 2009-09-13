@@ -37,9 +37,6 @@
 					<xsl:for-each select="$cards/*[position() &gt;= $i*3-2 and position() &lt;= $i*3]">
 						<td>
 							<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
-							<xsl:if test="id != 0">
-								<input type="submit" name="return_card[{id}]" value="Return" />
-							</xsl:if>
 						</td>
 					</xsl:for-each>
 				</tr>
