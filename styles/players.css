@@ -39,11 +39,6 @@ div#details > div /* user details content layout */
 	margin-bottom: 1ex;
 }
 
-.detail_value /* player's detail attribute color */
-{
-	color: green;
-}
-
 div#details /* set distance between separate lines */
 {
 	line-height: 1.6;
@@ -66,11 +61,6 @@ div.details_float_right img /* avatar and zodiac pictures */
 	padding: 0.5ex;
 	margin: 0.5ex 1ex 0.5ex 1ex;
 	border: medium ridge white;
-}
-
-div.details_float_right p /* avatar and zodiac text color */
-{
-	color: green;
 }
 
 div#details * + h4 /* special messages formatting */

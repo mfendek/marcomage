@@ -151,3 +151,13 @@ div#cost_per_turn > b:first-child + b + b /* recruits */
 {
 	color: green;
 }
+
+div.details_float_right p /* avatar and zodiac text color */
+{
+	color: green;
+}
+
+.detail_value /* player's detail attribute color */
+{
+	color: green;
+}
