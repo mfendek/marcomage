@@ -140,7 +140,7 @@ CREATE TABLE `settings` (
   `Email` char(30) COLLATE utf8_unicode_ci NOT NULL,
   `Imnumber` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `Country` char(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Unknown',
-  `Hobby` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `Hobby` text COLLATE utf8_unicode_ci NOT NULL,
   `Avatar` char(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'noavatar.jpg',
   `Timezone` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `Minimize` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',

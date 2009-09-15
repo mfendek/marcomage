@@ -64,7 +64,7 @@
 		</p>
 
 		<p>Hobbies, Interests:</p>
-		<div class="detail_value" style="max-width: 30ex;"><xsl:copy-of select="am:textencode($param/Hobby)"/></div>
+		<div class="detail_value"><xsl:copy-of select="am:textencode($param/Hobby)"/></div>
 
 <!--		
 		check if the player is allowed to challenge this opponent:

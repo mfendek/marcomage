@@ -20,6 +20,7 @@
 	define("MESSAGES_PER_PAGE", 15);
 	define("CARDS_PER_PAGE", 20);
 	define("EFFECT_LENGTH", 255);
+	define("HOBBY_LENGTH", 300);
 	
 	require_once('CDatabase.php');
 	require_once('CLogin.php');
@@ -1763,6 +1764,8 @@
 				
 				if ($message == 'user_settings') //upload user settings
 				{
+					if (strlen($_POST['Hobby']) > HOBBY_LENGTH) { $_POST['Hobby'] = substr($_POST['Hobby'], 0, HOBBY_LENGTH); $warning = "Hobby text is too long"; }
+
 					$settings = $settingdb->UserSettingsList();
 					foreach($settings as $input => $setting)
 						if (isset($_POST[$input]) and $input != 'Birthdate')
