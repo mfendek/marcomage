@@ -87,6 +87,11 @@ div#forum tr.table_row > td > p > input /* set distance of the "jump to last pos
 	margin-left: 1ex;
 }
 
+div#forum img, div#thread_details img /* info picture layout (locked thread) */
+{
+	vertical-align: middle;
+}
+
 /* end section */
 
 /* begin forum_new_edit */

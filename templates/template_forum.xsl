@@ -61,7 +61,7 @@
 					</xsl:attribute>
 
 					<xsl:value-of select="Title" />
-					<xsl:if test="Locked = 'yes'">(locked)</xsl:if>
+					<xsl:if test="Locked = 'yes'"><img src="img/password.png" width="25px" height="20px" alt="locked" /></xsl:if>
 				</p>
 			</td>
 			<td>
@@ -193,7 +193,7 @@
 				</xsl:attribute>
 				
 				<xsl:value-of select="Title" />
-				<xsl:if test="Locked = 'yes'">(locked)</xsl:if>
+				<xsl:if test="Locked = 'yes'"><img src="img/password.png" width="25px" height="20px" alt="locked" /></xsl:if>
 			</p>
 		</td>
 		<td>
@@ -255,7 +255,7 @@
 			<h5>
 				<input type="submit" name="section_details[{$section/SectionID}]" value="&uarr;" />
 				<span><xsl:value-of select="$section/SectionName"/></span> - <xsl:value-of select="$thread/Title"/>
-				<xsl:if test="$thread/Locked = 'yes'">(Locked)</xsl:if>
+				<xsl:if test="$thread/Locked = 'yes'"><img src="img/password.png" width="25px" height="20px" alt="locked" /></xsl:if>
 			</h5>
 			<p>
 			<xsl:if test="$param/concept &gt; 0">
