@@ -112,9 +112,7 @@
 					</xsl:if>
 					
 					<xsl:if test="$param/show_nationality = 'yes'">
-						<td>
-							<p style="color: white"><xsl:value-of select="country"/></p>
-						</td>
+						<td><p><xsl:value-of select="country"/></p></td>
 					</xsl:if>
 					
 					<td><img width="18px" height="12px" src="img/flags/{country}.gif" alt="country flag" class="country_flag" /></td>
