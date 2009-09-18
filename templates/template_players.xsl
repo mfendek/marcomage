@@ -143,9 +143,9 @@
 					</td>
 					<td>
 						<xsl:choose>
-							<xsl:when test="challenged     = 'yes'"><p style="color: red;">waiting for answer</p></xsl:when>
+							<xsl:when test="challenged     = 'yes'"><p class="error">waiting for answer</p></xsl:when>
 							<xsl:when test="playingagainst = 'yes'"><p>game already in progress</p></xsl:when>
-							<xsl:when test="waitingforack  = 'yes'"><p style="color: blue;">game over, waiting for opponent</p></xsl:when>
+							<xsl:when test="waitingforack  = 'yes'"><p class="warning">game over, waiting for opponent</p></xsl:when>
 						</xsl:choose>
 					</td>
 					

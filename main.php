@@ -2740,6 +2740,7 @@ case 'Profile':
 
 	$p = $playerdb->GetPlayer($cur_player);
 	$settings = $p->GetUserSettings();
+	$score = $scoredb->GetScore($cur_player);
 
 	$params['profile']['PlayerName'] = $p->Name();
 	$params['profile']['PlayerType'] = $p->Type();
@@ -2753,6 +2754,9 @@ case 'Profile':
 	$params['profile']['Email'] = $settings['Email'];
 	$params['profile']['Imnumber'] = $settings['Imnumber'];
 	$params['profile']['Hobby'] = $settings['Hobby'];
+	$params['profile']['Wins'] = $score->ScoreData->Wins;
+	$params['profile']['Losses'] = $score->ScoreData->Losses;
+	$params['profile']['Draws'] = $score->ScoreData->Draws;
 
 	if( $settings["Birthdate"] != "0000-00-00" )
 	{

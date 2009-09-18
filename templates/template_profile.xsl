@@ -46,6 +46,16 @@
 		<p>Age: <span class="detail_value"><xsl:value-of select="$param/Age"/></span></p>
 		<p>Rank: <span class="detail_value"><xsl:value-of select="$param/PlayerType"/></span></p>
 		<p>Country: <img width="18px" height="12px" src="img/flags/{$param/Country}.gif" alt="country flag" class="country_flag" /> <span class="detail_value"><xsl:value-of select="$param/Country"/></span></p>
+		<p>
+			<xsl:text>Wins / Losses / Draws: </xsl:text>
+			<span class="detail_value">
+				<xsl:value-of select="$param/Wins"/>
+				<xsl:text> / </xsl:text>
+				<xsl:value-of select="$param/Losses"/>
+				<xsl:text> / </xsl:text>
+				<xsl:value-of select="$param/Draws"/>
+			</span>
+		</p>
 		<p>Registered on: 
 			<span class="detail_value">
 				<xsl:choose>
@@ -79,17 +89,17 @@
 			<xsl:choose>
 			
 				<xsl:when test="$param/waitingforack = 'yes'">
-					<p style="color: blue">game over, waiting for opponent</p>
+					<p class="warning">game over, waiting for opponent</p>
 				</xsl:when>
 				
 				<xsl:when test="$param/playingagainst = 'yes'">
-					<p style="color: green">game already in progress</p>
+					<p class="info">game already in progress</p>
 				</xsl:when>
 				
 				<xsl:when test="$param/challenged = 'yes'">
 					<xsl:variable name="challenge" select="$param/challenge"/>
 					<p>
-						<span style="color: red">waiting for answer</span>
+						<span class="error">waiting for answer</span>
 						<input type="submit" name="withdraw_challenge[{am:urlencode($opponent)}]" value="Cancel" />
 					</p>
 					
@@ -98,7 +108,7 @@
 							<xsl:copy-of select="am:textencode($param/challenge/Content)" />
 						</div>
 					</xsl:if>
-					<p style="color: green">Challenged on <xsl:value-of select="am:datetime($param/challenge/Created, $param/timezone)"/></p>
+					<p class="info">Challenged on <xsl:value-of select="am:datetime($param/challenge/Created, $param/timezone)"/></p>
 				</xsl:when>
 				
 				<xsl:when test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
@@ -125,7 +135,7 @@
 				</xsl:when>
 				
 				<xsl:when test="$param/free_slots = 0">
-					<p style="color: yellow">You cannot initiate any more games.</p>
+					<p class="warning">You cannot initiate any more games.</p>
 				</xsl:when>
 				
 			</xsl:choose>
