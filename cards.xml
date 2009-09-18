@@ -3275,7 +3275,8 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Players discard up to 3 randomly chosen non-rare cards]]></effect>
-    <code><![CDATA[$mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random');
+    <code><![CDATA[
+								$mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random');
 								$mydata->NewCards[$cardpos] = 1;
 								$my_storage = $his_storage = array();
 								for ($i = 1; $i <= 8; $i++)
@@ -3296,7 +3297,8 @@
 										$hisdata->NewCards[$j] = 1;
 									}
 								}
-							$nextcard = 0;]]></code>
+								$nextcard = 0;
+]]></code>
   </card>
   <card id="252">
     <name>Black market</name>
@@ -3309,7 +3311,8 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Players switch up to 3 randomly chosen non-rare cards]]></effect>
-    <code><![CDATA[$mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random');
+    <code><![CDATA[
+								$mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random');
 								$mydata->NewCards[$cardpos] = 1;
 								$my_storage = $his_storage = array();
 								for ($i = 1; $i <= 8; $i++)
@@ -3331,7 +3334,8 @@
 										$hisdata->NewCards[$j] = 1;
 									}
 								}
-							$nextcard = 0;]]></code>
+								$nextcard = 0;
+]]></code>
   </card>
   <card id="253">
     <name>Necropolis</name>
@@ -4046,7 +4050,8 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Upgrades rarities of all <b>Undead</b> cards in your hand<br />Can upgrade at most one Uncommon to Rare]]></effect>
-    <code><![CDATA[$rarities = array(); $upgrades = array("Common" => "Uncommon", "Uncommon" => "Rare"); $rare = true;
+    <code><![CDATA[
+								$rarities = array(); $upgrades = array("Common" => "Uncommon", "Uncommon" => "Rare"); $rare = true;
 								for ($i = 1; $i <= 8; $i++)
 									if ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Undead")) $rarities[$i] = $carddb->GetCard($mydata->Hand[$i])->GetClass();
 								foreach ($rarities as $index => $val)
@@ -4354,7 +4359,8 @@
     <modes>0</modes>
     <keywords>Undead.</keywords>
     <effect><![CDATA[Returns your recently discarded <b>Undead</b> cards to your hand (random positions)<br />Attack: 10 for each card replaced this way]]></effect>
-    <code><![CDATA[$tmp = 0; $temparray = array();
+    <code><![CDATA[
+						$tmp = 0; $temparray = array();
 						if ($mylast_action == 'discard') $temparray[0] = $mydata->LastCard[$mylastcardindex];
 						if (count($discarded_cards[0]) > 0) $temparray = array_merge($discarded_cards[0], $temparray);
 						if (count($hisdata->DisCards[1]) > 0) $temparray = array_merge($temparray, $hisdata->DisCards[1]);
@@ -4371,7 +4377,8 @@
 							$mydata->NewCards[$trans_array[$i]] = 1;
 							if ($trans_array[$i] == $cardpos) $nextcard = 0;
 						}
-						$this->Attack(count($temparray)*10, $hisdata->Tower, $hisdata->Wall);]]></code>
+						$this->Attack(count($temparray)*10, $hisdata->Tower, $hisdata->Wall);
+]]></code>
   </card>
   <card id="331">
     <name>Benediction</name>
@@ -4436,7 +4443,8 @@
     <modes>0</modes>
     <keywords>Burning.</keywords>
     <effect><![CDATA[Attack: 21<br />If last card was a <b>Burning</b> card, up to 2 copies of that card will replace random non-rare non-<b>Burning</b> cards in your hand]]></effect>
-    <code><![CDATA[$this->Attack(21, $hisdata->Tower, $hisdata->Wall);
+    <code><![CDATA[
+								$this->Attack(21, $hisdata->Tower, $hisdata->Wall);
 								if ($mylast_card->HasKeyword("Burning"))
 								{
 									$storage = array();
@@ -4470,8 +4478,12 @@
     <modes>0</modes>
     <keywords>Burning.</keywords>
     <effect><![CDATA[Next card will be a <b>Burning</b> card<br />If last card played was a <b>Burning</b> card, it will be that card]]></effect>
-    <code><![CDATA[if (($mylast_card->HasKeyword("Burning")) and ($mylast_action == 'play')) $nextcard = $mydata->LastCard[$mylastcardindex];
-							  else $nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Burning")), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
+    <code><![CDATA[
+							if (($mylast_card->HasKeyword("Burning")) and ($mylast_action == 'play'))
+								$nextcard = $mydata->LastCard[$mylastcardindex];
+							else
+								$nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Burning")), $mydata->Hand, $cardpos, 'DrawCard_list');
+]]></code>
   </card>
   <card id="337">
     <name>Warlord</name>
@@ -4601,7 +4613,8 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Discards a <b>Frenzy</b> card from hand<br />Attack: 32<br />If none found<br />Next card will be a <b>Frenzy</b> card]]></effect>
-    <code><![CDATA[$storage = array();
+    <code><![CDATA[
+							$storage = array();
 							for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Frenzy")) $storage[] = $i;
 							if (count($storage) > 0)
 							{
@@ -4624,7 +4637,8 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Replaces all non-<b>Beast</b> cards with <b>Beast</b> cards<br />Stock: -2 for each card replaced]]></effect>
-    <code><![CDATA[$mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $nextcard = 0; $j = 0;
+    <code><![CDATA[
+								$mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $nextcard = 0; $j = 0;
 								for ($i = 1; $i <= 8; $i++)
 									if (!$carddb->GetCard($mydata->Hand[$i])->HasKeyword("Beast"))
 									{
@@ -4737,7 +4751,8 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Both players discard all cards with keywords<br />Each player receives 7 damage for each card discarded]]></effect>
-    <code><![CDATA[$j = 0;
+    <code><![CDATA[
+								$j = 0;
 								for ($i = 1; $i <= 8; $i++)
 									if (($carddb->GetCard($mydata->Hand[$i])->HasKeyword("any")) AND ($i != $cardpos))
 									{
@@ -4902,7 +4917,8 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Each player that played a <b>Quick</b> card last round discards all new cards and pays 1 stock for each one]]></effect>
-    <code><![CDATA[$tmp = 0; $found = false;
+    <code><![CDATA[
+						$tmp = 0; $found = false;
 						for ($i = 1; $i <= $mylastcardindex; $i++) if (($carddb->GetCard($mydata->LastCard[$i])->HasKeyword("Quick")) AND ($mydata->LastAction[$i] == 'play')) { $found = true; break; }
 						if ($found)
 							for ($i = 1; $i <= 8; $i++)
@@ -5220,7 +5236,8 @@
     <modes>0</modes>
     <keywords>Destruction.</keywords>
     <effect><![CDATA[Both players discard a random non-rare <b>Unliving</b> card from hand<br />If that card was uncommon<br />Owner's quarry: -1]]></effect>
-    <code><![CDATA[$storage = array();
+    <code><![CDATA[
+							$storage = array();
 							for ($i = 1; $i <= 8; $i++)
 							{
 								$cur_card = $carddb->GetCard($mydata->Hand[$i]);
@@ -5390,7 +5407,8 @@
     <modes>0</modes>
     <keywords>Legend.</keywords>
     <effect><![CDATA[Attack: 25<br />Magic: +1<br />Enemy magic: -1<br />Discards a <b>Mage</b> card from hand to receive 30 gems]]></effect>
-    <code><![CDATA[$this->Attack(25, $hisdata->Tower, $hisdata->Wall); $mydata->Magic+= 1; $hisdata->Magic-= 1;
+    <code><![CDATA[
+							$this->Attack(25, $hisdata->Tower, $hisdata->Wall); $mydata->Magic+= 1; $hisdata->Magic-= 1;
 							$storage = array();
 							for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Mage")) $storage[] = $i;
 							if (count($storage) > 0)
@@ -5530,7 +5548,8 @@
     <modes>0</modes>
     <keywords>Barbarian.</keywords>
     <effect><![CDATA[Attack: 13<br />Discards a <b>Legend</b> card from enemy hand to cause Enemy magic: -1]]></effect>
-    <code><![CDATA[$this->Attack(13, $hisdata->Tower, $hisdata->Wall);
+    <code><![CDATA[
+							$this->Attack(13, $hisdata->Tower, $hisdata->Wall);
 							$storage = array();
 							for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Legend")) $storage[] = $i;
 							if (count($storage) > 0)
@@ -5553,7 +5572,8 @@
     <modes>0</modes>
     <keywords>Soldier.</keywords>
     <effect><![CDATA[Attack: 14<br />Discards a rare <b>Dragon</b> card from enemy hand to add a Dragon egg into your hand]]></effect>
-    <code><![CDATA[$this->Attack(14, $hisdata->Tower, $hisdata->Wall);
+    <code><![CDATA[
+							$this->Attack(14, $hisdata->Tower, $hisdata->Wall);
 							$storage = array();
 							for ($i = 1; $i <= 8; $i++)
 								if (($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Dragon")) AND ($carddb->GetCard($hisdata->Hand[$i])->GetClass() == "Rare")) $storage[] = $i;
@@ -5642,7 +5662,8 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Attack: 4<br />Replace a random non-rare <b>Alliance</b> card from enemy hand with Goblin intruder]]></effect>
-    <code><![CDATA[$this->Attack(4, $hisdata->Tower, $hisdata->Wall);
+    <code><![CDATA[
+							$this->Attack(4, $hisdata->Tower, $hisdata->Wall);
 							$storage = array();
 							for ($i = 1; $i <= 8; $i++)
 							{
@@ -5655,7 +5676,8 @@
 								$selected_pos = $storage[array_rand($storage)];
 								$hisdata->Hand[$selected_pos] = 415;
 								$hisdata->NewCards[$selected_pos] = 1;
-							}]]></code>
+							}
+]]></code>
   </card>
   <card id="416">
     <name>Perfect shot</name>
@@ -5707,7 +5729,8 @@
     <modes>0</modes>
     <keywords>Mage.</keywords>
     <effect><![CDATA[Both players discard up to 6 random <b>Unliving</b> cards<br />Each player loses 10 bricks and 1 quarry for each card discarded from his hand above 4]]></effect>
-    <code><![CDATA[$my_temp = $his_temp = array();
+    <code><![CDATA[
+							$my_temp = $his_temp = array();
 							for ($i = 1; $i <= 8; $i++)
 							{
 								if ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Unliving")) $my_temp[$i] = $i;
@@ -5731,7 +5754,8 @@
 									$hisdata->NewCards[$his_temp[$j]] = 1;
 								}
 								$amount = max(($j - 4), 0); $hisdata->Bricks-= $amount * 10; $hisdata->Quarry-= $amount;
-							}]]></code>
+							}
+]]></code>
   </card>
   <card id="420">
     <name>Shrine</name>
@@ -5757,12 +5781,13 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Gain resources equal to opponent's highest facility (matching type only)]]></effect>
-    <code><![CDATA[$maximum = max($hisdata->Quarry, $hisdata->Magic, $hisdata->Dungeons);
+    <code><![CDATA[
+						$maximum = max($hisdata->Quarry, $hisdata->Magic, $hisdata->Dungeons);
 						$facilities = array('Quarry' => 'Bricks', 'Magic' => 'Gems', 'Dungeons' => 'Recruits'); $temp = array();
 						foreach ($facilities as $facility => $resource) if ($hisdata->$facility == $maximum) $temp[] = $facility;
 						$chosen_facility = $temp[array_rand($temp)];
 						$mydata->$facilities[$chosen_facility]+= $hisdata->$chosen_facility;
-							 ]]></code>
+]]></code>
   </card>
   <card id="422">
     <name>Death prophet</name>
@@ -5801,14 +5826,16 @@
     <modes>0</modes>
     <keywords>Brigand.</keywords>
     <effect><![CDATA[Attack: 11<br />Steals stock equal to enemy facilities<br />Next card recieved will be a non-common <b>Brigand</b>]]></effect>
-    <code><![CDATA[$this->Attack(11, $hisdata->Tower, $hisdata->Wall);
+    <code><![CDATA[
+							$this->Attack(11, $hisdata->Tower, $hisdata->Wall);
 							$resources = array('Quarry' => 'Bricks', 'Magic' => 'Gems', 'Dungeons' => 'Recruits');
 							foreach ($resources as $facility => $resource)
 							{
 								$mydata->$resource+= $hisdata->$facility;
 								$hisdata->$resource-= $hisdata->$facility;
 							}
-							$nextcard = $this->DrawCard(array_merge($carddb->GetList(array('class'=>"Uncommon", 'keyword'=>"Brigand")), $carddb->GetList(array('class'=>"Rare", 'keyword'=>"Brigand"))), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
+							$nextcard = $this->DrawCard(array_merge($carddb->GetList(array('class'=>"Uncommon", 'keyword'=>"Brigand")), $carddb->GetList(array('class'=>"Rare", 'keyword'=>"Brigand"))), $mydata->Hand, $cardpos, 'DrawCard_list');
+]]></code>
   </card>
   <card id="425">
     <name>Ice queen</name>
@@ -5821,7 +5848,8 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Discards all <b>Mage</b> cards<br />Each player gains 5 gems, 5 tower and 10 wall for each card discarded from his hand ]]></effect>
-    <code><![CDATA[$my_counter = $his_counter = 0;
+    <code><![CDATA[
+							$my_counter = $his_counter = 0;
 							for ($i = 1; $i <= 8; $i++)
 							{
 								if (($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Mage")) AND ($i != $cardpos))
@@ -5891,7 +5919,8 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Player with most <b>Alliance</b>, <b>Legend</b> and <b>Mage</b> cards gets 1 lowest facility]]></effect>
-    <code><![CDATA[$my_count = $this->KeywordCount($mydata->Hand, "Alliance") + $this->KeywordCount($mydata->Hand, "Legend") + $this->KeywordCount($mydata->Hand, "Mage"); $his_count = $this->KeywordCount($hisdata->Hand, "Alliance") + $this->KeywordCount($hisdata->Hand, "Legend") + $this->KeywordCount($hisdata->Hand, "Mage");
+    <code><![CDATA[
+							$my_count = $this->KeywordCount($mydata->Hand, "Alliance") + $this->KeywordCount($mydata->Hand, "Legend") + $this->KeywordCount($mydata->Hand, "Mage"); $his_count = $this->KeywordCount($hisdata->Hand, "Alliance") + $this->KeywordCount($hisdata->Hand, "Legend") + $this->KeywordCount($hisdata->Hand, "Mage");
 							if ($my_count >= $his_count)
 							{
 								$min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
@@ -5907,7 +5936,8 @@
 								foreach ($facilities as $facility) if ($hisdata->$facility == $min) $temp[] = $facility;
 								$chosen_facility = $temp[array_rand($temp)];
 								$hisdata->$chosen_facility+= 1;
-							}]]></code>
+							}
+]]></code>
   </card>
   <card id="430">
     <name>Messenger</name>
@@ -5959,7 +5989,8 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Both players discard highest and lowest cost card]]></effect>
-    <code><![CDATA[$my_low = $my_high = $his_low = $his_high = $my_costs = $his_costs = array();
+    <code><![CDATA[
+							$my_low = $my_high = $his_low = $his_high = $my_costs = $his_costs = array();
 							$my_min = $his_min = 1000; $my_max = $his_max = 0;
 							for ($i = 1; $i <= 8; $i++)
 							{
@@ -6002,7 +6033,8 @@
 								$his_dis = array_rand($his_high);
 								$hisdata->Hand[$his_dis] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $his_dis, 'DrawCard_random');
 								$hisdata->NewCards[$his_dis] = 1;
-							}]]></code>
+							}
+]]></code>
   </card>
   <card id="434">
     <name>Outnumbered and outmatched</name>
@@ -6080,7 +6112,8 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Player with fewest <b>Undead</b> cards in hand loses 1 highest facility]]></effect>
-    <code><![CDATA[$my_count = $this->KeywordCount($mydata->Hand, "Undead"); $his_count = $this->KeywordCount($hisdata->Hand, "Undead");
+    <code><![CDATA[
+							$my_count = $this->KeywordCount($mydata->Hand, "Undead"); $his_count = $this->KeywordCount($hisdata->Hand, "Undead");
 							if ($my_count <= $his_count)
 							{
 								$max = max($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
@@ -6096,7 +6129,8 @@
 								foreach ($facilities as $facility) if ($hisdata->$facility == $max) $temp[] = $facility;
 								$chosen_facility = $temp[array_rand($temp)];
 								$hisdata->$chosen_facility-= 1;
-							}]]></code>
+							}
+]]></code>
   </card>
   <card id="440">
     <name>Dragonling</name>
@@ -6174,15 +6208,15 @@
     <modes>0</modes>
     <keywords>Illusion. Undead.</keywords>
     <effect><![CDATA[Enemy lowest resource: -8]]></effect>
-    <code><![CDATA[$min = min($hisdata->Bricks, $hisdata->Gems, $hisdata->Recruits);
+    <code><![CDATA[
+							$min = min($hisdata->Bricks, $hisdata->Gems, $hisdata->Recruits);
 							$res = array("Bricks" => $hisdata->Bricks, "Gems" => $hisdata->Gems, "Recruits" => $hisdata->Recruits);
 							$temp = array();
 							foreach ($res as $resource => $r_value)
 								if ($r_value == $min) $temp[$resource] = $r_value;
 							$chosen = array_rand($temp);
 							$hisdata->$chosen-= 8;
-						]]>
-		</code>
+]]></code>
   </card>
   <card id="446">
     <name>Treant</name>
@@ -6247,7 +6281,8 @@
     <modes>0</modes>
     <keywords>Holy. Restoration.</keywords>
     <effect><![CDATA[Tower: +10<br />Highest facility: +1<br />Lowest facility: +2]]></effect>
-    <code><![CDATA[$mydata->Tower+= 10;
+    <code><![CDATA[
+							$mydata->Tower+= 10;
 							$min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
 							$max = max($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
 							$fac = array("Quarry" => $mydata->Quarry, "Magic" => $mydata->Magic, "Dungeons" => $mydata->Dungeons);
@@ -6261,8 +6296,7 @@
 							$chosen_max = array_rand($temp_max);
 							$mydata->$chosen_min+= 2;
 							$mydata->$chosen_max+= 1;
-						]]>
-		</code>
+]]></code>
   </card>
   <card id="451">
     <name>Siege preparations</name>
@@ -6353,7 +6387,8 @@
     <modes>0</modes>
     <keywords>Mage. Durable.</keywords>
     <effect><![CDATA[Attack: 5<br />Randomly discards one common card from hand]]></effect>
-    <code><![CDATA[$this->Attack(5, $hisdata->Tower, $hisdata->Wall);
+    <code><![CDATA[
+							$this->Attack(5, $hisdata->Tower, $hisdata->Wall);
 							$storage = array();
 							for ($i = 1; $i <= 8; $i++)
 								if (($i != $cardpos) AND ($carddb->GetCard($mydata->Hand[$i])->GetClass() == 'Common')) $storage[] = $i;
@@ -6363,8 +6398,7 @@
 								$mydata->Hand[$dis_index] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random');
 								$mydata->NewCards[$dis_index] = 1;
 							}
-						]]>
-		</code>
+]]></code>
   </card>
   <card id="458">
     <name>Dark warrior</name>
@@ -6410,8 +6444,7 @@
 									$hisdata->NewCards[$i] = 1;
 								}
 							}
-						]]>
-		</code>
+]]></code>
   </card>
   <card id="460">
     <name>Work in progress</name>
@@ -6489,7 +6522,8 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Lowest facility: +1<br />Lowest resource production X3]]></effect>
-    <code><![CDATA[$min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
+    <code><![CDATA[
+							$min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
 							$fac = array("Quarry" => $mydata->Quarry, "Magic" => $mydata->Magic, "Dungeons" => $mydata->Dungeons);
 							$temp = array();
 							foreach ($fac as $facility => $f_value)
@@ -6505,8 +6539,7 @@
 							if ($chosen == 'Bricks') $bricks_production*= 3;
 							elseif ($chosen == 'Gems') $gems_production*= 3;
 							elseif ($chosen == 'Recruits') $recruits_production*= 3;
-						]]>
-		</code>
+]]></code>
   </card>
   <card id="466">
     <name>Oasis</name>
