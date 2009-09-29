@@ -22,7 +22,7 @@ div#concepts_table /* concepts list layout */
 	width: 75%;
 }
 
-div#concepts_table th > p, div#concepts td > p /* table cell text */
+div#concepts_table th > p, div#concepts_table td > p /* table cell text */
 {
 	margin: 0.5ex 1ex 0.5ex 1ex;
 }
