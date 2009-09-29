@@ -270,7 +270,7 @@
 						{
 							$game = $gamedb->GetGame2($data['Player1'], $data['Player2']);
 							
-							if ($game->GameData->Current == $player->Name())
+							if ($game->Current == $player->Name())
 							{
 								$games_yourturn[$index] = $game;
 								$index++;
@@ -462,10 +462,9 @@
 							// update score
 							$score1 = $scoredb->GetScore($player1);
 							$score2 = $scoredb->GetScore($player2);
-							$data = &$game->GameData;
 							
-							if ($data->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
-							elseif ($data->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
+							if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
+							elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
 							else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
 							
 							$score1->SaveScore();
@@ -475,8 +474,8 @@
 							$opponent = $playerdb->GetPlayer(($player1 != $player->Name()) ? $player1 : $player2);
 							$opponent_rep = $opponent->GetSetting("Reports");
 							$player_rep = $player->GetSetting("Reports");
-							$outcome = $game->GameData->Outcome;
-							$winner = $game->GameData->Winner;
+							$outcome = $game->Outcome;
+							$winner = $game->Winner;
 
 							$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $winner);
 						}
@@ -513,12 +512,11 @@
 					
 					if ($result == 'OK')
 					{
-						$data = &$game->GameData;
 						$score = $scoredb->GetScore($player->Name());
 						$score->ScoreData->Losses++;
 						$score->SaveScore();
 						
-						$score = $scoredb->GetScore($data->Winner);
+						$score = $scoredb->GetScore($game->Winner);
 						$score->ScoreData->Wins++;
 						$score->SaveScore();
 
@@ -529,8 +527,8 @@
 						$opponent = $playerdb->GetPlayer(($player1 != $player->Name()) ? $player1 : $player2);
 						$opponent_rep = $opponent->GetSetting("Reports");
 						$player_rep = $player->GetSetting("Reports");
-						$outcome = $game->GameData->Outcome;
-						$winner = $game->GameData->Winner;
+						$outcome = $game->Outcome;
+						$winner = $game->Winner;
 
 						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $winner);
 					}
@@ -567,7 +565,7 @@
 						$opponent = $playerdb->GetPlayer(($player1 != $player->Name()) ? $player1 : $player2);
 						$opponent_rep = $opponent->GetSetting("Reports");
 						$player_rep = $player->GetSetting("Reports");
-						$outcome = $game->GameData->Outcome;
+						$outcome = $game->Outcome;
 
 						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome);
 					}
@@ -583,7 +581,6 @@
 					// applies only to games against non-'dead' players, when opponet didn't take action for more then 3 weeks
 					$gameid = $_POST['CurrentGame'];
 					$game = $gamedb->GetGame($gameid);
-					$data = &$game->GameData;
 					
 					// check if the game exists
 					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
@@ -595,7 +592,7 @@
 					if ($playerdb->isDead($game->Name1()) or $playerdb->isDead($game->Name2())) { /*$error = 'Action not allowed!';*/ $current = 'Game'; break; }
 					
 					// and only if the abort criteria are met
-					if( time() - $data->Timestamp < 60*60*24*7*3 || $data->Current == $player->Name() ) { /*$error = 'Action not allowed!';*/ $current = 'Game'; break; }
+					if( time() - strtotime($game->LastAction) < 60*60*24*7*3 || $data->Current == $player->Name() ) { /*$error = 'Action not allowed!';*/ $current = 'Game'; break; }
 					
 					$result = $game->FinishGame($player->Name());
 					
@@ -606,8 +603,8 @@
 						$score1 = $scoredb->GetScore($player1);
 						$score2 = $scoredb->GetScore($player2);
 						
-						if ($data->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
-						elseif ($data->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
+						if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
+						elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
 						else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
 						
 						$score1->SaveScore();
@@ -617,8 +614,8 @@
 						$opponent = $playerdb->GetPlayer(($player1 != $player->Name()) ? $player1 : $player2);
 						$opponent_rep = $opponent->GetSetting("Reports");
 						$player_rep = $player->GetSetting("Reports");
-						$outcome = $game->GameData->Outcome;
-						$winner = $game->GameData->Winner;
+						$outcome = $game->Outcome;
+						$winner = $game->Winner;
 
 						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $winner);
 					}
@@ -699,7 +696,7 @@
 					if (!$access_rights[$player->Type()]["accept_challenges"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
 					
 					// accept the challenge
-					$game->GameData->Player[$player->Name()]->Deck = $deck->DeckData;
+					$game->GameData[$player->Name()]->Deck = $deck->DeckData;
 					$game->StartGame();
 					$game->SaveGame();
 					$messagedb->CancelChallenge($game->ID());
@@ -2461,7 +2458,7 @@
 			{
 				$game = $gamedb->GetGame2($data['Player1'], $data['Player2']);
 				
-				if ($game->GameData->Current == $player->Name()) $temp++;
+				if ($game->Current == $player->Name()) $temp++;
 			}
 		}
 		
@@ -2925,7 +2922,7 @@ case 'Games':
 
 			$params['games']['list'][$i]['opponent'] = $opponent;
 			$params['games']['list'][$i]['active'] = (($playerdb->GetPlayer($opponent)->isOnline()) ? 'yes' : 'no');
-			$params['games']['list'][$i]['ready'] = (($game->GameData->Current == $player->Name()) ? 'yes' : 'no');
+			$params['games']['list'][$i]['ready'] = (($game->Current == $player->Name()) ? 'yes' : 'no');
 			$params['games']['list'][$i]['gameid'] = $game->ID();
 			$params['games']['list'][$i]['gamestate'] = $game->State;
 			$params['games']['list'][$i]['isdead'] = (($playerdb->isDead($opponent)) ? 'yes' : 'no');
@@ -2942,11 +2939,10 @@ case 'Game':
 	$game = $gamedb->GetGame($gameid);
 	$player1 = $game->Name1();
 	$player2 = $game->Name2();
-	$data = &$game->GameData;
 
 	$opponent = $playerdb->GetPlayer(($player1 != $player->Name()) ? $player1 : $player2);
-	$mydata = &$data->Player[$player->Name()];
-	$hisdata = &$data->Player[$opponent->Name()];
+	$mydata = &$game->GameData[$player->Name()];
+	$hisdata = &$game->GameData[$opponent->Name()];
 
 	$params['game']['CurrentGame'] = $gameid;
 	$params['game']['current'] = $current;
@@ -2966,13 +2962,13 @@ case 'Game':
 	$params['game']['Background'] = $player->GetSetting("Background");
 
 	$params['game']['GameState'] = $game->State;
-	$params['game']['Round'] = $data->Round;
-	$params['game']['Outcome'] = $data->Outcome;
-	$params['game']['Winner'] = $data->Winner;
+	$params['game']['Round'] = $game->Round;
+	$params['game']['Outcome'] = $game->Outcome;
+	$params['game']['Winner'] = $game->Winner;
 	$params['game']['PlayerName'] = $player->Name();
 	$params['game']['OpponentName'] = $opponent->Name();
-	$params['game']['Current'] = $data->Current;
-	$params['game']['Timestamp'] = $data->Timestamp;
+	$params['game']['Current'] = $game->Current;
+	$params['game']['Timestamp'] = $game->LastAction;
 	$params['game']['has_note'] = ($game->GetNote($player->Name()) != "") ? 'yes' : 'no';
 
 	// my hand
@@ -2983,7 +2979,7 @@ case 'Game':
 		$entry = array();
 		$entry['CardID'] = $card['id'];
 		$entry['Data'] = $card;
-		$entry['Playable'] = ( $mydata->Bricks >= $card['bricks'] and $mydata->Gems >= $card['gems'] and $mydata->Recruits >= $card['recruits'] and $game->State == 'in progress' and $data->Current == $player->Name() ) ? 'yes' : 'no';
+		$entry['Playable'] = ( $mydata->Bricks >= $card['bricks'] and $mydata->Gems >= $card['gems'] and $mydata->Recruits >= $card['recruits'] and $game->State == 'in progress' and $game->Current == $player->Name() ) ? 'yes' : 'no';
 		$entry['Modes'] = $card['modes'];
 		$entry['NewCard'] = ( isset($mydata->NewCards[$i]) ) ? 'yes' : 'no';
 		$params['game']['MyHand'][$i] = $entry;
@@ -3092,7 +3088,7 @@ case 'Game':
 		$opponent_object = $playerdb->GetPlayer($opponent_list);
 
 		$color = ''; // no extra color default
-		if ($game_list->GameData->Current == $player->Name()) $color = 'lime'; // when it is your turn
+		if ($game_list->Current == $player->Name()) $color = 'lime'; // when it is your turn
 		if ($game_list->State == 'in progress' and $playerdb->isDead($opponent_list)) $color = 'gray'; // when game can be aborted
 		if ($game_list->State == 'finished') $color = '#ff69b4'; // when game is finished color HotPink
 
@@ -3109,7 +3105,7 @@ case 'Game':
 
 	$num_games_your_turn = 0;
 	foreach ($list as $i => $names)
-		if ($gamedb->GetGame2($names['Player1'], $names['Player2'])->GameData->Current == $player->Name())
+		if ($gamedb->GetGame2($names['Player1'], $names['Player2'])->Current == $player->Name())
 			$num_games_your_turn++;
 	$params['game']['num_games_your_turn'] = $num_games_your_turn;
 
@@ -3119,7 +3115,7 @@ case 'Game':
 	$params['game']['opp_isOnline'] = (($opponent->isOnline()) ? 'yes' : 'no');
 	$params['game']['opp_isDead'] = (($opponent->isDead()) ? 'yes' : 'no');
 	$params['game']['surrender'] = ((isset($_POST["surrender"])) ? 'yes' : 'no');
-	$params['game']['finish_game'] = ((time() - $data->Timestamp >= 60*60*24*7*3 and $data->Current != $player->Name()) ? 'yes' : 'no');
+	$params['game']['finish_game'] = ((time() - strtotime($game->LastAction) >= 60*60*24*7*3 and $game->Current != $player->Name()) ? 'yes' : 'no');
 
 	// your resources and tower
 	$colors = array ('Quarry'=> '', 'Magic'=> '', 'Dungeons'=> '', 'Bricks'=> '', 'Gems'=> '', 'Recruits'=> '', 'Tower'=> '', 'Wall'=> '');
@@ -3159,7 +3155,7 @@ case 'Game':
 case 'Deck_view':
 	$gameid = $_POST['CurrentGame'];
 	$game = $gamedb->GetGame($gameid);
-	$deck = $game->GameData->Player[$player->Name()]->Deck;
+	$deck = $game->GameData[$player->Name()]->Deck;
 
 	//load needed settings
 	$params['deck_view']['c_text'] = $player->GetSetting("Cardtext");

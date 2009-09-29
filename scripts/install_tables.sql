@@ -54,10 +54,15 @@ CREATE TABLE `decks` (
 -- 
 
 CREATE TABLE `games` (
-  `GameID` int(10) unsigned NOT NULL,
+  `GameID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Player1` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `Player2` char(20) COLLATE utf8_unicode_ci NOT NULL,
-  `State` char(16) COLLATE utf8_unicode_ci NOT NULL,
+  `State` char(16) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'waiting',
+  `Current` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `Round` int(3) unsigned NOT NULL DEFAULT '1',
+  `Winner` char(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `Outcome` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `Last Action` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Data` text COLLATE utf8_unicode_ci NOT NULL,
   `Note1` text COLLATE utf8_unicode_ci NOT NULL,
   `Note2` text COLLATE utf8_unicode_ci NOT NULL,
