@@ -6,12 +6,20 @@
 
 div#games /* center buttons in game list */
 {
+	min-width: 1045px;
 	text-align: center;
 }
 
-div#games input /* set distance between game access buttons */
+div#games > table /* games list layout */
 {
-	margin-top: 3ex;
+	margin-left: auto;
+	margin-right: auto;
+	width: 75%;
+}
+
+div#games > table th > p, div#games > table td > p /* table cell text */
+{
+	margin: 0.5ex 1ex 0.5ex 1ex;
 }
 
 p.ended_game /* color for text information about the game ("game has ended") */

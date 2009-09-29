@@ -128,6 +128,20 @@
 			return $games;
 		}
 		
+		public function ListGamesData($player)
+		{
+			// $player is either on the left or right side and Status != 'waiting' or 'P? over'
+			$db = $this->db;
+			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2`, `State`, `Current`, `Round`, `Last Action` FROM `games` WHERE (`Player1` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P2 over"))');
+			if (!$result) return false;
+			
+			$games = array();
+			for ($i = 1; $i <= $result->Rows(); $i++)
+				$games[$i] = $result->Next();
+			
+			return $games;
+		}
+		
 		public function ListEndedGames($player)
 		{
 			$db = $this->db;

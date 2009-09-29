@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xsl:stylesheet [ <!ENTITY rarr "&#8594;"> ]>
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
@@ -14,29 +15,54 @@
 	<xsl:choose>
 	<xsl:when test="count($list) &gt; 0">
 		<div id="games">
-			<xsl:for-each select="$list/*">
-				<div>
-					<input type = "submit" name="view_game[{gameid}]" value="vs. {opponent}">
-						<xsl:if test="active = 'yes'">
-							<xsl:attribute name="style">font-style: italic</xsl:attribute>
-						</xsl:if>
-						<xsl:if test="ready = 'yes'">
-							<xsl:attribute name="class">marked_button</xsl:attribute>
-						</xsl:if>
-					</input>
-				</div>
-
-				<xsl:choose>
-				<xsl:when test="gamestate = 'in progress'">
-					<xsl:if test="isdead = 'yes'">
-						<p class="ended_game" >Game can be aborted</p>
-					</xsl:if>
-				</xsl:when>
-				<xsl:otherwise>
-					<p class="ended_game">Game has ended</p>
-				</xsl:otherwise>
-				</xsl:choose>
-			</xsl:for-each>
+			<table cellspacing="0" class="skin_text">
+				<tr>
+					<th><p>Opponent</p></th>
+					<th><p>Last seen</p></th>
+					<th><p>Round</p></th>
+					<th><p>Last game action</p></th>
+					<th><p>Game state</p></th>
+					<th><p>Info</p></th>
+					<th></th>
+				</tr>
+				<xsl:for-each select="$list/*">
+					<tr>
+						<td>
+							<p>
+								<xsl:if test="active = 'yes'">
+									<xsl:attribute name="class">p_online</xsl:attribute>
+								</xsl:if>
+								<xsl:value-of select="opponent"/>
+							</p>
+						</td>
+						<td><p><xsl:value-of select="am:datetime(lastseen, $param/timezone)"/></p></td>
+						<td><p><xsl:value-of select="round"/></p></td>
+						<td><p><xsl:value-of select="am:datetime(gameaction, $param/timezone)"/></p></td>
+						<td><p><xsl:value-of select="gamestate"/></p></td>
+						<td>
+							<xsl:choose>
+								<xsl:when test="gamestate = 'in progress'">
+									<xsl:if test="isdead = 'yes'">
+										<p class="ended_game" >Game can be aborted</p>
+									</xsl:if>
+								</xsl:when>
+								<xsl:otherwise>
+									<p class="ended_game">Game has ended</p>
+								</xsl:otherwise>
+							</xsl:choose>
+						</td>
+						<td>
+							<p>
+								<input class="details" type="submit" name="view_game[{gameid}]" value="&rarr;">
+									<xsl:if test="ready = 'yes'">
+										<xsl:attribute name="class">details marked_button</xsl:attribute>
+									</xsl:if>
+								</input>
+							</p>
+						</td>
+					</tr>
+				</xsl:for-each>
+			</table>
 		</div>
 	</xsl:when>
 	<xsl:otherwise>

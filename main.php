@@ -2911,21 +2911,26 @@ case 'Message_new':
 
 case 'Games':
 	$params['games']['PlayerName'] = $player->Name();
+	$params['games']['timezone'] = $player->GetSetting("Timezone");
 
-	$list = $gamedb->ListActiveGames($player->Name());
+	$list = $gamedb->ListGamesData($player->Name());
 	if (count($list) > 0)
 	{
 		foreach ($list as $i => $data)
 		{
-			$game = $gamedb->GetGame2($data['Player1'], $data['Player2']);
 			$opponent = ($data['Player1'] != $player->Name()) ? $data['Player1'] : $data['Player2'];
+			$last_seen = $playerdb->LastQuery($opponent);
+			$inactivity = time() - strtotime($last_seen);
 
 			$params['games']['list'][$i]['opponent'] = $opponent;
-			$params['games']['list'][$i]['active'] = (($playerdb->GetPlayer($opponent)->isOnline()) ? 'yes' : 'no');
-			$params['games']['list'][$i]['ready'] = (($game->Current == $player->Name()) ? 'yes' : 'no');
-			$params['games']['list'][$i]['gameid'] = $game->ID();
-			$params['games']['list'][$i]['gamestate'] = $game->State;
-			$params['games']['list'][$i]['isdead'] = (($playerdb->isDead($opponent)) ? 'yes' : 'no');
+			$params['games']['list'][$i]['ready'] = ($data['Current'] == $player->Name()) ? 'yes' : 'no';
+			$params['games']['list'][$i]['gameid'] = $data['GameID'];
+			$params['games']['list'][$i]['gamestate'] = $data['State'];
+			$params['games']['list'][$i]['round'] = $data['Round'];
+			$params['games']['list'][$i]['active'] = ($inactivity < 60*10) ? 'yes' : 'no';
+			$params['games']['list'][$i]['isdead'] = ($inactivity  > 60*60*24*7*3) ? 'yes' : 'no';
+			$params['games']['list'][$i]['gameaction'] = $data['Last Action'];
+			$params['games']['list'][$i]['lastseen'] = $last_seen;
 		}
 	}
 
