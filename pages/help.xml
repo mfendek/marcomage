@@ -312,18 +312,37 @@ Let's take the <b>Alliance</b> keyword for example. First you need to set one to
 	</li>
 </ul>
 
-<h4>System notification</h4>
-
-<p>There is a possibility to turn system notification on in the settings section. If you do this, system will automaticaly send you information messages about some events. If you are bothered by this, you can turn it off again. Default setting is off. You get system notification messages when:</p>
-
-<ul>
-	<li>someone accepts or rejects your challenge</li>
-	<li>the game ends (it informs you about the game outcome)</li>
-</ul>
-
 <h4>Menubar notification</h4>
 
 <p>By default, player is informed about new posts in the forum and new card concepts in the concepts section with small animated images in the upper navigation bar. This can be turned off in the settings section.</p>
+
+<h4>Settings</h4>
+
+<p>In this section you may customize MArcomage. Profile settings contain information about player identity, none of them is mandatory. When filled in, all other players are able to see this information. Account settings are used to adjust MArcomage to player's needs. It is possible to change password, set timezone, select skin and game background image. Menubar notification can be reset with "Reset notification" button (this will unmark all new posts and messages, it's the same as doing logout-login procedure). There are some layout options (described below).</p>
+
+<h4>Layout options</h4>
+
+<ul>
+	<li>Advanced games list - display more game details in the games list</li>
+	<li>Minimized game view - remove some graphics in the game section to reduce screen space</li>
+	<li>Show card text - display card effect text description</li>
+	<li>Show card images - display card image (turn off on slow internet connection)</li>
+	<li>Show card keywords - display card keywords text</li>
+	<li>Show nationality in players list - display text description of players' nationality in the players list</li>
+	<li>Reverse chat message order - reverses chat order in the chatbox (game section). By default chat messages are ordered from newest (top) to oldest (bottom)</li>
+	<li>Show avatar in game - display avatar of both players in the game</li>
+	<li>Show avatar in players list - display avatar in players list for all players who have an avatar</li>
+	<li>Avatar display correction for chat - used to prevent Firefox 2.x display bug</li>
+	<li>Old card appearance - display cards with old appearance</li>
+	<li>System messages - when active, system will automaticaly send you information messages about some events. If you are bothered by this, you can turn it off again. Default setting is off. You get system notification messages when:
+		<ul>
+			<li>someone accepts or rejects your challenge</li>
+			<li>the game ends (it informs you about the game outcome)</li>
+		</ul>
+	</li>
+	<li>Forum notification - display forum notification (new posts) in the menubar</li>
+	<li>Concepts notification - display concepts notification (new concepts) in the menubar</li>
+</ul>
 
 <h4>Keyboard shortcuts</h4>
 (might not work in some browsers without re-configuring them)
