@@ -135,6 +135,7 @@
 				<xsl:text>Game background</xsl:text>
 			</p>
 
+			<p><input type="checkbox" name="GamesDetails"><xsl:if test="$settings/GamesDetails = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Advanced games list</p>
 			<p><input type="checkbox" name="Minimize"   ><xsl:if test="$settings/Minimize    = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Minimized game view</p>
 			<p><input type="checkbox" name="Cardtext"   ><xsl:if test="$settings/Cardtext    = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Show card text</p>
 			<p><input type="checkbox" name="Images"     ><xsl:if test="$settings/Images      = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Show card images</p>

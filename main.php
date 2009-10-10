@@ -2912,6 +2912,7 @@ case 'Message_new':
 case 'Games':
 	$params['games']['PlayerName'] = $player->Name();
 	$params['games']['timezone'] = $player->GetSetting("Timezone");
+	$params['games']['games_details'] = $player->GetSetting("GamesDetails");
 
 	$list = $gamedb->ListGamesData($player->Name());
 	if (count($list) > 0)

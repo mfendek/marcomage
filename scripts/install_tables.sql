@@ -163,6 +163,7 @@ CREATE TABLE `settings` (
   `Concepts_notification` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
   `Skin` int(2) unsigned NOT NULL DEFAULT '0',
   `Background` int(3) unsigned NOT NULL DEFAULT '0',
+  `GamesDetails` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY  (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

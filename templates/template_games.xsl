@@ -18,15 +18,18 @@
 			<table cellspacing="0" class="skin_text">
 				<tr>
 					<th><p>Opponent</p></th>
-					<th><p>Last seen</p></th>
+					<xsl:if test="$param/games_details = 'yes'">
+						<th><p>Last seen</p></th>
+					</xsl:if>
 					<th><p>Round</p></th>
-					<th><p>Last game action</p></th>
-					<th><p>Game state</p></th>
+					<xsl:if test="$param/games_details = 'yes'">
+						<th><p>Last game action</p></th>
+					</xsl:if>
 					<th><p>Info</p></th>
 					<th></th>
 				</tr>
 				<xsl:for-each select="$list/*">
-					<tr>
+					<tr class="table_row">
 						<td>
 							<p>
 								<xsl:if test="active = 'yes'">
@@ -35,10 +38,13 @@
 								<xsl:value-of select="opponent"/>
 							</p>
 						</td>
-						<td><p><xsl:value-of select="am:datetime(lastseen, $param/timezone)"/></p></td>
+						<xsl:if test="$param/games_details = 'yes'">
+							<td><p><xsl:value-of select="am:datetime(lastseen, $param/timezone)"/></p></td>
+						</xsl:if>
 						<td><p><xsl:value-of select="round"/></p></td>
-						<td><p><xsl:value-of select="am:datetime(gameaction, $param/timezone)"/></p></td>
-						<td><p><xsl:value-of select="gamestate"/></p></td>
+						<xsl:if test="$param/games_details = 'yes'">
+							<td><p><xsl:value-of select="am:datetime(gameaction, $param/timezone)"/></p></td>
+						</xsl:if>
 						<td>
 							<xsl:choose>
 								<xsl:when test="gamestate = 'in progress'">
@@ -53,9 +59,9 @@
 						</td>
 						<td>
 							<p>
-								<input class="details" type="submit" name="view_game[{gameid}]" value="&rarr;">
+								<input type="submit" name="view_game[{gameid}]" value="&rarr;">
 									<xsl:if test="ready = 'yes'">
-										<xsl:attribute name="class">details marked_button</xsl:attribute>
+										<xsl:attribute name="class">marked_button</xsl:attribute>
 									</xsl:if>
 								</input>
 							</p>
