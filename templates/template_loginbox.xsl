@@ -13,11 +13,11 @@
 
 	<div id="login_inputs">
 		<p>
-			<img src="img/username.png" width="25px" height="20px" alt="" />
+			<img src="img/username.png" width="25px" height="20px" alt="username" />
 			<input type="text" name="Username" maxlength="20" tabindex="1" />
 		</p>
 		<p>
-			<img src="img/password.png" width="25px" height="20px" alt="" />
+			<img src="img/password.png" width="25px" height="20px" alt="password" />
 			<input type="password" name="Password" maxlength="20" tabindex="2" />
 		</p>
 		<p>
