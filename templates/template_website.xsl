@@ -29,6 +29,7 @@
 
 	<div id="webpg_float_right" class="skin_text">
 		<xsl:for-each select="$param/files/*">
+		<xsl:if test="($param/recent_news_only = 'no') or (position() &lt;= 4)">
 
 			<!-- TODO: check if file exists and print error if not -->
 			<xsl:variable name="entry" select="document(am:urlencode(concat('../pages/', .)))/am:entry" />
@@ -49,6 +50,7 @@
 				<xsl:copy-of select="$entry/am:content/node()" />
 				<hr/>
 			</div>
+		</xsl:if>
 
 		</xsl:for-each>
 	</div>

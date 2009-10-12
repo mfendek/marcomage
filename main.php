@@ -2481,6 +2481,8 @@ case 'Page':
 	$params['website']['selected'] = $selected;
 	$params['website']['files'] = $files;
 	$params['website']['timezone'] = ( isset($player) ) ? $player->GetSetting("Timezone") : '+0';
+	// display all news when viewing news archive, display only recent news otherwise
+	$params['website']['recent_news_only'] = (($selected == "News") AND !(isset($_POST['WebPage']) AND (array_shift($_POST['WebPage']) == "Show all news"))) ? 'yes' : 'no';
 	break;
 
 
