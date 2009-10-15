@@ -66,9 +66,10 @@
 											<input type="submit" name="accept_challenge[{am:urlencode(Author)}]" value="Accept" />
 										</xsl:if>
 										<select name="AcceptDeck[{am:urlencode(Author)}]" size="1">
-										<xsl:for-each select="$param/decks/*">
-											<option value="{am:urlencode(.)}"><xsl:value-of select="."/></option>
-										</xsl:for-each>
+											<option value="{am:urlencode($param/random_deck)}">select random</option>
+											<xsl:for-each select="$param/decks/*">
+												<option value="{am:urlencode(.)}"><xsl:value-of select="."/></option>
+											</xsl:for-each>
 										</select>
 									</xsl:if>
 									<input type="submit" name="reject_challenge[{am:urlencode(Author)}]" value="Reject" />

@@ -2807,6 +2807,7 @@ case 'Messages':
 	$params['messages']['system_name'] = SYSTEM_NAME;
 
 	$decks = $params['messages']['decks'] = $player->ListReadyDecks();
+	$params['messages']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)] : '';
 	$params['messages']['deck_count'] = count($decks);
 	$params['messages']['startedgames'] = count($gamedb->ListActiveGames($player->Name())) + count($gamedb->ListChallengesFrom($player->Name()));
 
