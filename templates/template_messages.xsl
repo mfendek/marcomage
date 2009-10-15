@@ -46,12 +46,17 @@
 					<div class="skin_text">
 						<xsl:choose>
 							<xsl:when test="$param/current_subsection = 'incoming'">
-								<p><span>
-									<xsl:if test="Online = 'yes'">
-										<xsl:attribute name="class">p_online</xsl:attribute>
-									</xsl:if>
-									<xsl:value-of select="Author"/>
-									</span> has challenged you on <span><xsl:value-of select="am:datetime(Created, $param/timezone)"/></span>.</p>
+								<p>
+									<input class="details" type="submit" name="user_details[{Author}]" value="i" />
+									<span>
+										<xsl:if test="Online = 'yes'">
+											<xsl:attribute name="class">p_online</xsl:attribute>
+										</xsl:if>
+										<xsl:value-of select="Author"/>
+									</span>
+									<xsl:text> has challenged you on </xsl:text>
+									<span><xsl:value-of select="am:datetime(Created, $param/timezone)"/></span>
+								</p>
 								<xsl:if test="Content != ''">
 									<div class="challenge_content"><xsl:copy-of select="am:textencode(Content)" /></div>
 								</xsl:if>
@@ -70,13 +75,17 @@
 								</p>
 							</xsl:when>
 							<xsl:when test="$param/current_subsection = 'outgoing'">
-								<p>You challenged 
-								<span>
-									<xsl:if test="Online = 'yes'">
-										<xsl:attribute name="class">p_online</xsl:attribute>
-									</xsl:if>
-									<xsl:value-of select="Recipient"/></span> on <span><xsl:value-of select="am:datetime(Created, $param/timezone)"/>
-								</span>.</p>
+								<p>
+									<xsl:text>You challenged </xsl:text>
+									<span>
+										<xsl:if test="Online = 'yes'">
+											<xsl:attribute name="class">p_online</xsl:attribute>
+										</xsl:if>
+										<xsl:value-of select="Recipient"/>
+									</span>
+									<xsl:text> on </xsl:text>
+									<span><xsl:value-of select="am:datetime(Created, $param/timezone)"/></span>
+								</p>
 								<xsl:if test="Content != ''">
 									<div class="challenge_content"><xsl:copy-of select="am:textencode(Content)" /></div>
 								</xsl:if>
