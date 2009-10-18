@@ -1,0 +1,110 @@
+/******************************************************
+ * MArcomage CSS stylesheet - skins - halloween theme *
+ ******************************************************/
+
+@import url("dark.css"); /* import dark skin template */
+
+.skin_text /* text element layout */
+{
+	background-color: #2b2b2b; /* light black */
+}
+
+.skin_label /* label element layout */
+{
+	background-image: url('../../img/skins/halloween_label.jpg');
+}
+
+html /* general background layout */
+{
+	background-image: url('../../img/skins/bg_halloween.jpg');
+}
+
+div#menubar /* navigation bar layout */
+{
+	background-image: url('../../img/skins/halloween_label.jpg');
+}
+
+div#login_box /* login box layout */
+{
+	background-image: url('../../img/skins/halloween_label.jpg');
+}
+
+hr /* horizontal line layout */
+{
+	border-color: #cccccc; /* light gray */
+}
+
+a:link /* unvisited link */
+{
+	color: #ff6a00; /* dark orange */
+}
+
+a:visited /* visited link */
+{
+	color: #c14114; /* orange brown */
+}
+
+tr.table_row:hover /* highlight table row */
+{
+	background-color: #ad4800; /* medium orange */
+}
+
+h2,h3,h4,h5 /* heading layout */
+{
+	color: #e25109; /* orange red */
+	text-shadow: 0 0 1px black, 0 0 2px black, 0 0 3px black, 0 0 4px black, 0 0 5px black;
+}
+
+input[type="submit"] /* submit input layout */
+{
+	background-color: #2b2b2b; /* light black */
+	border-color: gray;
+}
+
+input.marked_button /* highlighted button */
+{
+	background-color: #d85600; /* dark red */
+}
+
+.info /* information message layout */
+{
+	text-shadow: 0 0 1px black, 0 0 2px black, 0 0 3px black, 0 0 4px black, 0 0 5px black;
+}
+
+.warning /* warning message layout */
+{
+	text-shadow: 0 0 1px black, 0 0 2px black, 0 0 3px black, 0 0 4px black, 0 0 5px black;
+}
+
+.error /* error message layout */
+{
+	text-shadow: 0 0 1px black, 0 0 2px black, 0 0 3px black, 0 0 4px black, 0 0 5px black;
+}
+
+p.info_label /* information label used in multiple instances in game section */
+{
+	border: medium ridge #6495ed; /* light blue */
+	background-color: #2b2b2b; /* light black */
+}
+
+p.token_counter /* token counter layout */
+{
+	border: thin solid #6495ed; /* light blue */
+	background-color: #2b2b2b; /* light black */
+}
+
+div.chatbox /* chatbox window */
+{
+	border: medium ridge #6495ed; /* light blue */
+	background-color: #2b2b2b; /* light black */
+}
+
+p.flag /* new card flag (indicated above a new card) */
+{
+	background-color: #2b2b2b; /* light black */
+}
+
+div#cost_per_turn /* avg cost per turn indicator layout */
+{
+	background-color: #2b2b2b; /* light black */
+}
