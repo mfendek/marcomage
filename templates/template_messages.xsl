@@ -114,7 +114,7 @@
 
 	<!-- begin buttons and filters -->
 
-	<div class="filters_trans" style="text-align: left;">
+	<p>
 		<input type="submit" name="inbox" value="Inbox" >
 			<xsl:if test="$param/current_location = 'inbox'">
 				<xsl:attribute name="class">pushed</xsl:attribute>
@@ -132,7 +132,9 @@
 				</xsl:if>
 			</input>
 		</xsl:if>
+	</p>
 
+	<div class="message_filters">
 		<!-- begin date filter -->
 
 		<select name="date_filter">
@@ -186,7 +188,7 @@
 		<input type = "submit" name = "message_filter" value = "Apply filters" />
 	</div>
 
-	<div class="filters_trans" style="text-align: left;">
+	<div class="message_filters">
 	<!-- upper navigation -->
 			<xsl:if test="$param/page_count &gt; 0">
 				<!-- previous button -->

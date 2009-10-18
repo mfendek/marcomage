@@ -25,7 +25,7 @@ div#challenges > p /* challenge message */
 	margin-left: auto;
 }
 
-div#challenges > p > input, div#challenges > p > select /* distance between button end select elements */
+div#challenges > p > input + input /* distance between buttons */
 {
 	margin-left: 2ex;
 }
@@ -41,6 +41,11 @@ div#messages /* private messages subsection */
 	margin: 0ex 1ex 1ex 0ex;
 }
 
+div#messages > p > input + input /* distance between buttons */
+{
+	margin-left: 2ex;
+}
+
 div#messages th > p, div#messages td > p /* table cell text */
 {
 	margin: 0.5ex 1ex 0.5ex 1ex;
@@ -50,6 +55,17 @@ div#messages > table /* private messages table */
 {
 	margin: 0ex 1ex 2ex 2ex;
 	max-width: 32em;
+}
+
+div.message_filters /* filters and navigation */
+{
+	margin: 0.5ex 0ex 0.5ex 2ex;
+	text-align: left;
+}
+
+div.message_filters > input /* set distance between buttons */
+{
+	margin-right: 1ex;
 }
 
 /* end messages */
