@@ -2783,7 +2783,8 @@ case 'Profile':
 	$challengesto = $gamedb->ListChallengesTo($player->Name());
 	$endedgames = $gamedb->ListEndedGames($player->Name());
 	$params['profile']['free_slots'] = MAX_GAMES - (count($activegames) + count($challengesfrom) + count($challengesto));
-	$params['profile']['decks'] = $player->ListReadyDecks();
+	$params['profile']['decks'] = $decks = $player->ListReadyDecks();
+	$params['profile']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)] : '';
 
 	$params['profile']['challenged'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $cur_player), $challengesfrom) !== false) ? 'yes' : 'no';
 	$params['profile']['playingagainst'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $cur_player), $activegames) !== false) ? 'yes' : 'no';
