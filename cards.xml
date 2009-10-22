@@ -4560,8 +4560,33 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Randomly discards one card from hand<br />Replaces up to 3 random non-<b>Holy</b> cards from hand with Fanatics]]></effect>
-    <code><![CDATA[$mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $nextcard = 0; $tmp = mt_rand(1, 8); $mydata->Hand[$tmp] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $mydata->NewCards[$tmp] = 1; $temp_array = array(); for ($i = 1; $i <= 8; $i++) if (!$carddb->GetCard($mydata->Hand[$i])->HasKeyword("Holy")) $temp_array[$i] = $i; shuffle($temp_array); for ($i = 0; ($i < count($temp_array)) AND ($i < 3); $i++) { $mydata->Hand[$temp_array[$i]] = 340; $mydata->NewCards[$temp_array[$i]] = 1; }]]></code>
+    <effect><![CDATA[Randomly discards one non-rare card from hand<br />Replaces up to 3 random non-<b>Holy</b> non-rare cards from hand with Fanatics]]></effect>
+    <code><![CDATA[
+							$mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random');
+							$nextcard = 0; $storage = array();
+							for ($i = 1; $i <= 8; $i++)
+								if ($carddb->GetCard($mydata->Hand[$i])->GetClass() != 'Rare') $storage[] = $i;
+							if (count($storage) > 0)
+							{
+								$dis_pos = $storage[array_rand($storage)];
+								$mydata->Hand[$dis_pos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random');
+								$mydata->NewCards[$dis_pos] = 1; $temp_array = array();
+								for ($i = 1; $i <= 8; $i++)
+								{
+									$cur_card = $carddb->GetCard($mydata->Hand[$i]);
+									if (!$cur_card->HasKeyword("Holy") AND ($cur_card->GetClass() != 'Rare')) $temp_array[] = $i;
+								}
+								if (count($temp_array) > 0)
+								{
+									shuffle($temp_array);
+									for ($i = 0; ($i < count($temp_array)) AND ($i < 3); $i++)
+									{
+										$mydata->Hand[$temp_array[$i]] = 340;
+										$mydata->NewCards[$temp_array[$i]] = 1;
+									}
+								}
+							}
+]]></code>
   </card>
   <card id="343">
     <name>Death before dishonor</name>
@@ -6334,8 +6359,8 @@
     </cost>
     <modes>0</modes>
     <keywords>Alliance. Legend. Nature.</keywords>
-    <effect><![CDATA[Production XN<br />N = #<b>Alliance</b> + #<b>Nature</b> cards on hand (max 5)]]></effect>
-    <code><![CDATA[$tmp = min($this->KeywordCount($mydata->Hand, "Alliance") + $this->KeywordCount($mydata->Hand, "Nature"), 5); $bricks_production*= $tmp; $gems_production*= $tmp; $recruits_production*= $tmp;]]></code>
+    <effect><![CDATA[Production XN<br />N = #<b>Alliance</b> + #<b>Nature</b> cards on hand (max 6)]]></effect>
+    <code><![CDATA[$tmp = min($this->KeywordCount($mydata->Hand, "Alliance") + $this->KeywordCount($mydata->Hand, "Nature"), 6); $bricks_production*= $tmp; $gems_production*= $tmp; $recruits_production*= $tmp;]]></code>
   </card>
   <card id="454">
     <name>Dryad</name>

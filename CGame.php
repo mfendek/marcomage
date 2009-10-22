@@ -501,7 +501,7 @@
 					}
 				}
 				
-				//process Mage cards - Willpower (raises magic by 1)
+				//process Mage cards - Willpower (raises magic by 1 or adds 10 gems)
 				if ($card->HasKeyWord("Mage"))
 				{
 					$ammount = $this->KeywordCount($mydata->Hand, "Mage") - 1; // we don't count the played card
@@ -509,18 +509,19 @@
 					
 					if ($token_index)
 					{
-						$mydata->TokenValues[$token_index]+= 10 + $ammount * 6; // basic gain + bonus gain
+						$mydata->TokenValues[$token_index]+= 10 + $ammount * 3; // basic gain + bonus gain
 						
 						if ($mydata->TokenValues[$token_index] >= 100)
 						{
-							$mydata->Magic+= 1;
+							if ($mydata->Magic <= ($hisdata->Magic + 1)) $mydata->Magic+= 1;
+							else $mydata->Gems+= 10;
 							
 							$mydata->TokenValues[$token_index] = 0;
 						}
 					}
 				}
 				
-				//process Undead cards - Unholy sacrifice (discard undead card with highest cost, gain resources equal to the cost)
+				//process Undead cards - Pillage (gain stock based on damage caused)
 				if ($card->HasKeyWord("Undead"))
 				{
 					$ammount = $this->KeywordCount($mydata->Hand, "Undead") - 1; // we don't count the played card
@@ -532,32 +533,12 @@
 						
 						if ($mydata->TokenValues[$token_index] >= 100)
 						{
-							$high = $costs = array();
-							$max = 0;
-							for ($i = 1; $i <= 8; $i++)
-							{
-								$cur_card = $carddb->GetCard($mydata->Hand[$i]);
-								if (($i != $cardpos) AND $cur_card->HasKeyword('Undead'))
-								{
-									$costs[$i] = $cur_card->GetResources('');
-									if ($costs[$i] > $max) $max = $costs[$i];
-								}
-							}
-							
-							if (count($costs) > 0)
-							{
-								foreach ($costs as $i => $cur_cost)
-									if (($i != $cardpos) AND ($cur_cost == $max)) $high[$i] = $i;
-								
-								$target = array_rand($high);
-								$discarded_card = $carddb->GetCard($mydata->Hand[$target]);
-								$mydata->Hand[$target] = $this->DrawCard($mydata->Deck, $mydata->Hand, $target, 'DrawCard_random');
-								$mydata->NewCards[$target] = 1;
-								
-								$mydata->Bricks+= min($discarded_card->GetResources('Bricks'), 20);
-								$mydata->Gems+= min($discarded_card->GetResources('Gems'), 20);
-								$mydata->Recruits+= min($discarded_card->GetResources('Recruits'), 20);
-							}
+							$wall_damage = max(0, $hisdata_temp['Wall'] - max(0, $hisdata->Wall));
+							$tower_damage = max(0, $hisdata_temp['Tower'] - max(0, $hisdata->Tower));
+							$gained = round($wall_damage/5) + round($tower_damage/4);
+							$mydata->Bricks+= $gained;
+							$mydata->Gems+= $gained;
+							$mydata->Recruits+= $gained;
 							
 							$mydata->TokenValues[$token_index] = 0;
 						}

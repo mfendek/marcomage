@@ -268,7 +268,7 @@ Keywords represent information about the card that is too big to fit in the card
 	<li><b>Holy</b> - basic gain 25, bonus gain 5, side-effect (Purification): replaces one random <b>Undead</b> card from enemy hand (if there is one) with Purified ashes. Can only replace a card with same or lower rarity as was the played card, but cards with highest replacable rarity are preferred. Cards that cannot be replaced by played card are not considered targets for replace. You will get additional stock based on replaced card rarity (Common - 1 stock, Uncommon -  2 stock, Rare - 3 stock).</li>
 	<li><b>Illusion</b> - if an <b>Illusion</b> card is played after a different, non-common <b>Illusion</b> card, next card will be a rare card from enemy deck.</li>
 	<li><b>Legend</b> - if there is a rare card in hand (other then played card) Facilities: +1.</li>
-	<li><b>Mage</b> - basic gain 10, bonus gain 6, side-effect (Willpower): Magic: +1</li>
+	<li><b>Mage</b> - basic gain 10, bonus gain 3, side-effect (Willpower): If (Magic - Enemy magic &lt; 2) Magic: +1 else Gems: +10</li>
 	<li><b>Nature</b> - if an <b>Nature</b> card is played after a different, non-common <b>Nature</b> card, next card will be a rare <b>Nature</b> card.</li>
 	<li><b>Quick</b> - player gets an additional turn, but no production this turn, it is impossible to draw a rare card after a <b>Quick</b> card is played.</li>
 	<li><b>Rebirth</b> - when played and number of <b>Burning</b> cards in game is greater then 3, the card stays on hand and you will get additional 16 gems.</li>
@@ -277,7 +277,7 @@ Keywords represent information about the card that is too big to fit in the card
 	<li><b>Soldier</b> - basic gain 15, bonus gain 10, side-effect (Veteran troops): half of the recruits cost of the played card will be returned.</li>
 	<li><b>Swift</b> - player gets additional turn, also with production, it is impossible to draw a rare card after a <b>Swift</b> card is played.</li>
 	<li><b>Titan</b> - basic gain 22, bonus gain 5, side-effect (Titan's will): next card received will be a <b>Titan</b>.</li>
-	<li><b>Undead</b> - basic gain 5, bonus gain 5, side-effect (Unholy sacrifice): discards an <b>Undead</b> card with highest cost from hand to receive cost of the discarded card (max 20 of each).</li>
+	<li><b>Undead</b> - basic gain 5, bonus gain 5, side-effect (Pillage): gain stock based on damage caused to opponent (1/4 of tower damage and 1/5 of wall damage).</li>
 	<li><b>Unliving</b> - basic gain 9, bonus gain 8, side-effect (Sturdiness): third of the total cost of the played card will be returned.</li>
 </ul>
 
