@@ -167,7 +167,7 @@ In the settings section you can upload your own avatar. Avatar must be a jpg, jp
 	<li>Facilities - all three types of production (Quarry, Magic, Dungeon)</li>
 	<li>If we are talking about Tower, Wall, Stock, Facilites ... etc. we are talking about your Tower Wall ... . Opponent's Tower, Wall ... are addresed as Enemy tower, Enemy wall ...</li>
 	<li>Last card played means last card played by you not the opponent. Opponents last card played is addresed as last card played by opponent</li>
-	<li>Production X0, Production X2, Production X3 - you will get zero production, double production, triple production this turn. Note that with the combination of some keyword effect (<b>Alliance</b>) you may get Production X2 two times (one becuase of card effect and one becuase of keyword effect). In this case the production factor is multiplied, so the result is Production X4.</li>
+	<li>Production x0, Production x2, Production x3 - you will get zero production, double production, triple production this turn. Note that with the combination of some keyword effect (<b>Alliance</b>) you may get Production x2 two times (one becuase of card effect and one becuase of keyword effect). In this case the production factor is multiplied, so the result is Production x4.</li>
 	<li>"Last card" means last card played or discarded by you (if more cards were played this round then it is the most recent one)</li>
 	<li>"Last card played" means last card played by you (if more cards were played this round then it is the most recent one)</li>
 	<li>"Last card played by opponent" means last card played by opponent (if opponent played more cards in his round then it is the most recent one)</li>
@@ -253,7 +253,7 @@ Keywords represent information about the card that is too big to fit in the card
 </p>
 
 <ul>
-	<li><b>Alliance</b> - basic gain 17, bonus gain 3, side-effect (Arcane knowledge): additional Production X2.</li>
+	<li><b>Alliance</b> - basic gain 17, bonus gain 3, side-effect (Arcane knowledge): additional Production x2.</li>
 	<li><b>Banish</b> - discards one random <b>Durable</b> card from enemy hand (if there is one). Can only discard a card with same or lower rarity as was the played card, but cards with highest discardable rarity are preferred. Cards that cannot be discarded by played card are not considered targets for discard.</li>
 	<li><b>Barbarian</b> - basic gain 4, bonus gain 15, side-effect (Devastation): enemy wall will be additionally lowered by ammount based on played card rarity (Common - 3 , Uncommon -  8, Rare - 15).</li>
 	<li><b>Brigand</b> - basic gain 10, bonus gain 10, side-effect (Robbery): additional stock will be stolen from opponent, ammount based on played card rarity (Common - 1 stock, Uncommon -  2 stock, Rare - 3 stock).</li>
@@ -288,7 +288,7 @@ Some keywords have a side-effect, that requires a token counter. Player can choo
 </p>
 
 <p>
-Let's take the <b>Alliance</b> keyword for example. First you need to set one token counter to <b>Alliance</b> keyword (in the deck section). Then you normally start a game with this deck. <b>Alliance</b> keyword has 17 basic gain and 3 bonus gain. So, when you play a card that has <b>Alliance</b> keyword, it will raise the <b>Alliance</b> token counter by 17 plus 3 for each additional <b>Alliance</b> card in hand. When the counter reaches 100, it will add a Production X2 to the effect of the played card and will be reseted to 0. By paying close attention to the token counters, you will be able to make good combos of card effects and keyword side-effects. For example <b>Soldier</b> and Ceremonial guard or <b>Alliance</b> and Stilshrine of Miriam can make good stock boosting combos.
+Let's take the <b>Alliance</b> keyword for example. First you need to set one token counter to <b>Alliance</b> keyword (in the deck section). Then you normally start a game with this deck. <b>Alliance</b> keyword has 17 basic gain and 3 bonus gain. So, when you play a card that has <b>Alliance</b> keyword, it will raise the <b>Alliance</b> token counter by 17 plus 3 for each additional <b>Alliance</b> card in hand. When the counter reaches 100, it will add a Production x2 to the effect of the played card and will be reseted to 0. By paying close attention to the token counters, you will be able to make good combos of card effects and keyword side-effects. For example <b>Soldier</b> and Ceremonial guard or <b>Alliance</b> and Stilshrine of Miriam can make good stock boosting combos.
 </p>
 
 <h4>Color information</h4>

@@ -1558,7 +1558,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Restoration.</keywords>
-    <effect><![CDATA[Production X2]]></effect>
+    <effect><![CDATA[Production x2]]></effect>
     <code><![CDATA[$bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2;]]></code>
   </card>
   <card id="120">
@@ -1610,7 +1610,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Alliance.</keywords>
-    <effect><![CDATA[Tower: +7<br />Production X2]]></effect>
+    <effect><![CDATA[Tower: +7<br />Production x2]]></effect>
     <code><![CDATA[$mydata->Tower+= 7; $bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2;]]></code>
   </card>
   <card id="124">
@@ -1779,7 +1779,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Alliance. Mage.</keywords>
-    <effect><![CDATA[Attack: 9<br />Production X2]]></effect>
+    <effect><![CDATA[Attack: 9<br />Production x2]]></effect>
     <code><![CDATA[$this->Attack(9, $hisdata->Tower, $hisdata->Wall); $bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2;]]></code>
   </card>
   <card id="137">
@@ -2273,7 +2273,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Swift.</keywords>
-    <effect><![CDATA[Production X2]]></effect>
+    <effect><![CDATA[Production x2]]></effect>
     <code><![CDATA[$bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2;]]></code>
   </card>
   <card id="175">
@@ -2468,7 +2468,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Alliance.</keywords>
-    <effect><![CDATA[Tower: +5<br />Recruits production X3]]></effect>
+    <effect><![CDATA[Tower: +5<br />Recruits production x3]]></effect>
     <code><![CDATA[$mydata->Tower+= 5; $recruits_production*= 3;]]></code>
   </card>
   <card id="190">
@@ -2481,7 +2481,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Alliance.</keywords>
-    <effect><![CDATA[Attack: 11<br />Gems production X2]]></effect>
+    <effect><![CDATA[Attack: 11<br />Gems production x2]]></effect>
     <code><![CDATA[$this->Attack(11, $hisdata->Tower, $hisdata->Wall); $gems_production*= 2;]]></code>
   </card>
   <card id="191">
@@ -3027,7 +3027,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Attack: 20<br />Tower: +10<br />Wall: +10<br />Production X2]]></effect>
+    <effect><![CDATA[Attack: 20<br />Tower: +10<br />Wall: +10<br />Production x2]]></effect>
     <code><![CDATA[$this->Attack(20, $hisdata->Tower, $hisdata->Wall); $mydata->Tower+= 10; $mydata->Wall+= 10; $bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2;]]></code>
   </card>
   <card id="233">
@@ -3425,7 +3425,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Beast.</keywords>
-    <effect><![CDATA[Attack: 9<br />Production X0]]></effect>
+    <effect><![CDATA[Attack: 9<br />Production x0]]></effect>
     <code><![CDATA[$this->Attack(9, $hisdata->Tower, $hisdata->Wall); $bricks_production = 0; $gems_production = 0; $recruits_production = 0;]]></code>
   </card>
   <card id="260">
@@ -3477,7 +3477,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Stock: +4<br />Production X0]]></effect>
+    <effect><![CDATA[Stock: +4<br />Production x0]]></effect>
     <code><![CDATA[$mydata->Bricks+= 4; $mydata->Gems+= 4; $mydata->Recruits+= 4; $bricks_production = 0; $gems_production = 0; $recruits_production = 0;]]></code>
   </card>
   <card id="264">
@@ -3633,7 +3633,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Bricks production X2]]></effect>
+    <effect><![CDATA[Bricks production x2]]></effect>
     <code><![CDATA[$bricks_production*= 2;]]></code>
   </card>
   <card id="276">
@@ -3854,7 +3854,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Alliance.</keywords>
-    <effect><![CDATA[Production X2<br />Replaces your hand with two Elves, two Elite elves, two Elven archers, Elf commando and Elf enchantress]]></effect>
+    <effect><![CDATA[Production x2<br />Replaces your hand with two Elves, two Elite elves, two Elven archers, Elf commando and Elf enchantress]]></effect>
     <code><![CDATA[$bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2; $mydata->Hand = array (1=> 122, 122, 111, 111, 272, 272, 190, 136); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;]]></code>
   </card>
   <card id="293">
@@ -4345,7 +4345,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Mage. Nature.</keywords>
-    <effect><![CDATA[Gems: +6<br />Wall: +3<br />Production X0<br />Select a card from hand to be replaced with Conjurer]]></effect>
+    <effect><![CDATA[Gems: +6<br />Wall: +3<br />Production x0<br />Select a card from hand to be replaced with Conjurer]]></effect>
     <code><![CDATA[$mydata->Gems+= 6; $mydata->Wall+= 3; $bricks_production = 0; $gems_production = 0; $recruits_production = 0; $mydata->Hand[$mode] = 329; if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;]]></code>
   </card>
   <card id="330">
@@ -5093,7 +5093,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Alliance.</keywords>
-    <effect><![CDATA[Tower: +7<br />Wall: +11<br />Production X3]]></effect>
+    <effect><![CDATA[Tower: +7<br />Wall: +11<br />Production x3]]></effect>
     <code><![CDATA[$mydata->Tower+= 7; $mydata->Wall+= 11; $bricks_production*= 3; $gems_production*= 3; $recruits_production*= 3;]]></code>
   </card>
   <card id="376">
@@ -5917,7 +5917,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Alliance.</keywords>
-    <effect><![CDATA[Recruits production X10]]></effect>
+    <effect><![CDATA[Recruits production x10]]></effect>
     <code><![CDATA[$recruits_production*= 10;]]></code>
   </card>
   <card id="428">
@@ -6167,7 +6167,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Dragon.</keywords>
-    <effect><![CDATA[Gems production X2]]></effect>
+    <effect><![CDATA[Gems production x2]]></effect>
     <code><![CDATA[$gems_production*= 2;]]></code>
   </card>
   <card id="441">
@@ -6359,7 +6359,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Alliance. Legend. Nature.</keywords>
-    <effect><![CDATA[Production XN<br />N = #<b>Alliance</b> + #<b>Nature</b> cards on hand (max 6)]]></effect>
+    <effect><![CDATA[Production xN<br />N = #<b>Alliance</b> + #<b>Nature</b> cards on hand (max 6)]]></effect>
     <code><![CDATA[$tmp = min($this->KeywordCount($mydata->Hand, "Alliance") + $this->KeywordCount($mydata->Hand, "Nature"), 6); $bricks_production*= $tmp; $gems_production*= $tmp; $recruits_production*= $tmp;]]></code>
   </card>
   <card id="454">
@@ -6546,7 +6546,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Lowest facility: +1<br />Lowest resource production X3]]></effect>
+    <effect><![CDATA[Lowest facility: +1<br />Lowest resource production x3]]></effect>
     <code><![CDATA[
 							$min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
 							$fac = array("Quarry" => $mydata->Quarry, "Magic" => $mydata->Magic, "Dungeons" => $mydata->Dungeons);
@@ -6589,7 +6589,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Mage. Swift.</keywords>
-    <effect><![CDATA[Attack: 18<br />Gems production X3<br />Discard a card from enemy hand]]></effect>
+    <effect><![CDATA[Attack: 18<br />Gems production x3<br />Discard a card from enemy hand]]></effect>
     <code><![CDATA[$this->Attack(18, $hisdata->Tower, $hisdata->Wall); $gems_production*= 3; $hisdata->Hand[$mode] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $mode, 'DrawCard_random'); $hisdata->NewCards[$mode] = 1;]]></code>
   </card>
   <card id="468">
