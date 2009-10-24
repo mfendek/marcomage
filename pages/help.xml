@@ -178,6 +178,7 @@ In the settings section you can upload your own avatar. Avatar must be a jpg, jp
 	<li>"#Keyword1 + #Keyword2" means number of keywords1 plus number of keywords2, note that they are counted independently</li>
 	<li>All decimal numbers are always rounded standard fashion way</li>
 	<li>"If New" condition is satysfied when the played card had the "NEW CARD" flag above</li>
+	<li>"matching card" is the card in opponent's hand which is in the same position as played card</li>
 </ul>
 
 <h4>Forum</h4>
