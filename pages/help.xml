@@ -152,7 +152,7 @@ Messages have a "new message" notification system. New messages are highlighted 
 <ul>
 	<li>Red - new messages</li>
 	<li>Orange - unread messages</li>
-	<li>Blue - system messages</li>
+	<li>Blue - battle report messages</li>
 	<li>Lime - other messages</li>
 </ul>
 
@@ -335,12 +335,7 @@ Let's take the <b>Alliance</b> keyword for example. First you need to set one to
 	<li>Show avatar in players list - display avatar in players list for all players who have an avatar</li>
 	<li>Avatar display correction for chat - used to prevent Firefox 2.x display bug</li>
 	<li>Old card appearance - display cards with old appearance</li>
-	<li>System messages - when active, system will automaticaly send you information messages about some events. If you are bothered by this, you can turn it off again. Default setting is off. You get system notification messages when:
-		<ul>
-			<li>someone accepts or rejects your challenge</li>
-			<li>the game ends (it informs you about the game outcome)</li>
-		</ul>
-	</li>
+	<li>Battle report messages - when active, system will automaticaly send private message to inform you about a game outcome (when it finishes) or when someone accepts or rejects your challenge</li>
 	<li>Forum notification - display forum notification (new posts) in the menubar</li>
 	<li>Concepts notification - display concepts notification (new concepts) in the menubar</li>
 </ul>

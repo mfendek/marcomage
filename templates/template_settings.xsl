@@ -146,7 +146,7 @@
 			<p><input type="checkbox" name="Avatarlist" ><xsl:if test="$settings/Avatarlist  = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Show avatar in players list</p>
 			<p><input type="checkbox" name="Correction" ><xsl:if test="$settings/Correction  = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Avatar display correction for chat (Firefox 2.x only)</p>
 			<p><input type="checkbox" name="OldCardLook"><xsl:if test="$settings/OldCardLook = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Old card appearance</p>
-			<p><input type="checkbox" name="Reports"    ><xsl:if test="$settings/Reports     = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>System messages</p>
+			<p><input type="checkbox" name="Reports"    ><xsl:if test="$settings/Reports     = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Battle report messages</p>
 			<p><input type="checkbox" name="Forum_notification"><xsl:if test="$settings/Forum_notification = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Forum notification</p>
 			<p><input type="checkbox" name="Concepts_notification"><xsl:if test="$settings/Concepts_notification = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Concepts notification</p>
 		</div>
