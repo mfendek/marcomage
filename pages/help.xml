@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xsl:stylesheet [ <!ENTITY rarr "&#8594;"> ]>
 <am:entry xmlns:am="http://arcomage.netvor.sk">
 <am:content xmlns="http://www.w3.org/1999/xhtml">
 
@@ -109,6 +110,7 @@ The message itself contains the date and time when it was written and also name 
 </p>
 
 <h4>Deck building</h4>
+<p>Deck section contains list of all decks. For each deck it is possible to see date and time of last modification, so you can tell how old each deck is. To enter deck details use the [&rarr;] button. If deck is ready for use (contains 45 cards), its name is highlighted in green color.</p>
 <p>
 <a style="float: right;" href="img/screen_deck_building.png"><img src="img/screen_deck_building_s.png" alt="deck building section"/></a>
 Deck consists of 15 different cards from each group. A deck name must be different to all your other decks. Deck building section consits of control bar, where buttons that provide deck modifications and card pool modifications (filters), are located. On the left part this bar, there are filters. You can use them to filter out the unnecessary cards from the card pool. When a filter is active, it's border color is highlighted with lime color. There are five filters (all of them can be combined):</p>

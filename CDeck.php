@@ -54,13 +54,13 @@
 		public function ListDecks($username)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `Deckname` FROM `decks` WHERE `Username` = "'.$db->Escape($username).'"');
+			$result = $db->Query('SELECT `Deckname`, `Modified` FROM `decks` WHERE `Username` = "'.$db->Escape($username).'"');
 			if (!$result) return false;
 			
-			$names = array();
+			$decks = array();
 			while( $data = $result->Next() )
-				$names[] = $data['Deckname'];
-			return $names;
+				$decks[] = $data;
+			return $decks;
 		}
 		
 		public function ListReadyDecks($username)

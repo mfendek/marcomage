@@ -1263,7 +1263,9 @@
 					$curname = $_POST['CurrentDeck'];
 					$newname = $_POST['NewDeckName'];
 					$list = $player->ListDecks();
-					$pos = array_search($newname, $list);
+					$deck_names = array();
+					foreach ($list as $deck) $deck_names[] = $deck['Deckname'];
+					$pos = array_search($newname, $deck_names);
 					if ($pos !== false)
 					{
 						$error = 'Cannot change deck name, it is already used by another deck.';
@@ -2567,7 +2569,9 @@ case 'Deck_edit':
 
 
 case 'Decks':
-	$params['decks']['list'] = $player->ListDecks();
+	$params['decks']['list'] = $list = $player->ListDecks();
+	foreach ($list as $i => $deck_data) $params['decks']['list'][$i]['Ready'] = ($player->GetDeck($deck_data['Deckname'])->isReady()) ? 'yes' : 'no';
+	$params['decks']['timezone'] = $player->GetSetting("Timezone"); 
 
 	break;
 

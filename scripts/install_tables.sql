@@ -44,6 +44,7 @@ CREATE TABLE `decks` (
   `Deckname` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `Ready` binary(1) NOT NULL,
   `Data` text COLLATE utf8_unicode_ci NOT NULL,
+  `Modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`Username`,`Deckname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

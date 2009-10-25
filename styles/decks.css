@@ -6,12 +6,19 @@
 
 div#decks /* center buttons in deck list */
 {
+	min-width: 1045px;
 	text-align: center;
 }
 
-div#decks input /* set distance between deck access buttons */
+div#decks > table /* decks list layout */
 {
-	margin-top: 3ex;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div#decks > table th > p, div#decks > table td > p /* table cell text */
+{
+	margin: 0.5ex 1ex 0.5ex 1ex;
 }
 
 /* end decklist */

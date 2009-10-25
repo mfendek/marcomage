@@ -62,8 +62,8 @@
 			// delete every indication that the player ever existed ^^
 			$logindb->Unregister($playername);
 			$scoredb->DeleteScore($playername);
-			foreach ($deckdb->ListDecks($playername) as $deckname)
-				$deckdb->DeleteDeck($playername, $deckname);
+			foreach ($deckdb->ListDecks($playername) as $deck_data)
+				$deckdb->DeleteDeck($playername, $deck_data['Deckname']);
 			
 			//TODO: also set all games to 'game was aborted' and 'has already confirmed the result' so it can be deleted.
 			//TODO: delete settings
