@@ -6602,7 +6602,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Raises your wall up to the next height that is divisable by 10]]></effect>
+    <effect><![CDATA[If Wall is not divisible by 10<br />Wall is raised up to the next height that is divisible by 10]]></effect>
     <code><![CDATA[$mydata->Wall = ceil($mydata->Wall/10) * 10;]]></code>
   </card>
   <card id="469">
@@ -6754,15 +6754,15 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[If not New and matching card in enemy hand is New<br />Enemy tower: -15<br />else<br />Enemy tower: -3]]></effect>
-    <code><![CDATA[if (!isset($mynewflags[$cardpos]) AND isset($hisnewflags[$cardpos])) $hisdata->Tower-=15; else $hisdata->Tower-=3;]]></code>
+    <effect><![CDATA[If not New and matching card in enemy hand is New<br />Enemy tower: -10<br />else<br />Enemy tower: -3]]></effect>
+    <code><![CDATA[if (!isset($mynewflags[$cardpos]) AND isset($hisnewflags[$cardpos])) $hisdata->Tower-=10; else $hisdata->Tower-=3;]]></code>
   </card>
   <card id="478">
     <name>Renewal</name>
     <class>Common</class>
     <cost>
       <bricks>0</bricks>
-      <gems>1</gems>
+      <gems>0</gems>
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
@@ -6888,8 +6888,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[If Enemy gems - Gems > 1<br />Gems: +8<br />else<br />Gems: +3]]></effect>
-    <code><![CDATA[if (($hisdata->Gems - $mydata->Gems) > 1) $mydata->Gems+= 8; else $mydata->Gems+= 3;]]></code>
+    <effect><![CDATA[If Enemy gems - Gems > 2<br />Gems: +8<br />else<br />Gems: +3]]></effect>
+    <code><![CDATA[if (($hisdata->Gems - $mydata->Gems) > 2) $mydata->Gems+= 8; else $mydata->Gems+= 3;]]></code>
   </card>
   <card id="487">
     <name>Moon shrine</name>
@@ -6964,7 +6964,7 @@
     <class>Common</class>
     <cost>
       <bricks>0</bricks>
-      <gems>1</gems>
+      <gems>2</gems>
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
