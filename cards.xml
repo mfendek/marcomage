@@ -2598,7 +2598,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Illusion. Swift.</keywords>
-    <effect><![CDATA[Stock X2]]></effect>
+    <effect><![CDATA[Stock x2]]></effect>
     <code><![CDATA[$mydata->Bricks= ($mydata->Bricks * 2); $mydata->Gems= ($mydata->Gems * 2); $mydata->Recruits= ($mydata->Recruits * 2);]]></code>
   </card>
   <card id="200">
@@ -5660,7 +5660,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[If Recruits < 11<br /> Recruits X2<br />else<br />Recruits: +6]]></effect>
+    <effect><![CDATA[If Recruits < 11<br /> Recruits x2<br />else<br />Recruits: +6]]></effect>
     <code><![CDATA[if ($mydata->Recruits < 11) $mydata->Recruits = ($mydata->Recruits * 2); else $mydata->Recruits+= 6;]]></code>
   </card>
   <card id="414">
