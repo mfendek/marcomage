@@ -78,6 +78,7 @@ div#preview /* background image preview */
 	float: right;
 	text-align: center;
 	margin-right: 5ex;
+	margin-top: 1ex;
 }
 
 div#preview > img /* background image preview - image layout */

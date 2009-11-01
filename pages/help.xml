@@ -326,6 +326,7 @@ Let's take the <b>Alliance</b> keyword for example. First you need to set one to
 <h4>Layout options</h4>
 
 <ul>
+	<li>Players list filter - determines default value of the players list filter</li>
 	<li>Advanced games list - display more game details in the games list</li>
 	<li>Minimized game view - remove some graphics in the game section to reduce screen space</li>
 	<li>Show card text - display card effect text description</li>

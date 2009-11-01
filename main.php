@@ -1794,8 +1794,9 @@
 					$settings = $settingdb->GameSettingsList();
 					// handle timezone, skin and background separately
 					unset($settings['Timezone']);
-					unset($settings['Skin']);					
+					unset($settings['Skin']);
 					unset($settings['Background']);
+					unset($settings['PlayerFilter']);
 					
 					foreach($settings as $input => $setting)
 					{
@@ -1810,6 +1811,7 @@
 					
 					$player->ChangeSetting("Skin", $_POST['Skin']);
 					$player->ChangeSetting("Background", $_POST['Background']);
+					$player->ChangeSetting("PlayerFilter", $_POST['PlayerFilter']);
 					
 					$information = "Game settings saved";
 					
@@ -2677,7 +2679,7 @@ case 'Players':
 	$params['players']['order'] = $order = $_POST['CurrentOrder'];
 	$params['players']['condition'] = $condition = $_POST['CurrentCondition'];
 
-	$params['players']['CurrentFilter'] = $filter = ((isset($_POST['CurrentFilter'])) ? $_POST['CurrentFilter'] : "none");
+	$params['players']['CurrentFilter'] = $filter = ((isset($_POST['CurrentFilter'])) ? $_POST['CurrentFilter'] : $player->GetSetting("PlayerFilter"));
 
 	$params['players']['PlayerName'] = $player->Name();
 

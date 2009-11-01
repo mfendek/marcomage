@@ -106,6 +106,16 @@
 			</xsl:if>
 
 			<p>
+				<select name="PlayerFilter">
+					<option value="none" ><xsl:if test="$settings/PlayerFilter = 'none'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>No players filters</option>
+					<option value="active"><xsl:if test="$settings/PlayerFilter = 'active'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Active players</option>
+					<option value="offline"><xsl:if test="$settings/PlayerFilter = 'offline'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Active and offline players</option>
+					<option value="all"><xsl:if test="$settings/PlayerFilter = 'all'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Show all players</option>
+				</select>
+				<xsl:text>Players list filter</xsl:text>
+			</p>
+
+			<p>
 				<select name="Skin">
 					<xsl:for-each select="$skins/am:skin">
 						<xsl:sort select="am:name" order="ascending"/>
