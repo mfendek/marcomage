@@ -51,7 +51,7 @@
 		public function UserSettingsList() //returns list of all user setting names
 		{			
 			//translates input names to settings names
-			$settings = array("Firstname" => "Firstname", "Surname" => "Surname", "Birthdate" => "Birthdate", "Gender" => "Gender", "Email" => "Email", "Imnumber" => "Imnumber", "Country" => "Country", "Hobby" => "Hobby", "Avatar" => "Avatar");
+			$settings = array("Firstname" => "Firstname", "Surname" => "Surname", "Birthdate" => "Birthdate", "Gender" => "Gender", "Email" => "Email", "Imnumber" => "Imnumber", "Country" => "Country", "Hobby" => "Hobby", "Avatar" => "Avatar", "Status" => "Status");
 			
 			return $settings;
 		}

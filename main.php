@@ -2364,6 +2364,7 @@
 				if ($message == 'filter_players') // use player filter in players list
 				{
 					$_POST['CurrentFilter'] = $_POST['player_filter'];
+					$_POST['StatusFilter'] = $_POST['status_filter'];
 					$_POST['CurrentPlayersPage'] = 0;
 					
 					$current = "Players";
@@ -2679,7 +2680,10 @@ case 'Players':
 	$params['players']['order'] = $order = $_POST['CurrentOrder'];
 	$params['players']['condition'] = $condition = $_POST['CurrentCondition'];
 
+	// filter initialization
 	$params['players']['CurrentFilter'] = $filter = ((isset($_POST['CurrentFilter'])) ? $_POST['CurrentFilter'] : $player->GetSetting("PlayerFilter"));
+	if (!isset($_POST['StatusFilter'])) $_POST['StatusFilter'] = "none";
+	$params['players']['status_filter'] = $status_filter = $_POST['StatusFilter'];
 
 	$params['players']['PlayerName'] = $player->Name();
 
@@ -2703,14 +2707,14 @@ case 'Players':
 	$current_page = ((isset($_POST['CurrentPlayersPage'])) ? $_POST['CurrentPlayersPage'] : 0);
 	$params['players']['current_page'] = $current_page;
 
-	$page_count = $playerdb->CountPages($filter);
+	$page_count = $playerdb->CountPages($filter, $status_filter);
 	$pages = array();
 	if ($page_count > 0) for ($i = 0; $i < $page_count; $i++) $pages[$i] = $i;
 	$params['players']['pages'] = $pages;
 	$params['players']['page_count'] = $page_count;
 
 	// get the list of all existing players; (Username, Wins, Losses, Draws, Last Query, Free slots, Avatar, Country)
-	$list = $playerdb->ListPlayers($filter, $condition, $order, $current_page);
+	$list = $playerdb->ListPlayers($filter, $status_filter, $condition, $order, $current_page);
 
 	// for each player, display their name, score, and if conditions are met, also display the challenge button
 	foreach ($list as $i => $data)
@@ -2723,6 +2727,7 @@ case 'Players':
 		$entry['losses'] = $data['Losses'];
 		$entry['draws'] = $data['Draws'];
 		$entry['avatar'] = $data['Avatar'];
+		$entry['status'] = $data['Status'];
 		$entry['country'] = $data['Country'];
 		$entry['last_query'] = $data['Last Query'];
 		$entry['free_slots'] = $data['Free slots'];

@@ -67,6 +67,26 @@
 				<img width="18px" height="12px" src="img/flags/{$settings/Country}.gif" alt="country flag" class="country_flag" />
 			</p>
 
+			<p>
+				<select name="Status">
+					<option value="none">none</option>
+					<option value="ready">
+						<xsl:if test="$settings/Status = 'ready'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+						<xsl:text>looking for game</xsl:text>
+					</option>
+					<option value="quick">
+						<xsl:if test="$settings/Status = 'quick'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+						<xsl:text>looking for quick game</xsl:text>
+					</option>
+					<option value="dnd">
+						<xsl:if test="$settings/Status = 'dnd'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+						<xsl:text>do not disturb</xsl:text>
+					</option>
+				</select>
+				<xsl:text>Status</xsl:text>
+				<xsl:if test="$settings/Status != 'none'"><img width="20px" height="14px" src="img/{$settings/Status}.png" alt="status flag" class="country_flag" /></xsl:if>
+			</p>
+
 			<p>Hobbies, Interests:</p>
 			<p><textarea name="Hobby" rows="5" cols="30"><xsl:value-of select="$settings/Hobby"/></textarea></p>
 

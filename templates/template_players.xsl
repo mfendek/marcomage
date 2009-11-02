@@ -31,6 +31,15 @@
 				<option value="offline"><xsl:if test="$param/CurrentFilter = 'offline'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Active and offline players</option>
 				<option value="all"><xsl:if test="$param/CurrentFilter = 'all'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Show all players</option>
 			</select>
+
+			<!-- begin status filter -->
+			<select name="status_filter">
+				<xsl:if test="$param/status_filter != 'none'"><xsl:attribute name="class">filter_active</xsl:attribute></xsl:if>
+				<option value="none" >No status filter</option>
+				<option value="ready"><xsl:if test="$param/status_filter = 'ready'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Looking for game</option>
+				<option value="quick"><xsl:if test="$param/status_filter = 'quick'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Looking for quick game</option>
+				<option value="dnd"><xsl:if test="$param/status_filter = 'dnd'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Do not disturb</option>
+			</select>
 			<input type="submit" name="filter_players" value="Apply filter" />
 
 			<!-- upper navigation -->
@@ -71,6 +80,7 @@
 					<column name="Losses"     text="Losses"     sortable="no"  />
 					<column name="Draws"      text="Draws"      sortable="no"  />
 					<column name="Free Slots" text="Free Slots" sortable="yes" />
+					<column name="Status"     text="Status"     sortable="no" />
 					<column name="other"      text=""           sortable="no"  />
 				</xsl:variable>
 				
@@ -131,6 +141,13 @@
 					<td><p><xsl:value-of select="losses"/></p></td>
 					<td><p><xsl:value-of select="draws"/></p></td>
 					<td><p><xsl:value-of select="free_slots"/></p></td>
+					<td>
+						<p>
+							<xsl:if test="status != 'none'">
+								<img width="20px" height="14px" src="img/{status}.png" alt="status flag" class="country_flag" />
+							</xsl:if>
+						</p>
+					</td>
 					
 					<td style="text-align: left;">
 						<input class="details" type="submit" name="user_details[{name}]" value="i" />
@@ -173,6 +190,9 @@
 
 		<xsl:if test="$param/CurrentFilter">
 			<input type ="hidden" name="CurrentFilter" value="{$param/CurrentFilter}" />
+		</xsl:if>
+		<xsl:if test="$param/status_filter">
+			<input type ="hidden" name="StatusFilter" value="{$param/status_filter}" />
 		</xsl:if>
 		<input type ="hidden" name="CurrentPlayersPage" value="{$param/current_page}" />
 		<input type ="hidden" name="CurrentOrder" value="{$param/order}" />

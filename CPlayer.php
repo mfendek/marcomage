@@ -86,7 +86,7 @@
 			return new CPlayer($playername, $type, $this);
 		}
 		
-		public function ListPlayers($filter_cond, $condition, $order, $page)
+		public function ListPlayers($filter_cond, $status, $condition, $order, $page)
 		{
 			$db = $this->db;
 
@@ -99,8 +99,9 @@
 			$games_p2 = 'SELECT `Player2` as `Username` FROM `games` WHERE `State` != "waiting" AND `State` != "P2 over"';
 			$challenges = 'SELECT `Player1` as `Username` FROM `games` WHERE `State` = "waiting"';
 			$slots_q = "SELECT `Username`, COUNT(`Username`) as `Slots` FROM ((".$games_p1.") UNION ALL (".$games_p2.") UNION ALL (".$challenges.")) as t GROUP BY `Username`";
+			$status_query = ($status != 'none') ? '(SELECT `Username`, `Avatar`, `Status`, `Country` FROM `settings` WHERE `Status` = "'.$status.'") as `settings`' : '`settings`';
 
-			$query = "SELECT `logins`.`Username`, `scores`.`Wins`, `scores`.`Losses`, `scores`.`Draws`, `settings`.`Avatar`, `settings`.`Country`, `logins`.`Last Query`, ".MAX_GAMES." - IFNULL(`Slots`, 0) as `Free slots`, (CASE WHEN UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - 60*60*24*7*3 THEN `Wins`*3+`Draws` ELSE -(`Wins`*3+`Draws`) END) as `Rank` FROM (`logins` JOIN `settings` USING (`Username`) JOIN `scores` USING (`Username`) LEFT OUTER JOIN (".$slots_q.") as `slots` USING (`Username`)) WHERE UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - ".$activity_q." ORDER BY `".$condition."` ".$order." LIMIT ".(PLAYERS_PER_PAGE * $page)." , ".PLAYERS_PER_PAGE."";
+			$query = "SELECT `logins`.`Username`, `scores`.`Wins`, `scores`.`Losses`, `scores`.`Draws`, `settings`.`Avatar`, `settings`.`Status`, `settings`.`Country`, `logins`.`Last Query`, ".MAX_GAMES." - IFNULL(`Slots`, 0) as `Free slots`, (CASE WHEN UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - 60*60*24*7*3 THEN `Wins`*3+`Draws` ELSE -(`Wins`*3+`Draws`) END) as `Rank` FROM (`logins` JOIN ".$status_query." USING (`Username`) JOIN `scores` USING (`Username`) LEFT OUTER JOIN (".$slots_q.") as `slots` USING (`Username`)) WHERE UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - ".$activity_q." ORDER BY `".$condition."` ".$order." LIMIT ".(PLAYERS_PER_PAGE * $page)." , ".PLAYERS_PER_PAGE."";
 
 			$result = $db->Query($query);
 			if (!$result) return false;
@@ -111,7 +112,7 @@
 			return $list;
 		}
 		
-		public function CountPages($filter_cond)
+		public function CountPages($filter_cond, $status)
 		{
 			$db = $this->db;
 
@@ -119,8 +120,9 @@
 			            : ( $filter_cond == "offline" ? "60*60*24*7*1"
 			            : ( $filter_cond == "all"     ? "UNIX_TIMESTAMP()"
 			            :                               "60*60*24*7*3"     )));
+			$status_query = ($status != 'none') ? ' JOIN (SELECT `Username` FROM `settings` WHERE `Status` = "'.$status.'") as `settings` USING (`Username`)' : '';
 
-			$result = $db->Query('SELECT COUNT(`Username`) as `Count` FROM `logins` WHERE UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - '.$activity_q.'');
+			$result = $db->Query('SELECT COUNT(`Username`) as `Count` FROM `logins`'.$status_query.' WHERE UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - '.$activity_q.'');
 
 			$data = $result->Next();
 			
