@@ -142,6 +142,14 @@ There is no restriction to the number of games played per day or against someone
 </p>
 <p>When you have a game where your turn is, it is indicated by animated image ("crossed swords") in the upper part of the screen (navigation bar).</p>
 
+<p>Each player can configure his status in settings section. Player status can be seen by other players and can be used to help you find the desired opponent. There are three options available:</p>
+<ul>
+	<li>Looking for game - you want to play a normal game</li>
+	<li>Looking for quick game - you want to play a quick game (play online until the game finishes without interruptions)</li>
+	<li>Do not disturb - you don't want to play games right now</li>
+</ul>
+<p>For example if you want to play a quick game, select "Looking for quick game" status. It is possible to use filter in players list section to filter out players with a specific status, so in this case, only players that are looking for a quick game.</p>
+
 <h4>Messages</h4>
 <p>
 In the section "Messages" all challenges and messages that you received are located. When a new challenge/message arrives, you are informed about this in the upper menu bar with a animated image ("letter"). New messages can be written in the players section by selecting the [m] button or in the player's details section. Also you can reply to any message by selecting the reply button.
@@ -244,7 +252,7 @@ This section provides a tool for managing card suggestion in a structured form. 
 	<li>Bricks</li>
 	<li>Gems</li>
 	<li>Recruits</li>
-	<li>Keywords and effect (supports all filter conditions that are in the deck section). Keywords can have one parameter (like Charge), but it cannot by dynamic.</li>
+	<li>Keywords and effect (supports all filter conditions that are in the deck section). Keywords can have one parameter (like Charge), but it cannot be dynamic.</li>
 	<li>New card flag (whether the card is new or not)</li>
 	<li>Tokens</li>
 </ul>
