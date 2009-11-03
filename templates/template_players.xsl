@@ -188,12 +188,6 @@
 			</xsl:if>
 		</div>
 
-		<xsl:if test="$param/CurrentFilter">
-			<input type ="hidden" name="CurrentFilter" value="{$param/CurrentFilter}" />
-		</xsl:if>
-		<xsl:if test="$param/status_filter">
-			<input type ="hidden" name="StatusFilter" value="{$param/status_filter}" />
-		</xsl:if>
 		<input type ="hidden" name="CurrentPlayersPage" value="{$param/current_page}" />
 		<input type ="hidden" name="CurrentOrder" value="{$param/order}" />
 		<input type ="hidden" name="CurrentCondition" value="{$param/condition}" />

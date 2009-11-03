@@ -229,9 +229,6 @@
 
 		</div>
 
-		<input type="hidden" name="CurrentFilterChange" value="{$param/date_val}" />
-		<input type="hidden" name="CurrentFilterAuthor" value="{$param/author_val}" />
-		<input type="hidden" name="CurrentFilterState" value="{$param/state_val}" />
 		<input type="hidden" name="CurrentConPage" value="{$param/current_page}" />
 		<input type="hidden" name="CurrentOrder" value="{$param/current_order}" />
 		<input type="hidden" name="CurrentCon" value="{$param/current_condition}" />

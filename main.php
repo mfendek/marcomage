@@ -975,8 +975,8 @@
 				if ($message == 'inbox') // view messages to player
 				{
 					$_POST['CurrentLocation'] = "inbox";
-					$_POST['CurrentFilterDate'] = "none";
-					$_POST['CurrentFilterName'] = "none";
+					$_POST['date_filter'] = "none";
+					$_POST['name_filter'] = "none";
 					$_POST['CurrentMesPage'] = 0;
 					unset($_POST['CurrentCond']);
 					unset($_POST['CurrentOrd']);
@@ -987,8 +987,8 @@
 				if ($message == 'sent_mail') // view messages from player
 				{
 					$_POST['CurrentLocation'] = "sent_mail";
-					$_POST['CurrentFilterDate'] = "none";
-					$_POST['CurrentFilterName'] = "none";
+					$_POST['date_filter'] = "none";
+					$_POST['name_filter'] = "none";
 					$_POST['CurrentMesPage'] = 0;
 					unset($_POST['CurrentCond']);
 					unset($_POST['CurrentOrd']);
@@ -1001,8 +1001,8 @@
  					// check access rights
  					if (!$access_rights[$player->Type()]["see_all_messages"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
 					$_POST['CurrentLocation'] = "all_mail";
- 					$_POST['CurrentFilterDate'] = "none";
-					$_POST['CurrentFilterName'] = "none";
+					$_POST['date_filter'] = "none";
+					$_POST['name_filter'] = "none";
 					$_POST['CurrentMesPage'] = 0;
 					unset($_POST['CurrentCond']);
 					unset($_POST['CurrentOrd']);
@@ -1026,8 +1026,6 @@
 				
 				if ($message == 'message_filter') // use filter
 				{
-					$_POST['CurrentFilterDate'] = $_POST['date_filter'];
-					$_POST['CurrentFilterName'] = ((isset($_POST['name_filter'])) ? postdecode($_POST['name_filter']) : "none");
 					$_POST['CurrentMesPage'] = 0;
 					
 					$current = 'Messages';
@@ -1384,9 +1382,6 @@
 				
 				if ($message == 'concepts_filter') // use filter
 				{
-					$_POST['CurrentFilterChange'] = $_POST['date_filter'];
-					$_POST['CurrentFilterAuthor'] = ((isset($_POST['author_filter'])) ? postdecode($_POST['author_filter']) : "none");
-					$_POST['CurrentFilterState'] = $_POST['state_filter'];
 					$_POST['CurrentConPage'] = 0;
 					
 					$current = 'Concepts';
@@ -1395,9 +1390,9 @@
 				
 				if ($message == 'my_concepts') // use "my cards" quick button
 				{
-					$_POST['CurrentFilterChange'] = "none";
-					$_POST['CurrentFilterAuthor'] = $player->Name();
-					$_POST['CurrentFilterState'] = "none";
+					$_POST['date_filter'] = "none";
+					$_POST['author_filter'] = $player->Name();
+					$_POST['state_filter'] = "none";
 					$_POST['CurrentConPage'] = 0;
 					
 					$current = 'Concepts';
@@ -2363,8 +2358,6 @@
 				
 				if ($message == 'filter_players') // use player filter in players list
 				{
-					$_POST['CurrentFilter'] = $_POST['player_filter'];
-					$_POST['StatusFilter'] = $_POST['status_filter'];
 					$_POST['CurrentPlayersPage'] = 0;
 					
 					$current = "Players";
@@ -2580,13 +2573,9 @@ case 'Decks':
 
 case 'Concepts':
 	// filter initialization
-	if (!isset($_POST['CurrentFilterChange'])) $_POST['CurrentFilterChange'] = "none";
-	if (!isset($_POST['CurrentFilterAuthor'])) $_POST['CurrentFilterAuthor'] = "none";
-	if (!isset($_POST['CurrentFilterState'])) $_POST['CurrentFilterState'] = "none";
-
-	$params['concepts']['date_val'] = $date = $_POST['CurrentFilterChange'];
-	$params['concepts']['author_val'] = $author = $_POST['CurrentFilterAuthor'];
-	$params['concepts']['state_val'] = $state = $_POST['CurrentFilterState'];
+	$params['concepts']['date_val'] = $date = (isset($_POST['date_filter'])) ? $_POST['date_filter'] : 'none';
+	$params['concepts']['author_val'] = $author = (isset($_POST['author_filter'])) ? postdecode($_POST['author_filter']) : 'none';
+	$params['concepts']['state_val'] = $state = (isset($_POST['state_filter'])) ? $_POST['state_filter'] : 'none';
 
 	if (!isset($_POST['CurrentOrder'])) $_POST['CurrentOrder'] = "DESC"; // default ordering
 	if (!isset($_POST['CurrentCon'])) $_POST['CurrentCon'] =  "LastChange"; // default order condition
@@ -2681,9 +2670,8 @@ case 'Players':
 	$params['players']['condition'] = $condition = $_POST['CurrentCondition'];
 
 	// filter initialization
-	$params['players']['CurrentFilter'] = $filter = ((isset($_POST['CurrentFilter'])) ? $_POST['CurrentFilter'] : $player->GetSetting("PlayerFilter"));
-	if (!isset($_POST['StatusFilter'])) $_POST['StatusFilter'] = "none";
-	$params['players']['status_filter'] = $status_filter = $_POST['StatusFilter'];
+	$params['players']['CurrentFilter'] = $filter = ((isset($_POST['player_filter'])) ? $_POST['player_filter'] : $player->GetSetting("PlayerFilter"));
+	$params['players']['status_filter'] = $status_filter = (isset($_POST['status_filter'])) ? $_POST['status_filter'] : 'none';
 
 	$params['players']['PlayerName'] = $player->Name();
 
@@ -2844,11 +2832,8 @@ case 'Messages':
 	$params['messages']['current_page'] = $current_page;
 
 	// filter initialization
-	if (!isset($_POST['CurrentFilterDate'])) $_POST['CurrentFilterDate'] = "none";
-	if (!isset($_POST['CurrentFilterName'])) $_POST['CurrentFilterName'] = "none";
-
-	$params['messages']['date_val'] = $date = $_POST['CurrentFilterDate'];
-	$params['messages']['name_val'] = $name = $_POST['CurrentFilterName'];
+	$params['messages']['date_val'] = $date = (isset($_POST['date_filter'])) ? $_POST['date_filter'] : 'none';
+	$params['messages']['name_val'] = $name = (isset($_POST['name_filter'])) ? postdecode($_POST['name_filter']) : 'none';
 
 	if ($current_location == "all_mail")
 	{

@@ -366,8 +366,6 @@
 	<div class="clear_floats"></div>
 
 	<input type="hidden" name="CurrentLocation" value="{$param/current_location}" />
-	<input type="hidden" name="CurrentFilterDate" value="{$param/date_val}" />
-	<input type="hidden" name="CurrentFilterName" value="{$param/name_val}" />
 	<input type="hidden" name="CurrentMesPage" value="{$param/current_page}" />
 	<input type="hidden" name="CurrentOrd" value="{$param/current_order}" />
 	<input type="hidden" name="CurrentCond" value="{$param/current_condition}" />
