@@ -148,7 +148,7 @@ CREATE TABLE `settings` (
   `Country` char(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Unknown',
   `Hobby` text COLLATE utf8_unicode_ci NOT NULL,
   `Avatar` char(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'noavatar.jpg',
-  `Status` char(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'none',
+  `Status` char(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'ready',
   `Timezone` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `Minimize` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `Cardtext` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
