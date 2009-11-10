@@ -375,7 +375,7 @@
 					<tr>
 						<xsl:if test="count($param/MyLastCard/*) &gt; 0">
 							<xsl:for-each select="$param/MyLastCard/*">
-								<xsl:sort select="name()" order="descending"/>
+								<xsl:sort select="CardPosition" order="descending" data-type="number"/>
 								<td align="center">
 									<p>
 										<xsl:choose>
@@ -409,7 +409,7 @@
 					<tr>
 						<xsl:if test="count($param/HisLastCard/*) &gt; 0">
 							<xsl:for-each select="$param/HisLastCard/*">
-								<xsl:sort select="name()" order="descending"/>
+								<xsl:sort select="CardPosition" order="descending" data-type="number"/>
 								<td align="center">
 									<p>
 										<xsl:choose>

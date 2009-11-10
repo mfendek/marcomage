@@ -3014,6 +3014,7 @@ case 'Game':
 		$mylastcard[$i]['CardData'] = $card;
 		$mylastcard[$i]['CardAction'] = $mydata->LastAction[$i];
 		$mylastcard[$i]['CardMode'] = $mydata->LastMode[$i];
+		$mylastcard[$i]['CardPosition'] = $i;
 	}
 	$params['game']['MyLastCard'] = $mylastcard;
 
@@ -3066,6 +3067,7 @@ case 'Game':
 		$hislastcard[$i]['CardData'] = $card;
 		$hislastcard[$i]['CardAction'] = $hisdata->LastAction[$i];
 		$hislastcard[$i]['CardMode'] = $hisdata->LastMode[$i];
+		$hislastcard[$i]['CardPosition'] = $i;
 	}
 	$params['game']['HisLastCard'] = $hislastcard;
 
