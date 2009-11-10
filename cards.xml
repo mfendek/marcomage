@@ -6703,7 +6703,7 @@
     <modes>0</modes>
     <keywords>Holy. Soldier.</keywords>
     <effect><![CDATA[Attack: 48<br />Won't lower enemy tower below 15]]></effect>
-    <code><![CDATA[$this->Attack(48, $hisdata->Tower, $hisdata->Wall); $hisdata->Tower = max($hisdata->Tower, 15);]]></code>
+    <code><![CDATA[$tmp = min($hisdata->Tower, 15); $this->Attack(48, $hisdata->Tower, $hisdata->Wall); $hisdata->Tower = max($hisdata->Tower, $tmp);]]></code>
   </card>
   <card id="474">
     <name>Market week</name>
