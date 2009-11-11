@@ -112,12 +112,12 @@
 				</xsl:when>
 				
 				<xsl:when test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
-					<p>
-						<xsl:choose>
-							<xsl:when test="$param/challenging = 'no'">
-								<input type="submit" name="prepare_challenge[{am:urlencode($opponent)}]" value="Challenge this user" />
-							</xsl:when>
-							<xsl:otherwise>
+					<xsl:choose>
+						<xsl:when test="$param/challenging = 'no'">
+							<p><input type="submit" name="prepare_challenge[{am:urlencode($opponent)}]" value="Challenge this user" /></p>
+						</xsl:when>
+						<xsl:otherwise>
+							<p>
 								<input type="submit" name="send_challenge[{am:urlencode($opponent)}]" value="Send challenge" />
 								<select name="ChallengeDeck" size="1">
 									<option value="{am:urlencode($param/random_deck)}">select random</option>
@@ -125,10 +125,11 @@
 										<option value="{am:urlencode(text())}"><xsl:value-of select="text()"/></option>
 									</xsl:for-each>
 								</select>
-								<textarea name="Content" rows="10" cols="50"></textarea>
-							</xsl:otherwise>
-						</xsl:choose>
-					</p>
+							</p>
+							<p><input type="checkbox" name="HiddenCards" />Hide opponent's cards</p>
+							<textarea name="Content" rows="10" cols="50"></textarea>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:when>
 				
 				<xsl:when test="$activedecks = 0">

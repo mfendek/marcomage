@@ -49,6 +49,14 @@ div#details h3 /* section name layout */
 	margin: 0ex;
 }
 
+div#details input[type="checkbox"] /* checkbox layout */
+{
+	padding: 0.5ex;
+	margin: 0ex 2ex 0ex 0ex;
+	border-style: solid;
+	border-width: thin;
+}
+
 div.details_float_right /* float both avatar and zodiac to the right */
 {
 	float: right;

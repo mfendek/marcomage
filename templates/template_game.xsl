@@ -714,7 +714,14 @@
 				</xsl:if>
 
 				<!-- display card -->
-				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
+				<xsl:choose>
+					<xsl:when test="$param/HiddenCards = 'yes'">
+						<div class="hidden_card"></div>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
+					</xsl:otherwise>
+				</xsl:choose>
 			</td>
 		</xsl:for-each>
 	</tr>

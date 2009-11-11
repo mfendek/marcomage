@@ -165,6 +165,7 @@
 		private $Player2;
 		private $Note1;
 		private $Note2;
+		private $HiddenCards; // hide opponent's cards (yes/no)
 		public $State; // 'waiting' / 'in progress' / 'finished' / 'P1 over' / 'P2 over'
 		public $Current; // name of the player whose turn it currently is
 		public $Round; // incremented after each play/discard action
@@ -219,10 +220,25 @@
 			else $this->Note2 = '';
 		}
 		
+		public function GetGameMode($game_mode)
+		{
+			return $this->$game_mode;
+		}
+		
+		public function SetGameMode($game_mode, $value)
+		{
+			$this->$game_mode = $value;
+			$db = $this->Games->getDB();
+			$result = $db->Query('UPDATE `games` SET `'.$db->Escape($game_mode).'` = "'.$db->Escape($value).'" WHERE `Player1` = "'.$db->Escape($this->Player1).'" AND `Player2` = "'.$db->Escape($this->Player2).'"');
+			if (!$result) return false;
+			
+			return true;
+		}
+		
 		public function LoadGame()
 		{
 			$db = $this->Games->getDB();
-			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Outcome`, `Last Action`, `Data`, `Note1`, `Note2` FROM `games` WHERE `Player1` = "'.$db->Escape($this->Player1).'" AND `Player2` = "'.$db->Escape($this->Player2).'"');
+			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Outcome`, `Last Action`, `Data`, `Note1`, `Note2`, `HiddenCards` FROM `games` WHERE `Player1` = "'.$db->Escape($this->Player1).'" AND `Player2` = "'.$db->Escape($this->Player2).'"');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
@@ -235,6 +251,7 @@
 			$this->LastAction = $data['Last Action'];
 			$this->Note1 = $data['Note1'];
 			$this->Note2 = $data['Note2'];
+			$this->HiddenCards = $data['HiddenCards'];
 			$this->GameData = unserialize($data['Data']);
 			
 			return true;

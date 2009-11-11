@@ -787,7 +787,14 @@
 					$game = $gamedb->CreateGame($player->Name(), $opponent, $deck->DeckData);
 					if (!$game) { $error = 'Failed to create new game!'; $current = 'Profile'; break; }
 					
-					$res = $messagedb->SendChallenge($player->Name(), $opponent, $_POST['Content'], $game->ID());
+					// set game modes
+					$hidden_cards = (isset($_POST['HiddenCards']) ? 'yes' : 'no');
+					$game->SetGameMode('HiddenCards', $hidden_cards);
+					
+					$challenge_text = 'Hide opponent\'s cards: '.$hidden_cards."\n";
+					$challenge_text.= $_POST['Content'];
+					
+					$res = $messagedb->SendChallenge($player->Name(), $opponent, $challenge_text, $game->ID());
 					if (!$res) { $error = 'Failed to create new challenge!'; $current = 'Profile'; break; }
 					
 					$information = 'You have challenged '.htmlencode($opponent).'. Waiting for reply.';
@@ -2976,6 +2983,7 @@ case 'Game':
 	$params['game']['Current'] = $game->Current;
 	$params['game']['Timestamp'] = $game->LastAction;
 	$params['game']['has_note'] = ($game->GetNote($player->Name()) != "") ? 'yes' : 'no';
+	$params['game']['HiddenCards'] = $game->GetGameMode('HiddenCards');
 
 	// my hand
 	$myhand = $mydata->Hand;
