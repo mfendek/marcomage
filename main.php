@@ -361,6 +361,33 @@
 					break;
 				}
 				
+				if ($message == 'save_note_return')
+				{	// save current's player game note and return to game screen
+					$gameid = $_POST['CurrentGame'];
+					$game = $gamedb->GetGame($gameid);
+					
+					// check if the game exists
+					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
+					
+					// check if this user is allowed to view this game
+					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games'; break; }
+					
+					// disable re-visiting
+					if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { /*$error = 'Game already over.';*/ $current = 'Games'; break; }
+					
+					$new_note = $_POST['Content'];
+					
+					if (strlen($new_note) > MESSAGE_LENGTH) { $error = "Game note is too long"; $current = "Game_note"; break; }
+					
+					$game->SetNote($player->Name(), $new_note);
+					$game->SaveGame();
+					
+					$information = 'Game note saved.';
+					
+					$current = 'Game';
+					break;
+				}
+				
 				if ($message == 'clear_note')
 				{	// clear current's player game note
 					$gameid = $_POST['CurrentGame'];

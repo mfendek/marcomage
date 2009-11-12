@@ -19,6 +19,7 @@
 
 	<div class="skin_text">
 		<input type="submit" name="view_game[{$param/CurrentGame}]" value="Back to game"/>
+		<input type="submit" name="save_note_return" value="Save &amp; return" />
 		<input type="submit" name="save_note" value="Save" />
 		<input type="submit" name="clear_note" value="Clear" />
 		<hr/>
