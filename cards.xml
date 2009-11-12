@@ -1051,8 +1051,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Each player receives 5 damage for each facility and 10 resources he has<br />Won't lower tower below 1]]></effect>
-    <code><![CDATA[$my_fac = $mydata->Quarry + $mydata->Magic + $mydata->Dungeons; $his_fac = $hisdata->Quarry + $hisdata->Magic + $hisdata->Dungeons; $my_res = $mydata->Bricks + $mydata->Gems + $mydata->Recruits; $his_res = $hisdata->Bricks + $hisdata->Gems + $hisdata->Recruits; $this->Attack(($my_fac + floor($my_res / 10)) * 5, $mydata->Tower, $mydata->Wall); $this->Attack(($his_fac + floor($his_res / 10)) * 5, $hisdata->Tower, $hisdata->Wall); $mydata->Tower = max($mydata->Tower, 1); $hisdata->Tower = max($hisdata->Tower, 1);]]></code>
+    <effect><![CDATA[Each player receives 5 damage for each facility and 10 resources he has]]></effect>
+    <code><![CDATA[$my_fac = $mydata->Quarry + $mydata->Magic + $mydata->Dungeons; $his_fac = $hisdata->Quarry + $hisdata->Magic + $hisdata->Dungeons; $my_res = $mydata->Bricks + $mydata->Gems + $mydata->Recruits; $his_res = $hisdata->Bricks + $hisdata->Gems + $hisdata->Recruits; $this->Attack(($my_fac + floor($my_res / 10)) * 5, $mydata->Tower, $mydata->Wall); $this->Attack(($his_fac + floor($his_res / 10)) * 5, $hisdata->Tower, $hisdata->Wall);]]></code>
   </card>
   <card id="81">
     <name>New era</name>
@@ -1150,8 +1150,8 @@
     <class>Uncommon</class>
     <cost>
       <bricks>0</bricks>
-      <gems>40</gems>
-      <recruits>40</recruits>
+      <gems>30</gems>
+      <recruits>30</recruits>
     </cost>
     <modes>0</modes>
     <keywords>Undead.</keywords>
@@ -1254,13 +1254,13 @@
     <class>Uncommon</class>
     <cost>
       <bricks>0</bricks>
-      <gems>0</gems>
+      <gems>13</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Charge (4). Quick.</keywords>
-    <effect><![CDATA[Attack: 1<br />Gems: +3]]></effect>
-    <code><![CDATA[$this->Attack(1, $hisdata->Tower, $hisdata->Wall); $mydata->Gems+= 3;]]></code>
+    <keywords>Swift.</keywords>
+    <effect><![CDATA[If Wall > Enemy wall<br />Enemy tower: -11<br />else<br />Gems: +9]]></effect>
+    <code><![CDATA[if ($mydata->Wall > $hisdata->Wall) $hisdata->Tower-= 11; else $mydata->Gems+= 9;]]></code>
   </card>
   <card id="97">
     <name>Volunteer</name>
@@ -2884,7 +2884,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Enemy tower lowered by #Enemy quarry*7 + #Enemy bricks<br />Enemy wall lowered by same amount]]></effect>
+    <effect><![CDATA[Enemy tower and enemy wall lowered by #Enemy quarry*7 + #Enemy bricks]]></effect>
     <code><![CDATA[$tmp = ($hisdata->Quarry * 7) + $hisdata->Bricks; $hisdata->Tower-= $tmp; $hisdata->Wall-= $tmp;]]></code>
   </card>
   <card id="222">
@@ -2923,7 +2923,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Player with lowest wall is -1 Quarry and -1 Dungeon]]></effect>
+    <effect><![CDATA[Player(s) with lowest wall is -1 Quarry and -1 Dungeon]]></effect>
     <code><![CDATA[if ($mydata->Wall <= $hisdata->Wall) { $mydata->Quarry-= 1; $mydata->Dungeons-= 1; }; if ($hisdata->Wall <= $mydata->Wall) { $hisdata->Quarry-= 1; $hisdata->Dungeons-= 1; };]]></code>
   </card>
   <card id="225">
@@ -4005,8 +4005,8 @@
     <class>Uncommon</class>
     <cost>
       <bricks>0</bricks>
-      <gems>14</gems>
-      <recruits>14</recruits>
+      <gems>13</gems>
+      <recruits>13</recruits>
     </cost>
     <modes>0</modes>
     <keywords>Burning. Charge (10).</keywords>
@@ -5301,7 +5301,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Player with highest stock (total sum) receives 25% of his current stock]]></effect>
+    <effect><![CDATA[Player(s) with highest stock (total sum) receives 25% of his current stock]]></effect>
     <code><![CDATA[$my_res = $mydata->Bricks + $mydata->Gems + $mydata->Recruits; $his_res = $hisdata->Bricks + $hisdata->Gems + $hisdata->Recruits; if (($my_res) >= ($his_res)) { $mydata->Bricks+= round($mydata->Bricks * 0.25); $mydata->Gems+= round($mydata->Gems * 0.25); $mydata->Recruits+= round($mydata->Recruits * 0.25); } if (($my_res) <= ($his_res)) { $hisdata->Bricks+= round($hisdata->Bricks * 0.25); $hisdata->Gems+= round($hisdata->Gems * 0.25); $hisdata->Recruits+= round($hisdata->Recruits * 0.25); }]]></code>
   </card>
   <card id="389">
@@ -5943,7 +5943,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Player with most <b>Alliance</b>, <b>Legend</b> and <b>Mage</b> cards gets 1 lowest facility]]></effect>
+    <effect><![CDATA[Player(s) with most <b>Alliance</b>, <b>Legend</b> and <b>Mage</b> cards gets 1 lowest facility]]></effect>
     <code><![CDATA[
 							$my_count = $this->KeywordCount($mydata->Hand, "Alliance") + $this->KeywordCount($mydata->Hand, "Legend") + $this->KeywordCount($mydata->Hand, "Mage"); $his_count = $this->KeywordCount($hisdata->Hand, "Alliance") + $this->KeywordCount($hisdata->Hand, "Legend") + $this->KeywordCount($hisdata->Hand, "Mage");
 							if ($my_count >= $his_count)
@@ -5987,7 +5987,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Holy.</keywords>
-    <effect><![CDATA[Player with most <b>Holy</b> cards in hand gets<br />Tower: +9<br />Wall: +17]]></effect>
+    <effect><![CDATA[Player(s) with most <b>Holy</b> cards in hand gets<br />Tower: +9<br />Wall: +17]]></effect>
     <code><![CDATA[$my_count = $this->KeywordCount($mydata->Hand, "Holy"); $his_count = $this->KeywordCount($hisdata->Hand, "Holy"); if ($my_count >= $his_count) { $mydata->Tower+= 9; $mydata->Wall+= 17; } if ($my_count <= $his_count) { $hisdata->Tower+= 9; $hisdata->Wall+= 17; }]]></code>
   </card>
   <card id="432">
@@ -6000,7 +6000,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Player with lowest stock gains 20 stock<br />His opponent gains +1 facilities]]></effect>
+    <effect><![CDATA[Player(s) with lowest stock gains 20 stock<br />His opponent gains +1 facilities]]></effect>
     <code><![CDATA[$my_count = $mydata->Bricks + $mydata->Gems + $mydata->Recruits; $his_count = $hisdata->Bricks + $hisdata->Gems + $hisdata->Recruits; if ($my_count >= $his_count) { $mydata->Quarry+= 1; $mydata->Magic+= 1; $mydata->Dungeons+= 1; $hisdata->Bricks+= 20; $hisdata->Gems+= 20; $hisdata->Recruits+= 20; } if ($my_count <= $his_count) { $hisdata->Quarry+= 1; $hisdata->Magic+= 1; $hisdata->Dungeons+= 1; $mydata->Bricks+= 20; $mydata->Gems+= 20; $mydata->Recruits+= 20; }]]></code>
   </card>
   <card id="433">
@@ -6136,7 +6136,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Player with fewest <b>Undead</b> cards in hand loses 1 highest facility]]></effect>
+    <effect><![CDATA[Player(s) with fewest <b>Undead</b> cards in hand loses 1 highest facility]]></effect>
     <code><![CDATA[
 							$my_count = $this->KeywordCount($mydata->Hand, "Undead"); $his_count = $this->KeywordCount($hisdata->Hand, "Undead");
 							if ($my_count <= $his_count)
@@ -6398,8 +6398,8 @@
     </cost>
     <modes>0</modes>
     <keywords>Restoration.</keywords>
-    <effect><![CDATA[Stock: +16]]></effect>
-    <code><![CDATA[$mydata->Bricks+= 16; $mydata->Gems+= 16; $mydata->Recruits+= 16;]]></code>
+    <effect><![CDATA[If not New<br />Stock: +16]]></effect>
+    <code><![CDATA[if (!isset($mynewflags[$cardpos])) { $mydata->Bricks+= 16; $mydata->Gems+= 16; $mydata->Recruits+= 16; }]]></code>
   </card>
   <card id="457">
     <name>Chaos wizard</name>
@@ -6576,7 +6576,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Player with lowest wall gains stock +6]]></effect>
+    <effect><![CDATA[Player(s) with lowest wall gains stock +6]]></effect>
     <code><![CDATA[if ($mydata->Wall <= $hisdata->Wall) { $mydata->Bricks+= 6; $mydata->Gems+= 6; $mydata->Recruits+= 6; } if ($mydata->Wall >= $hisdata->Wall) { $hisdata->Bricks+= 6; $hisdata->Gems+= 6; $hisdata->Recruits+= 6; }]]></code>
   </card>
   <card id="467">
@@ -6928,8 +6928,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Attack: 26<br />Wall: +18]]></effect>
-    <code><![CDATA[$this->Attack(26, $hisdata->Tower, $hisdata->Wall); $mydata->Wall+= 18;]]></code>
+    <effect><![CDATA[Attack: 24<br />Wall: +16]]></effect>
+    <code><![CDATA[$this->Attack(24, $hisdata->Tower, $hisdata->Wall); $mydata->Wall+= 16;]]></code>
   </card>
   <card id="489">
     <name>Imp cache</name>
