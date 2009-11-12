@@ -459,16 +459,19 @@
 							$player1 = $game->Name1();
 							$player2 = $game->Name2();
 
-							// update score
-							$score1 = $scoredb->GetScore($player1);
-							$score2 = $scoredb->GetScore($player2);
-							
-							if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
-							elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
-							else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
-							
-							$score1->SaveScore();
-							$score2->SaveScore();
+							if ($game->GetGameMode('FriendlyPlay') == "no")
+							{
+								// update score
+								$score1 = $scoredb->GetScore($player1);
+								$score2 = $scoredb->GetScore($player2);
+								
+								if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
+								elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
+								else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
+								
+								$score1->SaveScore();
+								$score2->SaveScore();
+							}
 
 							// send battle report message
 							$opponent = $playerdb->GetPlayer(($player1 != $player->Name()) ? $player1 : $player2);
@@ -512,13 +515,16 @@
 					
 					if ($result == 'OK')
 					{
-						$score = $scoredb->GetScore($player->Name());
-						$score->ScoreData->Losses++;
-						$score->SaveScore();
-						
-						$score = $scoredb->GetScore($game->Winner);
-						$score->ScoreData->Wins++;
-						$score->SaveScore();
+						if ($game->GetGameMode('FriendlyPlay') == "no")
+						{
+							$score = $scoredb->GetScore($player->Name());
+							$score->ScoreData->Losses++;
+							$score->SaveScore();
+							
+							$score = $scoredb->GetScore($game->Winner);
+							$score->ScoreData->Wins++;
+							$score->SaveScore();
+						}
 
 						$player1 = $game->Name1();
 						$player2 = $game->Name2();
@@ -600,15 +606,19 @@
 					{
 						$player1 = $game->Name1();
 						$player2 = $game->Name2();
-						$score1 = $scoredb->GetScore($player1);
-						$score2 = $scoredb->GetScore($player2);
 						
-						if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
-						elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
-						else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
-						
-						$score1->SaveScore();
-						$score2->SaveScore();
+						if ($game->GetGameMode('FriendlyPlay') == "no")
+						{
+							$score1 = $scoredb->GetScore($player1);
+							$score2 = $scoredb->GetScore($player2);
+							
+							if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
+							elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
+							else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
+							
+							$score1->SaveScore();
+							$score2->SaveScore();
+						}
 
 						// send battle report message
 						$opponent = $playerdb->GetPlayer(($player1 != $player->Name()) ? $player1 : $player2);
@@ -789,9 +799,12 @@
 					
 					// set game modes
 					$hidden_cards = (isset($_POST['HiddenCards']) ? 'yes' : 'no');
+					$friendly_play = (isset($_POST['FriendlyPlay']) ? 'yes' : 'no');
 					$game->SetGameMode('HiddenCards', $hidden_cards);
+					$game->SetGameMode('FriendlyPlay', $friendly_play);
 					
 					$challenge_text = 'Hide opponent\'s cards: '.$hidden_cards."\n";
+					$challenge_text.= 'Friendly play: '.$friendly_play."\n";
 					$challenge_text.= $_POST['Content'];
 					
 					$res = $messagedb->SendChallenge($player->Name(), $opponent, $challenge_text, $game->ID());
@@ -2984,6 +2997,7 @@ case 'Game':
 	$params['game']['Timestamp'] = $game->LastAction;
 	$params['game']['has_note'] = ($game->GetNote($player->Name()) != "") ? 'yes' : 'no';
 	$params['game']['HiddenCards'] = $game->GetGameMode('HiddenCards');
+	$params['game']['FriendlyPlay'] = $game->GetGameMode('FriendlyPlay');
 
 	// my hand
 	$myhand = $mydata->Hand;

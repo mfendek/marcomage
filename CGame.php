@@ -166,6 +166,7 @@
 		private $Note1;
 		private $Note2;
 		private $HiddenCards; // hide opponent's cards (yes/no)
+		private $FriendlyPlay; // allow game to effect player score (yes/no)
 		public $State; // 'waiting' / 'in progress' / 'finished' / 'P1 over' / 'P2 over'
 		public $Current; // name of the player whose turn it currently is
 		public $Round; // incremented after each play/discard action
@@ -238,7 +239,7 @@
 		public function LoadGame()
 		{
 			$db = $this->Games->getDB();
-			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Outcome`, `Last Action`, `Data`, `Note1`, `Note2`, `HiddenCards` FROM `games` WHERE `Player1` = "'.$db->Escape($this->Player1).'" AND `Player2` = "'.$db->Escape($this->Player2).'"');
+			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Outcome`, `Last Action`, `Data`, `Note1`, `Note2`, `HiddenCards`, `FriendlyPlay` FROM `games` WHERE `Player1` = "'.$db->Escape($this->Player1).'" AND `Player2` = "'.$db->Escape($this->Player2).'"');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
@@ -252,6 +253,7 @@
 			$this->Note1 = $data['Note1'];
 			$this->Note2 = $data['Note2'];
 			$this->HiddenCards = $data['HiddenCards'];
+			$this->FriendlyPlay = $data['FriendlyPlay'];
 			$this->GameData = unserialize($data['Data']);
 			
 			return true;

@@ -196,4 +196,9 @@ p.token_counter > span /* token counter value */
 	margin-left: 1ex;
 }
 
+img.in_game
+{
+	vertical-align: middle;
+}
+
 /* end game */

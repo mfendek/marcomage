@@ -127,6 +127,7 @@
 								</select>
 							</p>
 							<p><input type="checkbox" name="HiddenCards" />Hide opponent's cards</p>
+							<p><input type="checkbox" name="FriendlyPlay" />Friendly play</p>
 							<textarea name="Content" rows="10" cols="50"></textarea>
 						</xsl:otherwise>
 					</xsl:choose>
