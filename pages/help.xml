@@ -142,6 +142,12 @@ There is no restriction to the number of games played per day or against someone
 </p>
 <p>When you have a game where your turn is, it is indicated by animated image ("crossed swords") in the upper part of the screen (navigation bar).</p>
 
+<p>It is possible to choose from several game modes, when starting a new game:</p>
+<ul>
+	<li>Hide opponent's cards - this mode will disable the ability to see opponent's cards for both players</li>
+	<li>Friendly play - allows to play games, where the game outcome doesn't effect score of the players (friendly play is indicated by a handshake icon near the refresh button)</li>
+</ul>
+
 <p>Each player can configure his status in settings section. Player status can be seen by other players and can be used to help you find the desired opponent. There are three options available:</p>
 <ul>
 	<li>Looking for game - you want to play a normal game</li>
