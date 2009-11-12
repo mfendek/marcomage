@@ -718,7 +718,7 @@
 
 				<!-- display card -->
 				<xsl:choose>
-					<xsl:when test="$param/HiddenCards = 'yes'">
+					<xsl:when test="($param/HiddenCards = 'yes') and ($param/GameState = 'in progress')">
 						<div class="hidden_card"></div>
 					</xsl:when>
 					<xsl:otherwise>
