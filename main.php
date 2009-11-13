@@ -506,8 +506,9 @@
 							$player_rep = $player->GetSetting("Reports");
 							$outcome = $game->Outcome;
 							$winner = $game->Winner;
+							$hidden = $game->GetGameMode('HiddenCards');
 
-							$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $winner);
+							$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $hidden, $winner);
 						}
 						else
 						{
@@ -562,8 +563,9 @@
 						$player_rep = $player->GetSetting("Reports");
 						$outcome = $game->Outcome;
 						$winner = $game->Winner;
+						$hidden = $game->GetGameMode('HiddenCards');
 
-						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $winner);
+						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $hidden, $winner);
 					}
 					/*else $error = $result;*/
 					
@@ -599,8 +601,9 @@
 						$opponent_rep = $opponent->GetSetting("Reports");
 						$player_rep = $player->GetSetting("Reports");
 						$outcome = $game->Outcome;
+						$hidden = $game->GetGameMode('HiddenCards');
 
-						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome);
+						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $hidden);
 					}
 					/*else $error = $result;*/
 					
