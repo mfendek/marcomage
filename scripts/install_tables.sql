@@ -150,6 +150,8 @@ CREATE TABLE `settings` (
   `Hobby` text COLLATE utf8_unicode_ci NOT NULL,
   `Avatar` char(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'noavatar.jpg',
   `Status` char(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'noob',
+  `FriendlyFlag` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `BlindFlag` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `Timezone` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `Minimize` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `Cardtext` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',

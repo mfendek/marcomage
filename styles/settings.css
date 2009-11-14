@@ -65,7 +65,7 @@ div#sett_float_right /* game settings layout */
 	margin: 0ex 1ex 1ex 0ex;
 }
 
-div#sett_float_right input[type="checkbox"] /* checkbox layout */
+div#settings input[type="checkbox"] /* checkbox layout */
 {
 	padding: 0.5ex;
 	margin: 0ex 2ex 0ex 0ex;

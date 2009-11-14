@@ -146,6 +146,12 @@
 							<xsl:if test="status != 'none'">
 								<img width="20px" height="14px" src="img/{status}.png" alt="status flag" class="country_flag" />
 							</xsl:if>
+							<xsl:if test="friendly_flag = 'yes'">
+								<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" />
+							</xsl:if>
+							<xsl:if test="blind_flag = 'yes'">
+								<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" />
+							</xsl:if>
 						</p>
 					</td>
 					

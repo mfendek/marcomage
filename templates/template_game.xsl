@@ -111,7 +111,7 @@
 			<!-- 'refresh' button -->
 			<input type="submit" name="Refresh[{am:urlencode($param/current)}]" value="Refresh" accesskey="w" />
 			<xsl:if test="$param/FriendlyPlay = 'yes'">
-				<img src="img/friendly_play.png" class="in_game" width="18px" height="18px" alt="friendly play" />
+				<img src="img/friendly_play.png" class="in_game" width="20px" height="14px" alt="friendly play" />
 			</xsl:if>
 		</td>
 

@@ -1813,6 +1813,8 @@
 					if (strlen($_POST['Hobby']) > HOBBY_LENGTH) { $_POST['Hobby'] = substr($_POST['Hobby'], 0, HOBBY_LENGTH); $warning = "Hobby text is too long"; }
 
 					$settings = $settingdb->UserSettingsList();
+					$_POST['FriendlyFlag'] = (isset($_POST['FriendlyFlag'])) ? 'yes' : 'no';
+					$_POST['BlindFlag'] = (isset($_POST['BlindFlag'])) ? 'yes' : 'no';
 					foreach($settings as $input => $setting)
 						if (isset($_POST[$input]) and $input != 'Birthdate')
 							$player->ChangeSetting($setting, $_POST[$input]);
@@ -2768,6 +2770,8 @@ case 'Players':
 		$entry['draws'] = $data['Draws'];
 		$entry['avatar'] = $data['Avatar'];
 		$entry['status'] = $data['Status'];
+		$entry['friendly_flag'] = $data['FriendlyFlag'];
+		$entry['blind_flag'] = $data['BlindFlag'];
 		$entry['country'] = $data['Country'];
 		$entry['last_query'] = $data['Last Query'];
 		$entry['free_slots'] = $data['Free slots'];

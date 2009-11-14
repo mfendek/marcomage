@@ -91,6 +91,30 @@
 				<xsl:if test="$settings/Status != 'none'"><img width="20px" height="14px" src="img/{$settings/Status}.png" alt="status flag" class="country_flag" /></xsl:if>
 			</p>
 
+			<p>Game mode flags</p>
+			<p>
+				<input type="checkbox" name="FriendlyFlag">
+					<xsl:if test="$settings/FriendlyFlag = 'yes'">
+						<xsl:attribute name="checked">checked</xsl:attribute>
+					</xsl:if>
+				</input>
+				<xsl:text>Friendly play</xsl:text>
+				<xsl:if test="$settings/FriendlyFlag = 'yes'">
+					<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" />
+				</xsl:if>
+			</p>
+			<p>
+				<input type="checkbox" name="BlindFlag">
+					<xsl:if test="$settings/BlindFlag = 'yes'">
+						<xsl:attribute name="checked">checked</xsl:attribute>
+					</xsl:if>
+				</input>
+				<xsl:text>Hidden cards</xsl:text>
+				<xsl:if test="$settings/BlindFlag = 'yes'">
+					<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" />
+				</xsl:if>
+			</p>
+
 			<p>Hobbies, Interests:</p>
 			<p><textarea name="Hobby" rows="5" cols="30"><xsl:value-of select="$settings/Hobby"/></textarea></p>
 
