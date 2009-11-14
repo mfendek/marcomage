@@ -82,6 +82,10 @@
 						<xsl:if test="$settings/Status = 'dnd'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
 						<xsl:text>do not disturb</xsl:text>
 					</option>
+					<option value="noob">
+						<xsl:if test="$settings/Status = 'noob'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+						<xsl:text>newbie</xsl:text>
+					</option>
 				</select>
 				<xsl:text>Status</xsl:text>
 				<xsl:if test="$settings/Status != 'none'"><img width="20px" height="14px" src="img/{$settings/Status}.png" alt="status flag" class="country_flag" /></xsl:if>
