@@ -226,11 +226,10 @@
 			return $this->$game_mode;
 		}
 		
-		public function SetGameMode($game_mode, $value)
+		public function SetGameModes($game_modes)
 		{
-			$this->$game_mode = $value;
 			$db = $this->Games->getDB();
-			$result = $db->Query('UPDATE `games` SET `'.$db->Escape($game_mode).'` = "'.$db->Escape($value).'" WHERE `Player1` = "'.$db->Escape($this->Player1).'" AND `Player2` = "'.$db->Escape($this->Player2).'"');
+			$result = $db->Query('UPDATE `games` SET `GameModes` = "'.$db->Escape($game_modes).'" WHERE `Player1` = "'.$db->Escape($this->Player1).'" AND `Player2` = "'.$db->Escape($this->Player2).'"');
 			if (!$result) return false;
 			
 			return true;
@@ -239,7 +238,7 @@
 		public function LoadGame()
 		{
 			$db = $this->Games->getDB();
-			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Outcome`, `Last Action`, `Data`, `Note1`, `Note2`, `HiddenCards`, `FriendlyPlay` FROM `games` WHERE `Player1` = "'.$db->Escape($this->Player1).'" AND `Player2` = "'.$db->Escape($this->Player2).'"');
+			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Outcome`, `Last Action`, `Data`, `Note1`, `Note2`, `GameModes` FROM `games` WHERE `Player1` = "'.$db->Escape($this->Player1).'" AND `Player2` = "'.$db->Escape($this->Player2).'"');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
@@ -252,8 +251,8 @@
 			$this->LastAction = $data['Last Action'];
 			$this->Note1 = $data['Note1'];
 			$this->Note2 = $data['Note2'];
-			$this->HiddenCards = $data['HiddenCards'];
-			$this->FriendlyPlay = $data['FriendlyPlay'];
+			$this->HiddenCards = (strpos($data['GameModes'], 'HiddenCards') !== false) ? 'yes' : 'no';
+			$this->FriendlyPlay = (strpos($data['GameModes'], 'FriendlyPlay') !== false) ? 'yes' : 'no';
 			$this->GameData = unserialize($data['Data']);
 			
 			return true;

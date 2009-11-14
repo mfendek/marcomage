@@ -830,8 +830,10 @@
 					// set game modes
 					$hidden_cards = (isset($_POST['HiddenCards']) ? 'yes' : 'no');
 					$friendly_play = (isset($_POST['FriendlyPlay']) ? 'yes' : 'no');
-					$game->SetGameMode('HiddenCards', $hidden_cards);
-					$game->SetGameMode('FriendlyPlay', $friendly_play);
+					$game_modes = array();
+					if ($hidden_cards == "yes") $game_modes[] = 'HiddenCards';
+					if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
+					$game->SetGameModes(implode(',', $game_modes));
 					
 					$challenge_text = 'Hide opponent\'s cards: '.$hidden_cards."\n";
 					$challenge_text.= 'Friendly play: '.$friendly_play."\n";
