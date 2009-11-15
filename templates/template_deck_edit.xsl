@@ -106,6 +106,7 @@
 		<adv name="Attack:"     text="Attack"          />
 		<adv name="Discard"     text="Discard"         />
 		<adv name="Replace"     text="Replace"         />
+		<adv name="Reveal"      text="Reveal"          />
 		<adv name="Production"  text="Production"      />
 		<adv name="Wall: +"     text="Wall +"          />
 		<adv name="Wall: -"     text="Wall -"          />

@@ -260,6 +260,7 @@ This section provides a tool for managing card suggestion in a structured form. 
 	<li>Recruits</li>
 	<li>Keywords and effect (supports all filter conditions that are in the deck section). Keywords can have one parameter (like Charge), but it cannot be dynamic.</li>
 	<li>New card flag (whether the card is new or not)</li>
+	<li>Reveal flag (used only in games with hidden cards)</li>
 	<li>Tokens</li>
 </ul>
 

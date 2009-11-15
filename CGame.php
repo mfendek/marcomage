@@ -279,7 +279,7 @@
 			$p1->LastCard[1] = $p2->LastCard[1] = 0;
 			$p1->LastMode[1] = $p2->LastMode[1] = 0;
 			$p1->LastAction[1] = $p2->LastAction[1] = 'play';
-			$p1->NewCards = $p2->NewCards = null;
+			$p1->NewCards = $p2->NewCards = $p1->Revealed = $p2->Revealed = null;
 			$p1->DisCards[0] = $p1->DisCards[1] = $p2->DisCards[0] = $p2->DisCards[1] = null; //0 - cards discarded from my hand, 1 - discarded from opponents hand
 			$p1->Changes = $p2->Changes = array ('Quarry'=> 0, 'Magic'=> 0, 'Dungeons'=> 0, 'Bricks'=> 0, 'Gems'=> 0, 'Recruits'=> 0, 'Tower'=> 0, 'Wall'=> 0);
 			$p1->Tower = $p2->Tower = 30;
@@ -995,6 +995,8 @@
 					{
 						$hisdiscards_index++;
 						$mydata->DisCards[1][$hisdiscards_index] = $hishand[$i];
+						// hide revealed card if it was revealed before and discarded now
+						if (isset($hisdata->Revealed[$i])); unset($hisdata->Revealed[$i]);
 					}
 					
 				}
@@ -1089,6 +1091,7 @@
 			$mydata->LastMode[$mylastcardindex] = $mode;
 			$mydata->LastAction[$mylastcardindex] = $action;
 			$mydata->NewCards[$cardpos] = 1; //TODO: this shouldn't apply everytime
+			if (isset($mydata->Revealed[$cardpos])); unset($mydata->Revealed[$cardpos]);
 			
 			// check victory conditions (in this predetermined order)
 			if(     $mydata->Tower > 0 and $hisdata->Tower <= 0 )
@@ -1357,6 +1360,7 @@
 		public $LastMode; // list of modes corresponding to cards played last turn (each is 0 or 1-8)
 		public $LastAction; // list of actions corresponding to cards played last turn ('play'/'discard')
 		public $NewCards; // associative array, where keys are card positions which have changed (values are arbitrary at the moment)
+		public $Revealed; // associative array, where keys are card positions which are revealed (values are arbitrary at the moment)
 		public $Changes; // associative array, where keys are game atributes (resources, facilties, tower and wall). Values are ammount of difference
 		public $DisCards; //array of two lists, one for each player. List contais all cards that where discarded during player's turn(s). Can be empty.
 		public $TokenNames;

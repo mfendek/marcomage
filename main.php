@@ -3099,6 +3099,7 @@ case 'Game':
 		$entry = array();
 		$entry['Data'] = $card;
 		$entry['NewCard'] = ( isset($hisdata->NewCards[$i]) ) ? 'yes' : 'no';
+		$entry['Revealed'] = ( isset($hisdata->Revealed[$i]) ) ? 'yes' : 'no';
 		$params['game']['HisHand'][$i] = $entry;
 	}
 
