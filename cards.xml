@@ -1254,13 +1254,13 @@
     <class>Uncommon</class>
     <cost>
       <bricks>0</bricks>
-      <gems>13</gems>
+      <gems>0</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Swift.</keywords>
-    <effect><![CDATA[If Wall > Enemy wall<br />Enemy tower: -11<br />else<br />Gems: +9]]></effect>
-    <code><![CDATA[if ($mydata->Wall > $hisdata->Wall) $hisdata->Tower-= 11; else $mydata->Gems+= 9;]]></code>
+    <keywords>Charge (4). Quick.</keywords>
+    <effect><![CDATA[Attack: 1<br />Gems: +3]]></effect>
+    <code><![CDATA[$this->Attack(1, $hisdata->Tower, $hisdata->Wall); $mydata->Gems+= 3;]]></code>
   </card>
   <card id="97">
     <name>Volunteer</name>
@@ -1718,7 +1718,7 @@
     <code><![CDATA[$filters = ($this->KeywordCount($mydata->Hand, "Dragon") > 0) ? array('class'=>"Rare", 'keyword'=>"Dragon") : array('keyword'=>"Dragon"); $nextcard = $this->DrawCard($carddb->GetList($filters), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
   </card>
   <card id="132">
-    <name>Gnomish alchemist</name>
+    <name>Tubular bells</name>
     <class>Rare</class>
     <cost>
       <bricks>0</bricks>
@@ -6971,5 +6971,18 @@
     <keywords>Quick.</keywords>
     <effect><![CDATA[Select a card from hand to take the position of Magic portal (cannot target self)]]></effect>
     <code><![CDATA[if ($mode != $cardpos) { $nextcard = $mydata->Hand[$mode]; $mydata->Hand[$mode] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_norare'); $mydata->NewCards[$mode] = 1; }]]></code>
+  </card>
+  <card id="491">
+    <name>Dark pegasus</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>13</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Swift.</keywords>
+    <effect><![CDATA[If Wall > Enemy wall<br />Enemy tower: -11<br />else<br />Gems: +9]]></effect>
+    <code><![CDATA[if ($mydata->Wall > $hisdata->Wall) $hisdata->Tower-= 11; else $mydata->Gems+= 9;]]></code>
   </card>
 </cards>
