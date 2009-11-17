@@ -47,6 +47,12 @@
 		<p>Rank: <span class="detail_value"><xsl:value-of select="$param/PlayerType"/></span></p>
 		<p>Country: <img width="18px" height="12px" src="img/flags/{$param/Country}.gif" alt="country flag" class="country_flag" /> <span class="detail_value"><xsl:value-of select="$param/Country"/></span></p>
 		<p>
+			<xsl:text>Status: </xsl:text>
+			<xsl:if test="$param/Status != 'none'"><img width="20px" height="14px" src="img/{$param/Status}.png" alt="status flag" class="country_flag" /></xsl:if>
+			<xsl:if test="$param/FriendlyFlag = 'yes'"><img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" /></xsl:if>
+			<xsl:if test="$param/BlindFlag = 'yes'"><img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" /></xsl:if>
+		</p>
+		<p>
 			<xsl:text>Wins / Losses / Draws: </xsl:text>
 			<span class="detail_value">
 				<xsl:value-of select="$param/Wins"/>

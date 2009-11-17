@@ -2804,6 +2804,9 @@ case 'Profile':
 	$params['profile']['Surname'] = $settings['Surname'];
 	$params['profile']['Gender'] = $settings['Gender'];
 	$params['profile']['Country'] = $settings['Country'];
+	$params['profile']['Status'] = $settings['Status'];
+	$params['profile']['FriendlyFlag'] = $settings['FriendlyFlag'];
+	$params['profile']['BlindFlag'] = $settings['BlindFlag'];
 	$params['profile']['Avatar'] = $settings['Avatar'];
 	$params['profile']['Email'] = $settings['Email'];
 	$params['profile']['Imnumber'] = $settings['Imnumber'];

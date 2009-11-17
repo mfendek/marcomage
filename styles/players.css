@@ -88,4 +88,9 @@ div#details select /* special messages formatting */
 	margin-bottom: 1ex;
 }
 
+div#details img.country_flag + img.country_flag /* icon distance */
+{
+	margin-left: 0.5ex;
+}
+
 /* end user details */
