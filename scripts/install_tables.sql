@@ -68,8 +68,7 @@ CREATE TABLE `games` (
   `Note1` text COLLATE utf8_unicode_ci NOT NULL,
   `Note2` text COLLATE utf8_unicode_ci NOT NULL,
   `GameModes` set('HiddenCards','FriendlyPlay') COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`Player1`,`Player2`),
-  UNIQUE KEY `GameID` (`GameID`)
+  PRIMARY KEY (`GameID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

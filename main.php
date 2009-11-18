@@ -258,7 +258,7 @@
 					break;
 				}
 				
-				if ($message == 'active_game') // Games -> vs. %s
+				if ($message == 'active_game') // Games -> next game button
 				{
 					$list = $gamedb->ListActiveGames($player->Name());
 					
@@ -268,7 +268,7 @@
 					if (count($list) > 0)
 						foreach ($list as $i => $data)
 						{
-							$game = $gamedb->GetGame2($data['Player1'], $data['Player2']);
+							$game = $gamedb->GetGame($data['GameID']);
 							
 							if ($game->Current == $player->Name())
 							{
@@ -702,38 +702,38 @@
 				// challenge-related messages
 				if ($message == 'accept_challenge') // Challenges -> Accept
 				{
-					$opponent = array_shift(array_keys($value));
-					$deckname = (isset($_POST['AcceptDeck']) and isset($_POST['AcceptDeck'][$opponent])) ? $_POST['AcceptDeck'][$opponent] : '(null)';
-					$opponent = postdecode($opponent);
-					$deckname = postdecode($deckname);
+					// check access rights
+					if (!$access_rights[$player->Type()]["accept_challenges"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
 					
+					$game_id = array_shift(array_keys($value));
+					$game = $gamedb->GetGame($game_id);
+					
+					// check if the challenge exists
+					if (!$game) { $error = 'No such challenge!'; $current = 'Messages'; break; }
+					
+					// check if the game is a challenge and not an active game
+					if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Messages'; break; }
+					
+					// the player may never have more than MAX_GAMES games at once, even potential ones (challenges)
+					if (count($gamedb->ListActiveGames($player->Name())) + count($gamedb->ListChallengesFrom($player->Name())) >= MAX_GAMES)
+					{
+						$error = 'You may only have '.MAX_GAMES.' simultaneous games at once (this also covers your challenges).'; $current = 'Messages'; break;
+					}
+					
+					$opponent = $game->Name1();
+					
+					$deckname = (isset($_POST['AcceptDeck']) and isset($_POST['AcceptDeck'][$opponent])) ? $_POST['AcceptDeck'][$opponent] : '(null)';
+					$deckname = postdecode($deckname);
 					$deck = $deckdb->GetDeck($player->Name(), $deckname);
 					
 					// check if such deck exists
-					if (!$deck) { $error = 'No such deck!'; $current = 'Players'; break; }
+					if (!$deck) { $error = 'No such deck!'; $current = 'Messages'; break; }
 					
 					// check if the deck is ready (all 45 cards)
 					if (!$deck->isReady()) { $error = 'This deck is not yet ready for gameplay!'; $current = 'Decks'; break; }
 					
 					// check if such opponent exists
-					if (!$playerdb->GetPlayer($opponent)) { $error = 'No such player!'; $current = 'Players'; break; }
-					
-					$game = $gamedb->GetGame2($opponent, $player->Name());
-					
-					// check if the challenge exists
-					if (!$game) { $error = 'No such challenge!'; $current = 'Players'; break; }
-					
-					// check if the game is a challenge and not an active game
-					if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Players'; break; }
-					
-					// the player may never have more than MAX_GAMES games at once, even potential ones (challenges)
-					if (count($gamedb->ListActiveGames($player->Name())) + count($gamedb->ListChallengesFrom($player->Name())) >= MAX_GAMES)
-					{
-						$error = 'You may only have '.MAX_GAMES.' simultaneous games at once (this also covers your challenges).'; $current = 'Players'; break;
-					}
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["accept_challenges"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
+					if (!$playerdb->GetPlayer($opponent)) { $error = 'No such player!'; $current = 'Messages'; break; }
 					
 					// accept the challenge
 					$game->StartGame($player->Name(), $deck->DeckData);
@@ -750,23 +750,23 @@
 				
 				if ($message == 'reject_challenge') // Challenges -> Reject
 				{
-					//FIXME: uses names for game identification
+					$game_id = array_shift(array_keys($value));
 					
-					$opponent = postdecode(array_shift(array_keys($value)));
-					
-					// check if such opponent exists
-					if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Players'; break; }
-					
-					$game = $gamedb->GetGame2($opponent, $player->Name());
+					$game = $gamedb->GetGame($game_id);
 					
 					// check if the challenge exists
-					if (!$game) { $error = 'No such challenge!'; $current = 'Players'; break; }
+					if (!$game) { $error = 'No such challenge!'; $current = 'Messages'; break; }
 					
 					// check if the game is a challenge (and not a game in progress)
-					if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Players'; break; }
+					if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Messages'; break; }
+					
+					$opponent = $game->Name1();
+					
+					// check if such opponent exists
+					if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Messages'; break; }
 					
 					// delete t3h challenge/game entry
-					$gamedb->DeleteGame2($opponent, $player->Name());
+					$gamedb->DeleteGame($game->ID());
 					$chatdb->DeleteChat($game->ID());
 					$messagedb->CancelChallenge($game->ID());
 
@@ -793,15 +793,12 @@
 				
 				if ($message == 'send_challenge') // Players -> Send challenge
 				{
-					//FIXME: uses names for game identification
-					
 					// check access rights
 					if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Players'; break; }
 					
-					$opponent = postdecode(array_shift(array_keys($value)));
+					$_POST['cur_player'] = $opponent = postdecode(array_shift(array_keys($value)));
 					$deckname = isset($_POST['ChallengeDeck']) ? postdecode($_POST['ChallengeDeck']) : '(null)';
 					
-					$_POST['cur_player'] = $opponent;
 					$deck = $deckdb->GetDeck($player->Name(), $deckname);
 					
 					// check if such deck exists
@@ -814,7 +811,7 @@
 					if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Profile'; break; }
 					
 					// check if that opponent was already challenged, or if there is a game already in progress
-					if ($gamedb->GetGame2($player->Name(), $opponent)) { $error = 'You are already playing against '.htmlencode($opponent).'!'; $current = 'Games'; break; }
+					if ($gamedb->CheckGame($player->Name(), $opponent)) { $error = 'You are already playing against '.htmlencode($opponent).'!'; $current = 'Profile'; break; }
 					
 					// check if you are within the MAX_GAMES limit
 					if (count($gamedb->ListActiveGames($player->Name())) + count($gamedb->ListChallengesFrom($player->Name())) + count($gamedb->ListChallengesTo($player->Name())) >= MAX_GAMES) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Messages'; break; }
@@ -848,15 +845,8 @@
 				
 				if ($message == 'withdraw_challenge') // Players -> Cancel
 				{
-					//FIXME: uses names for game identification
-					
-					$opponent = postdecode(array_shift(array_keys($value)));
-					$_POST['cur_player'] = $opponent;
-					
-					// check if such opponent exists
-					if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Profile'; break; }
-					
-					$game = $gamedb->GetGame2($player->Name(), $opponent);
+					$game_id = array_shift(array_keys($value));
+					$game = $gamedb->GetGame($game_id);
 					
 					// check if the challenge exists
 					if (!$game) { $error = 'No such challenge!'; $current = 'Profile'; break; }
@@ -864,8 +854,13 @@
 					// check if the game is a a challenge (and not a game in progress)
 					if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Profile'; break; }
 					
+					$_POST['cur_player'] = $opponent = $game->Name2();
+					
+					// check if such opponent exists
+					if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Profile'; break; }
+					
 					// delete t3h challenge/game entry
-					$gamedb->DeleteGame2($player->Name(), $opponent);
+					$gamedb->DeleteGame($game->ID());
 					$chatdb->DeleteChat($game->ID());
 					$messagedb->CancelChallenge($game->ID());
 					
@@ -876,15 +871,8 @@
 				
 				if ($message == 'withdraw_challenge2') // Challenges -> Cancel
 				{
-					//FIXME: uses names for game identification
-					
-					$opponent = postdecode(array_shift(array_keys($value)));
-					$_POST['cur_player'] = $opponent;
-					
-					// check if such opponent exists
-					if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Profile'; break; }
-					
-					$game = $gamedb->GetGame2($player->Name(), $opponent);
+					$game_id = array_shift(array_keys($value));
+					$game = $gamedb->GetGame($game_id);
 					
 					// check if the challenge exists
 					if (!$game) { $error = 'No such challenge!'; $current = 'Messages'; break; }
@@ -892,8 +880,13 @@
 					// check if the game is a a challenge (and not a game in progress)
 					if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Messages'; break; }
 					
+					$_POST['cur_player'] = $opponent = $game->Name2();
+					
+					// check if such opponent exists
+					if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Profile'; break; }
+					
 					// delete t3h challenge/game entry
-					$gamedb->DeleteGame2($player->Name(), $opponent);
+					$gamedb->DeleteGame($game->ID());
 					$chatdb->DeleteChat($game->ID());
 					$messagedb->CancelChallenge($game->ID());
 					
@@ -2507,7 +2500,7 @@
 		{
 			foreach ($list as $data)
 			{
-				$game = $gamedb->GetGame2($data['Player1'], $data['Player2']);
+				$game = $gamedb->GetGame($data['GameID']);
 				
 				if ($game->Current == $player->Name()) $temp++;
 			}
@@ -3150,10 +3143,10 @@ case 'Game':
 	// - <quick game switching menu>
 	$list = $gamedb->ListActiveGames($player->Name());
 
-	foreach ($list as $i => $names)
+	foreach ($list as $i => $data)
 	{
-		$game_list = $gamedb->GetGame2($names['Player1'], $names['Player2']);
-		$opponent_list = ($names['Player1'] != $player->Name()) ? $names['Player1'] : $names['Player2'];
+		$game_list = $gamedb->GetGame($data['GameID']);
+		$opponent_list = ($data['Player1'] != $player->Name()) ? $data['Player1'] : $data['Player2'];
 		$opponent_object = $playerdb->GetPlayer($opponent_list);
 
 		$color = ''; // no extra color default
@@ -3173,8 +3166,8 @@ case 'Game':
 	$list = $gamedb->ListActiveGames($player->Name());
 
 	$num_games_your_turn = 0;
-	foreach ($list as $i => $names)
-		if ($gamedb->GetGame2($names['Player1'], $names['Player2'])->Current == $player->Name())
+	foreach ($list as $i => $data)
+		if ($gamedb->GetGame($data['GameID'])->Current == $player->Name())
 			$num_games_your_turn++;
 	$params['game']['num_games_your_turn'] = $num_games_your_turn;
 

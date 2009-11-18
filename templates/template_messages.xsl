@@ -63,7 +63,7 @@
 								<p>
 									<xsl:if test="($param/deck_count &gt; 0) and ($param/max_games &gt; $param/startedgames)">
 										<xsl:if test="$param/accept_challenges = 'yes'">
-											<input type="submit" name="accept_challenge[{am:urlencode(Author)}]" value="Accept" />
+											<input type="submit" name="accept_challenge[{GameID}]" value="Accept" />
 										</xsl:if>
 										<select name="AcceptDeck[{am:urlencode(Author)}]" size="1">
 											<option value="{am:urlencode($param/random_deck)}">select random</option>
@@ -72,7 +72,7 @@
 											</xsl:for-each>
 										</select>
 									</xsl:if>
-									<input type="submit" name="reject_challenge[{am:urlencode(Author)}]" value="Reject" />
+									<input type="submit" name="reject_challenge[{GameID}]" value="Reject" />
 								</p>
 							</xsl:when>
 							<xsl:when test="$param/current_subsection = 'outgoing'">
@@ -90,7 +90,7 @@
 								<xsl:if test="Content != ''">
 									<div class="challenge_content"><xsl:copy-of select="am:textencode(Content)" /></div>
 								</xsl:if>
-								<p><input type="submit" name="withdraw_challenge2[{am:urlencode(Recipient)}]" value="Withdraw challenge" /></p>
+								<p><input type="submit" name="withdraw_challenge2[{GameID}]" value="Withdraw challenge" /></p>
 							</xsl:when>
 						</xsl:choose>
 					</div>

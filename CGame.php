@@ -41,15 +41,6 @@
 			
 			return true;
 		}
-
-		public function DeleteGame2($player1, $player2)
-		{
-			$db = $this->db;
-			$result = $db->Query('DELETE FROM `games` WHERE `Player1` = "'.$db->Escape($player1).'" AND `Player2` = "'.$db->Escape($player2).'"');
-			if (!$result) return false;
-			
-			return true;
-		}
 		
 		public function GetGame($gameid)
 		{
@@ -68,20 +59,14 @@
 			return $game;
 		}
 
-		public function GetGame2($player1, $player2)
+		public function CheckGame($player1, $player2)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `GameID` FROM `games` WHERE `Player1` = "'.$db->Escape($player1).'" AND `Player2` = "'.$db->Escape($player2).'"');
+			$result = $db->Query('SELECT 1 FROM `games` WHERE `Player1` = "'.$db->Escape($player1).'" AND `Player2` = "'.$db->Escape($player2).'"');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
-			$data = $result->Next();
-			$gameid = $data['GameID'];
-			
-			$game = new CGame($gameid, $player1, $player2, $this);
-			$game->LoadGame();
-			
-			return $game;
+			return true;
 		}
 		
 		public function ListChallengesFrom($player)
@@ -116,7 +101,7 @@
 		{
 			// $player is either on the left or right side and Status != 'waiting' or 'P? over'
 			$db = $this->db;
-			$result = $db->Query('SELECT `Player1`, `Player2` FROM `games` WHERE (`Player1` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P2 over"))');
+			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2` FROM `games` WHERE (`Player1` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P2 over"))');
 			if (!$result) return false;
 			
 			$games = array();
@@ -227,7 +212,7 @@
 		public function SetGameModes($game_modes)
 		{
 			$db = $this->Games->getDB();
-			$result = $db->Query('UPDATE `games` SET `GameModes` = "'.$db->Escape($game_modes).'" WHERE `Player1` = "'.$db->Escape($this->Player1).'" AND `Player2` = "'.$db->Escape($this->Player2).'"');
+			$result = $db->Query('UPDATE `games` SET `GameModes` = "'.$db->Escape($game_modes).'" WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
 			if (!$result) return false;
 			
 			return true;
@@ -236,7 +221,7 @@
 		public function LoadGame()
 		{
 			$db = $this->Games->getDB();
-			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Outcome`, `Last Action`, `Data`, `Note1`, `Note2`, `GameModes` FROM `games` WHERE `Player1` = "'.$db->Escape($this->Player1).'" AND `Player2` = "'.$db->Escape($this->Player2).'"');
+			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Outcome`, `Last Action`, `Data`, `Note1`, `Note2`, `GameModes` FROM `games` WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
@@ -259,7 +244,7 @@
 		public function SaveGame()
 		{
 			$db = $this->Games->getDB();
-			$result = $db->Query('UPDATE `games` SET `State` = "'.$db->Escape($this->State).'", `Current` = "'.$db->Escape($this->Current).'", `Round` = "'.$db->Escape($this->Round).'", `Winner` = "'.$db->Escape($this->Winner).'", `Outcome` = "'.$db->Escape($this->Outcome).'", `Last Action` = "'.$db->Escape($this->LastAction).'", `Data` = "'.$db->Escape(serialize($this->GameData)).'", `Note1` = "'.$db->Escape($this->Note1).'", `Note2` = "'.$db->Escape($this->Note2).'" WHERE `Player1` = "'.$db->Escape($this->Player1).'" AND `Player2` = "'.$db->Escape($this->Player2).'"');
+			$result = $db->Query('UPDATE `games` SET `State` = "'.$db->Escape($this->State).'", `Current` = "'.$db->Escape($this->Current).'", `Round` = "'.$db->Escape($this->Round).'", `Winner` = "'.$db->Escape($this->Winner).'", `Outcome` = "'.$db->Escape($this->Outcome).'", `Last Action` = "'.$db->Escape($this->LastAction).'", `Data` = "'.$db->Escape(serialize($this->GameData)).'", `Note1` = "'.$db->Escape($this->Note1).'", `Note2` = "'.$db->Escape($this->Note2).'" WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
 			if (!$result) return false;
 			
 			return true;

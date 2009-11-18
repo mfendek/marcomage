@@ -353,7 +353,7 @@
 		public function ListChallengesFrom($player)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `Recipient`, `Content`, `Created`, (CASE WHEN UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - 60*10 THEN "yes" ELSE "no" END) as `Online` FROM (SELECT `Recipient`, `Content`, `Created` FROM `messages` WHERE `GameID` > 0 AND `Author` = "'.$db->Escape($player).'") as `messages` INNER JOIN `logins` ON `messages`.`Recipient` = `logins`.`Username` ORDER BY `Created` DESC');
+			$result = $db->Query('SELECT `GameID`, `Recipient`, `Content`, `Created`, (CASE WHEN UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - 60*10 THEN "yes" ELSE "no" END) as `Online` FROM (SELECT `Recipient`, `Content`, `Created`, `GameID` FROM `messages` WHERE `GameID` > 0 AND `Author` = "'.$db->Escape($player).'") as `messages` INNER JOIN `logins` ON `messages`.`Recipient` = `logins`.`Username` ORDER BY `Created` DESC');
 			if (!$result) return false;
 			
 			$challenges = array();
@@ -366,7 +366,7 @@
 		public function ListChallengesTo($player)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `Author`, `Content`, `Created`, (CASE WHEN UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - 60*10 THEN "yes" ELSE "no" END) as `Online` FROM (SELECT `Author`, `Content`, `Created` FROM `messages` WHERE `GameID` > 0 AND `Recipient` = "'.$db->Escape($player).'") as `messages` INNER JOIN `logins` ON `messages`.`Author` = `logins`.`Username` ORDER BY `Created` DESC');
+			$result = $db->Query('SELECT `GameID`, `Author`, `Content`, `Created`, (CASE WHEN UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - 60*10 THEN "yes" ELSE "no" END) as `Online` FROM (SELECT `Author`, `Content`, `Created`, `GameID` FROM `messages` WHERE `GameID` > 0 AND `Recipient` = "'.$db->Escape($player).'") as `messages` INNER JOIN `logins` ON `messages`.`Author` = `logins`.`Username` ORDER BY `Created` DESC');
 			if (!$result) return false;
 			
 			$challenges = array();

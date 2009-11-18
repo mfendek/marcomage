@@ -106,7 +106,7 @@
 					<xsl:variable name="challenge" select="$param/challenge"/>
 					<p>
 						<span class="error">waiting for answer</span>
-						<input type="submit" name="withdraw_challenge[{am:urlencode($opponent)}]" value="Cancel" />
+						<input type="submit" name="withdraw_challenge[{$challenge/GameID}]" value="Cancel" />
 					</p>
 					
 					<xsl:if test="$param/challenge/Content != ''">
