@@ -18,11 +18,11 @@
 	<h3>Challenges</h3>
 
 	<xsl:if test="$param/deck_count = 0">
-		<p style="color: yellow">You need at least one ready deck to accept challenges.</p>
+		<p class="information_line warning">You need at least one ready deck to accept challenges.</p>
 	</xsl:if>
 
 	<xsl:if test="$param/startedgames &gt;= $param/max_games">
-		<p style="color: yellow">You cannot start any more games.</p>
+		<p class="information_line warning">You cannot start any more games.</p>
 	</xsl:if>
 
 	<p>	
@@ -98,7 +98,7 @@
 			</div>
 		</xsl:when>
 		<xsl:otherwise>
-			<p>You have no <xsl:value-of select="$param/current_subsection"/> challenges.</p>
+			<p class="information_line info">You have no <xsl:value-of select="$param/current_subsection"/> challenges.</p>
 		</xsl:otherwise>
 	</xsl:choose>
 
@@ -224,7 +224,7 @@
 	</xsl:if>
 
 	<xsl:if test="($param/messages_count = 0) and ($param/date_val = 'none') and ($param/name_val = 'none')">
-		<p class="information_line warning">You have no messages.</p>
+		<p class="information_line info">You have no messages.</p>
 	</xsl:if>
 
 	<!-- begin messages table -->
