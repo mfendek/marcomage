@@ -736,8 +736,7 @@
 					if (!$access_rights[$player->Type()]["accept_challenges"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
 					
 					// accept the challenge
-					$game->GameData[$player->Name()]->Deck = $deck->DeckData;
-					$game->StartGame();
+					$game->StartGame($player->Name(), $deck->DeckData);
 					$game->SaveGame();
 					$messagedb->CancelChallenge($game->ID());
 

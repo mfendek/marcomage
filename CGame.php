@@ -23,9 +23,7 @@
 			$db = $this->db;
 			
 			$game_data[$player1] = new CGamePlayerData;
-			$game_data[$player2] = new CGamePlayerData;
 			$game_data[$player1]->Deck = $deck1;
-			$game_data[$player2]->Deck = 0;
 			
 			$result = $db->Query('INSERT INTO `games` (`Player1`, `Player2`, `Data`) VALUES ("'.$db->Escape($player1).'", "'.$db->Escape($player2).'", "'.$db->Escape(serialize($game_data)).'")');
 			if (!$result) return false;
@@ -267,8 +265,11 @@
 			return true;
 		}
 		
-		public function StartGame()
+		public function StartGame($player, $deck)
 		{
+			$this->GameData[$player] = new CGamePlayerData;
+			$this->GameData[$player]->Deck = $deck;
+			
 			$this->State = 'in progress';
 			$this->LastAction = date('Y-m-d G:i:s');
 			$this->Current = ((mt_rand(0,1) == 1) ? $this->Player1 : $this->Player2);
