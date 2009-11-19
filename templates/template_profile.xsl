@@ -11,7 +11,7 @@
 <xsl:template match="section[. = 'Profile']">
 	<xsl:variable name="param" select="$params/profile" />
 	<xsl:variable name="opponent" select="$param/PlayerName" />
-	<xsl:variable name="activedecks" select="count($param/decks)" />
+	<xsl:variable name="activedecks" select="count($param/decks/*)" />
 
 	<div id="details">
 	<div class="skin_text">
