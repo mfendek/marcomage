@@ -41,7 +41,7 @@
 				<option value="dnd"><xsl:if test="$param/status_filter = 'dnd'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Do not disturb</option>
 				<option value="noob"><xsl:if test="$param/status_filter = 'noob'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Newbie</option>
 			</select>
-			<input type="submit" name="filter_players" value="Apply filter" />
+			<input type="submit" name="filter_players" value="Apply filters" />
 
 			<!-- upper navigation -->
 			<xsl:if test="$param/page_count &gt; 0">
