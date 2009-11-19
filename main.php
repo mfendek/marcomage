@@ -735,6 +735,9 @@
 					// check if such opponent exists
 					if (!$playerdb->GetPlayer($opponent)) { $error = 'No such player!'; $current = 'Messages'; break; }
 					
+					// check if player can enter the game
+					if ($game->Name2() != $player->Name()) { $error = 'Invalid player'; $current = 'Messages'; break; }
+					
 					// accept the challenge
 					$game->StartGame($player->Name(), $deck->DeckData);
 					$game->SaveGame();
