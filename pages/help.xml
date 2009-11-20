@@ -144,15 +144,16 @@ There is no restriction to the number of games played per day or against someone
 
 <p>It is possible to choose from several game modes, when starting a new game:</p>
 <ul>
-	<li>Hide opponent's cards - this mode will disable the ability to see opponent's cards for both players</li>
-	<li>Friendly play - allows to play games, where the game outcome doesn't effect score of the players (friendly play is indicated by a handshake icon near the refresh button)</li>
+	<li><img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" /> Hide opponent's cards - this mode will disable the ability to see opponent's cards for both players</li>
+	<li><img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" /> Friendly play - allows to play games, where the game outcome doesn't effect score of the players</li>
 </ul>
 
 <p>Each player can configure his status in settings section. Player status can be seen by other players and can be used to help you find the desired opponent. There are three options available:</p>
 <ul>
-	<li>Looking for game - you want to play a normal game</li>
-	<li>Looking for quick game - you want to play a quick game (play online until the game finishes without interruptions)</li>
-	<li>Do not disturb - you don't want to play games right now</li>
+	<li><img width="20px" height="14px" src="img/ready.png" alt="status flag" class="country_flag" /> Looking for game - you want to play a normal game</li>
+	<li><img width="20px" height="14px" src="img/quick.png" alt="status flag" class="country_flag" /> Looking for quick game - you want to play a quick game (play online until the game finishes without interruptions)</li>
+	<li><img width="20px" height="14px" src="img/dnd.png" alt="status flag" class="country_flag" /> Do not disturb - you don't want to play games right now</li>
+	<li><img width="20px" height="14px" src="img/noob.png" alt="status flag" class="country_flag" /> Newbie - new player, this is the default setting</li>
 </ul>
 <p>For example if you want to play a quick game, select "Looking for quick game" status. It is possible to use filter in players list section to filter out players with a specific status, so in this case, only players that are looking for a quick game.</p>
 
