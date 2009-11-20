@@ -134,7 +134,7 @@
 
 			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`LastChange`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$date.')' : '');
 
-			$result = $db->Query('SELECT DISTINCT `Author` FROM `concepts` WHERE 1'.$date_query.'');
+			$result = $db->Query('SELECT DISTINCT `Author` FROM `concepts` WHERE 1'.$date_query.' ORDER BY `Author` ASC');
 
 			if (!$result) return false;
 
