@@ -2160,7 +2160,7 @@
     <code><![CDATA[if ($mydata->Dungeons < $hisdata->Dungeons) { $mydata->Dungeons+= 1; } else { $mydata->Recruits+= 11; }]]></code>
   </card>
   <card id="166">
-    <name>Dragon knights</name>
+    <name>Royal dragoons</name>
     <class>Uncommon</class>
     <cost>
       <bricks>0</bricks>
@@ -3841,7 +3841,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Replaces your hand with Light and Heavy infantry, Knight, Crusader, Royal pikemen, Light cavalry, Battle formations, and Dragon knights<br />Recruits: +35]]></effect>
+    <effect><![CDATA[Replaces your hand with Light and Heavy infantry, Knight, Crusader, Royal pikemen, Light cavalry, Battle formations, and Royal dragoons<br />Recruits: +35]]></effect>
     <code><![CDATA[$mydata->Hand = array (1=> 367, 279, 7, 305, 193, 36, 322, 166); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $mydata->Recruits+= 35; $nextcard = 0;]]></code>
   </card>
   <card id="292">
