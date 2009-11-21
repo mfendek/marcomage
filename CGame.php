@@ -69,11 +69,20 @@
 			return true;
 		}
 		
+		public function JoinGame($player, $game_id)
+		{
+			$db = $this->db;
+			$result = $db->Query('UPDATE `games` SET `Player2` = "'.$db->Escape($player).'" WHERE `GameID` = "'.$db->Escape($game_id).'"');
+			if (!$result) return false;
+			
+			return true;
+		}
+		
 		public function ListChallengesFrom($player)
 		{
 			// $player is on the left side and $Status = "waiting"
 			$db = $this->db;
-			$result = $db->Query('SELECT `Player1`, `Player2` FROM `games` WHERE `Player1` = "'.$db->Escape($player).'" AND `State` = "waiting"');
+			$result = $db->Query('SELECT `Player1`, `Player2` FROM `games` WHERE `Player1` = "'.$db->Escape($player).'" AND `Player2` != "" AND `State` = "waiting"');
 			if (!$result) return false;
 			
 			$games = array();
@@ -88,6 +97,37 @@
 			// $player is on the right side and $Status = "waiting"
 			$db = $this->db;
 			$result = $db->Query('SELECT `Player1` FROM `games` WHERE `Player2` = "'.$db->Escape($player).'" AND `State` = "waiting"');
+			if (!$result) return false;
+			
+			$games = array();
+			for ($i = 1; $i <= $result->Rows(); $i++)
+				$games[$i] = $result->Next();
+			
+			return $games;
+		}
+		
+		public function ListFreeGames($player, $hidden = "ignore", $friendly = "ignore")
+		{
+			// list hosted games, where player can join
+			$hidden_q = ($hidden != "ignore") ? ' AND FIND_IN_SET("HiddenCards", `GameModes`) '.(($hidden == "include") ? '>' : '=').' 0' : '';
+			$friendly_q = ($friendly != "ignore") ? ' AND FIND_IN_SET("FriendlyPlay", `GameModes`) '.(($friendly == "include") ? '>' : '=').' 0' : '';
+			
+			$db = $this->db;
+			$result = $db->Query('SELECT `GameID`, `Player1`, `Last Action`, `GameModes` FROM `games` WHERE `Player1` != "'.$db->Escape($player).'" AND `Player2` = "" AND `State` = "waiting"'.$hidden_q.$friendly_q.' ORDER BY `Last Action` DESC');
+			if (!$result) return false;
+			
+			$games = array();
+			for ($i = 1; $i <= $result->Rows(); $i++)
+				$games[$i] = $result->Next();
+			
+			return $games;
+		}
+		
+		public function ListHostedGames($player)
+		{
+			// list hosted games, hosted by specific player
+			$db = $this->db;
+			$result = $db->Query('SELECT `GameID`, `Last Action`, `GameModes` FROM `games` WHERE `Player1` = "'.$db->Escape($player).'" AND `Player2` = "" AND `State` = "waiting" ORDER BY `Last Action` DESC');
 			if (!$result) return false;
 			
 			$games = array();

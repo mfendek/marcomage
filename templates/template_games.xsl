@@ -3,18 +3,29 @@
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:exsl="http://exslt.org/common"
+                extension-element-prefixes="exsl">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
 <xsl:template match="section[. = 'Games']">
 	<xsl:variable name="param" select="$params/games" />
-	
+	<xsl:variable name="activedecks" select="count($param/decks/*)" />
 	<xsl:variable name="list" select="$param/list" />
-	
+	<xsl:variable name="filter_values">
+		<value name="ignore"  />
+		<value name="include" />
+		<value name="exclude" />
+	</xsl:variable>
+
+	<div id="games">
+
+	<!-- begin active games list -->
+	<div id="active_games" class="skin_label">
+	<h3>Active games</h3>
 	<xsl:choose>
-	<xsl:when test="count($list) &gt; 0">
-		<div id="games">
+		<xsl:when test="count($list) &gt; 0">
 			<table cellspacing="0" class="skin_text">
 				<tr>
 					<th><p>Opponent</p></th>
@@ -69,13 +80,203 @@
 					</tr>
 				</xsl:for-each>
 			</table>
-		</div>
 	</xsl:when>
 	<xsl:otherwise>
-			<p class="information_line warning">You have no active games.</p>
+		<p class="information_line warning">You have no active games.</p>
 	</xsl:otherwise>
 	</xsl:choose>
-	
+	</div>
+	<!-- end active games list -->
+
+	<!-- begin hosted games list -->
+	<div id="hosted_games" class="skin_label">
+	<h3>Hosted games</h3>
+
+	<!-- warning messages -->
+	<xsl:if test="$activedecks = 0">
+		<p class="information_line warning">You need at least one ready deck to host/join a game.</p>
+	</xsl:if>
+	<xsl:if test="$param/free_slots = 0">
+		<p class="information_line warning">You cannot host/enter any more games.</p>
+	</xsl:if>
+
+	<!-- subsection navigation -->
+	<p>	
+		<input type="submit" name="free_games" value="Available games">
+			<xsl:if test="$param/current_subsection = 'free_games'">
+				<xsl:attribute name="class">pushed</xsl:attribute>
+			</xsl:if>
+		</input>
+
+		<input type="submit" name="hosted_games" value="My games">
+			<xsl:if test="$param/current_subsection = 'hosted_games'">
+				<xsl:attribute name="class">pushed</xsl:attribute>
+			</xsl:if>
+		</input>
+	</p>
+
+	<xsl:choose>
+		<!-- begin subsection free games -->
+		<xsl:when test="$param/current_subsection = 'free_games'">
+
+		<!-- begin filters -->
+		<p class="game_filters">
+
+			<!-- selected deck -->
+			<xsl:if test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
+				<select name="SelectedDeck" size="1">
+					<option value="{am:urlencode($param/random_deck)}">select random</option>
+					<xsl:for-each select="$param/decks/*">
+						<option value="{am:urlencode(text())}"><xsl:value-of select="text()"/></option>
+					</xsl:for-each>
+				</select>
+			</xsl:if>
+
+			<!-- hidden cards filter -->
+			<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" />
+			<select name="HiddenCards" size="1">
+				<xsl:if test="$param/HiddenCards != 'ignore'">
+					<xsl:attribute name="class">filter_active</xsl:attribute>
+				</xsl:if>
+				<xsl:for-each select="exsl:node-set($filter_values)/*">
+					<option value="{@name}">
+						<xsl:if test="$param/HiddenCards = @name">
+							<xsl:attribute name="selected">selected</xsl:attribute>
+						</xsl:if>
+						<xsl:value-of select="@name"/>
+					</option>
+				</xsl:for-each>
+			</select>
+
+			<!-- friendly game filter -->
+			<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" />
+			<select name="FriendlyPlay" size="1">
+				<xsl:if test="$param/FriendlyPlay != 'ignore'">
+					<xsl:attribute name="class">filter_active</xsl:attribute>
+				</xsl:if>
+				<xsl:for-each select="exsl:node-set($filter_values)/*">
+					<option value="{@name}">
+						<xsl:if test="$param/FriendlyPlay = @name">
+							<xsl:attribute name="selected">selected</xsl:attribute>
+						</xsl:if>
+						<xsl:value-of select="@name"/>
+					</option>
+				</xsl:for-each>
+			</select>
+			<input type="submit" name="filter_hosted_games" value="Apply filters" />
+		</p>
+		<!-- end filters -->
+
+		<!-- free games list -->
+		<xsl:choose>
+			<xsl:when test="count($param/free_games/*) &gt; 0">
+				<table cellspacing="0" class="skin_text">
+					<tr>
+						<th><p>Opponent</p></th>
+						<th><p>Created</p></th>
+						<th><p>Modes</p></th>
+						<th></th>
+					</tr>
+					<xsl:for-each select="$param/free_games/*">
+						<tr class="table_row">
+							<td>
+								<p>
+									<xsl:if test="active = 'yes'">
+										<xsl:attribute name="class">p_online</xsl:attribute>
+									</xsl:if>
+									<xsl:value-of select="opponent"/>
+								</p>
+							</td>
+							<td><p><xsl:value-of select="am:datetime(gameaction, $param/timezone)"/></p></td>
+							<td>
+								<p>
+									<xsl:if test="hidden_cards = 'yes'">
+										<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" />
+									</xsl:if>
+									<xsl:if test="friendly_play = 'yes'">
+										<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" />
+									</xsl:if>
+								</p>
+							</td>
+							<td>
+								<xsl:if test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
+									<p><input type="submit" name="join_game[{gameid}]" value="Join" /></p>
+								</xsl:if>
+							</td>
+						</tr>
+					</xsl:for-each>
+				</table>
+			</xsl:when>
+			<xsl:otherwise>
+				<p class="information_line warning">There are no hosted games.</p>
+			</xsl:otherwise>
+		</xsl:choose>
+
+		</xsl:when>
+		<!-- end subsection free games -->
+
+		<!-- begin subsection hosted games -->
+		<xsl:when test="$param/current_subsection = 'hosted_games'">
+
+		<!-- host new game interface -->
+		<xsl:if test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
+			<p class="game_filters">
+				<select name="SelectedDeck" size="1">
+					<option value="{am:urlencode($param/random_deck)}">select random</option>
+					<xsl:for-each select="$param/decks/*">
+						<option value="{am:urlencode(text())}"><xsl:value-of select="text()"/></option>
+					</xsl:for-each>
+				</select>
+				<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" />
+				<input type="checkbox" name="HiddenCards" />
+				<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" />
+				<input type="checkbox" name="FriendlyPlay" />
+				<input type="submit" name="host_game" value="Host game" />
+			</p>
+		</xsl:if>
+
+		<!-- hosted games by player list -->
+		<xsl:choose>
+			<xsl:when test="count($param/hosted_games/*) &gt; 0">
+				<table cellspacing="0" class="skin_text">
+					<tr>
+						<th><p>Created</p></th>
+						<th><p>Modes</p></th>
+						<th></th>
+					</tr>
+					<xsl:for-each select="$param/hosted_games/*">
+						<tr class="table_row">
+							<td><p><xsl:value-of select="am:datetime(gameaction, $param/timezone)"/></p></td>
+							<td>
+								<p>
+									<xsl:if test="hidden_cards = 'yes'">
+										<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" />
+									</xsl:if>
+									<xsl:if test="friendly_play = 'yes'">
+										<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" />
+									</xsl:if>
+								</p>
+							</td>
+							<td><p><input type="submit" name="unhost_game[{gameid}]" value="Cancel" /></p></td>
+						</tr>
+					</xsl:for-each>
+				</table>
+			</xsl:when>
+			<xsl:otherwise>
+				<p class="information_line warning">There are no hosted games.</p>
+			</xsl:otherwise>
+		</xsl:choose>
+
+		</xsl:when>
+		<!-- end hosted games subsection -->
+	</xsl:choose>
+
+	</div>
+	<!-- end hosted games section -->
+
+	<div class="clear_floats"></div>
+	</div>
+
 </xsl:template>
 
 

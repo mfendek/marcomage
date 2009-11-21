@@ -4,21 +4,52 @@
 
 /* begin gamelist */
 
-div#games /* center buttons in game list */
+div#games /* game section layout */
 {
 	min-width: 1045px;
 	text-align: center;
 }
 
-div#games > table /* games list layout */
+div#games table /* table layout */
 {
-	margin-left: auto;
-	margin-right: auto;
+	margin: 0.5ex auto 2ex auto;
 }
 
-div#games > table th > p, div#games > table td > p /* table cell text */
+div#games table th > p, div#games table td > p /* table cell text */
 {
 	margin: 0.5ex 1ex 0.5ex 1ex;
+}
+
+div#games input[type="checkbox"] /* checkbox layout */
+{
+	padding: 0.5ex;
+	margin: 0ex 2ex 0ex 0ex;
+	border-style: solid;
+	border-width: thin;
+}
+
+div#active_games /* active games subsection */
+{
+	float: right;
+	width: 51%;
+	margin: 0ex 1ex 1ex 0ex;
+}
+
+div#hosted_games /* hosted games subsection */
+{
+	float: left;
+	width: 46%;
+	margin: 0ex 0ex 1ex 1ex;
+}
+
+div#hosted_games > p > input + input /* distance between buttons */
+{
+	margin-left: 2ex;
+}
+
+.game_filters /* filters layout */
+{
+	margin-top: 1ex;
 }
 
 p.ended_game /* color for text information about the game ("game has ended") */
