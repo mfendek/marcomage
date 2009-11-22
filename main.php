@@ -1973,6 +1973,7 @@
 					unset($settings['Skin']);
 					unset($settings['Background']);
 					unset($settings['PlayerFilter']);
+					unset($settings['Autorefresh']);
 					
 					foreach($settings as $input => $setting)
 					{
@@ -1988,6 +1989,7 @@
 					$player->ChangeSetting("Skin", $_POST['Skin']);
 					$player->ChangeSetting("Background", $_POST['Background']);
 					$player->ChangeSetting("PlayerFilter", $_POST['PlayerFilter']);
+					$player->ChangeSetting("Autorefresh", $_POST['Autorefresh']);
 					
 					$information = "Game settings saved";
 					
@@ -2610,6 +2612,7 @@
 		$params["loginbox"]["warning_msg"] = @$warning;
 		$params["loginbox"]["info_msg"] = @$information;
 		$params["main"]["skin"] = 0; // default skin (user is not logged in, can't retrieve his settings)
+		$params["main"]["autorefresh"] = 0; // autorefresh is inactive by default
 	}
 	else
 	{
@@ -2643,6 +2646,7 @@
 		
 		$params["navbar"]['NumGames'] = $temp;
 		$params["main"]["skin"] = $player->GetSetting("Skin");
+		$params["main"]["autorefresh"] = ($current == "Games") ? $player->GetSetting("Autorefresh") : 0; // apply only in games section
 	}
 	
 // now display current inner-page contents

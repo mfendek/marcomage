@@ -33,6 +33,14 @@
 	<link rel="stylesheet" href="styles/skins/skin{$param/skin}.css" type="text/css" title="standard style" />
 	<link rel="icon" href="img/favicon.png" type="image/png" />
 	<title>MArcomage</title>
+	<xsl:if test="$param/autorefresh &gt; 0">
+		<xsl:element name="script">
+			<xsl:attribute name="type">text/javascript</xsl:attribute>
+			<xsl:text>setTimeout('window.location.reload()', </xsl:text>
+			<xsl:value-of select="$param/autorefresh" />
+			<xsl:text>000);</xsl:text>
+		</xsl:element>
+	</xsl:if>
 	</head>
 	<body>
 	<form action="" enctype="multipart/form-data" method="post">

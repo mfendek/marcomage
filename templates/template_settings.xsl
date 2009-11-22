@@ -2,7 +2,9 @@
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:exsl="http://exslt.org/common"
+                extension-element-prefixes="exsl">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
@@ -14,6 +16,14 @@
 	<xsl:variable name="timezones" select="document('timezones.xml')/am:timezones" />
 	<xsl:variable name="skins" select="document('skins.xml')/am:skins" />
 	<xsl:variable name="backgrounds" select="document('backgrounds.xml')/am:backgrounds" />
+	<xsl:variable name="refresh_values">
+		<value name="0"   text="off"        />
+		<value name="10"  text="10 seconds" />
+		<value name="30"  text="30 seconds" />
+		<value name="60"  text="1 minute"   />
+		<value name="300" text="5 minutes"  />
+		<value name="600" text="10 minutes" />
+	</xsl:variable>
 
 	<div id="settings">
 
@@ -191,6 +201,20 @@
 					</xsl:for-each>
 				</select>
 				<xsl:text>Game background</xsl:text>
+			</p>
+
+			<p>
+				<select name="Autorefresh">
+					<xsl:for-each select="exsl:node-set($refresh_values)/*">
+						<option value="{@name}">
+							<xsl:if test="$settings/Autorefresh = @name">
+								<xsl:attribute name="selected">selected</xsl:attribute>
+							</xsl:if>
+							<xsl:value-of select="@text"/>
+						</option>
+					</xsl:for-each>
+				</select>
+				<xsl:text>Auto refresh</xsl:text>
 			</p>
 
 			<p><input type="checkbox" name="GamesDetails"><xsl:if test="$settings/GamesDetails = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Advanced games list</p>

@@ -169,6 +169,7 @@ CREATE TABLE `settings` (
   `Background` int(3) unsigned NOT NULL DEFAULT '0',
   `GamesDetails` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `PlayerFilter` char(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'none',
+  `Autorefresh` int(5) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY  (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
