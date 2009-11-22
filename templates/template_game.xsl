@@ -12,9 +12,6 @@
 	<xsl:variable name="param" select="$params/game" />
 
 	<div id="game">
-	<xsl:if test="$param/Background != 0">
-		<xsl:attribute name="style">background-image: url('img/backgrounds/bg_<xsl:value-of select="$param/Background"/>.jpg'); background-position: center center; background-repeat: no-repeat;</xsl:attribute>
-	</xsl:if>
 
 	<!-- remember the current location across pages -->
 	<div><input type="hidden" name="CurrentGame" value="{$param/CurrentGame}"/></div>
@@ -39,6 +36,10 @@
 
 	<!-- four rows: your cards, messages and buttons, the current status, opponent's cards -->
 	<table class="centered" cellpadding="0" cellspacing="0">
+
+	<xsl:if test="$param/Background != 0">
+		<xsl:attribute name="style">background-image: url('img/backgrounds/bg_<xsl:value-of select="$param/Background"/>.jpg'); background-position: center center; background-repeat: no-repeat;</xsl:attribute>
+	</xsl:if>
 
 	<!-- begin your cards -->
 	<tr valign="top" class="hand">
@@ -730,64 +731,60 @@
 	</tr>
 	<!-- end his cards -->
 
-	<!-- begin chatboard -->
-	<tr>
-		<td colspan="8" align="center">
-			<div class="chatsection">
-				<!-- avatars normal version -->
-				<xsl:if test="($param/display_avatar = 'yes') and ($param/correction = 'no')">
-					<img style="float: left;  margin: 0.5ex 0ex 0ex 0ex;" class="avatar" height="60px" width="60px" src="img/avatars/{$param/myavatar}" alt="avatar" />
-					<img style="float: right; margin: 0.5ex 0ex 0ex 0ex;" class="avatar" height="60px" width="60px" src="img/avatars/{$param/hisavatar}" alt="avatar" />
-				</xsl:if>
-
-				<!-- message list -->
-				<xsl:if test="count($param/messagelist/*) &gt; 0">
-					<div class="chatbox">
-						<xsl:for-each select="$param/messagelist/*">
-							<p>
-								<span><xsl:value-of select="am:datetime(Timestamp, $param/timezone)"/></span>
-								<span>
-									<xsl:choose>
-										<xsl:when test="Name = $param/PlayerName">
-											<xsl:attribute name="class">chatbox_player</xsl:attribute>
-										</xsl:when>
-										<xsl:when test="Name = $param/OpponentName">
-											<xsl:attribute name="class">chatbox_opponent</xsl:attribute>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:attribute name="class">chatbox_system</xsl:attribute>
-										</xsl:otherwise>
-									</xsl:choose>
-									<xsl:value-of select="Name"/>
-									<xsl:text> : </xsl:text>
-								</span>
-								<span><xsl:copy-of select="am:textencode(Message)"/></span>
-							</p>
-						</xsl:for-each>
-					</div>
-				</xsl:if>
-
-				<!-- avatars corrected version -->
-				<xsl:if test="($param/display_avatar = 'yes') and ($param/correction = 'yes')">
-					<img style="float: left;  margin: 0.5ex 0ex 0ex 0ex;" class="avatar" height="60px" width="60px" src="img/avatars/{$param/myavatar}" alt="avatar" />
-					<img style="float: right; margin: 0.5ex 0ex 0ex 0ex;" class="avatar" height="60px" width="60px" src="img/avatars/{$param/hisavatar}" alt="avatar" />
-				</xsl:if>
-
-				<!-- chatboard inputs -->
-				<xsl:if test="$param/chat = 'yes'">
-					<div id="chat_inputs">
-						<input class="text_data chatboard" type="text" name="ChatMessage" size="115" maxlength="300" style="font-size: normal; margin-right: 2ex;" tabindex="1" accesskey="a" />
-						<input type="submit" name="send_message" value="Send message" tabindex="2" accesskey="s" />
-					</div>
-				</xsl:if>
-
-				<div style="clear: both"></div>
-			</div>
-		</td>
-	</tr>
-	<!-- end chatboard -->
-
 	</table>
+
+	<!-- begin chatboard -->
+	<div class="chatsection">
+		<!-- avatars normal version -->
+		<xsl:if test="($param/display_avatar = 'yes') and ($param/correction = 'no')">
+			<img style="float: left;  margin: 0.5ex 0ex 0ex 0ex;" class="avatar" height="60px" width="60px" src="img/avatars/{$param/myavatar}" alt="avatar" />
+			<img style="float: right; margin: 0.5ex 0ex 0ex 0ex;" class="avatar" height="60px" width="60px" src="img/avatars/{$param/hisavatar}" alt="avatar" />
+		</xsl:if>
+
+		<!-- message list -->
+		<xsl:if test="count($param/messagelist/*) &gt; 0">
+			<div class="chatbox">
+				<xsl:for-each select="$param/messagelist/*">
+					<p>
+						<span><xsl:value-of select="am:datetime(Timestamp, $param/timezone)"/></span>
+						<span>
+							<xsl:choose>
+								<xsl:when test="Name = $param/PlayerName">
+									<xsl:attribute name="class">chatbox_player</xsl:attribute>
+								</xsl:when>
+								<xsl:when test="Name = $param/OpponentName">
+									<xsl:attribute name="class">chatbox_opponent</xsl:attribute>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:attribute name="class">chatbox_system</xsl:attribute>
+								</xsl:otherwise>
+							</xsl:choose>
+							<xsl:value-of select="Name"/>
+							<xsl:text> : </xsl:text>
+						</span>
+						<span><xsl:copy-of select="am:textencode(Message)"/></span>
+					</p>
+				</xsl:for-each>
+			</div>
+		</xsl:if>
+
+		<!-- avatars corrected version -->
+		<xsl:if test="($param/display_avatar = 'yes') and ($param/correction = 'yes')">
+			<img style="float: left;  margin: 0.5ex 0ex 0ex 0ex;" class="avatar" height="60px" width="60px" src="img/avatars/{$param/myavatar}" alt="avatar" />
+			<img style="float: right; margin: 0.5ex 0ex 0ex 0ex;" class="avatar" height="60px" width="60px" src="img/avatars/{$param/hisavatar}" alt="avatar" />
+		</xsl:if>
+
+		<!-- chatboard inputs -->
+		<xsl:if test="$param/chat = 'yes'">
+			<div id="chat_inputs">
+				<input class="text_data chatboard" type="text" name="ChatMessage" size="122" maxlength="300" tabindex="1" accesskey="a" />
+				<input type="submit" name="send_message" value="Send" tabindex="2" accesskey="s" />
+			</div>
+		</xsl:if>
+
+		<div style="clear: both"></div>
+	</div>
+	<!-- end chatboard -->
 
 	</div>
 

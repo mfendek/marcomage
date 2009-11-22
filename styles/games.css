@@ -175,11 +175,21 @@ div.history /* history of played cards */
 	width: 98px;
 }
 
+div.chatsection /* chat section layout */
+{
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	max-width: 61em;
+}
+
 div.chatbox /* chatbox window */
 {
 	overflow: auto;
 	max-height: 11.5ex;
 	margin-top: 0.5ex;
+	margin-left: auto;
+	margin-right: auto;
 	-moz-border-radius: 7px;
 	padding: 0ex 0.5ex 0.5ex 0.5ex;
 	text-align: left;
@@ -195,6 +205,12 @@ input.chatboard /* chatbox input elements */
 div#chat_inputs /* chatbox inputs */
 {
 	margin-top: 1ex;
+}
+
+div#chat_inputs > input[type="text"] /* chat message input */
+{
+	font-size: normal;
+	margin-right: 2ex;
 }
 
 div.towerbody /* body part of the tower */
