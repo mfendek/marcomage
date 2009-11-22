@@ -122,16 +122,6 @@
 		<!-- begin filters -->
 		<p class="game_filters">
 
-			<!-- selected deck -->
-			<xsl:if test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
-				<select name="SelectedDeck" size="1">
-					<option value="{am:urlencode($param/random_deck)}">select random</option>
-					<xsl:for-each select="$param/decks/*">
-						<option value="{am:urlencode(text())}"><xsl:value-of select="text()"/></option>
-					</xsl:for-each>
-				</select>
-			</xsl:if>
-
 			<!-- hidden cards filter -->
 			<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" />
 			<select name="HiddenCards" size="1">
@@ -166,6 +156,19 @@
 			<input type="submit" name="filter_hosted_games" value="Apply filters" />
 		</p>
 		<!-- end filters -->
+
+		<!-- selected deck -->
+		<p class="game_filters">
+			<xsl:text>Select deck </xsl:text>
+			<xsl:if test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
+				<select name="SelectedDeck" size="1">
+					<option value="{am:urlencode($param/random_deck)}">select random</option>
+					<xsl:for-each select="$param/decks/*">
+						<option value="{am:urlencode(text())}"><xsl:value-of select="text()"/></option>
+					</xsl:for-each>
+				</select>
+			</xsl:if>
+		</p>
 
 		<!-- free games list -->
 		<xsl:choose>
