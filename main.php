@@ -853,8 +853,9 @@
 					}
 					
 					$opponent = $game->Name1();
+					$encoded = postencode($opponent);
 					
-					$deckname = (isset($_POST['AcceptDeck']) and isset($_POST['AcceptDeck'][$opponent])) ? $_POST['AcceptDeck'][$opponent] : '(null)';
+					$deckname = (isset($_POST['AcceptDeck']) and isset($_POST['AcceptDeck'][$encoded])) ? $_POST['AcceptDeck'][$encoded] : '(null)';
 					$deckname = postdecode($deckname);
 					$deck = $deckdb->GetDeck($player->Name(), $deckname);
 					
