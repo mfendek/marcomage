@@ -60,7 +60,7 @@
 							<xsl:choose>
 								<xsl:when test="gamestate = 'in progress'">
 									<xsl:if test="isdead = 'yes'">
-										<p class="ended_game" >Game can be aborted</p>
+										<p class="ended_game" >Can be aborted</p>
 									</xsl:if>
 								</xsl:when>
 								<xsl:otherwise>

@@ -30,16 +30,16 @@ div#games input[type="checkbox"] /* checkbox layout */
 
 div#active_games /* active games subsection */
 {
-	float: right;
-	width: 51%;
-	margin: 0ex 1ex 1ex 0ex;
+	float: left;
+	width: 61%;
+	margin: 0ex 0ex 1ex 1ex;
 }
 
 div#hosted_games /* hosted games subsection */
 {
-	float: left;
-	width: 46%;
-	margin: 0ex 0ex 1ex 1ex;
+	float: right;
+	width: 36%;
+	margin: 0ex 1ex 1ex 0ex;
 }
 
 div#hosted_games > p > input + input /* distance between buttons */
