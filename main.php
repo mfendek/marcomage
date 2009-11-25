@@ -2908,7 +2908,7 @@ case 'Players':
 		$entry['rank'] = $data['Rank'];
 		$entry['inactivity'] = time() - strtotime($data['Last Query']);
 		$entry['challenged'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $opponent), $challengesfrom) !== false) ? 'yes' : 'no';
-		$entry['playingagainst'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $opponent), $activegames) !== false) ? 'yes' : 'no';
+		$entry['playingagainst'] = ($gamedb->CheckGame($player->Name(), $opponent)) ? 'yes' : 'no';
 		$entry['waitingforack'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $opponent), $endedgames) !== false) ? 'yes' : 'no';
 
 		$params['players']['list'][] = $entry;
@@ -2976,7 +2976,7 @@ case 'Profile':
 	$params['profile']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)] : '';
 
 	$params['profile']['challenged'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $cur_player), $challengesfrom) !== false) ? 'yes' : 'no';
-	$params['profile']['playingagainst'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $cur_player), $activegames) !== false) ? 'yes' : 'no';
+	$params['profile']['playingagainst'] = ($gamedb->CheckGame($player->Name(), $cur_player)) ? 'yes' : 'no';
 	$params['profile']['waitingforack'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $cur_player), $endedgames) !== false) ? 'yes' : 'no';
 
 	$params['profile']['challenging'] = (isset($_POST['prepare_challenge'])) ? 'yes' : 'no';
