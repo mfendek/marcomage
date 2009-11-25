@@ -780,8 +780,7 @@
 					
 					$opponent = $game->Name1();
 					
-					$deckname = (isset($_POST['SelectedDeck']) and isset($_POST['SelectedDeck'])) ? $_POST['SelectedDeck'] : '(null)';
-					$deckname = postdecode($deckname);
+					$deckname = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
 					$deck = $deckdb->GetDeck($player->Name(), $deckname);
 					
 					// check if such deck exists
@@ -853,10 +852,8 @@
 					}
 					
 					$opponent = $game->Name1();
-					$encoded = postencode($opponent);
 					
-					$deckname = (isset($_POST['AcceptDeck']) and isset($_POST['AcceptDeck'][$encoded])) ? $_POST['AcceptDeck'][$encoded] : '(null)';
-					$deckname = postdecode($deckname);
+					$deckname = isset($_POST['AcceptDeck']) ? postdecode($_POST['AcceptDeck']) : '(null)';
 					$deck = $deckdb->GetDeck($player->Name(), $deckname);
 					
 					// check if such deck exists

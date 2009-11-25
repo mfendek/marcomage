@@ -158,17 +158,17 @@
 		<!-- end filters -->
 
 		<!-- selected deck -->
-		<p class="game_filters">
-			<xsl:text>Select deck </xsl:text>
-			<xsl:if test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
+		<xsl:if test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
+			<p class="game_filters">
+				<xsl:text>Select deck </xsl:text>
 				<select name="SelectedDeck" size="1">
 					<option value="{am:urlencode($param/random_deck)}">select random</option>
 					<xsl:for-each select="$param/decks/*">
 						<option value="{am:urlencode(text())}"><xsl:value-of select="text()"/></option>
 					</xsl:for-each>
 				</select>
-			</xsl:if>
-		</p>
+			</p>
+		</xsl:if>
 
 		<!-- free games list -->
 		<xsl:choose>

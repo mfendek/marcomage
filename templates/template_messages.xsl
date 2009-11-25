@@ -39,6 +39,19 @@
 		</input>
 	</p>
 
+	<!-- selected deck -->
+	<xsl:if test="($param/current_subsection = 'incoming') and ($param/deck_count &gt; 0)">
+		<p class="game_filters">
+			<xsl:text>Select deck </xsl:text>
+			<select name="AcceptDeck" size="1">
+				<option value="{am:urlencode($param/random_deck)}">select random</option>
+				<xsl:for-each select="$param/decks/*">
+					<option value="{am:urlencode(text())}"><xsl:value-of select="text()"/></option>
+				</xsl:for-each>
+			</select>
+		</p>
+	</xsl:if>
+
 	<xsl:choose>
 		<xsl:when test="$param/challenges_count &gt; 0">
 			<div class="challenge_box">
@@ -61,16 +74,8 @@
 									<div class="challenge_content"><xsl:copy-of select="am:textencode(Content)" /></div>
 								</xsl:if>
 								<p>
-									<xsl:if test="($param/deck_count &gt; 0) and ($param/max_games &gt; $param/startedgames)">
-										<xsl:if test="$param/accept_challenges = 'yes'">
-											<input type="submit" name="accept_challenge[{GameID}]" value="Accept" />
-										</xsl:if>
-										<select name="AcceptDeck[{am:urlencode(Author)}]" size="1">
-											<option value="{am:urlencode($param/random_deck)}">select random</option>
-											<xsl:for-each select="$param/decks/*">
-												<option value="{am:urlencode(.)}"><xsl:value-of select="."/></option>
-											</xsl:for-each>
-										</select>
+									<xsl:if test="($param/deck_count &gt; 0) and ($param/max_games &gt; $param/startedgames) and ($param/accept_challenges = 'yes')">
+										<input type="submit" name="accept_challenge[{GameID}]" value="Accept" />
 									</xsl:if>
 									<input type="submit" name="reject_challenge[{GameID}]" value="Reject" />
 								</p>
