@@ -21,7 +21,7 @@
 		<p class="information_line warning">You need at least one ready deck to accept challenges.</p>
 	</xsl:if>
 
-	<xsl:if test="$param/startedgames &gt;= $param/max_games">
+	<xsl:if test="$param/free_slots = 0">
 		<p class="information_line warning">You cannot start any more games.</p>
 	</xsl:if>
 
@@ -74,7 +74,7 @@
 									<div class="challenge_content"><xsl:copy-of select="am:textencode(Content)" /></div>
 								</xsl:if>
 								<p>
-									<xsl:if test="($param/deck_count &gt; 0) and ($param/max_games &gt; $param/startedgames) and ($param/accept_challenges = 'yes')">
+									<xsl:if test="($param/deck_count &gt; 0) and ($param/free_slots &gt; 0) and ($param/accept_challenges = 'yes')">
 										<input type="submit" name="accept_challenge[{GameID}]" value="Accept" />
 									</xsl:if>
 									<input type="submit" name="reject_challenge[{GameID}]" value="Reject" />

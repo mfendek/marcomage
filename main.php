@@ -260,35 +260,22 @@
 				
 				if ($message == 'active_game') // Games -> next game button
 				{
-					$list = $gamedb->ListActiveGames($player->Name());
+					$list = $gamedb->ListCurrentGames($player->Name());
 					
-					$games_yourturn = array();
-					$index = 0;
-					
-					if (count($list) > 0)
-						foreach ($list as $i => $data)
-						{
-							$game = $gamedb->GetGame($data['GameID']);
-							
-							if ($game->Current == $player->Name())
-							{
-								$games_yourturn[$index] = $game;
-								$index++;
-							}
-						}
 					//check if there is an active game
-					if ($index == 0) { /*$error = 'No games your turn!';*/ $current = 'Games'; break; }
+					if (count($list) == 0) { /*$error = 'No games your turn!';*/ $current = 'Games'; break; }
 					
-					$game = $games_yourturn[0];
-					if ($index > 1)
-						foreach ($games_yourturn as $i => $cur_game)
+					$game_id = $list[0];
+					foreach ($list as $i => $cur_game)
+					{
+						if ($_POST['CurrentGame'] == $cur_game)
 						{
-							if ($_POST['CurrentGame'] == $cur_game->ID())
-							{
-								$game = $games_yourturn[(($i + 1) % $index)];//wrap around
-								break;
-							}	
-						}
+							$game_id = $list[($i + 1) % count($list)];//wrap around
+							break;
+						}	
+					}
+					
+					$game = $gamedb->GetGame($game_id);
 					
 					// check if the game exists
 					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
@@ -716,7 +703,7 @@
 					if (!$deck->isReady()) { $error = 'Deck '.$deckname.' is not yet ready for gameplay!'; $current = 'Games'; break; }
 					
 					// check if you are within the MAX_GAMES limit
-					if (count($gamedb->ListActiveGames($player->Name())) + count($gamedb->ListChallengesFrom($player->Name())) + count($gamedb->ListChallengesTo($player->Name())) + count($gamedb->ListHostedGames($player->Name())) >= MAX_GAMES) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Games'; break; }
+					if ($gamedb->CountFreeSlots($player->Name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Games'; break; }
 					
 					// create a new challenge
 					$game = $gamedb->CreateGame($player->Name(), '', $deck->DeckData);
@@ -773,10 +760,7 @@
 					if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Games'; break; }
 					
 					// check if you are within the MAX_GAMES limit
-					if (count($gamedb->ListActiveGames($player->Name())) + count($gamedb->ListChallengesFrom($player->Name())) + count($gamedb->ListChallengesTo($player->Name())) + count($gamedb->ListHostedGames($player->Name())) >= MAX_GAMES)
-					{
-						$error = 'You may only have '.MAX_GAMES.' simultaneous games at once (this also covers your challenges).'; $current = 'Games'; break;
-					}
+					if ($gamedb->CountFreeSlots($player->Name()) == 0) { $error = 'You may only have '.MAX_GAMES.' simultaneous games at once (this also includes your challenges).'; $current = 'Games'; break; }
 					
 					$opponent = $game->Name1();
 					
@@ -846,10 +830,7 @@
 					if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Messages'; break; }
 					
 					// the player may never have more than MAX_GAMES games at once, even potential ones (challenges)
-					if (count($gamedb->ListActiveGames($player->Name())) + count($gamedb->ListChallengesFrom($player->Name())) + count($gamedb->ListHostedGames($player->Name())) >= MAX_GAMES)
-					{
-						$error = 'You may only have '.MAX_GAMES.' simultaneous games at once (this also covers your challenges).'; $current = 'Messages'; break;
-					}
+					if ($gamedb->CountFreeSlots($player->Name()) == 0) { $error = 'You may only have '.MAX_GAMES.' simultaneous games at once (this also includes your challenges).'; $current = 'Messages'; break; }
 					
 					$opponent = $game->Name1();
 					
@@ -947,7 +928,7 @@
 					if ($gamedb->CheckGame($player->Name(), $opponent)) { $error = 'You are already playing against '.htmlencode($opponent).'!'; $current = 'Profile'; break; }
 					
 					// check if you are within the MAX_GAMES limit
-					if (count($gamedb->ListActiveGames($player->Name())) + count($gamedb->ListChallengesFrom($player->Name())) + count($gamedb->ListChallengesTo($player->Name())) + count($gamedb->ListHostedGames($player->Name())) >= MAX_GAMES) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Messages'; break; }
+					if ($gamedb->CountFreeSlots($player->Name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Messages'; break; }
 					
 					// check challenge text length
 					if (strlen($_POST['Content']) > CHALLENGE_LENGTH) { $error = "Message too long"; $current = "Details"; break; }
@@ -2628,21 +2609,7 @@
 		$concepts_not = ($player->GetSetting("Concepts_notification") == 'yes');
 		$params["navbar"]['IsSomethingNew'] = ($forum_not AND $forum->IsSomethingNew($player->PreviousLogin())) ? 'yes' : 'no';
 		$params["navbar"]['NewConcepts'] = ($concepts_not AND $conceptdb->NewConcepts($player->PreviousLogin())) ? 'yes' : 'no';
-		
-		$list = $gamedb->ListActiveGames($player->Name());
-		$temp = 0;
-		
-		if (count($list) > 0)
-		{
-			foreach ($list as $data)
-			{
-				$game = $gamedb->GetGame($data['GameID']);
-				
-				if ($game->Current == $player->Name()) $temp++;
-			}
-		}
-		
-		$params["navbar"]['NumGames'] = $temp;
+		$params["navbar"]['NumGames'] = count($gamedb->ListCurrentGames($player->Name()));
 		$params["main"]["skin"] = $player->GetSetting("Skin");
 		$params["main"]["autorefresh"] = ($current == "Games") ? $player->GetSetting("Autorefresh") : 0; // apply only in games section
 	}
@@ -2865,13 +2832,11 @@ case 'Players':
 	$params['players']['show_nationality'] = $player->GetSetting("Nationality");
 	$params['players']['show_avatars'] = $player->GetSetting("Avatarlist");
 
-	$activegames = $gamedb->ListActiveGames($player->Name());
+	$opponents = $gamedb->ListOpponents($player->Name());
 	$challengesfrom = $gamedb->ListChallengesFrom($player->Name());
-	$challengesto = $gamedb->ListChallengesTo($player->Name());
 	$endedgames = $gamedb->ListEndedGames($player->Name());
-	$hostedgames = $gamedb->ListHostedGames($player->Name());
 
-	$params['players']['free_slots'] = MAX_GAMES - (count($activegames) + count($challengesfrom) + count($challengesto) + count($hostedgames));
+	$params['players']['free_slots'] = $gamedb->CountFreeSlots($player->Name());
 
 	$params['players']['messages'] = ($access_rights[$player->Type()]["messages"]) ? 'yes' : 'no';
 	$params['players']['send_challenges'] = ($access_rights[$player->Type()]["send_challenges"]) ? 'yes' : 'no';
@@ -2907,9 +2872,9 @@ case 'Players':
 		$entry['free_slots'] = $data['Free slots'];
 		$entry['rank'] = $data['Rank'];
 		$entry['inactivity'] = time() - strtotime($data['Last Query']);
-		$entry['challenged'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $opponent), $challengesfrom) !== false) ? 'yes' : 'no';
-		$entry['playingagainst'] = ($gamedb->CheckGame($player->Name(), $opponent)) ? 'yes' : 'no';
-		$entry['waitingforack'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $opponent), $endedgames) !== false) ? 'yes' : 'no';
+		$entry['challenged'] = (array_search($opponent, $challengesfrom) !== false) ? 'yes' : 'no';
+		$entry['playingagainst'] = (array_search($opponent, $opponents) !== false) ? 'yes' : 'no';
+		$entry['waitingforack'] = (array_search($opponent, $endedgames) !== false) ? 'yes' : 'no';
 
 		$params['players']['list'][] = $entry;
 	}
@@ -2965,19 +2930,13 @@ case 'Profile':
 	$params['profile']['change_rights'] = ($access_rights[$player->Type()]["change_rights"]) ? 'yes' : 'no';
 	$params['profile']['system_notification'] = ($access_rights[$player->Type()]["system_notification"]) ? 'yes' : 'no';
 	$params['profile']['change_all_avatar'] = ($access_rights[$player->Type()]["change_all_avatar"]) ? 'yes' : 'no';
-
-	$activegames = $gamedb->ListActiveGames($player->Name());
-	$challengesfrom = $gamedb->ListChallengesFrom($player->Name());
-	$challengesto = $gamedb->ListChallengesTo($player->Name());
-	$endedgames = $gamedb->ListEndedGames($player->Name());
-	$hostedgames = $gamedb->ListHostedGames($player->Name());
-	$params['profile']['free_slots'] = MAX_GAMES - (count($activegames) + count($challengesfrom) + count($challengesto) + count($hostedgames));
+	$params['profile']['free_slots'] = $gamedb->CountFreeSlots($player->Name());
 	$params['profile']['decks'] = $decks = $player->ListReadyDecks();
 	$params['profile']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)] : '';
 
-	$params['profile']['challenged'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $cur_player), $challengesfrom) !== false) ? 'yes' : 'no';
-	$params['profile']['playingagainst'] = ($gamedb->CheckGame($player->Name(), $cur_player)) ? 'yes' : 'no';
-	$params['profile']['waitingforack'] = (array_search(array('Player1' => $player->Name(), 'Player2' => $cur_player), $endedgames) !== false) ? 'yes' : 'no';
+	$params['profile']['challenged'] = (array_search($cur_player, $gamedb->ListChallengesFrom($player->Name())) !== false) ? 'yes' : 'no';
+	$params['profile']['playingagainst'] = (array_search($cur_player, $gamedb->ListOpponents($player->Name())) !== false) ? 'yes' : 'no';
+	$params['profile']['waitingforack'] = (array_search($cur_player, $gamedb->ListEndedGames($player->Name())) !== false) ? 'yes' : 'no';
 
 	$params['profile']['challenging'] = (isset($_POST['prepare_challenge'])) ? 'yes' : 'no';
 
@@ -2992,14 +2951,13 @@ case 'Profile':
 case 'Messages':
 	$params['messages']['PlayerName'] = $player->Name();
 	$params['messages']['PreviousLogin'] = $player->PreviousLogin();
-	$params['messages']['timezone'] = $player->GetSetting("Timezone"); 
-	$params['messages']['max_games'] = MAX_GAMES;
+	$params['messages']['timezone'] = $player->GetSetting("Timezone");
 	$params['messages']['system_name'] = SYSTEM_NAME;
 
 	$decks = $params['messages']['decks'] = $player->ListReadyDecks();
 	$params['messages']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)] : '';
 	$params['messages']['deck_count'] = count($decks);
-	$params['messages']['startedgames'] = count($gamedb->ListActiveGames($player->Name())) + count($gamedb->ListChallengesFrom($player->Name()));
+	$params['messages']['free_slots'] = $gamedb->CountFreeSlots($player->Name());
 
 	if (isset($_POST['incoming'])) $current_subsection = "incoming";
 	elseif (isset($_POST['outgoing'])) $current_subsection = "outgoing";
@@ -3132,12 +3090,9 @@ case 'Games':
 	$params['games']['HiddenCards'] = $hidden_f = (isset($_POST['HiddenCards'])) ? $_POST['HiddenCards'] : "ignore";
 	$params['games']['FriendlyPlay'] = $friendly_f = (isset($_POST['FriendlyPlay'])) ? $_POST['FriendlyPlay'] : "ignore";
 
-	$activegames = $gamedb->ListActiveGames($player->Name());
-	$challengesfrom = $gamedb->ListChallengesFrom($player->Name());
-	$challengesto = $gamedb->ListChallengesTo($player->Name());
 	$hostedgames = $gamedb->ListHostedGames($player->Name());
 	$free_games = $gamedb->ListFreeGames($player->Name(), $hidden_f, $friendly_f);
-	$params['games']['free_slots'] = MAX_GAMES - (count($activegames) + count($challengesfrom) + count($challengesto) + count($hostedgames));
+	$params['games']['free_slots'] = $gamedb->CountFreeSlots($player->Name());
 	$params['games']['decks'] = $decks = $player->ListReadyDecks();
 	$params['games']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)] : '';
 
@@ -3326,31 +3281,24 @@ case 'Game':
 
 	foreach ($list as $i => $data)
 	{
-		$game_list = $gamedb->GetGame($data['GameID']);
-		$opponent_list = ($data['Player1'] != $player->Name()) ? $data['Player1'] : $data['Player2'];
-		$opponent_object = $playerdb->GetPlayer($opponent_list);
+		$cur_game = $gamedb->GetGame($data['GameID']);
+		$cur_opponent = ($cur_game->Name1() != $player->Name()) ? $cur_game->Name1() : $cur_game->Name2();
 
 		$color = ''; // no extra color default
-		if ($game_list->Current == $player->Name()) $color = 'lime'; // when it is your turn
-		if ($game_list->State == 'in progress' and $playerdb->isDead($opponent_list)) $color = 'gray'; // when game can be aborted
-		if ($game_list->State == 'finished') $color = '#ff69b4'; // when game is finished color HotPink
+		if ($cur_game->Current == $player->Name()) $color = 'lime'; // when it is your turn
+		if ($cur_game->State == 'in progress' and $playerdb->isDead($cur_opponent)) $color = 'gray'; // when game can be aborted
+		if ($cur_game->State != 'in progress') $color = '#ff69b4'; // when game is finished color HotPink
 
-		$params['game']['GameList'][$i]['Value'] = $game_list->ID();
-		$params['game']['GameList'][$i]['Content'] = 'vs. '.htmlencode($opponent_list);
-		$params['game']['GameList'][$i]['Selected'] = (($game_list->ID() == $_POST['CurrentGame']) ? 'yes' : 'no');
+		$params['game']['GameList'][$i]['Value'] = $cur_game->ID();
+		$params['game']['GameList'][$i]['Content'] = 'vs. '.htmlencode($cur_opponent);
+		$params['game']['GameList'][$i]['Selected'] = (($cur_game->ID() == $_POST['CurrentGame']) ? 'yes' : 'no');
 		$params['game']['GameList'][$i]['Color'] = $color;
 	}
 	// - </quick game switching menu>
 
 	// - <'jump to next game' button>
 
-	$list = $gamedb->ListActiveGames($player->Name());
-
-	$num_games_your_turn = 0;
-	foreach ($list as $i => $data)
-		if ($gamedb->GetGame($data['GameID'])->Current == $player->Name())
-			$num_games_your_turn++;
-	$params['game']['num_games_your_turn'] = $num_games_your_turn;
+	$params['game']['num_games_your_turn'] = count($gamedb->ListCurrentGames($player->Name()));
 
 	// - </'jump to next game' button>
 

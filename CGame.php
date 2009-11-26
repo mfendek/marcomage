@@ -78,18 +78,40 @@
 			return true;
 		}
 		
+		public function CountFreeSlots($player)
+		{
+			$db = $this->db;
+			
+			// outgoing = chalenges_from + hosted_games
+			$outgoing = '`Player1` = "'.$db->Escape($player).'" AND `State` = "waiting"';
+			
+			// incoming challenges
+			$challenges_to = '`Player2` = "'.$db->Escape($player).'" AND `State` = "waiting"';
+			
+			// active games
+			$active_games = '`Player1` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P2 over")';
+			
+			$result = $db->Query('SELECT COUNT(`GameID`) as `count` FROM `games` WHERE ('.$outgoing.') OR ('.$challenges_to.') OR ('.$active_games.')');
+			if (!$result) return false;
+			if (!$result->Rows()) return false;
+			
+			$data = $result->Next();
+			
+			return max(0, MAX_GAMES - $data['count']); // make sure the result is not negative
+		}
+		
 		public function ListChallengesFrom($player)
 		{
 			// $player is on the left side and $Status = "waiting"
 			$db = $this->db;
-			$result = $db->Query('SELECT `Player1`, `Player2` FROM `games` WHERE `Player1` = "'.$db->Escape($player).'" AND `Player2` != "" AND `State` = "waiting"');
+			$result = $db->Query('SELECT `Player2` FROM `games` WHERE `Player1` = "'.$db->Escape($player).'" AND `Player2` != "" AND `State` = "waiting"');
 			if (!$result) return false;
 			
-			$games = array();
-			for ($i = 1; $i <= $result->Rows(); $i++)
-				$games[$i] = $result->Next();
+			$names = array();
+			while( $data = $result->Next() )
+				$names[] = $data['Player2'];
 			
-			return $games;
+			return $names;
 		}
 		
 		public function ListChallengesTo($player)
@@ -99,11 +121,11 @@
 			$result = $db->Query('SELECT `Player1` FROM `games` WHERE `Player2` = "'.$db->Escape($player).'" AND `State` = "waiting"');
 			if (!$result) return false;
 			
-			$games = array();
-			for ($i = 1; $i <= $result->Rows(); $i++)
-				$games[$i] = $result->Next();
+			$names = array();
+			while( $data = $result->Next() )
+				$names[] = $data['Player1'];
 			
-			return $games;
+			return $names;
 		}
 		
 		public function ListFreeGames($player, $hidden = "ignore", $friendly = "ignore")
@@ -141,7 +163,7 @@
 		{
 			// $player is either on the left or right side and Status != 'waiting' or 'P? over'
 			$db = $this->db;
-			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2` FROM `games` WHERE (`Player1` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P2 over"))');
+			$result = $db->Query('SELECT `GameID` FROM `games` WHERE (`Player1` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P2 over"))');
 			if (!$result) return false;
 			
 			$games = array();
@@ -149,6 +171,20 @@
 				$games[$i] = $result->Next();
 			
 			return $games;
+		}
+		
+		public function ListOpponents($player)
+		{
+			// list names of all oppponents from games where specified player is on the left
+			$db = $this->db;
+			$result = $db->Query('SELECT `Player2` FROM `games` WHERE `Player1` = "'.$db->Escape($player).'" AND `State` != "waiting" AND `State` != "P1 over"');
+			if (!$result) return false;
+			
+			$names = array();
+			while( $data = $result->Next() )
+				$names[] = $data['Player2'];
+			
+			return $names;
 		}
 		
 		public function ListGamesData($player)
@@ -167,13 +203,28 @@
 		
 		public function ListEndedGames($player)
 		{
+			// list names of all oppponents from ended games where specified player is on the left
 			$db = $this->db;
-			$result = $db->Query('SELECT `Player1`, `Player2` FROM `games` WHERE (`Player1` = "'.$db->Escape($player).'" AND `State` = "P1 over") OR (`Player2` = "'.$db->Escape($player).'" AND `State` = "P2 over")');
+			$result = $db->Query('SELECT `Player2` FROM `games` WHERE `Player1` = "'.$db->Escape($player).'" AND `State` = "P1 over"');
+			if (!$result) return false;
+			
+			$names = array();
+			while( $data = $result->Next() )
+				$names[] = $data['Player2'];
+			
+			return $names;
+		}
+		
+		public function ListCurrentGames($player)
+		{
+			// list all games where specified player is on turn
+			$db = $this->db;
+			$result = $db->Query('SELECT `GameID` FROM `games` WHERE ((`Player1` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P2 over"))) AND (`Current` = "'.$db->Escape($player).'")');
 			if (!$result) return false;
 			
 			$games = array();
-			for ($i = 1; $i <= $result->Rows(); $i++)
-				$games[$i] = $result->Next();
+			while( $data = $result->Next() )
+				$games[] = $data['GameID'];
 			
 			return $games;
 		}
