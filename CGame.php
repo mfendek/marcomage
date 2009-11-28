@@ -219,7 +219,7 @@
 		{
 			// list all games where specified player is on turn
 			$db = $this->db;
-			$result = $db->Query('SELECT `GameID` FROM `games` WHERE ((`Player1` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P2 over"))) AND (`Current` = "'.$db->Escape($player).'")');
+			$result = $db->Query('SELECT `GameID` FROM `games` WHERE ((`Player1` = "'.$db->Escape($player).'") OR (`Player2` = "'.$db->Escape($player).'")) AND (`State` = "in progress") AND (`Current` = "'.$db->Escape($player).'")');
 			if (!$result) return false;
 			
 			$games = array();
