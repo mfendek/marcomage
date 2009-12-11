@@ -136,6 +136,15 @@
 			return true;
 		}
 		
+		public function DeleteMessages($player)
+		{
+			$db = $this->db;
+			$result = $db->Query('DELETE FROM `messages` WHERE ((`GameID` = 0) AND ((`Author` = "'.SYSTEM_NAME.'" AND `Recipient` = "'.$db->Escape($player).'") OR (`Author` = "'.$db->Escape($player).'" AND `RecipientDelete` = "yes") OR (`Recipient` = "'.$db->Escape($player).'" AND `AuthorDelete` = "yes"))) OR ((`GameID` > 0) AND (`Author` = "'.$db->Escape($player).'" OR `Recipient` = "'.$db->Escape($player).'"))');
+			if (!$result) return false;
+			
+			return true;
+		}
+		
 		public function ListMessagesTo($player, $date, $name, $condition, $order, $page)
 		{	
 			$db = $this->db;

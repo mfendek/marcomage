@@ -27,6 +27,15 @@
 			return true;
 		}
 		
+		public function DeleteSettings($username) //delete user settings
+		{		
+			$db = $this->db;
+			$result = $db->Query('DELETE FROM `settings` WHERE `Username` = "'.$db->Escape($username).'"');
+			if (!$result) return false;
+			
+			return true;
+		}
+		
 		public function ChangeSetting($username, $setting, $value) //change a specific setting
 		{						
 			$db = $this->db;

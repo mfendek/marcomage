@@ -130,7 +130,7 @@
 		{	
 			$db = $this->db;
 						
-			$result = $db->Query('SELECT `PostID`, `Author`, `Content`, `Created`, `Avatar` FROM `forum_posts` JOIN `settings` ON `forum_posts`.`Author` = `settings`.`Username` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = "no" ORDER BY `Created` ASC LIMIT '.(POSTS_PER_PAGE * $page).' , '.POSTS_PER_PAGE.'');
+			$result = $db->Query('SELECT `PostID`, `Author`, `Content`, `Created`, IFNULL(`Avatar`,"noavatar.jpg") as `Avatar` FROM `forum_posts` LEFT OUTER JOIN `settings` ON `forum_posts`.`Author` = `settings`.`Username` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = "no" ORDER BY `Created` ASC LIMIT '.(POSTS_PER_PAGE * $page).' , '.POSTS_PER_PAGE.'');
 			
 			if (!$result) return false;
 			

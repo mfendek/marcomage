@@ -42,6 +42,15 @@
 			return true;
 		}
 		
+		public function DeleteGames($player)
+		{
+			$db = $this->db;
+			$result = $db->Query('DELETE FROM `games` WHERE (`Player1` = "'.$db->Escape($player).'") OR (`Player2` = "'.$db->Escape($player).'")');
+			if (!$result) return false;
+			
+			return true;
+		}
+		
 		public function GetGame($gameid)
 		{
 			$db = $this->db;
