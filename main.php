@@ -615,7 +615,7 @@
 					if ($playerdb->isDead($game->Name1()) or $playerdb->isDead($game->Name2())) { /*$error = 'Action not allowed!';*/ $current = 'Game'; break; }
 					
 					// and only if the abort criteria are met
-					if( time() - strtotime($game->LastAction) < 60*60*24*7*3 || $data->Current == $player->Name() ) { /*$error = 'Action not allowed!';*/ $current = 'Game'; break; }
+					if( time() - strtotime($game->LastAction) < 60*60*24*7*3 || $game->Current == $player->Name() ) { /*$error = 'Action not allowed!';*/ $current = 'Game'; break; }
 					
 					$result = $game->FinishGame($player->Name());
 					
@@ -643,8 +643,9 @@
 						$player_rep = $player->GetSetting("Reports");
 						$outcome = $game->Outcome;
 						$winner = $game->Winner;
+						$hidden = $game->GetGameMode('HiddenCards');
 
-						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $winner);
+						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $hidden, $winner);
 					}
 					/*else $error = $result;*/
 					
