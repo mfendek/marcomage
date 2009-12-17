@@ -231,6 +231,7 @@
 			<p><input type="checkbox" name="Reports"    ><xsl:if test="$settings/Reports     = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Battle report messages</p>
 			<p><input type="checkbox" name="Forum_notification"><xsl:if test="$settings/Forum_notification = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Forum notification</p>
 			<p><input type="checkbox" name="Concepts_notification"><xsl:if test="$settings/Concepts_notification = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Concepts notification</p>
+			<p><input type="checkbox" name="RandomDeck"><xsl:if test="$settings/RandomDeck = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Random deck selection</p>
 		</div>
 		</div>
 

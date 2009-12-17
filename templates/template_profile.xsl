@@ -126,7 +126,9 @@
 							<p>
 								<input type="submit" name="send_challenge[{am:urlencode($opponent)}]" value="Send challenge" />
 								<select name="ChallengeDeck" size="1">
-									<option value="{am:urlencode($param/random_deck)}">select random</option>
+									<xsl:if test="$param/RandomDeck = 'yes'">
+										<option value="{am:urlencode($param/random_deck)}">select random</option>
+									</xsl:if>
 									<xsl:for-each select="$param/decks/*">
 										<option value="{am:urlencode(text())}"><xsl:value-of select="text()"/></option>
 									</xsl:for-each>

@@ -44,7 +44,9 @@
 		<p class="game_filters">
 			<xsl:text>Select deck </xsl:text>
 			<select name="AcceptDeck" size="1">
-				<option value="{am:urlencode($param/random_deck)}">select random</option>
+				<xsl:if test="$param/RandomDeck = 'yes'">
+					<option value="{am:urlencode($param/random_deck)}">select random</option>
+				</xsl:if>
 				<xsl:for-each select="$param/decks/*">
 					<option value="{am:urlencode(text())}"><xsl:value-of select="text()"/></option>
 				</xsl:for-each>
