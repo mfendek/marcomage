@@ -60,7 +60,7 @@
 		public function UserSettingsList() //returns list of all user setting names
 		{			
 			//translates input names to settings names
-			$settings = array("Firstname" => "Firstname", "Surname" => "Surname", "Birthdate" => "Birthdate", "Gender" => "Gender", "Email" => "Email", "Imnumber" => "Imnumber", "Country" => "Country", "Hobby" => "Hobby", "Avatar" => "Avatar", "Status" => "Status", "FriendlyFlag" => "FriendlyFlag", "BlindFlag" => "BlindFlag");
+			$settings = array('Firstname', 'Surname', 'Birthdate', 'Gender', 'Email', 'Imnumber', 'Country', 'Hobby', 'Avatar', 'Status', 'FriendlyFlag', 'BlindFlag');
 			
 			return $settings;
 		}
@@ -68,7 +68,7 @@
 		public function GameSettingsList() //returns list of all game setting names
 		{			
 			//translates input names to settings names
-			$settings = array("Timezone" => "Timezone", "Minimize" => "Minimize", "Cardtext" => "Cardtext", "Images" => "Images", "Keywords" => "Keywords", "Nationality" => "Nationality", "Chatorder" => "Chatorder", "Avatargame" => "Avatargame", "Avatarlist" => "Avatarlist", "Correction" => "Correction", "OldCardLook" => "OldCardLook", "Reports" => "Reports", "Forum_notification" => "Forum_notification", "Concepts_notification" => "Concepts_notification", "Skin" => "Skin", "Background" => "Background", "GamesDetails" => "GamesDetails", "PlayerFilter" => "PlayerFilter", "Autorefresh" => "Autorefresh", "RandomDeck" => "RandomDeck");
+			$settings = array('Timezone', 'Minimize', 'Cardtext', 'Images', 'Keywords', 'Nationality', 'Chatorder', 'Avatargame', 'Avatarlist', 'Correction', 'OldCardLook', 'Reports', 'Forum_notification', 'Concepts_notification', 'Skin', 'Background', 'GamesDetails', 'PlayerFilter', 'Autorefresh', 'RandomDeck');
 			
 			return $settings;
 		}		

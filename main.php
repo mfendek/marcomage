@@ -1922,9 +1922,9 @@
 					$settings = $settingdb->UserSettingsList();
 					$_POST['FriendlyFlag'] = (isset($_POST['FriendlyFlag'])) ? 'yes' : 'no';
 					$_POST['BlindFlag'] = (isset($_POST['BlindFlag'])) ? 'yes' : 'no';
-					foreach($settings as $input => $setting)
-						if (isset($_POST[$input]) and $input != 'Birthdate')
-							$player->ChangeSetting($setting, $_POST[$input]);
+					foreach($settings as $setting)
+						if (isset($_POST[$setting]) and $setting != 'Birthdate')
+							$player->ChangeSetting($setting, $_POST[$setting]);
 
 					//birthdate is handled separately
 					if( $_POST['Birthyear'] == "" ) $_POST['Birthyear'] = '0000';
@@ -1955,9 +1955,9 @@
 					unset($settings['PlayerFilter']);
 					unset($settings['Autorefresh']);
 					
-					foreach($settings as $input => $setting)
+					foreach($settings as $setting)
 					{
-						if( isset($_POST[$input]) ) // option is checked
+						if( isset($_POST[$setting]) ) // option is checked
 							$player->ChangeSetting($setting, "yes");
 						else // assume option is unchecked
 							$player->ChangeSetting($setting, "no");
