@@ -231,9 +231,13 @@
 					</xsl:for-each>
 				</select>
 				<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" />
-				<input type="checkbox" name="HiddenCards" />
+				<input type="checkbox" name="HiddenCards">
+					<xsl:if test="$param/BlindFlag = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
 				<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" />
-				<input type="checkbox" name="FriendlyPlay" />
+				<input type="checkbox" name="FriendlyPlay">
+					<xsl:if test="$param/FriendlyFlag = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
 				<input type="submit" name="host_game" value="Host game" />
 			</p>
 		</xsl:if>

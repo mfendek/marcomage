@@ -132,8 +132,18 @@
 									</xsl:for-each>
 								</select>
 							</p>
-							<p><input type="checkbox" name="HiddenCards" />Hide opponent's cards</p>
-							<p><input type="checkbox" name="FriendlyPlay" />Friendly play</p>
+							<p>
+								<input type="checkbox" name="HiddenCards">
+									<xsl:if test="$param/HiddenCards = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+								</input>
+								<xsl:text>Hide opponent's cards</xsl:text>
+							</p>
+							<p>
+								<input type="checkbox" name="FriendlyPlay">
+									<xsl:if test="$param/FriendlyPlay = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+								</input>
+								<xsl:text>Friendly play</xsl:text>
+							</p>
 							<textarea name="Content" rows="10" cols="50"></textarea>
 						</xsl:otherwise>
 					</xsl:choose>

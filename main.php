@@ -2925,6 +2925,8 @@ case 'Profile':
 	}
 
 	$params['profile']['CurPlayerName'] = $player->Name();
+	$params['profile']['HiddenCards'] = $player->GetSetting("BlindFlag");
+	$params['profile']['FriendlyPlay'] = $player->GetSetting("FriendlyFlag");
 	$params['profile']['timezone'] = $player->GetSetting("Timezone");
 	$params['profile']['send_challenges'] = ($access_rights[$player->Type()]["send_challenges"]) ? 'yes' : 'no';
 	$params['profile']['messages'] = ($access_rights[$player->Type()]["messages"]) ? 'yes' : 'no';
@@ -3062,6 +3064,8 @@ case 'Games':
 	$params['games']['PlayerName'] = $player->Name();
 	$params['games']['timezone'] = $player->GetSetting("Timezone");
 	$params['games']['games_details'] = $player->GetSetting("GamesDetails");
+	$params['games']['BlindFlag'] = $player->GetSetting("BlindFlag");
+	$params['games']['FriendlyFlag'] = $player->GetSetting("FriendlyFlag");
 
 	$list = $gamedb->ListGamesData($player->Name());
 	if (count($list) > 0)
