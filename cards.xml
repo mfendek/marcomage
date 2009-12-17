@@ -1180,7 +1180,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Banish. Holy.</keywords>
+    <keywords>Holy. Banish.</keywords>
     <effect><![CDATA[Attack: 10<br />Gems: +6]]></effect>
     <code><![CDATA[$this->Attack(10, $hisdata->Tower, $hisdata->Wall); $mydata->Gems+= 6;]]></code>
   </card>
@@ -1258,7 +1258,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Charge (4). Quick.</keywords>
+    <keywords>Quick. Charge (4).</keywords>
     <effect><![CDATA[Attack: 1<br />Gems: +3]]></effect>
     <code><![CDATA[$this->Attack(1, $hisdata->Tower, $hisdata->Wall); $mydata->Gems+= 3;]]></code>
   </card>
@@ -2259,7 +2259,7 @@
       <recruits>20</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Mage. Swift. Durable.</keywords>
+    <keywords>Mage. Durable. Swift.</keywords>
     <effect><![CDATA[Attack: 25]]></effect>
     <code><![CDATA[$this->Attack(25, $hisdata->Tower, $hisdata->Wall);]]></code>
   </card>
@@ -2519,7 +2519,7 @@
       <recruits>12</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Skirmisher. Soldier.</keywords>
+    <keywords>Soldier. Skirmisher.</keywords>
     <effect><![CDATA[Attack: 16]]></effect>
     <code><![CDATA[$this->Attack(16, $hisdata->Tower, $hisdata->Wall);]]></code>
   </card>
@@ -2909,7 +2909,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Burning. Flare attack. Rebirth.</keywords>
+    <keywords>Burning. Rebirth. Flare attack.</keywords>
     <effect><![CDATA[Attack: 10N where N is #<b>Burning</b> cards in the game]]></effect>
     <code><![CDATA[$tmp = ($this->KeywordCount($mydata->Hand, "Burning") + $this->KeywordCount($hisdata->Hand, "Burning"))*10; $this->Attack($tmp, $hisdata->Tower, $hisdata->Wall);]]></code>
   </card>
@@ -3385,7 +3385,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Banish. Unliving.</keywords>
+    <keywords>Unliving. Banish.</keywords>
     <effect><![CDATA[Enemy wall: -6]]></effect>
     <code><![CDATA[$hisdata->Wall-= 6;]]></code>
   </card>
@@ -4214,7 +4214,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Mage. Burning.</keywords>
+    <keywords>Burning. Mage.</keywords>
     <effect><![CDATA[Gems: -3<br />Enemy wall: -4<br />Enemy tower: -4]]></effect>
     <code><![CDATA[$mydata->Gems-= 3; $hisdata->Wall-= 4; $hisdata->Tower-= 4;]]></code>
   </card>
@@ -5545,7 +5545,7 @@
       <recruits>39</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Beast. Skirmisher. Soldier.</keywords>
+    <keywords>Beast. Soldier. Skirmisher.</keywords>
     <effect><![CDATA[If there is a <b>Beast</b> and a <b>Soldier</b> card in hand (not counting this one)<br />Enemy wall: = 0<br />Always:<br />Attack: 35]]></effect>
     <code><![CDATA[$b_found = $s_found = false; for ($i = 1; $i <= 8; $i++) if ($i != $cardpos) { if ((!$b_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Beast"))) $b_found = true; if ((!$s_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Soldier"))) $s_found = true; } if ($b_found AND $s_found) $hisdata->Wall = 0; $this->Attack(35, $hisdata->Tower, $hisdata->Wall);]]></code>
   </card>
@@ -5903,7 +5903,7 @@
       <recruits>22</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Swift. Durable. Banish. Enduring (25).</keywords>
+    <keywords>Durable. Swift. Banish. Enduring (25).</keywords>
     <effect><![CDATA[Attack: 15<br />If not New<br />Gems: +5<br />Recruits: +5]]></effect>
     <code><![CDATA[$this->Attack(15, $hisdata->Tower, $hisdata->Wall); if (!isset($mynewflags[$cardpos])) { $mydata->Gems+= 5; $mydata->Recruits+= 5; }]]></code>
   </card>

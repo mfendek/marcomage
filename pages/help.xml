@@ -301,6 +301,45 @@ Keywords represent information about the card that is too big to fit in the card
 	<li><b>Unliving</b> - basic gain 9, bonus gain 8, side-effect (Sturdiness): third of the total cost of the played card will be returned.</li>
 </ul>
 
+<p>Keywords are divided into two groups - category and effect keywords. Category keywords are executed as first, effect keywords, as second. Here is an order of keyword execution within each group (keywords on cards are listed in such order):</p>
+
+<h4>Category keywords</h4>
+
+<ol>
+	<li>Alliance</li>
+	<li>Barbarian</li>
+	<li>Beast</li>
+	<li>Brigand</li>
+	<li>Burning</li>
+	<li>Destruction</li>
+	<li>Dragon</li>
+	<li>Holy</li>
+	<li>Illusion</li>
+	<li>Legend</li>
+	<li>Mage</li>
+	<li>Nature</li>
+	<li>Restoration</li>
+	<li>Soldier</li>
+	<li>Titan</li>
+	<li>Undead</li>
+	<li>Unliving</li>
+</ol>
+
+<h4>Effect keywords</h4>
+
+<ol>
+	<li>Durable</li>
+	<li>Quick</li>
+	<li>Swift</li>
+	<li>Banish</li>
+	<li>Skirmisher</li>
+	<li>Rebirth</li>
+	<li>Flare attack</li>
+	<li>Frenzy</li>
+	<li>Enduring</li>
+	<li>Charge</li>
+</ol>
+
 <h4>Tokens</h4>
 <p>
 Some keywords have a side-effect, that requires a token counter. Player can choose up to three token counters for each deck in the deck section. It is possible to assign the token counters automatically by selecting the "Auto" button. Playing a card with keyword, which is associated with the token counter, will raise the value of the token counter. The number of tokens received varies with each keyword (see the Keyword section above). When a token counter reaches 100 a side-effect will happen and the token counter will be reseted to 0. This side-effect takes place directly after the card effect of the played card. Each token-associated keyword has a token gain. This information tells you how many tokens are gained when card with such keyword is played. Token gain consists of basic gain (number of tokens you get for the played card) and bonus gain (number of tokens you gain for each additional card in hand with the same keyword as the played card). Keywords with high basic gain are generally better used as support keywords, since they don't require to have many cards with the same keyword in hand, however their token gains might not be very high. Keywords with high bonus gain require many cards with the same keyword, but when there are such cards in hand, token gains can be very high.

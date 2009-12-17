@@ -544,105 +544,89 @@
 	
 				//begin keyword processing
 				
-				//begin order independent keywords
+				//begin category keywords
 				
-				//process Durable cards - they stays on hand
-				if ($card->HasKeyWord("Durable"))
-					$nextcard = $cardid;
-				
-				//process Quick cards - play again with no production
-				if ($card->HasKeyWord("Quick"))
+				//process Alliance cards - Arcane knowledge (additional Production X2)
+				if ($card->HasKeyWord("Alliance"))
 				{
-					$nextplayer = $playername;
-					$bricks_production = 0;
-					$gems_production = 0;
-					$recruits_production = 0;
-				}
-				
-				//process Swift cards - play again with production
-				if ($card->HasKeyWord("Swift"))
-				{
-					$nextplayer = $playername;
-				}
-				
-				//process Unliving cards - Sturdiness (1/3 of total card cost return)
-				if ($card->HasKeyWord("Unliving"))
-				{
-					$ammount = $this->KeywordCount($mydata->Hand, "Unliving") - 1; // we don't count the played card
-					$token_index = array_search("Unliving", $mydata->TokenNames);
+					$ammount = $this->KeywordCount($mydata->Hand, "Alliance") - 1; // we don't count the played card
+					$token_index = array_search("Alliance", $mydata->TokenNames);
 					
 					if ($token_index)
 					{
-						$mydata->TokenValues[$token_index]+= 9 + $ammount * 8; // basic gain + bonus gain
+						$mydata->TokenValues[$token_index]+= 17 + $ammount * 3; // basic gain + bonus gain
 						
 						if ($mydata->TokenValues[$token_index] >= 100)
 						{
-							$mydata->Bricks+= round($card->CardData->Bricks / 3);
-							$mydata->Gems+= round($card->CardData->Gems / 3);
-							$mydata->Recruits+= round($card->CardData->Recruits / 3);
+							$bricks_production*= 2;
+							$gems_production*= 2;
+							$recruits_production*= 2;
 							
 							$mydata->TokenValues[$token_index] = 0;
 						}
 					}
 				}
 				
-				//process Soldier cards - Veteran troops (1/2 recruits card cost return)
-				if ($card->HasKeyWord("Soldier"))
+				//process Barbarian cards - Devastation (additional damage to enemy wall)
+				if ($card->HasKeyWord("Barbarian"))
 				{
-					$ammount = $this->KeywordCount($mydata->Hand, "Soldier") - 1; // we don't count the played card
-					$token_index = array_search("Soldier", $mydata->TokenNames);
+					$ammount = $this->KeywordCount($mydata->Hand, "Barbarian") - 1; // we don't count the played card
+					$token_index = array_search("Barbarian", $mydata->TokenNames);
 					
 					if ($token_index)
 					{
-						$mydata->TokenValues[$token_index]+= 15 + $ammount * 10; // basic gain + bonus gain
+						$mydata->TokenValues[$token_index]+= 4 + $ammount * 15; // basic gain + bonus gain
 						
 						if ($mydata->TokenValues[$token_index] >= 100)
 						{
-							$mydata->Recruits+= round($card->CardData->Recruits / 2);
+							$damage = array("Common" => 3, "Uncommon" => 8, "Rare" => 15);
+							$hisdata->Wall-= $damage[$card->GetClass()];
 							
 							$mydata->TokenValues[$token_index] = 0;
 						}
 					}
 				}
 				
-				//process Mage cards - Willpower (raises magic by 1 or adds 10 gems)
-				if ($card->HasKeyWord("Mage"))
+				//process Beast cards - Fierce attack (additional damage to enemy)
+				if ($card->HasKeyWord("Beast"))
 				{
-					$ammount = $this->KeywordCount($mydata->Hand, "Mage") - 1; // we don't count the played card
-					$token_index = array_search("Mage", $mydata->TokenNames);
+					$ammount = $this->KeywordCount($mydata->Hand, "Beast") - 1; // we don't count the played card
+					$token_index = array_search("Beast", $mydata->TokenNames);
 					
 					if ($token_index)
 					{
-						$mydata->TokenValues[$token_index]+= 10 + $ammount * 3; // basic gain + bonus gain
+						$mydata->TokenValues[$token_index]+= 14 + $ammount * 10; // basic gain + bonus gain
 						
 						if ($mydata->TokenValues[$token_index] >= 100)
 						{
-							if ($mydata->Magic <= ($hisdata->Magic + 1)) $mydata->Magic+= 1;
-							else $mydata->Gems+= 10;
+							$damage = array("Common" => 2, "Uncommon" => 5, "Rare" => 10);
+							$this->Attack($damage[$card->GetClass()], $hisdata->Tower, $hisdata->Wall);
 							
 							$mydata->TokenValues[$token_index] = 0;
 						}
 					}
 				}
 				
-				//process Undead cards - Pillage (gain stock based on damage caused)
-				if ($card->HasKeyWord("Undead"))
+				//process Brigand cards - Robbery (steal additional stock)
+				if ($card->HasKeyWord("Brigand"))
 				{
-					$ammount = $this->KeywordCount($mydata->Hand, "Undead") - 1; // we don't count the played card
-					$token_index = array_search("Undead", $mydata->TokenNames);
+					$ammount = $this->KeywordCount($mydata->Hand, "Brigand") - 1; // we don't count the played card
+					$token_index = array_search("Brigand", $mydata->TokenNames);
 					
 					if ($token_index)
 					{
-						$mydata->TokenValues[$token_index]+= 5 + $ammount * 5; // basic gain + bonus gain
+						$mydata->TokenValues[$token_index]+= 10 + $ammount * 10; // basic gain + bonus gain
 						
 						if ($mydata->TokenValues[$token_index] >= 100)
 						{
-							$wall_damage = max(0, $hisdata_temp['Wall'] - max(0, $hisdata->Wall));
-							$tower_damage = max(0, $hisdata_temp['Tower'] - max(0, $hisdata->Tower));
-							$gained = round($wall_damage/5) + round($tower_damage/4);
+							$stock = array("Common" => 1, "Uncommon" => 2, "Rare" => 3);
+							$gained = $stock[$card->GetClass()];
 							$mydata->Bricks+= $gained;
 							$mydata->Gems+= $gained;
 							$mydata->Recruits+= $gained;
+							$hisdata->Bricks-= $gained;
+							$hisdata->Gems-= $gained;
+							$hisdata->Recruits-= $gained;
 							
 							$mydata->TokenValues[$token_index] = 0;
 						}
@@ -689,6 +673,37 @@
 							$mydata->TokenValues[$token_index] = 0;
 						}
 					}
+				}
+				
+				//process Destruction cards - reduces enemy facility or resource
+				if (($card->HasKeyWord("Destruction")) AND ($mylast_card->HasKeyword("Destruction")) AND ($mylast_action == 'play') AND ($mylast_card->GetClass() != 'Common') AND ($cardid != $mylast_card->GetID()))
+				{
+					$max = max($hisdata->Quarry, $hisdata->Magic, $hisdata->Dungeons);
+					if ($max > 3)
+					{
+						$facilities = array("Quarry" => $hisdata->Quarry, "Magic" => $hisdata->Magic, "Dungeons" => $hisdata->Dungeons);
+						$temp = array();
+						foreach ($facilities as $facility => $f_value)
+							if ($f_value == $max) $temp[$facility] = $f_value;
+						$chosen = array_rand($temp);						
+						$hisdata->$chosen--;
+					}
+					else
+					{
+						$max = max($hisdata->Bricks, $hisdata->Gems, $hisdata->Recruits);
+						$resources = array("Bricks" => $hisdata->Bricks, "Gems" => $hisdata->Gems, "Recruits" => $hisdata->Recruits);
+						$temp = array();
+						foreach ($resources as $resource => $r_value)
+							if ($r_value == $max) $temp[$resource] = $r_value;
+						$chosen = array_rand($temp);						
+						$hisdata->$chosen-= 10;
+					}
+				}
+				
+				//process Dragon cards - get a Dragon egg when there are at least two dragon cards in hand
+				if ($card->HasKeyWord("Dragon"))
+				{
+					if ($this->KeywordCount($mydata->Hand, "Dragon") > 1) $nextcard = 131;
 				}
 				
 				//process Holy cards - Purification (discard one random undead card from enemy hand and get additional stock)
@@ -739,76 +754,186 @@
 					}
 				}
 				
-				//process Brigand cards - Robbery (steal additional stock)
-				if ($card->HasKeyWord("Brigand"))
+				//process Illusion cards - draw a rare card from enemy deck
+				if (($card->HasKeyWord("Illusion")) AND ($mylast_card->HasKeyword("Illusion")) AND ($mylast_action == 'play') AND ($mylast_card->GetClass() != 'Common') AND ($cardid != $mylast_card->GetID()))
 				{
-					$ammount = $this->KeywordCount($mydata->Hand, "Brigand") - 1; // we don't count the played card
-					$token_index = array_search("Brigand", $mydata->TokenNames);
+					$nextcard = $this->DrawCard($hisdata->Deck->Rare, $mydata->Hand, $cardpos, 'DrawCard_list');
+				}
+				
+				//process Legend cards - raises all facilities by one, if there is a rare card in hand
+				if ($card->HasKeyWord("Legend"))
+				{
+					$found = false;
+					for ($i = 1; $i <= 8; $i++)
+						if (($i != $cardpos) AND !$found) // played card does not count
+						{
+							$cur_card = $carddb->GetCard($mydata->Hand[$i]);
+							if ($cur_card->GetClass() == "Rare") $found = true;
+						}
+					
+					if ($found)
+					{
+						$mydata->Quarry+= 1;
+						$mydata->Magic+= 1;
+						$mydata->Dungeons+= 1;
+					}
+				}
+				
+				//process Mage cards - Willpower (raises magic by 1 or adds 10 gems)
+				if ($card->HasKeyWord("Mage"))
+				{
+					$ammount = $this->KeywordCount($mydata->Hand, "Mage") - 1; // we don't count the played card
+					$token_index = array_search("Mage", $mydata->TokenNames);
 					
 					if ($token_index)
 					{
-						$mydata->TokenValues[$token_index]+= 10 + $ammount * 10; // basic gain + bonus gain
+						$mydata->TokenValues[$token_index]+= 10 + $ammount * 3; // basic gain + bonus gain
 						
 						if ($mydata->TokenValues[$token_index] >= 100)
 						{
-							$stock = array("Common" => 1, "Uncommon" => 2, "Rare" => 3);
-							$gained = $stock[$card->GetClass()];
+							if ($mydata->Magic <= ($hisdata->Magic + 1)) $mydata->Magic+= 1;
+							else $mydata->Gems+= 10;
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
+					}
+				}
+				
+				//process Nature cards - draw a rare nature card
+				if (($card->HasKeyWord("Nature")) AND ($mylast_card->HasKeyword("Nature")) AND ($mylast_action == 'play') AND ($mylast_card->GetClass() != 'Common') AND ($cardid != $mylast_card->GetID()))
+				{
+					$nextcard = $this->DrawCard($carddb->GetList(array('class'=>"Rare", 'keyword'=>"Nature")), $mydata->Hand, $cardpos, 'DrawCard_list');
+				}
+				
+				//process Restoration cards - raises facility or resource
+				if (($card->HasKeyWord("Restoration")) AND ($mylast_card->HasKeyword("Restoration")) AND ($mylast_action == 'play') AND ($mylast_card->GetClass() != 'Common') AND ($cardid != $mylast_card->GetID()))
+				{
+					$min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
+					if ($min < 3)
+					{
+						$facilities = array("Quarry" => $mydata->Quarry, "Magic" => $mydata->Magic, "Dungeons" => $mydata->Dungeons);
+						$temp = array();
+						foreach ($facilities as $facility => $f_value)
+							if ($f_value == $min) $temp[$facility] = $f_value;
+						$chosen = array_rand($temp);						
+						$mydata->$chosen++;
+					}
+					else
+					{
+						$min = min($mydata->Bricks, $mydata->Gems, $mydata->Recruits);
+						$resources = array("Bricks" => $mydata->Bricks, "Gems" => $mydata->Gems, "Recruits" => $mydata->Recruits);
+						$temp = array();
+						foreach ($resources as $resource => $r_value)
+							if ($r_value == $min) $temp[$resource] = $r_value;
+						$chosen = array_rand($temp);						
+						$mydata->$chosen+= 10;
+					}
+				}
+				
+				//process Soldier cards - Veteran troops (1/2 recruits card cost return)
+				if ($card->HasKeyWord("Soldier"))
+				{
+					$ammount = $this->KeywordCount($mydata->Hand, "Soldier") - 1; // we don't count the played card
+					$token_index = array_search("Soldier", $mydata->TokenNames);
+					
+					if ($token_index)
+					{
+						$mydata->TokenValues[$token_index]+= 15 + $ammount * 10; // basic gain + bonus gain
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$mydata->Recruits+= round($card->CardData->Recruits / 2);
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
+					}
+				}
+				
+				//process Titan cards - Titan's will (draw a Titan card)
+				if ($card->HasKeyWord("Titan"))
+				{
+					$ammount = $this->KeywordCount($mydata->Hand, "Titan") - 1; // we don't count the played card
+					$token_index = array_search("Titan", $mydata->TokenNames);
+					
+					if ($token_index)
+					{
+						$mydata->TokenValues[$token_index]+= 22 + $ammount * 5; // basic gain + bonus gain
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Titan")), $mydata->Hand, $cardpos, 'DrawCard_list');
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
+					}
+				}
+				
+				//process Undead cards - Pillage (gain stock based on damage caused)
+				if ($card->HasKeyWord("Undead"))
+				{
+					$ammount = $this->KeywordCount($mydata->Hand, "Undead") - 1; // we don't count the played card
+					$token_index = array_search("Undead", $mydata->TokenNames);
+					
+					if ($token_index)
+					{
+						$mydata->TokenValues[$token_index]+= 5 + $ammount * 5; // basic gain + bonus gain
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$wall_damage = max(0, $hisdata_temp['Wall'] - max(0, $hisdata->Wall));
+							$tower_damage = max(0, $hisdata_temp['Tower'] - max(0, $hisdata->Tower));
+							$gained = round($wall_damage/5) + round($tower_damage/4);
 							$mydata->Bricks+= $gained;
 							$mydata->Gems+= $gained;
 							$mydata->Recruits+= $gained;
-							$hisdata->Bricks-= $gained;
-							$hisdata->Gems-= $gained;
-							$hisdata->Recruits-= $gained;
 							
 							$mydata->TokenValues[$token_index] = 0;
 						}
 					}
 				}
 				
-				//process Barbarian cards - Devastation (additional damage to enemy wall)
-				if ($card->HasKeyWord("Barbarian"))
+				//process Unliving cards - Sturdiness (1/3 of total card cost return)
+				if ($card->HasKeyWord("Unliving"))
 				{
-					$ammount = $this->KeywordCount($mydata->Hand, "Barbarian") - 1; // we don't count the played card
-					$token_index = array_search("Barbarian", $mydata->TokenNames);
+					$ammount = $this->KeywordCount($mydata->Hand, "Unliving") - 1; // we don't count the played card
+					$token_index = array_search("Unliving", $mydata->TokenNames);
 					
 					if ($token_index)
 					{
-						$mydata->TokenValues[$token_index]+= 4 + $ammount * 15; // basic gain + bonus gain
+						$mydata->TokenValues[$token_index]+= 9 + $ammount * 8; // basic gain + bonus gain
 						
 						if ($mydata->TokenValues[$token_index] >= 100)
 						{
-							$damage = array("Common" => 3, "Uncommon" => 8, "Rare" => 15);
-							$hisdata->Wall-= $damage[$card->GetClass()];
+							$mydata->Bricks+= round($card->CardData->Bricks / 3);
+							$mydata->Gems+= round($card->CardData->Gems / 3);
+							$mydata->Recruits+= round($card->CardData->Recruits / 3);
 							
 							$mydata->TokenValues[$token_index] = 0;
 						}
 					}
 				}
 				
-				//process Beast cards - Fierce attack (additional damage to enemy)
-				if ($card->HasKeyWord("Beast"))
+				//end category keywords
+				
+				//begin effect keywords
+				
+				//process Durable cards - they stays on hand
+				if ($card->HasKeyWord("Durable"))
+					$nextcard = $cardid;
+				
+				//process Quick cards - play again with no production
+				if ($card->HasKeyWord("Quick"))
 				{
-					$ammount = $this->KeywordCount($mydata->Hand, "Beast") - 1; // we don't count the played card
-					$token_index = array_search("Beast", $mydata->TokenNames);
-					
-					if ($token_index)
-					{
-						$mydata->TokenValues[$token_index]+= 14 + $ammount * 10; // basic gain + bonus gain
-						
-						if ($mydata->TokenValues[$token_index] >= 100)
-						{
-							$damage = array("Common" => 2, "Uncommon" => 5, "Rare" => 10);
-							$this->Attack($damage[$card->GetClass()], $hisdata->Tower, $hisdata->Wall);
-							
-							$mydata->TokenValues[$token_index] = 0;
-						}
-					}
+					$nextplayer = $playername;
+					$bricks_production = 0;
+					$gems_production = 0;
+					$recruits_production = 0;
 				}
 				
-				//process Dragon cards - get a Dragon egg when there are at least two dragon cards in hand
-				if ($card->HasKeyWord("Dragon"))
+				//process Swift cards - play again with production
+				if ($card->HasKeyWord("Swift"))
 				{
-					if ($this->KeywordCount($mydata->Hand, "Dragon") > 1) $nextcard = 131;
+					$nextplayer = $playername;
 				}
 				
 				//process Banish cards - discard one random Durable card from enemy hand, if there is one
@@ -840,65 +965,6 @@
 					}
 				}
 				
-				//process Titan cards - Titan's will (draw a Titan card)
-				if ($card->HasKeyWord("Titan"))
-				{
-					$ammount = $this->KeywordCount($mydata->Hand, "Titan") - 1; // we don't count the played card
-					$token_index = array_search("Titan", $mydata->TokenNames);
-					
-					if ($token_index)
-					{
-						$mydata->TokenValues[$token_index]+= 22 + $ammount * 5; // basic gain + bonus gain
-						
-						if ($mydata->TokenValues[$token_index] >= 100)
-						{
-							$nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Titan")), $mydata->Hand, $cardpos, 'DrawCard_list');
-							
-							$mydata->TokenValues[$token_index] = 0;
-						}
-					}
-				}
-				
-				//process Alliance cards - Arcane knowledge (additional Production X2)
-				if ($card->HasKeyWord("Alliance"))
-				{
-					$ammount = $this->KeywordCount($mydata->Hand, "Alliance") - 1; // we don't count the played card
-					$token_index = array_search("Alliance", $mydata->TokenNames);
-					
-					if ($token_index)
-					{
-						$mydata->TokenValues[$token_index]+= 17 + $ammount * 3; // basic gain + bonus gain
-						
-						if ($mydata->TokenValues[$token_index] >= 100)
-						{
-							$bricks_production*= 2;
-							$gems_production*= 2;
-							$recruits_production*= 2;
-							
-							$mydata->TokenValues[$token_index] = 0;
-						}
-					}
-				}
-				
-				//process Legend cards - raises all facilities by one, if there is a rare card in hand
-				if ($card->HasKeyWord("Legend"))
-				{
-					$found = false;
-					for ($i = 1; $i <= 8; $i++)
-						if (($i != $cardpos) AND !$found) // played card does not count
-						{
-							$cur_card = $carddb->GetCard($mydata->Hand[$i]);
-							if ($cur_card->GetClass() == "Rare") $found = true;
-						}
-					
-					if ($found)
-					{
-						$mydata->Quarry+= 1;
-						$mydata->Magic+= 1;
-						$mydata->Dungeons+= 1;
-					}
-				}
-				
 				//process Skirmisher cards - discard one random Charge card from enemy hand, if there is one
 				if ($card->HasKeyWord("Skirmisher"))
 				{
@@ -927,72 +993,6 @@
 						$hisdata->NewCards[$discarded_pos] = 1;
 					}
 				}
-				
-				//process Destruction cards - reduces enemy facility or resource
-				if (($card->HasKeyWord("Destruction")) AND ($mylast_card->HasKeyword("Destruction")) AND ($mylast_action == 'play') AND ($mylast_card->GetClass() != 'Common') AND ($cardid != $mylast_card->GetID()))
-				{
-					$max = max($hisdata->Quarry, $hisdata->Magic, $hisdata->Dungeons);
-					if ($max > 3)
-					{
-						$facilities = array("Quarry" => $hisdata->Quarry, "Magic" => $hisdata->Magic, "Dungeons" => $hisdata->Dungeons);
-						$temp = array();
-						foreach ($facilities as $facility => $f_value)
-							if ($f_value == $max) $temp[$facility] = $f_value;
-						$chosen = array_rand($temp);						
-						$hisdata->$chosen--;
-					}
-					else
-					{
-						$max = max($hisdata->Bricks, $hisdata->Gems, $hisdata->Recruits);
-						$resources = array("Bricks" => $hisdata->Bricks, "Gems" => $hisdata->Gems, "Recruits" => $hisdata->Recruits);
-						$temp = array();
-						foreach ($resources as $resource => $r_value)
-							if ($r_value == $max) $temp[$resource] = $r_value;
-						$chosen = array_rand($temp);						
-						$hisdata->$chosen-= 10;
-					}
-				}
-				
-				//process Restoration cards - raises facility or resource
-				if (($card->HasKeyWord("Restoration")) AND ($mylast_card->HasKeyword("Restoration")) AND ($mylast_action == 'play') AND ($mylast_card->GetClass() != 'Common') AND ($cardid != $mylast_card->GetID()))
-				{
-					$min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
-					if ($min < 3)
-					{
-						$facilities = array("Quarry" => $mydata->Quarry, "Magic" => $mydata->Magic, "Dungeons" => $mydata->Dungeons);
-						$temp = array();
-						foreach ($facilities as $facility => $f_value)
-							if ($f_value == $min) $temp[$facility] = $f_value;
-						$chosen = array_rand($temp);						
-						$mydata->$chosen++;
-					}
-					else
-					{
-						$min = min($mydata->Bricks, $mydata->Gems, $mydata->Recruits);
-						$resources = array("Bricks" => $mydata->Bricks, "Gems" => $mydata->Gems, "Recruits" => $mydata->Recruits);
-						$temp = array();
-						foreach ($resources as $resource => $r_value)
-							if ($r_value == $min) $temp[$resource] = $r_value;
-						$chosen = array_rand($temp);						
-						$mydata->$chosen+= 10;
-					}
-				}
-				
-				//process Illusion cards - draw a rare card from enemy deck
-				if (($card->HasKeyWord("Illusion")) AND ($mylast_card->HasKeyword("Illusion")) AND ($mylast_action == 'play') AND ($mylast_card->GetClass() != 'Common') AND ($cardid != $mylast_card->GetID()))
-				{
-					$nextcard = $this->DrawCard($hisdata->Deck->Rare, $mydata->Hand, $cardpos, 'DrawCard_list');
-				}
-				
-				//process Nature cards - draw a rare nature card
-				if (($card->HasKeyWord("Nature")) AND ($mylast_card->HasKeyword("Nature")) AND ($mylast_action == 'play') AND ($mylast_card->GetClass() != 'Common') AND ($cardid != $mylast_card->GetID()))
-				{
-					$nextcard = $this->DrawCard($carddb->GetList(array('class'=>"Rare", 'keyword'=>"Nature")), $mydata->Hand, $cardpos, 'DrawCard_list');
-				}
-				
-				//end order independent keywords
-				
-				//begin order dependent keywords
 				
 				//process Rebirth cards - if there are enough Burning cards in game the card stays on hand and player get additional gems
 				if ($card->HasKeyWord("Rebirth"))
@@ -1058,7 +1058,7 @@
 					if ($hisdata->Wall == 0) $hisdata->Tower-= $charge_damage;
 				}
 				
-				//end order dependent keywords
+				//end effect keywords
 				
 				//end keyword processing
 				
