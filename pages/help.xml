@@ -359,6 +359,7 @@ Let's take the <b>Alliance</b> keyword for example. First you need to set one to
 	<li>Battle report messages - when active, system will automaticaly send private message to inform you about a game outcome (when it finishes) or when someone accepts or rejects your challenge</li>
 	<li>Forum notification - display forum notification (new posts) in the menubar</li>
 	<li>Concepts notification - display concepts notification (new concepts) in the menubar</li>
+	<li>Random deck selection - allows to choose a random deck to play with when starting a game</li>
 </ul>
 
 <h4>Keyboard shortcuts</h4>
