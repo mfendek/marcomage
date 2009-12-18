@@ -239,7 +239,7 @@
 					<xsl:if test="$param/BlindFlag = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 				</input>
 				<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" />
-				<input type="checkbox" name="FriendlyPlay">
+				<input type="checkbox" name="FriendlyMode">
 					<xsl:if test="$param/FriendlyFlag = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 				</input>
 				<input type="submit" name="host_game" value="Host game" />

@@ -712,7 +712,7 @@
 					
 					// set game modes
 					$hidden_cards = (isset($_POST['HiddenCards']) ? 'yes' : 'no');
-					$friendly_play = (isset($_POST['FriendlyPlay']) ? 'yes' : 'no');
+					$friendly_play = (isset($_POST['FriendlyMode']) ? 'yes' : 'no');
 					$game_modes = array();
 					if ($hidden_cards == "yes") $game_modes[] = 'HiddenCards';
 					if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
