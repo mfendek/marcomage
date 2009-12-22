@@ -997,10 +997,10 @@
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
-    <modes>0</modes>
-    <keywords>Durable.</keywords>
-    <effect><![CDATA[-1 random resource<br />Enemy tower: -3]]></effect>
-    <code><![CDATA[$temp_array = array("Bricks", "Gems", "Recruits"); $mydata->$temp_array[array_rand($temp_array)]-= 1; $hisdata->Tower-= 3;]]></code>
+    <modes>8</modes>
+    <keywords/>
+    <effect><![CDATA[-1 random resource<br />Enemy tower: -3<br />Select a card from hand to be replaced with Ninja]]></effect>
+    <code><![CDATA[$temp_array = array("Bricks", "Gems", "Recruits"); $mydata->$temp_array[array_rand($temp_array)]-= 1; $hisdata->Tower-= 3; $mydata->Hand[$mode] = 76; if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;]]></code>
   </card>
   <card id="77">
     <name>Amazon tribe</name>
@@ -4416,8 +4416,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Each player suffers 4 damage for each non-<b>Undead</b> card in his or her hand<br/>First 3 non-<b>Undead</b> cards aren't counted]]></effect>
-    <code><![CDATA[$tmp = $this->KeywordCount($mydata->Hand, "Undead"); $tmp = max(5 - $tmp,0); $this->Attack($tmp*4, $mydata->Tower, $mydata->Wall); $tmp = $this->KeywordCount($hisdata->Hand, "Undead"); $tmp = max(5 - $tmp,0); $this->Attack($tmp*4, $hisdata->Tower, $hisdata->Wall);]]></code>
+    <effect><![CDATA[Attack: 4N<br />N is #<b>Undead</b> cards in your hand (max 5)]]></effect>
+    <code><![CDATA[$this->Attack((min($this->KeywordCount($mydata->Hand, "Undead"), 5) * 4), $hisdata->Tower, $hisdata->Wall);]]></code>
   </card>
   <card id="334">
     <name>Tarkhan</name>
@@ -4508,8 +4508,8 @@
     </cost>
     <modes>0</modes>
     <keywords>Legend. Swift.</keywords>
-    <effect><![CDATA[Attack: 26<br />If last card played was a <b>Mage</b><br />Gems: +#Magic*3]]></effect>
-    <code><![CDATA[if (($mylast_card->HasKeyword("Mage")) and ($mylast_action == 'play')) $mydata->Gems+= $mydata->Magic * 3; $this->Attack(26, $hisdata->Tower, $hisdata->Wall);]]></code>
+    <effect><![CDATA[Attack: 26<br />If last card played was a <b>Mage</b><br />Gems production x4]]></effect>
+    <code><![CDATA[if (($mylast_card->HasKeyword("Mage")) and ($mylast_action == 'play')) $gems_production*= 4; $this->Attack(26, $hisdata->Tower, $hisdata->Wall);]]></code>
   </card>
   <card id="339">
     <name>Prince of thieves</name>
@@ -5872,7 +5872,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Discards all <b>Mage</b> cards<br />Each player gains 5 gems, 5 tower and 10 wall for each card discarded from his hand ]]></effect>
+    <effect><![CDATA[Discards all <b>Mage</b> cards<br />Each player gains 4 gems, 4 tower and 8 wall for each card discarded from his hand ]]></effect>
     <code><![CDATA[
 							$my_counter = $his_counter = 0;
 							for ($i = 1; $i <= 8; $i++)
@@ -5890,8 +5890,8 @@
 									$his_counter++;
 								}
 							}
-							$mydata->Tower+= $my_counter * 5; $mydata->Wall+= $my_counter * 10; $mydata->Gems+= $my_counter * 5;
-							$hisdata->Tower+= $his_counter * 5; $hisdata->Wall+= $his_counter * 10; $hisdata->Gems+= $his_counter * 5;
+							$mydata->Tower+= $my_counter * 4; $mydata->Wall+= $my_counter * 8; $mydata->Gems+= $my_counter * 4;
+							$hisdata->Tower+= $his_counter * 4; $hisdata->Wall+= $his_counter * 8; $hisdata->Gems+= $his_counter * 4;
 ]]></code>
   </card>
   <card id="426">
@@ -6584,13 +6584,13 @@
     <class>Rare</class>
     <cost>
       <bricks>0</bricks>
-      <gems>22</gems>
+      <gems>20</gems>
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
     <keywords>Mage. Swift.</keywords>
-    <effect><![CDATA[Attack: 18<br />Gems production x3<br />Discard a card from enemy hand]]></effect>
-    <code><![CDATA[$this->Attack(18, $hisdata->Tower, $hisdata->Wall); $gems_production*= 3; $hisdata->Hand[$mode] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $mode, 'DrawCard_random'); $hisdata->NewCards[$mode] = 1;]]></code>
+    <effect><![CDATA[Attack: 18<br />Gems production x3<br />Replace a card from enemy hand with Wind]]></effect>
+    <code><![CDATA[$this->Attack(18, $hisdata->Tower, $hisdata->Wall); $gems_production*= 3; $hisdata->Hand[$mode] = 247; $hisdata->NewCards[$mode] = 1;]]></code>
   </card>
   <card id="468">
     <name>Strive for height</name>
@@ -6780,8 +6780,8 @@
     </cost>
     <modes>0</modes>
     <keywords>Illusion. Unliving.</keywords>
-    <effect><![CDATA[Attack based on matching card in enemy hand (C-8, U-16, R-28)]]></effect>
-    <code><![CDATA[$damage = array('Common' => 8, 'Uncommon' => 16, 'Rare' => 28); $this->Attack($damage[$carddb->GetCard($hisdata->Hand[$cardpos])->GetClass()], $hisdata->Tower, $hisdata->Wall);]]></code>
+    <effect><![CDATA[Attack based on matching card in enemy hand (C-7, U-14, R-21)]]></effect>
+    <code><![CDATA[$damage = array('Common' => 7, 'Uncommon' => 14, 'Rare' => 21); $this->Attack($damage[$carddb->GetCard($hisdata->Hand[$cardpos])->GetClass()], $hisdata->Tower, $hisdata->Wall);]]></code>
   </card>
   <card id="480">
     <name>Ambush</name>

@@ -701,10 +701,17 @@
 					}
 				}
 				
-				//process Dragon cards - get a Dragon egg when there are at least two dragon cards in hand
+				//process Dragon cards - get a Dragon egg or gems production when there are at least two dragon cards in hand
 				if ($card->HasKeyWord("Dragon"))
 				{
-					if ($this->KeywordCount($mydata->Hand, "Dragon") > 1) $nextcard = 131;
+					if ($this->KeywordCount($mydata->Hand, "Dragon") > 1)
+					{
+						$tmp = 0;
+						for ($i = 1; $i <= 8; $i++) if ($mydata->Hand[$i] == 131) $tmp++;
+						
+						if ($tmp > 0) $gems_production*= 2; // when there already is a dragon egg on hand add gems production
+						else $nextcard = 131; // add dragon egg otherwise
+					}
 				}
 				
 				//process Holy cards - Purification (discard one random undead card from enemy hand and get additional stock)
