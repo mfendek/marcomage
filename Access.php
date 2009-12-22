@@ -31,6 +31,7 @@
 	"login" => true,
 	"see_all_messages" => true, 
 	"system_notification" => true, 
+	"reset_exp" => true, 
 	"change_rights" => true);
 	
 	$moderator_rights = array(
@@ -60,6 +61,7 @@
 	"login" => true,
 	"see_all_messages" => false, 
 	"system_notification" => false, 
+	"reset_exp" => false, 
 	"change_rights" => false);
 	
 	$user_rights = array(
@@ -89,6 +91,7 @@
 	"login" => true,
 	"see_all_messages" => false, 
 	"system_notification" => false, 
+	"reset_exp" => false, 
 	"change_rights" => false);
 	
 	$squashed_rights = array(
@@ -118,6 +121,7 @@
 	"login" => true,
 	"see_all_messages" => false, 
 	"system_notification" => false, 
+	"reset_exp" => false, 
 	"change_rights" => false);
 	
 	$limited_rights = array(
@@ -147,6 +151,7 @@
 	"login" => true,
 	"see_all_messages" => false, 
 	"system_notification" => false, 
+	"reset_exp" => false, 
 	"change_rights" => false);
 	
 	$banned_rights = array(
@@ -176,6 +181,7 @@
 	"login" => false,
 	"see_all_messages" => false, 
 	"system_notification" => false, 
+	"reset_exp" => false, 
 	"change_rights" => false);
 	
 	$access_rights = array(

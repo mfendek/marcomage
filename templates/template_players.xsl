@@ -77,11 +77,13 @@
 				<xsl:variable name="columns">
 					<column name="Country"    text="Flag"       sortable="yes" />
 					<column name="Username"   text="Username"   sortable="yes" />
-					<column name="Rank"       text="Wins"       sortable="yes" />
+					<column name="Level"      text="Level"      sortable="yes" />
+					<column name="Exp"        text="Exp"        sortable="no"  />
+					<column name="Wins"       text="Wins"       sortable="no"  />
 					<column name="Losses"     text="Losses"     sortable="no"  />
 					<column name="Draws"      text="Draws"      sortable="no"  />
 					<column name="Free Slots" text="Free Slots" sortable="yes" />
-					<column name="Status"     text="Status"     sortable="no" />
+					<column name="Status"     text="Status"     sortable="no"  />
 					<column name="other"      text=""           sortable="no"  />
 				</xsl:variable>
 				
@@ -138,6 +140,12 @@
 					</xsl:variable>
 					<td><p class="{$player_class}"><xsl:value-of select="name"/></p></td>
 
+					<td><p><xsl:value-of select="level"/></p></td>
+					<td>
+						<div class="progress_bar">
+							<div><xsl:attribute name="style">width: <xsl:value-of select="round(exp * 50)"/>px</xsl:attribute></div>
+						</div>
+					</td>
 					<td><p><xsl:value-of select="wins"/></p></td>
 					<td><p><xsl:value-of select="losses"/></p></td>
 					<td><p><xsl:value-of select="draws"/></p></td>

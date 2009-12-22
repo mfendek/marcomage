@@ -185,3 +185,8 @@ div.details_float_right p /* avatar and zodiac text color */
 {
 	color: lime;
 }
+
+div.progress_bar /* exp progress bar */
+{
+	background-color: gray;
+}

@@ -23,7 +23,7 @@
 			$score = new CScore($username, $this);
 			
 			$db = $this->db;
-			$result = $db->Query('INSERT INTO `scores` (`Username`, `Wins`, `Losses`, `Draws`) VALUES ("'.$db->Escape($username).'", '.$score->ScoreData->Wins.', '.$score->ScoreData->Losses.', '.$score->ScoreData->Draws.')');
+			$result = $db->Query('INSERT INTO `scores` (`Username`) VALUES ("'.$db->Escape($username).'")');
 			if (!$result) return false;
 			
 			return $score;
@@ -49,6 +49,11 @@
 			$score->LoadScore();
 			
 			return $score;
+		}
+		
+		public function NextLevel($level)
+		{
+			return (500 + 50 * $level + 200 * floor($level / 5) + 100 * pow(floor($level / 10), 2));
 		}
 	}
 	
@@ -81,10 +86,12 @@
 		public function LoadScore()
 		{
 			$db = $this->Scores->getDB();
-			$result = $db->Query('SELECT `Wins`, `Losses`, `Draws` FROM `scores` WHERE `Username` = "'.$db->Escape($this->Username).'"');
+			$result = $db->Query('SELECT `Level`, `Exp`, `Wins`, `Losses`, `Draws` FROM `scores` WHERE `Username` = "'.$db->Escape($this->Username).'"');
 			if (!$result) return false;
 			
 			$data = $result->Next();
+			$this->ScoreData->Level = $data['Level'];
+			$this->ScoreData->Exp = $data['Exp'];
 			$this->ScoreData->Wins = $data['Wins'];
 			$this->ScoreData->Losses = $data['Losses'];
 			$this->ScoreData->Draws = $data['Draws'];
@@ -95,16 +102,42 @@
 		public function SaveScore()
 		{
 			$db = $this->Scores->getDB();
-			$result = $db->Query('UPDATE `scores` SET `Wins` = '.$this->ScoreData->Wins.', `Losses` = '.$this->ScoreData->Losses.', `Draws` = '.$this->ScoreData->Draws.' WHERE `Username` = "'.$db->Escape($this->Username).'"');
+			$result = $db->Query('UPDATE `scores` SET `Level` = '.$this->ScoreData->Level.', `Exp` = '.$this->ScoreData->Exp.', `Wins` = '.$this->ScoreData->Wins.', `Losses` = '.$this->ScoreData->Losses.', `Draws` = '.$this->ScoreData->Draws.' WHERE `Username` = "'.$db->Escape($this->Username).'"');
 			if (!$result) return false;
 			
 			return true;
+		}
+		
+		public function AddExp($exp)
+		{
+			$level_up = false;
+			$nextlevel = $this->Scores->NextLevel($this->ScoreData->Level);
+			$current_exp = $this->ScoreData->Exp + $exp;
+			
+			if ($current_exp >= $nextlevel)
+			{
+				$current_exp-= $nextlevel;
+				$this->ScoreData->Level++;
+				$level_up = true;
+			}
+			
+			$this->ScoreData->Exp = $current_exp;
+			
+			return $level_up;
+		}
+		
+		public function ResetExp()
+		{
+			$this->ScoreData->Exp = 0;
+			$this->ScoreData->Level = 0;
 		}
 	}
 	
 	
 	class CScoreData
 	{
+		public $Level = 0;
+		public $Exp = 0;
 		public $Wins = 0;
 		public $Losses = 0;
 		public $Draws = 0;

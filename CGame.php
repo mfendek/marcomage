@@ -89,6 +89,7 @@
 		
 		public function CountFreeSlots($player)
 		{
+			global $playerdb;
 			$db = $this->db;
 			
 			// outgoing = chalenges_from + hosted_games
@@ -106,7 +107,7 @@
 			
 			$data = $result->Next();
 			
-			return max(0, MAX_GAMES - $data['count']); // make sure the result is not negative
+			return max(0, MAX_GAMES + floor($playerdb->GetLevel($player) / BONUS_GAME_SLOTS) - $data['count']); // make sure the result is not negative
 		}
 		
 		public function ListChallengesFrom($player)
@@ -1434,6 +1435,160 @@
 			if ($attributes["Wall"] > 150) $attributes["Wall"] = 150;
 			
 			return $attributes;
+		}
+		
+		public function CalculateExp($player)
+		{
+			global $carddb;
+			global $playerdb;
+			
+			$opponent = ($this->Player1 == $player) ? $this->Player2 : $this->Player1;
+			$mydata = $this->GameData[$player];
+			$hisdata = $this->GameData[$opponent];
+			$round = $this->Round;
+			$winner = $this->Winner;
+			$outcome = $this->Outcome;
+			$mylevel = $playerdb->GetLevel($player);
+			$hislevel = $playerdb->GetLevel($opponent);
+			
+			$win = ($player == $winner);
+			$exp = 100; // base exp
+			$message = 'Base = '.$exp.' EXP'."\n";
+			
+			// first phase: Game rating
+			if ($outcome == 'Resource accumulation victory' AND $win) $mod = 1.15;
+			elseif ($outcome == 'Tower building victory' AND $win) $mod = 1.10;
+			elseif ($outcome == 'Tower destruction victory' AND $win) $mod = 1.05;
+			elseif ($outcome == $opponent.' has fled the battlefield') $mod = 1;
+			elseif ($outcome == 'Opponent has surrendered' AND $win) $mod = 0.95;
+			elseif ($outcome == 'Timeout victory' AND $win) $mod = 0.6;
+			elseif ($outcome == 'Draw') $mod = 0.5;
+			elseif ($outcome == 'Timeout victory' AND !$win) $mod = 0.4;
+			elseif ($outcome == 'Tower destruction victory' AND !$win) $mod = 0.15;
+			elseif ($outcome == 'Tower building victory' AND !$win) $mod = 0.1;
+			elseif ($outcome == 'Resource accumulation victory' AND !$win) $mod = 0.05;
+			elseif ($outcome == 'Opponent has surrendered' AND !$win) $mod = 0;
+			elseif ($outcome == $player.' has fled the battlefield') $mod = 0;
+			else $mod = 0; // should never happen
+			
+			// update exp and message
+			$exp = round($exp * $mod);
+			$message.= 'Game rating'."\n".'Modifier: '.$mod.', Total: '.$exp.' EXP'."\n";
+			
+			// second phase: Opponent rating
+			if ($mylevel > $hislevel) $mod = 1 - 0.05 * min(10, $mylevel - $hislevel);
+			elseif ($mylevel < $hislevel) $mod = 1 + 0.1 * min(10, $hislevel - $mylevel);
+			else $mod = 1;
+			
+			// update exp and message
+			$exp = round($exp * $mod);
+			$message.= 'Opponent rating'."\n".'Modifier: '.$mod.', Total: '.$exp.' EXP'."\n";
+			
+			// third phase: Victory rating
+			if ($win)// if player is winner
+			{
+				$bonus = array('major' => 1.75, 'minor' => 1.25, 'tactical' => 1);
+				$victories = array();
+				
+				// Resource accumulation victory
+				$enemy_stock = $hisdata->Bricks + $hisdata->Gems + $hisdata->Recruits;
+				if ($enemy_stock < 150) $victories[] = 'major';
+				elseif (($enemy_stock >= 150) AND ($enemy_stock <= 300)) $victories[] = 'minor';
+				else $victories[] = 'tactical';
+				
+				// Tower building victory
+				if ($hisdata->Tower < 30) $victories[] = 'major';
+				elseif (($hisdata->Tower >= 30) AND ($hisdata->Tower <= 60)) $victories[] = 'minor';
+				else $victories[] = 'tactical';
+				
+				// Tower destruction victory
+				if ($mydata->Tower > 60) $victories[] = 'major';
+				elseif (($mydata->Tower >= 30) AND ($mydata->Tower <= 60)) $victories[] = 'minor';
+				else $victories[] = 'tactical';
+				
+				sort($victories);
+				$victory = array_pop($victories); // pick lowest victory rating
+				$mod = $bonus[$victory];
+				
+				// update exp and message
+				$exp = round($exp * $mod);
+				$message.= 'Victory rating'."\n".'Modifier: '.$mod.', Total: '.$exp.' EXP'."\n";
+			}
+			else // if player is loser
+			{
+				$bonus = array('major' => 1.75, 'minor' => 1.25, 'tactical' => 1);
+				$victories = array();
+				
+				// Resource accumulation victory
+				$stock = $mydata->Bricks + $mydata->Gems + $mydata->Recruits;
+				if ($stock > 300) $victories[] = 'major';
+				elseif (($stock >= 150) AND ($stock <= 300)) $victories[] = 'minor';
+				else $victories[] = 'tactical';
+				
+				// Tower building victory
+				if ($mydata->Tower > 60) $victories[] = 'major';
+				elseif (($mydata->Tower >= 30) AND ($mydata->Tower <= 60)) $victories[] = 'minor';
+				else $victories[] = 'tactical';
+				
+				// Tower destruction victory
+				if ($hisdata->Tower < 30) $victories[] = 'major';
+				elseif (($hisdata->Tower >= 30) AND ($hisdata->Tower <= 60)) $victories[] = 'minor';
+				else $victories[] = 'tactical';
+				
+				sort($victories);
+				$victory = array_shift($victories); // pick highest victory rating
+				$mod = $bonus[$victory];
+				
+				// update exp and message
+				$exp = round($exp * $mod);
+				$message.= 'Victory rating'."\n".'Modifier: '.$mod.', Total: '.$exp.' EXP'."\n";
+			}
+			
+			//fourth phase: Awards
+			if ($win)
+			{
+				$mylastcardindex = count($mydata->LastCard);
+				$mylast_card = $carddb->GetCard($mydata->LastCard[$mylastcardindex]);
+				$mylast_action = $mydata->LastAction[$mylastcardindex];
+				
+				$awards = array('Assassin' => 0.5, 'Survivor' => 0.9, 'Desolator' => 0.3, 'Builder' => 0.8, 'Gentle touch' => 0.2, 'Collector' => 0.7, 'Titan' => 0.45);
+				$recieved = array();
+				
+				if ($round < 10) $recieved[] = 'Assassin';// Assassin
+				if ($hisdata->Quarry == 1 AND $hisdata->Magic == 1 AND $hisdata->Dungeons == 1) $recieved[] = 'Desolator'; // Desolator
+				if ($mydata->Wall == 150) $recieved[] = 'Builder'; // Builder
+				if ($mylast_card->GetClass() == 'Common' AND $mylast_action == 'play') $recieved[] = 'Gentle touch'; // Gentle touch
+				$tmp = 0;
+				for ($i = 1; $i <= 8; $i++)
+				{
+					$cur_card = $carddb->GetCard($mydata->Hand[$i]);
+					if ($cur_card->GetClass() == "Rare") $tmp++;
+				}
+				if ($tmp >= 4) $recieved[] = 'Collector'; // Collector
+				if ($mylast_card->GetID() == 315 AND $mylast_action == 'play' AND $outcome == 'Tower destruction victory') $recieved[] = 'Titan'; // Titan
+				if (($mydata->Tower == 1) AND ($mydata->Wall == 0)) $recieved[] = 'Survivor'; // Survivor
+				
+				// update exp and message
+				if (count($recieved) > 0)
+				{
+					$mod = 0;
+					$award_temp = array();
+					foreach ($recieved as $award)
+					{
+						$mod+= $awards[$award];
+						$award_temp[] = $award.' ('.$awards[$award].')';
+					}
+					$tmp = round($exp * (1 + $mod));
+					$message.= 'Awards'."\n".implode(", ", $award_temp)."\n".'Bonus: '.$mod.', Total: '.($tmp - $exp).' EXP'."\n";
+					$exp = $tmp;
+				}
+				else $message.= 'Awards'."\n".'None achieved'."\n";
+			}
+			
+			// finalize report
+			$message.= "\n".'You gained '.$exp.' EXP';
+			
+			return array('exp' => $exp, 'message' => $message);
 		}
 	}
 	

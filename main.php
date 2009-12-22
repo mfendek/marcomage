@@ -9,6 +9,9 @@
 	/*	<section: APPLICATION LOGIC>	*/
 	
 	define("MAX_GAMES", 15);
+	define("DECK_SLOTS", 8);
+	define("BONUS_GAME_SLOTS", 4); // add bonus game slot every 4th level
+	define("BONUS_DECK_SLOTS", 6); // add bonus deck slot every 6th level
 	define("MESSAGE_LENGTH", 1000);
 	define("CHALLENGE_LENGTH", 250);
 	define("SYSTEM_NAME", "MArcomage"); // user name for system notification
@@ -472,6 +475,12 @@
 						{
 							$player1 = $game->Name1();
 							$player2 = $game->Name2();
+							$exp1 = $game->CalculateExp($player1);
+							$exp2 = $game->CalculateExp($player2);
+							$p1 = $playerdb->GetPlayer($player1);
+							$p2 = $playerdb->GetPlayer($player2);
+							$p1_rep = $p1->GetSetting("Reports");
+							$p2_rep = $p2->GetSetting("Reports");
 
 							if ($game->GetGameMode('FriendlyPlay') == "no")
 							{
@@ -483,19 +492,26 @@
 								elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
 								else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
 								
+								$levelup1 = $score1->AddExp($exp1['exp']);
+								$levelup2 = $score2->AddExp($exp2['exp']);
 								$score1->SaveScore();
 								$score2->SaveScore();
+								
+								// send level up messages
+								if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
+								if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
+								
+								// add bonus deck slot every 6th level
+								if ($levelup1 AND (($p1->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player1, time());
+								if ($levelup2 AND (($p2->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player2, time());
 							}
 
 							// send battle report message
-							$opponent = $playerdb->GetPlayer(($player1 != $player->Name()) ? $player1 : $player2);
-							$opponent_rep = $opponent->GetSetting("Reports");
-							$player_rep = $player->GetSetting("Reports");
 							$outcome = $game->Outcome;
 							$winner = $game->Winner;
 							$hidden = $game->GetGameMode('HiddenCards');
 
-							$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $hidden, $winner);
+							$messagedb->SendBattleReport($player1, $player2, $p1_rep, $p2_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
 						}
 						else
 						{
@@ -530,29 +546,40 @@
 					
 					if ($result == 'OK')
 					{
-						if ($game->GetGameMode('FriendlyPlay') == "no")
-						{
-							$score = $scoredb->GetScore($player->Name());
-							$score->ScoreData->Losses++;
-							$score->SaveScore();
-							
-							$score = $scoredb->GetScore($game->Winner);
-							$score->ScoreData->Wins++;
-							$score->SaveScore();
-						}
-
-						$player1 = $game->Name1();
-						$player2 = $game->Name2();
-
-						// send battle report message
-						$opponent = $playerdb->GetPlayer(($player1 != $player->Name()) ? $player1 : $player2);
+						$exp1 = $game->CalculateExp($player->Name());
+						$exp2 = $game->CalculateExp($game->Winner);
+						$opponent = $playerdb->GetPlayer($game->Winner);
 						$opponent_rep = $opponent->GetSetting("Reports");
 						$player_rep = $player->GetSetting("Reports");
+
+						if ($game->GetGameMode('FriendlyPlay') == "no")
+						{
+							// update score
+							$score1 = $scoredb->GetScore($player->Name());
+							$score1->ScoreData->Losses++;
+							$levelup1 = $score1->AddExp($exp1['exp']);
+							$score1->SaveScore();
+							
+							$score2 = $scoredb->GetScore($game->Winner);
+							$score2->ScoreData->Wins++;
+							$levelup2 = $score2->AddExp($exp2['exp']);
+							$score2->SaveScore();
+							
+							// send level up messages
+							if ($levelup1 AND ($player_rep == "yes")) $messagedb->LevelUp($player->Name(), $score1->ScoreData->Level);
+							if ($levelup2 AND ($opponent_rep == "yes")) $messagedb->LevelUp($opponent->Name(), $score2->ScoreData->Level);
+							
+							// add bonus deck slot every 6th level
+							if ($levelup1 AND (($player->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player->Name(), time());
+							if ($levelup2 AND (($opponent->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($opponent->Name(), time());
+						}
+
+						// send battle report message
 						$outcome = $game->Outcome;
 						$winner = $game->Winner;
 						$hidden = $game->GetGameMode('HiddenCards');
 
-						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $hidden, $winner);
+						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
 					}
 					/*else $error = $result;*/
 					
@@ -623,9 +650,16 @@
 					{
 						$player1 = $game->Name1();
 						$player2 = $game->Name2();
+						$exp1 = $game->CalculateExp($player1);
+						$exp2 = $game->CalculateExp($player2);
+						$p1 = $playerdb->GetPlayer($player1);
+						$p2 = $playerdb->GetPlayer($player2);
+						$p1_rep = $p1->GetSetting("Reports");
+						$p2_rep = $p2->GetSetting("Reports");
 						
 						if ($game->GetGameMode('FriendlyPlay') == "no")
 						{
+							// update score
 							$score1 = $scoredb->GetScore($player1);
 							$score2 = $scoredb->GetScore($player2);
 							
@@ -633,19 +667,26 @@
 							elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
 							else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
 							
+							$levelup1 = $score1->AddExp($exp1['exp']);
+							$levelup2 = $score2->AddExp($exp2['exp']);
 							$score1->SaveScore();
 							$score2->SaveScore();
+							
+							// send level up messages
+							if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
+							if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
+							
+							// add bonus deck slot every 6th level
+							if ($levelup1 AND (($p1->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player1, time());
+							if ($levelup2 AND (($p2->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player2, time());
 						}
 
 						// send battle report message
-						$opponent = $playerdb->GetPlayer(($player1 != $player->Name()) ? $player1 : $player2);
-						$opponent_rep = $opponent->GetSetting("Reports");
-						$player_rep = $player->GetSetting("Reports");
 						$outcome = $game->Outcome;
 						$winner = $game->Winner;
 						$hidden = $game->GetGameMode('HiddenCards');
 
-						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $hidden, $winner);
+						$messagedb->SendBattleReport($player1, $player2, $p1_rep, $p2_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
 					}
 					/*else $error = $result;*/
 					
@@ -1256,6 +1297,31 @@
 					
 					$information = 'Access rights changed.';
 								
+					$current = 'Profile';
+					break;
+				}
+				
+				if ($message == 'reset_exp') // Players -> User details -> Reset exp
+				{
+					$opponent = postdecode(array_shift(array_keys($value)));
+					
+					$_POST['Profile'] = $opponent;
+					
+					// check access rights
+					if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Profile'; break; }
+					
+					// reset level end exp
+					$score = $scoredb->GetScore($opponent);
+					$score->ResetExp();
+					$score->SaveScore();
+					
+					// delete bonus deck slots
+					$decks = $deckdb->ListDecks($opponent);
+					foreach ($decks as $i => $deck_data)
+						if ($i >= DECK_SLOTS) $deckdb->DeleteDeck($opponent, $deck_data['Deckname']);
+					
+					$information = 'Exp reset.';
+					
 					$current = 'Profile';
 					break;
 				}
@@ -2598,6 +2664,7 @@
 	{
 		// navbar params
 		$params["navbar"]["player_name"] = $player->Name();
+		$params["navbar"]["level"] = $player->GetLevel();
 		$params["navbar"]["current"] = $current;
 		$params["navbar"]["error_msg"] = @$error;
 		$params["navbar"]["warning_msg"] = @$warning;
@@ -2815,7 +2882,7 @@ case 'Players':
 
 	// defaults for list ordering
 	if (!isset($_POST['CurrentOrder'])) $_POST['CurrentOrder'] = "DESC";
-	if (!isset($_POST['CurrentCondition'])) $_POST['CurrentCondition'] = "Rank";
+	if (!isset($_POST['CurrentCondition'])) $_POST['CurrentCondition'] = "Level";
 
 	$params['players']['order'] = $order = $_POST['CurrentOrder'];
 	$params['players']['condition'] = $condition = $_POST['CurrentCondition'];
@@ -2861,6 +2928,8 @@ case 'Players':
 
 		$entry = array();
 		$entry['name'] = $data['Username'];
+		$entry['level'] = $data['Level'];
+		$entry['exp'] = $data['Exp'] / $scoredb->NextLevel($data['Level']);
 		$entry['wins'] = $data['Wins'];
 		$entry['losses'] = $data['Losses'];
 		$entry['draws'] = $data['Draws'];
@@ -2871,7 +2940,6 @@ case 'Players':
 		$entry['country'] = $data['Country'];
 		$entry['last_query'] = $data['Last Query'];
 		$entry['free_slots'] = $data['Free slots'];
-		$entry['rank'] = $data['Rank'];
 		$entry['inactivity'] = time() - strtotime($data['Last Query']);
 		$entry['challenged'] = (array_search($opponent, $challengesfrom) !== false) ? 'yes' : 'no';
 		$entry['playingagainst'] = (array_search($opponent, $opponents) !== false) ? 'yes' : 'no';
@@ -2907,6 +2975,9 @@ case 'Profile':
 	$params['profile']['Email'] = $settings['Email'];
 	$params['profile']['Imnumber'] = $settings['Imnumber'];
 	$params['profile']['Hobby'] = $settings['Hobby'];
+	$params['profile']['Level'] = $score->ScoreData->Level;
+	$params['profile']['Exp'] = $score->ScoreData->Exp;
+	$params['profile']['NextLevel'] = $scoredb->NextLevel($score->ScoreData->Level);
 	$params['profile']['Wins'] = $score->ScoreData->Wins;
 	$params['profile']['Losses'] = $score->ScoreData->Losses;
 	$params['profile']['Draws'] = $score->ScoreData->Draws;
@@ -2934,6 +3005,7 @@ case 'Profile':
 	$params['profile']['change_rights'] = ($access_rights[$player->Type()]["change_rights"]) ? 'yes' : 'no';
 	$params['profile']['system_notification'] = ($access_rights[$player->Type()]["system_notification"]) ? 'yes' : 'no';
 	$params['profile']['change_all_avatar'] = ($access_rights[$player->Type()]["change_all_avatar"]) ? 'yes' : 'no';
+	$params['profile']['reset_exp'] = ($access_rights[$player->Type()]["reset_exp"]) ? 'yes' : 'no';
 	$params['profile']['free_slots'] = $gamedb->CountFreeSlots($player->Name());
 	$params['profile']['decks'] = $decks = $player->ListReadyDecks();
 	$params['profile']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)] : '';

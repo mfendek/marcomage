@@ -28,17 +28,24 @@
 			return true;
 		}
 		
-		public function SendBattleReport($player1, $player2, $player1_reports, $player2_reports, $outcome, $hidden, $winner = '')
+		public function SendBattleReport($player1, $player2, $player1_reports, $player2_reports, $outcome, $hidden, $message1 = '', $message2 = '', $winner = '')
 		{
 			$winner = ($winner != '') ? 'Winner: '.$winner : '';
 			
 			if ($player1_reports == "yes")
-				$this->SendMessage("MArcomage", $player1, "Battle report", "Opponent: $player2\nOutcome: {$outcome}\n".$winner."\nHide opponent's cards: ".$hidden);
+				$this->SendMessage("MArcomage", $player1, "Battle report", "Opponent: $player2\nOutcome: {$outcome}\n".$winner."\nHide opponent's cards: ".$hidden."\n".$message1);
 			
 			if ($player2_reports == "yes")
-				$this->SendMessage("MArcomage", $player2, "Battle report", "Opponent: $player1\nOutcome: {$outcome}\n".$winner."\nHide opponent's cards: ".$hidden);
+				$this->SendMessage("MArcomage", $player2, "Battle report", "Opponent: $player1\nOutcome: {$outcome}\n".$winner."\nHide opponent's cards: ".$hidden."\n".$message2);
 			
 			return true;
+		}
+		
+		public function LevelUp($player, $new_level)
+		{
+			$game_slot = (($new_level % BONUS_GAME_SLOTS) == 0) ? "\n".'You gained bonus game slot.' : '';
+			$decks_slot = (($new_level % BONUS_DECK_SLOTS) == 0) ? "\n".'You gained bonus deck slot.' : '';
+			$this->SendMessage("MArcomage", $player, 'Level up ('.$new_level.')', 'Congratulations, you have reached level '.$new_level.'.'.$game_slot.$decks_slot);
 		}
 		
 		public function GetMessage($messageid, $player_name)

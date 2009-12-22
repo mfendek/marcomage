@@ -174,6 +174,133 @@ Messages have a "new message" notification system. New messages are highlighted 
 	<li>Lime - other messages</li>
 </ul>
 
+<h4>Player rating system</h4>
+
+<p>Players gather experience by playing games. When enough experience is gathered, a player will gain a new level. Higher level ensures a higher place in the ladder of all players and grants extra game and deck slots. Each 4th level grants a bonus game slot and each 6th level grants bonus deck slot. Based on player's performance in the game, the experience amount is calculated. To level up on the Nth level you need 500 + (50 * N) + (200 * [N/5]) + (100 * [N/10]^{2}) EXP. The [] is operation floor, which is nearest lower integer number (for exmaple: [1] = 1, [1.3] = 1, [1.9] = 1, [2.2] = 2). Base EXP for one game is 100 EXP. Experience calculation is divided into four phases.</p>
+
+<h4>First phase: Game rating</h4>
+<p>From the perspective of one player the game can have several outcomes, each of them is handled separately. Below, there is a list of experience modifiers - one for each game outcome. This modifier applies onto the base EXP.</p>
+
+<ul>
+	<li>Victory - Resource accumulation: 115%</li>
+	<li>Victory - Tower building: 110%</li>
+	<li>Victory - Tower destruction: 105%</li>
+	<li>Victory - Abandon: 100%</li>
+	<li>Victory - Surrender: 95%</li>
+	<li>Victory - Timeout: 60%</li>
+	<li>Draw: 50%</li>
+	<li>Loss - Timeout: 40%</li>
+	<li>Loss - Tower destruction: 15%</li>
+	<li>Loss - Tower building: 10%</li>
+	<li>Loss - Resource accumulation: 5%</li>
+	<li>Loss - Surrender: 0%</li>
+	<li>Loss - Abandon: 0%</li>
+</ul>
+
+<p>For example, if Player1 won with Tower destruction victory, he will gain 105EXP. His opponent will gain only 15EXP. Lets give one more example. Player1 won with Timeout victory, he will gain 60EXP. His opponent will gain 40EXP. This EXP, which we recently computed, is not the EXP the players gain. This is the input to the next phase.</p>
+
+<h4>Second phase: Opponent rating</h4>
+
+<p>This phase deals with players' levels. The idea behind this phase is really simple. When you beat an opponent of higher level than yours, you get EXP bonus. On the other hand if you beat opponent of lower level than yours, you get EXP penalty.</p>
+
+<ul>
+	<li>If opponent's level is higher than yours, you get 10% EXP bonus for each opponent's level above yours. The amount of bonus is limited to 100% max.</li>
+	<li>If opponent's level is same as yours, you don't get EXP bonus or EXP penalty.</li>
+	<li>If opponent's level is lower than yours, you get 5% EXP penalty for each of your level that you are above opponent. The amount of penalty is limited to 50% max.</li>
+</ul>
+
+<p>Let's see an example. We take Player1 with 105 EXP. Player1 has level 7, Player2 has level 1. Now, let's compute the outcome. Player1 is 6 levels above Player2, so he gets 6 * 5% penalty, so it's 30% EXP penalty total. That leaves him with 105 * 0.7 =  74EXP (rounded). Player2 gets a bonus for 6 levels. He gets 6 * 10% bonus, 60% EXP bonus total. That leaves him with 10 * 1.6 = 24EXP.</p>
+
+<h4>Third phase: Victory rating</h4>
+
+<p>Main idea is to rate how close the victory was. The condition depends on the victory type. There are three victory ratings:</p>
+
+<ul>
+	<li>Major achievement - 75% EXP bonus</li>
+	<li>Minor achievement - 25% EXP bonus</li>
+	<li>Tactical achievement - no EXP bonus</li>
+</ul>
+
+<p>Table below explains how are victory ratings achieved. The system evaluates how close the victory was, by rating how close it was for each victory type. There are two cases, each explained separately.</p>
+
+<h4>In case of victory</h4>
+
+<p>Minimum is computed from all victory ratings. For example, if Resource accumulation was evaluated "Major", Tower building was evaluated "Minor" and Tower destruction was evaluated "Minor", the final result will be "Minor". If you want to achieve Major victory you need to satisfy condition for Major victory of all three types.</p>
+
+<table class="centered skin_text" cellpadding="5">
+	<tr>
+		<td></td>
+		<th>Major</th>
+		<th>Minor</th>
+		<th>Tactical</th>
+	</tr>
+	<tr>
+		<th>Resource accumulation</th>
+		<td>Enemy stock below 150</td>
+		<td>Enemy stock between 150 and 300</td>
+		<td>Enemy stock above 300</td>
+	</tr>
+	<tr>
+		<th>Tower building</th>
+		<td>Enemy tower below 30</td>
+		<td>Enemy tower between 30 and 60</td>
+		<td>Enemy tower above 60</td>
+	</tr>
+	<tr>
+		<th>Tower destruction</th>
+		<td>Tower above 60</td>
+		<td>Tower between 30 and 60</td>
+		<td>Tower below 30</td>
+	</tr>
+</table>
+
+<h4>In case of draw or loss</h4>
+
+<p>Maximum is computed from all victory ratings. For example, if Resource accumulation was evaluated "Major", Tower building was evaluated "Minor" and Tower destruction was evaluated "Minor", the final result will be "Major". If you want to achieve Major victory you need to satisfy condition for Major victory of at least one of the three types.</p>
+
+<table class="centered skin_text" cellpadding="5">
+	<tr>
+		<td></td>
+		<th>Major</th>
+		<th>Minor</th>
+		<th>Tactical</th>
+	</tr>
+	<tr>
+		<th>Resource accumulation</th>
+		<td>Stock above 300</td>
+		<td>Stock between 150 and 300</td>
+		<td>Stock below 150</td>
+	</tr>
+	<tr>
+		<th>Tower building</th>
+		<td>Tower above 60</td>
+		<td>Tower between 30 and 60</td>
+		<td>Tower below 30</td>
+	</tr>
+	<tr>
+		<th>Tower destruction</th>
+		<td>Enemy tower below 30</td>
+		<td>Enemy tower between 30 and 60</td>
+		<td>Enemy tower above 60</td>
+	</tr>
+</table>
+
+<h4>Fourth phase: Awards</h4>
+
+<p>This phase effects only the victor and allows you to gather extra EXP when certain conditions are satisfied. Any number of awards can be collected.</p>
+
+<ul>
+	<li>Gentle touch (20% EXP) - win by playing a common card</li>
+	<li>Desolator (30% EXP) - win while enemy facilities = 1</li>
+	<li>Titan (45% EXP) - win with the <b>Titan</b> set</li>
+	<li>Assassin (50% EXP) - win within 10 rounds</li>
+	<li>Collector (70% EXP) - win with at least 4 rare cards in hand (played card doesn't count)</li>
+	<li>Builder (80% EXP) - win with maximum wall</li>
+	<li>Survivor (90% EXP) - win with 1 tower and 0 wall</li>
+</ul>
+
+<p>After the game the system will send you a message about the outcome of the game - a game report (when battle reports option is active). It will show you how much EXP you got in each phase and how much EXP did you get in the end. Also, when you gain next level, the system will sent you an information message about it.</p>
+
 <h4>Avatar</h4>
 <p>
 In the settings section you can upload your own avatar. Avatar must be a jpg, jpeg, png or gif image type, must have at most 10kB and should be 60px X 60px large. If it isn't, it will be resized to this size. Avatars with inappropriate content will be deleted and could also lead to ban.

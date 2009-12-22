@@ -52,6 +52,15 @@
 			<xsl:if test="$param/FriendlyFlag = 'yes'"><img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" /></xsl:if>
 			<xsl:if test="$param/BlindFlag = 'yes'"><img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" /></xsl:if>
 		</p>
+		<p>Level: <span class="detail_value"><xsl:value-of select="$param/Level"/></span></p>
+		<p>
+			<xsl:text>Experience: </xsl:text>
+			<span class="detail_value">
+				<xsl:value-of select="$param/Exp"/>
+				<xsl:text> / </xsl:text>
+				<xsl:value-of select="$param/NextLevel"/>
+			</span>
+		</p>
 		<p>
 			<xsl:text>Wins / Losses / Draws: </xsl:text>
 			<span class="detail_value">
@@ -195,6 +204,11 @@
 		<xsl:if test="$param/change_all_avatar = 'yes'">
 			<h4>Reset avatar</h4>
 			<input type="submit" name="reset_avatar_remote[{am:urlencode($opponent)}]" value="Reset" />
+		</xsl:if>
+
+		<xsl:if test="$param/reset_exp = 'yes'">
+			<h4>Reset exp</h4>
+			<input type="submit" name="reset_exp[{am:urlencode($opponent)}]" value="Reset" />
 		</xsl:if>
 
 	</div>

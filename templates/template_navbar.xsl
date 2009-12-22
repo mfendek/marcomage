@@ -12,7 +12,7 @@
 	<div id="menubar">
 
 	<div id="menu_float_left">
-	<p><xsl:value-of select="$param/player_name"/></p>
+	<p><xsl:value-of select="$param/player_name"/> (<xsl:value-of select="$param/level"/>)</p>
 	</div>
 
 	<div id="menu_float_right">

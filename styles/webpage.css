@@ -79,6 +79,13 @@ div#webpage li > span /* highlighted text */
 	color: green;
 }
 
+div#webpg_float_right table /* table layout */
+{
+	text-align: center;
+	margin-top: 2ex;
+	margin-bottom: 2ex;
+}
+
 /* end webpage */
 
 /* begin login menu */

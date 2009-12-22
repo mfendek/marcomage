@@ -105,7 +105,7 @@
 			$slots_q = "SELECT `Username`, COUNT(`Username`) as `Slots` FROM ((".$games_p1.") UNION ALL (".$games_p2.") UNION ALL (".$challenges_out.") UNION ALL (".$challenges_in.")) as t GROUP BY `Username`";
 			$status_query = ($status != 'none') ? '(SELECT `Username`, `Avatar`, `Status`, `Country`, `FriendlyFlag`, `BlindFlag` FROM `settings` WHERE `Status` = "'.$status.'") as `settings`' : '`settings`';
 
-			$query = "SELECT `logins`.`Username`, `scores`.`Wins`, `scores`.`Losses`, `scores`.`Draws`, `settings`.`Avatar`, `settings`.`Status`, `settings`.`FriendlyFlag`, `settings`.`BlindFlag`, `settings`.`Country`, `logins`.`Last Query`, GREATEST(0, ".MAX_GAMES." - IFNULL(`Slots`, 0)) as `Free slots`, (CASE WHEN UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - 60*60*24*7*3 THEN `Wins`*3+`Draws` ELSE -(`Wins`*3+`Draws`) END) as `Rank` FROM (`logins` JOIN ".$status_query." USING (`Username`) JOIN `scores` USING (`Username`) LEFT OUTER JOIN (".$slots_q.") as `slots` USING (`Username`)) WHERE UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - ".$activity_q." ORDER BY `".$condition."` ".$order." LIMIT ".(PLAYERS_PER_PAGE * $page)." , ".PLAYERS_PER_PAGE."";
+			$query = "SELECT `Username`, `Level`, `Exp`, `Wins`, `Losses`, `Draws`, `Avatar`, `Status`, `FriendlyFlag`, `BlindFlag`, `settings`.`Country`, `Last Query`, GREATEST(0, ".MAX_GAMES." + (`Level` DIV ".BONUS_GAME_SLOTS.") - IFNULL(`Slots`, 0)) as `Free slots` FROM (`logins` JOIN ".$status_query." USING (`Username`) JOIN `scores` USING (`Username`) LEFT OUTER JOIN (".$slots_q.") as `slots` USING (`Username`)) WHERE UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - ".$activity_q." ORDER BY `".$condition."` ".$order.", `Username` ASC LIMIT ".(PLAYERS_PER_PAGE * $page)." , ".PLAYERS_PER_PAGE."";
 
 			$result = $db->Query($query);
 			if (!$result) return false;
@@ -211,6 +211,17 @@
 			$data = $result->Next();
 			return $data['Registered'];
 		}
+		
+		public function GetLevel($playername)
+		{
+			$db = $this->db;
+			$result = $db->Query('SELECT `Level` FROM `scores` WHERE `Username` = "'.$db->Escape($playername).'"');
+			if (!$result) return false;
+			if (!$result->Rows()) return false;
+			
+			$data = $result->Next();
+			return $data['Level'];
+		}
 	}
 	
 	
@@ -277,6 +288,11 @@
 		{
 			global $scoredb;
 			return $scoredb->GetScore($this->Name);
+		}
+		
+		public function GetLevel()
+		{
+			return $this->Players->GetLevel($this->Name);
 		}
 		
 		public function GetDeck($deckname)
