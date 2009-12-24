@@ -3373,25 +3373,18 @@ case 'Game':
 	$params['game']['finish_game'] = ((time() - strtotime($game->LastAction) >= 60*60*24*7*3 and $game->Current != $player->Name()) ? 'yes' : 'no');
 
 	// your resources and tower
-	$colors = array ('Quarry'=> '', 'Magic'=> '', 'Dungeons'=> '', 'Bricks'=> '', 'Gems'=> '', 'Recruits'=> '', 'Tower'=> '', 'Wall'=> '');
-	foreach ($colors as $attribute => $color)
-	{
-		if ($mydata->Changes[$attribute] > 0) $colors[$attribute] = 'color: lime';
-		elseif ($mydata->Changes[$attribute] < 0) $colors[$attribute] = 'color: orange';
-		else $colors[$attribute] = '';
-	}
+	$changes = array ('Quarry'=> '', 'Magic'=> '', 'Dungeons'=> '', 'Bricks'=> '', 'Gems'=> '', 'Recruits'=> '', 'Tower'=> '', 'Wall'=> '');
+	foreach ($changes as $attribute => $change)
+		$changes[$attribute] = (($mydata->Changes[$attribute] > 0) ? '+' : '').$mydata->Changes[$attribute];
 
-	$params['game']['mycolors'] = $colors;
+	$params['game']['mychanges'] = $changes;
 
 	// opponent's resources and tower
-	$colors = array ('Quarry'=> '', 'Magic'=> '', 'Dungeons'=> '', 'Bricks'=> '', 'Gems'=> '', 'Recruits'=> '', 'Tower'=> '', 'Wall'=> '');
-	foreach ($colors as $attribute => $color)
-	{
-		if ($hisdata->Changes[$attribute] > 0) $colors[$attribute] = 'color: lime';
-		elseif ($hisdata->Changes[$attribute] < 0) $colors[$attribute] = 'color: orange';
-	}
+	$changes = array ('Quarry'=> '', 'Magic'=> '', 'Dungeons'=> '', 'Bricks'=> '', 'Gems'=> '', 'Recruits'=> '', 'Tower'=> '', 'Wall'=> '');
+	foreach ($changes as $attribute => $change)
+		$changes[$attribute] = (($hisdata->Changes[$attribute] > 0) ? '+' : '').$hisdata->Changes[$attribute];
 
-	$params['game']['hiscolors'] = $colors;	
+	$params['game']['hischanges'] = $changes;
 
 	// chatboard
 

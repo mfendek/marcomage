@@ -92,17 +92,17 @@ div#game
 	padding-bottom: 1ex;
 }
 
-td.stats > div > p:first-child /* facilites text */
+p.facility /* facilites text */
 {
 	color: white;
-	padding: 0.9ex 0ex 0ex 1ex;
+	padding: 0.9ex 0ex 0ex 0.6ex;
 	font-size: x-large;
 }
 
-td.stats > div > p + p /* resources text */
+p.resource /* resources text */
 {
 	color: black;
-	margin: 2ex 0ex 0ex 1.5ex;
+	margin: 2ex 0ex 0ex 0.8ex;
 	font-weight: bold;
 	font-size: medium;
 }
@@ -148,6 +148,13 @@ td.stats > h5 > img, td.minstats > h5 > img /* flag image*/
 td.stats > h5 > input, td.minstats > h5 > input /* shortcut button to player's details */
 {
 	margin-left: 1ex;
+}
+
+span.changes /* attributes changes layout */
+{
+	margin-left: 0.3ex;
+	font-size: x-small;
+	font-weight: normal;
 }
 
 td.minstats > div /* minimized game view layout */
@@ -240,7 +247,7 @@ p.token_counter /* token counter layout */
 
 p.token_counter > span /* token counter value */
 {
-	margin-left: 1ex;
+	margin-left: 0.5ex;
 }
 
 img.in_game
