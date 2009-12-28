@@ -879,9 +879,6 @@
 					$game->StartGame($player->Name(), $deck->DeckData);
 					$game->SaveGame();
 					$messagedb->CancelChallenge($game->ID());
-
-					if ($playerdb->GetPlayer($opponent)->GetSetting("Reports") == "yes")
-						$messagedb->SendMessage("MArcomage", $opponent, "Challenge accepted", 'Player '.$player->Name().' has accepted your challenge.');
 					
 					$information = 'You have accepted a challenge from '.htmlencode($opponent).'.';
 					$current = 'Messages';
@@ -909,9 +906,6 @@
 					$gamedb->DeleteGame($game->ID());
 					$chatdb->DeleteChat($game->ID());
 					$messagedb->CancelChallenge($game->ID());
-
-					if ($playerdb->GetPlayer($opponent)->GetSetting("Reports") == "yes")
-						$messagedb->SendMessage("MArcomage", $opponent, "Challenge rejected", 'Player '.$player->Name().' has rejected your challenge.');
 					
 					$information = 'You have rejected a challenge.';
 					$current = 'Messages';
