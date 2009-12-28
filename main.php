@@ -3223,6 +3223,8 @@ case 'Game':
 	$params['game']['has_note'] = ($game->GetNote($player->Name()) != "") ? 'yes' : 'no';
 	$params['game']['HiddenCards'] = $game->GetGameMode('HiddenCards');
 	$params['game']['FriendlyPlay'] = $game->GetGameMode('FriendlyPlay');
+	$params['game']['max_tower'] = $game_config['max_tower'];
+	$params['game']['max_wall'] = $game_config['max_wall'];
 
 	// my hand
 	$myhand = $mydata->Hand;

@@ -3725,7 +3725,7 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Each player's stock loses N% of each resource, N is his tower height]]></effect>
-    <code><![CDATA[$mydata->Bricks-= (int)round($mydata->Bricks * (($mydata->Tower)/100)); $mydata->Gems-= (int)round($mydata->Gems * (($mydata->Tower)/100)); $mydata->Recruits-= (int)round($mydata->Recruits * (($mydata->Tower)/100)); $hisdata->Bricks-= (int)round($hisdata->Bricks * (($hisdata->Tower)/100)); $hisdata->Gems-= (int)round($hisdata->Gems * (($hisdata->Tower)/100)); $hisdata->Recruits-= (int)round($hisdata->Recruits * (($hisdata->Tower)/100));]]></code>
+    <code><![CDATA[$mydata->Bricks-= (int)round($mydata->Bricks * (($mydata->Tower)/$max_tower)); $mydata->Gems-= (int)round($mydata->Gems * (($mydata->Tower)/$max_tower)); $mydata->Recruits-= (int)round($mydata->Recruits * (($mydata->Tower)/$max_tower)); $hisdata->Bricks-= (int)round($hisdata->Bricks * (($hisdata->Tower)/$max_tower)); $hisdata->Gems-= (int)round($hisdata->Gems * (($hisdata->Tower)/$max_tower)); $hisdata->Recruits-= (int)round($hisdata->Recruits * (($hisdata->Tower)/$max_tower));]]></code>
   </card>
   <card id="283">
     <name>Return to the beginning</name>
@@ -3737,8 +3737,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: =30<br />Wall: =20<br />Enemy tower: =30<br />Enemy wall: =20]]></effect>
-    <code><![CDATA[$mydata->Tower= 30; $mydata->Wall= 20; $hisdata->Tower= 30; $hisdata->Wall= 20;]]></code>
+    <effect><![CDATA[Tower and wall of both players is set to the same height as was at the start of the game]]></effect>
+    <code><![CDATA[$mydata->Tower= $init_tower; $mydata->Wall= $init_wall; $hisdata->Tower= $init_tower; $hisdata->Wall= $init_wall;]]></code>
   </card>
   <card id="284">
     <name>Jealousy</name>
@@ -5559,8 +5559,8 @@
     </cost>
     <modes>0</modes>
     <keywords>Alliance.</keywords>
-    <effect><![CDATA[Tower: = 40<br />If #<b>Alliance</b> cards in hand > 4<br />Wall: = 150<br />else<br />Wall: +50]]></effect>
-    <code><![CDATA[$mydata->Tower = 40; $tmp = $this->KeywordCount($mydata->Hand, "Alliance"); if ($tmp > 4) { $mydata->Wall = 150; } else $mydata->Wall+= 50;]]></code>
+    <effect><![CDATA[Tower: = 40<br />If #<b>Alliance</b> cards in hand > 4<br />Wall: = Max wall<br />else<br />Wall: +50]]></effect>
+    <code><![CDATA[$mydata->Tower = 40; $tmp = $this->KeywordCount($mydata->Hand, "Alliance"); if ($tmp > 4) { $mydata->Wall = $max_wall; } else $mydata->Wall+= 50;]]></code>
   </card>
   <card id="408">
     <name>Bounty hunter</name>
@@ -6494,8 +6494,8 @@
     </cost>
     <modes>0</modes>
     <keywords>Holy. Banish.</keywords>
-    <effect><![CDATA[Attack: 100 - N<br />N = Tower height]]></effect>
-    <code><![CDATA[$this->Attack(100 - $mydata->Tower, $hisdata->Tower, $hisdata->Wall);]]></code>
+    <effect><![CDATA[Attack: Max tower - Tower height]]></effect>
+    <code><![CDATA[$this->Attack($max_tower - $mydata->Tower, $hisdata->Tower, $hisdata->Wall);]]></code>
   </card>
   <card id="462">
     <name>Relic hunter</name>

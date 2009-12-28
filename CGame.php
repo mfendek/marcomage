@@ -353,6 +353,8 @@
 		
 		public function StartGame($player, $deck)
 		{
+			global $game_config;
+			
 			$this->GameData[$player] = new CGamePlayerData;
 			$this->GameData[$player]->Deck = $deck;
 			
@@ -369,8 +371,8 @@
 			$p1->NewCards = $p2->NewCards = $p1->Revealed = $p2->Revealed = null;
 			$p1->DisCards[0] = $p1->DisCards[1] = $p2->DisCards[0] = $p2->DisCards[1] = null; //0 - cards discarded from my hand, 1 - discarded from opponents hand
 			$p1->Changes = $p2->Changes = array ('Quarry'=> 0, 'Magic'=> 0, 'Dungeons'=> 0, 'Bricks'=> 0, 'Gems'=> 0, 'Recruits'=> 0, 'Tower'=> 0, 'Wall'=> 0);
-			$p1->Tower = $p2->Tower = 30;
-			$p1->Wall = $p2->Wall = 20;
+			$p1->Tower = $p2->Tower = $game_config['init_tower'];
+			$p1->Wall = $p2->Wall = $game_config['init_wall'];
 			$p1->Quarry = $p2->Quarry = 3;
 			$p1->Magic = $p2->Magic = 3;
 			$p1->Dungeons = $p2->Dungeons = 3;
@@ -446,6 +448,7 @@
 		public function PlayCard($playername, $cardpos, $mode, $action)
 		{
 			global $carddb;
+			global $game_config;
 			
 			// only allow discarding if the game is still on
 			if ($this->State != 'in progress') return 'Action not allowed!';
@@ -456,6 +459,14 @@
 			// anti-hack
 			if (($cardpos < 1) || ($cardpos > 8)) return 'Wrong card position!';
 			if (($action != 'play') && ($action != 'discard')) return 'Invalid action!';
+			
+			// game configuration
+			$max_tower = $game_config['max_tower'];
+			$max_wall = $game_config['max_wall'];
+			$init_tower = $game_config['init_tower'];
+			$init_wall = $game_config['init_wall'];
+			$res_vic = $game_config['res_victory'];
+			$time_vic = $game_config['time_victory'];
 			
 			// prepare basic information
 			$opponent = ($this->Player1 == $playername) ? $this->Player2 : $this->Player1;
@@ -1206,43 +1217,43 @@
 				$this->Outcome = 'Draw';
 				$this->State = 'finished';
 			}
-			elseif( $mydata->Tower >= 100 and $hisdata->Tower < 100 )
+			elseif( $mydata->Tower >= $max_tower and $hisdata->Tower < $max_tower )
 			{	// tower building victory - player
 				$this->Winner = $playername;
 				$this->Outcome = 'Tower building victory';
 				$this->State = 'finished';
 			}
-			elseif( $mydata->Tower < 100 and $hisdata->Tower >= 100 )
+			elseif( $mydata->Tower < $max_tower and $hisdata->Tower >= $max_tower )
 			{	// tower building victory - opponent
 				$this->Winner = $opponent;
 				$this->Outcome = 'Tower building victory';
 				$this->State = 'finished';
 			}
-			elseif( $mydata->Tower >= 100 and $hisdata->Tower >= 100 )
+			elseif( $mydata->Tower >= $max_tower and $hisdata->Tower >= $max_tower )
 			{	// tower building victory - draw
 				$this->Winner = '';
 				$this->Outcome = 'Draw';
 				$this->State = 'finished';
 			}
-			elseif( ($mydata->Bricks + $mydata->Gems + $mydata->Recruits) >= 400 and !(($hisdata->Bricks + $hisdata->Gems + $hisdata->Recruits) >= 400) )
+			elseif( ($mydata->Bricks + $mydata->Gems + $mydata->Recruits) >= $res_vic and !(($hisdata->Bricks + $hisdata->Gems + $hisdata->Recruits) >= $res_vic) )
 			{	// resource accumulation victory - player
 				$this->Winner = $playername;
 				$this->Outcome = 'Resource accumulation victory';
 				$this->State = 'finished';
 			}
-			elseif( ($hisdata->Bricks + $hisdata->Gems + $hisdata->Recruits) >= 400 and !(($mydata->Bricks + $mydata->Gems + $mydata->Recruits) >= 400) )
+			elseif( ($hisdata->Bricks + $hisdata->Gems + $hisdata->Recruits) >= $res_vic and !(($mydata->Bricks + $mydata->Gems + $mydata->Recruits) >= $res_vic) )
 			{	// resource accumulation victory - opponent
 				$this->Winner = $opponent;
 				$this->Outcome = 'Resource accumulation victory';
 				$this->State = 'finished';
 			}
-			elseif( ($mydata->Bricks + $mydata->Gems + $mydata->Recruits) >= 400 and ($hisdata->Bricks + $hisdata->Gems + $hisdata->Recruits) >= 400 )
+			elseif( ($mydata->Bricks + $mydata->Gems + $mydata->Recruits) >= $res_vic and ($hisdata->Bricks + $hisdata->Gems + $hisdata->Recruits) >= $res_vic )
 			{	// resource accumulation victory - draw
 				$this->Winner = '';
 				$this->Outcome = 'Draw';
 				$this->State = 'finished';
 			}
-			elseif( $this->Round >= 250 )
+			elseif( $this->Round >= $time_vic )
 			{	// timeout victory
 				$this->Outcome = 'Timeout victory';
 				$this->State = 'finished';
@@ -1429,7 +1440,12 @@
 		}
 		
 		private function ApplyGameLimits(array $attributes)
-		{			
+		{
+			global $game_config;
+			
+			$max_tower = $game_config['max_tower'];
+			$max_wall = $game_config['max_wall'];
+			
 			if ($attributes["Quarry"] < 1) $attributes["Quarry"] = 1;
 			if ($attributes["Magic"] < 1) $attributes["Magic"] = 1;
 			if ($attributes["Dungeons"] < 1) $attributes["Dungeons"] = 1;
@@ -1437,9 +1453,9 @@
 			if ($attributes["Gems"] < 0) $attributes["Gems"] = 0;
 			if ($attributes["Recruits"] < 0) $attributes["Recruits"] = 0;
 			if ($attributes["Tower"] < 0) $attributes["Tower"] = 0;
-			if ($attributes["Tower"] > 100) $attributes["Tower"] = 100;
+			if ($attributes["Tower"] > $max_tower) $attributes["Tower"] = $max_tower;
 			if ($attributes["Wall"] < 0) $attributes["Wall"] = 0;
-			if ($attributes["Wall"] > 150) $attributes["Wall"] = 150;
+			if ($attributes["Wall"] > $max_wall) $attributes["Wall"] = $max_wall;
 			
 			return $attributes;
 		}

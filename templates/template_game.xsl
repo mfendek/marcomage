@@ -318,7 +318,7 @@
 								<div style="margin: 0ex 1ex 0ex 1ex;">
 									<img width="65px" style="display:block" alt="" >
 										<xsl:choose>
-											<xsl:when test="$param/MyTower = 100">
+											<xsl:when test="$param/MyTower = $param/max_tower">
 												<xsl:attribute name="src">img/victory_red.png</xsl:attribute>
 												<xsl:attribute name="height">114px</xsl:attribute>
 											</xsl:when>
@@ -328,14 +328,14 @@
 											</xsl:otherwise>
 										</xsl:choose>
 									</img>
-									<div class="towerbody" style="margin-left: 14px; height: {170 * $param/MyTower div 100}px;"></div>
+									<div class="towerbody" style="margin-left: 14px; height: {170 * $param/MyTower div $param/max_tower}px;"></div>
 								</div>
 							</td>
 							<td valign="bottom">
 								<xsl:if test="$param/MyWall &gt; 0">
 									<div>
 										<img src="img/korunka.png" width="19px" height="11px" style="display:block" alt="" />
-										<div class="wallbody" style="height: {270 * $param/MyWall div 150}px;"></div>
+										<div class="wallbody" style="height: {270 * $param/MyWall div $param/max_wall}px;"></div>
 									</div>
 								</xsl:if>
 							</td>
@@ -479,7 +479,7 @@
 								<xsl:if test="$param/HisWall &gt; 0">
 									<div>
 										<img src="img/korunka.png" width="19px" height="11px" style="display:block" alt="" />
-										<div class="wallbody" style="height: {270 * $param/HisWall div 150}px;"></div>
+										<div class="wallbody" style="height: {270 * $param/HisWall div $param/max_wall}px;"></div>
 									</div>
 								</xsl:if>
 							</td>
@@ -487,7 +487,7 @@
 								<div style="margin: 0ex 1ex 0ex 1ex;">
 									<img width="65px" style="display:block" alt="" >
 										<xsl:choose>
-											<xsl:when test="$param/HisTower = 100">
+											<xsl:when test="$param/HisTower = $param/max_tower">
 												<xsl:attribute name="src">img/victory_blue.png</xsl:attribute>
 												<xsl:attribute name="height">114px</xsl:attribute>
 											</xsl:when>
@@ -497,7 +497,7 @@
 											</xsl:otherwise>
 										</xsl:choose>
 									</img>
-									<div class="towerbody" style="margin-left: 14px; height: {170 * $param/HisTower div 100}px;"></div>
+									<div class="towerbody" style="margin-left: 14px; height: {170 * $param/HisTower div $param/max_tower}px;"></div>
 								</div>
 							</td>
 						</tr>
