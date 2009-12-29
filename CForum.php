@@ -25,7 +25,7 @@
 			$db = $this->db;
 			
 			// return section list with thread count, ordered by sectionID (alphabetical order is not suited for our needs)
-			$result = $db->Query('SELECT `forum_sections`.`SectionID`, `SectionName`, `Description`, IFNULL(`count`, 0) as `count` FROM `forum_sections` LEFT OUTER JOIN (SELECT `SectionID`, COUNT(`ThreadID`) as `count` FROM `forum_threads` GROUP BY `SectionID`) as `threads` USING (`SectionID`) ORDER BY `SectionID`');
+			$result = $db->Query('SELECT `forum_sections`.`SectionID`, `SectionName`, `Description`, IFNULL(`count`, 0) as `count` FROM `forum_sections` LEFT OUTER JOIN (SELECT `SectionID`, COUNT(`ThreadID`) as `count` FROM `forum_threads` WHERE `Deleted` = "no" GROUP BY `SectionID`) as `threads` USING (`SectionID`) ORDER BY `SectionID`');
 			if (!$result) return false;
 			
 			$sections = array();
