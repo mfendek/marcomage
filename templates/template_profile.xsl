@@ -44,7 +44,13 @@
 		<p>ICQ / IM: <span class="detail_value"><xsl:value-of select="$param/Imnumber"/></span></p>
 		<p>Date of birth (dd-mm-yyyy): <span class="detail_value"><xsl:value-of select="$param/Birthdate"/></span></p>
 		<p>Age: <span class="detail_value"><xsl:value-of select="$param/Age"/></span></p>
-		<p>Rank: <span class="detail_value"><xsl:value-of select="$param/PlayerType"/></span></p>
+		<p>
+			<xsl:text>Rank: </xsl:text>
+			<span class="detail_value"><xsl:value-of select="$param/PlayerType"/></span>
+			<xsl:if test="$param/PlayerType != 'user'">
+				<img width="9px" height="12px" src="img/{$param/PlayerType}.png" alt="rank flag" class="rank_flag" />
+			</xsl:if>
+		</p>
 		<p>Country: <img width="18px" height="12px" src="img/flags/{$param/Country}.gif" alt="country flag" class="country_flag" /> <span class="detail_value"><xsl:value-of select="$param/Country"/></span></p>
 		<p>
 			<xsl:text>Status: </xsl:text>
