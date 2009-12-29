@@ -2906,6 +2906,7 @@ case 'Players':
 
 		$entry = array();
 		$entry['name'] = $data['Username'];
+		$entry['rank'] = $data['UserType'];
 		$entry['level'] = $data['Level'];
 		$entry['exp'] = $data['Exp'] / $scoredb->NextLevel($data['Level']);
 		$entry['wins'] = $data['Wins'];

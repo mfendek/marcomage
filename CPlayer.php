@@ -105,7 +105,7 @@
 			$slots_q = "SELECT `Username`, COUNT(`Username`) as `Slots` FROM ((".$games_p1.") UNION ALL (".$games_p2.") UNION ALL (".$challenges_out.") UNION ALL (".$challenges_in.")) as t GROUP BY `Username`";
 			$status_query = ($status != 'none') ? '(SELECT `Username`, `Avatar`, `Status`, `Country`, `FriendlyFlag`, `BlindFlag` FROM `settings` WHERE `Status` = "'.$status.'") as `settings`' : '`settings`';
 
-			$query = "SELECT `Username`, `Level`, `Exp`, `Wins`, `Losses`, `Draws`, `Avatar`, `Status`, `FriendlyFlag`, `BlindFlag`, `settings`.`Country`, `Last Query`, GREATEST(0, ".MAX_GAMES." + (`Level` DIV ".BONUS_GAME_SLOTS.") - IFNULL(`Slots`, 0)) as `Free slots` FROM (`logins` JOIN ".$status_query." USING (`Username`) JOIN `scores` USING (`Username`) LEFT OUTER JOIN (".$slots_q.") as `slots` USING (`Username`)) WHERE UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - ".$activity_q." ORDER BY `".$condition."` ".$order.", `Username` ASC LIMIT ".(PLAYERS_PER_PAGE * $page)." , ".PLAYERS_PER_PAGE."";
+			$query = "SELECT `Username`, `UserType`, `Level`, `Exp`, `Wins`, `Losses`, `Draws`, `Avatar`, `Status`, `FriendlyFlag`, `BlindFlag`, `settings`.`Country`, `Last Query`, GREATEST(0, ".MAX_GAMES." + (`Level` DIV ".BONUS_GAME_SLOTS.") - IFNULL(`Slots`, 0)) as `Free slots` FROM (`logins` JOIN ".$status_query." USING (`Username`) JOIN `scores` USING (`Username`) LEFT OUTER JOIN (".$slots_q.") as `slots` USING (`Username`)) WHERE UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - ".$activity_q." ORDER BY `".$condition."` ".$order.", `Username` ASC LIMIT ".(PLAYERS_PER_PAGE * $page)." , ".PLAYERS_PER_PAGE."";
 
 			$result = $db->Query($query);
 			if (!$result) return false;

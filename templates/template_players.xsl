@@ -138,7 +138,14 @@
 							<xsl:otherwise                               >p_online</xsl:otherwise> <!-- online -->
 						</xsl:choose>
 					</xsl:variable>
-					<td><p class="{$player_class}"><xsl:value-of select="name"/></p></td>
+					<td>
+						<p class="{$player_class}">
+							<xsl:value-of select="name"/>
+							<xsl:if test="rank != 'user'"> <!-- player rank -->
+								<img width="9px" height="12px" src="img/{rank}.png" alt="rank flag" class="rank_flag" />
+							</xsl:if>
+						</p>
+					</td>
 
 					<td><p><xsl:value-of select="level"/></p></td>
 					<td>

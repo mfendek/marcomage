@@ -34,6 +34,12 @@ div.progress_bar > div  /* exp progress bar - inner part */
 	background-color: green;
 }
 
+img.rank_flag /* rank flag */
+{
+	vertical-align: middle;
+	margin-left: 0.5ex;
+}
+
 /* end playerslist */
 
 /* begin user details */
