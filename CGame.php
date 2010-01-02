@@ -255,7 +255,8 @@
 		public $Current; // name of the player whose turn it currently is
 		public $Round; // incremented after each play/discard action
 		public $Winner; // if defined, name of the winner
-		public $Outcome; // type: 'Build victory', 'Tower elimination victory', 'Opponent has surrendered', 'Draw', 'Aborted', 'Opponent fled the battlefield'
+		public $Outcome; // game outcome message
+		public $EndState; // game end type: 'Construction', 'Destruction', 'Resource', 'Timeout', 'Draw', 'Surrender', 'Abort', 'Abandon'
 		public $LastAction; // timestamp of the most recent action
 		public $GameData; // array (name => CGamePlayerData)
 		
@@ -322,7 +323,7 @@
 		public function LoadGame()
 		{
 			$db = $this->Games->getDB();
-			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Outcome`, `Last Action`, `Data`, `Note1`, `Note2`, `GameModes` FROM `games` WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
+			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Outcome`, `EndState`, `Last Action`, `Data`, `Note1`, `Note2`, `GameModes` FROM `games` WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
@@ -332,6 +333,7 @@
 			$this->Round = $data['Round'];
 			$this->Winner = $data['Winner'];
 			$this->Outcome = $data['Outcome'];
+			$this->EndState = $data['EndState'];
 			$this->LastAction = $data['Last Action'];
 			$this->Note1 = $data['Note1'];
 			$this->Note2 = $data['Note2'];
@@ -345,7 +347,7 @@
 		public function SaveGame()
 		{
 			$db = $this->Games->getDB();
-			$result = $db->Query('UPDATE `games` SET `State` = "'.$db->Escape($this->State).'", `Current` = "'.$db->Escape($this->Current).'", `Round` = "'.$db->Escape($this->Round).'", `Winner` = "'.$db->Escape($this->Winner).'", `Outcome` = "'.$db->Escape($this->Outcome).'", `Last Action` = "'.$db->Escape($this->LastAction).'", `Data` = "'.$db->Escape(serialize($this->GameData)).'", `Note1` = "'.$db->Escape($this->Note1).'", `Note2` = "'.$db->Escape($this->Note2).'" WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
+			$result = $db->Query('UPDATE `games` SET `State` = "'.$db->Escape($this->State).'", `Current` = "'.$db->Escape($this->Current).'", `Round` = "'.$db->Escape($this->Round).'", `Winner` = "'.$db->Escape($this->Winner).'", `Outcome` = "'.$db->Escape($this->Outcome).'", `EndState` = "'.$db->Escape($this->EndState).'", `Last Action` = "'.$db->Escape($this->LastAction).'", `Data` = "'.$db->Escape(serialize($this->GameData)).'", `Note1` = "'.$db->Escape($this->Note1).'", `Note2` = "'.$db->Escape($this->Note2).'" WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
 			if (!$result) return false;
 			
 			return true;
@@ -413,6 +415,7 @@
 			$this->State = 'finished';
 			$this->Winner = ($this->Player1 == $playername) ? $this->Player2 : $this->Player1;
 			$this->Outcome = 'Opponent has surrendered';
+			$this->EndState = 'Surrender';
 			$this->SaveGame();
 			
 			return 'OK';
@@ -426,6 +429,7 @@
 			$this->State = 'finished';
 			$this->Winner = '';
 			$this->Outcome = 'Aborted';
+			$this->EndState = 'Abort';
 			$this->SaveGame();
 			
 			return 'OK';
@@ -440,6 +444,7 @@
 			$this->Winner = ($this->Player1 == $playername) ? $this->Player1 : $this->Player2;
 			$opponent = ($this->Player1 == $playername) ? $this->Player2 : $this->Player1;
 			$this->Outcome = $opponent.' has fled the battlefield';
+			$this->EndState = 'Abandon';
 			$this->SaveGame();
 			
 			return 'OK';
@@ -1203,59 +1208,69 @@
 			{	// tower destruction victory - player
 				$this->Winner = $playername;
 				$this->Outcome = 'Tower destruction victory';
+				$this->EndState = 'Destruction';
 				$this->State = 'finished';
 			}
 			elseif( $mydata->Tower <= 0 and $hisdata->Tower > 0 )
 			{	// tower destruction victory - opponent
 				$this->Winner = $opponent;
 				$this->Outcome = 'Tower destruction victory';
+				$this->EndState = 'Destruction';
 				$this->State = 'finished';
 			}
 			elseif( $mydata->Tower <= 0 and $hisdata->Tower <= 0 )
 			{	// tower destruction victory - draw
 				$this->Winner = '';
 				$this->Outcome = 'Draw';
+				$this->EndState = 'Draw';
 				$this->State = 'finished';
 			}
 			elseif( $mydata->Tower >= $max_tower and $hisdata->Tower < $max_tower )
 			{	// tower building victory - player
 				$this->Winner = $playername;
 				$this->Outcome = 'Tower building victory';
+				$this->EndState = 'Construction';
 				$this->State = 'finished';
 			}
 			elseif( $mydata->Tower < $max_tower and $hisdata->Tower >= $max_tower )
 			{	// tower building victory - opponent
 				$this->Winner = $opponent;
 				$this->Outcome = 'Tower building victory';
+				$this->EndState = 'Construction';
 				$this->State = 'finished';
 			}
 			elseif( $mydata->Tower >= $max_tower and $hisdata->Tower >= $max_tower )
 			{	// tower building victory - draw
 				$this->Winner = '';
 				$this->Outcome = 'Draw';
+				$this->EndState = 'Draw';
 				$this->State = 'finished';
 			}
 			elseif( ($mydata->Bricks + $mydata->Gems + $mydata->Recruits) >= $res_vic and !(($hisdata->Bricks + $hisdata->Gems + $hisdata->Recruits) >= $res_vic) )
 			{	// resource accumulation victory - player
 				$this->Winner = $playername;
 				$this->Outcome = 'Resource accumulation victory';
+				$this->EndState = 'Resource';
 				$this->State = 'finished';
 			}
 			elseif( ($hisdata->Bricks + $hisdata->Gems + $hisdata->Recruits) >= $res_vic and !(($mydata->Bricks + $mydata->Gems + $mydata->Recruits) >= $res_vic) )
 			{	// resource accumulation victory - opponent
 				$this->Winner = $opponent;
 				$this->Outcome = 'Resource accumulation victory';
+				$this->EndState = 'Resource';
 				$this->State = 'finished';
 			}
 			elseif( ($mydata->Bricks + $mydata->Gems + $mydata->Recruits) >= $res_vic and ($hisdata->Bricks + $hisdata->Gems + $hisdata->Recruits) >= $res_vic )
 			{	// resource accumulation victory - draw
 				$this->Winner = '';
 				$this->Outcome = 'Draw';
+				$this->EndState = 'Draw';
 				$this->State = 'finished';
 			}
 			elseif( $this->Round >= $time_vic )
 			{	// timeout victory
 				$this->Outcome = 'Timeout victory';
+				$this->EndState = 'Timeout';
 				$this->State = 'finished';
 				
 				// compare towers
@@ -1275,6 +1290,7 @@
 				{
 					$this->Winner = '';
 					$this->Outcome = 'Draw';
+					$this->EndState = 'Draw';
 				}
 			}
 			else
@@ -1470,7 +1486,7 @@
 			$hisdata = $this->GameData[$opponent];
 			$round = $this->Round;
 			$winner = $this->Winner;
-			$outcome = $this->Outcome;
+			$endstate = $this->EndState;
 			$mylevel = $playerdb->GetLevel($player);
 			$hislevel = $playerdb->GetLevel($opponent);
 			
@@ -1479,19 +1495,19 @@
 			$message = 'Base = '.$exp.' EXP'."\n";
 			
 			// first phase: Game rating
-			if ($outcome == 'Resource accumulation victory' AND $win) $mod = 1.15;
-			elseif ($outcome == 'Tower building victory' AND $win) $mod = 1.10;
-			elseif ($outcome == 'Tower destruction victory' AND $win) $mod = 1.05;
-			elseif ($outcome == $opponent.' has fled the battlefield') $mod = 1;
-			elseif ($outcome == 'Opponent has surrendered' AND $win) $mod = 0.95;
-			elseif ($outcome == 'Timeout victory' AND $win) $mod = 0.6;
-			elseif ($outcome == 'Draw') $mod = 0.5;
-			elseif ($outcome == 'Timeout victory' AND !$win) $mod = 0.4;
-			elseif ($outcome == 'Tower destruction victory' AND !$win) $mod = 0.15;
-			elseif ($outcome == 'Tower building victory' AND !$win) $mod = 0.1;
-			elseif ($outcome == 'Resource accumulation victory' AND !$win) $mod = 0.05;
-			elseif ($outcome == 'Opponent has surrendered' AND !$win) $mod = 0;
-			elseif ($outcome == $player.' has fled the battlefield') $mod = 0;
+			if ($endstate == 'Resource' AND $win) $mod = 1.15;
+			elseif ($endstate == 'Construction' AND $win) $mod = 1.10;
+			elseif ($endstate == 'Destruction' AND $win) $mod = 1.05;
+			elseif ($endstate == 'Abandon' AND $win) $mod = 1;
+			elseif ($endstate == 'Surrender' AND $win) $mod = 0.95;
+			elseif ($endstate == 'Timeout' AND $win) $mod = 0.6;
+			elseif ($endstate == 'Draw') $mod = 0.5;
+			elseif ($endstate == 'Timeout' AND !$win) $mod = 0.4;
+			elseif ($endstate == 'Destruction' AND !$win) $mod = 0.15;
+			elseif ($endstate == 'Construction' AND !$win) $mod = 0.1;
+			elseif ($endstate == 'Resource' AND !$win) $mod = 0.05;
+			elseif ($endstate == 'Surrender' AND !$win) $mod = 0;
+			elseif ($endstate == 'Abandon' AND !$win) $mod = 0;
 			else $mod = 0; // should never happen
 			
 			// update exp and message
@@ -1588,7 +1604,7 @@
 					if ($cur_card->GetClass() == "Rare") $tmp++;
 				}
 				if ($tmp >= 4) $recieved[] = 'Collector'; // Collector
-				if ($mylast_card->GetID() == 315 AND $mylast_action == 'play' AND $outcome == 'Tower destruction victory') $recieved[] = 'Titan'; // Titan
+				if ($mylast_card->GetID() == 315 AND $mylast_action == 'play' AND $endstate == 'Destruction') $recieved[] = 'Titan'; // Titan
 				if (($mydata->Tower == 1) AND ($mydata->Wall == 0)) $recieved[] = 'Survivor'; // Survivor
 				
 				// update exp and message

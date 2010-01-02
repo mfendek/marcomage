@@ -63,6 +63,7 @@ CREATE TABLE `games` (
   `Round` int(3) unsigned NOT NULL DEFAULT '1',
   `Winner` char(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `Outcome` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `EndState` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `Last Action` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Data` text COLLATE utf8_unicode_ci NOT NULL,
   `Note1` text COLLATE utf8_unicode_ci NOT NULL,

@@ -3216,6 +3216,7 @@ case 'Game':
 	$params['game']['GameState'] = $game->State;
 	$params['game']['Round'] = $game->Round;
 	$params['game']['Outcome'] = $game->Outcome;
+	$params['game']['EndState'] = $game->EndState;
 	$params['game']['Winner'] = $game->Winner;
 	$params['game']['PlayerName'] = $player->Name();
 	$params['game']['OpponentName'] = $opponent->Name();

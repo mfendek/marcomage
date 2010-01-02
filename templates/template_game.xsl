@@ -27,8 +27,8 @@
 				<xsl:choose>
 					<xsl:when test="$param/Winner = $param/PlayerName">You have won in round <xsl:value-of select="$param/Round"/>. <xsl:value-of select="$param/Outcome"/>.</xsl:when>
 					<xsl:when test="$param/Winner = $param/OpponentName"><xsl:value-of select="$param/Winner"/> has won in round <xsl:value-of select="$param/Round"/>. <xsl:value-of select="$param/Outcome"/>.</xsl:when>
-					<xsl:when test="($param/Winner = '') and ($param/Outcome = 'Draw')">Game ended in a draw in round <xsl:value-of select="$param/Round"/>.</xsl:when>
-					<xsl:when test="($param/Winner = '') and ($param/Outcome = 'Aborted')">Game was aborted in round <xsl:value-of select="$param/Round"/>.</xsl:when>
+					<xsl:when test="($param/Winner = '') and ($param/EndState = 'Draw')">Game ended in a draw in round <xsl:value-of select="$param/Round"/>.</xsl:when>
+					<xsl:when test="($param/Winner = '') and ($param/EndState = 'Abort')">Game was aborted in round <xsl:value-of select="$param/Round"/>.</xsl:when>
 				</xsl:choose>
 			</p>
 		</xsl:otherwise>
