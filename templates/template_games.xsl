@@ -25,7 +25,7 @@
 	<div id="active_games" class="skin_label">
 	<h3>Active games</h3>
 	<xsl:choose>
-		<xsl:when test="count($list) &gt; 0">
+		<xsl:when test="count($list/*) &gt; 0">
 			<table cellspacing="0" class="skin_text">
 				<tr>
 					<th><p>Opponent</p></th>
