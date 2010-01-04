@@ -87,7 +87,7 @@
 			return true;
 		}
 		
-		public function CountFreeSlots($player)
+		public function CountFreeSlots1($player) // used in all cases except when accepting a challenge
 		{
 			global $playerdb;
 			$db = $this->db;
@@ -108,6 +108,26 @@
 			$data = $result->Next();
 			
 			return max(0, MAX_GAMES + floor($playerdb->GetLevel($player) / BONUS_GAME_SLOTS) - $data['count']); // make sure the result is not negative
+		}
+		
+		public function CountFreeSlots2($player) // used only when accepting a challenge
+		{
+			global $playerdb;
+			$db = $this->db;
+			
+			// outgoing = chalenges_from + hosted_games
+			$outgoing = '`Player1` = "'.$db->Escape($player).'" AND `State` = "waiting"';
+			
+			// active games
+			$active_games = '`Player1` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P2 over")';
+			
+			$result = $db->Query('SELECT COUNT(`GameID`) as `count` FROM `games` WHERE ('.$outgoing.') OR ('.$active_games.')');
+			if (!$result) return false;
+			if (!$result->Rows()) return false;
+			
+			$data = $result->Next();
+			
+			return max(0, MAX_GAMES + floor($playerdb->GetLevel($player) / BONUS_GAME_SLOTS) - $data['count']);
 		}
 		
 		public function ListChallengesFrom($player)
