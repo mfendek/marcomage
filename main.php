@@ -491,7 +491,7 @@
 							}
 
 							// send battle report message
-							$outcome = $game->Outcome;
+							$outcome = $game->Outcome();
 							$winner = $game->Winner;
 							$hidden = $game->GetGameMode('HiddenCards');
 
@@ -559,7 +559,7 @@
 						}
 
 						// send battle report message
-						$outcome = $game->Outcome;
+						$outcome = $game->Outcome();
 						$winner = $game->Winner;
 						$hidden = $game->GetGameMode('HiddenCards');
 
@@ -598,7 +598,7 @@
 						$opponent = $playerdb->GetPlayer(($player1 != $player->Name()) ? $player1 : $player2);
 						$opponent_rep = $opponent->GetSetting("Reports");
 						$player_rep = $player->GetSetting("Reports");
-						$outcome = $game->Outcome;
+						$outcome = $game->Outcome();
 						$hidden = $game->GetGameMode('HiddenCards');
 
 						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $hidden);
@@ -666,7 +666,7 @@
 						}
 
 						// send battle report message
-						$outcome = $game->Outcome;
+						$outcome = $game->Outcome();
 						$winner = $game->Winner;
 						$hidden = $game->GetGameMode('HiddenCards');
 
@@ -3215,7 +3215,7 @@ case 'Game':
 
 	$params['game']['GameState'] = $game->State;
 	$params['game']['Round'] = $game->Round;
-	$params['game']['Outcome'] = $game->Outcome;
+	$params['game']['Outcome'] = $game->Outcome();
 	$params['game']['EndState'] = $game->EndState;
 	$params['game']['Winner'] = $game->Winner;
 	$params['game']['PlayerName'] = $player->Name();
