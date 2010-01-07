@@ -786,9 +786,6 @@
 					$game->StartGame($player->Name(), $deck->DeckData);
 					$game->SaveGame();
 					
-					if ($playerdb->GetPlayer($opponent)->GetSetting("Reports") == "yes")
-						$messagedb->SendMessage("MArcomage", $opponent, "Game started", 'Player '.$player->Name().' has joined your game.');
-					
 					$information = 'You have joined '.htmlencode($opponent).'\'s game.';
 					$current = 'Games';
 					break;
