@@ -455,7 +455,7 @@
 					{
 						$game->SaveGame();
 
-						if ($game->State == 'finished')
+						if (($game->State == 'finished') AND ($game->GetGameMode('FriendlyPlay') == "no"))
 						{
 							$player1 = $game->Name1();
 							$player2 = $game->Name2();
@@ -465,31 +465,28 @@
 							$p2 = $playerdb->GetPlayer($player2);
 							$p1_rep = $p1->GetSetting("Reports");
 							$p2_rep = $p2->GetSetting("Reports");
-
-							if ($game->GetGameMode('FriendlyPlay') == "no")
-							{
-								// update score
-								$score1 = $scoredb->GetScore($player1);
-								$score2 = $scoredb->GetScore($player2);
-								
-								if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
-								elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
-								else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
-								
-								$levelup1 = $score1->AddExp($exp1['exp']);
-								$levelup2 = $score2->AddExp($exp2['exp']);
-								$score1->SaveScore();
-								$score2->SaveScore();
-								
-								// send level up messages
-								if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
-								if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
-								
-								// add bonus deck slot every 6th level
-								if ($levelup1 AND (($p1->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player1, time());
-								if ($levelup2 AND (($p2->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player2, time());
-							}
-
+							
+							// update score
+							$score1 = $scoredb->GetScore($player1);
+							$score2 = $scoredb->GetScore($player2);
+							
+							if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
+							elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
+							else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
+							
+							$levelup1 = $score1->AddExp($exp1['exp']);
+							$levelup2 = $score2->AddExp($exp2['exp']);
+							$score1->SaveScore();
+							$score2->SaveScore();
+							
+							// send level up messages
+							if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
+							if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
+							
+							// add bonus deck slot every 6th level
+							if ($levelup1 AND (($p1->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player1, time());
+							if ($levelup2 AND (($p2->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player2, time());
+							
 							// send battle report message
 							$outcome = $game->Outcome();
 							$winner = $game->Winner;
@@ -528,35 +525,32 @@
 					
 					$result = $game->SurrenderGame($player->Name());
 					
-					if ($result == 'OK')
+					if (($result == 'OK') AND ($game->GetGameMode('FriendlyPlay') == "no"))
 					{
 						$exp1 = $game->CalculateExp($player->Name());
 						$exp2 = $game->CalculateExp($game->Winner);
 						$opponent = $playerdb->GetPlayer($game->Winner);
 						$opponent_rep = $opponent->GetSetting("Reports");
 						$player_rep = $player->GetSetting("Reports");
-
-						if ($game->GetGameMode('FriendlyPlay') == "no")
-						{
-							// update score
-							$score1 = $scoredb->GetScore($player->Name());
-							$score1->ScoreData->Losses++;
-							$levelup1 = $score1->AddExp($exp1['exp']);
-							$score1->SaveScore();
-							
-							$score2 = $scoredb->GetScore($game->Winner);
-							$score2->ScoreData->Wins++;
-							$levelup2 = $score2->AddExp($exp2['exp']);
-							$score2->SaveScore();
-							
-							// send level up messages
-							if ($levelup1 AND ($player_rep == "yes")) $messagedb->LevelUp($player->Name(), $score1->ScoreData->Level);
-							if ($levelup2 AND ($opponent_rep == "yes")) $messagedb->LevelUp($opponent->Name(), $score2->ScoreData->Level);
-							
-							// add bonus deck slot every 6th level
-							if ($levelup1 AND (($player->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player->Name(), time());
-							if ($levelup2 AND (($opponent->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($opponent->Name(), time());
-						}
+						
+						// update score
+						$score1 = $scoredb->GetScore($player->Name());
+						$score1->ScoreData->Losses++;
+						$levelup1 = $score1->AddExp($exp1['exp']);
+						$score1->SaveScore();
+						
+						$score2 = $scoredb->GetScore($game->Winner);
+						$score2->ScoreData->Wins++;
+						$levelup2 = $score2->AddExp($exp2['exp']);
+						$score2->SaveScore();
+						
+						// send level up messages
+						if ($levelup1 AND ($player_rep == "yes")) $messagedb->LevelUp($player->Name(), $score1->ScoreData->Level);
+						if ($levelup2 AND ($opponent_rep == "yes")) $messagedb->LevelUp($opponent->Name(), $score2->ScoreData->Level);
+						
+						// add bonus deck slot every 6th level
+						if ($levelup1 AND (($player->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player->Name(), time());
+						if ($levelup2 AND (($opponent->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($opponent->Name(), time());
 
 						// send battle report message
 						$outcome = $game->Outcome();
@@ -589,22 +583,6 @@
 					
 					$result = $game->AbortGame($player->Name());
 					
-					if ($result == 'OK')
-					{
-						$player1 = $game->Name1();
-						$player2 = $game->Name2();
-
-						// send battle report message
-						$opponent = $playerdb->GetPlayer(($player1 != $player->Name()) ? $player1 : $player2);
-						$opponent_rep = $opponent->GetSetting("Reports");
-						$player_rep = $player->GetSetting("Reports");
-						$outcome = $game->Outcome();
-						$hidden = $game->GetGameMode('HiddenCards');
-
-						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $hidden);
-					}
-					/*else $error = $result;*/
-					
 					$current = "Game";
 					break;
 				}
@@ -630,7 +608,7 @@
 					
 					$result = $game->FinishGame($player->Name());
 					
-					if ($result == 'OK')
+					if (($result == 'OK') AND ($game->GetGameMode('FriendlyPlay') == "no"))
 					{
 						$player1 = $game->Name1();
 						$player2 = $game->Name2();
@@ -641,29 +619,26 @@
 						$p1_rep = $p1->GetSetting("Reports");
 						$p2_rep = $p2->GetSetting("Reports");
 						
-						if ($game->GetGameMode('FriendlyPlay') == "no")
-						{
-							// update score
-							$score1 = $scoredb->GetScore($player1);
-							$score2 = $scoredb->GetScore($player2);
-							
-							if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
-							elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
-							else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
-							
-							$levelup1 = $score1->AddExp($exp1['exp']);
-							$levelup2 = $score2->AddExp($exp2['exp']);
-							$score1->SaveScore();
-							$score2->SaveScore();
-							
-							// send level up messages
-							if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
-							if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
-							
-							// add bonus deck slot every 6th level
-							if ($levelup1 AND (($p1->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player1, time());
-							if ($levelup2 AND (($p2->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player2, time());
-						}
+						// update score
+						$score1 = $scoredb->GetScore($player1);
+						$score2 = $scoredb->GetScore($player2);
+						
+						if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
+						elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
+						else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
+						
+						$levelup1 = $score1->AddExp($exp1['exp']);
+						$levelup2 = $score2->AddExp($exp2['exp']);
+						$score1->SaveScore();
+						$score2->SaveScore();
+						
+						// send level up messages
+						if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
+						if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
+						
+						// add bonus deck slot every 6th level
+						if ($levelup1 AND (($p1->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player1, time());
+						if ($levelup2 AND (($p2->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player2, time());
 
 						// send battle report message
 						$outcome = $game->Outcome();
