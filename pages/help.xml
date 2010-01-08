@@ -317,7 +317,7 @@ In the settings section you can upload your own avatar. Avatar must be a jpg, jp
 	<li>"Last card played" means last card played by you (if more cards were played this round then it is the most recent one)</li>
 	<li>"Last card played by opponent" means last card played by opponent (if opponent played more cards in his round then it is the most recent one)</li>
 	<li>"Recently discarded" means cards discarded by you last round or by opponent (during his last round)</li>
-	<li>"Last round" is a round recently made by some player</li>
+	<li>"Last round" is a round recently made by some player, cards that refer to changes made by opponent during his last round must be played at the start of the round, otherwise they will have no effect</li>
 	<li>"(max N), (min N)" these are limits applied to each resource type (Bricks, Gems, Recruits). It means that you cannot get more then N of each resource for example.</li>
 	<li>"#Keyword" means number of such keywords either in card present in your hand or in both player's hands (this is specified in the card effect description)</li>
 	<li>"#Keyword1 + #Keyword2" means number of keywords1 plus number of keywords2, note that they are counted independently</li>
@@ -489,13 +489,7 @@ Let's take the <b>Alliance</b> keyword for example. First you need to set one to
 			<li><b>Gray</b> (dead) means that player was inactive for more than 21 days</li>
 		</ul>
 	</li>
-	<li>In the game section color holds information about player activity and game attributes changes (tower, wall, stock and facilities)
-		<ul>
-			<li>Opponent's name (located above tower and wall info) is in <b>Lime</b> (or <b>Green</b>) color, when he is online</li>
-			<li>If a game attribute was raised last round, it will be highlighted in lime color</li>
-			<li>If a game attribute was lowered last round, it will be highlighted in orange color</li>
-		</ul>
-	</li>
+	<li>In the game section color holds information about player activity. Opponent's name (located above tower and wall info) is in <b>Lime</b> (or <b>Green</b>) color, when he is online</li>
 </ul>
 
 <h4>Menubar notification</h4>
