@@ -21,6 +21,7 @@
 	define("CARDS_PER_PAGE", 20);
 	define("EFFECT_LENGTH", 255);
 	define("HOBBY_LENGTH", 300);
+	define("REPLAYS_PER_PAGE", 20); // game replays
 
 	// game configuration
 	$game_config['init_tower'] = 30; // starting tower height

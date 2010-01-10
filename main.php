@@ -16,6 +16,7 @@
 	require_once('CConcept.php');
 	require_once('CDeck.php');
 	require_once('CGame.php');
+	require_once('CReplay.php');
 	require_once('CNovels.php');
 	require_once('CSettings.php');
 	require_once('CChat.php');
@@ -38,6 +39,7 @@
 	$conceptdb = new CConcepts($db);
 	$deckdb = new CDecks($db);
 	$gamedb = new CGames($db);
+	$replaydb = new CReplays($db);
 	$chatdb = new CChats($db);
 	$settingdb = new CSettings($db);
 	$playerdb = new CPlayers($db);
@@ -170,6 +172,10 @@
 		elseif (isset($_POST['Settings']))
 		{
 			$current = "Settings";
+		}
+		elseif (isset($_POST['Replays']))
+		{
+			$current = "Replays";
 		}
 		elseif (isset($_POST['Logout']))
 		{
@@ -426,6 +432,11 @@
 					if ($result == 'OK')
 					{
 						$game->SaveGame();
+						$replaydb->UpdateReplay($game);
+						
+						if ($game->State == "finished")
+							$replaydb->FinishReplay($game);
+						
 						$information = "You have discarded a card.";
 					}
 					/*else $error = $result;*/
@@ -454,6 +465,10 @@
 					if ($result == 'OK')
 					{
 						$game->SaveGame();
+						$replaydb->UpdateReplay($game);
+						
+						if ($game->State == 'finished')
+							$replaydb->FinishReplay($game);
 
 						if (($game->State == 'finished') AND ($game->GetGameMode('FriendlyPlay') == "no"))
 						{
@@ -523,6 +538,9 @@
 					
 					$result = $game->SurrenderGame($player->Name());
 					
+					if ($result == 'OK')
+						$replaydb->FinishReplay($game);
+					
 					if (($result == 'OK') AND ($game->GetGameMode('FriendlyPlay') == "no"))
 					{
 						$exp1 = $game->CalculateExp($player->Name());
@@ -581,6 +599,10 @@
 					
 					$result = $game->AbortGame($player->Name());
 					
+					if ($result == 'OK')
+						$replaydb->FinishReplay($game);
+					/*else $error = $result;*/
+					
 					$current = "Game";
 					break;
 				}
@@ -605,6 +627,9 @@
 					if( time() - strtotime($game->LastAction) < 60*60*24*7*3 || $game->Current == $player->Name() ) { /*$error = 'Action not allowed!';*/ $current = 'Game'; break; }
 					
 					$result = $game->FinishGame($player->Name());
+					
+					if ($result == 'OK')
+						$replaydb->FinishReplay($game);
 					
 					if (($result == 'OK') AND ($game->GetGameMode('FriendlyPlay') == "no"))
 					{
@@ -783,6 +808,7 @@
 					$game = $gamedb->GetGame($game_id); // refresh game data
 					$game->StartGame($player->Name(), $deck->DeckData);
 					$game->SaveGame();
+					$replaydb->CreateReplay($game); // create game replay
 					
 					$information = 'You have joined '.htmlencode($opponent).'\'s game.';
 					$current = 'Games';
@@ -848,6 +874,7 @@
 					// accept the challenge
 					$game->StartGame($player->Name(), $deck->DeckData);
 					$game->SaveGame();
+					$replaydb->CreateReplay($game); // create game replay
 					$messagedb->CancelChallenge($game->ID());
 					
 					$information = 'You have accepted a challenge from '.htmlencode($opponent).'.';
@@ -2562,6 +2589,84 @@
 				
 				// end players related messages
 				
+				// begin replays related messages
+				
+				if ($message == 'filter_replays') // use filter in replays list
+				{
+					$current = 'Replays';
+					break;
+				}
+				
+				if ($message == 'select_page_replays') // Replays -> select page (previous and next button)
+				{
+					$current_page = array_shift(array_keys($value));
+					$current = "Replays";
+					
+					break;
+				}
+				
+				if ($message == 'seek_page_replays') // Replays -> select page (page selector)
+				{
+					$current_page = $_POST['page_selector'];
+					$current = "Replays";
+					
+					break;
+				}
+				
+				if ($message == 'view_replay') // Replays -> select specific replay
+				{
+					$gameid = array_shift(array_keys($value));
+					$player_view = array_pop($value);
+					$replay = $replaydb->GetReplay($gameid, 1); // view first turn
+					
+					// check if the game replay exists
+					if (!$replay) { /*$error = 'No such game replay!';*/ $current = 'Replays'; break; }
+					
+					$_POST['CurrentReplay'] = $gameid;
+					$_POST['PlayerView'] = $player_view;
+					$current = "Replay";
+					
+					break;
+				}
+				
+				if ($message == 'select_turn') // Replay -> select turn (previous or next button)
+				{
+					$gameid = $_POST['CurrentReplay'];
+					$_POST['turn_selector'] = $turn = array_shift(array_keys($value));
+					$replay = $replaydb->GetReplay($gameid, $turn);
+					
+					// check if the game replay exists
+					if (!$replay) { /*$error = 'No such game replay!';*/ $current = 'Replays'; break; }
+					
+					$current = "Replay";
+					
+					break;
+				}
+				
+				if ($message == 'seek_turn') // Replay -> select turn (page selector)
+				{
+					$gameid = $_POST['CurrentReplay'];
+					$turn = $_POST['turn_selector'];
+					$replay = $replaydb->GetReplay($gameid, $turn);
+					
+					// check if the game replay exists
+					if (!$replay) { /*$error = 'No such game replay!';*/ $current = 'Replays'; break; }
+					
+					$current = "Replay";
+					
+					break;
+				}
+				
+				if ($message == 'switch_players') // Replay -> switch player view
+				{
+					$_POST['PlayerView'] = ($_POST['PlayerView'] == 1) ? 2 : 1;
+					$current = "Replay";
+					
+					break;
+				}
+				
+				// end replays related messages
+				
 				// refresh button :)
 				if ($message == 'Refresh')
 				{
@@ -3523,6 +3628,187 @@ case 'Edit_post':
 	$params['forum_post_edit']['Thread'] = $forum->Threads->GetThread($post_data['ThreadID']);
 	$params['forum_post_edit']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : $post_data['Content']);
 	$params['forum_post_edit']['move_post'] = (($access_rights[$player->Type()]["move_post"]) ? 'yes' : 'no');
+
+	break;
+
+case 'Replays':
+	if (!isset($current_page)) $current_page = 0;
+	$params['replays']['current_page'] = $current_page;
+	$params['replays']['PlayerFilter'] = $player_f = (isset($_POST['PlayerFilter'])) ? $_POST['PlayerFilter'] : "none";
+	$params['replays']['HiddenCards'] = $hidden_f = (isset($_POST['HiddenCards'])) ? $_POST['HiddenCards'] : "ignore";
+	$params['replays']['FriendlyPlay'] = $friendly_f = (isset($_POST['FriendlyPlay'])) ? $_POST['FriendlyPlay'] : "ignore";
+	$params['replays']['VictoryFilter'] = $victory_f = (isset($_POST['VictoryFilter'])) ? $_POST['VictoryFilter'] : "none";
+	$params['replays']['list'] = $replaydb->ListReplays($player_f, $hidden_f, $friendly_f, $victory_f, $current_page);
+	$params['replays']['count_pages'] = $count = $replaydb->CountPages($player_f, $hidden_f, $friendly_f, $victory_f);
+	$pages = array();
+	for ($i = 0; $i < $count; $i++) $pages[$i] = $i;
+	$params['replays']['pages'] = $pages;
+	$params['replays']['timezone'] = $player->GetSetting("Timezone");
+	$params['replays']['players'] = $replaydb->ListPlayers();
+
+	break;
+
+case 'Replay':
+	$params['replay']['CurrentReplay'] = $gameid = $_POST['CurrentReplay'];
+	$params['replay']['PlayerView'] = $player_view = (isset($_POST['PlayerView'])) ? $_POST['PlayerView'] : 1;
+	$params['replay']['CurrentTurn'] = $turn = (isset($_POST['turn_selector']) ? $_POST['turn_selector'] : 1);
+
+	// prepare the necessary data
+	$replay = $replaydb->GetReplay($gameid, $turn);
+
+	// determine player view
+	$player1 = ($player_view == 1) ? $replay->Name1() : $replay->Name2();
+	$player2 = ($player_view == 1) ? $replay->Name2() : $replay->Name1();
+
+	$replay_data = $replay->ReplayData;
+	$p1data = $replay_data[$player1];
+	$p2data = $replay_data[$player2];
+
+	// load needed settings
+	$params['replay']['c_text'] = $player->GetSetting("Cardtext");
+	$params['replay']['c_img'] = $player->GetSetting("Images");
+	$params['replay']['c_keywords'] = $player->GetSetting("Keywords");
+	$params['replay']['c_oldlook'] = $player->GetSetting("OldCardLook");
+	$params['replay']['minimize'] = $player->GetSetting("Minimize");
+	$params['replay']['Background'] = $player->GetSetting("Background");
+
+	$params['replay']['turns'] = $turns = $replay->NumberOfTurns();
+	$pages = array();
+	for ($i = 1; $i <= $turns; $i++) $pages[$i] = $i;
+	$params['replay']['pages'] = $pages;
+	$params['replay']['Round'] = $replay->Round;
+	$params['replay']['Outcome'] = $replay->Outcome();
+	$params['replay']['EndType'] = $replay->EndType;
+	$params['replay']['Winner'] = $replay->Winner;
+	$params['replay']['Player1'] = $player1;
+	$params['replay']['Player2'] = $player2;
+	$params['replay']['Current'] = $replay->Current;
+	$params['replay']['HiddenCards'] = $replay->GetGameMode('HiddenCards');
+	$params['replay']['FriendlyPlay'] = $replay->GetGameMode('FriendlyPlay');
+	$params['replay']['max_tower'] = $game_config['max_tower'];
+	$params['replay']['max_wall'] = $game_config['max_wall'];
+
+	// player1 hand
+	$p1hand = $p1data->Hand;
+	$handdata = $carddb->GetData($p1hand);
+	foreach( $handdata as $i => $card )
+	{
+		$entry = array();
+		$entry['Data'] = $card;
+		$entry['NewCard'] = ( isset($p1data->NewCards[$i]) ) ? 'yes' : 'no';
+		$params['replay']['p1Hand'][$i] = $entry;
+	}
+
+	$params['replay']['p1Bricks'] = $p1data->Bricks;
+	$params['replay']['p1Gems'] = $p1data->Gems;
+	$params['replay']['p1Recruits'] = $p1data->Recruits;
+	$params['replay']['p1Quarry'] = $p1data->Quarry;
+	$params['replay']['p1Magic'] = $p1data->Magic;
+	$params['replay']['p1Dungeons'] = $p1data->Dungeons;
+	$params['replay']['p1Tower'] = $p1data->Tower;
+	$params['replay']['p1Wall'] = $p1data->Wall;
+
+	// player1 discarded cards
+	if( count($p1data->DisCards[0]) > 0 )
+		$params['replay']['p1DisCards0'] = $carddb->GetData($p1data->DisCards[0]); // cards discarded from player1 hand
+	if( count($p1data->DisCards[1]) > 0 )
+		$params['replay']['p1DisCards1'] = $carddb->GetData($p1data->DisCards[1]); // cards discarded from player2 hand
+
+	// player1 last played cards
+	$p1lastcard = array();
+	$tmp = $carddb->GetData($p1data->LastCard);
+	foreach( $tmp as $i => $card )
+	{
+		$p1lastcard[$i]['CardData'] = $card;
+		$p1lastcard[$i]['CardAction'] = $p1data->LastAction[$i];
+		$p1lastcard[$i]['CardMode'] = $p1data->LastMode[$i];
+		$p1lastcard[$i]['CardPosition'] = $i;
+	}
+	$params['replay']['p1LastCard'] = $p1lastcard;
+
+	// player1 tokens
+	$p1_token_names = $p1data->TokenNames;
+	$p1_token_values = $p1data->TokenValues;
+	$p1_token_changes = $p1data->TokenChanges;
+
+	$p1_tokens = array();
+	foreach ($p1_token_names as $index => $value)
+	{
+		$p1_tokens[$index]['Name'] = $p1_token_names[$index];
+		$p1_tokens[$index]['Value'] = $p1_token_values[$index];
+		$p1_tokens[$index]['Change'] = $p1_token_changes[$index];
+	}
+
+	$params['replay']['p1Tokens'] = $p1_tokens;
+
+	// player2 hand
+	$p2hand = $p2data->Hand;
+	$handdata = $carddb->GetData($p2hand);
+	foreach( $handdata as $i => $card )
+	{
+		$entry = array();
+		$entry['Data'] = $card;
+		$entry['NewCard'] = ( isset($p2data->NewCards[$i]) ) ? 'yes' : 'no';
+		$params['replay']['p2Hand'][$i] = $entry;
+	}
+
+	$params['replay']['p2Bricks'] = $p2data->Bricks;
+	$params['replay']['p2Gems'] = $p2data->Gems;
+	$params['replay']['p2Recruits'] = $p2data->Recruits;
+	$params['replay']['p2Quarry'] = $p2data->Quarry;
+	$params['replay']['p2Magic'] = $p2data->Magic;
+	$params['replay']['p2Dungeons'] = $p2data->Dungeons;
+	$params['replay']['p2Tower'] = $p2data->Tower;
+	$params['replay']['p2Wall'] = $p2data->Wall;
+
+	// player2 discarded cards
+	if( count($p2data->DisCards[0]) > 0 )
+		$params['replay']['p2DisCards0'] = $carddb->GetData($p2data->DisCards[0]); // cards discarded from player1 hand
+	if( count($p2data->DisCards[1]) > 0 )
+		$params['replay']['p2DisCards1'] = $carddb->GetData($p2data->DisCards[1]); // cards discarded from player2 hand
+
+	// player2 last played cards
+	$p2lastcard = array();
+	$tmp = $carddb->GetData($p2data->LastCard);
+	foreach( $tmp as $i => $card )
+	{
+		$p2lastcard[$i]['CardData'] = $card;
+		$p2lastcard[$i]['CardAction'] = $p2data->LastAction[$i];
+		$p2lastcard[$i]['CardMode'] = $p2data->LastMode[$i];
+		$p2lastcard[$i]['CardPosition'] = $i;
+	}
+	$params['replay']['p2LastCard'] = $p2lastcard;
+
+	// player2 tokens
+	$p2_token_names = $p2data->TokenNames;
+	$p2_token_values = $p2data->TokenValues;
+	$p2_token_changes = $p2data->TokenChanges;
+
+	$p2_tokens = array();
+	foreach ($p2_token_names as $index => $value)
+	{
+		$p2_tokens[$index]['Name'] = $p2_token_names[$index];
+		$p2_tokens[$index]['Value'] = $p2_token_values[$index];
+		$p2_tokens[$index]['Change'] = $p2_token_changes[$index];
+	}
+
+	$params['replay']['p2Tokens'] = array_reverse($p2_tokens);
+
+	// changes
+
+	// player1 resources and tower
+	$changes = array ('Quarry'=> '', 'Magic'=> '', 'Dungeons'=> '', 'Bricks'=> '', 'Gems'=> '', 'Recruits'=> '', 'Tower'=> '', 'Wall'=> '');
+	foreach ($changes as $attribute => $change)
+		$changes[$attribute] = (($p1data->Changes[$attribute] > 0) ? '+' : '').$p1data->Changes[$attribute];
+
+	$params['replay']['p1changes'] = $changes;
+
+	// player2 resources and tower
+	$changes = array ('Quarry'=> '', 'Magic'=> '', 'Dungeons'=> '', 'Bricks'=> '', 'Gems'=> '', 'Recruits'=> '', 'Tower'=> '', 'Wall'=> '');
+	foreach ($changes as $attribute => $change)
+		$changes[$attribute] = (($p2data->Changes[$attribute] > 0) ? '+' : '').$p2data->Changes[$attribute];
+
+	$params['replay']['p2changes'] = $changes;
 
 	break;
 

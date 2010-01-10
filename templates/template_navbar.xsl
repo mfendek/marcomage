@@ -76,6 +76,11 @@
 	<xsl:if test="$param/NewConcepts = 'yes'">
 		<img src="img/new_card.gif" alt="" width="10px" height="14px" />
 	</xsl:if>
+	<input type="submit" name="Replays" value="Replays" >
+		<xsl:if test="($param/current = 'Replays') or ($param/current = 'Replay')">
+			<xsl:attribute name="class">pushed</xsl:attribute>
+		</xsl:if>
+	</input>
 	<input type="submit" name="Novels" value="Novels" >
 		<xsl:if test="$param/current = 'Novels'">
 			<xsl:attribute name="class">pushed</xsl:attribute>
