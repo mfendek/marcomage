@@ -494,10 +494,8 @@
 
 							$messagedb->SendBattleReport($player1, $player2, $p1_rep, $p2_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
 						}
-						else
-						{
-							$information = "You have played a card.";
-						}
+						
+						$information = "You have played a card.";
 					}
 					/*else $error = $result;*/
 					
