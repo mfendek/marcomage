@@ -431,7 +431,7 @@
     <code><![CDATA[$this->Attack(16, $hisdata->Tower, $hisdata->Wall);]]></code>
   </card>
   <card id="33">
-    <name>Beastiary</name>
+    <name>Beast farm</name>
     <class>Uncommon</class>
     <cost>
       <bricks>10</bricks>
@@ -3789,8 +3789,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Stock: +10<br />Dicards your hand and receive cards randomly chosen from Volunteer, Archer, Goblin, Lady Ellena, Swordsman, Ninja, Gladiator, Samurai]]></effect>
-    <code><![CDATA[$mydata->Hand = $this->DrawHand_list(array(97, 95, 13, 42, 51, 20, 76, 68)); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $mydata->Bricks+= 10; $mydata->Gems+= 10; $mydata->Recruits+= 10; $nextcard = 0;]]></code>
+    <effect><![CDATA[Stock: +10<br />Replaces your hand with non-rare no keyword, no support keyword, attack cards]]></effect>
+    <code><![CDATA[$mydata->Hand = $this->DrawHand_list(array_merge($carddb->GetList(array('class'=>"Common", 'keyword'=>"No keywords", 'advanced'=>"Attack:", 'support'=>"No keywords")), $carddb->GetList(array('class'=>"Uncommon", 'keyword'=>"No keywords", 'advanced'=>"Attack:", 'support'=>"No keywords")))); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $mydata->Bricks+= 10; $mydata->Gems+= 10; $mydata->Recruits+= 10; $nextcard = 0;]]></code>
   </card>
   <card id="288">
     <name>Cursed amulet</name>
@@ -4210,13 +4210,13 @@
     <class>Common</class>
     <cost>
       <bricks>0</bricks>
-      <gems>8</gems>
+      <gems>2</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
     <keywords>Burning. Mage.</keywords>
-    <effect><![CDATA[Gems: -3<br />Enemy wall: -4<br />Enemy tower: -4]]></effect>
-    <code><![CDATA[$mydata->Gems-= 3; $hisdata->Wall-= 4; $hisdata->Tower-= 4;]]></code>
+    <effect><![CDATA[Wall: +10<br />If last card played wasn't <b>Burning</b><br />Gems: -4]]></effect>
+    <code><![CDATA[$mydata->Wall+= 10; if (!(($mylast_card->HasKeyword("Mage")) and ($mylast_action == 'play'))) $mydata->Gems-= 4;]]></code>
   </card>
   <card id="320">
     <name>Last hope</name>
@@ -5596,9 +5596,9 @@
     </cost>
     <modes>0</modes>
     <keywords>Soldier.</keywords>
-    <effect><![CDATA[Attack: 14<br />Discards a rare <b>Dragon</b> card from enemy hand to add a Dragon egg into your hand]]></effect>
+    <effect><![CDATA[Attack: 16<br />Discards a rare <b>Dragon</b> card from enemy hand to add a Dragon egg into your hand]]></effect>
     <code><![CDATA[
-							$this->Attack(14, $hisdata->Tower, $hisdata->Wall);
+							$this->Attack(16, $hisdata->Tower, $hisdata->Wall);
 							$storage = array();
 							for ($i = 1; $i <= 8; $i++)
 								if (($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Dragon")) AND ($carddb->GetCard($hisdata->Hand[$i])->GetClass() == "Rare")) $storage[] = $i;
@@ -6767,8 +6767,8 @@
     </cost>
     <modes>8</modes>
     <keywords>Quick.</keywords>
-    <effect><![CDATA[Adds a newcard flag to a selected card in your hand]]></effect>
-    <code><![CDATA[$mydata->NewCards[$mode] = 1;]]></code>
+    <effect><![CDATA[Gems: -1<br />Adds a newcard flag to a selected card in your hand]]></effect>
+    <code><![CDATA[$mydata->Gems-= 1; $mydata->NewCards[$mode] = 1;]]></code>
   </card>
   <card id="479">
     <name>Mirror golem</name>
@@ -6901,7 +6901,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Both players gain 2 stock for each zero cost card and lose 2 stock for each non zero cost card in their hand]]></effect>
+    <effect><![CDATA[Both players gain 1.5 stock for each zero cost card and lose 1.5 stock for each non zero cost card in their hand]]></effect>
     <code><![CDATA[
 							$my_gain = $his_gain = 0;
 							for ($i = 1; $i <= 8; $i++)
@@ -6914,8 +6914,8 @@
 								if ($carddb->GetCard($hisdata->Hand[$i])->GetResources('') == 0) $his_gain++;
 								else $his_gain--;
 							}
-							$mydata->Bricks+= $my_gain * 2; $mydata->Gems+= $my_gain * 2; $mydata->Recruits+= $my_gain * 2;
-							$hisdata->Bricks+= $his_gain * 2; $hisdata->Gems+= $his_gain * 2; $hisdata->Recruits+= $his_gain * 2;
+							$mydata->Bricks+= round($my_gain * 1.5); $mydata->Gems+= round($my_gain * 1.5); $mydata->Recruits+= round($my_gain * 1.5);
+							$hisdata->Bricks+= round($his_gain * 1.5); $hisdata->Gems+= round($his_gain * 1.5); $hisdata->Recruits+= round($his_gain * 1.5);
 ]]></code>
   </card>
   <card id="488">
@@ -6935,7 +6935,7 @@
     <name>Imp cache</name>
     <class>Common</class>
     <cost>
-      <bricks>3</bricks>
+      <bricks>2</bricks>
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
