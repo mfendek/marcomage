@@ -120,7 +120,8 @@
 				<xsl:attribute name="disabled">disabled</xsl:attribute>
 			</xsl:if>
 		</input>
-		<!-- page selector -->
+		<xsl:if test="$count_pages &gt; 0">
+			<!-- page selector -->
 			<select name="page_selector">
 				<xsl:for-each select="$param/pages/*">
 					<option value="{.}">
@@ -130,6 +131,7 @@
 				</xsl:for-each>
 			</select>
 			<input type="submit" name="seek_page_replays" value="Select" />
+		</xsl:if>
 	</p>
 	<!-- end filters and navigation -->
 
