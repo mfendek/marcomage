@@ -139,21 +139,27 @@
 		<xsl:when test="count($param/list/*) &gt; 0">
 			<table cellspacing="0" class="skin_text">
 				<tr>
-					<th><p>Player 1</p></th>
-					<th><p>Player 2</p></th>
+					<th><p>Winner</p></th>
+					<th><p>Loser</p></th>
 					<th><p>Rounds</p></th>
 					<th><p>Turns</p></th>
 					<th><p>Started</p></th>
 					<th><p>Finished</p></th>
 					<th><p>Modes</p></th>
-					<th><p>Winner</p></th>
 					<th><p>Outcome</p></th>
 					<th></th>
 				</tr>
 				<xsl:for-each select="$param/list/*">
 					<tr class="table_row">
-						<td><p><xsl:value-of select="Player1"/></p></td>
-						<td><p><xsl:value-of select="Player2"/></p></td>
+						<td><p><xsl:value-of select="Winner"/></p></td>
+						<td>
+							<p>
+								<xsl:choose>
+									<xsl:when test="Winner = Player1"><xsl:value-of select="Player2"/></xsl:when>
+									<xsl:when test="Winner = Player2"><xsl:value-of select="Player1"/></xsl:when>
+								</xsl:choose>
+							</p>
+						</td>
 						<td><p><xsl:value-of select="Rounds"/></p></td>
 						<td><p><xsl:value-of select="Turns"/></p></td>
 						<td><p><xsl:value-of select="am:datetime(Started, $param/timezone)"/></p></td>
@@ -168,7 +174,6 @@
 								</xsl:if>
 							</p>
 						</td>
-						<td><p><xsl:value-of select="Winner"/></p></td>
 						<td><p><xsl:value-of select="EndType"/></p></td>
 						<td>
 							<p>
@@ -202,6 +207,34 @@
 		<input type="hidden" name="CurrentReplay" value="{$param/CurrentReplay}"/>
 		<input type="hidden" name="PlayerView" value="{$param/PlayerView}"/>
 	</div>
+
+	<p class="information_line">
+		<!-- begin navigation -->
+		<input type="submit" name="select_turn[{am:max($current - 1, 1)}]" value="&lt;">
+			<xsl:if test="$current = 1">
+				<xsl:attribute name="disabled">disabled</xsl:attribute>
+			</xsl:if>
+		</input>
+
+		<input type="submit" name="select_turn[{am:min($current + 1, $turns)}]" value="&gt;">
+			<xsl:if test="$current = am:max($turns, 1)">
+				<xsl:attribute name="disabled">disabled</xsl:attribute>
+			</xsl:if>
+		</input>
+
+		<!-- turn selector -->
+		<select name="turn_selector">
+			<xsl:for-each select="$param/pages/*">
+				<option value="{.}">
+					<xsl:if test="$current = ."><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+					<xsl:value-of select="."/>
+				</option>
+			</xsl:for-each>
+		</select>
+		<input type="submit" name="seek_turn" value="Select" />
+		<input type="submit" name="switch_players" value="{$param/PlayerView}"/>
+		<!-- end navigation -->
+	</p>
 
 	<!-- display supportive information -->
 	<xsl:choose>
@@ -238,33 +271,8 @@
 
 	<!-- begin messages and game buttons -->
 	<tr>
-		<!-- begin navigation -->
-		<td>
-			<input type="submit" name="select_turn[{am:max($current - 1, 1)}]" value="&lt;">
-				<xsl:if test="$current = 1">
-					<xsl:attribute name="disabled">disabled</xsl:attribute>
-				</xsl:if>
-			</input>
-
-			<input type="submit" name="select_turn[{am:min($current + 1, $turns)}]" value="&gt;">
-				<xsl:if test="$current = am:max($turns, 1)">
-					<xsl:attribute name="disabled">disabled</xsl:attribute>
-				</xsl:if>
-			</input>
-		</td>
-		<td>
-			<!-- turn selector -->
-			<select name="turn_selector">
-				<xsl:for-each select="$param/pages/*">
-					<option value="{.}">
-						<xsl:if test="$current = ."><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-						<xsl:value-of select="."/>
-					</option>
-				</xsl:for-each>
-			</select>
-			<input type="submit" name="seek_turn" value="Select" />
-		</td>
-		<!-- end navigation -->
+		<td></td>
+		<td></td>
 		<!-- begin game mode flags -->
 		<td>
 			<xsl:if test="$param/HiddenCards = 'yes'">
@@ -273,7 +281,6 @@
 			<xsl:if test="$param/FriendlyPlay = 'yes'">
 				<img src="img/friendly_play.png" class="in_game" width="20px" height="14px" alt="friendly play" />
 			</xsl:if>
-			<input type="submit" name="switch_players" value="{$param/PlayerView}"/>
 		</td>
 		<!-- end game mode flags -->
 

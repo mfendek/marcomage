@@ -148,7 +148,7 @@
 		public function ListPlayers() // player filter list
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `Player1` as `Player` FROM `replays` WHERE `Final` = "yes" UNION DISTINCT SELECT `Player2` as `Player` FROM `replays` WHERE `Final` = "yes"');
+			$result = $db->Query('SELECT `Player1` as `Player` FROM `replays` WHERE `Final` = "yes" UNION DISTINCT SELECT `Player2` as `Player` FROM `replays` WHERE `Final` = "yes" ORDER BY `Player` ASC');
 			if (!$result) return false;
 			
 			$players = array();
