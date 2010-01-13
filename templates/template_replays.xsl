@@ -10,7 +10,7 @@
 
 <xsl:template match="section[. = 'Replays']">
 	<xsl:variable name="param" select="$params/replays" />
-	<xsl:variable name="count_pages" select="$param/count_pages" />
+	<xsl:variable name="count_pages" select="count($param/pages/*)" />
 	<xsl:variable name="current" select="$param/current_page" />
 	<xsl:variable name="filter_values">
 		<value name="ignore"  />
@@ -141,17 +141,24 @@
 				<tr>
 					<th><p>Winner</p></th>
 					<th><p>Loser</p></th>
+					<th><p>Outcome</p></th>
 					<th><p>Rounds</p></th>
 					<th><p>Turns</p></th>
 					<th><p>Started</p></th>
 					<th><p>Finished</p></th>
 					<th><p>Modes</p></th>
-					<th><p>Outcome</p></th>
 					<th></th>
 				</tr>
 				<xsl:for-each select="$param/list/*">
 					<tr class="table_row">
-						<td><p><xsl:value-of select="Winner"/></p></td>
+						<td>
+							<p>
+								<xsl:choose>
+									<xsl:when test="Winner != ''"><xsl:value-of select="Winner"/></xsl:when>
+									<xsl:otherwise><xsl:value-of select="Player1"/>/<xsl:value-of select="Player2"/></xsl:otherwise>
+								</xsl:choose>
+							</p>
+						</td>
 						<td>
 							<p>
 								<xsl:choose>
@@ -160,6 +167,7 @@
 								</xsl:choose>
 							</p>
 						</td>
+						<td><p><xsl:value-of select="EndType"/></p></td>
 						<td><p><xsl:value-of select="Rounds"/></p></td>
 						<td><p><xsl:value-of select="Turns"/></p></td>
 						<td><p><xsl:value-of select="am:datetime(Started, $param/timezone)"/></p></td>
@@ -174,7 +182,6 @@
 								</xsl:if>
 							</p>
 						</td>
-						<td><p><xsl:value-of select="EndType"/></p></td>
 						<td>
 							<p>
 								<input type="submit" name="view_replay[{GameID}]" value="1" />

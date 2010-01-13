@@ -3639,7 +3639,7 @@ case 'Replays':
 	$params['replays']['FriendlyPlay'] = $friendly_f = (isset($_POST['FriendlyPlay'])) ? $_POST['FriendlyPlay'] : "ignore";
 	$params['replays']['VictoryFilter'] = $victory_f = (isset($_POST['VictoryFilter'])) ? $_POST['VictoryFilter'] : "none";
 	$params['replays']['list'] = $replaydb->ListReplays($player_f, $hidden_f, $friendly_f, $victory_f, $current_page);
-	$params['replays']['count_pages'] = $count = $replaydb->CountPages($player_f, $hidden_f, $friendly_f, $victory_f);
+	$count = $replaydb->CountPages($player_f, $hidden_f, $friendly_f, $victory_f);
 	$pages = array();
 	for ($i = 0; $i < $count; $i++) $pages[$i] = $i;
 	$params['replays']['pages'] = $pages;
