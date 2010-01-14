@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xsl:stylesheet [ <!ENTITY rarr "&#8594;"> ]>
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
@@ -182,12 +183,7 @@
 								</xsl:if>
 							</p>
 						</td>
-						<td>
-							<p>
-								<input type="submit" name="view_replay[{GameID}]" value="1" />
-								<input type="submit" name="view_replay[{GameID}]" value="2" />
-							</p>
-						</td>
+						<td><p><input type="submit" name="view_replay[{GameID}]" value="&rarr;" /></p></td>
 					</tr>
 				</xsl:for-each>
 			</table>
@@ -239,7 +235,7 @@
 			</xsl:for-each>
 		</select>
 		<input type="submit" name="seek_turn" value="Select" />
-		<input type="submit" name="switch_players" value="{$param/PlayerView}"/>
+		<input type="submit" name="switch_players" value="{$param/Player1}"/>
 		<!-- end navigation -->
 	</p>
 

@@ -2616,7 +2616,7 @@
 				if ($message == 'view_replay') // Replays -> select specific replay
 				{
 					$gameid = array_shift(array_keys($value));
-					$player_view = array_pop($value);
+					$player_view = 1; // default player view
 					$replay = $replaydb->GetReplay($gameid, 1); // view first turn
 					
 					// check if the game replay exists
