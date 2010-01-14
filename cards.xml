@@ -4685,7 +4685,7 @@
     <modes>0</modes>
     <keywords>Nature.</keywords>
     <effect><![CDATA[If opponent played a <b>Swift</b> card last round<br />Enemy stock: -12<br />else<br />Enemy stock: -5]]></effect>
-    <code><![CDATA[$found = false; for ($i = 1; $i <= $hislastcardindex; $i++) if ($carddb->GetCard($hisdata->LastCard[$i])->HasKeyword("Swift")) { $found = true; break; } if ($found) { $hisdata->Bricks-= 12; $hisdata->Gems-= 12; $hisdata->Recruits-= 12; } else { $hisdata->Bricks-= 5; $hisdata->Gems-= 5; $hisdata->Recruits-= 5; }]]></code>
+    <code><![CDATA[$found = false; for ($i = 1; $i <= $hislastcardindex; $i++) if ($carddb->GetCard($hisdata->LastCard[$i])->HasKeyword("Swift") AND ($hisdata->LastAction[$i] == 'play')) { $found = true; break; } if ($found) { $hisdata->Bricks-= 12; $hisdata->Gems-= 12; $hisdata->Recruits-= 12; } else { $hisdata->Bricks-= 5; $hisdata->Gems-= 5; $hisdata->Recruits-= 5; }]]></code>
   </card>
   <card id="349">
     <name>Reuse the rubble</name>
