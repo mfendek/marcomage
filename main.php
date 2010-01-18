@@ -28,7 +28,7 @@
 	require_once('utils.php');
 	require_once('Access.php');
 	
-	$db = new CDatabase("localhost", "arcomage", "", "arcomage");
+	$db = new CDatabase($server, $username, $password, $database);
 
 	date_default_timezone_set("Etc/UTC");
 	$db->Query("SET time_zone='Etc/UTC'");

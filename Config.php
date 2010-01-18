@@ -4,6 +4,12 @@
 	 * | MARCOMAGE CONFIGURATION FILE | *
 	 * -------------------------------- */
 
+	// database configuration
+	$server = "localhost";
+	$username = "arcomage";
+	$password = "";
+	$database = "arcomage";
+
 	// constants
 	define("MAX_GAMES", 15);
 	define("DECK_SLOTS", 8);
