@@ -4216,7 +4216,7 @@
     <modes>0</modes>
     <keywords>Burning. Mage.</keywords>
     <effect><![CDATA[Wall: +10<br />If last card played wasn't <b>Burning</b><br />Gems: -4]]></effect>
-    <code><![CDATA[$mydata->Wall+= 10; if (!(($mylast_card->HasKeyword("Mage")) and ($mylast_action == 'play'))) $mydata->Gems-= 4;]]></code>
+    <code><![CDATA[$mydata->Wall+= 10; if (!(($mylast_card->HasKeyword("Burning")) and ($mylast_action == 'play'))) $mydata->Gems-= 4;]]></code>
   </card>
   <card id="320">
     <name>Last hope</name>
