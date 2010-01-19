@@ -2591,6 +2591,20 @@
 				
 				// begin replays related messages
 				
+				$temp = array("asc" => "ASC", "desc" => "DESC");
+				foreach($temp as $type => $order_val)
+				{
+					if ($message == 'replays_ord_'.$type) // select ascending or descending order in game replays list
+					{
+						$_POST['ReplaysCond'] = array_shift(array_keys($value));
+						$_POST['ReplaysOrder'] = $order_val;
+						
+						$current = "Replays";
+						
+						break;
+					}
+				}
+				
 				if ($message == 'filter_replays') // use filter in replays list
 				{
 					$current = 'Replays';
@@ -3639,7 +3653,13 @@ case 'Replays':
 	$params['replays']['FriendlyPlay'] = $friendly_f = (isset($_POST['FriendlyPlay'])) ? $_POST['FriendlyPlay'] : "ignore";
 	$params['replays']['VictoryFilter'] = $victory_f = (isset($_POST['VictoryFilter'])) ? $_POST['VictoryFilter'] : "none";
 	$params['replays']['IdFilter'] = $id_f = (isset($_POST['IdFilter'])) ? $_POST['IdFilter'] : "";
-	$params['replays']['list'] = $replaydb->ListReplays($player_f, $hidden_f, $friendly_f, $victory_f, $id_f, $current_page);
+
+	if (!isset($_POST['ReplaysOrder'])) $_POST['ReplaysOrder'] = "DESC"; // default ordering
+	if (!isset($_POST['ReplaysCond'])) $_POST['ReplaysCond'] =  "Finished"; // default order condition
+	$params['replays']['order'] = $order = $_POST['ReplaysOrder'];
+	$params['replays']['cond'] = $cond = $_POST['ReplaysCond'];
+
+	$params['replays']['list'] = $replaydb->ListReplays($player_f, $hidden_f, $friendly_f, $victory_f, $id_f, $current_page, $cond, $order);
 	$count = $replaydb->CountPages($player_f, $hidden_f, $friendly_f, $victory_f, $id_f);
 	$pages = array();
 	for ($i = 0; $i < $count; $i++) $pages[$i] = $i;

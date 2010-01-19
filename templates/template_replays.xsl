@@ -143,16 +143,43 @@
 		<xsl:when test="count($param/list/*) &gt; 0">
 			<table cellspacing="0" class="skin_text">
 				<tr>
-					<th><p>Id</p></th>
-					<th><p>Winner</p></th>
-					<th><p>Loser</p></th>
-					<th><p>Outcome</p></th>
-					<th><p>Rounds</p></th>
-					<th><p>Turns</p></th>
-					<th><p>Started</p></th>
-					<th><p>Finished</p></th>
-					<th><p>Modes</p></th>
-					<th></th>
+					<xsl:variable name="columns">
+						<column name="GameID"    text="Id"       sortable="yes" />
+						<column name="Winner"    text="Winner"   sortable="yes" />
+						<column name="Loser"     text="Loser"    sortable="no"  />
+						<column name="EndType"   text="Outcome"  sortable="no"  />
+						<column name="Rounds"    text="Rounds"   sortable="yes" />
+						<column name="Turns"     text="Turns"    sortable="yes" />
+						<column name="Started"   text="Started"  sortable="yes" />
+						<column name="Finished"  text="Finished" sortable="yes" />
+						<column name="GameModes" text="Modes"    sortable="no"  />
+						<column name="other"     text=""         sortable="no"  />
+					</xsl:variable>
+					
+					<xsl:for-each select="exsl:node-set($columns)/*">
+						<th>
+							<p>
+								<xsl:value-of select="@text"/>
+								<xsl:if test="@sortable = 'yes'">
+									<input type="submit" class="details">
+										<xsl:if test="$param/cond = @name">
+											<xsl:attribute name="class">details pushed</xsl:attribute>
+										</xsl:if>
+										<xsl:choose>
+											<xsl:when test="$param/cond = @name and $param/order = 'DESC'">
+												<xsl:attribute name="name">replays_ord_asc[<xsl:value-of select="@name"/>]</xsl:attribute>
+												<xsl:attribute name="value">\/</xsl:attribute>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:attribute name="name">replays_ord_desc[<xsl:value-of select="@name"/>]</xsl:attribute>
+												<xsl:attribute name="value">/\</xsl:attribute>
+											</xsl:otherwise>
+										</xsl:choose>
+									</input>
+								</xsl:if>
+							</p>
+						</th>
+					</xsl:for-each>
 				</tr>
 				<xsl:for-each select="$param/list/*">
 					<tr class="table_row">
@@ -197,6 +224,9 @@
 		<p class="information_line warning">There are no game replays.</p>
 	</xsl:otherwise>
 	</xsl:choose>
+
+	<input type="hidden" name="ReplaysOrder" value="{$param/order}"/>
+	<input type="hidden" name="ReplaysCond" value="{$param/cond}"/>
 
 	</div>
 
