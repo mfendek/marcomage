@@ -9,6 +9,7 @@
 		private $db = false;
 		public $status = 'ERROR_DB_OFFLINE';
 		public $queries = 0; // counter
+		public $qtime = 0; // time spent
 		
 		public function __construct($server, $username, $password, $database)
 		{
@@ -40,10 +41,13 @@
 		{
 			if (!$this->db) { $this->status = 'ERROR_DB_OFFLINE'; return false; };
 			
+			$t_start = microtime(TRUE);
 			$result = mysql_query($query, $this->db);
+			$t_end = microtime(TRUE);
 			if (!$result) { $this->status = 'ERROR_MYSQL_QUERY: '.mysql_error($this->db); return false; };
 			
 			$this->queries++;
+			$this->qtime += $t_end - $t_start;
 			$this->status = 'SUCCESS';
 			return new CResult($result);
 		}
