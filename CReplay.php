@@ -105,16 +105,17 @@
 			return $replay;
 		}
 		
-		public function ListReplays($player, $hidden, $friendly, $victory, $page)
+		public function ListReplays($player, $hidden, $friendly, $victory, $id, $page)
 		{
 			$db = $this->db;
 			
 			$victory_q = ($victory != "none") ? '`EndType` = "'.$db->Escape($victory).'"' : '`EndType` != "Pending"';
+			$id_q = ($id != "") ? ' AND `GameID` = "'.$db->Escape($id).'"' : '';
 			$player_q = ($player != "none") ? 'AND ((`Player1` = "'.$db->Escape($player).'") OR (`Player2` = "'.$db->Escape($player).'"))' : '';
 			$hidden_q = ($hidden != "ignore") ? ' AND FIND_IN_SET("HiddenCards", `GameModes`) '.(($hidden == "include") ? '>' : '=').' 0' : '';
 			$friendly_q = ($friendly != "ignore") ? ' AND FIND_IN_SET("FriendlyPlay", `GameModes`) '.(($friendly == "include") ? '>' : '=').' 0' : '';
 			
-			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2`, `Started`, `Finished`, `Rounds`, `Turns`, `GameModes`, `Winner`, `EndType` FROM `replays_head` WHERE '.$player_q.$hidden_q.$friendly_q.$victory_q.' ORDER BY `Finished` DESC LIMIT '.(REPLAYS_PER_PAGE * $page).' , '.REPLAYS_PER_PAGE.'');
+			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2`, `Started`, `Finished`, `Rounds`, `Turns`, `GameModes`, `Winner`, `EndType` FROM `replays_head` WHERE '.$victory_q.$id_q.$player_q.$hidden_q.$friendly_q.' ORDER BY `Finished` DESC LIMIT '.(REPLAYS_PER_PAGE * $page).' , '.REPLAYS_PER_PAGE.'');
 			if (!$result) return false;
 			
 			$replays = array();
@@ -124,16 +125,17 @@
 			return $replays;
 		}
 		
-		public function CountPages($player, $hidden, $friendly, $victory)
+		public function CountPages($player, $hidden, $friendly, $victory, $id)
 		{	
 			$db = $this->db;
 			
 			$victory_q = ($victory != "none") ? '`EndType` = "'.$db->Escape($victory).'"' : '`EndType` != "Pending"';
+			$id_q = ($id != "") ? ' AND `GameID` = "'.$db->Escape($id).'"' : '';
 			$player_q = ($player != "none") ? 'AND ((`Player1` = "'.$db->Escape($player).'") OR (`Player2` = "'.$db->Escape($player).'"))' : '';
 			$hidden_q = ($hidden != "ignore") ? ' AND FIND_IN_SET("HiddenCards", `GameModes`) '.(($hidden == "include") ? '>' : '=').' 0' : '';
 			$friendly_q = ($friendly != "ignore") ? ' AND FIND_IN_SET("FriendlyPlay", `GameModes`) '.(($friendly == "include") ? '>' : '=').' 0' : '';
 			
-			$result = $db->Query('SELECT COUNT(`GameID`) as `Count` FROM `replays_head` WHERE '.$player_q.$hidden_q.$friendly_q.$victory_q.'');
+			$result = $db->Query('SELECT COUNT(`GameID`) as `Count` FROM `replays_head` WHERE '.$victory_q.$id_q.$player_q.$hidden_q.$friendly_q.'');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			

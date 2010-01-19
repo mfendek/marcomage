@@ -24,6 +24,9 @@
 	<h3>Game replays</h3>
 	<!-- begin filters and navigation -->
 	<p>
+		<!-- id filter -->
+		<input type="text" name="IdFilter" maxlength="10" size="10" value="{$param/IdFilter}" />
+
 		<!-- player filter -->
 		<select name="PlayerFilter" size="1">
 			<xsl:if test="$param/PlayerFilter != 'none'">
@@ -140,6 +143,7 @@
 		<xsl:when test="count($param/list/*) &gt; 0">
 			<table cellspacing="0" class="skin_text">
 				<tr>
+					<th><p>Id</p></th>
 					<th><p>Winner</p></th>
 					<th><p>Loser</p></th>
 					<th><p>Outcome</p></th>
@@ -152,6 +156,7 @@
 				</tr>
 				<xsl:for-each select="$param/list/*">
 					<tr class="table_row">
+						<td><p><xsl:value-of select="GameID"/></p></td>
 						<td>
 							<p>
 								<xsl:choose>

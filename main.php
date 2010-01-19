@@ -3638,8 +3638,9 @@ case 'Replays':
 	$params['replays']['HiddenCards'] = $hidden_f = (isset($_POST['HiddenCards'])) ? $_POST['HiddenCards'] : "ignore";
 	$params['replays']['FriendlyPlay'] = $friendly_f = (isset($_POST['FriendlyPlay'])) ? $_POST['FriendlyPlay'] : "ignore";
 	$params['replays']['VictoryFilter'] = $victory_f = (isset($_POST['VictoryFilter'])) ? $_POST['VictoryFilter'] : "none";
-	$params['replays']['list'] = $replaydb->ListReplays($player_f, $hidden_f, $friendly_f, $victory_f, $current_page);
-	$count = $replaydb->CountPages($player_f, $hidden_f, $friendly_f, $victory_f);
+	$params['replays']['IdFilter'] = $id_f = (isset($_POST['IdFilter'])) ? $_POST['IdFilter'] : "";
+	$params['replays']['list'] = $replaydb->ListReplays($player_f, $hidden_f, $friendly_f, $victory_f, $id_f, $current_page);
+	$count = $replaydb->CountPages($player_f, $hidden_f, $friendly_f, $victory_f, $id_f);
 	$pages = array();
 	for ($i = 0; $i < $count; $i++) $pages[$i] = $i;
 	$params['replays']['pages'] = $pages;
