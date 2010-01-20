@@ -258,8 +258,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Wall: +21]]></effect>
-    <code><![CDATA[$mydata->Wall+= 21;]]></code>
+    <effect><![CDATA[Wall: +25]]></effect>
+    <code><![CDATA[$mydata->Wall+= 25;]]></code>
   </card>
   <card id="20">
     <name>Swordsman</name>
@@ -460,14 +460,14 @@
     <name>Magical tower</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>16</bricks>
+      <bricks>15</bricks>
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +15<br />Gems: +5]]></effect>
-    <code><![CDATA[$mydata->Tower+= 15; $mydata->Gems+= 5;]]></code>
+    <effect><![CDATA[Tower: +15<br />If matching card in enemy hand costs gems<br />Gems: +10]]></effect>
+    <code><![CDATA[$mydata->Tower+= 15; if ($carddb->GetCard($hisdata->Hand[$cardpos])->GetResources('Gems') > 0) $mydata->Gems+= 10;]]></code>
   </card>
   <card id="36">
     <name>Light cavalry</name>
@@ -622,8 +622,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Wall: +31]]></effect>
-    <code><![CDATA[$mydata->Wall+= 31;]]></code>
+    <effect><![CDATA[Wall: +35]]></effect>
+    <code><![CDATA[$mydata->Wall+= 35;]]></code>
   </card>
   <card id="48">
     <name>School of Restoration</name>
@@ -739,8 +739,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +10]]></effect>
-    <code><![CDATA[$mydata->Tower+= 10;]]></code>
+    <effect><![CDATA[Tower: +12]]></effect>
+    <code><![CDATA[$mydata->Tower+= 12;]]></code>
   </card>
   <card id="57">
     <name>Gate</name>
@@ -1363,8 +1363,8 @@
     </cost>
     <modes>0</modes>
     <keywords>Durable.</keywords>
-    <effect><![CDATA[Wall: +10]]></effect>
-    <code><![CDATA[$mydata->Wall+= 10;]]></code>
+    <effect><![CDATA[Wall: +15]]></effect>
+    <code><![CDATA[$mydata->Wall+= 15;]]></code>
   </card>
   <card id="105">
     <name>Restoration</name>
@@ -2020,14 +2020,14 @@
     <name>Citadel</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>22</bricks>
+      <bricks>20</bricks>
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +20]]></effect>
-    <code><![CDATA[$mydata->Tower+= 20;]]></code>
+    <effect><![CDATA[Tower: +25]]></effect>
+    <code><![CDATA[$mydata->Tower+= 25;]]></code>
   </card>
   <card id="156">
     <name>Magic barrier</name>
@@ -2462,7 +2462,7 @@
     <name>Foundry</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>11</bricks>
+      <bricks>10</bricks>
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
@@ -2488,14 +2488,14 @@
     <name>Ivory tower</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>14</bricks>
+      <bricks>16</bricks>
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +15]]></effect>
-    <code><![CDATA[$mydata->Tower+= 15;]]></code>
+    <effect><![CDATA[Tower: +20]]></effect>
+    <code><![CDATA[$mydata->Tower+= 20;]]></code>
   </card>
   <card id="192">
     <name>Fortified castle</name>
@@ -2819,8 +2819,8 @@
     </cost>
     <modes>0</modes>
     <keywords>Swift.</keywords>
-    <effect><![CDATA[If Tower < 10<br />Tower: +15<br />else<br />Tower: +3]]></effect>
-    <code><![CDATA[if ($mydata->Tower < 10) $mydata->Tower+= 15; else $mydata->Tower+= 3;]]></code>
+    <effect><![CDATA[If Tower < 15<br />Tower: +15<br />else<br />Tower: +3]]></effect>
+    <code><![CDATA[if ($mydata->Tower < 15) $mydata->Tower+= 15; else $mydata->Tower+= 3;]]></code>
   </card>
   <card id="217">
     <name>Auxilia</name>
@@ -3014,8 +3014,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +10]]></effect>
-    <code><![CDATA[$mydata->Tower+= 10;]]></code>
+    <effect><![CDATA[Tower: +13]]></effect>
+    <code><![CDATA[$mydata->Tower+= 13;]]></code>
   </card>
   <card id="232">
     <name>Tyran's pride</name>
@@ -3510,7 +3510,7 @@
     <name>Defense improvement</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>11</bricks>
+      <bricks>10</bricks>
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
@@ -3640,14 +3640,14 @@
     <name>Border fortress</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>42</bricks>
+      <bricks>45</bricks>
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Wall: +60]]></effect>
-    <code><![CDATA[$mydata->Wall+= 60;]]></code>
+    <effect><![CDATA[Tower: +25<br />Wall: +50]]></effect>
+    <code><![CDATA[$mydata->Tower+= 25; $mydata->Wall+= 50;]]></code>
   </card>
   <card id="277">
     <name>King's elite guard</name>
@@ -3789,8 +3789,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Stock: +10<br />Replaces your hand with non-rare no keyword, no support keyword, attack cards]]></effect>
-    <code><![CDATA[$mydata->Hand = $this->DrawHand_list(array_merge($carddb->GetList(array('class'=>"Common", 'keyword'=>"No keywords", 'advanced'=>"Attack:", 'support'=>"No keywords")), $carddb->GetList(array('class'=>"Uncommon", 'keyword'=>"No keywords", 'advanced'=>"Attack:", 'support'=>"No keywords")))); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $mydata->Bricks+= 10; $mydata->Gems+= 10; $mydata->Recruits+= 10; $nextcard = 0;]]></code>
+    <effect><![CDATA[Stock: +5<br />Replaces your hand with non-rare no keyword, no support keyword, attack cards]]></effect>
+    <code><![CDATA[$mydata->Hand = $this->DrawHand_list(array_merge($carddb->GetList(array('class'=>"Common", 'keyword'=>"No keywords", 'advanced'=>"Attack:", 'support'=>"No keywords")), $carddb->GetList(array('class'=>"Uncommon", 'keyword'=>"No keywords", 'advanced'=>"Attack:", 'support'=>"No keywords")))); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $mydata->Bricks+= 5; $mydata->Gems+= 5; $mydata->Recruits+= 5; $nextcard = 0;]]></code>
   </card>
   <card id="288">
     <name>Cursed amulet</name>
@@ -3822,7 +3822,7 @@
     <name>Warlord's keep</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>31</bricks>
+      <bricks>30</bricks>
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
@@ -5106,7 +5106,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Beast. Soldier.</keywords>
-    <effect><![CDATA[Attack: 19<br />Bonus 15 attack for a <b>Beast</b> card in hand<br />Bonus 15 attack for a <b>Soldier</b> card in hand (other then this card)]]></effect>
+    <effect><![CDATA[Attack: 19<br />If #<b>Beast</b> cards in hand > 1<br />Bonus 15 attack<br />If #<b>Soldier</b> cards in hand > 1<br />Bonus 15 attack]]></effect>
     <code><![CDATA[$b_found = $s_found = false; for ($i = 1; $i <= 8; $i++) if ($i != $cardpos) { if ((!$b_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Beast"))) $b_found = true; if ((!$s_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Soldier"))) $s_found = true; } $this->Attack(19 + (($b_found) ? 15 : 0) + (($s_found) ? 15 :  0), $hisdata->Tower, $hisdata->Wall);]]></code>
   </card>
   <card id="377">
@@ -5327,8 +5327,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Negates the effect of opponent's last round on his tower, wall, facilities and stock]]></effect>
-    <code><![CDATA[if (!($mylast_card->IsPlayAgainCard() and $mylast_action == 'play')) { $hisdata->Tower-= $hischanges['Tower']; $hisdata->Wall-= $hischanges['Wall']; $hisdata->Quarry-= $hischanges['Quarry']; $hisdata->Magic-= $hischanges['Magic']; $hisdata->Dungeons-= $hischanges['Dungeons']; $hisdata->Bricks-= $hischanges['Bricks']; $hisdata->Gems-= $hischanges['Gems']; $hisdata->Recruits-= $hischanges['Recruits']; }]]></code>
+    <effect><![CDATA[Negates the positive effect of opponent's last round on his tower, wall, facilities and stock]]></effect>
+    <code><![CDATA[if (!($mylast_card->IsPlayAgainCard() and $mylast_action == 'play')) { $hisdata->Tower-= max(0, $hischanges['Tower']); $hisdata->Wall-= max(0, $hischanges['Wall']); $hisdata->Quarry-= max(0, $hischanges['Quarry']); $hisdata->Magic-= max(0, $hischanges['Magic']); $hisdata->Dungeons-= max(0, $hischanges['Dungeons']); $hisdata->Bricks-= max(0, $hischanges['Bricks']); $hisdata->Gems-= max(0, $hischanges['Gems']); $hisdata->Recruits-= max(0, $hischanges['Recruits']); }]]></code>
   </card>
   <card id="391">
     <name>Road to Valhalla</name>
