@@ -2333,6 +2333,15 @@
 					
 					$delete = $forum->Threads->DeleteThread($thread_id);					
 					if (!$delete) { $error = "Failed to delete thread"; $current = "Thread_details"; break; }
+					
+					// check for linked card concepts, update when necessary
+					$concept_id = $conceptdb->FindConcept($thread_id);
+					
+					if ($concept_id > 0)
+					{
+						$delete = $conceptdb->RemoveThread($concept_id);
+						if (!$delete) { $error = "Failed to unlink matching concept"; $current = "Thread_details"; break; }
+					}
 										
 					$information = "Thread deleted";
 										

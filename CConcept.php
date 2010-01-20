@@ -206,6 +206,17 @@
 			return true;
 		}
 
+		public function RemoveThread($concept_id)
+		{
+			$db = $this->db;
+
+			$result = $db->Query('UPDATE `concepts` SET `ThreadID` = 0 WHERE `CardID` = "'.$concept_id.'"');
+
+			if (!$result) return false;
+
+			return true;
+		}
+
 		public function FindConcept($thread_id)
 		{
 			$db = $this->db;
