@@ -22,6 +22,7 @@
 		<input type="submit" name="save_note_return" value="Save &amp; return" />
 		<input type="submit" name="save_note" value="Save" />
 		<input type="submit" name="clear_note" value="Clear" />
+		<input type="submit" name="clear_note_return" value="Clear &amp; return" />
 		<hr/>
 
 		<textarea name="Content" rows="10" cols="50"><xsl:value-of select="$param/text"/></textarea>

@@ -388,6 +388,29 @@
 					break;
 				}
 				
+				if ($message == 'clear_note_return')
+				{	// clear current's player game note and return to game screen
+					$gameid = $_POST['CurrentGame'];
+					$game = $gamedb->GetGame($gameid);
+					
+					// check if the game exists
+					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
+					
+					// check if this user is allowed to perform game actions
+					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
+					
+					// disable re-visiting
+					if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { /*$error = 'Game already over.';*/ $current = 'Games'; break; }
+					
+					$game->ClearNote($player->Name());
+					$game->SaveGame();
+					
+					$information = 'Game note cleared.';
+					
+					$current = 'Game';
+					break;
+				}
+				
 				if ($message == 'send_message')
 				{	// message contains no data itself
 					$msg = $_POST['ChatMessage'];
