@@ -45,7 +45,7 @@
 		</td></tr>
 		<xsl:for-each select="threadlist/*">
 
-			<xsl:variable name="hasposts" select="boolean(post_count > 0)" />
+			<xsl:variable name="hasposts" select="boolean(PostCount > 0)" />
 
 			<tr class="table_row">
 			<td>
@@ -68,7 +68,7 @@
 				<p><xsl:value-of select="Author"/></p>
 			</td>
 			<td>
-				<p><xsl:value-of select="post_count"/></p>
+				<p><xsl:value-of select="PostCount"/></p>
 			</td>
 			<td>
 				<p><xsl:value-of select="am:datetime(Created, $param/timezone)"/></p>
@@ -77,10 +77,10 @@
 				<xsl:choose>
 					<xsl:when test="$hasposts">
 						<p>
-							<xsl:if test="am:datediff(last_post, $param/PreviousLogin) &lt; 0">
+							<xsl:if test="am:datediff(LastPost, $param/PreviousLogin) &lt; 0">
 								<xsl:attribute name="class">new</xsl:attribute>
 							</xsl:if>
-							<xsl:value-of select="concat(am:datetime(last_post, $param/timezone), ' by ', PostAuthor)" />
+							<xsl:value-of select="concat(am:datetime(LastPost, $param/timezone), ' by ', LastAuthor)" />
 							<input class="details" type="submit" name="thread_last_page[{ThreadID}]" value="&rarr;" />
 						</p>
 					</xsl:when>
@@ -177,7 +177,7 @@
 
 	<xsl:for-each select="$param/threads/*">
 
-		<xsl:variable name="hasposts" select="boolean(post_count > 0)" />
+		<xsl:variable name="hasposts" select="boolean(PostCount > 0)" />
 
 		<tr class="table_row">
 		<td>
@@ -200,7 +200,7 @@
 			<p><xsl:value-of select="Author"/></p>
 		</td>
 		<td>
-			<p><xsl:value-of select="post_count"/></p>
+			<p><xsl:value-of select="PostCount"/></p>
 		</td>
 		<td>
 			<p><xsl:value-of select="am:datetime(Created, $param/timezone)"/></p>
@@ -209,10 +209,10 @@
 			<xsl:choose>
 				<xsl:when test="$hasposts">
 					<p>
-						<xsl:if test="am:datediff(last_post, $param/PreviousLogin) &lt; 0">
+						<xsl:if test="am:datediff(LastPost, $param/PreviousLogin) &lt; 0">
 							<xsl:attribute name="class">new</xsl:attribute>
 						</xsl:if>
-						<xsl:value-of select="concat(am:datetime(last_post, $param/timezone), ' by ', PostAuthor)" />
+						<xsl:value-of select="concat(am:datetime(LastPost, $param/timezone), ' by ', LastAuthor)" />
 						<input class="details" type="submit" name="thread_last_page[{ThreadID}]" value="&rarr;" />
 					</p>
 				</xsl:when>

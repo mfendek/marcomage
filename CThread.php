@@ -85,7 +85,38 @@
 									
 			return true;
 		}
-				
+		
+		public function RefreshThread($thread_id)
+		{
+			$db = $this->db;
+			
+			// recalculate last post date and author
+			$data = $this->GetLastPost($thread_id);
+			if (!$data) return false;
+			
+			// recalculate number of posts
+			$count = $this->PostCount($thread_id);
+			if ($count === false) return false;
+			
+			$result = $db->Query('UPDATE `forum_threads` SET `PostCount` = "'.$db->Escape($count).'", `LastAuthor` = "'.$db->Escape($data['Author']).'", `LastPost` = "'.$db->Escape($data['Created']).'" WHERE `ThreadID` = "'.$thread_id.'"');
+			if (!$result) return false;
+			
+			return true;
+		}
+		
+		public function GetLastPost($thread_id)
+		{
+			$db = $this->db;
+			
+			$result = $db->Query('SELECT `Author`, `Created` FROM `forum_posts` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = "no" AND `Created` = (SELECT MAX(`Created`) FROM `forum_posts` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = "no")');
+			if (!$result) return false;
+			if (!$result->Rows()) return array('Author' => '', 'Created' => '0000-00-00 00:00:00'); // there are no posts in this thread
+			
+			$data = $result->Next();
+			
+			return $data;
+		}
+		
 		public function LockThread($thread_id)
 		{	
 			$db = $this->db;
@@ -120,10 +151,10 @@
 		}
 		
 		public function PostCount($thread_id)
-		{	
+		{
 			$db = $this->db;
-									
-			$result = $db->Query('SELECT COUNT(`PostID`) as `Count` FROM `forum_posts` WHERE `ThreadID` = "'.$thread_id.'"');
+			
+			$result = $db->Query('SELECT COUNT(`PostID`) as `Count` FROM `forum_posts` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = "no"');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
@@ -131,38 +162,12 @@
 			
 			return $data['Count'];
 		}
-		
-		private function GenerateQuery($type, $section)
-		{	// support function for ListThreads
-			if ($type == "sticky")
-			{
-				$sign = "";
-				$flag = 0;
-			}
-			elseif ($type == "nonsticky")
-			{
-				$sign = "!";
-				$flag = 1;
-			}
-			
-			return 'SELECT `threads`.`ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostAuthor`, IFNULL(`last_post`,`Created`) as `last_post`, IFNULL(`post_count`, 0) as `post_count`, `flag` FROM (SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, '.$flag.' as `flag` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = "no" AND `Priority` '.$sign.'= "sticky") as `threads` LEFT OUTER JOIN (SELECT `PostAuthor`, `posts1`.`ThreadID`, `last_post`, `post_count` FROM (SELECT `Author` as `PostAuthor`, `ThreadID`, `Created` FROM `forum_posts` WHERE `Deleted` = "no") as `posts1` INNER JOIN (SELECT `ThreadID`, MAX(`Created`) as `last_post`, COUNT(`PostID`) as `post_count` FROM `forum_posts` WHERE `Deleted` = "no" GROUP BY `ThreadID`) as `posts2` ON `posts1`.`ThreadID` = `posts2`.`ThreadID` AND `posts1`.`Created` = `posts2`.`last_post`) as `posts` USING (`ThreadID`)';
-		}
 				
-		public function ListThreads($section, $page, $limit)
-		{			
+		public function ListThreads($section, $page)
+		{	// lists threads in one specific section. Used in Section details.
 			$db = $this->db;
 			
-			// get the thread list with last post date, sticky part
-			$sticky_query = $this->GenerateQuery("sticky", $section);
-			
-			// get the thread list with last post date, non-sticky part
-			$nonsticky_query = $this->GenerateQuery("nonsticky", $section);
-			
-			// limit option "" - no limit, N - limit N threads to output			
-			$limit_query = (($limit == "") ? (THREADS_PER_PAGE * $page).' , '.THREADS_PER_PAGE.'' : '0 , '.$limit);
-			
-			// combine queries into one query
-			$result = $db->Query(''.$sticky_query.' UNION '.$nonsticky_query.' ORDER BY `Flag` ASC, `last_post` DESC, `Created` DESC LIMIT '.$limit_query.'');
+			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost`, 0 as `flag` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = "no" AND `Priority` = "sticky" UNION SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost`, 1 as `flag` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = "no" AND `Priority` != "sticky" ORDER BY `Flag` ASC, `LastPost` DESC, `Created` DESC LIMIT '.(THREADS_PER_PAGE * $page).' , '.THREADS_PER_PAGE.'');
 			
 			if (!$result) return false;
 			
@@ -177,9 +182,7 @@
 		{	// lists threads in one specific section, ignoring sticky flag. Used in Forum main page.
 			$db = $this->db;
 			
-			$posts_q = "SELECT `ThreadID`, COUNT(`PostID`) as `post_count`, SUBSTRING(MAX(CONCAT(`Created`,`Author`)), 19+1) as `PostAuthor`, MAX(`Created`) as `last_post` FROM `forum_posts` WHERE `Deleted` = 'no' GROUP BY `ThreadID`";
-			$query = "SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, IFNULL(`PostAuthor`,'n/a') as `PostAuthor`, IFNULL(`last_post`,`Created`) as `last_post`, IFNULL(`post_count`, 0) as `post_count` FROM `forum_threads` LEFT OUTER JOIN (".$posts_q.") as `posts` USING(`ThreadID`) WHERE `SectionID` = '".$section."' AND `Deleted` = 'no' ORDER BY `last_post` DESC, `Created` DESC LIMIT 0 , ".NUM_THREADS."";
-			$result = $db->Query($query);
+			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = "no" ORDER BY `LastPost` DESC, `Created` DESC LIMIT 0 , '.NUM_THREADS.'');
 			
 			if (!$result) return false;
 			

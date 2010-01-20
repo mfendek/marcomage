@@ -2220,6 +2220,8 @@
 					$new_post = $forum->Threads->Posts->CreatePost($new_thread, $player->Name(), $_POST['Content']);					
 					if (!$new_post) { $error = "Failed to create new post"; $current = "Section_details"; break; }
 					
+					$forum->Threads->RefreshThread($new_thread); // update post count, last author and last post
+					
 					$information = "Thread created";
 										
 					$current = 'Section_details';
@@ -2382,6 +2384,8 @@
 					$new_post = $forum->Threads->Posts->CreatePost($thread_id, $player->Name(), $_POST['Content']);					
 					if (!$new_post) { $error = "Failed to create new post"; $current = "Thread_details"; break; }
 					
+					$forum->Threads->RefreshThread($thread_id); // update post count, last author and last post
+					
 					$information = "Post created";
 					
 					$current_page = ($forum->Threads->Posts->CountPages($thread_id)) - 1;
@@ -2538,6 +2542,8 @@
 					$deleted_post = $forum->Threads->Posts->DeletePost($post_id);
 					if (!$deleted_post) { $error = "Failed to delete post"; $current = "Thread_details"; break; }
 					
+					$forum->Threads->RefreshThread($thread_id); // update post count, last author and last post
+					
 					$max_page = $forum->Threads->Posts->CountPages($thread_id) - 1;
 					
 					$current_page = (($_POST['CurrentPage'] <= $max_page) ? $_POST['CurrentPage'] : $max_page);
@@ -2561,6 +2567,10 @@
 					
 					$move = $forum->Threads->Posts->MovePost($post_id, $new_thread);
 					if (!$move) { $error = "Failed to change threads"; $current = "Thread_details"; break; }
+					
+					 // update post count, last author and last post of both former and target threads
+					$forum->Threads->RefreshThread($thread_id);
+					$forum->Threads->RefreshThread($new_thread);
 					
 					$post_data = $forum->Threads->Posts->GetPost($post_id);
 					$current_page = 0; // go to first page of target thread on success
@@ -3605,7 +3615,7 @@ case 'Section_details':
 	if (!isset($current_page)) $current_page = 0;
 
 	$params['forum_section']['section'] = $forum->GetSection($section_id);
-	$params['forum_section']['threads'] = $forum->Threads->ListThreads($section_id, $current_page, "");
+	$params['forum_section']['threads'] = $forum->Threads->ListThreads($section_id, $current_page);
 	$params['forum_section']['pages'] = $forum->Threads->CountPages($section_id);
 	$params['forum_section']['current_page'] = $current_page;
 	$params['forum_section']['create_thread'] = (($access_rights[$player->Type()]["create_thread"]) ? 'yes' : 'no');
