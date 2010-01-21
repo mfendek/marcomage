@@ -7113,7 +7113,7 @@
     <modes>3</modes>
     <keywords/>
     <effect><![CDATA[Mode1:<br />Wall: +6<br />Mode2:<br />Gems: +4<br />Mode3:<br />Enemy recruits: -3]]></effect>
-    <code><![CDATA[if ($mode == 1) $mydata->Wall+= 6; elseif ($mode == 2) $mydata->Gems+= 4; elseif ($mode == 3) $mydata->Recruits-= 3;]]></code>
+    <code><![CDATA[if ($mode == 1) $mydata->Wall+= 6; elseif ($mode == 2) $mydata->Gems+= 4; elseif ($mode == 3) $hisdata->Recruits-= 3;]]></code>
   </card>
   <card id="502">
     <name>Orc brute</name>
