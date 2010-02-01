@@ -635,7 +635,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +4<br />Stock: +1<br />Next card received will be a <b>Restoration</b> spell]]></effect>
+    <effect><![CDATA[Tower: +4<br />Stock: +1<br />Next card received will be a <b>Restoration</b> card]]></effect>
     <code><![CDATA[$mydata->Tower+= 4; $mydata->Bricks+= 1; $mydata->Gems+= 1; $mydata->Recruits+= 1; $nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Restoration")), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
   </card>
   <card id="49">
@@ -726,7 +726,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +5<br />Stock: +1<br />Next card received will be a <b>Nature</b> spell]]></effect>
+    <effect><![CDATA[Tower: +5<br />Stock: +1<br />Next card received will be a <b>Nature</b> card]]></effect>
     <code><![CDATA[$mydata->Tower+= 5; $mydata->Bricks+= 1; $mydata->Gems+= 1; $mydata->Recruits+= 1; $nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Nature")), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
   </card>
   <card id="56">
@@ -765,7 +765,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +6<br />Stock: +2<br />Next card received will be a <b>Destruction</b> spell]]></effect>
+    <effect><![CDATA[Tower: +6<br />Stock: +2<br />Next card received will be a <b>Destruction</b> card]]></effect>
     <code><![CDATA[$mydata->Tower+= 6; $mydata->Bricks+= 2; $mydata->Gems+= 2; $mydata->Recruits+= 2; $nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Destruction")), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
   </card>
   <card id="59">
@@ -856,7 +856,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +7<br />Stock: +2<br />Next card received will be a <b>Illusion</b> spell]]></effect>
+    <effect><![CDATA[Tower: +7<br />Stock: +2<br />Next card received will be a <b>Illusion</b> card]]></effect>
     <code><![CDATA[$mydata->Tower+= 7; $mydata->Bricks+= 2; $mydata->Gems+= 2; $mydata->Recruits+= 2; $nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Illusion")), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
   </card>
   <card id="66">
