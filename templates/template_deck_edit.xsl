@@ -217,7 +217,6 @@
 		</xsl:otherwise>
 	</xsl:choose>
 
-	<input type="submit" name="finish_deck" value="Finish" />
 	<input type="submit" name="export_deck" value="Export" />
 	<input name="uploadedfile" type="file" style="color: white"/>
 	<input type="submit" name="import_deck" value="Import" />

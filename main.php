@@ -1464,21 +1464,6 @@
 					break;
 				}
 				
-				if ($message == 'finish_deck') // Decks -> Modify this deck -> Finish
-				{
-					$deckname = $_POST['CurrentDeck'];
-					$deck = $player->GetDeck($deckname);
-					
-					// finish deck, saving it on success
-					if( $deck->FinishDeck() )
-						$deck->SaveDeck();
-					else
-						$error = 'Failed to finish this deck.';
-
-					$current = 'Deck_edit';
-					break;
-				}
-				
 				if ($message == 'rename_deck') // Decks -> Modify this deck -> Rename
 				{
 					$curname = $_POST['CurrentDeck'];

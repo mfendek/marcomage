@@ -158,39 +158,6 @@
 			return true;
 		}
 		
-		public function FinishDeck()
-		{
-			global $carddb;
-			
-			$cards_c = $carddb->GetList(array('class'=>"Common"));
-			$cards_u = $carddb->GetList(array('class'=>"Uncommon"));
-			$cards_r = $carddb->GetList(array('class'=>"Rare"));
-			
-			// array_diff ensures that cards already in the deck won't be added again
-			$cards_c = array_diff($cards_c, $this->DeckData->Common);
-			$cards_u = array_diff($cards_u, $this->DeckData->Uncommon);
-			$cards_r = array_diff($cards_r, $this->DeckData->Rare);
-			
-			// array_rand picks K random elements and returns their keys
-			$keys_c = array_rand($cards_c, 15);
-			$keys_u = array_rand($cards_u, 15);
-			$keys_r = array_rand($cards_r, 15);
-			
-			// shuffle ensures that the cards will get filled in a random order
-			shuffle($keys_c);
-			shuffle($keys_u);
-			shuffle($keys_r);
-			
-			for( $i = 1; $i <= 15; $i++ )
-			{
-				if( $this->DeckData->Common[$i]   == 0 ) $this->DeckData->Common[$i]   = $cards_c[$keys_c[$i-1]];
-				if( $this->DeckData->Uncommon[$i] == 0 ) $this->DeckData->Uncommon[$i] = $cards_u[$keys_u[$i-1]];
-				if( $this->DeckData->Rare[$i]     == 0 ) $this->DeckData->Rare[$i]     = $cards_r[$keys_r[$i-1]];
-			}
-
-			return true;
-		}
-		
 		/**
 		 * Adds the card to an appropriate empty slot in the deck.
 		 * Looks up the specified card's data and attempts to insert the card into an empty slot in $DeckData's corresponding array.
