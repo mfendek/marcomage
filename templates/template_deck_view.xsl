@@ -9,11 +9,6 @@
 <xsl:template match="section[. = 'Deck_view']">
 	<xsl:variable name="param" select="$params/deck_view" />
 
-	<!-- remember the current location across pages -->
-	<div>
-		<input type="hidden" name="CurrentGame" value="{$param/CurrentGame}"/>
-	</div>
-	
 	<div style="text-align: center">
 		<input type="submit" name="view_game[{$param/CurrentGame}]" value="Back to game"/>
 	</div>

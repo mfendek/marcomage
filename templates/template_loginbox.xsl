@@ -41,8 +41,6 @@
 		</xsl:if>
 	</div>
 
-	<input type="hidden" name="Remember" value="yes" />
-
 	</div>
 </xsl:template>
 

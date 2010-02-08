@@ -10,7 +10,7 @@
 	<xsl:variable name="param" select="$params/registration" />
 
 	<div id="registration">
-		
+
 	<h3>Registration</h3>
 	<p>Login name</p>
 	<div><input type="text" name="NewUsername" maxlength="20" /></div>
@@ -22,8 +22,7 @@
 	<input type="submit" name="Register" value="Register" />
 	<input type="submit" name="ReturnToLogin" value="Back" />
 	</div>
-	<input type="hidden" name="Registration" value="Register new user" />
-		
+
 	</div>
 </xsl:template>
 

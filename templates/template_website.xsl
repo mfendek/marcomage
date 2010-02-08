@@ -12,9 +12,6 @@
 
 	<div id="webpage">
 
-	<!-- remember the current location across pages -->
-	<input type="hidden" name="CurrentPage" value="{$param/selected}" />
-
 	<div id="webpg_float_left">
 	<div class="skin_label">
 	<p><input type="submit" name="WebPage[Main]" value="Main page" /></p>

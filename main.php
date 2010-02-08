@@ -62,24 +62,24 @@
 		}
 		elseif (isset($_POST['Registration']))
 		{
-			if (isset($_POST['ReturnToLogin'])) // TODO: rename this
-			{
-				$current = "Page";
-			}
-			elseif (!isset($_POST['Register']))
-			{
-				$current = "Registration";
-			}
-			elseif (!isset($_POST['NewUsername']) || !isset($_POST['NewPassword']) || !isset ($_POST['NewPassword2']) || trim($_POST['NewUsername']) == '' || trim($_POST['NewPassword']) == '' || trim($_POST['NewPassword2']) == '')
+			$current = "Registration";
+		}
+		elseif (isset($_POST['ReturnToLogin'])) // TODO: rename this
+		{
+			$current = "Page";
+		}
+		elseif (isset($_POST['Register']))
+		{
+			if (!isset($_POST['NewUsername']) || !isset($_POST['NewPassword']) || !isset ($_POST['NewPassword2']) || trim($_POST['NewUsername']) == '' || trim($_POST['NewPassword']) == '' || trim($_POST['NewPassword2']) == '')
 			{
 				$current = "Registration";
 				$error = "Please enter all required inputs.";
 			}
-//			elseif (preg_match("(<|>|'|\"|:)", $_POST['NewUsername']))
-//			{
-//				$current = "Registration";
-//				$error = "Name contains invalid characters.";
-//			}
+//	  elseif (preg_match("(<|>|'|\"|:)", $_POST['NewUsername']))
+//	  {
+//		  $current = "Registration";
+//		  $error = "Name contains invalid characters.";
+//	  }
 			elseif ($_POST['NewPassword'] != $_POST['NewPassword2'])
 			{
 				$current = "Registration";
