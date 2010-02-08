@@ -236,10 +236,13 @@
 				if ($this->validate_login($_POST['Username'], $_POST['Password']))
 				{
 					//echo 'Login accepted. Will try to generate a sesion...'.'<br />';
+					/*
 					if (isset($_POST['Remember']) && $_POST['Remember'] == 'yes')
 						$hascookies = 'maybe'; // if allowed, begin_session() will probe the browser for cookie capability
 					else
 						$hascookies = 'no'; // cookie usage is explicitly disabled
+					*/
+					$hascookies = 'maybe';
 					
 					return $this->begin_session($_POST['Username'], 0, $hascookies);
 				}
