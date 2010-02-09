@@ -864,14 +864,7 @@
 				</xsl:if>
 
 				<!-- display card -->
-				<xsl:choose>
-					<xsl:when test="($param/HiddenCards = 'yes') and (Revealed = 'no') and ($param/GameState = 'in progress')">
-						<div class="hidden_card"></div>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
-					</xsl:otherwise>
-				</xsl:choose>
+				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
 			</td>
 		</xsl:for-each>
 	</tr>
