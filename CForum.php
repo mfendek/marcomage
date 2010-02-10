@@ -28,9 +28,18 @@
 			$result = $db->Query('SELECT `forum_sections`.`SectionID`, `SectionName`, `Description`, IFNULL(`count`, 0) as `count` FROM `forum_sections` LEFT OUTER JOIN (SELECT `SectionID`, COUNT(`ThreadID`) as `count` FROM `forum_threads` WHERE `Deleted` = "no" GROUP BY `SectionID`) as `threads` USING (`SectionID`) ORDER BY `SectionID`');
 			if (!$result) return false;
 			
-			$sections = array();
+			$sections = $sections_data = array();
 			while( $data = $result->Next() )
-				$sections[$data['SectionID']] = $data;
+				$sections_data[$data['SectionName']] = $data;
+			
+			// apply custom order to sections
+			$section_names = array('General', 'Development', 'Support', 'Concepts', 'Contests', 'Novels');
+			
+			foreach($section_names as $name)
+			{
+				$section_id = $sections_data[$name]['SectionID'];
+				$sections[$section_id] = $sections_data[$name];
+			}
 			
 			return $sections;
 		}
