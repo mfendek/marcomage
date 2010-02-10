@@ -259,7 +259,7 @@
 			</h5>
 			<p>
 			<xsl:if test="$param/concept &gt; 0">
-				<input type="submit" name="view_concept[{$param/concept}]" value="Go to concept" />
+				<input type="submit" name="view_concept[{$param/concept}]" value="View concept" />
 			</xsl:if>
 
 			<xsl:if test="$param/lock_thread = 'yes'">

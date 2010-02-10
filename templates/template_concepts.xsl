@@ -488,7 +488,7 @@
 						<input type="submit" name="concept_thread" value="Start discussion" />
 					</xsl:when>
 					<xsl:when test="$param/data/threadid &gt; 0">
-						<input type="submit" name="thread_details[{$param/data/threadid}]" value="Go to discussion" />
+						<input type="submit" name="thread_details[{$param/data/threadid}]" value="View discussion" />
 					</xsl:when>
 				</xsl:choose>
 			</p>
