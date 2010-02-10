@@ -1130,6 +1130,8 @@
 					{
 						$mydiscards_index++;
 						$mydata->DisCards[0][$mydiscards_index] = $myhand[$i];
+						// hide revealed card if it was revealed before and discarded now
+						if (isset($mydata->Revealed[$i])); unset($mydata->Revealed[$i]);
 					}
 					
 					if (((!(isset($hisnewcards[$i]))) and (isset($hisdata->NewCards[$i]))) or ($hishand[$i] != $hisdata->Hand[$i]))
