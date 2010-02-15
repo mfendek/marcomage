@@ -113,7 +113,7 @@ div.hidden_card
 	border-color: white;
 	border-style: ridge;
 	-moz-border-radius: 7px;
-	margin: 1.5ex 0.5ex 0.7ex 0.5ex;
+	margin: 1ex 0.5ex 0.7ex 0.5ex;
 	background-color: black;
 	background-image: url('../img/hidden_card.jpg');
 	background-repeat: repeat;

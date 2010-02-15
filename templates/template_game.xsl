@@ -50,9 +50,17 @@
 					<input type="submit" name="discard_card[{position()}]" value="Discard"/>
 				</xsl:if>
 
-				<!--  display new card indicator, if set -->
-				<xsl:if test="NewCard = 'yes'">
-					<p class="flag">NEW CARD</p>
+				<!--  display card flags, if set -->
+				<xsl:if test="(NewCard = 'yes') or (Revealed = 'yes' and $param/HiddenCards = 'yes')">
+					<div class="flag_space">
+					<xsl:if test="NewCard = 'yes'">
+						<span class="newcard">NEW</span>
+					</xsl:if>
+					<xsl:if test="Revealed = 'yes' and $param/HiddenCards = 'yes'">
+						<img src="img/revealed.png" class="revealed" width="20px" height="14px" alt="revealed" />
+					</xsl:if>
+					</div>
+					<div class="clear_floats"></div>
 				</xsl:if>
 
 				<!-- display card -->
@@ -111,6 +119,9 @@
 		<td>
 			<!-- 'refresh' button -->
 			<input type="submit" name="Refresh[{am:urlencode($param/current)}]" value="Refresh" accesskey="w" />
+			<xsl:if test="$param/HiddenCards = 'yes'">
+				<img src="img/blind.png" class="in_game" width="20px" height="14px" alt="hidden cards" />
+			</xsl:if>
 			<xsl:if test="$param/FriendlyPlay = 'yes'">
 				<img src="img/friendly_play.png" class="in_game" width="20px" height="14px" alt="friendly play" />
 			</xsl:if>
@@ -706,7 +717,8 @@
 			<td align="center">
 				<!--  display new card indicator, if set -->
 				<xsl:if test="NewCard = 'yes'">
-					<p class="flag">NEW CARD</p>
+					<div class="flag_space"><span class="newcard">NEW</span></div>
+					<div class="clear_floats"></div>
 				</xsl:if>
 
 				<!-- display card -->

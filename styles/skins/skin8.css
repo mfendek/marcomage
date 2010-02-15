@@ -99,7 +99,7 @@ div.chatbox /* chatbox window */
 	background-color: #2b2b2b; /* light black */
 }
 
-p.flag /* new card flag (indicated above a new card) */
+p.flag, span.newcard /* new card flag (indicated above a new card) */
 {
 	background-color: #2b2b2b; /* light black */
 }

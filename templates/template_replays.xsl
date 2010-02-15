@@ -295,9 +295,17 @@
 	<tr valign="top" class="hand">
 		<xsl:for-each select="$param/p1Hand/*">
 			<td align="center">
-				<!--  display new card indicator, if set -->
-				<xsl:if test="NewCard = 'yes'">
-					<p class="flag">NEW CARD</p>
+				<!--  display card flags, if set -->
+				<xsl:if test="(NewCard = 'yes') or (Revealed = 'yes' and $param/HiddenCards = 'yes')">
+					<div class="flag_space">
+					<xsl:if test="NewCard = 'yes'">
+						<span class="newcard">NEW</span>
+					</xsl:if>
+					<xsl:if test="Revealed = 'yes' and $param/HiddenCards = 'yes'">
+						<img src="img/revealed.png" class="revealed" width="20px" height="14px" alt="revealed" />
+					</xsl:if>
+					</div>
+					<div class="clear_floats"></div>
 				</xsl:if>
 
 				<!-- display card -->
@@ -858,9 +866,17 @@
 	<tr valign="top" class="hand">
 		<xsl:for-each select="$param/p2Hand/*">
 			<td align="center">
-				<!--  display new card indicator, if set -->
-				<xsl:if test="NewCard = 'yes'">
-					<p class="flag">NEW CARD</p>
+				<!--  display card flags, if set -->
+				<xsl:if test="(NewCard = 'yes') or (Revealed = 'yes' and $param/HiddenCards = 'yes')">
+					<div class="flag_space">
+					<xsl:if test="NewCard = 'yes'">
+						<span class="newcard">NEW</span>
+					</xsl:if>
+					<xsl:if test="Revealed = 'yes' and $param/HiddenCards = 'yes'">
+						<img src="img/revealed.png" class="revealed" width="20px" height="14px" alt="revealed" />
+					</xsl:if>
+					</div>
+					<div class="clear_floats"></div>
 				</xsl:if>
 
 				<!-- display card -->

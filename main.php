@@ -3409,6 +3409,7 @@ case 'Game':
 		$entry['Playable'] = ( $mydata->Bricks >= $card['bricks'] and $mydata->Gems >= $card['gems'] and $mydata->Recruits >= $card['recruits'] and $game->State == 'in progress' and $game->Current == $player->Name() ) ? 'yes' : 'no';
 		$entry['Modes'] = $card['modes'];
 		$entry['NewCard'] = ( isset($mydata->NewCards[$i]) ) ? 'yes' : 'no';
+		$entry['Revealed'] = ( isset($mydata->Revealed[$i]) ) ? 'yes' : 'no';
 		$params['game']['MyHand'][$i] = $entry;
 	}
 
@@ -3810,6 +3811,7 @@ case 'Replay':
 		$entry = array();
 		$entry['Data'] = $card;
 		$entry['NewCard'] = ( isset($p1data->NewCards[$i]) ) ? 'yes' : 'no';
+		$entry['Revealed'] = ( isset($p1data->Revealed[$i]) ) ? 'yes' : 'no';
 		$params['replay']['p1Hand'][$i] = $entry;
 	}
 
@@ -3863,6 +3865,7 @@ case 'Replay':
 		$entry = array();
 		$entry['Data'] = $card;
 		$entry['NewCard'] = ( isset($p2data->NewCards[$i]) ) ? 'yes' : 'no';
+		$entry['Revealed'] = ( isset($p2data->Revealed[$i]) ) ? 'yes' : 'no';
 		$params['replay']['p2Hand'][$i] = $entry;
 	}
 
