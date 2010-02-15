@@ -2225,6 +2225,13 @@
 					break;
 				}
 				
+				if ($message == 'forum_search') // forum -> Search
+				{
+					$current = 'Forum_search';
+					
+					break;
+				}
+				
 				// end section oriented messages
 				
 				// begin thread oriented messages
@@ -3591,6 +3598,18 @@ case 'Forum':
 
 	foreach($params['forum_overview']['sections'] as $index => $data)
 		$params['forum_overview']['sections'][$index]['threadlist'] = $forum->Threads->ListThreadsMain($index);
+
+	break;
+
+
+case 'Forum_search':
+	$params['forum_search']['phrase'] = $phrase = (isset($_POST['phrase'])) ? $_POST['phrase'] : '';
+	$params['forum_search']['target'] = $target = (isset($_POST['target'])) ? $_POST['target'] : 'all';
+	$params['forum_search']['section'] = $section = (isset($_POST['section'])) ? $_POST['section'] : 'any';
+	$params['forum_search']['threads'] = (trim($phrase) != "") ? $forum->Search($phrase, $target, $section) : array();
+	$params['forum_search']['sections'] = $forum->ListSections();
+	$params['forum_search']['PreviousLogin'] = $player->PreviousLogin();
+	$params['forum_search']['timezone'] = $player->GetSetting("Timezone");
 
 	break;
 

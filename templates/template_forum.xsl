@@ -27,7 +27,7 @@
 	<th><p>Author</p></th>
 	<th><p>Posts</p></th>
 	<th><p>Created</p></th>
-	<th><p>Last post</p></th>
+	<th><p><input type="submit" class="search_button" name="forum_search" value="Search" />Last post</p></th>
 	</tr>
 
 	<xsl:for-each select="$param/sections/*">
@@ -97,6 +97,143 @@
 </xsl:template>
 
 
+<xsl:template match="section[. = 'Forum_search']">
+	<xsl:variable name="param" select="$params/forum_search" />
+
+	<div id="forum">
+
+	<h3>MArcomage discussion forum</h3>
+	<h4>Search</h4>
+	
+	<div class="filters_trans">
+		<input type="text" name="phrase" maxlength="50" size="30" value="{$param/phrase}" />
+
+		<!-- target selector -->
+		<xsl:variable name="targets">
+			<class name="posts"   />
+			<class name="threads" />
+		</xsl:variable>
+
+		<select name="target">
+			<xsl:if test="$param/target != 'all'">
+					<xsl:attribute name="class">filter_active</xsl:attribute>
+			</xsl:if>
+			<option value="all">
+				<xsl:if test="$param/target = 'all'">
+					<xsl:attribute name="selected">selected</xsl:attribute>
+				</xsl:if>
+				<xsl:text>any source</xsl:text>
+			</option>
+			<xsl:for-each select="exsl:node-set($targets)/*">
+			<option value="{@name}">
+				<xsl:if test="$param/target = @name">
+					<xsl:attribute name="selected">selected</xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="@name"/>
+			</option>
+			</xsl:for-each>
+		</select>
+
+		<!-- section selector -->
+		<select name="section">
+			<xsl:if test="$param/section != 'any'">
+					<xsl:attribute name="class">filter_active</xsl:attribute>
+			</xsl:if>
+			<option value="any">
+				<xsl:if test="$param/section = 'any'">
+					<xsl:attribute name="selected">selected</xsl:attribute>
+				</xsl:if>
+				<xsl:text>any section</xsl:text>
+			</option>
+			<xsl:for-each select="$param/sections/*">
+				<option value="{SectionID}">
+					<xsl:if test="$param/section = SectionID">
+						<xsl:attribute name="selected">selected</xsl:attribute>
+					</xsl:if>
+					<xsl:value-of select="SectionName"/>
+				</option>
+			</xsl:for-each>
+		</select>
+
+		<input type="submit" name="forum_search" value="Search" />
+	</div>
+
+	<xsl:choose>
+		<xsl:when test="count($param/threads/*) &gt; 0">
+			<div class="skin_text">
+
+			<table cellspacing="0" cellpadding="0">
+
+			<tr>
+			<th><p></p></th>
+			<th><p>Topic</p></th>
+			<th><p>Author</p></th>
+			<th><p>Posts</p></th>
+			<th><p>Created</p></th>
+			<th><p>Last post</p></th>
+			</tr>
+
+			<xsl:for-each select="$param/threads/*">
+
+				<xsl:variable name="hasposts" select="boolean(PostCount > 0)" />
+
+				<tr class="table_row">
+				<td>
+					<p><input class="details" type = "submit" name="thread_details[{ThreadID}]" value="+" /></p>
+				</td>
+				<td>
+					<p>
+						<xsl:attribute name="style">
+						<xsl:choose>
+						<xsl:when test="Priority = 'sticky'">color: red</xsl:when>
+						<xsl:when test="Priority = 'important'">color: orange</xsl:when>
+						</xsl:choose>
+						</xsl:attribute>
+						
+						<xsl:value-of select="Title" />
+						<xsl:if test="Locked = 'yes'"><img src="img/password.png" width="25px" height="20px" alt="locked" /></xsl:if>
+					</p>
+				</td>
+				<td>
+					<p><xsl:value-of select="Author"/></p>
+				</td>
+				<td>
+					<p><xsl:value-of select="PostCount"/></p>
+				</td>
+				<td>
+					<p><xsl:value-of select="am:datetime(Created, $param/timezone)"/></p>
+				</td>
+				<td>
+					<xsl:choose>
+						<xsl:when test="$hasposts">
+							<p>
+								<xsl:if test="am:datediff(LastPost, $param/PreviousLogin) &lt; 0">
+									<xsl:attribute name="class">new</xsl:attribute>
+								</xsl:if>
+								<xsl:value-of select="concat(am:datetime(LastPost, $param/timezone), ' by ', LastAuthor)" />
+								<input class="details" type="submit" name="thread_last_page[{ThreadID}]" value="&rarr;" />
+							</p>
+						</xsl:when>
+						<xsl:otherwise><p>n/a</p></xsl:otherwise>
+					</xsl:choose>
+				</td>
+				</tr>
+
+			</xsl:for-each>	
+
+			</table>
+
+			</div>
+		</xsl:when>
+		<xsl:otherwise>
+			<p class="information_line warning">No results matched selected criteria.</p>
+		</xsl:otherwise>
+	</xsl:choose>
+
+	</div>
+</xsl:template>
+
+
 <xsl:template match="section[. = 'Section_details']">
 	<xsl:variable name="param" select="$params/forum_section" />
 
@@ -118,7 +255,7 @@
 	<th><p>Author</p></th>
 	<th><p>Posts</p></th>
 	<th><p>Created</p></th>
-	<th><p>Last post</p></th>
+	<th><p><input type="submit" class="search_button" name="forum_search" value="Search" />Last post</p></th>
 	</tr>
 
 	<tr><td colspan="6">

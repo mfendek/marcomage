@@ -84,5 +84,31 @@
 			
 			return true;
 		}
+		
+		public function Search($phrase, $target = 'all', $section = 'any')
+		{
+			$db = $this->db;
+			
+			$section_q = ($section != 'any') ? ' AND `SectionID` = "'.$db->Escape($section).'"' : '';
+			
+			// search post text content
+			$post_q = (($target == 'posts') OR ($target == 'all')) ? 'SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM (SELECT DISTINCT `ThreadID` FROM `forum_posts` WHERE `Content` LIKE "%'.$db->Escape($phrase).'%") as `posts` INNER JOIN (SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE 1'.$section_q.') as `threads` USING(`ThreadID`)' : '';
+			
+			// search thread title
+			$thread_q = (($target == 'threads') OR ($target == 'all')) ? 'SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE `Title` LIKE "%'.$db->Escape($phrase).'%"'.$section_q.'' : '';
+			
+			// merge results
+			$query = $post_q.(($target == 'all') ? ' UNION DISTINCT ' : '').$thread_q.' ORDER BY `LastPost` DESC';
+			
+			$result = $db->Query($query);
+			
+			if (!$result) return false;
+			
+			$threads = array();
+			while( $data = $result->Next() )
+				$threads[] = $data;
+			
+			return $threads;
+		}
 	}
 ?>

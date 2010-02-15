@@ -92,6 +92,11 @@ div#forum img, div#thread_details img /* info picture layout (locked thread) */
 	vertical-align: middle;
 }
 
+input.search_button /* search button layout */
+{
+	float: right;
+}
+
 /* end section */
 
 /* begin forum_new_edit */
