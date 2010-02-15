@@ -270,6 +270,7 @@ CREATE TABLE `forum_threads` (
   `PostCount` int(10) unsigned NOT NULL DEFAULT '0',
   `LastAuthor` char(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `LastPost` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `CardID` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`ThreadID`),
   KEY `SectionID` (`SectionID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
@@ -297,4 +298,5 @@ INSERT INTO `forum_sections` (`SectionID`, `SectionName`, `Description`) VALUES
 (3, 'Support', 'report bugs, exploits and technical difficulties'),
 (4, 'Contests', 'help MArcomage to become a better site'),
 (5, 'Novels', 'discuss our fantasy novels section'),
-(6, 'Concepts', 'discuss card suggestions');
+(6, 'Concepts', 'discuss card suggestions'),
+(7, 'Balance changes', 'balance existing cards');

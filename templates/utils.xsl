@@ -97,6 +97,19 @@
 </func:function>
 
 
+<func:function name="am:cardeffect">
+	<xsl:param name="effect" as="xs:string" />
+	<!-- ad-hoc html entity corrections -->
+	<xsl:variable name="replace">
+		<from> &lt; </from><to> &amp;lt; </to>
+		<from> &gt; </from><to> &amp;gt; </to>
+		<from> &lt;= </from><to> &amp;lt;= </to>
+		<from> &gt;= </from><to> &amp;gt;= </to>
+	</xsl:variable>
+	<func:result select="str:replace($effect, exsl:node-set($replace)/*[local-name()='from'], exsl:node-set($replace)/*[local-name()='to'])" />
+</func:function>
+
+
 <func:function name="am:cardstring">
 	<xsl:param name="card" />
 	<xsl:param name="c_img" select="'yes'" />
@@ -190,14 +203,7 @@
 							<xsl:copy-of select="am:textencode($card/effect)" />
 						</xsl:when>
 						<xsl:otherwise>
-							<!-- ad-hoc html entity corrections -->
-							<xsl:variable name="replace">
-								<from> &lt; </from><to> &amp;lt; </to>
-								<from> &gt; </from><to> &amp;gt; </to>
-								<from> &lt;= </from><to> &amp;lt;= </to>
-								<from> &gt;= </from><to> &amp;gt;= </to>
-							</xsl:variable>
-							<xsl:value-of select="str:replace($card/effect, exsl:node-set($replace)/*[local-name()='from'], exsl:node-set($replace)/*[local-name()='to'])" disable-output-escaping="yes"/>
+							<xsl:value-of select="am:cardeffect($card/effect)" disable-output-escaping="yes"/>
 						</xsl:otherwise>
 					</xsl:choose>
 				</div>

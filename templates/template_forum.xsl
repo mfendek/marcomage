@@ -398,6 +398,9 @@
 			<xsl:if test="$param/concept &gt; 0">
 				<input type="submit" name="view_concept[{$param/concept}]" value="View concept" />
 			</xsl:if>
+			<xsl:if test="$thread/CardID &gt; 0">
+				<input type="submit" name="view_card[{$thread/CardID}]" value="View card" />
+			</xsl:if>
 
 			<xsl:if test="$param/lock_thread = 'yes'">
 				<xsl:choose>

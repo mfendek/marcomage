@@ -165,6 +165,10 @@
 		{
 			$current = "Concepts";
 		}
+		elseif (isset($_POST['Cards']))
+		{
+			$current = "Cards";
+		}
 		elseif (isset($_POST['Novels']))
 		{
 			$current = "Novels";
@@ -2715,6 +2719,49 @@
 				
 				// end replays related messages
 				
+				// begin cards related messages
+				
+				if ($message == 'cards_filter') // Cards -> Apply filters
+				{
+					$current = 'Cards';
+					
+					break;
+				}
+				
+				if ($message == 'view_card') // Cards -> Select card details
+				{
+					$card_id = array_shift(array_keys($value));
+					$current = 'Cards_details';
+					
+					break;
+				}
+				
+				if ($message == 'card_thread') // find matching thread for specified card or create a new matching thread
+				{
+					$card_id = array_shift(array_keys($value));
+					
+					// check access rights
+					if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Cards'; break; }
+					
+					$thread_id = $forum->Threads->CardThread($card_id);
+					if (!$thread_id)
+					{
+						$card = $carddb->GetCard($card_id);
+						$title = $card->CardData->Name;
+						$section_id = 7; // section for discussing balance changes
+						$new_thread = $forum->Threads->CreateThread($title, $player->Name(), 'normal', $section_id, $card_id);
+						if (!$new_thread) { $error = "Failed to create new thread"; $current = "Cards"; break; }
+						
+						$thread_id = $new_thread;
+					}
+					
+					$current = 'Thread_details';
+					
+					break;
+				}
+				
+				// end cards related messages
+				
 				// refresh button :)
 				if ($message == 'Refresh')
 				{
@@ -3876,6 +3923,49 @@ case 'Replay':
 		$changes[$attribute] = (($p2data->Changes[$attribute] > 0) ? '+' : '').$p2data->Changes[$attribute];
 
 	$params['replay']['p2changes'] = $changes;
+
+	break;
+
+case 'Cards':
+	$classfilter = $params['cards']['ClassFilter'] = isset($_POST['ClassFilter']) ? $_POST['ClassFilter'] : 'Common';
+	$costfilter = $params['cards']['CostFilter'] = isset($_POST['CostFilter']) ? $_POST['CostFilter'] : 'none';
+	$keywordfilter = $params['cards']['KeywordFilter'] = isset($_POST['KeywordFilter']) ? $_POST['KeywordFilter'] : 'none';
+	$advancedfilter = $params['cards']['AdvancedFilter'] = isset($_POST['AdvancedFilter']) ? $_POST['AdvancedFilter'] : 'none';
+	$supportfilter = $params['cards']['SupportFilter'] = isset($_POST['SupportFilter']) ? $_POST['SupportFilter'] : 'none';
+
+	$params['cards']['keywords'] = $carddb->Keywords();
+
+	$filter = array();
+	if( $classfilter != 'none' ) $filter['class'] = $classfilter;
+	if( $keywordfilter != 'none' ) $filter['keyword'] = $keywordfilter;
+	if( $costfilter != 'none' ) $filter['cost'] = $costfilter;
+	if( $advancedfilter != 'none' ) $filter['advanced'] = $advancedfilter;
+	if( $supportfilter != 'none' ) $filter['support'] = $supportfilter;
+	$ids = $carddb->GetList($filter);
+	$params['cards']['CardList'] = $carddb->GetData($ids);
+
+	// load card display settings
+	$params['cards']['c_text'] = $player->GetSetting("Cardtext");
+	$params['cards']['c_img'] = $player->GetSetting("Images");
+	$params['cards']['c_keywords'] = $player->GetSetting("Keywords");
+	$params['cards']['c_oldlook'] = $player->GetSetting("OldCardLook");
+
+	break;
+
+
+case 'Cards_details':
+	// uses: $card_id
+	$card_data = $carddb->GetData(array($card_id));
+	$params['cards_details']['data'] = array_pop($card_data);
+	$thread_id = $forum->Threads->CardThread($card_id);
+	$params['cards_details']['discussion'] = ($thread_id) ? 'yes' : 'no';
+	$params['cards_details']['create_thread'] = ($access_rights[$player->Type()]["create_thread"]) ? 'yes' : 'no';
+
+	// load card display settings
+	$params['cards_details']['c_text'] = $player->GetSetting("Cardtext");
+	$params['cards_details']['c_img'] = $player->GetSetting("Images");
+	$params['cards_details']['c_keywords'] = $player->GetSetting("Keywords");
+	$params['cards_details']['c_oldlook'] = $player->GetSetting("OldCardLook");
 
 	break;
 

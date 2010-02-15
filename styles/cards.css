@@ -1,0 +1,82 @@
+/********************************************
+ * MArcomage CSS stylesheet - cards section *
+ ********************************************/
+
+div#cards /* cards section layout */
+{
+	min-width: 1045px;
+	text-align: center;
+}
+
+div#cards > h3, div#cards_details > h3 /* cards heading layout */
+{
+	margin: 0ex;
+}
+
+div#cards_table /* cards list layout */
+{
+	margin-left: auto;
+	margin-right: auto;
+	width: 75%;
+}
+
+div#cards_table th > p, div#cards_table td > p /* table cell text */
+{
+	margin: 0.5ex 1ex 0.5ex 1ex;
+}
+
+div#cards_table > table /* cards table */
+{
+	width: 100%;
+}
+
+div#cards_table > table div.karta /* card layout within the table */
+{
+	margin-left: 2ex;
+}
+
+p.effect /* card effect */
+{
+	text-align: left;
+}
+
+/* begin cards details */
+
+div#cards_details /* cards details subsection */
+{
+	min-width: 1045px;
+}
+
+div#card_details /* card data layout */
+{
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: 1ex;
+	width: 50%;
+	font-weight: bold;
+	padding: 1ex;
+}
+
+div#card_details > p, div#card_details > div.limit > p, div#card_details hr /* set distance between elements */
+{
+	margin-top: 1ex;
+	margin-bottom: 1ex;
+}
+
+div.limit /* input formular layout */
+{
+	width: 25em;
+}
+
+div.limit > p > span /* float text to the right */
+{
+	float: right;
+}
+
+div.card_preview /* card preview layout */
+{
+	float: right;
+	font-weight: normal;
+}
+
+/* end cards details */

@@ -13,6 +13,7 @@
 <xsl:include href="template_navbar.xsl" />
 <xsl:include href="template_loginbox.xsl" />
 
+<xsl:include href="template_cards.xsl" />
 <xsl:include href="template_concepts.xsl" />
 <xsl:include href="template_deck_edit.xsl" />
 <xsl:include href="template_deck_view.xsl" />

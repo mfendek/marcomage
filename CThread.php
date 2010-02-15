@@ -20,11 +20,11 @@
 			return $this->db;
 		}
 		
-		public function CreateThread($title, $author, $priority, $section)
+		public function CreateThread($title, $author, $priority, $section, $card_id = 0)
 		{	
 			$db = $this->db;
 			
-			$result = $db->Query('INSERT INTO `forum_threads` (`Title`, `Author`, `Priority`, `SectionID`, `Created`) VALUES ("'.$db->Escape($title).'", "'.$db->Escape($author).'", "'.$priority.'", "'.$section.'", NOW())');
+			$result = $db->Query('INSERT INTO `forum_threads` (`Title`, `Author`, `Priority`, `SectionID`, `Created`, `CardID`) VALUES ("'.$db->Escape($title).'", "'.$db->Escape($author).'", "'.$priority.'", "'.$section.'", NOW(), "'.$card_id.'")');
 			if (!$result) return false;
 			
 			return $db->LastID();
@@ -51,7 +51,7 @@
 		{	
 			$db = $this->db;
 						
-			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `SectionID`, `Created` FROM `forum_threads` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = "no"');
+			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `SectionID`, `Created`, `CardID` FROM `forum_threads` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = "no"');
 			
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
@@ -66,6 +66,21 @@
 			$db = $this->db;
 						
 			$result = $db->Query('SELECT `ThreadID` FROM `forum_threads` WHERE `Title` = "'.$title.'" AND `Deleted` = "no"');
+			
+			if (!$result) return false;
+			if (!$result->Rows()) return false;
+			
+			$data = $result->Next();
+			$thread_id = $data['ThreadID'];
+			
+			return $thread_id;
+		}
+		
+		public function CardThread($card_id) /* find matching thread for specified card */
+		{
+			$db = $this->db;
+			
+			$result = $db->Query('SELECT `ThreadID` FROM `forum_threads` WHERE `CardID` = "'.$card_id.'" AND `Deleted` = "no"');
 			
 			if (!$result) return false;
 			if (!$result->Rows()) return false;

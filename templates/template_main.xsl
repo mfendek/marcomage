@@ -30,6 +30,7 @@
 	<link rel="stylesheet" href="styles/novels.css" type="text/css" title="standard style" />
 	<link rel="stylesheet" href="styles/forum.css" type="text/css" title="standard style" />
 	<link rel="stylesheet" href="styles/concepts.css" type="text/css" title="standard style" />
+	<link rel="stylesheet" href="styles/cards.css" type="text/css" title="standard style" />
 	<link rel="stylesheet" href="styles/skins/skin{$param/skin}.css" type="text/css" title="standard style" />
 	<link rel="icon" href="img/favicon.png" type="image/png" />
 	<title>MArcomage</title>
