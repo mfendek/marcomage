@@ -270,7 +270,7 @@
 			</xsl:for-each>
 		</select>
 		<input type="submit" name="seek_turn" value="Select" />
-		<input type="submit" name="switch_players" value="{$param/Player1}"/>
+		<input type="submit" name="switch_players" value="Switch players"/>
 		<!-- end navigation -->
 	</p>
 
