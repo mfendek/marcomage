@@ -2923,7 +2923,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Player(s) with lowest wall is -1 Quarry and -1 Dungeon]]></effect>
+    <effect><![CDATA[Player(s) with lowest wall gets -1 Quarry and -1 Dungeon]]></effect>
     <code><![CDATA[if ($mydata->Wall <= $hisdata->Wall) { $mydata->Quarry-= 1; $mydata->Dungeons-= 1; }; if ($hisdata->Wall <= $mydata->Wall) { $hisdata->Quarry-= 1; $hisdata->Dungeons-= 1; };]]></code>
   </card>
   <card id="225">
@@ -5943,7 +5943,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Player(s) with most <b>Alliance</b>, <b>Legend</b> and <b>Mage</b> cards gets 1 lowest facility]]></effect>
+    <effect><![CDATA[Player(s) with most <b>Alliance</b>, <b>Legend</b> and <b>Mage</b> cards gets +1 lowest facility]]></effect>
     <code><![CDATA[
 							$my_count = $this->KeywordCount($mydata->Hand, "Alliance") + $this->KeywordCount($mydata->Hand, "Legend") + $this->KeywordCount($mydata->Hand, "Mage"); $his_count = $this->KeywordCount($hisdata->Hand, "Alliance") + $this->KeywordCount($hisdata->Hand, "Legend") + $this->KeywordCount($hisdata->Hand, "Mage");
 							if ($my_count >= $his_count)
@@ -7008,7 +7008,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Reveals matching card<br />If revealed card has keyword<br />Reveals neigbouring cards]]></effect>
+    <effect><![CDATA[Reveals matching card in enemy hand<br />If revealed card has keyword<br />Reveals neigbouring cards]]></effect>
     <code><![CDATA[$hisdata->Revealed[$cardpos] = 1; if ($carddb->GetCard($hisdata->Hand[$cardpos])->HasKeyword("any")) { if ($cardpos > 1) $hisdata->Revealed[$cardpos - 1] = 1; if ($cardpos < 8) $hisdata->Revealed[$cardpos + 1] = 1; }]]></code>
   </card>
   <card id="494">
@@ -7060,7 +7060,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Destruction.</keywords>
-    <effect><![CDATA[Replaces matching card and its neigbouring cards with Wind]]></effect>
+    <effect><![CDATA[Replaces matching card in enemy hand and its neigbouring cards with Wind]]></effect>
     <code><![CDATA[$hisdata->Hand[$cardpos] = 247; $hisdata->NewCards[$cardpos] = 1; if ($cardpos > 1) { $hisdata->Hand[$cardpos - 1] = 247; $hisdata->NewCards[$cardpos - 1] = 1; } if ($cardpos < 8) { $hisdata->Hand[$cardpos + 1] = 247; $hisdata->NewCards[$cardpos + 1] = 1; }]]></code>
   </card>
   <card id="498">
