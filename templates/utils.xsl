@@ -89,6 +89,37 @@
 	<func:result select="php:functionString('ZoneTime', $date, $zone, 'H:i, j. M, Y')" />
 </func:function>
 
+<!--
+<func:function name="am:BBCode_parse">
+	<xsl:param name="orig_content" as="xs:string" />
+	<func:result select="php:functionString('parse_post', $orig_content)" />
+</func:function>
+-->
+
+<func:function name="am:BBCode_parse_extended">
+	<xsl:param name="orig_content" as="xs:string" />
+	<func:result select="php:functionString('parse_post', $orig_content, 'true')" />
+</func:function>
+
+<func:function name="am:BBcodeButtons">
+	<xsl:variable name="buttons">
+		<div class="BBcodeButtons">
+			<button type="button" onclick="addTags('[b]', '[/b]')">
+				<img src="img/BBCode/bold.gif" width="23px" height="22px" alt="Bold" />
+			</button>
+			<button type="button" onclick="addTags('[i]', '[/i]')">
+				<img src="img/BBCode/italicize.gif" width="23px" height="22px" alt="Italics" />
+			</button>
+			<button type="button" onclick="addTags('[url]', '[/url]')">
+				<img src="img/BBCode/url.gif" width="23px" height="22px" alt="Hyperlink" />
+			</button>
+			<button type="button" onclick="addTags('[quote]', '[/quote]')">
+				<img src="img/BBCode/quote2.gif" width="23px" height="22px" alt="Quote" />
+			</button>
+		</div>
+	</xsl:variable>
+	<func:result select="exsl:node-set($buttons)"/>
+</func:function>
 
 <func:function name="am:datediff">
 	<xsl:param name="datetime1" as="xs:string" />

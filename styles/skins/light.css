@@ -166,3 +166,10 @@ div.progress_bar /* exp progress bar */
 {
 	background-color: #dddddd; /* light gray */
 }
+
+blockquote > div /* quote text layout */
+{
+	border: thin solid black;
+	color: black;
+	background-color: #fefefe; /* very light gray */
+}

@@ -506,13 +506,17 @@
 			
 			<div>
 			
-			<div><xsl:copy-of select="am:textencode(Content)" /></div>
+			<div><xsl:value-of select="am:BBCode_parse_extended(Content)" disable-output-escaping="yes" /></div>
 			
 			</div>
 			
 			<div class="clear_floats"></div>
 			
 			<div>
+			
+			<xsl:if test="$param/create_post = 'yes' and $thread/Locked = 'no'">
+				<input type="submit" name="quote_post[{PostID}]" value="Quote" />
+			</xsl:if>
 			
 			<xsl:if test="($param/edit_all_post = 'yes' or ($param/edit_own_post = 'yes' and $param/PlayerName = Author)) and $can_modify = true()">
 				<input type="submit" name="edit_post[{PostID}]" value="Edit" />
@@ -573,6 +577,7 @@
 		
 		<input type="submit" name="create_thread" value="Create thread" />
 		<input type="submit" name="section_details[{$section/SectionID}]" value="Back" />
+		<xsl:copy-of select="am:BBcodeButtons()"/>
 		<hr/>
 		
 		<textarea name="Content" rows="10" cols="50"><xsl:value-of select="$param/Content"/></textarea>
@@ -597,6 +602,7 @@
 	
 	<input type="submit" name="create_post" value="Create post" />
 	<input type="submit" name="thread_details[{$thread/ThreadID}]" value="Back" />
+	<xsl:copy-of select="am:BBcodeButtons()"/>
 	<hr/>
 	
 	<textarea name="Content" rows="10" cols="50"><xsl:value-of select="$param/Content"/></textarea>
@@ -678,6 +684,7 @@
 		<div class="skin_text">	
 		<input type="submit" name="modify_post" value="Save" />
 		<input type="submit" name="thread_details[{$post/ThreadID}]" value="Back" />
+		<xsl:copy-of select="am:BBcodeButtons()"/>
 		<hr/>
 
 		<textarea name="Content" rows="10" cols="50">

@@ -27,6 +27,7 @@
 	require_once('CForum.php');
 	require_once('utils.php');
 	require_once('Access.php');
+	require_once('parser/parse.php');
 	
 	$db = new CDatabase($server, $username, $password, $database);
 
@@ -2363,6 +2364,22 @@
 					break;
 				}
 				
+				if ($message == 'quote_post') // forum -> section -> thread -> quote post
+				{
+					$thread_id = $_POST['CurrentThread'];
+					$quoted_post = array_shift(array_keys($value));
+					
+					// check if thread is locked and if you have access to unlock it
+					if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
+					
+					// check access rights
+					if (!$access_rights[$player->Type()]["create_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+					
+					$current = 'New_post';
+					
+					break;
+				}
+				
 				if ($message == 'create_post') // forum -> section -> thread -> create new post
 				{
 					$thread_id = $_POST['CurrentThread'];
@@ -3713,8 +3730,14 @@ case 'New_thread':
 
 
 case 'New_post':
+	// uses: $quoted_post
 	$params['forum_post_new']['Thread'] = $forum->Threads->GetThread($thread_id);
-	$params['forum_post_new']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : "");
+	if (isset($quoted_post))
+	{
+		$post_data = $forum->Threads->Posts->GetPost($quoted_post);
+		$quoted_content = '[quote='.$post_data['Author'].']'.$post_data['Content'].'[/quote]';
+	}
+	$params['forum_post_new']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : ((isset($quoted_content)) ? $quoted_content : ''));
 
 	break;
 

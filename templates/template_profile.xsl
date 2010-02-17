@@ -126,7 +126,7 @@
 					
 					<xsl:if test="$param/challenge/Content != ''">
 						<div class="challenge_text">
-							<xsl:copy-of select="am:textencode($param/challenge/Content)" />
+							<xsl:value-of select="am:BBCode_parse_extended($param/challenge/Content)" disable-output-escaping="yes" />
 						</div>
 					</xsl:if>
 					<p class="info">Challenged on <xsl:value-of select="am:datetime($param/challenge/Created, $param/timezone)"/></p>
@@ -161,6 +161,7 @@
 								</input>
 								<xsl:text>Friendly play</xsl:text>
 							</p>
+							<xsl:copy-of select="am:BBcodeButtons()"/>
 							<textarea name="Content" rows="10" cols="50"></textarea>
 						</xsl:otherwise>
 					</xsl:choose>

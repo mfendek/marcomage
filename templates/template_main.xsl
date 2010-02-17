@@ -42,6 +42,7 @@
 			<xsl:text>000);</xsl:text>
 		</xsl:element>
 	</xsl:if>
+	<script type="text/javascript" src="javascript/BBtags.js"></script>
 	</head>
 	<body>
 	<form action="" enctype="multipart/form-data" method="post">

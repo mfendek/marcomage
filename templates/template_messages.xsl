@@ -73,7 +73,7 @@
 									<span><xsl:value-of select="am:datetime(Created, $param/timezone)"/></span>
 								</p>
 								<xsl:if test="Content != ''">
-									<div class="challenge_content"><xsl:copy-of select="am:textencode(Content)" /></div>
+									<div class="challenge_content"><xsl:value-of select="am:BBCode_parse_extended(Content)" disable-output-escaping="yes" /></div>
 								</xsl:if>
 								<p>
 									<xsl:if test="($param/deck_count &gt; 0) and ($param/free_slots &gt; 0) and ($param/accept_challenges = 'yes')">
@@ -95,7 +95,7 @@
 									<span><xsl:value-of select="am:datetime(Created, $param/timezone)"/></span>
 								</p>
 								<xsl:if test="Content != ''">
-									<div class="challenge_content"><xsl:copy-of select="am:textencode(Content)" /></div>
+									<div class="challenge_content"><xsl:value-of select="am:BBCode_parse_extended(Content)" disable-output-escaping="yes" /></div>
 								</xsl:if>
 								<p><input type="submit" name="withdraw_challenge2[{GameID}]" value="Withdraw challenge" /></p>
 							</xsl:when>
@@ -412,7 +412,7 @@
 			<input type="submit" name="message_cancel" value="Back" />
 		</p>
 		<hr/>
-		<div><xsl:copy-of select="am:textencode($param/Content)" /></div>
+		<div><xsl:value-of select="am:BBCode_parse_extended($param/Content)" disable-output-escaping="yes" /></div>
 	</div>
 	<input type="hidden" name="CurrentLocation" value="{$param/current_location}" />
 
@@ -438,6 +438,7 @@
 		</p>
 		<input type="submit" name="message_send" value="Send" />
 		<input type="submit" name="message_cancel" value="Discard" />
+		<xsl:copy-of select="am:BBcodeButtons()"/>
 		<hr/>
 
 		<textarea name="Content" rows="6" cols="50"><xsl:value-of select="$param/Content"/></textarea>

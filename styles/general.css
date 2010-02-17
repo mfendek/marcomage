@@ -173,3 +173,28 @@ img.country_flag /* country flag image layout */
 {
 	font-weight: bold;
 }
+
+div.BBcodeButtons > button /* BBcode buttons layout */
+{
+	padding: 0ex;
+	border-style: none;
+	background-color: transparent;
+}
+
+blockquote > div /* quote text layout */
+{
+	padding: 1.8em 0.8em 0.8em 0.8em;
+	background-image: url('../img/BBCode/quote.gif');
+	background-position: 10px 10px;
+	background-repeat: no-repeat;
+	font-size: small;
+	-moz-border-radius: 7px;
+}
+
+blockquote > div > cite /* author name layout in quote text */
+{
+	display: block;
+	font-style: normal;
+	font-weight: bold;
+	margin-left: 2.5ex;
+}
