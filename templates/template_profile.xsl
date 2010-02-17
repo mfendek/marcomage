@@ -186,11 +186,12 @@
 			<h4>Change access rights</h4>			
 			<input type="submit" name="change_access[{am:urlencode($opponent)}]" value="Change access rights" />
 			<xsl:variable name="user_types">
-				<type name="moderator" text="Moderator"/>
-				<type name="user"      text="User"     />
-				<type name="squashed"  text="Squashed" />
-				<type name="limited"   text="Limited"  />
-				<type name="banned"    text="Banned"   />
+				<type name="moderator"  text="Moderator"/>
+				<type name="supervisor" text="Supervisor"/>
+				<type name="user"       text="User"     />
+				<type name="squashed"   text="Squashed" />
+				<type name="limited"    text="Limited"  />
+				<type name="banned"     text="Banned"   />
 			</xsl:variable>
 			<select name="new_access" size="1">
 				<xsl:for-each select="exsl:node-set($user_types)/*">
