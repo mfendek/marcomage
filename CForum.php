@@ -92,10 +92,10 @@
 			$section_q = ($section != 'any') ? ' AND `SectionID` = "'.$db->Escape($section).'"' : '';
 			
 			// search post text content
-			$post_q = (($target == 'posts') OR ($target == 'all')) ? 'SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM (SELECT DISTINCT `ThreadID` FROM `forum_posts` WHERE `Content` LIKE "%'.$db->Escape($phrase).'%") as `posts` INNER JOIN (SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE 1'.$section_q.') as `threads` USING(`ThreadID`)' : '';
+			$post_q = (($target == 'posts') OR ($target == 'all')) ? 'SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM (SELECT DISTINCT `ThreadID` FROM `forum_posts` WHERE `Deleted` = "no" AND `Content` LIKE "%'.$db->Escape($phrase).'%") as `posts` INNER JOIN (SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE `Deleted` = "no"'.$section_q.') as `threads` USING(`ThreadID`)' : '';
 			
 			// search thread title
-			$thread_q = (($target == 'threads') OR ($target == 'all')) ? 'SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE `Title` LIKE "%'.$db->Escape($phrase).'%"'.$section_q.'' : '';
+			$thread_q = (($target == 'threads') OR ($target == 'all')) ? 'SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE `Deleted` = "no" AND `Title` LIKE "%'.$db->Escape($phrase).'%"'.$section_q.'' : '';
 			
 			// merge results
 			$query = $post_q.(($target == 'all') ? ' UNION DISTINCT ' : '').$thread_q.' ORDER BY `LastPost` DESC';
