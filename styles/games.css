@@ -69,7 +69,8 @@ div.flag_space /* card flags area */
 
 span.newcard /* new card flag (indicated above a new card) */
 {
-	border: thin solid #6495ed;
+	border-color: #6495ed;
+	border-style: ridge;
 	-moz-border-radius: 7px;
 	font-size: x-small;
 	padding: 0ex 1ex 0ex 1ex;

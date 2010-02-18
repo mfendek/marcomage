@@ -51,17 +51,20 @@
 				</xsl:if>
 
 				<!--  display card flags, if set -->
-				<xsl:if test="(NewCard = 'yes') or (Revealed = 'yes' and $param/HiddenCards = 'yes')">
-					<div class="flag_space">
-					<xsl:if test="NewCard = 'yes'">
-						<span class="newcard">NEW</span>
-					</xsl:if>
-					<xsl:if test="Revealed = 'yes' and $param/HiddenCards = 'yes'">
-						<img src="img/revealed.png" class="revealed" width="20px" height="14px" alt="revealed" />
-					</xsl:if>
-					</div>
-					<div class="clear_floats"></div>
-				</xsl:if>
+				<xsl:choose>
+					<xsl:when test="$param/HiddenCards = 'yes' and Revealed = 'yes'">
+						<div class="flag_space">
+							<xsl:if test="NewCard = 'yes'">
+								<span class="newcard">NEW</span>
+							</xsl:if>
+							<img src="img/revealed.png" class="revealed" width="20px" height="14px" alt="revealed" />
+						</div>
+						<div class="clear_floats"></div>
+					</xsl:when>
+					<xsl:when test="NewCard = 'yes'">
+						<p class="flag">NEW CARD</p>
+					</xsl:when>
+				</xsl:choose>
 
 				<!-- display card -->
 				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
@@ -717,8 +720,7 @@
 			<td align="center">
 				<!--  display new card indicator, if set -->
 				<xsl:if test="NewCard = 'yes'">
-					<div class="flag_space"><span class="newcard">NEW</span></div>
-					<div class="clear_floats"></div>
+					<p class="flag">NEW CARD</p>
 				</xsl:if>
 
 				<!-- display card -->
