@@ -112,7 +112,7 @@ input[type="text"], input[type="password"] /* input text fields */
 	border-style: inset;
 }
 
-input[type="submit"] /* submit input layout */
+input[type="submit"], input[type="button"] /* submit input layout */
 {
 	font-weight: bold;
 }
@@ -172,13 +172,6 @@ img.country_flag /* country flag image layout */
 .p_online,.p_offline,.p_inactive,.p_dead /* player name layout */
 {
 	font-weight: bold;
-}
-
-div.BBcodeButtons > button /* BBcode buttons layout */
-{
-	padding: 0ex;
-	border-style: none;
-	background-color: transparent;
 }
 
 blockquote > div /* quote text layout */

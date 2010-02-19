@@ -60,7 +60,7 @@ input, textarea /* input text fields */
 	font-weight: bold;
 }
 
-input[type="submit"] /* submit input layout */
+input[type="submit"], input[type="button"] /* submit input layout */
 {
 	color: #dddddd; /* very light gray */
 }

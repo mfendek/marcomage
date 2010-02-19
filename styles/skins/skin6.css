@@ -65,7 +65,7 @@ h2,h3,h4,h5 /* heading layout */
 	color: #ffff66; /* sandy yellow */
 }
 
-input[type="submit"] /* submit input layout */
+input[type="submit"], input[type="button"] /* submit input layout */
 {
 	background-color: black;
 	border-color: #6495ed; /* light blue */

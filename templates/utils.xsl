@@ -104,18 +104,10 @@
 <func:function name="am:BBcodeButtons">
 	<xsl:variable name="buttons">
 		<div class="BBcodeButtons">
-			<button type="button" onclick="addTags('[b]', '[/b]')">
-				<img src="img/BBCode/bold.gif" width="23px" height="22px" alt="Bold" />
-			</button>
-			<button type="button" onclick="addTags('[i]', '[/i]')">
-				<img src="img/BBCode/italicize.gif" width="23px" height="22px" alt="Italics" />
-			</button>
-			<button type="button" onclick="addTags('[url]', '[/url]')">
-				<img src="img/BBCode/url.gif" width="23px" height="22px" alt="Hyperlink" />
-			</button>
-			<button type="button" onclick="addTags('[quote]', '[/quote]')">
-				<img src="img/BBCode/quote2.gif" width="23px" height="22px" alt="Quote" />
-			</button>
+			<input type="button" title="Bold" value="B" onclick="addTags('[b]', '[/b]')" />
+			<input type="button" title="Italics" value="I" onclick="addTags('[i]', '[/i]')" />
+			<input type="button" title="Hyperlink" value="Url" onclick="addTags('[url]', '[/url]')" />
+			<input type="button" title="Quote" value="Quote" onclick="addTags('[quote]', '[/quote]')" />
 		</div>
 	</xsl:variable>
 	<func:result select="exsl:node-set($buttons)"/>

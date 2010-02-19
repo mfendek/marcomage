@@ -41,7 +41,7 @@ h2,h3,h4,h5 /* heading layout */
 	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
 }
 
-input[type="submit"] /* submit input layout */
+input[type="submit"], input[type="button"] /* submit input layout */
 {
 	background-color: #6495ed; /* light blue */
 	border-color: #6495ed; /* light blue */
