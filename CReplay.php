@@ -115,7 +115,7 @@
 			$hidden_q = ($hidden != "ignore") ? ' AND FIND_IN_SET("HiddenCards", `GameModes`) '.(($hidden == "include") ? '>' : '=').' 0' : '';
 			$friendly_q = ($friendly != "ignore") ? ' AND FIND_IN_SET("FriendlyPlay", `GameModes`) '.(($friendly == "include") ? '>' : '=').' 0' : '';
 			
-			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2`, `Started`, `Finished`, `Rounds`, `Turns`, `GameModes`, `Winner`, `EndType` FROM `replays_head` WHERE '.$victory_q.$id_q.$player_q.$hidden_q.$friendly_q.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(REPLAYS_PER_PAGE * $page).' , '.REPLAYS_PER_PAGE.'');
+			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2`, `Started`, `Finished`, `Rounds`, `Turns`, `GameModes`, `Winner`, `EndType`, `Views` FROM `replays_head` WHERE '.$victory_q.$id_q.$player_q.$hidden_q.$friendly_q.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(REPLAYS_PER_PAGE * $page).' , '.REPLAYS_PER_PAGE.'');
 			if (!$result) return false;
 			
 			$replays = array();
@@ -180,6 +180,16 @@
 			$data = $result->Next();
 			
 			return $data['Turns'];
+		}
+		
+		public function IncrementViews($game_id) // increment number of views for the specified replay
+		{
+			$db = $this->db;
+			
+			$result = $db->Query('UPDATE `replays_head` SET `Views` = `Views` + 1 WHERE `GameID` = "'.$db->Escape($game_id).'"');
+			if (!$result) return false;
+			
+			return true;
 		}
 	}
 	
@@ -274,6 +284,11 @@
 			$data = $result->Next();
 			
 			return $data['Turns'];
+		}
+		
+		public function IncrementViews() // increment number of views for the specified replay
+		{
+			return $this->Replays->IncrementViews($this->ID());
 		}
 		
 		public function Outcome()

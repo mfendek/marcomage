@@ -1,0 +1,1 @@
+ALTER TABLE `replays_head`  ADD `Views` INT(10) UNSIGNED NOT NULL DEFAULT '0';

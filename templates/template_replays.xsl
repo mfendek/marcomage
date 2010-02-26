@@ -153,6 +153,7 @@
 						<column name="Started"   text="Started"  sortable="yes" />
 						<column name="Finished"  text="Finished" sortable="yes" />
 						<column name="GameModes" text="Modes"    sortable="no"  />
+						<column name="Views"     text="Views"    sortable="no"  />
 						<column name="other"     text=""         sortable="no"  />
 					</xsl:variable>
 					
@@ -215,6 +216,7 @@
 								</xsl:if>
 							</p>
 						</td>
+						<td><p><xsl:value-of select="Views"/></p></td>
 						<td><p><input type="submit" name="view_replay[{GameID}]" value="&rarr;" /></p></td>
 					</tr>
 				</xsl:for-each>

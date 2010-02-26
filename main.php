@@ -2691,6 +2691,8 @@
 					// check if the game replay exists
 					if (!$replay) { /*$error = 'No such game replay!';*/ $current = 'Replays'; break; }
 					
+					$replay->IncrementViews(); // increment number of views
+					
 					$_POST['CurrentReplay'] = $gameid;
 					$_POST['PlayerView'] = $player_view;
 					$current = "Replay";
