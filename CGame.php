@@ -594,7 +594,7 @@
 				
 				//begin category keywords
 				
-				//process Alliance cards - Arcane knowledge (double gems production)
+				//process Alliance cards - Arcane knowledge (additional Production X2)
 				if ($card->HasKeyWord("Alliance"))
 				{
 					$ammount = $this->KeywordCount($mydata->Hand, "Alliance") - 1; // we don't count the played card
@@ -602,11 +602,13 @@
 					
 					if ($token_index)
 					{
-						$mydata->TokenValues[$token_index]+= 20 + $ammount * 5; // basic gain + bonus gain
+						$mydata->TokenValues[$token_index]+= 17 + $ammount * 3; // basic gain + bonus gain
 						
 						if ($mydata->TokenValues[$token_index] >= 100)
 						{
+							$bricks_production*= 2;
 							$gems_production*= 2;
+							$recruits_production*= 2;
 							
 							$mydata->TokenValues[$token_index] = 0;
 						}
@@ -813,7 +815,7 @@
 					$nextcard = $this->DrawCard($hisdata->Deck->Rare, $mydata->Hand, $cardpos, 'DrawCard_list');
 				}
 				
-				//process Legend cards - additional production x2 (x3 if there is a rare card in hand)
+				//process Legend cards - raises random facility by one, if there is a rare card in hand
 				if ($card->HasKeyWord("Legend"))
 				{
 					$found = false;
@@ -824,11 +826,12 @@
 							if ($cur_card->GetClass() == "Rare") $found = true;
 						}
 					
-					$tmp = ($found) ? 3 : 2;
-					
-					$bricks_production*= $tmp;
-					$gems_production*= $tmp;
-					$recruits_production*= $tmp;
+					if ($found)
+					{
+						$facilities = array("Quarry", "Magic", "Dungeons");
+						$chosen = $facilities[array_rand($facilities)];
+						$mydata->$chosen++;
+					}
 				}
 				
 				//process Mage cards - Willpower (raises magic by 1 or adds 10 gems)
@@ -882,7 +885,7 @@
 					}
 				}
 				
-				//process Soldier cards - Veteran troops (double recruits production)
+				//process Soldier cards - Veteran troops (1/2 recruits card cost return)
 				if ($card->HasKeyWord("Soldier"))
 				{
 					$ammount = $this->KeywordCount($mydata->Hand, "Soldier") - 1; // we don't count the played card
@@ -894,7 +897,7 @@
 						
 						if ($mydata->TokenValues[$token_index] >= 100)
 						{
-							$recruits_production*= 2;
+							$mydata->Recruits+= round($card->CardData->Recruits / 2);
 							
 							$mydata->TokenValues[$token_index] = 0;
 						}
@@ -941,7 +944,7 @@
 					}
 				}
 				
-				//process Unliving cards - Artificial workers (double bricks production)
+				//process Unliving cards - Artificial workers (additional bricks production)
 				if ($card->HasKeyWord("Unliving"))
 				{
 					$ammount = $this->KeywordCount($mydata->Hand, "Unliving") - 1; // we don't count the played card
@@ -953,7 +956,8 @@
 						
 						if ($mydata->TokenValues[$token_index] >= 100)
 						{
-							$bricks_production*= 2;
+							$b_prod = array("Common" => 2, "Uncommon" => 3, "Rare" => 4);
+							$bricks_production*= $b_prod[$card->GetClass()];
 							
 							$mydata->TokenValues[$token_index] = 0;
 						}

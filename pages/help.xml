@@ -401,7 +401,7 @@ Keywords represent information about the card that is too big to fit in the card
 </p>
 
 <ul>
-	<li><b>Alliance</b> - basic gain 20, bonus gain 5, side-effect (Arcane knowledge): double gems production.</li>
+	<li><b>Alliance</b> - basic gain 17, bonus gain 3, side-effect (Arcane knowledge): additional Production x2.</li>
 	<li><b>Banish</b> - discards one random <b>Durable</b> card from enemy hand (if there is one). Can only discard a card with same or lower rarity as was the played card, but cards with highest discardable rarity are preferred. Cards that cannot be discarded by played card are not considered targets for discard.</li>
 	<li><b>Barbarian</b> - basic gain 4, bonus gain 15, side-effect (Devastation): enemy wall will be additionally lowered by ammount based on played card rarity (Common - 3 , Uncommon -  8, Rare - 15).</li>
 	<li><b>Brigand</b> - basic gain 10, bonus gain 10, side-effect (Robbery): additional stock will be stolen from opponent, ammount based on played card rarity (Common - 1 stock, Uncommon -  2 stock, Rare - 3 stock).</li>
@@ -416,18 +416,18 @@ Keywords represent information about the card that is too big to fit in the card
 	<li><b>Frenzy</b> - if there is another <b>Frenzy</b> card in hand, opponent receives bonus damage (recruits cost of the played card).</li>
 	<li><b>Holy</b> - basic gain 25, bonus gain 5, side-effect (Purification): replaces one random <b>Undead</b> card from enemy hand (if there is one) with Purified ashes. Can only replace a card with same or lower rarity as was the played card, but cards with highest replacable rarity are preferred. Cards that cannot be replaced by played card are not considered targets for replace. You will get additional stock based on replaced card rarity (Common - 1 stock, Uncommon -  2 stock, Rare - 3 stock).</li>
 	<li><b>Illusion</b> - if an <b>Illusion</b> card is played after playing a different, non-common <b>Illusion</b> card, next card will be a rare card from enemy deck.</li>
-	<li><b>Legend</b> - if there is a rare card in hand (other then played card) Production x3 otherwise Production x2.</li>
+	<li><b>Legend</b> - if there is a rare card in hand (other then played card) raises random facility by one.</li>
 	<li><b>Mage</b> - basic gain 10, bonus gain 3, side-effect (Willpower): If (Magic - Enemy magic &lt; 2) Magic: +1 else Gems: +10</li>
 	<li><b>Nature</b> - if an <b>Nature</b> card is played after playing a different, non-common <b>Nature</b> card, next card will be a rare <b>Nature</b> card.</li>
 	<li><b>Quick</b> - player gets an additional turn, but no production this turn, it is impossible to draw a rare card after a <b>Quick</b> card is played.</li>
 	<li><b>Rebirth</b> - when played and number of <b>Burning</b> cards in game is greater then 3, the card stays on hand and you will get additional 16 gems.</li>
 	<li><b>Restoration</b> - if an <b>Restoration</b> card is played after playing a different, non-common <b>Restoration</b> card, it raises your lowest facility by 1 when your facility is below 3, otherwise it gives you 10 of your lowest resource.</li>
 	<li><b>Skirmisher</b> - discards one random <b>Charge</b> card from enemy hand (if there is one). Can only discard a card with same or lower rarity as was the played card, but cards with highest discardable rarity are preferred. Cards that cannot be discarded by played card are not considered targets for discard.</li>
-	<li><b>Soldier</b> - basic gain 15, bonus gain 10, side-effect (Veteran troops): double recruits production.</li>
+	<li><b>Soldier</b> - basic gain 15, bonus gain 10, side-effect (Veteran troops): half of the recruits cost of the played card will be returned.</li>
 	<li><b>Swift</b> - player gets additional turn, also with production, it is impossible to draw a rare card after a <b>Swift</b> card is played.</li>
 	<li><b>Titan</b> - basic gain 22, bonus gain 5, side-effect (Titan's will): next card received will be a <b>Titan</b>.</li>
 	<li><b>Undead</b> - basic gain 5, bonus gain 5, side-effect (Eternal servitude): third of the total cost of the played card will be returned.</li>
-	<li><b>Unliving</b> - basic gain 9, bonus gain 8, side-effect (Artificial workers): double bricks production.</li>
+	<li><b>Unliving</b> - basic gain 9, bonus gain 8, side-effect (Artificial workers): additional bricks production based on played card rarity (Common - x2, Uncommon - x3 stock, Rare - x4).</li>
 </ul>
 
 <p>Keywords are divided into two groups - category and effect keywords. Category keywords are executed as first, effect keywords, as second. Here is an order of keyword execution within each group (keywords on cards are listed in such order):</p>
