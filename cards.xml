@@ -5621,7 +5621,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Holy.</keywords>
-    <effect><![CDATA[If there is a no <b>Holy</b> card in enemy hand<br />Stock: +1<br />Enemy stock: -1<br />else<br />Enemy tower: -1]]></effect>
+    <effect><![CDATA[If there is no <b>Holy</b> card in enemy hand<br />Stock: +1<br />Enemy stock: -1<br />else<br />Enemy tower: -1]]></effect>
     <code><![CDATA[$found = false; for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Holy")) { $found = true; break; } if (!$found) { $mydata->Bricks+= 1; $mydata->Gems+= 1; $mydata->Recruits+= 1; $hisdata->Bricks-= 1; $hisdata->Gems-= 1; $hisdata->Recruits-= 1; } else $hisdata->Tower-= 1;]]></code>
   </card>
   <card id="411">
