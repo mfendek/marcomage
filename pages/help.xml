@@ -424,7 +424,7 @@ Keywords represent information about the card that is too big to fit in the card
 	<li><b>Soldier</b> - basic gain 15, bonus gain 10, side-effect (Veteran troops): double recruits production.</li>
 	<li><b>Swift</b> - player gets additional turn, also with production, it is impossible to draw a rare card after a <b>Swift</b> card is played.</li>
 	<li><b>Titan</b> - basic gain 22, bonus gain 5, side-effect (Titan's will): next card received will be a <b>Titan</b>.</li>
-	<li><b>Undead</b> - basic gain 5, bonus gain 5, side-effect (Eternal Servitude): third of the total cost of the played card will be returned.</li>
+	<li><b>Undead</b> - basic gain 5, bonus gain 5, side-effect (Eternal servitude): third of the total cost of the played card will be returned.</li>
 	<li><b>Unliving</b> - basic gain 9, bonus gain 8, side-effect (Artificial workers): double bricks production.</li>
 </ul>
 
