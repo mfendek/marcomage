@@ -437,8 +437,8 @@
 			$p1->TokenValues = $p1->TokenChanges = array_fill_keys(array_keys($p1->TokenNames), 0);
 			$p2->TokenValues = $p2->TokenChanges = array_fill_keys(array_keys($p2->TokenNames), 0);
 			
-			$p1->Hand = $this->DrawHand_initial($p1->Deck);
-			$p2->Hand = $this->DrawHand_initial($p2->Deck);
+			$p1->Hand = $this->DrawHand_norare($p1->Deck);
+			$p2->Hand = $this->DrawHand_norare($p2->Deck);
 		}
 		
 		public function SurrenderGame($playername)
@@ -1443,7 +1443,7 @@
 		}
 		
 		// returns a starting hand
-		private function DrawHand_initial(CDeckData $deck)
+		private function DrawHand_norare(CDeckData $deck)
 		{
 			return $this->DrawHand($deck, 'DrawCard_norare');
 		}

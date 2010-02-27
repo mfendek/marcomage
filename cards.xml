@@ -3373,8 +3373,8 @@
     </cost>
     <modes>0</modes>
     <keywords>Swift.</keywords>
-    <effect><![CDATA[Both players discard all cards in hand and receive 8 new cards]]></effect>
-    <code><![CDATA[$mydata->Hand = $this->DrawHand_random($mydata->Deck); $hisdata->Hand = $this->DrawHand_random($hisdata->Deck); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $hisdata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;]]></code>
+    <effect><![CDATA[Both players discard all cards in hand and receive 8 new cards (player can draw a rare, opponent can't)]]></effect>
+    <code><![CDATA[$mydata->Hand = $this->DrawHand_random($mydata->Deck); $hisdata->Hand = $this->DrawHand_norare($hisdata->Deck); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $hisdata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;]]></code>
   </card>
   <card id="256">
     <name>Bronze golem</name>
@@ -3491,7 +3491,7 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Discards your hand and receive eight new cards]]></effect>
-    <code><![CDATA[$mydata->Hand = $this->DrawHand_random($mydata->Deck); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;]]></code>
+    <code><![CDATA[$mydata->Hand = $this->DrawHand_norare($mydata->Deck); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;]]></code>
   </card>
   <card id="265">
     <name>Residence of Gods</name>
