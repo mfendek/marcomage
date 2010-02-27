@@ -3348,7 +3348,7 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Replaces your hand with Zombie, Skeleton warriors, Ghoul, Stalker, Banshee, Emissary of the afterlife, Vampire, and Vampire countess]]></effect>
-    <code><![CDATA[$mydata->Hand = array (1=> 114, 113, 112, 120, 133, 330, 28, 103); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;]]></code>
+    <code><![CDATA[$hand = array (114, 113, 112, 120, 133, 330, 28, 103); shuffle($hand); $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $keys = array_keys($newcards); $mydata->Hand = array_combine($keys, $hand); $mydata->NewCards = $newcards; $nextcard = 0;]]></code>
   </card>
   <card id="254">
     <name>Lava spectre</name>
@@ -3842,7 +3842,7 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Replaces your hand with Light and Heavy infantry, Knight, Crusader, Royal pikemen, Light cavalry, Battle formations, and Royal dragoons<br />Recruits: +35]]></effect>
-    <code><![CDATA[$mydata->Hand = array (1=> 367, 279, 7, 305, 193, 36, 322, 166); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $mydata->Recruits+= 35; $nextcard = 0;]]></code>
+    <code><![CDATA[$hand = array (367, 279, 7, 305, 193, 36, 322, 166); shuffle($hand); $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $keys = array_keys($newcards); $mydata->Hand = array_combine($keys, $hand); $mydata->NewCards = $newcards; $nextcard = 0; $mydata->Recruits+= 35;]]></code>
   </card>
   <card id="292">
     <name>Elven army</name>
@@ -3855,7 +3855,7 @@
     <modes>0</modes>
     <keywords>Alliance.</keywords>
     <effect><![CDATA[Production x2<br />Replaces your hand with two Elves, two Elite elves, two Elven archers, Elf commando and Elf enchantress]]></effect>
-    <code><![CDATA[$bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2; $mydata->Hand = array (1=> 122, 122, 111, 111, 272, 272, 190, 136); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;]]></code>
+    <code><![CDATA[$bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2; $hand = array (122, 122, 111, 111, 272, 272, 190, 136); shuffle($hand); $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $keys = array_keys($newcards); $mydata->Hand = array_combine($keys, $hand); $mydata->NewCards = $newcards; $nextcard = 0;]]></code>
   </card>
   <card id="293">
     <name>Under siege</name>
@@ -5209,7 +5209,7 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Replaces your hand with Shadow fairy, Fairy, Heavenly warrior, Paladin, Cathedral, Zealot, Seraphim and Angel]]></effect>
-    <code><![CDATA[$mydata->Hand = array (1=> 410, 27, 85, 90, 175, 341, 137, 44); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;]]></code>
+    <code><![CDATA[$hand = array (410, 27, 85, 90, 175, 341, 137, 44); shuffle($hand); $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $keys = array_keys($newcards); $mydata->Hand = array_combine($keys, $hand); $mydata->NewCards = $newcards; $nextcard = 0;]]></code>
   </card>
   <card id="384">
     <name>Last order</name>
@@ -5508,7 +5508,7 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Replaces your hand with 2 Goblins, 2 Elite orcs, Goblin saboteur, Ogre, Troll and Orc regiment<br />Dungeon: +2]]></effect>
-    <code><![CDATA[$mydata->Hand = array (1=> 13, 13, 240, 240, 368, 46, 106, 89); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0; $mydata->Dungeons+= 2;]]></code>
+    <code><![CDATA[$hand = array (13, 13, 240, 240, 368, 46, 106, 89); shuffle($hand); $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $keys = array_keys($newcards); $mydata->Hand = array_combine($keys, $hand); $mydata->NewCards = $newcards; $nextcard = 0; $mydata->Dungeons+= 2;]]></code>
   </card>
   <card id="404">
     <name>Thor</name>
@@ -6716,7 +6716,7 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Replaces your hand with Merchant, Caravan, Wealth, Merchant ship, Fair trade, Greed is good, Prosperity and Bank<br />Halves your stock]]></effect>
-    <code><![CDATA[$mydata->Hand = array (1=> 273, 23, 129, 465, 432, 388, 456, 389); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0; $mydata->Bricks = round($mydata->Bricks/2); $mydata->Gems = round($mydata->Gems/2); $mydata->Recruits = round($mydata->Recruits/2);]]></code>
+    <code><![CDATA[$hand = array (273, 23, 129, 465, 432, 388, 456, 389); shuffle($hand); $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $keys = array_keys($newcards); $mydata->Hand = array_combine($keys, $hand); $mydata->NewCards = $newcards; $nextcard = 0; $mydata->Bricks = round($mydata->Bricks/2); $mydata->Gems = round($mydata->Gems/2); $mydata->Recruits = round($mydata->Recruits/2);]]></code>
   </card>
   <card id="475">
     <name>Wishing lagoon</name>
@@ -7022,7 +7022,7 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Replace your hand with 4 commons, 3 uncommons and 1 rare from your deck]]></effect>
-    <code><![CDATA[$trans = array(1 => 'Common', 'Common', 'Common', 'Common', 'Uncommon', 'Uncommon', 'Uncommon', 'Rare'); for ($i = 1; $i <= 8; $i++) $mydata->Hand[$i] = $this->DrawCard($mydata->Deck->$trans[$i], $mydata->Hand, $i, 'DrawCard_list'); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;]]></code>
+    <code><![CDATA[$trans = array('Common', 'Common', 'Common', 'Common', 'Uncommon', 'Uncommon', 'Uncommon', 'Rare'); shuffle($trans); for ($i = 1; $i <= 8; $i++) $mydata->Hand[$i] = $this->DrawCard($mydata->Deck->$trans[$i-1], $mydata->Hand, $i, 'DrawCard_list'); $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;]]></code>
   </card>
   <card id="495">
     <name>Globe of Myr</name>
