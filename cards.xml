@@ -227,7 +227,7 @@
     <class>Rare</class>
     <cost>
       <bricks>0</bricks>
-      <gems>16</gems>
+      <gems>10</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
@@ -629,13 +629,13 @@
     <name>School of Restoration</name>
     <class>Common</class>
     <cost>
-      <bricks>7</bricks>
-      <gems>4</gems>
+      <bricks>5</bricks>
+      <gems>3</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +4<br />Stock: +1<br />Next card received will be a <b>Restoration</b> card]]></effect>
+    <effect><![CDATA[Tower: +4<br />Stock: +1<br />Next card received will be a <b>Restoration</b>]]></effect>
     <code><![CDATA[$mydata->Tower+= 4; $mydata->Bricks+= 1; $mydata->Gems+= 1; $mydata->Recruits+= 1; $nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Restoration")), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
   </card>
   <card id="49">
@@ -717,16 +717,16 @@
     <code><![CDATA[$hisdata->Wall-= 11;]]></code>
   </card>
   <card id="55">
-    <name>School of Nature magic</name>
+    <name>School of Nature</name>
     <class>Common</class>
     <cost>
-      <bricks>8</bricks>
-      <gems>6</gems>
+      <bricks>6</bricks>
+      <gems>3</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +5<br />Stock: +1<br />Next card received will be a <b>Nature</b> card]]></effect>
+    <effect><![CDATA[Tower: +5<br />Stock: +1<br />Next card received will be a <b>Nature</b>]]></effect>
     <code><![CDATA[$mydata->Tower+= 5; $mydata->Bricks+= 1; $mydata->Gems+= 1; $mydata->Recruits+= 1; $nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Nature")), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
   </card>
   <card id="56">
@@ -759,14 +759,14 @@
     <name>Academy of Destruction</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>10</bricks>
-      <gems>7</gems>
+      <bricks>8</bricks>
+      <gems>6</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +6<br />Stock: +2<br />Next card received will be a <b>Destruction</b> card]]></effect>
-    <code><![CDATA[$mydata->Tower+= 6; $mydata->Bricks+= 2; $mydata->Gems+= 2; $mydata->Recruits+= 2; $nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Destruction")), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
+    <effect><![CDATA[Tower: +6<br />Stock: +2<br />Next card received will be a non-common <b>Destruction</b>]]></effect>
+    <code><![CDATA[$mydata->Tower+= 6; $mydata->Bricks+= 2; $mydata->Gems+= 2; $mydata->Recruits+= 2; $nextcard = $this->DrawCard(array_merge($carddb->GetList(array('class'=>"Uncommon", 'keyword'=>"Destruction")), $carddb->GetList(array('class'=>"Rare", 'keyword'=>"Destruction"))), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
   </card>
   <card id="59">
     <name>Flame spitter</name>
@@ -850,14 +850,14 @@
     <name>Academy of Illusion</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>12</bricks>
-      <gems>8</gems>
+      <bricks>9</bricks>
+      <gems>6</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +7<br />Stock: +2<br />Next card received will be a <b>Illusion</b> card]]></effect>
-    <code><![CDATA[$mydata->Tower+= 7; $mydata->Bricks+= 2; $mydata->Gems+= 2; $mydata->Recruits+= 2; $nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Illusion")), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
+    <effect><![CDATA[Tower: +7<br />Stock: +2<br />Next card received will be a non-common <b>Illusion</b>]]></effect>
+    <code><![CDATA[$mydata->Tower+= 7; $mydata->Bricks+= 2; $mydata->Gems+= 2; $mydata->Recruits+= 2; $nextcard = $this->DrawCard(array_merge($carddb->GetList(array('class'=>"Uncommon", 'keyword'=>"Illusion")), $carddb->GetList(array('class'=>"Rare", 'keyword'=>"Illusion"))), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
   </card>
   <card id="66">
     <name>Manticore</name>
@@ -1981,9 +1981,9 @@
     <name>Micramix</name>
     <class>Rare</class>
     <cost>
-      <bricks>10</bricks>
-      <gems>10</gems>
-      <recruits>10</recruits>
+      <bricks>6</bricks>
+      <gems>6</gems>
+      <recruits>6</recruits>
     </cost>
     <modes>0</modes>
     <keywords/>
@@ -2397,8 +2397,8 @@
     <name>Lost city</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>15</bricks>
-      <gems>7</gems>
+      <bricks>10</bricks>
+      <gems>5</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
@@ -2455,8 +2455,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Wall: +5]]></effect>
-    <code><![CDATA[$mydata->Wall+= 5;]]></code>
+    <effect><![CDATA[Wall: +5<br />Enemy tower: -1]]></effect>
+    <code><![CDATA[$mydata->Wall+= 5; $hisdata->Tower-= 1;]]></code>
   </card>
   <card id="189">
     <name>Foundry</name>
@@ -2775,8 +2775,8 @@
     <class>Uncommon</class>
     <cost>
       <bricks>0</bricks>
-      <gems>18</gems>
-      <recruits>10</recruits>
+      <gems>16</gems>
+      <recruits>8</recruits>
     </cost>
     <modes>0</modes>
     <keywords/>
@@ -2800,9 +2800,9 @@
     <name>Treacherous artifact</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>11</bricks>
-      <gems>11</gems>
-      <recruits>11</recruits>
+      <bricks>9</bricks>
+      <gems>9</gems>
+      <recruits>9</recruits>
     </cost>
     <modes>0</modes>
     <keywords/>
@@ -3367,9 +3367,9 @@
     <name>Evolution</name>
     <class>Rare</class>
     <cost>
-      <bricks>10</bricks>
-      <gems>10</gems>
-      <recruits>10</recruits>
+      <bricks>8</bricks>
+      <gems>8</gems>
+      <recruits>8</recruits>
     </cost>
     <modes>0</modes>
     <keywords>Swift.</keywords>
@@ -4262,8 +4262,8 @@
     <class>Rare</class>
     <cost>
       <bricks>0</bricks>
-      <gems>11</gems>
-      <recruits>16</recruits>
+      <gems>10</gems>
+      <recruits>15</recruits>
     </cost>
     <modes>2</modes>
     <keywords>Beast. Durable.</keywords>
@@ -5002,8 +5002,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[If opponent raised his wall by more than 8 last round<br />Enemy wall: -12<br />Always:<br />Attack: 4]]></effect>
-    <code><![CDATA[if (!($mylast_card->IsPlayAgainCard() and $mylast_action == 'play') AND ($hischanges['Wall'] > 8)) $hisdata->Wall-= 12; $this->Attack(4, $hisdata->Tower, $hisdata->Wall);]]></code>
+    <effect><![CDATA[Attack: 4<br />If opponent raised his wall by more than 8 last round<br />Enemy wall: -12]]></effect>
+    <code><![CDATA[$this->Attack(4, $hisdata->Tower, $hisdata->Wall); if (!($mylast_card->IsPlayAgainCard() and $mylast_action == 'play') AND ($hischanges['Wall'] > 8)) $hisdata->Wall-= 12;]]></code>
   </card>
   <card id="369">
     <name>Keeper of souls</name>
@@ -6292,8 +6292,8 @@
     </cost>
     <modes>8</modes>
     <keywords>Quick.</keywords>
-    <effect><![CDATA[Select a card to be replaced with Hidden treasure]]></effect>
-    <code><![CDATA[$mydata->Hand[$mode] = 274; $mydata->NewCards[$mode] = 1; if ($cardpos == $mode) $nextcard = 0;]]></code>
+    <effect><![CDATA[Select a card to be replaced with Hidden treasure<br />Recruits: -1]]></effect>
+    <code><![CDATA[$mydata->Hand[$mode] = 274; $mydata->NewCards[$mode] = 1; if ($cardpos == $mode) $nextcard = 0; $mydata->Recruits-= 1;]]></code>
   </card>
   <card id="450">
     <name>White shrine</name>
@@ -6540,9 +6540,9 @@
     <name>Merchant ship</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>9</bricks>
-      <gems>9</gems>
-      <recruits>9</recruits>
+      <bricks>7</bricks>
+      <gems>7</gems>
+      <recruits>7</recruits>
     </cost>
     <modes>0</modes>
     <keywords/>
@@ -6723,7 +6723,7 @@
     <class>Uncommon</class>
     <cost>
       <bricks>0</bricks>
-      <gems>3</gems>
+      <gems>10</gems>
       <recruits>0</recruits>
     </cost>
     <modes>3</modes>
@@ -6901,7 +6901,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Both players gain 1.5 stock for each zero cost card and lose 1.5 stock for each non zero cost card in their hand]]></effect>
+    <effect><![CDATA[Both players gain 1 stock for each zero cost card and lose 1 stock for each non zero cost card in their hand]]></effect>
     <code><![CDATA[
 							$my_gain = $his_gain = 0;
 							for ($i = 1; $i <= 8; $i++)
@@ -6914,8 +6914,8 @@
 								if ($carddb->GetCard($hisdata->Hand[$i])->GetResources('') == 0) $his_gain++;
 								else $his_gain--;
 							}
-							$mydata->Bricks+= round($my_gain * 1.5); $mydata->Gems+= round($my_gain * 1.5); $mydata->Recruits+= round($my_gain * 1.5);
-							$hisdata->Bricks+= round($his_gain * 1.5); $hisdata->Gems+= round($his_gain * 1.5); $hisdata->Recruits+= round($his_gain * 1.5);
+							$mydata->Bricks+= $my_gain; $mydata->Gems+= $my_gain; $mydata->Recruits+= $my_gain;
+							$hisdata->Bricks+= $his_gain; $hisdata->Gems+= $his_gain; $hisdata->Recruits+= $his_gain;
 ]]></code>
   </card>
   <card id="488">
