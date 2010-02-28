@@ -1442,7 +1442,7 @@
 			return $this->DrawHand($deck, 'DrawCard_random');
 		}
 		
-		// returns a starting hand
+		// returns a new hand consisting of type-random cards chosen from the specified deck (excluding rare cards)
 		private function DrawHand_norare(CDeckData $deck)
 		{
 			return $this->DrawHand($deck, 'DrawCard_norare');
