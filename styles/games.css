@@ -47,6 +47,11 @@ div#hosted_games > p > input + input /* distance between buttons */
 	margin-left: 2ex;
 }
 
+div#hosted_games input.details /* player details button */
+{
+	margin-right: 1ex;
+}
+
 .game_filters /* filters layout */
 {
 	margin-top: 1ex;

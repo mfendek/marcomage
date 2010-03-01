@@ -189,6 +189,7 @@
 									<xsl:if test="active = 'yes'">
 										<xsl:attribute name="class">p_online</xsl:attribute>
 									</xsl:if>
+									<input class="details" type="submit" name="user_details[{opponent}]" value="i" />
 									<xsl:value-of select="opponent"/>
 								</p>
 							</td>
