@@ -217,7 +217,11 @@
 							</p>
 						</td>
 						<td><p><xsl:value-of select="Views"/></p></td>
-						<td><p><input type="submit" name="view_replay[{GameID}]" value="&rarr;" /></p></td>
+						<td>
+							<xsl:if test="Deleted = 'no'">
+								<p><input type="submit" name="view_replay[{GameID}]" value="&rarr;" /></p>
+							</xsl:if>
+						</td>
 					</tr>
 				</xsl:for-each>
 			</table>
