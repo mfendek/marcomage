@@ -88,6 +88,7 @@ CREATE TABLE `replays_head` (
   `GameModes` set('HiddenCards','FriendlyPlay') COLLATE utf8_unicode_ci NOT NULL,
   `Started` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Finished` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `Deleted` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `Views` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`GameID`),
   KEY `Player1` (`Player1`),
