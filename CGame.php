@@ -1002,7 +1002,7 @@
 						$dis_rank = $rarities[$dis_class];
 						
 						// pick only cards that can be discarded by played card
-						if (($dis_card->HasKeyword("Durable")) AND ($dis_rank <= $played_rank)) $storage[$dis_class][] = $i;
+						if (($dis_card->HasKeyword("Durable")) AND ($dis_rank <= ($played_rank + 1))) $storage[$dis_class][] = $i;
 					}
 					
 					if ((count($storage['Common']) + count($storage['Uncommon']) + count($storage['Rare'])) > 0)
@@ -1011,6 +1011,15 @@
 						shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
 						$storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
 						$discarded_pos = array_pop($storage_temp);
+						
+						// if played card was rare gain bonus stock based on discarded card cost
+						if ($card->GetClass() == 'Rare')
+						{
+							$dis_card = $carddb->GetCard($hisdata->Hand[$discarded_pos]);
+							$mydata->Bricks+= $dis_card->GetResources('Bricks');
+							$mydata->Gems+= $dis_card->GetResources('Gems');
+							$mydata->Recruits+= $dis_card->GetResources('Recruits');
+						}
 						$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_random');
 						$hisdata->NewCards[$discarded_pos] = 1;
 					}
@@ -1031,7 +1040,7 @@
 						$dis_rank = $rarities[$dis_class];
 						
 						// pick only cards that can be discarded by played card
-						if (($dis_card->HasKeyword("Charge")) AND ($dis_rank <= $played_rank)) $storage[$dis_class][] = $i;
+						if (($dis_card->HasKeyword("Charge")) AND ($dis_rank <= ($played_rank + 1))) $storage[$dis_class][] = $i;
 					}
 					
 					if ((count($storage['Common']) + count($storage['Uncommon']) + count($storage['Rare'])) > 0)
@@ -1040,6 +1049,15 @@
 						shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
 						$storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
 						$discarded_pos = array_pop($storage_temp);
+						
+						// if played card was rare lower opponent stock based on discarded card cost
+						if ($card->GetClass() == 'Rare')
+						{
+							$dis_card = $carddb->GetCard($hisdata->Hand[$discarded_pos]);
+							$hisdata->Bricks-= $dis_card->GetResources('Bricks');
+							$hisdata->Gems-= $dis_card->GetResources('Gems');
+							$hisdata->Recruits-= $dis_card->GetResources('Recruits');
+						}
 						$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_random');
 						$hisdata->NewCards[$discarded_pos] = 1;
 					}
