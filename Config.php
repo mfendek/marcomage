@@ -32,7 +32,7 @@
 	// game configuration
 	$game_config['init_tower'] = 30; // starting tower height
 	$game_config['max_tower'] = 100; // maximum tower height
-	$game_config['init_wall'] = 20; // starting wall height
+	$game_config['init_wall'] = 25; // starting wall height
 	$game_config['max_wall'] = 150; // maximum wall height
 	$game_config['res_victory'] = 400; // sum of all resources
 	$game_config['time_victory'] = 250; // maximum number of rounds
