@@ -284,8 +284,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +30]]></effect>
-    <code><![CDATA[$mydata->Tower+= 30;]]></code>
+    <effect><![CDATA[Tower: +30<br />Stock: +4]]></effect>
+    <code><![CDATA[$mydata->Tower+= 30; $mydata->Bricks+= 4; $mydata->Gems+= 4; $mydata->Recruits+= 4;]]></code>
   </card>
   <card id="22">
     <name>Master bricklayer</name>
@@ -915,14 +915,14 @@
     <name>Stormwind</name>
     <class>Rare</class>
     <cost>
-      <bricks>20</bricks>
+      <bricks>15</bricks>
       <gems>10</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +20<br />Magic: +1]]></effect>
-    <code><![CDATA[$mydata->Tower+= 20; $mydata->Magic+= 1;]]></code>
+    <effect><![CDATA[Tower: +20<br />Magic: +2]]></effect>
+    <code><![CDATA[$mydata->Tower+= 20; $mydata->Magic+= 2;]]></code>
   </card>
   <card id="71">
     <name>Dwarven miners</name>
@@ -1306,7 +1306,7 @@
     <class>Rare</class>
     <cost>
       <bricks>0</bricks>
-      <gems>15</gems>
+      <gems>0</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
@@ -1861,7 +1861,7 @@
     <code><![CDATA[$this->Attack(20, $hisdata->Tower, $hisdata->Wall); $mydata->Wall+= 10; $mydata->Quarry-= 1; $hisdata->Wall+= 10; $hisdata->Quarry-= 1;]]></code>
   </card>
   <card id="143">
-    <name>Clay fabric</name>
+    <name>Clay valley</name>
     <class>Rare</class>
     <cost>
       <bricks>0</bricks>
@@ -2507,8 +2507,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +45]]></effect>
-    <code><![CDATA[$mydata->Tower+= 45;]]></code>
+    <effect><![CDATA[Tower: +45<br />Wall: +25]]></effect>
+    <code><![CDATA[$mydata->Tower+= 45; $mydata->Wall+= 25;]]></code>
   </card>
   <card id="193">
     <name>Royal pikemen</name>
@@ -2754,8 +2754,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[If Enemy wall > Wall<br />Attack: 25<br />else<br />Attack: 13]]></effect>
-    <code><![CDATA[if ($hisdata->Wall > $mydata->Wall) $this->Attack(25, $hisdata->Tower, $hisdata->Wall); else $this->Attack(13, $hisdata->Tower, $hisdata->Wall);]]></code>
+    <effect><![CDATA[If Enemy wall - Wall > 10<br />Attack: 25<br />else<br />Attack: 15]]></effect>
+    <code><![CDATA[if (($hisdata->Wall - $mydata->Wall) > 10) $this->Attack(25, $hisdata->Tower, $hisdata->Wall); else $this->Attack(15, $hisdata->Tower, $hisdata->Wall);]]></code>
   </card>
   <card id="212">
     <name>Rogue</name>
@@ -3060,7 +3060,7 @@
     <name>Architect academy</name>
     <class>Rare</class>
     <cost>
-      <bricks>30</bricks>
+      <bricks>25</bricks>
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
@@ -3243,7 +3243,7 @@
     <class>Rare</class>
     <cost>
       <bricks>0</bricks>
-      <gems>23</gems>
+      <gems>10</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
@@ -3555,8 +3555,8 @@
     </cost>
     <modes>8</modes>
     <keywords>Quick.</keywords>
-    <effect><![CDATA[Wall: +1<br />Stock: -1<br />Select an extra card to be discarded]]></effect>
-    <code><![CDATA[$mydata->Bricks-= 1; $mydata->Gems-= 1; $mydata->Recruits-= 1; $mydata->Wall+= 1; $mydata->Hand[$mode] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_norare'); $mydata->NewCards[$mode] = 1;]]></code>
+    <effect><![CDATA[Wall: +1<br />-1 random resource<br />Select an extra card to be discarded]]></effect>
+    <code><![CDATA[$mydata->Wall+= 1; $temp_array = array("Bricks", "Gems", "Recruits"); $mydata->$temp_array[array_rand($temp_array)]-= 1; $mydata->Hand[$mode] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_norare'); $mydata->NewCards[$mode] = 1;]]></code>
   </card>
   <card id="270">
     <name>Intrigue</name>
@@ -5503,12 +5503,12 @@
     <cost>
       <bricks>0</bricks>
       <gems>0</gems>
-      <recruits>18</recruits>
+      <recruits>40</recruits>
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Replaces your hand with 2 Goblins, 2 Elite orcs, Goblin saboteur, Ogre, Troll and Orc regiment<br />Dungeon: +2]]></effect>
-    <code><![CDATA[$hand = array (13, 13, 240, 240, 368, 46, 106, 89); shuffle($hand); $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $keys = array_keys($newcards); $mydata->Hand = array_combine($keys, $hand); $mydata->NewCards = $newcards; $nextcard = 0; $mydata->Dungeons+= 2;]]></code>
+    <effect><![CDATA[Replaces your hand with 2 Goblins, 2 Elite orcs, Goblin saboteur, Ogre, Troll and Orc regiment<br />Recruits: +80]]></effect>
+    <code><![CDATA[$hand = array (13, 13, 240, 240, 368, 46, 106, 89); shuffle($hand); $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $keys = array_keys($newcards); $mydata->Hand = array_combine($keys, $hand); $mydata->NewCards = $newcards; $nextcard = 0; $mydata->Recruits+= 80;]]></code>
   </card>
   <card id="404">
     <name>Thor</name>
@@ -6754,8 +6754,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[If not New and matching card in enemy hand is New<br />Enemy tower: -10<br />else<br />Enemy tower: -3]]></effect>
-    <code><![CDATA[if (!isset($mynewflags[$cardpos]) AND isset($hisnewflags[$cardpos])) $hisdata->Tower-=10; else $hisdata->Tower-=3;]]></code>
+    <effect><![CDATA[If not New and matching card in enemy hand is New<br />Enemy tower: -8<br />else<br />Enemy tower: -3]]></effect>
+    <code><![CDATA[if (!isset($mynewflags[$cardpos]) AND isset($hisnewflags[$cardpos])) $hisdata->Tower-=8; else $hisdata->Tower-=3;]]></code>
   </card>
   <card id="478">
     <name>Renewal</name>
