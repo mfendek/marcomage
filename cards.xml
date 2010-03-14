@@ -1700,7 +1700,7 @@
       <recruits>30</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Banish.</keywords>
+    <keywords>Aqua. Banish.</keywords>
     <effect><![CDATA[Attack: 30<br />If Enemy wall = 0<br />Recruits: +20]]></effect>
     <code><![CDATA[$this->Attack(30, $hisdata->Tower, $hisdata->Wall); if ($hisdata->Wall <= 0) $mydata->Recruits+= 20;]]></code>
   </card>
@@ -7150,7 +7150,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords/>
+    <keywords>Aqua.</keywords>
     <effect><![CDATA[If New<br />Attack: 5<br />else<br />Attack: 1]]></effect>
     <code><![CDATA[$this->Attack(((isset($mynewflags[$cardpos])) ? 5 : 1), $hisdata->Tower, $hisdata->Wall);]]></code>
   </card>
@@ -7163,7 +7163,7 @@
       <recruits>25</recruits>
     </cost>
     <modes>0</modes>
-    <keywords/>
+    <keywords>Aqua.</keywords>
     <effect><![CDATA[Attack: 25<br />Enemy highest facility: -1]]></effect>
     <code><![CDATA[$this->Attack(25, $hisdata->Tower, $hisdata->Wall);
 							$max = max($hisdata->Quarry, $hisdata->Magic, $hisdata->Dungeons);
@@ -7182,7 +7182,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Dragon.</keywords>
+    <keywords>Aqua. Dragon.</keywords>
     <effect><![CDATA[Attack: 40<br />Stock: +10]]></effect>
     <code><![CDATA[$this->Attack(40, $hisdata->Tower, $hisdata->Wall); $mydata->Bricks+= 10; $mydata->Gems+= 10; $mydata->Recruits+= 10;]]></code>
   </card>
@@ -7195,7 +7195,7 @@
       <recruits>20</recruits>
     </cost>
     <modes>0</modes>
-    <keywords/>
+    <keywords>Aqua.</keywords>
     <effect><![CDATA[Attack: 20<br />Gems: +15<br />Recruits: +15]]></effect>
     <code><![CDATA[$this->Attack(20, $hisdata->Tower, $hisdata->Wall); $mydata->Gems+= 15; $mydata->Recruits+= 15;]]></code>
   </card>
