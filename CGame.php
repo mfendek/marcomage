@@ -615,6 +615,18 @@
 					}
 				}
 				
+				//process Aqua cards - raise tower and wall, lower opponent's stock based on played card rarity
+				if ($card->HasKeyWord("Aqua") AND $mylast_card->HasKeyword("Aqua") and ($mylast_action == 'play'))
+				{
+					$trans = array('Common' => 1, 'Uncommon' => 2, 'Rare' => 5);
+					$change = $trans[$card->GetClass()];
+					$mydata->Tower+= $change;
+					$mydata->Wall+= $change;
+					$hisdata->Bricks-= $change;
+					$hisdata->Gems-= $change;
+					$hisdata->Recruits-= $change;
+				}
+				
 				//process Barbarian cards - Devastation (additional damage to enemy wall)
 				if ($card->HasKeyWord("Barbarian"))
 				{
