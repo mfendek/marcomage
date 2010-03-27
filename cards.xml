@@ -5468,7 +5468,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Illusion.</keywords>
-    <effect><![CDATA[Select a card from hand<br />Next card received will be that card (cannot target self)]]></effect>
+    <effect><![CDATA[Select a card from hand<br />Next card received will be that card]]></effect>
     <code><![CDATA[if ($mode != $cardpos) $nextcard = $mydata->Hand[$mode];]]></code>
   </card>
   <card id="401">
@@ -6969,7 +6969,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Quick.</keywords>
-    <effect><![CDATA[Select a card from hand to take the position of Magic portal (cannot target self)]]></effect>
+    <effect><![CDATA[Select a card from hand to take the position of Magic portal]]></effect>
     <code><![CDATA[if ($mode != $cardpos) { $nextcard = $mydata->Hand[$mode]; $mydata->Hand[$mode] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_norare'); $mydata->NewCards[$mode] = 1; }]]></code>
   </card>
   <card id="491">
