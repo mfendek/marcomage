@@ -89,6 +89,25 @@ If your opponent doesn't make his turn for more than three weeks and he doesn't 
 <h4>Cards</h4>
 <p><img style="float: right" src="img/screen_card.png" alt="card"/>Every card has a name, a price and an effect. The name and the price are found in the upper part of the card, the effect in the lower part, below the card picture. The price is the ammount of resources needed for a card to be played, each type of resource represented by the color related to the resource. This ammount will be subtracted from the resource stock when the card is played. The card can only be played if you have enough resources to pay for its price. After a card is played, its effect will take place. Every card belongs to some group, indicated by the card's border color. There are three groups: Common, Uncommon and Rare. Common cards have green border, Uncommon brown and Rare yellow. Every player has exactly eight cards in his or hers hand. Your cards are located at the upper part of the screen. Opponent's cards are located in the bottom part of the screen. You can see enemy's cards in his or hers hand. Some cards in yours/opponent's hand are marked with "New card" flag. This indicates that this card has been received to the hand only recently. You may want to pay close attention to these cards. In the middle of the game screen are cards last played by each player (it can be very important). In one turn one player plays one card or a player can discard a card instead of playing it. When a card is discarded, its cost is not payed, but its effect will not happen. After a card(s) has been played or discarded a new card(s) will be added to player's hand. The new card will be chosen randomly from the card groups with probabilities 65% for Common, 29% for Uncommon and 6% for Rare, unless a played card says otherwise. Rares can't be drawn by discarding effect of Common cards. Rares can't be drawn after <b>Quick</b> or <b>Swift</b> cards.</p>
 
+<p>When drawing new card, the system takes into account cards on current player's hand. The system reduces the probability of stocking multiple instances of the same card in hand by doing this procedure:</p>
+
+<ol>
+	<li>Draw a random card according to the current rules (depends on draw procedure type)</li>
+	<li>Count number of instances (= N) of new card already present in hand (played position doesn't count)</li>
+	<li>Select the new card as chosen with probability of 1/(2^{N}) (i.e. reject the new card with probability of 1 - (1/(2^{N}))</li>
+	<li>If a card was rejected return to 1, if it was chosen end procedure</li>
+</ol>
+
+<p>The probability that you will end up with multiple card instances is exponentially decreasing with number of instances. We call this the anti-flood mechanism. Let's look at some examples:</p>
+
+<ul>
+	<li>If there are no card instances (N = 0), the card is chosen with 100% probability</li>
+	<li>If there is one card instance (N = 1), the card is chosen with 50% probability</li>
+	<li>If there are two card instances (N = 2), the card is chosen with 25% probability</li>
+	<li>If there are three card instances (N = 3), the card is chosen with 12.5% probability</li>
+	<li>If there are four card instances (N = 4), the card is chosen with 6.25% probability</li>
+</ul>
+
 <p>Some cards have modes. If a card has more modes, it means it can be played with different effects. The effects are described on the card. For example card Merchant will add 6 bricks, when played in Mode1, 5 gems when played in Mode2 or 5 recruits, when played in mode3. When you can play such card, there is a mode selector next to the play button. Simply select the chosen mode of the card and play it. Some cards discard other cards from yours or opponents hand. Cards that where discarded during your last round are located to the left of the card history. Cards that were discarded during opponent's last round are shown to the right of the card history. One pile of discarded cards are further divided into cards that were discarded from your hand (located on the left of yellow vertical line) and cards that were discarded from opponent's hand (located on the right of yellow vertical line). Both card history and discarded cards are ordered in this fashion: last played/discarded are the leftmost.
 </p>
 
