@@ -7276,7 +7276,7 @@
     <modes>8</modes>
     <keywords>Quick.</keywords>
     <effect><![CDATA[Wall: +3<br />Select a card from hand to be replaced with a card with the same rarity (can't summon self)]]></effect>
-    <code><![CDATA[$mydata->Wall+= 3; $class = $carddb->GetCard($mydata->Hand[$mode])->GetClass(); $mydata->Hand[$mode] = $this->DrawCard(array_diff($mydata->Deck->$class, array(513)), $mydata->Hand, $cardpos, 'DrawCard_list'); $mydata->NewCards[$mode] = 1;]]></code>
+    <code><![CDATA[$mydata->Wall+= 3; $class = $carddb->GetCard($mydata->Hand[$mode])->GetClass(); $mydata->Hand[$mode] = $this->DrawCard(array_diff($mydata->Deck->$class, array(513, $mydata->Hand[$mode])), $mydata->Hand, $cardpos, 'DrawCard_list'); $mydata->NewCards[$mode] = 1;]]></code>
   </card>
 	<card id="514">
     <name>Firestorm</name>
