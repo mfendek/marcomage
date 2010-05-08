@@ -258,10 +258,22 @@
 				
 				if ($message == 'active_game') // Games -> next game button
 				{
-					$list = $gamedb->ListCurrentGames($player->Name());
+					$list = $gamedb->NextGameList($player->Name());
 					
 					//check if there is an active game
 					if (count($list) == 0) { /*$error = 'No games your turn!';*/ $current = 'Games'; break; }
+					
+					$active = $inactive = array();
+					
+					foreach ($list as $game_id => $opponent_name)
+					{
+						// separate games into two groups based on opponent activity
+						$inactivity = time() - strtotime($playerdb->LastQuery($opponent_name));
+						if ($inactivity < 60*10) $active[] = $game_id;
+						else $inactive[] = $game_id;
+					}
+					
+					$list = array_merge($active, $inactive);
 					
 					$game_id = $list[0];
 					foreach ($list as $i => $cur_game)

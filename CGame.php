@@ -258,6 +258,20 @@
 			
 			return $games;
 		}
+		
+		public function NextGameList($player)
+		{
+			// provide list of active games with opponent names
+			$db = $this->db;
+			$result = $db->Query('SELECT `GameID`, (CASE WHEN `Player1` = "'.$db->Escape($player).'" THEN `Player2` ELSE `Player1` END) as `Opponent` FROM `games` WHERE ((`Player1` = "'.$db->Escape($player).'") OR (`Player2` = "'.$db->Escape($player).'")) AND (`State` = "in progress") AND (`Current` = "'.$db->Escape($player).'")');
+			if (!$result) return false;
+			
+			$game_data = array();
+			while( $data = $result->Next() )
+				$game_data[$data['GameID']] = $data['Opponent'];
+			
+			return $game_data;
+		}
 	}
 	
 	
