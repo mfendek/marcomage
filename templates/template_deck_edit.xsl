@@ -102,30 +102,32 @@
 
 	<!-- advanced filter select menu - filters based upon appearance in card text -->
 	<xsl:variable name="advanced">
-		<adv name="none"        text="No adv. filters" />
-		<adv name="Attack:"     text="Attack"          />
-		<adv name="Discard"     text="Discard"         />
-		<adv name="Replace"     text="Replace"         />
-		<adv name="Reveal"      text="Reveal"          />
-		<adv name="Production"  text="Production"      />
-		<adv name="Wall: +"     text="Wall +"          />
-		<adv name="Wall: -"     text="Wall -"          />
-		<adv name="Tower: +"    text="Tower +"         />
-		<adv name="Tower: -"    text="Tower -"         />
-		<adv name="Stock: +"    text="Stock +"         />
-		<adv name="Stock: -"    text="Stock -"         />
-		<adv name="Magic: +"    text="Magic +"         />
-		<adv name="Magic: -"    text="Magic -"         />
-		<adv name="Quarry: +"   text="Quarry +"        />
-		<adv name="Quarry: -"   text="Quarry -"        />
-		<adv name="Dungeon: +"  text="Dungeon +"       />
-		<adv name="Dungeon: -"  text="Dungeon -"       />
-		<adv name="Gems: +"     text="Gems +"          />
-		<adv name="Gems: -"     text="Gems -"          />
-		<adv name="Bricks: +"   text="Bricks +"        />
-		<adv name="Bricks: -"   text="Bricks -"        />
-		<adv name="Recruits: +" text="Recruits +"      />
-		<adv name="Recruits: -" text="Recruits -"      />
+		<adv name="none"          text="No adv. filters" />
+		<adv name="Attack:"       text="Attack"          />
+		<adv name="Discard"       text="Discard"         />
+		<adv name="Replace"       text="Replace"         />
+		<adv name="Reveal"        text="Reveal"          />
+		<adv name="Production"    text="Production"      />
+		<adv name="Wall: +"       text="Wall +"          />
+		<adv name="Wall: -"       text="Wall -"          />
+		<adv name="Tower: +"      text="Tower +"         />
+		<adv name="Tower: -"      text="Tower -"         />
+		<adv name="Facilities: +" text="Facilities +"    />
+		<adv name="Facilities: -" text="Facilities -"    />
+		<adv name="Magic: +"      text="Magic +"         />
+		<adv name="Magic: -"      text="Magic -"         />
+		<adv name="Quarry: +"     text="Quarry +"        />
+		<adv name="Quarry: -"     text="Quarry -"        />
+		<adv name="Dungeon: +"    text="Dungeon +"       />
+		<adv name="Dungeon: -"    text="Dungeon -"       />
+		<adv name="Stock: +"      text="Stock +"         />
+		<adv name="Stock: -"      text="Stock -"         />
+		<adv name="Gems: +"       text="Gems +"          />
+		<adv name="Gems: -"       text="Gems -"          />
+		<adv name="Bricks: +"     text="Bricks +"        />
+		<adv name="Bricks: -"     text="Bricks -"        />
+		<adv name="Recruits: +"   text="Recruits +"      />
+		<adv name="Recruits: -"   text="Recruits -"      />
 	</xsl:variable>
 
 	<select name="AdvancedFilter">
