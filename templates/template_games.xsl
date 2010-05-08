@@ -177,6 +177,7 @@
 			<xsl:when test="count($param/free_games/*) &gt; 0">
 				<table cellspacing="0" class="skin_text">
 					<tr>
+						<th></th>
 						<th><p>Opponent</p></th>
 						<th><p>Created</p></th>
 						<th><p>Modes</p></th>
@@ -185,11 +186,18 @@
 					<xsl:for-each select="$param/free_games/*">
 						<tr class="table_row">
 							<td>
+								<p class="flags">
+									<input class="details" type="submit" name="user_details[{opponent}]" value="i" />
+									<xsl:if test="status != 'none'">
+										<img width="20px" height="14px" src="img/{status}.png" alt="status flag" class="country_flag" />
+									</xsl:if>
+								</p>
+							</td>
+							<td>
 								<p>
 									<xsl:if test="active = 'yes'">
 										<xsl:attribute name="class">p_online</xsl:attribute>
 									</xsl:if>
-									<input class="details" type="submit" name="user_details[{opponent}]" value="i" />
 									<xsl:value-of select="opponent"/>
 								</p>
 							</td>

@@ -62,6 +62,11 @@ p.ended_game /* color for text information about the game ("game has ended") */
 	font-style: italic;
 }
 
+p.flags /* flags column */
+{
+	text-align: left;
+}
+
 /* end gamelist */
 
 /* begin card flags */

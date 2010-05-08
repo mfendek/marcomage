@@ -3346,13 +3346,28 @@ case 'Games':
 
 	if (count($free_games) > 0)
 	{
+		$buffer = array();
 		foreach ($free_games as $i => $data)
 		{
-			$inactivity = time() - strtotime($playerdb->LastQuery($data['Player1']));
+			$opponent_name = $data['Player1'];
 
-			$params['games']['free_games'][$i]['opponent'] = $data['Player1'];
+			// buffer supplementary data to reduce number of queries
+			if (isset($buffer[$opponent_name]))
+			{
+				$status = $buffer[$opponent_name]['status'];
+				$inactivity = $buffer[$opponent_name]['inactivity'];
+			}
+			else
+			{
+				$cur_player = $playerdb->GetPlayer($opponent_name);
+				$buffer[$opponent_name]['status'] = $status = $cur_player->GetSetting('Status');
+				$buffer[$opponent_name]['inactivity'] = $inactivity = time() - strtotime($cur_player->LastQuery());
+			}
+
+			$params['games']['free_games'][$i]['opponent'] = $opponent_name;
 			$params['games']['free_games'][$i]['gameid'] = $data['GameID'];
 			$params['games']['free_games'][$i]['active'] = ($inactivity < 60*10) ? 'yes' : 'no';
+			$params['games']['free_games'][$i]['status'] = $status;
 			$params['games']['free_games'][$i]['gameaction'] = $data['Last Action'];
 			$params['games']['free_games'][$i]['friendly_play'] = (strpos($data['GameModes'], 'FriendlyPlay') !== false) ? 'yes' : 'no';
 			$params['games']['free_games'][$i]['hidden_cards'] = (strpos($data['GameModes'], 'HiddenCards') !== false) ? 'yes' : 'no';
