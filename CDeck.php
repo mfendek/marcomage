@@ -230,7 +230,7 @@
 			return (($this->DeckData->Count('Common') == 15) && ($this->DeckData->Count('Uncommon') == 15) && ($this->DeckData->Count('Rare') == 15));
 		}
 		
-		public function CalculateKeywords() // find token keywords most present in the deck
+		public function SetAutoTokens() // find and set token keywords most present in the deck
 		{
 			global $carddb;
 			
@@ -269,7 +269,12 @@
 			// add empty tokens when there are not enough token keywords
 			if (count($new_tokens) < $tokens) $new_tokens = array_pad($new_tokens, $tokens, 'none');
 			
-			return $new_tokens;
+			// adjust array keys
+			$new_tokens = array_combine(array_keys(array_fill(1, count($new_tokens), 0)), $new_tokens);
+			
+			$this->DeckData->Tokens = $new_tokens;
+			
+			return "Success";
 		}
 		
 		public function ToCSV()

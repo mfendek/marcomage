@@ -1362,7 +1362,13 @@
 					
 					// add card, saving the deck on success
 					if( $deck->AddCard($cardid) )
+					{
+						// set tokens when deck is finished and player forgot to set them
+						if ((count(array_diff($deck->DeckData->Tokens, array('none'))) == 0) AND $deck->isReady())
+							$deck->SetAutoTokens();
+						
 						$deck->SaveDeck();
+					}
 					else
 						$error = 'Unable to add the chosen card to this deck.';
 					
@@ -1435,14 +1441,7 @@
 					
 					$current = 'Deck_edit';
 					
-					$tokens_temp = $deck->CalculateKeywords();
-					$tokens = array();
-					
-					// adjust array keys
-					foreach ($tokens_temp as $key => $value) $tokens[$key + 1] = $value;
-					
-					$deck->DeckData->Tokens = $tokens;
-					
+					$deck->SetAutoTokens();					
 					$deck->SaveDeck();
 					
 					$information = 'Tokens set.';
