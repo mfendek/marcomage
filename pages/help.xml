@@ -414,6 +414,14 @@ This section provides a tool for managing card suggestion in a structured form. 
 	<li>Tokens</li>
 </ul>
 
+<p>Unsupported card effects</p>
+
+<ul>
+	<li>continuous card effects (effects that manipulate future turns)</li>
+	<li>using card effects of other cards</li>
+	<li>card effects based on results of the keyword effects</li>
+</ul>
+
 <h4>Keywords</h4>
 <p>
 Keywords represent information about the card that is too big to fit in the card box, or some property that other cards may look for while performing their effect. Below, all keywords are listed and explained.
