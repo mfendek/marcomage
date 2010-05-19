@@ -53,12 +53,10 @@
 			</td>
 			<td>
 				<p>
-					<xsl:attribute name="style">
 					<xsl:choose>
-					<xsl:when test="Priority = 'sticky'">color: red</xsl:when>
-					<xsl:when test="Priority = 'important'">color: orange</xsl:when>
+					<xsl:when test="Priority = 'sticky'"><xsl:attribute name="class">sticky</xsl:attribute></xsl:when>
+					<xsl:when test="Priority = 'important'"><xsl:attribute name="class">important</xsl:attribute></xsl:when>
 					</xsl:choose>
-					</xsl:attribute>
 
 					<xsl:value-of select="Title" />
 					<xsl:if test="Locked = 'yes'"><img src="img/password.png" width="25px" height="20px" alt="locked" /></xsl:if>

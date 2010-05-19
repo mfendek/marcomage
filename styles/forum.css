@@ -97,6 +97,16 @@ input.search_button /* search button layout */
 	float: right;
 }
 
+p.sticky /* sticky thread heading */
+{
+	color: red;
+}
+
+p.important /* important thread heading */
+{
+	color: orange;
+}
+
 /* end section */
 
 /* begin forum_new_edit */
