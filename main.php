@@ -1882,12 +1882,17 @@
 					
 					if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
 					$concept = $conceptdb->GetConcept($concept_id);
+					$thread_id = $concept->ThreadID();
+					$concept_name = $concept->Name();
 					
 					// check access rights
 					if (!($access_rights[$player->Type()]["delete_all_card"] OR ($access_rights[$player->Type()]["delete_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 					
 					$result = $concept->DeleteConcept();
 					if (!$result) { $error = "Failed to delete card"; $current = "Concepts_edit"; break; }
+					
+					$result = $forum->Threads->EditThread($thread_id, $concept_name.' [Deleted]', 'normal');					
+					if (!$result) { $error = "Failed to rename thread"; $current = "Concepts"; break; }
 					
 					$information = "Card deleted";
 					$current = "Concepts";
