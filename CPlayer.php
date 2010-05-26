@@ -89,7 +89,7 @@
 			return new CPlayer($playername, $type, $this);
 		}
 		
-		public function ListPlayers($filter_cond, $status, $condition, $order, $page)
+		public function ListPlayers($filter_cond, $status, $name, $condition, $order, $page)
 		{
 			$db = $this->db;
 
@@ -98,6 +98,8 @@
 			            : ( $filter_cond == "all"     ? "UNIX_TIMESTAMP()"
 			            :                               "60*60*24*7*3"     )));
 
+			$name_q = ($name != '') ? ' AND `Username` LIKE "%'.$db->Escape($name).'%"' : '';
+
 			$games_p1 = 'SELECT `Player1` as `Username` FROM `games` WHERE `State` != "waiting" AND `State` != "P1 over"';
 			$games_p2 = 'SELECT `Player2` as `Username` FROM `games` WHERE `State` != "waiting" AND `State` != "P2 over"';
 			$challenges_out = 'SELECT `Player1` as `Username` FROM `games` WHERE `State` = "waiting"';
@@ -105,7 +107,7 @@
 			$slots_q = "SELECT `Username`, COUNT(`Username`) as `Slots` FROM ((".$games_p1.") UNION ALL (".$games_p2.") UNION ALL (".$challenges_out.") UNION ALL (".$challenges_in.")) as t GROUP BY `Username`";
 			$status_query = ($status != 'none') ? '(SELECT `Username`, `Avatar`, `Status`, `Country`, `FriendlyFlag`, `BlindFlag` FROM `settings` WHERE `Status` = "'.$status.'") as `settings`' : '`settings`';
 
-			$query = "SELECT `Username`, `UserType`, `Level`, `Exp`, `Wins`, `Losses`, `Draws`, `Avatar`, `Status`, `FriendlyFlag`, `BlindFlag`, `settings`.`Country`, `Last Query`, GREATEST(0, ".MAX_GAMES." + (`Level` DIV ".BONUS_GAME_SLOTS.") - IFNULL(`Slots`, 0)) as `Free slots` FROM (`logins` JOIN ".$status_query." USING (`Username`) JOIN `scores` USING (`Username`) LEFT OUTER JOIN (".$slots_q.") as `slots` USING (`Username`)) WHERE UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - ".$activity_q." ORDER BY `".$condition."` ".$order.", `Username` ASC LIMIT ".(PLAYERS_PER_PAGE * $page)." , ".PLAYERS_PER_PAGE."";
+			$query = "SELECT `Username`, `UserType`, `Level`, `Exp`, `Wins`, `Losses`, `Draws`, `Avatar`, `Status`, `FriendlyFlag`, `BlindFlag`, `settings`.`Country`, `Last Query`, GREATEST(0, ".MAX_GAMES." + (`Level` DIV ".BONUS_GAME_SLOTS.") - IFNULL(`Slots`, 0)) as `Free slots` FROM (`logins` JOIN ".$status_query." USING (`Username`) JOIN `scores` USING (`Username`) LEFT OUTER JOIN (".$slots_q.") as `slots` USING (`Username`)) WHERE (UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - ".$activity_q.")".$name_q." ORDER BY `".$condition."` ".$order.", `Username` ASC LIMIT ".(PLAYERS_PER_PAGE * $page)." , ".PLAYERS_PER_PAGE."";
 
 			$result = $db->Query($query);
 			if (!$result) return false;

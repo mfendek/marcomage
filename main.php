@@ -3073,6 +3073,7 @@ case 'Players':
 	// filter initialization
 	$params['players']['CurrentFilter'] = $filter = ((isset($_POST['player_filter'])) ? $_POST['player_filter'] : $player->GetSetting("PlayerFilter"));
 	$params['players']['status_filter'] = $status_filter = (isset($_POST['status_filter'])) ? $_POST['status_filter'] : 'none';
+	$params['players']['name_filter'] = $name_filter = (isset($_POST['name_filter'])) ? $_POST['name_filter'] : '';
 
 	$params['players']['PlayerName'] = $player->Name();
 
@@ -3102,7 +3103,7 @@ case 'Players':
 	$params['players']['page_count'] = $page_count;
 
 	// get the list of all existing players; (Username, Wins, Losses, Draws, Last Query, Free slots, Avatar, Country)
-	$list = $playerdb->ListPlayers($filter, $status_filter, $condition, $order, $current_page);
+	$list = $playerdb->ListPlayers($filter, $status_filter, $name_filter, $condition, $order, $current_page);
 
 	// for each player, display their name, score, and if conditions are met, also display the challenge button
 	foreach ($list as $i => $data)
