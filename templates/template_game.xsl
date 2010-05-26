@@ -122,12 +122,6 @@
 		<td>
 			<!-- 'refresh' button -->
 			<input type="submit" name="Refresh[{am:urlencode($param/current)}]" value="Refresh" accesskey="w" />
-			<xsl:if test="$param/HiddenCards = 'yes'">
-				<img src="img/blind.png" class="in_game" width="20px" height="14px" alt="hidden cards" />
-			</xsl:if>
-			<xsl:if test="$param/FriendlyPlay = 'yes'">
-				<img src="img/friendly_play.png" class="in_game" width="20px" height="14px" alt="friendly play" />
-			</xsl:if>
 		</td>
 
 		<!-- begin game state indicator -->
@@ -686,7 +680,15 @@
 		</xsl:for-each>	
 	<!-- end my tokens -->
 
-		<td></td>
+		<td style="text-align: center">
+			<!-- game mode flags -->
+			<xsl:if test="$param/HiddenCards = 'yes'">
+				<img src="img/blind.png" class="in_game" width="20px" height="14px" alt="hidden cards" />
+			</xsl:if>
+			<xsl:if test="$param/FriendlyPlay = 'yes'">
+				<img src="img/friendly_play.png" class="in_game" width="20px" height="14px" alt="friendly play" />
+			</xsl:if>
+		</td>
 		<td></td>
 
 	<!-- begin his tokens -->

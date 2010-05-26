@@ -328,16 +328,7 @@
 	<tr>
 		<td></td>
 		<td></td>
-		<!-- begin game mode flags -->
-		<td>
-			<xsl:if test="$param/HiddenCards = 'yes'">
-				<img src="img/blind.png" class="in_game" width="20px" height="14px" alt="blind flag" />
-			</xsl:if>
-			<xsl:if test="$param/FriendlyPlay = 'yes'">
-				<img src="img/friendly_play.png" class="in_game" width="20px" height="14px" alt="friendly play" />
-			</xsl:if>
-		</td>
-		<!-- end game mode flags -->
+		<td></td>
 
 		<!-- game state indicator -->
 		<td colspan="2"><p class="info_label"><xsl:value-of select="$param/Current"/>'s turn</p></td>
@@ -843,7 +834,15 @@
 		</xsl:for-each>	
 	<!-- end player1 tokens -->
 
-		<td></td>
+		<td style="text-align: center">
+			<!-- game mode flags -->
+			<xsl:if test="$param/HiddenCards = 'yes'">
+				<img src="img/blind.png" class="in_game" width="20px" height="14px" alt="hidden cards" />
+			</xsl:if>
+			<xsl:if test="$param/FriendlyPlay = 'yes'">
+				<img src="img/friendly_play.png" class="in_game" width="20px" height="14px" alt="friendly play" />
+			</xsl:if>
+		</td>
 		<td></td>
 
 	<!-- begin player2 tokens -->
