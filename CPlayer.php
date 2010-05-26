@@ -118,7 +118,7 @@
 			return $list;
 		}
 		
-		public function CountPages($filter_cond, $status)
+		public function CountPages($filter_cond, $status, $name)
 		{
 			$db = $this->db;
 
@@ -126,9 +126,11 @@
 			            : ( $filter_cond == "offline" ? "60*60*24*7*1"
 			            : ( $filter_cond == "all"     ? "UNIX_TIMESTAMP()"
 			            :                               "60*60*24*7*3"     )));
+
+			$name_q = ($name != '') ? ' AND `Username` LIKE "%'.$db->Escape($name).'%"' : '';
 			$status_query = ($status != 'none') ? ' JOIN (SELECT `Username` FROM `settings` WHERE `Status` = "'.$status.'") as `settings` USING (`Username`)' : '';
 
-			$result = $db->Query('SELECT COUNT(`Username`) as `Count` FROM `logins`'.$status_query.' WHERE UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - '.$activity_q.'');
+			$result = $db->Query('SELECT COUNT(`Username`) as `Count` FROM `logins`'.$status_query.' WHERE UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - '.$activity_q.$name_q.'');
 
 			$data = $result->Next();
 			

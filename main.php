@@ -3096,7 +3096,7 @@ case 'Players':
 	$current_page = ((isset($_POST['CurrentPlayersPage'])) ? $_POST['CurrentPlayersPage'] : 0);
 	$params['players']['current_page'] = $current_page;
 
-	$page_count = $playerdb->CountPages($filter, $status_filter);
+	$page_count = $playerdb->CountPages($filter, $status_filter, $name_filter);
 	$pages = array();
 	if ($page_count > 0) for ($i = 0; $i < $page_count; $i++) $pages[$i] = $i;
 	$params['players']['pages'] = $pages;
