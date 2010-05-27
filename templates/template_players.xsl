@@ -24,7 +24,7 @@
 	<div id="players">
 		<div class="filters_trans" style="text-align: center;">
 			<!-- begin name filter -->
-			<input type="text" name="name_filter" maxlength="20" size="20" value="{$param/name_filter}" />
+			<input type="text" name="pname_filter" maxlength="20" size="20" value="{$param/pname_filter}" />
 
 			<!-- begin player filter -->
 			<select name="player_filter">

@@ -3073,7 +3073,7 @@ case 'Players':
 	// filter initialization
 	$params['players']['CurrentFilter'] = $filter = ((isset($_POST['player_filter'])) ? $_POST['player_filter'] : $player->GetSetting("PlayerFilter"));
 	$params['players']['status_filter'] = $status_filter = (isset($_POST['status_filter'])) ? $_POST['status_filter'] : 'none';
-	$params['players']['name_filter'] = $name_filter = (isset($_POST['name_filter'])) ? $_POST['name_filter'] : '';
+	$params['players']['pname_filter'] = $pname_filter = (isset($_POST['pname_filter'])) ? $_POST['pname_filter'] : '';
 
 	$params['players']['PlayerName'] = $player->Name();
 
@@ -3096,14 +3096,14 @@ case 'Players':
 	$current_page = ((isset($_POST['CurrentPlayersPage'])) ? $_POST['CurrentPlayersPage'] : 0);
 	$params['players']['current_page'] = $current_page;
 
-	$page_count = $playerdb->CountPages($filter, $status_filter, $name_filter);
+	$page_count = $playerdb->CountPages($filter, $status_filter, $pname_filter);
 	$pages = array();
 	if ($page_count > 0) for ($i = 0; $i < $page_count; $i++) $pages[$i] = $i;
 	$params['players']['pages'] = $pages;
 	$params['players']['page_count'] = $page_count;
 
 	// get the list of all existing players; (Username, Wins, Losses, Draws, Last Query, Free slots, Avatar, Country)
-	$list = $playerdb->ListPlayers($filter, $status_filter, $name_filter, $condition, $order, $current_page);
+	$list = $playerdb->ListPlayers($filter, $status_filter, $pname_filter, $condition, $order, $current_page);
 
 	// for each player, display their name, score, and if conditions are met, also display the challenge button
 	foreach ($list as $i => $data)
