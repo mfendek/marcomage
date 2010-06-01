@@ -89,6 +89,13 @@
 	<func:result select="php:functionString('ZoneTime', $date, $zone, 'H:i, j. M, Y')" />
 </func:function>
 
+
+<func:function name="am:format-date">
+	<xsl:param name="date" as="xs:string" />
+	<func:result select="date:format-date($date, 'd. MMM, yyyy')" />
+</func:function>
+
+
 <!--
 <func:function name="am:BBCode_parse">
 	<xsl:param name="orig_content" as="xs:string" />

@@ -100,6 +100,16 @@
 				default           : $query .= "contains(am:effect, '".$filters['support']."')"; //FIXME: no escaping
 				}
 			}
+
+			if( isset($filters['created']) )
+			{
+				$query .= " and am:created = '".$filters['created']."'";
+			}
+
+			if( isset($filters['modified']) )
+			{
+				$query .= " and am:modified = '".$filters['modified']."'";
+			}
 			
 			return $query;
 		}
@@ -154,6 +164,8 @@
 				$data['keywords'] = (string)$card->keywords;
 				$data['effect']   = (string)$card->effect;
 				$data['code']     = (string)$card->code;
+				$data['created']  = (string)$card->created;
+				$data['modified'] = (string)$card->modified;
 				$cards[$data['id']] = $data;
 			}
 
@@ -194,6 +206,38 @@
 			return $keywords;
 		}
 		
+		public function ListCreationDates() // returns list of distinct creation dates
+		{
+			$db = $this->getDB();
+			
+			$result = $db->xpath('/am:cards/am:card[@id > 0]/am:created');
+			if( $result === false ) return false;
+			$dates = array();
+			
+			foreach($result as $created) $dates[] = (string)$created;
+			
+			$dates = array_unique($dates);
+			rsort($dates);
+			
+			return $dates;
+		}
+		
+		public function ListModifyDates() // returns list of distinct modification dates
+		{
+			$db = $this->getDB();
+			
+			$result = $db->xpath('/am:cards/am:card[@id > 0]/am:modified');
+			if( $result === false ) return false;
+			$dates = array();
+			
+			foreach($result as $modified) $dates[] = (string)$modified;
+			
+			$dates = array_unique($dates);
+			rsort($dates);
+			
+			return $dates;
+		}
+		
 		// returns token keywords
 		public function TokenKeywords()
 		{
@@ -225,11 +269,11 @@
 			else
 			{
 				$data = &$result[0];
-				$arr = array ((string)$data->name, (string)$data->class, (int)$data->cost->bricks, (int)$data->cost->gems, (int)$data->cost->recruits, (int)$data->modes, (string)$data->keywords, (string)$data->effect, (string)$data->code);
+				$arr = array ((string)$data->name, (string)$data->class, (int)$data->cost->bricks, (int)$data->cost->gems, (int)$data->cost->recruits, (int)$data->modes, (string)$data->keywords, (string)$data->effect, (string)$data->code, (string)$data->created, (string)$data->modified);
 			}
 			
 			// initialize self
-			list($cd->Name, $cd->Class, $cd->Bricks, $cd->Gems, $cd->Recruits, $cd->Modes, $cd->Keywords, $cd->Effect, $cd->Code) = $arr;
+			list($cd->Name, $cd->Class, $cd->Bricks, $cd->Gems, $cd->Recruits, $cd->Modes, $cd->Keywords, $cd->Effect, $cd->Code, $cd->Created, $cd->Modified) = $arr;
 		}
 		
 		public function __destruct()
@@ -295,5 +339,7 @@
 		public $Keywords;
 		public $Effect;
 		public $Code;
+		public $Created;
+		public $Modified;
 	}
 ?>

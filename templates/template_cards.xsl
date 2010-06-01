@@ -173,6 +173,46 @@
 				</xsl:for-each>
 			</select>
 
+			<select name="CreatedFilter">
+				<xsl:if test="$param/CreatedFilter != 'none'">
+					<xsl:attribute name="class">filter_active</xsl:attribute>
+				</xsl:if>
+				<option value="none">
+					<xsl:if test="$param/CreatedFilter = 'none'">
+						<xsl:attribute name="selected">selected</xsl:attribute>
+					</xsl:if>
+					<xsl:text>No created filters</xsl:text>
+				</option>
+				<xsl:for-each select="$param/created_dates/*">
+					<option value="{text()}">
+						<xsl:if test="$param/CreatedFilter = .">
+							<xsl:attribute name="selected">selected</xsl:attribute>
+						</xsl:if>
+						<xsl:value-of select="am:format-date(text())"/>
+					</option>
+				</xsl:for-each>
+			</select>
+
+			<select name="ModifiedFilter">
+				<xsl:if test="$param/ModifiedFilter != 'none'">
+					<xsl:attribute name="class">filter_active</xsl:attribute>
+				</xsl:if>
+				<option value="none">
+					<xsl:if test="$param/ModifiedFilter = 'none'">
+						<xsl:attribute name="selected">selected</xsl:attribute>
+					</xsl:if>
+					<xsl:text>No modified filters</xsl:text>
+				</option>
+				<xsl:for-each select="$param/modified_dates/*">
+					<option value="{text()}">
+						<xsl:if test="$param/ModifiedFilter = .">
+							<xsl:attribute name="selected">selected</xsl:attribute>
+						</xsl:if>
+						<xsl:value-of select="am:format-date(text())"/>
+					</option>
+				</xsl:for-each>
+			</select>
+
 			<input type="submit" name="cards_filter" value="Apply filters" />
 		</div>
 		<!-- end buttons and filters -->
@@ -185,6 +225,8 @@
 				<th><p>Rarity</p></th>
 				<th><p>Cost</p></th>
 				<th><p>Effect</p></th>
+				<th><p>Created</p></th>
+				<th><p>Modified</p></th>
 			</tr>
 			<xsl:for-each select="$param/CardList/*">
 				<xsl:sort select="name" order="ascending"/>
@@ -195,6 +237,8 @@
 					<td><p><xsl:value-of select="class"/></p></td>
 					<td><p><xsl:value-of select="bricks" />/<xsl:value-of select="gems" />/<xsl:value-of select="recruits" /></p></td>
 					<td><p class="effect"><xsl:value-of select="am:cardeffect(effect)" disable-output-escaping="yes"/></p></td>
+					<td><p><xsl:value-of select="am:format-date(created)"/></p></td>
+					<td><p><xsl:value-of select="am:format-date(modified)"/></p></td>
 				</tr>
 			</xsl:for-each>
 		</table>
@@ -232,6 +276,8 @@
 				<p><span><xsl:value-of select="$param/data/keywords"/></span>Keywords</p>
 				<p><span><xsl:value-of select="$param/data/bricks"/>/<xsl:value-of select="$param/data/gems"/>/<xsl:value-of select="$param/data/recruits"/></span>Cost (B/G/R)</p>
 				<p><span><xsl:value-of select="$param/data/modes"/></span>Modes</p>
+				<p><span><xsl:value-of select="am:format-date($param/data/created)"/></span>Created</p>
+				<p><span><xsl:value-of select="am:format-date($param/data/modified)"/></span>Modified</p>
 			</div>
 			<p>Effect</p>
 			<p><xsl:value-of select="am:cardeffect($param/data/effect)" disable-output-escaping="yes"/></p>

@@ -2892,8 +2892,12 @@ case 'Deck_edit':
 	$keywordfilter = $params['deck_edit']['KeywordFilter'] = isset($_POST['KeywordFilter']) ? $_POST['KeywordFilter'] : 'none';
 	$advancedfilter = $params['deck_edit']['AdvancedFilter'] = isset($_POST['AdvancedFilter']) ? $_POST['AdvancedFilter'] : 'none';
 	$supportfilter = $params['deck_edit']['SupportFilter'] = isset($_POST['SupportFilter']) ? $_POST['SupportFilter'] : 'none';
+	$createdfilter = $params['deck_edit']['CreatedFilter'] = isset($_POST['CreatedFilter']) ? $_POST['CreatedFilter'] : 'none';
+	$modifiedfilter = $params['deck_edit']['ModifiedFilter'] = isset($_POST['ModifiedFilter']) ? $_POST['ModifiedFilter'] : 'none';
 
 	$params['deck_edit']['keywords'] = $carddb->Keywords();
+	$params['deck_edit']['created_dates'] = $carddb->ListCreationDates();
+	$params['deck_edit']['modified_dates'] = $carddb->ListModifyDates();
 
 	// download the neccessary data
 	$deck = $player->GetDeck($currentdeck);
@@ -2953,6 +2957,8 @@ case 'Deck_edit':
 	if( $costfilter != 'none' ) $filter['cost'] = $costfilter;
 	if( $advancedfilter != 'none' ) $filter['advanced'] = $advancedfilter;
 	if( $supportfilter != 'none' ) $filter['support'] = $supportfilter;
+	if( $createdfilter != 'none' ) $filter['created'] = $createdfilter;
+	if( $modifiedfilter != 'none' ) $filter['modified'] = $modifiedfilter;
 	$ids = array_diff($carddb->GetList($filter), $deck->DeckData->$classfilter); // cards not present in the deck
 	$params['deck_edit']['CardList'] = $carddb->GetData($ids);
 
@@ -3992,8 +3998,12 @@ case 'Cards':
 	$keywordfilter = $params['cards']['KeywordFilter'] = isset($_POST['KeywordFilter']) ? $_POST['KeywordFilter'] : 'none';
 	$advancedfilter = $params['cards']['AdvancedFilter'] = isset($_POST['AdvancedFilter']) ? $_POST['AdvancedFilter'] : 'none';
 	$supportfilter = $params['cards']['SupportFilter'] = isset($_POST['SupportFilter']) ? $_POST['SupportFilter'] : 'none';
+	$createdfilter = $params['cards']['CreatedFilter'] = isset($_POST['CreatedFilter']) ? $_POST['CreatedFilter'] : 'none';
+	$modifiedfilter = $params['cards']['ModifiedFilter'] = isset($_POST['ModifiedFilter']) ? $_POST['ModifiedFilter'] : 'none';
 
 	$params['cards']['keywords'] = $carddb->Keywords();
+	$params['cards']['created_dates'] = $carddb->ListCreationDates();
+	$params['cards']['modified_dates'] = $carddb->ListModifyDates();
 
 	$filter = array();
 	if( $classfilter != 'none' ) $filter['class'] = $classfilter;
@@ -4001,6 +4011,8 @@ case 'Cards':
 	if( $costfilter != 'none' ) $filter['cost'] = $costfilter;
 	if( $advancedfilter != 'none' ) $filter['advanced'] = $advancedfilter;
 	if( $supportfilter != 'none' ) $filter['support'] = $supportfilter;
+	if( $createdfilter != 'none' ) $filter['created'] = $createdfilter;
+	if( $modifiedfilter != 'none' ) $filter['modified'] = $modifiedfilter;
 	$ids = $carddb->GetList($filter);
 	$params['cards']['CardList'] = $carddb->GetData($ids);
 

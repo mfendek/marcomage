@@ -176,6 +176,46 @@
 		</xsl:for-each>
 	</select>
 
+	<select name="CreatedFilter">
+		<xsl:if test="$param/CreatedFilter != 'none'">
+			<xsl:attribute name="class">filter_active</xsl:attribute>
+		</xsl:if>
+		<option value="none">
+			<xsl:if test="$param/CreatedFilter = 'none'">
+				<xsl:attribute name="selected">selected</xsl:attribute>
+			</xsl:if>
+			<xsl:text>No created filters</xsl:text>
+		</option>
+		<xsl:for-each select="$param/created_dates/*">
+			<option value="{text()}">
+				<xsl:if test="$param/CreatedFilter = .">
+					<xsl:attribute name="selected">selected</xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="am:format-date(text())"/>
+			</option>
+		</xsl:for-each>
+	</select>
+
+	<select name="ModifiedFilter">
+		<xsl:if test="$param/ModifiedFilter != 'none'">
+			<xsl:attribute name="class">filter_active</xsl:attribute>
+		</xsl:if>
+		<option value="none">
+			<xsl:if test="$param/ModifiedFilter = 'none'">
+				<xsl:attribute name="selected">selected</xsl:attribute>
+			</xsl:if>
+			<xsl:text>No modified filters</xsl:text>
+		</option>
+		<xsl:for-each select="$param/modified_dates/*">
+			<option value="{text()}">
+				<xsl:if test="$param/ModifiedFilter = .">
+					<xsl:attribute name="selected">selected</xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="am:format-date(text())"/>
+			</option>
+		</xsl:for-each>
+	</select>
+
 	<input type="submit" name="filter" value="Apply filters" />
 	
 	</div>	
