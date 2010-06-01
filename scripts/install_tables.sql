@@ -58,7 +58,7 @@ CREATE TABLE `games` (
   `GameID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Player1` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `Player2` char(20) COLLATE utf8_unicode_ci NOT NULL,
-  `State` char(16) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'waiting',
+  `State` enum('waiting','in progress','finished','P1 over','P2 over') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'waiting',
   `Current` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `Round` int(3) unsigned NOT NULL DEFAULT '1',
   `Winner` char(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
