@@ -155,5 +155,18 @@
 			
 			return $pages;
 		}
+		
+		public function CountPosts($author)
+		{
+			$db = $this->db;
+			
+			$result = $db->Query('SELECT COUNT(`PostID`) as `Count` FROM `forum_posts` WHERE `Author` = "'.$db->Escape($author).'" AND `Deleted` = "no"');
+			if (!$result) return false;
+			if (!$result->Rows()) return false;
+			
+			$data = $result->Next();
+			
+			return $data['Count'];
+		}
 	}
 ?>

@@ -3172,6 +3172,7 @@ case 'Profile':
 	$params['profile']['Wins'] = $score->ScoreData->Wins;
 	$params['profile']['Losses'] = $score->ScoreData->Losses;
 	$params['profile']['Draws'] = $score->ScoreData->Draws;
+	$params['profile']['Posts'] = $forum->Threads->Posts->CountPosts($cur_player);
 
 	if( $settings["Birthdate"] != "0000-00-00" )
 	{
