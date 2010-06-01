@@ -26,7 +26,7 @@ CREATE TABLE `concepts` (
   `Keywords` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `Picture` char(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'blank.jpg',
   `Note` text COLLATE utf8_unicode_ci NOT NULL,
-  `State` char(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'waiting',
+  `State` enum('waiting','rejected','interesting','implemented') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'waiting',
   `Author` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `LastChange` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ThreadID` int(10) unsigned NOT NULL DEFAULT '0',
