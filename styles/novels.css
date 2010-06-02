@@ -6,6 +6,7 @@ div#novels /* novels layout */
 {
 	text-align: left;
 	min-width: 1045px;
+	margin-bottom: 1ex;
 }
 
 div#nov_float_left /* menu part of novels section */

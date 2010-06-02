@@ -23,7 +23,7 @@
 
 	<h3>Game replays</h3>
 	<!-- begin filters and navigation -->
-	<p>
+	<div class="filters_trans">
 		<!-- id filter -->
 		<input type="text" name="IdFilter" maxlength="10" size="10" value="{$param/IdFilter}" />
 
@@ -136,7 +136,7 @@
 			</select>
 			<input type="submit" name="seek_page_replays" value="Select" />
 		</xsl:if>
-	</p>
+	</div>
 	<!-- end filters and navigation -->
 
 	<xsl:choose>

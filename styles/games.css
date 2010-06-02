@@ -10,9 +10,14 @@ div#games /* game section layout */
 	text-align: center;
 }
 
+div#games h3 /* section heading */
+{
+	margin: 0ex;
+}
+
 div#games table /* table layout */
 {
-	margin: 0.5ex auto 2ex auto;
+	margin: 0.5ex auto 1ex auto;
 }
 
 div#games table th > p, div#games table td > p /* table cell text */
@@ -40,6 +45,11 @@ div#hosted_games /* hosted games subsection */
 	float: right;
 	width: 36%;
 	margin: 0ex 1ex 1ex 0ex;
+}
+
+div#active_games h3, div#hosted_games h3 /* subsection heading */
+{
+	margin: 2ex;
 }
 
 div#hosted_games > p > input + input /* distance between buttons */
