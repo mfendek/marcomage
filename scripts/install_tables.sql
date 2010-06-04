@@ -264,7 +264,7 @@ CREATE TABLE `forum_threads` (
   `ThreadID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Title` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `Author` char(20) COLLATE utf8_unicode_ci NOT NULL,
-  `Priority` char(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'normal',
+  `Priority` enum('normal','important','sticky') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'normal',
   `Locked` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `Deleted` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `SectionID` int(10) NOT NULL,

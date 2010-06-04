@@ -635,9 +635,21 @@
 				<xsl:if test="$param/chng_priority = 'no'">
 					<xsl:attribute name="disabled">disabled</xsl:attribute>
 				</xsl:if>
-				<option value="normal"><xsl:if test="$thread/Priority = 'normal'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Normal</option>
-				<option value="important"><xsl:if test="$thread/Priority = 'important'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Important</option>
-				<option value="sticky"><xsl:if test="$thread/Priority = 'sticky'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Sticky</option>
+
+				<xsl:variable name="priority_types">
+					<type name="normal"    text="Normal"    />
+					<type name="important" text="Important" />
+					<type name="sticky"    text="Sticky"    />
+				</xsl:variable>
+
+				<xsl:for-each select="exsl:node-set($priority_types)/*">
+					<option value="{@name}">
+						<xsl:if test="$thread/Priority = @name">
+							<xsl:attribute name="selected">selected</xsl:attribute>
+						</xsl:if>
+						<xsl:value-of select="@text"/>
+					</option>
+				</xsl:for-each>
 			</select>
 			</p>
 			
