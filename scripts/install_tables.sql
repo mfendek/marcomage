@@ -191,7 +191,7 @@ CREATE TABLE `settings` (
   `Country` char(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Unknown',
   `Hobby` text COLLATE utf8_unicode_ci NOT NULL,
   `Avatar` char(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'noavatar.jpg',
-  `Status` char(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'noob',
+  `Status` char(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'newbie',
   `FriendlyFlag` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `BlindFlag` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   `Timezone` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',

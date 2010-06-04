@@ -92,8 +92,8 @@
 						<xsl:if test="$settings/Status = 'dnd'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
 						<xsl:text>do not disturb</xsl:text>
 					</option>
-					<option value="noob">
-						<xsl:if test="$settings/Status = 'noob'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+					<option value="newbie">
+						<xsl:if test="$settings/Status = 'newbie'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
 						<xsl:text>newbie</xsl:text>
 					</option>
 				</select>

@@ -175,7 +175,7 @@ There is no restriction to the number of games played per day or against someone
 	<li><img width="20px" height="14px" src="img/ready.png" alt="status flag" class="country_flag" title="ready" /> Looking for game - you want to play a normal game</li>
 	<li><img width="20px" height="14px" src="img/quick.png" alt="status flag" class="country_flag" title="quick" /> Looking for quick game - you want to play a quick game (play online until the game finishes without interruptions)</li>
 	<li><img width="20px" height="14px" src="img/dnd.png" alt="status flag" class="country_flag" title="dnd" /> Do not disturb - you don't want to play games right now</li>
-	<li><img width="20px" height="14px" src="img/noob.png" alt="status flag" class="country_flag" title="noob" /> Newbie - new player, this is the default setting</li>
+	<li><img width="20px" height="14px" src="img/newbie.png" alt="status flag" class="country_flag" title="newbie" /> Newbie - new player, this is the default setting</li>
 </ul>
 <p>For example if you want to play a quick game, select "Looking for quick game" status. It is possible to use filter in players list section to filter out players with a specific status, so in this case, only players that are looking for a quick game.</p>
 
