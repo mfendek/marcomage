@@ -52,22 +52,17 @@
 		{	// get message for message details section
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `Author`, `Recipient`, `Subject`, `Content`, `Created`, `AuthorDelete`, `RecipientDelete` FROM `messages` WHERE `MessageID` = "'.$messageid.'"');
+			$result = $db->Query('SELECT `Author`, `Recipient`, `Subject`, `Content`, `Created` FROM `messages` WHERE `MessageID` = "'.$messageid.'" AND ((`Author` = "'.$db->Escape($player_name).'" AND `AuthorDelete` = FALSE) OR (`Recipient` = "'.$db->Escape($player_name).'" AND `RecipientDelete` = FALSE))');
 			
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
-				
-			$message = $result->Next();
-			$author = $message['Author'];
-			$recipient = $message['Recipient'];
 			
-			// if message is deleted from player's perspective return false
-			if ((($player_name == $author) AND ($message['AuthorDelete'] == "yes")) OR (($player_name == $recipient) AND ($message['RecipientDelete'] == "yes"))) return false;
+			$message = $result->Next();
 			
 			// unmark message from unread to read, when player is a recipient
-			if ($recipient == $player_name)
+			if ($message['Recipient'] == $player_name)
 			{
-				$result = $db->Query('UPDATE `messages` SET `Unread`= "no" WHERE `MessageID` = "'.$messageid.'"');
+				$result = $db->Query('UPDATE `messages` SET `Unread`= FALSE WHERE `MessageID` = "'.$messageid.'"');
 				if (!$result) return false;
 			}
 			
@@ -109,8 +104,8 @@
 			$author = $message['Author'];
 			$recipient = $message['Recipient'];
 			
-			$author_query = ($author == $player_name) ? '`AuthorDelete` = "yes"' : '';
-			$recipient_query = ($recipient == $player_name) ? '`RecipientDelete` = "yes"' : '';
+			$author_query = ($author == $player_name) ? '`AuthorDelete` = TRUE' : '';
+			$recipient_query = ($recipient == $player_name) ? '`RecipientDelete` = TRUE' : '';
 			$sup_query = (($author_query != "") AND ($recipient_query != "")) ? ', ' : '';
 			
 			$result = $db->Query('UPDATE `messages` SET '.$author_query.$sup_query.$recipient_query.' WHERE `MessageID` = "'.$messageid.'"');
@@ -136,7 +131,7 @@
 				else $query.= ' OR `MessageID` = "'.$message_id.'"';
 			}
 			
-			$result = $db->Query('UPDATE `messages` SET `AuthorDelete` = (CASE WHEN `Author` = "'.$db->Escape($player_name).'" THEN "yes" ELSE `AuthorDelete` END), `RecipientDelete` = (CASE WHEN `Recipient` = "'.$db->Escape($player_name).'" THEN "yes" ELSE `RecipientDelete` END) WHERE '.$query.'');
+			$result = $db->Query('UPDATE `messages` SET `AuthorDelete` = (CASE WHEN `Author` = "'.$db->Escape($player_name).'" THEN TRUE ELSE `AuthorDelete` END), `RecipientDelete` = (CASE WHEN `Recipient` = "'.$db->Escape($player_name).'" THEN TRUE ELSE `RecipientDelete` END) WHERE '.$query.'');
 			
 			if (!$result) return false;
 			
@@ -146,7 +141,7 @@
 		public function DeleteMessages($player)
 		{
 			$db = $this->db;
-			$result = $db->Query('DELETE FROM `messages` WHERE ((`GameID` = 0) AND ((`Author` = "'.SYSTEM_NAME.'" AND `Recipient` = "'.$db->Escape($player).'") OR (`Author` = "'.$db->Escape($player).'" AND `RecipientDelete` = "yes") OR (`Recipient` = "'.$db->Escape($player).'" AND `AuthorDelete` = "yes"))) OR ((`GameID` > 0) AND (`Author` = "'.$db->Escape($player).'" OR `Recipient` = "'.$db->Escape($player).'"))');
+			$result = $db->Query('DELETE FROM `messages` WHERE ((`GameID` = 0) AND ((`Author` = "'.SYSTEM_NAME.'" AND `Recipient` = "'.$db->Escape($player).'") OR (`Author` = "'.$db->Escape($player).'" AND `RecipientDelete` = TRUE) OR (`Recipient` = "'.$db->Escape($player).'" AND `AuthorDelete` = TRUE))) OR ((`GameID` > 0) AND (`Author` = "'.$db->Escape($player).'" OR `Recipient` = "'.$db->Escape($player).'"))');
 			if (!$result) return false;
 			
 			return true;
@@ -159,7 +154,7 @@
 			$name_query = (($name != "none") ? ' AND `Author` =  "'.$name.'"' : '');
 			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`Created`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$date.')' : '');
 			
-			$result = $db->Query('SELECT `MessageID`, `Author`, `Recipient`, `Subject`, `Content`, `Unread`, `Created` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = "'.$db->Escape($player).'" AND `RecipientDelete` = "no"'.$name_query.$date_query.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(MESSAGES_PER_PAGE * $page).' , '.MESSAGES_PER_PAGE.'');
+			$result = $db->Query('SELECT `MessageID`, `Author`, `Recipient`, `Subject`, `Content`, (CASE WHEN `Unread` = TRUE THEN "yes" ELSE "no" END) as `Unread`, `Created` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = "'.$db->Escape($player).'" AND `RecipientDelete` = FALSE'.$name_query.$date_query.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(MESSAGES_PER_PAGE * $page).' , '.MESSAGES_PER_PAGE.'');
 			if (!$result) return false;
 			
 			$messages = array();
@@ -176,7 +171,7 @@
 			$name_query = (($name != "none") ? ' AND `Author` =  "'.$name.'"' : '');
 			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`Created`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$date.')' : '');
 			
-			$result = $db->Query('SELECT COUNT(`MessageID`) as `Count` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = "'.$db->Escape($player).'" AND `RecipientDelete` = "no"'.$name_query.$date_query.'');
+			$result = $db->Query('SELECT COUNT(`MessageID`) as `Count` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = "'.$db->Escape($player).'" AND `RecipientDelete` = FALSE'.$name_query.$date_query.'');
 			if (!$result) return false;
 			
 			$data = $result->Next();
@@ -193,7 +188,7 @@
 			$name_query = (($name != "none") ? ' AND `Recipient` =  "'.$name.'"' : '');
 			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`Created`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$date.')' : '');
 			
-			$result = $db->Query('SELECT `MessageID`, `Author`, `Recipient`, `Subject`, `Content`, `Unread`, `Created` FROM `messages` WHERE `GameID` = 0 AND `Author` = "'.$db->Escape($player).'" AND `AuthorDelete` = "no"'.$name_query.$date_query.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(MESSAGES_PER_PAGE * $page).' , '.MESSAGES_PER_PAGE.'');
+			$result = $db->Query('SELECT `MessageID`, `Author`, `Recipient`, `Subject`, `Content`, (CASE WHEN `Unread` = TRUE THEN "yes" ELSE "no" END) as `Unread`, `Created` FROM `messages` WHERE `GameID` = 0 AND `Author` = "'.$db->Escape($player).'" AND `AuthorDelete` = FALSE'.$name_query.$date_query.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(MESSAGES_PER_PAGE * $page).' , '.MESSAGES_PER_PAGE.'');
 			if (!$result) return false;
 			
 			$messages = array();
@@ -210,7 +205,7 @@
 			$name_query = (($name != "none") ? ' AND `Recipient` =  "'.$name.'"' : '');
 			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`Created`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$date.')' : '');
 			
-			$result = $db->Query('SELECT COUNT(`MessageID`) as `Count` FROM `messages` WHERE `GameID` = 0 AND `Author` = "'.$db->Escape($player).'" AND `AuthorDelete` = "no"'.$name_query.$date_query.'');
+			$result = $db->Query('SELECT COUNT(`MessageID`) as `Count` FROM `messages` WHERE `GameID` = 0 AND `Author` = "'.$db->Escape($player).'" AND `AuthorDelete` = FALSE'.$name_query.$date_query.'');
 			if (!$result) return false;
 			
 			$data = $result->Next();
@@ -227,7 +222,7 @@
 			$name_query = (($name != "none") ? ' AND `Author` =  "'.$name.'"' : '');
 			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`Created`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$date.')' : '');
 			
-			$result = $db->Query('SELECT `MessageID`, `Author`, `Recipient`, `Subject`, `Content`, `Unread`, `Created` FROM `messages` WHERE `GameID` = 0 AND `Author` != "'.SYSTEM_NAME.'"'.$name_query.$date_query.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(MESSAGES_PER_PAGE * $page).' , '.MESSAGES_PER_PAGE.'');
+			$result = $db->Query('SELECT `MessageID`, `Author`, `Recipient`, `Subject`, `Content`, (CASE WHEN `Unread` = TRUE THEN "yes" ELSE "no" END) as `Unread`, `Created` FROM `messages` WHERE `GameID` = 0 AND `Author` != "'.SYSTEM_NAME.'"'.$name_query.$date_query.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(MESSAGES_PER_PAGE * $page).' , '.MESSAGES_PER_PAGE.'');
 			if (!$result) return false;
 			
 			$messages = array();
@@ -258,7 +253,7 @@
 		{	
 			$db = $this->db;
 												
-			$result = $db->Query('SELECT COUNT(`MessageID`) as `CountUnread` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = "'.$db->Escape($player).'" AND `RecipientDelete` = "no" AND `Unread` = "yes"');
+			$result = $db->Query('SELECT COUNT(`MessageID`) as `CountUnread` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = "'.$db->Escape($player).'" AND `RecipientDelete` = FALSE AND `Unread` = TRUE');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
@@ -273,7 +268,7 @@
 			
 			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`Created`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$date.')' : '');
 			
-			$result = $db->Query('SELECT DISTINCT `Author` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = "'.$db->Escape($player).'" AND `RecipientDelete` = "no"'.$date_query.' ORDER BY `Author` ASC');
+			$result = $db->Query('SELECT DISTINCT `Author` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = "'.$db->Escape($player).'" AND `RecipientDelete` = FALSE'.$date_query.' ORDER BY `Author` ASC');
 			if (!$result) return false;
 			
 			$names = array();
@@ -288,7 +283,7 @@
 			
 			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`Created`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$date.')' : '');
 			
-			$result = $db->Query('SELECT DISTINCT `Recipient` FROM `messages` WHERE `GameID` = 0 AND `Author` = "'.$db->Escape($player).'" AND `AuthorDelete` = "no"'.$date_query.' ORDER BY `Recipient` ASC');
+			$result = $db->Query('SELECT DISTINCT `Recipient` FROM `messages` WHERE `GameID` = 0 AND `Author` = "'.$db->Escape($player).'" AND `AuthorDelete` = FALSE'.$date_query.' ORDER BY `Recipient` ASC');
 			if (!$result) return false;
 			
 			$names = array();

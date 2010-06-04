@@ -229,9 +229,9 @@ CREATE TABLE `messages` (
   `Recipient` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `Subject` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `Content` text COLLATE utf8_unicode_ci NOT NULL,
-  `AuthorDelete` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
-  `RecipientDelete` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
-  `Unread` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
+  `AuthorDelete` tinyint(1) NOT NULL DEFAULT '0',
+  `RecipientDelete` tinyint(1) NOT NULL DEFAULT '0',
+  `Unread` tinyint(1) NOT NULL DEFAULT '1',
   `GameID` int(10) unsigned NOT NULL DEFAULT '0',
   `Created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY  (`MessageID`)
