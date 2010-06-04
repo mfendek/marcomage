@@ -162,12 +162,23 @@
 				</div>
 			</xsl:if>
 
+			<xsl:variable name="filter_types">
+				<filter name="none"    text="No players filters"         />
+				<filter name="active"  text="Active players"             />
+				<filter name="offline" text="Active and offline players" />
+				<filter name="all"     text="Show all players"           />
+			</xsl:variable>
+
 			<p>
 				<select name="PlayerFilter">
-					<option value="none" ><xsl:if test="$settings/PlayerFilter = 'none'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>No players filters</option>
-					<option value="active"><xsl:if test="$settings/PlayerFilter = 'active'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Active players</option>
-					<option value="offline"><xsl:if test="$settings/PlayerFilter = 'offline'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Active and offline players</option>
-					<option value="all"><xsl:if test="$settings/PlayerFilter = 'all'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Show all players</option>
+					<xsl:for-each select="exsl:node-set($filter_types)/*">
+						<option value="{@name}">
+							<xsl:if test="$settings/PlayerFilter = @name">
+								<xsl:attribute name="selected">selected</xsl:attribute>
+							</xsl:if>
+							<xsl:value-of select="@text"/>
+						</option>
+					</xsl:for-each>
 				</select>
 				<xsl:text>Players list filter</xsl:text>
 			</p>
