@@ -25,7 +25,7 @@
 			$db = $this->db;
 			
 			// return section list with thread count, ordered by sectionID (alphabetical order is not suited for our needs)
-			$result = $db->Query('SELECT `forum_sections`.`SectionID`, `SectionName`, `Description`, IFNULL(`count`, 0) as `count` FROM `forum_sections` LEFT OUTER JOIN (SELECT `SectionID`, COUNT(`ThreadID`) as `count` FROM `forum_threads` WHERE `Deleted` = "no" GROUP BY `SectionID`) as `threads` USING (`SectionID`) ORDER BY `SectionID`');
+			$result = $db->Query('SELECT `forum_sections`.`SectionID`, `SectionName`, `Description`, IFNULL(`count`, 0) as `count` FROM `forum_sections` LEFT OUTER JOIN (SELECT `SectionID`, COUNT(`ThreadID`) as `count` FROM `forum_threads` WHERE `Deleted` = FALSE GROUP BY `SectionID`) as `threads` USING (`SectionID`) ORDER BY `SectionID`');
 			if (!$result) return false;
 			
 			$sections = $sections_data = array();
@@ -77,7 +77,7 @@
 		{	
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT 1 FROM `forum_posts` WHERE `Deleted` = "no" AND `Created` > "'.$time.'"');
+			$result = $db->Query('SELECT 1 FROM `forum_posts` WHERE `Deleted` = FALSE AND `Created` > "'.$time.'"');
 			
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
@@ -92,10 +92,10 @@
 			$section_q = ($section != 'any') ? ' AND `SectionID` = "'.$db->Escape($section).'"' : '';
 			
 			// search post text content
-			$post_q = (($target == 'posts') OR ($target == 'all')) ? 'SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM (SELECT DISTINCT `ThreadID` FROM `forum_posts` WHERE `Deleted` = "no" AND `Content` LIKE "%'.$db->Escape($phrase).'%") as `posts` INNER JOIN (SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE `Deleted` = "no"'.$section_q.') as `threads` USING(`ThreadID`)' : '';
+			$post_q = (($target == 'posts') OR ($target == 'all')) ? 'SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM (SELECT DISTINCT `ThreadID` FROM `forum_posts` WHERE `Deleted` = FALSE AND `Content` LIKE "%'.$db->Escape($phrase).'%") as `posts` INNER JOIN (SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE `Deleted` = FALSE'.$section_q.') as `threads` USING(`ThreadID`)' : '';
 			
 			// search thread title
-			$thread_q = (($target == 'threads') OR ($target == 'all')) ? 'SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE `Deleted` = "no" AND `Title` LIKE "%'.$db->Escape($phrase).'%"'.$section_q.'' : '';
+			$thread_q = (($target == 'threads') OR ($target == 'all')) ? 'SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE `Deleted` = FALSE AND `Title` LIKE "%'.$db->Escape($phrase).'%"'.$section_q.'' : '';
 			
 			// merge results
 			$query = $post_q.(($target == 'all') ? ' UNION DISTINCT ' : '').$thread_q.' ORDER BY `LastPost` DESC';

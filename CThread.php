@@ -35,12 +35,12 @@
 			$db = $this->db;
 			
 			// delete all posts that are inside this thread
-			$result = $db->Query('UPDATE `forum_posts` SET `Deleted` = "yes" WHERE `ThreadID` = "'.$thread_id.'"');
+			$result = $db->Query('UPDATE `forum_posts` SET `Deleted` = TRUE WHERE `ThreadID` = "'.$thread_id.'"');
 			
 			if (!$result) return false;
 			
 			// delete thread
-			$result = $db->Query('UPDATE `forum_threads` SET `Deleted` = "yes" WHERE `ThreadID` = "'.$thread_id.'"');
+			$result = $db->Query('UPDATE `forum_threads` SET `Deleted` = TRUE WHERE `ThreadID` = "'.$thread_id.'"');
 			
 			if (!$result) return false;
 			
@@ -51,7 +51,7 @@
 		{	
 			$db = $this->db;
 						
-			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `SectionID`, `Created`, `CardID` FROM `forum_threads` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = "no"');
+			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `SectionID`, `Created`, `CardID` FROM `forum_threads` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = FALSE');
 			
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
@@ -65,7 +65,7 @@
 		{	
 			$db = $this->db;
 						
-			$result = $db->Query('SELECT `ThreadID` FROM `forum_threads` WHERE `Title` = "'.$title.'" AND `Deleted` = "no"');
+			$result = $db->Query('SELECT `ThreadID` FROM `forum_threads` WHERE `Title` = "'.$title.'" AND `Deleted` = FALSE');
 			
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
@@ -80,7 +80,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `ThreadID` FROM `forum_threads` WHERE `CardID` = "'.$card_id.'" AND `Deleted` = "no"');
+			$result = $db->Query('SELECT `ThreadID` FROM `forum_threads` WHERE `CardID` = "'.$card_id.'" AND `Deleted` = FALSE');
 			
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
@@ -123,7 +123,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `Author`, `Created` FROM `forum_posts` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = "no" AND `Created` = (SELECT MAX(`Created`) FROM `forum_posts` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = "no")');
+			$result = $db->Query('SELECT `Author`, `Created` FROM `forum_posts` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = FALSE AND `Created` = (SELECT MAX(`Created`) FROM `forum_posts` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = FALSE)');
 			if (!$result) return false;
 			if (!$result->Rows()) return array('Author' => '', 'Created' => '0000-00-00 00:00:00'); // there are no posts in this thread
 			
@@ -136,7 +136,7 @@
 		{	
 			$db = $this->db;
 									
-			$result = $db->Query('UPDATE `forum_threads` SET `Locked` = "yes" WHERE `ThreadID` = "'.$thread_id.'"');
+			$result = $db->Query('UPDATE `forum_threads` SET `Locked` = TRUE WHERE `ThreadID` = "'.$thread_id.'"');
 			if (!$result) return false;
 			
 			return true;
@@ -146,7 +146,7 @@
 		{	
 			$db = $this->db;
 									
-			$result = $db->Query('UPDATE `forum_threads` SET `Locked` = "no" WHERE `ThreadID` = "'.$thread_id.'"');
+			$result = $db->Query('UPDATE `forum_threads` SET `Locked` = FALSE WHERE `ThreadID` = "'.$thread_id.'"');
 			if (!$result) return false;
 			
 			return true;
@@ -156,20 +156,18 @@
 		{	
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `Locked` FROM `forum_threads` WHERE `ThreadID` = "'.$thread_id.'"');
+			$result = $db->Query('SELECT 1 FROM `forum_threads` WHERE `ThreadID` = "'.$thread_id.'" AND `Locked` = TRUE');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
-			$data = $result->Next();
-			
-			return ($data['Locked'] == "yes");
+			return true;
 		}
 		
 		public function PostCount($thread_id)
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT COUNT(`PostID`) as `Count` FROM `forum_posts` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = "no"');
+			$result = $db->Query('SELECT COUNT(`PostID`) as `Count` FROM `forum_posts` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = FALSE');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
@@ -182,7 +180,7 @@
 		{	// lists threads in one specific section. Used in Section details.
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost`, 0 as `flag` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = "no" AND `Priority` = "sticky" UNION SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost`, 1 as `flag` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = "no" AND `Priority` != "sticky" ORDER BY `Flag` ASC, `LastPost` DESC, `Created` DESC LIMIT '.(THREADS_PER_PAGE * $page).' , '.THREADS_PER_PAGE.'');
+			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost`, 0 as `flag` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = FALSE AND `Priority` = "sticky" UNION SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost`, 1 as `flag` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = FALSE AND `Priority` != "sticky" ORDER BY `Flag` ASC, `LastPost` DESC, `Created` DESC LIMIT '.(THREADS_PER_PAGE * $page).' , '.THREADS_PER_PAGE.'');
 			
 			if (!$result) return false;
 			
@@ -197,7 +195,7 @@
 		{	// lists threads in one specific section, ignoring sticky flag. Used in Forum main page.
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = "no" ORDER BY `LastPost` DESC, `Created` DESC LIMIT 0 , '.NUM_THREADS.'');
+			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = FALSE ORDER BY `LastPost` DESC, `Created` DESC LIMIT 0 , '.NUM_THREADS.'');
 			
 			if (!$result) return false;
 			
@@ -212,7 +210,7 @@
 		{	// used to generate all thread names except the current one
 			$db = $this->db;
 								
-			$result = $db->Query('SELECT `ThreadID`, `Title` FROM `forum_threads` WHERE `ThreadID` != "'.$current_thread.'" AND `Deleted` = "no" ORDER BY `Title` ASC');
+			$result = $db->Query('SELECT `ThreadID`, `Title` FROM `forum_threads` WHERE `ThreadID` != "'.$current_thread.'" AND `Deleted` = FALSE ORDER BY `Title` ASC');
 			
 			if (!$result) return false;
 			
@@ -237,7 +235,7 @@
 		{	
 			$db = $this->db;
 						
-			$result = $db->Query('SELECT COUNT(`ThreadID`) as `Count` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = "no"');
+			$result = $db->Query('SELECT COUNT(`ThreadID`) as `Count` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = FALSE');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
