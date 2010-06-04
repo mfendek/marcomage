@@ -1,0 +1,1 @@
+ALTER TABLE `decks` CHANGE `Ready` `Ready` BOOL NOT NULL DEFAULT '0';

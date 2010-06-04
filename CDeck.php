@@ -23,7 +23,7 @@
 			$deck = new CDeck($username, $deckname, $this);
 			
 			$db = $this->db;
-			$result = $db->Query('INSERT INTO `decks` (`Username`, `Deckname`, `Ready`, `Data`) VALUES ("'.$db->Escape($username).'", "'.$db->Escape($deckname).'", 0, "'.$db->Escape(serialize($deck->DeckData)).'")');
+			$result = $db->Query('INSERT INTO `decks` (`Username`, `Deckname`, `Data`) VALUES ("'.$db->Escape($username).'", "'.$db->Escape($deckname).'", "'.$db->Escape(serialize($deck->DeckData)).'")');
 			if (!$result) return false;
 			
 			return $deck;
@@ -54,7 +54,7 @@
 		public function ListDecks($username)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `Deckname`, `Modified` FROM `decks` WHERE `Username` = "'.$db->Escape($username).'"');
+			$result = $db->Query('SELECT `Deckname`, `Modified`, (CASE WHEN `Ready` = TRUE THEN "yes" ELSE "no" END) as `Ready` FROM `decks` WHERE `Username` = "'.$db->Escape($username).'"');
 			if (!$result) return false;
 			
 			$decks = array();
@@ -66,7 +66,7 @@
 		public function ListReadyDecks($username)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `Deckname` FROM `decks` WHERE `Username` = "'.$db->Escape($username).'" AND `Ready` = 1');
+			$result = $db->Query('SELECT `Deckname` FROM `decks` WHERE `Username` = "'.$db->Escape($username).'" AND `Ready` = TRUE');
 			if (!$result) return false;
 			
 			$names = array();
@@ -126,7 +126,7 @@
 		public function SaveDeck()
 		{
 			$db = $this->Decks->getDB();
-			$result = $db->Query('UPDATE `decks` SET `Ready` = '.($this->isReady() ? '1' : '0').', `Data` = "'.$db->Escape(serialize($this->DeckData)).'"  WHERE `Username` = "'.$db->Escape($this->Username).'" AND `Deckname` = "'.$db->Escape($this->Deckname).'"');
+			$result = $db->Query('UPDATE `decks` SET `Ready` = '.($this->isReady() ? 'TRUE' : 'FALSE').', `Data` = "'.$db->Escape(serialize($this->DeckData)).'" WHERE `Username` = "'.$db->Escape($this->Username).'" AND `Deckname` = "'.$db->Escape($this->Deckname).'"');
 			if (!$result) return false;
 			
 			return true;

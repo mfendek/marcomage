@@ -2973,7 +2973,6 @@ case 'Deck_edit':
 
 case 'Decks':
 	$params['decks']['list'] = $list = $player->ListDecks();
-	foreach ($list as $i => $deck_data) $params['decks']['list'][$i]['Ready'] = ($player->GetDeck($deck_data['Deckname'])->isReady()) ? 'yes' : 'no';
 	$params['decks']['timezone'] = $player->GetSetting("Timezone"); 
 
 	break;
