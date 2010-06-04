@@ -77,25 +77,24 @@
 				<img width="18px" height="12px" src="img/flags/{$settings/Country}.gif" alt="country flag" class="country_flag" title="{$settings/Country}" />
 			</p>
 
+			<xsl:variable name="status_types">
+				<status name="none"   text="none"                   />
+				<status name="ready"  text="looking for game"       />
+				<status name="quick"  text="looking for quick game" />
+				<status name="dnd"    text="do not disturb"         />
+				<status name="newbie" text="newbie"                 />
+			</xsl:variable>
+
 			<p>
 				<select name="Status">
-					<option value="none">none</option>
-					<option value="ready">
-						<xsl:if test="$settings/Status = 'ready'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-						<xsl:text>looking for game</xsl:text>
-					</option>
-					<option value="quick">
-						<xsl:if test="$settings/Status = 'quick'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-						<xsl:text>looking for quick game</xsl:text>
-					</option>
-					<option value="dnd">
-						<xsl:if test="$settings/Status = 'dnd'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-						<xsl:text>do not disturb</xsl:text>
-					</option>
-					<option value="newbie">
-						<xsl:if test="$settings/Status = 'newbie'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-						<xsl:text>newbie</xsl:text>
-					</option>
+					<xsl:for-each select="exsl:node-set($status_types)/*">
+						<option value="{@name}">
+							<xsl:if test="$settings/Status = @name">
+								<xsl:attribute name="selected">selected</xsl:attribute>
+							</xsl:if>
+							<xsl:value-of select="@text"/>
+						</option>
+					</xsl:for-each>
 				</select>
 				<xsl:text>Status</xsl:text>
 				<xsl:if test="$settings/Status != 'none'"><img width="20px" height="14px" src="img/{$settings/Status}.png" alt="status flag" class="country_flag" title="{$settings/Status}" /></xsl:if>
