@@ -136,7 +136,7 @@ CREATE TABLE `logins` (
   `Username` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `Password` char(32) COLLATE utf8_unicode_ci NOT NULL,
   `SessionID` int(10) unsigned NOT NULL DEFAULT '0',
-  `UserType` char(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'user',
+  `UserType` enum('user','moderator','supervisor','admin','squashed','limited','banned') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'user',
   `Registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Last IP` char(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0.0.0.0',
   `Last Query` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
