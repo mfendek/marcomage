@@ -131,7 +131,7 @@
 						<td><p><xsl:value-of select="country"/></p></td>
 					</xsl:if>
 					
-					<td><img width="18px" height="12px" src="img/flags/{country}.gif" alt="country flag" class="country_flag" /></td>
+					<td><img width="18px" height="12px" src="img/flags/{country}.gif" alt="country flag" class="country_flag" title="{country}" /></td>
 
 					<xsl:variable name="player_class">
 						<xsl:choose> <!-- choose name color according to inactivity time -->
@@ -145,7 +145,7 @@
 						<p class="{$player_class}">
 							<xsl:value-of select="name"/>
 							<xsl:if test="rank != 'user'"> <!-- player rank -->
-								<img width="9px" height="12px" src="img/{rank}.png" alt="rank flag" class="rank_flag" />
+								<img width="9px" height="12px" src="img/{rank}.png" alt="rank flag" class="rank_flag" title="{rank}" />
 							</xsl:if>
 						</p>
 					</td>
@@ -163,13 +163,13 @@
 					<td>
 						<p>
 							<xsl:if test="status != 'none'">
-								<img width="20px" height="14px" src="img/{status}.png" alt="status flag" class="country_flag" />
+								<img width="20px" height="14px" src="img/{status}.png" alt="status flag" class="country_flag" title="{status}" />
 							</xsl:if>
 							<xsl:if test="friendly_flag = 'yes'">
-								<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" />
+								<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" title="Friendly play" />
 							</xsl:if>
 							<xsl:if test="blind_flag = 'yes'">
-								<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" />
+								<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" title="Hidden cards" />
 							</xsl:if>
 						</p>
 					</td>

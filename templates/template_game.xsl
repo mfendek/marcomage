@@ -57,7 +57,7 @@
 							<xsl:if test="NewCard = 'yes'">
 								<span class="newcard">NEW</span>
 							</xsl:if>
-							<img src="img/revealed.png" class="revealed" width="20px" height="14px" alt="revealed" />
+							<img src="img/revealed.png" class="revealed" width="20px" height="14px" alt="revealed" title="Revealed" />
 						</div>
 						<div class="clear_floats"></div>
 					</xsl:when>
@@ -228,7 +228,7 @@
 					</div>
 					<h5>
 						<xsl:value-of select="$param/PlayerName"/>
-						<img width="18px" height="12px" src="img/flags/{$param/mycountry}.gif" alt="country flag" class="country_flag" />
+						<img width="18px" height="12px" src="img/flags/{$param/mycountry}.gif" alt="country flag" class="country_flag" title="{$param/mycountry}" />
 					</h5>
 					<p class="info_label">Tower: <span>
 						<xsl:value-of select="$param/MyTower"/>
@@ -292,7 +292,7 @@
 					</div>
 					<h5>
 						<xsl:value-of select="$param/PlayerName"/>
-						<img width="18px" height="12px" src="img/flags/{$param/mycountry}.gif" alt="country flag" class="country_flag" />
+						<img width="18px" height="12px" src="img/flags/{$param/mycountry}.gif" alt="country flag" class="country_flag" title="{$param/mycountry}" />
 					</h5>
 					<p class="info_label">Tower: <span>
 						<xsl:value-of select="$param/MyTower"/>
@@ -562,7 +562,7 @@
 						</xsl:if>
 					</div>
 					<h5>
-						<img width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" class="country_flag" />
+						<img width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" class="country_flag" title="{$param/hiscountry}" />
 						<xsl:value-of select="$param/OpponentName"/>
 						<input class="details" type="submit" name="user_details[{$param/OpponentName}]" value="i" />
 					</h5>
@@ -630,7 +630,7 @@
 						<xsl:if test="$param/opp_isOnline = 'yes'">
 							<xsl:attribute name="class">player</xsl:attribute>
 						</xsl:if>
-						<img width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" class="country_flag" />
+						<img width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" class="country_flag" title="{$param/hiscountry}" />
 						<xsl:value-of select="$param/OpponentName"/>
 						<input class="details" type="submit" name="user_details[{$param/OpponentName}]" value="i" />
 					</h5>
@@ -683,10 +683,10 @@
 		<td style="text-align: center">
 			<!-- game mode flags -->
 			<xsl:if test="$param/HiddenCards = 'yes'">
-				<img src="img/blind.png" class="in_game" width="20px" height="14px" alt="hidden cards" />
+				<img src="img/blind.png" class="in_game" width="20px" height="14px" alt="hidden cards" title="Hidden cards" />
 			</xsl:if>
 			<xsl:if test="$param/FriendlyPlay = 'yes'">
-				<img src="img/friendly_play.png" class="in_game" width="20px" height="14px" alt="friendly play" />
+				<img src="img/friendly_play.png" class="in_game" width="20px" height="14px" alt="friendly play" title="Friendly play" />
 			</xsl:if>
 		</td>
 		<td></td>

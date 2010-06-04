@@ -74,7 +74,7 @@
 					</xsl:for-each>
 				</select>
 				<xsl:text>Country</xsl:text>
-				<img width="18px" height="12px" src="img/flags/{$settings/Country}.gif" alt="country flag" class="country_flag" />
+				<img width="18px" height="12px" src="img/flags/{$settings/Country}.gif" alt="country flag" class="country_flag" title="{$settings/Country}" />
 			</p>
 
 			<p>
@@ -98,7 +98,7 @@
 					</option>
 				</select>
 				<xsl:text>Status</xsl:text>
-				<xsl:if test="$settings/Status != 'none'"><img width="20px" height="14px" src="img/{$settings/Status}.png" alt="status flag" class="country_flag" /></xsl:if>
+				<xsl:if test="$settings/Status != 'none'"><img width="20px" height="14px" src="img/{$settings/Status}.png" alt="status flag" class="country_flag" title="{$settings/Status}" /></xsl:if>
 			</p>
 
 			<p>Game mode flags</p>
@@ -110,7 +110,7 @@
 				</input>
 				<xsl:text>Friendly play</xsl:text>
 				<xsl:if test="$settings/FriendlyFlag = 'yes'">
-					<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" />
+					<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" title="Friendly play" />
 				</xsl:if>
 			</p>
 			<p>
@@ -121,7 +121,7 @@
 				</input>
 				<xsl:text>Hidden cards</xsl:text>
 				<xsl:if test="$settings/BlindFlag = 'yes'">
-					<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" />
+					<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" title="Hidden cards" />
 				</xsl:if>
 			</p>
 

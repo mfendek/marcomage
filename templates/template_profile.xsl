@@ -48,15 +48,15 @@
 			<xsl:text>Rank: </xsl:text>
 			<span class="detail_value"><xsl:value-of select="$param/PlayerType"/></span>
 			<xsl:if test="$param/PlayerType != 'user'">
-				<img width="9px" height="12px" src="img/{$param/PlayerType}.png" alt="rank flag" class="rank_flag" />
+				<img width="9px" height="12px" src="img/{$param/PlayerType}.png" alt="rank flag" class="rank_flag" title="{$param/PlayerType}" />
 			</xsl:if>
 		</p>
-		<p>Country: <img width="18px" height="12px" src="img/flags/{$param/Country}.gif" alt="country flag" class="country_flag" /> <span class="detail_value"><xsl:value-of select="$param/Country"/></span></p>
+		<p>Country: <img width="18px" height="12px" src="img/flags/{$param/Country}.gif" alt="country flag" class="country_flag" title="{$param/Country}" /> <span class="detail_value"><xsl:value-of select="$param/Country"/></span></p>
 		<p>
 			<xsl:text>Status: </xsl:text>
-			<xsl:if test="$param/Status != 'none'"><img width="20px" height="14px" src="img/{$param/Status}.png" alt="status flag" class="country_flag" /></xsl:if>
-			<xsl:if test="$param/FriendlyFlag = 'yes'"><img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" /></xsl:if>
-			<xsl:if test="$param/BlindFlag = 'yes'"><img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" /></xsl:if>
+			<xsl:if test="$param/Status != 'none'"><img width="20px" height="14px" src="img/{$param/Status}.png" alt="status flag" class="country_flag" title="{$param/Status}" /></xsl:if>
+			<xsl:if test="$param/FriendlyFlag = 'yes'"><img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" title="Friendly play" /></xsl:if>
+			<xsl:if test="$param/BlindFlag = 'yes'"><img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" title="Hidden cards" /></xsl:if>
 		</p>
 		<p>Level: <span class="detail_value"><xsl:value-of select="$param/Level"/></span></p>
 		<p>

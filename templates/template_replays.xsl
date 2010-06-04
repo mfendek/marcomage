@@ -49,7 +49,7 @@
 		</select>
 
 		<!-- hidden cards filter -->
-		<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" />
+		<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" title="Hidden cards" />
 		<select name="HiddenCards" size="1">
 			<xsl:if test="$param/HiddenCards != 'ignore'">
 				<xsl:attribute name="class">filter_active</xsl:attribute>
@@ -65,7 +65,7 @@
 		</select>
 
 		<!-- friendly game filter -->
-		<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" />
+		<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" title="Friendly play" />
 		<select name="FriendlyPlay" size="1">
 			<xsl:if test="$param/FriendlyPlay != 'ignore'">
 				<xsl:attribute name="class">filter_active</xsl:attribute>
@@ -209,10 +209,10 @@
 						<td>
 							<p>
 								<xsl:if test="contains(GameModes, 'HiddenCards')">
-									<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" />
+									<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" title="Hidden cards" />
 								</xsl:if>
 								<xsl:if test="contains(GameModes, 'FriendlyPlay')">
-									<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" />
+									<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" title="Friendly play" />
 								</xsl:if>
 							</p>
 						</td>
@@ -308,7 +308,7 @@
 							<xsl:if test="NewCard = 'yes'">
 								<span class="newcard">NEW</span>
 							</xsl:if>
-							<img src="img/revealed.png" class="revealed" width="20px" height="14px" alt="revealed" />
+							<img src="img/revealed.png" class="revealed" width="20px" height="14px" alt="revealed" title="Revealed" />
 						</div>
 						<div class="clear_floats"></div>
 					</xsl:when>
@@ -837,10 +837,10 @@
 		<td style="text-align: center">
 			<!-- game mode flags -->
 			<xsl:if test="$param/HiddenCards = 'yes'">
-				<img src="img/blind.png" class="in_game" width="20px" height="14px" alt="hidden cards" />
+				<img src="img/blind.png" class="in_game" width="20px" height="14px" alt="hidden cards" title="Hidden cards" />
 			</xsl:if>
 			<xsl:if test="$param/FriendlyPlay = 'yes'">
-				<img src="img/friendly_play.png" class="in_game" width="20px" height="14px" alt="friendly play" />
+				<img src="img/friendly_play.png" class="in_game" width="20px" height="14px" alt="friendly play" title="Friendly play" />
 			</xsl:if>
 		</td>
 		<td></td>
@@ -881,7 +881,7 @@
 							<xsl:if test="NewCard = 'yes'">
 								<span class="newcard">NEW</span>
 							</xsl:if>
-							<img src="img/revealed.png" class="revealed" width="20px" height="14px" alt="revealed" />
+							<img src="img/revealed.png" class="revealed" width="20px" height="14px" alt="revealed" title="Revealed" />
 						</div>
 						<div class="clear_floats"></div>
 					</xsl:when>

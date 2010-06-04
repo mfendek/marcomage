@@ -123,7 +123,7 @@
 		<p class="game_filters">
 
 			<!-- hidden cards filter -->
-			<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" />
+			<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" title="Hidden cards" />
 			<select name="HiddenCards" size="1">
 				<xsl:if test="$param/HiddenCards != 'ignore'">
 					<xsl:attribute name="class">filter_active</xsl:attribute>
@@ -139,7 +139,7 @@
 			</select>
 
 			<!-- friendly game filter -->
-			<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" />
+			<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" title="Friendly play" />
 			<select name="FriendlyPlay" size="1">
 				<xsl:if test="$param/FriendlyPlay != 'ignore'">
 					<xsl:attribute name="class">filter_active</xsl:attribute>
@@ -189,7 +189,7 @@
 								<p class="flags">
 									<input class="details" type="submit" name="user_details[{opponent}]" value="i" />
 									<xsl:if test="status != 'none'">
-										<img width="20px" height="14px" src="img/{status}.png" alt="status flag" class="country_flag" />
+										<img width="20px" height="14px" src="img/{status}.png" alt="status flag" class="country_flag" title="{status}" />
 									</xsl:if>
 								</p>
 							</td>
@@ -205,10 +205,10 @@
 							<td>
 								<p>
 									<xsl:if test="hidden_cards = 'yes'">
-										<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" />
+										<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" title="Hidden cards" />
 									</xsl:if>
 									<xsl:if test="friendly_play = 'yes'">
-										<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" />
+										<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" title="Friendly play" />
 									</xsl:if>
 								</p>
 							</td>
@@ -243,11 +243,11 @@
 						<option value="{am:urlencode(text())}"><xsl:value-of select="text()"/></option>
 					</xsl:for-each>
 				</select>
-				<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" />
+				<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" title="Hidden cards" />
 				<input type="checkbox" name="HiddenCards">
 					<xsl:if test="$param/BlindFlag = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 				</input>
-				<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" />
+				<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" title="Friendly play" />
 				<input type="checkbox" name="FriendlyMode">
 					<xsl:if test="$param/FriendlyFlag = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 				</input>
@@ -270,10 +270,10 @@
 							<td>
 								<p>
 									<xsl:if test="hidden_cards = 'yes'">
-										<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" />
+										<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="country_flag" title="Hidden cards" />
 									</xsl:if>
 									<xsl:if test="friendly_play = 'yes'">
-										<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" />
+										<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="country_flag" title="Friendly play" />
 									</xsl:if>
 								</p>
 							</td>
