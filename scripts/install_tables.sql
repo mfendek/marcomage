@@ -185,7 +185,7 @@ CREATE TABLE `settings` (
   `Firstname` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `Surname` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `Birthdate` date NOT NULL DEFAULT '0000-00-00',
-  `Gender` char(10) COLLATE utf8_unicode_ci NOT NULL,
+  `Gender` enum('none','male','female') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'none',
   `Email` char(30) COLLATE utf8_unicode_ci NOT NULL,
   `Imnumber` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `Country` char(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Unknown',

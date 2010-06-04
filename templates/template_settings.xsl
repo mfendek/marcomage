@@ -42,12 +42,23 @@
 			<p><input type="text" name="Email" maxlength="30" value="{$settings/Email}" />E-mail</p>
 		
 			<p><input type="text" name="Imnumber" maxlength="20" value="{$settings/Imnumber}" />ICQ / IM number</p>
-		
+
+			<xsl:variable name="gender_types">
+				<type name="none"   text="select" />
+				<type name="male"   text="male"   />
+				<type name="female" text="female" />
+			</xsl:variable>
+
 			<p>
 				<select name="Gender">
-					<option value=""><xsl:if test="$settings/Gender = 'none'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>select</option>
-					<option value="male"><xsl:if test="$settings/Gender = 'male'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>male</option>
-					<option value="female"><xsl:if test="$settings/Gender = 'female'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>female</option>
+					<xsl:for-each select="exsl:node-set($gender_types)/*">
+						<option value="{@name}">
+							<xsl:if test="$settings/Gender = @name">
+								<xsl:attribute name="selected">selected</xsl:attribute>
+							</xsl:if>
+							<xsl:value-of select="@text"/>
+						</option>
+					</xsl:for-each>
 				</select>
 				<xsl:text>Gender</xsl:text>
 			</p>
