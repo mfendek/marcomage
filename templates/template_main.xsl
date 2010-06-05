@@ -43,8 +43,11 @@
 		</xsl:element>
 	</xsl:if>
 	<script type="text/javascript" src="javascript/BBtags.js"></script>
+	<script type="text/javascript" src="javascript/utils.js"></script>
 	</head>
 	<body>
+	<xsl:attribute name="onload">setFocus('<xsl:value-of select="$param/current_section"/>')</xsl:attribute>
+
 	<form action="" enctype="multipart/form-data" method="post">
 
 

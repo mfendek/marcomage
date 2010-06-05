@@ -2864,7 +2864,7 @@
 		$params["navbar"]['sections_list'] = SectionsList();
 		$params["main"]["skin"] = $player->GetSetting("Skin");
 		$params["main"]["autorefresh"] = ($current == "Games") ? $player->GetSetting("Autorefresh") : 0; // apply only in games section
-		$params["navbar"]['current_section'] = NavBarSection($current); // navigation bar section
+		$params["main"]['current_section'] = $params["navbar"]['current_section'] = NavBarSection($current); // navigation bar section
 	}
 	
 // now display current inner-page contents
