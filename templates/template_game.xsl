@@ -228,7 +228,7 @@
 					</div>
 					<h5>
 						<xsl:value-of select="$param/PlayerName"/>
-						<img width="18px" height="12px" src="img/flags/{$param/mycountry}.gif" alt="country flag" class="country_flag" title="{$param/mycountry}" />
+						<img width="18px" height="12px" src="img/flags/{$param/mycountry}.gif" alt="country flag" class="icon" title="{$param/mycountry}" />
 					</h5>
 					<p class="info_label">Tower: <span>
 						<xsl:value-of select="$param/MyTower"/>
@@ -292,7 +292,7 @@
 					</div>
 					<h5>
 						<xsl:value-of select="$param/PlayerName"/>
-						<img width="18px" height="12px" src="img/flags/{$param/mycountry}.gif" alt="country flag" class="country_flag" title="{$param/mycountry}" />
+						<img width="18px" height="12px" src="img/flags/{$param/mycountry}.gif" alt="country flag" class="icon" title="{$param/mycountry}" />
 					</h5>
 					<p class="info_label">Tower: <span>
 						<xsl:value-of select="$param/MyTower"/>
@@ -562,7 +562,7 @@
 						</xsl:if>
 					</div>
 					<h5>
-						<img width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" class="country_flag" title="{$param/hiscountry}" />
+						<img width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" class="icon" title="{$param/hiscountry}" />
 						<xsl:value-of select="$param/OpponentName"/>
 						<input class="details" type="submit" name="user_details[{$param/OpponentName}]" value="i" />
 					</h5>
@@ -630,7 +630,7 @@
 						<xsl:if test="$param/opp_isOnline = 'yes'">
 							<xsl:attribute name="class">player</xsl:attribute>
 						</xsl:if>
-						<img width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" class="country_flag" title="{$param/hiscountry}" />
+						<img width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" class="icon" title="{$param/hiscountry}" />
 						<xsl:value-of select="$param/OpponentName"/>
 						<input class="details" type="submit" name="user_details[{$param/OpponentName}]" value="i" />
 					</h5>
@@ -680,13 +680,13 @@
 		</xsl:for-each>	
 	<!-- end my tokens -->
 
-		<td style="text-align: center">
+		<td class="game_mode_flags">
 			<!-- game mode flags -->
 			<xsl:if test="$param/HiddenCards = 'yes'">
-				<img src="img/blind.png" class="in_game" width="20px" height="14px" alt="hidden cards" title="Hidden cards" />
+				<img src="img/blind.png" width="20px" height="14px" alt="hidden cards" title="Hidden cards" class="icon" />
 			</xsl:if>
 			<xsl:if test="$param/FriendlyPlay = 'yes'">
-				<img src="img/friendly_play.png" class="in_game" width="20px" height="14px" alt="friendly play" title="Friendly play" />
+				<img src="img/friendly_play.png" width="20px" height="14px" alt="friendly play" title="Friendly play" class="icon" />
 			</xsl:if>
 		</td>
 		<td></td>

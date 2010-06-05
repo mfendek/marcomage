@@ -86,8 +86,3 @@ div#preview > img /* background image preview - image layout */
 	border: medium ridge white;
 	margin-top: 0.5ex;
 }
-
-div#sett_float_left img.country_flag /* country flag image layout */
-{
-	margin-left: 0.5ex;
-}

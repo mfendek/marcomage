@@ -164,12 +164,7 @@ input.pushed /* selected button */
 	border-style: inset;
 }
 
-img.country_flag /* country flag image layout */
-{
-	vertical-align: middle;
-}
-
-img.locked /* locked thread icon */
+img.icon /* icon image */
 {
 	vertical-align: middle;
 	margin-left: 0.5ex;

@@ -291,9 +291,14 @@ p.token_counter > span /* token counter value */
 	margin-left: 0.5ex;
 }
 
-img.in_game
+td.game_mode_flags /* game mode flags area */
 {
-	vertical-align: middle;
+	text-align: center;
+}
+
+td.game_mode_flags > img /* game mode flags */
+{
+	margin: 0ex;
 }
 
 /* end game */

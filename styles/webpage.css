@@ -86,6 +86,11 @@ div#webpg_float_right table /* table layout */
 	margin-bottom: 2ex;
 }
 
+div#webpg_float_right img.icon /* icon image */
+{
+	margin: 0ex 0.5ex 0ex 0ex;
+}
+
 /* end webpage */
 
 /* begin login menu */

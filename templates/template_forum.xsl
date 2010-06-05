@@ -59,7 +59,7 @@
 					</xsl:choose>
 
 					<xsl:value-of select="Title" />
-					<xsl:if test="Locked = 'yes'"><img src="img/locked.gif" width="15px" height="16px" alt="locked" title="Locked" class="locked" /></xsl:if>
+					<xsl:if test="Locked = 'yes'"><img src="img/locked.gif" width="15px" height="16px" alt="locked" title="Locked" class="icon" /></xsl:if>
 				</p>
 			</td>
 			<td>
@@ -189,7 +189,7 @@
 						</xsl:attribute>
 						
 						<xsl:value-of select="Title" />
-						<xsl:if test="Locked = 'yes'"><img src="img/locked.gif" width="15px" height="16px" alt="locked" title="Locked" class="locked" /></xsl:if>
+						<xsl:if test="Locked = 'yes'"><img src="img/locked.gif" width="15px" height="16px" alt="locked" title="Locked" class="icon" /></xsl:if>
 					</p>
 				</td>
 				<td>
@@ -328,7 +328,7 @@
 				</xsl:attribute>
 				
 				<xsl:value-of select="Title" />
-				<xsl:if test="Locked = 'yes'"><img src="img/locked.gif" width="15px" height="16px" alt="locked" title="Locked" class="locked" /></xsl:if>
+				<xsl:if test="Locked = 'yes'"><img src="img/locked.gif" width="15px" height="16px" alt="locked" title="Locked" class="icon" /></xsl:if>
 			</p>
 		</td>
 		<td>
@@ -390,7 +390,7 @@
 			<h5>
 				<input type="submit" name="section_details[{$section/SectionID}]" value="&uarr;" />
 				<span><xsl:value-of select="$section/SectionName"/></span> - <xsl:value-of select="$thread/Title"/>
-				<xsl:if test="$thread/Locked = 'yes'"><img src="img/locked.gif" width="15px" height="16px" alt="locked" title="Locked" class="locked" /></xsl:if>
+				<xsl:if test="$thread/Locked = 'yes'"><img src="img/locked.gif" width="15px" height="16px" alt="locked" title="Locked" class="icon" /></xsl:if>
 			</h5>
 			<p>
 			<xsl:if test="$param/concept &gt; 0">
