@@ -145,7 +145,7 @@
 						<p class="{$player_class}">
 							<xsl:value-of select="name"/>
 							<xsl:if test="rank != 'user'"> <!-- player rank -->
-								<img width="9px" height="12px" src="img/{rank}.png" alt="rank flag" class="rank_flag" title="{rank}" />
+								<img width="9px" height="12px" src="img/{rank}.png" alt="rank flag" class="icon" title="{rank}" />
 							</xsl:if>
 						</p>
 					</td>

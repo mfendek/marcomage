@@ -48,7 +48,7 @@
 			<xsl:text>Rank: </xsl:text>
 			<span class="detail_value"><xsl:value-of select="$param/PlayerType"/></span>
 			<xsl:if test="$param/PlayerType != 'user'">
-				<img width="9px" height="12px" src="img/{$param/PlayerType}.png" alt="rank flag" class="rank_flag" title="{$param/PlayerType}" />
+				<img width="9px" height="12px" src="img/{$param/PlayerType}.png" alt="rank flag" class="icon" title="{$param/PlayerType}" />
 			</xsl:if>
 		</p>
 		<p>Country: <img width="18px" height="12px" src="img/flags/{$param/Country}.gif" alt="country flag" class="icon" title="{$param/Country}" /> <span class="detail_value"><xsl:value-of select="$param/Country"/></span></p>
