@@ -252,7 +252,7 @@
 			<div class="limit">
 				<p>
 					<span>
-						<input type="text" name="name" maxlength="64" size="35" >
+						<input type="text" name="name" maxlength="64" size="35" onkeypress="return BlockEnter(event)">
 							<xsl:if test="$param/stored = 'yes'">
 								<xsl:attribute name="value"><xsl:value-of select="$param/data/name"/></xsl:attribute>
 							</xsl:if>
@@ -283,7 +283,7 @@
 				</p>
 				<p>
 					<span>
-						<input type="text" name="bricks" maxlength="2" size="2" >
+						<input type="text" name="bricks" maxlength="2" size="2" onkeypress="return BlockEnter(event)">
 							<xsl:attribute name="value">
 								<xsl:choose>
 									<xsl:when test="$param/stored = 'yes'">
@@ -293,7 +293,7 @@
 								</xsl:choose>
 							</xsl:attribute>
 						</input>
-						<input type="text" name="gems" maxlength="2" size="2" >
+						<input type="text" name="gems" maxlength="2" size="2" onkeypress="return BlockEnter(event)">
 							<xsl:attribute name="value">
 								<xsl:choose>
 									<xsl:when test="$param/stored = 'yes'">
@@ -303,7 +303,7 @@
 								</xsl:choose>
 							</xsl:attribute>
 						</input>
-						<input type="text" name="recruits" maxlength="2" size="2" >
+						<input type="text" name="recruits" maxlength="2" size="2" onkeypress="return BlockEnter(event)">
 							<xsl:attribute name="value">
 								<xsl:choose>
 									<xsl:when test="$param/stored = 'yes'">
@@ -318,7 +318,7 @@
 				</p>
 				<p>
 					<span>
-						<input type="text" name="keywords" maxlength="100" size="35" >
+						<input type="text" name="keywords" maxlength="100" size="35" onkeypress="return BlockEnter(event)">
 							<xsl:if test="$param/stored = 'yes'">
 								<xsl:attribute name="value"><xsl:value-of select="$param/data/keywords"/></xsl:attribute>
 							</xsl:if>
@@ -377,7 +377,7 @@
 			<div class="limit">
 				<p>
 					<span>
-						<input type="text" name="name" maxlength="64" size="35" value="{$param/data/name}" />
+						<input type="text" name="name" maxlength="64" size="35" value="{$param/data/name}" onkeypress="return BlockEnter(event)" />
 					</span>
 					<xsl:text>Name</xsl:text>
 				</p>
@@ -404,15 +404,15 @@
 				</p>
 				<p>
 					<span>
-						<input type="text" name="bricks" maxlength="2" size="2" value="{$param/data/bricks}" />
-						<input type="text" name="gems" maxlength="2" size="2" value="{$param/data/gems}" />
-						<input type="text" name="recruits" maxlength="2" size="2" value="{$param/data/recruits}" />
+						<input type="text" name="bricks" maxlength="2" size="2" value="{$param/data/bricks}" onkeypress="return BlockEnter(event)" />
+						<input type="text" name="gems" maxlength="2" size="2" value="{$param/data/gems}" onkeypress="return BlockEnter(event)" />
+						<input type="text" name="recruits" maxlength="2" size="2" value="{$param/data/recruits}" onkeypress="return BlockEnter(event)" />
 					</span>
 					<xsl:text>Cost (B/G/R)</xsl:text>
 				</p>
 				<p>
 					<span>
-						<input type="text" name="keywords" maxlength="100" size="35" value="{$param/data/keywords}" />
+						<input type="text" name="keywords" maxlength="100" size="35" value="{$param/data/keywords}" onkeypress="return BlockEnter(event)" />
 					</span>
 					<xsl:text>Keywords</xsl:text>
 				</p>

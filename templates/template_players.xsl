@@ -24,7 +24,7 @@
 	<div id="players">
 		<div class="filters_trans" style="text-align: center;">
 			<!-- begin name filter -->
-			<input type="text" name="pname_filter" maxlength="20" size="20" value="{$param/pname_filter}" />
+			<input type="text" name="pname_filter" maxlength="20" size="20" value="{$param/pname_filter}" onkeypress="return BlockEnter(event)" />
 
 			<!-- begin player filter -->
 			<select name="player_filter">
