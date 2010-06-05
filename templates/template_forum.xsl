@@ -104,7 +104,7 @@
 	<h4>Search</h4>
 	
 	<div class="filters_trans">
-		<input type="text" name="phrase" maxlength="50" size="30" value="{$param/phrase}" />
+		<input type="text" name="phrase" maxlength="50" size="30" value="{$param/phrase}" onkeypress="return BlockEnter(event)" />
 
 		<!-- target selector -->
 		<xsl:variable name="targets">
