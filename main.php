@@ -48,7 +48,7 @@
 	$noveldb = new CNovels($db);
 	$forum = new CForum($db);
 
-	$current = "Page"; // set a meaningful default
+	$current = "Webpage"; // set a meaningful default
 
 	$session = $logindb->Login();
 
@@ -58,7 +58,7 @@
 	{
 		if (isset($_POST['Login']))
 		{
-			$current = "Page";
+			$current = "Webpage";
 			$information = "Login failed.";
 		}
 		elseif (isset($_POST['Registration']))
@@ -67,7 +67,7 @@
 		}
 		elseif (isset($_POST['ReturnToLogin'])) // TODO: rename this
 		{
-			$current = "Page";
+			$current = "Webpage";
 		}
 		elseif (isset($_POST['Register']))
 		{
@@ -98,13 +98,13 @@
 			}
 			else
 			{
-				$current = "Page";
+				$current = "Webpage";
 				$information = "User registered. You may now log in.";
 			}
 		}
 		else
 		{
-			$current = "Page";
+			$current = "Webpage";
 			$information = "Please log in.";
 		}
 	}
@@ -116,7 +116,7 @@
 		if( !$player )
 		{
 			$session = false;
-			$current = "Page";
+			$current = "Webpage";
 			$error = "Failed to load player data! Please report this!";
 			break;
 		}
@@ -125,7 +125,7 @@
 		if( !$access_rights[$player->Type()]["login"] )
 		{
 			$session = false;
-			$current = "Page";
+			$current = "Webpage";
 			$warning = "This user is not permitted to log in.";
 			break;
 		}
@@ -133,14 +133,14 @@
 		// login page messages
 		if (isset($_POST['Login']))
 		{
-			$current = "Page"; // new sessions default to here
+			$current = "Webpage"; // new sessions default to here
 		}
 		else
 		
 		// navigation bar messages
-		if (isset($_POST['Page']))
+		if (isset($_POST['Webpage']))
 		{
-			$current = "Page";
+			$current = "Webpage";
 		}
 		elseif (isset($_POST['Forum']))
 		{
@@ -187,7 +187,7 @@
 			$logindb->Logout($session);
 			
 			$information = "You have successfully logged out.";
-			$current = "Page";
+			$current = "Webpage";
 		}
 		else
 		
@@ -2870,10 +2870,10 @@
 // now display current inner-page contents
 switch( $current )
 {
-case 'Page':
+case 'Webpage':
 	// decide what screen is default (depends on whether the user is logged in)
 	$default_page = ( !$session ) ? 'Main' : 'News';
-	$selected = isset($_POST['WebPage']) ? postdecode(array_shift(array_keys($_POST['WebPage']))) : $default_page;
+	$selected = isset($_POST['WebSection']) ? postdecode(array_shift(array_keys($_POST['WebSection']))) : $default_page;
 
 	// list the names of the files to display
 	// (all files whose name matches up to the first space character)

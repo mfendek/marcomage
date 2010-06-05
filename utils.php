@@ -86,7 +86,7 @@
 	{
 		$sections = array();
 
-		$sections['Page'] = array('Page');
+		$sections['Webpage'] = array('Webpage');
 		$sections['Forum'] = array('Forum', 'Forum_search', 'Section_details', 'New_thread', 'Thread_details', 'New_post', 'Edit_post', 'Edit_thread');
 		$sections['Messages'] = array('Messages', 'Message_details', 'Message_new');
 		$sections['Players'] = array('Players', 'Profile');

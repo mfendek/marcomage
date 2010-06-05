@@ -7,20 +7,20 @@
 <xsl:strip-space elements="*" />
 
 
-<xsl:template match="section[. = 'Page']">
+<xsl:template match="section[. = 'Webpage']">
 	<xsl:variable name="param" select="$params/website" />
 
 	<div id="webpage">
 
 	<div id="webpg_float_left">
 	<div class="skin_label">
-	<p><input type="submit" name="WebPage[Main]" value="Main page" /></p>
-	<p><input type="submit" name="WebPage[News]" value="Latest news" /></p>
-	<p><input type="submit" name="WebPage[Modified]" value="Modified cards" /></p>
-	<p><input type="submit" name="WebPage[Help]" value="Game manual" /></p>
-	<p><input type="submit" name="WebPage[Faq]" value="F .   A .   Q . " /></p>
-	<p><input type="submit" name="WebPage[Credits]" value="Hall of fame" /></p>
-	<p><input type="submit" name="WebPage[History]" value="Project history" /></p>
+	<p><input type="submit" name="WebSection[Main]" value="Main page" /></p>
+	<p><input type="submit" name="WebSection[News]" value="Latest news" /></p>
+	<p><input type="submit" name="WebSection[Modified]" value="Modified cards" /></p>
+	<p><input type="submit" name="WebSection[Help]" value="Game manual" /></p>
+	<p><input type="submit" name="WebSection[Faq]" value="F .   A .   Q . " /></p>
+	<p><input type="submit" name="WebSection[Credits]" value="Hall of fame" /></p>
+	<p><input type="submit" name="WebSection[History]" value="Project history" /></p>
 	</div>
 	</div>
 
