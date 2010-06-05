@@ -29,6 +29,7 @@
 	<input type="submit" name="Forum" value="Forum" >
 		<xsl:if test="(
 			($param/current = 'Forum') or 
+			($param/current = 'Forum_search') or 
 			($param/current = 'Section_details') or 
 			($param/current = 'New_thread') or 
 			($param/current = 'Thread_details') or 
