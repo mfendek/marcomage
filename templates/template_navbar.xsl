@@ -57,7 +57,7 @@
 		</xsl:if>
 	</input>
 	<input type="submit" name="Games" value="Games" >
-		<xsl:if test="($param/current = 'Games') or ($param/current = 'Game') or ($param/current = 'Deck_view')">
+		<xsl:if test="($param/current = 'Games') or ($param/current = 'Game') or ($param/current = 'Deck_view') or ($param/current = 'Game_note')">
 			<xsl:attribute name="class">pushed</xsl:attribute>
 		</xsl:if>
 	</input>
