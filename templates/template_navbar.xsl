@@ -15,10 +15,6 @@
 	<p><xsl:value-of select="$param/player_name"/> (<xsl:value-of select="$param/level"/>)</p>
 	</div>
 
-	<div id="menu_float_right">
-	<input type="submit" name="Logout" value="Logout" accesskey="q" />
-	</div>
-
 	<div id="menu_center">
 
 	<xsl:for-each select="$param/sections_list/*">
@@ -40,6 +36,10 @@
 			<img src="img/new_card.gif" alt="" width="10px" height="14px" />
 		</xsl:if>
 	</xsl:for-each>
+
+	<div id="menu_float_right">
+		<input type="submit" name="Logout" value="Logout" accesskey="q" />
+	</div>
 
 	</div>
 
