@@ -140,7 +140,7 @@
 			<tr>
 				<th>Card</th>
 				<th>
-					<p>Card name<input class="details" type="submit" >
+					<p>Card name<input class="small_button" type="submit" >
 						<xsl:choose>
 							<xsl:when test="(($param/current_condition = 'Name') and ($param/current_order = 'DESC'))">
 								<xsl:attribute name="name">concepts_ord_asc[Name]</xsl:attribute>
@@ -152,14 +152,14 @@
 							</xsl:otherwise>
 						</xsl:choose>
 						<xsl:if test="$param/current_condition = 'Name'">
-							<xsl:attribute name="class">details pushed</xsl:attribute>
+							<xsl:attribute name="class">small_button pushed</xsl:attribute>
 						</xsl:if>
 					</input></p>
 				</th>
 				<th><p>Author</p></th>
 				<th><p>Rarity</p></th>
 				<th>
-					<p>Last change<input class="details" type="submit" >
+					<p>Last change<input class="small_button" type="submit" >
 						<xsl:choose>
 							<xsl:when test="(($param/current_condition = 'LastChange') and ($param/current_order = 'DESC'))">
 								<xsl:attribute name="name">concepts_ord_asc[LastChange]</xsl:attribute>
@@ -171,7 +171,7 @@
 							</xsl:otherwise>
 						</xsl:choose>
 						<xsl:if test="$param/current_condition = 'LastChange'">
-							<xsl:attribute name="class">details pushed</xsl:attribute>
+							<xsl:attribute name="class">small_button pushed</xsl:attribute>
 						</xsl:if>
 					</input></p>
 				</th>
@@ -195,12 +195,12 @@
 					<td><p><xsl:value-of select="state"/></p></td>
 					<td>
 						<p>
-							<input class="details" type="submit" name="view_concept[{id}]" value="+" />
+							<input class="small_button" type="submit" name="view_concept[{id}]" value="+" />
 							<xsl:if test="$param/edit_all_card = 'yes' or ($param/edit_own_card = 'yes' and ($param/PlayerName = author))">
-								<input class="details" type="submit" name="edit_concept[{id}]" value="E" />
+								<input class="small_button" type="submit" name="edit_concept[{id}]" value="E" />
 							</xsl:if>
 							<xsl:if test="$param/delete_all_card = 'yes' or ($param/delete_own_card = 'yes' and ($param/PlayerName = author))">
-								<input class="details" type="submit" name="delete_concept[{id}]" value="D" />
+								<input class="small_button" type="submit" name="delete_concept[{id}]" value="D" />
 							</xsl:if>
 						</p>
 					</td>

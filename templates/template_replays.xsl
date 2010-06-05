@@ -162,9 +162,9 @@
 							<p>
 								<xsl:value-of select="@text"/>
 								<xsl:if test="@sortable = 'yes'">
-									<input type="submit" class="details">
+									<input type="submit" class="small_button">
 										<xsl:if test="$param/cond = @name">
-											<xsl:attribute name="class">details pushed</xsl:attribute>
+											<xsl:attribute name="class">small_button pushed</xsl:attribute>
 										</xsl:if>
 										<xsl:choose>
 											<xsl:when test="$param/cond = @name and $param/order = 'DESC'">

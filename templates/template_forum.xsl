@@ -49,7 +49,7 @@
 
 			<tr class="table_row">
 			<td>
-				<p><input class="details" type = "submit" name="thread_details[{ThreadID}]" value="+" /></p>
+				<p><input class="small_button" type = "submit" name="thread_details[{ThreadID}]" value="+" /></p>
 			</td>
 			<td>
 				<p>
@@ -79,7 +79,7 @@
 								<xsl:attribute name="class">new</xsl:attribute>
 							</xsl:if>
 							<xsl:value-of select="concat(am:datetime(LastPost, $param/timezone), ' by ', LastAuthor)" />
-							<input class="details" type="submit" name="thread_last_page[{ThreadID}]" value="&rarr;" />
+							<input class="small_button" type="submit" name="thread_last_page[{ThreadID}]" value="&rarr;" />
 						</p>
 					</xsl:when>
 					<xsl:otherwise><p>n/a</p></xsl:otherwise>
@@ -177,7 +177,7 @@
 
 				<tr class="table_row">
 				<td>
-					<p><input class="details" type = "submit" name="thread_details[{ThreadID}]" value="+" /></p>
+					<p><input class="small_button" type = "submit" name="thread_details[{ThreadID}]" value="+" /></p>
 				</td>
 				<td>
 					<p>
@@ -209,7 +209,7 @@
 									<xsl:attribute name="class">new</xsl:attribute>
 								</xsl:if>
 								<xsl:value-of select="concat(am:datetime(LastPost, $param/timezone), ' by ', LastAuthor)" />
-								<input class="details" type="submit" name="thread_last_page[{ThreadID}]" value="&rarr;" />
+								<input class="small_button" type="submit" name="thread_last_page[{ThreadID}]" value="&rarr;" />
 							</p>
 						</xsl:when>
 						<xsl:otherwise><p>n/a</p></xsl:otherwise>
@@ -316,7 +316,7 @@
 
 		<tr class="table_row">
 		<td>
-			<p><input class="details" type = "submit" name="thread_details[{ThreadID}]" value="+" /></p>
+			<p><input class="small_button" type="submit" name="thread_details[{ThreadID}]" value="+" /></p>
 		</td>
 		<td>
 			<p>
@@ -348,7 +348,7 @@
 							<xsl:attribute name="class">new</xsl:attribute>
 						</xsl:if>
 						<xsl:value-of select="concat(am:datetime(LastPost, $param/timezone), ' by ', LastAuthor)" />
-						<input class="details" type="submit" name="thread_last_page[{ThreadID}]" value="&rarr;" />
+						<input class="small_button" type="submit" name="thread_last_page[{ThreadID}]" value="&rarr;" />
 					</p>
 				</xsl:when>
 				<xsl:otherwise><p>n/a</p></xsl:otherwise>
@@ -488,8 +488,8 @@
 			<img class="avatar" height="60px" width="60px" src="img/avatars/{Avatar}" alt="avatar" />
 			
 			<p>
-			<input class="details" type="submit" name="user_details[{Author}]" value = "i" />
-			<input class="details" type="submit" name="message_create[{Author}]" value = "m" />
+			<input class="small_button" type="submit" name="user_details[{Author}]" value="i" />
+			<input class="small_button" type="submit" name="message_create[{Author}]" value="m" />
 			
 			</p>
 			

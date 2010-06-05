@@ -187,7 +187,7 @@
 						<tr class="table_row">
 							<td>
 								<p class="flags">
-									<input class="details" type="submit" name="user_details[{opponent}]" value="i" />
+									<input class="small_button" type="submit" name="user_details[{opponent}]" value="i" />
 									<xsl:if test="status != 'none'">
 										<img width="20px" height="14px" src="img/{status}.png" alt="status flag" class="icon" title="{status}" />
 									</xsl:if>

@@ -124,7 +124,7 @@ div.challenge_box > div > p > span /* highlight important information in a chall
 	font-weight: bold;
 }
 
-div.challenge_box > div > p > input.details /* set distance between info buttons and text */
+div.challenge_box > div > p > input.small_button /* set distance between info buttons and text */
 {
 	margin-right: 0.5ex;
 }

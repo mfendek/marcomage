@@ -564,7 +564,7 @@
 					<h5>
 						<img width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" class="icon" title="{$param/hiscountry}" />
 						<xsl:value-of select="$param/OpponentName"/>
-						<input class="details" type="submit" name="user_details[{$param/OpponentName}]" value="i" />
+						<input class="small_button" type="submit" name="user_details[{$param/OpponentName}]" value="i" />
 					</h5>
 					<p class="info_label">Tower: <span>
 						<xsl:value-of select="$param/HisTower"/>
@@ -632,7 +632,7 @@
 						</xsl:if>
 						<img width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" class="icon" title="{$param/hiscountry}" />
 						<xsl:value-of select="$param/OpponentName"/>
-						<input class="details" type="submit" name="user_details[{$param/OpponentName}]" value="i" />
+						<input class="small_button" type="submit" name="user_details[{$param/OpponentName}]" value="i" />
 					</h5>
 					<p class="info_label">Tower: <span>
 						<xsl:value-of select="$param/HisTower"/>

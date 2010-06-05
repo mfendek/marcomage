@@ -95,9 +95,9 @@
 						<p>
 							<xsl:value-of select="@text"/>
 							<xsl:if test="@sortable = 'yes'">
-								<input type="submit" class="details">
+								<input type="submit" class="small_button">
 									<xsl:if test="$param/condition = @name">
-										<xsl:attribute name="class">details pushed</xsl:attribute>
+										<xsl:attribute name="class">small_button pushed</xsl:attribute>
 									</xsl:if>
 									<xsl:choose>
 										<xsl:when test="$param/condition = @name and $param/order = 'DESC'">
@@ -175,12 +175,12 @@
 					</td>
 					
 					<td style="text-align: left;">
-						<input class="details" type="submit" name="user_details[{name}]" value="i" />
+						<input class="small_button" type="submit" name="user_details[{name}]" value="i" />
 						<xsl:if test="$param/messages = 'yes'">
-							<input class="details" type="submit" name="message_create[{name}]" value="m" />
+							<input class="small_button" type="submit" name="message_create[{name}]" value="m" />
 						</xsl:if>
 						<xsl:if test="$param/send_challenges = 'yes' and $param/free_slots &gt; 0 and $param/active_decks &gt; 0 and name != $param/PlayerName and challenged = 'no' and playingagainst = 'no' and waitingforack = 'no'">
-							<input class="details" type="submit" name="prepare_challenge[{name}]" value="Challenge" />
+							<input class="small_button" type="submit" name="prepare_challenge[{name}]" value="Challenge" />
 						</xsl:if>
 					</td>
 					<td>
