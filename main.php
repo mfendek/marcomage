@@ -2861,8 +2861,10 @@
 		$params["navbar"]['IsSomethingNew'] = ($forum_not AND $forum->IsSomethingNew($player->PreviousLogin())) ? 'yes' : 'no';
 		$params["navbar"]['NewConcepts'] = ($concepts_not AND $conceptdb->NewConcepts($player->PreviousLogin())) ? 'yes' : 'no';
 		$params["navbar"]['NumGames'] = count($gamedb->ListCurrentGames($player->Name()));
+		$params["navbar"]['sections_list'] = SectionsList();
 		$params["main"]["skin"] = $player->GetSetting("Skin");
 		$params["main"]["autorefresh"] = ($current == "Games") ? $player->GetSetting("Autorefresh") : 0; // apply only in games section
+		$params["navbar"]['current_section'] = NavBarSection($current); // navigation bar section
 	}
 	
 // now display current inner-page contents
