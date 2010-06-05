@@ -1,8 +1,4 @@
-function setFocus(elemName)
-{
-  var obj = document.getElementsByName(elemName).item(0);
-  obj.focus();
-}
+// MArcomage JavaScript support functions
 
 function SendMessage(e) // sends in game chat message when ENTER key is hit
 {
