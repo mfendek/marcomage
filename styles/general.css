@@ -169,6 +169,12 @@ img.country_flag /* country flag image layout */
 	vertical-align: middle;
 }
 
+img.locked /* locked thread icon */
+{
+	vertical-align: middle;
+	margin-left: 0.5ex;
+}
+
 .p_online,.p_offline,.p_inactive,.p_dead /* player name layout */
 {
 	font-weight: bold;
