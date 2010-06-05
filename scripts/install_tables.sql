@@ -211,7 +211,7 @@ CREATE TABLE `settings` (
   `Skin` int(2) unsigned NOT NULL DEFAULT '0',
   `Background` int(3) unsigned NOT NULL DEFAULT '0',
   `GamesDetails` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
-  `PlayerFilter` enum('none','active','offline','all') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'none',
+  `DefaultFilter` enum('none','active','offline','all') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'none',
   `Autorefresh` int(5) unsigned NOT NULL DEFAULT '0',
   `RandomDeck` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes',
   PRIMARY KEY  (`Username`)

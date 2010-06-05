@@ -2022,7 +2022,7 @@
 					unset($settings['Timezone']);
 					unset($settings['Skin']);
 					unset($settings['Background']);
-					unset($settings['PlayerFilter']);
+					unset($settings['DefaultFilter']);
 					unset($settings['Autorefresh']);
 					
 					foreach($settings as $setting)
@@ -2038,7 +2038,7 @@
 					
 					$player->ChangeSetting("Skin", $_POST['Skin']);
 					$player->ChangeSetting("Background", $_POST['Background']);
-					$player->ChangeSetting("PlayerFilter", $_POST['PlayerFilter']);
+					$player->ChangeSetting("DefaultFilter", $_POST['DefaultFilter']);
 					$player->ChangeSetting("Autorefresh", $_POST['Autorefresh']);
 					
 					$information = "Game settings saved";
@@ -3076,7 +3076,7 @@ case 'Players':
 	$params['players']['condition'] = $condition = $_POST['CurrentCondition'];
 
 	// filter initialization
-	$params['players']['CurrentFilter'] = $filter = ((isset($_POST['player_filter'])) ? $_POST['player_filter'] : $player->GetSetting("PlayerFilter"));
+	$params['players']['CurrentFilter'] = $filter = ((isset($_POST['player_filter'])) ? $_POST['player_filter'] : $player->GetSetting("DefaultFilter"));
 	$params['players']['status_filter'] = $status_filter = (isset($_POST['status_filter'])) ? $_POST['status_filter'] : 'none';
 	$params['players']['pname_filter'] = $pname_filter = (isset($_POST['pname_filter'])) ? $_POST['pname_filter'] : '';
 

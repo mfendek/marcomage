@@ -181,10 +181,10 @@
 			</xsl:variable>
 
 			<p>
-				<select name="PlayerFilter">
+				<select name="DefaultFilter">
 					<xsl:for-each select="exsl:node-set($filter_types)/*">
 						<option value="{@name}">
-							<xsl:if test="$settings/PlayerFilter = @name">
+							<xsl:if test="$settings/DefaultFilter = @name">
 								<xsl:attribute name="selected">selected</xsl:attribute>
 							</xsl:if>
 							<xsl:value-of select="@text"/>
