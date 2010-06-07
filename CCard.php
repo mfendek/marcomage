@@ -187,12 +187,12 @@
 			$keywords = array();
 			
 			$db = $this->getDB();
-			$result = $db->xpath('/am:cards/am:card/am:keywords');
+			$result = $db->xpath("/am:cards/am:card[am:keywords != '']/am:keywords");
 			if( $result === false ) return $keywords;
 			
 			foreach($result as $entry)
 			{
-				$words = preg_split("/\. ?/", (string)$entry, -1, PREG_SPLIT_NO_EMPTY); // split individual keywords
+				$words = explode(",", $entry); // split individual keywords
 				foreach($words as $word)
 				{
 					$word = preg_split("/ \(/", $word, 0); // remove parameter if present

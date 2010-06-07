@@ -1401,12 +1401,12 @@
 						$keywords_list = $keyword;
 						$first = false;
 					}
-					else $keywords_list.= " ".$keyword;
+					else $keywords_list.= ",".$keyword;
 			}
 			
 			if ($keywords_list == "") return 0; // no keywords in hand
 			
-			$words = preg_split("/\. ?/", $keywords_list, -1, PREG_SPLIT_NO_EMPTY); // split individual keywords
+			$words = explode(",", $keywords_list); // split individual keywords
 			foreach($words as $word)
 			{
 				$word = preg_split("/ \(/", $word, 0); // remove parameter if present

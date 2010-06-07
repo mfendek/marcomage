@@ -222,7 +222,26 @@
 
 			<!-- keywords -->
 			<xsl:if test="$c_keywords = 'yes'">
-				<p><b><xsl:value-of select="$card/keywords"/></b></p>
+				<xsl:choose>
+					<xsl:when test="$card/picture">
+						<p><b><xsl:value-of select="$card/keywords"/></b></p>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:variable name="descriptions" select="document('keywords.xml')/am:keywords" />
+						<p>
+							<xsl:for-each select="str:split($card/keywords, ',')">
+								<b>
+									<xsl:variable name="keyword_name" select="." />
+									<xsl:attribute name="title">
+										<xsl:value-of select="$descriptions/am:keyword[contains($keyword_name, am:name)]/am:description"/>
+									</xsl:attribute>
+									<xsl:value-of select="$keyword_name"/>
+									<xsl:text>.</xsl:text>
+								</b>
+							</xsl:for-each>
+						</p>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:if>
 
 			<!-- card effect -->

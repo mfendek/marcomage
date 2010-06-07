@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keywords xmlns="http://arcomage.netvor.sk">
+	<keyword>
+		<name>Alliance</name>
+		<description>Basic gain 17, bonus gain 3, side-effect (Arcane knowledge): additional Production x2.</description>
+	</keyword>
+	<keyword>
+		<name>Aqua</name>
+		<description>If an Aqua card is played after playing a different, non-common Aqua card, it raises your tower and wall by 5, opponent's stock is reduced by 5.</description>
+	</keyword>
+	<keyword>
+		<name>Banish</name>
+		<description>Discards one random Durable card from enemy hand (if there is one). Common cards can discard common and uncommon cards, uncommon cards can discard any rarity. Rare cards can also discard any rarity, but they have additional effect (player gains stock equal to discarded card cost). Cards with highest discardable rarity are preferred. Cards that cannot be discarded by played card are not considered targets for discard.</description>
+	</keyword>
+	<keyword>
+		<name>Barbarian</name>
+		<description>Basic gain 4, bonus gain 15, side-effect (Devastation): enemy wall will be additionally lowered by ammount based on played card rarity (Common - 3 , Uncommon - 8, Rare - 15).</description>
+	</keyword>
+	<keyword>
+		<name>Brigand</name>
+		<description>Basic gain 10, bonus gain 10, side-effect (Robbery): additional stock will be stolen from opponent, ammount based on played card rarity (Common - 1 stock, Uncommon - 2 stock, Rare - 3 stock).</description>
+	</keyword>
+	<keyword>
+		<name>Beast</name>
+		<description>Basic gain 14, bonus gain 10, side-effect (Fierce attack): additional damage will be inflicted upon your enemy based on played card rarity (Common - 2 , Uncommon - 5, Rare - 10).</description>
+	</keyword>
+	<keyword>
+		<name>Burning</name>
+		<description>Basic gain 3, bonus gain 11, side-effect (Fire blast): replaces one random non-Burning card from enemy hand (if there is one) with Searing fire. Can only replace a card with same or lower rarity as was the played card, but cards with highest replacable rarity are preferred. Cards that cannot be replaced by played card are not considered targets for replace.</description>
+	</keyword>
+	<keyword>
+		<name>Charge</name>
+		<description>when card has this keyword, it also has a number next to this keyword. When such card is played and the opponent's wall (after the standard attack) is 0, he will receive additional damage equal to number next to charge.</description>
+	</keyword>
+	<keyword>
+		<name>Destruction</name>
+		<description>If an Destruction card is played after playing a different, non-common Destruction card, it reduces enemy's highest facility by 1 when it is greater then 3, otherwise it reduces opponent's highest resurce by 10.</description>
+	</keyword>
+	<keyword>
+		<name>Dragon</name>
+		<description>If there is another Dragon in hand, next card will be Dragon egg (if there is no Dragon egg card in hand) or Gems production x2 (if there already is a Dragon egg card in hand).</description>
+	</keyword>
+	<keyword>
+		<name>Durable</name>
+		<description>Card stays on hand.</description>
+	</keyword>
+	<keyword>
+		<name>Enduring</name>
+		<description>when card has this keyword, it also has a number next to this keyword. When such card is played and the last card played was same as this one, opponent will suffer additional damage equal to number next to Enduring.</description>
+	</keyword>
+	<keyword>
+		<name>Flare attack</name>
+		<description>when played, one player receives Searing fire cards at odd card positions, while the other player receives Searing fire cards at even card positions. Who receives odd and who even positions is resolved randomly. The position of the played card is ignored and Burning cards are not replaced by Searing fires. Rare cards aren't replaced, unless the played card is a rare.</description>
+	</keyword>
+	<keyword>
+		<name>Frenzy</name>
+		<description>If there is another Frenzy card in hand, opponent receives bonus damage (recruits cost of the played card).</description>
+	</keyword>
+	<keyword>
+		<name>Holy</name>
+		<description>Basic gain 25, bonus gain 5, side-effect (Purification): replaces one random Undead card from enemy hand (if there is one) with Purified ashes. Can only replace a card with same or lower rarity as was the played card, but cards with highest replacable rarity are preferred. Cards that cannot be replaced by played card are not considered targets for replace. You will get additional stock based on replaced card rarity (Common - 1 stock, Uncommon - 2 stock, Rare - 3 stock).</description>
+	</keyword>
+	<keyword>
+		<name>Illusion</name>
+		<description>If an Illusion card is played after playing a different, non-common Illusion card, next card will be a rare card from enemy deck.</description>
+	</keyword>
+	<keyword>
+		<name>Legend</name>
+		<description>If there is a rare card in hand (other then played card) raises random facility by one.</description>
+	</keyword>
+	<keyword>
+		<name>Mage</name>
+		<description>Basic gain 10, bonus gain 3, side-effect (Willpower): If (Magic - Enemy magic &lt; 2) Magic: +1 else Gems: +10</description>
+	</keyword>
+	<keyword>
+		<name>Nature</name>
+		<description>If an Nature card is played after playing a different, non-common Nature card, next card will be a rare Nature card.</description>
+	</keyword>
+	<keyword>
+		<name>Quick</name>
+		<description>Player gets an additional turn, but no production this turn, it is impossible to draw a rare card after a Quick card is played.</description>
+	</keyword>
+	<keyword>
+		<name>Rebirth</name>
+		<description>when played and number of Burning cards in game is greater then 3, the card stays on hand and you will get additional 16 gems.</description>
+	</keyword>
+	<keyword>
+		<name>Restoration</name>
+		<description>If an Restoration card is played after playing a different, non-common Restoration card, it raises your lowest facility by 1 when your facility is below 3, otherwise it gives you 10 of your lowest resource.</description>
+	</keyword>
+	<keyword>
+		<name>Skirmisher</name>
+		<description>Discards one random Charge card from enemy hand (if there is one). Common cards can discard common and uncommon cards, uncommon cards can discard any rarity. Rare cards can also discard any rarity, but they have additional effect (opponent loses stock equal to discarded card cost). Cards with highest discardable rarity are preferred. Cards that cannot be discarded by played card are not considered targets for discard.</description>
+	</keyword>
+	<keyword>
+		<name>Soldier</name>
+		<description>Basic gain 15, bonus gain 10, side-effect (Veteran troops): half of the recruits cost of the played card will be returned.</description>
+	</keyword>
+	<keyword>
+		<name>Swift</name>
+		<description>Player gets additional turn, also with production, it is impossible to draw a rare card after a Swift card is played.</description>
+	</keyword>
+	<keyword>
+		<name>Titan</name>
+		<description>Basic gain 22, bonus gain 5, side-effect (Titan's will): next card received will be a Titan.</description>
+	</keyword>
+	<keyword>
+		<name>Undead</name>
+		<description>Basic gain 5, bonus gain 5, side-effect (Eternal servitude): third of the total cost of the played card will be returned.</description>
+	</keyword>
+	<keyword>
+		<name>Unliving</name>
+		<description>Basic gain 9, bonus gain 8, side-effect (Artificial workers): additional bricks production based on played card rarity (Common - x2, Uncommon - x3, Rare - x4).</description>
+	</keyword>
+</keywords>
