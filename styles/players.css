@@ -43,14 +43,18 @@ div#details /* set minimum width to whole section (grants immunity to resize) */
 	min-width: 1045px;
 }
 
-div#details > div /* user details content layout */
+div#details > div.skin_text /* user details content layout */
 {
 	margin-left: auto;
 	margin-right: auto;
 	width: 50%;
-	font-weight: bold;
 	padding: 0ex 1ex 1ex 1ex;
 	margin-bottom: 1ex;
+}
+
+div#details > div.skin_text .detail_value /* player data values */
+{
+	font-weight: bold;
 }
 
 div#details /* set distance between separate lines */
@@ -75,6 +79,7 @@ div.details_float_right /* float both avatar and zodiac to the right */
 {
 	float: right;
 	text-align: center;
+	font-weight: bold;
 }
 
 div.details_float_right img /* avatar and zodiac pictures */
@@ -85,15 +90,20 @@ div.details_float_right img /* avatar and zodiac pictures */
 	border: medium ridge white;
 }
 
-div#details * + h4 /* special messages formatting */
+div.statistics /* versus statistics layout */
 {
-	margin-top: 5ex;
-	margin-bottom: 2ex;
+	clear: right;
+	float: right;
+	width: 12em;
+	margin: 1ex;
+	border: medium ridge white;
+	padding: 0ex 1ex 1ex 1ex;
 }
 
-div#details select /* special messages formatting */
+div.statistics > p > span /* float values to the right */
 {
-	margin-left: 2ex;
+	float: right;
+	font-weight: bold;
 }
 
 .challenge_text /* challenge text input and display layout */

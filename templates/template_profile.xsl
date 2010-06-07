@@ -27,7 +27,46 @@
 			<p>Avatar</p>
 			<img height="60px" width="60px" src="img/avatars/{$param/Avatar}" alt="avatar" />
 		</div>
-		
+
+		<xsl:if test="count($param/statistics/*) &gt; 0">
+			<div class="statistics">
+
+			<h3>Versus statistics</h3>
+
+			<h4>Victories</h4>
+			<xsl:for-each select="$param/statistics/wins/*">
+				<p>
+					<span><xsl:value-of select="count"/> (<xsl:value-of select="ratio"/>%)</span>
+					<xsl:value-of select="EndType"/>
+				</p>
+			</xsl:for-each>
+			<p><span><xsl:value-of select="$param/statistics/wins_total"/></span>Total</p>
+
+			<h4>Losses</h4>
+			<xsl:for-each select="$param/statistics/losses/*">
+				<p>
+					<span><xsl:value-of select="count"/> (<xsl:value-of select="ratio"/>%)</span>
+					<xsl:value-of select="EndType"/>
+				</p>
+			</xsl:for-each>
+			<p><span><xsl:value-of select="$param/statistics/losses_total"/></span>Total</p>
+
+			<h4>Other</h4>
+			<xsl:for-each select="$param/statistics/other/*">
+				<p>
+					<span><xsl:value-of select="count"/> (<xsl:value-of select="ratio"/>%)</span>
+					<xsl:value-of select="EndType"/>
+				</p>
+			</xsl:for-each>
+			<p><span><xsl:value-of select="$param/statistics/other_total"/></span>Total</p>
+
+			<h4>Average game duration</h4>
+			<p><span><xsl:value-of select="$param/statistics/turns"/></span>Turns</p>
+			<p><span><xsl:value-of select="$param/statistics/rounds"/></span>Rounds</p>
+
+			</div>
+		</xsl:if>
+
 		<p>First name: <span class="detail_value"><xsl:value-of select="$param/Firstname"/></span></p>
 		<p>Surname: <span class="detail_value"><xsl:value-of select="$param/Surname"/></span></p>
 
@@ -39,7 +78,7 @@
 			</xsl:choose>
 		</xsl:variable>
 		
-		<p>Gender: <span style="color: {$gender_color}"><xsl:value-of select="$param/Gender"/></span></p>
+		<p>Gender: <span class="detail_value" style="color: {$gender_color}"><xsl:value-of select="$param/Gender"/></span></p>
 		<p>E-mail: <span class="detail_value"><xsl:value-of select="$param/Email"/></span></p>
 		<p>ICQ / IM: <span class="detail_value"><xsl:value-of select="$param/Imnumber"/></span></p>
 		<p>Date of birth (dd-mm-yyyy): <span class="detail_value"><xsl:value-of select="$param/Birthdate"/></span></p>

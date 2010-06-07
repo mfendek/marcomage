@@ -120,6 +120,81 @@
 			return $statistics;
 		}
 
+		public function VersusStats($player1, $player2) // calculate versus statistics for the two specified players from player1 perspecive
+		{
+			$db = $this->db;
+			$statistics = array();
+
+			// wins statistics
+			$result = $db->Query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays_head` WHERE (`EndType` != "Pending") AND ((`Player1` = "'.$db->Escape($player1).'" AND `Player2` = "'.$db->Escape($player2).'") OR (`Player1` = "'.$db->Escape($player2).'" AND `Player2` = "'.$db->Escape($player1).'")) AND `Winner` = "'.$db->Escape($player1).'" GROUP BY `EndType` ORDER BY `count` DESC');
+
+			if (!$result) return false;
+			$wins_total = 0;
+
+			if ($result->Rows())
+			{
+				while( $data = $result->Next() )
+				{
+					$statistics['wins'][] = $data;
+					$wins_total+= $data['count'];
+				}
+
+				// calculate percentage
+				foreach ($statistics['wins'] as $i => $data) $statistics['wins'][$i]['ratio'] = round(($data['count'] / $wins_total) * 100, 1);
+			}
+			$statistics['wins_total'] = $wins_total;
+
+			// loss statistics
+			$result = $db->Query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays_head` WHERE (`EndType` != "Pending") AND ((`Player1` = "'.$db->Escape($player1).'" AND `Player2` = "'.$db->Escape($player2).'") OR (`Player1` = "'.$db->Escape($player2).'" AND `Player2` = "'.$db->Escape($player1).'")) AND `Winner` = "'.$db->Escape($player2).'" GROUP BY `EndType` ORDER BY `count` DESC');
+
+			if (!$result) return false;
+			$losses_total = 0;
+
+			if ($result->Rows())
+			{
+				while( $data = $result->Next() )
+				{
+					$statistics['losses'][] = $data;
+					$losses_total+= $data['count'];
+				}
+
+				// calculate percentage
+				foreach ($statistics['losses'] as $i => $data) $statistics['losses'][$i]['ratio'] = round(($data['count'] / $losses_total) * 100, 1);
+			}
+			$statistics['losses_total'] = $losses_total;
+
+			// other statistics (draws, aborts...)
+			$result = $db->Query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays_head` WHERE (`EndType` != "Pending") AND ((`Player1` = "'.$db->Escape($player1).'" AND `Player2` = "'.$db->Escape($player2).'") OR (`Player1` = "'.$db->Escape($player2).'" AND `Player2` = "'.$db->Escape($player1).'")) AND `Winner` = "" GROUP BY `EndType` ORDER BY `count` DESC');
+
+			if (!$result) return false;
+			$other_total = 0;
+
+			if ($result->Rows())
+			{
+				while( $data = $result->Next() )
+				{
+					$statistics['other'][] = $data;
+					$other_total+= $data['count'];
+				}
+
+				// calculate percentage
+				foreach ($statistics['other'] as $i => $data) $statistics['other'][$i]['ratio'] = round(($data['count'] / $other_total) * 100, 2);
+			}
+
+			$statistics['other_total'] = $other_total;
+
+			// average game duration
+			$result = $db->Query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays_head` WHERE (`EndType` != "Pending") AND ((`Player1` = "'.$db->Escape($player1).'" AND `Player2` = "'.$db->Escape($player2).'") OR (`Player1` = "'.$db->Escape($player2).'" AND `Player2` = "'.$db->Escape($player1).'"))');
+
+			if (!$result) return false;
+
+			$data = $result->Next();
+			$statistics['turns'] = $data['Turns'];
+			$statistics['rounds'] = $data['Rounds'];
+
+			return $statistics;
+		}
+
 		public function Skins() // calculate skin related statistics
 		{
 			$db = $this->db;

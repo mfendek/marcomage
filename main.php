@@ -3208,6 +3208,8 @@ case 'Profile':
 		$params['profile']['challenge'] = $messagedb->GetChallenge($player->Name(), $cur_player);
 	}
 
+	$params['profile']['statistics'] = ($player->Name() != $cur_player) ? $player->GetVersusStats($p->Name()) : array();
+
 	break;
 
 
