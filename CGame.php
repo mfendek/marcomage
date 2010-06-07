@@ -498,6 +498,7 @@
 		public function PlayCard($playername, $cardpos, $mode, $action)
 		{
 			global $carddb;
+			global $statistics;
 			global $game_config;
 			
 			// only allow discarding if the game is still on
@@ -1168,6 +1169,7 @@
 					{
 						$mydiscards_index++;
 						$mydata->DisCards[0][$mydiscards_index] = $myhand[$i];
+						$statistics->UpdateCardStats($myhand[$i], 'discard'); // update card statistics (card discarded by card effect)
 						// hide revealed card if it was revealed before and discarded now
 						if (isset($mydata->Revealed[$i])); unset($mydata->Revealed[$i]);
 					}
@@ -1176,6 +1178,7 @@
 					{
 						$hisdiscards_index++;
 						$mydata->DisCards[1][$hisdiscards_index] = $hishand[$i];
+						$statistics->UpdateCardStats($hishand[$i], 'discard'); // update card statistics (card discarded by card effect)
 						// hide revealed card if it was revealed before and discarded now
 						if (isset($hisdata->Revealed[$i])); unset($hisdata->Revealed[$i]);
 					}
@@ -1360,6 +1363,9 @@
 				if( $nextplayer != $playername )
 					$this->Round++;
 			}
+			
+			// update card statistics (card was played or discarded by standard discard action)
+			$statistics->UpdateCardStats($cardid, $action);
 			
 			return 'OK';
 		}

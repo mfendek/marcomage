@@ -25,6 +25,7 @@
 	require_once('CPost.php');
 	require_once('CThread.php');
 	require_once('CForum.php');
+	require_once('CStatistic.php');
 	require_once('utils.php');
 	require_once('Access.php');
 	require_once('parser/parse.php');
@@ -47,6 +48,7 @@
 	$messagedb = new CMessage($db);
 	$noveldb = new CNovels($db);
 	$forum = new CForum($db);
+	$statistics = new CStatistics($db);
 
 	$current = "Webpage"; // set a meaningful default
 
@@ -181,6 +183,10 @@
 		elseif (isset($_POST['Replays']))
 		{
 			$current = "Replays";
+		}
+		elseif (isset($_POST['Statistics']))
+		{
+			$current = "Statistics";
 		}
 		elseif (isset($_POST['Logout']))
 		{
@@ -4037,6 +4043,25 @@ case 'Cards_details':
 	$params['cards_details']['c_img'] = $settings->GetSetting('Images');
 	$params['cards_details']['c_keywords'] = $settings->GetSetting('Keywords');
 	$params['cards_details']['c_oldlook'] = $settings->GetSetting('OldCardLook');
+
+	break;
+
+
+case 'Statistics':
+	$params['statistics']['victory_types'] = $statistics->VictoryTypes();
+	$params['statistics']['game_modes'] = $statistics->GameModes();
+	$params['statistics']['skins'] = $statistics->Skins();
+	$params['statistics']['backgrounds'] = $statistics->Backgrounds();
+	$params['statistics']['suggested'] = $statistics->SuggestedConcepts();
+	$params['statistics']['implemented'] = $statistics->ImplementedConcepts();
+	$params['statistics']['most_played'] = $statistics->Cards('Played', 'DESC'); // most played cards
+	$params['statistics']['least_played'] = $statistics->Cards('Played', 'ASC'); // least played cards
+	$params['statistics']['most_discarded'] = $statistics->Cards('Discarded', 'DESC'); // most discarded cards
+	$params['statistics']['least_discarded'] = $statistics->Cards('Discarded', 'ASC'); // least discarded cards
+	$params['statistics']['most_played_total'] = $statistics->Cards('PlayedTotal', 'DESC'); // most played cards (total)
+	$params['statistics']['least_played_total'] = $statistics->Cards('PlayedTotal', 'ASC'); // least played cards (total)
+	$params['statistics']['most_discarded_total'] = $statistics->Cards('DiscardedTotal', 'DESC'); // most discarded cards (total)
+	$params['statistics']['least_discarded_total'] = $statistics->Cards('DiscardedTotal', 'ASC'); // least discarded cards (total)
 
 	break;
 

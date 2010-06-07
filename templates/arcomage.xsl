@@ -28,6 +28,7 @@
 <xsl:include href="template_profile.xsl" />
 <xsl:include href="template_registration.xsl" />
 <xsl:include href="template_settings.xsl" />
+<xsl:include href="template_statistics.xsl" />
 <xsl:include href="template_website.xsl" />
 <xsl:include href="template_replays.xsl" />
 <xsl:include href="template_nowhere.xsl" /> <!-- needs to be the last included section -->

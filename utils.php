@@ -97,6 +97,7 @@
 		$sections['Replays'] = array('Replays', 'Replay');
 		$sections['Novels'] = array('Novels');
 		$sections['Settings'] = array('Settings');
+		$sections['Statistics'] = array('Statistics');
 
 		return $sections;
 	}

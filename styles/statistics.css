@@ -1,0 +1,48 @@
+/*************************************************
+ * MArcomage CSS stylesheet - statistics section *
+ *************************************************/
+
+div#statistics /* set minimum width to whole section (grants immunity to resize) */
+{
+	min-width: 1045px;
+}
+
+div#statistics > div.skin_label /* content layout */
+{
+	width: 90%;
+	margin: 1ex auto 1ex auto;
+}
+
+div#statistics p /* set distance between separate lines */
+{
+	margin-top: 0.5ex;
+}
+
+div#statistics h3 /* section heading */
+{
+	margin: 0ex;
+}
+
+div#statistics h4 /* column heading */
+{
+	margin-top: 1ex;
+	margin-bottom: 1ex;
+}
+
+div#statistics div.skin_text /* statistic group (subsection) layout */
+{
+	width: 12em;
+	margin: 1ex;
+	padding: 0ex 1ex 1ex 1ex;
+}
+
+div#statistics div.skin_text > p > span /* float values to the right */
+{
+	float: right;
+	font-weight: bold;
+}
+
+div#statistics div.skin_text /* floated columns */
+{
+	float: left;
+}
