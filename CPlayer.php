@@ -105,9 +105,9 @@
 			$challenges_out = 'SELECT `Player1` as `Username` FROM `games` WHERE `State` = "waiting"';
 			$challenges_in = 'SELECT `Player2` as `Username` FROM `games` WHERE `State` = "waiting"';
 			$slots_q = "SELECT `Username`, COUNT(`Username`) as `Slots` FROM ((".$games_p1.") UNION ALL (".$games_p2.") UNION ALL (".$challenges_out.") UNION ALL (".$challenges_in.")) as t GROUP BY `Username`";
-			$status_query = ($status != 'none') ? '(SELECT `Username`, `Avatar`, `Status`, `Country`, `FriendlyFlag`, `BlindFlag` FROM `settings` WHERE `Status` = "'.$status.'") as `settings`' : '`settings`';
+			$status_query = ($status != 'none') ? ' WHERE `Status` = "'.$status.'"' : '';
 
-			$query = "SELECT `Username`, `UserType`, `Level`, `Exp`, `Wins`, `Losses`, `Draws`, `Avatar`, `Status`, `FriendlyFlag`, `BlindFlag`, `settings`.`Country`, `Last Query`, GREATEST(0, ".MAX_GAMES." + (`Level` DIV ".BONUS_GAME_SLOTS.") - IFNULL(`Slots`, 0)) as `Free slots` FROM (`logins` JOIN ".$status_query." USING (`Username`) JOIN `scores` USING (`Username`) LEFT OUTER JOIN (".$slots_q.") as `slots` USING (`Username`)) WHERE (UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - ".$activity_q.")".$name_q." ORDER BY `".$condition."` ".$order.", `Username` ASC LIMIT ".(PLAYERS_PER_PAGE * $page)." , ".PLAYERS_PER_PAGE."";
+			$query = "SELECT `Username`, `UserType`, `Level`, `Exp`, `Wins`, `Losses`, `Draws`, `Avatar`, `Status`, `FriendlyFlag`, `BlindFlag`, `settings`.`Country`, `Last Query`, GREATEST(0, ".MAX_GAMES." + (`Level` DIV ".BONUS_GAME_SLOTS.") - IFNULL(`Slots`, 0)) as `Free slots` FROM (`logins` JOIN (SELECT `Username`, `Avatar`, `Status`, `Country`, (CASE WHEN `FriendlyFlag` = TRUE THEN 'yes' ELSE 'no' END) as `FriendlyFlag`, (CASE WHEN `BlindFlag` = TRUE THEN 'yes' ELSE 'no' END) as `BlindFlag` FROM `settings`".$status_query.") as `settings` USING (`Username`) JOIN `scores` USING (`Username`) LEFT OUTER JOIN (".$slots_q.") as `slots` USING (`Username`)) WHERE (UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - ".$activity_q.")".$name_q." ORDER BY `".$condition."` ".$order.", `Username` ASC LIMIT ".(PLAYERS_PER_PAGE * $page)." , ".PLAYERS_PER_PAGE."";
 
 			$result = $db->Query($query);
 			if (!$result) return false;
@@ -316,40 +316,16 @@
 			global $deckdb;
 			return $deckdb->ListReadyDecks($this->Name);
 		}
-		
-		public function GetSetting($setting)
-		{
-            global $settingdb;
-			return $settingdb->GetSetting($this->Name, $setting);
-		}
 
-		public function ChangeSetting($setting, $value)
-		{
-            global $settingdb;
-			return $settingdb->ChangeSetting($this->Name, $setting, $value);
-		}
-	
 		public function GetSettings()
 		{
-            global $settingdb;
+			global $settingdb;
 			return $settingdb->GetSettings($this->Name);
 		}
-		
-		public function GetUserSettings()
-		{
-            global $settingdb;
-			return $settingdb->GetSettings($this->Name, $settingdb->UserSettingsList());
-		}
-		
-		public function GetGameSettings()
-		{
-            global $settingdb;
-			return $settingdb->GetSettings($this->Name, $settingdb->GameSettingsList());
-		}
-		
+
 		public function ChangeAccessRights($access_right)
 		{
-            return $this->Players->ChangeAccessRights($this->Name, $access_right);
+			return $this->Players->ChangeAccessRights($this->Name, $access_right);
 		}
 	}
 ?>

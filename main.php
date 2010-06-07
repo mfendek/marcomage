@@ -518,8 +518,8 @@
 							$exp2 = $game->CalculateExp($player2);
 							$p1 = $playerdb->GetPlayer($player1);
 							$p2 = $playerdb->GetPlayer($player2);
-							$p1_rep = $p1->GetSetting("Reports");
-							$p2_rep = $p2->GetSetting("Reports");
+							$p1_rep = $p1->GetSettings()->GetSetting('Reports');
+							$p2_rep = $p2->GetSettings()->GetSetting('Reports');
 							
 							// update score
 							$score1 = $scoredb->GetScore($player1);
@@ -586,8 +586,8 @@
 						$exp1 = $game->CalculateExp($player->Name());
 						$exp2 = $game->CalculateExp($game->Winner);
 						$opponent = $playerdb->GetPlayer($game->Winner);
-						$opponent_rep = $opponent->GetSetting("Reports");
-						$player_rep = $player->GetSetting("Reports");
+						$opponent_rep = $opponent->GetSettings()->GetSetting('Reports');
+						$player_rep = $player->GetSettings()->GetSetting('Reports');
 						
 						// update score
 						$score1 = $scoredb->GetScore($player->Name());
@@ -679,8 +679,8 @@
 						$exp2 = $game->CalculateExp($player2);
 						$p1 = $playerdb->GetPlayer($player1);
 						$p2 = $playerdb->GetPlayer($player2);
-						$p1_rep = $p1->GetSetting("Reports");
-						$p2_rep = $p2->GetSetting("Reports");
+						$p1_rep = $p1->GetSettings()->GetSetting('Reports');
+						$p2_rep = $p2->GetSettings()->GetSetting('Reports');
 						
 						// update score
 						$score1 = $scoredb->GetScore($player1);
@@ -1985,18 +1985,21 @@
 				
 				// settings-related messages
 				
-				if ($message == 'user_settings') //upload user settings
+				if ($message == 'user_settings') // upload user settings
 				{
 					if (strlen($_POST['Hobby']) > HOBBY_LENGTH) { $_POST['Hobby'] = substr($_POST['Hobby'], 0, HOBBY_LENGTH); $warning = "Hobby text is too long"; }
 
-					$settings = $settingdb->UserSettingsList();
-					$_POST['FriendlyFlag'] = (isset($_POST['FriendlyFlag'])) ? 'yes' : 'no';
-					$_POST['BlindFlag'] = (isset($_POST['BlindFlag'])) ? 'yes' : 'no';
-					foreach($settings as $setting)
-						if (isset($_POST[$setting]) and $setting != 'Birthdate')
-							$player->ChangeSetting($setting, $_POST[$setting]);
+					$settings = $player->GetSettings();
+					$bool_settings = $settings->ListBooleanSettings();
+					$other_settings = $settings->ListOtherSettings();
 
-					//birthdate is handled separately
+					// process yes/no settings
+					foreach($bool_settings as $setting) $settings->ChangeSetting($setting, ((isset($_POST[$setting])) ? 'yes' : 'no'));
+					// process other settings
+					foreach($other_settings as $setting)
+						if (isset($_POST[$setting]) and $setting != 'Birthdate'and $setting != 'Avatar') $settings->ChangeSetting($setting, $_POST[$setting]);
+
+					// birthdate is handled separately
 					if( $_POST['Birthyear'] == "" ) $_POST['Birthyear'] = '0000';
 					if( $_POST['Birthmonth'] == "" ) $_POST['Birthmonth'] = '00';
 					if( $_POST['Birthday'] == "" ) $_POST['Birthday'] = '00';
@@ -2007,44 +2010,13 @@
 					elseif( intval(date("Y")) <= $_POST['Birthyear'] )
 						$error = "Invalid birthdate";
 					else
-						$player->ChangeSetting("Birthdate", $_POST['Birthyear']."-".$_POST['Birthmonth']."-".$_POST['Birthday']);
+						$settings->ChangeSetting('Birthdate', implode("-", array($_POST['Birthyear'], $_POST['Birthmonth'], $_POST['Birthday'])));
+
+					$settings->SaveSettings();
 
 					$information = "User settings saved";
 					$current = 'Settings';
-					
-					break;
-				}
-				
-				if ($message == 'game_settings') //upload game settings
-				{
-					$settings = $settingdb->GameSettingsList();
-					// handle timezone, skin and background separately
-					unset($settings['Timezone']);
-					unset($settings['Skin']);
-					unset($settings['Background']);
-					unset($settings['DefaultFilter']);
-					unset($settings['Autorefresh']);
-					
-					foreach($settings as $setting)
-					{
-						if( isset($_POST[$setting]) ) // option is checked
-							$player->ChangeSetting($setting, "yes");
-						else // assume option is unchecked
-							$player->ChangeSetting($setting, "no");
-					}
-					
-					if( isset($_POST['Timezone']) and (int)$_POST['Timezone'] >= -12 and (int)$_POST['Timezone'] <= +12 )
-						$player->ChangeSetting("Timezone", $_POST['Timezone']);
-					
-					$player->ChangeSetting("Skin", $_POST['Skin']);
-					$player->ChangeSetting("Background", $_POST['Background']);
-					$player->ChangeSetting("DefaultFilter", $_POST['DefaultFilter']);
-					$player->ChangeSetting("Autorefresh", $_POST['Autorefresh']);
-					
-					$information = "Game settings saved";
-					
-					$current = 'Settings';
-					
+
 					break;
 				}
 				
@@ -2052,8 +2024,10 @@
 				{
 					// check access rights
 					if (!$access_rights[$player->Type()]["change_own_avatar"]) { $error = 'Access denied.'; $current = 'Settings'; break; }
-				
-					$former_name = $player->GetSetting("Avatar");
+					
+					$settings = $player->GetSettings();
+					
+					$former_name = $settings->GetSetting('Avatar');
 					$former_path = 'img/avatars/'.$former_name;
 					
 					$type = $_FILES['uploadedfile']['type'];
@@ -2081,7 +2055,8 @@
 					else
 					{
 						if ((file_exists($former_path)) and ($former_name != "noavatar.jpg")) unlink($former_path);
-						$player->ChangeSetting("Avatar", $code_name);
+						$settings->ChangeSetting('Avatar', $code_name);
+						$settings->SaveSettings();
 						$information = "Avatar uploaded";
 					}
 					
@@ -2095,11 +2070,14 @@
 					// check access rights
 					if (!$access_rights[$player->Type()]["change_own_avatar"]) { $error = 'Access denied.'; $current = 'Settings'; break; }
 					
-					$former_name = $player->GetSetting("Avatar");
+					$settings = $player->GetSettings();
+					
+					$former_name = $settings->GetSetting('Avatar');
 					$former_path = 'img/avatars/'.$former_name;
 					
 					if ((file_exists($former_path)) and ($former_name != "noavatar.jpg")) unlink($former_path);
-					$player->ChangeSetting("Avatar", "noavatar.jpg");
+					$settings->ChangeSetting('Avatar', "noavatar.jpg");
+					$settings->SaveSettings();
 					$information = "Avatar cleared";
 					
 					$current = 'Settings';
@@ -2116,11 +2094,13 @@
 					// check access rights
 					if (!$access_rights[$player->Type()]["change_all_avatar"]) { $error = 'Access denied.'; $current = 'Profile'; break; }
 					
-					$former_name = $opponent->GetSetting("Avatar");
+					$settings = $opponent->GetSettings();
+					$former_name = $settings->GetSetting('Avatar');
 					$former_path = 'img/avatars/'.$former_name;
 					
 					if ((file_exists($former_path)) and ($former_name != "noavatar.jpg")) unlink($former_path);
-					$opponent->ChangeSetting("Avatar", "noavatar.jpg");
+					$settings->ChangeSetting('Avatar', "noavatar.jpg");
+					$settings->SaveSettings();
 					$information = "Avatar cleared";
 					
 					$current = 'Profile';
@@ -2856,14 +2836,15 @@
 		$params["navbar"]['NumUnread'] = $messagedb->CountUnreadMessages($player->Name());
 
 		// menubar notification (depends on current user's game settings)
-		$forum_not = ($player->GetSetting("Forum_notification") == 'yes');
-		$concepts_not = ($player->GetSetting("Concepts_notification") == 'yes');
+		$settings = $player->GetSettings();
+		$forum_not = ($settings->GetSetting('Forum_notification') == 'yes');
+		$concepts_not = ($settings->GetSetting('Concepts_notification') == 'yes');
 		$params["navbar"]['IsSomethingNew'] = ($forum_not AND $forum->IsSomethingNew($player->PreviousLogin())) ? 'yes' : 'no';
 		$params["navbar"]['NewConcepts'] = ($concepts_not AND $conceptdb->NewConcepts($player->PreviousLogin())) ? 'yes' : 'no';
 		$params["navbar"]['NumGames'] = count($gamedb->ListCurrentGames($player->Name()));
 		$params["navbar"]['sections_list'] = SectionsList();
-		$params["main"]["skin"] = $player->GetSetting("Skin");
-		$params["main"]["autorefresh"] = ($current == "Games") ? $player->GetSetting("Autorefresh") : 0; // apply only in games section
+		$params["main"]["skin"] = $settings->GetSetting('Skin');
+		$params["main"]["autorefresh"] = ($current == "Games") ? $settings->GetSetting('Autorefresh') : 0; // apply only in games section
 		$params["navbar"]['current_section'] = NavBarSection($current); // navigation bar section
 	}
 	
@@ -2881,7 +2862,7 @@ case 'Webpage':
 
 	$params['website']['selected'] = $selected;
 	$params['website']['files'] = $files;
-	$params['website']['timezone'] = ( isset($player) ) ? $player->GetSetting("Timezone") : '+0';
+	$params['website']['timezone'] = ( isset($player) ) ? $player->GetSettings()->GetSetting('Timezone') : '+0';
 	// display all news when viewing news archive, display only recent news otherwise
 	$params['website']['recent_news_only'] = (($selected == "News") AND !(isset($_POST['WebPage']) AND (array_shift($_POST['WebPage']) == "Show all news"))) ? 'yes' : 'no';
 	break;
@@ -2907,10 +2888,11 @@ case 'Deck_edit':
 	$params['deck_edit']['reset'] = ( (isset($_POST["reset_deck_prepare"] )) ? 'yes' : 'no');
 
 	// load card display settings
-	$params['deck_edit']['c_text'] = $player->GetSetting("Cardtext");
-	$params['deck_edit']['c_img'] = $player->GetSetting("Images");
-	$params['deck_edit']['c_keywords'] = $player->GetSetting("Keywords");
-	$params['deck_edit']['c_oldlook'] = $player->GetSetting("OldCardLook");
+	$settings = $player->GetSettings();
+	$params['deck_edit']['c_text'] = $settings->GetSetting('Cardtext');
+	$params['deck_edit']['c_img'] = $settings->GetSetting('Images');
+	$params['deck_edit']['c_keywords'] = $settings->GetSetting('Keywords');
+	$params['deck_edit']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 
 	// calculate average cost per turn
 
@@ -2975,7 +2957,7 @@ case 'Deck_edit':
 
 case 'Decks':
 	$params['decks']['list'] = $list = $player->ListDecks();
-	$params['decks']['timezone'] = $player->GetSetting("Timezone"); 
+	$params['decks']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 
 	break;
 
@@ -3001,21 +2983,22 @@ case 'Concepts':
 	$params['concepts']['pages'] = $pages;
 	$params['concepts']['page_count'] = $page_count;
 
+	$settings = $player->GetSettings();
 	$params['concepts']['timesections'] = $messagedb->Timesections();
 	$params['concepts']['PreviousLogin'] = $player->PreviousLogin();
 	$params['concepts']['authors'] = $authors = $conceptdb->ListAuthors($date);
 	$params['concepts']['mycards'] = (in_array($player->Name(), $authors) ? 'yes' : 'no');
-	$params['concepts']['timezone'] = $player->GetSetting("Timezone");
+	$params['concepts']['timezone'] = $settings->GetSetting('Timezone');
 	$params['concepts']['PlayerName'] = $player->Name();
 	$params['concepts']['create_card'] = (($access_rights[$player->Type()]["create_card"]) ? 'yes' : 'no');
 	$params['concepts']['edit_own_card'] = (($access_rights[$player->Type()]["edit_own_card"]) ? 'yes' : 'no');
 	$params['concepts']['edit_all_card'] = (($access_rights[$player->Type()]["edit_all_card"]) ? 'yes' : 'no');
 	$params['concepts']['delete_own_card'] = (($access_rights[$player->Type()]["delete_own_card"]) ? 'yes' : 'no');
 	$params['concepts']['delete_all_card'] = (($access_rights[$player->Type()]["delete_all_card"]) ? 'yes' : 'no');
-	$params['concepts']['c_text'] = $player->GetSetting("Cardtext");
-	$params['concepts']['c_img'] = $player->GetSetting("Images");
-	$params['concepts']['c_keywords'] = $player->GetSetting("Keywords");
-	$params['concepts']['c_oldlook'] = $player->GetSetting("OldCardLook");
+	$params['concepts']['c_text'] = $settings->GetSetting('Cardtext');
+	$params['concepts']['c_img'] = $settings->GetSetting('Images');
+	$params['concepts']['c_keywords'] = $settings->GetSetting('Keywords');
+	$params['concepts']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 
 	break;
 
@@ -3040,10 +3023,11 @@ case 'Concepts_edit':
 	$params['concepts_edit']['delete_all_card'] = (($access_rights[$player->Type()]["delete_all_card"]) ? 'yes' : 'no');
 	$params['concepts_edit']['PlayerName'] = $player->Name();
 	$params['concepts_edit']['delete'] = ((isset($_POST["delete_concept"])) ? 'yes' : 'no');
-	$params['concepts_edit']['c_text'] = $player->GetSetting("Cardtext");
-	$params['concepts_edit']['c_img'] = $player->GetSetting("Images");
-	$params['concepts_edit']['c_keywords'] = $player->GetSetting("Keywords");
-	$params['concepts_edit']['c_oldlook'] = $player->GetSetting("OldCardLook");
+	$settings = $player->GetSettings();
+	$params['concepts_edit']['c_text'] = $settings->GetSetting('Cardtext');
+	$params['concepts_edit']['c_img'] = $settings->GetSetting('Images');
+	$params['concepts_edit']['c_keywords'] = $settings->GetSetting('Keywords');
+	$params['concepts_edit']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 
 	break;
 
@@ -3060,10 +3044,11 @@ case 'Concepts_details':
 	$params['concepts_details']['edit_all_card'] = ($access_rights[$player->Type()]["edit_all_card"]) ? 'yes' : 'no';
 	$params['concepts_details']['delete_own_card'] = ($access_rights[$player->Type()]["delete_own_card"]) ? 'yes' : 'no';
 	$params['concepts_details']['delete_all_card'] = ($access_rights[$player->Type()]["delete_all_card"]) ? 'yes' : 'no';
-	$params['concepts_details']['c_text'] = $player->GetSetting("Cardtext");
-	$params['concepts_details']['c_img'] = $player->GetSetting("Images");
-	$params['concepts_details']['c_keywords'] = $player->GetSetting("Keywords");
-	$params['concepts_details']['c_oldlook'] = $player->GetSetting("OldCardLook");
+	$settings = $player->GetSettings();
+	$params['concepts_details']['c_text'] = $settings->GetSetting('Cardtext');
+	$params['concepts_details']['c_img'] = $settings->GetSetting('Images');
+	$params['concepts_details']['c_keywords'] = $settings->GetSetting('Keywords');
+	$params['concepts_details']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 
 	break;
 
@@ -3077,8 +3062,10 @@ case 'Players':
 	$params['players']['order'] = $order = $_POST['CurrentOrder'];
 	$params['players']['condition'] = $condition = $_POST['CurrentCondition'];
 
+	$settings = $player->GetSettings();
+
 	// filter initialization
-	$params['players']['CurrentFilter'] = $filter = ((isset($_POST['player_filter'])) ? $_POST['player_filter'] : $player->GetSetting("DefaultFilter"));
+	$params['players']['CurrentFilter'] = $filter = ((isset($_POST['player_filter'])) ? $_POST['player_filter'] : $settings->GetSetting('DefaultFilter'));
 	$params['players']['status_filter'] = $status_filter = (isset($_POST['status_filter'])) ? $_POST['status_filter'] : 'none';
 	$params['players']['pname_filter'] = $pname_filter = (isset($_POST['pname_filter'])) ? $_POST['pname_filter'] : '';
 
@@ -3088,8 +3075,8 @@ case 'Players':
 	$params['players']['active_decks'] = count($player->ListReadyDecks());
 
 	//retrieve layout setting
-	$params['players']['show_nationality'] = $player->GetSetting("Nationality");
-	$params['players']['show_avatars'] = $player->GetSetting("Avatarlist");
+	$params['players']['show_nationality'] = $settings->GetSetting('Nationality');
+	$params['players']['show_avatars'] = $settings->GetSetting('Avatarlist');
 
 	$opponents = $gamedb->ListOpponents($player->Name());
 	$challengesfrom = $gamedb->ListChallengesFrom($player->Name());
@@ -3149,24 +3136,24 @@ case 'Profile':
 	$cur_player = (isset($_POST['Profile'])) ? $_POST['Profile'] : $_POST['cur_player'];
 
 	$p = $playerdb->GetPlayer($cur_player);
-	$settings = $p->GetUserSettings();
+	$p_settings = $p->GetSettings();
 	$score = $scoredb->GetScore($cur_player);
 
 	$params['profile']['PlayerName'] = $p->Name();
 	$params['profile']['PlayerType'] = $p->Type();
 	$params['profile']['LastQuery'] = $p->LastQuery();
 	$params['profile']['Registered'] = $p->Registered();
-	$params['profile']['Firstname'] = $settings['Firstname'];
-	$params['profile']['Surname'] = $settings['Surname'];
-	$params['profile']['Gender'] = $settings['Gender'];
-	$params['profile']['Country'] = $settings['Country'];
-	$params['profile']['Status'] = $settings['Status'];
-	$params['profile']['FriendlyFlag'] = $settings['FriendlyFlag'];
-	$params['profile']['BlindFlag'] = $settings['BlindFlag'];
-	$params['profile']['Avatar'] = $settings['Avatar'];
-	$params['profile']['Email'] = $settings['Email'];
-	$params['profile']['Imnumber'] = $settings['Imnumber'];
-	$params['profile']['Hobby'] = $settings['Hobby'];
+	$params['profile']['Firstname'] = $p_settings->GetSetting('Firstname');
+	$params['profile']['Surname'] = $p_settings->GetSetting('Surname');
+	$params['profile']['Gender'] = $p_settings->GetSetting('Gender');
+	$params['profile']['Country'] = $p_settings->GetSetting('Country');
+	$params['profile']['Status'] = $p_settings->GetSetting('Status');
+	$params['profile']['FriendlyFlag'] = $p_settings->GetSetting('FriendlyFlag');
+	$params['profile']['BlindFlag'] = $p_settings->GetSetting('BlindFlag');
+	$params['profile']['Avatar'] = $p_settings->GetSetting('Avatar');
+	$params['profile']['Email'] = $p_settings->GetSetting('Email');
+	$params['profile']['Imnumber'] = $p_settings->GetSetting('Imnumber');
+	$params['profile']['Hobby'] = $p_settings->GetSetting('Hobby');
 	$params['profile']['Level'] = $score->ScoreData->Level;
 	$params['profile']['Exp'] = $score->ScoreData->Exp;
 	$params['profile']['NextLevel'] = $scoredb->NextLevel($score->ScoreData->Level);
@@ -3175,11 +3162,11 @@ case 'Profile':
 	$params['profile']['Draws'] = $score->ScoreData->Draws;
 	$params['profile']['Posts'] = $forum->Threads->Posts->CountPosts($cur_player);
 
-	if( $settings["Birthdate"] != "0000-00-00" )
+	if( $p_settings->GetSetting('Birthdate') != "0000-00-00" )
 	{
-		$params['profile']['Age'] = $settingdb->CalculateAge($settings['Birthdate']);
-		$params['profile']['Sign'] = $settingdb->CalculateSign($settings['Birthdate']);
-		$params['profile']['Birthdate'] = date("d-m-Y", strtotime($settings['Birthdate']));
+		$params['profile']['Age'] = $p_settings->Age();
+		$params['profile']['Sign'] = $p_settings->Sign();
+		$params['profile']['Birthdate'] = date("d-m-Y", strtotime($p_settings->GetSetting('Birthdate')));
 	}
 	else
 	{
@@ -3188,11 +3175,12 @@ case 'Profile':
 		$params['profile']['Birthdate'] = 'Unknown';
 	}
 
+	$settings = $player->GetSettings();
 	$params['profile']['CurPlayerName'] = $player->Name();
-	$params['profile']['HiddenCards'] = $player->GetSetting("BlindFlag");
-	$params['profile']['FriendlyPlay'] = $player->GetSetting("FriendlyFlag");
-	$params['profile']['RandomDeck'] = $player->GetSetting("RandomDeck");
-	$params['profile']['timezone'] = $player->GetSetting("Timezone");
+	$params['profile']['HiddenCards'] = $settings->GetSetting('BlindFlag');
+	$params['profile']['FriendlyPlay'] = $settings->GetSetting('FriendlyFlag');
+	$params['profile']['RandomDeck'] = $settings->GetSetting('RandomDeck');
+	$params['profile']['timezone'] = $settings->GetSetting('Timezone');
 	$params['profile']['send_challenges'] = ($access_rights[$player->Type()]["send_challenges"]) ? 'yes' : 'no';
 	$params['profile']['messages'] = ($access_rights[$player->Type()]["messages"]) ? 'yes' : 'no';
 	$params['profile']['change_rights'] = ($access_rights[$player->Type()]["change_rights"]) ? 'yes' : 'no';
@@ -3218,10 +3206,11 @@ case 'Profile':
 
 
 case 'Messages':
+	$settings = $player->GetSettings();
 	$params['messages']['PlayerName'] = $player->Name();
 	$params['messages']['PreviousLogin'] = $player->PreviousLogin();
-	$params['messages']['timezone'] = $player->GetSetting("Timezone");
-	$params['messages']['RandomDeck'] = $player->GetSetting("RandomDeck");
+	$params['messages']['timezone'] = $settings->GetSetting('Timezone');
+	$params['messages']['RandomDeck'] = $settings->GetSetting('RandomDeck');
 	$params['messages']['system_name'] = SYSTEM_NAME;
 
 	$decks = $params['messages']['decks'] = $player->ListReadyDecks();
@@ -3298,7 +3287,7 @@ case 'Messages':
 case 'Message_details':
 	$params['message_details']['PlayerName'] = $player->Name();
 	$params['message_details']['system_name'] = SYSTEM_NAME;
-	$params['message_details']['timezone'] = $player->GetSetting("Timezone"); 
+	$params['message_details']['timezone'] = $player->GetSettings()->GetSetting('Timezone'); 
 
 	$params['message_details']['Author'] = $message['Author'];
 	$params['message_details']['Recipient'] = $message['Recipient'];
@@ -3328,12 +3317,13 @@ case 'Message_new':
 
 
 case 'Games':
+	$settings = $player->GetSettings();
 	$params['games']['PlayerName'] = $player->Name();
-	$params['games']['timezone'] = $player->GetSetting("Timezone");
-	$params['games']['games_details'] = $player->GetSetting("GamesDetails");
-	$params['games']['BlindFlag'] = $player->GetSetting("BlindFlag");
-	$params['games']['FriendlyFlag'] = $player->GetSetting("FriendlyFlag");
-	$params['games']['RandomDeck'] = $player->GetSetting("RandomDeck");
+	$params['games']['timezone'] = $settings->GetSetting('Timezone');
+	$params['games']['games_details'] = $settings->GetSetting('GamesDetails');
+	$params['games']['BlindFlag'] = $settings->GetSetting('BlindFlag');
+	$params['games']['FriendlyFlag'] = $settings->GetSetting('FriendlyFlag');
+	$params['games']['RandomDeck'] = $settings->GetSetting('RandomDeck');
 
 	$list = $gamedb->ListGamesData($player->Name());
 	if (count($list) > 0)
@@ -3385,7 +3375,7 @@ case 'Games':
 			else
 			{
 				$cur_player = $playerdb->GetPlayer($opponent_name);
-				$buffer[$opponent_name]['status'] = $status = $cur_player->GetSetting('Status');
+				$buffer[$opponent_name]['status'] = $status = $cur_player->GetSettings()->GetSetting('Status');
 				$buffer[$opponent_name]['inactivity'] = $inactivity = time() - strtotime($cur_player->LastQuery());
 			}
 
@@ -3431,16 +3421,18 @@ case 'Game':
 	$params['game']['chat'] = (($access_rights[$player->Type()]["chat"]) ? 'yes' : 'no');
 
 	// load needed settings
-	$params['game']['c_text'] = $player->GetSetting("Cardtext");
-	$params['game']['c_img'] = $player->GetSetting("Images");
-	$params['game']['c_keywords'] = $player->GetSetting("Keywords");
-	$params['game']['c_oldlook'] = $player->GetSetting("OldCardLook");
+	$settings = $player->GetSettings();
+	$o_settings = $opponent->GetSettings();
+	$params['game']['c_text'] = $settings->GetSetting('Cardtext');
+	$params['game']['c_img'] = $settings->GetSetting('Images');
+	$params['game']['c_keywords'] = $settings->GetSetting('Keywords');
+	$params['game']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 
-	$params['game']['minimize'] = $player->GetSetting("Minimize");
-	$params['game']['mycountry'] = $player->GetSetting("Country");
-	$params['game']['hiscountry'] = $opponent->GetSetting("Country");
-	$params['game']['timezone'] = $player->GetSetting("Timezone");
-	$params['game']['Background'] = $player->GetSetting("Background");
+	$params['game']['minimize'] = $settings->GetSetting('Minimize');
+	$params['game']['mycountry'] = $settings->GetSetting('Country');
+	$params['game']['hiscountry'] = $o_settings->GetSetting('Country');
+	$params['game']['timezone'] = $settings->GetSetting('Timezone');
+	$params['game']['Background'] = $settings->GetSetting('Background');
 
 	$params['game']['GameState'] = $game->State;
 	$params['game']['Round'] = $game->Round;
@@ -3616,13 +3608,13 @@ case 'Game':
 
 	// chatboard
 
-	$params['game']['display_avatar'] = $player->GetSetting("Avatargame");
-	$params['game']['correction'] = $player->GetSetting("Correction");
+	$params['game']['display_avatar'] = $settings->GetSetting('Avatargame');
+	$params['game']['correction'] = $settings->GetSetting('Correction');
 
-	$params['game']['myavatar'] = $player->GetSetting("Avatar");
-	$params['game']['hisavatar'] = $opponent->GetSetting("Avatar");
+	$params['game']['myavatar'] = $settings->GetSetting('Avatar');
+	$params['game']['hisavatar'] = $o_settings->GetSetting('Avatar');
 
-	$order = ( $player->GetSetting("Chatorder") == "yes" ) ? "ASC" : "DESC";
+	$order = ( $settings->GetSetting('Chatorder') == "yes" ) ? "ASC" : "DESC";
 	$params['game']['messagelist'] = $message_list = $chatdb->ListChatMessages($game->ID(), $order);
 
 	break;
@@ -3634,10 +3626,11 @@ case 'Deck_view':
 	$deck = $game->GameData[$player->Name()]->Deck;
 
 	//load needed settings
-	$params['deck_view']['c_text'] = $player->GetSetting("Cardtext");
-	$params['deck_view']['c_img'] = $player->GetSetting("Images");
-	$params['deck_view']['c_keywords'] = $player->GetSetting("Keywords");
-	$params['deck_view']['c_oldlook'] = $player->GetSetting("OldCardLook");
+	$settings = $player->GetSettings();
+	$params['deck_view']['c_text'] = $settings->GetSetting('Cardtext');
+	$params['deck_view']['c_img'] = $settings->GetSetting('Images');
+	$params['deck_view']['c_keywords'] = $settings->GetSetting('Keywords');
+	$params['deck_view']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 
 	$params['deck_view']['CurrentGame'] = $gameid;
 
@@ -3674,18 +3667,19 @@ case 'Novels':
 
 
 case 'Settings':
-	$params['settings']['current_settings'] = $player->GetSettings();
+	$settings = $player->GetSettings();
+	$params['settings']['current_settings'] = $settings->GetAll();
 	$params['settings']['PlayerType'] = $player->Type();
 	$params['settings']['change_own_avatar'] = (($access_rights[$player->Type()]["change_own_avatar"]) ? 'yes' : 'no');
 
 	//date is handled separately
-	$birthdate = $params['settings']['current_settings']["Birthdate"];
+	$birthdate = $settings->GetSetting('Birthdate');
 	list($year, $month, $day) = explode("-", $birthdate);
 
 	if( $birthdate != "0000-00-00" )
 	{
-		$params['settings']['current_settings']["Age"] = $settingdb->CalculateAge($birthdate);
-		$params['settings']['current_settings']["Sign"] = $settingdb->CalculateSign($birthdate);
+		$params['settings']['current_settings']["Age"] = $settings->Age();
+		$params['settings']['current_settings']["Sign"] = $settings->Sign();
 		$params['settings']['current_settings']["Birthdate"] = array('year'=>$year, 'month'=>$month, 'day'=>$day);
 	}
 	else
@@ -3701,7 +3695,7 @@ case 'Settings':
 case 'Forum':
 	$params['forum_overview']['sections'] = $forum->ListSections();	
 	$params['forum_overview']['PreviousLogin'] = $player->PreviousLogin();
-	$params['forum_overview']['timezone'] = $player->GetSetting("Timezone");
+	$params['forum_overview']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 
 	foreach($params['forum_overview']['sections'] as $index => $data)
 		$params['forum_overview']['sections'][$index]['threadlist'] = $forum->Threads->ListThreadsMain($index);
@@ -3716,7 +3710,7 @@ case 'Forum_search':
 	$params['forum_search']['threads'] = (trim($phrase) != "") ? $forum->Search($phrase, $target, $section) : array();
 	$params['forum_search']['sections'] = $forum->ListSections();
 	$params['forum_search']['PreviousLogin'] = $player->PreviousLogin();
-	$params['forum_search']['timezone'] = $player->GetSetting("Timezone");
+	$params['forum_search']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 
 	break;
 
@@ -3731,7 +3725,7 @@ case 'Section_details':
 	$params['forum_section']['current_page'] = $current_page;
 	$params['forum_section']['create_thread'] = (($access_rights[$player->Type()]["create_thread"]) ? 'yes' : 'no');
 	$params['forum_section']['PreviousLogin'] = $player->PreviousLogin();
-	$params['forum_section']['timezone'] = $player->GetSetting("Timezone");
+	$params['forum_section']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 
 	break;
 
@@ -3748,7 +3742,7 @@ case 'Thread_details':
 	$params['forum_thread']['DeletePost'] = ((isset($deleting_post)) ? $deleting_post : 0);
 	$params['forum_thread']['PlayerName'] = $player->Name();
 	$params['forum_thread']['PreviousLogin'] = $player->PreviousLogin();
-	$params['forum_thread']['timezone'] = $player->GetSetting("Timezone");
+	$params['forum_thread']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 	$params['forum_thread']['concept'] = $conceptdb->FindConcept($thread_id);
 
 	$params['forum_thread']['lock_thread'] = (($access_rights[$player->Type()]["lock_thread"]) ? 'yes' : 'no');
@@ -3823,7 +3817,7 @@ case 'Replays':
 	$pages = array();
 	for ($i = 0; $i < $count; $i++) $pages[$i] = $i;
 	$params['replays']['pages'] = $pages;
-	$params['replays']['timezone'] = $player->GetSetting("Timezone");
+	$params['replays']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 	$params['replays']['players'] = $replaydb->ListPlayers();
 
 	break;
@@ -3845,12 +3839,13 @@ case 'Replay':
 	$p2data = $replay_data[$player2];
 
 	// load needed settings
-	$params['replay']['c_text'] = $player->GetSetting("Cardtext");
-	$params['replay']['c_img'] = $player->GetSetting("Images");
-	$params['replay']['c_keywords'] = $player->GetSetting("Keywords");
-	$params['replay']['c_oldlook'] = $player->GetSetting("OldCardLook");
-	$params['replay']['minimize'] = $player->GetSetting("Minimize");
-	$params['replay']['Background'] = $player->GetSetting("Background");
+	$settings = $player->GetSettings();
+	$params['replay']['c_text'] = $settings->GetSetting('Cardtext');
+	$params['replay']['c_img'] = $settings->GetSetting('Images');
+	$params['replay']['c_keywords'] = $settings->GetSetting('Keywords');
+	$params['replay']['c_oldlook'] = $settings->GetSetting('OldCardLook');
+	$params['replay']['minimize'] = $settings->GetSetting('Minimize');
+	$params['replay']['Background'] = $settings->GetSetting('Background');
 
 	$params['replay']['turns'] = $turns = $replay->NumberOfTurns();
 	$pages = array();
@@ -4019,10 +4014,11 @@ case 'Cards':
 	$params['cards']['CardList'] = $carddb->GetData($ids);
 
 	// load card display settings
-	$params['cards']['c_text'] = $player->GetSetting("Cardtext");
-	$params['cards']['c_img'] = $player->GetSetting("Images");
-	$params['cards']['c_keywords'] = $player->GetSetting("Keywords");
-	$params['cards']['c_oldlook'] = $player->GetSetting("OldCardLook");
+	$settings = $player->GetSettings();
+	$params['cards']['c_text'] = $settings->GetSetting('Cardtext');
+	$params['cards']['c_img'] = $settings->GetSetting('Images');
+	$params['cards']['c_keywords'] = $settings->GetSetting('Keywords');
+	$params['cards']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 
 	break;
 
@@ -4036,10 +4032,11 @@ case 'Cards_details':
 	$params['cards_details']['create_thread'] = ($access_rights[$player->Type()]["create_thread"]) ? 'yes' : 'no';
 
 	// load card display settings
-	$params['cards_details']['c_text'] = $player->GetSetting("Cardtext");
-	$params['cards_details']['c_img'] = $player->GetSetting("Images");
-	$params['cards_details']['c_keywords'] = $player->GetSetting("Keywords");
-	$params['cards_details']['c_oldlook'] = $player->GetSetting("OldCardLook");
+	$settings = $player->GetSettings();
+	$params['cards_details']['c_text'] = $settings->GetSetting('Cardtext');
+	$params['cards_details']['c_img'] = $settings->GetSetting('Images');
+	$params['cards_details']['c_keywords'] = $settings->GetSetting('Keywords');
+	$params['cards_details']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 
 	break;
 

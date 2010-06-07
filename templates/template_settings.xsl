@@ -35,7 +35,6 @@
 			<div><h4>Zodiac sign</h4><img height="100px" width="100px" src="img/zodiac/{$settings/Sign}.jpg" alt="sign" /><h4><xsl:value-of select="$settings/Sign"/></h4></div>
 
 			<div><h4>Avatar</h4><img height="60px" width="60px" src="img/avatars/{$settings/Avatar}" alt="avatar" /></div>
-			<p><input type="submit" name="user_settings" value="Save user settings" /></p>
 			<p><input type="text" name="Firstname" maxlength="20" value="{$settings/Firstname}" onkeypress="return BlockEnter(event)" />First name</p>
 			<p><input type="text" name="Surname" maxlength="20" value="{$settings/Surname}" onkeypress="return BlockEnter(event)" />Surname</p>
 		
@@ -148,7 +147,7 @@
 		<div id="sett_float_right" class="skin_text">
 		<div>
 			<h3>Account settings</h3>
-			<p><input type="submit" name="game_settings" value="Save game settings" /><input type="submit" name="reset_notification" value= "Reset notification" /></p>
+			<p><input type="submit" name="user_settings" value="Save settings" /><input type="submit" name="reset_notification" value= "Reset notification" /></p>
 			<p><input type="password" name="NewPassword" maxlength="20" onkeypress="return BlockEnter(event)" />New password</p>
 			<p><input type="password" name="NewPassword2" maxlength="20" onkeypress="return BlockEnter(event)" />Confirm password</p>
 			<p><input type="submit" name="changepasswd" value="Change password" /></p>
