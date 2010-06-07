@@ -26,7 +26,6 @@
 			$result = $db->Query('SELECT `Author`, COUNT(`Author`) as `count` FROM `concepts` WHERE (`State` = "waiting") OR (`State` = "interesting") GROUP BY `Author` ORDER BY `count` DESC, `Author` ASC LIMIT 0, 10');
 
 			if (!$result) return false;
-			if (!$result->Rows()) return false;
 
 			while( $data = $result->Next() ) $statistics[] = $data;
 
@@ -41,7 +40,6 @@
 			$result = $db->Query('SELECT `Author`, COUNT(`Author`) as `count` FROM `concepts` WHERE `State` = "implemented" GROUP BY `Author` ORDER BY `count` DESC, `Author` ASC LIMIT 0, 10');
 
 			if (!$result) return false;
-			if (!$result->Rows()) return false;
 
 			while( $data = $result->Next() ) $statistics[] = $data;
 
@@ -60,7 +58,6 @@
 			$result = $db->Query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays_head` WHERE (`EndType` != "Pending") GROUP BY `EndType`');
 
 			if (!$result) return false;
-			if (!$result->Rows()) return false;
 
 			while( $data = $result->Next() ) $statistics[$data['EndType']] = $data['count'];
 
@@ -79,7 +76,7 @@
 			foreach ($statistics as $statistic => $value)
 			{
 				$rounded[$i]['type'] = $statistic;
-				$rounded[$i]['count'] = round(($value / $total_games) * 100, 2);
+				$rounded[$i]['count'] = ($total_games > 0) ? round(($value / $total_games) * 100, 2) : 0;
 				$i++;
 			}
 
