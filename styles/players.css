@@ -41,6 +41,7 @@ div.progress_bar > div  /* exp progress bar - inner part */
 div#details /* set minimum width to whole section (grants immunity to resize) */
 {
 	min-width: 1045px;
+	line-height: 1.6;
 }
 
 div#details > div.skin_text /* user details content layout */
@@ -55,11 +56,6 @@ div#details > div.skin_text /* user details content layout */
 div#details > div.skin_text .detail_value /* player data values */
 {
 	font-weight: bold;
-}
-
-div#details /* set distance between separate lines */
-{
-	line-height: 1.6;
 }
 
 div#details h3 /* section name layout */
@@ -98,12 +94,18 @@ div.statistics /* versus statistics layout */
 	margin: 1ex;
 	border: medium ridge white;
 	padding: 0ex 1ex 1ex 1ex;
+	line-height: 1.3;
 }
 
 div.statistics > p > span /* float values to the right */
 {
 	float: right;
 	font-weight: bold;
+}
+
+div.statistics > h4 /* versus statistics heading */
+{
+	margin: 0ex;
 }
 
 .challenge_text /* challenge text input and display layout */

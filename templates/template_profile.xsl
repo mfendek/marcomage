@@ -259,6 +259,7 @@
 			<input type="submit" name="reset_exp[{am:urlencode($opponent)}]" value="Reset" />
 		</xsl:if>
 
+		<div class="clear_floats"></div>
 	</div>
 	</div>
 </xsl:template>

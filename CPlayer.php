@@ -326,7 +326,7 @@
 		public function GetVersusStats($opponent)
 		{
 			global $statistics;
-			return $statistics->VersusStats($this->Name, $opponent);
+			return ($this->Name == $opponent) ? $statistics->GameStats($this->Name) : $statistics->VersusStats($this->Name, $opponent);
 		}
 
 		public function ChangeAccessRights($access_right)
