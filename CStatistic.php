@@ -359,6 +359,17 @@
 			return $carddb->GetData($cards);
 		}
 
+		public function CardStatistics($card_id) // return statistics for specified card
+		{
+			$db = $this->db;
+			$result = $db->Query('SELECT `Played`, `Discarded`, `PlayedTotal`, `DiscardedTotal` FROM `statistics` WHERE `CardID` = "'.$db->Escape($card_id).'"');
+			if (!$result) return false;
+			if (!$result->Rows()) $data = array('Played' => 0, 'Discarded' => 0, 'PlayedTotal' => 0, 'DiscardedTotal' => 0);
+			else $data = $result->Next();
+
+			return $data;
+		}
+
 		public function UpdateCardStats($card_id, $action) // update card statistics (used when card is played or discarded)
 		{
 			$db = $this->db;

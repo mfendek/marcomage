@@ -4038,6 +4038,7 @@ case 'Cards_details':
 	$thread_id = $forum->Threads->CardThread($card_id);
 	$params['cards_details']['discussion'] = ($thread_id) ? 'yes' : 'no';
 	$params['cards_details']['create_thread'] = ($access_rights[$player->Type()]["create_thread"]) ? 'yes' : 'no';
+	$params['cards_details']['statistics'] = $statistics->CardStatistics($card_id);
 
 	// load card display settings
 	$settings = $player->GetSettings();
