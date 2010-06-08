@@ -124,7 +124,7 @@ If your opponent doesn't make his turn for more than three weeks and he doesn't 
 <h4>Chat</h4>
 <p>
 You can chat with other players in the game screen.
-Simply write the text in the bottom part of the game and then click the "Send message" button.
+Simply write the text in the bottom part of the game and then click the "Send message" button or push the Enter button on your keyboard (this works only when you have JavaScript enabled).
 For more comfort you can use some hot keys.
 Push Tab (or Alt+a when your browser support keybord shortcuts) to jump into chat window, write the message and then push Tab+Enter (or Alt+s).
 The message itself contains the date and time when it was written and also name of the player who wrote it.
@@ -177,7 +177,7 @@ There is no restriction to the number of games played per day or against someone
 	<li><img width="20px" height="14px" src="img/dnd.png" alt="status flag" class="icon" title="dnd" /> Do not disturb - you don't want to play games right now</li>
 	<li><img width="20px" height="14px" src="img/newbie.png" alt="status flag" class="icon" title="newbie" /> Newbie - new player, this is the default setting</li>
 </ul>
-<p>For example if you want to play a quick game, select "Looking for quick game" status. It is possible to use filter in players list section to filter out players with a specific status, so in this case, only players that are looking for a quick game.</p>
+<p>For example if you want to play a quick game, select "Looking for quick game" status. It is possible to use filter in players list section to filter out players with a specific status, so in this case, only players that are looking for a quick game. All icon images have their description displayed when hovering over them with mouse cursor.</p>
 
 <h4>Messages</h4>
 <p>
@@ -424,7 +424,7 @@ This section provides a tool for managing card suggestion in a structured form. 
 
 <h4>Keywords</h4>
 <p>
-Keywords represent information about the card that is too big to fit in the card box, or some property that other cards may look for while performing their effect. Below, all keywords are listed and explained.
+Keywords represent information about the card that is too big to fit in the card box, or some property that other cards may look for while performing their effect. Below, all keywords are listed and explained. Keyword description is also displayed when hovering over a keyword on a card with mouse cursor.
 </p>
 
 <ul>
@@ -552,6 +552,29 @@ Let's take the <b>Alliance</b> keyword for example. First you need to set one to
 	<li>Concepts notification - display concepts notification (new concepts) in the menubar</li>
 	<li>Random deck selection - allows to choose a random deck to play with when starting a game</li>
 </ul>
+
+<h4>Statistics</h4>
+
+<p>Statistics section provides various statistical reports:</p>
+
+<ul>
+	<li>Most played - Top 10 most played cards, this statistic is updated each time a card is played</li>
+	<li>Most discarded - Top 10 most discarded cards, this statistic is updated each time a card is discarded by standard discard or by card effect</li>
+	<li>Least played - Top 10 least played cards, this statistic is updated each time a card is played</li>
+	<li>Least discarded - Top 10 least discarded cards, this statistic is updated each time a card is discarded by standard discard or by card effect</li>
+	<li>Skins - for each skin type (layout setting), the usage ratio is shown (how many players use that skin compared to total skins used), only active and offline players contribute to this statistic</li>
+	<li>Game modes - the percentage shown is how many games use the respective game mode (compared to all games in total), only finished games contribute to this statistic</li>
+	<li>Victory types - for each victory type, the percentage ratio is shown (how many games ended with the respective victory type compared to all games in total), only finished games contribute to this statistic</li>
+	<li>Backgrounds - for each background type (layout setting), the usage ratio is shown (how many players use that background compared to total backgrounds used), only active and offline players contribute to this statistic</li>
+	<li>Suggested concepts - Top 10 authors of suggested card concepts (only card concepts with status "waiting" and "interesting" are counted)</li>
+	<li>Implemented concepts - Top 10 authors of implemented card concepts (only card concepts with status "implemented" are counted)</li>
+</ul>
+
+<p>The difference between "lastest" and "overall" statistics is the fact that "lastest" statistics are reset every time new cards are added to provide fair competition between new and old cards. "overall" statistics are never reset, so the older the card, the bigger is the advantage compared to new, younger cards.</p>
+
+<h4>Versus statistics</h4>
+
+<p>Versus statistics are available in the player's details section. These statistics show information about games where two players played against each other (first player is the one viewing the player's details section and second player is the one being viewed). Statistics are calculated from the first player perspective. When viewing own profile, player's overall game statistics are shown instead of Versus statistics.</p>
 
 <h4>Keyboard shortcuts</h4>
 (might not work in some browsers without re-configuring them)
