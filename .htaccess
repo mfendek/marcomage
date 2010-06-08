@@ -1,0 +1,17 @@
+# deny everything that's not allowed
+order allow,deny
+
+# allow base dir
+<Files ".">
+allow from all
+</Files>
+
+# also need to allow index file
+<Files "index.php">
+allow from all
+</Files>
+
+# allow files for the browser
+<Files ~ "\.(html|css|js||jpg|jpeg|gif|png)$">
+allow from all
+</Files>
