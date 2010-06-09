@@ -289,7 +289,50 @@
 			
 			return $data;
 		}
-		
+
+		public function AvgCostPerTurn() // calculate average cost per turn
+		{
+			global $carddb;
+
+			// define a data structure for our needs
+			$sub_array = array('Common' => 0, 'Uncommon' => 0, 'Rare' => 0);
+
+			$sum = array('Bricks' => $sub_array ,'Gems' => $sub_array, 'Recruits' => $sub_array, 'Count' => $sub_array);
+			$avg = array('Bricks' => $sub_array ,'Gems' => $sub_array, 'Recruits' => $sub_array);
+			$res = array('Bricks' => 0 ,'Gems' => 0, 'Recruits' => 0);
+
+			foreach ($sub_array as $class => $value)
+			{
+				foreach ($this->DeckData->$class as $index => $cardid)
+				{
+					if ($cardid != 0)
+					{
+						$card = $carddb->GetCard($cardid);
+						$sum['Bricks'][$class]+= $card->CardData->Bricks;
+						$sum['Gems'][$class]+= $card->CardData->Gems;
+						$sum['Recruits'][$class]+= $card->CardData->Recruits;
+						$sum['Count'][$class]+= 1;
+					}
+				}
+			}
+
+			foreach ($avg as $type => $value)
+			{
+				if ($sum['Count']['Common'] == 0) $avg[$type]['Common'] = 0;
+				else $avg[$type]['Common'] = ($sum[$type]['Common'] * 0.65)/$sum['Count']['Common'];
+
+				if ($sum['Count']['Uncommon'] == 0) $avg[$type]['Uncommon'] = 0;
+				else $avg[$type]['Uncommon'] = ($sum[$type]['Uncommon'] * 0.29)/$sum['Count']['Uncommon'];
+
+				if ($sum['Count']['Rare'] == 0) $avg[$type]['Rare'] = 0;
+				else $avg[$type]['Rare'] = (($sum[$type]['Rare'] * 0.06)/$sum['Count']['Rare']);
+			}
+
+			foreach ($avg as $type => $value) $res[$type] = round($avg[$type]['Common'] + $avg[$type]['Uncommon'] + $avg[$type]['Rare'], 2);
+
+			return $res;
+		}
+
 		public function FromCSV($file)
 		{
 			global $carddb;
