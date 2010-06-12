@@ -104,7 +104,7 @@
 	<h4>Search</h4>
 	
 	<div class="filters_trans">
-		<input type="text" name="phrase" maxlength="50" size="30" value="{$param/phrase}" onkeypress="return BlockEnter(event)" />
+		<input type="text" name="phrase" maxlength="50" size="30" value="{$param/phrase}" />
 
 		<!-- target selector -->
 		<xsl:variable name="targets">
@@ -558,7 +558,7 @@
 	<h3>Create new thread to the section <span><xsl:value-of select="$section/SectionName"/></span></h3>
 	
 	<div class="skin_text">
-		<p>Topic:<input type="text" name="Title" maxlength="50" size="45" value="{$param/Title}" onkeypress="return BlockEnter(event)" /></p>
+		<p>Topic:<input type="text" name="Title" maxlength="50" size="45" value="{$param/Title}" /></p>
 		<p>
 
 		<xsl:text>Priority:</xsl:text>
@@ -625,7 +625,7 @@
 		<h3>Edit thread</h3>
 	
 		<div class="skin_text">
-			<p>Topic:<input type="text" name="Title" maxlength="50" size="45" value="{$thread/Title}" onkeypress="return BlockEnter(event)" /></p>
+			<p>Topic:<input type="text" name="Title" maxlength="50" size="45" value="{$thread/Title}" /></p>
 
 			<p>
 

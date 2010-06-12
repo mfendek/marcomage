@@ -25,7 +25,7 @@
 	<!-- begin filters and navigation -->
 	<div class="filters_trans">
 		<!-- id filter -->
-		<input type="text" name="IdFilter" maxlength="10" size="10" value="{$param/IdFilter}" onkeypress="return BlockEnter(event)" />
+		<input type="text" name="IdFilter" maxlength="10" size="10" value="{$param/IdFilter}" />
 
 		<!-- player filter -->
 		<select name="PlayerFilter" size="1">

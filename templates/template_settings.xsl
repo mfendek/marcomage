@@ -35,12 +35,12 @@
 			<div><h4>Zodiac sign</h4><img height="100px" width="100px" src="img/zodiac/{$settings/Sign}.jpg" alt="sign" /><h4><xsl:value-of select="$settings/Sign"/></h4></div>
 
 			<div><h4>Avatar</h4><img height="60px" width="60px" src="img/avatars/{$settings/Avatar}" alt="avatar" /></div>
-			<p><input type="text" name="Firstname" maxlength="20" value="{$settings/Firstname}" onkeypress="return BlockEnter(event)" />First name</p>
-			<p><input type="text" name="Surname" maxlength="20" value="{$settings/Surname}" onkeypress="return BlockEnter(event)" />Surname</p>
+			<p><input type="text" name="Firstname" maxlength="20" value="{$settings/Firstname}" />First name</p>
+			<p><input type="text" name="Surname" maxlength="20" value="{$settings/Surname}" />Surname</p>
 		
-			<p><input type="text" name="Email" maxlength="30" value="{$settings/Email}" onkeypress="return BlockEnter(event)" />E-mail</p>
+			<p><input type="text" name="Email" maxlength="30" value="{$settings/Email}" />E-mail</p>
 		
-			<p><input type="text" name="Imnumber" maxlength="20" value="{$settings/Imnumber}" onkeypress="return BlockEnter(event)" />ICQ / IM number</p>
+			<p><input type="text" name="Imnumber" maxlength="20" value="{$settings/Imnumber}" />ICQ / IM number</p>
 
 			<xsl:variable name="gender_types">
 				<type name="none"   text="select" />
@@ -63,9 +63,9 @@
 			</p>
 
 			<p>
-				<input type="text" name="Birthday" maxlength="2" size="2" value="{$settings/Birthdate/day}" onkeypress="return BlockEnter(event)" />
-				<input type="text" name="Birthmonth" maxlength="2" size="2" value="{$settings/Birthdate/month}" onkeypress="return BlockEnter(event)" />
-				<input type="text" name="Birthyear" maxlength="4" size="4" value="{$settings/Birthdate/year}" onkeypress="return BlockEnter(event)" />
+				<input type="text" name="Birthday" maxlength="2" size="2" value="{$settings/Birthdate/day}" />
+				<input type="text" name="Birthmonth" maxlength="2" size="2" value="{$settings/Birthdate/month}" />
+				<input type="text" name="Birthyear" maxlength="4" size="4" value="{$settings/Birthdate/year}" />
 				<xsl:text>Date of birth (dd-mm-yyyy)</xsl:text>
 			</p>
 
@@ -148,8 +148,8 @@
 		<div>
 			<h3>Account settings</h3>
 			<p><input type="submit" name="user_settings" value="Save settings" /><input type="submit" name="reset_notification" value= "Reset notification" /></p>
-			<p><input type="password" name="NewPassword" maxlength="20" onkeypress="return BlockEnter(event)" />New password</p>
-			<p><input type="password" name="NewPassword2" maxlength="20" onkeypress="return BlockEnter(event)" />Confirm password</p>
+			<p><input type="password" name="NewPassword" maxlength="20" />New password</p>
+			<p><input type="password" name="NewPassword2" maxlength="20" />Confirm password</p>
 			<p><input type="submit" name="changepasswd" value="Change password" /></p>
 
 			<p>

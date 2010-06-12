@@ -43,6 +43,7 @@
 			<xsl:text>000);</xsl:text>
 		</xsl:element>
 	</xsl:if>
+	<script type="text/javascript" src="javascript/jquery.js"></script>
 	<script type="text/javascript" src="javascript/BBtags.js"></script>
 	<script type="text/javascript" src="javascript/utils.js"></script>
 	</head>
