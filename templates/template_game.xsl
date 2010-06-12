@@ -785,7 +785,7 @@
 		<!-- chatboard inputs -->
 		<xsl:if test="$param/chat = 'yes'">
 			<div id="chat_inputs">
-				<input class="text_data chatboard" type="text" name="ChatMessage" size="122" maxlength="300" tabindex="1" accesskey="a" onkeypress="return SendMessage(event)" />
+				<input class="text_data chatboard" type="text" name="ChatMessage" size="122" maxlength="300" tabindex="1" accesskey="a" />
 				<input type="submit" name="send_message" value="Send" tabindex="2" accesskey="s" />
 			</div>
 		</xsl:if>
