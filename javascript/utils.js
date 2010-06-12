@@ -8,6 +8,6 @@ $(document).ready(function() {
 	});
 
 	// blocks ENTER key to prevent section redirects
-	$("input[name!=ChatMessage], select").keypress(function(event) { if (event.keyCode == '13') { event.preventDefault(); } });
+	$("input[name!=ChatMessage][type!=password], select").keypress(function(event) { if (event.keyCode == '13') { event.preventDefault(); } });
 
 });
