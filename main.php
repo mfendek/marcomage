@@ -2910,14 +2910,27 @@ case 'Deck_edit':
 	if( $supportfilter != 'none' ) $filter['support'] = $supportfilter;
 	if( $createdfilter != 'none' ) $filter['created'] = $createdfilter;
 	if( $modifiedfilter != 'none' ) $filter['modified'] = $modifiedfilter;
-	$ids = array_diff($carddb->GetList($filter), $deck->DeckData->$classfilter); // cards not present in the deck
-	$params['deck_edit']['CardList'] = $carddb->GetData($ids);
+	$exluded = $deck->DeckData->$classfilter; // cards not present in the deck
+	$card_list = $carddb->GetData($carddb->GetList($filter));
+	foreach ($card_list as $i => $data) $card_list[$i]['excluded'] = (in_array($data['id'], $exluded)) ? 'yes' : 'no';
+
+	$params['deck_edit']['CardList'] = $card_list;
 
 	foreach (array('Common', 'Uncommon', 'Rare') as $class)
 		$params['deck_edit']['DeckCards'][$class] = $carddb->GetData($deck->DeckData->$class);
 
 	$params['deck_edit']['Tokens'] = $deck->DeckData->Tokens;
 	$params['deck_edit']['TokenKeywords'] = $carddb->TokenKeywords();
+
+	// prepare javascript data
+	$data = array($player->Name(), $session->SessionID(), $currentdeck);
+	foreach ($data as $i => $value) $data[$i] = "'".$value."'";
+	$jparams = implode(", ", $data);
+	$jscript = '
+		function Take(id) { return TakeCard('.$jparams.', id); }
+		function Remove(id) { return RemoveCard('.$jparams.', id); }
+	';
+	$params['deck_edit']['jscript'] = $jscript;
 
 	break;
 

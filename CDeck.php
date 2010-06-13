@@ -195,7 +195,9 @@
 			// record the new card
 			$this->DeckData->{$class}[$pos] = $cardid;
 
-			return true;
+			$classes = array('Common' => 0, 'Uncommon' => 1, 'Rare' => 2);
+
+			return ($pos + 15 * $classes[$class]); // return slot number that was used to store newly added card (slot range 1 - 45)
 		}
 		
 		/**
@@ -222,7 +224,9 @@
 			// remove the card from the deck
 			$this->DeckData->{$class}[$pos] = 0;
 
-			return true;
+			$classes = array('Common' => 0, 'Uncommon' => 1, 'Rare' => 2);
+
+			return ($pos + 15 * $classes[$class]); // return slot number that became vacant
 		}
 		
 		public function isReady()

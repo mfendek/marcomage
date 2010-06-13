@@ -10,6 +10,10 @@
 
 <xsl:template match="section[. = 'Deck_edit']">
 	<xsl:variable name="param" select="$params/deck_edit" />
+	<xsl:element name="script">
+		<xsl:attribute name="type">text/javascript</xsl:attribute>
+		<xsl:value-of select="$param/jscript" />
+	</xsl:element>
 
 	<!-- remember the current location across pages -->
 	<div>
@@ -273,8 +277,11 @@
 				<tr valign="top">
 					<xsl:for-each select="$param/CardList/*">
 						<xsl:sort select="name" order="ascending"/>
-						<td>
-							<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
+						<td id="card_{id}" >
+							<xsl:if test="excluded = 'no'">
+								<xsl:attribute name="onclick">return Take(<xsl:value-of select="id" />)</xsl:attribute>
+								<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
+							</xsl:if>
 						</td>
 					</xsl:for-each>
 				</tr>
@@ -283,7 +290,7 @@
 					<xsl:for-each select="$param/CardList/*">
 						<xsl:sort select="name" order="ascending"/>
 						<!-- if the deck's $classfilter section isn't full yet, display the button that adds the card -->
-						<td><input type="submit" name="add_card[{id}]" value="Take" /></td>
+						<td><xsl:if test="excluded = 'no'"><noscript><div><input type="submit" name="add_card[{id}]" value="Take" /></div></noscript></xsl:if></td>
 					</xsl:for-each>
 				</tr>
 				</xsl:if>
@@ -308,15 +315,17 @@
 		<xsl:for-each select="$param/DeckCards/*"> <!-- Common, Uncommon, Rare sections -->
 			<td>
 				<table class="centered" cellpadding="0" cellspacing="0">
+				<xsl:variable name="rarity" select="position()"/>
 				<xsl:variable name="cards" select="."/>
 				<xsl:for-each select="$cards/*[position() &lt;= 5]"> <!-- row counting hack -->
 				<tr>
 					<xsl:variable name="i" select="position()"/>
 					<xsl:for-each select="$cards/*[position() &gt;= $i*3-2 and position() &lt;= $i*3]">
-						<td>
+						<td id="slot_{(($i - 1) * 3) + position() + 15 * ($rarity - 1)}" >
+							<xsl:if test="id &gt; 0"><xsl:attribute name="onclick">return Remove(<xsl:value-of select="id" />)</xsl:attribute></xsl:if>
 							<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
 							<xsl:if test="id != 0">
-								<input type="submit" name="return_card[{id}]" value="Return" />
+								<noscript><div><input type="submit" name="return_card[{id}]" value="Return" /></div></noscript>
 							</xsl:if>
 						</td>
 					</xsl:for-each>

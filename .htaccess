@@ -11,6 +11,11 @@ allow from all
 allow from all
 </Files>
 
+# allow ajax handler
+<Files "AJAXhandler.php">
+allow from all
+</Files>
+
 # allow files for the browser
 <Files ~ "\.(html|css|js||jpg|jpeg|gif|png)$">
 allow from all
