@@ -25,6 +25,9 @@
 				<input type="submit" name="new_concept" value="New card" />
 			</xsl:if>
 
+			<!-- card name filter -->
+			<input type="text" name="card_name" maxlength="64" size="30" value="{$param/card_name}" />
+
 			<!-- begin date filter -->
 
 			<select name="date_filter">

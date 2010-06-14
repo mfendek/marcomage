@@ -89,15 +89,16 @@
 			return true;
 		}
 
-		public function GetList($author, $date, $state, $condition, $order, $page)
+		public function GetList($name, $author, $date, $state, $condition, $order, $page)
 		{
 			$db = $this->db;
 
+			$name_query = ($name != '') ? ' AND `Name` LIKE "%'.$db->Escape($name).'%"' : '';
 			$author_query = (($author != "none") ? ' AND `Author` = "'.$db->Escape($author).'"' : '');
 			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`LastChange`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$date.')' : '');
 			$state_query = (($state != "none") ? ' AND `State` = "'.$db->Escape($state).'"' : '');
 
-			$result = $db->Query('SELECT `CardID` as `id`, `Name` as `name`, `Class` as `class`, `Bricks` as `bricks`, `Gems` as `gems`, `Recruits` as `recruits`, `Effect` as `effect`, `Keywords` as `keywords`, `Picture` as `picture`, `Note` as `note`, `State` as `state`, `Author` as `author`, `LastChange` as `lastchange` FROM `concepts` WHERE 1'.$author_query.$date_query.$state_query.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(CARDS_PER_PAGE * $page).' , '.CARDS_PER_PAGE.'');
+			$result = $db->Query('SELECT `CardID` as `id`, `Name` as `name`, `Class` as `class`, `Bricks` as `bricks`, `Gems` as `gems`, `Recruits` as `recruits`, `Effect` as `effect`, `Keywords` as `keywords`, `Picture` as `picture`, `Note` as `note`, `State` as `state`, `Author` as `author`, `LastChange` as `lastchange` FROM `concepts` WHERE 1'.$name_query.$author_query.$date_query.$state_query.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(CARDS_PER_PAGE * $page).' , '.CARDS_PER_PAGE.'');
 
 			if (!$result) return false;
 
@@ -109,15 +110,16 @@
 			return $cards;
 		}
 
-		public function CountPages($author, $date, $state)
+		public function CountPages($name, $author, $date, $state)
 		{
 			$db = $this->db;
 
+			$name_query = ($name != '') ? ' AND `Name` LIKE "%'.$db->Escape($name).'%"' : '';
 			$author_query = (($author != "none") ? ' AND `Author` = "'.$db->Escape($author).'"' : '');
 			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`LastChange`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$date.')' : '');
 			$state_query = (($state != "none") ? ' AND `State` = "'.$db->Escape($state).'"' : '');
 
-			$result = $db->Query('SELECT COUNT(`CardID`) as `Count` FROM `concepts` WHERE 1'.$author_query.$date_query.$state_query.'');
+			$result = $db->Query('SELECT COUNT(`CardID`) as `Count` FROM `concepts` WHERE 1'.$name_query.$author_query.$date_query.$state_query.'');
 
 			if (!$result) return false;
 

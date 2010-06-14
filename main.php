@@ -2943,6 +2943,7 @@ case 'Decks':
 
 case 'Concepts':
 	// filter initialization
+	$params['concepts']['card_name'] = $name = (isset($_POST['card_name'])) ? trim($_POST['card_name']) : '';
 	$params['concepts']['date_val'] = $date = (isset($_POST['date_filter'])) ? $_POST['date_filter'] : 'none';
 	$params['concepts']['author_val'] = $author = (isset($_POST['author_filter'])) ? postdecode($_POST['author_filter']) : 'none';
 	$params['concepts']['state_val'] = $state = (isset($_POST['state_filter'])) ? $_POST['state_filter'] : 'none';
@@ -2956,8 +2957,8 @@ case 'Concepts':
 	$current_page = ((isset($_POST['CurrentConPage'])) ? $_POST['CurrentConPage'] : 0);
 	$params['concepts']['current_page'] = $current_page;
 
-	$params['concepts']['list'] = $conceptdb->GetList($author, $date, $state, $condition, $order, $current_page);
-	$page_count = $conceptdb->CountPages($author, $date, $state);
+	$params['concepts']['list'] = $conceptdb->GetList($name, $author, $date, $state, $condition, $order, $current_page);
+	$page_count = $conceptdb->CountPages($name, $author, $date, $state);
 	$pages = array();
 	if ($page_count > 0) for ($i = 0; $i < $page_count; $i++) $pages[$i] = $i;
 	$params['concepts']['pages'] = $pages;
