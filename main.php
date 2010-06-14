@@ -3048,7 +3048,7 @@ case 'Players':
 	// filter initialization
 	$params['players']['CurrentFilter'] = $filter = ((isset($_POST['player_filter'])) ? $_POST['player_filter'] : $settings->GetSetting('DefaultFilter'));
 	$params['players']['status_filter'] = $status_filter = (isset($_POST['status_filter'])) ? $_POST['status_filter'] : 'none';
-	$params['players']['pname_filter'] = $pname_filter = (isset($_POST['pname_filter'])) ? $_POST['pname_filter'] : '';
+	$params['players']['pname_filter'] = $pname_filter = (isset($_POST['pname_filter'])) ? trim($_POST['pname_filter']) : '';
 
 	$params['players']['PlayerName'] = $player->Name();
 
