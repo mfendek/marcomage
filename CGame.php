@@ -1426,6 +1426,8 @@
 		// returns one card at type-random from the specified source with the specified draw function
 		private function DrawCard($source, array $hand, $card_pos, $draw_function)
 		{
+			global $statistics;
+
 			while (1)
 			{
 				$nextcard = $this->$draw_function($source, $hand[$card_pos]);
@@ -1436,7 +1438,11 @@
 					if (($hand[$i] == $nextcard) and ($card_pos != $i))
 						$match++; //do not count the card already played
 				
-				if (mt_rand(1, pow(2, $match)) == 1) return $nextcard; // chance to retain the card decreases exponentially as the number of matches increases
+				if (mt_rand(1, pow(2, $match)) == 1)
+				{
+					$statistics->UpdateCardStats($nextcard, 'draw');
+					return $nextcard; // chance to retain the card decreases exponentially as the number of matches increases
+				}
 			}
 			
 		}

@@ -374,7 +374,10 @@
 		{
 			$db = $this->db;
 
-			$action_q = ($action == "play") ? 'Played' : 'Discarded';
+			if ($action == "play") $action_q = 'Played';
+			elseif ($action == "discard") $action_q = 'Discarded';
+			elseif ($action == "draw") $action_q = 'Drawn';
+			else return false; // invalid action
 
 			// check if the card is already present in the database
 			$result = $db->Query('SELECT 1 FROM `statistics` WHERE `CardID` = "'.$card_id.'"');

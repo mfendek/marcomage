@@ -81,6 +81,40 @@
 		</div>
 
 		<div class="skin_text">
+			<h4>Most drawn (latest)</h4>
+			<xsl:for-each select="$param/most_drawn/*">
+				<p>
+					<span><input type="submit" name="view_card[{id}]" value="+" /></span>
+					<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
+				</p>
+			</xsl:for-each>
+			<h4>Least drawn (latest)</h4>
+			<xsl:for-each select="$param/least_drawn/*">
+				<p>
+					<span><input type="submit" name="view_card[{id}]" value="+" /></span>
+					<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
+				</p>
+			</xsl:for-each>
+		</div>
+
+		<div class="skin_text">
+			<h4>Most drawn (overall)</h4>
+			<xsl:for-each select="$param/most_drawn_total/*">
+				<p>
+					<span><input type="submit" name="view_card[{id}]" value="+" /></span>
+					<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
+				</p>
+			</xsl:for-each>
+			<h4>Least drawn (overall)</h4>
+			<xsl:for-each select="$param/least_drawn_total/*">
+				<p>
+					<span><input type="submit" name="view_card[{id}]" value="+" /></span>
+					<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
+				</p>
+			</xsl:for-each>
+		</div>
+
+		<div class="skin_text">
 			<h4>Skins</h4>
 			<xsl:for-each select="$param/skins/*">
 				<xsl:sort select="name" order="ascending"/>

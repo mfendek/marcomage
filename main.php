@@ -4036,10 +4036,14 @@ case 'Statistics':
 	$params['statistics']['least_played'] = $statistics->Cards('Played', 'ASC'); // least played cards
 	$params['statistics']['most_discarded'] = $statistics->Cards('Discarded', 'DESC'); // most discarded cards
 	$params['statistics']['least_discarded'] = $statistics->Cards('Discarded', 'ASC'); // least discarded cards
+	$params['statistics']['most_drawn'] = $statistics->Cards('Drawn', 'DESC'); // most drawn cards
+	$params['statistics']['least_drawn'] = $statistics->Cards('Drawn', 'ASC'); // least drawn cards
 	$params['statistics']['most_played_total'] = $statistics->Cards('PlayedTotal', 'DESC'); // most played cards (total)
 	$params['statistics']['least_played_total'] = $statistics->Cards('PlayedTotal', 'ASC'); // least played cards (total)
 	$params['statistics']['most_discarded_total'] = $statistics->Cards('DiscardedTotal', 'DESC'); // most discarded cards (total)
 	$params['statistics']['least_discarded_total'] = $statistics->Cards('DiscardedTotal', 'ASC'); // least discarded cards (total)
+	$params['statistics']['most_drawn_total'] = $statistics->Cards('DrawnTotal', 'DESC'); // most drawn cards (total)
+	$params['statistics']['least_drawn_total'] = $statistics->Cards('DrawnTotal', 'ASC'); // least drawn cards (total)
 
 	break;
 
