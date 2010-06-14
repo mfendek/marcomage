@@ -49,6 +49,10 @@
 		<description>when card has this keyword, it also has a number next to this keyword. When such card is played and the last card played was same as this one, opponent will suffer additional damage equal to number next to Enduring.</description>
 	</keyword>
 	<keyword>
+		<name>Far sight</name>
+		<description>if matching card in opponent's hand is revealed, effect based on matching card cost and played card rarity (bricks only cost - raise tower (C - 2, U - 6, R - 18), gems only cost - raise lowest token counter (C - 10, U - 30, R - 90), recruits only cost - raise wall (C - 3, U - 9, R - 27), mixed cost - raise stock (C - 1, U - 3, R - 9), zero cost - no effect). After optional effect opponent's cards are revealed based on played card rarity (C - matching card and it's neighbours, U - matching card and it's neighbours and their neighbours, R - whole hand). Optional effect will always trigger in a game with disabled Hidden cards mode.</description>
+	</keyword>
+	<keyword>
 		<name>Flare attack</name>
 		<description>when played, one player receives Searing fire cards at odd card positions, while the other player receives Searing fire cards at even card positions. Who receives odd and who even positions is resolved randomly. The position of the played card is ignored and Burning cards are not replaced by Searing fires. Rare cards aren't replaced, unless the played card is a rare.</description>
 	</keyword>

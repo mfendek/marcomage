@@ -440,6 +440,7 @@ Keywords represent information about the card that is too big to fit in the card
 	<li><b>Dragon</b> - if there is another <b>Dragon</b> in hand, next card will be Dragon egg (if there is no Dragon egg card in hand) or Gems production x2 (if there already is a Dragon egg card in hand).</li>
 	<li><b>Durable</b> - card stays on hand.</li>
 	<li><b>Enduring</b> - when card has this keyword, it also has a number next to this keyword. When such card is played and the last card played was same as this one, opponent will suffer additional damage equal to number next to Enduring.</li>
+	<li><b>Far sight</b> - if matching card in opponent's hand is revealed, effect based on matching card cost and played card rarity (bricks only cost - raise tower (C - 2, U - 6, R - 18), gems only cost - raise lowest token counter (C - 10, U - 30, R - 90), recruits only cost - raise wall (C - 3, U - 9, R - 27), mixed cost - raise stock (C - 1, U - 3, R - 9), zero cost - no effect). After optional effect opponent's cards are revealed based on played card rarity (C - matching card and it's neighbours, U - matching card and it's neighbours and their neighbours, R - whole hand). Optional effect will always trigger in a game with disabled Hidden cards mode.</li>
 	<li><b>Flare attack</b> - when played, one player receives Searing fire cards at odd card positions, while the other player receives Searing fire cards at even card positions. Who receives odd and who even positions is resolved randomly. The position of the played card is ignored and <b>Burning</b> cards are not replaced by Searing fires. Rare cards aren't replaced, unless the played card is a rare.</li>
 	<li><b>Frenzy</b> - if there is another <b>Frenzy</b> card in hand, opponent receives bonus damage (recruits cost of the played card).</li>
 	<li><b>Holy</b> - basic gain 25, bonus gain 5, side-effect (Purification): replaces one random <b>Undead</b> card from enemy hand (if there is one) with Purified ashes. Can only replace a card with same or lower rarity as was the played card, but cards with highest replacable rarity are preferred. Cards that cannot be replaced by played card are not considered targets for replace. You will get additional stock based on replaced card rarity (Common - 1 stock, Uncommon -  2 stock, Rare - 3 stock).</li>
@@ -489,6 +490,7 @@ Keywords represent information about the card that is too big to fit in the card
 	<li>Durable</li>
 	<li>Quick</li>
 	<li>Swift</li>
+	<li>Far sight</li>
 	<li>Banish</li>
 	<li>Skirmisher</li>
 	<li>Rebirth</li>

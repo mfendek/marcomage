@@ -537,6 +537,7 @@
 			$mylast_action = $mydata->LastAction[$mylastcardindex];
 			$hislast_card = $carddb->GetCard($hisdata->LastCard[$hislastcardindex]);
 			$hislast_action = $hisdata->LastAction[$hislastcardindex];
+			$hidden_cards = ($this->HiddenCards == 'yes');
 			
 			//we need to store this information, because some cards will need it to make their effect, however after effect this information is not stored
 			$mychanges = $mydata->Changes;
@@ -1010,6 +1011,45 @@
 				if ($card->HasKeyWord("Swift"))
 				{
 					$nextplayer = $playername;
+				}
+				
+				//process Far sight - reveal opponent's cards (if already revelead, bonus effect based on matching card cost and played card rarity)
+				if ($card->HasKeyWord("Far sight"))
+				{
+					if (!$hidden_cards OR isset($hisdata->Revealed[$cardpos])) // bonus effect
+					{
+						$cur_card = $carddb->GetCard($hisdata->Hand[$cardpos]);
+						$bricks = $cur_card->GetResources('Bricks');
+						$gems = $cur_card->GetResources('Gems');
+						$recruits = $cur_card->GetResources('Recruits');
+						$rarities = array("Common" => 1, "Uncommon" => 3, "Rare" => 9);
+						$factor = $rarities[$card->GetClass()];
+						
+						if ($bricks > 0 AND $gems == 0 AND $recruits == 0) $mydata->Tower+= 2 * $factor; // raise tower
+						elseif ($bricks == 0 AND $gems > 0 AND $recruits == 0)
+						{
+							if (count(array_diff($mydata->TokenNames, array('none'))) > 0) // raise lowest token counter
+							{
+								$min = 1000;
+								$chosen = array();
+								foreach ($mydata->TokenNames as $i => $token_name) $min = min($min, $mydata->TokenValues[$i]);
+								foreach ($mydata->TokenNames as $i => $token_name) if ($mydata->TokenValues[$i] == $min) $chosen[] = $i;
+								$chosen_index = $chosen[array_rand($chosen)];
+								$mydata->TokenValues[$chosen_index]+= 10 * $factor;
+							}
+						}
+						elseif ($bricks == 0 AND $gems == 0 AND $recruits > 0) $mydata->Wall+= 3 * $factor; // raise wall
+						elseif ($bricks == 0 AND $gems == 0 AND $recruits == 0) {} // no effect
+						else { $mydata->Bricks+= $factor; $mydata->Gems+= $factor; $mydata->Recruits+= $factor; } // raise stock
+					}
+					
+					// reveal opponent's cards based on played card rarity
+					$offsets = array("Common" => 1, "Uncommon" => 2, "Rare" => 8);
+					$offset = $offsets[$card->GetClass()];
+					$start = max($cardpos - $offset, 1);
+					$finish = min($cardpos + $offset, 8);
+					
+					for ($i = $start; $i <= $finish; $i++) $hisdata->Revealed[$i] = 1;
 				}
 				
 				//process Banish cards - discard one random Durable card from enemy hand, if there is one
