@@ -14,11 +14,13 @@ function TakeCard(username, session_id, deck, id) // add card to deck via AJAX
 		var avg = result[2];
 
 		var slot = str.concat("#slot_", res_val);
+		if ($.browser.opera) { var scroll_position = $(".scroll").scrollLeft(); } // store current scroll bar position (needed for Opera scroll bar bug)
 
 		// move selected card to deck
 		$(card).removeAttr('onclick'); // disallow the card to be removed from the deck (prevent double clicks)
 		$(card).animate({ opacity: 0 }, 'slow', function() {
 			$(card).animate({ width: 'hide' }, 'slow', function() {
+				if ($.browser.opera) { $(".scroll").scrollLeft(scroll_position); } // scroll to saved position (fixes Opera scroll bar bug)
 				$(slot).html($(card).html());
 				$(slot).hide();
 				$(slot).fadeIn('slow');
