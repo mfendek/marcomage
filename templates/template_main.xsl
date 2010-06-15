@@ -44,6 +44,7 @@
 		</xsl:element>
 	</xsl:if>
 	<script type="text/javascript" src="javascript/jquery.js"></script>
+	<script type="text/javascript" src="javascript/scrollto.js"></script>
 	<script type="text/javascript" src="javascript/bbtags.js"></script>
 	<script type="text/javascript" src="javascript/utils.js"></script>
 	</head>

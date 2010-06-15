@@ -104,4 +104,12 @@ $(document).ready(function() {
 	// blocks ENTER key to prevent section redirects
 	$("input[name!='ChatMessage'][type!='password'], select").keypress(function(event) { if (event.keyCode == '13') { event.preventDefault(); } });
 
+	// scroll card pool when leaving the left or right edge
+	$('.scroll').mouseout(function(event) {
+		var x = event.pageX - this.offsetLeft;
+		var move = ($(this).width() * 3)/4; // calculate 3/4 of current card pool length
+		var str = new String();
+		if (x < 3) { $(".scroll").scrollTo(str.concat("-=", move, "px"), 'slow'); }
+		else if (x > ($(this).width() - 3)) { $(".scroll").scrollTo(str.concat("+=", move, "px"), 'slow'); }
+	});
 });
