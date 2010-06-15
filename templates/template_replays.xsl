@@ -112,6 +112,9 @@
 			</xsl:for-each>
 		</select>
 		<input type="submit" name="filter_replays" value="Apply filters" />
+		<xsl:if test="$param/my_replays = 'yes'">
+			<input type="submit" name="my_replays" value="My replays" />
+		</xsl:if>
 
 		<!-- navigation -->
 		<input type="submit" name="select_page_replays[{am:max($current - 1, 0)}]" value="&lt;">

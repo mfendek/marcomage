@@ -2668,6 +2668,18 @@
 					break;
 				}
 				
+				if ($message == 'my_replays') // show only current player's replays
+				{
+					$_POST['PlayerFilter'] = $player->Name();
+					$_POST['HiddenCards'] = "ignore";
+					$_POST['FriendlyPlay'] = "ignore";
+					$_POST['VictoryFilter'] = "none";
+					$_POST['IdFilter'] = "";
+					
+					$current = 'Replays';
+					break;
+				}
+				
 				if ($message == 'select_page_replays') // Replays -> select page (previous and next button)
 				{
 					$current_page = array_shift(array_keys($value));
@@ -3801,7 +3813,8 @@ case 'Replays':
 	for ($i = 0; $i < $count; $i++) $pages[$i] = $i;
 	$params['replays']['pages'] = $pages;
 	$params['replays']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
-	$params['replays']['players'] = $replaydb->ListPlayers();
+	$params['replays']['players'] = $replay_players = $replaydb->ListPlayers();
+	$params['replays']['my_replays'] = (in_array($player->Name(), $replay_players) ? 'yes' : 'no');
 
 	break;
 
