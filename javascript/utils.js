@@ -66,6 +66,7 @@ function RemoveCard(username, session_id, deck, id) // remove card from deck via
 		var avg = result[1];
 
 		var slot = str.concat("#slot_", res_val);
+		if ($.browser.opera) { var scroll_position = $(".scroll").scrollLeft(); } // store current scroll bar position (needed for Opera scroll bar bug)
 		var empty = '<div class="karta no_class zero_cost with_bgimage"><div class="null">0</div><h5>Empty</h5><img src="img/cards/g0.jpg" width="80px" height="60px" alt="" /><p></p><div></div></div>';
 
 		// move selected card to card pool
@@ -80,6 +81,7 @@ function RemoveCard(username, session_id, deck, id) // remove card from deck via
 			$(slot).html(empty);
 			$(slot).show();
 			$(card).animate({ width: 'show' }, 'slow', function() {
+				if ($.browser.opera) { $(".scroll").scrollLeft(scroll_position); } // scroll to saved position (fixes Opera scroll bar bug)
 				$(card).animate({ opacity: 1 }, 'slow');
 			});
 		});
