@@ -566,6 +566,8 @@ Let's take the <b>Alliance</b> keyword for example. First you need to set one to
 	<li>Most discarded - Top 10 most discarded cards, this statistic is updated each time a card is discarded by standard discard or by card effect</li>
 	<li>Least played - Top 10 least played cards, this statistic is updated each time a card is played</li>
 	<li>Least discarded - Top 10 least discarded cards, this statistic is updated each time a card is discarded by standard discard or by card effect</li>
+	<li>Most drawn - Top 10 most drawn cards, this statistic is updated each time a card is drawn by any draw type</li>
+	<li>Least drawn - Top 10 least drawn cards, this statistic is updated each time a card is drawn by any draw type</li>
 	<li>Skins - for each skin type (layout setting), the usage ratio is shown (how many players use that skin compared to total skins used), only active and offline players contribute to this statistic</li>
 	<li>Game modes - the percentage shown is how many games use the respective game mode (compared to all games in total), only finished games contribute to this statistic</li>
 	<li>Victory types - for each victory type, the percentage ratio is shown (how many games ended with the respective victory type compared to all games in total), only finished games contribute to this statistic</li>
