@@ -627,7 +627,7 @@
     <modes>2</modes>
     <keywords>Unliving</keywords>
     <effect><![CDATA[Mode1:<br />Wall: +8<br />Mode2:<br />Enemy wall: -9]]></effect>
-    <code><![CDATA[if ($mode == 1) $mydata->Wall+=8 ; elseif ($mode == 2) $hisdata->Wall-= 9;]]></code>
+    <code><![CDATA[if ($mode == 1) $mydata->Wall+=8; elseif ($mode == 2) $hisdata->Wall-= 9;]]></code>
     <created>2006-11-14</created>
     <modified>2007-11-25</modified>
   </card>
@@ -7543,7 +7543,7 @@
     <modes>2</modes>
     <keywords/>
     <effect><![CDATA[Mode1:<br />Tower: -7<br />Stock: +4<br />Mode2:<br />Tower: -14<br />Stock: +8]]></effect>
-    <code><![CDATA[if ($mode == 1) { $mydata->Tower-=7 ; $mydata->Bricks+= 4; $mydata->Gems+= 4; $mydata->Recruits+= 4; } elseif ($mode == 2) { $mydata->Tower-=14 ; $mydata->Bricks+= 8; $mydata->Gems+= 8; $mydata->Recruits+= 8; }]]></code>
+    <code><![CDATA[if ($mode == 1) { $mydata->Tower-=7; $mydata->Bricks+= 4; $mydata->Gems+= 4; $mydata->Recruits+= 4; } elseif ($mode == 2) { $mydata->Tower-=14; $mydata->Bricks+= 8; $mydata->Gems+= 8; $mydata->Recruits+= 8; }]]></code>
     <created>2009-10-24</created>
     <modified>2009-10-24</modified>
   </card>
