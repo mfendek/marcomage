@@ -6687,7 +6687,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Brigand</keywords>
-    <effect><![CDATA[Attack: 11<br />Steals stock equal to enemy facilities<br />Next card recieved will be a non-common <b>Brigand</b>]]></effect>
+    <effect><![CDATA[Attack: 11<br />Steals stock equal to enemy facilities<br />Next card will be a non-common <b>Brigand</b>]]></effect>
     <code><![CDATA[
 							$this->Attack(11, $hisdata->Tower, $hisdata->Wall);
 							$resources = array('Quarry' => 'Bricks', 'Magic' => 'Gems', 'Dungeons' => 'Recruits');
