@@ -70,7 +70,7 @@
 	</keyword>
 	<keyword>
 		<name>Legend</name>
-		<description>If there is a rare card in hand (other then played card) raises random facility by one.</description>
+		<description>If there is a rare card in hand (other then played card) raises lowest facility by one.</description>
 	</keyword>
 	<keyword>
 		<name>Mage</name>

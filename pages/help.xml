@@ -447,7 +447,7 @@ Keywords represent information about the card that is too big to fit in the card
 	<li><b>Frenzy</b> - if there is another <b>Frenzy</b> card in hand, opponent receives bonus damage (recruits cost of the played card).</li>
 	<li><b>Holy</b> - basic gain 25, bonus gain 5, side-effect (Purification): replaces one random <b>Undead</b> card from enemy hand (if there is one) with Purified ashes. Can only replace a card with same or lower rarity as was the played card, but cards with highest replacable rarity are preferred. Cards that cannot be replaced by played card are not considered targets for replace. You will get additional stock based on replaced card rarity (Common - 1 stock, Uncommon -  2 stock, Rare - 3 stock).</li>
 	<li><b>Illusion</b> - if an <b>Illusion</b> card is played after playing a different, non-common <b>Illusion</b> card, next card will be a rare card from enemy deck.</li>
-	<li><b>Legend</b> - if there is a rare card in hand (other then played card) raises random facility by one.</li>
+	<li><b>Legend</b> - if there is a rare card in hand (other then played card) raises lowest facility by one.</li>
 	<li><b>Mage</b> - basic gain 10, bonus gain 3, side-effect (Willpower): If (Magic - Enemy magic &lt; 2) Magic: +1 else Gems: +10</li>
 	<li><b>Nature</b> - if an <b>Nature</b> card is played after playing a different, non-common <b>Nature</b> card, next card will be a rare <b>Nature</b> card.</li>
 	<li><b>Quick</b> - player gets an additional turn, but no production this turn, it is impossible to draw a rare card after a <b>Quick</b> card is played.</li>

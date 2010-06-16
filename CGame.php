@@ -841,7 +841,7 @@
 					$nextcard = $this->DrawCard($hisdata->Deck->Rare, $mydata->Hand, $cardpos, 'DrawCard_list');
 				}
 				
-				//process Legend cards - raises random facility by one, if there is a rare card in hand
+				//process Legend cards - raises lowest facility by one, if there is a rare card in hand
 				if ($card->HasKeyWord("Legend"))
 				{
 					$found = false;
@@ -854,8 +854,12 @@
 					
 					if ($found)
 					{
-						$facilities = array("Quarry", "Magic", "Dungeons");
-						$chosen = $facilities[array_rand($facilities)];
+						$min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
+						$facilities = array("Quarry" => $mydata->Quarry, "Magic" => $mydata->Magic, "Dungeons" => $mydata->Dungeons);
+						$temp = array();
+						foreach ($facilities as $facility => $f_value)
+							if ($f_value == $min) $temp[$facility] = $f_value;
+						$chosen = array_rand($temp);						
 						$mydata->$chosen++;
 					}
 				}
