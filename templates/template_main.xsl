@@ -20,18 +20,8 @@
 	<meta name="keywords" content="Arcomage, MArcomage, free, online, fantasy, card game, fantasy novels"/>
 	<link rel="stylesheet" href="styles/general.css" type="text/css" title="standard style" />
 	<link rel="stylesheet" href="styles/menubar.css" type="text/css" title="standard style" />
-	<link rel="stylesheet" href="styles/decks.css" type="text/css" title="standard style" />
 	<link rel="stylesheet" href="styles/card.css" type="text/css" title="standard style" />
-	<link rel="stylesheet" href="styles/games.css" type="text/css" title="standard style" />
-	<link rel="stylesheet" href="styles/players.css" type="text/css" title="standard style" />
-	<link rel="stylesheet" href="styles/messages.css" type="text/css" title="standard style" />
-	<link rel="stylesheet" href="styles/webpage.css" type="text/css" title="standard style" />
-	<link rel="stylesheet" href="styles/settings.css" type="text/css" title="standard style" />
-	<link rel="stylesheet" href="styles/novels.css" type="text/css" title="standard style" />
-	<link rel="stylesheet" href="styles/forum.css" type="text/css" title="standard style" />
-	<link rel="stylesheet" href="styles/concepts.css" type="text/css" title="standard style" />
-	<link rel="stylesheet" href="styles/cards.css" type="text/css" title="standard style" />
-	<link rel="stylesheet" href="styles/statistics.css" type="text/css" title="standard style" />
+	<link rel="stylesheet" href="styles/{$param/current_section}.css" type="text/css" title="standard style" />	
 	<link rel="stylesheet" href="styles/skins/skin{$param/skin}.css" type="text/css" title="standard style" />
 	<link rel="icon" href="img/favicon.png" type="image/png" />
 	<title>MArcomage</title>

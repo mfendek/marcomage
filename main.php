@@ -2824,6 +2824,7 @@
 
 	// which section to display
 	$params["main"]["section"] = $current;
+	$params["main"]['current_section'] = strtolower(NavBarSection($current)); // calculate current main section
 
 	// session information, if necessary
 	if( $session and !$session->hasCookies() )
