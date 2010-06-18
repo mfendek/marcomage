@@ -636,9 +636,9 @@
 				{
 					$mydata->Tower+= 5;
 					$mydata->Wall+= 5;
-					$hisdata->Bricks-= 5;
-					$hisdata->Gems-= 5;
-					$hisdata->Recruits-= 5;
+					$hisdata->Bricks-= 3;
+					$hisdata->Gems-= 3;
+					$hisdata->Recruits-= 3;
 				}
 				
 				//process Barbarian cards - Devastation (additional damage to enemy wall)

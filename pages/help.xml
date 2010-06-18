@@ -431,7 +431,7 @@ Keywords represent information about the card that is too big to fit in the card
 
 <ul>
 	<li><b>Alliance</b> - basic gain 17, bonus gain 3, side-effect (Arcane knowledge): additional Production x2.</li>
-	<li><b>Aqua</b> - if an <b>Aqua</b> card is played after playing a different, non-common <b>Aqua</b> card, it raises your tower and wall by 5, opponent's stock is reduced by 5.</li>
+	<li><b>Aqua</b> - if an <b>Aqua</b> card is played after playing a different, non-common <b>Aqua</b> card, it raises your tower and wall by 5, opponent's stock is reduced by 3.</li>
 	<li><b>Banish</b> - discards one random <b>Durable</b> card from enemy hand (if there is one). Common cards can discard common and uncommon cards, uncommon cards can discard any rarity. Rare cards can also discard any rarity, but they have additional effect (player gains stock equal to discarded card cost). Cards with highest discardable rarity are preferred. Cards that cannot be discarded by played card are not considered targets for discard.</li>
 	<li><b>Barbarian</b> - basic gain 4, bonus gain 15, side-effect (Devastation): enemy wall will be additionally lowered by ammount based on played card rarity (Common - 3 , Uncommon -  8, Rare - 15).</li>
 	<li><b>Brigand</b> - basic gain 10, bonus gain 10, side-effect (Robbery): additional stock will be stolen from opponent, ammount based on played card rarity (Common - 1 stock, Uncommon -  2 stock, Rare - 3 stock).</li>
