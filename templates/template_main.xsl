@@ -19,9 +19,18 @@
 	<meta name="author" content="Mojmír Fendek, Viktor Štujber" />
 	<meta name="keywords" content="Arcomage, MArcomage, free, online, fantasy, card game, fantasy novels"/>
 	<link rel="stylesheet" href="styles/general.css" type="text/css" title="standard style" />
-	<link rel="stylesheet" href="styles/menubar.css" type="text/css" title="standard style" />
 	<link rel="stylesheet" href="styles/card.css" type="text/css" title="standard style" />
-	<link rel="stylesheet" href="styles/{$param/current_section}.css" type="text/css" title="standard style" />	
+	<xsl:choose>
+		<xsl:when test="$param/is_logged_in = 'yes'">
+			<link rel="stylesheet" href="styles/menubar.css" type="text/css" title="standard style" />
+		</xsl:when>
+		<xsl:otherwise>
+			<link rel="stylesheet" href="styles/login.css" type="text/css" title="standard style" />
+		</xsl:otherwise>
+	</xsl:choose>
+	<xsl:if test="$param/current_section != ''">
+		<link rel="stylesheet" href="styles/{$param/current_section}.css" type="text/css" title="standard style" />
+	</xsl:if>
 	<link rel="stylesheet" href="styles/skins/skin{$param/skin}.css" type="text/css" title="standard style" />
 	<link rel="icon" href="img/favicon.png" type="image/png" />
 	<title>MArcomage</title>
