@@ -21,16 +21,6 @@
 					<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
 				</p>
 			</xsl:for-each>
-			<h4>Most discarded (latest)</h4>
-			<xsl:for-each select="$param/most_discarded/*">
-				<p>
-					<span><input type="submit" name="view_card[{id}]" value="+" /></span>
-					<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
-				</p>
-			</xsl:for-each>
-		</div>
-
-		<div class="skin_text">
 			<h4>Least played (latest)</h4>
 			<xsl:for-each select="$param/least_played/*">
 				<p>
@@ -38,41 +28,18 @@
 					<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
 				</p>
 			</xsl:for-each>
-			<h4>Least discarded (latest)</h4>
-			<xsl:for-each select="$param/least_discarded/*">
-				<p>
-					<span><input type="submit" name="view_card[{id}]" value="+" /></span>
-					<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
-				</p>
-			</xsl:for-each>
-		</div>
-		<div class="skin_text">
-			<h4>Most played (overall)</h4>
-			<xsl:for-each select="$param/most_played_total/*">
-				<p>
-					<span><input type="submit" name="view_card[{id}]" value="+" /></span>
-					<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
-				</p>
-			</xsl:for-each>
-			<h4>Most discarded (overall)</h4>
-			<xsl:for-each select="$param/most_discarded_total/*">
-				<p>
-					<span><input type="submit" name="view_card[{id}]" value="+" /></span>
-					<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
-				</p>
-			</xsl:for-each>
 		</div>
 
 		<div class="skin_text">
-			<h4>Least played (overall)</h4>
-			<xsl:for-each select="$param/least_played_total/*">
+			<h4>Most discarded (latest)</h4>
+			<xsl:for-each select="$param/most_discarded/*">
 				<p>
 					<span><input type="submit" name="view_card[{id}]" value="+" /></span>
 					<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
 				</p>
 			</xsl:for-each>
-			<h4>Least discarded (overall)</h4>
-			<xsl:for-each select="$param/least_discarded_total/*">
+			<h4>Least discarded (latest)</h4>
+			<xsl:for-each select="$param/least_discarded/*">
 				<p>
 					<span><input type="submit" name="view_card[{id}]" value="+" /></span>
 					<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
@@ -90,6 +57,40 @@
 			</xsl:for-each>
 			<h4>Least drawn (latest)</h4>
 			<xsl:for-each select="$param/least_drawn/*">
+				<p>
+					<span><input type="submit" name="view_card[{id}]" value="+" /></span>
+					<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
+				</p>
+			</xsl:for-each>
+		</div>
+
+		<div class="skin_text">
+			<h4>Most played (overall)</h4>
+			<xsl:for-each select="$param/most_played_total/*">
+				<p>
+					<span><input type="submit" name="view_card[{id}]" value="+" /></span>
+					<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
+				</p>
+			</xsl:for-each>
+			<h4>Least played (overall)</h4>
+			<xsl:for-each select="$param/least_played_total/*">
+				<p>
+					<span><input type="submit" name="view_card[{id}]" value="+" /></span>
+					<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
+				</p>
+			</xsl:for-each>
+		</div>
+
+		<div class="skin_text">
+			<h4>Most discarded (overall)</h4>
+			<xsl:for-each select="$param/most_discarded_total/*">
+				<p>
+					<span><input type="submit" name="view_card[{id}]" value="+" /></span>
+					<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
+				</p>
+			</xsl:for-each>
+			<h4>Least discarded (overall)</h4>
+			<xsl:for-each select="$param/least_discarded_total/*">
 				<p>
 					<span><input type="submit" name="view_card[{id}]" value="+" /></span>
 					<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
