@@ -8657,4 +8657,663 @@
     <created>2010-03-14</created>
     <modified>2010-03-14</modified>
   </card>
+	<card id="533">
+    <name>Chaos gargoyle</name>
+    <class>Common</class>
+    <cost>
+      <bricks>6</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Unliving,Durable</keywords>
+    <effect><![CDATA[Attack: 4<br />Randomly discards one common card from hand<br />If discarded card was <b>Unliving</b><br />Wall: +4]]></effect>
+    <code><![CDATA[
+							$this->Attack(4, $hisdata->Tower, $hisdata->Wall);
+							$storage = array();
+							for ($i = 1; $i <= 8; $i++)
+								if (($i != $cardpos) AND ($carddb->GetCard($mydata->Hand[$i])->GetClass() == 'Common')) $storage[] = $i;
+							if (count($storage) > 0)
+							{
+								$dis_index = $storage[array_rand($storage)];
+								if ($carddb->GetCard($mydata->Hand[$dis_index])->HasKeyword("Unliving")) $mydata->Wall+= 4;
+								$mydata->Hand[$dis_index] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_norare');
+								$mydata->NewCards[$dis_index] = 1;
+							}
+]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="534">
+    <name>Sniper</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>6</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Soldier,Far sight</keywords>
+    <effect><![CDATA[Attack: 5<br />If there is a <b>Quick</b> or <b>Swift</b> card in opponent's hand<br />Enemy tower: -4]]></effect>
+    <code><![CDATA[$this->Attack(5, $hisdata->Tower, $hisdata->Wall); if (($this->KeywordCount($hisdata->Hand, "Quick") > 0) OR ($this->KeywordCount($hisdata->Hand, "Swift") > 0)) $hisdata->Tower-= 4;]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="535">
+    <name>Urk the Conqueror</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>30</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Barbarian,Durable</keywords>
+    <effect><![CDATA[If last card played was a non-common <b>Barbarian</b><br />Enemy wall: -20<br />Always:<br />Attack: 35]]></effect>
+    <code><![CDATA[if (($mylast_card->HasKeyword("Barbarian")) and ($mylast_action == 'play') AND ($mylast_card->GetClass() != 'Common')) $hisdata->Wall-= 20; $this->Attack(35, $hisdata->Tower, $hisdata->Wall);]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="536">
+    <name>Rage of Urk</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>18</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Barbarian,Frenzy</keywords>
+    <effect><![CDATA[If New<br />Enemy wall: -13<br />Always:<br />Attack: 22]]></effect>
+    <code><![CDATA[if (isset($mynewflags[$cardpos])) $hisdata->Wall-= 13; $this->Attack(22, $hisdata->Tower, $hisdata->Wall);]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="537">
+    <name>Minaret</name>
+    <class>Common</class>
+    <cost>
+      <bricks>5</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Player(s) with least different keywords in hand gets +10 tower]]></effect>
+    <code><![CDATA[$mine = $this->CountDistinctKeywords($mydata->Hand); $his = $this->CountDistinctKeywords($hisdata->Hand); if ($mine <= $his) $mydata->Tower+= 10; if ($mine >= $his) $hisdata->Tower+= 10;]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="538">
+    <name>Forest guardian</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast,Nature</keywords>
+    <effect><![CDATA[Attack: #<b>Beast</b> + #<b>Nature</b> cards in hand]]></effect>
+    <code><![CDATA[$tmp = $this->KeywordCount($mydata->Hand, "Beast") + $this->KeywordCount($mydata->Hand, "Nature"); $this->Attack($tmp, $hisdata->Tower, $hisdata->Wall);]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="539">
+    <name>Book of life</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>4</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Nature</keywords>
+    <effect><![CDATA[Next card will be a <b>Beast</b> or a <b>Nature</b> card<br />If New<br />non-common<br />else<br />non-rare]]></effect>
+    <code><![CDATA[$tmp = (isset($mynewflags[$cardpos])) ? 'Rare' : 'Common'; $nextcard = $this->DrawCard(array_merge($carddb->GetList(array('class'=>"Uncommon", 'keyword'=>"Nature")), $carddb->GetList(array('class'=>$tmp, 'keyword'=>"Nature"))), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="540">
+    <name>Ancestral spirit</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Player(s) with highest tower gets +2 stock]]></effect>
+    <code><![CDATA[if ($mydata->Tower >= $hisdata->Tower) { $mydata->Bricks+= 2; $mydata->Gems+= 2; $mydata->Recruits+= 2; } if ($mydata->Tower <= $hisdata->Tower) { $hisdata->Bricks+= 2; $hisdata->Gems+= 2; $hisdata->Recruits+= 2; }]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="541">
+    <name>Forest spirit</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>15</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast,Nature</keywords>
+    <effect><![CDATA[Attack: 12 + N<br />Wall: +2N<br />N = #<b>Beast</b> + #<b>Nature</b> cards in hand]]></effect>
+    <code><![CDATA[$tmp = $this->KeywordCount($mydata->Hand, "Beast") + $this->KeywordCount($mydata->Hand, "Nature"); $this->Attack(12 + $tmp, $hisdata->Tower, $hisdata->Wall); $mydata->Wall+= 2 * $tmp;]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="542">
+    <name>Seth</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>15</gems>
+      <recruits>15</recruits>
+    </cost>
+    <modes>3</modes>
+    <keywords>Destruction</keywords>
+    <effect><![CDATA[Mode1:<br />Enemy tower: -20<br />Mode2:<br />Enemy wall: -50<br />Mode3:<br />Enemy stock: -15]]></effect>
+    <code><![CDATA[if ($mode == 1) $hisdata->Tower-=20; elseif ($mode == 2) $hisdata->Wall-= 50; elseif ($mode == 3) { $hisdata->Bricks-= 15; $hisdata->Gems-= 15; $hisdata->Recruits-= 15; }]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="543">
+    <name>Deathwood shaman</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>12</gems>
+      <recruits>12</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Nature,Undead</keywords>
+    <effect><![CDATA[Enemy wall: -6 for each <b>Undead</b> card in hand<br />Stock: +2 for each <b>Nature</b> card in hand]]></effect>
+    <code><![CDATA[$tmp = $this->KeywordCount($mydata->Hand, "Undead"); $hisdata->Wall-= 6* $tmp; $tmp = $this->KeywordCount($mydata->Hand, "Nature"); $mydata->Bricks+= 2 * $tmp; $mydata->Gems+= 2 * $tmp; $mydata->Recruits+= 2 * $tmp;]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="544">
+    <name>Black unicorn</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>16</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Legend</keywords>
+    <effect><![CDATA[If there are no rare cards in hand<br />Attack: 25<br />else<br />Attack: 15]]></effect>
+    <code><![CDATA[$found = false; for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($mydata->Hand[$i])->GetClass() == "Rare") $found = true; $this->Attack(((!$found) ? 25 : 15), $hisdata->Tower, $hisdata->Wall);]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="545">
+    <name>Elven marksman</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>5</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance</keywords>
+    <effect><![CDATA[Enemy tower: -N<br />Attack: 8 - N<br />N = #<b>Alliance</b> cards in hand]]></effect>
+    <code><![CDATA[$tmp = $this->KeywordCount($mydata->Hand, "Alliance"); $hisdata->Tower-= $tmp; if ($tmp < 8) $this->Attack(8 - $tmp, $hisdata->Tower, $hisdata->Wall);]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="546">
+    <name>Dwarven elder</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>12</bricks>
+      <gems>12</gems>
+      <recruits>12</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance</keywords>
+    <effect><![CDATA[Attack: 22<br />Production x4]]></effect>
+    <code><![CDATA[$this->Attack(22, $hisdata->Tower, $hisdata->Wall); $bricks_production*= 4; $gems_production*= 4; $recruits_production*= 4;]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="547">
+    <name>Flame lord</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>15</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Burning,Far sight</keywords>
+    <effect><![CDATA[Attack: 25<br />Next card will be Eternal flame]]></effect>
+    <code><![CDATA[$this->Attack(25, $hisdata->Tower, $hisdata->Wall); $nextcard = 336;]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="548">
+    <name>War wolf</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>7</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Beast</keywords>
+    <effect><![CDATA[Attack: 7<br />If there is a Goblin in your hand<br />Recruits: +4]]></effect>
+    <code><![CDATA[$found = false; for ($i = 1; $i <= 8; $i++) if ($mydata->Hand[$i] == 13) $found = true; $this->Attack(7, $hisdata->Tower, $hisdata->Wall); if ($found) $mydata->Recruits+= 4;]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="549">
+    <name>Goblin regiment</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>20</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Attack: 30<br />Replaces all common cards in hand with Goblins<br />Recruits: +2 for each card replaced]]></effect>
+    <code><![CDATA[$this->Attack(30, $hisdata->Tower, $hisdata->Wall); $tmp = 0; for ($i = 1; $i <= 8; $i++) if (($i != $cardpos) AND ($carddb->GetCard($mydata->Hand[$i])->GetClass() == 'Common')) { $mydata->Hand[$i] = 13; $mydata->NewCards[$i] = 1; $tmp++; } $mydata->Recruits+= $tmp * 2;]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="550">
+    <name>Sea priestess</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>1</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Aqua,Restoration</keywords>
+    <effect><![CDATA[Next card will be <b>Aqua</b><br />If last card played was <b>Aqua</b><br />Stock: +1]]></effect>
+    <code><![CDATA[$nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Aqua")), $mydata->Hand, $cardpos, 'DrawCard_list'); if (($mylast_card->HasKeyword("Aqua")) and ($mylast_action == 'play')) { $mydata->Bricks+= 1; $mydata->Gems+= 1; $mydata->Recruits+= 1; }]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="551">
+    <name>Spectral siren</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>12</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Aqua,Undead</keywords>
+    <effect><![CDATA[Attack: 12<br />Enemy recruits: -2N<br />N = #<b>Aqua</b> cards in hand]]></effect>
+    <code><![CDATA[$this->Attack(12, $hisdata->Tower, $hisdata->Wall); $tmp = $this->KeywordCount($mydata->Hand, "Aqua"); $hisdata->Recruits-= 2 * $tmp;]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="552">
+    <name>Leviathan</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>30</gems>
+      <recruits>50</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Aqua</keywords>
+    <effect><![CDATA[Enemy tower: -80<br />Enemy wall: -100]]></effect>
+    <code><![CDATA[$hisdata->Tower-= 80; $hisdata->Wall-= 100;]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="553">
+    <name>Hidden lagoon</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>1</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Aqua</keywords>
+    <effect><![CDATA[Wall: +N / 2<br />Stock: +N / 3<br />N = #<b>Aqua</b> cards in hand]]></effect>
+    <code><![CDATA[$tmp = $this->KeywordCount($mydata->Hand, "Aqua"); $tmp_stock = (int)round($tmp / 3); $mydata->Wall+= (int)round($tmp / 2); $mydata->Bricks+= $tmp_stock; $mydata->Gems+= $tmp_stock; $mydata->Recruits+= $tmp_stock;]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="554">
+    <name>Northen fortress</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>35</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Wall: +40<br />If matching card is New<br />Tower: +20]]></effect>
+    <code><![CDATA[$mydata->Wall+= 40; if (isset($hisnewflags[$cardpos])) $mydata->Tower+= 20;]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="555">
+    <name>Trickster</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>3</gems>
+      <recruits>3</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Brigand</keywords>
+    <effect><![CDATA[All opponent's tokens are destroyed<br />Gain 1 random resource for each 10 destroyed tokens of the same kind]]></effect>
+    <code><![CDATA[$tmp = 0; foreach ($hisdata->TokenValues as $i => $value) if ($value > 0) { $tmp+= floor($value / 10); $hisdata->TokenValues[$i] = 0; } if ($tmp > 0) for ($i = 1; $i <= $tmp; $i++) { $type = mt_rand(0,2); if ($type == 0) $mydata->Bricks++; elseif ($type == 1) $mydata->Gems++; elseif ($type == 2) $mydata->Recruits++; }]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="556">
+    <name>Dwarven watchtower</name>
+    <class>Common</class>
+    <cost>
+      <bricks>8</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Alliance</keywords>
+    <effect><![CDATA[Tower: +6<br />Next card will be <b>Alliance</b> with the same rarity as matching card]]></effect>
+    <code><![CDATA[$mydata->Tower+= 6; $rarity = $carddb->GetCard($hisdata->Hand[$cardpos])->GetClass(); $nextcard = $this->DrawCard($carddb->GetList(array('class'=>$rarity, 'keyword'=>"Alliance")), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="557">
+    <name>Confusion</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords>Illusion</keywords>
+    <effect><![CDATA[Stock: +4<br />Select a card from opponent's hand and replace it with a rare card from your deck]]></effect>
+    <code><![CDATA[$mydata->Bricks+= 4; $mydata->Gems+= 4; $mydata->Recruits+= 4; $hisdata->Hand[$mode] = $this->DrawCard($mydata->Deck->Rare, $hisdata->Hand, $cardpos, 'DrawCard_list'); $hisdata->NewCards[$mode] = 1;]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="558">
+    <name>Magic spring</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Gain 1 random resource for each distinct keyword in hand]]></effect>
+    <code><![CDATA[$tmp = $this->CountDistinctKeywords($mydata->Hand); if ($tmp > 0) for ($i = 1; $i <= $tmp; $i++) { $type = mt_rand(0,2); if ($type == 0) $mydata->Bricks++; elseif ($type == 1) $mydata->Gems++; elseif ($type == 2) $mydata->Recruits++; }]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="559">
+    <name>River Thief</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>4</gems>
+      <recruits>4</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Aqua,Brigand</keywords>
+    <effect><![CDATA[Attack: 2<br />Stock: +2<br />Enemy stock: -2]]></effect>
+    <code><![CDATA[$this->Attack(2, $hisdata->Tower, $hisdata->Wall); $mydata->Bricks+= 2; $mydata->Gems+= 2; $mydata->Recruits+= 2; $hisdata->Bricks-= 2; $hisdata->Gems-= 2; $hisdata->Recruits-= 2;]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="560">
+    <name>Sea gate</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>10</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Aqua,Far sight</keywords>
+    <effect><![CDATA[Wall: +15<br />Discards highest rarity <b>Aqua</b> card from opponent's hand]]></effect>
+    <code><![CDATA[
+							$mydata->Wall+= 15;
+							$storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
+							for ($i = 1; $i <= 8; $i++)
+							{
+								$cur_card = $carddb->GetCard($hisdata->Hand[$i]);
+								$rarity = $cur_card->GetClass();
+								if ($cur_card->HasKeyword("Aqua")) $storage[$rarity][] = $i;
+							}
+							if ((count($storage['Common']) + count($storage['Uncommon']) + count($storage['Rare'])) > 0)
+							{
+								shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
+								$storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
+								$discarded_pos = array_pop($storage_temp);
+								$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_random');
+								$hisdata->NewCards[$discarded_pos] = 1;
+							}
+]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="561">
+    <name>Arcane bolt</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>5</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Destruction</keywords>
+    <effect><![CDATA[If <b>Mage</b> tokens > 70<br />Enemy tower: -8<br /><b>Mage</b> tokens = 0<br />else<br />Enemy wall: -6]]></effect>
+    <code><![CDATA[$tmp = array_search("Mage", $mydata->TokenNames); if ($tmp) { if ($mydata->TokenValues[$tmp] > 70) { $hisdata->Tower-= 8; $mydata->TokenValues[$tmp] = 0; } else $hisdata->Wall-= 6; }]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="562">
+    <name>Divine guidance</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>1</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Restoration</keywords>
+    <effect><![CDATA[If <b>Holy</b> tokens > 80<br />Stock: +4<br /><b>Holy</b> tokens = 0<br />else<br /><b>Holy</b> tokens: +20]]></effect>
+    <code><![CDATA[$tmp = array_search("Holy", $mydata->TokenNames); if ($tmp) { if ($mydata->TokenValues[$tmp] > 80) { $mydata->Bricks+= 4; $mydata->Gems+= 4; $mydata->Recruits+= 4; $mydata->TokenValues[$tmp] = 0; } else $mydata->TokenValues[$tmp]+= 20; }]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="563">
+    <name>Lancer</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>10</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Soldier,Skirmisher</keywords>
+    <effect><![CDATA[Attack: 10<br />Discards all <b>Quick</b> and <b>Swift</b> cards from opponent's hand]]></effect>
+    <code><![CDATA[$this->Attack(10, $hisdata->Tower, $hisdata->Wall); for ($i = 1; $i <= 8; $i++) { $cur_card = $carddb->GetCard($hisdata->Hand[$i]); if ($cur_card->HasKeyword("Quick") OR $cur_card->HasKeyword("Swift")) { $hisdata->Hand[$i] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_random'); $hisdata->NewCards[$i] = 1; }}]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="564">
+    <name>Summon master</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>10</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Mage</keywords>
+    <effect><![CDATA[If <b>Mage</b> tokens > 70<br />Next card will be a <b>Legend</b><br /><b>Mage</b> tokens = 0<br />else<br /><b>Mage</b> tokens: +20]]></effect>
+    <code><![CDATA[$tmp = array_search("Mage", $mydata->TokenNames); if ($tmp) { if ($mydata->TokenValues[$tmp] > 75) { $nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Legend")), $mydata->Hand, $cardpos, 'DrawCard_list'); $mydata->TokenValues[$tmp] = 0; } else $mydata->TokenValues[$tmp]+= 20; }]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="565">
+    <name>Titan's worshipper</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>10</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Next card will be a <b>Titan</b> card not in hand]]></effect>
+    <code><![CDATA[$titans = array_diff($carddb->GetList(array('keyword'=>"Titan")), $mydata->Hand); if (count($titans) > 0) $nextcard = $this->DrawCard($titans, $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="566">
+    <name>Wheat farm</name>
+    <class>Common</class>
+    <cost>
+      <bricks>1</bricks>
+      <gems>1</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Stock: +2N - 1<br />N = #Wheat farms in hand]]></effect>
+    <code><![CDATA[$tmp = 0; for ($i = 1; $i <= 8; $i++) if ($mydata->Hand[$i] == 566) $tmp++; $tmp = ($tmp * 2) - 1; $mydata->Bricks+= $tmp; $mydata->Gems+= $tmp; $mydata->Recruits+= $tmp;]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="567">
+    <name>Jungle river</name>
+    <class>Common</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>8</modes>
+    <keywords>Aqua,Nature</keywords>
+    <effect><![CDATA[Enemy wall: -3<br />Select a card from hand to be replaced with Piranhas]]></effect>
+    <code><![CDATA[$hisdata->Wall-= 3; $mydata->Hand[$mode] = 504; if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="568">
+    <name>Flesh golem</name>
+    <class>Common</class>
+    <cost>
+      <bricks>8</bricks>
+      <gems>0</gems>
+      <recruits>6</recruits>
+    </cost>
+    <modes>2</modes>
+    <keywords>Undead,Unliving</keywords>
+    <effect><![CDATA[Attack: 6<br />Wall: +4<br />Mode1:<br />Bricks: +8<br />Mode2:<br />Recruits: +6]]></effect>
+    <code><![CDATA[$this->Attack(6, $hisdata->Tower, $hisdata->Wall); $mydata->Wall+= 4; if ($mode == 1) $mydata->Bricks+=8; elseif ($mode == 2) $mydata->Recruits+= 6;]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="569">
+    <name>Dream shift</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>9</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Illusion</keywords>
+    <effect><![CDATA[Replace your hand with cards from your deck of the same rarity as the replaced card]]></effect>
+    <code><![CDATA[for ($i = 1; $i <= 8; $i++) if ($i != $cardpos) { $rarity = $carddb->GetCard($mydata->Hand[$i])->GetClass(); $mydata->Hand[$i] = $this->DrawCard($mydata->Deck->$rarity, $mydata->Hand, $i, 'DrawCard_list'); } $mydata->NewCards = array(1=> 1, 1, 1, 1, 1, 1, 1, 1);]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="570">
+    <name>Swamp</name>
+    <class>Common</class>
+    <cost>
+      <bricks>4</bricks>
+      <gems>3</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Aqua,Skirmisher</keywords>
+    <effect><![CDATA[Wall: +8<br />Enemy stock: -1]]></effect>
+    <code><![CDATA[$mydata->Wall+= 8; $hisdata->Bricks-= 1; $hisdata->Gems-= 1; $hisdata->Recruits-= 1;]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="571">
+    <name>Flame obelisk</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>12</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +15<br />Replaces neighbouring cards with <b>Burning</b> cards]]></effect>
+    <code><![CDATA[$mydata->Tower+= 15; if ($cardpos > 1) { $mydata->Hand[$cardpos - 1] = $this->DrawCard($carddb->GetList(array('keyword'=>"Burning")), $mydata->Hand, $cardpos, 'DrawCard_list'); $mydata->NewCards[$cardpos - 1] = 1; } if ($cardpos < 8) { $mydata->Hand[$cardpos + 1] = $this->DrawCard($carddb->GetList(array('keyword'=>"Burning")), $mydata->Hand, $cardpos, 'DrawCard_list'); $mydata->NewCards[$cardpos + 1] = 1; }]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="572">
+    <name>Stables</name>
+    <class>Common</class>
+    <cost>
+      <bricks>4</bricks>
+      <gems>0</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower: +2<br />Wall: +4<br />If <b>Soldier</b> tokens are set<br />Next card will be a <b>Soldier</b> with <b>Charge</b>]]></effect>
+    <code><![CDATA[$mydata->Tower+= 2; $mydata->Wall+= 4; if (array_search("Soldier", $mydata->TokenNames)) $nextcard = $this->DrawCard(array_intersect($carddb->GetList(array('keyword'=>"Soldier")), $carddb->GetList(array('keyword'=>"Charge"))), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="573">
+    <name>Laputa the Flying fortress</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>20</bricks>
+      <gems>20</gems>
+      <recruits>20</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords/>
+    <effect><![CDATA[Tower = Max tower - Tower height<br />Wall = Max wall - Wall height<br />Stock: +5]]></effect>
+    <code><![CDATA[$mydata->Tower = $max_tower - $mydata->Tower; $mydata->Wall = $max_wall - $mydata->Wall; $mydata->Bricks+= 5; $mydata->Gems+= 5; $mydata->Recruits+= 5;]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
+	<card id="574">
+    <name>Alucard</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>0</bricks>
+      <gems>20</gems>
+      <recruits>20</recruits>
+    </cost>
+    <modes>0</modes>
+    <keywords>Far sight</keywords>
+    <effect><![CDATA[Attack: 35<br />If #distinct keywords in hand > #distinct keywords in opponent's hand<br />Bonus 30 attack]]></effect>
+    <code><![CDATA[$tmp = ($this->CountDistinctKeywords($mydata->Hand) > $this->CountDistinctKeywords($hisdata->Hand)) ? 65 : 35; $this->Attack($tmp, $hisdata->Tower, $hisdata->Wall);]]></code>
+    <created>2010-06-21</created>
+    <modified>2010-06-21</modified>
+  </card>
 </cards>
