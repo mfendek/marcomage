@@ -362,9 +362,9 @@
 		public function CardStatistics($card_id) // return statistics for specified card
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `Played`, `Discarded`, `PlayedTotal`, `DiscardedTotal` FROM `statistics` WHERE `CardID` = "'.$db->Escape($card_id).'"');
+			$result = $db->Query('SELECT `Played`, `Discarded`, `Drawn`, `PlayedTotal`, `DiscardedTotal`, `DrawnTotal` FROM `statistics` WHERE `CardID` = "'.$db->Escape($card_id).'"');
 			if (!$result) return false;
-			if (!$result->Rows()) $data = array('Played' => 0, 'Discarded' => 0, 'PlayedTotal' => 0, 'DiscardedTotal' => 0);
+			if (!$result->Rows()) $data = array('Played' => 0, 'Discarded' => 0, 'Drawn' => 0, 'PlayedTotal' => 0, 'DiscardedTotal' => 0, 'DrawnTotal' => 0);
 			else $data = $result->Next();
 
 			return $data;

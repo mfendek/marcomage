@@ -280,6 +280,7 @@
 				<p><span><xsl:value-of select="am:format-date($param/data/modified)"/></span>Modified</p>
 				<p><span><xsl:value-of select="$param/statistics/Played"/> / <xsl:value-of select="$param/statistics/PlayedTotal"/></span>Played</p>
 				<p><span><xsl:value-of select="$param/statistics/Discarded"/> / <xsl:value-of select="$param/statistics/DiscardedTotal"/></span>Discarded</p>
+				<p><span><xsl:value-of select="$param/statistics/Drawn"/> / <xsl:value-of select="$param/statistics/DrawnTotal"/></span>Drawn</p>
 			</div>
 			<p>Effect</p>
 			<p><xsl:value-of select="am:cardeffect($param/data/effect)" disable-output-escaping="yes"/></p>
