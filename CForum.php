@@ -33,7 +33,7 @@
 				$sections_data[$data['SectionName']] = $data;
 			
 			// apply custom order to sections
-			$section_names = array('General', 'Development', 'Support', 'Balance changes', 'Concepts', 'Contests', 'Novels');
+			$section_names = array('General', 'Development', 'Support', 'Balance changes', 'Concepts', 'Contests', 'Off topic', 'Novels');
 			
 			foreach($section_names as $name)
 			{

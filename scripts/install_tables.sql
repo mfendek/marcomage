@@ -318,4 +318,5 @@ INSERT INTO `forum_sections` (`SectionID`, `SectionName`, `Description`) VALUES
 (4, 'Contests', 'help MArcomage to become a better site'),
 (5, 'Novels', 'discuss our fantasy novels section'),
 (6, 'Concepts', 'discuss card suggestions'),
-(7, 'Balance changes', 'balance existing cards');
+(7, 'Balance changes', 'balance existing cards'),
+(8, 'Off topic', 'everything else');
