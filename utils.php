@@ -82,36 +82,4 @@
 		return $xsl->transformToXML($xmldoc);
 	}
 
-	function Subsections() // returns sections-subsections relation
-	{
-		$sections = array();
-
-		$sections['Webpage'] = array('Webpage');
-		$sections['Forum'] = array('Forum', 'Forum_search', 'Section_details', 'New_thread', 'Thread_details', 'New_post', 'Edit_post', 'Edit_thread');
-		$sections['Messages'] = array('Messages', 'Message_details', 'Message_new');
-		$sections['Players'] = array('Players', 'Profile');
-		$sections['Games'] = array('Games', 'Game', 'Deck_view', 'Game_note');
-		$sections['Decks'] = array('Decks', 'Deck_edit');
-		$sections['Concepts'] = array('Concepts', 'Concepts_new', 'Concepts_edit', 'Concepts_details');
-		$sections['Cards'] = array('Cards', 'Cards_details');
-		$sections['Replays'] = array('Replays', 'Replay');
-		$sections['Novels'] = array('Novels');
-		$sections['Statistics'] = array('Statistics');
-		$sections['Settings'] = array('Settings');
-
-		return $sections;
-	}
-
-	function SectionsList() { return array_keys(Subsections()); } // returns list of all sections
-
-	function NavBarSection($current) // calculates current section for navigation bar
-	{
-		$sections = Subsections();
-
-		// try to match current state with subsection, return section name when match was found
-		foreach ($sections as $section => $subsections) if (array_search($current, $subsections) !== FALSE) return $section;
-
-		return false; // no match was found (should never happen)
-	}
-
 ?>

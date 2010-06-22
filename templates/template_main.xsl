@@ -12,6 +12,9 @@
 <xsl:template name="main">
 	<xsl:variable name="param" select="$params/main" />
 
+	<xsl:variable name="sections" select="document('sections.xml')/am:sections" />
+	<xsl:variable name="current_section" select="am:lowercase($sections/am:section/am:subsection[text() = $param/section]/../@name)" />
+
 	<html xmlns="http://www.w3.org/1999/xhtml" xmlns:am="http://arcomage.netvor.sk" lang="en" xml:lang="en">
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -28,8 +31,8 @@
 			<link rel="stylesheet" href="styles/login.css" type="text/css" title="standard style" />
 		</xsl:otherwise>
 	</xsl:choose>
-	<xsl:if test="$param/current_section != ''">
-		<link rel="stylesheet" href="styles/{$param/current_section}.css" type="text/css" title="standard style" />
+	<xsl:if test="$current_section != ''">
+		<link rel="stylesheet" href="styles/{$current_section}.css" type="text/css" title="standard style" />
 	</xsl:if>
 	<link rel="stylesheet" href="styles/skins/skin{$param/skin}.css" type="text/css" title="standard style" />
 	<link rel="icon" href="img/favicon.png" type="image/png" />

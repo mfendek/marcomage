@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sections xmlns="http://arcomage.netvor.sk">
+	<section name="Webpage">
+		<subsection>Webpage</subsection>
+	</section>
+	<section name="Forum">
+		<subsection>Forum</subsection>
+		<subsection>Forum_search</subsection>
+		<subsection>Section_details</subsection>
+		<subsection>New_thread</subsection>
+		<subsection>Thread_details</subsection>
+		<subsection>New_post</subsection>
+		<subsection>Edit_post</subsection>
+		<subsection>Edit_thread</subsection>
+	</section>
+	<section name="Messages">
+		<subsection>Messages</subsection>
+		<subsection>Message_details</subsection>
+		<subsection>Message_new</subsection>
+	</section>
+	<section name="Players">
+		<subsection>Players</subsection>
+		<subsection>Profile</subsection>
+	</section>
+	<section name="Games">
+		<subsection>Games</subsection>
+		<subsection>Game</subsection>
+		<subsection>Deck_view</subsection>
+		<subsection>Game_note</subsection>
+	</section>
+	<section name="Decks">
+		<subsection>Decks</subsection>
+		<subsection>Deck_edit</subsection>
+	</section>
+	<section name="Concepts">
+		<subsection>Concepts</subsection>
+		<subsection>Concepts_new</subsection>
+		<subsection>Concepts_edit</subsection>
+		<subsection>Concepts_details</subsection>
+	</section>
+	<section name="Cards">
+		<subsection>Cards</subsection>
+		<subsection>Cards_details</subsection>
+	</section>
+	<section name="Replays">
+		<subsection>Replays</subsection>
+		<subsection>Replay</subsection>
+	</section>
+	<section name="Novels">
+		<subsection>Novels</subsection>
+	</section>
+	<section name="Statistics">
+		<subsection>Statistics</subsection>
+	</section>
+	<section name="Settings">
+		<subsection>Settings</subsection>
+	</section>
+</sections>

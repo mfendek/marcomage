@@ -9,6 +9,9 @@
 <xsl:template name="navbar">
 	<xsl:variable name="param" select="$params/navbar" />
 
+	<xsl:variable name="sections" select="document('sections.xml')/am:sections" />
+	<xsl:variable name="current_section" select="$sections/am:section/am:subsection[text() = $param/current]/../@name" />
+
 	<div id="menubar">
 
 	<div id="menu_float_left">
@@ -21,9 +24,9 @@
 
 	<div id="menu_center">
 
-	<xsl:for-each select="$param/sections_list/*">
-		<input type="submit" name="{text()}" value="{text()}" >
-			<xsl:if test="$param/current_section = .">
+	<xsl:for-each select="$sections/*">
+		<input type="submit" name="{@name}" value="{@name}" >
+			<xsl:if test="$current_section = @name">
 				<xsl:attribute name="class">pushed</xsl:attribute>
 			</xsl:if>
 		</input>

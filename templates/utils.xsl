@@ -96,6 +96,14 @@
 </func:function>
 
 
+<func:function name="am:lowercase">
+	<xsl:param name="string" as="xs:string" />
+	<xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'"/>
+	<xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
+	<func:result select="translate($string, $uppercase, $smallcase)" />
+</func:function>
+
+
 <!--
 <func:function name="am:BBCode_parse">
 	<xsl:param name="orig_content" as="xs:string" />
