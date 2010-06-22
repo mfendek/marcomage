@@ -24,22 +24,13 @@
 		{	
 			$db = $this->db;
 			
-			// return section list with thread count, ordered by sectionID (alphabetical order is not suited for our needs)
-			$result = $db->Query('SELECT `forum_sections`.`SectionID`, `SectionName`, `Description`, IFNULL(`count`, 0) as `count` FROM `forum_sections` LEFT OUTER JOIN (SELECT `SectionID`, COUNT(`ThreadID`) as `count` FROM `forum_threads` WHERE `Deleted` = FALSE GROUP BY `SectionID`) as `threads` USING (`SectionID`) ORDER BY `SectionID`');
+			// return section list with thread count, ordered by custom order (alphabetical order is not suited for our needs)
+			$result = $db->Query('SELECT `forum_sections`.`SectionID`, `SectionName`, `Description`, IFNULL(`count`, 0) as `count` FROM `forum_sections` LEFT OUTER JOIN (SELECT `SectionID`, COUNT(`ThreadID`) as `count` FROM `forum_threads` WHERE `Deleted` = FALSE GROUP BY `SectionID`) as `threads` USING (`SectionID`) ORDER BY `SectionOrder` ASC');
 			if (!$result) return false;
 			
-			$sections = $sections_data = array();
+			$sections = array();
 			while( $data = $result->Next() )
-				$sections_data[$data['SectionName']] = $data;
-			
-			// apply custom order to sections
-			$section_names = array('General', 'Development', 'Support', 'Balance changes', 'Concepts', 'Contests', 'Off topic', 'Novels');
-			
-			foreach($section_names as $name)
-			{
-				$section_id = $sections_data[$name]['SectionID'];
-				$sections[$section_id] = $sections_data[$name];
-			}
+				$sections[$data['SectionID']] = $data;
 			
 			return $sections;
 		}

@@ -304,19 +304,21 @@ CREATE TABLE `forum_sections` (
   `SectionID` int(10) unsigned NOT NULL,
   `SectionName` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `Description` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY  (`SectionID`)
+  `SectionOrder` int(2) unsigned NOT NULL,
+  PRIMARY KEY (`SectionID`),
+  UNIQUE KEY `SectionOrder` (`SectionOrder`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- 
 -- Dumping data for table `forum_sections`
 -- 
 
-INSERT INTO `forum_sections` (`SectionID`, `SectionName`, `Description`) VALUES 
-(1, 'General', 'main discussion about MArcomage'),
-(2, 'Development', 'suggest and discuss new features that could be added'),
-(3, 'Support', 'report bugs, exploits and technical difficulties'),
-(4, 'Contests', 'help MArcomage to become a better site'),
-(5, 'Novels', 'discuss our fantasy novels section'),
-(6, 'Concepts', 'discuss card suggestions'),
-(7, 'Balance changes', 'balance existing cards'),
-(8, 'Off topic', 'everything else');
+INSERT INTO `forum_sections` (`SectionID`, `SectionName`, `Description`, `SectionOrder`) VALUES
+(1, 'General', 'main discussion about MArcomage', 1),
+(2, 'Development', 'suggest and discuss new features that could be added', 2),
+(3, 'Support', 'report bugs, exploits and technical difficulties', 3),
+(4, 'Contests', 'help MArcomage to become a better site', 6),
+(5, 'Novels', 'discuss our fantasy novels section', 8),
+(6, 'Concepts', 'discuss card suggestions', 5),
+(7, 'Balance changes', 'balance existing cards', 4),
+(8, 'Off topic', 'everything else', 7);
