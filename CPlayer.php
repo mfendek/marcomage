@@ -234,6 +234,7 @@
 		private $Name = '';
 		private $Type = '';
 		private $Players = false;
+		private $Settings = false; // cache
 		
 		public function __construct($username, $type, CPlayers &$Players)
 		{
@@ -320,7 +321,9 @@
 		public function GetSettings()
 		{
 			global $settingdb;
-			return $settingdb->GetSettings($this->Name);
+
+			if (!$this->Settings) $this->Settings = &$settingdb->GetSettings($this->Name);
+			return $this->Settings;
 		}
 
 		public function GetVersusStats($opponent)
