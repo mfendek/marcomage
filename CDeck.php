@@ -252,7 +252,7 @@
 					if ($card_id > 0)
 					{
 						$keywords = $carddb->GetCard($card_id)->GetKeywords();
-						$words = preg_split("/\. ?/", $keywords, -1, PREG_SPLIT_NO_EMPTY);
+						$words = explode(",", $keywords);
 						
 						foreach($words as $word)
 						{
