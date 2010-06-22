@@ -15,6 +15,7 @@
 	require_once('CLogin.php');
 	require_once('CCard.php');
 	require_once('CDeck.php');
+	require_once('utils.php');
 
 	$db = new CDatabase($server, $username, $password, $database);
 
@@ -24,6 +25,8 @@
 	$logindb = new CLogin($db);
 	$carddb = new CCards();
 	$deckdb = new CDecks($db);
+
+	$_POST['Username'] = postdecode($_POST['Username']);
 
 	// validate session
 	$session = $logindb->Login();
@@ -36,7 +39,7 @@
 		if (!isset($_POST['deckname']) OR $_POST['deckname'] == "") { echo 'Invalid deck name.'; exit; }
 		if (!isset($_POST['card_id']) OR $_POST['card_id'] == "") { echo 'Invalid card.'; exit; }
 
-		$deck_name = $_POST['deckname'];
+		$deck_name = postdecode($_POST['deckname']);
 		$card_id = $_POST['card_id'];
 		$tokens = 'no'; // default results
 
@@ -72,7 +75,7 @@
 		if (!isset($_POST['deckname']) OR $_POST['deckname'] == "") { echo 'Invalid deck name.'; exit; }
 		if (!isset($_POST['card_id']) OR $_POST['card_id'] == "") { echo 'Invalid card.'; exit; }
 
-		$deck_name = $_POST['deckname'];
+		$deck_name = postdecode($_POST['deckname']);
 		$card_id = $_POST['card_id'];
 
 		// download deck
