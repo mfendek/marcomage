@@ -25,12 +25,12 @@
 	<section name="Games">
 		<subsection>Games</subsection>
 		<subsection>Game</subsection>
-		<subsection>Deck_view</subsection>
 		<subsection>Game_note</subsection>
 	</section>
 	<section name="Decks">
 		<subsection>Decks</subsection>
 		<subsection>Deck_edit</subsection>
+		<subsection>Deck_view</subsection>
 	</section>
 	<section name="Concepts">
 		<subsection>Concepts</subsection>
