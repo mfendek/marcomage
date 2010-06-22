@@ -96,8 +96,8 @@
 		$sections['Cards'] = array('Cards', 'Cards_details');
 		$sections['Replays'] = array('Replays', 'Replay');
 		$sections['Novels'] = array('Novels');
-		$sections['Settings'] = array('Settings');
 		$sections['Statistics'] = array('Statistics');
+		$sections['Settings'] = array('Settings');
 
 		return $sections;
 	}
