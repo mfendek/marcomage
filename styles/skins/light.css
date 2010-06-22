@@ -61,6 +61,11 @@ input[type="submit"], input[type="button"] /* submit input layout */
 	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
 }
 
+input[disabled="disabled"] /* disabled submit input */
+{
+	color: gray;
+}
+
 input[type="submit"].marked_button /* highlighted button */
 {
 	background-color: rgb(5,204,0); /* medium green */

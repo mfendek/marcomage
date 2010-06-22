@@ -65,6 +65,11 @@ input[type="submit"], input[type="button"] /* submit input layout */
 	color: #dddddd; /* very light gray */
 }
 
+input[disabled="disabled"] /* disabled submit input */
+{
+	color: gray;
+}
+
 input.marked_button /* highlighted button */
 {
 	background-color: green;
