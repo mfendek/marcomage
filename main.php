@@ -1157,7 +1157,9 @@
 					if ((trim($_POST['Subject']) == "") AND (trim($_POST['Content']) == "")) { $error = "No message input specified"; $current = "Message_new"; break; }
 					
 					if (strlen($_POST['Content']) > MESSAGE_LENGTH) { $error = "Message too long"; $current = "Message_new"; break; }
-				
+
+					if (!$playerdb->GetPlayer($_POST['Recipient'])) { $error = "Recipient doesn't exist"; $current = "Message_new"; break; }
+
 					$message = $messagedb->SendMessage($_POST['Author'], $_POST['Recipient'], $_POST['Subject'], $_POST['Content']);
 					
 					if (!$message) { $error = "Failed to send message"; $current = "Messages"; break; }
@@ -1298,6 +1300,8 @@
 				if ($message == 'user_details') // Players -> User details
 				{
 					$opponent = postdecode(array_shift(array_keys($value)));
+					
+					if (!$playerdb->GetPlayer($opponent)) { $error = "Player doesn't exist"; $current = "Players"; break; }
 					
 					$_POST['Profile'] = $opponent;
 					$current = 'Profile';
