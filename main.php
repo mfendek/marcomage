@@ -2141,7 +2141,7 @@
 					if ($player->ResetNotification()) $information = 'Notification successfully reset';
 					else $error = 'Failed to reset notification';
 					
-					$current = 'Settings';
+					$current = postdecode(array_shift(array_keys($value)));
 					
 					break;
 				}

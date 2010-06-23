@@ -19,6 +19,7 @@
 	</div>
 
 	<div id="menu_float_right">
+		<input type="submit" name="reset_notification[{am:urlencode($current_section)}]" value= "RN" />
 		<input type="submit" name="Logout" value="Logout" accesskey="q" />
 	</div>
 

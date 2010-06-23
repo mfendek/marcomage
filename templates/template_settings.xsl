@@ -147,7 +147,7 @@
 		<div id="sett_float_right" class="skin_text">
 		<div>
 			<h3>Account settings</h3>
-			<p><input type="submit" name="user_settings" value="Save settings" /><input type="submit" name="reset_notification" value= "Reset notification" /></p>
+			<p><input type="submit" name="user_settings" value="Save settings" /></p>
 			<p><input type="password" name="NewPassword" maxlength="20" />New password</p>
 			<p><input type="password" name="NewPassword2" maxlength="20" />Confirm password</p>
 			<p><input type="submit" name="changepasswd" value="Change password" /></p>

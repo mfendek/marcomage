@@ -533,7 +533,7 @@ Let's take the <b>Alliance</b> keyword for example. First you need to set one to
 
 <h4>Settings</h4>
 
-<p>In this section you may customize MArcomage. Profile settings contain information about player identity, none of them is mandatory. When filled in, all other players are able to see this information. Account settings are used to adjust MArcomage to player's needs. It is possible to change password, set timezone, select skin and game background image. Menubar notification can be reset with "Reset notification" button (this will unmark all new posts and messages, it's the same as doing logout-login procedure). There are some layout options (described below).</p>
+<p>In this section you may customize MArcomage. Profile settings contain information about player identity, none of them is mandatory. When filled in, all other players are able to see this information. Account settings are used to adjust MArcomage to player's needs. It is possible to change password, set timezone, select skin and game background image. There are some layout options (described below).</p>
 
 <h4>Layout options</h4>
 
@@ -556,6 +556,10 @@ Let's take the <b>Alliance</b> keyword for example. First you need to set one to
 	<li>Concepts notification - display concepts notification (new concepts) in the menubar</li>
 	<li>Random deck selection - allows to choose a random deck to play with when starting a game</li>
 </ul>
+
+<h4>RN button</h4>
+
+<p>Menubar notification can be reset with "Reset notification" button (this will unmark all new posts and messages, it's the same as doing logout-login procedure).</p>
 
 <h4>Statistics</h4>
 
