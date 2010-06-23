@@ -1036,8 +1036,9 @@
 							{
 								$min = 1000;
 								$chosen = array();
-								foreach ($mydata->TokenNames as $i => $token_name) $min = min($min, $mydata->TokenValues[$i]);
-								foreach ($mydata->TokenNames as $i => $token_name) if ($mydata->TokenValues[$i] == $min) $chosen[] = $i;
+								$my_tokens = array_diff($mydata->TokenNames, array('none')); // remove inactive token counters
+								foreach ($my_tokens as $i => $token_name) $min = min($min, $mydata->TokenValues[$i]);
+								foreach ($my_tokens as $i => $token_name) if ($mydata->TokenValues[$i] == $min) $chosen[] = $i;
 								$chosen_index = $chosen[array_rand($chosen)];
 								$mydata->TokenValues[$chosen_index]+= 10 * $factor;
 							}
