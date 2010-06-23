@@ -42,11 +42,32 @@
 			return true;
 		}
 		
-		public function DeleteGames($player)
+		public function DeleteGames($player) // delete all games and related data for specified player
 		{
+			global $chatdb;
+			global $replaydb;
 			$db = $this->db;
+			
+			// get list of games that are going to be deleted
+			$result = $db->Query('SELECT `GameID` FROM `games` WHERE (`Player1` = "'.$db->Escape($player).'") OR (`Player2` = "'.$db->Escape($player).'")');
+			if (!$result) return false;
+			
+			$games = array();
+			while( $data = $result->Next() )
+				$games[] = $data['GameID'];
+			
+			// delete games
 			$result = $db->Query('DELETE FROM `games` WHERE (`Player1` = "'.$db->Escape($player).'") OR (`Player2` = "'.$db->Escape($player).'")');
 			if (!$result) return false;
+			
+			// delete related data
+			foreach ($games as $gameid)
+			{
+				$res = $chatdb->DeleteChat($gameid);
+				if (!$res) return false;
+				$res = $replaydb->DeleteReplay($gameid);
+				if (!$res) return false;
+			}
 			
 			return true;
 		}

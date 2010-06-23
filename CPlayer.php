@@ -63,16 +63,30 @@
 			global $gamedb;
 			global $messagedb;
 
+			$result = array();
 			// delete every indication that the player ever existed ^^
-			$logindb->Unregister($playername);
-			$scoredb->DeleteScore($playername);
+			$res = $logindb->Unregister($playername);
+			$result[] = (($res) ? 'Success' : 'FAILED!!!').' at Unregister';
+
+			$res = $scoredb->DeleteScore($playername);
+			$result[] = (($res) ? 'Success' : 'FAILED!!!').' at DeleteScore';
+
 			foreach ($deckdb->ListDecks($playername) as $deck_data)
-				$deckdb->DeleteDeck($playername, $deck_data['Deckname']);
-			$settingdb->DeleteSettings($playername);
-			$gamedb->DeleteGames($playername);
-			$messagedb->DeleteMessages($playername);
-			
-			return true;
+			{
+				$res = $deckdb->DeleteDeck($playername, $deck_data['Deckname']);
+				$result[] = (($res) ? 'Success' : 'FAILED!!!').' at DeleteDeck '.htmlencode($deck_data['Deckname']);
+			}
+
+			$res = $settingdb->DeleteSettings($playername);
+			$result[] = (($res) ? 'Success' : 'FAILED!!!').' at DeleteSettings';
+
+			$res = $gamedb->DeleteGames($playername);
+			$result[] = (($res) ? 'Success' : 'FAILED!!!').' at DeleteGames';
+
+			$res = $messagedb->DeleteMessages($playername);
+			$result[] = (($res) ? 'Success' : 'FAILED!!!').' at DeleteMessages';
+
+			return $result;
 		}
 		
 		public function GetPlayer($playername)

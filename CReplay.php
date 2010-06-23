@@ -47,6 +47,18 @@
 			return true;
 		}
 		
+		public function DeleteReplay($gameid) // delete unfinished replay
+		{
+			$db = $this->db;
+			$result = $db->Query('DELETE FROM `replays_data` WHERE `GameID` = "'.$gameid.'"');
+			if (!$result) return false;
+			
+			$result = $db->Query('DELETE FROM `replays_head` WHERE `GameID` = "'.$gameid.'"');
+			if (!$result) return false;
+			
+			return true;
+		}
+		
 		public function UpdateReplay(CGame $game) // update replay data
 		{
 			$db = $this->db;
