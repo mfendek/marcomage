@@ -9,8 +9,8 @@ div#statistics /* set minimum width to whole section (grants immunity to resize)
 
 div#statistics > div.skin_label /* content layout */
 {
-	width: 90%;
-	margin: 1ex auto 1ex auto;
+	width: 70%;
+	margin: 2ex auto 1ex auto;
 }
 
 div#statistics p /* set distance between separate lines */
@@ -29,9 +29,16 @@ div#statistics h4 /* column heading */
 	margin-bottom: 1ex;
 }
 
+div#statistics h5 /* statistics info heading */
+{
+	margin-top: 1ex;
+	margin-bottom: 1ex;
+	font-size: medium;
+}
+
 div#statistics div.skin_text /* statistic group (subsection) layout */
 {
-	width: 12em;
+	width: 15em;
 	margin: 1ex;
 	padding: 0ex 1ex 1ex 1ex;
 }
@@ -45,4 +52,10 @@ div#statistics div.skin_text > p > span /* float values to the right */
 div#statistics div.skin_text /* floated columns */
 {
 	float: left;
+}
+
+div#statistics div.filter_trans /* subsection navigation */
+{
+	text-align: center;
+	margin-top: 1ex;
 }

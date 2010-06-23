@@ -344,19 +344,36 @@
 			return $backgrounds;
 		}
 
-		public function Cards($condition, $order) // calculate card statistics according to specified paramaters
+		public function Cards($condition) // calculate card statistics according to specified paramater
 		{
 			global $carddb;
 
 			$db = $this->db;
-			$result = $db->Query('SELECT `CardID` FROM `statistics` WHERE `CardID` > 0 ORDER BY `'.$db->Escape($condition).'` '.$db->Escape($order).', `CardID` ASC LIMIT 0, 10');
+			$result = $db->Query('SELECT `CardID` FROM `statistics` WHERE `CardID` > 0 ORDER BY `'.$db->Escape($condition).'` DESC, `CardID` ASC');
 			if (!$result) return false;
 
 			$cards = array();
 			while( $data = $result->Next() )
 				$cards[] = $data['CardID'];
 
-			return $carddb->GetData($cards);
+			$cards_data = $carddb->GetData($cards);
+			$separated = array('Common' => array(), 'Uncommon' => array(), 'Rare' => array());
+			$statistics = array(
+			'Common' => array('top' => array(), 'bottom' => array()), 
+			'Uncommon' => array('top' => array(), 'bottom' => array()), 
+			'Rare' => array('top' => array(), 'bottom' => array()));
+
+			// separate card list by card rarity
+			foreach ($cards_data as $data) $separated[$data['class']][] = $data;
+
+			// make top and bottom lists for each rarity type
+			foreach ($separated as $rarity => $list)
+			{
+				$statistics[$rarity]['top'] = array_slice($list, 0, 10);
+				$statistics[$rarity]['bottom'] = array_slice(array_reverse($list), 0, 10);
+			}
+
+			return $statistics;
 		}
 
 		public function CardStatistics($card_id) // return statistics for specified card
@@ -370,7 +387,7 @@
 			return $data;
 		}
 
-		public function UpdateCardStats($card_id, $action) // update card statistics (used when card is played or discarded)
+		public function UpdateCardStats($card_id, $action) // update card statistics (used when card is played, drawn or discarded)
 		{
 			$db = $this->db;
 

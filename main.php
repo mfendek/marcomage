@@ -2815,6 +2815,23 @@
 				
 				// end cards related messages
 				
+				// begin statistics related messages
+				
+				if ($message == 'card_statistics') // view card statistics
+				{
+					$current_statistic = array_shift(array_keys($value));
+					$current = 'Statistics';
+					break;
+				}
+				
+				if ($message == 'other_statistics') // view other statistics
+				{
+					$current = 'Statistics';
+					break;
+				}
+				
+				// end statistics related messages
+				
 				// refresh button :)
 				if ($message == 'Refresh')
 				{
@@ -4063,24 +4080,29 @@ case 'Cards_details':
 
 
 case 'Statistics':
-	$params['statistics']['victory_types'] = $statistics->VictoryTypes();
-	$params['statistics']['game_modes'] = $statistics->GameModes();
-	$params['statistics']['skins'] = $statistics->Skins();
-	$params['statistics']['backgrounds'] = $statistics->Backgrounds();
-	$params['statistics']['suggested'] = $statistics->SuggestedConcepts();
-	$params['statistics']['implemented'] = $statistics->ImplementedConcepts();
-	$params['statistics']['most_played'] = $statistics->Cards('Played', 'DESC'); // most played cards
-	$params['statistics']['least_played'] = $statistics->Cards('Played', 'ASC'); // least played cards
-	$params['statistics']['most_discarded'] = $statistics->Cards('Discarded', 'DESC'); // most discarded cards
-	$params['statistics']['least_discarded'] = $statistics->Cards('Discarded', 'ASC'); // least discarded cards
-	$params['statistics']['most_drawn'] = $statistics->Cards('Drawn', 'DESC'); // most drawn cards
-	$params['statistics']['least_drawn'] = $statistics->Cards('Drawn', 'ASC'); // least drawn cards
-	$params['statistics']['most_played_total'] = $statistics->Cards('PlayedTotal', 'DESC'); // most played cards (total)
-	$params['statistics']['least_played_total'] = $statistics->Cards('PlayedTotal', 'ASC'); // least played cards (total)
-	$params['statistics']['most_discarded_total'] = $statistics->Cards('DiscardedTotal', 'DESC'); // most discarded cards (total)
-	$params['statistics']['least_discarded_total'] = $statistics->Cards('DiscardedTotal', 'ASC'); // least discarded cards (total)
-	$params['statistics']['most_drawn_total'] = $statistics->Cards('DrawnTotal', 'DESC'); // most drawn cards (total)
-	$params['statistics']['least_drawn_total'] = $statistics->Cards('DrawnTotal', 'ASC'); // least drawn cards (total)
+	// uses: $current_statistic
+	if (isset($_POST['card_statistics'])) $subsection = "card_statistics";
+	elseif (isset($_POST['other_statistics'])) $subsection = "other_statistics";
+	elseif (!isset($subsection)) $subsection = "card_statistics";
+
+	if (!isset($current_statistic)) $current_statistic = "Played";
+
+	$params['statistics']['current_subsection'] = $subsection;
+	$params['statistics']['current_statistic'] = $current_statistic;
+
+	if ($subsection == "card_statistics")
+	{
+		$params['statistics']['card_statistics'] = $statistics->Cards($current_statistic);
+	}
+	elseif ($subsection == "other_statistics")
+	{
+		$params['statistics']['victory_types'] = $statistics->VictoryTypes();
+		$params['statistics']['game_modes'] = $statistics->GameModes();
+		$params['statistics']['skins'] = $statistics->Skins();
+		$params['statistics']['backgrounds'] = $statistics->Backgrounds();
+		$params['statistics']['suggested'] = $statistics->SuggestedConcepts();
+		$params['statistics']['implemented'] = $statistics->ImplementedConcepts();
+	}
 
 	break;
 
