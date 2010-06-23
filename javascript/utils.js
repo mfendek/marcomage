@@ -1,9 +1,10 @@
 // MArcomage JavaScript support functions
 
-function TakeCard(username, session_id, deck, id) // add card to deck via AJAX
+function TakeCard(username, session_id, id) // add card to deck via AJAX
 {
 	var str = new String();
 	var card = str.concat("#card_", id);
+	var deck = $("input[name='CurrentDeck']").attr('value');
 
 	$.post("AJAXhandler.php", { action: 'take', Username: username, SessionID: session_id, deckname: deck, card_id: id }, function(data){
 		// process result
@@ -53,10 +54,11 @@ function TakeCard(username, session_id, deck, id) // add card to deck via AJAX
 	return false; // disable standard processing
 }
 
-function RemoveCard(username, session_id, deck, id) // remove card from deck via AJAX
+function RemoveCard(username, session_id, id) // remove card from deck via AJAX
 {
 	var str = new String();
 	var card = str.concat("#card_", id);
+	var deck = $("input[name='CurrentDeck']").attr('value');
 
 	$.post("AJAXhandler.php", { action: 'remove', Username: username, SessionID: session_id, deckname: deck, card_id: id }, function(data){
 		// process result

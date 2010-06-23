@@ -39,7 +39,7 @@
 		if (!isset($_POST['deckname']) OR $_POST['deckname'] == "") { echo 'Invalid deck name.'; exit; }
 		if (!isset($_POST['card_id']) OR $_POST['card_id'] == "") { echo 'Invalid card.'; exit; }
 
-		$deck_name = postdecode($_POST['deckname']);
+		$deck_name = $_POST['deckname'];
 		$card_id = $_POST['card_id'];
 		$tokens = 'no'; // default results
 
@@ -75,7 +75,7 @@
 		if (!isset($_POST['deckname']) OR $_POST['deckname'] == "") { echo 'Invalid deck name.'; exit; }
 		if (!isset($_POST['card_id']) OR $_POST['card_id'] == "") { echo 'Invalid card.'; exit; }
 
-		$deck_name = postdecode($_POST['deckname']);
+		$deck_name = $_POST['deckname'];
 		$card_id = $_POST['card_id'];
 
 		// download deck
