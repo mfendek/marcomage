@@ -2765,6 +2765,22 @@
 					break;
 				}
 				
+				if ($message == 'select_page_cards') // Cards -> select page (previous and next button)
+				{
+					$current_page = array_shift(array_keys($value));
+					$current = 'Cards';
+					
+					break;
+				}
+				
+				if ($message == 'seek_page_cards') // Cards -> select page (page selector)
+				{
+					$current_page = $_POST['page_selector'];
+					$current = 'Cards';
+					
+					break;
+				}
+				
 				if ($message == 'view_card') // Cards -> Select card details
 				{
 					$card_id = array_shift(array_keys($value));
@@ -3988,6 +4004,8 @@ case 'Replay':
 	break;
 
 case 'Cards':
+	if (!isset($current_page)) $current_page = 0;
+	$params['cards']['current_page'] = $current_page;
 	$classfilter = $params['cards']['ClassFilter'] = isset($_POST['ClassFilter']) ? $_POST['ClassFilter'] : 'Common';
 	$costfilter = $params['cards']['CostFilter'] = isset($_POST['CostFilter']) ? $_POST['CostFilter'] : 'none';
 	$keywordfilter = $params['cards']['KeywordFilter'] = isset($_POST['KeywordFilter']) ? $_POST['KeywordFilter'] : 'none';
@@ -4009,7 +4027,11 @@ case 'Cards':
 	if( $createdfilter != 'none' ) $filter['created'] = $createdfilter;
 	if( $modifiedfilter != 'none' ) $filter['modified'] = $modifiedfilter;
 	$ids = $carddb->GetList($filter);
-	$params['cards']['CardList'] = $carddb->GetData($ids);
+	$params['cards']['CardList'] = $carddb->GetData($ids, $current_page);
+	$count = $carddb->CountPages($filter);
+	$pages = array();
+	for ($i = 0; $i < $count; $i++) $pages[$i] = $i;
+	$params['cards']['pages'] = $pages;
 
 	// load card display settings
 	$settings = $player->GetSettings();

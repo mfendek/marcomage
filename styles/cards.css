@@ -18,7 +18,7 @@ div#cards_table /* cards list layout */
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 1ex;
-	width: 75%;
+	width: 80%;
 }
 
 div#cards_table th > p, div#cards_table td > p /* table cell text */

@@ -135,15 +135,27 @@
 			return $cards;
 		}
 
+		public function CountPages(array $filters) // calculate number of pages for current card list (specified by filters)
+		{
+			$db = $this->getDB();
+
+			$result = $db->xpath("/am:cards/am:card[".$this->makeFilterQuery($filters)."]/@id");
+
+			if( $result === false ) return array(); // workaround for http://bugs.php.net/bug.php?id=48601
+
+			return ceil(count($result) / CARDS_PER_PAGE);
+		}
+
 		/**
 		 * Retrieves data for the specified card ids.
 		 * Can be used in combination with CCards::GetList().
 		 * The same card id may be specified multiple times.
 		 * The result will use the same keys and key order as the input.
 		 * @param array $ids an array of card ids to retrieve
+		 * @param int $page current page number (optional parameter)
 		 * @return array an array of the requested cards' data
 		*/
-		public function GetData(array $ids)
+		public function GetData(array $ids, $page = -1)
 		{
 			$db = $this->getDB();
 
@@ -169,13 +181,22 @@
 				$cards[$data['id']] = $data;
 			}
 
-			$out = array();
+			$out = $names = array();
 			foreach( $ids as $index => $id )
 			{
 				if( !isset($cards[$id]) )
 					return NULL; // nonexistent card
 				
 				$out[$index] = $cards[$id];
+				if ($page > -1) $names[$cards[$id]['name']] = $id; // map card names to ids
+			}
+
+			if ($page > -1) // retrieve current page of the card list
+			{
+				$out = array();
+				ksort($names, SORT_STRING);
+				$names = array_slice($names, $page * CARDS_PER_PAGE, CARDS_PER_PAGE);
+				foreach ($names as $card_id) $out[] = $cards[$card_id];
 			}
 
 			return $out;
