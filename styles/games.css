@@ -297,3 +297,27 @@ td.game_mode_flags > img /* game mode flags */
 }
 
 /* end game */
+
+/* begin game note */
+
+div#game_note /* game note subsection */
+{
+	min-width: 1045px;
+}
+
+div#game_note > div /* game note layout */
+{
+	margin-right: auto;
+	margin-left: auto;
+	width: 50%;
+	font-weight: bold;
+	padding: 1ex;
+}
+
+div#game_note > div > * /* set distance between elements */
+{
+	margin-bottom: 1ex;
+	margin-top: 1ex;
+}
+
+/* end message details */

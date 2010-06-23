@@ -13,7 +13,7 @@
 		<input type="hidden" name="CurrentGame" value="{$param/CurrentGame}"/>
 	</div>
 
-	<div id="mes_details">
+	<div id="game_note">
 
 	<h3>Game note</h3>
 
