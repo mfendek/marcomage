@@ -235,9 +235,6 @@
 <xsl:template match="section[. = 'Section_details']">
 	<xsl:variable name="param" select="$params/forum_section" />
 
-	<xsl:variable name="pages" select="$param/pages" />
-	<xsl:variable name="current" select="$param/current_page" />
-
 	<div id="forum">
 
 	<h3>MArcomage discussion forum</h3>
@@ -262,43 +259,8 @@
 	<h5><input type="submit" name="Forum" value="&uarr;" /><span><xsl:value-of select="$param/section/SectionName"/></span> - <xsl:value-of select="$param/section/Description"/></h5>
 	<p>
 
-	<input type="submit" name="section_page_jump[{am:max($current - 1, 0)}]" value="&lt;">
-		<xsl:if test="$current = 0">
-			<xsl:attribute name="disabled">disabled</xsl:attribute>
-		</xsl:if>
-	</input>
-
-	<input type="submit" name="section_page_jump[0]" value="First">
-		<xsl:if test="$current = 0">
-			<xsl:attribute name="disabled">disabled</xsl:attribute>
-		</xsl:if>
-	</input>
-
-	<xsl:variable name="numbers">
-		<xsl:call-template name="numbers">
-			<xsl:with-param name="from" select="am:max($current - 2, 0)"/>
-			<xsl:with-param name="to" select="am:min($current + 2, $pages - 1)"/>
-		</xsl:call-template>
-	</xsl:variable>
-	<xsl:for-each select="exsl:node-set($numbers)/*">
-		<input type="submit" name="section_select_page" value="{text()}">
-			<xsl:if test="$current = .">
-				<xsl:attribute name="disabled">disabled</xsl:attribute>
-			</xsl:if>
-		</input>
-	</xsl:for-each>
-
-	<input type="submit" name="section_page_jump[{$pages - 1}]" value="Last">
-		<xsl:if test="$current = am:max($pages - 1, 0)">
-			<xsl:attribute name="disabled">disabled</xsl:attribute>
-		</xsl:if>
-	</input>
-
-	<input type="submit" name="section_page_jump[{am:min($current + 1, $pages - 1)}]" value="&gt;">
-		<xsl:if test="$current = am:max($pages - 1, 0)">
-			<xsl:attribute name="disabled">disabled</xsl:attribute>
-		</xsl:if>
-	</input>
+	<!-- navigation -->
+	<xsl:copy-of select="am:forum_navigation($param/pages, $param/current_page, 'section')"/>
 
 	<xsl:if test="$param/create_thread = 'yes'">
 		<input type="submit" name="new_thread" value="New thread" />
@@ -372,9 +334,7 @@
 	<xsl:variable name="param" select="$params/forum_thread" />
 
 	<xsl:variable name="section" select="$param/Section"/>
-	<xsl:variable name="current_page" select="$param/CurrentPage"/>
 	<xsl:variable name="thread" select="$param/Thread"/>
-	<xsl:variable name="pages" select="$param/Pages"/>
 	<xsl:variable name="delete_post" select="$param/DeletePost"/>
 	<!-- is unlocked or you have the right to lock/unlock -->
 	<xsl:variable name="can_modify" select="$thread/Locked = 'no' or $param/lock_thread = 'yes'"/>
@@ -426,43 +386,8 @@
 				<input type="submit" name="edit_thread" value="Edit" />
 			</xsl:if>
 
-			<input type="submit" name="thread_page_jump[{am:max($current_page - 1, 0)}]" value="&lt;">
-				<xsl:if test="$current_page = 0">
-					<xsl:attribute name="disabled">disabled</xsl:attribute>
-				</xsl:if>
-			</input>
-
-			<input type="submit" name="thread_page_jump[0]" value="First">
-				<xsl:if test="$current_page = 0">
-					<xsl:attribute name="disabled">disabled</xsl:attribute>
-				</xsl:if>
-			</input>
-
-			<xsl:variable name="numbers">
-				<xsl:call-template name="numbers">
-					<xsl:with-param name="from" select="am:max($current_page - 2, 0)"/>
-					<xsl:with-param name="to" select="am:min($current_page + 2, $pages - 1)"/>
-				</xsl:call-template>
-			</xsl:variable>
-			<xsl:for-each select="exsl:node-set($numbers)/*">
-				<input type="submit" name="thread_select_page" value="{text()}">
-					<xsl:if test="$current_page = .">
-						<xsl:attribute name="disabled">disabled</xsl:attribute>
-					</xsl:if>
-				</input>
-			</xsl:for-each>
-
-			<input type="submit" name="thread_page_jump[{$pages - 1}]" value="Last">
-				<xsl:if test="$current_page = am:max($pages - 1, 0)">
-					<xsl:attribute name="disabled">disabled</xsl:attribute>
-				</xsl:if>
-			</input>
-
-			<input type="submit" name="thread_page_jump[{am:min($current_page + 1, $pages - 1)}]" value="&gt;">
-				<xsl:if test="$current_page = am:max($pages - 1, 0)">
-					<xsl:attribute name="disabled">disabled</xsl:attribute>
-				</xsl:if>
-			</input>
+			<!-- navigation -->
+			<xsl:copy-of select="am:forum_navigation($param/Pages, $param/CurrentPage, 'thread')"/>
 
 			<xsl:if test="$param/create_post = 'yes' and $thread/Locked = 'no'">
 				<input type = "submit" name="new_post" value="New post" />
@@ -542,7 +467,7 @@
 
 	<input type="hidden" name="CurrentSection" value="{$thread/SectionID}" />
 	<input type="hidden" name="CurrentThread" value="{$thread/ThreadID}" />
-	<input type="hidden" name="CurrentPage" value="{$current_page}" />
+	<input type="hidden" name="CurrentPage" value="{$param/CurrentPage}" />
 
 	</div>
 </xsl:template>
@@ -723,19 +648,6 @@
 		<input type="hidden" name="CurrentPost" value="{$post/PostID}"/>
 		<input type="hidden" name="CurrentPage" value="{$current_page}"/>
 	</div>
-</xsl:template>
-
-
-<xsl:template name="numbers">
-	<xsl:param name="from"/>
-	<xsl:param name="to"/>
-	<xsl:if test="$from &lt;= $to">
-		<div><xsl:value-of select="$from"/></div>
-		<xsl:call-template name="numbers">
-			<xsl:with-param name="from" select="$from+1"/>
-			<xsl:with-param name="to" select="$to"/>
-		</xsl:call-template>
-	</xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>

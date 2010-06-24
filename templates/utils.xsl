@@ -199,21 +199,65 @@
 
 <func:function name="am:page_list">
 	<xsl:param name="count" as="xs:integer" />
-	<func:result select="str:split(am:pages($count - 1), ',')" />
+	<func:result select="str:split(am:numbers(0, $count - 1), ',')" />
 </func:function>
 
 
-<func:function name="am:pages">
-	<xsl:param name="count" as="xs:integer" />
+<func:function name="am:numbers">
+	<xsl:param name="from" as="xs:integer" />
+	<xsl:param name="to" as="xs:integer" />
 
 	<xsl:choose>
-		<xsl:when test="$count > 0">
-			<func:result select="concat(am:pages($count - 1), ',', $count)" />
+		<xsl:when test="$to > $from">
+			<func:result select="concat(am:numbers($from, $to - 1), ',', $to)" />
 		</xsl:when>
 		<xsl:otherwise>
-			<func:result select="$count" />
+			<func:result select="$to" />
 		</xsl:otherwise>
 	</xsl:choose>
+</func:function>
+
+
+<func:function name="am:forum_navigation">
+	<xsl:param name="page_count" as="xs:integer" />
+	<xsl:param name="current" as="xs:integer" />
+	<xsl:param name="button_name" as="xs:string" />
+
+	<xsl:variable name="output">
+		<input type="submit" name="{concat($button_name, '_page_jump')}[{am:max($current - 1, 0)}]" value="&lt;">
+			<xsl:if test="$current = 0">
+				<xsl:attribute name="disabled">disabled</xsl:attribute>
+			</xsl:if>
+		</input>
+
+		<input type="submit" name="{concat($button_name, '_page_jump')}[0]" value="First">
+			<xsl:if test="$current = 0">
+				<xsl:attribute name="disabled">disabled</xsl:attribute>
+			</xsl:if>
+		</input>
+
+		<xsl:for-each select="str:split(am:numbers(am:max($current - 2, 0), am:min($current + 2, $page_count - 1)), ',')">
+			<input type="submit" name="{concat($button_name, '_select_page')}" value="{text()}">
+				<xsl:if test="$current = .">
+					<xsl:attribute name="disabled">disabled</xsl:attribute>
+				</xsl:if>
+			</input>
+		</xsl:for-each>
+
+		<input type="submit" name="{concat($button_name, '_page_jump')}[{$page_count - 1}]" value="Last">
+			<xsl:if test="$current = am:max($page_count - 1, 0)">
+				<xsl:attribute name="disabled">disabled</xsl:attribute>
+			</xsl:if>
+		</input>
+
+		<input type="submit" name="{concat($button_name, '_page_jump')}[{am:min($current + 1, $page_count - 1)}]" value="&gt;">
+			<xsl:if test="$current = am:max($page_count - 1, 0)">
+				<xsl:attribute name="disabled">disabled</xsl:attribute>
+			</xsl:if>
+		</input>
+	</xsl:variable>
+
+	<func:result select="$output" />
 </func:function>
 
 
