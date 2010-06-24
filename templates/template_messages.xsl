@@ -197,31 +197,13 @@
 
 	<div class="message_filters">
 	<!-- upper navigation -->
-			<xsl:if test="$param/page_count &gt; 0">
-				<!-- previous button -->
-				<input type="submit" name="select_page_mes[{$param/current_page - 1}]" value="&lt;">
-					<xsl:if test="$param/current_page &lt;= 0"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-				</input>
+		<xsl:if test="$param/page_count &gt; 0">
+			<xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'mes')"/>
 
-				<!-- next button -->
-				<input type="submit" name="select_page_mes[{$param/current_page + 1}]" value="&gt;">
-					<xsl:if test="$param/current_page &gt;= $param/page_count - 1"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-				</input>
-
-				<!-- page selector -->
-				<select name="jump_to_page">
-					<xsl:for-each select="$param/pages/*">
-						<option value="{.}">
-							<xsl:if test="$param/current_page = ."><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-							<xsl:value-of select="."/>
-						</option>
-					</xsl:for-each>
-				</select>
-				<input type="submit" name="Jump_messages" value="Select page" />
-				<xsl:if test="$param/current_location != 'all_mail'">
-					<input type="submit" name="Delete_mass" value="Delete selected" />
-				</xsl:if>
+			<xsl:if test="$param/current_location != 'all_mail'">
+				<input type="submit" name="Delete_mass" value="Delete selected" />
 			</xsl:if>
+		</xsl:if>
 
 	<!-- end buttons and filters -->
 	</div>

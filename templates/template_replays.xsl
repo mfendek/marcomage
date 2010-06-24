@@ -11,8 +11,6 @@
 
 <xsl:template match="section[. = 'Replays']">
 	<xsl:variable name="param" select="$params/replays" />
-	<xsl:variable name="count_pages" select="count($param/pages/*)" />
-	<xsl:variable name="current" select="$param/current_page" />
 	<xsl:variable name="filter_values">
 		<value name="ignore"  />
 		<value name="include" />
@@ -117,28 +115,7 @@
 		</xsl:if>
 
 		<!-- navigation -->
-		<input type="submit" name="select_page_replays[{am:max($current - 1, 0)}]" value="&lt;">
-			<xsl:if test="$current = 0">
-				<xsl:attribute name="disabled">disabled</xsl:attribute>
-			</xsl:if>
-		</input>
-		<input type="submit" name="select_page_replays[{am:min($current + 1, $count_pages - 1)}]" value="&gt;">
-			<xsl:if test="$current = am:max($count_pages - 1, 0)">
-				<xsl:attribute name="disabled">disabled</xsl:attribute>
-			</xsl:if>
-		</input>
-		<xsl:if test="$count_pages &gt; 0">
-			<!-- page selector -->
-			<select name="page_selector">
-				<xsl:for-each select="$param/pages/*">
-					<option value="{.}">
-						<xsl:if test="$current = ."><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-						<xsl:value-of select="."/>
-					</option>
-				</xsl:for-each>
-			</select>
-			<input type="submit" name="seek_page_replays" value="Select" />
-		</xsl:if>
+		<xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'replays')"/>
 	</div>
 	<!-- end filters and navigation -->
 

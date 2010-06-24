@@ -1263,9 +1263,9 @@
 					break;
 				}
 				
-				if ($message == 'Jump_messages') // Messages -> select page (Jump to page)
+				if ($message == 'seek_page_mes') // Messages -> select page (Jump to page)
 				{
-					$_POST['CurrentMesPage'] = $_POST['jump_to_page'];
+					$_POST['CurrentMesPage'] = $_POST['page_selector'];
 					$current = "Messages";
 					
 					break;
@@ -1641,9 +1641,9 @@
 					break;
 				}
 				
-				if ($message == 'Jump_concepts') // Concepts -> select page (Jump to page)
+				if ($message == 'seek_page_con') // Concepts -> select page (Jump to page)
 				{
-					$_POST['CurrentConPage'] = $_POST['jump_to_page'];
+					$_POST['CurrentConPage'] = $_POST['page_selector'];
 					$current = "Concepts";
 					
 					break;
@@ -2639,9 +2639,9 @@
 					break;
 				}
 				
-				if ($message == 'Jump_players') // Players -> select page (Jump to page)
+				if ($message == 'seek_page_players') // Players -> select page (Jump to page)
 				{
-					$_POST['CurrentPlayersPage'] = $_POST['jump_to_page'];
+					$_POST['CurrentPlayersPage'] = $_POST['page_selector'];
 					
 					$current = "Players";
 					
@@ -3005,11 +3005,7 @@ case 'Concepts':
 	$params['concepts']['current_page'] = $current_page;
 
 	$params['concepts']['list'] = $conceptdb->GetList($name, $author, $date, $state, $condition, $order, $current_page);
-	$page_count = $conceptdb->CountPages($name, $author, $date, $state);
-	$pages = array();
-	if ($page_count > 0) for ($i = 0; $i < $page_count; $i++) $pages[$i] = $i;
-	$params['concepts']['pages'] = $pages;
-	$params['concepts']['page_count'] = $page_count;
+	$params['concepts']['page_count'] = $conceptdb->CountPages($name, $author, $date, $state);
 
 	$settings = $player->GetSettings();
 	$params['concepts']['timesections'] = $messagedb->Timesections();
@@ -3118,11 +3114,7 @@ case 'Players':
 	$current_page = ((isset($_POST['CurrentPlayersPage'])) ? $_POST['CurrentPlayersPage'] : 0);
 	$params['players']['current_page'] = $current_page;
 
-	$page_count = $playerdb->CountPages($filter, $status_filter, $pname_filter);
-	$pages = array();
-	if ($page_count > 0) for ($i = 0; $i < $page_count; $i++) $pages[$i] = $i;
-	$params['players']['pages'] = $pages;
-	$params['players']['page_count'] = $page_count;
+	$params['players']['page_count'] = $playerdb->CountPages($filter, $status_filter, $pname_filter);
 
 	// get the list of all existing players; (Username, Wins, Losses, Draws, Last Query, Free slots, Avatar, Country)
 	$list = $playerdb->ListPlayers($filter, $status_filter, $pname_filter, $condition, $order, $current_page);
@@ -3294,12 +3286,7 @@ case 'Messages':
 	$list = $messagedb->$list_type($player->Name(), $date, $name, $current_condition, $current_order, $current_page);
 	$name_list = $messagedb->$name_type($player->Name(), $date);
 
-	$page_count = $messagedb->$pages_type($player->Name(), $date, $name);
-	$pages = array();
-	if ($page_count > 0) for ($i = 0; $i < $page_count; $i++) $pages[$i] = $i;
-	$params['messages']['pages'] = $pages;
-	$params['messages']['page_count'] = $page_count;
-
+	$params['messages']['page_count'] = $messagedb->$pages_type($player->Name(), $date, $name);
 	$params['messages']['messages'] = $list;
 	$params['messages']['messages_count'] = count($list);
 	$params['messages']['current_location'] = $current_location;
@@ -3843,10 +3830,7 @@ case 'Replays':
 	$params['replays']['cond'] = $cond = $_POST['ReplaysCond'];
 
 	$params['replays']['list'] = $replaydb->ListReplays($player_f, $hidden_f, $friendly_f, $victory_f, $id_f, $current_page, $cond, $order);
-	$count = $replaydb->CountPages($player_f, $hidden_f, $friendly_f, $victory_f, $id_f);
-	$pages = array();
-	for ($i = 0; $i < $count; $i++) $pages[$i] = $i;
-	$params['replays']['pages'] = $pages;
+	$params['replays']['page_count'] = $replaydb->CountPages($player_f, $hidden_f, $friendly_f, $victory_f, $id_f);
 	$params['replays']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 	$params['replays']['players'] = $replay_players = $replaydb->ListPlayers();
 	$params['replays']['my_replays'] = (in_array($player->Name(), $replay_players) ? 'yes' : 'no');
@@ -4045,10 +4029,7 @@ case 'Cards':
 	if( $modifiedfilter != 'none' ) $filter['modified'] = $modifiedfilter;
 	$ids = $carddb->GetList($filter);
 	$params['cards']['CardList'] = $carddb->GetData($ids, $current_page);
-	$count = $carddb->CountPages($filter);
-	$pages = array();
-	for ($i = 0; $i < $count; $i++) $pages[$i] = $i;
-	$params['cards']['pages'] = $pages;
+	$params['cards']['page_count'] = $carddb->CountPages($filter);
 
 	// load card display settings
 	$settings = $player->GetSettings();

@@ -111,30 +111,8 @@
 				<input type="submit" name="my_concepts" value="My cards" />
 			</xsl:if>
 
-		<!-- upper navigation -->
-				<xsl:if test="$param/page_count &gt; 0">
-					<!-- previous button -->
-					<input type="submit" name="select_page_con[{$param/current_page - 1}]" value="&lt;">
-						<xsl:if test="$param/current_page &lt;= 0"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-					</input>
-
-					<!-- next button -->
-					<input type="submit" name="select_page_con[{$param/current_page + 1}]" value="&gt;">
-						<xsl:if test="$param/current_page &gt;= $param/page_count - 1"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-					</input>
-
-					<!-- page selector -->
-					<select name="jump_to_page">
-						<xsl:for-each select="$param/pages/*">
-							<option value="{.}">
-								<xsl:if test="$param/current_page = ."><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-								<xsl:value-of select="."/>
-							</option>
-						</xsl:for-each>
-					</select>
-					<input type="submit" name="Jump_concepts" value="Select page" />
-				</xsl:if>
-		<!-- end upper navigation -->
+			<!-- upper navigation -->
+			<xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'con')"/>
 
 		<!-- end buttons and filters -->
 		</div>

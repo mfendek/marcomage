@@ -135,6 +135,55 @@
 </func:function>
 
 
+<func:function name="am:upper_navigation">
+	<xsl:param name="page_count" as="xs:integer" />
+	<xsl:param name="current" as="xs:integer" />
+	<xsl:param name="button_name" as="xs:string" />
+
+	<xsl:variable name="output">
+		<!-- arrow buttons selector -->
+		<input type="submit" name="{concat('select_page_', $button_name)}[{am:max($current - 1, 0)}]" value="&lt;">
+			<xsl:if test="$current = 0">
+				<xsl:attribute name="disabled">disabled</xsl:attribute>
+			</xsl:if>
+		</input>
+		<input type="submit" name="{concat('select_page_', $button_name)}[{am:min($current + 1, $page_count - 1)}]" value="&gt;">
+			<xsl:if test="$current = am:max($page_count - 1, 0)">
+				<xsl:attribute name="disabled">disabled</xsl:attribute>
+			</xsl:if>
+		</input>
+		<xsl:if test="$page_count &gt; 0">
+			<!-- page selector -->
+			<select name="page_selector">
+				<xsl:for-each select="str:split(am:pages($page_count - 1), ',')">
+					<option value="{.}">
+						<xsl:if test="$current = ."><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+						<xsl:value-of select="."/>
+					</option>
+				</xsl:for-each>
+			</select>
+			<input type="submit" name="{concat('seek_page_', $button_name)}" value="Select" />
+		</xsl:if>
+	</xsl:variable>
+
+	<func:result select="$output" />
+</func:function>
+
+
+<func:function name="am:pages">
+	<xsl:param name="count" as="xs:integer" />
+
+	<xsl:choose>
+		<xsl:when test="$count > 0">
+			<func:result select="concat(am:pages($count - 1), ',', $count)" />
+		</xsl:when>
+		<xsl:otherwise>
+			<func:result select="$count" />
+		</xsl:otherwise>
+	</xsl:choose>
+</func:function>
+
+
 <func:function name="am:cardeffect">
 	<xsl:param name="effect" as="xs:string" />
 	<!-- ad-hoc html entity corrections -->
