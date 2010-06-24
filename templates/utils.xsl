@@ -155,7 +155,7 @@
 		<xsl:if test="$page_count &gt; 0">
 			<!-- page selector -->
 			<select name="page_selector">
-				<xsl:for-each select="str:split(am:pages($page_count - 1), ',')">
+				<xsl:for-each select="am:page_list($page_count)">
 					<option value="{.}">
 						<xsl:if test="$current = ."><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
 						<xsl:value-of select="."/>
@@ -194,6 +194,12 @@
 	</xsl:variable>
 
 	<func:result select="$output" />
+</func:function>
+
+
+<func:function name="am:page_list">
+	<xsl:param name="count" as="xs:integer" />
+	<func:result select="str:split(am:pages($count - 1), ',')" />
 </func:function>
 
 

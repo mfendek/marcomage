@@ -254,10 +254,10 @@
 
 		<!-- turn selector -->
 		<select name="turn_selector">
-			<xsl:for-each select="$param/pages/*">
-				<option value="{.}">
-					<xsl:if test="$current = ."><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-					<xsl:value-of select="."/>
+			<xsl:for-each select="am:page_list($turns)">
+				<option value="{. + 1}">
+					<xsl:if test="$current = (. + 1)"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+					<xsl:value-of select=". + 1"/>
 				</option>
 			</xsl:for-each>
 		</select>

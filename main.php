@@ -3866,9 +3866,6 @@ case 'Replay':
 	$params['replay']['Background'] = $settings->GetSetting('Background');
 
 	$params['replay']['turns'] = $turns = $replay->NumberOfTurns();
-	$pages = array();
-	for ($i = 1; $i <= $turns; $i++) $pages[$i] = $i;
-	$params['replay']['pages'] = $pages;
 	$params['replay']['Round'] = $replay->Round;
 	$params['replay']['Outcome'] = $replay->Outcome();
 	$params['replay']['EndType'] = $replay->EndType;
