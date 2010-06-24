@@ -9147,7 +9147,7 @@
     <modes>0</modes>
     <keywords>Soldier,Skirmisher</keywords>
     <effect><![CDATA[Attack: 10<br />Discards all <b>Quick</b> and <b>Swift</b> cards from opponent's hand]]></effect>
-    <code><![CDATA[$this->Attack(10, $hisdata->Tower, $hisdata->Wall); for ($i = 1; $i <= 8; $i++) { $cur_card = $carddb->GetCard($hisdata->Hand[$i]); if ($cur_card->HasKeyword("Quick") OR $cur_card->HasKeyword("Swift")) { $hisdata->Hand[$i] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_random'); $hisdata->NewCards[$i] = 1; }}]]></code>
+    <code><![CDATA[$this->Attack(10, $hisdata->Tower, $hisdata->Wall); for ($i = 1; $i <= 8; $i++) { $cur_card = $carddb->GetCard($hisdata->Hand[$i]); if ($cur_card->HasKeyword("Quick") OR $cur_card->HasKeyword("Swift")) { $hisdata->Hand[$i] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $i, 'DrawCard_random'); $hisdata->NewCards[$i] = 1; }}]]></code>
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
