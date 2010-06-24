@@ -190,22 +190,8 @@
 		</table>
 
 		<div class="filters_trans">
-		<!-- lower navigation -->
-				<xsl:if test="$param/page_count &gt; 0">
-					<!-- previous button -->
-					<input type="submit" name="select_page_con[{$param/current_page - 1}]" value="&lt;">
-						<xsl:if test="$param/current_page &lt;= 0"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-					</input>
-
-					<input type="submit" name="Concepts" value="Back to top" />
-
-					<!-- next button -->
-					<input type="submit" name="select_page_con[{$param/current_page + 1}]" value="&gt;">
-						<xsl:if test="$param/current_page &gt;= $param/page_count - 1"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-					</input>
-				</xsl:if>
-
-		<!-- end lower navigation -->
+			<!-- lower navigation -->
+			<xsl:copy-of select="am:lower_navigation($param/page_count, $param/current_page, 'con', 'Concepts')"/>
 		</div>
 
 		</div>

@@ -245,8 +245,14 @@
 			</xsl:for-each>
 		</table>
 
+		<div class="filters_trans">
+			<!-- lower navigation -->
+			<xsl:copy-of select="am:lower_navigation($param/page_count, $param/current_page, 'cards', 'Cards')"/>
 		</div>
 
+		</div>
+
+		<input type="hidden" name="CurrentCardsPage" value="{$param/current_page}" />
 </div>
 
 </xsl:template>

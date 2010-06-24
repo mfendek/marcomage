@@ -176,20 +176,7 @@
 
 		<!-- lower navigation -->
 		<div class="filters_trans" style="text-align: center;">
-			<xsl:if test="$param/page_count &gt; 0">
-				<!-- previous button -->
-				<input type="submit" name="select_page_players[{$param/current_page - 1}]" value="&lt;">
-					<xsl:if test="$param/current_page &lt;= 0"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-				</input>
-
-				<!-- back to top button -->
-				<input type = "submit" name="Players" value="Back to top" />
-
-				<!-- next button -->
-				<input type="submit" name="select_page_players[{$param/current_page + 1}]" value="&gt;">
-					<xsl:if test="$param/current_page &gt;= $param/page_count - 1"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-				</input>
-			</xsl:if>
+			<xsl:copy-of select="am:lower_navigation($param/page_count, $param/current_page, 'players', 'Players')"/>
 		</div>
 
 		<input type ="hidden" name="CurrentPlayersPage" value="{$param/current_page}" />

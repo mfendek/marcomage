@@ -205,12 +205,18 @@
 					</tr>
 				</xsl:for-each>
 			</table>
-	</xsl:when>
+
+			<div class="filters_trans">
+				<!-- lower navigation -->
+				<xsl:copy-of select="am:lower_navigation($param/page_count, $param/current_page, 'replays', 'Replays')"/>
+			</div>
+		</xsl:when>
 	<xsl:otherwise>
 		<p class="information_line warning">There are no game replays.</p>
 	</xsl:otherwise>
 	</xsl:choose>
 
+	<input type="hidden" name="CurrentRepPage" value="{$param/current_page}" />
 	<input type="hidden" name="ReplaysOrder" value="{$param/order}"/>
 	<input type="hidden" name="ReplaysCond" value="{$param/cond}"/>
 

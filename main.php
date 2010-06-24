@@ -2668,6 +2668,7 @@
 				
 				if ($message == 'filter_replays') // use filter in replays list
 				{
+					$_POST['CurrentRepPage'] = 0;
 					$current = 'Replays';
 					break;
 				}
@@ -2679,6 +2680,7 @@
 					$_POST['FriendlyPlay'] = "ignore";
 					$_POST['VictoryFilter'] = "none";
 					$_POST['IdFilter'] = "";
+					$_POST['CurrentRepPage'] = 0;
 					
 					$current = 'Replays';
 					break;
@@ -2686,7 +2688,7 @@
 				
 				if ($message == 'select_page_replays') // Replays -> select page (previous and next button)
 				{
-					$current_page = array_shift(array_keys($value));
+					$_POST['CurrentRepPage'] = array_shift(array_keys($value));
 					$current = "Replays";
 					
 					break;
@@ -2694,7 +2696,7 @@
 				
 				if ($message == 'seek_page_replays') // Replays -> select page (page selector)
 				{
-					$current_page = $_POST['page_selector'];
+					$_POST['CurrentRepPage'] = $_POST['page_selector'];
 					$current = "Replays";
 					
 					break;
@@ -2760,6 +2762,7 @@
 				
 				if ($message == 'cards_filter') // Cards -> Apply filters
 				{
+					$_POST['CurrentCardsPage'] = 0;
 					$current = 'Cards';
 					
 					break;
@@ -2767,7 +2770,7 @@
 				
 				if ($message == 'select_page_cards') // Cards -> select page (previous and next button)
 				{
-					$current_page = array_shift(array_keys($value));
+					$_POST['CurrentCardsPage'] = array_shift(array_keys($value));
 					$current = 'Cards';
 					
 					break;
@@ -2775,7 +2778,7 @@
 				
 				if ($message == 'seek_page_cards') // Cards -> select page (page selector)
 				{
-					$current_page = $_POST['page_selector'];
+					$_POST['CurrentCardsPage'] = $_POST['page_selector'];
 					$current = 'Cards';
 					
 					break;
@@ -3816,7 +3819,7 @@ case 'Edit_post':
 	break;
 
 case 'Replays':
-	if (!isset($current_page)) $current_page = 0;
+	$current_page = ((isset($_POST['CurrentRepPage'])) ? $_POST['CurrentRepPage'] : 0);
 	$params['replays']['current_page'] = $current_page;
 	$params['replays']['PlayerFilter'] = $player_f = (isset($_POST['PlayerFilter'])) ? $_POST['PlayerFilter'] : "none";
 	$params['replays']['HiddenCards'] = $hidden_f = (isset($_POST['HiddenCards'])) ? $_POST['HiddenCards'] : "ignore";
@@ -4005,7 +4008,7 @@ case 'Replay':
 	break;
 
 case 'Cards':
-	if (!isset($current_page)) $current_page = 0;
+	$current_page = ((isset($_POST['CurrentCardsPage'])) ? $_POST['CurrentCardsPage'] : 0);
 	$params['cards']['current_page'] = $current_page;
 	$classfilter = $params['cards']['ClassFilter'] = isset($_POST['ClassFilter']) ? $_POST['ClassFilter'] : 'Common';
 	$costfilter = $params['cards']['CostFilter'] = isset($_POST['CostFilter']) ? $_POST['CostFilter'] : 'none';

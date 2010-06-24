@@ -170,6 +170,33 @@
 </func:function>
 
 
+<func:function name="am:lower_navigation">
+	<xsl:param name="page_count" as="xs:integer" />
+	<xsl:param name="current" as="xs:integer" />
+	<xsl:param name="arrow_button" as="xs:string" />
+	<xsl:param name="back_button" as="xs:string" />
+
+	<xsl:variable name="output">
+		<!-- arrow buttons selector -->
+		<input type="submit" name="{concat('select_page_', $arrow_button)}[{am:max($current - 1, 0)}]" value="&lt;">
+			<xsl:if test="$current = 0">
+				<xsl:attribute name="disabled">disabled</xsl:attribute>
+			</xsl:if>
+		</input>
+
+		<input type="submit" name="{$back_button}" value="Back to top" />
+
+		<input type="submit" name="{concat('select_page_', $arrow_button)}[{am:min($current + 1, $page_count - 1)}]" value="&gt;">
+			<xsl:if test="$current = am:max($page_count - 1, 0)">
+				<xsl:attribute name="disabled">disabled</xsl:attribute>
+			</xsl:if>
+		</input>
+	</xsl:variable>
+
+	<func:result select="$output" />
+</func:function>
+
+
 <func:function name="am:pages">
 	<xsl:param name="count" as="xs:integer" />
 
