@@ -1255,7 +1255,7 @@
 					break;
 				}
 				
-				if ($message == 'select_page_mes') // Messages -> select page (previous and next button)
+				if ($message == 'select_page_messages') // Messages -> select page (previous and next button)
 				{
 					$_POST['CurrentMesPage'] = array_shift(array_keys($value));
 					$current = "Messages";
@@ -1263,7 +1263,7 @@
 					break;
 				}
 				
-				if ($message == 'seek_page_mes') // Messages -> select page (Jump to page)
+				if ($message == 'seek_page_messages') // Messages -> select page (Jump to page)
 				{
 					$_POST['CurrentMesPage'] = $_POST['page_selector'];
 					$current = "Messages";
@@ -1633,7 +1633,7 @@
 					break;
 				}
 				
-				if ($message == 'select_page_con') // Concepts -> select page (previous and next button)
+				if ($message == 'select_page_concepts') // Concepts -> select page (previous and next button)
 				{
 					$_POST['CurrentConPage'] = array_shift(array_keys($value));
 					$current = "Concepts";
@@ -1641,7 +1641,7 @@
 					break;
 				}
 				
-				if ($message == 'seek_page_con') // Concepts -> select page (Jump to page)
+				if ($message == 'seek_page_concepts') // Concepts -> select page (Jump to page)
 				{
 					$_POST['CurrentConPage'] = $_POST['page_selector'];
 					$current = "Concepts";

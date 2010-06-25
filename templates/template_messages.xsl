@@ -198,7 +198,7 @@
 	<div class="message_filters">
 	<!-- upper navigation -->
 		<xsl:if test="$param/page_count &gt; 0">
-			<xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'mes')"/>
+			<xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'messages')"/>
 
 			<xsl:if test="$param/current_location != 'all_mail'">
 				<input type="submit" name="Delete_mass" value="Delete selected" />

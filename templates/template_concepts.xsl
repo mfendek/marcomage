@@ -112,7 +112,7 @@
 			</xsl:if>
 
 			<!-- upper navigation -->
-			<xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'con')"/>
+			<xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'concepts')"/>
 
 		<!-- end buttons and filters -->
 		</div>
