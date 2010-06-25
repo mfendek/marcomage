@@ -113,7 +113,7 @@ $(document).ready(function() {
 		var x = event.pageX - this.offsetLeft;
 		var move = ($(this).width() * 3)/4; // calculate 3/4 of current card pool length
 		var str = new String();
-		if (x < 3) { $(".scroll").scrollTo(str.concat("-=", move, "px"), 'slow'); }
-		else if (x > ($(this).width() - 3)) { $(".scroll").scrollTo(str.concat("+=", move, "px"), 'slow'); }
+		if (x < 3) { $(".scroll").scrollTo(str.concat("-=", move, "px"), 5000); }
+		else if (x > ($(this).width() - 3)) { $(".scroll").scrollTo(str.concat("+=", move, "px"), 5000); }
 	});
 });
