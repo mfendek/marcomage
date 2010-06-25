@@ -5,7 +5,7 @@
 	 * ---------------------------------------------- */
 	/*
 
-	- deletes dead users and their related data
+	- deletes dead users (no activity in more than 12 weeks and zero score) and their related data
 	- deletes 50 users at a time
 	- provides debug information about delete procedure
 
@@ -41,7 +41,7 @@
 
 	echo "Deleting player data..."."\n<br />\n<br />";
 
-	$result = $db->Query('SELECT `Username` FROM `logins` WHERE (UNIX_TIMESTAMP(`Last Query`) < UNIX_TIMESTAMP() - 60*60*24*7*3) LIMIT 0 , 50');
+	$result = $db->Query('SELECT `Username` FROM (SELECT `Username` FROM `logins` WHERE (UNIX_TIMESTAMP(`Last Query`) < UNIX_TIMESTAMP() - 60*60*24*7*12)) as `logins` INNER JOIN (SELECT `Username` FROM `scores` WHERE `Wins` + `Losses` + `Draws` = 0) as `scores` USING (`Username`) LIMIT 0 , 50');
 
 	while( $data = $result->Next() )
 	{
