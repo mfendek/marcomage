@@ -2161,16 +2161,6 @@
 					break;
 				}
 				
-				if ($message == 'section_select_page') // forum -> section -> select page with select element
-				{
-					$section_id = $_POST['CurrentSection'];
-					$current_page = $_POST['section_select_page'];
-					
-					$current = 'Section_details';
-					
-					break;
-				}
-				
 				if ($message == 'section_page_jump') // forum -> section -> select page with previous or next button
 				{
 					$section_id = $_POST['CurrentSection'];
@@ -2251,16 +2241,6 @@
 				{				
 					$thread_id = array_shift(array_keys($value));
 										
-					$current = 'Thread_details';
-					
-					break;
-				}
-				
-				if ($message == 'thread_select_page') // forum -> section -> thread -> select page with select element
-				{
-					$thread_id = $_POST['CurrentThread'];
-					$current_page = $_POST['thread_select_page'];
-					
 					$current = 'Thread_details';
 					
 					break;
