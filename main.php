@@ -3117,8 +3117,8 @@ case 'Players':
 		$entry['draws'] = $data['Draws'];
 		$entry['avatar'] = $data['Avatar'];
 		$entry['status'] = $data['Status'];
-		$entry['friendly_flag'] = $data['FriendlyFlag'];
-		$entry['blind_flag'] = $data['BlindFlag'];
+		$entry['friendly_flag'] = ($data['FriendlyFlag'] == 1) ? 'yes' : 'no';
+		$entry['blind_flag'] = ($data['BlindFlag'] == 1) ? 'yes' : 'no';
 		$entry['country'] = $data['Country'];
 		$entry['last_query'] = $data['Last Query'];
 		$entry['free_slots'] = $data['Free slots'];
