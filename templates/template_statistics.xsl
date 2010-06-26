@@ -2,7 +2,9 @@
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:exsl="http://exslt.org/common"
+                extension-element-prefixes="exsl">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
@@ -14,42 +16,53 @@
 
 	<!-- subsection navigation -->
 	<div class="filter_trans">
-		<input type="submit" name="card_statistics[Played]" value="Played - latest">
-			<xsl:if test="$param/current_subsection = 'card_statistics' and $param/current_statistic = 'Played'">
-				<xsl:attribute name="class">pushed</xsl:attribute>
-			</xsl:if>
-		</input>
+		<xsl:variable name="types">
+			<type name="Played - latest"     value="Played"         />
+			<type name="Played - overall"    value="PlayedTotal"    />
+			<type name="Discarded - latest"  value="Discarded"      />
+			<type name="Discarded - overall" value="DiscardedTotal" />
+			<type name="Drawn - latest"      value="Drawn"          />
+			<type name="Drawn - overall"     value="DrawnTotal"     />
+		</xsl:variable>
 
-		<input type="submit" name="card_statistics[PlayedTotal]" value="Played - overall">
-			<xsl:if test="$param/current_subsection = 'card_statistics' and $param/current_statistic = 'PlayedTotal'">
-				<xsl:attribute name="class">pushed</xsl:attribute>
+		<select name="selected_statistic">
+			<xsl:if test="$param/current_subsection = 'card_statistics'">
+				<xsl:attribute name="class">filter_active</xsl:attribute>
 			</xsl:if>
-		</input>
+			<xsl:for-each select="exsl:node-set($types)/*">
+			<option value="{@value}">
+				<xsl:if test="$param/current_statistic = @value">
+					<xsl:attribute name="selected">selected</xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="@name"/>
+			</option>
+			</xsl:for-each>
+		</select>
 
-		<input type="submit" name="card_statistics[Discarded]" value="Discarded - latest">
-			<xsl:if test="$param/current_subsection = 'card_statistics' and $param/current_statistic = 'Discarded'">
-				<xsl:attribute name="class">pushed</xsl:attribute>
+		<xsl:variable name="sizes">
+			<size name="10"       value="10"   />
+			<size name="15"       value="15"   />
+			<size name="20"       value="20"   />
+			<size name="30"       value="30"   />
+			<size name="50"       value="50"   />
+			<size name="Show all" value="full" />
+		</xsl:variable>
+
+		<select name="selected_size">
+			<xsl:if test="$param/current_subsection = 'card_statistics'">
+				<xsl:attribute name="class">filter_active</xsl:attribute>
 			</xsl:if>
-		</input>
+			<xsl:for-each select="exsl:node-set($sizes)/*">
+			<option value="{@value}">
+				<xsl:if test="$param/current_size = @value">
+					<xsl:attribute name="selected">selected</xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="@name"/>
+			</option>
+			</xsl:for-each>
+		</select>
 
-		<input type="submit" name="card_statistics[DiscardedTotal]" value="Discarded - overall">
-			<xsl:if test="$param/current_subsection = 'card_statistics' and $param/current_statistic = 'DiscardedTotal'">
-				<xsl:attribute name="class">pushed</xsl:attribute>
-			</xsl:if>
-		</input>
-
-		<input type="submit" name="card_statistics[Drawn]" value="Drawn - latest">
-			<xsl:if test="$param/current_subsection = 'card_statistics' and $param/current_statistic = 'Drawn'">
-				<xsl:attribute name="class">pushed</xsl:attribute>
-			</xsl:if>
-		</input>
-
-		<input type="submit" name="card_statistics[DrawnTotal]" value="Drawn - overall">
-			<xsl:if test="$param/current_subsection = 'card_statistics' and $param/current_statistic = 'DrawnTotal'">
-				<xsl:attribute name="class">pushed</xsl:attribute>
-			</xsl:if>
-		</input>
-
+		<input type="submit" name="card_statistics" value="Select" />
 		<input type="submit" name="other_statistics" value="Other statistics">
 			<xsl:if test="$param/current_subsection = 'other_statistics'">
 				<xsl:attribute name="class">pushed</xsl:attribute>

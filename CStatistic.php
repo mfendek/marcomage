@@ -344,7 +344,7 @@
 			return $backgrounds;
 		}
 
-		public function Cards($condition) // calculate card statistics according to specified paramater
+		public function Cards($condition, $list_size) // calculate card statistics according to specified paramaters
 		{
 			global $carddb;
 
@@ -369,8 +369,8 @@
 			// make top and bottom lists for each rarity type
 			foreach ($separated as $rarity => $list)
 			{
-				$statistics[$rarity]['top'] = array_slice($list, 0, 10);
-				$statistics[$rarity]['bottom'] = array_slice(array_reverse($list), 0, 10);
+				$statistics[$rarity]['top'] = ($list_size == 'full') ? $list : array_slice($list, 0, $list_size);
+				$statistics[$rarity]['bottom'] = ($list_size == 'full') ? array_reverse($list) : array_slice(array_reverse($list), 0, $list_size);
 			}
 
 			return $statistics;

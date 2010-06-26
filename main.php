@@ -2802,7 +2802,6 @@
 				
 				if ($message == 'card_statistics') // view card statistics
 				{
-					$current_statistic = array_shift(array_keys($value));
 					$current = 'Statistics';
 					break;
 				}
@@ -4049,11 +4048,12 @@ case 'Statistics':
 	if (!isset($current_statistic)) $current_statistic = "Played";
 
 	$params['statistics']['current_subsection'] = $subsection;
-	$params['statistics']['current_statistic'] = $current_statistic;
+	$params['statistics']['current_statistic'] = $current_statistic = (isset($_POST['selected_statistic'])) ? $_POST['selected_statistic'] : 'Played';
+	$params['statistics']['current_size'] = $current_size = (isset($_POST['selected_size'])) ? $_POST['selected_size'] : 10;
 
 	if ($subsection == "card_statistics")
 	{
-		$params['statistics']['card_statistics'] = $statistics->Cards($current_statistic);
+		$params['statistics']['card_statistics'] = $statistics->Cards($current_statistic, $current_size);
 	}
 	elseif ($subsection == "other_statistics")
 	{
