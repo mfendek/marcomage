@@ -42,7 +42,7 @@
 				<option value="ready"><xsl:if test="$param/status_filter = 'ready'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Looking for game</option>
 				<option value="quick"><xsl:if test="$param/status_filter = 'quick'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Looking for quick game</option>
 				<option value="dnd"><xsl:if test="$param/status_filter = 'dnd'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Do not disturb</option>
-				<option value="noob"><xsl:if test="$param/status_filter = 'noob'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Newbie</option>
+				<option value="newbie"><xsl:if test="$param/status_filter = 'newbie'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Newbie</option>
 			</select>
 			<input type="submit" name="filter_players" value="Apply filters" />
 
