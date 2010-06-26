@@ -10,6 +10,13 @@
 
 <xsl:template match="section[. = 'Game']">
 	<xsl:variable name="param" select="$params/game" />
+	<!-- scrolls chatbox to bottom if reverse chatorder setting is active -->
+	<xsl:if test="$param/reverse_chat = 'yes'">
+		<xsl:element name="script">
+			<xsl:attribute name="type">text/javascript</xsl:attribute>
+			<xsl:text>$(document).ready(function() { $(".chatbox").scrollTo($(".chatbox").height()); });</xsl:text>
+		</xsl:element>
+	</xsl:if>
 
 	<div id="game">
 

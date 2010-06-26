@@ -3614,6 +3614,7 @@ case 'Game':
 	$params['game']['hisavatar'] = $o_settings->GetSetting('Avatar');
 
 	$order = ( $settings->GetSetting('Chatorder') == "yes" ) ? "ASC" : "DESC";
+	$params['game']['reverse_chat'] = $settings->GetSetting('Chatorder');
 	$params['game']['messagelist'] = $message_list = $chatdb->ListChatMessages($game->ID(), $order);
 
 	break;
