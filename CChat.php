@@ -41,7 +41,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `Name`, `Message`, `Timestamp` FROM `chats` WHERE `GameID` = "'.$gameid.'" ORDER BY `Timestamp` '.$order.' LIMIT 0 , 21');
+			$result = $db->Query('SELECT `Name`, `Message`, `Timestamp` FROM `chats` WHERE `GameID` = "'.$gameid.'" ORDER BY `Timestamp` '.$order.'');
 			if (!$result) return false;
 			
 			$messages = array();
