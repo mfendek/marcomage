@@ -107,22 +107,30 @@
 		{
 			$db = $this->db;
 
-			$activity_q = ( $filter_cond == "active"  ? "60*10"
-			            : ( $filter_cond == "offline" ? "60*60*24*7*1"
-			            : ( $filter_cond == "all"     ? "UNIX_TIMESTAMP()"
-			            :                               "60*60*24*7*3"     )));
+			$interval = ( $filter_cond == "active"  ? "10 MINUTE"
+			          : ( $filter_cond == "offline" ? "1 WEEK"
+			          : ( $filter_cond == "none"    ? "3 WEEK"
+			          : ( $filter_cond == "all"     ? ""
+			          : ""))));
 
 			$name_q = ($name != '') ? ' AND `Username` LIKE "%'.$db->Escape($name).'%"' : '';
-			$status_query = ($status != 'none') ? ' WHERE `Status` = "'.$status.'"' : '';
+			$status_q = ($status != 'none') ? ' AND `Status` = "'.$status.'"' : '';
+			$activity_q = ($interval != '') ? ' AND `Last Query` >= NOW() - INTERVAL '.$interval.'' : '';
 
-			$query = "SELECT `Username`, `UserType`, `Level`, `Exp`, `Wins`, `Losses`, `Draws`, `Avatar`, `Status`, `FriendlyFlag`, `BlindFlag`, `settings`.`Country`, `Last Query` FROM ((SELECT `Username`, `UserType`, `Last Query` FROM `logins` WHERE (UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - ".$activity_q.")".$name_q.") as `logins` JOIN (SELECT `Username`, `Avatar`, `Status`, `Country`, `FriendlyFlag`, `BlindFlag` FROM `settings`".$status_query.") as `settings` USING (`Username`) JOIN `scores` USING (`Username`)) ORDER BY `".$condition."` ".$order.", `Username` ASC LIMIT ".(PLAYERS_PER_PAGE * $page)." , ".PLAYERS_PER_PAGE."";
-
+			$query = "
+				SELECT `Username`, `UserType`, `Level`, `Exp`, `Wins`, `Losses`, `Draws`, `Avatar`, `Status`, `FriendlyFlag`, `BlindFlag`, `settings`.`Country`, `Last Query`
+				FROM `logins` JOIN `settings` USING (`Username`) JOIN `scores` USING (`Username`)
+				WHERE 1 {$name_q}{$status_q}{$activity_q}
+				ORDER BY `{$condition}` {$order}, `Username` ASC
+				LIMIT ".(PLAYERS_PER_PAGE * $page).", ".PLAYERS_PER_PAGE."";
+    
 			$result = $db->Query($query);
 			if (!$result) return false;
 			
 			$list = array();
 			while( $data = $result->Next() )
 				$list[] = $data;
+
 			return $list;
 		}
 		
