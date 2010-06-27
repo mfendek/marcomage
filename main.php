@@ -2950,16 +2950,6 @@ case 'Deck_edit':
 	$params['deck_edit']['Tokens'] = $deck->DeckData->Tokens;
 	$params['deck_edit']['TokenKeywords'] = $carddb->TokenKeywords();
 
-	// prepare javascript data
-	$data = array(postencode($player->Name()), $session->SessionID());
-	foreach ($data as $i => $value) $data[$i] = "'".$value."'";
-	$jparams = implode(", ", $data);
-	$jscript = '
-		function Take(id) { return TakeCard('.$jparams.', id); }
-		function Remove(id) { return RemoveCard('.$jparams.', id); }
-	';
-	$params['deck_edit']['jscript'] = $jscript;
-
 	break;
 
 

@@ -1,9 +1,11 @@
 // MArcomage JavaScript support functions
 
-function TakeCard(username, session_id, id) // add card to deck via AJAX
+function TakeCard(id) // add card to deck via AJAX
 {
 	var str = new String();
 	var card = str.concat("#card_", id);
+	var username = GetSessionData('Username');
+	var session_id = GetSessionData('SessionID');
 	var deck = $("input[name='CurrentDeck']").attr('value');
 
 	$.post("AJAXhandler.php", { action: 'take', Username: username, SessionID: session_id, deckname: deck, card_id: id }, function(data){
@@ -25,7 +27,7 @@ function TakeCard(username, session_id, id) // add card to deck via AJAX
 				$(slot).html($(card).html());
 				$(slot).hide();
 				$(slot).fadeIn('slow');
-				$(slot).attr('onclick', str.concat("return Remove(", id, ")")); // allow a card to be removed from deck
+				$(slot).attr('onclick', str.concat("return RemoveCard(", id, ")")); // allow a card to be removed from deck
 				$(card).html(''); // remove card from card pool
 			});
 		});
@@ -54,10 +56,12 @@ function TakeCard(username, session_id, id) // add card to deck via AJAX
 	return false; // disable standard processing
 }
 
-function RemoveCard(username, session_id, id) // remove card from deck via AJAX
+function RemoveCard(id) // remove card from deck via AJAX
 {
 	var str = new String();
 	var card = str.concat("#card_", id);
+	var username = GetSessionData('Username');
+	var session_id = GetSessionData('SessionID');
 	var deck = $("input[name='CurrentDeck']").attr('value');
 
 	$.post("AJAXhandler.php", { action: 'remove', Username: username, SessionID: session_id, deckname: deck, card_id: id }, function(data){
@@ -78,7 +82,7 @@ function RemoveCard(username, session_id, id) // remove card from deck via AJAX
 		$(card).hide();
 		$(card).css('width', 'hide'); // hide card (set width and opacity to default values for the animation)
 		$(card).css('opacity', 0);
-		$(card).attr('onclick', str.concat("return Take(", id, ")")); // allow a card to be removed from deck
+		$(card).attr('onclick', str.concat("return TakeCard(", id, ")")); // allow a card to be removed from deck
 		$(slot).fadeOut('slow', function() {
 			$(slot).html(empty);
 			$(slot).show();
@@ -96,6 +100,14 @@ function RemoveCard(username, session_id, id) // remove card from deck via AJAX
  });
 
 	return false; // disable standard processing
+}
+
+function GetSessionData(name) // retrieve session data from cookies (or session string if cookies are disabled)
+{
+	var str = new String();
+	var cookie_val = $.cookie(name);
+	if (cookie_val != null && cookie_val != "") return cookie_val;
+	else return $(str.concat("input[name='", name,"'][type='hidden']")).val();
 }
 
 $(document).ready(function() {

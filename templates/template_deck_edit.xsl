@@ -10,10 +10,6 @@
 
 <xsl:template match="section[. = 'Deck_edit']">
 	<xsl:variable name="param" select="$params/deck_edit" />
-	<xsl:element name="script">
-		<xsl:attribute name="type">text/javascript</xsl:attribute>
-		<xsl:value-of select="$param/jscript" />
-	</xsl:element>
 
 	<!-- remember the current location across pages -->
 	<div>
@@ -279,7 +275,7 @@
 						<xsl:sort select="name" order="ascending"/>
 						<td id="card_{id}" >
 							<xsl:if test="excluded = 'no'">
-								<xsl:attribute name="onclick">return Take(<xsl:value-of select="id" />)</xsl:attribute>
+								<xsl:attribute name="onclick">return TakeCard(<xsl:value-of select="id" />)</xsl:attribute>
 								<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
 							</xsl:if>
 						</td>
@@ -322,7 +318,7 @@
 					<xsl:variable name="i" select="position()"/>
 					<xsl:for-each select="$cards/*[position() &gt;= $i*3-2 and position() &lt;= $i*3]">
 						<td id="slot_{(($i - 1) * 3) + position() + 15 * ($rarity - 1)}" >
-							<xsl:if test="id &gt; 0"><xsl:attribute name="onclick">return Remove(<xsl:value-of select="id" />)</xsl:attribute></xsl:if>
+							<xsl:if test="id &gt; 0"><xsl:attribute name="onclick">return RemoveCard(<xsl:value-of select="id" />)</xsl:attribute></xsl:if>
 							<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
 							<xsl:if test="id != 0">
 								<noscript><div><input type="submit" name="return_card[{id}]" value="Return" /></div></noscript>
