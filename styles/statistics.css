@@ -9,7 +9,7 @@ div#statistics /* set minimum width to whole section (grants immunity to resize)
 
 div#statistics > div.skin_label /* content layout */
 {
-	width: 70%;
+	width: 80%;
 	margin: 2ex auto 1ex auto;
 }
 
