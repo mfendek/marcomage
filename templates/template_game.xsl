@@ -112,7 +112,9 @@
 		</td>
 		<td>
 			<input type="submit" name="jump_to_game" value="Select" />
-			<input type="submit" name="active_game" value="Next game" />
+			<xsl:if test="$param/nextgame_button = 'yes'">
+				<input type="submit" name="active_game" value="Next game" />
+			</xsl:if> 
 		</td>
 		<!-- end quick game switching menu -->
 		<td>

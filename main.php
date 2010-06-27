@@ -3550,6 +3550,7 @@ case 'Game':
 
 	// - <quick game switching menu>
 	$list = $gamedb->ListActiveGames($player->Name());
+	$nextgame_button = false;
 
 	foreach ($list as $i => $data)
 	{
@@ -3557,7 +3558,7 @@ case 'Game':
 		$cur_opponent = ($cur_game->Name1() != $player->Name()) ? $cur_game->Name1() : $cur_game->Name2();
 
 		$color = ''; // no extra color default
-		if ($cur_game->Current == $player->Name()) $color = 'lime'; // when it is your turn
+		if ($cur_game->Current == $player->Name()) { $color = 'lime'; $nextgame_button = true; } // when it is your turn
 		if ($cur_game->State == 'in progress' and $playerdb->isDead($cur_opponent)) $color = 'gray'; // when game can be aborted
 		if ($cur_game->State != 'in progress') $color = '#ff69b4'; // when game is finished color HotPink
 
@@ -3567,6 +3568,9 @@ case 'Game':
 		$params['game']['GameList'][$i]['Color'] = $color;
 	}
 	// - </quick game switching menu>
+
+	// - <'jump to next game' button> 
+	$params['game']['nextgame_button'] = ($nextgame_button) ? 'yes' : 'no';
 
 	// - <game state indicator>
 	$params['game']['opp_isOnline'] = (($opponent->isOnline()) ? 'yes' : 'no');
