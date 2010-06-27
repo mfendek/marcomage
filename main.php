@@ -2869,16 +2869,15 @@
 		$params["navbar"]["error_msg"] = @$error;
 		$params["navbar"]["warning_msg"] = @$warning;
 		$params["navbar"]["info_msg"] = @$information;
-		$params["navbar"]['NumMessages'] = count($gamedb->ListChallengesTo($player->Name()));
-		$params["navbar"]['NumUnread'] = $messagedb->CountUnreadMessages($player->Name());
 
 		// menubar notification (depends on current user's game settings)
 		$settings = $player->GetSettings();
 		$forum_not = ($settings->GetSetting('Forum_notification') == 'yes');
 		$concepts_not = ($settings->GetSetting('Concepts_notification') == 'yes');
-		$params["navbar"]['IsSomethingNew'] = ($forum_not AND $forum->IsSomethingNew($player->PreviousLogin())) ? 'yes' : 'no';
-		$params["navbar"]['NewConcepts'] = ($concepts_not AND $conceptdb->NewConcepts($player->PreviousLogin())) ? 'yes' : 'no';
-		$params["navbar"]['NumGames'] = count($gamedb->ListCurrentGames($player->Name()));
+		$params["navbar"]['forum_notice'] = ($forum_not AND $forum->IsSomethingNew($player->PreviousLogin())) ? 'yes' : 'no';
+		$params["navbar"]['message_notice'] = (count($gamedb->ListChallengesTo($player->Name())) + $messagedb->CountUnreadMessages($player->Name()) > 0) ? 'yes' : 'no';
+		$params["navbar"]['concept_notice'] = ($concepts_not AND $conceptdb->NewConcepts($player->PreviousLogin())) ? 'yes' : 'no';
+		$params["navbar"]['game_notice'] = $gamedb->IsAnyCurrentGame($player->Name()) ? 'yes' : 'no';
 		$params["main"]["skin"] = $settings->GetSetting('Skin');
 		$params["main"]["autorefresh"] = ($current == "Games") ? $settings->GetSetting('Autorefresh') : 0; // apply only in games section
 	}
@@ -3578,12 +3577,6 @@ case 'Game':
 		$params['game']['GameList'][$i]['Color'] = $color;
 	}
 	// - </quick game switching menu>
-
-	// - <'jump to next game' button>
-
-	$params['game']['num_games_your_turn'] = count($gamedb->ListCurrentGames($player->Name()));
-
-	// - </'jump to next game' button>
 
 	// - <game state indicator>
 	$params['game']['opp_isOnline'] = (($opponent->isOnline()) ? 'yes' : 'no');

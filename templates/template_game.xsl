@@ -112,14 +112,9 @@
 		</td>
 		<td>
 			<input type="submit" name="jump_to_game" value="Select" />
-		<!-- end quick game switching menu -->
-
-		<!-- begin 'jump to next game' button -->
-			<xsl:if test="$param/num_games_your_turn &gt; 0">
-				<input type="submit" name="active_game" value="Next game" />
-			</xsl:if>
+			<input type="submit" name="active_game" value="Next game" />
 		</td>
-		<!-- end 'jump to next game' button -->
+		<!-- end quick game switching menu -->
 		<td>
 			<!-- 'refresh' button -->
 			<input type="submit" name="Refresh[{am:urlencode($param/current)}]" value="Refresh" accesskey="w" />

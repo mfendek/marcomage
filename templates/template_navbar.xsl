@@ -31,16 +31,16 @@
 				<xsl:attribute name="class">pushed</xsl:attribute>
 			</xsl:if>
 		</input>
-		<xsl:if test="'Forum' = @name and $param/IsSomethingNew = 'yes'">
+		<xsl:if test="'Forum' = @name and $param/forum_notice = 'yes'">
 			<img src="img/book.gif" alt="" width="18px" height="14px" />
 		</xsl:if>
-		<xsl:if test="'Messages' = @name and (($param/NumMessages &gt; 0) or ($param/NumUnread &gt; 0))">
+		<xsl:if test="'Messages' = @name and $param/message_notice = 'yes'">
 			<img src="img/new_post.gif" alt="" width="15px" height="10px" />
 		</xsl:if>
-		<xsl:if test="'Games' = @name and $param/NumGames &gt; 0">
+		<xsl:if test="'Games' = @name and $param/game_notice = 'yes'">
 			<img src="img/battle.gif" alt="" width="20px" height="13px" />
 		</xsl:if>
-		<xsl:if test="'Concepts' = @name and $param/NewConcepts = 'yes'">
+		<xsl:if test="'Concepts' = @name and $param/concept_notice = 'yes'">
 			<img src="img/new_card.gif" alt="" width="10px" height="14px" />
 		</xsl:if>
 	</xsl:for-each>

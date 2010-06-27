@@ -266,18 +266,14 @@
 			return $names;
 		}
 		
-		public function ListCurrentGames($player)
+		/// Does the specified player has any games where it's his/her turn?
+		public function IsAnyCurrentGame($player)
 		{
-			// list all games where specified player is on turn
 			$db = $this->db;
-			$result = $db->Query('SELECT `GameID` FROM `games` WHERE ((`Player1` = "'.$db->Escape($player).'") OR (`Player2` = "'.$db->Escape($player).'")) AND (`State` = "in progress") AND (`Current` = "'.$db->Escape($player).'")');
+			$result = $db->Query('SELECT 1 FROM `games` WHERE `Current` = "'.$db->Escape($player).'" AND `State` = "in progress" LIMIT 1');
 			if (!$result) return false;
-			
-			$games = array();
-			while( $data = $result->Next() )
-				$games[] = $data['GameID'];
-			
-			return $games;
+
+			return( $result->Rows() > 0 );
 		}
 		
 		public function NextGameList($player)
