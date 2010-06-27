@@ -38,12 +38,9 @@
 
 		public function GetSettings($username)
 		{
-			$db = $this->db;
-			$result = $db->Query('SELECT 1 FROM `settings` WHERE `Username` = "'.$db->Escape($username).'"');
-			if( !$result or !$result->Rows() ) return false;
-
 			$settings = new CSetting($username, $this);
-			$settings->LoadSettings();
+			if( !$settings->LoadSettings() )
+				return false;
 
 			return $settings;
 		}
