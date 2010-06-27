@@ -17,11 +17,17 @@ allow from all
 </Files>
 
 # allow files for the browser
-<Files ~ "\.(html|css|js||jpg|jpeg|gif|png)$">
+<Files ~ "\.(html|css|js||jpg|jpeg|gif|png|ico)$">
 allow from all
 </Files>
 
 # allow robots.txt
 <Files "robots.txt">
 allow from all
+</Files>
+
+# redirect blind favicon requests to the right location
+<Files "favicon.ico">
+RewriteEngine On
+RewriteRule .* '/img/favicon-ie.ico' [L]
 </Files>
