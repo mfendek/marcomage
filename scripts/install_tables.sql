@@ -30,7 +30,10 @@ CREATE TABLE `concepts` (
   `Author` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `LastChange` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ThreadID` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`CardID`)
+  PRIMARY KEY (`CardID`),
+  KEY `LastChange` (`LastChange`),
+  KEY `Author` (`Author`),
+  KEY `State` (`State`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -68,7 +71,10 @@ CREATE TABLE `games` (
   `Note1` text COLLATE utf8_unicode_ci NOT NULL,
   `Note2` text COLLATE utf8_unicode_ci NOT NULL,
   `GameModes` set('HiddenCards','FriendlyPlay') COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`GameID`)
+  PRIMARY KEY (`GameID`),
+  KEY `Player1` (`Player1`),
+  KEY `Player2` (`Player2`),
+  KEY `Current` (`Current`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -94,7 +100,8 @@ CREATE TABLE `replays_head` (
   KEY `Player1` (`Player1`),
   KEY `Player2` (`Player2`),
   KEY `EndType` (`EndType`),
-  KEY `GameModes` (`GameModes`)
+  KEY `GameModes` (`GameModes`),
+  KEY `Finished` (`Finished`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -141,7 +148,8 @@ CREATE TABLE `logins` (
   `Last IP` char(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0.0.0.0',
   `Last Query` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `PreviousLogin` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`Username`)
+  PRIMARY KEY (`Username`),
+  KEY `Last Query` (`Last Query`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -251,7 +259,8 @@ CREATE TABLE `messages` (
   `Unread` tinyint(1) NOT NULL DEFAULT '1',
   `GameID` int(10) unsigned NOT NULL DEFAULT '0',
   `Created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY  (`MessageID`)
+  PRIMARY KEY  (`MessageID`),
+  KEY `Recipient` (`Recipient`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------

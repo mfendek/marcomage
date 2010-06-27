@@ -68,7 +68,7 @@
 		{	
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT 1 FROM `forum_posts` WHERE `Deleted` = FALSE AND `Created` > "'.$time.'"');
+			$result = $db->Query('SELECT 1 FROM `forum_posts` WHERE `Created` > "'.$time.'" AND `Deleted` = FALSE');
 			
 			if (!$result) return false;
 			if (!$result->Rows()) return false;

@@ -161,7 +161,7 @@
 		public function ListPlayers() // player filter list
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `Player1` as `Player` FROM `replays_head` WHERE `EndType` != "Pending" UNION DISTINCT SELECT `Player2` as `Player` FROM `replays_head` WHERE `EndType` != "Pending" ORDER BY `Player` ASC');
+			$result = $db->Query('SELECT DISTINCT `Player1` as `Player` FROM `replays_head` WHERE `EndType` != "Pending" UNION DISTINCT SELECT DISTINCT `Player2` as `Player` FROM `replays_head` WHERE `EndType` != "Pending" ORDER BY `Player` ASC');
 			if (!$result) return false;
 			
 			$players = array();
