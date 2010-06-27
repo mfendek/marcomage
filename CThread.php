@@ -195,7 +195,7 @@
 		{	// lists threads in one specific section, ignoring sticky flag. Used in Forum main page.
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = FALSE ORDER BY `LastPost` DESC, `Created` DESC LIMIT 0 , '.NUM_THREADS.'');
+			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = FALSE ORDER BY `LastPost` DESC, `Created` DESC LIMIT '.NUM_THREADS.'');
 			
 			if (!$result) return false;
 			

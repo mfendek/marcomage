@@ -23,7 +23,7 @@
 			$db = $this->db;
 			$statistics = array();
 
-			$result = $db->Query('SELECT `Author`, COUNT(`Author`) as `count` FROM `concepts` WHERE (`State` = "waiting") OR (`State` = "interesting") GROUP BY `Author` ORDER BY `count` DESC, `Author` ASC LIMIT 0, 10');
+			$result = $db->Query('SELECT `Author`, COUNT(`Author`) as `count` FROM `concepts` WHERE (`State` = "waiting") OR (`State` = "interesting") GROUP BY `Author` ORDER BY `count` DESC, `Author` ASC LIMIT 10');
 
 			if (!$result) return false;
 
@@ -37,7 +37,7 @@
 			$db = $this->db;
 			$statistics = array();
 
-			$result = $db->Query('SELECT `Author`, COUNT(`Author`) as `count` FROM `concepts` WHERE `State` = "implemented" GROUP BY `Author` ORDER BY `count` DESC, `Author` ASC LIMIT 0, 10');
+			$result = $db->Query('SELECT `Author`, COUNT(`Author`) as `count` FROM `concepts` WHERE `State` = "implemented" GROUP BY `Author` ORDER BY `count` DESC, `Author` ASC LIMIT 10');
 
 			if (!$result) return false;
 
