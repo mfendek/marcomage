@@ -3557,15 +3557,14 @@ case 'Game':
 		$cur_game = $gamedb->GetGame($data['GameID']);
 		$cur_opponent = ($cur_game->Name1() != $player->Name()) ? $cur_game->Name1() : $cur_game->Name2();
 
-		$color = ''; // no extra color default
-		if ($cur_game->Current == $player->Name()) { $color = 'lime'; $nextgame_button = true; } // when it is your turn
-		if ($cur_game->State == 'in progress' and $playerdb->isDead($cur_opponent)) $color = 'gray'; // when game can be aborted
-		if ($cur_game->State != 'in progress') $color = '#ff69b4'; // when game is finished color HotPink
+		if ($cur_game->Current == $player->Name()) $nextgame_button = true;
 
 		$params['game']['GameList'][$i]['Value'] = $cur_game->ID();
 		$params['game']['GameList'][$i]['Content'] = 'vs. '.htmlencode($cur_opponent);
 		$params['game']['GameList'][$i]['Selected'] = (($cur_game->ID() == $_POST['CurrentGame']) ? 'yes' : 'no');
-		$params['game']['GameList'][$i]['Color'] = $color;
+		$params['game']['GameList'][$i]['is_current'] = ($cur_game->Current == $player->Name()) ? 'yes' : 'no';
+		$params['game']['GameList'][$i]['is_dead'] = ($playerdb->isDead($cur_opponent)) ? 'yes' : 'no';
+		$params['game']['GameList'][$i]['in_progress'] = ($cur_game->State == 'in progress') ? 'yes' : 'no';
 	}
 	// - </quick game switching menu>
 
