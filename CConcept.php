@@ -192,6 +192,7 @@
 
 			// check input length
 			if (strlen($data['effect']) > EFFECT_LENGTH) $error = "Card effect text is too long";
+			if (count(explode("\n", $data['effect'])) > EFFECT_LINES) $error = "Card effect text has too many lines";
 			if (strlen($data['note']) > MESSAGE_LENGTH) $error = "Note text is too long";
 
 			return $error;

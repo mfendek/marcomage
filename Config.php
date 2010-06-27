@@ -25,7 +25,8 @@
 	define("PLAYERS_PER_PAGE", 50);
 	define("MESSAGES_PER_PAGE", 15);
 	define("CARDS_PER_PAGE", 20);
-	define("EFFECT_LENGTH", 100);
+	define("EFFECT_LENGTH", 150);
+	define("EFFECT_LINES", 8);
 	define("HOBBY_LENGTH", 300);
 	define("REPLAYS_PER_PAGE", 20); // game replays
 
