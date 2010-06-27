@@ -6,7 +6,7 @@ function TakeCard(id) // add card to deck via AJAX
 	var card = str.concat("#card_", id);
 	var username = GetSessionData('Username');
 	var session_id = GetSessionData('SessionID');
-	var deck = $("input[name='CurrentDeck']").attr('value');
+	var deck = $("input[name='CurrentDeck']").val();
 
 	$.post("AJAXhandler.php", { action: 'take', Username: username, SessionID: session_id, deckname: deck, card_id: id }, function(data){
 		// process result
@@ -41,7 +41,7 @@ function TakeCard(id) // add card to deck via AJAX
 			$("#tokens > select").each(function(i) {
 				token = document.getElementsByName(str.concat("Token", i + 1)).item(0);
 				$(this).find("option").each(function(j) {
-					if ($(this).attr("value") == token_vals[i]) { token.selectedIndex = j; };
+					if ($(this).val() == token_vals[i]) { token.selectedIndex = j; };
 				});
 			});
 		}
@@ -62,7 +62,7 @@ function RemoveCard(id) // remove card from deck via AJAX
 	var card = str.concat("#card_", id);
 	var username = GetSessionData('Username');
 	var session_id = GetSessionData('SessionID');
-	var deck = $("input[name='CurrentDeck']").attr('value');
+	var deck = $("input[name='CurrentDeck']").val();
 
 	$.post("AJAXhandler.php", { action: 'remove', Username: username, SessionID: session_id, deckname: deck, card_id: id }, function(data){
 		// process result
