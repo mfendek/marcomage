@@ -113,15 +113,9 @@
 			            :                               "60*60*24*7*3"     )));
 
 			$name_q = ($name != '') ? ' AND `Username` LIKE "%'.$db->Escape($name).'%"' : '';
-
-			$games_p1 = 'SELECT `Player1` as `Username` FROM `games` WHERE `State` != "waiting" AND `State` != "P1 over"';
-			$games_p2 = 'SELECT `Player2` as `Username` FROM `games` WHERE `State` != "waiting" AND `State` != "P2 over"';
-			$challenges_out = 'SELECT `Player1` as `Username` FROM `games` WHERE `State` = "waiting"';
-			$challenges_in = 'SELECT `Player2` as `Username` FROM `games` WHERE `State` = "waiting"';
-			$slots_q = "SELECT `Username`, COUNT(`Username`) as `Slots` FROM ((".$games_p1.") UNION ALL (".$games_p2.") UNION ALL (".$challenges_out.") UNION ALL (".$challenges_in.")) as t GROUP BY `Username`";
 			$status_query = ($status != 'none') ? ' WHERE `Status` = "'.$status.'"' : '';
 
-			$query = "SELECT `Username`, `UserType`, `Level`, `Exp`, `Wins`, `Losses`, `Draws`, `Avatar`, `Status`, `FriendlyFlag`, `BlindFlag`, `settings`.`Country`, `Last Query`, GREATEST(0, ".MAX_GAMES." + (`Level` DIV ".BONUS_GAME_SLOTS.") - IFNULL(`Slots`, 0)) as `Free slots` FROM ((SELECT `Username`, `UserType`, `Last Query` FROM `logins` WHERE (UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - ".$activity_q.")".$name_q.") as `logins` JOIN (SELECT `Username`, `Avatar`, `Status`, `Country`, `FriendlyFlag`, `BlindFlag` FROM `settings`".$status_query.") as `settings` USING (`Username`) JOIN `scores` USING (`Username`) LEFT OUTER JOIN (".$slots_q.") as `slots` USING (`Username`)) ORDER BY `".$condition."` ".$order.", `Username` ASC LIMIT ".(PLAYERS_PER_PAGE * $page)." , ".PLAYERS_PER_PAGE."";
+			$query = "SELECT `Username`, `UserType`, `Level`, `Exp`, `Wins`, `Losses`, `Draws`, `Avatar`, `Status`, `FriendlyFlag`, `BlindFlag`, `settings`.`Country`, `Last Query` FROM ((SELECT `Username`, `UserType`, `Last Query` FROM `logins` WHERE (UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - ".$activity_q.")".$name_q.") as `logins` JOIN (SELECT `Username`, `Avatar`, `Status`, `Country`, `FriendlyFlag`, `BlindFlag` FROM `settings`".$status_query.") as `settings` USING (`Username`) JOIN `scores` USING (`Username`)) ORDER BY `".$condition."` ".$order.", `Username` ASC LIMIT ".(PLAYERS_PER_PAGE * $page)." , ".PLAYERS_PER_PAGE."";
 
 			$result = $db->Query($query);
 			if (!$result) return false;
@@ -344,6 +338,12 @@
 		{
 			global $statistics;
 			return ($this->Name == $opponent) ? $statistics->GameStats($this->Name) : $statistics->VersusStats($this->Name, $opponent);
+		}
+
+		public function FreeSlots()
+		{
+			global $gamedb;
+			return $gamedb->CountFreeSlots1($this->Name);
 		}
 
 		public function ChangeAccessRights($access_right)

@@ -64,7 +64,6 @@
 					<column name="Wins"       text="Wins"       sortable="no"  />
 					<column name="Losses"     text="Losses"     sortable="no"  />
 					<column name="Draws"      text="Draws"      sortable="no"  />
-					<column name="Free Slots" text="Free Slots" sortable="yes" />
 					<column name="Status"     text="Status"     sortable="no"  />
 					<column name="other"      text=""           sortable="no"  />
 				</xsl:variable>
@@ -138,7 +137,6 @@
 					<td><p><xsl:value-of select="wins"/></p></td>
 					<td><p><xsl:value-of select="losses"/></p></td>
 					<td><p><xsl:value-of select="draws"/></p></td>
-					<td><p><xsl:value-of select="free_slots"/></p></td>
 					<td>
 						<p>
 							<xsl:if test="status != 'none'">

@@ -3109,7 +3109,6 @@ case 'Players':
 		$entry['blind_flag'] = ($data['BlindFlag'] == 1) ? 'yes' : 'no';
 		$entry['country'] = $data['Country'];
 		$entry['last_query'] = $data['Last Query'];
-		$entry['free_slots'] = $data['Free slots'];
 		$entry['inactivity'] = time() - strtotime($data['Last Query']);
 		$entry['challenged'] = (array_search($opponent, $challengesfrom) !== false) ? 'yes' : 'no';
 		$entry['playingagainst'] = (array_search($opponent, $opponents) !== false) ? 'yes' : 'no';
@@ -3146,6 +3145,7 @@ case 'Profile':
 	$params['profile']['Imnumber'] = $p_settings->GetSetting('Imnumber');
 	$params['profile']['Hobby'] = $p_settings->GetSetting('Hobby');
 	$params['profile']['Level'] = $score->ScoreData->Level;
+	$params['profile']['FreeSlots'] = $p->FreeSlots();
 	$params['profile']['Exp'] = $score->ScoreData->Exp;
 	$params['profile']['NextLevel'] = $scoredb->NextLevel($score->ScoreData->Level);
 	$params['profile']['Wins'] = $score->ScoreData->Wins;

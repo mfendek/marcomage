@@ -116,6 +116,7 @@
 				<xsl:value-of select="$param/Draws"/>
 			</span>
 		</p>
+		<p>Free slots: <span class="detail_value"><xsl:value-of select="$param/FreeSlots"/></span></p>
 		<p>Number of posts: <span class="detail_value"><xsl:value-of select="$param/Posts"/></span></p>
 		<p>Registered on: 
 			<span class="detail_value">
