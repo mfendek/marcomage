@@ -1723,14 +1723,15 @@
 				$mylastcardindex = count($mydata->LastCard);
 				$mylast_card = $carddb->GetCard($mydata->LastCard[$mylastcardindex]);
 				$mylast_action = $mydata->LastAction[$mylastcardindex];
+				$standard_victory = ($endtype == 'Resource') OR ($endtype == 'Construction') OR ($endtype == 'Destruction');
 				
 				$awards = array('Assassin' => 0.5, 'Survivor' => 0.9, 'Desolator' => 0.3, 'Builder' => 0.8, 'Gentle touch' => 0.2, 'Collector' => 0.7, 'Titan' => 0.45);
 				$recieved = array();
 				
-				if ($round < 10) $recieved[] = 'Assassin';// Assassin
+				if ($round < 10 AND $standard_victory) $recieved[] = 'Assassin';// Assassin
 				if ($hisdata->Quarry == 1 AND $hisdata->Magic == 1 AND $hisdata->Dungeons == 1) $recieved[] = 'Desolator'; // Desolator
 				if ($mydata->Wall == 150) $recieved[] = 'Builder'; // Builder
-				if ($mylast_card->GetClass() == 'Common' AND $mylast_action == 'play') $recieved[] = 'Gentle touch'; // Gentle touch
+				if ($mylast_card->GetClass() == 'Common' AND $mylast_action == 'play' AND $standard_victory) $recieved[] = 'Gentle touch'; // Gentle touch
 				$tmp = 0;
 				for ($i = 1; $i <= 8; $i++)
 				{
