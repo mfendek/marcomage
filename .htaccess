@@ -20,3 +20,8 @@ allow from all
 <Files ~ "\.(html|css|js||jpg|jpeg|gif|png)$">
 allow from all
 </Files>
+
+# allow robots.txt
+<Files "robots.txt">
+allow from all
+</Files>
