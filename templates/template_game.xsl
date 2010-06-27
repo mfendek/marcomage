@@ -14,7 +14,7 @@
 	<xsl:if test="$param/reverse_chat = 'yes'">
 		<xsl:element name="script">
 			<xsl:attribute name="type">text/javascript</xsl:attribute>
-			<xsl:text>$(document).ready(function() { $(".chatbox").scrollTo($(".chatbox").height()); });</xsl:text>
+			<xsl:text>$(document).ready(function() { $(".chatbox").scrollTo('max'); });</xsl:text>
 		</xsl:element>
 	</xsl:if>
 
