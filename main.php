@@ -25,7 +25,7 @@
 	require_once('CPost.php');
 	require_once('CThread.php');
 	require_once('CForum.php');
-	require_once('CStatistic.php');
+	require_once('CStatistics.php');
 	require_once('utils.php');
 	require_once('Access.php');
 	require_once('parser/parse.php');
