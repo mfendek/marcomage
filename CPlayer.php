@@ -103,14 +103,14 @@
 			return new CPlayer($playername, $type, $this);
 		}
 		
-		public function ListPlayers($filter_cond, $status, $name, $condition, $order, $page)
+		public function ListPlayers($activity, $status, $name, $condition, $order, $page)
 		{
 			$db = $this->db;
 
-			$interval = ( $filter_cond == "active"  ? "10 MINUTE"
-			          : ( $filter_cond == "offline" ? "1 WEEK"
-			          : ( $filter_cond == "none"    ? "3 WEEK"
-			          : ( $filter_cond == "all"     ? ""
+			$interval = ( $activity == "active"  ? "10 MINUTE"
+			          : ( $activity == "offline" ? "1 WEEK"
+			          : ( $activity == "none"    ? "3 WEEK"
+			          : ( $activity == "all"     ? ""
 			          : ""))));
 
 			$name_q = ($name != '') ? ' AND `Username` LIKE "%'.$db->Escape($name).'%"' : '';
@@ -134,13 +134,13 @@
 			return $list;
 		}
 		
-		public function CountPages($filter_cond, $status, $name)
+		public function CountPages($activity, $status, $name)
 		{
 			$db = $this->db;
 
-			$activity_q = ( $filter_cond == "active"  ? "60*10"
-			            : ( $filter_cond == "offline" ? "60*60*24*7*1"
-			            : ( $filter_cond == "all"     ? "UNIX_TIMESTAMP()"
+			$activity_q = ( $activity == "active"  ? "60*10"
+			            : ( $activity == "offline" ? "60*60*24*7*1"
+			            : ( $activity == "all"     ? "UNIX_TIMESTAMP()"
 			            :                               "60*60*24*7*3"     )));
 
 			$name_q = ($name != '') ? ' AND `Username` LIKE "%'.$db->Escape($name).'%"' : '';

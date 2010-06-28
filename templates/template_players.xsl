@@ -26,13 +26,13 @@
 			<!-- begin name filter -->
 			<input type="text" name="pname_filter" maxlength="20" size="20" value="{$param/pname_filter}" />
 
-			<!-- begin player filter -->
-			<select name="player_filter">
-				<xsl:if test="$param/CurrentFilter != 'none'"><xsl:attribute name="class">filter_active</xsl:attribute></xsl:if>
+			<!-- begin activity filter -->
+			<select name="activity_filter">
+				<xsl:if test="$param/activity_filter != 'none'"><xsl:attribute name="class">filter_active</xsl:attribute></xsl:if>
 				<option value="none" >No players filters</option>
-				<option value="active"><xsl:if test="$param/CurrentFilter = 'active'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Active players</option>
-				<option value="offline"><xsl:if test="$param/CurrentFilter = 'offline'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Active and offline players</option>
-				<option value="all"><xsl:if test="$param/CurrentFilter = 'all'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Show all players</option>
+				<option value="active"><xsl:if test="$param/activity_filter = 'active'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Active players</option>
+				<option value="offline"><xsl:if test="$param/activity_filter = 'offline'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Active and offline players</option>
+				<option value="all"><xsl:if test="$param/activity_filter = 'all'"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>Show all players</option>
 			</select>
 
 			<!-- begin status filter -->
