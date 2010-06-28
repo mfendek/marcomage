@@ -191,7 +191,7 @@
 
 		<div class="filters_trans">
 			<!-- lower navigation -->
-			<xsl:copy-of select="am:lower_navigation($param/page_count, $param/current_page, 'con', 'Concepts')"/>
+			<xsl:copy-of select="am:lower_navigation($param/page_count, $param/current_page, 'concepts', 'Concepts')"/>
 		</div>
 
 		</div>
