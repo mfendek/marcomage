@@ -580,7 +580,7 @@ Let's take the <b>Alliance</b> keyword for example. First you need to set one to
 	<li>Implemented concepts - Top 10 authors of implemented card concepts (only card concepts with status "implemented" are counted)</li>
 </ul>
 
-<p>The difference between "lastest" and "overall" statistics is the fact that "lastest" statistics are reset every time new cards are added to provide fair competition between new and old cards. "overall" statistics are never reset, so the older the card, the bigger is the advantage compared to new, younger cards.</p>
+<p>The difference between "lastest" and "overall" statistics is the fact that "lastest" statistics are reset every time new cards are added to provide fair competition between new and old cards. "overall" statistics are never reset, so the older the card, the bigger is the advantage compared to new, younger cards. Default length of card statistics list is 10, but this can be changed via the card list length selector at the top of the statistics page. Usage factor (which is located near card's details button) is calculated for each card to compare card usage to other cards of the same rarity.</p>
 
 <h4>Versus statistics</h4>
 

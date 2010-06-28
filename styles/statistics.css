@@ -38,7 +38,7 @@ div#statistics h5 /* statistics info heading */
 
 div#statistics div.skin_text /* statistic group (subsection) layout */
 {
-	width: 15em;
+	width: 17em;
 	margin: 1ex;
 	padding: 0ex 1ex 1ex 1ex;
 }
@@ -47,6 +47,11 @@ div#statistics div.skin_text > p > span /* float values to the right */
 {
 	float: right;
 	font-weight: bold;
+}
+
+div#statistics div.skin_text > p > span > input /* card's details shortcut button */
+{
+	margin-left: 1ex;
 }
 
 div#statistics div.skin_text /* floated columns */

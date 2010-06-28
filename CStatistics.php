@@ -349,12 +349,15 @@
 			global $carddb;
 
 			$db = $this->db;
-			$result = $db->Query('SELECT `CardID` FROM `statistics` WHERE `CardID` > 0 ORDER BY `'.$db->Escape($condition).'` DESC, `CardID` ASC');
+			$result = $db->Query('SELECT `CardID`, `'.$db->Escape($condition).'` as `value` FROM `statistics` WHERE `CardID` > 0 ORDER BY `'.$db->Escape($condition).'` DESC, `CardID` ASC');
 			if (!$result) return false;
 
-			$cards = array();
+			$cards = $values = array();
 			while( $data = $result->Next() )
+			{
 				$cards[] = $data['CardID'];
+				$values[$data['CardID']] = $data['value']; // assign a statistic value to each card id
+			}
 
 			$cards_data = $carddb->GetData($cards);
 			$separated = array('Common' => array(), 'Uncommon' => array(), 'Rare' => array());
@@ -362,9 +365,14 @@
 			'Common' => array('top' => array(), 'bottom' => array()), 
 			'Uncommon' => array('top' => array(), 'bottom' => array()), 
 			'Rare' => array('top' => array(), 'bottom' => array()));
+			$total = array('Common' => 0, 'Uncommon' => 0, 'Rare' => 0);
 
-			// separate card list by card rarity
-			foreach ($cards_data as $data) $separated[$data['class']][] = $data;
+			// separate card list by card rarity, calculate total sum for each rarity type
+			foreach ($cards_data as $data)
+			{
+				$separated[$data['class']][] = $data;
+				$total[$data['class']]+= $values[$data['id']]; // add current's card statistics to current card rarity total
+			}
 
 			// make top and bottom lists for each rarity type
 			foreach ($separated as $rarity => $list)
@@ -372,6 +380,12 @@
 				$statistics[$rarity]['top'] = ($list_size == 'full') ? $list : array_slice($list, 0, $list_size);
 				$statistics[$rarity]['bottom'] = ($list_size == 'full') ? array() : array_slice(array_reverse($list), 0, $list_size);
 			}
+
+			// calculate usage factor for each card (relative to card's rarity)
+			foreach ($statistics as $rarity => $types)
+				foreach ($types as $type => $list)
+					foreach ($list as $i => $cur_card)
+						$statistics[$rarity][$type][$i]['factor'] = ($total[$rarity] > 0) ? round($values[$cur_card['id']] / $total[$rarity], 5) * 1000 : 0;
 
 			return $statistics;
 		}
