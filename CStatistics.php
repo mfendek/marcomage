@@ -370,7 +370,7 @@
 			foreach ($separated as $rarity => $list)
 			{
 				$statistics[$rarity]['top'] = ($list_size == 'full') ? $list : array_slice($list, 0, $list_size);
-				$statistics[$rarity]['bottom'] = ($list_size == 'full') ? array_reverse($list) : array_slice(array_reverse($list), 0, $list_size);
+				$statistics[$rarity]['bottom'] = ($list_size == 'full') ? array() : array_slice(array_reverse($list), 0, $list_size);
 			}
 
 			return $statistics;

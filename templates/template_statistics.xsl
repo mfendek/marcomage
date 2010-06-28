@@ -85,13 +85,15 @@
 							<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
 						</p>
 					</xsl:for-each>
-					<h5>Worst</h5>
-					<xsl:for-each select="bottom/*">
-						<p>
-							<span><input type="submit" name="view_card[{id}]" value="+" /></span>
-							<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
-						</p>
-					</xsl:for-each>
+					<xsl:if test="count(bottom/*) &gt; 0">
+						<h5>Worst</h5>
+						<xsl:for-each select="bottom/*">
+							<p>
+								<span><input type="submit" name="view_card[{id}]" value="+" /></span>
+								<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
+							</p>
+						</xsl:for-each>
+					</xsl:if>
 				</div>
 			</xsl:for-each>
 		</xsl:when>
