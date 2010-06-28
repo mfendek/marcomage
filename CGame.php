@@ -1723,7 +1723,7 @@
 				$mylastcardindex = count($mydata->LastCard);
 				$mylast_card = $carddb->GetCard($mydata->LastCard[$mylastcardindex]);
 				$mylast_action = $mydata->LastAction[$mylastcardindex];
-				$standard_victory = ($endtype == 'Resource') OR ($endtype == 'Construction') OR ($endtype == 'Destruction');
+				$standard_victory = (($endtype == 'Resource') OR ($endtype == 'Construction') OR ($endtype == 'Destruction'));
 				
 				$awards = array('Assassin' => 0.5, 'Survivor' => 0.9, 'Desolator' => 0.3, 'Builder' => 0.8, 'Gentle touch' => 0.2, 'Collector' => 0.7, 'Titan' => 0.45);
 				$recieved = array();
