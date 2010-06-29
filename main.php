@@ -780,7 +780,7 @@
 					if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
 					
 					// set game modes
-					$hidden_cards = (isset($_POST['HiddenCards']) ? 'yes' : 'no');
+					$hidden_cards = (isset($_POST['HiddenMode']) ? 'yes' : 'no');
 					$friendly_play = (isset($_POST['FriendlyMode']) ? 'yes' : 'no');
 					$game_modes = array();
 					if ($hidden_cards == "yes") $game_modes[] = 'HiddenCards';
