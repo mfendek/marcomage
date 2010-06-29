@@ -21,197 +21,94 @@
 		<!-- begin buttons and filters -->
 
 		<div class="filters_trans">
+			<!-- card rarity filter -->
 			<xsl:variable name="classes">
-				<class name="Common"   text="Common"   />
-				<class name="Uncommon" text="Uncommon" />
-				<class name="Rare"     text="Rare"     />
-				<class name="none"     text="Any"      />
+				<value name="Common"  >Common</value>
+				<value name="Uncommon">Uncommon</value>
+				<value name="Rare"    >Rare</value>
+				<value name="Any"     >none</value>
 			</xsl:variable>
+			<xsl:copy-of select="am:filter('ClassFilter', $param/ClassFilter, exsl:node-set($classes))"/>
 
-			<select name="ClassFilter">
-				<xsl:if test="$param/ClassFilter != 'none'">
-					<xsl:attribute name="class">filter_active</xsl:attribute>
-				</xsl:if>
-				<xsl:for-each select="exsl:node-set($classes)/*">
-				<option value="{@name}">
-					<xsl:if test="$param/ClassFilter = @name">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:value-of select="@text"/>
-				</option>
-				</xsl:for-each>
-			</select>
+			<!-- card keyword filter -->
+			<xsl:variable name="keywords">
+				<value name="No keyword filter">none</value>
+				<value name="Any keyword"      >Any keyword</value>
+				<value name="No keywords"      >No keywords</value>
+			</xsl:variable>
+			<xsl:copy-of select="am:filter('KeywordFilter', $param/KeywordFilter, exsl:node-set($keywords) | am:array2values($param/keywords))"/>
 
-			<select name="KeywordFilter">
-				<xsl:if test="$param/KeywordFilter != 'none'">
-						<xsl:attribute name="class">filter_active</xsl:attribute>
-				</xsl:if>
-				<option value="none">
-					<xsl:if test="$param/KeywordFilter = 'none'">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:text>No keyword filters</xsl:text>
-				</option>
-				<option value="Any keyword">
-					<xsl:if test="$param/KeywordFilter = 'Any keyword'">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:text>Any keyword</xsl:text>
-				</option>
-				<option value="No keywords">
-					<xsl:if test="$param/KeywordFilter = 'No keywords'">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:text>No keywords</xsl:text>
-				</option>	
-				<xsl:for-each select="$param/keywords/*">
-					<option value="{text()}">
-						<xsl:if test="$param/KeywordFilter = .">
-							<xsl:attribute name="selected">selected</xsl:attribute>
-						</xsl:if>
-						<xsl:value-of select="text()"/>
-					</option>
-				</xsl:for-each>
-			</select>
-
+			<!-- cost filter -->
 			<xsl:variable name="costs">
-				<cost name="none"  text="No cost filters" />
-				<cost name="Red"   text="Bricks only"     />
-				<cost name="Blue"  text="Gems only"       />
-				<cost name="Green" text="Recruits only"   />
-				<cost name="Zero"  text="Zero cost"       />
-				<cost name="Mixed" text="Mixed cost"      />
+				<value name="No cost filter">none</value>
+				<value name="Bricks only"   >Red</value>
+				<value name="Gems only"     >Blue</value>
+				<value name="Recruits only" >Green</value>
+				<value name="Zero cost"     >Zero</value>
+				<value name="Mixed cost"    >Mixed</value>
 			</xsl:variable>
-
-			<select name="CostFilter">
-				<xsl:if test="$param/CostFilter != 'none'">
-					<xsl:attribute name="class">filter_active</xsl:attribute>
-				</xsl:if>
-				<xsl:for-each select="exsl:node-set($costs)/*">
-					<option value="{@name}">
-						<xsl:if test="$param/CostFilter = @name">
-							<xsl:attribute name="selected">selected</xsl:attribute>
-						</xsl:if>
-						<xsl:value-of select="@text"/>
-					</option>
-				</xsl:for-each>
-			</select>
+			<xsl:copy-of select="am:filter('CostFilter', $param/CostFilter, exsl:node-set($costs))"/>
 
 			<!-- advanced filter select menu - filters based upon appearance in card text -->
 			<xsl:variable name="advanced">
-				<adv name="none"          text="No adv. filters" />
-				<adv name="Attack:"       text="Attack"          />
-				<adv name="Discard"       text="Discard"         />
-				<adv name="Replace"       text="Replace"         />
-				<adv name="Reveal"        text="Reveal"          />
-				<adv name="Production"    text="Production"      />
-				<adv name="Wall: +"       text="Wall +"          />
-				<adv name="Wall: -"       text="Wall -"          />
-				<adv name="Tower: +"      text="Tower +"         />
-				<adv name="Tower: -"      text="Tower -"         />
-				<adv name="Facilities: +" text="Facilities +"    />
-				<adv name="Facilities: -" text="Facilities -"    />
-				<adv name="Magic: +"      text="Magic +"         />
-				<adv name="Magic: -"      text="Magic -"         />
-				<adv name="Quarry: +"     text="Quarry +"        />
-				<adv name="Quarry: -"     text="Quarry -"        />
-				<adv name="Dungeon: +"    text="Dungeon +"       />
-				<adv name="Dungeon: -"    text="Dungeon -"       />
-				<adv name="Stock: +"      text="Stock +"         />
-				<adv name="Stock: -"      text="Stock -"         />
-				<adv name="Gems: +"       text="Gems +"          />
-				<adv name="Gems: -"       text="Gems -"          />
-				<adv name="Bricks: +"     text="Bricks +"        />
-				<adv name="Bricks: -"     text="Bricks -"        />
-				<adv name="Recruits: +"   text="Recruits +"      />
-				<adv name="Recruits: -"   text="Recruits -"      />
+				<value name="No adv. filter">none</value>
+				<value name="Attack"        >Attack:</value>
+				<value name="Discard"       >Discard</value>
+				<value name="Replace"       >Replace</value>
+				<value name="Reveal"        >Reveal</value>
+				<value name="Production"    >Production</value>
+				<value name="Wall +"        >Wall: +</value>
+				<value name="Wall -"        >Wall: -</value>
+				<value name="Tower +"       >Tower: +</value>
+				<value name="Tower -"       >Tower: -</value>
+				<value name="Facilities +"  >Facilities: +</value>
+				<value name="Facilities -"  >Facilities: -</value>
+				<value name="Magic +"       >Magic: +</value>
+				<value name="Magic -"       >Magic: -</value>
+				<value name="Quarry +"      >Quarry: +</value>
+				<value name="Quarry -"      >Quarry: -</value>
+				<value name="Dungeon +"     >Dungeon: +</value>
+				<value name="Dungeon -"     >Dungeon: -</value>
+				<value name="Stock +"       >Stock: +</value>
+				<value name="Stock -"       >Stock: -</value>
+				<value name="Gems +"        >Gems: +</value>
+				<value name="Gems -"        >Gems: -</value>
+				<value name="Bricks +"      >Bricks: +</value>
+				<value name="Bricks -"      >Bricks: -</value>
+				<value name="Recruits +"    >Recruits: +</value>
+				<value name="Recruits -"    >Recruits: -</value>
 			</xsl:variable>
+			<xsl:copy-of select="am:filter('AdvancedFilter', $param/AdvancedFilter, exsl:node-set($advanced))"/>
 
-			<select name="AdvancedFilter">
-				<xsl:if test="$param/AdvancedFilter != 'none'">
-					<xsl:attribute name="class">filter_active</xsl:attribute>
-				</xsl:if>
-				<xsl:for-each select="exsl:node-set($advanced)/*">
-					<option value="{@name}">
-						<xsl:if test="$param/AdvancedFilter = @name">
-							<xsl:attribute name="selected">selected</xsl:attribute>
-						</xsl:if>
-						<xsl:value-of select="@text"/>
-					</option>
-				</xsl:for-each>
-			</select>
+			<!-- support keyword filter -->
+			<xsl:variable name="support">
+				<value name="No support filter">none</value>
+				<value name="Any keyword"      >Any keyword</value>
+				<value name="No keywords"      >No keywords</value>
+			</xsl:variable>
+			<xsl:copy-of select="am:filter('SupportFilter', $param/SupportFilter, exsl:node-set($support) | am:array2values($param/keywords))"/>
 
-			<select name="SupportFilter">
-				<xsl:if test="$param/SupportFilter != 'none'">
-						<xsl:attribute name="class">filter_active</xsl:attribute>
-				</xsl:if>
-				<option value="none">
-					<xsl:if test="$param/SupportFilter = 'none'">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:text>No support filters</xsl:text>
-				</option>
-				<option value="Any keyword">
-					<xsl:if test="$param/SupportFilter = 'Any keyword'">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:text>Any keyword</xsl:text>
-				</option>
-				<option value="No keywords">
-					<xsl:if test="$param/SupportFilter = 'No keywords'">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:text>No keywords</xsl:text>
-				</option>	
-				<xsl:for-each select="$param/keywords/*">
-					<option value="{text()}">
-						<xsl:if test="$param/SupportFilter = .">
-							<xsl:attribute name="selected">selected</xsl:attribute>
-						</xsl:if>
-						<xsl:value-of select="text()"/>
-					</option>
-				</xsl:for-each>
-			</select>
-
-			<select name="CreatedFilter">
-				<xsl:if test="$param/CreatedFilter != 'none'">
-					<xsl:attribute name="class">filter_active</xsl:attribute>
-				</xsl:if>
-				<option value="none">
-					<xsl:if test="$param/CreatedFilter = 'none'">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:text>No created filters</xsl:text>
-				</option>
+			<!-- creation date filter -->
+			<xsl:variable name="created">
+				<value name="No created filter">none</value>
+			</xsl:variable>
+			<xsl:variable name="creation_dates">
 				<xsl:for-each select="$param/created_dates/*">
-					<option value="{text()}">
-						<xsl:if test="$param/CreatedFilter = .">
-							<xsl:attribute name="selected">selected</xsl:attribute>
-						</xsl:if>
-						<xsl:value-of select="am:format-date(text())"/>
-					</option>
+					<value name="{am:format-date(text())}"><xsl:value-of select="text()"/></value>
 				</xsl:for-each>
-			</select>
+			</xsl:variable>
+			<xsl:copy-of select="am:filter('CreatedFilter', $param/CreatedFilter, exsl:node-set($created) | exsl:node-set($creation_dates))"/>
 
-			<select name="ModifiedFilter">
-				<xsl:if test="$param/ModifiedFilter != 'none'">
-					<xsl:attribute name="class">filter_active</xsl:attribute>
-				</xsl:if>
-				<option value="none">
-					<xsl:if test="$param/ModifiedFilter = 'none'">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:text>No modified filters</xsl:text>
-				</option>
-				<xsl:for-each select="$param/modified_dates/*">
-					<option value="{text()}">
-						<xsl:if test="$param/ModifiedFilter = .">
-							<xsl:attribute name="selected">selected</xsl:attribute>
-						</xsl:if>
-						<xsl:value-of select="am:format-date(text())"/>
-					</option>
+			<!-- modification date filter -->
+			<xsl:variable name="modified">
+				<value name="No modified filter">none</value>
+			</xsl:variable>
+			<xsl:variable name="modification_dates">
+				<xsl:for-each select="$param//modified_dates/*">
+					<value name="{am:format-date(text())}"><xsl:value-of select="text()"/></value>
 				</xsl:for-each>
-			</select>
+			</xsl:variable>
+			<xsl:copy-of select="am:filter('ModifiedFilter', $param/ModifiedFilter, exsl:node-set($modified) | exsl:node-set($modification_dates))"/>
 
 			<input type="submit" name="cards_filter" value="Apply filters" />
 

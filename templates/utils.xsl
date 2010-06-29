@@ -218,6 +218,46 @@
 </func:function>
 
 
+<func:function name="am:filter">
+	<!-- generates filter (select element) -->
+	<xsl:param name="name" as="xs:string" />
+	<xsl:param name="current" as="xs:string" />
+	<xsl:param name="values" as="xs:node-set" />
+
+	<xsl:variable name="output">
+		<select name="{$name}">
+			<xsl:if test="$current != 'none'">
+				<xsl:attribute name="class">filter_active</xsl:attribute>
+			</xsl:if>
+			<xsl:for-each select="$values/*">
+				<option value="{text()}">
+					<xsl:if test="$current = text()">
+						<xsl:attribute name="selected">selected</xsl:attribute>
+					</xsl:if>
+					<xsl:value-of select="@name"/>
+				</option>
+			</xsl:for-each>
+		</select>
+	</xsl:variable>
+
+	<func:result select="$output" />
+</func:function>
+
+
+<func:function name="am:array2values">
+	<!-- converts array-like node-set to am:filter() compatible node set -->
+	<xsl:param name="values" as="xs:node-set" />
+
+	<xsl:variable name="output">
+		<xsl:for-each select="$values/*">
+			<value name="{text()}"><xsl:value-of select="text()"/></value>
+		</xsl:for-each>
+	</xsl:variable>
+
+	<func:result select="exsl:node-set($output)" />
+</func:function>
+
+
 <func:function name="am:cardeffect">
 	<xsl:param name="effect" as="xs:string" />
 	<!-- ad-hoc html entity corrections -->
