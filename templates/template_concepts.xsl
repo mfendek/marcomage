@@ -30,83 +30,29 @@
 			<!-- card name filter -->
 			<input type="text" name="card_name" maxlength="64" size="30" value="{$param/card_name}" />
 
-			<!-- begin date filter -->
+			<!-- date filter -->
+			<xsl:variable name="dates">
+				<value name="No date filter">none</value>
+			</xsl:variable>
+			<xsl:copy-of select="am:filter('date_filter', $param/date_val, exsl:node-set($dates) | $timesections)"/>
 
-			<select name="date_filter">
-				<xsl:if test="$param/date_val != 'none'">
-						<xsl:attribute name="class">filter_active</xsl:attribute>
-				</xsl:if>
-				<option value="none">
-					<xsl:if test="$param/date_val = 'none'">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:text>No date filter</xsl:text>
-				</option>
-				<xsl:for-each select="$timesections/*">
-					<option value="{text()}">
-						<xsl:if test="$param/date_val = text()">
-							<xsl:attribute name="selected">selected</xsl:attribute>
-						</xsl:if>
-						<xsl:value-of select="@name"/>
-					</option>
-				</xsl:for-each>
-			</select>
-
-			<!-- end date filter -->
-
+			<!-- author filter -->
 			<xsl:if test="count($param/authors/*) &gt; 0">
-			<!-- begin author filter -->
-
-			<select name="author_filter">
-				<xsl:if test="$param/author_val != 'none'">
-					<xsl:attribute name="class">filter_active</xsl:attribute>
-				</xsl:if>
-				<option value="none">
-					<xsl:if test="$param/author_val = 'none'">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:text>No author filter</xsl:text>
-				</option>
-				<xsl:for-each select="$param/authors/*">
-					<option value="{am:urlencode(.)}">
-						<xsl:if test="$param/author_val = .">
-							<xsl:attribute name="selected">selected</xsl:attribute>
-						</xsl:if>
-						<xsl:value-of select="text()"/>
-					</option>
-				</xsl:for-each>
-			</select>
-
-			<!-- end author filter -->
+				<xsl:variable name="authors">
+					<value name="No author filter">none</value>
+				</xsl:variable>
+				<xsl:copy-of select="am:filter('author_filter', $param/author_val, exsl:node-set($authors) | am:array2values($param/authors))"/>
 			</xsl:if>
 
-			<!-- begin state filter -->
+			<!-- state filter -->
 			<xsl:variable name="states">
-				<class name="waiting"     />
-				<class name="rejected"    />
-				<class name="interesting" />
-				<class name="implemented" />
+				<value name="No state filter">none</value>
+				<value name="waiting"        >waiting</value>
+				<value name="rejected"       >rejected</value>
+				<value name="interesting"    >interesting</value>
+				<value name="implemented"    >implemented</value>
 			</xsl:variable>
-
-			<select name="state_filter">
-				<xsl:if test="$param/state_val != 'none'">
-					<xsl:attribute name="class">filter_active</xsl:attribute>
-				</xsl:if>
-				<option value="none">
-					<xsl:if test="$param/state_val = 'none'">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:text>No state filter</xsl:text>
-				</option>
-				<xsl:for-each select="exsl:node-set($states)/*">
-				<option value="{@name}">
-					<xsl:if test="$param/state_val = @name">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:value-of select="@name"/>
-				</option>
-				</xsl:for-each>
-			</select>
+			<xsl:copy-of select="am:filter('state_filter', $param/state_val, exsl:node-set($states))"/>
 
 			<input type="submit" name="concepts_filter" value="Apply filters" />
 			<xsl:if test="$param/mycards = 'yes'">

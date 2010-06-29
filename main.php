@@ -2963,7 +2963,7 @@ case 'Concepts':
 	// filter initialization
 	$params['concepts']['card_name'] = $name = (isset($_POST['card_name'])) ? trim($_POST['card_name']) : '';
 	$params['concepts']['date_val'] = $date = (isset($_POST['date_filter'])) ? $_POST['date_filter'] : 'none';
-	$params['concepts']['author_val'] = $author = (isset($_POST['author_filter'])) ? postdecode($_POST['author_filter']) : 'none';
+	$params['concepts']['author_val'] = $author = (isset($_POST['author_filter'])) ? $_POST['author_filter'] : 'none';
 	$params['concepts']['state_val'] = $state = (isset($_POST['state_filter'])) ? $_POST['state_filter'] : 'none';
 
 	if (!isset($_POST['CurrentOrder'])) $_POST['CurrentOrder'] = "DESC"; // default ordering
