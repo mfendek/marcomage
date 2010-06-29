@@ -9,8 +9,6 @@
 <xsl:template match="section[. = 'Messages']">
 	<xsl:variable name="param" select="$params/messages" />
 
-	<xsl:variable name="timesections" select="document('timesections.xml')/am:timesections" />
-
 	<div id="message_section">
 
 	<!-- begin challenges -->
@@ -43,7 +41,7 @@
 
 	<!-- selected deck -->
 	<xsl:if test="($param/current_subsection = 'incoming') and ($param/deck_count &gt; 0)">
-		<p class="game_filters">
+		<p>
 			<xsl:text>Select deck </xsl:text>
 			<select name="AcceptDeck" size="1">
 				<xsl:if test="$param/RandomDeck = 'yes'">
@@ -144,54 +142,28 @@
 	</p>
 
 	<div class="filters">
-		<!-- begin date filter -->
+		<!-- date filter -->
+		<xsl:variable name="dates">
+			<value name="No date filter" value="none" />
+			<value name="1 day"          value="1"    />
+			<value name="2 days"         value="2"    />
+			<value name="5 days"         value="5"    />
+			<value name="1 week"         value="7"    />
+			<value name="2 weeks"        value="14"   />
+			<value name="3 weeks"        value="21"   />
+			<value name="1 month"        value="30"   />
+			<value name="3 months"       value="91"   />
+			<value name="6 months"       value="182"  />
+			<value name="1 year"         value="365"  />
+		</xsl:variable>
+		<xsl:copy-of select="am:htmlSelectBox('date_filter', $param/date_val, $dates, '')"/>
 
-		<select name="date_filter">
-			<xsl:if test="$param/date_val != 'none'">
-					<xsl:attribute name="class">filter_active</xsl:attribute>
-			</xsl:if>
-			<option value="none">
-				<xsl:if test="$param/date_val = 'none'">
-					<xsl:attribute name="selected">selected</xsl:attribute>
-				</xsl:if>
-				<xsl:text>No date filter</xsl:text>
-			</option>
-			<xsl:for-each select="$timesections/*">
-				<option value="{text()}">
-					<xsl:if test="$param/date_val = text()">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:value-of select="@name"/>
-				</option>
-			</xsl:for-each>
-		</select>
-
-		<!-- end date filter -->
-
+		<!-- name filter -->
 		<xsl:if test="$param/messages_count &gt; 0">
-		<!-- begin name filter -->
-
-		<select name="name_filter">
-			<xsl:if test="$param/name_val != 'none'">
-				<xsl:attribute name="class">filter_active</xsl:attribute>
-			</xsl:if>
-			<option value="none">
-				<xsl:if test="$param/name_val = 'none'">
-					<xsl:attribute name="selected">selected</xsl:attribute>
-				</xsl:if>
-				<xsl:text>No name filter</xsl:text>
-			</option>
-			<xsl:for-each select="$param/name_filter/*">
-				<option value="{am:urlencode(.)}">
-					<xsl:if test="$param/name_val = .">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:value-of select="text()"/>
-				</option>
-			</xsl:for-each>
-		</select>
-
-		<!-- end name filter -->
+			<xsl:variable name="authors">
+				<value name="No name filter" value="none" />
+			</xsl:variable>
+			<xsl:copy-of select="am:htmlSelectBox('name_filter', $param/name_val, $authors, $param/name_filter)"/>
 		</xsl:if>
 
 		<input type = "submit" name = "message_filter" value = "Apply filters" />

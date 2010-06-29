@@ -13,8 +13,6 @@
 <xsl:template match="section[. = 'Concepts']">
 	<xsl:variable name="param" select="$params/concepts" />
 
-	<xsl:variable name="timesections" select="document('timesections.xml')/am:timesections" />
-
 	<div id="concepts">
 		<h3>Card concepts</h3>
 
