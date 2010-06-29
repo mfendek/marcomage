@@ -9,6 +9,8 @@
 <xsl:template match="section[. = 'Messages']">
 	<xsl:variable name="param" select="$params/messages" />
 
+	<xsl:variable name="timesections" select="document('timesections.xml')/am:timesections" />
+
 	<div id="message_section">
 
 	<!-- begin challenges -->
@@ -154,12 +156,12 @@
 				</xsl:if>
 				<xsl:text>No date filter</xsl:text>
 			</option>
-			<xsl:for-each select="$param/timesections/*">
-				<option value="{time}">
-					<xsl:if test="$param/date_val = time">
+			<xsl:for-each select="$timesections/*">
+				<option value="{text()}">
+					<xsl:if test="$param/date_val = text()">
 						<xsl:attribute name="selected">selected</xsl:attribute>
 					</xsl:if>
-					<xsl:value-of select="text"/>
+					<xsl:value-of select="@name"/>
 				</option>
 			</xsl:for-each>
 		</select>

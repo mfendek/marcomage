@@ -307,28 +307,6 @@
 			return $names;
 		}
 		
-		function TimeSections() // date filter options
-		{
-			$section = array();
-			$timesections = array();
-			
-			$section[1] = "1 day";
-			$section[2] = "2 days";
-			$section[5] = "5 days";
-			$section[7] = "1 week";
-			$section[14] = "2 weeks";
-			$section[21] = "3 weeks";
-			$section[30] = "1 month";
-			$section[91] = "3 months";
-			$section[182] = "6 months";
-			$section[365] = "1 year";
-			
-			foreach ($section as $date_val => $date_text)
-				array_push($timesections, array("time" => $date_val, "text" => $date_text));
-			
-			return $timesections;
-		}
-		
 		public function SendChallenge($author, $recipient, $content, $game_id)
 		{
 			$db = $this->db;

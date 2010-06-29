@@ -2979,7 +2979,6 @@ case 'Concepts':
 	$params['concepts']['page_count'] = $conceptdb->CountPages($name, $author, $date, $state);
 
 	$settings = $player->GetSettings();
-	$params['concepts']['timesections'] = $messagedb->Timesections();
 	$params['concepts']['PreviousLogin'] = $player->PreviousLogin();
 	$params['concepts']['authors'] = $authors = $conceptdb->ListAuthors($date);
 	$params['concepts']['mycards'] = (in_array($player->Name(), $authors) ? 'yes' : 'no');
@@ -3261,7 +3260,6 @@ case 'Messages':
 	$params['messages']['messages'] = $list;
 	$params['messages']['messages_count'] = count($list);
 	$params['messages']['current_location'] = $current_location;
-	$params['messages']['timesections'] = $messagedb->Timesections();
 	$params['messages']['name_filter'] = $name_list;
 	$params['messages']['current_page'] = $current_page;
 
