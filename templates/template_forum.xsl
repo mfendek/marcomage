@@ -54,12 +54,15 @@
 			</td>
 			<td>
 				<p>
-					<xsl:choose>
-					<xsl:when test="Priority = 'sticky'"><xsl:attribute name="class">sticky</xsl:attribute></xsl:when>
-					<xsl:when test="Priority = 'important'"><xsl:attribute name="class">important</xsl:attribute></xsl:when>
-					</xsl:choose>
-
 					<xsl:value-of select="Title" />
+					<xsl:choose>
+						<xsl:when test="Priority = 'sticky'">
+							<img src="img/sticky.gif" width="22px" height="15x" alt="sticky" title="Sticky" class="icon" />
+						</xsl:when>
+						<xsl:when test="Priority = 'important'">
+							<img src="img/important.gif" width="18px" height="13px" alt="important" title="Important" class="icon" />
+						</xsl:when>
+					</xsl:choose>
 					<xsl:if test="Locked = 'yes'"><img src="img/locked.gif" width="15px" height="16px" alt="locked" title="Locked" class="icon" /></xsl:if>
 				</p>
 			</td>
@@ -182,14 +185,15 @@
 				</td>
 				<td>
 					<p>
-						<xsl:attribute name="style">
-						<xsl:choose>
-						<xsl:when test="Priority = 'sticky'">color: red</xsl:when>
-						<xsl:when test="Priority = 'important'">color: orange</xsl:when>
-						</xsl:choose>
-						</xsl:attribute>
-						
 						<xsl:value-of select="Title" />
+						<xsl:choose>
+							<xsl:when test="Priority = 'sticky'">
+								<img src="img/sticky.gif" width="22px" height="15x" alt="sticky" title="Sticky" class="icon" />
+							</xsl:when>
+							<xsl:when test="Priority = 'important'">
+								<img src="img/important.gif" width="18px" height="13px" alt="important" title="Important" class="icon" />
+							</xsl:when>
+						</xsl:choose>
 						<xsl:if test="Locked = 'yes'"><img src="img/locked.gif" width="15px" height="16px" alt="locked" title="Locked" class="icon" /></xsl:if>
 					</p>
 				</td>
@@ -283,14 +287,15 @@
 		</td>
 		<td>
 			<p>
-				<xsl:attribute name="style">
-				<xsl:choose>
-				<xsl:when test="Priority = 'sticky'">color: red</xsl:when>
-				<xsl:when test="Priority = 'important'">color: orange</xsl:when>
-				</xsl:choose>
-				</xsl:attribute>
-				
 				<xsl:value-of select="Title" />
+				<xsl:choose>
+					<xsl:when test="Priority = 'sticky'">
+						<img src="img/sticky.gif" width="22px" height="15x" alt="sticky" title="Sticky" class="icon" />
+					</xsl:when>
+					<xsl:when test="Priority = 'important'">
+						<img src="img/important.gif" width="18px" height="13px" alt="important" title="Important" class="icon" />
+					</xsl:when>
+				</xsl:choose>
 				<xsl:if test="Locked = 'yes'"><img src="img/locked.gif" width="15px" height="16px" alt="locked" title="Locked" class="icon" /></xsl:if>
 			</p>
 		</td>

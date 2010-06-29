@@ -354,9 +354,9 @@ In the settings section you can upload your own avatar. Avatar must be a jpg, jp
 Please use English only at all times. Forum is divided into sections. Section contains threads - discussions about some topic. There are 3 types of threads:
 </p>
 <ul>
-	<li>Sticky - (red color) these are always at the top of the threadds list</li>
-	<li>Important - (orange color) these are more important then other threads</li>
-	<li>Normal - (white color) all other threads</li>
+	<li>Sticky <img src="img/sticky.gif" width="22px" height="15x" alt="sticky" title="Sticky" class="icon" />- these are always at the top of the threads list</li>
+	<li>Important <img src="img/important.gif" width="18px" height="13px" alt="important" title="Important" class="icon" />- these are more important then other threads</li>
+	<li>Normal - all other threads</li>
 </ul>
 
 <p>
