@@ -139,14 +139,14 @@ input.table_checkbox /* checkbox layout */
 	padding: 0.7ex;
 }
 
-div.filters_trans /* filters with transparent background */
+.filters /* filters */
 {
-	margin: 1ex 0ex 2ex 2ex;
+	text-align: center;
 }
 
-div.filters_trans > input /* set distance between filter buttons */
+.filters > input /* set distance between filter buttons */
 {
-	margin-right: 2ex;
+	margin-right: 1ex;
 }
 
 .online /* highlight player name if he is online */
@@ -154,7 +154,7 @@ div.filters_trans > input /* set distance between filter buttons */
 	font-weight: bold;
 }
 
-.filter_active /* highlight filter when active */
+.filters > .filter_active /* highlight filter when active */
 {
 	background-color: green;
 }

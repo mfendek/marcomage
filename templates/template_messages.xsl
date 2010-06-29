@@ -143,7 +143,7 @@
 		</xsl:if>
 	</p>
 
-	<div class="message_filters">
+	<div class="filters">
 		<!-- begin date filter -->
 
 		<select name="date_filter">
@@ -197,7 +197,7 @@
 		<input type = "submit" name = "message_filter" value = "Apply filters" />
 	</div>
 
-	<div class="message_filters">
+	<div class="filters">
 	<!-- upper navigation -->
 		<xsl:if test="$param/page_count &gt; 0">
 			<xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'messages')"/>

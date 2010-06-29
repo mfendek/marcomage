@@ -120,7 +120,7 @@
 		<xsl:when test="$param/current_subsection = 'free_games'">
 
 		<!-- begin filters -->
-		<p class="game_filters">
+		<p class="filters">
 
 			<!-- hidden cards filter -->
 			<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="icon" title="Hidden cards" />
@@ -159,7 +159,7 @@
 
 		<!-- selected deck -->
 		<xsl:if test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
-			<p class="game_filters">
+			<p class="misc">
 				<xsl:text>Select deck </xsl:text>
 				<select name="SelectedDeck" size="1">
 					<xsl:if test="$param/RandomDeck = 'yes'">
@@ -234,7 +234,7 @@
 
 		<!-- host new game interface -->
 		<xsl:if test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
-			<p class="game_filters">
+			<p class="misc">
 				<select name="SelectedDeck" size="1">
 					<xsl:if test="$param/RandomDeck = 'yes'">
 						<option value="{am:urlencode($param/random_deck)}">select random</option>

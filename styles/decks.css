@@ -26,20 +26,13 @@ div#decks > table th > p, div#decks > table td > p /* table cell text */
 
 /* begin filters */
 
-div.filters /* filters subsection */
+div.filters, div.misc /* filters and misc part */
 {
 	text-align: left;
 	/*min-width: 120ex;*/
 	min-width: 1045px;
 	padding-bottom: 0.5ex;
 	margin-left: 5ex;
-}
-
-div.filters + hr /* horizontal line that separates the filters from the rest of the section */
-{
-	/*min-width: 120ex;*/
-	min-width: 1045px;
-	margin: 0ex;
 }
 
 div#cost_per_turn /* avg cost per turn indicator layout */

@@ -104,7 +104,7 @@
 	<h3>MArcomage discussion forum</h3>
 	<h4>Search</h4>
 	
-	<div class="filters_trans">
+	<div class="filters">
 		<input type="text" name="phrase" maxlength="50" size="30" value="{$param/phrase}" />
 
 		<!-- target selector -->

@@ -21,7 +21,7 @@
 
 	<h3>Game replays</h3>
 	<!-- begin filters and navigation -->
-	<div class="filters_trans">
+	<div class="filters">
 		<!-- id filter -->
 		<input type="text" name="IdFilter" maxlength="10" size="10" value="{$param/IdFilter}" />
 
@@ -206,7 +206,7 @@
 				</xsl:for-each>
 			</table>
 
-			<div class="filters_trans">
+			<div class="filters">
 				<!-- lower navigation -->
 				<xsl:copy-of select="am:lower_navigation($param/page_count, $param/current_page, 'replays', 'Replays')"/>
 			</div>

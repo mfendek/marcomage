@@ -20,7 +20,7 @@
 
 		<!-- begin buttons and filters -->
 
-		<div class="filters_trans">
+		<div class="filters">
 			<!-- card rarity filter -->
 			<xsl:variable name="classes">
 				<value name="Common"  >Common</value>
@@ -142,7 +142,7 @@
 			</xsl:for-each>
 		</table>
 
-		<div class="filters_trans">
+		<div class="filters">
 			<!-- lower navigation -->
 			<xsl:copy-of select="am:lower_navigation($param/page_count, $param/current_page, 'cards', 'Cards')"/>
 		</div>

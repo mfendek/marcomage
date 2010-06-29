@@ -20,6 +20,11 @@ div#players th input /* set distance for ordering buttons from header texts in t
 	margin-left: 1ex;
 }
 
+div#players .filters /* filters */
+{
+	margin: 1ex 0ex 2ex 2ex;
+}
+
 div.progress_bar /* exp progress bar */
 {
 	border: thin solid black;

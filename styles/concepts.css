@@ -32,6 +32,11 @@ div#concepts_table > table /* concepts table */
 	width: 100%;
 }
 
+div#concepts .filters /* filters */
+{
+	margin: 1ex 0ex 2ex 2ex;
+}
+
 div.note /* note layout */
 {
 	text-align: justify;

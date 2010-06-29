@@ -219,7 +219,7 @@
 	<input type="submit" name="filter" value="Apply filters" />
 	
 	</div>	
-	<div class="filters">
+	<div class="misc">
 
 	<div id="tokens">
 		<xsl:for-each select="$param/Tokens/*">

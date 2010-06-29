@@ -22,7 +22,7 @@
 	</xsl:if> 
 
 	<div id="players">
-		<div class="filters_trans" style="text-align: center;">
+		<div class="filters">
 			<!-- begin name filter -->
 			<input type="text" name="pname_filter" maxlength="20" size="20" value="{$param/pname_filter}" />
 
@@ -199,7 +199,7 @@
 		</table>
 
 		<!-- lower navigation -->
-		<div class="filters_trans" style="text-align: center;">
+		<div class="filters">
 			<xsl:copy-of select="am:lower_navigation($param/page_count, $param/current_page, 'players', 'Players')"/>
 		</div>
 

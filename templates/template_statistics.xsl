@@ -15,7 +15,7 @@
 	<h3>Statistics</h3>
 
 	<!-- subsection navigation -->
-	<div class="filter_trans">
+	<div class="filters">
 		<xsl:variable name="types">
 			<type name="Played - latest"     value="Played"         />
 			<type name="Played - overall"    value="PlayedTotal"    />

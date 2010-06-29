@@ -36,6 +36,11 @@ div#cards_table > table div.karta /* card layout within the table */
 	margin-left: 2ex;
 }
 
+div#cards .filters /* filters */
+{
+	margin: 1ex 0ex 2ex 2ex;
+}
+
 p.effect /* card effect */
 {
 	text-align: left;

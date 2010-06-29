@@ -22,7 +22,7 @@
 
 		<!-- begin buttons and filters -->
 
-		<div class="filters_trans">
+		<div class="filters">
 			<xsl:if test="$param/create_card = 'yes'">
 				<input type="submit" name="new_concept" value="New card" />
 			</xsl:if>
@@ -137,7 +137,7 @@
 			</xsl:for-each>
 		</table>
 
-		<div class="filters_trans">
+		<div class="filters">
 			<!-- lower navigation -->
 			<xsl:copy-of select="am:lower_navigation($param/page_count, $param/current_page, 'concepts', 'Concepts')"/>
 		</div>

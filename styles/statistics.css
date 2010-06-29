@@ -59,7 +59,7 @@ div#statistics div.skin_text /* floated columns */
 	float: left;
 }
 
-div#statistics div.filter_trans /* subsection navigation */
+div#statistics div.filters /* subsection navigation */
 {
 	text-align: center;
 	margin-top: 1ex;

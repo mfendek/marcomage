@@ -57,15 +57,10 @@ div#messages > table /* private messages table */
 	max-width: 32em;
 }
 
-div.message_filters /* filters and navigation */
+div#messages .filters /* filters and navigation */
 {
 	margin: 0.5ex 0ex 0.5ex 2ex;
 	text-align: left;
-}
-
-div.message_filters > input /* set distance between buttons */
-{
-	margin-right: 1ex;
 }
 
 /* end messages */

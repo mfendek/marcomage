@@ -57,7 +57,12 @@ div#hosted_games > p > input + input /* distance between buttons */
 	margin-left: 2ex;
 }
 
-.game_filters /* filters layout */
+div#games .filters /* filters layout */
+{
+	margin: 1ex 0ex 2ex 2ex;
+}
+
+div#games .misc /* misc layout */
 {
 	margin-top: 1ex;
 }
