@@ -32,27 +32,37 @@
 
 			<!-- date filter -->
 			<xsl:variable name="dates">
-				<value name="No date filter">none</value>
+				<value name="No date filter" value="none" />
+				<value name="1 day"          value="1"    />
+				<value name="2 days"         value="2"    />
+				<value name="5 days"         value="5"    />
+				<value name="1 week"         value="7"    />
+				<value name="2 weeks"        value="14"   />
+				<value name="3 weeks"        value="21"   />
+				<value name="1 month"        value="30"   />
+				<value name="3 months"       value="91"   />
+				<value name="6 months"       value="182"  />
+				<value name="1 year"         value="365"  />
 			</xsl:variable>
-			<xsl:copy-of select="am:filter('date_filter', $param/date_val, exsl:node-set($dates) | $timesections)"/>
+			<xsl:copy-of select="am:htmlSelectBox('date_filter', $param/date_val, $dates, '')"/>
 
 			<!-- author filter -->
 			<xsl:if test="count($param/authors/*) &gt; 0">
 				<xsl:variable name="authors">
-					<value name="No author filter">none</value>
+					<value name="No author filter" value="none" />
 				</xsl:variable>
-				<xsl:copy-of select="am:filter('author_filter', $param/author_val, exsl:node-set($authors) | am:array2values($param/authors))"/>
+				<xsl:copy-of select="am:htmlSelectBox('author_filter', $param/author_val, $authors, $param/authors)"/>
 			</xsl:if>
 
 			<!-- state filter -->
 			<xsl:variable name="states">
-				<value name="No state filter">none</value>
-				<value name="waiting"        >waiting</value>
-				<value name="rejected"       >rejected</value>
-				<value name="interesting"    >interesting</value>
-				<value name="implemented"    >implemented</value>
+				<value name="No state filter" value="none"        />
+				<value name="waiting"         value="waiting"     />
+				<value name="rejected"        value="rejected"    />
+				<value name="interesting"     value="interesting" />
+				<value name="implemented"     value="implemented" />
 			</xsl:variable>
-			<xsl:copy-of select="am:filter('state_filter', $param/state_val, exsl:node-set($states))"/>
+			<xsl:copy-of select="am:htmlSelectBox('state_filter', $param/state_val, $states, '')"/>
 
 			<input type="submit" name="concepts_filter" value="Apply filters" />
 			<xsl:if test="$param/mycards = 'yes'">

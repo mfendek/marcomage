@@ -218,11 +218,20 @@
 </func:function>
 
 
-<func:function name="am:filter">
-	<!-- generates filter (select element) -->
+<func:function name="am:htmlSelectBox">
+	<!-- generates html select box -->
 	<xsl:param name="name" as="xs:string" />
 	<xsl:param name="current" as="xs:string" />
-	<xsl:param name="values" as="xs:node-set" />
+	<xsl:param name="static_values" as="xs:node-set" />
+	<xsl:param name="dynamic_values" as="xs:node-set" />
+
+	<xsl:variable name="converted">
+		<xsl:for-each select="exsl:node-set($dynamic_values)/*">
+			<value name="{text()}" value="{text()}" />
+		</xsl:for-each>
+	</xsl:variable>
+
+	<xsl:variable name="values" select="exsl:node-set($static_values) | exsl:node-set($converted)" />
 
 	<xsl:variable name="output">
 		<select name="{$name}">
@@ -230,8 +239,8 @@
 				<xsl:attribute name="class">filter_active</xsl:attribute>
 			</xsl:if>
 			<xsl:for-each select="$values/*">
-				<option value="{text()}">
-					<xsl:if test="$current = text()">
+				<option value="{@value}">
+					<xsl:if test="$current = @value">
 						<xsl:attribute name="selected">selected</xsl:attribute>
 					</xsl:if>
 					<xsl:value-of select="@name"/>
@@ -241,20 +250,6 @@
 	</xsl:variable>
 
 	<func:result select="$output" />
-</func:function>
-
-
-<func:function name="am:array2values">
-	<!-- converts array-like node-set to am:filter() compatible node set -->
-	<xsl:param name="values" as="xs:node-set" />
-
-	<xsl:variable name="output">
-		<xsl:for-each select="$values/*">
-			<value name="{text()}"><xsl:value-of select="text()"/></value>
-		</xsl:for-each>
-	</xsl:variable>
-
-	<func:result select="exsl:node-set($output)" />
 </func:function>
 
 

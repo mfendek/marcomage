@@ -23,92 +23,82 @@
 		<div class="filters">
 			<!-- card rarity filter -->
 			<xsl:variable name="classes">
-				<value name="Common"  >Common</value>
-				<value name="Uncommon">Uncommon</value>
-				<value name="Rare"    >Rare</value>
-				<value name="Any"     >none</value>
+				<value name="Common"   value="Common"   />
+				<value name="Uncommon" value="Uncommon" />
+				<value name="Rare"     value="Rare"     />
+				<value name="Any"      value="none"     />
 			</xsl:variable>
-			<xsl:copy-of select="am:filter('ClassFilter', $param/ClassFilter, exsl:node-set($classes))"/>
+			<xsl:copy-of select="am:htmlSelectBox('ClassFilter', $param/ClassFilter, $classes, '')"/>
 
 			<!-- card keyword filter -->
 			<xsl:variable name="keywords">
-				<value name="No keyword filter">none</value>
-				<value name="Any keyword"      >Any keyword</value>
-				<value name="No keywords"      >No keywords</value>
+				<value name="No keyword filter" value="none"        />
+				<value name="Any keyword"       value="Any keyword" />
+				<value name="No keywords"       value="No keywords" />
 			</xsl:variable>
-			<xsl:copy-of select="am:filter('KeywordFilter', $param/KeywordFilter, exsl:node-set($keywords) | am:array2values($param/keywords))"/>
+			<xsl:copy-of select="am:htmlSelectBox('KeywordFilter', $param/KeywordFilter, $keywords, $param/keywords)"/>
 
 			<!-- cost filter -->
 			<xsl:variable name="costs">
-				<value name="No cost filter">none</value>
-				<value name="Bricks only"   >Red</value>
-				<value name="Gems only"     >Blue</value>
-				<value name="Recruits only" >Green</value>
-				<value name="Zero cost"     >Zero</value>
-				<value name="Mixed cost"    >Mixed</value>
+				<value name="No cost filter" value="none"  />
+				<value name="Bricks only"    value="Red"   />
+				<value name="Gems only"      value="Blue"  />
+				<value name="Recruits only"  value="Green" />
+				<value name="Zero cost"      value="Zero"  />
+				<value name="Mixed cost"     value="Mixed" />
 			</xsl:variable>
-			<xsl:copy-of select="am:filter('CostFilter', $param/CostFilter, exsl:node-set($costs))"/>
+			<xsl:copy-of select="am:htmlSelectBox('CostFilter', $param/CostFilter, $costs, '')"/>
 
 			<!-- advanced filter select menu - filters based upon appearance in card text -->
 			<xsl:variable name="advanced">
-				<value name="No adv. filter">none</value>
-				<value name="Attack"        >Attack:</value>
-				<value name="Discard"       >Discard</value>
-				<value name="Replace"       >Replace</value>
-				<value name="Reveal"        >Reveal</value>
-				<value name="Production"    >Production</value>
-				<value name="Wall +"        >Wall: +</value>
-				<value name="Wall -"        >Wall: -</value>
-				<value name="Tower +"       >Tower: +</value>
-				<value name="Tower -"       >Tower: -</value>
-				<value name="Facilities +"  >Facilities: +</value>
-				<value name="Facilities -"  >Facilities: -</value>
-				<value name="Magic +"       >Magic: +</value>
-				<value name="Magic -"       >Magic: -</value>
-				<value name="Quarry +"      >Quarry: +</value>
-				<value name="Quarry -"      >Quarry: -</value>
-				<value name="Dungeon +"     >Dungeon: +</value>
-				<value name="Dungeon -"     >Dungeon: -</value>
-				<value name="Stock +"       >Stock: +</value>
-				<value name="Stock -"       >Stock: -</value>
-				<value name="Gems +"        >Gems: +</value>
-				<value name="Gems -"        >Gems: -</value>
-				<value name="Bricks +"      >Bricks: +</value>
-				<value name="Bricks -"      >Bricks: -</value>
-				<value name="Recruits +"    >Recruits: +</value>
-				<value name="Recruits -"    >Recruits: -</value>
+				<value name="No adv. filter" value="none"          />
+				<value name="Attack"         value="Attack:"       />
+				<value name="Discard"        value="Discard"       />
+				<value name="Replace"        value="Replace"       />
+				<value name="Reveal"         value="Reveal"        />
+				<value name="Production"     value="Production"    />
+				<value name="Wall +"         value="Wall: +"       />
+				<value name="Wall -"         value="Wall: -"       />
+				<value name="Tower +"        value="Tower: +"      />
+				<value name="Tower -"        value="Tower: -"      />
+				<value name="Facilities +"   value="Facilities: +" />
+				<value name="Facilities -"   value="Facilities: -" />
+				<value name="Magic +"        value="Magic: +"      />
+				<value name="Magic -"        value="Magic: -"      />
+				<value name="Quarry +"       value="Quarry: +"     />
+				<value name="Quarry -"       value="Quarry: -"     />
+				<value name="Dungeon +"      value="Dungeon: +"    />
+				<value name="Dungeon -"      value="Dungeon: -"    />
+				<value name="Stock +"        value="Stock: +"      />
+				<value name="Stock -"        value="Stock: -"      />
+				<value name="Gems +"         value="Gems: +"       />
+				<value name="Gems -"         value="Gems: -"       />
+				<value name="Bricks +"       value="Bricks: +"     />
+				<value name="Bricks -"       value="Bricks: -"     />
+				<value name="Recruits +"     value="Recruits: +"   />
+				<value name="Recruits -"     value="Recruits: -"   />
 			</xsl:variable>
-			<xsl:copy-of select="am:filter('AdvancedFilter', $param/AdvancedFilter, exsl:node-set($advanced))"/>
+			<xsl:copy-of select="am:htmlSelectBox('AdvancedFilter', $param/AdvancedFilter, $advanced, '')"/>
 
 			<!-- support keyword filter -->
 			<xsl:variable name="support">
-				<value name="No support filter">none</value>
-				<value name="Any keyword"      >Any keyword</value>
-				<value name="No keywords"      >No keywords</value>
+				<value name="No support filter" value="none"        />
+				<value name="Any keyword"       value="Any keyword" />
+				<value name="No keywords"       value="No keywords" />
 			</xsl:variable>
-			<xsl:copy-of select="am:filter('SupportFilter', $param/SupportFilter, exsl:node-set($support) | am:array2values($param/keywords))"/>
+			<xsl:copy-of select="am:htmlSelectBox('SupportFilter', $param/SupportFilter, $support, $param/keywords)"/>
 
 			<!-- creation date filter -->
 			<xsl:variable name="created">
-				<value name="No created filter">none</value>
+				<value name="No created filter" value="none" />
 			</xsl:variable>
-			<xsl:variable name="creation_dates">
-				<xsl:for-each select="$param/created_dates/*">
-					<value name="{am:format-date(text())}"><xsl:value-of select="text()"/></value>
-				</xsl:for-each>
-			</xsl:variable>
-			<xsl:copy-of select="am:filter('CreatedFilter', $param/CreatedFilter, exsl:node-set($created) | exsl:node-set($creation_dates))"/>
+			<xsl:copy-of select="am:htmlSelectBox('CreatedFilter', $param/CreatedFilter, exsl:node-set($created), $param/created_dates)"/>
 
 			<!-- modification date filter -->
 			<xsl:variable name="modified">
-				<value name="No modified filter">none</value>
+				<value name="No modified filter" value="none" />
 			</xsl:variable>
-			<xsl:variable name="modification_dates">
-				<xsl:for-each select="$param//modified_dates/*">
-					<value name="{am:format-date(text())}"><xsl:value-of select="text()"/></value>
-				</xsl:for-each>
-			</xsl:variable>
-			<xsl:copy-of select="am:filter('ModifiedFilter', $param/ModifiedFilter, exsl:node-set($modified) | exsl:node-set($modification_dates))"/>
+			<xsl:copy-of select="am:htmlSelectBox('ModifiedFilter', $param/ModifiedFilter, exsl:node-set($modified), $param/modified_dates)"/>
 
 			<input type="submit" name="cards_filter" value="Apply filters" />
 
