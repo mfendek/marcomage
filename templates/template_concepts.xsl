@@ -42,7 +42,7 @@
 				<value name="6 months"       value="182"  />
 				<value name="1 year"         value="365"  />
 			</xsl:variable>
-			<xsl:copy-of select="am:htmlSelectBox('date_filter', $param/date_val, $dates, '')"/>
+			<xsl:copy-of select="am:htmlSelectBox('date_filter_concepts', $param/date_val, $dates, '')"/>
 
 			<!-- author filter -->
 			<xsl:if test="count($param/authors/*) &gt; 0">
