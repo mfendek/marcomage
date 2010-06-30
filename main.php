@@ -2656,8 +2656,8 @@
 				if ($message == 'my_replays') // show only current player's replays
 				{
 					$_POST['PlayerFilter'] = $player->Name();
-					$_POST['HiddenCards'] = "ignore";
-					$_POST['FriendlyPlay'] = "ignore";
+					$_POST['HiddenCards'] = "none";
+					$_POST['FriendlyPlay'] = "none";
 					$_POST['VictoryFilter'] = "none";
 					$_POST['IdFilter'] = "";
 					$_POST['CurrentRepPage'] = 0;
@@ -3786,8 +3786,8 @@ case 'Replays':
 	$current_page = ((isset($_POST['CurrentRepPage'])) ? $_POST['CurrentRepPage'] : 0);
 	$params['replays']['current_page'] = $current_page;
 	$params['replays']['PlayerFilter'] = $player_f = (isset($_POST['PlayerFilter'])) ? $_POST['PlayerFilter'] : "none";
-	$params['replays']['HiddenCards'] = $hidden_f = (isset($_POST['HiddenCards'])) ? $_POST['HiddenCards'] : "ignore";
-	$params['replays']['FriendlyPlay'] = $friendly_f = (isset($_POST['FriendlyPlay'])) ? $_POST['FriendlyPlay'] : "ignore";
+	$params['replays']['HiddenCards'] = $hidden_f = (isset($_POST['HiddenCards'])) ? $_POST['HiddenCards'] : "none";
+	$params['replays']['FriendlyPlay'] = $friendly_f = (isset($_POST['FriendlyPlay'])) ? $_POST['FriendlyPlay'] : "none";
 	$params['replays']['VictoryFilter'] = $victory_f = (isset($_POST['VictoryFilter'])) ? $_POST['VictoryFilter'] : "none";
 	$params['replays']['IdFilter'] = $id_f = (isset($_POST['IdFilter'])) ? $_POST['IdFilter'] : "";
 

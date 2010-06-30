@@ -11,11 +11,6 @@
 
 <xsl:template match="section[. = 'Replays']">
 	<xsl:variable name="param" select="$params/replays" />
-	<xsl:variable name="filter_values">
-		<value name="ignore"  />
-		<value name="include" />
-		<value name="exclude" />
-	</xsl:variable>
 
 	<div id="games">
 
@@ -26,59 +21,28 @@
 		<input type="text" name="IdFilter" maxlength="10" size="10" value="{$param/IdFilter}" />
 
 		<!-- player filter -->
-		<select name="PlayerFilter" size="1">
-			<xsl:if test="$param/PlayerFilter != 'none'">
-				<xsl:attribute name="class">filter_active</xsl:attribute>
-			</xsl:if>
-			<option value="none">
-				<xsl:if test="$param/PlayerFilter = 'none'">
-					<xsl:attribute name="selected">selected</xsl:attribute>
-				</xsl:if>
-				<xsl:text>No player filter</xsl:text>
-			</option>
-			<xsl:for-each select="$param/players/*">
-				<option value="{.}">
-					<xsl:if test="$param/PlayerFilter = .">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:value-of select="."/>
-				</option>
-			</xsl:for-each>
-		</select>
+		<xsl:variable name="players">
+			<value name="No player filter" value="none" />
+		</xsl:variable>
+		<xsl:copy-of select="am:htmlSelectBox('PlayerFilter', $param/PlayerFilter, $players, $param/players)"/>
+
+		<xsl:variable name="mode_options">
+			<value name="ignore"  value="none"    />
+			<value name="include" value="include" />
+			<value name="exclude" value="exclude" />
+		</xsl:variable>
 
 		<!-- hidden cards filter -->
 		<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="icon" title="Hidden cards" />
-		<select name="HiddenCards" size="1">
-			<xsl:if test="$param/HiddenCards != 'ignore'">
-				<xsl:attribute name="class">filter_active</xsl:attribute>
-			</xsl:if>
-			<xsl:for-each select="exsl:node-set($filter_values)/*">
-				<option value="{@name}">
-					<xsl:if test="$param/HiddenCards = @name">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:value-of select="@name"/>
-				</option>
-			</xsl:for-each>
-		</select>
+		<xsl:copy-of select="am:htmlSelectBox('HiddenCards', $param/HiddenCards, $mode_options, '')"/>
 
 		<!-- friendly game filter -->
 		<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" />
-		<select name="FriendlyPlay" size="1">
-			<xsl:if test="$param/FriendlyPlay != 'ignore'">
-				<xsl:attribute name="class">filter_active</xsl:attribute>
-			</xsl:if>
-			<xsl:for-each select="exsl:node-set($filter_values)/*">
-				<option value="{@name}">
-					<xsl:if test="$param/FriendlyPlay = @name">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:value-of select="@name"/>
-				</option>
-			</xsl:for-each>
-		</select>
+		<xsl:copy-of select="am:htmlSelectBox('FriendlyPlay', $param/FriendlyPlay, $mode_options, '')"/>
 
+		<!-- victory type filter -->
 		<xsl:variable name="victory_types">
+			<value name="No victory filter"     value="none"         />
 			<value name="Tower building"        value="Construction" />
 			<value name="Tower destruction"     value="Destruction"  />
 			<value name="Resource accumulation" value="Resource"     />
@@ -88,27 +52,8 @@
 			<value name="Aborted"               value="Abort"        />
 			<value name="Abandon"               value="Abandon"      />
 		</xsl:variable>
+		<xsl:copy-of select="am:htmlSelectBox('VictoryFilter', $param/VictoryFilter, $victory_types, '')"/>
 
-		<!-- victory type filter -->
-		<select name="VictoryFilter" size="1">
-			<xsl:if test="$param/VictoryFilter != 'none'">
-				<xsl:attribute name="class">filter_active</xsl:attribute>
-			</xsl:if>
-			<option value="none">
-				<xsl:if test="$param/VictoryFilter = 'none'">
-					<xsl:attribute name="selected">selected</xsl:attribute>
-				</xsl:if>
-				<xsl:text>No victory filter</xsl:text>
-			</option>
-			<xsl:for-each select="exsl:node-set($victory_types)/*">
-				<option value="{@value}">
-					<xsl:if test="$param/VictoryFilter = @value">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:value-of select="@name"/>
-				</option>
-			</xsl:for-each>
-		</select>
 		<input type="submit" name="filter_replays" value="Apply filters" />
 		<xsl:if test="$param/my_replays = 'yes'">
 			<input type="submit" name="my_replays" value="My replays" />
