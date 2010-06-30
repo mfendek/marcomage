@@ -43,7 +43,6 @@
 
 			if (!$result) return false;
 
-			$threads = array();
 			while( $data = $result->Next() )
 				$sections[$data['SectionID']]['threadlist'][] = $data;
 
