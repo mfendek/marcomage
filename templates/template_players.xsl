@@ -28,48 +28,23 @@
 
 			<!-- activity filter -->
 			<xsl:variable name="activity_types">
-				<class name="No activity filter"         value="none"    />
-				<class name="Active players"             value="active"  />
-				<class name="Active and offline players" value="offline" />
-				<class name="Show all players"           value="all"     />
+				<value name="No activity filter"         value="none"    />
+				<value name="Active players"             value="active"  />
+				<value name="Active and offline players" value="offline" />
+				<value name="Show all players"           value="all"     />
 			</xsl:variable>
-
-			<select name="activity_filter">
-				<xsl:if test="$param/activity_filter != 'none'">
-					<xsl:attribute name="class">filter_active</xsl:attribute>
-				</xsl:if>
-				<xsl:for-each select="exsl:node-set($activity_types)/*">
-				<option value="{@value}">
-					<xsl:if test="$param/activity_filter = @value">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:value-of select="@name"/>
-				</option>
-				</xsl:for-each>
-			</select>
+			<xsl:copy-of select="am:htmlSelectBox('activity_filter', $param/activity_filter, $activity_types, '')"/>
 
 			<!-- status filter -->
 			<xsl:variable name="status_types">
-				<class name="No status filter"       value="none"   />
-				<class name="Looking for game"       value="ready"  />
-				<class name="Looking for quick game" value="quick"  />
-				<class name="Do not disturb"         value="dnd"    />
-				<class name="Newbie"                 value="newbie" />
+				<value name="No status filter"       value="none"   />
+				<value name="Looking for game"       value="ready"  />
+				<value name="Looking for quick game" value="quick"  />
+				<value name="Do not disturb"         value="dnd"    />
+				<value name="Newbie"                 value="newbie" />
 			</xsl:variable>
+			<xsl:copy-of select="am:htmlSelectBox('status_filter', $param/status_filter, $status_types, '')"/>
 
-			<select name="status_filter">
-				<xsl:if test="$param/status_filter != 'none'">
-					<xsl:attribute name="class">filter_active</xsl:attribute>
-				</xsl:if>
-				<xsl:for-each select="exsl:node-set($status_types)/*">
-				<option value="{@value}">
-					<xsl:if test="$param/status_filter = @value">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:value-of select="@name"/>
-				</option>
-				</xsl:for-each>
-			</select>
 			<input type="submit" name="filter_players" value="Apply filters" />
 
 			<!-- upper navigation -->
