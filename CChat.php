@@ -22,7 +22,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('INSERT INTO `chats` (`GameID`, `Name`, `Message`) VALUES ("'.$gameid.'", "'.$db->Escape($name).'", "'.$db->Escape($message).'")');
+			$result = $db->Query('INSERT INTO `chats` (`GameID`, `Name`, `Message`) VALUES ("'.$db->Escape($gameid).'", "'.$db->Escape($name).'", "'.$db->Escape($message).'")');
 			if (!$result) return false;
 			
 			return true;
@@ -31,7 +31,7 @@
 		public function DeleteChat($gameid)
 		{
 			$db = $this->db;
-			$result = $db->Query('DELETE FROM `chats` WHERE `GameID` = "'.$gameid.'"');
+			$result = $db->Query('DELETE FROM `chats` WHERE `GameID` = "'.$db->Escape($gameid).'"');
 			if (!$result) return false;
 			
 			return true;
@@ -41,7 +41,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `Name`, `Message`, `Timestamp` FROM `chats` WHERE `GameID` = "'.$gameid.'" ORDER BY `Timestamp` '.$order.'');
+			$result = $db->Query('SELECT `Name`, `Message`, `Timestamp` FROM `chats` WHERE `GameID` = "'.$db->Escape($gameid).'" ORDER BY `Timestamp` '.$db->Escape($order).'');
 			if (!$result) return false;
 			
 			$messages = array();

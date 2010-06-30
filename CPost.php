@@ -23,12 +23,12 @@
 			$db = $this->db;
 			
 			// verifiy if thread exists and isn't locked
-			$result = $db->Query('SELECT 1 FROM `forum_threads` WHERE `ThreadID` = "'.$thread_id.'" AND `Locked` = FALSE');
+			$result = $db->Query('SELECT 1 FROM `forum_threads` WHERE `ThreadID` = "'.$db->Escape($thread_id).'" AND `Locked` = FALSE');
 			
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
-			$result = $db->Query('INSERT INTO `forum_posts` (`Author`, `Content`, `ThreadID`, `Created`) VALUES ("'.$db->Escape($author).'", "'.$db->Escape($content).'", "'.$thread_id.'", NOW())');
+			$result = $db->Query('INSERT INTO `forum_posts` (`Author`, `Content`, `ThreadID`, `Created`) VALUES ("'.$db->Escape($author).'", "'.$db->Escape($content).'", "'.$db->Escape($thread_id).'", NOW())');
 			if (!$result) return false;
 			
 			return true;
@@ -38,7 +38,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('UPDATE `forum_posts` SET `Deleted` = TRUE WHERE `PostID` = "'.$post_id.'"');
+			$result = $db->Query('UPDATE `forum_posts` SET `Deleted` = TRUE WHERE `PostID` = "'.$db->Escape($post_id).'"');
 			
 			if (!$result) return false;
 			
@@ -56,10 +56,10 @@
 			{
 				if ($first)
 				{
-					$post_query.= '`PostID` = "'.$post_id.'"';
+					$post_query.= '`PostID` = "'.$db->Escape($post_id).'"';
 					$first = false;
 				}
-				else $post_query.= ' OR `PostID` = "'.$post_id.'"';
+				else $post_query.= ' OR `PostID` = "'.$db->Escape($post_id).'"';
 			}
 			
 			$result = $db->Query('UPDATE `forum_posts` SET `Deleted` = TRUE WHERE '.$post_query.'');
@@ -73,7 +73,7 @@
 		{	
 			$db = $this->db;
 						
-			$result = $db->Query('SELECT `PostID`, `Author`, `Content`, `ThreadID`, `Created` FROM `forum_posts` WHERE `PostID` = "'.$post_id.'" AND `Deleted` = FALSE');
+			$result = $db->Query('SELECT `PostID`, `Author`, `Content`, `ThreadID`, `Created` FROM `forum_posts` WHERE `PostID` = "'.$db->Escape($post_id).'" AND `Deleted` = FALSE');
 			
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
@@ -87,7 +87,7 @@
 		{	
 			$db = $this->db;
 									
-			$result = $db->Query('UPDATE `forum_posts` SET `Content` = "'.$db->Escape($content).'" WHERE `PostID` = "'.$post_id.'"');
+			$result = $db->Query('UPDATE `forum_posts` SET `Content` = "'.$db->Escape($content).'" WHERE `PostID` = "'.$db->Escape($post_id).'"');
 			if (!$result) return false;
 			
 			return true;
@@ -97,7 +97,7 @@
 		{	
 			$db = $this->db;
 					
-			$result = $db->Query('UPDATE `forum_posts` SET `ThreadID` = "'.$new_thread.'" WHERE `PostID` = "'.$post_id.'"');
+			$result = $db->Query('UPDATE `forum_posts` SET `ThreadID` = "'.$db->Escape($new_thread).'" WHERE `PostID` = "'.$db->Escape($post_id).'"');
 			if (!$result) return false;
 			
 			return true;
@@ -114,13 +114,13 @@
 			{
 				if ($first)
 				{
-					$post_query.= '`PostID` = "'.$post_id.'"';
+					$post_query.= '`PostID` = "'.$db->Escape($post_id).'"';
 					$first = false;
 				}
-				else $post_query.= ' OR `PostID` = "'.$post_id.'"';
+				else $post_query.= ' OR `PostID` = "'.$db->Escape($post_id).'"';
 			}
 				
-			$result = $db->Query('UPDATE `forum_posts` SET `ThreadID` = "'.$new_thread.'" WHERE '.$post_query.'');
+			$result = $db->Query('UPDATE `forum_posts` SET `ThreadID` = "'.$db->Escape($new_thread).'" WHERE '.$post_query.'');
 			if (!$result) return false;
 			
 			return true;
@@ -130,7 +130,7 @@
 		{	
 			$db = $this->db;
 						
-			$result = $db->Query('SELECT `PostID`, `Author`, `Content`, `Created`, IFNULL(`Avatar`,"noavatar.jpg") as `Avatar` FROM `forum_posts` LEFT OUTER JOIN `settings` ON `forum_posts`.`Author` = `settings`.`Username` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = FALSE ORDER BY `Created` ASC LIMIT '.(POSTS_PER_PAGE * $page).' , '.POSTS_PER_PAGE.'');
+			$result = $db->Query('SELECT `PostID`, `Author`, `Content`, `Created`, IFNULL(`Avatar`,"noavatar.jpg") as `Avatar` FROM `forum_posts` LEFT OUTER JOIN `settings` ON `forum_posts`.`Author` = `settings`.`Username` WHERE `ThreadID` = "'.$db->Escape($thread_id).'" AND `Deleted` = FALSE ORDER BY `Created` ASC LIMIT '.(POSTS_PER_PAGE * $db->Escape($page)).' , '.POSTS_PER_PAGE.'');
 			
 			if (!$result) return false;
 			
@@ -145,7 +145,7 @@
 		{	
 			$db = $this->db;
 						
-			$result = $db->Query('SELECT COUNT(`PostID`) as `Count` FROM `forum_posts` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = FALSE');
+			$result = $db->Query('SELECT COUNT(`PostID`) as `Count` FROM `forum_posts` WHERE `ThreadID` = "'.$db->Escape($thread_id).'" AND `Deleted` = FALSE');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			

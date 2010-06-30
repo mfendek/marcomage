@@ -39,7 +39,7 @@
 		{	// used to generate list of all section except the current section
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `SectionID`, `SectionName` FROM `forum_sections` WHERE `SectionID` != "'.$current_section.'" ORDER BY `SectionID`');
+			$result = $db->Query('SELECT `SectionID`, `SectionName` FROM `forum_sections` WHERE `SectionID` != "'.$db->Escape($current_section).'" ORDER BY `SectionID`');
 			if (!$result) return false;
 			
 			$sections = array();
@@ -53,7 +53,7 @@
 		{	
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `SectionID`, `SectionName`, `Description` FROM `forum_sections` WHERE `SectionID` = "'.$section_id.'"');
+			$result = $db->Query('SELECT `SectionID`, `SectionName`, `Description` FROM `forum_sections` WHERE `SectionID` = "'.$db->Escape($section_id).'"');
 			
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
@@ -68,7 +68,7 @@
 		{	
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT 1 FROM `forum_posts` WHERE `Created` > "'.$time.'" AND `Deleted` = FALSE');
+			$result = $db->Query('SELECT 1 FROM `forum_posts` WHERE `Created` > "'.$db->Escape($time).'" AND `Deleted` = FALSE');
 			
 			if (!$result) return false;
 			if (!$result->Rows()) return false;

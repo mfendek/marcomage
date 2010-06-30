@@ -411,12 +411,12 @@
 			else return false; // invalid action
 
 			// check if the card is already present in the database
-			$result = $db->Query('SELECT 1 FROM `statistics` WHERE `CardID` = "'.$card_id.'"');
+			$result = $db->Query('SELECT 1 FROM `statistics` WHERE `CardID` = "'.$db->Escape($card_id).'"');
 
 			if (!$result) return false;
 			if (!$result->Rows()) // add new record when necessary
 			{
-				$result = $db->Query('INSERT INTO `statistics` (`CardID`) VALUES ("'.$card_id.'")');
+				$result = $db->Query('INSERT INTO `statistics` (`CardID`) VALUES ("'.$db->Escape($card_id).'")');
 				if (!$result) return false;
 			}
 

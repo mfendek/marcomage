@@ -50,10 +50,10 @@
 		public function DeleteReplay($gameid) // delete unfinished replay
 		{
 			$db = $this->db;
-			$result = $db->Query('DELETE FROM `replays_data` WHERE `GameID` = "'.$gameid.'"');
+			$result = $db->Query('DELETE FROM `replays_data` WHERE `GameID` = "'.$db->Escape($gameid).'"');
 			if (!$result) return false;
 			
-			$result = $db->Query('DELETE FROM `replays_head` WHERE `GameID` = "'.$gameid.'"');
+			$result = $db->Query('DELETE FROM `replays_head` WHERE `GameID` = "'.$db->Escape($gameid).'"');
 			if (!$result) return false;
 			
 			return true;
@@ -127,7 +127,7 @@
 			$hidden_q = ($hidden != "none") ? ' AND FIND_IN_SET("HiddenCards", `GameModes`) '.(($hidden == "include") ? '>' : '=').' 0' : '';
 			$friendly_q = ($friendly != "none") ? ' AND FIND_IN_SET("FriendlyPlay", `GameModes`) '.(($friendly == "include") ? '>' : '=').' 0' : '';
 			
-			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2`, `Started`, `Finished`, `Rounds`, `Turns`, `GameModes`, `Winner`, `EndType`, (CASE WHEN `Deleted` = TRUE THEN "yes" ELSE "no" END) as `Deleted`, `Views` FROM `replays_head` WHERE '.$victory_q.$id_q.$player_q.$hidden_q.$friendly_q.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(REPLAYS_PER_PAGE * $page).' , '.REPLAYS_PER_PAGE.'');
+			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2`, `Started`, `Finished`, `Rounds`, `Turns`, `GameModes`, `Winner`, `EndType`, (CASE WHEN `Deleted` = TRUE THEN "yes" ELSE "no" END) as `Deleted`, `Views` FROM `replays_head` WHERE '.$victory_q.$id_q.$player_q.$hidden_q.$friendly_q.' ORDER BY `'.$db->Escape($condition).'` '.$db->Escape($order).' LIMIT '.(REPLAYS_PER_PAGE * $db->Escape($page)).' , '.REPLAYS_PER_PAGE.'');
 			if (!$result) return false;
 			
 			$replays = array();

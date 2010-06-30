@@ -114,15 +114,15 @@
 			          : ""))));
 
 			$name_q = ($name != '') ? ' AND `Username` LIKE "%'.$db->Escape($name).'%"' : '';
-			$status_q = ($status != 'none') ? ' AND `Status` = "'.$status.'"' : '';
+			$status_q = ($status != 'none') ? ' AND `Status` = "'.$db->Escape($status).'"' : '';
 			$activity_q = ($interval != '') ? ' AND `Last Query` >= NOW() - INTERVAL '.$interval.'' : '';
 
 			$query = "
 				SELECT `Username`, `UserType`, `Level`, `Exp`, `Wins`, `Losses`, `Draws`, `Avatar`, `Status`, `FriendlyFlag`, `BlindFlag`, `settings`.`Country`, `Last Query`
 				FROM `logins` JOIN `settings` USING (`Username`) JOIN `scores` USING (`Username`)
 				WHERE 1 {$name_q}{$status_q}{$activity_q}
-				ORDER BY `{$condition}` {$order}, `Username` ASC
-				LIMIT ".(PLAYERS_PER_PAGE * $page).", ".PLAYERS_PER_PAGE."";
+				ORDER BY `".$db->Escape($condition)."` ".$db->Escape($order).", `Username` ASC
+				LIMIT ".(PLAYERS_PER_PAGE * $db->Escape($page)).", ".PLAYERS_PER_PAGE."";
     
 			$result = $db->Query($query);
 			if (!$result) return false;
@@ -144,7 +144,7 @@
 			            :                               "60*60*24*7*3"     )));
 
 			$name_q = ($name != '') ? ' AND `Username` LIKE "%'.$db->Escape($name).'%"' : '';
-			$status_query = ($status != 'none') ? ' JOIN (SELECT `Username` FROM `settings` WHERE `Status` = "'.$status.'") as `settings` USING (`Username`)' : '';
+			$status_query = ($status != 'none') ? ' JOIN (SELECT `Username` FROM `settings` WHERE `Status` = "'.$db->Escape($status).'") as `settings` USING (`Username`)' : '';
 
 			$result = $db->Query('SELECT COUNT(`Username`) as `Count` FROM `logins`'.$status_query.' WHERE UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - '.$activity_q.$name_q.'');
 
@@ -159,7 +159,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('UPDATE `logins` SET `UserType` = "'.$access_right.'" WHERE `Username` = "'.$db->Escape($playername).'"');
+			$result = $db->Query('UPDATE `logins` SET `UserType` = "'.$db->Escape($access_right).'" WHERE `Username` = "'.$db->Escape($playername).'"');
 			
 			if (!$result) return false;
 			

@@ -24,7 +24,7 @@
 		{	
 			$db = $this->db;
 			
-			$result = $db->Query('INSERT INTO `forum_threads` (`Title`, `Author`, `Priority`, `SectionID`, `Created`, `CardID`) VALUES ("'.$db->Escape($title).'", "'.$db->Escape($author).'", "'.$priority.'", "'.$section.'", NOW(), "'.$card_id.'")');
+			$result = $db->Query('INSERT INTO `forum_threads` (`Title`, `Author`, `Priority`, `SectionID`, `Created`, `CardID`) VALUES ("'.$db->Escape($title).'", "'.$db->Escape($author).'", "'.$db->Escape($priority).'", "'.$db->Escape($section).'", NOW(), "'.$db->Escape($card_id).'")');
 			if (!$result) return false;
 			
 			return $db->LastID();
@@ -35,12 +35,12 @@
 			$db = $this->db;
 			
 			// delete all posts that are inside this thread
-			$result = $db->Query('UPDATE `forum_posts` SET `Deleted` = TRUE WHERE `ThreadID` = "'.$thread_id.'"');
+			$result = $db->Query('UPDATE `forum_posts` SET `Deleted` = TRUE WHERE `ThreadID` = "'.$db->Escape($thread_id).'"');
 			
 			if (!$result) return false;
 			
 			// delete thread
-			$result = $db->Query('UPDATE `forum_threads` SET `Deleted` = TRUE WHERE `ThreadID` = "'.$thread_id.'"');
+			$result = $db->Query('UPDATE `forum_threads` SET `Deleted` = TRUE WHERE `ThreadID` = "'.$db->Escape($thread_id).'"');
 			
 			if (!$result) return false;
 			
@@ -51,7 +51,7 @@
 		{	
 			$db = $this->db;
 						
-			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `SectionID`, `Created`, `CardID` FROM `forum_threads` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = FALSE');
+			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `SectionID`, `Created`, `CardID` FROM `forum_threads` WHERE `ThreadID` = "'.$db->Escape($thread_id).'" AND `Deleted` = FALSE');
 			
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
@@ -65,7 +65,7 @@
 		{	
 			$db = $this->db;
 						
-			$result = $db->Query('SELECT `ThreadID` FROM `forum_threads` WHERE `Title` = "'.$title.'" AND `Deleted` = FALSE');
+			$result = $db->Query('SELECT `ThreadID` FROM `forum_threads` WHERE `Title` = "'.$db->Escape($title).'" AND `Deleted` = FALSE');
 			
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
@@ -80,7 +80,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `ThreadID` FROM `forum_threads` WHERE `CardID` = "'.$card_id.'" AND `Deleted` = FALSE');
+			$result = $db->Query('SELECT `ThreadID` FROM `forum_threads` WHERE `CardID` = "'.$db->Escape($card_id).'" AND `Deleted` = FALSE');
 			
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
@@ -95,7 +95,7 @@
 		{	
 			$db = $this->db;
 									
-			$result = $db->Query('UPDATE `forum_threads` SET `Title` = "'.$db->Escape($title).'", `Priority` = "'.$priority.'" WHERE `ThreadID` = "'.$thread_id.'"');
+			$result = $db->Query('UPDATE `forum_threads` SET `Title` = "'.$db->Escape($title).'", `Priority` = "'.$db->Escape($priority).'" WHERE `ThreadID` = "'.$db->Escape($thread_id).'"');
 			if (!$result) return false;
 									
 			return true;
@@ -113,7 +113,7 @@
 			$count = $this->PostCount($thread_id);
 			if ($count === false) return false;
 			
-			$result = $db->Query('UPDATE `forum_threads` SET `PostCount` = "'.$db->Escape($count).'", `LastAuthor` = "'.$db->Escape($data['Author']).'", `LastPost` = "'.$db->Escape($data['Created']).'" WHERE `ThreadID` = "'.$thread_id.'"');
+			$result = $db->Query('UPDATE `forum_threads` SET `PostCount` = "'.$db->Escape($count).'", `LastAuthor` = "'.$db->Escape($data['Author']).'", `LastPost` = "'.$db->Escape($data['Created']).'" WHERE `ThreadID` = "'.$db->Escape($thread_id).'"');
 			if (!$result) return false;
 			
 			return true;
@@ -123,7 +123,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `Author`, `Created` FROM `forum_posts` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = FALSE AND `Created` = (SELECT MAX(`Created`) FROM `forum_posts` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = FALSE)');
+			$result = $db->Query('SELECT `Author`, `Created` FROM `forum_posts` WHERE `ThreadID` = "'.$db->Escape($thread_id).'" AND `Deleted` = FALSE AND `Created` = (SELECT MAX(`Created`) FROM `forum_posts` WHERE `ThreadID` = "'.$db->Escape($thread_id).'" AND `Deleted` = FALSE)');
 			if (!$result) return false;
 			if (!$result->Rows()) return array('Author' => '', 'Created' => '0000-00-00 00:00:00'); // there are no posts in this thread
 			
@@ -136,7 +136,7 @@
 		{	
 			$db = $this->db;
 									
-			$result = $db->Query('UPDATE `forum_threads` SET `Locked` = TRUE WHERE `ThreadID` = "'.$thread_id.'"');
+			$result = $db->Query('UPDATE `forum_threads` SET `Locked` = TRUE WHERE `ThreadID` = "'.$db->Escape($thread_id).'"');
 			if (!$result) return false;
 			
 			return true;
@@ -146,7 +146,7 @@
 		{	
 			$db = $this->db;
 									
-			$result = $db->Query('UPDATE `forum_threads` SET `Locked` = FALSE WHERE `ThreadID` = "'.$thread_id.'"');
+			$result = $db->Query('UPDATE `forum_threads` SET `Locked` = FALSE WHERE `ThreadID` = "'.$db->Escape($thread_id).'"');
 			if (!$result) return false;
 			
 			return true;
@@ -156,7 +156,7 @@
 		{	
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT 1 FROM `forum_threads` WHERE `ThreadID` = "'.$thread_id.'" AND `Locked` = TRUE');
+			$result = $db->Query('SELECT 1 FROM `forum_threads` WHERE `ThreadID` = "'.$db->Escape($thread_id).'" AND `Locked` = TRUE');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
@@ -167,7 +167,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT COUNT(`PostID`) as `Count` FROM `forum_posts` WHERE `ThreadID` = "'.$thread_id.'" AND `Deleted` = FALSE');
+			$result = $db->Query('SELECT COUNT(`PostID`) as `Count` FROM `forum_posts` WHERE `ThreadID` = "'.$db->Escape($thread_id).'" AND `Deleted` = FALSE');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
@@ -180,7 +180,7 @@
 		{	// lists threads in one specific section. Used in Section details.
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost`, 0 as `flag` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = FALSE AND `Priority` = "sticky" UNION SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost`, 1 as `flag` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = FALSE AND `Priority` != "sticky" ORDER BY `Flag` ASC, `LastPost` DESC, `Created` DESC LIMIT '.(THREADS_PER_PAGE * $page).' , '.THREADS_PER_PAGE.'');
+			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost`, 0 as `flag` FROM `forum_threads` WHERE `SectionID` = "'.$db->Escape($section).'" AND `Deleted` = FALSE AND `Priority` = "sticky" UNION SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost`, 1 as `flag` FROM `forum_threads` WHERE `SectionID` = "'.$db->Escape($section).'" AND `Deleted` = FALSE AND `Priority` != "sticky" ORDER BY `Flag` ASC, `LastPost` DESC, `Created` DESC LIMIT '.(THREADS_PER_PAGE * $db->Escape($page)).' , '.THREADS_PER_PAGE.'');
 			
 			if (!$result) return false;
 			
@@ -195,7 +195,7 @@
 		{	// lists threads in one specific section, ignoring sticky flag. Used in Forum main page.
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = FALSE ORDER BY `LastPost` DESC, `Created` DESC LIMIT '.NUM_THREADS.'');
+			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE `SectionID` = "'.$db->Escape($section).'" AND `Deleted` = FALSE ORDER BY `LastPost` DESC, `Created` DESC LIMIT '.NUM_THREADS.'');
 			
 			if (!$result) return false;
 			
@@ -210,7 +210,7 @@
 		{	// used to generate all thread names except the current one
 			$db = $this->db;
 								
-			$result = $db->Query('SELECT `ThreadID`, `Title` FROM `forum_threads` WHERE `ThreadID` != "'.$current_thread.'" AND `Deleted` = FALSE ORDER BY `Title` ASC');
+			$result = $db->Query('SELECT `ThreadID`, `Title` FROM `forum_threads` WHERE `ThreadID` != "'.$db->Escape($current_thread).'" AND `Deleted` = FALSE ORDER BY `Title` ASC');
 			
 			if (!$result) return false;
 			
@@ -225,7 +225,7 @@
 		{	
 			$db = $this->db;
 			
-			$result = $db->Query('UPDATE `forum_threads` SET `SectionID` = "'.$new_section.'" WHERE `ThreadID` = "'.$thread_id.'"');
+			$result = $db->Query('UPDATE `forum_threads` SET `SectionID` = "'.$db->Escape($new_section).'" WHERE `ThreadID` = "'.$db->Escape($thread_id).'"');
 			if (!$result) return false;
 			
 			return true;
@@ -235,7 +235,7 @@
 		{	
 			$db = $this->db;
 						
-			$result = $db->Query('SELECT COUNT(`ThreadID`) as `Count` FROM `forum_threads` WHERE `SectionID` = "'.$section.'" AND `Deleted` = FALSE');
+			$result = $db->Query('SELECT COUNT(`ThreadID`) as `Count` FROM `forum_threads` WHERE `SectionID` = "'.$db->Escape($section).'" AND `Deleted` = FALSE');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
