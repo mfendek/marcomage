@@ -21,25 +21,40 @@
 		}
 		
 		public function ListSections()
-		{	
+		{
 			$db = $this->db;
-			
-			// return section list with thread count, ordered by custom order (alphabetical order is not suited for our needs)
+
+			// get section list with thread count, ordered by custom order (alphabetical order is not suited for our needs)
 			$result = $db->Query('SELECT `forum_sections`.`SectionID`, `SectionName`, `Description`, IFNULL(`count`, 0) as `count` FROM `forum_sections` LEFT OUTER JOIN (SELECT `SectionID`, COUNT(`ThreadID`) as `count` FROM `forum_threads` WHERE `Deleted` = FALSE GROUP BY `SectionID`) as `threads` USING (`SectionID`) ORDER BY `SectionOrder` ASC');
 			if (!$result) return false;
-			
+
 			$sections = array();
 			while( $data = $result->Next() )
 				$sections[$data['SectionID']] = $data;
-			
+
+			$query = array();
+
+			// get threads list for each section
+			foreach ($sections as $section_id => $section_data)
+				$query[] = '(SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost`, `SectionID` FROM `forum_threads` WHERE `SectionID` = "'.$db->Escape($section_id).'" AND `Deleted` = FALSE ORDER BY `LastPost` DESC, `Created` DESC LIMIT '.NUM_THREADS.')';
+
+			$query = implode(' UNION ', $query);
+			$result = $db->Query($query);
+
+			if (!$result) return false;
+
+			$threads = array();
+			while( $data = $result->Next() )
+				$sections[$data['SectionID']]['threadlist'][] = $data;
+
 			return $sections;
 		}
-		
-		public function ListTargetSections($current_section)
+
+		public function ListTargetSections($current_section = 0)
 		{	// used to generate list of all section except the current section
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `SectionID`, `SectionName` FROM `forum_sections` WHERE `SectionID` != "'.$db->Escape($current_section).'" ORDER BY `SectionID`');
+			$result = $db->Query('SELECT `SectionID`, `SectionName` FROM `forum_sections` WHERE `SectionID` != "'.$db->Escape($current_section).'" ORDER BY `SectionOrder`');
 			if (!$result) return false;
 			
 			$sections = array();
@@ -48,7 +63,7 @@
 						
 			return $sections;
 		}
-		
+
 		public function GetSection($section_id)
 		{	
 			$db = $this->db;

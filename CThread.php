@@ -191,21 +191,6 @@
 			return $threads;
 		}
 		
-		public function ListThreadsMain($section)
-		{	// lists threads in one specific section, ignoring sticky flag. Used in Forum main page.
-			$db = $this->db;
-			
-			$result = $db->Query('SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE `SectionID` = "'.$db->Escape($section).'" AND `Deleted` = FALSE ORDER BY `LastPost` DESC, `Created` DESC LIMIT '.NUM_THREADS.'');
-			
-			if (!$result) return false;
-			
-			$threads = array();
-			while( $data = $result->Next() )
-				$threads[] = $data;
-			
-			return $threads;
-		}
-		
 		public function ListTargetThreads($current_thread)
 		{	// used to generate all thread names except the current one
 			$db = $this->db;
