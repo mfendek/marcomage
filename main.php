@@ -2219,7 +2219,7 @@
 				{
 					$thread_id = array_shift(array_keys($value));
 														
-					$current_page = $forum->Threads->Posts->CountPages($thread_id) - 1;
+					$current_page = max($forum->Threads->Posts->CountPages($thread_id) - 1, 0);
 															
 					$current = 'Thread_details';
 					
@@ -2387,7 +2387,7 @@
 					
 					$information = "Post created";
 					
-					$current_page = ($forum->Threads->Posts->CountPages($thread_id)) - 1;
+					$current_page = max(($forum->Threads->Posts->CountPages($thread_id)) - 1, 0);
 										
 					$current = 'Thread_details';
 					
@@ -2543,7 +2543,7 @@
 					
 					$forum->Threads->RefreshThread($thread_id); // update post count, last author and last post
 					
-					$max_page = $forum->Threads->Posts->CountPages($thread_id) - 1;
+					$max_page = max($forum->Threads->Posts->CountPages($thread_id) - 1, 0);
 					
 					$current_page = (($_POST['CurrentPage'] <= $max_page) ? $_POST['CurrentPage'] : $max_page);
 					
