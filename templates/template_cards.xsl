@@ -4,9 +4,7 @@
                 xmlns:am="http://arcomage.netvor.sk"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:date="http://exslt.org/dates-and-times"
-                xmlns:exsl="http://exslt.org/common"
-                xmlns:str="http://exslt.org/strings"
-                extension-element-prefixes="date exsl str">
+                extension-element-prefixes="date">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
@@ -92,13 +90,13 @@
 			<xsl:variable name="created">
 				<value name="No created filter" value="none" />
 			</xsl:variable>
-			<xsl:copy-of select="am:htmlSelectBox('CreatedFilter', $param/CreatedFilter, exsl:node-set($created), $param/created_dates)"/>
+			<xsl:copy-of select="am:htmlSelectBox('CreatedFilter', $param/CreatedFilter, $created, $param/created_dates)"/>
 
 			<!-- modification date filter -->
 			<xsl:variable name="modified">
 				<value name="No modified filter" value="none" />
 			</xsl:variable>
-			<xsl:copy-of select="am:htmlSelectBox('ModifiedFilter', $param/ModifiedFilter, exsl:node-set($modified), $param/modified_dates)"/>
+			<xsl:copy-of select="am:htmlSelectBox('ModifiedFilter', $param/ModifiedFilter, $modified, $param/modified_dates)"/>
 
 			<input type="submit" name="cards_filter" value="Apply filters" />
 
