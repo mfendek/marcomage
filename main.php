@@ -3336,8 +3336,8 @@ case 'Games':
 	elseif (isset($_POST['hosted_games'])) $subsection = "hosted_games";
 	elseif (!isset($subsection)) $subsection = "free_games";
 	$params['games']['current_subsection'] = $subsection;
-	$params['games']['HiddenCards'] = $hidden_f = (isset($_POST['HiddenCards'])) ? $_POST['HiddenCards'] : "ignore";
-	$params['games']['FriendlyPlay'] = $friendly_f = (isset($_POST['FriendlyPlay'])) ? $_POST['FriendlyPlay'] : "ignore";
+	$params['games']['HiddenCards'] = $hidden_f = (isset($_POST['HiddenCards'])) ? $_POST['HiddenCards'] : 'none';
+	$params['games']['FriendlyPlay'] = $friendly_f = (isset($_POST['FriendlyPlay'])) ? $_POST['FriendlyPlay'] : 'none';
 
 	$hostedgames = $gamedb->ListHostedGames($player->Name());
 	$free_games = $gamedb->ListFreeGames($player->Name(), $hidden_f, $friendly_f);

@@ -3,9 +3,7 @@
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:exsl="http://exslt.org/common"
-                extension-element-prefixes="exsl">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
@@ -13,11 +11,6 @@
 	<xsl:variable name="param" select="$params/games" />
 	<xsl:variable name="activedecks" select="count($param/decks/*)" />
 	<xsl:variable name="list" select="$param/list" />
-	<xsl:variable name="filter_values">
-		<value name="ignore"  />
-		<value name="include" />
-		<value name="exclude" />
-	</xsl:variable>
 
 	<div id="games">
 
@@ -121,38 +114,20 @@
 
 		<!-- begin filters -->
 		<p class="filters">
+			<xsl:variable name="mode_options">
+				<value name="ignore"  value="none"    />
+				<value name="include" value="include" />
+				<value name="exclude" value="exclude" />
+			</xsl:variable>
 
 			<!-- hidden cards filter -->
 			<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="icon" title="Hidden cards" />
-			<select name="HiddenCards" size="1">
-				<xsl:if test="$param/HiddenCards != 'ignore'">
-					<xsl:attribute name="class">filter_active</xsl:attribute>
-				</xsl:if>
-				<xsl:for-each select="exsl:node-set($filter_values)/*">
-					<option value="{@name}">
-						<xsl:if test="$param/HiddenCards = @name">
-							<xsl:attribute name="selected">selected</xsl:attribute>
-						</xsl:if>
-						<xsl:value-of select="@name"/>
-					</option>
-				</xsl:for-each>
-			</select>
+			<xsl:copy-of select="am:htmlSelectBox('HiddenCards', $param/HiddenCards, $mode_options, '')"/>
 
 			<!-- friendly game filter -->
 			<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" />
-			<select name="FriendlyPlay" size="1">
-				<xsl:if test="$param/FriendlyPlay != 'ignore'">
-					<xsl:attribute name="class">filter_active</xsl:attribute>
-				</xsl:if>
-				<xsl:for-each select="exsl:node-set($filter_values)/*">
-					<option value="{@name}">
-						<xsl:if test="$param/FriendlyPlay = @name">
-							<xsl:attribute name="selected">selected</xsl:attribute>
-						</xsl:if>
-						<xsl:value-of select="@name"/>
-					</option>
-				</xsl:for-each>
-			</select>
+			<xsl:copy-of select="am:htmlSelectBox('FriendlyPlay', $param/FriendlyPlay, $mode_options, '')"/>
+
 			<input type="submit" name="filter_hosted_games" value="Apply filters" />
 		</p>
 		<!-- end filters -->
