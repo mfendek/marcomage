@@ -95,7 +95,7 @@
 
 			$name_query = ($name != '') ? ' AND `Name` LIKE "%'.$db->Escape($name).'%"' : '';
 			$author_query = (($author != "none") ? ' AND `Author` = "'.$db->Escape($author).'"' : '');
-			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`LastChange`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$db->Escape($date).')' : '');
+			$date_query = (($date != "none") ? ' AND `LastChange` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
 			$state_query = (($state != "none") ? ' AND `State` = "'.$db->Escape($state).'"' : '');
 
 			$result = $db->Query('SELECT `CardID` as `id`, `Name` as `name`, `Class` as `class`, `Bricks` as `bricks`, `Gems` as `gems`, `Recruits` as `recruits`, `Effect` as `effect`, `Keywords` as `keywords`, `Picture` as `picture`, `Note` as `note`, `State` as `state`, `Author` as `author`, `LastChange` as `lastchange` FROM `concepts` WHERE 1'.$name_query.$author_query.$date_query.$state_query.' ORDER BY `'.$db->Escape($condition).'` '.$db->Escape($order).' LIMIT '.(CARDS_PER_PAGE * $db->Escape($page)).' , '.CARDS_PER_PAGE.'');
@@ -116,7 +116,7 @@
 
 			$name_query = ($name != '') ? ' AND `Name` LIKE "%'.$db->Escape($name).'%"' : '';
 			$author_query = (($author != "none") ? ' AND `Author` = "'.$db->Escape($author).'"' : '');
-			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`LastChange`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$db->Escape($date).')' : '');
+			$date_query = (($date != "none") ? ' AND `LastChange` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
 			$state_query = (($state != "none") ? ' AND `State` = "'.$db->Escape($state).'"' : '');
 
 			$result = $db->Query('SELECT COUNT(`CardID`) as `Count` FROM `concepts` WHERE 1'.$name_query.$author_query.$date_query.$state_query.'');
@@ -134,7 +134,7 @@
 		{
 			$db = $this->db;
 
-			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`LastChange`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$db->Escape($date).')' : '');
+			$date_query = (($date != "none") ? ' AND `LastChange` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
 
 			$result = $db->Query('SELECT DISTINCT `Author` FROM `concepts` WHERE 1'.$date_query.' ORDER BY `Author` ASC');
 

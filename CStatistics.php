@@ -290,7 +290,7 @@
 			$total = 0; // total number of skins
 			
 			// get number of different skins (only active and offline players are taken into account)
-			$result = $db->Query('SELECT `Skin`, COUNT(`Skin`) as `count` FROM `settings` JOIN `logins` USING (`Username`) WHERE (UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - 60*60*24*7*1) GROUP BY `Skin`');
+			$result = $db->Query('SELECT `Skin`, COUNT(`Skin`) as `count` FROM `settings` JOIN `logins` USING (`Username`) WHERE `Last Query` >= NOW() - INTERVAL 1 WEEK GROUP BY `Skin`');
 
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
@@ -327,7 +327,7 @@
 			$total = 0; // total number of backgrounds
 
 			// get number of different backgrounds (only active and offline players are taken into account)
-			$result = $db->Query('SELECT `Background`, COUNT(`Background`) as `count` FROM `settings` JOIN `logins` USING (`Username`) WHERE (UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - 60*60*24*7*1) GROUP BY `Background`');
+			$result = $db->Query('SELECT `Background`, COUNT(`Background`) as `count` FROM `settings` JOIN `logins` USING (`Username`) WHERE `Last Query` >= NOW() - INTERVAL 1 WEEK GROUP BY `Background`');
 
 			if (!$result) return false;
 			if (!$result->Rows()) return false;

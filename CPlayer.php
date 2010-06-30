@@ -138,15 +138,18 @@
 		{
 			$db = $this->db;
 
-			$activity_q = ( $activity == "active"  ? "60*10"
-			            : ( $activity == "offline" ? "60*60*24*7*1"
-			            : ( $activity == "all"     ? "UNIX_TIMESTAMP()"
-			            :                               "60*60*24*7*3"     )));
+			$interval = ( $activity == "active"  ? "10 MINUTE"
+			          : ( $activity == "offline" ? "1 WEEK"
+			          : ( $activity == "none"    ? "3 WEEK"
+			          : ( $activity == "all"     ? ""
+			          : ""))));
 
 			$name_q = ($name != '') ? ' AND `Username` LIKE "%'.$db->Escape($name).'%"' : '';
-			$status_query = ($status != 'none') ? ' JOIN (SELECT `Username` FROM `settings` WHERE `Status` = "'.$db->Escape($status).'") as `settings` USING (`Username`)' : '';
+			$status_q = ($status != 'none') ? ' JOIN (SELECT `Username` FROM `settings` WHERE `Status` = "'.$db->Escape($status).'") as `settings` USING (`Username`)' : '';
+			$activity_q = ($interval != '') ? ' AND `Last Query` >= NOW() - INTERVAL '.$interval.'' : '';
 
-			$result = $db->Query('SELECT COUNT(`Username`) as `Count` FROM `logins`'.$status_query.' WHERE UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - '.$activity_q.$name_q.'');
+			$result = $db->Query('SELECT COUNT(`Username`) as `Count` FROM `logins`'.$status_q.' WHERE 1'.$activity_q.$name_q.'');
+			if (!$result) return false;
 
 			$data = $result->Next();
 			

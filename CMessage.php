@@ -152,7 +152,7 @@
 			$db = $this->db;
 			
 			$name_query = (($name != "none") ? ' AND `Author` =  "'.$db->Escape($name).'"' : '');
-			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`Created`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$db->Escape($date).')' : '');
+			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
 			
 			$result = $db->Query('SELECT `MessageID`, `Author`, `Recipient`, `Subject`, `Content`, (CASE WHEN `Unread` = TRUE THEN "yes" ELSE "no" END) as `Unread`, `Created` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = "'.$db->Escape($player).'" AND `RecipientDelete` = FALSE'.$name_query.$date_query.' ORDER BY `'.$db->Escape($condition).'` '.$db->Escape($order).' LIMIT '.(MESSAGES_PER_PAGE * $db->Escape($page)).' , '.MESSAGES_PER_PAGE.'');
 			if (!$result) return false;
@@ -169,7 +169,7 @@
 			$db = $this->db;
 			
 			$name_query = (($name != "none") ? ' AND `Author` =  "'.$db->Escape($name).'"' : '');
-			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`Created`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$db->Escape($date).')' : '');
+			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
 			
 			$result = $db->Query('SELECT COUNT(`MessageID`) as `Count` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = "'.$db->Escape($player).'" AND `RecipientDelete` = FALSE'.$name_query.$date_query.'');
 			if (!$result) return false;
@@ -186,7 +186,7 @@
 			$db = $this->db;
 			
 			$name_query = (($name != "none") ? ' AND `Recipient` =  "'.$db->Escape($name).'"' : '');
-			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`Created`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$db->Escape($date).')' : '');
+			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
 			
 			$result = $db->Query('SELECT `MessageID`, `Author`, `Recipient`, `Subject`, `Content`, (CASE WHEN `Unread` = TRUE THEN "yes" ELSE "no" END) as `Unread`, `Created` FROM `messages` WHERE `GameID` = 0 AND `Author` = "'.$db->Escape($player).'" AND `AuthorDelete` = FALSE'.$name_query.$date_query.' ORDER BY `'.$db->Escape($condition).'` '.$db->Escape($order).' LIMIT '.(MESSAGES_PER_PAGE * $db->Escape($page)).' , '.MESSAGES_PER_PAGE.'');
 			if (!$result) return false;
@@ -203,7 +203,7 @@
 			$db = $this->db;
 			
 			$name_query = (($name != "none") ? ' AND `Recipient` =  "'.$db->Escape($name).'"' : '');
-			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`Created`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$db->Escape($date).')' : '');
+			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
 			
 			$result = $db->Query('SELECT COUNT(`MessageID`) as `Count` FROM `messages` WHERE `GameID` = 0 AND `Author` = "'.$db->Escape($player).'" AND `AuthorDelete` = FALSE'.$name_query.$date_query.'');
 			if (!$result) return false;
@@ -220,7 +220,7 @@
 			$db = $this->db;
 			
 			$name_query = (($name != "none") ? ' AND `Author` =  "'.$db->Escape($name).'"' : '');
-			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`Created`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$db->Escape($date).')' : '');
+			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
 			
 			$result = $db->Query('SELECT `MessageID`, `Author`, `Recipient`, `Subject`, `Content`, (CASE WHEN `Unread` = TRUE THEN "yes" ELSE "no" END) as `Unread`, `Created` FROM `messages` WHERE `GameID` = 0 AND `Author` != "'.SYSTEM_NAME.'"'.$name_query.$date_query.' ORDER BY `'.$db->Escape($condition).'` '.$db->Escape($order).' LIMIT '.(MESSAGES_PER_PAGE * $db->Escape($page)).' , '.MESSAGES_PER_PAGE.'');
 			if (!$result) return false;
@@ -237,7 +237,7 @@
 			$db = $this->db;
 			
 			$name_query = (($name != "none") ? ' AND `Author` =  "'.$db->Escape($name).'"' : '');
-			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`Created`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$db->Escape($date).')' : '');
+			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
 			
 			$result = $db->Query('SELECT COUNT(`MessageID`) as `Count` FROM `messages` WHERE `GameID` = 0 AND `Author` != "'.SYSTEM_NAME.'"'.$name_query.$date_query.'');
 			if (!$result) return false;
@@ -266,7 +266,7 @@
 		{	
 			$db = $this->db;
 			
-			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`Created`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$db->Escape($date).')' : '');
+			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
 			
 			$result = $db->Query('SELECT DISTINCT `Author` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = "'.$db->Escape($player).'" AND `RecipientDelete` = FALSE'.$date_query.' ORDER BY `Author` ASC');
 			if (!$result) return false;
@@ -281,7 +281,7 @@
 		{	
 			$db = $this->db;
 			
-			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`Created`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$db->Escape($date).')' : '');
+			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
 			
 			$result = $db->Query('SELECT DISTINCT `Recipient` FROM `messages` WHERE `GameID` = 0 AND `Author` = "'.$db->Escape($player).'" AND `AuthorDelete` = FALSE'.$date_query.' ORDER BY `Recipient` ASC');
 			if (!$result) return false;
@@ -296,7 +296,7 @@
 		{	// get list of authors of all messages
 			$db = $this->db;
 			
-			$date_query = (($date != "none") ? ' AND UNIX_TIMESTAMP(`Created`) >=  (UNIX_TIMESTAMP() - 60 * 60 * 24 * '.$db->Escape($date).')' : '');
+			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
 			
 			$result = $db->Query('SELECT DISTINCT `Author` FROM `messages` WHERE `GameID` = 0 AND `Author` != "'.SYSTEM_NAME.'"'.$date_query.' ORDER BY `Recipient` ASC');
 			if (!$result) return false;
@@ -342,7 +342,7 @@
 		public function ListChallengesFrom($player)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `GameID`, `Recipient`, `Content`, `Created`, (CASE WHEN UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - 60*10 THEN "yes" ELSE "no" END) as `Online` FROM (SELECT `Recipient`, `Content`, `Created`, `GameID` FROM `messages` WHERE `GameID` > 0 AND `Author` = "'.$db->Escape($player).'") as `messages` INNER JOIN `logins` ON `messages`.`Recipient` = `logins`.`Username` ORDER BY `Created` DESC');
+			$result = $db->Query('SELECT `GameID`, `Recipient`, `Content`, `Created`, (CASE WHEN `Last Query` >= NOW() - INTERVAL 10 MINUTE THEN "yes" ELSE "no" END) as `Online` FROM (SELECT `Recipient`, `Content`, `Created`, `GameID` FROM `messages` WHERE `GameID` > 0 AND `Author` = "'.$db->Escape($player).'") as `messages` INNER JOIN `logins` ON `messages`.`Recipient` = `logins`.`Username` ORDER BY `Created` DESC');
 			if (!$result) return false;
 			
 			$challenges = array();
@@ -355,7 +355,7 @@
 		public function ListChallengesTo($player)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `GameID`, `Author`, `Content`, `Created`, (CASE WHEN UNIX_TIMESTAMP(`Last Query`) >= UNIX_TIMESTAMP() - 60*10 THEN "yes" ELSE "no" END) as `Online` FROM (SELECT `Author`, `Content`, `Created`, `GameID` FROM `messages` WHERE `GameID` > 0 AND `Recipient` = "'.$db->Escape($player).'") as `messages` INNER JOIN `logins` ON `messages`.`Author` = `logins`.`Username` ORDER BY `Created` DESC');
+			$result = $db->Query('SELECT `GameID`, `Author`, `Content`, `Created`, (CASE WHEN `Last Query` >= NOW() - INTERVAL 10 MINUTE THEN "yes" ELSE "no" END) as `Online` FROM (SELECT `Author`, `Content`, `Created`, `GameID` FROM `messages` WHERE `GameID` > 0 AND `Recipient` = "'.$db->Escape($player).'") as `messages` INNER JOIN `logins` ON `messages`.`Author` = `logins`.`Username` ORDER BY `Created` DESC');
 			if (!$result) return false;
 			
 			$challenges = array();
