@@ -155,20 +155,6 @@ CREATE TABLE `logins` (
 -- --------------------------------------------------------
 
 -- 
--- Table structure for table `novels`
--- 
-
-CREATE TABLE `novels` (
-  `Novelname` char(30) COLLATE utf8_unicode_ci NOT NULL,
-  `Chapter` char(30) COLLATE utf8_unicode_ci NOT NULL,
-  `Page` int(10) unsigned NOT NULL,
-  `Content` text COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY  (`Novelname`,`Chapter`,`Page`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
--- 
 -- Table structure for table `scores`
 -- 
 

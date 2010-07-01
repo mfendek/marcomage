@@ -46,7 +46,7 @@
 	$settingdb = new CSettings($db);
 	$playerdb = new CPlayers($db);
 	$messagedb = new CMessage($db);
-	$noveldb = new CNovels($db);
+	$noveldb = new CNovels();
 	$forum = new CForum($db);
 	$statistics = new CStatistics($db);
 
@@ -1942,55 +1942,73 @@
 				// end concepts-related messages
 				
 				// novels-related messages
-				
+
 				if ($message == 'view_novel') // Novels -> expand novel
 				{
-					$_POST['current_novel'] = array_shift(array_keys($value));
-					
+					$_POST['novel'] = array_shift(array_keys($value));
+					$_POST['chapter'] = $_POST['part'] = $_POST['page'] = "";
+
 					$current = 'Novels';
-					
+
 					break;
 				}
-				
+
 				if ($message == 'collapse_novel') // Novels -> collapse novel
 				{
-					$_POST['current_novel'] = "";
-					$_POST['current_chapter'] = "";
-					
+					$_POST['novel'] = $_POST['chapter'] = $_POST['part'] = $_POST['page'] = "";
+
 					$current = 'Novels';
-					
+
 					break;
 				}
-				
+
 				if ($message == 'view_chapter') // Novels -> select chapter
 				{
-					$_POST['current_chapter'] = array_shift(array_keys($value));
-					
-					$_POST['current_page'] = 0;
-					
+					$_POST['chapter'] = array_shift(array_keys($value));
+					$_POST['part'] = $_POST['page'] = "";
+
 					$current = 'Novels';
-					
+
 					break;
 				}
-				
-				if ($message == 'select_page') // Novels -> select page (previous and next button)
+
+				if ($message == 'collapse_chapter') // Novels -> collapse chapter
 				{
-					$_POST['current_page'] = array_shift(array_keys($value));
-					
+					$_POST['chapter'] = $_POST['part'] = $_POST['page'] = "";
+
 					$current = 'Novels';
-					
+
 					break;
 				}
-				
-				if ($message == 'Jump') // Novels -> select page (Jump to page)
+
+				if ($message == 'view_part') // Novels -> select part
 				{
-					$_POST['current_page'] = $_POST['jump_to_page'];
-					
+					$_POST['part'] = array_shift(array_keys($value));
+					$_POST['page'] = 1;
+
 					$current = 'Novels';
-					
+
 					break;
 				}
-				
+
+				if ($message == 'select_page_novels') // Novels -> select page (previous and next button)
+				{
+					$_POST['page'] = array_shift(array_keys($value));
+
+					$current = 'Novels';
+
+					break;
+				}
+
+				if ($message == 'seek_page_novels') // Novels -> select page (Jump to page)
+				{
+					$_POST['page'] = $_POST['page_selector'];
+
+					$current = 'Novels';
+
+					break;
+				}
+
 				// end novels related messages
 				
 				// settings-related messages
@@ -3635,17 +3653,16 @@ case 'Game_note':
 
 
 case 'Novels':
-	$current_novel = ( isset($_POST['current_novel']) ) ? $_POST['current_novel'] : "";
-	$current_chapter = ( isset($_POST['current_chapter']) ) ? $_POST['current_chapter'] : "";
-	$current_page = ( isset($_POST['current_page']) ) ? $_POST['current_page'] : "";
+	$params['novels']['novel'] = $novel = ( isset($_POST['novel']) ) ? $_POST['novel'] : "";
+	$params['novels']['chapter'] = $chapter = ( isset($_POST['chapter']) ) ? $_POST['chapter'] : "";
+	$params['novels']['part'] = $part = ( isset($_POST['part']) ) ? $_POST['part'] : "";
+	$params['novels']['page'] = $page = ( isset($_POST['page']) ) ? $_POST['page'] : "";
 
-	$params['novels']['current_novel'] = $current_novel;
-	$params['novels']['current_chapter'] = $current_chapter;
-	$params['novels']['current_page'] = $current_page;
-	$params['novels']['novelslist'] = $noveldb->GetNovelsList();
-	$params['novels']['chapterslist'] = ($current_novel != "") ? $noveldb->GetChaptersList($current_novel) : null;
-	$params['novels']['ListPages'] = $noveldb->ListPages($current_novel, $current_chapter);
-	$params['novels']['PageContent'] = $noveldb->GetPageContent($current_novel, $current_chapter, $current_page);
+	$params['novels']['novelslist'] = $noveldb->listNovels();
+	$params['novels']['chapterslist'] = ($novel != "") ? $noveldb->listChapters($novel) : array();
+	$params['novels']['partslist'] = ($novel != "" AND $chapter != "") ? $noveldb->listParts($novel, $chapter) : array();
+	$params['novels']['pages'] = ($novel != "" AND $chapter != "" AND $part != "") ? $noveldb->listPages($novel, $chapter, $part) : array();
+	$params['novels']['content'] = ($novel != "" AND $chapter != "" AND $part != "" AND $page != "") ? $noveldb->getPage($novel, $chapter, $part, $page) : '';
 
 	break;
 

@@ -7,71 +7,93 @@
 	class CNovels
 	{
 		private $db;
-		
-		public function __construct(CDatabase &$database)
+
+		public function __construct()
 		{
-			$this->db = &$database;		
+			$this->db = false;
 		}
 
-		public function GetDB()
+		public function __destruct()
 		{
+			$this->db = false;
+		}
+
+		public function getDB()
+		{
+			// initialize on first use
+			if( $this->db === false )
+			{
+				$this->db = new SimpleXMLElement('novels.xml', 0, TRUE);
+				$this->db->registerXPathNamespace('am', 'http://arcomage.netvor.sk');
+			}
+
 			return $this->db;
 		}
-		
-		public function GetNovelsList()
-		{
-			$db = $this->db;
-			$result = $db->Query('SELECT DISTINCT `Novelname` FROM `novels` ORDER BY `Novelname` ASC');
-			if (!$result) return false;
-			
-			$names = array();
-			while( $data = $result->Next() )
-				$names[] = $data['Novelname'];
-			return $names;
-		}
-		
-		public function GetChaptersList($novel)
-		{
-			$db = $this->db;
-			$result = $db->Query('SELECT DISTINCT `Chapter` FROM `novels` WHERE `Novelname` = "'.$db->Escape($novel).'" ORDER BY `Chapter` ASC');
-			if (!$result) return false;
-			
-			$names = array();
-			while( $data = $result->Next() )
-				$names[] = $data['Chapter'];
-			return $names;
-		}
-		
-		public function ListPages($novel, $chapter) // get page list, pages with part headings are decorated with them
-		{
-			$db = $this->db;
 
-			$part_query = 'SELECT `Page`, SUBSTRING(`Content`, LOCATE("<h4>Part",`Content`) + 4, LOCATE("</h4>",`Content`) - (LOCATE("<h4>Part",`Content`) + 4)) as `Part` FROM `novels` WHERE `Novelname` = "'.$db->Escape($novel).'" AND `Chapter` = "'.$db->Escape($chapter).'" AND `Content` LIKE "%<h4>Part%</h4>%"';
-			
-			$nonpart_query = 'SELECT `Page`, "" as `Part` FROM `novels` WHERE `Novelname` = "'.$db->Escape($novel).'" AND `Chapter` = "'.$db->Escape($chapter).'" AND `Content` NOT LIKE "%<h4>Part%</h4>%"';
-			
-			$result = $db->Query('SELECT `Page`, `Part` FROM ('.$part_query.' UNION '.$nonpart_query.') as `temp` ORDER BY `Page` ASC');
-			if (!$result) return false;
-			
-			$pages = array();
-			while( $data = $result->Next() )
-				$pages[$data['Page']] = $data['Page'].(($data['Part'] != "") ? " ".$data['Part']: "");
-			
-			return $pages;
-		}
-		
-		public function GetPageContent($novel, $chapter, $page)
+		public function listNovels()
 		{
-			$db = $this->db;
-			$result = $db->Query('SELECT `Content` FROM `novels` WHERE `Novelname` = "'.$db->Escape($novel).'" AND `Chapter` = "'.$db->Escape($chapter).'" AND `Page` = "'.$db->Escape($page).'"');
-			if (!$result) return false;
-			
-			$data = $result->Next();			
-			$content = $data['Content'];
-			
-			return $content;
+			$db = $this->getDB();
+
+			$result = $db->xpath("/am:novels/am:book");
+
+			if( $result === false ) return array();
+
+			$list = array();
+			foreach ($result as $book) $list[] = $book->attributes()->name;
+
+			return $list;
 		}
-		
+
+		public function listChapters($novel)
+		{
+			$db = $this->getDB();
+
+			$result = $db->xpath('/am:novels/am:book[@name = "'.$novel.'"]/am:chapter');
+
+			if( $result === false ) return array();
+
+			$list = array();
+			foreach ($result as $chapter) $list[] = $chapter->attributes()->name;
+
+			return $list;
+		}
+
+		public function listParts($novel, $chapter)
+		{
+			$db = $this->getDB();
+
+			$result = $db->xpath('/am:novels/am:book[@name = "'.$novel.'"]/am:chapter[@name = "'.$chapter.'"]/am:part');
+
+			if( $result === false ) return array();
+
+			$list = array();
+			foreach ($result as $part) $list[] = $part->attributes()->name;
+
+			return $list;
+		}
+
+		public function listPages($novel, $chapter, $part)
+		{
+			$db = $this->getDB();
+
+			$result = $db->xpath('/am:novels/am:book[@name = "'.$novel.'"]/am:chapter[@name = "'.$chapter.'"]/am:part[@name = "'.$part.'"]/am:page');
+
+			if( $result === false ) return array();
+
+			return count($result);
+		}
+
+		public function getPage($novel, $chapter, $part, $page)
+		{
+			$db = $this->getDB();
+
+			$result = $db->xpath('/am:novels/am:book[@name = "'.$novel.'"]/am:chapter[@name = "'.$chapter.'"]/am:part[@name = "'.$part.'"]/am:page[position() = "'.$page.'"]');
+
+			if( $result === false ) return array();
+
+			$result = $result[0];
+
+			return (string)$result;
+		}
 	}
-
 ?>
