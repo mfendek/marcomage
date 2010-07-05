@@ -207,14 +207,7 @@
 	<xsl:param name="from" as="xs:integer" />
 	<xsl:param name="to" as="xs:integer" />
 
-	<xsl:choose>
-		<xsl:when test="$to > $from">
-			<func:result select="concat(am:numbers($from, $to - 1), ',', $to)" />
-		</xsl:when>
-		<xsl:otherwise>
-			<func:result select="$to" />
-		</xsl:otherwise>
-	</xsl:choose>
+	<func:result select="php:functionString('Numbers', $from, $to)" />
 </func:function>
 
 

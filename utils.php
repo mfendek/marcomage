@@ -40,6 +40,15 @@
 	////////////////////////
 	/// XSL Transformations
 
+	function Numbers($from, $to) // creates comma-separated list of all integer values from interval <$from, $to>
+	{
+		$page_list = array();
+		if ($from <= $to)
+			for ($i = $from; $i <= $to; $i++) $page_list[] = $i;
+
+		return implode(",", $page_list);
+	}
+
 	function array2xml(array $array)
 	{
 		$text = "";
