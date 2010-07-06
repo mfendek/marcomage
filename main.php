@@ -470,7 +470,7 @@
 					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
 					
 					// check if this user is allowed to perform game actions
-					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
+					if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or $game->Surrender != '') { $current = 'Game'; break; }
 					
 					// the rest of the checks are done internally
 					$result = $game->PlayCard($player->Name(), $cardpos, 0, 'discard');
@@ -503,7 +503,7 @@
 					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
 					
 					// check if this user is allowed to perform game actions
-					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
+					if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or $game->Surrender != '') { $current = 'Game'; break; }
 					
 					// the rest of the checks are done internally
 					$result = $game->PlayCard($player->Name(), $cardpos, $mode, 'play');
@@ -564,14 +564,7 @@
 					break;
 				}
 				
-				if ($message == 'surrender') // Games -> vs. %s -> Surrender
-				{
-					// only symbolic functionality... rest is handled below
-					$current = "Game";
-					break;
-				}
-				
-				if ($message == 'confirm_surrender') // Games -> vs. %s -> Surrender -> Confirm surrender
+				if ($message == 'surrender') // Games -> vs. %s -> Surrender -> send surrender request to opponent
 				{
 					$gameid = $_POST['CurrentGame'];
 					$game = $gamedb->GetGame($gameid);
@@ -582,27 +575,88 @@
 					// check if this user is allowed to surrender in this game
 					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
 					
-					$result = $game->SurrenderGame($player->Name());
+					$result = $game->RequestSurrender($player->Name());
+					
+					if ($result == 'OK') $information = 'Surrender request sent.';
+					
+					$current = "Game";
+					break;
+				}
+				
+				if ($message == 'cancel_surrender') // Games -> vs. %s -> Surrender -> cancel surrender request to opponent
+				{
+					$gameid = $_POST['CurrentGame'];
+					$game = $gamedb->GetGame($gameid);
+					
+					// check if the game exists
+					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
+					
+					// check if this user is allowed to cancel surrender in this game
+					if ($player->Name() != $game->Surrender) { $current = 'Game'; break; }
+					
+					$result = $game->CancelSurrender();
+					
+					if ($result == 'OK') $information = 'Surrender request cancelled.';
+					
+					$current = "Game";
+					break;
+				}
+				
+				if ($message == 'reject_surrender') // Games -> vs. %s -> Surrender -> reject surrender request from opponent
+				{
+					$gameid = $_POST['CurrentGame'];
+					$game = $gamedb->GetGame($gameid);
+					
+					// check if the game exists
+					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
+					
+					// check if this user is allowed to reject surrender in this game
+					if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or ($player->Name() == $game->Surrender)) { $current = 'Game'; break; }
+					
+					$result = $game->CancelSurrender();
+					
+					if ($result == 'OK') $information = 'Surrender request rejected.';
+					
+					$current = "Game";
+					break;
+				}
+				
+				if ($message == 'accept_surrender') // Games -> vs. %s -> Surrender -> accept surrender from opponent
+				{
+					$gameid = $_POST['CurrentGame'];
+					$game = $gamedb->GetGame($gameid);
+					
+					// check if the game exists
+					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
+					
+					// check if this user is allowed to accept surrender in this game
+					if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or ($player->Name() == $game->Surrender)) { $current = 'Game'; break; }
+					
+					$result = $game->SurrenderGame();
 					
 					if ($result == 'OK')
+					{
+						$information = 'Surrender request accepted.';
 						$replaydb->FinishReplay($game);
+					}
 					
 					if (($result == 'OK') AND ($game->GetGameMode('FriendlyPlay') == "no"))
 					{
-						$exp1 = $game->CalculateExp($player->Name());
-						$exp2 = $game->CalculateExp($game->Winner);
-						$opponent = $playerdb->GetPlayer($game->Winner);
+						$loser = $game->Surrender;
+						$exp1 = $game->CalculateExp($game->Winner);
+						$exp2 = $game->CalculateExp($loser);
+						$opponent = $playerdb->GetPlayer($loser);
 						$opponent_rep = $opponent->GetSettings()->GetSetting('Reports');
 						$player_rep = $player->GetSettings()->GetSetting('Reports');
 						
 						// update score
-						$score1 = $scoredb->GetScore($player->Name());
-						$score1->ScoreData->Losses++;
+						$score1 = $scoredb->GetScore($game->Winner);
+						$score1->ScoreData->Wins++;
 						$levelup1 = $score1->AddExp($exp1['exp']);
 						$score1->SaveScore();
 						
-						$score2 = $scoredb->GetScore($game->Winner);
-						$score2->ScoreData->Wins++;
+						$score2 = $scoredb->GetScore($loser);
+						$score2->ScoreData->Losses++;
 						$levelup2 = $score2->AddExp($exp2['exp']);
 						$score2->SaveScore();
 						
@@ -3443,6 +3497,7 @@ case 'Game':
 	$params['game']['Outcome'] = $game->Outcome();
 	$params['game']['EndType'] = $game->EndType;
 	$params['game']['Winner'] = $game->Winner;
+	$params['game']['Surrender'] = $game->Surrender;
 	$params['game']['PlayerName'] = $player->Name();
 	$params['game']['OpponentName'] = $opponent->Name();
 	$params['game']['Current'] = $game->Current;
@@ -3590,7 +3645,6 @@ case 'Game':
 	// - <game state indicator>
 	$params['game']['opp_isOnline'] = (($opponent->isOnline()) ? 'yes' : 'no');
 	$params['game']['opp_isDead'] = (($opponent->isDead()) ? 'yes' : 'no');
-	$params['game']['surrender'] = ((isset($_POST["surrender"])) ? 'yes' : 'no');
 	$params['game']['finish_game'] = ((time() - strtotime($game->LastAction) >= 60*60*24*7*3 and $game->Current != $player->Name()) ? 'yes' : 'no');
 
 	// your resources and tower

@@ -306,6 +306,7 @@
 		public $Current; // name of the player whose turn it currently is
 		public $Round; // incremented after each play/discard action
 		public $Winner; // if defined, name of the winner
+		public $Surrender; // if defined, name of the player who requested to surrender
 		public $EndType; // game end type: 'Pending', 'Construction', 'Destruction', 'Resource', 'Timeout', 'Draw', 'Surrender', 'Abort', 'Abandon'
 		public $LastAction; // timestamp of the most recent action
 		public $GameData; // array (name => CGamePlayerData)
@@ -389,7 +390,7 @@
 		public function LoadGame()
 		{
 			$db = $this->Games->getDB();
-			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `EndType`, `Last Action`, `Data`, `Note1`, `Note2`, `GameModes` FROM `games` WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
+			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Surrender`, `EndType`, `Last Action`, `Data`, `Note1`, `Note2`, `GameModes` FROM `games` WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
@@ -398,6 +399,7 @@
 			$this->Current = $data['Current'];
 			$this->Round = $data['Round'];
 			$this->Winner = $data['Winner'];
+			$this->Surrender = $data['Surrender'];
 			$this->EndType = $data['EndType'];
 			$this->LastAction = $data['Last Action'];
 			$this->Note1 = $data['Note1'];
@@ -412,7 +414,7 @@
 		public function SaveGame()
 		{
 			$db = $this->Games->getDB();
-			$result = $db->Query('UPDATE `games` SET `State` = "'.$db->Escape($this->State).'", `Current` = "'.$db->Escape($this->Current).'", `Round` = "'.$db->Escape($this->Round).'", `Winner` = "'.$db->Escape($this->Winner).'", `EndType` = "'.$db->Escape($this->EndType).'", `Last Action` = "'.$db->Escape($this->LastAction).'", `Data` = "'.$db->Escape(serialize($this->GameData)).'", `Note1` = "'.$db->Escape($this->Note1).'", `Note2` = "'.$db->Escape($this->Note2).'" WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
+			$result = $db->Query('UPDATE `games` SET `State` = "'.$db->Escape($this->State).'", `Current` = "'.$db->Escape($this->Current).'", `Round` = "'.$db->Escape($this->Round).'", `Winner` = "'.$db->Escape($this->Winner).'", `Surrender` = "'.$db->Escape($this->Surrender).'", `EndType` = "'.$db->Escape($this->EndType).'", `Last Action` = "'.$db->Escape($this->LastAction).'", `Data` = "'.$db->Escape(serialize($this->GameData)).'", `Note1` = "'.$db->Escape($this->Note1).'", `Note2` = "'.$db->Escape($this->Note2).'" WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
 			if (!$result) return false;
 			
 			return true;
@@ -472,19 +474,41 @@
 			$p2->Hand = $this->DrawHand_norare($p2->Deck);
 		}
 		
-		public function SurrenderGame($playername)
+		public function SurrenderGame()
 		{
 			// only allow surrender if the game is still on
-			if ($this->State != 'in progress') return 'Action not allowed!';
+			if ($this->State != 'in progress' OR $this->Surrender == '') return 'Action not allowed!';
 			
 			$this->State = 'finished';
-			$this->Winner = ($this->Player1 == $playername) ? $this->Player2 : $this->Player1;
+			$this->Winner = ($this->Player1 == $this->Surrender) ? $this->Player2 : $this->Player1;
 			$this->EndType = 'Surrender';
 			$this->SaveGame();
 			
 			return 'OK';
 		}
-		
+
+		public function RequestSurrender($playername)
+		{
+			// only allow to request for surrender if the game is still on
+			if ($this->State != 'in progress' OR $this->Surrender != '') return 'Action not allowed!';
+
+			$this->Surrender = $playername;
+			$this->SaveGame();
+
+			return 'OK';
+		}
+
+		public function CancelSurrender()
+		{
+			// only allow to cancel surrender request if the game is still on
+			if ($this->State != 'in progress' OR $this->Surrender == '') return 'Action not allowed!';
+
+			$this->Surrender = '';
+			$this->SaveGame();
+
+			return 'OK';
+		}
+
 		public function AbortGame($playername)
 		{
 			// only allow surrender if the game is still on

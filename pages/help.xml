@@ -74,7 +74,7 @@ Destruction victory > Tower bulding victory > Resource victory > Timeout victory
 <ul>
 <li>
 <b>surrender</b><br/>
-Each player can use the "Surrender" button to end the game at any time. If your opponent surrenders, the game will be ended, you'll get one victory point and opponent one loss point.
+Each player can use the "Surrender" button to send a surrender request to his opponent. Surrender request can be cancelled until the opponent accepts or rejects the request. The game will be ended only if he accepts. In such case, player who sent the surrender request will get one loss point and his opponent will get one victory point.
 </li>
 <li>
 <b>abort</b><br/>

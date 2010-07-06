@@ -52,8 +52,8 @@
 	<tr valign="top" class="hand">
 		<xsl:for-each select="$param/MyHand/*">
 			<td align="center">
-				<!--  display discard button -->
-				<xsl:if test="($param/GameState = 'in progress') and ($param/Current = $param/PlayerName)">
+				<!--  display discard button (buttons are locked when surrender request is active) -->
+				<xsl:if test="($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = ''">
 					<input type="submit" name="discard_card[{position()}]" value="Discard"/>
 				</xsl:if>
 
@@ -76,8 +76,8 @@
 				<!-- display card -->
 				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
 				
-				<!-- play button and card modes -->
-				<xsl:if test="Playable = 'yes'">
+				<!-- play button and card modes (buttons are locked when surrender request is active) -->
+				<xsl:if test="Playable = 'yes' and $param/Surrender = ''">
 					<input type="submit" name="play_card[{position()}]" value="Play"/>
 					<xsl:if test="Modes &gt; 0">
 						<select name="card_mode[{position()}]" class="card_modes" size="1">
@@ -136,6 +136,12 @@
 				<td colspan="2">
 					<p class="info_label">
 						<xsl:choose>
+							<xsl:when test="$param/Surrender = $param/OpponentName">
+								<span class="player"><xsl:value-of select="$param/OpponentName"/> wishes to surrender</span>
+							</xsl:when>
+							<xsl:when test="$param/Surrender = $param/PlayerName">
+								<span class="opponent">You have requested to surrender</span>
+							</xsl:when>
 							<xsl:when test="$param/Current = $param/PlayerName">
 								<span class="player"><xsl:text>It is your turn</xsl:text></span>
 							</xsl:when>
@@ -164,8 +170,12 @@
 						<xsl:when test="$param/finish_game = 'yes'">
 							<input type="submit" name="finish_game" value="Finish game" />
 						</xsl:when>
-						<xsl:when test="$param/surrender = 'yes'">
-							<input type="submit" name="confirm_surrender" value="Confirm surrender" />
+						<xsl:when test="$param/Surrender = $param/OpponentName">
+							<input type="submit" name="accept_surrender" value="Accept" />
+							<input type="submit" name="reject_surrender" value="Reject" />
+						</xsl:when>
+						<xsl:when test="$param/Surrender = $param/PlayerName">
+							<input type="submit" name="cancel_surrender" value="Cancel surrender" />
 						</xsl:when>
 						<xsl:otherwise>
 							<input type="submit" name="surrender" value="Surrender" />

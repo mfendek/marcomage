@@ -65,6 +65,7 @@ CREATE TABLE `games` (
   `Current` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `Round` int(3) unsigned NOT NULL DEFAULT '1',
   `Winner` char(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `Surrender` char(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `EndType` enum('Pending','Surrender','Abort','Abandon','Destruction','Draw','Construction','Resource','Timeout') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Pending',
   `Last Action` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Data` text COLLATE utf8_unicode_ci NOT NULL,
