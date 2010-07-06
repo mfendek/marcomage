@@ -42,11 +42,8 @@
 
 	function Numbers($from, $to) // creates comma-separated list of all integer values from interval <$from, $to>
 	{
-		$page_list = array();
-		if ($from <= $to)
-			for ($i = $from; $i <= $to; $i++) $page_list[] = $i;
-
-		return implode(",", $page_list);
+		if ($from <= $to) return implode(",", array_keys(array_fill($from, $to - $from + 1, 0)));
+		else return "";
 	}
 
 	function array2xml(array $array)
