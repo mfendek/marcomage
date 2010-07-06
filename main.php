@@ -13,6 +13,7 @@
 	require_once('CLogin.php');
 	require_once('CScore.php');
 	require_once('CCard.php');
+	require_once('CKeyword.php');
 	require_once('CConcept.php');
 	require_once('CDeck.php');
 	require_once('CGame.php');
@@ -38,6 +39,7 @@
 	$logindb = new CLogin($db);
 	$scoredb = new CScores($db);
 	$carddb = new CCards();
+	$keyworddb = new CKeywords();
 	$conceptdb = new CConcepts($db);
 	$deckdb = new CDecks($db);
 	$gamedb = new CGames($db);

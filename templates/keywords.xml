@@ -1,119 +1,588 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--MArcomage keywords database (XML)-->
 <keywords xmlns="http://arcomage.netvor.sk">
 	<keyword>
 		<name>Alliance</name>
 		<description>Basic gain 17, bonus gain 3, side-effect (Arcane knowledge): additional Production x2.</description>
+		<code><![CDATA[
+					$ammount = $this->KeywordCount($mydata->Hand, "Alliance") - 1; // we don't count the played card
+					$token_index = array_search("Alliance", $mydata->TokenNames);
+					
+					if ($token_index)
+					{
+						$mydata->TokenValues[$token_index]+= 17 + $ammount * 3; // basic gain + bonus gain
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$bricks_production*= 2;
+							$gems_production*= 2;
+							$recruits_production*= 2;
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
+					}
+]]></code>
 	</keyword>
 	<keyword>
 		<name>Aqua</name>
 		<description>If an Aqua card is played after playing a different, non-common Aqua card, it raises your tower and wall by 5, opponent's stock is reduced by 3.</description>
+		<code><![CDATA[if ($mylast_card->HasKeyword("Aqua") AND $mylast_action == 'play' AND $mylast_card->GetClass() != 'Common' AND $cardid != $mylast_card->GetID()) { $mydata->Tower+= 5; $mydata->Wall+= 5; $hisdata->Bricks-= 3; $hisdata->Gems-= 3; $hisdata->Recruits-= 3; }]]></code>
 	</keyword>
 	<keyword>
 		<name>Banish</name>
 		<description>Discards one random Durable card from enemy hand (if there is one). Common cards can discard common and uncommon cards, uncommon cards can discard any rarity. Rare cards can also discard any rarity, but they have additional effect (player gains stock equal to discarded card cost). Cards with highest discardable rarity are preferred. Cards that cannot be discarded by played card are not considered targets for discard.</description>
+		<code><![CDATA[
+					// target card is discarded only if it has same or lower rarity then the played card
+					$rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
+					$storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
+					$played_rank = $rarities[$card->GetClass()];
+					
+					for ($i = 1; $i <= 8; $i++)
+					{
+						$dis_card = $carddb->GetCard($hisdata->Hand[$i]);
+						$dis_class = $dis_card->GetClass();
+						$dis_rank = $rarities[$dis_class];
+						
+						// pick only cards that can be discarded by played card
+						if (($dis_card->HasKeyword("Durable")) AND ($dis_rank <= ($played_rank + 1))) $storage[$dis_class][] = $i;
+					}
+					
+					if ((count($storage['Common']) + count($storage['Uncommon']) + count($storage['Rare'])) > 0)
+					{
+						// pick preferably cards with higher rarity, but choose random card within the rarity group
+						shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
+						$storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
+						$discarded_pos = array_pop($storage_temp);
+						
+						// if played card was rare gain bonus stock based on discarded card cost
+						if ($card->GetClass() == 'Rare')
+						{
+							$dis_card = $carddb->GetCard($hisdata->Hand[$discarded_pos]);
+							$mydata->Bricks+= $dis_card->GetResources('Bricks');
+							$mydata->Gems+= $dis_card->GetResources('Gems');
+							$mydata->Recruits+= $dis_card->GetResources('Recruits');
+						}
+						$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_random');
+						$hisdata->NewCards[$discarded_pos] = 1;
+					}
+]]></code>
 	</keyword>
 	<keyword>
 		<name>Barbarian</name>
 		<description>Basic gain 4, bonus gain 15, side-effect (Devastation): enemy wall will be additionally lowered by ammount based on played card rarity (Common - 3 , Uncommon - 8, Rare - 15).</description>
+		<code><![CDATA[
+					$ammount = $this->KeywordCount($mydata->Hand, "Barbarian") - 1; // we don't count the played card
+					$token_index = array_search("Barbarian", $mydata->TokenNames);
+					
+					if ($token_index)
+					{
+						$mydata->TokenValues[$token_index]+= 4 + $ammount * 15; // basic gain + bonus gain
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$damage = array("Common" => 3, "Uncommon" => 8, "Rare" => 15);
+							$hisdata->Wall-= $damage[$card->GetClass()];
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
+					}
+]]></code>
 	</keyword>
 	<keyword>
 		<name>Brigand</name>
 		<description>Basic gain 10, bonus gain 10, side-effect (Robbery): additional stock will be stolen from opponent, ammount based on played card rarity (Common - 1 stock, Uncommon - 2 stock, Rare - 3 stock).</description>
+		<code><![CDATA[
+					$ammount = $this->KeywordCount($mydata->Hand, "Brigand") - 1; // we don't count the played card
+					$token_index = array_search("Brigand", $mydata->TokenNames);
+					
+					if ($token_index)
+					{
+						$mydata->TokenValues[$token_index]+= 10 + $ammount * 10; // basic gain + bonus gain
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$stock = array("Common" => 1, "Uncommon" => 2, "Rare" => 3);
+							$gained = $stock[$card->GetClass()];
+							$mydata->Bricks+= $gained;
+							$mydata->Gems+= $gained;
+							$mydata->Recruits+= $gained;
+							$hisdata->Bricks-= $gained;
+							$hisdata->Gems-= $gained;
+							$hisdata->Recruits-= $gained;
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
+					}
+]]></code>
 	</keyword>
 	<keyword>
 		<name>Beast</name>
 		<description>Basic gain 14, bonus gain 10, side-effect (Fierce attack): additional damage will be inflicted upon your enemy based on played card rarity (Common - 2 , Uncommon - 5, Rare - 10).</description>
+		<code><![CDATA[
+					$ammount = $this->KeywordCount($mydata->Hand, "Beast") - 1; // we don't count the played card
+					$token_index = array_search("Beast", $mydata->TokenNames);
+					
+					if ($token_index)
+					{
+						$mydata->TokenValues[$token_index]+= 14 + $ammount * 10; // basic gain + bonus gain
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$damage = array("Common" => 2, "Uncommon" => 5, "Rare" => 10);
+							$this->Attack($damage[$card->GetClass()], $hisdata->Tower, $hisdata->Wall);
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
+					}
+]]></code>
 	</keyword>
 	<keyword>
 		<name>Burning</name>
 		<description>Basic gain 3, bonus gain 11, side-effect (Fire blast): replaces one random non-Burning card from enemy hand (if there is one) with Searing fire. Can only replace a card with same or lower rarity as was the played card, but cards with highest replacable rarity are preferred. Cards that cannot be replaced by played card are not considered targets for replace.</description>
+		<code><![CDATA[
+					$ammount = $this->KeywordCount($mydata->Hand, "Burning") - 1; // we don't count the played card
+					$token_index = array_search("Burning", $mydata->TokenNames);
+					
+					if ($token_index)
+					{
+						$mydata->TokenValues[$token_index]+= 3 + $ammount * 11; // basic gain + bonus gain
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							// target card is discarded only if it has same or lower rarity then the played card
+							$rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
+							$storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
+							$played_rank = $rarities[$card->GetClass()];
+							
+							for ($i = 1; $i <= 8; $i++)
+							{
+								$dis_card = $carddb->GetCard($hisdata->Hand[$i]);
+								$dis_class = $dis_card->GetClass();
+								$dis_rank = $rarities[$dis_class];
+								
+								// pick only cards that can be discarded by played card
+								if ((!$dis_card->HasKeyword("Burning")) AND ($dis_rank <= $played_rank)) $storage[$dis_class][] = $i;
+							}
+							
+							if ((count($storage['Common']) + count($storage['Uncommon']) + count($storage['Rare'])) > 0)
+							{
+								// pick preferably cards with higher rarity, but choose random card within the rarity group
+								shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
+								$storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
+								$discarded_pos = array_pop($storage_temp);
+								$hisdata->Hand[$discarded_pos] = 248;
+								$hisdata->NewCards[$discarded_pos] = 1;
+							}
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
+					}
+]]></code>
 	</keyword>
 	<keyword>
 		<name>Charge</name>
 		<description>when card has this keyword, it also has a number next to this keyword. When such card is played and the opponent's wall (after the standard attack) is 0, he will receive additional damage equal to number next to charge.</description>
+		<code><![CDATA[$charge_damage = $this->KeywordValue($card->GetKeywords(), 'Charge'); if ($hisdata->Wall == 0) $hisdata->Tower-= $charge_damage;]]></code>
 	</keyword>
 	<keyword>
 		<name>Destruction</name>
 		<description>If an Destruction card is played after playing a different, non-common Destruction card, it reduces enemy's highest facility by 1 when it is greater then 3, otherwise it reduces opponent's highest resurce by 10.</description>
+		<code><![CDATA[
+					if (($mylast_card->HasKeyword("Destruction")) AND ($mylast_action == 'play') AND ($mylast_card->GetClass() != 'Common') AND ($cardid != $mylast_card->GetID()))
+					{
+						$max = max($hisdata->Quarry, $hisdata->Magic, $hisdata->Dungeons);
+						if ($max > 3)
+						{
+							$facilities = array("Quarry" => $hisdata->Quarry, "Magic" => $hisdata->Magic, "Dungeons" => $hisdata->Dungeons);
+							$temp = array();
+							foreach ($facilities as $facility => $f_value)
+								if ($f_value == $max) $temp[$facility] = $f_value;
+							$chosen = array_rand($temp);						
+							$hisdata->$chosen--;
+						}
+						else
+						{
+							$max = max($hisdata->Bricks, $hisdata->Gems, $hisdata->Recruits);
+							$resources = array("Bricks" => $hisdata->Bricks, "Gems" => $hisdata->Gems, "Recruits" => $hisdata->Recruits);
+							$temp = array();
+							foreach ($resources as $resource => $r_value)
+								if ($r_value == $max) $temp[$resource] = $r_value;
+							$chosen = array_rand($temp);						
+							$hisdata->$chosen-= 10;
+						}
+					}
+]]></code>
 	</keyword>
 	<keyword>
 		<name>Dragon</name>
 		<description>If there is another Dragon in hand, next card will be Dragon egg (if there is no Dragon egg card in hand) or Gems production x2 (if there already is a Dragon egg card in hand).</description>
+		<code><![CDATA[
+					if ($this->KeywordCount($mydata->Hand, "Dragon") > 1)
+					{
+						$tmp = 0;
+						for ($i = 1; $i <= 8; $i++) if ($mydata->Hand[$i] == 131) $tmp++;
+						
+						if ($tmp > 0) $gems_production*= 2; // when there already is a dragon egg on hand add gems production
+						else $nextcard = 131; // add dragon egg otherwise
+					}
+]]></code>
 	</keyword>
 	<keyword>
 		<name>Durable</name>
 		<description>Card stays on hand.</description>
+		<code><![CDATA[$nextcard = $cardid;]]></code>
 	</keyword>
 	<keyword>
 		<name>Enduring</name>
 		<description>when card has this keyword, it also has a number next to this keyword. When such card is played and the last card played was same as this one, opponent will suffer additional damage equal to number next to Enduring.</description>
+		<code><![CDATA[if ($mydata->LastCard[$mylastcardindex] == $cardid AND $mylast_action == 'play') { $bonus_damage = $this->KeywordValue($card->GetKeywords(), 'Enduring'); $this->Attack($bonus_damage, $hisdata->Tower, $hisdata->Wall); }]]></code>
 	</keyword>
 	<keyword>
 		<name>Far sight</name>
 		<description>if matching card in opponent's hand is revealed, effect based on matching card cost and played card rarity (bricks only cost - raise tower (C - 2, U - 6, R - 18), gems only cost - raise lowest token counter (C - 10, U - 30, R - 90), recruits only cost - raise wall (C - 3, U - 9, R - 27), mixed cost - raise stock (C - 1, U - 3, R - 9), zero cost - no effect). After optional effect opponent's cards are revealed based on played card rarity (C - matching card and it's neighbours, U - matching card and it's neighbours and their neighbours, R - whole hand). Optional effect will always trigger in a game with disabled Hidden cards mode.</description>
+		<code><![CDATA[
+					if (!$hidden_cards OR isset($hisdata->Revealed[$cardpos])) // bonus effect
+					{
+						$cur_card = $carddb->GetCard($hisdata->Hand[$cardpos]);
+						$bricks = $cur_card->GetResources('Bricks');
+						$gems = $cur_card->GetResources('Gems');
+						$recruits = $cur_card->GetResources('Recruits');
+						$rarities = array("Common" => 1, "Uncommon" => 3, "Rare" => 9);
+						$factor = $rarities[$card->GetClass()];
+						
+						if ($bricks > 0 AND $gems == 0 AND $recruits == 0) $mydata->Tower+= 2 * $factor; // raise tower
+						elseif ($bricks == 0 AND $gems > 0 AND $recruits == 0)
+						{
+							if (count(array_diff($mydata->TokenNames, array('none'))) > 0) // raise lowest token counter
+							{
+								$min = 1000;
+								$chosen = array();
+								$my_tokens = array_diff($mydata->TokenNames, array('none')); // remove inactive token counters
+								foreach ($my_tokens as $i => $token_name) $min = min($min, $mydata->TokenValues[$i]);
+								foreach ($my_tokens as $i => $token_name) if ($mydata->TokenValues[$i] == $min) $chosen[] = $i;
+								$chosen_index = $chosen[array_rand($chosen)];
+								$mydata->TokenValues[$chosen_index]+= 10 * $factor;
+							}
+						}
+						elseif ($bricks == 0 AND $gems == 0 AND $recruits > 0) $mydata->Wall+= 3 * $factor; // raise wall
+						elseif ($bricks == 0 AND $gems == 0 AND $recruits == 0) {} // no effect
+						else { $mydata->Bricks+= $factor; $mydata->Gems+= $factor; $mydata->Recruits+= $factor; } // raise stock
+					}
+					
+					// reveal opponent's cards based on played card rarity
+					$offsets = array("Common" => 1, "Uncommon" => 2, "Rare" => 8);
+					$offset = $offsets[$card->GetClass()];
+					$start = max($cardpos - $offset, 1);
+					$finish = min($cardpos + $offset, 8);
+					
+					for ($i = $start; $i <= $finish; $i++) $hisdata->Revealed[$i] = 1;
+]]></code>
 	</keyword>
 	<keyword>
 		<name>Flare attack</name>
 		<description>when played, one player receives Searing fire cards at odd card positions, while the other player receives Searing fire cards at even card positions. Who receives odd and who even positions is resolved randomly. The position of the played card is ignored and Burning cards are not replaced by Searing fires. Rare cards aren't replaced, unless the played card is a rare.</description>
+		<code><![CDATA[
+					$selector = mt_rand(0,1);
+					for ($i = 1; $i <= 4; $i++)
+					{
+						// current index (odd and even positions)
+						$mine = 2*$i - $selector;
+						$his = 2*$i - (1 - $selector);
+						
+						$mytarget = $carddb->GetCard($mydata->Hand[$mine]);
+						$histarget = $carddb->GetCard($hisdata->Hand[$his]);
+						
+						$my_rarity = $mytarget->GetClass();
+						$his_rarity = $histarget->GetClass();
+						
+						// played card position is ignored, does not discard burning cards (rares cards can only be rares)
+						if (($mine != $cardpos) AND (!$mytarget->HasKeyword("Burning")) AND (($my_rarity != 'Rare') OR ($my_rarity == $card->GetClass())))
+						{
+							$mydata->Hand[$mine] = 248;
+							$mydata->NewCards[$mine] = 1;
+						}
+						
+						if ((!$histarget->HasKeyword("Burning")) AND (($his_rarity != 'Rare') OR ($his_rarity == $card->GetClass())))
+						{
+							$hisdata->Hand[$his] = 248;
+							$hisdata->NewCards[$his] = 1;
+						}
+					}
+]]></code>
 	</keyword>
 	<keyword>
 		<name>Frenzy</name>
 		<description>If there is another Frenzy card in hand, opponent receives bonus damage (recruits cost of the played card).</description>
+		<code><![CDATA[if ($this->KeywordCount($mydata->Hand, "Frenzy") > 1) $this->Attack($card->GetResources('Recruits'), $hisdata->Tower, $hisdata->Wall);]]></code>
 	</keyword>
 	<keyword>
 		<name>Holy</name>
 		<description>Basic gain 25, bonus gain 5, side-effect (Purification): replaces one random Undead card from enemy hand (if there is one) with Purified ashes. Can only replace a card with same or lower rarity as was the played card, but cards with highest replacable rarity are preferred. Cards that cannot be replaced by played card are not considered targets for replace. You will get additional stock based on replaced card rarity (Common - 1 stock, Uncommon - 2 stock, Rare - 3 stock).</description>
+		<code><![CDATA[
+					$ammount = $this->KeywordCount($mydata->Hand, "Holy") - 1; // we don't count the played card
+					$token_index = array_search("Holy", $mydata->TokenNames);
+					
+					if ($token_index)
+					{
+						$mydata->TokenValues[$token_index]+= 25 + $ammount * 5; // basic gain + bonus gain
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							// target card is discarded only if it has same or lower rarity then the played card
+							$rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
+							$storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
+							$played_rank = $rarities[$card->GetClass()];
+							
+							for ($i = 1; $i <= 8; $i++)
+							{
+								$dis_card = $carddb->GetCard($hisdata->Hand[$i]);
+								$dis_class = $dis_card->GetClass();
+								$dis_rank = $rarities[$dis_class];
+								
+								// pick only cards that can be discarded by played card
+								if (($dis_card->HasKeyword("Undead")) AND ($dis_rank <= $played_rank)) $storage[$dis_class][] = $i;
+							}
+							
+							if ((count($storage['Common']) + count($storage['Uncommon']) + count($storage['Rare'])) > 0)
+							{
+								// pick preferably cards with higher rarity, but choose random card within the rarity group
+								shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
+								$storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
+								$discarded_pos = array_pop($storage_temp);
+								$dis_rarity = $carddb->GetCard($hisdata->Hand[$discarded_pos])->GetClass();
+								$hisdata->Hand[$discarded_pos] = 381;
+								$hisdata->NewCards[$discarded_pos] = 1;
+								$stock = array("Common" => 1, "Uncommon" => 2, "Rare" => 3);
+								$gained = $stock[$dis_rarity];
+								$mydata->Bricks+= $gained;
+								$mydata->Gems+= $gained;
+								$mydata->Recruits+= $gained;
+							}
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
+					}
+]]></code>
 	</keyword>
 	<keyword>
 		<name>Illusion</name>
 		<description>If an Illusion card is played after playing a different, non-common Illusion card, next card will be a rare card from enemy deck.</description>
+		<code><![CDATA[if ($mylast_card->HasKeyword("Illusion") AND $mylast_action == 'play' AND $mylast_card->GetClass() != 'Common' AND $cardid != $mylast_card->GetID()) $nextcard = $this->DrawCard($hisdata->Deck->Rare, $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
 	</keyword>
 	<keyword>
 		<name>Legend</name>
 		<description>If there is a rare card in hand (other then played card) raises lowest facility by one.</description>
+		<code><![CDATA[
+					$found = false;
+					for ($i = 1; $i <= 8; $i++)
+						if (($i != $cardpos) AND !$found) // played card does not count
+						{
+							$cur_card = $carddb->GetCard($mydata->Hand[$i]);
+							if ($cur_card->GetClass() == "Rare") $found = true;
+						}
+					
+					if ($found)
+					{
+						$min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
+						$facilities = array("Quarry" => $mydata->Quarry, "Magic" => $mydata->Magic, "Dungeons" => $mydata->Dungeons);
+						$temp = array();
+						foreach ($facilities as $facility => $f_value)
+							if ($f_value == $min) $temp[$facility] = $f_value;
+						$chosen = array_rand($temp);						
+						$mydata->$chosen++;
+					}
+]]></code>
 	</keyword>
 	<keyword>
 		<name>Mage</name>
 		<description>Basic gain 10, bonus gain 3, side-effect (Willpower): If (Magic - Enemy magic &lt; 2) Magic: +1 else Gems: +10</description>
+		<code><![CDATA[
+					$ammount = $this->KeywordCount($mydata->Hand, "Mage") - 1; // we don't count the played card
+					$token_index = array_search("Mage", $mydata->TokenNames);
+					
+					if ($token_index)
+					{
+						$mydata->TokenValues[$token_index]+= 10 + $ammount * 3; // basic gain + bonus gain
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							if ($mydata->Magic <= ($hisdata->Magic + 1)) $mydata->Magic+= 1;
+							else $mydata->Gems+= 10;
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
+					}
+]]></code>
 	</keyword>
 	<keyword>
 		<name>Nature</name>
 		<description>If an Nature card is played after playing a different, non-common Nature card, next card will be a rare Nature card.</description>
+		<code><![CDATA[if ($mylast_card->HasKeyword("Nature") AND $mylast_action == 'play' AND $mylast_card->GetClass() != 'Common' AND $cardid != $mylast_card->GetID()) $nextcard = $this->DrawCard($carddb->GetList(array('class'=>"Rare", 'keyword'=>"Nature")), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
 	</keyword>
 	<keyword>
 		<name>Quick</name>
 		<description>Player gets an additional turn, but no production this turn, it is impossible to draw a rare card after a Quick card is played.</description>
+		<code><![CDATA[$nextplayer = $playername; $bricks_production = 0; $gems_production = 0; $recruits_production = 0;]]></code>
 	</keyword>
 	<keyword>
 		<name>Rebirth</name>
 		<description>when played and number of Burning cards in game is greater then 3, the card stays on hand and you will get additional 16 gems.</description>
+		<code><![CDATA[if (($this->KeywordCount($mydata->Hand, "Burning") + $this->KeywordCount($hisdata->Hand, "Burning")) > 3) $nextcard = $cardid; $mydata->Gems+= 16;]]></code>
 	</keyword>
 	<keyword>
 		<name>Restoration</name>
 		<description>If an Restoration card is played after playing a different, non-common Restoration card, it raises your lowest facility by 1 when your facility is below 3, otherwise it gives you 10 of your lowest resource.</description>
+		<code><![CDATA[
+					if ($mylast_card->HasKeyword("Restoration") AND $mylast_action == 'play' AND $mylast_card->GetClass() != 'Common' AND $cardid != $mylast_card->GetID())
+					{
+						$min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
+						if ($min < 3)
+						{
+							$facilities = array("Quarry" => $mydata->Quarry, "Magic" => $mydata->Magic, "Dungeons" => $mydata->Dungeons);
+							$temp = array();
+							foreach ($facilities as $facility => $f_value)
+								if ($f_value == $min) $temp[$facility] = $f_value;
+							$chosen = array_rand($temp);						
+							$mydata->$chosen++;
+						}
+						else
+						{
+							$min = min($mydata->Bricks, $mydata->Gems, $mydata->Recruits);
+							$resources = array("Bricks" => $mydata->Bricks, "Gems" => $mydata->Gems, "Recruits" => $mydata->Recruits);
+							$temp = array();
+							foreach ($resources as $resource => $r_value)
+								if ($r_value == $min) $temp[$resource] = $r_value;
+							$chosen = array_rand($temp);						
+							$mydata->$chosen+= 10;
+						}
+					}
+]]></code>
 	</keyword>
 	<keyword>
 		<name>Skirmisher</name>
 		<description>Discards one random Charge card from enemy hand (if there is one). Common cards can discard common and uncommon cards, uncommon cards can discard any rarity. Rare cards can also discard any rarity, but they have additional effect (opponent loses stock equal to discarded card cost). Cards with highest discardable rarity are preferred. Cards that cannot be discarded by played card are not considered targets for discard.</description>
+		<code><![CDATA[
+					// target card is discarded only if it has same or lower rarity then the played card
+					$rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
+					$storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
+					$played_rank = $rarities[$card->GetClass()];
+					
+					for ($i = 1; $i <= 8; $i++)
+					{
+						$dis_card = $carddb->GetCard($hisdata->Hand[$i]);
+						$dis_class = $dis_card->GetClass();
+						$dis_rank = $rarities[$dis_class];
+						
+						// pick only cards that can be discarded by played card
+						if (($dis_card->HasKeyword("Charge")) AND ($dis_rank <= ($played_rank + 1))) $storage[$dis_class][] = $i;
+					}
+					
+					if ((count($storage['Common']) + count($storage['Uncommon']) + count($storage['Rare'])) > 0)
+					{
+						// pick preferably cards with higher rarity, but choose random card within the rarity group
+						shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
+						$storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
+						$discarded_pos = array_pop($storage_temp);
+						
+						// if played card was rare lower opponent stock based on discarded card cost
+						if ($card->GetClass() == 'Rare')
+						{
+							$dis_card = $carddb->GetCard($hisdata->Hand[$discarded_pos]);
+							$hisdata->Bricks-= $dis_card->GetResources('Bricks');
+							$hisdata->Gems-= $dis_card->GetResources('Gems');
+							$hisdata->Recruits-= $dis_card->GetResources('Recruits');
+						}
+						$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_random');
+						$hisdata->NewCards[$discarded_pos] = 1;
+					}
+]]></code>
 	</keyword>
 	<keyword>
 		<name>Soldier</name>
 		<description>Basic gain 15, bonus gain 10, side-effect (Veteran troops): half of the recruits cost of the played card will be returned.</description>
+		<code><![CDATA[
+					$ammount = $this->KeywordCount($mydata->Hand, "Soldier") - 1; // we don't count the played card
+					$token_index = array_search("Soldier", $mydata->TokenNames);
+					
+					if ($token_index)
+					{
+						$mydata->TokenValues[$token_index]+= 15 + $ammount * 10; // basic gain + bonus gain
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$mydata->Recruits+= round($card->CardData->Recruits / 2);
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
+					}
+]]></code>
 	</keyword>
 	<keyword>
 		<name>Swift</name>
 		<description>Player gets additional turn, also with production, it is impossible to draw a rare card after a Swift card is played.</description>
+		<code><![CDATA[$nextplayer = $playername;]]></code>
 	</keyword>
 	<keyword>
 		<name>Titan</name>
 		<description>Basic gain 22, bonus gain 5, side-effect (Titan's will): next card received will be a Titan.</description>
+		<code><![CDATA[
+					$ammount = $this->KeywordCount($mydata->Hand, "Titan") - 1; // we don't count the played card
+					$token_index = array_search("Titan", $mydata->TokenNames);
+					
+					if ($token_index)
+					{
+						$mydata->TokenValues[$token_index]+= 22 + $ammount * 5; // basic gain + bonus gain
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Titan")), $mydata->Hand, $cardpos, 'DrawCard_list');
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
+					}
+]]></code>
 	</keyword>
 	<keyword>
 		<name>Undead</name>
 		<description>Basic gain 5, bonus gain 5, side-effect (Eternal servitude): third of the total cost of the played card will be returned.</description>
+		<code><![CDATA[
+					$ammount = $this->KeywordCount($mydata->Hand, "Undead") - 1; // we don't count the played card
+					$token_index = array_search("Undead", $mydata->TokenNames);
+					
+					if ($token_index)
+					{
+						$mydata->TokenValues[$token_index]+= 5 + $ammount * 5; // basic gain + bonus gain
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$mydata->Bricks+= round($card->CardData->Bricks / 3);
+							$mydata->Gems+= round($card->CardData->Gems / 3);
+							$mydata->Recruits+= round($card->CardData->Recruits / 3);
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
+					}
+]]></code>
 	</keyword>
 	<keyword>
 		<name>Unliving</name>
 		<description>Basic gain 9, bonus gain 8, side-effect (Artificial workers): additional bricks production based on played card rarity (Common - x2, Uncommon - x3, Rare - x4).</description>
+		<code><![CDATA[
+					$ammount = $this->KeywordCount($mydata->Hand, "Unliving") - 1; // we don't count the played card
+					$token_index = array_search("Unliving", $mydata->TokenNames);
+					
+					if ($token_index)
+					{
+						$mydata->TokenValues[$token_index]+= 9 + $ammount * 8; // basic gain + bonus gain
+						
+						if ($mydata->TokenValues[$token_index] >= 100)
+						{
+							$b_prod = array("Common" => 2, "Uncommon" => 3, "Rare" => 4);
+							$bricks_production*= $b_prod[$card->GetClass()];
+							
+							$mydata->TokenValues[$token_index] = 0;
+						}
+					}
+]]></code>
 	</keyword>
 </keywords>
