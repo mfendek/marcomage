@@ -110,7 +110,7 @@
 			<div class="skin_text">
 				<h4>Backgrounds</h4>
 				<xsl:for-each select="$param/backgrounds/*">
-					<xsl:sort select="name" order="ascending"/>
+					<xsl:sort select="count" order="descending"/>
 					<p>
 						<span><xsl:value-of select="count"/>%</span>
 						<xsl:value-of select="name"/>
@@ -121,7 +121,7 @@
 			<div class="skin_text">
 				<h4>Skins</h4>
 				<xsl:for-each select="$param/skins/*">
-					<xsl:sort select="name" order="ascending"/>
+					<xsl:sort select="count" order="descending"/>
 					<p>
 						<span><xsl:value-of select="count"/>%</span>
 						<xsl:value-of select="name"/>
@@ -134,6 +134,7 @@
 
 				<h4>Victory types</h4>
 				<xsl:for-each select="$param/victory_types/*">
+					<xsl:sort select="count" order="descending"/>
 					<p>
 						<span><xsl:value-of select="count"/>%</span>
 						<xsl:value-of select="type"/>
