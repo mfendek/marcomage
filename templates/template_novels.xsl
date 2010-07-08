@@ -84,7 +84,7 @@
 		<!-- display welcome page -->
 		<h3>Welcome to the Fantasy novels section</h3>
 
-		<p>All novels are written by our external associate <a href="mailto:thomasteekanne@gmail.com">Lukáš Čajági</a>, and therefore all novels are exclusive property of the author. We will add new pieces of the novel once a week or so.</p>
+		<p>All novels are written by our external associate <a href="mailto:thomasteekanne@gmail.com">Lukáš Čajági</a>, and therefore all novels are exclusive property of the author.</p>
 		<br />
 		<p>This novel will probably be a trilogy, the name is not known yet. The author provided us with description of the first book:</p>
 		<p><b>"Only the fewest people in the world have the luxury of knowing who they really are, how hard it is to find something worth living for. Now try to imagine that upon finding it, it is snatched away from you forever. What would you do? Would you care to live on while the lives of everyone around you shatter? Could your consience bear the thought of you being responsible for the whole mess? This is the story of a man who has to cope with these questions."</b></p>
@@ -92,7 +92,7 @@
 		<br />
 		<p>For feedback regarding novels please use the appropriate thread in the forum's 'Novels' section.</p>
 		<br />
-		<p>Please select a book and chapter you wish to read.</p>
+		<p>Please select a book, chapter and part you wish to read.</p>
 		<br />
 		<p>Copyright 2008-2010 Lukáš Čajági</p>
 
