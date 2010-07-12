@@ -173,7 +173,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('UPDATE `logins` SET `PreviousLogin` = `Last Query` WHERE `Username` = "'.$db->Escape($playername).'"');
+			$result = $db->Query('UPDATE `logins` SET `Notification` = `Last Query` WHERE `Username` = "'.$db->Escape($playername).'"');
 			
 			if (!$result) return false;
 			
@@ -202,15 +202,15 @@
 			return ( time() - strtotime($data['Last Query']) > 60*60*24*7*3 );
 		}
 		
-		public function PreviousLogin($playername)
+		public function GetNotification($playername)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `PreviousLogin` FROM `logins` WHERE `Username` = "'.$db->Escape($playername).'"');
+			$result = $db->Query('SELECT `Notification` FROM `logins` WHERE `Username` = "'.$db->Escape($playername).'"');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
 			$data = $result->Next();
-			return $data['PreviousLogin'];
+			return $data['Notification'];
 		}
 		
 		public function LastQuery($playername)
@@ -293,9 +293,9 @@
 			return $this->Players->isDead($this->Name);
 		}
 		
-		public function PreviousLogin()
+		public function GetNotification()
 		{
-			return $this->Players->PreviousLogin($this->Name);
+			return $this->Players->GetNotification($this->Name);
 		}
 		
 		public function LastQuery()

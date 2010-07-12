@@ -1,0 +1,1 @@
+ALTER TABLE `logins` CHANGE `PreviousLogin` `Notification` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00';

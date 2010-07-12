@@ -148,7 +148,7 @@ CREATE TABLE `logins` (
   `Registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Last IP` char(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0.0.0.0',
   `Last Query` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `PreviousLogin` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `Notification` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`Username`),
   KEY `Last Query` (`Last Query`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

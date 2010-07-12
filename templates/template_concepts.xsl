@@ -122,7 +122,7 @@
 					<td><p><xsl:value-of select="class"/></p></td>
 					<td>
 						<p>
-							<xsl:if test="am:datediff(lastchange, $param/PreviousLogin) &lt; 0">
+							<xsl:if test="am:datediff(lastchange, $param/notification) &lt; 0">
 								<xsl:attribute name="class">highlighted</xsl:attribute>
 							</xsl:if>
 							<xsl:value-of select="am:datetime(lastchange, $param/timezone)"/>

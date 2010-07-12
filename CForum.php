@@ -78,7 +78,7 @@
 			return $section;
 		}
 		
-		public function IsSomethingNew($time)
+		public function NewPosts($time)
 		{	
 			$db = $this->db;
 			

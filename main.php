@@ -2948,9 +2948,9 @@
 		$settings = $player->GetSettings();
 		$forum_not = ($settings->GetSetting('Forum_notification') == 'yes');
 		$concepts_not = ($settings->GetSetting('Concepts_notification') == 'yes');
-		$params["navbar"]['forum_notice'] = ($forum_not AND $forum->IsSomethingNew($player->PreviousLogin())) ? 'yes' : 'no';
+		$params["navbar"]['forum_notice'] = ($forum_not AND $forum->NewPosts($player->GetNotification())) ? 'yes' : 'no';
 		$params["navbar"]['message_notice'] = (count($gamedb->ListChallengesTo($player->Name())) + $messagedb->CountUnreadMessages($player->Name()) > 0) ? 'yes' : 'no';
-		$params["navbar"]['concept_notice'] = ($concepts_not AND $conceptdb->NewConcepts($player->PreviousLogin())) ? 'yes' : 'no';
+		$params["navbar"]['concept_notice'] = ($concepts_not AND $conceptdb->NewConcepts($player->GetNotification())) ? 'yes' : 'no';
 		$params["navbar"]['game_notice'] = $gamedb->IsAnyCurrentGame($player->Name()) ? 'yes' : 'no';
 		$params["main"]["skin"] = $settings->GetSetting('Skin');
 		$params["main"]["autorefresh"] = ($current == "Games") ? $settings->GetSetting('Autorefresh') : 0; // apply only in games section
@@ -3053,7 +3053,7 @@ case 'Concepts':
 	$params['concepts']['page_count'] = $conceptdb->CountPages($name, $author, $date, $state);
 
 	$settings = $player->GetSettings();
-	$params['concepts']['PreviousLogin'] = $player->PreviousLogin();
+	$params['concepts']['notification'] = $player->GetNotification();
 	$params['concepts']['authors'] = $authors = $conceptdb->ListAuthors($date);
 	$params['concepts']['mycards'] = (in_array($player->Name(), $authors) ? 'yes' : 'no');
 	$params['concepts']['timezone'] = $settings->GetSetting('Timezone');
@@ -3274,7 +3274,7 @@ case 'Profile':
 case 'Messages':
 	$settings = $player->GetSettings();
 	$params['messages']['PlayerName'] = $player->Name();
-	$params['messages']['PreviousLogin'] = $player->PreviousLogin();
+	$params['messages']['notification'] = $player->GetNotification();
 	$params['messages']['timezone'] = $settings->GetSetting('Timezone');
 	$params['messages']['RandomDeck'] = $settings->GetSetting('RandomDeck');
 	$params['messages']['system_name'] = SYSTEM_NAME;
@@ -3751,7 +3751,7 @@ case 'Settings':
 
 case 'Forum':
 	$params['forum_overview']['sections'] = $forum->ListSections();	
-	$params['forum_overview']['PreviousLogin'] = $player->PreviousLogin();
+	$params['forum_overview']['notification'] = $player->GetNotification();
 	$params['forum_overview']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 
 	break;
@@ -3763,7 +3763,7 @@ case 'Forum_search':
 	$params['forum_search']['section'] = $section = (isset($_POST['section'])) ? $_POST['section'] : 'any';
 	$params['forum_search']['threads'] = (trim($phrase) != "") ? $forum->Search($phrase, $target, $section) : array();
 	$params['forum_search']['sections'] = $forum->ListTargetSections();
-	$params['forum_search']['PreviousLogin'] = $player->PreviousLogin();
+	$params['forum_search']['notification'] = $player->GetNotification();
 	$params['forum_search']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 
 	break;
@@ -3778,7 +3778,7 @@ case 'Section_details':
 	$params['forum_section']['pages'] = $forum->Threads->CountPages($section_id);
 	$params['forum_section']['current_page'] = $current_page;
 	$params['forum_section']['create_thread'] = (($access_rights[$player->Type()]["create_thread"]) ? 'yes' : 'no');
-	$params['forum_section']['PreviousLogin'] = $player->PreviousLogin();
+	$params['forum_section']['notification'] = $player->GetNotification();
 	$params['forum_section']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 
 	break;
@@ -3795,7 +3795,7 @@ case 'Thread_details':
 	$params['forum_thread']['Delete'] = ((isset($_POST['thread_delete'])) ? 'yes' : 'no');
 	$params['forum_thread']['DeletePost'] = ((isset($deleting_post)) ? $deleting_post : 0);
 	$params['forum_thread']['PlayerName'] = $player->Name();
-	$params['forum_thread']['PreviousLogin'] = $player->PreviousLogin();
+	$params['forum_thread']['notification'] = $player->GetNotification();
 	$params['forum_thread']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 	$params['forum_thread']['concept'] = $conceptdb->FindConcept($thread_id);
 

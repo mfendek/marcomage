@@ -79,7 +79,7 @@
 				<xsl:choose>
 					<xsl:when test="$hasposts">
 						<p>
-							<xsl:if test="am:datediff(LastPost, $param/PreviousLogin) &lt; 0">
+							<xsl:if test="am:datediff(LastPost, $param/notification) &lt; 0">
 								<xsl:attribute name="class">new</xsl:attribute>
 							</xsl:if>
 							<xsl:value-of select="concat(am:datetime(LastPost, $param/timezone), ' by ', LastAuthor)" />
@@ -210,7 +210,7 @@
 					<xsl:choose>
 						<xsl:when test="$hasposts">
 							<p>
-								<xsl:if test="am:datediff(LastPost, $param/PreviousLogin) &lt; 0">
+								<xsl:if test="am:datediff(LastPost, $param/notification) &lt; 0">
 									<xsl:attribute name="class">new</xsl:attribute>
 								</xsl:if>
 								<xsl:value-of select="concat(am:datetime(LastPost, $param/timezone), ' by ', LastAuthor)" />
@@ -312,7 +312,7 @@
 			<xsl:choose>
 				<xsl:when test="$hasposts">
 					<p>
-						<xsl:if test="am:datediff(LastPost, $param/PreviousLogin) &lt; 0">
+						<xsl:if test="am:datediff(LastPost, $param/notification) &lt; 0">
 							<xsl:attribute name="class">new</xsl:attribute>
 						</xsl:if>
 						<xsl:value-of select="concat(am:datetime(LastPost, $param/timezone), ' by ', LastAuthor)" />
@@ -425,7 +425,7 @@
 			</p>
 			
 			<p>
-				<xsl:if test="am:datediff(Created, $param/PreviousLogin) &lt; 0">
+				<xsl:if test="am:datediff(Created, $param/notification) &lt; 0">
 					<xsl:attribute name="class">new</xsl:attribute>
 				</xsl:if>
 				<xsl:value-of select="am:datetime(Created, $param/timezone)" />

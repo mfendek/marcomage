@@ -265,7 +265,7 @@
 					<xsl:if test="$param/current_location = 'inbox'">
 						<xsl:choose>
 							<!-- TODO format time to seconds and independant of user timezone -->
-							<xsl:when test="Unread = 'yes' and am:datediff(Created, $param/PreviousLogin) &lt;= 0">
+							<xsl:when test="Unread = 'yes' and am:datediff(Created, $param/notification) &lt;= 0">
 								<xsl:attribute name="class">table_row new_message</xsl:attribute>
 							</xsl:when>
 							<xsl:when test="Unread = 'yes'">

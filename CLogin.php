@@ -84,7 +84,7 @@
 			{
 				// generate and store a new unitialized session for the user
 				$sessionid = mt_rand(1, pow(2,31)-1);
-				$result = $db->Query('UPDATE `logins` SET `SessionID` = '.$db->Escape($sessionid).', `PreviousLogin` = `Last Query` WHERE `Username` = "'.$db->Escape($username).'"');
+				$result = $db->Query('UPDATE `logins` SET `SessionID` = '.$db->Escape($sessionid).', `Notification` = `Last Query` WHERE `Username` = "'.$db->Escape($username).'"');
 				if (!$result) { $status = $db->status; return false; };
 				
 				//if ($result->Rows() == 0) { $status = 'ERROR_NO_SUCH_USER'; return false; };  // not yet implemented for UPDATE queries :|
