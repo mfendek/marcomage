@@ -3717,7 +3717,7 @@ case 'Novels':
 	$params['novels']['novelslist'] = $noveldb->listNovels();
 	$params['novels']['chapterslist'] = ($novel != "") ? $noveldb->listChapters($novel) : array();
 	$params['novels']['partslist'] = ($novel != "" AND $chapter != "") ? $noveldb->listParts($novel, $chapter) : array();
-	$params['novels']['pages'] = ($novel != "" AND $chapter != "" AND $part != "") ? $noveldb->listPages($novel, $chapter, $part) : array();
+	$params['novels']['pages'] = ($novel != "" AND $chapter != "" AND $part != "") ? $noveldb->listPages($novel, $chapter, $part) : 0;
 	$params['novels']['content'] = ($novel != "" AND $chapter != "" AND $part != "" AND $page != "") ? $noveldb->getPage($novel, $chapter, $part, $page) : '';
 
 	break;

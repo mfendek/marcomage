@@ -78,7 +78,7 @@
 
 			$result = $db->xpath('/am:novels/am:book[@name = "'.$novel.'"]/am:chapter[@name = "'.$chapter.'"]/am:part[@name = "'.$part.'"]/am:page');
 
-			if( $result === false ) return array();
+			if( $result === false ) return 0;
 
 			return count($result);
 		}
@@ -89,7 +89,7 @@
 
 			$result = $db->xpath('/am:novels/am:book[@name = "'.$novel.'"]/am:chapter[@name = "'.$chapter.'"]/am:part[@name = "'.$part.'"]/am:page[position() = "'.$page.'"]');
 
-			if( $result === false ) return array();
+			if( $result === false ) return '';
 
 			$result = $result[0];
 
