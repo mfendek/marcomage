@@ -363,6 +363,17 @@ Please use English only at all times. Forum is divided into sections. Section co
 Forum has a "new post" notification system. If there are new posts in the forum there is an animated image ("book") in the upper menu bar. Threads that contain new posts have the quick access buttons highlighted in red border color. In the threads details, new posts have their date highlighted in yellow color. This system works correctly only if you logout every time you finish your stay at our site.
 </p>
 
+<h4>BB code</h4>
+
+<ul>
+	<li>[b]some_text[/b] will add bold font weight to <b>some_text</b></li>
+	<li>[i]some_text[/i] will add italic style to <i>some_text</i></li>
+	<li>[url]some_url[/url] will make a hyperlink from the provided some_url</li>
+	<li>[url=some_url]some text[/url] will make a hyperlink from some text pointing to location described by some_url</li>
+	<li>[quote]some_text[/quote] will make a quote containing some_text</li>
+	<li>[quote=some_name]some_text[/quote] will make a quote containing some_text with some_name as quote author</li>
+</ul>
+
 <h4>Concepts</h4>
 <p>
 This section provides a tool for managing card suggestion in a structured form. This includes creating new cards, editing or deleting the existing ones. To provide more comfort, while searching for a specific card, there are filters and orderings available. You can even read the developer's feedback from the card state. There are 3 possible card states:
