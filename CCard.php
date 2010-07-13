@@ -286,7 +286,7 @@
 			$result = $db->xpath("/am:cards/am:card[@id={$this->CardID}]");
 			
 			if( $result === false || count($result) == 0 )
-                $arr = array ('Invalid Card', 'None', 0, 0, 0, '', '', 0);
+                $arr = array ('Invalid Card', 'None', 0, 0, 0, 0, '', '', '', '', '');
 			else
 			{
 				$data = &$result[0];
