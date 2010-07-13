@@ -346,6 +346,24 @@
 		{
 			return $this->CardData->Keywords;
 		}
+
+		public function GetData()
+		{
+			$data['id']       = $this->CardID;
+			$data['name']     = $this->CardData->Name;
+			$data['class']    = $this->CardData->Class;
+			$data['bricks']   = $this->CardData->Bricks;
+			$data['gems']     = $this->CardData->Gems;
+			$data['recruits'] = $this->CardData->Recruits;
+			$data['modes']    = $this->CardData->Modes;
+			$data['keywords'] = $this->CardData->Keywords;
+			$data['effect']   = $this->CardData->Effect;
+			$data['code']     = $this->CardData->Code;
+			$data['created']  = $this->CardData->Created;
+			$data['modified'] = $this->CardData->Modified;
+
+			return $data;
+		}
 	}
 	
 	

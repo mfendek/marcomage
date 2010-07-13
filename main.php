@@ -4077,8 +4077,8 @@ case 'Cards':
 
 case 'Cards_details':
 	// uses: $card_id
-	$card_data = $carddb->GetData(array($card_id));
-	$params['cards_details']['data'] = array_pop($card_data);
+	$card = $carddb->GetCard($card_id);
+	$params['cards_details']['data'] = $card->GetData();
 	$thread_id = $forum->Threads->CardThread($card_id);
 	$params['cards_details']['discussion'] = ($thread_id) ? 'yes' : 'no';
 	$params['cards_details']['create_thread'] = ($access_rights[$player->Type()]["create_thread"]) ? 'yes' : 'no';
