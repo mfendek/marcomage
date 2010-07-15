@@ -192,3 +192,8 @@ blockquote > div > cite /* author name layout in quote text */
 	font-weight: bold;
 	margin-left: 2.5ex;
 }
+
+*[title] /* display help cursor when additional description is available */
+{
+	cursor: help;
+}
