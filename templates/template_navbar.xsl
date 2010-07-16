@@ -32,16 +32,16 @@
 			</xsl:if>
 		</input>
 		<xsl:if test="'Forum' = @name and $param/forum_notice = 'yes'">
-			<img src="img/book.gif" alt="" width="18px" height="14px" />
+			<img src="img/book.gif" alt="" width="18px" height="14px" title="New post" />
 		</xsl:if>
 		<xsl:if test="'Messages' = @name and $param/message_notice = 'yes'">
-			<img src="img/new_post.gif" alt="" width="15px" height="10px" />
+			<img src="img/new_post.gif" alt="" width="15px" height="10px" title="New message" />
 		</xsl:if>
 		<xsl:if test="'Games' = @name and $param/game_notice = 'yes'">
-			<img src="img/battle.gif" alt="" width="20px" height="13px" />
+			<img src="img/battle.gif" alt="" width="20px" height="13px" title="Your turn" />
 		</xsl:if>
 		<xsl:if test="'Concepts' = @name and $param/concept_notice = 'yes'">
-			<img src="img/new_card.gif" alt="" width="10px" height="14px" />
+			<img src="img/new_card.gif" alt="" width="10px" height="14px" title="New card" />
 		</xsl:if>
 	</xsl:for-each>
 
