@@ -427,7 +427,7 @@
 	<keyword>
 		<name>Rebirth</name>
 		<description>when played and number of Burning cards in game is greater then 3, the card stays on hand and you will get additional 16 gems.</description>
-		<code><![CDATA[if (($this->KeywordCount($mydata->Hand, "Burning") + $this->KeywordCount($hisdata->Hand, "Burning")) > 3) $nextcard = $cardid; $mydata->Gems+= 16;]]></code>
+		<code><![CDATA[if (($this->KeywordCount($mydata->Hand, "Burning") + $this->KeywordCount($hisdata->Hand, "Burning")) > 3) { $nextcard = $cardid; $mydata->Gems+= 16; }]]></code>
 	</keyword>
 	<keyword>
 		<name>Restoration</name>
