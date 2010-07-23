@@ -5248,7 +5248,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Barbarian,Holy</keywords>
-    <effect><![CDATA[Attack: 10 + 3N<br />N = #<b>Barbarian</b> + #<b>Holy</b> cards on hand]]></effect>
+    <effect><![CDATA[Attack: 10 + 3N<br />N = #<b>Barbarian</b> + #<b>Holy</b> cards in hand]]></effect>
     <code><![CDATA[$tmp = $this->KeyWordCount($mydata->Hand, "Barbarian") + $this->KeyWordCount($mydata->Hand, "Holy"); $this->Attack(10 + 3*$tmp, $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2008-02-12</created>
     <modified>2008-02-12</modified>
@@ -7088,7 +7088,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Nature</keywords>
-    <effect><![CDATA[Wall: +20<br />Recruits: +2N<br />N = #<b>Beast</b> + #<b>Nature</b> cards on hand]]></effect>
+    <effect><![CDATA[Wall: +20<br />Recruits: +2N<br />N = #<b>Beast</b> + #<b>Nature</b> cards in hand]]></effect>
     <code><![CDATA[$mydata->Wall+= 20; $mydata->Recruits+= ($this->KeywordCount($mydata->Hand, "Beast") + $this->KeywordCount($mydata->Hand, "Nature")) * 2;]]></code>
     <created>2009-07-22</created>
     <modified>2009-07-22</modified>
@@ -7118,7 +7118,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Burning</keywords>
-    <effect><![CDATA[Wall: +40<br />Attack: 5N<br />N = #<b>Burning</b> cards on hand]]></effect>
+    <effect><![CDATA[Wall: +40<br />Attack: 5N<br />N = #<b>Burning</b> cards in hand]]></effect>
     <code><![CDATA[$mydata->Wall+= 40; $this->Attack(($this->KeywordCount($mydata->Hand, "Burning") * 5), $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2009-07-22</created>
     <modified>2009-07-22</modified>
@@ -7276,7 +7276,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Alliance,Legend,Nature</keywords>
-    <effect><![CDATA[Production xN<br />N = #<b>Alliance</b> + #<b>Nature</b> cards on hand (max 6)]]></effect>
+    <effect><![CDATA[Production xN<br />N = #<b>Alliance</b> + #<b>Nature</b> cards in hand (max 6)]]></effect>
     <code><![CDATA[$tmp = min($this->KeywordCount($mydata->Hand, "Alliance") + $this->KeywordCount($mydata->Hand, "Nature"), 6); $bricks_production*= $tmp; $gems_production*= $tmp; $recruits_production*= $tmp;]]></code>
     <created>2009-07-22</created>
     <modified>2009-10-26</modified>
