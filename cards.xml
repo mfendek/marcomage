@@ -8795,7 +8795,7 @@
     <modes>0</modes>
     <keywords>Nature</keywords>
     <effect><![CDATA[Next card will be a <b>Beast</b> or a <b>Nature</b> card<br />If New<br />non-common<br />else<br />non-rare]]></effect>
-    <code><![CDATA[$tmp = (isset($mynewflags[$cardpos])) ? 'Rare' : 'Common'; $nextcard = $this->DrawCard(array_merge($carddb->GetList(array('class'=>"Uncommon", 'keyword'=>"Nature")), $carddb->GetList(array('class'=>$tmp, 'keyword'=>"Nature"))), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
+    <code><![CDATA[$tmp = (isset($mynewflags[$cardpos])) ? 'Rare' : 'Common'; $nextcard = $this->DrawCard(array_unique(array_merge($carddb->GetList(array('class'=>"Uncommon", 'keyword'=>"Beast")), $carddb->GetList(array('class'=>$tmp, 'keyword'=>"Beast")), $carddb->GetList(array('class'=>"Uncommon", 'keyword'=>"Nature")), $carddb->GetList(array('class'=>$tmp, 'keyword'=>"Nature")))), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
