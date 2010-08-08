@@ -3403,6 +3403,7 @@ case 'Games':
 			$params['games']['list'][$i]['isdead'] = ($inactivity  > 60*60*24*7*3) ? 'yes' : 'no';
 			$params['games']['list'][$i]['gameaction'] = $data['Last Action'];
 			$params['games']['list'][$i]['lastseen'] = $last_seen;
+			$params['games']['list'][$i]['finishable'] = (time() - strtotime($data['Last Action']) >= 60*60*24*7*3 and $data['Current'] != $player->Name()) ? 'yes' : 'no';
 		}
 	}
 

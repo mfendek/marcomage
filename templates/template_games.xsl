@@ -55,6 +55,9 @@
 									<xsl:if test="isdead = 'yes'">
 										<p class="ended_game" >Can be aborted</p>
 									</xsl:if>
+									<xsl:if test="finishable = 'yes'">
+										<p class="ended_game" >Can be finished</p>
+									</xsl:if>
 								</xsl:when>
 								<xsl:otherwise>
 									<p class="ended_game">Game has ended</p>
