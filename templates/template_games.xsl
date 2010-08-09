@@ -51,17 +51,15 @@
 						</xsl:if>
 						<td>
 							<xsl:choose>
-								<xsl:when test="gamestate = 'in progress'">
-									<xsl:if test="isdead = 'yes'">
-										<p class="ended_game" >Can be aborted</p>
-									</xsl:if>
-									<xsl:if test="finishable = 'yes'">
-										<p class="ended_game" >Can be finished</p>
-									</xsl:if>
+								<xsl:when test="gamestate = 'in progress' and isdead = 'yes'">
+									<p class="ended_game" >Can be aborted</p>
 								</xsl:when>
-								<xsl:otherwise>
+								<xsl:when test="gamestate = 'in progress' and finishable = 'yes'">
+									<p class="ended_game" >Can be finished</p>
+								</xsl:when>
+								<xsl:when test="gamestate != 'in progress'">
 									<p class="ended_game">Game has ended</p>
-								</xsl:otherwise>
+								</xsl:when>
 							</xsl:choose>
 						</td>
 						<td>
