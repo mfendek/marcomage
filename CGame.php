@@ -589,6 +589,16 @@
 			$discarded_cards[0] = $mydata->DisCards[0];
 			$discarded_cards[1] = $mydata->DisCards[1];
 			
+			// create a copy of interesting game attributes
+			$attributes = array('Quarry', 'Magic', 'Dungeons', 'Bricks', 'Gems', 'Recruits', 'Tower', 'Wall');
+			$mydata_temp = $hisdata_temp = array();
+			
+			foreach ($attributes as $attribute)
+			{
+				$mydata_temp[$attribute] = $mydata->$attribute;
+				$hisdata_temp[$attribute] = $hisdata->$attribute;
+			}
+			
 			// clear newcards flag, changes indicator and discarded cards here, if required
 			if (!($mylast_card->IsPlayAgainCard() and $mylast_action == 'play'))
 			{
@@ -625,9 +635,7 @@
 				$mydata->Gems-= $card->CardData->Gems;
 				$mydata->Recruits-= $card->CardData->Recruits;
 				
-				//create a copy of interesting game attributes
-				$mydata_temp = $hisdata_temp = array ('Quarry'=> 0, 'Magic'=> 0, 'Dungeons'=> 0, 'Bricks'=> 0, 'Gems'=> 0, 'Recruits'=> 0, 'Tower'=> 0, 'Wall'=> 0);
-				
+				// update copy of game attributes (card cost was substracted)
 				foreach ($mydata_temp as $attribute => $value)
 				{
 					$mydata_temp[$attribute] = $mydata->$attribute;
@@ -694,37 +702,15 @@
 					
 				}
 				
-				// apply game limits and compute the changes
-				$mydata_copy = $hisdata_copy = array ('Quarry'=> 0, 'Magic'=> 0, 'Dungeons'=> 0, 'Bricks'=> 0, 'Gems'=> 0, 'Recruits'=> 0, 'Tower'=> 0, 'Wall'=> 0);
-				
-				// create a copy of all game attributes
-				foreach ($mydata_copy as $attribute => $value)
-				{
-					$mydata_copy[$attribute] = $mydata->$attribute;
-					$hisdata_copy[$attribute] = $hisdata->$attribute;
-				}
-				
-				// apply game limits to copy of attributes
-				$mydata_copy = $this->ApplyGameLimits($mydata_copy);
-				$hisdata_copy = $this->ApplyGameLimits($hisdata_copy);
-				
 				// apply limits to game attributes
-				foreach ($mydata_copy as $attribute => $value)
-				{
-					$mydata->$attribute = $mydata_copy[$attribute];
-					$hisdata->$attribute = $hisdata_copy[$attribute];
-				}
+				$this->ApplyGameLimits($mydata);
+				$this->ApplyGameLimits($hisdata);
 				
-				// production is applied to copy of the game attributes only (for changes array needs), production factor is descresed because normal production is a default card effect, thus it doesn't need to be highlighted - only abnormal productions (production X0, X2, X3...) are displayed via changes array
-				$mydata_copy['Bricks']+= ($bricks_production - 1) * $mydata->Quarry;
-				$mydata_copy['Gems']+= ($gems_production - 1) * $mydata->Magic;
-				$mydata_copy['Recruits']+= ($recruits_production - 1) * $mydata->Dungeons;
-				
-				// add the new difference to the changes arrays
-				foreach ($mydata_temp as $attribute => $value)
+				// apply limits to token counters
+				foreach ($mytokens_temp as $index => $token_val)
 				{
-					$mydata->Changes[$attribute] += $mydata_copy[$attribute] - $mydata_temp[$attribute];
-					$hisdata->Changes[$attribute] += $hisdata_copy[$attribute] - $hisdata_temp[$attribute];
+					$mydata->TokenValues[$index] = max(min($mydata->TokenValues[$index], 100), 0);
+					$hisdata->TokenValues[$index] = max(min($hisdata->TokenValues[$index], 100), 0);
 				}
 				
 				// compute changes on token counters
@@ -733,20 +719,21 @@
 					$mydata->TokenChanges[$index] += $mydata->TokenValues[$index] - $mytokens_temp[$index];
 					$hisdata->TokenChanges[$index] += $hisdata->TokenValues[$index] - $histokens_temp[$index];
 				}
-				
-				// apply limits to token counters
-				foreach ($mytokens_temp as $index => $token_val)
-				{
-					$mydata->TokenValues[$index] = max(min($mydata->TokenValues[$index], 100), 0);
-					$hisdata->TokenValues[$index] = max(min($hisdata->TokenValues[$index], 100), 0);
-				}
 			}
 			
 			// add production at the end of turn
 			$mydata->Bricks+= $bricks_production * $mydata->Quarry;
 			$mydata->Gems+= $gems_production * $mydata->Magic;
 			$mydata->Recruits+= $recruits_production * $mydata->Dungeons;
-										
+			
+			// compute changes on game attributes
+			$attributes = array('Quarry', 'Magic', 'Dungeons', 'Bricks', 'Gems', 'Recruits', 'Tower', 'Wall');
+			foreach ($attributes as $attribute)
+			{
+				$mydata->Changes[$attribute]+= $mydata->$attribute - $mydata_temp[$attribute];
+				$hisdata->Changes[$attribute]+= $hisdata->$attribute - $hisdata_temp[$attribute];
+			}
+			
 			// draw card at the end of turn
 			if( $nextcard > 0 )
 			{// value was decided by a card effect
@@ -1036,25 +1023,18 @@
 				$tower-= $damage;
 		}
 		
-		private function ApplyGameLimits(array $attributes)
+		private function ApplyGameLimits(CGamePlayerData &$data)
 		{
 			global $game_config;
 			
-			$max_tower = $game_config['max_tower'];
-			$max_wall = $game_config['max_wall'];
-			
-			if ($attributes["Quarry"] < 1) $attributes["Quarry"] = 1;
-			if ($attributes["Magic"] < 1) $attributes["Magic"] = 1;
-			if ($attributes["Dungeons"] < 1) $attributes["Dungeons"] = 1;
-			if ($attributes["Bricks"] < 0) $attributes["Bricks"] = 0;
-			if ($attributes["Gems"] < 0) $attributes["Gems"] = 0;
-			if ($attributes["Recruits"] < 0) $attributes["Recruits"] = 0;
-			if ($attributes["Tower"] < 0) $attributes["Tower"] = 0;
-			if ($attributes["Tower"] > $max_tower) $attributes["Tower"] = $max_tower;
-			if ($attributes["Wall"] < 0) $attributes["Wall"] = 0;
-			if ($attributes["Wall"] > $max_wall) $attributes["Wall"] = $max_wall;
-			
-			return $attributes;
+			$data->Quarry = max($data->Quarry, 1);
+			$data->Magic = max($data->Magic, 1);
+			$data->Dungeons = max($data->Dungeons, 1);
+			$data->Bricks = max($data->Bricks, 0);
+			$data->Gems = max($data->Gems, 0);
+			$data->Recruits = max($data->Recruits, 0);
+			$data->Tower = min(max($data->Tower, 0), $game_config['max_tower']);
+			$data->Wall = min(max($data->Wall, 0), $game_config['max_wall']);
 		}
 		
 		public function CalculateExp($player)
