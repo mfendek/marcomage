@@ -22,6 +22,7 @@
 <xsl:include href="template_game.xsl" />
 <xsl:include href="template_game_note.xsl" />
 <xsl:include href="template_games.xsl" />
+<xsl:include href="template_help.xsl" />
 <xsl:include href="template_messages.xsl" />
 <xsl:include href="template_novels.xsl" />
 <xsl:include href="template_players.xsl" />
@@ -31,6 +32,7 @@
 <xsl:include href="template_statistics.xsl" />
 <xsl:include href="template_website.xsl" />
 <xsl:include href="template_replays.xsl" />
+<xsl:include href="template_error.xsl" />
 <xsl:include href="template_nowhere.xsl" /> <!-- needs to be the last included section -->
 <xsl:include href="utils.xsl" />
 

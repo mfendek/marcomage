@@ -27,6 +27,17 @@ div#forum > h4 /* forum subtitle layout */
 	font-size: large;
 }
 
+div#forum a /* standard hyperlink */
+{
+	text-decoration: none;
+	color: inherit;
+}
+
+div#forum tr.table_row:hover a /* standard hyperlink hover layout */
+{
+	text-decoration: underline;
+}
+
 div#forum tr div > h5 /* section heading layout - description */
 {
 	font-size: medium;
@@ -36,10 +47,15 @@ div#forum tr div > h5 /* section heading layout - description */
 	margin: 1ex 0ex 1ex 1ex;
 }
 
-div#forum tr div > h5 > span /* section heading layout - title */
+div#forum tr div > h5 > a /* section heading layout - title */
 {
 	font-size: large;
 	margin-left: 1ex;
+}
+
+div#forum tr div:hover > h5 > a /* section heading hover layout - title */
+{
+	text-decoration: underline;
 }
 
 div#forum tr div > h5 + p /* section heading layout - right side with buttons */
@@ -50,14 +66,9 @@ div#forum tr div > h5 + p /* section heading layout - right side with buttons */
 	margin: 1ex 1ex 1ex 0ex;
 }
 
-div#forum tr div > h5 + p > input + input  /* section heading layout - right side with buttons - set distance between inputs */
+div#forum tr div > h5 + p > * + *  /* section heading layout - right side with buttons - set distance between inputs */
 {
 	margin-left: 2ex;
-}
-
-div#forum tr div > h5 + p > select /* set distance of select from inputs in the right side of section heading*/
-{
-	margin: 0ex 0ex 0ex 2ex;
 }
 
 div#forum tr div > h5 + p + div /* end section heading */
@@ -82,11 +93,6 @@ div#forum td > p /* forum table cell layout */
 	margin-top: 0.5ex;
 }
 
-div#forum tr.table_row > td > p > input /* set distance of the "jump to last post" button and other text */
-{
-	margin-left: 1ex;
-}
-
 div#forum img, div#thread_details img /* info picture layout (locked thread) */
 {
 	vertical-align: middle;
@@ -95,6 +101,11 @@ div#forum img, div#thread_details img /* info picture layout (locked thread) */
 input.search_button /* search button layout */
 {
 	float: right;
+}
+
+.headings /* thread headings */
+{
+	text-align: left;
 }
 
 /* end section */
@@ -164,10 +175,17 @@ div.thread_bar > h5 /* thread navigation menu - heading description */
 	margin: 1ex 0ex 1ex 1ex;
 }
 
-div.thread_bar > h5 > span  /* thread navigation menu - heading text */
+div.thread_bar > h5 > a  /* thread navigation menu - heading text */
 {
 	font-size: large;
 	margin-left: 1ex;
+	text-decoration: none;
+	color: inherit;
+}
+
+div.thread_bar:hover > h5 > a  /* thread navigation menu - hover layot */
+{
+	text-decoration: underline;
 }
 
 div.thread_bar > p /* thread navigation menu - right part with buttons */
@@ -178,15 +196,9 @@ div.thread_bar > p /* thread navigation menu - right part with buttons */
 	margin: 1ex 1ex 1ex 0ex;
 }
 
-div.thread_bar > p > input + input /* set distance between inputs in the right part of the thread navigation menu */
+div.thread_bar > p > * + * /* set distance between inputs in the right part of the thread navigation menu */
 {
 	margin-left: 2ex;
-}
-
-div.thread_bar > p > select /* set distance between select and other inputs in the right part of the thread navigation menu */
-{
-	margin-left: 2ex;
-	margin: 0ex 0ex 0ex 2ex;
 }
 
 div#post_list > div /* post list layout */

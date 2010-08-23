@@ -18,7 +18,6 @@
 	require_once('CDeck.php');
 	require_once('CGame.php');
 	require_once('CReplay.php');
-	require_once('CNovels.php');
 	require_once('CSettings.php');
 	require_once('CChat.php');
 	require_once('CPlayer.php');
@@ -48,11 +47,13 @@
 	$settingdb = new CSettings($db);
 	$playerdb = new CPlayers($db);
 	$messagedb = new CMessage($db);
-	$noveldb = new CNovels();
 	$forum = new CForum($db);
 	$statistics = new CStatistics($db);
 
-	$current = "Webpage"; // set a meaningful default
+	// process GET request
+	foreach ($_GET as $param_name => $param_value) $_POST[$param_name] = $param_value;
+
+	$current = (isset($_POST['location'])) ? $_POST['location'] : "Webpage"; // set a meaningful default
 
 	$session = $logindb->Login();
 
@@ -108,7 +109,8 @@
 		}
 		else
 		{
-			$current = "Webpage";
+			$public_sections = array('Webpage', 'Help', 'Novels');
+			if (!in_array($current, $public_sections)) $current = "Webpage";
 			$information = "Please log in.";
 		}
 	}
@@ -142,55 +144,7 @@
 		else
 		
 		// navigation bar messages
-		if (isset($_POST['Webpage']))
-		{
-			$current = "Webpage";
-		}
-		elseif (isset($_POST['Forum']))
-		{
-			$current = "Forum";
-		}
-		elseif (isset($_POST['Messages']))
-		{
-			$current = "Messages";
-		}
-		elseif (isset($_POST['Players'])) 
-		{
-			$current = "Players";
-		}
-		elseif (isset($_POST['Games']))
-		{
-			$current = "Games";
-		}
-		elseif (isset($_POST['Decks']))
-		{
-			$current = "Decks";
-		}
-		elseif (isset($_POST['Concepts']))
-		{
-			$current = "Concepts";
-		}
-		elseif (isset($_POST['Cards']))
-		{
-			$current = "Cards";
-		}
-		elseif (isset($_POST['Novels']))
-		{
-			$current = "Novels";
-		}
-		elseif (isset($_POST['Settings']))
-		{
-			$current = "Settings";
-		}
-		elseif (isset($_POST['Replays']))
-		{
-			$current = "Replays";
-		}
-		elseif (isset($_POST['Statistics']))
-		{
-			$current = "Statistics";
-		}
-		elseif (isset($_POST['Logout']))
+		if (isset($_POST['Logout']))
 		{
 			$logindb->Logout($session);
 			
@@ -220,28 +174,6 @@
 			foreach($_POST as $message => $value)
 			{
 				// game-related messages
-				if ($message == 'view_game') // Games -> vs. %s
-				{
-					$gameid = postdecode(array_shift(array_keys($value)));
-					$game = $gamedb->GetGame($gameid);
-					
-					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
-					
-					// check if this user is allowed to view this game
-					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games'; break; }
-					
-					// check if the game is a game in progress (and not a challenge)
-					if ($game->State == 'waiting') { /*$error = 'Opponent did not accept the challenge yet!';*/ $current = 'Games'; break; }
-					
-					// disable re-visiting
-					if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { /*$error = 'Game already over.';*/ $current = 'Games'; break; }
-					
-					$_POST['CurrentGame'] = $gameid;
-					$current = "Game";
-					break;
-				}
-				
 				if ($message == 'jump_to_game') // Games -> vs. %s
 				{	
 					$gameid = $_POST['games_list'];	
@@ -309,36 +241,6 @@
 					
 					$_POST['CurrentGame'] = $game->ID();
 					$current = "Game";
-					break;
-				}
-				
-				if ($message == 'view_deck')
-				{	// show deck a player is currently playing with
-					$gameid = $_POST['CurrentGame'];
-					$game = $gamedb->GetGame($gameid);
-					
-					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
-					
-					// check if this user is allowed to perform game actions
-					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
-					
-					$current = 'Deck_view';
-					break;
-				}
-				
-				if ($message == 'view_note')
-				{	// show current's player game note
-					$gameid = $_POST['CurrentGame'];
-					$game = $gamedb->GetGame($gameid);
-					
-					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
-					
-					// check if this user is allowed to perform game actions
-					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
-					
-					$current = 'Game_note';
 					break;
 				}
 				
@@ -1128,18 +1030,6 @@
 					$current = 'Messages';
 					break;
 				}
-				
-				if ($message == 'incoming') // view challenges to player
-				{
-					$current = 'Messages';
-					break;
-				}
-				
-				if ($message == 'outgoing') // view challenges from player
-				{
-					$current = 'Messages';
-					break;
-				}
 				// end challenge-related messages
 				
 				// message-related messages
@@ -1251,44 +1141,6 @@
 					break;
 				}
 				
-				if ($message == 'inbox') // view messages to player
-				{
-					$_POST['CurrentLocation'] = "inbox";
-					$_POST['date_filter'] = "none";
-					$_POST['name_filter'] = "none";
-					$_POST['CurrentMesPage'] = 0;
-					unset($_POST['CurrentCond']);
-					unset($_POST['CurrentOrd']);
-					$current = 'Messages';
-					break;
-				}
-				
-				if ($message == 'sent_mail') // view messages from player
-				{
-					$_POST['CurrentLocation'] = "sent_mail";
-					$_POST['date_filter'] = "none";
-					$_POST['name_filter'] = "none";
-					$_POST['CurrentMesPage'] = 0;
-					unset($_POST['CurrentCond']);
-					unset($_POST['CurrentOrd']);
-					$current = 'Messages';
-					break;
-				}
-				
- 				if ($message == 'all_mail') // view messages from player
- 				{
- 					// check access rights
- 					if (!$access_rights[$player->Type()]["see_all_messages"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
-					$_POST['CurrentLocation'] = "all_mail";
-					$_POST['date_filter'] = "none";
-					$_POST['name_filter'] = "none";
-					$_POST['CurrentMesPage'] = 0;
-					unset($_POST['CurrentCond']);
-					unset($_POST['CurrentOrd']);
- 					$current = 'Messages';
- 					break;
- 				}
-				
 				$temp = array("asc" => "ASC", "desc" => "DESC");
 				foreach($temp as $type => $order_val)
 				{
@@ -1352,18 +1204,7 @@
 				}
 				// end message-related messages
 				
-				// view user details
-				if ($message == 'user_details') // Players -> User details
-				{
-					$opponent = postdecode(array_shift(array_keys($value)));
-					
-					if (!$playerdb->GetPlayer($opponent)) { $error = "Player doesn't exist"; $current = "Players"; break; }
-					
-					$_POST['Profile'] = $opponent;
-					$current = 'Profile';
-					break;
-				}
-				
+				// begin user details
 				if ($message == 'change_access') // Players -> User details -> Change access rights
 				{
 					$opponent = postdecode(array_shift(array_keys($value)));
@@ -1406,18 +1247,9 @@
 					$current = 'Profile';
 					break;
 				}
-				// end view user details
+				// end user details
 				
 				// deck-related messages
-				if ($message == 'modify_deck') // Decks -> Modify this deck
-				{
-					$deckname = postdecode(array_shift(array_keys($value)));
-					
-					$_POST['CurrentDeck'] = $deckname;
-					$current = 'Deck_edit';
-					break;
-				}
-				
 				if ($message == 'add_card') // Decks -> Modify this deck -> Take
 				{
 					$cardid = (int)postdecode(array_shift(array_keys($value)));
@@ -1737,20 +1569,9 @@
 					$concept_id = $conceptdb->CreateConcept($data);
 					if (!$concept_id) { $error = "Failed to create new card"; $current = "Concepts_new"; break; }
 					
+					$_POST['CurrentConcept'] = $concept_id;
 					$information = "New card created";
 					$current = "Concepts_edit";
-					
-					break;
-				}
-				
-				if ($message == 'view_concept') // go to card details
-				{
-					$concept_id = array_shift(array_keys($value));
-					
-					if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
-					$concept = $conceptdb->GetConcept($concept_id);
-					
-					$current = "Concepts_details";
 					
 					break;
 				}
@@ -1765,6 +1586,7 @@
 					// check access rights
 					if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 					
+					$_POST['CurrentConcept'] = $concept_id;
 					$current = "Concepts_edit";
 					
 					break;
@@ -1937,6 +1759,7 @@
 					// check access rights
 					if (!($access_rights[$player->Type()]["delete_all_card"] OR ($access_rights[$player->Type()]["delete_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 					
+					$_POST['CurrentConcept'] = $concept_id;
 					$current = "Concepts_edit";
 					
 					break;
@@ -1996,76 +1819,6 @@
 				}
 				
 				// end concepts-related messages
-				
-				// novels-related messages
-
-				if ($message == 'view_novel') // Novels -> expand novel
-				{
-					$_POST['novel'] = array_shift(array_keys($value));
-					$_POST['chapter'] = $_POST['part'] = $_POST['page'] = "";
-
-					$current = 'Novels';
-
-					break;
-				}
-
-				if ($message == 'collapse_novel') // Novels -> collapse novel
-				{
-					$_POST['novel'] = $_POST['chapter'] = $_POST['part'] = $_POST['page'] = "";
-
-					$current = 'Novels';
-
-					break;
-				}
-
-				if ($message == 'view_chapter') // Novels -> select chapter
-				{
-					$_POST['chapter'] = array_shift(array_keys($value));
-					$_POST['part'] = $_POST['page'] = "";
-
-					$current = 'Novels';
-
-					break;
-				}
-
-				if ($message == 'collapse_chapter') // Novels -> collapse chapter
-				{
-					$_POST['chapter'] = $_POST['part'] = $_POST['page'] = "";
-
-					$current = 'Novels';
-
-					break;
-				}
-
-				if ($message == 'view_part') // Novels -> select part
-				{
-					$_POST['part'] = array_shift(array_keys($value));
-					$_POST['page'] = 1;
-
-					$current = 'Novels';
-
-					break;
-				}
-
-				if ($message == 'select_page_novels') // Novels -> select page (previous and next button)
-				{
-					$_POST['page'] = array_shift(array_keys($value));
-
-					$current = 'Novels';
-
-					break;
-				}
-
-				if ($message == 'seek_page_novels') // Novels -> select page (Jump to page)
-				{
-					$_POST['page'] = $_POST['page_selector'];
-
-					$current = 'Novels';
-
-					break;
-				}
-
-				// end novels related messages
 				
 				// settings-related messages
 				
@@ -2226,25 +1979,6 @@
 				
 				// begin section oriented messages
 				
-				if ($message == 'section_details') // forum -> section
-				{
-					$section_id = array_shift(array_keys($value));
-					
-					$current = 'Section_details';
-					
-					break;
-				}
-				
-				if ($message == 'section_page_jump') // forum -> section -> select page with previous or next button
-				{
-					$section_id = $_POST['CurrentSection'];
-					$current_page = array_shift(array_keys($value));
-										
-					$current = 'Section_details';
-					
-					break;
-				}
-				
 				if ($message == 'new_thread') // forum -> section -> new thread
 				{				
 					$section_id = $_POST['CurrentSection'];
@@ -2289,17 +2023,6 @@
 					break;
 				}
 				
-				if ($message == 'thread_last_page') // forum -> section -> thread -> go to last page
-				{
-					$thread_id = array_shift(array_keys($value));
-														
-					$current_page = max($forum->Threads->Posts->CountPages($thread_id) - 1, 0);
-															
-					$current = 'Thread_details';
-					
-					break;
-				}
-				
 				if ($message == 'forum_search') // forum -> Search
 				{
 					$current = 'Forum_search';
@@ -2310,26 +2033,6 @@
 				// end section oriented messages
 				
 				// begin thread oriented messages
-				
-				if ($message == 'thread_details') // forum -> section -> thread
-				{				
-					$thread_id = array_shift(array_keys($value));
-										
-					$current = 'Thread_details';
-					
-					break;
-				}
-				
-				if ($message == 'thread_page_jump') // forum -> section -> thread -> select page with previous or next button
-				{
-					$thread_id = $_POST['CurrentThread'];
-					
-					$current_page = array_shift(array_keys($value));
-										
-					$current = 'Thread_details';
-					
-					break;
-				}
 				
 				if ($message == 'thread_lock') // forum -> section -> thread -> lock thread
 				{
@@ -2733,7 +2436,6 @@
 					$_POST['HiddenCards'] = "none";
 					$_POST['FriendlyPlay'] = "none";
 					$_POST['VictoryFilter'] = "none";
-					$_POST['IdFilter'] = "";
 					$_POST['CurrentRepPage'] = 0;
 					
 					$current = 'Replays';
@@ -2752,60 +2454,6 @@
 				{
 					$_POST['CurrentRepPage'] = $_POST['page_selector'];
 					$current = "Replays";
-					
-					break;
-				}
-				
-				if ($message == 'view_replay') // Replays -> select specific replay
-				{
-					$gameid = array_shift(array_keys($value));
-					$player_view = 1; // default player view
-					$replay = $replaydb->GetReplay($gameid, 1); // view first turn
-					
-					// check if the game replay exists
-					if (!$replay) { /*$error = 'No such game replay!';*/ $current = 'Replays'; break; }
-					
-					$replay->IncrementViews(); // increment number of views
-					
-					$_POST['CurrentReplay'] = $gameid;
-					$_POST['PlayerView'] = $player_view;
-					$current = "Replay";
-					
-					break;
-				}
-				
-				if ($message == 'select_turn') // Replay -> select turn (previous or next button)
-				{
-					$gameid = $_POST['CurrentReplay'];
-					$_POST['turn_selector'] = $turn = array_shift(array_keys($value));
-					$replay = $replaydb->GetReplay($gameid, $turn);
-					
-					// check if the game replay exists
-					if (!$replay) { /*$error = 'No such game replay!';*/ $current = 'Replays'; break; }
-					
-					$current = "Replay";
-					
-					break;
-				}
-				
-				if ($message == 'seek_turn') // Replay -> select turn (page selector)
-				{
-					$gameid = $_POST['CurrentReplay'];
-					$turn = $_POST['turn_selector'];
-					$replay = $replaydb->GetReplay($gameid, $turn);
-					
-					// check if the game replay exists
-					if (!$replay) { /*$error = 'No such game replay!';*/ $current = 'Replays'; break; }
-					
-					$current = "Replay";
-					
-					break;
-				}
-				
-				if ($message == 'switch_players') // Replay -> switch player view
-				{
-					$_POST['PlayerView'] = ($_POST['PlayerView'] == 1) ? 2 : 1;
-					$current = "Replay";
 					
 					break;
 				}
@@ -2834,14 +2482,6 @@
 				{
 					$_POST['CurrentCardsPage'] = $_POST['page_selector'];
 					$current = 'Cards';
-					
-					break;
-				}
-				
-				if ($message == 'view_card') // Cards -> Select card details
-				{
-					$card_id = array_shift(array_keys($value));
-					$current = 'Cards_details';
 					
 					break;
 				}
@@ -2891,7 +2531,7 @@
 				// refresh button :)
 				if ($message == 'Refresh')
 				{
-					$current = postdecode(array_shift(array_keys($value)));
+					$current = array_shift(array_keys($value));
 					break;
 				}
 			} // foreach($_POST as $msg)
@@ -2915,9 +2555,6 @@
 	// whether to display the login box or navigation bar
 	$params["main"]["is_logged_in"] = ($session) ? 'yes' : 'no';
 
-	// which section to display
-	$params["main"]["section"] = $current;
-
 	// session information, if necessary
 	if( $session and !$session->hasCookies() )
 	{
@@ -2931,6 +2568,7 @@
 		$params["loginbox"]["error_msg"] = @$error;
 		$params["loginbox"]["warning_msg"] = @$warning;
 		$params["loginbox"]["info_msg"] = @$information;
+		$params["loginbox"]["current"] = $current;
 		$params["main"]["skin"] = 0; // default skin (user is not logged in, can't retrieve his settings)
 		$params["main"]["autorefresh"] = 0; // autorefresh is inactive by default
 	}
@@ -2962,22 +2600,38 @@ switch( $current )
 case 'Webpage':
 	// decide what screen is default (depends on whether the user is logged in)
 	$default_page = ( !$session ) ? 'Main' : 'News';
-	$selected = isset($_POST['WebSection']) ? postdecode(array_shift(array_keys($_POST['WebSection']))) : $default_page;
+	$params['website']['selected'] = $selected = isset($_POST['WebSection']) ? $_POST['WebSection'] : $default_page;
+
+	$websections = array('Main', 'News', 'Archive', 'Modified', 'Faq', 'Credits', 'History');
+	if (!in_array($selected, $websections)) { $display_error = 'Invalid web section.'; break; }
+
+	// display all news when viewing news archive, display only recent news otherwise
+	if ($selected == 'Archive') { $selected = 'News'; $params['website']['recent_news_only'] = 'no'; }
+	else $params['website']['recent_news_only'] = 'yes';
 
 	// list the names of the files to display
 	// (all files whose name matches up to the first space character)
 	$files = preg_grep('/^'.$selected.'( .*)?\.xml/i', scandir('pages',1));
 
-	$params['website']['selected'] = $selected;
+	$params['website']['websections'] = $websections;
 	$params['website']['files'] = $files;
 	$params['website']['timezone'] = ( isset($player) ) ? $player->GetSettings()->GetSetting('Timezone') : '+0';
-	// display all news when viewing news archive, display only recent news otherwise
-	$params['website']['recent_news_only'] = (($selected == "News") AND !(isset($_POST['WebPage']) AND (array_shift($_POST['WebPage']) == "Show all news"))) ? 'yes' : 'no';
+	break;
+
+
+case 'Help':
+	$params['help']['part'] = (isset($_POST['help_part'])) ? $_POST['help_part'] : 'Introduction';
+
+	break;
+
+
+case 'Registration':
+
 	break;
 
 
 case 'Deck_edit':
-	$currentdeck = $params['deck_edit']['CurrentDeck'] = $_POST['CurrentDeck'];
+	$currentdeck = $params['deck_edit']['CurrentDeck'] = isset($_POST['CurrentDeck']) ? $_POST['CurrentDeck'] : '';
 	$classfilter = $params['deck_edit']['ClassFilter'] = isset($_POST['ClassFilter']) ? $_POST['ClassFilter'] : 'Common';
 	$costfilter = $params['deck_edit']['CostFilter'] = isset($_POST['CostFilter']) ? $_POST['CostFilter'] : 'none';
 	$keywordfilter = $params['deck_edit']['KeywordFilter'] = isset($_POST['KeywordFilter']) ? $_POST['KeywordFilter'] : 'none';
@@ -2992,6 +2646,7 @@ case 'Deck_edit':
 
 	// download the neccessary data
 	$deck = $player->GetDeck($currentdeck);
+	if (!$deck) { $display_error = "Invalid deck."; break; }
 
 	$params['deck_edit']['reset'] = ( (isset($_POST["reset_deck_prepare"] )) ? 'yes' : 'no');
 
@@ -3079,7 +2734,12 @@ case 'Concepts_new':
 
 
 case 'Concepts_edit':
+	$concept_id = (isset($_POST['CurrentConcept'])) ? $_POST['CurrentConcept'] : 0;
+	if (!is_numeric($concept_id) OR $concept_id <= 0) { $display_error = 'Invalid concept id.'; break; }
+
 	$concept = $conceptdb->GetConcept($concept_id);
+	if ($concept->ConceptData->Name == "Invalid Concept") { $display_error = 'Invalid concept.'; break; }
+
 	$inputs = array('Name', 'Class', 'Bricks', 'Gems', 'Recruits', 'Effect', 'Keywords', 'Picture', 'Note', 'State', 'Author');
 	$data = array();
 	foreach ($inputs as $input) $data[strtolower($input)] = $concept->ConceptData->$input;
@@ -3101,7 +2761,12 @@ case 'Concepts_edit':
 
 
 case 'Concepts_details':
+	$concept_id = (isset($_POST['CurrentConcept'])) ? $_POST['CurrentConcept'] : 0;
+	if (!is_numeric($concept_id) OR $concept_id <= 0) { $display_error = 'Invalid concept id.'; break; }
+
 	$concept = $conceptdb->GetConcept($concept_id);
+	if ($concept->ConceptData->Name == "Invalid Concept") { $display_error = 'Invalid concept.'; break; }
+
 	$inputs = array('Name', 'Class', 'Bricks', 'Gems', 'Recruits', 'Effect', 'Keywords', 'Picture', 'Note', 'State', 'Author', 'ThreadID');
 	$data = array();
 	foreach ($inputs as $input) $data[strtolower($input)] = $concept->ConceptData->$input;
@@ -3199,6 +2864,8 @@ case 'Profile':
 	$cur_player = (isset($_POST['Profile'])) ? $_POST['Profile'] : $_POST['cur_player'];
 
 	$p = $playerdb->GetPlayer($cur_player);
+	if (!$p) { $display_error = 'Invalid player.'; break; }
+
 	$p_settings = $p->GetSettings();
 	$score = $scoredb->GetScore($cur_player);
 
@@ -3272,6 +2939,13 @@ case 'Profile':
 
 
 case 'Messages':
+	$current_subsection = isset($_POST['challengebox']) ? $_POST['challengebox'] : "incoming";
+	$current_location = ((isset($_POST['CurrentLocation'])) ? $_POST['CurrentLocation'] : "inbox");
+
+	if ($current_subsection != 'incoming' AND $current_subsection != 'outgoing') { $display_error = "Invalid challenges subsection."; break; }
+	if (!in_array($current_location, array('inbox', 'sent_mail', 'all_mail'))) { $display_error = "Invalid messages subsection."; break; }
+	if ($current_location == 'all_mail' AND !$access_rights[$player->Type()]["see_all_messages"]) { $display_error = 'Access denied.'; break; }
+
 	$settings = $player->GetSettings();
 	$params['messages']['PlayerName'] = $player->Name();
 	$params['messages']['notification'] = $player->GetNotification();
@@ -3284,29 +2958,16 @@ case 'Messages':
 	$params['messages']['deck_count'] = count($decks);
 	$params['messages']['free_slots'] = $gamedb->CountFreeSlots2($player->Name());
 
-	if (isset($_POST['incoming'])) $current_subsection = "incoming";
-	elseif (isset($_POST['outgoing'])) $current_subsection = "outgoing";
-	elseif (!isset($current_subsection)) $current_subsection = "incoming";
-
 	$function_type = (($current_subsection == "incoming") ? "ListChallengesTo" : "ListChallengesFrom");
 	$params['messages']['challenges'] = $messagedb->$function_type($player->Name());
 	$params['messages']['challenges_count'] = count($params['messages']['challenges']);
 	$params['messages']['current_subsection'] = $current_subsection;
 
-	$current_location = ((isset($_POST['CurrentLocation'])) ? $_POST['CurrentLocation'] : "inbox");
-
-	if (!isset($_POST['CurrentOrd'])) $_POST['CurrentOrd'] = "DESC"; // default ordering
-	if (!isset($_POST['CurrentCond'])) $_POST['CurrentCond'] =  "Created"; // default order condition
-
-	$params['messages']['current_order'] = $current_order = $_POST['CurrentOrd'];
-	$params['messages']['current_condition'] = $current_condition = $_POST['CurrentCond'];
-
-	$current_page = ((isset($_POST['CurrentMesPage'])) ? $_POST['CurrentMesPage'] : 0);
-	$params['messages']['current_page'] = $current_page;
-
-	// filter initialization
 	$params['messages']['date_val'] = $date = (isset($_POST['date_filter'])) ? $_POST['date_filter'] : 'none';
 	$params['messages']['name_val'] = $name = (isset($_POST['name_filter'])) ? postdecode($_POST['name_filter']) : 'none';
+	$params['messages']['current_order'] = $current_order = (isset($_POST['CurrentOrd'])) ? $_POST['CurrentOrd'] : 'DESC';
+	$params['messages']['current_condition'] = $current_condition = (isset($_POST['CurrentCond'])) ? $_POST['CurrentCond'] : 'Created';
+	$params['messages']['current_page'] = $current_page = (isset($_POST['CurrentMesPage'])) ? $_POST['CurrentMesPage'] : 0;
 
 	if ($current_location == "all_mail")
 	{
@@ -3407,10 +3068,7 @@ case 'Games':
 		}
 	}
 
-	if (isset($_POST['free_games'])) $subsection = "free_games";
-	elseif (isset($_POST['hosted_games'])) $subsection = "hosted_games";
-	elseif (!isset($subsection)) $subsection = "free_games";
-	$params['games']['current_subsection'] = $subsection;
+	$params['games']['current_subsection'] = (isset($_POST['subsection'])) ? $_POST['subsection'] : 'free_games';
 	$params['games']['HiddenCards'] = $hidden_f = (isset($_POST['HiddenCards'])) ? $_POST['HiddenCards'] : 'none';
 	$params['games']['FriendlyPlay'] = $friendly_f = (isset($_POST['FriendlyPlay'])) ? $_POST['FriendlyPlay'] : 'none';
 
@@ -3466,19 +3124,29 @@ case 'Games':
 
 case 'Game':
 	$gameid = $_POST['CurrentGame'];
-
-	// prepare the neccessary data
 	$game = $gamedb->GetGame($gameid);
+
+	// check if the game exists
+	if (!$game) { $display_error = 'No such game!'; break; }
+
 	$player1 = $game->Name1();
 	$player2 = $game->Name2();
 
+	// check if this user is allowed to view this game
+	if ($player->Name() != $player1 and $player->Name() != $player2) { $display_error = 'You are not allowed to access this game.'; break; }
+
+	// check if the game is a game in progress (and not a challenge)
+	if ($game->State == 'waiting') { $display_error = 'Opponent did not accept the challenge yet!'; break; }
+
+	// disable re-visiting
+	if ( (($player->Name() == $player1) && ($game->State == 'P1 over')) || (($player->Name() == $player2) && ($game->State == 'P2 over')) ) { $display_error = 'Game is already over.'; break; }
+
+	// prepare the neccessary data
 	$opponent = $playerdb->GetPlayer(($player1 != $player->Name()) ? $player1 : $player2);
 	$mydata = &$game->GameData[$player->Name()];
 	$hisdata = &$game->GameData[$opponent->Name()];
 
 	$params['game']['CurrentGame'] = $gameid;
-	$params['game']['current'] = $current;
-
 	$params['game']['chat'] = (($access_rights[$player->Type()]["chat"]) ? 'yes' : 'no');
 
 	// load needed settings
@@ -3682,6 +3350,13 @@ case 'Game':
 case 'Deck_view':
 	$gameid = $_POST['CurrentGame'];
 	$game = $gamedb->GetGame($gameid);
+
+	// check if the game exists
+	if (!$game) { $display_error = 'No such game!'; break; }
+
+	// check if this user is allowed to view this game
+	if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $display_error = 'You are not allowed to access this game.'; break; }
+
 	$deck = $game->GameData[$player->Name()]->Deck;
 
 	//load needed settings
@@ -3695,13 +3370,19 @@ case 'Deck_view':
 
 	foreach (array('Common', 'Uncommon', 'Rare') as $class)
 		$params['deck_view']['DeckCards'][$class] = $carddb->GetData($deck->$class);
-	
+
 	break;
 
 
 case 'Game_note':
 	$gameid = $_POST['CurrentGame'];
 	$game = $gamedb->GetGame($gameid);
+
+	// check if the game exists
+	if (!$game) { $display_error = 'No such game!'; break; }
+
+	// check if this user is allowed to view this game
+	if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $display_error = 'You are not allowed to access this game.'; break; }
 
 	$params['game_note']['CurrentGame'] = $gameid;
 	$params['game_note']['text'] = (isset($new_note)) ? $new_note : $game->GetNote($player->Name());
@@ -3714,12 +3395,6 @@ case 'Novels':
 	$params['novels']['chapter'] = $chapter = ( isset($_POST['chapter']) ) ? $_POST['chapter'] : "";
 	$params['novels']['part'] = $part = ( isset($_POST['part']) ) ? $_POST['part'] : "";
 	$params['novels']['page'] = $page = ( isset($_POST['page']) ) ? $_POST['page'] : "";
-
-	$params['novels']['novelslist'] = $noveldb->listNovels();
-	$params['novels']['chapterslist'] = ($novel != "") ? $noveldb->listChapters($novel) : array();
-	$params['novels']['partslist'] = ($novel != "" AND $chapter != "") ? $noveldb->listParts($novel, $chapter) : array();
-	$params['novels']['pages'] = ($novel != "" AND $chapter != "" AND $part != "") ? $noveldb->listPages($novel, $chapter, $part) : 0;
-	$params['novels']['content'] = ($novel != "" AND $chapter != "" AND $part != "" AND $page != "") ? $noveldb->getPage($novel, $chapter, $part, $page) : '';
 
 	break;
 
@@ -3771,11 +3446,17 @@ case 'Forum_search':
 
 
 case 'Section_details':
-	// uses: $current_page, $section_id
-	if (!isset($current_page)) $current_page = 0;
+	$section_id = $_POST['CurrentSection'];
+	$current_page = (isset($_POST['CurrentPage'])) ? $_POST['CurrentPage'] : 0;
 
-	$params['forum_section']['section'] = $forum->GetSection($section_id);
-	$params['forum_section']['threads'] = $forum->Threads->ListThreads($section_id, $current_page);
+	$section = $forum->GetSection($section_id);
+	if (!$section) { $display_error = "Invalid forum section."; break; }
+
+	$thread_list = $forum->Threads->ListThreads($section_id, $current_page);
+	if ($thread_list === false) { $display_error = "Invalid section page."; break; }
+
+	$params['forum_section']['section'] = $section;
+	$params['forum_section']['threads'] = $thread_list;
 	$params['forum_section']['pages'] = $forum->Threads->CountPages($section_id);
 	$params['forum_section']['current_page'] = $current_page;
 	$params['forum_section']['create_thread'] = (($access_rights[$player->Type()]["create_thread"]) ? 'yes' : 'no');
@@ -3786,13 +3467,20 @@ case 'Section_details':
 
 
 case 'Thread_details':
-	if (!isset($current_page)) $current_page = 0;
+	$thread_id = $_POST['CurrentThread'];
+	$current_page = (isset($_POST['CurrentPage'])) ? $_POST['CurrentPage'] : 0;
+
+	$thread = $forum->Threads->GetThread($thread_id);
+	if (!$thread) { $display_error = "Invalid forum thread."; break; }
+
+	$post_list = $forum->Threads->Posts->ListPosts($thread_id, $current_page);
+	if ($post_list === FALSE) { $display_error = "Invalid thread page."; break; }
 
 	$params['forum_thread']['Thread'] = $thread_data = $forum->Threads->GetThread($thread_id);
 	$params['forum_thread']['Section'] = $forum->GetSection($thread_data['SectionID']);
 	$params['forum_thread']['Pages'] = $forum->Threads->Posts->CountPages($thread_id);
 	$params['forum_thread']['CurrentPage'] = $current_page;
-	$params['forum_thread']['PostList'] = $forum->Threads->Posts->ListPosts($thread_id, $current_page);
+	$params['forum_thread']['PostList'] = $post_list;
 	$params['forum_thread']['Delete'] = ((isset($_POST['thread_delete'])) ? 'yes' : 'no');
 	$params['forum_thread']['DeletePost'] = ((isset($deleting_post)) ? $deleting_post : 0);
 	$params['forum_thread']['PlayerName'] = $player->Name();
@@ -3860,15 +3548,14 @@ case 'Replays':
 	$params['replays']['HiddenCards'] = $hidden_f = (isset($_POST['HiddenCards'])) ? $_POST['HiddenCards'] : "none";
 	$params['replays']['FriendlyPlay'] = $friendly_f = (isset($_POST['FriendlyPlay'])) ? $_POST['FriendlyPlay'] : "none";
 	$params['replays']['VictoryFilter'] = $victory_f = (isset($_POST['VictoryFilter'])) ? $_POST['VictoryFilter'] : "none";
-	$params['replays']['IdFilter'] = $id_f = (isset($_POST['IdFilter'])) ? $_POST['IdFilter'] : "";
 
 	if (!isset($_POST['ReplaysOrder'])) $_POST['ReplaysOrder'] = "DESC"; // default ordering
 	if (!isset($_POST['ReplaysCond'])) $_POST['ReplaysCond'] =  "Finished"; // default order condition
 	$params['replays']['order'] = $order = $_POST['ReplaysOrder'];
 	$params['replays']['cond'] = $cond = $_POST['ReplaysCond'];
 
-	$params['replays']['list'] = $replaydb->ListReplays($player_f, $hidden_f, $friendly_f, $victory_f, $id_f, $current_page, $cond, $order);
-	$params['replays']['page_count'] = $replaydb->CountPages($player_f, $hidden_f, $friendly_f, $victory_f, $id_f);
+	$params['replays']['list'] = $replaydb->ListReplays($player_f, $hidden_f, $friendly_f, $victory_f, $current_page, $cond, $order);
+	$params['replays']['page_count'] = $replaydb->CountPages($player_f, $hidden_f, $friendly_f, $victory_f);
 	$params['replays']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 	$params['replays']['players'] = $replay_players = $replaydb->ListPlayers();
 	$params['replays']['my_replays'] = (in_array($player->Name(), $replay_players) ? 'yes' : 'no');
@@ -3876,12 +3563,17 @@ case 'Replays':
 	break;
 
 case 'Replay':
-	$params['replay']['CurrentReplay'] = $gameid = $_POST['CurrentReplay'];
+	$params['replay']['CurrentReplay'] = $gameid = (isset($_POST['CurrentReplay'])) ? $_POST['CurrentReplay'] : 0;
 	$params['replay']['PlayerView'] = $player_view = (isset($_POST['PlayerView'])) ? $_POST['PlayerView'] : 1;
-	$params['replay']['CurrentTurn'] = $turn = (isset($_POST['turn_selector']) ? $_POST['turn_selector'] : 1);
+	$params['replay']['CurrentTurn'] = $turn = (isset($_POST['Turn']) ? $_POST['Turn'] : 1);
 
 	// prepare the necessary data
 	$replay = $replaydb->GetReplay($gameid, $turn);
+	if (!$replay) { $display_error = "Invalid replay."; break; }
+	if (!($player_view == 1 OR $player_view == 2)) { $display_error = "Invalid player selection."; break; }
+
+	// increment number of views each time player enters a replay
+	if ($turn == 1 AND $player_view == 1) $replay->IncrementViews();
 
 	// determine player view
 	$player1 = ($player_view == 1) ? $replay->Name1() : $replay->Name2();
@@ -4077,8 +3769,12 @@ case 'Cards':
 
 
 case 'Cards_details':
-	// uses: $card_id
+	$card_id = isset($_POST['card']) ? $_POST['card'] : 0;
+	if (!is_numeric($card_id) OR $card_id <= 0) { $display_error = 'Invalid card id.'; break; }
+
 	$card = $carddb->GetCard($card_id);
+	if ($card->CardData->Name == "Invalid Card") { $display_error = 'Invalid card.'; break; }
+
 	$params['cards_details']['data'] = $card->GetData();
 	$thread_id = $forum->Threads->CardThread($card_id);
 	$params['cards_details']['discussion'] = ($thread_id) ? 'yes' : 'no';
@@ -4128,6 +3824,11 @@ default:
 	break;
 }
 
+	// error handler
+	if (isset($display_error) AND $display_error != '') { $current = 'Error'; $params["error"]["message"] = $display_error; }
+
+	// which section to display
+	$params["main"]["section"] = $current;
 
 	// HTML code generation
 

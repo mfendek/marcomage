@@ -3,7 +3,6 @@
 <am:content xmlns="http://www.w3.org/1999/xhtml">
 
 <h2>News and update history</h2>
-<p><input type="submit" name="WebSection[News]" value="Show all news" /></p>
 
 </am:content>
 </am:entry>

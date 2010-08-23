@@ -3,8 +3,9 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:php="http://php.net/xsl"
                 xmlns:str="http://exslt.org/strings"
-                extension-element-prefixes="str">
+                extension-element-prefixes="php str">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
@@ -127,7 +128,7 @@
 		<!-- end quick game switching menu -->
 		<td>
 			<!-- 'refresh' button -->
-			<input type="submit" name="Refresh[{am:urlencode($param/current)}]" value="Refresh" accesskey="w" />
+			<a class="button" href="{php:functionString('makeurl', 'Game', 'CurrentGame', $param/CurrentGame)}" accesskey="w" >Refresh</a>
 		</td>
 
 		<!-- begin game state indicator -->
@@ -153,12 +154,13 @@
 				</td>
 				<td></td>
 				<td>
-					<input type="submit" name="view_deck" value="Deck" />
-					<input type="submit" name="view_note" value="Note" >
+					<a class="button" href="{php:functionString('makeurl', 'Deck_view', 'CurrentGame', $param/CurrentGame)}">Deck</a>
+					<a class="button" href="{php:functionString('makeurl', 'Game_note', 'CurrentGame', $param/CurrentGame)}" >
 						<xsl:if test="$param/has_note = 'yes'">
-							<xsl:attribute name="class">marked_button</xsl:attribute>
+							<xsl:attribute name="class">button marked_button</xsl:attribute>
 						</xsl:if>
-					</input>
+						<xsl:text>Note</xsl:text>
+					</a>
 				</td>
 
 				<!-- begin surrender/abort button -->
@@ -579,8 +581,7 @@
 					</div>
 					<h5>
 						<img width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" class="icon" title="{$param/hiscountry}" />
-						<xsl:value-of select="$param/OpponentName"/>
-						<input class="small_button" type="submit" name="user_details[{$param/OpponentName}]" value="i" />
+						<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', $param/OpponentName)}"><xsl:value-of select="$param/OpponentName"/></a>
 					</h5>
 					<p class="info_label">Tower: <span>
 						<xsl:value-of select="$param/HisTower"/>
@@ -647,8 +648,7 @@
 							<xsl:attribute name="class">player</xsl:attribute>
 						</xsl:if>
 						<img width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" class="icon" title="{$param/hiscountry}" />
-						<xsl:value-of select="$param/OpponentName"/>
-						<input class="small_button" type="submit" name="user_details[{$param/OpponentName}]" value="i" />
+						<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', $param/OpponentName)}"><xsl:value-of select="$param/OpponentName"/></a>
 					</h5>
 					<p class="info_label">Tower: <span>
 						<xsl:value-of select="$param/HisTower"/>

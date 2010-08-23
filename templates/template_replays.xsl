@@ -5,7 +5,8 @@
                 xmlns:am="http://arcomage.netvor.sk"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exsl="http://exslt.org/common"
-                extension-element-prefixes="exsl">
+                xmlns:php="http://php.net/xsl"
+                extension-element-prefixes="exsl php">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
@@ -17,9 +18,6 @@
 	<h3>Game replays</h3>
 	<!-- begin filters and navigation -->
 	<div class="filters">
-		<!-- id filter -->
-		<input type="text" name="IdFilter" maxlength="10" size="10" value="{$param/IdFilter}" />
-
 		<!-- player filter -->
 		<xsl:variable name="players">
 			<value name="No player filter" value="none" />
@@ -69,7 +67,6 @@
 			<table cellspacing="0" class="skin_text">
 				<tr>
 					<xsl:variable name="columns">
-						<column name="GameID"    text="Id"       sortable="yes" />
 						<column name="Winner"    text="Winner"   sortable="yes" />
 						<column name="Loser"     text="Loser"    sortable="no"  />
 						<column name="EndType"   text="Outcome"  sortable="no"  />
@@ -109,7 +106,6 @@
 				</tr>
 				<xsl:for-each select="$param/list/*">
 					<tr class="table_row">
-						<td><p><xsl:value-of select="GameID"/></p></td>
 						<td>
 							<p>
 								<xsl:choose>
@@ -144,7 +140,7 @@
 						<td><p><xsl:value-of select="Views"/></p></td>
 						<td>
 							<xsl:if test="Deleted = 'no'">
-								<p><input type="submit" name="view_replay[{GameID}]" value="&rarr;" /></p>
+								<p><a class="button" href="{php:functionString('makeurl', 'Replay', 'CurrentReplay', GameID, 'PlayerView', 1, 'Turn', 1)}">&rarr;</a></p>
 							</xsl:if>
 						</td>
 					</tr>
@@ -177,47 +173,44 @@
 
 	<div id="game">
 
-	<!-- remember the current location across pages -->
-	<div>
-		<input type="hidden" name="CurrentReplay" value="{$param/CurrentReplay}"/>
-		<input type="hidden" name="PlayerView" value="{$param/PlayerView}"/>
-	</div>
-
 	<p class="information_line">
 		<!-- begin navigation -->
-		<input type="submit" name="select_turn[{am:max($current - 1, 1)}]" value="&lt;">
-			<xsl:if test="$current = 1">
-				<xsl:attribute name="disabled">disabled</xsl:attribute>
-			</xsl:if>
-		</input>
+		<xsl:choose>
+			<xsl:when test="$current &gt; 1">
+				<a class="button" href="{php:functionString('makeurl', 'Replay', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', am:max($current - 1, 1))}">&lt;</a>
+			</xsl:when>
+			<xsl:otherwise>
+				<span class="disabled">&lt;</span>
+			</xsl:otherwise>
+		</xsl:choose>
 
-		<input type="submit" name="select_turn[{am:min($current + 1, $turns)}]" value="&gt;">
-			<xsl:if test="$current = am:max($turns, 1)">
-				<xsl:attribute name="disabled">disabled</xsl:attribute>
-			</xsl:if>
-		</input>
+		<xsl:choose>
+			<xsl:when test="$current &lt; $turns">
+				<a class="button" href="{php:functionString('makeurl', 'Replay', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', am:min($current + 1, $turns))}">&gt;</a>
+			</xsl:when>
+			<xsl:otherwise>
+				<span class="disabled">&gt;</span>
+			</xsl:otherwise>
+		</xsl:choose>
 
-		<!-- turn selector -->
-		<select name="turn_selector">
-			<xsl:for-each select="am:page_list($turns)">
-				<option value="{text() + 1}">
-					<xsl:if test="$current = (text() + 1)"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-					<xsl:value-of select="text() + 1"/>
-				</option>
-			</xsl:for-each>
-		</select>
-		<input type="submit" name="seek_turn" value="Select" />
-		<input type="submit" name="switch_players" value="Switch players"/>
+		<!-- player switcher -->
+		<xsl:variable name="view">
+			<xsl:choose>
+				<xsl:when test="$param/PlayerView = 1">2</xsl:when>
+				<xsl:otherwise>1</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<a class="button" href="{php:functionString('makeurl', 'Replay', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $view, 'Turn', $current)}">Switch players</a>
 		<!-- end navigation -->
 	</p>
 
 	<!-- display supportive information -->
 	<xsl:choose>
 		<xsl:when test="$current = $turns">
-			<p class="information_line info"><xsl:value-of select="$param/Winner"/> has won in round <xsl:value-of select="$param/Round"/>. <xsl:value-of select="$param/Outcome"/>.</p>
+			<p class="information_line info"><xsl:value-of select="$param/Winner"/> has won in round <xsl:value-of select="$param/Round"/> (turn <xsl:value-of select="$current"/>). <xsl:value-of select="$param/Outcome"/>.</p>
 		</xsl:when>
 		<xsl:otherwise>
-			<p class="information_line info">Round <xsl:value-of select="$param/Round"/></p>
+			<p class="information_line info">Round <xsl:value-of select="$param/Round"/> (turn <xsl:value-of select="$current"/> of <xsl:value-of select="$turns"/>)</p>
 		</xsl:otherwise>
 	</xsl:choose>
 
@@ -318,7 +311,7 @@
 						</xsl:if>
 					</div>
 					<h5>
-						<xsl:value-of select="$param/Player1"/>
+						<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', $param/Player1)}"><xsl:value-of select="$param/Player1"/></a>
 					</h5>
 					<p class="info_label">Tower: <span>
 						<xsl:value-of select="$param/p1Tower"/>
@@ -381,7 +374,7 @@
 						</p>
 					</div>
 					<h5>
-						<xsl:value-of select="$param/Player1"/>
+						<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', $param/Player1)}"><xsl:value-of select="$param/Player1"/></a>
 					</h5>
 					<p class="info_label">Tower: <span>
 						<xsl:value-of select="$param/p1Tower"/>
@@ -651,7 +644,7 @@
 						</xsl:if>
 					</div>
 					<h5>
-						<xsl:value-of select="$param/Player2"/>
+						<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', $param/Player2)}"><xsl:value-of select="$param/Player2"/></a>
 					</h5>
 					<p class="info_label">Tower: <span>
 						<xsl:value-of select="$param/p2Tower"/>
@@ -714,10 +707,7 @@
 						</p>
 					</div>
 					<h5>
-						<xsl:if test="$param/opp_isOnline = 'yes'">
-							<xsl:attribute name="class">player</xsl:attribute>
-						</xsl:if>
-						<xsl:value-of select="$param/Player2"/>
+						<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', $param/Player2)}"><xsl:value-of select="$param/Player2"/></a>
 					</h5>
 					<p class="info_label">Tower: <span>
 						<xsl:value-of select="$param/p2Tower"/>

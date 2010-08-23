@@ -5,7 +5,8 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:date="http://exslt.org/dates-and-times"
                 xmlns:exsl="http://exslt.org/common"
-                extension-element-prefixes="date exsl">
+                xmlns:php="http://php.net/xsl"
+                extension-element-prefixes="date exsl php">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
@@ -117,8 +118,8 @@
 			<xsl:for-each select="$param/list/*">
 				<tr>
 					<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></td>
-					<td><p><xsl:value-of select="name"/></p></td>
-					<td><p><xsl:value-of select="author"/></p></td>
+					<td><p><a href="{php:functionString('makeurl', 'Concepts_details', 'CurrentConcept', id)}"><xsl:value-of select="name"/></a></p></td>
+					<td><p><a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', author)}"><xsl:value-of select="author"/></a></p></td>
 					<td><p><xsl:value-of select="class"/></p></td>
 					<td>
 						<p>
@@ -131,7 +132,6 @@
 					<td><p><xsl:value-of select="state"/></p></td>
 					<td>
 						<p>
-							<input class="small_button" type="submit" name="view_concept[{id}]" value="+" />
 							<xsl:if test="$param/edit_all_card = 'yes' or ($param/edit_own_card = 'yes' and ($param/PlayerName = author))">
 								<input class="small_button" type="submit" name="edit_concept[{id}]" value="E" />
 							</xsl:if>
@@ -166,7 +166,7 @@
 		<h3>New card</h3>
 
 		<div id="card_edit" class="skin_text">
-			<input type="submit" name="Concepts" value="Back" />
+			<a class="button" href="{php:functionString('makeurl', 'Concepts')}">Back</a>
 			<input type="submit" name="create_concept" value="Create card" />
 
 			<hr />
@@ -275,8 +275,8 @@
 		<h3>Edit card</h3>
 
 		<div id="card_edit" class="skin_text">
-			<input type="submit" name="Concepts" value="Back" />
-			<input type="submit" name="view_concept[{$param/data/id}]" value="Details" />
+			<a class="button" href="{php:functionString('makeurl', 'Concepts')}">Back</a>
+			<a class="button" href="{php:functionString('makeurl', 'Concepts_details', 'CurrentConcept', $param/data/id)}">Details</a>
 			<xsl:if test="$param/data/author = $param/PlayerName">
 				<input type="submit" name="save_concept" value="Save" />
 			</xsl:if>
@@ -388,7 +388,7 @@
 		<h3>Card details</h3>
 
 		<div id="card_edit" class="skin_text">
-			<input type="submit" name="Concepts" value="Back" />
+			<a class="button" href="{php:functionString('makeurl', 'Concepts')}">Back</a>
 			<xsl:if test="$param/edit_all_card = 'yes' or ($param/edit_own_card = 'yes' and ($param/PlayerName = author))">
 				<input type="submit" name="edit_concept[{$param/data/id}]" value="Edit" />
 			</xsl:if>
@@ -396,7 +396,7 @@
 
 			<div class="card_preview"><xsl:copy-of select="am:cardstring($param/data, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></div>
 			<div class="limit">
-				<p><span><xsl:value-of select="$param/data/author"/></span>Author</p>
+				<p><span><a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', $param/data/author)}"><xsl:value-of select="$param/data/author"/></a></span>Author</p>
 				<p><span><xsl:value-of select="$param/data/name"/></span>Name</p>
 				<p><span><xsl:value-of select="$param/data/class"/></span>Rarity</p>
 				<p><span><xsl:value-of select="$param/data/keywords"/></span>Keywords</p>

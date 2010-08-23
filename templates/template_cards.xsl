@@ -4,7 +4,8 @@
                 xmlns:am="http://arcomage.netvor.sk"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:date="http://exslt.org/dates-and-times"
-                extension-element-prefixes="date">
+                xmlns:php="http://php.net/xsl"
+                extension-element-prefixes="date php">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
@@ -108,7 +109,6 @@
 		<table cellspacing="0" class="skin_text">
 			<tr>
 				<th>Card</th>
-				<th></th>
 				<th><p>Card name</p></th>
 				<th><p>Rarity</p></th>
 				<th><p>Cost</p></th>
@@ -119,8 +119,7 @@
 			<xsl:for-each select="$param/CardList/*">
 				<tr>
 					<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></td>
-					<td><p><input type="submit" name="view_card[{id}]" value="+" /></p></td>
-					<td><p><xsl:value-of select="name"/></p></td>
+					<td><p><a href="{php:functionString('makeurl', 'Cards_details', 'card', id)}"><xsl:value-of select="name"/></a></p></td>
 					<td><p><xsl:value-of select="class"/></p></td>
 					<td><p><xsl:value-of select="bricks" />/<xsl:value-of select="gems" />/<xsl:value-of select="recruits" /></p></td>
 					<td><p class="effect"><xsl:value-of select="am:cardeffect(effect)" disable-output-escaping="yes"/></p></td>
@@ -151,7 +150,7 @@
 		<h3>Card details</h3>
 
 		<div id="card_details" class="skin_text">
-			<input type="submit" name="Cards" value="Back" />
+			<a class="button" href="{php:functionString('makeurl', 'Cards')}">Back</a>
 			<xsl:choose>
 				<xsl:when test="$param/discussion = 'no' and $param/create_thread = 'yes'">
 					<input type="submit" name="card_thread[{$param/data/id}]" value="Start discussion" />

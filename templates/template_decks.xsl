@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE xsl:stylesheet [ <!ENTITY rarr "&#8594;"> ]>
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:php="http://php.net/xsl"
+                extension-element-prefixes="php">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
@@ -15,7 +16,6 @@
 		<tr>
 			<th><p>Deck name</p></th>
 			<th><p>Last change</p></th>
-			<th></th>
 		</tr>
 		<xsl:for-each select="$param/list/*">
 			<tr class="table_row">
@@ -24,7 +24,7 @@
 						<xsl:if test="Ready = 'yes'">
 							<xsl:attribute name="class">p_online</xsl:attribute>
 						</xsl:if>
-						<xsl:value-of select="Deckname"/>
+						<a href="{php:functionString('makeurl', 'Deck_edit', 'CurrentDeck', Deckname)}"><xsl:value-of select="Deckname"/></a>
 					</p>
 				</td>
 				<td>
@@ -35,7 +35,6 @@
 						</xsl:choose>
 					</p>
 				</td>
-				<td><p><input type="submit" name="modify_deck[{am:urlencode(Deckname)}]" value="&rarr;" /></p></td>
 			</tr>
 		</xsl:for-each>
 	</table>

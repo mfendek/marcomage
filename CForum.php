@@ -36,7 +36,7 @@
 
 			// get threads list for each section
 			foreach ($sections as $section_id => $section_data)
-				$query[] = '(SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost`, `SectionID` FROM `forum_threads` WHERE `SectionID` = "'.$db->Escape($section_id).'" AND `Deleted` = FALSE ORDER BY `LastPost` DESC, `Created` DESC LIMIT '.NUM_THREADS.')';
+				$query[] = '(SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost`, CEIL(`PostCount` / '.POSTS_PER_PAGE.') as `LastPage`, `SectionID` FROM `forum_threads` WHERE `SectionID` = "'.$db->Escape($section_id).'" AND `Deleted` = FALSE ORDER BY `LastPost` DESC, `Created` DESC LIMIT '.NUM_THREADS.')';
 
 			$query = implode(' UNION ', $query);
 			$result = $db->Query($query);
@@ -72,7 +72,6 @@
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
-			$section = array();
 			$section = $result->Next();
 			
 			return $section;

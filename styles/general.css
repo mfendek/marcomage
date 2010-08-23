@@ -28,6 +28,42 @@ input
 	vertical-align: middle;
 }
 
+a.button /* hyperlink button */
+{
+	font-size: x-small;
+	font-weight: bold;
+	color: black;
+	border: 2px outset black;
+	-moz-border-radius: 7px;
+	padding: 0.4ex 1.2ex 0.4ex 1.2ex;
+	vertical-align: middle;
+	text-decoration: none;
+	font-family: arial, sans-serif;
+}
+
+a.button:link, a.button:visited /* default color for hyperlink button */
+{
+	color: black;
+}
+
+a.profile, a.profile:link, a.profile:visited /* player profile link */
+{
+	text-decoration: none;
+	color: inherit;
+}
+
+.disabled /* disabled hyperlink button */
+{
+	font-size: x-small;
+	font-weight: bold;
+	color: gray;
+	border: 2px outset black;
+	-moz-border-radius: 7px;
+	padding: 0.4ex 1.2ex 0.4ex 1.2ex;
+	vertical-align: middle;
+	font-family: arial, sans-serif;
+}
+
 body,p,h5 /* override defaults */
 {
 	padding: 0ex;
@@ -126,7 +162,7 @@ img.avatar /* avatar picture */
 	vertical-align: middle;
 }
 
-input.small_button /* small input button */
+input.small_button, a.small_button /* small input button */
 {
 	padding: 0ex 0.5ex 0ex 0.5ex;
 	font-size: x-small;
@@ -159,7 +195,7 @@ input.table_checkbox /* checkbox layout */
 	background-color: green;
 }
 
-input.pushed /* selected button */
+input.pushed, a.pushed, a.button:active /* selected button */
 {
 	border-style: inset;
 }

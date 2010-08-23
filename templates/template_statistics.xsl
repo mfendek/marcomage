@@ -4,7 +4,8 @@
                 xmlns:am="http://arcomage.netvor.sk"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exsl="http://exslt.org/common"
-                extension-element-prefixes="exsl">
+                xmlns:php="http://php.net/xsl"
+                extension-element-prefixes="exsl php">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
@@ -81,22 +82,20 @@
 					<h5>Best</h5>
 					<xsl:for-each select="top/*">
 						<p>
-							<span>
-								<xsl:value-of select="factor"/>
-								<input type="submit" name="view_card[{id}]" value="+" />
-							</span>
-							<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
+							<span><xsl:value-of select="factor"/></span>
+							<xsl:value-of select="position()"/>
+							<xsl:text>. </xsl:text>
+							<a href="{php:functionString('makeurl', 'Cards_details', 'card', id)}"><xsl:value-of select="name"/></a>
 						</p>
 					</xsl:for-each>
 					<xsl:if test="count(bottom/*) &gt; 0">
 						<h5>Worst</h5>
 						<xsl:for-each select="bottom/*">
 							<p>
-								<span>
-									<xsl:value-of select="factor"/>
-									<input type="submit" name="view_card[{id}]" value="+" />
-								</span>
-								<xsl:value-of select="position()"/>. <xsl:value-of select="name"/>
+								<span><xsl:value-of select="factor"/></span>
+								<xsl:value-of select="position()"/>
+								<xsl:text>. </xsl:text>
+								<a href="{php:functionString('makeurl', 'Cards_details', 'card', id)}"><xsl:value-of select="name"/></a>
 							</p>
 						</xsl:for-each>
 					</xsl:if>
@@ -147,7 +146,9 @@
 				<xsl:for-each select="$param/suggested/*">
 					<p>
 						<span><xsl:value-of select="count"/></span>
-						<xsl:value-of select="position()"/>. <xsl:value-of select="Author"/>
+						<xsl:value-of select="position()"/>
+						<xsl:text>. </xsl:text>
+						<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><xsl:value-of select="Author"/></a>
 					</p>
 				</xsl:for-each>
 
@@ -155,7 +156,9 @@
 				<xsl:for-each select="$param/implemented/*">
 					<p>
 						<span><xsl:value-of select="count"/></span>
-						<xsl:value-of select="position()"/>. <xsl:value-of select="Author"/>
+						<xsl:value-of select="position()"/>
+						<xsl:text>. </xsl:text>
+						<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><xsl:value-of select="Author"/></a>
 					</p>
 				</xsl:for-each>
 			</div>

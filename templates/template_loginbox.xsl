@@ -2,7 +2,10 @@
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:exsl="http://exslt.org/common"
+                xmlns:php="http://php.net/xsl"
+                extension-element-prefixes="exsl php">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
@@ -39,6 +42,23 @@
 		<xsl:if test="$param/info_msg != ''">
 			<p class="info"><xsl:value-of select="$param/info_msg"/></p>
 		</xsl:if>
+	</div>
+
+	<!-- sections menubar -->
+	<div id="sections">
+		<xsl:variable name="sections">
+			<value name="Webpage" value="Introduction"   />
+			<value name="Help"    value="Game manual"    />
+			<value name="Novels"  value="Fantasy novels" />
+		</xsl:variable>
+		<xsl:for-each select="exsl:node-set($sections)/*">
+			<a class="button" href="{php:functionString('makeurl', @name)}" >
+				<xsl:if test="$param/current = @name">
+					<xsl:attribute name="class">button pushed</xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="@value"/>
+			</a>
+		</xsl:for-each>
 	</div>
 
 	</div>

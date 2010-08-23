@@ -55,13 +55,13 @@ h2,h3,h4,h5 /* heading layout */
 	color: #6495ed; /* light blue */
 }
 
-input[type="submit"], input[type="button"] /* submit input layout */
+input[type="submit"], input[type="button"], a.button, .disabled /* submit input layout */
 {
 	background-color: rgb(70, 70, 100); /* dark blue */
 	border-color: #191970; /* midnight blue */
 }
 
-input.marked_button /* highlighted button */
+input.marked_button, a.marked_button /* highlighted button */
 {
 	background-color: green;
 }

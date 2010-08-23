@@ -252,10 +252,12 @@
 			$db = $this->Concepts->getDB();
 			$result = $db->Query('SELECT `Name`, `Class`, `Bricks`, `Gems`, `Recruits`, `Effect`, `Keywords`, `Picture`, `Note`, `State`, `Author`, `LastChange`, `ThreadID` FROM `concepts` WHERE `CardID` = '.$this->CardID.'');
 
-			if( !$result OR !$result->Rows() ) return false;
-
-			$data = $result->Next();
-			$arr = array ($data['Name'], $data['Class'], $data['Bricks'], $data['Gems'], $data['Recruits'], $data['Effect'], $data['Keywords'], $data['Picture'], $data['Note'], $data['State'], $data['Author'], $data['LastChange'], $data['ThreadID']);
+			if( !$result OR !$result->Rows() ) $arr = array ('Invalid Concept', 'None', 0, 0, 0, '', '', '', '', '', '', '', 0);
+			else
+			{
+				$data = $result->Next();
+				$arr = array ($data['Name'], $data['Class'], $data['Bricks'], $data['Gems'], $data['Recruits'], $data['Effect'], $data['Keywords'], $data['Picture'], $data['Note'], $data['State'], $data['Author'], $data['LastChange'], $data['ThreadID']);
+			}
 
 			// initialize self
 			list($cd->Name, $cd->Class, $cd->Bricks, $cd->Gems, $cd->Recruits, $cd->Effect, $cd->Keywords, $cd->Picture, $cd->Note, $cd->State, $cd->Author, $cd->LastChange, $cd->ThreadID) = $arr;

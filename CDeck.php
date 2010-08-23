@@ -46,7 +46,8 @@
 			if (!$result->Rows()) return false;
 			
 			$deck = new CDeck($username, $deckname, $this);
-			$deck->LoadDeck();
+			$result = $deck->LoadDeck();
+			if (!$result) return false;
 			
 			return $deck;
 		}

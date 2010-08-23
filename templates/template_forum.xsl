@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE xsl:stylesheet [ <!ENTITY uarr "&#8593;"> <!ENTITY rarr "&#8594;"> <!ENTITY crarr "&#8629;"> ]>
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
@@ -7,8 +6,9 @@
                 xmlns:date="http://exslt.org/dates-and-times"
                 xmlns:exsl="http://exslt.org/common"
                 xmlns:func="http://exslt.org/functions"
+                xmlns:php="http://php.net/xsl"
                 xmlns:str="http://exslt.org/strings"
-                extension-element-prefixes="date exsl func str">
+                extension-element-prefixes="date exsl func php str">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
@@ -36,8 +36,7 @@
 		<tr><td colspan="6">
 		<div class="skin_label">
 		<h5>
-			<input type="submit" name="section_details[{SectionID}]" value="&crarr;" />
-			<span><xsl:value-of select="SectionName"/></span>
+			<a href="{php:functionString('makeurl', 'Section_details', 'CurrentSection', SectionID)}"><xsl:value-of select="SectionName"/></a>
 			( <xsl:value-of select="count" /> ) - <xsl:value-of select="Description" />
 		</h5>
 		<p></p>
@@ -50,11 +49,7 @@
 
 			<tr class="table_row">
 			<td>
-				<p><input class="small_button" type = "submit" name="thread_details[{ThreadID}]" value="+" /></p>
-			</td>
-			<td>
 				<p>
-					<xsl:value-of select="Title" />
 					<xsl:choose>
 						<xsl:when test="Priority = 'sticky'">
 							<img src="img/sticky.gif" width="22px" height="15x" alt="sticky" title="Sticky" class="icon" />
@@ -67,7 +62,12 @@
 				</p>
 			</td>
 			<td>
-				<p><xsl:value-of select="Author"/></p>
+				<p class="headings">
+					<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID)}"><xsl:value-of select="Title" /></a>
+				</p>
+			</td>
+			<td>
+				<p><a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><xsl:value-of select="Author"/></a></p>
 			</td>
 			<td>
 				<p><xsl:value-of select="PostCount"/></p>
@@ -82,8 +82,9 @@
 							<xsl:if test="am:datediff(LastPost, $param/notification) &lt; 0">
 								<xsl:attribute name="class">new</xsl:attribute>
 							</xsl:if>
-							<xsl:value-of select="concat(am:datetime(LastPost, $param/timezone), ' by ', LastAuthor)" />
-							<input class="small_button" type="submit" name="thread_last_page[{ThreadID}]" value="&rarr;" />
+							<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID, 'CurrentPage', am:max(LastPage - 1, 0))}"><xsl:value-of select="am:datetime(LastPost, $param/timezone)" /></a>
+							<xsl:text> by </xsl:text>
+							<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', LastAuthor)}"><xsl:value-of select="LastAuthor"/></a>
 						</p>
 					</xsl:when>
 					<xsl:otherwise><p>n/a</p></xsl:otherwise>
@@ -181,11 +182,7 @@
 
 				<tr class="table_row">
 				<td>
-					<p><input class="small_button" type = "submit" name="thread_details[{ThreadID}]" value="+" /></p>
-				</td>
-				<td>
 					<p>
-						<xsl:value-of select="Title" />
 						<xsl:choose>
 							<xsl:when test="Priority = 'sticky'">
 								<img src="img/sticky.gif" width="22px" height="15x" alt="sticky" title="Sticky" class="icon" />
@@ -198,7 +195,12 @@
 					</p>
 				</td>
 				<td>
-					<p><xsl:value-of select="Author"/></p>
+					<p class="headings">
+						<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID)}"><xsl:value-of select="Title" /></a>
+					</p>
+				</td>
+				<td>
+					<p><a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><xsl:value-of select="Author"/></a></p>
 				</td>
 				<td>
 					<p><xsl:value-of select="PostCount"/></p>
@@ -213,8 +215,9 @@
 								<xsl:if test="am:datediff(LastPost, $param/notification) &lt; 0">
 									<xsl:attribute name="class">new</xsl:attribute>
 								</xsl:if>
-								<xsl:value-of select="concat(am:datetime(LastPost, $param/timezone), ' by ', LastAuthor)" />
-								<input class="small_button" type="submit" name="thread_last_page[{ThreadID}]" value="&rarr;" />
+								<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID, 'CurrentPage', am:max(LastPage - 1, 0))}"><xsl:value-of select="am:datetime(LastPost, $param/timezone)" /></a>
+								<xsl:text> by </xsl:text>
+								<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', LastAuthor)}"><xsl:value-of select="LastAuthor"/></a>
 							</p>
 						</xsl:when>
 						<xsl:otherwise><p>n/a</p></xsl:otherwise>
@@ -261,11 +264,15 @@
 	<tr><td colspan="6">
 	<div class="skin_label">
 
-	<h5><input type="submit" name="Forum" value="&uarr;" /><span><xsl:value-of select="$param/section/SectionName"/></span> - <xsl:value-of select="$param/section/Description"/></h5>
+	<h5>
+		<a href="{php:functionString('makeurl', 'Forum')}"><xsl:value-of select="$param/section/SectionName"/></a>
+		<xsl:text> - </xsl:text>
+		<xsl:value-of select="$param/section/Description"/>
+	</h5>
 	<p>
 
 	<!-- navigation -->
-	<xsl:copy-of select="am:forum_navigation($param/pages, $param/current_page, 'section')"/>
+	<xsl:copy-of select="am:forum_navigation('Section_details', 'CurrentSection', $param/section/SectionID, $param/current_page, $param/pages)"/>
 
 	<xsl:if test="$param/create_thread = 'yes'">
 		<input type="submit" name="new_thread" value="New thread" />
@@ -283,11 +290,7 @@
 
 		<tr class="table_row">
 		<td>
-			<p><input class="small_button" type="submit" name="thread_details[{ThreadID}]" value="+" /></p>
-		</td>
-		<td>
 			<p>
-				<xsl:value-of select="Title" />
 				<xsl:choose>
 					<xsl:when test="Priority = 'sticky'">
 						<img src="img/sticky.gif" width="22px" height="15x" alt="sticky" title="Sticky" class="icon" />
@@ -300,7 +303,12 @@
 			</p>
 		</td>
 		<td>
-			<p><xsl:value-of select="Author"/></p>
+			<p class="headings">
+				<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID)}"><xsl:value-of select="Title" /></a>
+			</p>
+		</td>
+		<td>
+			<p><a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><xsl:value-of select="Author"/></a></p>
 		</td>
 		<td>
 			<p><xsl:value-of select="PostCount"/></p>
@@ -315,8 +323,9 @@
 						<xsl:if test="am:datediff(LastPost, $param/notification) &lt; 0">
 							<xsl:attribute name="class">new</xsl:attribute>
 						</xsl:if>
-						<xsl:value-of select="concat(am:datetime(LastPost, $param/timezone), ' by ', LastAuthor)" />
-						<input class="small_button" type="submit" name="thread_last_page[{ThreadID}]" value="&rarr;" />
+						<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID, 'CurrentPage', am:max(LastPage - 1, 0))}"><xsl:value-of select="am:datetime(LastPost, $param/timezone)" /></a>
+						<xsl:text> by </xsl:text>
+						<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', LastAuthor)}"><xsl:value-of select="LastAuthor"/></a>
 					</p>
 				</xsl:when>
 				<xsl:otherwise><p>n/a</p></xsl:otherwise>
@@ -354,16 +363,19 @@
 	<xsl:variable name="nav_bar">
 		<div class="thread_bar skin_label">
 			<h5>
-				<input type="submit" name="section_details[{$section/SectionID}]" value="&uarr;" />
-				<span><xsl:value-of select="$section/SectionName"/></span> - <xsl:value-of select="$thread/Title"/>
-				<xsl:if test="$thread/Locked = 'yes'"><img src="img/locked.gif" width="15px" height="16px" alt="locked" title="Locked" class="icon" /></xsl:if>
+				<a href="{php:functionString('makeurl', 'Section_details', 'CurrentSection', $section/SectionID)}"><xsl:value-of select="$section/SectionName"/></a>
+				<xsl:text> - </xsl:text>
+				<xsl:value-of select="$thread/Title"/>
+				<xsl:if test="$thread/Locked = 'yes'">
+					<img src="img/locked.gif" width="15px" height="16px" alt="locked" title="Locked" class="icon" />
+				</xsl:if>
 			</h5>
 			<p>
 			<xsl:if test="$param/concept &gt; 0">
-				<input type="submit" name="view_concept[{$param/concept}]" value="View concept" />
+				<a class="button" href="{php:functionString('makeurl', 'Concepts_details', 'CurrentConcept', $param/concept)}">View concept</a>
 			</xsl:if>
 			<xsl:if test="$thread/CardID &gt; 0">
-				<input type="submit" name="view_card[{$thread/CardID}]" value="View card" />
+				<a class="button" href="{php:functionString('makeurl', 'Cards_details', 'card', $thread/CardID)}">View card</a>
 			</xsl:if>
 
 			<xsl:if test="$param/lock_thread = 'yes'">
@@ -393,7 +405,7 @@
 			</xsl:if>
 
 			<!-- navigation -->
-			<xsl:copy-of select="am:forum_navigation($param/Pages, $param/CurrentPage, 'thread')"/>
+			<xsl:copy-of select="am:forum_navigation('Thread_details', 'CurrentThread', $thread/ThreadID, $param/CurrentPage, $param/Pages)"/>
 
 			<xsl:if test="$param/create_post = 'yes' and $thread/Locked = 'no'">
 				<input type = "submit" name="new_post" value="New post" />
@@ -411,42 +423,36 @@
 		<xsl:for-each select="$param/PostList/*">
 
 			<div class="skin_text">
-			
+
 			<div>
-							
+
 			<h5><xsl:value-of select="Author"/></h5>
-			
-			<img class="avatar" height="60px" width="60px" src="img/avatars/{Avatar}" alt="avatar" />
-			
-			<p>
-			<input class="small_button" type="submit" name="user_details[{Author}]" value="i" />
-			<input class="small_button" type="submit" name="message_create[{Author}]" value="m" />
-			
-			</p>
-			
+
+			<a href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><img class="avatar" height="60px" width="60px" src="img/avatars/{Avatar}" alt="avatar" /></a>
+
 			<p>
 				<xsl:if test="am:datediff(Created, $param/notification) &lt; 0">
 					<xsl:attribute name="class">new</xsl:attribute>
 				</xsl:if>
 				<xsl:value-of select="am:datetime(Created, $param/timezone)" />
 			</p>
-			
+
 			</div>
-			
+
 			<div>
-			
+
 			<div><xsl:value-of select="am:BBCode_parse_extended(Content)" disable-output-escaping="yes" /></div>
-			
+
 			</div>
-			
+
 			<div class="clear_floats"></div>
-			
+
 			<div>
-			
+
 			<xsl:if test="$param/create_post = 'yes' and $thread/Locked = 'no'">
 				<input type="submit" name="quote_post[{PostID}]" value="Quote" />
 			</xsl:if>
-			
+
 			<xsl:if test="($param/edit_all_post = 'yes' or ($param/edit_own_post = 'yes' and $param/PlayerName = Author)) and $can_modify = true()">
 				<input type="submit" name="edit_post[{PostID}]" value="Edit" />
 			</xsl:if>
@@ -505,7 +511,7 @@
 		</p>
 		
 		<input type="submit" name="create_thread" value="Create thread" />
-		<input type="submit" name="section_details[{$section/SectionID}]" value="Back" />
+		<a class="button" href="{php:functionString('makeurl', 'Section_details', 'CurrentSection', $section/SectionID)}">Back</a>
 		<xsl:copy-of select="am:BBcodeButtons()"/>
 		<hr/>
 		
@@ -530,7 +536,7 @@
 	<div class="skin_text">
 	
 	<input type="submit" name="create_post" value="Create post" />
-	<input type="submit" name="thread_details[{$thread/ThreadID}]" value="Back" />
+	<a class="button" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $thread/ThreadID)}">Back</a>
 	<xsl:copy-of select="am:BBcodeButtons()"/>
 	<hr/>
 	
@@ -585,7 +591,7 @@
 			</p>
 			
 			<input type="submit" name="modify_thread" value="Save" />
-			<input type="submit" name="thread_details[{$thread/ThreadID}]" value="Back" />
+			<a class="button" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $thread/ThreadID)}">Back</a>
 
 			<xsl:if test="$param/move_thread = 'yes'">
 				<hr/>
@@ -624,7 +630,7 @@
 		<h3>Edit post</h3>
 		<div class="skin_text">	
 		<input type="submit" name="modify_post" value="Save" />
-		<input type="submit" name="thread_details[{$post/ThreadID}]" value="Back" />
+		<a class="button" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $post/ThreadID)}">Back</a>
 		<xsl:copy-of select="am:BBcodeButtons()"/>
 		<hr/>
 
@@ -658,42 +664,59 @@
 
 
 <func:function name="am:forum_navigation">
-	<xsl:param name="page_count" as="xs:integer" />
+	<xsl:param name="location" as="xs:string" />
+	<xsl:param name="section_name" as="xs:string" />
+	<xsl:param name="section_id" as="xs:integer" />
 	<xsl:param name="current" as="xs:integer" />
-	<xsl:param name="button_name" as="xs:string" />
+	<xsl:param name="page_count" as="xs:integer" />
 
 	<xsl:variable name="output">
-		<input type="submit" name="{concat($button_name, '_page_jump')}[{am:max($current - 1, 0)}]" value="&lt;">
-			<xsl:if test="$current = 0">
-				<xsl:attribute name="disabled">disabled</xsl:attribute>
-			</xsl:if>
-		</input>
+		<xsl:choose>
+			<xsl:when test="$current &gt; 0">
+				<a class="button" href="{php:functionString('makeurl', $location, $section_name, $section_id, 'CurrentPage', am:max($current - 1, 0))}">&lt;</a>
+			</xsl:when>
+			<xsl:otherwise>
+				<span class="disabled">&lt;</span>
+			</xsl:otherwise>
+		</xsl:choose>
 
-		<input type="submit" name="{concat($button_name, '_page_jump')}[0]" value="First">
-			<xsl:if test="$current = 0">
-				<xsl:attribute name="disabled">disabled</xsl:attribute>
-			</xsl:if>
-		</input>
+		<xsl:choose>
+			<xsl:when test="$current &gt; 0">
+				<a class="button" href="{php:functionString('makeurl', $location, $section_name, $section_id, 'CurrentPage', 0)}">First</a>
+			</xsl:when>
+			<xsl:otherwise>
+				<span class="disabled">First</span>
+			</xsl:otherwise>
+		</xsl:choose>
 
 		<xsl:for-each select="str:split(am:numbers(am:max($current - 2, 0), am:min($current + 2, am:max($page_count - 1, 0))), ',')">
-			<input type="submit" name="{concat($button_name, '_page_jump')}[{text()}]" value="{text()}">
-				<xsl:if test="$current = .">
-					<xsl:attribute name="disabled">disabled</xsl:attribute>
-				</xsl:if>
-			</input>
+			<xsl:choose>
+				<xsl:when test="$current != .">
+					<a class="button" href="{php:functionString('makeurl', $location, $section_name, $section_id, 'CurrentPage', text())}"><xsl:value-of select="text()"/></a>
+				</xsl:when>
+				<xsl:otherwise>
+					<span class="disabled"><xsl:value-of select="text()"/></span>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:for-each>
 
-		<input type="submit" name="{concat($button_name, '_page_jump')}[{am:max($page_count - 1, 0)}]" value="Last">
-			<xsl:if test="$current = am:max($page_count - 1, 0)">
-				<xsl:attribute name="disabled">disabled</xsl:attribute>
-			</xsl:if>
-		</input>
+		<xsl:choose>
+			<xsl:when test="$current &lt; am:max($page_count - 1, 0)">
+				<a class="button" href="{php:functionString('makeurl', $location, $section_name, $section_id, 'CurrentPage', am:max($page_count - 1, 0))}">Last</a>
+			</xsl:when>
+			<xsl:otherwise>
+				<span class="disabled">Last</span>
+			</xsl:otherwise>
+		</xsl:choose>
 
-		<input type="submit" name="{concat($button_name, '_page_jump')}[{am:min($current + 1, am:max($page_count - 1, 0))}]" value="&gt;">
-			<xsl:if test="$current = am:max($page_count - 1, 0)">
-				<xsl:attribute name="disabled">disabled</xsl:attribute>
-			</xsl:if>
-		</input>
+		<xsl:choose>
+			<xsl:when test="$current &lt; am:max($page_count - 1, 0)">
+				<a class="button" href="{php:functionString('makeurl', $location, $section_name, $section_id, 'CurrentPage', am:min($current + 1, am:max($page_count - 1, 0)))}">&gt;</a>
+			</xsl:when>
+			<xsl:otherwise>
+				<span class="disabled">&gt;</span>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:variable>
 
 	<func:result select="$output" />

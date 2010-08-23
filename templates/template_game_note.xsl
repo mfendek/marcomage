@@ -2,7 +2,9 @@
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:php="http://php.net/xsl"
+                extension-element-prefixes="php">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 <xsl:template match="section[. = 'Game_note']">
@@ -18,7 +20,7 @@
 	<h3>Game note</h3>
 
 	<div class="skin_text">
-		<input type="submit" name="view_game[{$param/CurrentGame}]" value="Back to game"/>
+		<a class="button" href="{php:functionString('makeurl', 'Game', 'CurrentGame', $param/CurrentGame)}">Back to game</a>
 		<input type="submit" name="save_note_return" value="Save &amp; return" />
 		<input type="submit" name="save_note" value="Save" />
 		<input type="submit" name="clear_note" value="Clear" />

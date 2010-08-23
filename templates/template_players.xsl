@@ -4,7 +4,8 @@
                 xmlns:am="http://arcomage.netvor.sk"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exsl="http://exslt.org/common"
-                extension-element-prefixes="exsl">
+                xmlns:php="http://php.net/xsl"
+                extension-element-prefixes="exsl php">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
@@ -122,7 +123,7 @@
 					</xsl:variable>
 					<td>
 						<p class="{$player_class}">
-							<xsl:value-of select="name"/>
+							<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', name)}"><xsl:value-of select="name"/></a>
 							<xsl:if test="rank != 'user'"> <!-- player rank -->
 								<img width="9px" height="12px" src="img/{rank}.png" alt="rank flag" class="icon" title="{rank}" />
 							</xsl:if>
@@ -153,7 +154,6 @@
 					</td>
 					
 					<td style="text-align: left;">
-						<input class="small_button" type="submit" name="user_details[{name}]" value="i" />
 						<xsl:if test="$param/messages = 'yes'">
 							<input class="small_button" type="submit" name="message_create[{name}]" value="m" />
 						</xsl:if>

@@ -7,6 +7,7 @@ div#novels /* novels layout */
 	text-align: left;
 	min-width: 1045px;
 	margin-bottom: 1ex;
+	margin-right: 1ex;
 }
 
 div#nov_float_left /* menu part of novels section */
@@ -28,7 +29,7 @@ div#nov_float_left > ul > li /* set distance between list items */
 	margin-top: 2ex;
 }
 
-div#nov_float_left > ul input /* menu button layout */
+div#nov_float_left > ul a.button /* menu button layout */
 {
 	padding: 0.1ex 0.9ex 0.1ex 0.9ex;
 	margin-right: 3ex;
@@ -51,8 +52,14 @@ div#nov_float_right /* content part of novels section */
 	padding: 1ex 5ex 2ex 5ex;
 	line-height: 3.5ex;
 	min-height: 420px;
-	margin-right: 1ex;
 	margin-bottom: 1ex;
+}
+
+div#nov_float_right /* text content */
+{
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 50em;
 }
 
 div.navigation /* top and bottom navigation bar */
@@ -62,17 +69,12 @@ div.navigation /* top and bottom navigation bar */
 	margin-bottom: 2ex;
 }
 
-div.navigation > select /* set distance for select from input in the navigation bar */
-{
-	margin-right: 1ex;
-}
-
-input.previous /* "previous" button layout in the navigation bar */
+.previous /* "previous" button layout in the navigation bar */
 {
 	float: left;
 }
 
-input.next /* "next" button layout in the navigation bar */
+.next /* "next" button layout in the navigation bar */
 {
 	float: right;
 }

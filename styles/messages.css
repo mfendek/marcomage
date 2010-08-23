@@ -25,7 +25,7 @@ div#challenges > p /* challenge message */
 	margin-left: auto;
 }
 
-div#challenges > p > input + input /* distance between buttons */
+div#challenges > p > a.button + a.button /* distance between buttons */
 {
 	margin-left: 2ex;
 }
@@ -41,7 +41,7 @@ div#messages /* private messages subsection */
 	margin: 0ex 1ex 1ex 0ex;
 }
 
-div#messages > p > input + input /* distance between buttons */
+div#messages > p > a.button + a.button /* distance between buttons */
 {
 	margin-left: 2ex;
 }
@@ -119,7 +119,7 @@ div.challenge_box > div > p > span /* highlight important information in a chall
 	font-weight: bold;
 }
 
-div.challenge_box > div > p > input.small_button /* set distance between info buttons and text */
+div.challenge_box > div > p > a.small_button /* set distance between info buttons and text */
 {
 	margin-right: 0.5ex;
 }

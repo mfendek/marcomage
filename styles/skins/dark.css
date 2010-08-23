@@ -37,7 +37,7 @@ div#login_box /* login box layout */
 	-moz-border-radius: 7px;
 }
 
-input, textarea /* input text fields */
+input, textarea, a.button, .disabled /* input text fields */
 {
 	background-color: #dddddd; /* very light gray */
 }
@@ -60,7 +60,7 @@ input, textarea /* input text fields */
 	font-weight: bold;
 }
 
-input[type="submit"], input[type="button"] /* submit input layout */
+input[type="submit"], input[type="button"], a.button:link, a.button:visited /* submit input layout */
 {
 	color: #dddddd; /* very light gray */
 }
@@ -70,7 +70,7 @@ input[disabled="disabled"] /* disabled submit input */
 	color: gray;
 }
 
-input.marked_button /* highlighted button */
+input.marked_button, a.marked_button /* highlighted button */
 {
 	background-color: green;
 }

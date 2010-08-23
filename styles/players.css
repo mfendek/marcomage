@@ -20,6 +20,11 @@ div#players th input /* set distance for ordering buttons from header texts in t
 	margin-left: 1ex;
 }
 
+div#players > table tr.table_row:hover a.profile /* player profile hyperlink */
+{
+	text-decoration: underline;
+}
+
 div#players .filters /* filters */
 {
 	margin: 1ex 0ex 2ex 2ex;

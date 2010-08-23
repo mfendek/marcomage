@@ -84,7 +84,8 @@
 			$player2 = $players['Player2'];
 			
 			$game = new CGame($gameid, $player1, $player2, $this);
-			$game->LoadGame();
+			$result = $game->LoadGame();
+			if (!$result) return false;
 			
 			return $game;
 		}

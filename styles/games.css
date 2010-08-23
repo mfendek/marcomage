@@ -52,7 +52,7 @@ div#active_games h3, div#hosted_games h3 /* subsection heading */
 	margin: 2ex;
 }
 
-div#hosted_games > p > input + input /* distance between buttons */
+div#hosted_games > p > a.button + a.button /* distance between subsection buttons */
 {
 	margin-left: 2ex;
 }
@@ -184,11 +184,6 @@ td.stats > h5 > img, td.minstats > h5 > img /* flag image*/
 {
 	margin-left: 0.5ex;
 	margin-right: 0.5ex;
-}
-
-td.stats > h5 > input, td.minstats > h5 > input /* shortcut button to player's details */
-{
-	margin-left: 1ex;
 }
 
 span.changes /* attributes changes layout */

@@ -3,6 +3,9 @@
 	<section name="Webpage">
 		<subsection>Webpage</subsection>
 	</section>
+	<section name="Help">
+		<subsection>Help</subsection>
+	</section>
 	<section name="Forum">
 		<subsection>Forum</subsection>
 		<subsection>Forum_search</subsection>

@@ -2,7 +2,10 @@
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:exsl="http://exslt.org/common"
+                xmlns:php="http://php.net/xsl"
+                extension-element-prefixes="exsl php">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
@@ -25,18 +28,19 @@
 		<p class="information_line warning">You cannot start any more games.</p>
 	</xsl:if>
 
-	<p>	
-		<input type="submit" name="incoming" value="Incoming">
-			<xsl:if test="$param/current_subsection = 'incoming'">
-				<xsl:attribute name="class">pushed</xsl:attribute>
-			</xsl:if>
-		</input>
-
-		<input type="submit" name="outgoing" value="Outgoing">
-			<xsl:if test="$param/current_subsection = 'outgoing'">
-				<xsl:attribute name="class">pushed</xsl:attribute>
-			</xsl:if>
-		</input>
+	<p>
+		<xsl:variable name="challenge_sections">
+			<value name="incoming" value="Incoming" />
+			<value name="outgoing" value="Outgoing" />
+		</xsl:variable>
+		<xsl:for-each select="exsl:node-set($challenge_sections)/*">
+			<a class="button" href="{php:functionString('makeurl', 'Messages', 'challengebox', @name, 'CurrentLocation', $param/current_location)}">
+				<xsl:if test="$param/current_subsection = @name">
+					<xsl:attribute name="class">button pushed</xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="@value"/>
+			</a>
+		</xsl:for-each>
 	</p>
 
 	<!-- selected deck -->
@@ -62,12 +66,11 @@
 						<xsl:choose>
 							<xsl:when test="$param/current_subsection = 'incoming'">
 								<p>
-									<input class="small_button" type="submit" name="user_details[{Author}]" value="i" />
 									<span>
 										<xsl:if test="Online = 'yes'">
 											<xsl:attribute name="class">p_online</xsl:attribute>
 										</xsl:if>
-										<xsl:value-of select="Author"/>
+										<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><xsl:value-of select="Author"/></a>
 									</span>
 									<xsl:text> has challenged you on </xsl:text>
 									<span><xsl:value-of select="am:datetime(Created, $param/timezone)"/></span>
@@ -89,7 +92,7 @@
 										<xsl:if test="Online = 'yes'">
 											<xsl:attribute name="class">p_online</xsl:attribute>
 										</xsl:if>
-										<xsl:value-of select="Recipient"/>
+										<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', Recipient)}"><xsl:value-of select="Recipient"/></a>
 									</span>
 									<xsl:text> on </xsl:text>
 									<span><xsl:value-of select="am:datetime(Created, $param/timezone)"/></span>
@@ -122,23 +125,21 @@
 	<!-- begin buttons and filters -->
 
 	<p>
-		<input type="submit" name="inbox" value="Inbox" >
-			<xsl:if test="$param/current_location = 'inbox'">
-				<xsl:attribute name="class">pushed</xsl:attribute>
+		<xsl:variable name="message_sections">
+			<value name="inbox"     value="Inbox"     />
+			<value name="sent_mail" value="Sent mail" />
+			<value name="all_mail"  value="All mail"  />
+		</xsl:variable>
+		<xsl:for-each select="exsl:node-set($message_sections)/*">
+			<xsl:if test="@name != 'all_mail' or $param/see_all_messages = 'yes'" >
+				<a class="button" href="{php:functionString('makeurl', 'Messages', 'challengebox', $param/current_subsection, 'CurrentLocation', @name)}">
+					<xsl:if test="$param/current_location = @name">
+						<xsl:attribute name="class">button pushed</xsl:attribute>
+					</xsl:if>
+					<xsl:value-of select="@value"/>
+				</a>
 			</xsl:if>
-		</input>
-		<input type="submit" name="sent_mail" value="Sent mail" >
-			<xsl:if test="$param/current_location = 'sent_mail'">
-				<xsl:attribute name="class">pushed</xsl:attribute>
-			</xsl:if>
-		</input>
-		<xsl:if test="$param/see_all_messages = 'yes'" >
-			<input type="submit" name="all_mail" value="All mail" >
-				<xsl:if test="$param/current_location = 'all_mail'">
-					<xsl:attribute name="class">pushed</xsl:attribute>
-				</xsl:if>
-			</input>
-		</xsl:if>
+		</xsl:for-each>
 	</p>
 
 	<div class="filters">
@@ -328,6 +329,7 @@
 
 	<div class="clear_floats"></div>
 
+	<input type="hidden" name="challengebox" value="{$param/current_subsection}" />
 	<input type="hidden" name="CurrentLocation" value="{$param/current_location}" />
 	<input type="hidden" name="CurrentMesPage" value="{$param/current_page}" />
 	<input type="hidden" name="CurrentOrd" value="{$param/current_order}" />

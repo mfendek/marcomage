@@ -3,15 +3,22 @@
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:exsl="http://exslt.org/common"
+                xmlns:php="http://php.net/xsl"
+                extension-element-prefixes="exsl php">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
 <xsl:template match="section[. = 'Novels']">
 	<xsl:variable name="param" select="$params/novels" />
-	
+
+	<xsl:variable name="novels" select="document('novels.xml')/am:novels" />
+	<xsl:variable name="chapters" select="$novels/am:book[@name = $param/novel]" />
+	<xsl:variable name="parts" select="$chapters/am:chapter[@name = $param/chapter]" />
+	<xsl:variable name="pages" select="count($parts/am:part[@name = $param/part]/am:page)" />
 	<xsl:variable name="page" select="$param/page" />
-	<xsl:variable name="pages" select="$param/pages" />
+	<xsl:variable name="content" select="$parts/am:part[@name = $param/part]/am:page[position() = $page]" />
 
 	<div id="novels">
 
@@ -21,41 +28,40 @@
 		<h3>Novels menu</h3>
 
 		<ul>
-		<xsl:for-each select="$param/novelslist/*">
+		<xsl:for-each select="exsl:node-set($novels)/*">
 			<li>
 			<xsl:choose>
 			<!-- display expanded novel -->
-			<xsl:when test="$param/novel = text()">
-				<input type="submit" name="collapse_novel" value="&minus;" class="pushed" />
+			<xsl:when test="$param/novel = @name">
+				<a class="button pushed" href="{php:functionString('makeurl', 'Novels')}">&minus;</a>
 				<xsl:text>Book </xsl:text><xsl:value-of select="position()"/><xsl:text>: </xsl:text>
-				<xsl:value-of select="text()"/>
+				<xsl:value-of select="@name"/>
 				<ul>
-					<xsl:for-each select="$param/chapterslist/*">
+					<xsl:for-each select="exsl:node-set($chapters)/*">
 						<li>
 							<xsl:choose>
 							<!-- display expanded chapter -->
-							<xsl:when test="$param/chapter = text()">
-								<input type="submit" name="collapse_chapter" value="&minus;" class="pushed" />
+							<xsl:when test="$param/chapter = @name">
+								<a class="button pushed" href="{php:functionString('makeurl', 'Novels', 'novel', $param/novel)}">&minus;</a>
 								<xsl:text>Chapter </xsl:text><xsl:value-of select="position()"/><xsl:text>: </xsl:text>
-								<xsl:value-of select="text()"/>
+								<xsl:value-of select="@name"/>
 								<ul>
-									<xsl:for-each select="$param/partslist/*">
+									<xsl:for-each select="exsl:node-set($parts)/*">
 										<li>
-											<input type="submit" name="view_part[{text()}]" value=">">
-												<xsl:if test="$param/part = text()"><xsl:attribute name="class">pushed</xsl:attribute></xsl:if>
-											</input>
-											<xsl:value-of select="text()"/>
+											<a class="button" href="{php:functionString('makeurl', 'Novels', 'novel', $param/novel, 'chapter', $param/chapter, 'part', @name, 'page', 1)}">
+												<xsl:if test="$param/part = @name"><xsl:attribute name="class">button pushed</xsl:attribute></xsl:if>
+												<xsl:text>></xsl:text>
+											</a>
+											<xsl:value-of select="@name"/>
 										</li>
 									</xsl:for-each>
 								</ul>
 							</xsl:when>
 							<!-- display collapsed chapter -->
 							<xsl:otherwise>
-								<input type="submit" name="view_chapter[{text()}]" value="+">
-									<xsl:if test="$param/chapter = text()"><xsl:attribute name="class">pushed</xsl:attribute></xsl:if>
-								</input>
+								<a class="button" href="{php:functionString('makeurl', 'Novels', 'novel', $param/novel, 'chapter', @name)}">+</a>
 								<xsl:text>Chapter </xsl:text><xsl:value-of select="position()"/><xsl:text>: </xsl:text>
-								<xsl:value-of select="text()"/>
+								<xsl:value-of select="@name"/>
 							</xsl:otherwise>
 							</xsl:choose>
 						</li>
@@ -64,9 +70,9 @@
 			</xsl:when>
 			<!-- display collapsed novel -->
 			<xsl:otherwise>
-				<input type="submit" name="view_novel[{text()}]" value="+" />
+				<a class="button" href="{php:functionString('makeurl', 'Novels', 'novel', @name)}">+</a>
 				<xsl:text>Book </xsl:text><xsl:value-of select="position()"/><xsl:text>: </xsl:text>
-				<xsl:value-of select="text()"/>
+				<xsl:value-of select="@name"/>
 			</xsl:otherwise>
 			</xsl:choose>
 			</li>
@@ -77,9 +83,55 @@
 
 		<!-- novel content -->
 		<div id="nov_float_right" class="skin_text">
+		<div>
 
 		<xsl:choose>
-		<xsl:when test="$param/part = ''">
+		<xsl:when test="$content">
+		<!-- display content -->
+
+		<xsl:variable name="nav_bar">
+			<div class="previous">
+			<xsl:choose>
+				<xsl:when test="$page &gt; 1">
+					<a class="button" href="{php:functionString('makeurl', 'Novels', 'novel', $param/novel, 'chapter', $param/chapter, 'part', $param/part, 'page', am:max($page - 1, 1))}">Previous</a>
+				</xsl:when>
+				<xsl:otherwise>
+					<span class="disabled">Previous</span>
+				</xsl:otherwise>
+			</xsl:choose>
+			</div>
+
+			<div class="next">
+			<xsl:choose>
+				<xsl:when test="$page &lt; $pages">
+					<a class="button" href="{php:functionString('makeurl', 'Novels', 'novel', $param/novel, 'chapter', $param/chapter, 'part', $param/part, 'page', am:min($page + 1, $pages))}">Next</a>
+				</xsl:when>
+				<xsl:otherwise>
+					<span class="disabled">Next</span>
+				</xsl:otherwise>
+			</xsl:choose>
+			</div>
+		</xsl:variable>
+
+		<!-- upper navigation -->
+		<div class="navigation">
+			<xsl:copy-of select="$nav_bar"/>
+			<xsl:value-of select="$page"/>
+			<xsl:text> / </xsl:text>
+			<xsl:value-of select="$pages"/>
+		</div>
+
+		<!-- page content -->
+		<xsl:value-of select="$content" disable-output-escaping="yes" />
+
+		<!-- lower navigation -->
+		<div class="navigation">
+			<xsl:copy-of select="$nav_bar"/>
+			<a class="button" href="{php:functionString('makeurl', 'Novels', 'novel', $param/novel, 'chapter', $param/chapter, 'part', $param/part, 'page', $page)}">Back to top</a>
+		</div>
+
+		</xsl:when>
+		<xsl:otherwise>
 
 		<!-- display welcome page -->
 		<h3>Welcome to the Fantasy novels section</h3>
@@ -96,58 +148,13 @@
 		<br />
 		<p>Copyright 2008-2010 Lukáš Čajági</p>
 
-		</xsl:when>
-		<!-- display content -->
-		<xsl:otherwise>
-
-		<!-- upper navigation -->
-		<div class="navigation">
-			<input class="previous" type="submit" name="select_page_novels[{am:max($page - 1, 1)}]" value="Previous">
-				<xsl:if test="$page = 1"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-			</input>
-
-			<input class="next" type="submit" name="select_page_novels[{am:min($page + 1, $pages)}]" value="Next">
-				<xsl:if test="$page = $pages"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-			</input>
-
-			<select name="page_selector">
-				<xsl:for-each select="am:page_list($pages)">
-					<option value="{text() + 1}">
-						<xsl:if test="$page = (text() + 1)"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-						<xsl:value-of select="text() + 1"/>
-					</option>
-				</xsl:for-each>
-			</select>
-			<input type="submit" name="seek_page_novels" value="Select page" />
-		</div>
-
-		<!-- page content -->
-		<xsl:value-of select="$param/content" disable-output-escaping="yes" />
-
-		<!-- lower navigation -->
-		<div class="navigation">
-			<input class="previous" type="submit" name="select_page_novels[{am:max($page - 1, 1)}]" value="Previous">
-				<xsl:if test="$page = 1"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-			</input>
-
-			<input type="submit" name="Novels" value="Back to top" />
-
-			<input class="next" type="submit" name="select_page_novels[{am:min($page + 1, $pages)}]" value="Next">
-				<xsl:if test="$page = $pages"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
-			</input>
-		</div>
-
 		</xsl:otherwise>
 		</xsl:choose>
 
 		</div>
 		<div class="clear_floats"></div>
+	</div>
 
-		<!-- navigation data -->
-		<xsl:if test="$param/novel != ''"><input type="hidden" name="novel" value="{$param/novel}"/></xsl:if>
-		<xsl:if test="$param/chapter != ''"><input type="hidden" name="chapter" value="{$param/chapter}"/></xsl:if>
-		<xsl:if test="$param/part != ''"><input type="hidden" name="part" value="{$param/part}"/></xsl:if>
-		<xsl:if test="$page != ''"><input type="hidden" name="page" value="{$page}"/></xsl:if>
 	</div>
 </xsl:template>
 

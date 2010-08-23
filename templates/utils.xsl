@@ -184,7 +184,7 @@
 			</xsl:if>
 		</input>
 
-		<input type="submit" name="{$back_button}" value="Back to top" />
+		<input type="submit" name="Refresh[{$back_button}]" value="Back to top" />
 
 		<input type="submit" name="{concat('select_page_', $arrow_button)}[{am:min($current + 1, $page_count - 1)}]" value="&gt;">
 			<xsl:if test="$current = am:max($page_count - 1, 0)">

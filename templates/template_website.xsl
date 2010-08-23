@@ -2,7 +2,10 @@
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:exsl="http://exslt.org/common"
+                xmlns:php="http://php.net/xsl"
+                extension-element-prefixes="exsl php">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 <xsl:strip-space elements="*" />
 
@@ -14,13 +17,26 @@
 
 	<div id="webpg_float_left">
 	<div class="skin_label">
-	<p><input type="submit" name="WebSection[Main]" value="Main page" /></p>
-	<p><input type="submit" name="WebSection[News]" value="Latest news" /></p>
-	<p><input type="submit" name="WebSection[Modified]" value="Modified cards" /></p>
-	<p><input type="submit" name="WebSection[Help]" value="Game manual" /></p>
-	<p><input type="submit" name="WebSection[Faq]" value="F .   A .   Q . " /></p>
-	<p><input type="submit" name="WebSection[Credits]" value="Hall of fame" /></p>
-	<p><input type="submit" name="WebSection[History]" value="Project history" /></p>
+	<xsl:variable name="websections">
+		<value name="Main"     value="Main page"       />
+		<value name="News"     value="Latest news"     />
+		<value name="Archive"  value="News archive"    />
+		<value name="Modified" value="Modified cards"  />
+		<value name="Faq"      value="F .   A .   Q ." />
+		<value name="Credits"  value="Hall of fame"    />
+		<value name="History"  value="Project history" />
+	</xsl:variable>
+
+	<xsl:for-each select="exsl:node-set($websections)/*">
+		<p>
+			<a class="button" href="{php:functionString('makeurl', 'Webpage', 'WebSection', @name)}">
+				<xsl:if test="$param/selected = @name">
+					<xsl:attribute name="class">button pushed</xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="@value" />
+			</a>
+		</p>
+	</xsl:for-each>
 	</div>
 	</div>
 

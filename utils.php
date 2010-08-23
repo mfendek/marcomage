@@ -11,6 +11,19 @@
 	function htmldecode($string) { return htmlspecialchars_decode($string, ENT_COMPAT); }
 	function postencode($string) { return rawurlencode($string); }
 	function postdecode($string) { return rawurldecode($string); }
+	function makeurl($location)
+	{
+		global $session;
+
+		$params = '?location='.$location; // get location (only mandatory parameter)
+		$args = array_slice(func_get_args(), 1); // get other optional parameters
+
+		// create url from optional parameters
+		foreach ($args as $pos => $param) $params.= (($pos % 2 == 0) ? '&' : '=').$param;
+		$ss_opt = ($session AND !$session->hasCookies()) ? '&Username='.$session->Username().'&SessionID='.$session->SessionID() : '';
+
+		return $params.$ss_opt;
+	}
 
 	///////////////////////////////
 	/// date and time manipulation

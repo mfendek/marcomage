@@ -52,7 +52,7 @@
 	<script type="text/javascript" src="javascript/utils.js"></script>
 	</head>
 	<body>
-	<form action="" enctype="multipart/form-data" method="post">
+	<form action="index.php" enctype="multipart/form-data" method="post">
 
 
 	<!-- login box or navbar, depending on 'is_logged_in' -->

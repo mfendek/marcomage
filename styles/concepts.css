@@ -78,6 +78,11 @@ div#card_edit input + input /* set distance between elements */
 	margin-left: 1ex;
 }
 
+div#card_edit > a.button /* set distance between hyperlink buttons */
+{
+	margin-right: 1ex;
+}
+
 div.limit /* input formular layout */
 {
 	width: 20em;

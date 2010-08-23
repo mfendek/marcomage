@@ -2,7 +2,9 @@
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:php="http://php.net/xsl"
+                extension-element-prefixes="php">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
@@ -15,7 +17,12 @@
 	<div id="menubar">
 
 	<div id="menu_float_left">
-	<p><xsl:value-of select="$param/player_name"/> (<xsl:value-of select="$param/level"/>)</p>
+	<p>
+		<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', $param/player_name)}"><xsl:value-of select="$param/player_name"/></a>
+		<xsl:text> (</xsl:text>
+		<xsl:value-of select="$param/level"/>
+		<xsl:text>)</xsl:text>
+	</p>
 	</div>
 
 	<div id="menu_float_right">
@@ -26,11 +33,12 @@
 	<div id="menu_center">
 
 	<xsl:for-each select="$sections/*">
-		<input type="submit" name="{@name}" value="{@name}" >
+		<a class="button" href="{php:functionString('makeurl', @name)}" >
 			<xsl:if test="$current_section = @name">
-				<xsl:attribute name="class">pushed</xsl:attribute>
+				<xsl:attribute name="class">button pushed</xsl:attribute>
 			</xsl:if>
-		</input>
+			<xsl:value-of select="@name"/>
+		</a>
 		<xsl:if test="'Forum' = @name and $param/forum_notice = 'yes'">
 			<img src="img/book.gif" alt="" width="18px" height="14px" title="New post" />
 		</xsl:if>

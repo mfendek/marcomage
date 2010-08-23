@@ -3,7 +3,9 @@
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:php="http://php.net/xsl"
+                extension-element-prefixes="php">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 
@@ -64,11 +66,12 @@
 						</td>
 						<td>
 							<p>
-								<input type="submit" name="view_game[{gameid}]" value="&rarr;">
+								<a class="button" href="{php:functionString('makeurl', 'Game', 'CurrentGame', gameid)}">
 									<xsl:if test="ready = 'yes'">
-										<xsl:attribute name="class">marked_button</xsl:attribute>
+										<xsl:attribute name="class">button marked_button</xsl:attribute>
 									</xsl:if>
-								</input>
+									<xsl:text>&rarr;</xsl:text>
+								</a>
 							</p>
 						</td>
 					</tr>
@@ -95,18 +98,20 @@
 	</xsl:if>
 
 	<!-- subsection navigation -->
-	<p>	
-		<input type="submit" name="free_games" value="Available games">
+	<p>
+		<a class="button" href="{php:functionString('makeurl', 'Games', 'subsection', 'free_games')}">
 			<xsl:if test="$param/current_subsection = 'free_games'">
-				<xsl:attribute name="class">pushed</xsl:attribute>
+				<xsl:attribute name="class">button pushed</xsl:attribute>
 			</xsl:if>
-		</input>
+			<xsl:text>Available games</xsl:text>
+		</a>
 
-		<input type="submit" name="hosted_games" value="My games">
+		<a class="button" href="{php:functionString('makeurl', 'Games', 'subsection', 'hosted_games')}">
 			<xsl:if test="$param/current_subsection = 'hosted_games'">
-				<xsl:attribute name="class">pushed</xsl:attribute>
+				<xsl:attribute name="class">button pushed</xsl:attribute>
 			</xsl:if>
-		</input>
+			<xsl:text>My games</xsl:text>
+		</a>
 	</p>
 
 	<xsl:choose>
@@ -163,7 +168,6 @@
 						<tr class="table_row">
 							<td>
 								<p class="flags">
-									<input class="small_button" type="submit" name="user_details[{opponent}]" value="i" />
 									<xsl:if test="status != 'none'">
 										<img width="20px" height="14px" src="img/{status}.png" alt="status flag" class="icon" title="{status}" />
 									</xsl:if>
@@ -174,7 +178,7 @@
 									<xsl:if test="active = 'yes'">
 										<xsl:attribute name="class">p_online</xsl:attribute>
 									</xsl:if>
-									<xsl:value-of select="opponent"/>
+									<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', opponent)}"><xsl:value-of select="opponent"/></a>
 								</p>
 							</td>
 							<td><p><xsl:value-of select="am:datetime(gameaction, $param/timezone)"/></p></td>

@@ -49,11 +49,6 @@ div#statistics div.skin_text > p > span /* float values to the right */
 	font-weight: bold;
 }
 
-div#statistics div.skin_text > p > span > input /* card's details shortcut button */
-{
-	margin-left: 1ex;
-}
-
 div#statistics div.skin_text /* floated columns */
 {
 	float: left;
