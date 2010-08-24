@@ -65,7 +65,7 @@ h2,h3,h4,h5 /* heading layout */
 	color: #ffff66; /* sandy yellow */
 }
 
-input[type="submit"], input[type="button"], a.button /* submit input layout */
+input[type="submit"], input[type="button"], button, a.button /* submit input layout */
 {
 	background-color: black;
 	border-color: #6495ed; /* light blue */
@@ -78,7 +78,7 @@ input[type="submit"], input[type="button"], a.button /* submit input layout */
 	border-color: #6495ed; /* light blue */
 }
 
-input[disabled="disabled"] /* disabled submit input */
+input[disabled], button[disabled] /* disabled submit input */
 {
 	color: gray;
 }
@@ -88,7 +88,7 @@ a.button:link, a.button:visited
 	color: #ffff66; /* sandy yellow */
 }
 
-input.marked_button, a.marked_button /* highlighted button */
+input.marked_button, button.marked_button, a.marked_button /* highlighted button */
 {
 	background-color: yellow;
 	color: black;
@@ -153,18 +153,12 @@ div#forum table /* forum table layout */
 	background-color: #050529; /* very dark blue */
 }
 
-div#forum input
+div#forum input, div#forum button
 {
 	border-color: lime;
 	border-style: outset;
 	border-width: 1px;
 	padding: 0.4ex 1.2ex 0.4ex 1.2ex;
-}
-
-div#forum input.details
-{
-	border-style: solid;
-	padding: 0ex 0.9ex 0ex 0.9ex;
 }
 
 div#forum th > p
