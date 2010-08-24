@@ -155,6 +155,69 @@
 		
 		// inner-page messages
 		{
+			// begin cards related messages
+
+			if (isset($_POST['cards_filter'])) // Cards -> Apply filters
+			{
+				$_POST['CurrentCardsPage'] = 0;
+				$current = 'Cards';
+
+				break;
+			}
+
+			if (isset($_POST['select_page_cards'])) // Cards -> select page (previous and next button)
+			{
+				$_POST['CurrentCardsPage'] = $_POST['select_page_cards'];
+				$current = 'Cards';
+
+				break;
+			}
+
+			if (isset($_POST['seek_page_cards'])) // Cards -> select page (page selector)
+			{
+				$_POST['CurrentCardsPage'] = $_POST['page_selector'];
+				$current = 'Cards';
+
+				break;
+			}
+
+			if (isset($_POST['card_thread'])) // find matching thread for specified card or create a new matching thread
+			{
+				$card_id = $_POST['card_thread'];
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Cards'; break; }
+
+				// check value
+				if (!is_numeric($card_id)) { $error = "Invalid card id"; $current = "Cards"; break; }
+
+				$thread_id = $forum->Threads->CardThread($card_id);
+				if (!$thread_id)
+				{
+					$card = $carddb->GetCard($card_id);
+					$title = $card->CardData->Name;
+					$section_id = 7; // section for discussing balance changes
+					$new_thread = $forum->Threads->CreateThread($title, $player->Name(), 'normal', $section_id, $card_id);
+					if (!$new_thread) { $error = "Failed to create new thread"; $current = "Cards"; break; }
+
+					$thread_id = $new_thread;
+				}
+
+				$_POST['CurrentThread'] = $thread_id;
+				$current = 'Thread_details';
+
+				break;
+			}
+
+			// end cards related messages
+
+			// refresh button :)
+			if (isset($_POST['Refresh']))
+			{
+				$current = $_POST['Refresh'];
+				break;
+			}
+
 			// Explanation of how message passing is done:
 			//
 			// All requests are retrieved from POST data as <message, value>.
@@ -2460,58 +2523,6 @@
 				
 				// end replays related messages
 				
-				// begin cards related messages
-				
-				if ($message == 'cards_filter') // Cards -> Apply filters
-				{
-					$_POST['CurrentCardsPage'] = 0;
-					$current = 'Cards';
-					
-					break;
-				}
-				
-				if ($message == 'select_page_cards') // Cards -> select page (previous and next button)
-				{
-					$_POST['CurrentCardsPage'] = array_shift(array_keys($value));
-					$current = 'Cards';
-					
-					break;
-				}
-				
-				if ($message == 'seek_page_cards') // Cards -> select page (page selector)
-				{
-					$_POST['CurrentCardsPage'] = $_POST['page_selector'];
-					$current = 'Cards';
-					
-					break;
-				}
-				
-				if ($message == 'card_thread') // find matching thread for specified card or create a new matching thread
-				{
-					$card_id = array_shift(array_keys($value));
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Cards'; break; }
-					
-					$thread_id = $forum->Threads->CardThread($card_id);
-					if (!$thread_id)
-					{
-						$card = $carddb->GetCard($card_id);
-						$title = $card->CardData->Name;
-						$section_id = 7; // section for discussing balance changes
-						$new_thread = $forum->Threads->CreateThread($title, $player->Name(), 'normal', $section_id, $card_id);
-						if (!$new_thread) { $error = "Failed to create new thread"; $current = "Cards"; break; }
-						
-						$thread_id = $new_thread;
-					}
-					
-					$current = 'Thread_details';
-					
-					break;
-				}
-				
-				// end cards related messages
-				
 				// begin statistics related messages
 				
 				if ($message == 'card_statistics') // view card statistics
@@ -2527,13 +2538,6 @@
 				}
 				
 				// end statistics related messages
-				
-				// refresh button :)
-				if ($message == 'Refresh')
-				{
-					$current = array_shift(array_keys($value));
-					break;
-				}
 			} // foreach($_POST as $msg)
 		} // inner-page messages
 	} // else ($session)
@@ -3733,6 +3737,8 @@ case 'Replay':
 
 case 'Cards':
 	$current_page = ((isset($_POST['CurrentCardsPage'])) ? $_POST['CurrentCardsPage'] : 0);
+	if (!is_numeric($current_page) OR $current_page < 0) { $display_error = 'Invalid cards page.'; break; }
+
 	$params['cards']['current_page'] = $current_page;
 	$classfilter = $params['cards']['ClassFilter'] = isset($_POST['ClassFilter']) ? $_POST['ClassFilter'] : 'none';
 	$costfilter = $params['cards']['CostFilter'] = isset($_POST['CostFilter']) ? $_POST['CostFilter'] : 'none';

@@ -99,7 +99,7 @@
 			</xsl:variable>
 			<xsl:copy-of select="am:htmlSelectBox('ModifiedFilter', $param/ModifiedFilter, $modified, $param/modified_dates)"/>
 
-			<input type="submit" name="cards_filter" value="Apply filters" />
+			<button type="submit" name="cards_filter" >Apply filters</button>
 
 			<!-- navigation -->
 			<xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'cards')"/>
@@ -153,10 +153,10 @@
 			<a class="button" href="{php:functionString('makeurl', 'Cards')}">Back</a>
 			<xsl:choose>
 				<xsl:when test="$param/discussion = 'no' and $param/create_thread = 'yes'">
-					<input type="submit" name="card_thread[{$param/data/id}]" value="Start discussion" />
+					<button type="submit" name="card_thread" value="{$param/data/id}" >Start discussion</button>
 				</xsl:when>
 				<xsl:when test="$param/discussion = 'yes'">
-					<input type="submit" name="card_thread[{$param/data/id}]" value="View discussion" />
+					<button type="submit" name="card_thread" value="{$param/data/id}" >View discussion</button>
 				</xsl:when>
 			</xsl:choose>
 			<hr />

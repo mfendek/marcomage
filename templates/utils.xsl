@@ -142,16 +142,18 @@
 
 	<xsl:variable name="output">
 		<!-- arrow buttons selector -->
-		<input type="submit" name="{concat('select_page_', $button_name)}[{am:max($current - 1, 0)}]" value="&lt;">
+		<button type="submit" name="{concat('select_page_', $button_name)}" value="{am:max($current - 1, 0)}">
 			<xsl:if test="$current = 0">
 				<xsl:attribute name="disabled">disabled</xsl:attribute>
 			</xsl:if>
-		</input>
-		<input type="submit" name="{concat('select_page_', $button_name)}[{am:min($current + 1, $page_count - 1)}]" value="&gt;">
+			<xsl:text>&lt;</xsl:text>
+		</button>
+		<button type="submit" name="{concat('select_page_', $button_name)}" value="{am:min($current + 1, $page_count - 1)}">
 			<xsl:if test="$current = am:max($page_count - 1, 0)">
 				<xsl:attribute name="disabled">disabled</xsl:attribute>
 			</xsl:if>
-		</input>
+			<xsl:text>&gt;</xsl:text>
+		</button>
 		<xsl:if test="$page_count &gt; 0">
 			<!-- page selector -->
 			<select name="page_selector">
@@ -162,7 +164,7 @@
 					</option>
 				</xsl:for-each>
 			</select>
-			<input type="submit" name="{concat('seek_page_', $button_name)}" value="Select" />
+			<button type="submit" name="{concat('seek_page_', $button_name)}">Select</button>
 		</xsl:if>
 	</xsl:variable>
 
@@ -178,19 +180,21 @@
 
 	<xsl:variable name="output">
 		<!-- arrow buttons selector -->
-		<input type="submit" name="{concat('select_page_', $arrow_button)}[{am:max($current - 1, 0)}]" value="&lt;">
+		<button type="submit" name="{concat('select_page_', $arrow_button)}" value="{am:max($current - 1, 0)}">
 			<xsl:if test="$current = 0">
 				<xsl:attribute name="disabled">disabled</xsl:attribute>
 			</xsl:if>
-		</input>
+			<xsl:text>&lt;</xsl:text>
+		</button>
 
-		<input type="submit" name="Refresh[{$back_button}]" value="Back to top" />
+		<button type="submit" name="Refresh" value="{$back_button}">Back to top</button>
 
-		<input type="submit" name="{concat('select_page_', $arrow_button)}[{am:min($current + 1, $page_count - 1)}]" value="&gt;">
+		<button type="submit" name="{concat('select_page_', $arrow_button)}" value="{am:min($current + 1, $page_count - 1)}">
 			<xsl:if test="$current = am:max($page_count - 1, 0)">
 				<xsl:attribute name="disabled">disabled</xsl:attribute>
 			</xsl:if>
-		</input>
+			<xsl:text>&gt;</xsl:text>
+		</button>
 	</xsl:variable>
 
 	<func:result select="$output" />
