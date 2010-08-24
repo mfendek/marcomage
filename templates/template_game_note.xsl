@@ -21,10 +21,10 @@
 
 	<div class="skin_text">
 		<a class="button" href="{php:functionString('makeurl', 'Game', 'CurrentGame', $param/CurrentGame)}">Back to game</a>
-		<input type="submit" name="save_note_return" value="Save &amp; return" />
-		<input type="submit" name="save_note" value="Save" />
-		<input type="submit" name="clear_note" value="Clear" />
-		<input type="submit" name="clear_note_return" value="Clear &amp; return" />
+		<button type="submit" name="save_note_return">Save &amp; return</button>
+		<button type="submit" name="save_note">Save</button>
+		<button type="submit" name="clear_note">Clear</button>
+		<button type="submit" name="clear_note_return">Clear &amp; return</button>
 		<hr/>
 
 		<textarea name="Content" rows="10" cols="50"><xsl:value-of select="$param/text"/></textarea>

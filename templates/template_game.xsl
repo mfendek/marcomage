@@ -55,7 +55,7 @@
 			<td align="center">
 				<!--  display discard button (buttons are locked when surrender request is active) -->
 				<xsl:if test="($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = ''">
-					<input type="submit" name="discard_card[{position()}]" value="Discard"/>
+					<button type="submit" name="discard_card" value="{position()}">Discard</button>
 				</xsl:if>
 
 				<!--  display card flags, if set -->
@@ -79,7 +79,7 @@
 				
 				<!-- play button and card modes (buttons are locked when surrender request is active) -->
 				<xsl:if test="Playable = 'yes' and $param/Surrender = ''">
-					<input type="submit" name="play_card[{position()}]" value="Play"/>
+					<button type="submit" name="play_card" value="{position()}">Play</button>
 					<xsl:if test="Modes &gt; 0">
 						<select name="card_mode[{position()}]" class="card_modes" size="1">
 							<xsl:for-each select="str:split(am:numbers(1, Modes), ',')">
@@ -120,9 +120,9 @@
 			</select>
 		</td>
 		<td>
-			<input type="submit" name="jump_to_game" value="Select" />
+			<button type="submit" name="jump_to_game">Select</button>
 			<xsl:if test="$param/nextgame_button = 'yes'">
-				<input type="submit" name="active_game" value="Next game" />
+				<button type="submit" name="active_game">Next game</button>
 			</xsl:if> 
 		</td>
 		<!-- end quick game switching menu -->
@@ -167,20 +167,20 @@
 				<td style="text-align: right">
 					<xsl:choose>
 						<xsl:when test="$param/opp_isDead = 'yes'">
-							<input type="submit" name="abort_game" value="Abort game" />
+							<button type="submit" name="abort_game">Abort game</button>
 						</xsl:when>
 						<xsl:when test="$param/finish_game = 'yes'">
-							<input type="submit" name="finish_game" value="Finish game" />
+							<button type="submit" name="finish_game">Finish game</button>
 						</xsl:when>
 						<xsl:when test="$param/Surrender = $param/OpponentName">
-							<input type="submit" name="accept_surrender" value="Accept" />
-							<input type="submit" name="reject_surrender" value="Reject" />
+							<button type="submit" name="accept_surrender">Accept</button>
+							<button type="submit" name="reject_surrender">Reject</button>
 						</xsl:when>
 						<xsl:when test="$param/Surrender = $param/PlayerName">
-							<input type="submit" name="cancel_surrender" value="Cancel surrender" />
+							<button type="submit" name="cancel_surrender">Cancel surrender</button>
 						</xsl:when>
 						<xsl:otherwise>
-							<input type="submit" name="surrender" value="Surrender" />
+							<button type="submit" name="surrender">Surrender</button>
 						</xsl:otherwise>
 					</xsl:choose>
 				<!-- end surrender/abort button -->
@@ -188,7 +188,7 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<td align="center" colspan="2">
-					<input type="submit" name="Confirm" value="Leave the game" />
+					<button type="submit" name="Confirm">Leave the game</button>
 				</td>
 			</xsl:otherwise>
 		</xsl:choose>
@@ -802,7 +802,7 @@
 		<xsl:if test="$param/chat = 'yes'">
 			<div id="chat_inputs">
 				<input class="text_data chatboard" type="text" name="ChatMessage" size="122" maxlength="300" tabindex="1" accesskey="a" />
-				<input type="submit" name="send_message" value="Send" tabindex="2" accesskey="s" />
+				<button type="submit" name="send_message" tabindex="2" accesskey="s">Send</button>
 			</div>
 		</xsl:if>
 

@@ -1145,6 +1145,665 @@
 
 			// end forum related messages
 
+			// game-related messages
+
+			if (isset($_POST['jump_to_game'])) // Games -> vs. %s
+			{
+				$gameid = $_POST['games_list'];	
+				$game = $gamedb->GetGame($gameid);
+
+				// check if the game exists
+				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
+
+				// check if this user is allowed to view this game
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games'; break; }
+
+				// check if the game is a game in progress (and not a challenge)
+				if ($game->State == 'waiting') { $error = 'Opponent did not accept the challenge yet!'; $current = 'Games'; break; }
+
+				// disable re-visiting
+				if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { $error = 'Game already over.'; $current = 'Games'; break; }
+
+				$_POST['CurrentGame'] = $gameid;
+				$current = "Game";
+				break;
+			}
+			
+			if (isset($_POST['active_game'])) // Games -> next game button
+			{
+				$list = $gamedb->NextGameList($player->Name());
+
+				//check if there is an active game
+				if (count($list) == 0) { $error = 'No games your turn!'; $current = 'Games'; break; }
+
+				$active = $inactive = array();
+
+				foreach ($list as $game_id => $opponent_name)
+				{
+					// separate games into two groups based on opponent activity
+					$inactivity = time() - strtotime($playerdb->LastQuery($opponent_name));
+					if ($inactivity < 60*10) $active[] = $game_id;
+					else $inactive[] = $game_id;
+				}
+
+				$list = array_merge($active, $inactive);
+
+				$game_id = $list[0];
+				foreach ($list as $i => $cur_game)
+				{
+					if ($_POST['CurrentGame'] == $cur_game)
+					{
+						$game_id = $list[($i + 1) % count($list)];//wrap around
+						break;
+					}	
+				}
+
+				$game = $gamedb->GetGame($game_id);
+
+				// check if the game exists
+				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
+
+				// check if this user is allowed to view this game
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games'; break; }
+
+				// check if the game is a game in progress (and not a challenge)
+				if ($game->State == 'waiting') { $error = 'Opponent did not accept the challenge yet!'; $current = 'Games'; break; }
+
+				// disable re-visiting
+				if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { $error = 'Game already over.'; $current = 'Games'; break; }
+
+				$_POST['CurrentGame'] = $game->ID();
+				$current = "Game";
+				break;
+			}
+
+			if (isset($_POST['save_note']))	// save current's player game note
+			{
+				$gameid = $_POST['CurrentGame'];
+				$game = $gamedb->GetGame($gameid);
+
+				// check if the game exists
+				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
+
+				// check if this user is allowed to perform game actions
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
+
+				$new_note = $_POST['Content'];
+
+				if (strlen($new_note) > MESSAGE_LENGTH) { $error = "Game note is too long"; $current = "Game_note"; break; }
+
+				$game->SetNote($player->Name(), $new_note);
+				$game->SaveGame();
+
+				$information = 'Game note saved.';
+				$current = 'Game_note';
+				break;
+			}
+
+			if (isset($_POST['save_note_return'])) // save current's player game note and return to game screen
+			{
+				$gameid = $_POST['CurrentGame'];
+				$game = $gamedb->GetGame($gameid);
+
+				// check if the game exists
+				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
+
+				// check if this user is allowed to view this game
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games'; break; }
+
+				// disable re-visiting
+				if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { $error = 'Game already over.'; $current = 'Games'; break; }
+
+				$new_note = $_POST['Content'];
+
+				if (strlen($new_note) > MESSAGE_LENGTH) { $error = "Game note is too long"; $current = "Game_note"; break; }
+
+				$game->SetNote($player->Name(), $new_note);
+				$game->SaveGame();
+
+				$information = 'Game note saved.';
+				$current = 'Game';
+				break;
+			}
+
+			if (isset($_POST['clear_note'])) // clear current's player game note
+			{
+				$gameid = $_POST['CurrentGame'];
+				$game = $gamedb->GetGame($gameid);
+
+				// check if the game exists
+				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
+
+				// check if this user is allowed to perform game actions
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
+
+				$game->ClearNote($player->Name());
+				$game->SaveGame();
+
+				$information = 'Game note cleared.';
+				$current = 'Game_note';
+				break;
+			}
+
+			if (isset($_POST['clear_note_return']))	// clear current's player game note and return to game screen
+			{
+				$gameid = $_POST['CurrentGame'];
+				$game = $gamedb->GetGame($gameid);
+
+				// check if the game exists
+				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
+
+				// check if this user is allowed to perform game actions
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
+
+				// disable re-visiting
+				if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { $error = 'Game already over.'; $current = 'Games'; break; }
+
+				$game->ClearNote($player->Name());
+				$game->SaveGame();
+
+				$information = 'Game note cleared.';
+				$current = 'Game';
+				break;
+			}
+
+			if (isset($_POST['send_message'])) // message contains no data itself
+			{
+				$msg = $_POST['ChatMessage'];
+
+				$gameid = $_POST['CurrentGame'];
+				$game = $gamedb->GetGame($gameid);
+
+				// check if the game exists
+				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
+
+				// check if this user is allowed to send messages in this game
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
+
+				// do not post empty messages (prevents accidental send)
+				if (trim($msg) == '') { /*$error = 'You can't send empty chat messages.';*/ $current = 'Game'; break; }
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["chat"]) { $error = 'Access denied.'; $current = 'Game'; break; }
+
+				$chatdb->SaveChatMessage($game->ID(), $msg, $player->Name());
+				$current = 'Game';
+				break;
+			}
+
+			if (isset($_POST['discard_card'])) // Games -> vs. %s -> Discard
+			{
+				$cardpos = $_POST['discard_card'];
+
+				$gameid = $_POST['CurrentGame'];
+				$game = $gamedb->GetGame($gameid);
+
+				// check if the game exists
+				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
+
+				// check if this user is allowed to perform game actions
+				if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or $game->Surrender != '') { $current = 'Game'; break; }
+
+				// check card position
+				if (!is_numeric($cardpos)) { $error = 'Invalid card position.'; $current = 'Game'; break; }
+
+				// the rest of the checks are done internally
+				$result = $game->PlayCard($player->Name(), $cardpos, 0, 'discard');
+
+				if ($result == 'OK')
+				{
+					$game->SaveGame();
+					$replaydb->UpdateReplay($game);
+
+					if ($game->State == "finished")
+						$replaydb->FinishReplay($game);
+
+					$information = "You have discarded a card.";
+				}
+				else $error = $result;
+
+				$current = "Game";
+				break;
+			}
+
+			if (isset($_POST['play_card'])) // Games -> vs. %s -> Play
+			{
+				$cardpos = $_POST['play_card'];
+				$mode = (isset($_POST['card_mode']) and isset($_POST['card_mode'][$cardpos])) ? $_POST['card_mode'][$cardpos] : 0;
+
+				$gameid = $_POST['CurrentGame'];
+				$game = $gamedb->GetGame($gameid);
+
+				// check if the game exists
+				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
+
+				// check if this user is allowed to perform game actions
+				if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or $game->Surrender != '') { $current = 'Game'; break; }
+
+				// check card position
+				if (!is_numeric($cardpos)) { $error = 'Invalid card position.'; $current = 'Game'; break; }
+
+				// check card mode
+				if (!is_numeric($mode)) { $error = 'Invalid mode.'; $current = 'Game'; break; }
+
+				// the rest of the checks are done internally
+				$result = $game->PlayCard($player->Name(), $cardpos, $mode, 'play');
+
+				if ($result == 'OK')
+				{
+					$game->SaveGame();
+					$replaydb->UpdateReplay($game);
+
+					if ($game->State == 'finished')
+						$replaydb->FinishReplay($game);
+
+					if (($game->State == 'finished') AND ($game->GetGameMode('FriendlyPlay') == "no"))
+					{
+						$player1 = $game->Name1();
+						$player2 = $game->Name2();
+						$exp1 = $game->CalculateExp($player1);
+						$exp2 = $game->CalculateExp($player2);
+						$p1 = $playerdb->GetPlayer($player1);
+						$p2 = $playerdb->GetPlayer($player2);
+						$p1_rep = $p1->GetSettings()->GetSetting('Reports');
+						$p2_rep = $p2->GetSettings()->GetSetting('Reports');
+
+						// update score
+						$score1 = $scoredb->GetScore($player1);
+						$score2 = $scoredb->GetScore($player2);
+
+						if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
+						elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
+						else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
+
+						$levelup1 = $score1->AddExp($exp1['exp']);
+						$levelup2 = $score2->AddExp($exp2['exp']);
+						$score1->SaveScore();
+						$score2->SaveScore();
+
+						// send level up messages
+						if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
+						if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
+
+						// add bonus deck slot every 6th level
+						if ($levelup1 AND (($p1->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player1, time());
+						if ($levelup2 AND (($p2->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player2, time());
+
+						// send battle report message
+						$outcome = $game->Outcome();
+						$winner = $game->Winner;
+						$hidden = $game->GetGameMode('HiddenCards');
+
+						$messagedb->SendBattleReport($player1, $player2, $p1_rep, $p2_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
+					}
+
+					$information = "You have played a card.";
+				}
+				else $error = $result;
+
+				$current = "Game";
+				break;
+			}
+
+			if (isset($_POST['surrender'])) // Games -> vs. %s -> Surrender -> send surrender request to opponent
+			{
+				$gameid = $_POST['CurrentGame'];
+				$game = $gamedb->GetGame($gameid);
+
+				// check if the game exists
+				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
+
+				// check if this user is allowed to surrender in this game
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
+
+				$result = $game->RequestSurrender($player->Name());
+
+				if ($result == 'OK') $information = 'Surrender request sent.';
+
+				$current = "Game";
+				break;
+			}
+
+			if (isset($_POST['cancel_surrender'])) // Games -> vs. %s -> Surrender -> cancel surrender request to opponent
+			{
+				$gameid = $_POST['CurrentGame'];
+				$game = $gamedb->GetGame($gameid);
+
+				// check if the game exists
+				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
+
+				// check if this user is allowed to cancel surrender in this game
+				if ($player->Name() != $game->Surrender) { $current = 'Game'; break; }
+
+				$result = $game->CancelSurrender();
+
+				if ($result == 'OK') $information = 'Surrender request cancelled.';
+
+				$current = "Game";
+				break;
+			}
+
+			if (isset($_POST['reject_surrender'])) // Games -> vs. %s -> Surrender -> reject surrender request from opponent
+			{
+				$gameid = $_POST['CurrentGame'];
+				$game = $gamedb->GetGame($gameid);
+
+				// check if the game exists
+				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
+
+				// check if this user is allowed to reject surrender in this game
+				if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or ($player->Name() == $game->Surrender)) { $current = 'Game'; break; }
+
+				$result = $game->CancelSurrender();
+
+				if ($result == 'OK') $information = 'Surrender request rejected.';
+
+				$current = "Game";
+				break;
+			}
+
+			if (isset($_POST['accept_surrender'])) // Games -> vs. %s -> Surrender -> accept surrender from opponent
+			{
+				$gameid = $_POST['CurrentGame'];
+				$game = $gamedb->GetGame($gameid);
+
+				// check if the game exists
+				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
+
+				// check if this user is allowed to accept surrender in this game
+				if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or ($player->Name() == $game->Surrender)) { $current = 'Game'; break; }
+
+				$result = $game->SurrenderGame();
+
+				if ($result == 'OK')
+				{
+					$information = 'Surrender request accepted.';
+					$replaydb->FinishReplay($game);
+				}
+
+				if (($result == 'OK') AND ($game->GetGameMode('FriendlyPlay') == "no"))
+				{
+					$loser = $game->Surrender;
+					$exp1 = $game->CalculateExp($game->Winner);
+					$exp2 = $game->CalculateExp($loser);
+					$opponent = $playerdb->GetPlayer($loser);
+					$opponent_rep = $opponent->GetSettings()->GetSetting('Reports');
+					$player_rep = $player->GetSettings()->GetSetting('Reports');
+
+					// update score
+					$score1 = $scoredb->GetScore($game->Winner);
+					$score1->ScoreData->Wins++;
+					$levelup1 = $score1->AddExp($exp1['exp']);
+					$score1->SaveScore();
+
+					$score2 = $scoredb->GetScore($loser);
+					$score2->ScoreData->Losses++;
+					$levelup2 = $score2->AddExp($exp2['exp']);
+					$score2->SaveScore();
+
+					// send level up messages
+					if ($levelup1 AND ($player_rep == "yes")) $messagedb->LevelUp($player->Name(), $score1->ScoreData->Level);
+					if ($levelup2 AND ($opponent_rep == "yes")) $messagedb->LevelUp($opponent->Name(), $score2->ScoreData->Level);
+
+					// add bonus deck slot every 6th level
+					if ($levelup1 AND (($player->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player->Name(), time());
+					if ($levelup2 AND (($opponent->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($opponent->Name(), time());
+
+					// send battle report message
+					$outcome = $game->Outcome();
+					$winner = $game->Winner;
+					$hidden = $game->GetGameMode('HiddenCards');
+
+					$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
+				}
+				else $error = $result;
+
+				$current = "Game";
+				break;
+			}
+
+			if (isset($_POST['abort_game'])) // Games -> vs. %s -> Abort game
+			{
+				// an option to end the game without hurting your score
+				// applies only to games against 'dead' players (abandoned games)
+				$gameid = $_POST['CurrentGame'];
+				$game = $gamedb->GetGame($gameid);
+
+				// check if the game exists
+				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
+
+				// check if this user is allowed to abort this game
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
+
+				// only allow aborting abandoned games
+				if (!$playerdb->isDead($game->Name1()) and !$playerdb->isDead($game->Name2())) { $error = 'Action not allowed!'; $current = 'Game'; break; }
+
+				$result = $game->AbortGame($player->Name());
+
+				if ($result == 'OK')
+					$replaydb->FinishReplay($game);
+				else $error = $result;
+
+				$current = "Game";
+				break;
+			}
+
+			if (isset($_POST['finish_game'])) // Games -> vs. %s -> Finish game
+			{
+				// an option to end the game when opponent refuses to play
+				// applies only to games against non-'dead' players, when opponet didn't take action for more then 3 weeks
+				$gameid = $_POST['CurrentGame'];
+				$game = $gamedb->GetGame($gameid);
+
+				// check if the game exists
+				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
+
+				// check if this user is allowed to abort this game
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
+
+				// only allow finishing active games
+				if ($playerdb->isDead($game->Name1()) or $playerdb->isDead($game->Name2())) { $error = 'Action not allowed!'; $current = 'Game'; break; }
+
+				// and only if the abort criteria are met
+				if( time() - strtotime($game->LastAction) < 60*60*24*7*3 || $game->Current == $player->Name() ) { $error = 'Action not allowed!'; $current = 'Game'; break; }
+
+				$result = $game->FinishGame($player->Name());
+
+				if ($result == 'OK')
+					$replaydb->FinishReplay($game);
+
+				if (($result == 'OK') AND ($game->GetGameMode('FriendlyPlay') == "no"))
+				{
+					$player1 = $game->Name1();
+					$player2 = $game->Name2();
+					$exp1 = $game->CalculateExp($player1);
+					$exp2 = $game->CalculateExp($player2);
+					$p1 = $playerdb->GetPlayer($player1);
+					$p2 = $playerdb->GetPlayer($player2);
+					$p1_rep = $p1->GetSettings()->GetSetting('Reports');
+					$p2_rep = $p2->GetSettings()->GetSetting('Reports');
+
+					// update score
+					$score1 = $scoredb->GetScore($player1);
+					$score2 = $scoredb->GetScore($player2);
+
+					if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
+					elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
+					else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
+
+					$levelup1 = $score1->AddExp($exp1['exp']);
+					$levelup2 = $score2->AddExp($exp2['exp']);
+					$score1->SaveScore();
+					$score2->SaveScore();
+
+					// send level up messages
+					if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
+					if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
+
+					// add bonus deck slot every 6th level
+					if ($levelup1 AND (($p1->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player1, time());
+					if ($levelup2 AND (($p2->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player2, time());
+
+					// send battle report message
+					$outcome = $game->Outcome();
+					$winner = $game->Winner;
+					$hidden = $game->GetGameMode('HiddenCards');
+
+					$messagedb->SendBattleReport($player1, $player2, $p1_rep, $p2_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
+				}
+				else $error = $result;
+
+				$current = "Game";
+				break;
+			}
+
+			if (isset($_POST['Confirm'])) // Games -> vs. %s -> Leave the game
+			{
+				$gameid = $_POST['CurrentGame'];
+				$game = $gamedb->GetGame($gameid);
+
+				// check if the game exists
+				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
+
+				// disable re-visiting (or the player would set this twice >_>)
+				if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { $current = 'Games'; break; }
+
+				// only allow if the game is over (stay if not)
+				if ($game->State == 'in progress') { $current = "Game"; break; }
+
+				if ($game->State == 'finished')
+				{
+					// we are the first one to acknowledge
+					$game->State = ($game->Name1() == $player->Name()) ? 'P1 over' : 'P2 over';
+					$game->SaveGame();
+					// inform other player about leaving the game
+					$chatdb->SaveChatMessage($game->ID(), "has left the game", $player->Name());
+				}
+				else // 'P1 over' or 'P2 over'
+				{
+					// the other player has already acknowledged
+					$gamedb->DeleteGame($game->ID());
+					$chatdb->DeleteChat($game->ID());
+				}
+
+				$current = "Games";
+				break;
+			}
+
+			if (isset($_POST['host_game'])) // Games -> Host game
+			{
+				$_POST['subsection'] = 'hosted_games';
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
+
+				$deckname = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
+				$deck = $deckdb->GetDeck($player->Name(), $deckname);
+
+				// check if such deck exists
+				if (!$deck) { $error = 'Deck '.$deckname.' does not exist!'; $current = 'Games'; break; }
+
+				// check if the deck is ready (all 45 cards)
+				if (!$deck->isReady()) { $error = 'Deck '.$deckname.' is not yet ready for gameplay!'; $current = 'Games'; break; }
+
+				// check if you are within the MAX_GAMES limit
+				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Games'; break; }
+
+				// create a new challenge
+				$game = $gamedb->CreateGame($player->Name(), '', $deck->DeckData);
+				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
+
+				// set game modes
+				$hidden_cards = (isset($_POST['HiddenMode']) ? 'yes' : 'no');
+				$friendly_play = (isset($_POST['FriendlyMode']) ? 'yes' : 'no');
+				$game_modes = array();
+				if ($hidden_cards == "yes") $game_modes[] = 'HiddenCards';
+				if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
+				$game->SetGameModes(implode(',', $game_modes));
+
+				$information = 'Game created. Waiting for opponent to join.';
+				$current = 'Games';
+				break;
+			}
+
+			if (isset($_POST['unhost_game'])) // Games -> Unhost game
+			{
+				$game_id = $_POST['unhost_game'];
+				$game = $gamedb->GetGame($game_id);
+				$_POST['subsection'] = 'hosted_games';
+
+				// check if the game exists
+				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
+
+				// check if the game is a a challenge (and not a game in progress)
+				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Games'; break; }
+
+				// delete game entry
+				$gamedb->DeleteGame($game->ID());
+				$chatdb->DeleteChat($game->ID());
+
+				$information = 'You have canceled a game.';
+				$current = 'Games';
+				break;
+			}
+
+			if (isset($_POST['join_game'])) // Games -> Join game
+			{
+				$_POST['subsection'] = 'free_games';
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["accept_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
+
+				$game_id = $_POST['join_game'];
+				$game = $gamedb->GetGame($game_id);
+
+				// check if the game exists
+				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
+
+				// check if the game is a challenge and not an active game
+				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Games'; break; }
+
+				// check if you are within the MAX_GAMES limit
+				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'You may only have '.MAX_GAMES.' simultaneous games at once (this also includes your challenges).'; $current = 'Games'; break; }
+
+				$opponent = $game->Name1();
+
+				$deckname = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
+				$deck = $deckdb->GetDeck($player->Name(), $deckname);
+
+				// check if such deck exists
+				if (!$deck) { $error = 'No such deck!'; $current = 'Games'; break; }
+
+				// check if the deck is ready (all 45 cards)
+				if (!$deck->isReady()) { $error = 'This deck is not yet ready for gameplay!'; $current = 'Decks'; break; }
+
+				// check if such opponent exists
+				if (!$playerdb->GetPlayer($opponent)) { $error = 'No such player!'; $current = 'Games'; break; }
+
+				// check if that opponent was already challenged, or if there is a game already in progress
+				if ($gamedb->CheckGame($opponent, $player->Name())) { $error = 'You are already playing against '.htmlencode($opponent).'!'; $current = 'Games'; break; }
+
+				// join the game
+				$gamedb->JoinGame($player->Name(), $game_id);
+				$game = $gamedb->GetGame($game_id); // refresh game data
+				$game->StartGame($player->Name(), $deck->DeckData);
+				$game->SaveGame();
+				$replaydb->CreateReplay($game); // create game replay
+
+				$information = 'You have joined '.htmlencode($opponent).'\'s game.';
+				$current = 'Games';
+				break;
+			}
+
+			if (isset($_POST['filter_hosted_games'])) // use filter in hosted games view
+			{
+				$_POST['subsection'] = 'free_games';
+				$current = 'Games';
+				break;
+			}
+
+			// end game-related messages
+
 			// Explanation of how message passing is done:
 			//
 			// All requests are retrieved from POST data as <message, value>.
@@ -1163,673 +1822,6 @@
 			
 			foreach($_POST as $message => $value)
 			{
-				// game-related messages
-				if ($message == 'jump_to_game') // Games -> vs. %s
-				{	
-					$gameid = $_POST['games_list'];	
-					$game = $gamedb->GetGame($gameid);
-					
-					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
-					
-					// check if this user is allowed to view this game
-					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games'; break; }
-					
-					// check if the game is a game in progress (and not a challenge)
-					if ($game->State == 'waiting') { /*$error = 'Opponent did not accept the challenge yet!';*/ $current = 'Games'; break; }
-					
-					// disable re-visiting
-					if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { /*$error = 'Game already over.';*/ $current = 'Games'; break; }
-					
-					$_POST['CurrentGame'] = $gameid;
-					$current = "Game";
-					break;
-				}
-				
-				if ($message == 'active_game') // Games -> next game button
-				{
-					$list = $gamedb->NextGameList($player->Name());
-					
-					//check if there is an active game
-					if (count($list) == 0) { /*$error = 'No games your turn!';*/ $current = 'Games'; break; }
-					
-					$active = $inactive = array();
-					
-					foreach ($list as $game_id => $opponent_name)
-					{
-						// separate games into two groups based on opponent activity
-						$inactivity = time() - strtotime($playerdb->LastQuery($opponent_name));
-						if ($inactivity < 60*10) $active[] = $game_id;
-						else $inactive[] = $game_id;
-					}
-					
-					$list = array_merge($active, $inactive);
-					
-					$game_id = $list[0];
-					foreach ($list as $i => $cur_game)
-					{
-						if ($_POST['CurrentGame'] == $cur_game)
-						{
-							$game_id = $list[($i + 1) % count($list)];//wrap around
-							break;
-						}	
-					}
-					
-					$game = $gamedb->GetGame($game_id);
-					
-					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
-					
-					// check if this user is allowed to view this game
-					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games'; break; }
-					
-					// check if the game is a game in progress (and not a challenge)
-					if ($game->State == 'waiting') { /*$error = 'Opponent did not accept the challenge yet!';*/ $current = 'Games'; break; }
-					
-					// disable re-visiting
-					if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { /*$error = 'Game already over.';*/ $current = 'Games'; break; }
-					
-					$_POST['CurrentGame'] = $game->ID();
-					$current = "Game";
-					break;
-				}
-				
-				if ($message == 'save_note')
-				{	// save current's player game note
-					$gameid = $_POST['CurrentGame'];
-					$game = $gamedb->GetGame($gameid);
-					
-					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
-					
-					// check if this user is allowed to perform game actions
-					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
-					
-					$new_note = $_POST['Content'];
-					
-					if (strlen($new_note) > MESSAGE_LENGTH) { $error = "Game note is too long"; $current = "Game_note"; break; }
-					
-					$game->SetNote($player->Name(), $new_note);
-					$game->SaveGame();
-					
-					$information = 'Game note saved.';
-					
-					$current = 'Game_note';
-					break;
-				}
-				
-				if ($message == 'save_note_return')
-				{	// save current's player game note and return to game screen
-					$gameid = $_POST['CurrentGame'];
-					$game = $gamedb->GetGame($gameid);
-					
-					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
-					
-					// check if this user is allowed to view this game
-					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games'; break; }
-					
-					// disable re-visiting
-					if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { /*$error = 'Game already over.';*/ $current = 'Games'; break; }
-					
-					$new_note = $_POST['Content'];
-					
-					if (strlen($new_note) > MESSAGE_LENGTH) { $error = "Game note is too long"; $current = "Game_note"; break; }
-					
-					$game->SetNote($player->Name(), $new_note);
-					$game->SaveGame();
-					
-					$information = 'Game note saved.';
-					
-					$current = 'Game';
-					break;
-				}
-				
-				if ($message == 'clear_note')
-				{	// clear current's player game note
-					$gameid = $_POST['CurrentGame'];
-					$game = $gamedb->GetGame($gameid);
-					
-					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
-					
-					// check if this user is allowed to perform game actions
-					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
-					
-					$game->ClearNote($player->Name());
-					$game->SaveGame();
-					
-					$information = 'Game note cleared.';
-					
-					$current = 'Game_note';
-					break;
-				}
-				
-				if ($message == 'clear_note_return')
-				{	// clear current's player game note and return to game screen
-					$gameid = $_POST['CurrentGame'];
-					$game = $gamedb->GetGame($gameid);
-					
-					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
-					
-					// check if this user is allowed to perform game actions
-					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
-					
-					// disable re-visiting
-					if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { /*$error = 'Game already over.';*/ $current = 'Games'; break; }
-					
-					$game->ClearNote($player->Name());
-					$game->SaveGame();
-					
-					$information = 'Game note cleared.';
-					
-					$current = 'Game';
-					break;
-				}
-				
-				if ($message == 'send_message')
-				{	// message contains no data itself
-					$msg = $_POST['ChatMessage'];
-					
-					$gameid = $_POST['CurrentGame'];
-					$game = $gamedb->GetGame($gameid);
-					
-					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
-					
-					// check if this user is allowed to send messages in this game
-					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
-					
-					// do not post empty messages (prevents accidental send)
-					if (trim($msg) == '') { /*$error = 'You can't send empty chat messages.';*/ $current = 'Game'; break; }
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["chat"]) { $error = 'Access denied.'; $current = 'Game'; break; }
-					
-					$chatdb->SaveChatMessage($game->ID(), $msg, $player->Name());
-					
-					$current = 'Game';
-					break;
-				}
-				
-				if ($message == 'discard_card') // Games -> vs. %s -> Discard
-				{
-					$cardpos = postdecode(array_shift(array_keys($value)));
-					
-					$gameid = $_POST['CurrentGame'];
-					$game = $gamedb->GetGame($gameid);
-					
-					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
-					
-					// check if this user is allowed to perform game actions
-					if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or $game->Surrender != '') { $current = 'Game'; break; }
-					
-					// the rest of the checks are done internally
-					$result = $game->PlayCard($player->Name(), $cardpos, 0, 'discard');
-					
-					if ($result == 'OK')
-					{
-						$game->SaveGame();
-						$replaydb->UpdateReplay($game);
-						
-						if ($game->State == "finished")
-							$replaydb->FinishReplay($game);
-						
-						$information = "You have discarded a card.";
-					}
-					/*else $error = $result;*/
-					
-					$current = "Game";
-					break;
-				}
-				
-				if ($message == 'play_card') // Games -> vs. %s -> Play
-				{
-					$cardpos = array_shift(array_keys($value));
-					$mode = (isset($_POST['card_mode']) and isset($_POST['card_mode'][$cardpos])) ? $_POST['card_mode'][$cardpos] : 0;
-					
-					$gameid = $_POST['CurrentGame'];
-					$game = $gamedb->GetGame($gameid);
-					
-					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
-					
-					// check if this user is allowed to perform game actions
-					if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or $game->Surrender != '') { $current = 'Game'; break; }
-					
-					// the rest of the checks are done internally
-					$result = $game->PlayCard($player->Name(), $cardpos, $mode, 'play');
-					
-					if ($result == 'OK')
-					{
-						$game->SaveGame();
-						$replaydb->UpdateReplay($game);
-						
-						if ($game->State == 'finished')
-							$replaydb->FinishReplay($game);
-
-						if (($game->State == 'finished') AND ($game->GetGameMode('FriendlyPlay') == "no"))
-						{
-							$player1 = $game->Name1();
-							$player2 = $game->Name2();
-							$exp1 = $game->CalculateExp($player1);
-							$exp2 = $game->CalculateExp($player2);
-							$p1 = $playerdb->GetPlayer($player1);
-							$p2 = $playerdb->GetPlayer($player2);
-							$p1_rep = $p1->GetSettings()->GetSetting('Reports');
-							$p2_rep = $p2->GetSettings()->GetSetting('Reports');
-							
-							// update score
-							$score1 = $scoredb->GetScore($player1);
-							$score2 = $scoredb->GetScore($player2);
-							
-							if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
-							elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
-							else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
-							
-							$levelup1 = $score1->AddExp($exp1['exp']);
-							$levelup2 = $score2->AddExp($exp2['exp']);
-							$score1->SaveScore();
-							$score2->SaveScore();
-							
-							// send level up messages
-							if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
-							if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
-							
-							// add bonus deck slot every 6th level
-							if ($levelup1 AND (($p1->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player1, time());
-							if ($levelup2 AND (($p2->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player2, time());
-							
-							// send battle report message
-							$outcome = $game->Outcome();
-							$winner = $game->Winner;
-							$hidden = $game->GetGameMode('HiddenCards');
-
-							$messagedb->SendBattleReport($player1, $player2, $p1_rep, $p2_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
-						}
-						
-						$information = "You have played a card.";
-					}
-					/*else $error = $result;*/
-					
-					$current = "Game";
-					break;
-				}
-				
-				if ($message == 'surrender') // Games -> vs. %s -> Surrender -> send surrender request to opponent
-				{
-					$gameid = $_POST['CurrentGame'];
-					$game = $gamedb->GetGame($gameid);
-					
-					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
-					
-					// check if this user is allowed to surrender in this game
-					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
-					
-					$result = $game->RequestSurrender($player->Name());
-					
-					if ($result == 'OK') $information = 'Surrender request sent.';
-					
-					$current = "Game";
-					break;
-				}
-				
-				if ($message == 'cancel_surrender') // Games -> vs. %s -> Surrender -> cancel surrender request to opponent
-				{
-					$gameid = $_POST['CurrentGame'];
-					$game = $gamedb->GetGame($gameid);
-					
-					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
-					
-					// check if this user is allowed to cancel surrender in this game
-					if ($player->Name() != $game->Surrender) { $current = 'Game'; break; }
-					
-					$result = $game->CancelSurrender();
-					
-					if ($result == 'OK') $information = 'Surrender request cancelled.';
-					
-					$current = "Game";
-					break;
-				}
-				
-				if ($message == 'reject_surrender') // Games -> vs. %s -> Surrender -> reject surrender request from opponent
-				{
-					$gameid = $_POST['CurrentGame'];
-					$game = $gamedb->GetGame($gameid);
-					
-					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
-					
-					// check if this user is allowed to reject surrender in this game
-					if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or ($player->Name() == $game->Surrender)) { $current = 'Game'; break; }
-					
-					$result = $game->CancelSurrender();
-					
-					if ($result == 'OK') $information = 'Surrender request rejected.';
-					
-					$current = "Game";
-					break;
-				}
-				
-				if ($message == 'accept_surrender') // Games -> vs. %s -> Surrender -> accept surrender from opponent
-				{
-					$gameid = $_POST['CurrentGame'];
-					$game = $gamedb->GetGame($gameid);
-					
-					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
-					
-					// check if this user is allowed to accept surrender in this game
-					if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or ($player->Name() == $game->Surrender)) { $current = 'Game'; break; }
-					
-					$result = $game->SurrenderGame();
-					
-					if ($result == 'OK')
-					{
-						$information = 'Surrender request accepted.';
-						$replaydb->FinishReplay($game);
-					}
-					
-					if (($result == 'OK') AND ($game->GetGameMode('FriendlyPlay') == "no"))
-					{
-						$loser = $game->Surrender;
-						$exp1 = $game->CalculateExp($game->Winner);
-						$exp2 = $game->CalculateExp($loser);
-						$opponent = $playerdb->GetPlayer($loser);
-						$opponent_rep = $opponent->GetSettings()->GetSetting('Reports');
-						$player_rep = $player->GetSettings()->GetSetting('Reports');
-						
-						// update score
-						$score1 = $scoredb->GetScore($game->Winner);
-						$score1->ScoreData->Wins++;
-						$levelup1 = $score1->AddExp($exp1['exp']);
-						$score1->SaveScore();
-						
-						$score2 = $scoredb->GetScore($loser);
-						$score2->ScoreData->Losses++;
-						$levelup2 = $score2->AddExp($exp2['exp']);
-						$score2->SaveScore();
-						
-						// send level up messages
-						if ($levelup1 AND ($player_rep == "yes")) $messagedb->LevelUp($player->Name(), $score1->ScoreData->Level);
-						if ($levelup2 AND ($opponent_rep == "yes")) $messagedb->LevelUp($opponent->Name(), $score2->ScoreData->Level);
-						
-						// add bonus deck slot every 6th level
-						if ($levelup1 AND (($player->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player->Name(), time());
-						if ($levelup2 AND (($opponent->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($opponent->Name(), time());
-
-						// send battle report message
-						$outcome = $game->Outcome();
-						$winner = $game->Winner;
-						$hidden = $game->GetGameMode('HiddenCards');
-
-						$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
-					}
-					/*else $error = $result;*/
-					
-					$current = "Game";
-					break;
-				}
-				
-				if ($message == 'abort_game') // Games -> vs. %s -> Abort game
-				{
-					// an option to end the game without hurting your score
-					// applies only to games against 'dead' players (abandoned games)
-					$gameid = $_POST['CurrentGame'];
-					$game = $gamedb->GetGame($gameid);
-					
-					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
-					
-					// check if this user is allowed to abort this game
-					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
-					
-					// only allow aborting abandoned games
-					if (!$playerdb->isDead($game->Name1()) and !$playerdb->isDead($game->Name2())) { /*$error = 'Action not allowed!';*/ $current = 'Game'; break; }
-					
-					$result = $game->AbortGame($player->Name());
-					
-					if ($result == 'OK')
-						$replaydb->FinishReplay($game);
-					/*else $error = $result;*/
-					
-					$current = "Game";
-					break;
-				}
-				
-				if ($message == 'finish_game') // Games -> vs. %s -> Finish game
-				{
-					// an option to end the game when opponent refuses to play
-					// applies only to games against non-'dead' players, when opponet didn't take action for more then 3 weeks
-					$gameid = $_POST['CurrentGame'];
-					$game = $gamedb->GetGame($gameid);
-					
-					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
-					
-					// check if this user is allowed to abort this game
-					if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
-					
-					// only allow finishing active games
-					if ($playerdb->isDead($game->Name1()) or $playerdb->isDead($game->Name2())) { /*$error = 'Action not allowed!';*/ $current = 'Game'; break; }
-					
-					// and only if the abort criteria are met
-					if( time() - strtotime($game->LastAction) < 60*60*24*7*3 || $game->Current == $player->Name() ) { /*$error = 'Action not allowed!';*/ $current = 'Game'; break; }
-					
-					$result = $game->FinishGame($player->Name());
-					
-					if ($result == 'OK')
-						$replaydb->FinishReplay($game);
-					
-					if (($result == 'OK') AND ($game->GetGameMode('FriendlyPlay') == "no"))
-					{
-						$player1 = $game->Name1();
-						$player2 = $game->Name2();
-						$exp1 = $game->CalculateExp($player1);
-						$exp2 = $game->CalculateExp($player2);
-						$p1 = $playerdb->GetPlayer($player1);
-						$p2 = $playerdb->GetPlayer($player2);
-						$p1_rep = $p1->GetSettings()->GetSetting('Reports');
-						$p2_rep = $p2->GetSettings()->GetSetting('Reports');
-						
-						// update score
-						$score1 = $scoredb->GetScore($player1);
-						$score2 = $scoredb->GetScore($player2);
-						
-						if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
-						elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
-						else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
-						
-						$levelup1 = $score1->AddExp($exp1['exp']);
-						$levelup2 = $score2->AddExp($exp2['exp']);
-						$score1->SaveScore();
-						$score2->SaveScore();
-						
-						// send level up messages
-						if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
-						if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
-						
-						// add bonus deck slot every 6th level
-						if ($levelup1 AND (($p1->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player1, time());
-						if ($levelup2 AND (($p2->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player2, time());
-
-						// send battle report message
-						$outcome = $game->Outcome();
-						$winner = $game->Winner;
-						$hidden = $game->GetGameMode('HiddenCards');
-
-						$messagedb->SendBattleReport($player1, $player2, $p1_rep, $p2_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
-					}
-					/*else $error = $result;*/
-					
-					$current = "Game";
-					break;
-				}
-				
-				if ($message == 'Confirm') // Games -> vs. %s -> Leave the game
-				{
-					$gameid = $_POST['CurrentGame'];
-					$game = $gamedb->GetGame($gameid);
-					
-					// check if the game exists
-					if (!$game) { /*$error = 'No such game!';*/ $current = 'Games'; break; }
-					
-					// disable re-visiting (or the player would set this twice >_>)
-					if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { $current = 'Games'; break; }
-					
-					// only allow if the game is over (stay if not)
-					if ($game->State == 'in progress') { $current = "Game"; break; }
-					
-					if ($game->State == 'finished')
-					{
-						// we are the first one to acknowledge
-						$game->State = ($game->Name1() == $player->Name()) ? 'P1 over' : 'P2 over';
-						$game->SaveGame();
-						// inform other player about leaving the game
-						$chatdb->SaveChatMessage($game->ID(), "has left the game", $player->Name());
-					}
-					else // 'P1 over' or 'P2 over'
-					{
-						// the other player has already acknowledged
-						$gamedb->DeleteGame($game->ID());
-						$chatdb->DeleteChat($game->ID());
-					}
-					
-					$current = "Games";
-					break;
-				}
-				
-				if ($message == 'host_game') // Games -> Host game
-				{
-					$subsection = "hosted_games";
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
-					
-					$deckname = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
-					
-					$deck = $deckdb->GetDeck($player->Name(), $deckname);
-					
-					// check if such deck exists
-					if (!$deck) { $error = 'Deck '.$deckname.' does not exist!'; $current = 'Games'; break; }
-					
-					// check if the deck is ready (all 45 cards)
-					if (!$deck->isReady()) { $error = 'Deck '.$deckname.' is not yet ready for gameplay!'; $current = 'Games'; break; }
-					
-					// check if you are within the MAX_GAMES limit
-					if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Games'; break; }
-					
-					// create a new challenge
-					$game = $gamedb->CreateGame($player->Name(), '', $deck->DeckData);
-					if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
-					
-					// set game modes
-					$hidden_cards = (isset($_POST['HiddenMode']) ? 'yes' : 'no');
-					$friendly_play = (isset($_POST['FriendlyMode']) ? 'yes' : 'no');
-					$game_modes = array();
-					if ($hidden_cards == "yes") $game_modes[] = 'HiddenCards';
-					if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
-					$game->SetGameModes(implode(',', $game_modes));
-					
-					$information = 'Game created. Waiting for opponent to join.';
-					$current = 'Games';
-					break;
-				}
-				
-				if ($message == 'unhost_game') // Games -> Unhost game
-				{
-					$game_id = array_shift(array_keys($value));
-					$game = $gamedb->GetGame($game_id);
-					$subsection = "hosted_games";
-					
-					// check if the game exists
-					if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
-					
-					// check if the game is a a challenge (and not a game in progress)
-					if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Games'; break; }
-					
-					// delete game entry
-					$gamedb->DeleteGame($game->ID());
-					$chatdb->DeleteChat($game->ID());
-					
-					$information = 'You have canceled a game.';
-					$current = 'Games';
-					break;
-				}
-				
-				if ($message == 'join_game') // Games -> Join game
-				{					
-					$subsection = "free_games";
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["accept_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
-					
-					$game_id = array_shift(array_keys($value));
-					$game = $gamedb->GetGame($game_id);
-					
-					// check if the game exists
-					if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
-					
-					// check if the game is a challenge and not an active game
-					if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Games'; break; }
-					
-					// check if you are within the MAX_GAMES limit
-					if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'You may only have '.MAX_GAMES.' simultaneous games at once (this also includes your challenges).'; $current = 'Games'; break; }
-					
-					$opponent = $game->Name1();
-					
-					$deckname = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
-					$deck = $deckdb->GetDeck($player->Name(), $deckname);
-					
-					// check if such deck exists
-					if (!$deck) { $error = 'No such deck!'; $current = 'Games'; break; }
-					
-					// check if the deck is ready (all 45 cards)
-					if (!$deck->isReady()) { $error = 'This deck is not yet ready for gameplay!'; $current = 'Decks'; break; }
-					
-					// check if such opponent exists
-					if (!$playerdb->GetPlayer($opponent)) { $error = 'No such player!'; $current = 'Games'; break; }
-					
-					// check if that opponent was already challenged, or if there is a game already in progress
-					if ($gamedb->CheckGame($opponent, $player->Name())) { $error = 'You are already playing against '.htmlencode($opponent).'!'; $current = 'Games'; break; }
-					
-					// join the game
-					$gamedb->JoinGame($player->Name(), $game_id);
-					$game = $gamedb->GetGame($game_id); // refresh game data
-					$game->StartGame($player->Name(), $deck->DeckData);
-					$game->SaveGame();
-					$replaydb->CreateReplay($game); // create game replay
-					
-					$information = 'You have joined '.htmlencode($opponent).'\'s game.';
-					$current = 'Games';
-					break;
-				}
-				
-				if ($message == 'free_games') // view available games, where player can join
-				{
-					$current = 'Games';
-					break;
-				}
-				
-				if ($message == 'hosted_games') // view games hosted by player
-				{
-					$current = 'Games';
-					break;
-				}
-				
-				if ($message == 'filter_hosted_games') // use filter in hosted games view
-				{
-					$current = 'Games';
-					$subsection = "free_games";
-					break;
-				}
-				
-				// end game-related messages
-				
 				// challenge-related messages
 				if ($message == 'accept_challenge') // Challenges -> Accept
 				{

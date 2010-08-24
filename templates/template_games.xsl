@@ -134,7 +134,7 @@
 			<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" />
 			<xsl:copy-of select="am:htmlSelectBox('FriendlyPlay', $param/FriendlyPlay, $mode_options, '')"/>
 
-			<input type="submit" name="filter_hosted_games" value="Apply filters" />
+			<button type="submit" name="filter_hosted_games">Apply filters</button>
 		</p>
 		<!-- end filters -->
 
@@ -194,7 +194,7 @@
 							</td>
 							<td>
 								<xsl:if test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
-									<p><input type="submit" name="join_game[{gameid}]" value="Join" /></p>
+									<p><button type="submit" name="join_game" value="{gameid}">Join</button></p>
 								</xsl:if>
 							</td>
 						</tr>
@@ -231,7 +231,7 @@
 				<input type="checkbox" name="FriendlyMode">
 					<xsl:if test="$param/FriendlyFlag = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 				</input>
-				<input type="submit" name="host_game" value="Host game" />
+				<button type="submit" name="host_game">Host game</button>
 			</p>
 		</xsl:if>
 
@@ -257,7 +257,7 @@
 									</xsl:if>
 								</p>
 							</td>
-							<td><p><input type="submit" name="unhost_game[{gameid}]" value="Cancel" /></p></td>
+							<td><p><button type="submit" name="unhost_game" value="{gameid}">Cancel</button></p></td>
 						</tr>
 					</xsl:for-each>
 				</table>
