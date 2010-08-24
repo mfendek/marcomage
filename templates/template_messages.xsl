@@ -80,9 +80,9 @@
 								</xsl:if>
 								<p>
 									<xsl:if test="($param/deck_count &gt; 0) and ($param/free_slots &gt; 0) and ($param/accept_challenges = 'yes')">
-										<input type="submit" name="accept_challenge[{GameID}]" value="Accept" />
+										<button type="submit" name="accept_challenge" value="{GameID}">Accept</button>
 									</xsl:if>
-									<input type="submit" name="reject_challenge[{GameID}]" value="Reject" />
+									<button type="submit" name="reject_challenge" value="{GameID}">Reject</button>
 								</p>
 							</xsl:when>
 							<xsl:when test="$param/current_subsection = 'outgoing'">
@@ -100,7 +100,7 @@
 								<xsl:if test="Content != ''">
 									<div class="challenge_content"><xsl:value-of select="am:BBCode_parse_extended(Content)" disable-output-escaping="yes" /></div>
 								</xsl:if>
-								<p><input type="submit" name="withdraw_challenge2[{GameID}]" value="Withdraw challenge" /></p>
+								<p><button type="submit" name="withdraw_challenge2" value="{GameID}">Withdraw challenge</button></p>
 							</xsl:when>
 						</xsl:choose>
 					</div>
@@ -167,7 +167,7 @@
 			<xsl:copy-of select="am:htmlSelectBox('name_filter', $param/name_val, $authors, $param/name_filter)"/>
 		</xsl:if>
 
-		<input type = "submit" name = "message_filter" value = "Apply filters" />
+		<button type="submit" name="message_filter">Apply filters</button>
 	</div>
 
 	<div class="filters">
@@ -176,7 +176,7 @@
 			<xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'messages')"/>
 
 			<xsl:if test="$param/current_location != 'all_mail'">
-				<input type="submit" name="Delete_mass" value="Delete selected" />
+				<button type="submit" name="Delete_mass">Delete selected</button>
 			</xsl:if>
 		</xsl:if>
 
@@ -200,38 +200,44 @@
 				<th>
 					<xsl:choose>
 						<xsl:when test="$param/current_location = 'sent_mail'">
-							<p>To<input class="small_button" type="submit" >
-									<xsl:choose>
-										<xsl:when test="(($param/current_condition = 'Recipient') and ($param/current_order = 'DESC'))">
-											<xsl:attribute name="name">mes_ord_asc[Recipient]</xsl:attribute>
-											<xsl:attribute name="value">\/</xsl:attribute>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:attribute name="name">mes_ord_desc[Recipient]</xsl:attribute>
-											<xsl:attribute name="value">/\</xsl:attribute>
-										</xsl:otherwise>
-									</xsl:choose>
+							<p>
+								<xsl:text>To</xsl:text>
+								<button class="small_button" type="submit" value="Recipient" >
 									<xsl:if test="$param/current_condition = 'Recipient'">
 										<xsl:attribute name="class">small_button pushed</xsl:attribute>
 									</xsl:if>
-								</input></p>
-						</xsl:when>
-						<xsl:otherwise>
-							<p>From<input class="small_button" type="submit" >
 									<xsl:choose>
-										<xsl:when test="(($param/current_condition = 'Author') and ($param/current_order = 'DESC'))">
-											<xsl:attribute name="name">mes_ord_asc[Author]</xsl:attribute>
-											<xsl:attribute name="value">\/</xsl:attribute>
+										<xsl:when test="(($param/current_condition = 'Recipient') and ($param/current_order = 'DESC'))">
+											<xsl:attribute name="name">mes_ord_asc</xsl:attribute>
+											<xsl:text>\/</xsl:text>
 										</xsl:when>
 										<xsl:otherwise>
-											<xsl:attribute name="name">mes_ord_desc[Author]</xsl:attribute>
-											<xsl:attribute name="value">/\</xsl:attribute>
+											<xsl:attribute name="name">mes_ord_desc</xsl:attribute>
+											<xsl:text>/\</xsl:text>
 										</xsl:otherwise>
 									</xsl:choose>
+								</button>
+							</p>
+						</xsl:when>
+						<xsl:otherwise>
+							<p>
+								<xsl:text>From</xsl:text>
+								<button class="small_button" type="submit" value="Author" >
 									<xsl:if test="$param/current_condition = 'Author'">
 										<xsl:attribute name="class">small_button pushed</xsl:attribute>
 									</xsl:if>
-								</input></p>
+									<xsl:choose>
+										<xsl:when test="(($param/current_condition = 'Author') and ($param/current_order = 'DESC'))">
+											<xsl:attribute name="name">mes_ord_asc</xsl:attribute>
+											<xsl:text>\/</xsl:text>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:attribute name="name">mes_ord_desc</xsl:attribute>
+											<xsl:text>/\</xsl:text>
+										</xsl:otherwise>
+									</xsl:choose>
+								</button>
+							</p>
 						</xsl:otherwise>
 					</xsl:choose>
 				</th>
@@ -240,21 +246,24 @@
 				</xsl:if>
 				<th><p>Subject</p></th>
 				<th>
-					<p>Sent on<input class="small_button" type="submit" >
-					<xsl:choose>
-						<xsl:when test="(($param/current_condition = 'Created') and ($param/current_order = 'DESC'))">
-							<xsl:attribute name="name">mes_ord_asc[Created]</xsl:attribute>
-							<xsl:attribute name="value">\/</xsl:attribute>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:attribute name="name">mes_ord_desc[Created]</xsl:attribute>
-							<xsl:attribute name="value">/\</xsl:attribute>
-						</xsl:otherwise>
-					</xsl:choose>
-					<xsl:if test="$param/current_condition = 'Created'">
-						<xsl:attribute name="class">small_button pushed</xsl:attribute>
-					</xsl:if>
-					</input></p>
+					<p>
+						<xsl:text>Sent on</xsl:text>
+						<button class="small_button" type="submit" value="Created" >
+							<xsl:if test="$param/current_condition = 'Created'">
+								<xsl:attribute name="class">small_button pushed</xsl:attribute>
+							</xsl:if>
+							<xsl:choose>
+								<xsl:when test="(($param/current_condition = 'Created') and ($param/current_order = 'DESC'))">
+									<xsl:attribute name="name">mes_ord_asc</xsl:attribute>
+									<xsl:text>\/</xsl:text>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:attribute name="name">mes_ord_desc</xsl:attribute>
+									<xsl:text>/\</xsl:text>
+								</xsl:otherwise>
+							</xsl:choose>
+						</button>
+					</p>
 				</th>
 				<th></th>
 			</tr>
@@ -296,22 +305,23 @@
 					<td><p><xsl:value-of select="am:datetime(Created, $param/timezone)"/></p></td>
 					<td>
 						<p style="text-align: left">
-							<input class="small_button" type="submit" value="+" >
+							<button class="small_button" type="submit" value="{MessageID}" >
 								<xsl:choose>
 									<xsl:when test="$param/current_location = 'all_mail'">
-										<xsl:attribute name="name">message_retrieve[<xsl:value-of select="MessageID"/>]</xsl:attribute>
+										<xsl:attribute name="name">message_retrieve</xsl:attribute>
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:attribute name="name">message_details[<xsl:value-of select="MessageID"/>]</xsl:attribute>
+										<xsl:attribute name="name">message_details</xsl:attribute>
 									</xsl:otherwise>
 								</xsl:choose>
-							</input>
+								<xsl:text>+</xsl:text>
+							</button>
 							<xsl:if test="$param/current_location != 'all_mail'">
-								<input class="small_button" type="submit" name="message_delete[{MessageID}]" value="D" />
+								<button class="small_button" type="submit" name="message_delete" value="{MessageID}">D</button>
 								<input type="checkbox" class="table_checkbox" name="Mass_delete_{position()}[{MessageID}]" />
 							</xsl:if>
 							<xsl:if test="(($param/send_messages = 'yes') and ($param/current_location = 'inbox') and (Author != $param/system_name) and (Author != $param/PlayerName))">
-								<input class="small_button" type="submit" name="message_create[{Author}]" value="R" />
+								<button class="small_button" type="submit" name="message_create" value="{Author}">R</button>
 							</xsl:if>
 						</p>
 					</td>
@@ -357,17 +367,17 @@
 			<xsl:if test="$param/current_location != 'all_mail'">
 				<xsl:choose>
 					<xsl:when test="$param/delete = 'no'">
-						<input type="submit" name="message_delete[{$param/MessageID}]" value="Delete" />
+						<button type="submit" name="message_delete" value="{$param/MessageID}">Delete</button>
 					</xsl:when>
 					<xsl:otherwise>
-						<input type="submit" name="message_delete_confirm[{$param/MessageID}]" value="Confirm delete" />
+						<button type="submit" class="marked_button" name="message_delete_confirm" value="{$param/MessageID}">Confirm delete</button>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:if>
 			<xsl:if test="($param/messages = 'yes') and ($param/Recipient = $param/PlayerName) and ($param/Author != $param/system_name) and ($param/Author != $param/PlayerName)">
-				<input type="submit" name="message_create[{am:urlencode($param/Author)}]" value="Reply" />
+				<button type="submit" name="message_create" value="{am:urlencode($param/Author)}">Reply</button>
 			</xsl:if>
-			<input type="submit" name="message_cancel" value="Back" />
+			<button type="submit" name="message_cancel">Back</button>
 		</p>
 		<hr/>
 		<div><xsl:value-of select="am:BBCode_parse_extended($param/Content)" disable-output-escaping="yes" /></div>
@@ -394,8 +404,8 @@
 			<span>Subject:</span>
 			<input type="text" name="Subject" maxlength="30" size="25" value="{$param/Subject}" />
 		</p>
-		<input type="submit" name="message_send" value="Send" />
-		<input type="submit" name="message_cancel" value="Discard" />
+		<button type="submit" name="message_send">Send</button>
+		<button type="submit" name="message_cancel">Discard</button>
 		<xsl:copy-of select="am:BBcodeButtons()"/>
 		<hr/>
 

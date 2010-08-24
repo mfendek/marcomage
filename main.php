@@ -1816,6 +1816,471 @@
 
 			// end misc messages
 
+			// begin challenge related messages
+
+			if (isset($_POST['accept_challenge'])) // Challenges -> Accept
+			{
+				// check access rights
+				if (!$access_rights[$player->Type()]["accept_challenges"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
+
+				$game_id = $_POST['accept_challenge'];
+				$game = $gamedb->GetGame($game_id);
+
+				// check if the challenge exists
+				if (!$game) { $error = 'No such challenge!'; $current = 'Messages'; break; }
+
+				// check if the game is a challenge and not an active game
+				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Messages'; break; }
+
+				// the player may never have more than MAX_GAMES games at once, even potential ones (challenges)
+				if ($gamedb->CountFreeSlots2($player->Name()) == 0) { $error = 'You may only have '.MAX_GAMES.' simultaneous games at once (this also includes your challenges).'; $current = 'Messages'; break; }
+
+				$opponent = $game->Name1();
+
+				$deckname = isset($_POST['AcceptDeck']) ? postdecode($_POST['AcceptDeck']) : '(null)';
+				$deck = $deckdb->GetDeck($player->Name(), $deckname);
+
+				// check if such deck exists
+				if (!$deck) { $error = 'No such deck!'; $current = 'Messages'; break; }
+
+				// check if the deck is ready (all 45 cards)
+				if (!$deck->isReady()) { $error = 'This deck is not yet ready for gameplay!'; $current = 'Decks'; break; }
+
+				// check if such opponent exists
+				if (!$playerdb->GetPlayer($opponent)) { $error = 'No such player!'; $current = 'Messages'; break; }
+
+				// check if player can enter the game
+				if ($game->Name2() != $player->Name()) { $error = 'Invalid player'; $current = 'Messages'; break; }
+
+				// accept the challenge
+				$game->StartGame($player->Name(), $deck->DeckData);
+				$game->SaveGame();
+				$replaydb->CreateReplay($game); // create game replay
+				$messagedb->CancelChallenge($game->ID());
+
+				$information = 'You have accepted a challenge from '.htmlencode($opponent).'.';
+				$current = 'Messages';
+				break;
+			}
+
+			if (isset($_POST['reject_challenge'])) // Challenges -> Reject
+			{
+				$game_id = $_POST['reject_challenge'];
+				$game = $gamedb->GetGame($game_id);
+
+				// check if the challenge exists
+				if (!$game) { $error = 'No such challenge!'; $current = 'Messages'; break; }
+
+				// check if the game is a challenge (and not a game in progress)
+				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Messages'; break; }
+
+				$opponent = $game->Name1();
+
+				// check if such opponent exists
+				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Messages'; break; }
+
+				// delete t3h challenge/game entry
+				$gamedb->DeleteGame($game->ID());
+				$chatdb->DeleteChat($game->ID());
+				$messagedb->CancelChallenge($game->ID());
+
+				$information = 'You have rejected a challenge.';
+				$current = 'Messages';
+				break;
+			}
+
+			if (isset($_POST['prepare_challenge'])) // Players -> Challenge this user
+			{
+				// check access rights
+				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Players'; break; }
+
+				$_POST['cur_player'] = postdecode($_POST['prepare_challenge']);
+
+				// this is only used to assist the function below
+				$current = 'Profile';
+				break;
+			}
+
+			if (isset($_POST['send_challenge'])) // Players -> Send challenge
+			{
+				// check access rights
+				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Players'; break; }
+
+				$_POST['cur_player'] = $opponent = postdecode($_POST['send_challenge']);
+				$deckname = isset($_POST['ChallengeDeck']) ? postdecode($_POST['ChallengeDeck']) : '(null)';
+
+				$deck = $deckdb->GetDeck($player->Name(), $deckname);
+
+				// check if such deck exists
+				if (!$deck) { $error = 'Deck '.$deckname.' does not exist!'; $current = 'Profile'; break; }
+
+				// check if the deck is ready (all 45 cards)
+				if (!$deck->isReady()) { $error = 'Deck '.$deckname.' is not yet ready for gameplay!'; $current = 'Profile'; break; }
+
+				// check if such opponent exists
+				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Profile'; break; }
+
+				// check if that opponent was already challenged, or if there is a game already in progress
+				if ($gamedb->CheckGame($player->Name(), $opponent)) { $error = 'You are already playing against '.htmlencode($opponent).'!'; $current = 'Profile'; break; }
+
+				// check if you are within the MAX_GAMES limit
+				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Messages'; break; }
+
+				// check challenge text length
+				if (strlen($_POST['Content']) > CHALLENGE_LENGTH) { $error = "Message too long"; $current = "Details"; break; }
+
+				// create a new challenge
+				$game = $gamedb->CreateGame($player->Name(), $opponent, $deck->DeckData);
+				if (!$game) { $error = 'Failed to create new game!'; $current = 'Profile'; break; }
+
+				// set game modes
+				$hidden_cards = (isset($_POST['HiddenCards']) ? 'yes' : 'no');
+				$friendly_play = (isset($_POST['FriendlyPlay']) ? 'yes' : 'no');
+				$game_modes = array();
+				if ($hidden_cards == "yes") $game_modes[] = 'HiddenCards';
+				if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
+				$game->SetGameModes(implode(',', $game_modes));
+
+				$challenge_text = 'Hide opponent\'s cards: '.$hidden_cards."\n";
+				$challenge_text.= 'Friendly play: '.$friendly_play."\n";
+				$challenge_text.= $_POST['Content'];
+
+				$res = $messagedb->SendChallenge($player->Name(), $opponent, $challenge_text, $game->ID());
+				if (!$res) { $error = 'Failed to create new challenge!'; $current = 'Profile'; break; }
+
+				$information = 'You have challenged '.htmlencode($opponent).'. Waiting for reply.';
+				$current = 'Profile';
+				break;
+			}
+
+			if (isset($_POST['withdraw_challenge'])) // Players -> Cancel
+			{
+				$game_id = $_POST['withdraw_challenge'];
+				$game = $gamedb->GetGame($game_id);
+
+				// check if the challenge exists
+				if (!$game) { $error = 'No such challenge!'; $current = 'Profile'; break; }
+
+				// check if the game is a a challenge (and not a game in progress)
+				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Profile'; break; }
+
+				$_POST['cur_player'] = $opponent = $game->Name2();
+
+				// check if such opponent exists
+				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Profile'; break; }
+
+				// delete t3h challenge/game entry
+				$gamedb->DeleteGame($game->ID());
+				$chatdb->DeleteChat($game->ID());
+				$messagedb->CancelChallenge($game->ID());
+
+				$information = 'You have withdrawn a challenge.';
+				$current = 'Profile';
+				break;
+			}
+
+			if (isset($_POST['withdraw_challenge2'])) // Challenges -> Cancel
+			{
+				$game_id = $_POST['withdraw_challenge2'];
+				$game = $gamedb->GetGame($game_id);
+
+				// check if the challenge exists
+				if (!$game) { $error = 'No such challenge!'; $current = 'Messages'; break; }
+
+				// check if the game is a a challenge (and not a game in progress)
+				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Messages'; break; }
+
+				$_POST['cur_player'] = $opponent = $game->Name2();
+
+				// check if such opponent exists
+				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Profile'; break; }
+
+				// delete t3h challenge/game entry
+				$gamedb->DeleteGame($game->ID());
+				$chatdb->DeleteChat($game->ID());
+				$messagedb->CancelChallenge($game->ID());
+
+				$information = 'You have withdrawn a challenge.';
+				$_POST['outgoing'] = "outgoing"; // stay in "Outgoing" subsection
+				$current = 'Messages';
+				break;
+			}
+
+			// end challenge related messages
+
+			// begin message related messages
+
+			if (isset($_POST['message_details'])) // view message
+			{
+				$messageid = $_POST['message_details'];
+				$message = $messagedb->GetMessage($messageid, $player->Name());
+
+				if (!$message) { $error = "No such message!"; $current = "Messages"; break; }
+
+				$_POST['CurrentMessage'] = $messageid;
+				$current = 'Message_details';
+				break;
+			}
+
+			if (isset($_POST['message_retrieve'])) // retrieve message (even deleted one)
+			{
+				$messageid = $_POST['message_retrieve'];
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["see_all_messages"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
+
+				$message = $messagedb->RetrieveMessage($messageid);
+				if (!$message) { $error = "No such message!"; $current = "Messages"; break; }
+
+				$_POST['CurrentMessage'] = $messageid;
+				$current = 'Message_details';
+				break;
+			}
+
+			if (isset($_POST['message_delete'])) // delete message
+			{
+				$messageid = $_POST['message_delete'];
+				$message = $messagedb->GetMessage($messageid, $player->Name());
+
+				if (!$message) { $error = "No such message!"; $current = "Messages"; break; }
+
+				$_POST['CurrentMessage'] = $messageid;
+				$current = 'Message_details';
+				break;
+			}
+
+			if (isset($_POST['message_delete_confirm'])) // delete message confirmation
+			{
+				$messageid = $_POST['message_delete_confirm'];
+				$message = $messagedb->DeleteMessage($messageid, $player->Name());
+
+				if (!$message) { $error = "No such message!"; $current = "Messages"; break; }
+
+				$information = "Message deleted";
+				$current = 'Messages';
+				break;
+			}
+
+			if (isset($_POST['message_cancel'])) // cancel new message creation
+			{
+				$current = 'Messages';
+				break;
+			}
+
+			if (isset($_POST['message_send'])) // send new message
+			{
+				$recipient = $_POST['Recipient'];
+				$author = $_POST['Author'];
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["messages"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
+				if ((trim($_POST['Subject']) == "") AND (trim($_POST['Content']) == "")) { $error = "No message input specified"; $current = "Message_new"; break; }
+				if (strlen($_POST['Content']) > MESSAGE_LENGTH) { $error = "Message too long"; $current = "Message_new"; break; }
+				if (!$playerdb->GetPlayer($_POST['Recipient'])) { $error = "Recipient doesn't exist"; $current = "Message_new"; break; }
+
+				$message = $messagedb->SendMessage($_POST['Author'], $_POST['Recipient'], $_POST['Subject'], $_POST['Content']);
+
+				if (!$message) { $error = "Failed to send message"; $current = "Messages"; break; }
+
+				$_POST['CurrentLocation'] = "sent_mail";
+				$information = "Message sent";
+				$current = 'Messages';
+				break;
+			}
+
+			if (isset($_POST['message_create'])) // go to new message screen
+			{
+				// check access rights
+				if (!$access_rights[$player->Type()]["messages"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
+
+				$_POST['Recipient'] = postdecode($_POST['message_create']);
+				$_POST['Author'] = $player->Name();
+
+				$current = 'Message_new';
+				break;
+			}
+
+			if (isset($_POST['system_notification'])) // go to new message screen to write system notification
+			{
+				// check access rights
+				if (!$access_rights[$player->Type()]["system_notification"]) { $error = 'Access denied.'; $current = 'Players'; break; }
+
+				$_POST['Recipient'] = postdecode($_POST['system_notification']);
+				$_POST['Author'] = SYSTEM_NAME;
+
+				$current = 'Message_new';
+				break;
+			}
+
+			$temp = array("asc" => "ASC", "desc" => "DESC");
+			foreach($temp as $type => $order_val)
+			{
+			if (isset($_POST['mes_ord_'.$type])) // select ascending or descending order in message list
+				{
+					$_POST['CurrentCond'] = $_POST['mes_ord_'.$type];
+					$_POST['CurrentOrd'] = $order_val;
+
+					$current = "Messages";
+
+					break;
+				}
+			}
+
+			if (isset($_POST['message_filter'])) // use filter
+			{
+				$_POST['CurrentMesPage'] = 0;
+				$current = 'Messages';
+				break;
+			}
+
+			if (isset($_POST['select_page_messages'])) // Messages -> select page (previous and next button)
+			{
+				$_POST['CurrentMesPage'] = $_POST['select_page_messages'];
+				$current = "Messages";
+
+				break;
+			}
+
+			if (isset($_POST['seek_page_messages'])) // Messages -> select page (Jump to page)
+			{
+				$_POST['CurrentMesPage'] = $_POST['page_selector'];
+				$current = "Messages";
+
+				break;
+			}
+
+			if (isset($_POST['Delete_mass'])) // Messages -> delete selected messages
+			{
+				$deleted_messages = array();
+
+				for ($i = 1; $i<= MESSAGES_PER_PAGE; $i++)
+					if (isset($_POST['Mass_delete_'.$i]))
+					{
+						$current_message = array_shift(array_keys($_POST['Mass_delete_'.$i]));
+						array_push($deleted_messages, $current_message);
+					}
+
+				if (count($deleted_messages) > 0)
+				{
+					$result = $messagedb->MassDeleteMessage($deleted_messages, $player->Name());
+					if (!$result) { $error = "Failed to delete messages"; $current = "Messages"; break; }
+					
+					$information = "Messages deleted";
+				}
+				else $warning = "No messages selected";
+
+				$current = "Messages";
+				break;
+			}
+
+			// end message-related messages
+			
+			// begin profile related messages
+
+			if (isset($_POST['change_access'])) // Players -> User details -> Change access rights
+			{
+				$_POST['Profile'] = $opponent = postdecode($_POST['change_access']);
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Profile'; break; }
+
+				$target = $playerdb->GetPlayer($opponent);
+				$target->ChangeAccessRights($_POST['new_access']);
+
+				$information = 'Access rights changed.';
+				$current = 'Profile';
+				break;
+			}
+
+			if (isset($_POST['reset_exp'])) // Players -> User details -> Reset exp
+			{
+				$_POST['Profile'] = $opponent = postdecode($_POST['reset_exp']);
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Profile'; break; }
+
+				// reset level end exp
+				$score = $scoredb->GetScore($opponent);
+				$score->ResetExp();
+				$score->SaveScore();
+
+				// delete bonus deck slots
+				$decks = $deckdb->ListDecks($opponent);
+				foreach ($decks as $i => $deck_data)
+					if ($i >= DECK_SLOTS) $deckdb->DeleteDeck($opponent, $deck_data['Deckname']);
+
+				$information = 'Exp reset.';
+				$current = 'Profile';
+				break;
+			}
+
+			if (isset($_POST['reset_avatar_remote'])) // reset some player's avatar
+			{
+				$_POST['cur_player'] = postdecode($_POST['reset_avatar_remote']);
+
+				$opponent = $playerdb->GetPlayer($_POST['cur_player']);
+				if (!$opponent) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Players'; break; }
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["change_all_avatar"]) { $error = 'Access denied.'; $current = 'Profile'; break; }
+
+				$settings = $opponent->GetSettings();
+				$former_name = $settings->GetSetting('Avatar');
+				$former_path = 'img/avatars/'.$former_name;
+
+				if ((file_exists($former_path)) and ($former_name != "noavatar.jpg")) unlink($former_path);
+				$settings->ChangeSetting('Avatar', "noavatar.jpg");
+				$settings->SaveSettings();
+
+				$information = "Avatar cleared";
+				$current = 'Profile';
+
+				break;
+			}
+
+			// end profile related messages
+
+			// begin players related messages
+
+			$temp = array("asc" => "ASC", "desc" => "DESC");
+			foreach($temp as $type => $order_val)
+			{
+				if (isset($_POST['players_ord_'.$type])) // select ascending or descending order in players list
+				{
+					$_POST['CurrentCondition'] = $_POST['players_ord_'.$type];
+					$_POST['CurrentOrder'] = $order_val;
+
+					$current = "Players";
+					break;
+				}
+			}
+
+			if (isset($_POST['filter_players'])) // use player filter in players list
+			{
+				$_POST['CurrentPlayersPage'] = 0;
+				$current = "Players";
+
+				break;
+			}
+
+			if (isset($_POST['select_page_players'])) // Players -> select page (previous and next button)
+			{
+				$_POST['CurrentPlayersPage'] = $_POST['select_page_players'];
+				$current = "Players";
+
+				break;
+			}
+
+			if (isset($_POST['seek_page_players'])) // Players -> select page (Jump to page)
+			{
+				$_POST['CurrentPlayersPage'] = $_POST['page_selector'];
+				$current = "Players";
+
+				break;
+			}
+
+			// end players related messages
+
 			// Explanation of how message passing is done:
 			//
 			// All requests are retrieved from POST data as <message, value>.
@@ -1834,415 +2299,6 @@
 			
 			foreach($_POST as $message => $value)
 			{
-				// challenge-related messages
-				if ($message == 'accept_challenge') // Challenges -> Accept
-				{
-					// check access rights
-					if (!$access_rights[$player->Type()]["accept_challenges"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
-					
-					$game_id = array_shift(array_keys($value));
-					$game = $gamedb->GetGame($game_id);
-					
-					// check if the challenge exists
-					if (!$game) { $error = 'No such challenge!'; $current = 'Messages'; break; }
-					
-					// check if the game is a challenge and not an active game
-					if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Messages'; break; }
-					
-					// the player may never have more than MAX_GAMES games at once, even potential ones (challenges)
-					if ($gamedb->CountFreeSlots2($player->Name()) == 0) { $error = 'You may only have '.MAX_GAMES.' simultaneous games at once (this also includes your challenges).'; $current = 'Messages'; break; }
-					
-					$opponent = $game->Name1();
-					
-					$deckname = isset($_POST['AcceptDeck']) ? postdecode($_POST['AcceptDeck']) : '(null)';
-					$deck = $deckdb->GetDeck($player->Name(), $deckname);
-					
-					// check if such deck exists
-					if (!$deck) { $error = 'No such deck!'; $current = 'Messages'; break; }
-					
-					// check if the deck is ready (all 45 cards)
-					if (!$deck->isReady()) { $error = 'This deck is not yet ready for gameplay!'; $current = 'Decks'; break; }
-					
-					// check if such opponent exists
-					if (!$playerdb->GetPlayer($opponent)) { $error = 'No such player!'; $current = 'Messages'; break; }
-					
-					// check if player can enter the game
-					if ($game->Name2() != $player->Name()) { $error = 'Invalid player'; $current = 'Messages'; break; }
-					
-					// accept the challenge
-					$game->StartGame($player->Name(), $deck->DeckData);
-					$game->SaveGame();
-					$replaydb->CreateReplay($game); // create game replay
-					$messagedb->CancelChallenge($game->ID());
-					
-					$information = 'You have accepted a challenge from '.htmlencode($opponent).'.';
-					$current = 'Messages';
-					break;
-				}
-				
-				if ($message == 'reject_challenge') // Challenges -> Reject
-				{
-					$game_id = array_shift(array_keys($value));
-					
-					$game = $gamedb->GetGame($game_id);
-					
-					// check if the challenge exists
-					if (!$game) { $error = 'No such challenge!'; $current = 'Messages'; break; }
-					
-					// check if the game is a challenge (and not a game in progress)
-					if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Messages'; break; }
-					
-					$opponent = $game->Name1();
-					
-					// check if such opponent exists
-					if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Messages'; break; }
-					
-					// delete t3h challenge/game entry
-					$gamedb->DeleteGame($game->ID());
-					$chatdb->DeleteChat($game->ID());
-					$messagedb->CancelChallenge($game->ID());
-					
-					$information = 'You have rejected a challenge.';
-					$current = 'Messages';
-					break;
-				}
-				
-				if ($message == 'prepare_challenge') // Players -> Challenge this user
-				{
-					// check access rights
-					if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Players'; break; }
-				
-					$_POST['cur_player'] = postdecode(array_shift(array_keys($value)));
-				
-					// this is only used to assist the function below
-					// do not remove two-step challenging mechanism, we will make use of it when challenges will be transformed to messages
-					$current = 'Profile';
-					break;
-				}
-				
-				if ($message == 'send_challenge') // Players -> Send challenge
-				{
-					// check access rights
-					if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Players'; break; }
-					
-					$_POST['cur_player'] = $opponent = postdecode(array_shift(array_keys($value)));
-					$deckname = isset($_POST['ChallengeDeck']) ? postdecode($_POST['ChallengeDeck']) : '(null)';
-					
-					$deck = $deckdb->GetDeck($player->Name(), $deckname);
-					
-					// check if such deck exists
-					if (!$deck) { $error = 'Deck '.$deckname.' does not exist!'; $current = 'Profile'; break; }
-					
-					// check if the deck is ready (all 45 cards)
-					if (!$deck->isReady()) { $error = 'Deck '.$deckname.' is not yet ready for gameplay!'; $current = 'Profile'; break; }
-					
-					// check if such opponent exists
-					if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Profile'; break; }
-					
-					// check if that opponent was already challenged, or if there is a game already in progress
-					if ($gamedb->CheckGame($player->Name(), $opponent)) { $error = 'You are already playing against '.htmlencode($opponent).'!'; $current = 'Profile'; break; }
-					
-					// check if you are within the MAX_GAMES limit
-					if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Messages'; break; }
-					
-					// check challenge text length
-					if (strlen($_POST['Content']) > CHALLENGE_LENGTH) { $error = "Message too long"; $current = "Details"; break; }
-					
-					// create a new challenge
-					$game = $gamedb->CreateGame($player->Name(), $opponent, $deck->DeckData);
-					if (!$game) { $error = 'Failed to create new game!'; $current = 'Profile'; break; }
-					
-					// set game modes
-					$hidden_cards = (isset($_POST['HiddenCards']) ? 'yes' : 'no');
-					$friendly_play = (isset($_POST['FriendlyPlay']) ? 'yes' : 'no');
-					$game_modes = array();
-					if ($hidden_cards == "yes") $game_modes[] = 'HiddenCards';
-					if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
-					$game->SetGameModes(implode(',', $game_modes));
-					
-					$challenge_text = 'Hide opponent\'s cards: '.$hidden_cards."\n";
-					$challenge_text.= 'Friendly play: '.$friendly_play."\n";
-					$challenge_text.= $_POST['Content'];
-					
-					$res = $messagedb->SendChallenge($player->Name(), $opponent, $challenge_text, $game->ID());
-					if (!$res) { $error = 'Failed to create new challenge!'; $current = 'Profile'; break; }
-					
-					$information = 'You have challenged '.htmlencode($opponent).'. Waiting for reply.';
-					$current = 'Profile';
-					break;
-				}
-				
-				if ($message == 'withdraw_challenge') // Players -> Cancel
-				{
-					$game_id = array_shift(array_keys($value));
-					$game = $gamedb->GetGame($game_id);
-					
-					// check if the challenge exists
-					if (!$game) { $error = 'No such challenge!'; $current = 'Profile'; break; }
-					
-					// check if the game is a a challenge (and not a game in progress)
-					if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Profile'; break; }
-					
-					$_POST['cur_player'] = $opponent = $game->Name2();
-					
-					// check if such opponent exists
-					if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Profile'; break; }
-					
-					// delete t3h challenge/game entry
-					$gamedb->DeleteGame($game->ID());
-					$chatdb->DeleteChat($game->ID());
-					$messagedb->CancelChallenge($game->ID());
-					
-					$information = 'You have withdrawn a challenge.';
-					$current = 'Profile';
-					break;
-				}
-				
-				if ($message == 'withdraw_challenge2') // Challenges -> Cancel
-				{
-					$game_id = array_shift(array_keys($value));
-					$game = $gamedb->GetGame($game_id);
-					
-					// check if the challenge exists
-					if (!$game) { $error = 'No such challenge!'; $current = 'Messages'; break; }
-					
-					// check if the game is a a challenge (and not a game in progress)
-					if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Messages'; break; }
-					
-					$_POST['cur_player'] = $opponent = $game->Name2();
-					
-					// check if such opponent exists
-					if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Profile'; break; }
-					
-					// delete t3h challenge/game entry
-					$gamedb->DeleteGame($game->ID());
-					$chatdb->DeleteChat($game->ID());
-					$messagedb->CancelChallenge($game->ID());
-					
-					$information = 'You have withdrawn a challenge.';
-					$_POST['outgoing'] = "outgoing"; // stay in "Outgoing" subsection
-					$current = 'Messages';
-					break;
-				}
-				// end challenge-related messages
-				
-				// message-related messages
-				if ($message == 'message_details') // view message
-				{
-					$messageid = array_shift(array_keys($value));
-					
-					$message = $messagedb->GetMessage($messageid, $player->Name());
-					
-					if (!$message) { $error = "No such message!"; $current = "Messages"; break; }
-					
-					$current = 'Message_details';
-					break;
-				}
-				
-				if ($message == 'message_retrieve') // retrieve message (even deleted one)
-				{				
-					$messageid = array_shift(array_keys($value));
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["see_all_messages"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
-						
-					$message = $messagedb->RetrieveMessage($messageid);
-					
-					if (!$message) { $error = "No such message!"; $current = "Messages"; break; }
-					
-					$current = 'Message_details';
-					break;
-				}
-				
-				if ($message == 'message_delete') // delete message
-				{
-					$messageid = array_shift(array_keys($value));
-					
-					$message = $messagedb->GetMessage($messageid, $player->Name());
-					
-					if (!$message) { $error = "No such message!"; $current = "Messages"; break; }
-					
-					$current = 'Message_details';
-					break;
-				}
-				
-				if ($message == 'message_delete_confirm') // delete message confirmation
-				{
-					$messageid = array_shift(array_keys($value));
-					
-					$message = $messagedb->DeleteMessage($messageid, $player->Name());
-					
-					if (!$message) { $error = "No such message!"; $current = "Messages"; break; }
-					
-					$information = "Message deleted";
-					
-					$current = 'Messages';
-					break;
-				}
-				
-				if ($message == 'message_cancel') // cancel new message creation
-				{
-					$current = 'Messages';
-					break;
-				}
-				
-				if ($message == 'message_send') // send new message
-				{
-					$recipient = $_POST['Recipient'];
-					$author = $_POST['Author'];
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["messages"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
-				
-					if ((trim($_POST['Subject']) == "") AND (trim($_POST['Content']) == "")) { $error = "No message input specified"; $current = "Message_new"; break; }
-					
-					if (strlen($_POST['Content']) > MESSAGE_LENGTH) { $error = "Message too long"; $current = "Message_new"; break; }
-
-					if (!$playerdb->GetPlayer($_POST['Recipient'])) { $error = "Recipient doesn't exist"; $current = "Message_new"; break; }
-
-					$message = $messagedb->SendMessage($_POST['Author'], $_POST['Recipient'], $_POST['Subject'], $_POST['Content']);
-					
-					if (!$message) { $error = "Failed to send message"; $current = "Messages"; break; }
-					
-					$_POST['CurrentLocation'] = "sent_mail";
-					$information = "Message sent";
-					
-					$current = 'Messages';
-					break;
-				}
-				
-				if ($message == 'message_create') // go to new message screen
-				{
-					// check access rights
-					if (!$access_rights[$player->Type()]["messages"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
-				
-					$recipient = postdecode(array_shift(array_keys($value)));
-					$author = $player->Name();
-					
-					$current = 'Message_new';
-					break;
-				}
-				
-				if ($message == 'system_notification') // go to new message screen to write system notification
-				{
-					// check access rights
-					if (!$access_rights[$player->Type()]["system_notification"]) { $error = 'Access denied.'; $current = 'Players'; break; }
-				
-					$recipient = postdecode(array_shift(array_keys($value)));
-					$author = SYSTEM_NAME;
-																							
-					$current = 'Message_new';
-					break;
-				}
-				
-				$temp = array("asc" => "ASC", "desc" => "DESC");
-				foreach($temp as $type => $order_val)
-				{
-					if ($message == 'mes_ord_'.$type) // select ascending or descending order in message list
-					{
-						$_POST['CurrentCond'] = array_shift(array_keys($value));
-						$_POST['CurrentOrd'] = $order_val;
-						
-						$current = "Messages";
-						
-						break;
-					}
-				}
-				
-				if ($message == 'message_filter') // use filter
-				{
-					$_POST['CurrentMesPage'] = 0;
-					
-					$current = 'Messages';
-					break;
-				}
-				
-				if ($message == 'select_page_messages') // Messages -> select page (previous and next button)
-				{
-					$_POST['CurrentMesPage'] = array_shift(array_keys($value));
-					$current = "Messages";
-					
-					break;
-				}
-				
-				if ($message == 'seek_page_messages') // Messages -> select page (Jump to page)
-				{
-					$_POST['CurrentMesPage'] = $_POST['page_selector'];
-					$current = "Messages";
-					
-					break;
-				}
-				
-				if ($message == 'Delete_mass') // Messages -> delete selected messages
-				{
-					$deleted_messages = array();
-					
-					for ($i = 1; $i<= MESSAGES_PER_PAGE; $i++)
-						if (isset($_POST['Mass_delete_'.$i]))
-						{
-							$current_message = array_shift(array_keys($_POST['Mass_delete_'.$i]));
-							array_push($deleted_messages, $current_message);
-						}
-					
-					if (count($deleted_messages) > 0)
-					{
-						$result = $messagedb->MassDeleteMessage($deleted_messages, $player->Name());
-						if (!$result) { $error = "Failed to delete messages"; $current = "Messages"; break; }
-						
-						$information = "Messages deleted";
-					}
-					else $warning = "No messages selected";
-					
-					$current = "Messages";
-					break;
-				}
-				// end message-related messages
-				
-				// begin user details
-				if ($message == 'change_access') // Players -> User details -> Change access rights
-				{
-					$opponent = postdecode(array_shift(array_keys($value)));
-					
-					$_POST['Profile'] = $opponent;
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Profile'; break; }
-										
-					$target = $playerdb->GetPlayer($opponent);
-					$target->ChangeAccessRights($_POST['new_access']);
-					
-					$information = 'Access rights changed.';
-								
-					$current = 'Profile';
-					break;
-				}
-				
-				if ($message == 'reset_exp') // Players -> User details -> Reset exp
-				{
-					$opponent = postdecode(array_shift(array_keys($value)));
-					
-					$_POST['Profile'] = $opponent;
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Profile'; break; }
-					
-					// reset level end exp
-					$score = $scoredb->GetScore($opponent);
-					$score->ResetExp();
-					$score->SaveScore();
-					
-					// delete bonus deck slots
-					$decks = $deckdb->ListDecks($opponent);
-					foreach ($decks as $i => $deck_data)
-						if ($i >= DECK_SLOTS) $deckdb->DeleteDeck($opponent, $deck_data['Deckname']);
-					
-					$information = 'Exp reset.';
-					
-					$current = 'Profile';
-					break;
-				}
-				// end user details
-				
 				// settings-related messages
 				
 				if ($message == 'user_settings') // upload user settings
@@ -2345,29 +2401,6 @@
 					break;
 				}
 				
-				if ($message == 'reset_avatar_remote') // reset some player's avatar
-				{
-					$_POST['cur_player'] = postdecode(array_shift(array_keys($value)));
-					
-					$opponent = $playerdb->GetPlayer($_POST['cur_player']);
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["change_all_avatar"]) { $error = 'Access denied.'; $current = 'Profile'; break; }
-					
-					$settings = $opponent->GetSettings();
-					$former_name = $settings->GetSetting('Avatar');
-					$former_path = 'img/avatars/'.$former_name;
-					
-					if ((file_exists($former_path)) and ($former_name != "noavatar.jpg")) unlink($former_path);
-					$settings->ChangeSetting('Avatar', "noavatar.jpg");
-					$settings->SaveSettings();
-					$information = "Avatar cleared";
-					
-					$current = 'Profile';
-					
-					break;
-				}
-				
 				if ($message == 'changepasswd') //change password
 				{
 					if (!isset($_POST['NewPassword']) || !isset ($_POST['NewPassword2']) || trim($_POST['NewPassword']) == '' || trim($_POST['NewPassword2']) == '')
@@ -2387,51 +2420,6 @@
 				}
 				
 				// end settings-related messages
-				
-				// begin players related messages
-				
-				$temp = array("asc" => "ASC", "desc" => "DESC");
-				foreach($temp as $type => $order_val)
-				{
-					if ($message == 'players_ord_'.$type) // select ascending or descending order in players list
-					{
-						$_POST['CurrentCondition'] = postdecode(array_shift(array_keys($value)));
-						$_POST['CurrentOrder'] = $order_val;
-						
-						$current = "Players";
-						
-						break;
-					}
-				}
-				
-				if ($message == 'filter_players') // use player filter in players list
-				{
-					$_POST['CurrentPlayersPage'] = 0;
-					
-					$current = "Players";
-					
-					break;
-				}
-				
-				if ($message == 'select_page_players') // Players -> select page (previous and next button)
-				{
-					$_POST['CurrentPlayersPage'] = array_shift(array_keys($value));
-					
-					$current = "Players";
-					
-					break;
-				}
-				
-				if ($message == 'seek_page_players') // Players -> select page (Jump to page)
-				{
-					$_POST['CurrentPlayersPage'] = $_POST['page_selector'];
-					
-					$current = "Players";
-					
-					break;
-				}
-				
-				// end players related messages
 				
 				// begin replays related messages
 				
@@ -2974,6 +2962,10 @@ case 'Messages':
 
 
 case 'Message_details':
+	$messageid = $_POST['CurrentMessage'];
+	$message = $messagedb->GetMessage($messageid, $player->Name());
+	if (!$message) { $display_error = "Invalid message."; break; }
+
 	$params['message_details']['PlayerName'] = $player->Name();
 	$params['message_details']['system_name'] = SYSTEM_NAME;
 	$params['message_details']['timezone'] = $player->GetSettings()->GetSetting('Timezone'); 
@@ -2997,8 +2989,8 @@ case 'Message_details':
 
 
 case 'Message_new':
-	$params['message_new']['Author'] = $author;
-	$params['message_new']['Recipient'] = $recipient;
+	$params['message_new']['Author'] = $_POST['Author'];
+	$params['message_new']['Recipient'] = $_POST['Recipient'];
 	$params['message_new']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : '');
  	$params['message_new']['Subject'] = ((isset($_POST['Subject'])) ? $_POST['Subject'] : '');
 

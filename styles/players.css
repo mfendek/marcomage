@@ -15,7 +15,7 @@ div#players > table p /* players table row layout */
 	margin: 0ex 1ex 0ex 1ex;
 }
 
-div#players th input /* set distance for ordering buttons from header texts in the table header */
+div#players th button /* set distance for ordering buttons from header texts in the table header */
 {
 	margin-left: 1ex;
 }

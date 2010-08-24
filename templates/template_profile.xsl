@@ -162,7 +162,7 @@
 					<xsl:variable name="challenge" select="$param/challenge"/>
 					<p>
 						<span class="error">waiting for answer</span>
-						<input type="submit" name="withdraw_challenge[{$challenge/GameID}]" value="Cancel" />
+						<button type="submit" name="withdraw_challenge" value="{$challenge/GameID}">Cancel</button>
 					</p>
 					
 					<xsl:if test="$param/challenge/Content != ''">
@@ -176,11 +176,11 @@
 				<xsl:when test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
 					<xsl:choose>
 						<xsl:when test="$param/challenging = 'no'">
-							<p><input type="submit" name="prepare_challenge[{am:urlencode($opponent)}]" value="Challenge this user" /></p>
+							<p><button type="submit" name="prepare_challenge" value="{am:urlencode($opponent)}">Challenge this user</button></p>
 						</xsl:when>
 						<xsl:otherwise>
 							<p>
-								<input type="submit" name="send_challenge[{am:urlencode($opponent)}]" value="Send challenge" />
+								<button type="submit" name="send_challenge" value="{am:urlencode($opponent)}">Send challenge</button>
 								<select name="ChallengeDeck" size="1">
 									<xsl:if test="$param/RandomDeck = 'yes'">
 										<option value="{am:urlencode($param/random_deck)}">select random</option>
@@ -221,12 +221,12 @@
 		
 		<xsl:if test="$param/messages = 'yes'">
 			<h4>Message options</h4>
-			<input type="submit" name="message_create[{am:urlencode($opponent)}]" value="Send message" />
+			<button type="submit" name="message_create" value="{am:urlencode($opponent)}">Send message</button>
 		</xsl:if>
 		
 		<xsl:if test="$param/change_rights = 'yes'">
 			<h4>Change access rights</h4>			
-			<input type="submit" name="change_access[{am:urlencode($opponent)}]" value="Change access rights" />
+			<button type="submit" name="change_access" value="{am:urlencode($opponent)}">Change access rights</button>
 			<xsl:variable name="user_types">
 				<type name="moderator"  text="Moderator"/>
 				<type name="supervisor" text="Supervisor"/>
@@ -247,17 +247,17 @@
 		
 		<xsl:if test="$param/system_notification = 'yes'">
 			<h4>System notification</h4>
-			<input type="submit" name="system_notification[{am:urlencode($opponent)}]" value="Send system notification" />
+			<button type="submit" name="system_notification" value="{am:urlencode($opponent)}">Send system notification</button>
 		</xsl:if>
 
 		<xsl:if test="$param/change_all_avatar = 'yes'">
 			<h4>Reset avatar</h4>
-			<input type="submit" name="reset_avatar_remote[{am:urlencode($opponent)}]" value="Reset" />
+			<button type="submit" name="reset_avatar_remote" value="{am:urlencode($opponent)}">Reset</button>
 		</xsl:if>
 
 		<xsl:if test="$param/reset_exp = 'yes'">
 			<h4>Reset exp</h4>
-			<input type="submit" name="reset_exp[{am:urlencode($opponent)}]" value="Reset" />
+			<button type="submit" name="reset_exp" value="{am:urlencode($opponent)}">Reset</button>
 		</xsl:if>
 
 		<div class="clear_floats"></div>

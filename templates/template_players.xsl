@@ -46,7 +46,7 @@
 			</xsl:variable>
 			<xsl:copy-of select="am:htmlSelectBox('status_filter', $param/status_filter, $status_types, '')"/>
 
-			<input type="submit" name="filter_players" value="Apply filters" />
+			<button type="submit" name="filter_players">Apply filters</button>
 
 			<!-- upper navigation -->
 			<xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'players')"/>
@@ -75,21 +75,21 @@
 						<p>
 							<xsl:value-of select="@text"/>
 							<xsl:if test="@sortable = 'yes'">
-								<input type="submit" class="small_button">
+								<button type="submit" class="small_button" value="{@name}">
 									<xsl:if test="$param/condition = @name">
 										<xsl:attribute name="class">small_button pushed</xsl:attribute>
 									</xsl:if>
 									<xsl:choose>
 										<xsl:when test="$param/condition = @name and $param/order = 'DESC'">
-											<xsl:attribute name="name">players_ord_asc[<xsl:value-of select="@name"/>]</xsl:attribute>
-											<xsl:attribute name="value">\/</xsl:attribute>
+											<xsl:attribute name="name">players_ord_asc</xsl:attribute>
+											<xsl:text>\/</xsl:text>
 										</xsl:when>
 										<xsl:otherwise>
-											<xsl:attribute name="name">players_ord_desc[<xsl:value-of select="@name"/>]</xsl:attribute>
-											<xsl:attribute name="value">/\</xsl:attribute>
+											<xsl:attribute name="name">players_ord_desc</xsl:attribute>
+											<xsl:text>/\</xsl:text>
 										</xsl:otherwise>
 									</xsl:choose>
-								</input>
+								</button>
 							</xsl:if>
 						</p>
 					</th>
@@ -155,10 +155,10 @@
 					
 					<td style="text-align: left;">
 						<xsl:if test="$param/messages = 'yes'">
-							<input class="small_button" type="submit" name="message_create[{name}]" value="m" />
+							<button class="small_button" type="submit" name="message_create" value="{name}">m</button>
 						</xsl:if>
 						<xsl:if test="$param/send_challenges = 'yes' and $param/free_slots &gt; 0 and $param/active_decks &gt; 0 and name != $param/PlayerName and challenged = 'no' and playingagainst = 'no' and waitingforack = 'no'">
-							<input class="small_button" type="submit" name="prepare_challenge[{name}]" value="Challenge" />
+							<button class="small_button" type="submit" name="prepare_challenge" value="{name}">Challenge</button>
 						</xsl:if>
 					</td>
 					<td>
