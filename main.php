@@ -218,6 +218,340 @@
 				break;
 			}
 
+			// concepts-related messages
+
+			$temp = array("asc" => "ASC", "desc" => "DESC");
+			foreach($temp as $type => $order_val)
+			{
+				if (isset($_POST['concepts_ord_'.$type])) // select ascending or descending order in card concepts list
+				{
+					$_POST['CurrentCon'] = $_POST['concepts_ord_'.$type];
+					$_POST['CurrentOrder'] = $order_val;
+
+					$current = "Concepts";
+
+					break;
+				}
+			}
+
+			if (isset($_POST['concepts_filter'])) // use filter
+			{
+				$_POST['CurrentConPage'] = 0;
+
+				$current = 'Concepts';
+				break;
+			}
+
+			if (isset($_POST['my_concepts'])) // use "my cards" quick button
+			{
+				$_POST['date_filter_concepts'] = "none";
+				$_POST['author_filter'] = $player->Name();
+				$_POST['state_filter'] = "none";
+				$_POST['CurrentConPage'] = 0;
+
+				$current = 'Concepts';
+				break;
+			}
+
+			if (isset($_POST['select_page_concepts'])) // Concepts -> select page (previous and next button)
+			{
+				$_POST['CurrentConPage'] = $_POST['select_page_concepts'];
+				$current = "Concepts";
+
+				break;
+			}
+
+			if (isset($_POST['seek_page_concepts'])) // Concepts -> select page (Jump to page)
+			{
+				$_POST['CurrentConPage'] = $_POST['page_selector'];
+				$current = "Concepts";
+
+				break;
+			}
+
+			if (isset($_POST['new_concept'])) // go to new card formular
+			{
+				// check access rights
+				if (!$access_rights[$player->Type()]["create_card"]) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+				$current = "Concepts_new";
+
+				break;
+			}
+
+			if (isset($_POST['create_concept'])) // create new card concept
+			{
+				// check access rights
+				if (!$access_rights[$player->Type()]["create_card"]) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+
+				// add default cost values
+				if (trim($_POST['bricks']) == "") $_POST['bricks'] = 0;
+				if (trim($_POST['gems']) == "") $_POST['gems'] = 0;
+				if (trim($_POST['recruits']) == "") $_POST['recruits'] = 0;
+
+				$data = array();
+				$inputs = array('name', 'class', 'bricks', 'gems', 'recruits', 'effect', 'keywords', 'note');
+				foreach ($inputs as $input) $data[$input] = $_POST[$input];
+				$data['author'] = $player->Name();
+
+				// input checks
+				$check = $conceptdb->CheckInputs($data);
+
+				if ($check != "") { $error = $check; $current = "Concepts_new"; break; }
+
+				$concept_id = $conceptdb->CreateConcept($data);
+				if (!$concept_id) { $error = "Failed to create new card"; $current = "Concepts_new"; break; }
+
+				$_POST['CurrentConcept'] = $concept_id;
+				$information = "New card created";
+				$current = "Concepts_edit";
+
+				break;
+			}
+
+			if (isset($_POST['edit_concept'])) // go to card edit formaular
+			{
+				$concept_id = $_POST['edit_concept'];
+
+				if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
+				$concept = $conceptdb->GetConcept($concept_id);
+
+				// check access rights
+				if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+
+				$_POST['CurrentConcept'] = $concept_id;
+				$current = "Concepts_edit";
+
+				break;
+			}
+
+			if (isset($_POST['save_concept'])) // save edited changes
+			{
+				$concept_id = $_POST['CurrentConcept'];
+
+				if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
+				$concept = $conceptdb->GetConcept($concept_id);
+
+				// check access rights
+				if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+
+				$old_name = $concept->Name();
+				$new_name = $_POST['name'];
+				$thread_id = $concept->ThreadID();
+
+				// add default cost values
+				if (trim($_POST['bricks']) == "") $_POST['bricks'] = 0;
+				if (trim($_POST['gems']) == "") $_POST['gems'] = 0;
+				if (trim($_POST['recruits']) == "") $_POST['recruits'] = 0;
+
+				$data = array();
+				$inputs = array('name', 'class', 'bricks', 'gems', 'recruits', 'effect', 'keywords', 'note');
+				foreach ($inputs as $input) $data[$input] = $_POST[$input];
+
+				// input checks
+				$check = $conceptdb->CheckInputs($data);
+
+				if ($check != "") { $error = $check; $current = "Concepts_edit"; break; }
+
+				$result = $concept->EditConcept($data);
+				if (!$result) { $error = "Failed to save changes"; $current = "Concepts_edit"; break; }
+
+				// update corresponding thread name if necessary
+				if ((trim($old_name) != trim($new_name)) AND ($thread_id > 0))
+				{
+					$result = $forum->Threads->EditThread($thread_id, $new_name, 'normal');					
+					if (!$result) { $error = "Failed to rename thread"; $current = "Concepts_edit"; break; }
+				}
+
+				$information = "Changes saved";
+				$current = "Concepts_edit";
+
+				break;
+			}
+
+			if (isset($_POST['save_concept_special'])) // save edited changes (special access)
+			{
+				$concept_id = $_POST['CurrentConcept'];
+
+				if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
+				$concept = $conceptdb->GetConcept($concept_id);
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["edit_all_card"]) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+
+				$old_name = $concept->Name();
+				$new_name = $_POST['name'];
+				$thread_id = $concept->ThreadID();
+
+				// add default cost values
+				if (trim($_POST['bricks']) == "") $_POST['bricks'] = 0;
+				if (trim($_POST['gems']) == "") $_POST['gems'] = 0;
+				if (trim($_POST['recruits']) == "") $_POST['recruits'] = 0;
+
+				$data = array();
+				$inputs = array('name', 'class', 'bricks', 'gems', 'recruits', 'effect', 'keywords', 'note', 'state');
+				foreach ($inputs as $input) $data[$input] = $_POST[$input];
+
+				// input checks
+				$check = $conceptdb->CheckInputs($data);
+
+				if ($check != "") { $error = $check; $current = "Concepts_edit"; break; }
+
+				$result = $concept->EditConceptSpecial($data);
+				if (!$result) { $error = "Failed to save changes"; $current = "Concepts_edit"; break; }
+
+				// update corresponding thread name if necessary
+				if ((trim($old_name) != trim($new_name)) AND ($thread_id > 0))
+				{
+					$result = $forum->Threads->EditThread($thread_id, $new_name, 'normal');					
+					if (!$result) { $error = "Failed to rename thread"; $current = "Concepts_edit"; break; }
+				}
+
+				$information = "Changes saved";
+				$current = "Concepts_edit";
+
+				break;
+			}
+
+			if (isset($_POST['upload_pic'])) // upload card_picture
+			{
+				$concept_id = $_POST['CurrentConcept'];
+
+				if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
+				$concept = $conceptdb->GetConcept($concept_id);
+
+				// check access rights
+				if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+
+				$former_name = $concept->ConceptData->Picture;
+				$former_path = 'img/concepts/'.$former_name;
+
+				$type = $_FILES['uploadedfile']['type'];
+				$pos = strrpos($type, "/") + 1;
+
+				$code_type = substr($type, $pos, strlen($type) - $pos);
+				$filtered_name = preg_replace("/[^a-zA-Z0-9_-]/i", "_", $player->Name());
+
+				$code_name = time().$filtered_name.'.'.$code_type;
+				$target_path = 'img/concepts/'.$code_name;
+
+				$supported_types = array("image/jpg", "image/jpeg", "image/gif", "image/png");
+
+				if (($_FILES['uploadedfile']['tmp_name'] == ""))
+					$error = "Invalid input file";
+				else
+				if (($_FILES['uploadedfile']['size'] > 50*1000 ))
+					$error = "File is too big";
+				else
+				if (!in_array($_FILES['uploadedfile']['type'], $supported_types))
+					$error = "Unsupported input file";
+				else
+				if (move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $target_path) == FALSE)
+					$error = "Upload failed, error code ".$_FILES['uploadedfile']['error'];
+				else
+				{
+					if ((file_exists($former_path)) and ($former_name != "blank.jpg")) unlink($former_path);
+					$concept->EditPicture($code_name);
+					$information = "Picture uploaded";
+				}
+
+				$current = 'Concepts_edit';
+
+				break;
+			}
+
+			if (isset($_POST['clear_img'])) // clear card picture
+			{
+				$concept_id = $_POST['CurrentConcept'];
+
+				if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
+				$concept = $conceptdb->GetConcept($concept_id);
+
+				// check access rights
+				if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+
+				$former_name = $concept->ConceptData->Picture;
+				$former_path = 'img/concepts/'.$former_name;
+
+				if ((file_exists($former_path)) and ($former_name != "blank.jpg")) unlink($former_path);
+				$concept->ResetPicture();
+
+				$information = "Card picture cleared";
+				$current = 'Concepts_edit';
+
+				break;
+			}
+
+			if (isset($_POST['delete_concept'])) // delete card concept
+			{
+				$concept_id = $_POST['delete_concept'];
+
+				if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
+				$concept = $conceptdb->GetConcept($concept_id);
+
+				// check access rights
+				if (!($access_rights[$player->Type()]["delete_all_card"] OR ($access_rights[$player->Type()]["delete_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+
+				$_POST['CurrentConcept'] = $concept_id;
+				$current = "Concepts_edit";
+
+				break;
+			}
+
+			if (isset($_POST['delete_concept_confirm'])) // delete card concept confirmation
+			{
+				$concept_id = $_POST['CurrentConcept'];
+
+				if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
+				$concept = $conceptdb->GetConcept($concept_id);
+				$thread_id = $concept->ThreadID();
+				$concept_name = $concept->Name();
+
+				// check access rights
+				if (!($access_rights[$player->Type()]["delete_all_card"] OR ($access_rights[$player->Type()]["delete_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+
+				$result = $concept->DeleteConcept();
+				if (!$result) { $error = "Failed to delete card"; $current = "Concepts_edit"; break; }
+
+				$result = $forum->Threads->EditThread($thread_id, $concept_name.' [Deleted]', 'normal');					
+				if (!$result) { $error = "Failed to rename thread"; $current = "Concepts"; break; }
+
+				$information = "Card deleted";
+				$current = "Concepts";
+
+				break;
+			}
+
+			if (isset($_POST['concept_thread'])) // create new thread for specified card concept
+			{
+				$concept_id = $_POST['CurrentConcept'];
+				$section_id = 6; // section for discussing concepts
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Concepts_details'; break; }
+
+				$concept = $conceptdb->GetConcept($concept_id);
+				if (!$concept) { $error = 'No such card.'; $current = 'Concepts'; break; }
+				$thread_id = $concept->ThreadID();
+				if ($thread_id > 0) { $error = "Thread already exists"; $current = "Thread_details"; $_POST['CurrentThread'] = $thread_id; break; }
+
+				$concept_name = $concept->Name();
+
+				$new_thread = $forum->Threads->CreateThread($concept_name, $player->Name(), 'normal', $section_id);
+				if ($new_thread === false) { $error = "Failed to create new thread"; $current = "Concepts_details"; break; }
+				// $new_thread contains ID of currently created thread, which can be 0
+
+				$result = $concept->AssignThread($new_thread);
+				if (!$result) { $error = "Failed to assign new thread"; $current = "Concepts_details"; break; }
+
+				$_POST['CurrentThread'] = $new_thread;
+				$information = "Thread created";
+				$current = 'Thread_details';
+
+				break;
+			}
+
+			// end concepts-related messages
+
 			// Explanation of how message passing is done:
 			//
 			// All requests are retrieved from POST data as <message, value>.
@@ -1550,339 +1884,6 @@
 				
 				// end deck-related messages
 				
-				// concepts-related messages
-				$temp = array("asc" => "ASC", "desc" => "DESC");
-				foreach($temp as $type => $order_val)
-				{
-					if ($message == 'concepts_ord_'.$type) // select ascending or descending order in card concepts list
-					{
-						$_POST['CurrentCon'] = array_shift(array_keys($value));
-						$_POST['CurrentOrder'] = $order_val;
-						
-						$current = "Concepts";
-						
-						break;
-					}
-				}
-				
-				if ($message == 'concepts_filter') // use filter
-				{
-					$_POST['CurrentConPage'] = 0;
-					
-					$current = 'Concepts';
-					break;
-				}
-				
-				if ($message == 'my_concepts') // use "my cards" quick button
-				{
-					$_POST['date_filter_concepts'] = "none";
-					$_POST['author_filter'] = $player->Name();
-					$_POST['state_filter'] = "none";
-					$_POST['CurrentConPage'] = 0;
-					
-					$current = 'Concepts';
-					break;
-				}
-				
-				if ($message == 'select_page_concepts') // Concepts -> select page (previous and next button)
-				{
-					$_POST['CurrentConPage'] = array_shift(array_keys($value));
-					$current = "Concepts";
-					
-					break;
-				}
-				
-				if ($message == 'seek_page_concepts') // Concepts -> select page (Jump to page)
-				{
-					$_POST['CurrentConPage'] = $_POST['page_selector'];
-					$current = "Concepts";
-					
-					break;
-				}
-				
-				if ($message == 'new_concept') // go to new card formular
-				{
-					// check access rights
-					if (!$access_rights[$player->Type()]["create_card"]) { $error = 'Access denied.'; $current = 'Concepts'; break; }
-					$current = "Concepts_new";
-					
-					break;
-				}
-				
-				if ($message == 'create_concept') // create new card concept
-				{
-					// check access rights
-					if (!$access_rights[$player->Type()]["create_card"]) { $error = 'Access denied.'; $current = 'Concepts'; break; }
-					
-					// add default cost values
-					if (trim($_POST['bricks']) == "") $_POST['bricks'] = 0;
-					if (trim($_POST['gems']) == "") $_POST['gems'] = 0;
-					if (trim($_POST['recruits']) == "") $_POST['recruits'] = 0;
-					
-					$data = array();
-					$inputs = array('name', 'class', 'bricks', 'gems', 'recruits', 'effect', 'keywords', 'note');
-					foreach ($inputs as $input) $data[$input] = $_POST[$input];
-					$data['author'] = $player->Name();
-					
-					// input checks
-					$check = $conceptdb->CheckInputs($data);
-					
-					if ($check != "") { $error = $check; $current = "Concepts_new"; break; }
-					
-					$concept_id = $conceptdb->CreateConcept($data);
-					if (!$concept_id) { $error = "Failed to create new card"; $current = "Concepts_new"; break; }
-					
-					$_POST['CurrentConcept'] = $concept_id;
-					$information = "New card created";
-					$current = "Concepts_edit";
-					
-					break;
-				}
-				
-				if ($message == 'edit_concept') // go to card edit formaular
-				{
-					$concept_id = array_shift(array_keys($value));
-					
-					if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
-					$concept = $conceptdb->GetConcept($concept_id);
-					
-					// check access rights
-					if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
-					
-					$_POST['CurrentConcept'] = $concept_id;
-					$current = "Concepts_edit";
-					
-					break;
-				}
-				
-				if ($message == 'save_concept') // save edited changes
-				{
-					$concept_id = $_POST['CurrentConcept'];
-					
-					if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
-					$concept = $conceptdb->GetConcept($concept_id);
-					
-					// check access rights
-					if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
-					
-					$old_name = $concept->Name();
-					$new_name = $_POST['name'];
-					$thread_id = $concept->ThreadID();
-					
-					// add default cost values
-					if (trim($_POST['bricks']) == "") $_POST['bricks'] = 0;
-					if (trim($_POST['gems']) == "") $_POST['gems'] = 0;
-					if (trim($_POST['recruits']) == "") $_POST['recruits'] = 0;
-					
-					$data = array();
-					$inputs = array('name', 'class', 'bricks', 'gems', 'recruits', 'effect', 'keywords', 'note');
-					foreach ($inputs as $input) $data[$input] = $_POST[$input];
-					
-					// input checks
-					$check = $conceptdb->CheckInputs($data);
-					
-					if ($check != "") { $error = $check; $current = "Concepts_edit"; break; }
-					
-					$result = $concept->EditConcept($data);
-					if (!$result) { $error = "Failed to save changes"; $current = "Concepts_edit"; break; }
-					
-					// update corresponding thread name if necessary
-					if ((trim($old_name) != trim($new_name)) AND ($thread_id > 0))
-					{
-						$result = $forum->Threads->EditThread($thread_id, $new_name, 'normal');					
-						if (!$result) { $error = "Failed to rename thread"; $current = "Concepts_edit"; break; }
-					}
-					
-					$information = "Changes saved";
-					$current = "Concepts_edit";
-					
-					break;
-				}
-				
-				if ($message == 'save_concept_special') // save edited changes (special access)
-				{
-					$concept_id = $_POST['CurrentConcept'];
-					
-					if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
-					$concept = $conceptdb->GetConcept($concept_id);
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["edit_all_card"]) { $error = 'Access denied.'; $current = 'Concepts'; break; }
-					
-					$old_name = $concept->Name();
-					$new_name = $_POST['name'];
-					$thread_id = $concept->ThreadID();
-					
-					// add default cost values
-					if (trim($_POST['bricks']) == "") $_POST['bricks'] = 0;
-					if (trim($_POST['gems']) == "") $_POST['gems'] = 0;
-					if (trim($_POST['recruits']) == "") $_POST['recruits'] = 0;
-					
-					$data = array();
-					$inputs = array('name', 'class', 'bricks', 'gems', 'recruits', 'effect', 'keywords', 'note', 'state');
-					foreach ($inputs as $input) $data[$input] = $_POST[$input];
-					
-					// input checks
-					$check = $conceptdb->CheckInputs($data);
-					
-					if ($check != "") { $error = $check; $current = "Concepts_edit"; break; }
-					
-					$result = $concept->EditConceptSpecial($data);
-					if (!$result) { $error = "Failed to save changes"; $current = "Concepts_edit"; break; }
-					
-					// update corresponding thread name if necessary
-					if ((trim($old_name) != trim($new_name)) AND ($thread_id > 0))
-					{
-						$result = $forum->Threads->EditThread($thread_id, $new_name, 'normal');					
-						if (!$result) { $error = "Failed to rename thread"; $current = "Concepts_edit"; break; }
-					}
-					
-					$information = "Changes saved";
-					$current = "Concepts_edit";
-					
-					break;
-				}
-				
-				if ($message == 'upload_pic') // upload card_picture
-				{
-					$concept_id = $_POST['CurrentConcept'];
-					
-					if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
-					$concept = $conceptdb->GetConcept($concept_id);
-					
-					// check access rights
-					if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
-					
-					$former_name = $concept->ConceptData->Picture;
-					$former_path = 'img/concepts/'.$former_name;
-					
-					$type = $_FILES['uploadedfile']['type'];
-					$pos = strrpos($type, "/") + 1;
-					
-					$code_type = substr($type, $pos, strlen($type) - $pos);
-					$filtered_name = preg_replace("/[^a-zA-Z0-9_-]/i", "_", $player->Name());
-					
-					$code_name = time().$filtered_name.'.'.$code_type;
-					$target_path = 'img/concepts/'.$code_name;
-					
-					$supported_types = array("image/jpg", "image/jpeg", "image/gif", "image/png");
-					
-					if (($_FILES['uploadedfile']['tmp_name'] == ""))
-						$error = "Invalid input file";
-					else
-					if (($_FILES['uploadedfile']['size'] > 50*1000 ))
-						$error = "File is too big";
-					else
-					if (!in_array($_FILES['uploadedfile']['type'], $supported_types))
-						$error = "Unsupported input file";
-					else
-					if (move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $target_path) == FALSE)
-						$error = "Upload failed, error code ".$_FILES['uploadedfile']['error'];
-					else
-					{
-						if ((file_exists($former_path)) and ($former_name != "blank.jpg")) unlink($former_path);
-						$concept->EditPicture($code_name);
-						$information = "Picture uploaded";
-					}
-					
-					$current = 'Concepts_edit';
-					
-					break;
-				}
-				
-				if ($message == 'clear_img') // clear card picture
-				{
-					$concept_id = $_POST['CurrentConcept'];
-					
-					if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
-					$concept = $conceptdb->GetConcept($concept_id);
-					
-					// check access rights
-					if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
-					
-					$former_name = $concept->ConceptData->Picture;
-					$former_path = 'img/concepts/'.$former_name;
-					
-					if ((file_exists($former_path)) and ($former_name != "blank.jpg")) unlink($former_path);
-					$concept->ResetPicture();
-
-					$information = "Card picture cleared";
-					$current = 'Concepts_edit';
-					
-					break;
-				}
-				
-				if ($message == 'delete_concept') // delete card concept
-				{
-					$concept_id = array_shift(array_keys($value));
-					
-					if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
-					$concept = $conceptdb->GetConcept($concept_id);
-					
-					// check access rights
-					if (!($access_rights[$player->Type()]["delete_all_card"] OR ($access_rights[$player->Type()]["delete_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
-					
-					$_POST['CurrentConcept'] = $concept_id;
-					$current = "Concepts_edit";
-					
-					break;
-				}
-				
-				if ($message == 'delete_concept_confirm') // delete card concept confirmation
-				{
-					$concept_id = $_POST['CurrentConcept'];
-					
-					if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
-					$concept = $conceptdb->GetConcept($concept_id);
-					$thread_id = $concept->ThreadID();
-					$concept_name = $concept->Name();
-					
-					// check access rights
-					if (!($access_rights[$player->Type()]["delete_all_card"] OR ($access_rights[$player->Type()]["delete_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
-					
-					$result = $concept->DeleteConcept();
-					if (!$result) { $error = "Failed to delete card"; $current = "Concepts_edit"; break; }
-					
-					$result = $forum->Threads->EditThread($thread_id, $concept_name.' [Deleted]', 'normal');					
-					if (!$result) { $error = "Failed to rename thread"; $current = "Concepts"; break; }
-					
-					$information = "Card deleted";
-					$current = "Concepts";
-					
-					break;
-				}
-				
-				if ($message == 'concept_thread') // create new thread for specified card concept
-				{
-					$concept_id = $_POST['CurrentConcept'];
-					$section_id = 6; // section for discussing concepts
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Concepts_details'; break; }
-					
-					$concept = $conceptdb->GetConcept($concept_id);
-					$thread_id = $concept->ThreadID();
-					if ($thread_id > 0) { $error = "Thread already exists"; $current = "Thread_details"; break; }
-					
-					$concept_name = $concept->Name();
-					
-					$new_thread = $forum->Threads->CreateThread($concept_name, $player->Name(), 'normal', $section_id);
-					if ($new_thread === false) { $error = "Failed to create new thread"; $current = "Concepts_details"; break; }
-					// $new_thread contains ID of currently created thread, which can be 0
-					
-					$result = $concept->AssignThread($new_thread);
-					if (!$result) { $error = "Failed to assign new thread"; $current = "Concepts_details"; break; }
-					
-					$information = "Thread created";
-					$thread_id = $new_thread;
-					
-					$current = 'Thread_details';
-					
-					break;
-				}
-				
-				// end concepts-related messages
-				
 				// settings-related messages
 				
 				if ($message == 'user_settings') // upload user settings
@@ -2706,6 +2707,7 @@ case 'Concepts':
 	$params['concepts']['current_condition'] = $condition = $_POST['CurrentCon'];
 
 	$current_page = ((isset($_POST['CurrentConPage'])) ? $_POST['CurrentConPage'] : 0);
+	if (!is_numeric($current_page) OR $current_page < 0) { $display_error = 'Invalid concepts page.'; break; }
 	$params['concepts']['current_page'] = $current_page;
 
 	$params['concepts']['list'] = $conceptdb->GetList($name, $author, $date, $state, $condition, $order, $current_page);

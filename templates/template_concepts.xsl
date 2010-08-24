@@ -22,7 +22,7 @@
 
 		<div class="filters">
 			<xsl:if test="$param/create_card = 'yes'">
-				<input type="submit" name="new_concept" value="New card" />
+				<button type="submit" name="new_concept">New card</button>
 			</xsl:if>
 
 			<!-- card name filter -->
@@ -62,9 +62,9 @@
 			</xsl:variable>
 			<xsl:copy-of select="am:htmlSelectBox('state_filter', $param/state_val, $states, '')"/>
 
-			<input type="submit" name="concepts_filter" value="Apply filters" />
+			<button type="submit" name="concepts_filter">Apply filters</button>
 			<xsl:if test="$param/mycards = 'yes'">
-				<input type="submit" name="my_concepts" value="My cards" />
+				<button type="submit" name="my_concepts">My cards</button>
 			</xsl:if>
 
 			<!-- upper navigation -->
@@ -77,40 +77,46 @@
 			<tr>
 				<th>Card</th>
 				<th>
-					<p>Card name<input class="small_button" type="submit" >
-						<xsl:choose>
-							<xsl:when test="(($param/current_condition = 'Name') and ($param/current_order = 'DESC'))">
-								<xsl:attribute name="name">concepts_ord_asc[Name]</xsl:attribute>
-								<xsl:attribute name="value">\/</xsl:attribute>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:attribute name="name">concepts_ord_desc[Name]</xsl:attribute>
-								<xsl:attribute name="value">/\</xsl:attribute>
-							</xsl:otherwise>
-						</xsl:choose>
-						<xsl:if test="$param/current_condition = 'Name'">
-							<xsl:attribute name="class">small_button pushed</xsl:attribute>
-						</xsl:if>
-					</input></p>
+					<p>
+						<xsl:text>Card name</xsl:text>
+						<button class="small_button" type="submit" value="Name" >
+							<xsl:if test="$param/current_condition = 'Name'">
+								<xsl:attribute name="class">small_button pushed</xsl:attribute>
+							</xsl:if>
+							<xsl:choose>
+								<xsl:when test="(($param/current_condition = 'Name') and ($param/current_order = 'DESC'))">
+									<xsl:attribute name="name">concepts_ord_asc</xsl:attribute>
+									<xsl:text>\/</xsl:text>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:attribute name="name">concepts_ord_desc</xsl:attribute>
+									<xsl:text>/\</xsl:text>
+								</xsl:otherwise>
+							</xsl:choose>
+						</button>
+					</p>
 				</th>
 				<th><p>Author</p></th>
 				<th><p>Rarity</p></th>
 				<th>
-					<p>Last change<input class="small_button" type="submit" >
-						<xsl:choose>
-							<xsl:when test="(($param/current_condition = 'LastChange') and ($param/current_order = 'DESC'))">
-								<xsl:attribute name="name">concepts_ord_asc[LastChange]</xsl:attribute>
-								<xsl:attribute name="value">\/</xsl:attribute>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:attribute name="name">concepts_ord_desc[LastChange]</xsl:attribute>
-								<xsl:attribute name="value">/\</xsl:attribute>
-							</xsl:otherwise>
-						</xsl:choose>
-						<xsl:if test="$param/current_condition = 'LastChange'">
-							<xsl:attribute name="class">small_button pushed</xsl:attribute>
-						</xsl:if>
-					</input></p>
+					<p>
+						<xsl:text>Last change</xsl:text>
+						<button class="small_button" type="submit" value="LastChange" >
+							<xsl:if test="$param/current_condition = 'LastChange'">
+								<xsl:attribute name="class">small_button pushed</xsl:attribute>
+							</xsl:if>
+							<xsl:choose>
+								<xsl:when test="(($param/current_condition = 'LastChange') and ($param/current_order = 'DESC'))">
+										<xsl:attribute name="name">concepts_ord_asc</xsl:attribute>
+										<xsl:text>\/</xsl:text>
+								</xsl:when>
+								<xsl:otherwise>
+										<xsl:attribute name="name">concepts_ord_desc</xsl:attribute>
+										<xsl:text>/\</xsl:text>
+								</xsl:otherwise>
+							</xsl:choose>
+						</button>
+					</p>
 				</th>
 				<th><p>State</p></th>
 				<th></th>
@@ -133,10 +139,10 @@
 					<td>
 						<p>
 							<xsl:if test="$param/edit_all_card = 'yes' or ($param/edit_own_card = 'yes' and ($param/PlayerName = author))">
-								<input class="small_button" type="submit" name="edit_concept[{id}]" value="E" />
+								<button class="small_button" type="submit" name="edit_concept" value="{id}">E</button>
 							</xsl:if>
 							<xsl:if test="$param/delete_all_card = 'yes' or ($param/delete_own_card = 'yes' and ($param/PlayerName = author))">
-								<input class="small_button" type="submit" name="delete_concept[{id}]" value="D" />
+								<button class="small_button" type="submit" name="delete_concept" value="{id}">D</button>
 							</xsl:if>
 						</p>
 					</td>
@@ -167,7 +173,7 @@
 
 		<div id="card_edit" class="skin_text">
 			<a class="button" href="{php:functionString('makeurl', 'Concepts')}">Back</a>
-			<input type="submit" name="create_concept" value="Create card" />
+			<button type="submit" name="create_concept">Create card</button>
 
 			<hr />
 
@@ -278,18 +284,18 @@
 			<a class="button" href="{php:functionString('makeurl', 'Concepts')}">Back</a>
 			<a class="button" href="{php:functionString('makeurl', 'Concepts_details', 'CurrentConcept', $param/data/id)}">Details</a>
 			<xsl:if test="$param/data/author = $param/PlayerName">
-				<input type="submit" name="save_concept" value="Save" />
+				<button type="submit" name="save_concept">Save</button>
 			</xsl:if>
 			<xsl:if test="$param/edit_all_card = 'yes'">
-				<input type="submit" name="save_concept_special" value="Special save" />
+				<button type="submit" name="save_concept_special">Special save</button>
 			</xsl:if>
 			<xsl:if test="$param/delete_all_card = 'yes' or ($param/delete_own_card = 'yes' and $param/data/author = $param/PlayerName)">
 				<xsl:choose>
 					<xsl:when test="$param/delete = 'no'">
-						<input type="submit" name="delete_concept[{$param/data/id}]" value="Delete" />
+						<button type="submit" name="delete_concept" value="{$param/data/id}">Delete</button>
 					</xsl:when>
 					<xsl:otherwise>
-						<input type="submit" name="delete_concept_confirm" value="Confirm delete" class="marked_button" />
+						<button type="submit" name="delete_concept_confirm" class="marked_button">Confirm delete</button>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:if>
@@ -368,9 +374,11 @@
 			<textarea name="effect" rows="6" cols="50"><xsl:value-of select="$param/data/effect"/></textarea>
 			<p>Note</p>
 			<textarea name="note" rows="6" cols="50"><xsl:value-of select="$param/data/note"/></textarea>
-			<p>Card picture 
-				<input name="uploadedfile" type="file" style="color: white"/><input type="submit" name="upload_pic[{$param/data/id}]" value="Upload" />
-				<input type="submit" name="clear_img[{$param/data/id}]" value="Clear" />
+			<p>
+				<xsl:text>Card picture</xsl:text>
+				<input type="file" name="uploadedfile" style="color: white"/>
+				<button type="submit" name="upload_pic" value="{$param/data/id}">Upload</button>
+				<button type="submit" name="clear_img" value="{$param/data/id}">Clear</button>
 			</p>
 		</div>
 
@@ -390,7 +398,7 @@
 		<div id="card_edit" class="skin_text">
 			<a class="button" href="{php:functionString('makeurl', 'Concepts')}">Back</a>
 			<xsl:if test="$param/edit_all_card = 'yes' or ($param/edit_own_card = 'yes' and ($param/PlayerName = author))">
-				<input type="submit" name="edit_concept[{$param/data/id}]" value="Edit" />
+				<button type="submit" name="edit_concept" value="{$param/data/id}">Edit</button>
 			</xsl:if>
 			<hr />
 
@@ -407,10 +415,10 @@
 			<p>
 				<xsl:choose>
 					<xsl:when test="$param/data/threadid = 0 and $param/create_thread = 'yes'">
-						<input type="submit" name="concept_thread" value="Start discussion" />
+						<button type="submit" name="concept_thread">Start discussion</button>
 					</xsl:when>
 					<xsl:when test="$param/data/threadid &gt; 0">
-						<input type="submit" name="thread_details[{$param/data/threadid}]" value="View discussion" />
+						<button type="submit" name="thread_details" value="{$param/data/threadid}">View discussion</button>
 					</xsl:when>
 				</xsl:choose>
 			</p>

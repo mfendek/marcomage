@@ -73,9 +73,15 @@ div#card_edit > p, div#card_edit > div.limit > p, div#card_edit hr /* set distan
 	margin-bottom: 1ex;
 }
 
-div#card_edit input + input /* set distance between elements */
+div#card_edit input + input, div#card_edit button + button /* set distance between elements */
 {
 	margin-left: 1ex;
+}
+
+div#card_edit input[type="file"] /* set distance between elements */
+{
+	margin-left: 1ex;
+	margin-right: 1ex;
 }
 
 div#card_edit > a.button /* set distance between hyperlink buttons */
