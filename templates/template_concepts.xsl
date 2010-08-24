@@ -376,7 +376,7 @@
 			<textarea name="note" rows="6" cols="50"><xsl:value-of select="$param/data/note"/></textarea>
 			<p>
 				<xsl:text>Card picture</xsl:text>
-				<input type="file" name="uploadedfile" style="color: white"/>
+				<input type="file" name="uploadedfile" />
 				<button type="submit" name="upload_pic" value="{$param/data/id}">Upload</button>
 				<button type="submit" name="clear_img" value="{$param/data/id}">Clear</button>
 			</p>

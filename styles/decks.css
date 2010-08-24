@@ -98,7 +98,7 @@ table.deck th > p /* deck table header */
 	background-color: #6495ed; /* light blue */
 }
 
-table.deck input /* set distance of "return" buttons in the deck table */
+table.deck button /* set distance of "return" buttons in the deck table */
 {
 	margin-bottom: 1ex;
 }

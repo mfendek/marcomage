@@ -552,6 +552,247 @@
 
 			// end concepts-related messages
 
+			// deck-related messages
+
+			if (isset($_POST['add_card'])) // Decks -> Modify this deck -> Take
+			{
+				$cardid = $_POST['add_card'];
+				$deckname = $_POST['CurrentDeck'];
+
+				//download deck
+				$deck = $player->GetDeck($deckname);
+				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
+
+				// add card, saving the deck on success
+				if( $deck->AddCard($cardid) )
+				{
+					// set tokens when deck is finished and player forgot to set them
+					if ((count(array_diff($deck->DeckData->Tokens, array('none'))) == 0) AND $deck->isReady())
+						$deck->SetAutoTokens();
+					
+					$deck->SaveDeck();
+				}
+				else
+					$error = 'Unable to add the chosen card to this deck.';
+
+				$current = 'Deck_edit';
+				break;
+			}
+
+			if (isset($_POST['return_card'])) // Decks -> Modify this deck -> Return
+			{
+				$cardid = $_POST['return_card'];
+				$deckname = $_POST['CurrentDeck'];
+
+				// download deck
+				$deck = $player->GetDeck($deckname);
+				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
+
+				// remove card, saving the deck on success
+				if( $deck->ReturnCard($cardid) )
+					$deck->SaveDeck();
+				else
+					$error = 'Unable to remove the chosen card from this deck.';
+
+				$current = 'Deck_edit';
+				break;
+			}
+
+			if (isset($_POST['set_tokens'])) // Decks -> Set tokens
+			{
+				$deckname = $_POST['CurrentDeck'];
+				$deck = $player->GetDeck($deckname);
+				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
+
+				// read tokens from inputs
+				$tokens = array();
+				foreach ($deck->DeckData->Tokens as $token_index => $token)
+					$tokens[$token_index] = $_POST['Token'.$token_index];
+
+				$length = count($tokens);
+
+				// remove empty tokens
+				$tokens = array_diff($tokens, array('none'));
+
+				// remove duplicates
+				$tokens = array_unique($tokens);
+				$tokens = array_pad($tokens, $length, 'none');
+
+				// sort tokens, add consistent keys
+				$i = 1;
+				$sorted_tokens = array();
+				foreach ($tokens as $token)
+				{
+					$sorted_tokens[$i] = $token;
+					$i++;
+				}
+
+				// save token data
+				$deck->DeckData->Tokens = $sorted_tokens;
+				$deck->SaveDeck();
+
+				$information = 'Tokens set.';
+				$current = 'Deck_edit';
+
+				break;
+			}
+
+			if (isset($_POST['auto_tokens'])) // Decks -> Assign tokens automatically
+			{
+				$deckname = $_POST['CurrentDeck'];
+				$deck = $player->GetDeck($deckname);
+				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
+
+				$deck->SetAutoTokens();					
+				$deck->SaveDeck();
+
+				$information = 'Tokens set.';
+				$current = 'Deck_edit';
+
+				break;
+			}
+
+			if (isset($_POST['filter'])) // Decks -> Modify this deck -> Apply filters
+			{
+				$current = 'Deck_edit';
+
+				break;
+			}
+
+			if (isset($_POST['reset_deck_prepare'])) // Decks -> Reset
+			{
+				// only symbolic functionality... rest is handled below
+				$current = 'Deck_edit';
+
+				break;
+			}
+
+			if (isset($_POST['reset_deck_confirm'])) // Decks -> Modify this deck -> Confirm reset
+			{
+				$deckname = $_POST['CurrentDeck'];
+				$deck = $player->GetDeck($deckname);
+				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
+
+				// reset deck, saving it on success
+				if( $deck->ResetDeck() )
+					$deck->SaveDeck();
+				else
+					$error = 'Failed to reset this deck.';
+
+				$current = 'Deck_edit';
+				break;
+			}
+
+			if (isset($_POST['rename_deck'])) // Decks -> Modify this deck -> Rename
+			{
+				$curname = $_POST['CurrentDeck'];
+				$newname = $_POST['NewDeckName'];
+				$list = $player->ListDecks();
+				$deck_names = array();
+				foreach ($list as $deck) $deck_names[] = $deck['Deckname'];
+				$pos = array_search($newname, $deck_names);
+				if ($pos !== false)
+				{
+					$error = 'Cannot change deck name, it is already used by another deck.';
+					$current = 'Deck_edit';
+				}
+				elseif (trim($newname) == '')
+				{
+					$error = 'Cannot change deck name, invalid input.';
+					$current = 'Deck_edit';
+				}
+				else
+				{
+					$deck = $player->GetDeck($curname);
+
+					if ($deck != false)
+					{
+						$deck->RenameDeck($newname);
+						$_POST['CurrentDeck'] = $newname;
+						
+						$information = "Deck saved.";
+						$current = 'Deck_edit';
+					}
+					else
+					{
+						$error = 'Cannot view deck, name no longer exists.';
+						$current = 'Decks';
+					}
+				}
+				break;
+			}
+
+			if (isset($_POST['export_deck'])) // Decks -> Modify this deck -> Export
+			{
+				$curname = $_POST['CurrentDeck'];
+				$deck = $player->GetDeck($curname);
+				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
+				$file = $deck->ToCSV();
+
+				$content_type = 'text/csv';
+				$file_name = preg_replace("/[^a-zA-Z0-9_-]/i", "_", $deck->Deckname()).'.csv';
+				$file_length = strlen($file);
+
+				header('Content-Type: '.$content_type.'');
+				header('Content-Disposition: attachment; filename="'.$file_name.'"');
+				header('Content-Length: '.$file_length);
+				echo $file;
+
+				return; // skip the presentation layer
+			}
+
+			if (isset($_POST['import_deck'])) // Decks -> Modify this deck -> Import
+			{
+				$curname = $_POST['CurrentDeck'];
+				$current = 'Deck_edit';
+
+				//$supported_types = array("text/csv", "text/comma-separated-values");
+				$supported_types = array("csv");
+
+				if (($_FILES['uploadedfile']['tmp_name'] == ""))
+					$error = "Invalid input file";
+				else
+				/* MIME file type checking cannot be used, there are browser specific issues (Firefox, Chrome), instead use file extension check
+				if (!in_array($_FILES['uploadedfile']['type'], $supported_types))
+					$error = "Unsupported input file";
+				else
+				*/
+				if (!in_array(end(explode(".", $_FILES['uploadedfile']['name'])), $supported_types))
+					$error = "Unsupported input file";
+				else
+				if (($_FILES['uploadedfile']['size'] > 1*1000 ))
+					$error = "File is too big";
+				else
+				{
+					// load file
+					$file = file_get_contents($_FILES['uploadedfile']['tmp_name']);
+
+					// import data
+					$deck = $player->GetDeck($curname);
+
+					if ($deck != false)
+					{
+						$result = $deck->FromCSV($file);
+						if ($result != "Success")	$error = $result;
+						else
+						{
+							$deck->SaveDeck();
+							$_POST['CurrentDeck'] = $deck->Deckname();
+							$information = "Deck successfully imported.";
+						}
+					}
+					else
+					{
+						$error = 'Cannot view deck, name no longer exists.';
+						$current = 'Decks';
+					}
+				}
+
+				break;
+			}
+
+			// end deck-related messages
+
 			// Explanation of how message passing is done:
 			//
 			// All requests are retrieved from POST data as <message, value>.
@@ -1645,244 +1886,6 @@
 					break;
 				}
 				// end user details
-				
-				// deck-related messages
-				if ($message == 'add_card') // Decks -> Modify this deck -> Take
-				{
-					$cardid = (int)postdecode(array_shift(array_keys($value)));
-					$deckname = $_POST['CurrentDeck'];
-					
-					//download deck
-					$deck = $player->GetDeck($deckname);
-					
-					// add card, saving the deck on success
-					if( $deck->AddCard($cardid) )
-					{
-						// set tokens when deck is finished and player forgot to set them
-						if ((count(array_diff($deck->DeckData->Tokens, array('none'))) == 0) AND $deck->isReady())
-							$deck->SetAutoTokens();
-						
-						$deck->SaveDeck();
-					}
-					else
-						$error = 'Unable to add the chosen card to this deck.';
-					
-					$current = 'Deck_edit';
-					break;
-				}
-				
-				if ($message == 'return_card') // Decks -> Modify this deck -> Return
-				{
-					$cardid = (int)postdecode(array_shift(array_keys($value)));
-					$deckname = $_POST['CurrentDeck'];
-					
-					// download deck
-					$deck = $player->GetDeck($deckname);
-					
-					// remove card, saving the deck on success
-					if( $deck->ReturnCard($cardid) )
-						$deck->SaveDeck();
-					else
-						$error = 'Unable to remove the chosen card from this deck.';
-					
-					$current = 'Deck_edit';
-					break;
-				}
-				
-				if ($message == 'set_tokens') // Decks -> Set tokens
-				{
-					$deckname = $_POST['CurrentDeck'];
-					$deck = $player->GetDeck($deckname);
-					
-					$current = 'Deck_edit';
-					
-					// read tokens from inputs
-					$tokens = array();
-					foreach ($deck->DeckData->Tokens as $token_index => $token)
-						$tokens[$token_index] = $_POST['Token'.$token_index];
-					
-					$length = count($tokens);
-					
-					// remove empty tokens
-					$tokens = array_diff($tokens, array('none'));
-					
-					// remove duplicates
-					$tokens = array_unique($tokens);
-					$tokens = array_pad($tokens, $length, 'none');
-					
-					// sort tokens, add consistent keys
-					$i = 1;
-					$sorted_tokens = array();
-					foreach ($tokens as $token)
-					{
-						$sorted_tokens[$i] = $token;
-						$i++;
-					}
-					
-					// save token data
-					$deck->DeckData->Tokens = $sorted_tokens;
-					
-					$deck->SaveDeck();
-					
-					$information = 'Tokens set.';
-					
-					break;
-				}
-				
-				if ($message == 'auto_tokens') // Decks -> Assign tokens automatically
-				{
-					$deckname = $_POST['CurrentDeck'];
-					$deck = $player->GetDeck($deckname);
-					
-					$current = 'Deck_edit';
-					
-					$deck->SetAutoTokens();					
-					$deck->SaveDeck();
-					
-					$information = 'Tokens set.';
-					
-					break;
-				}
-				
-				if ($message == 'filter') // Decks -> Modify this deck -> Apply filters
-				{
-					$current = 'Deck_edit';
-					
-					break;
-				}
-				
-				if ($message == 'reset_deck_prepare') // Decks -> Reset
-				{
-					// only symbolic functionality... rest is handled below
-					$deckname = $_POST['CurrentDeck'];
-					$current = 'Deck_edit';
-					
-					break;
-				}
-				
-				if ($message == 'reset_deck_confirm') // Decks -> Modify this deck -> Confirm reset
-				{
-					$deckname = $_POST['CurrentDeck'];
-					$deck = $player->GetDeck($deckname);
-					
-					// reset deck, saving it on success
-					if( $deck->ResetDeck() )
-						$deck->SaveDeck();
-					else
-						$error = 'Failed to reset this deck.';
-				
-					$current = 'Deck_edit';
-					break;
-				}
-				
-				if ($message == 'rename_deck') // Decks -> Modify this deck -> Rename
-				{
-					$curname = $_POST['CurrentDeck'];
-					$newname = $_POST['NewDeckName'];
-					$list = $player->ListDecks();
-					$deck_names = array();
-					foreach ($list as $deck) $deck_names[] = $deck['Deckname'];
-					$pos = array_search($newname, $deck_names);
-					if ($pos !== false)
-					{
-						$error = 'Cannot change deck name, it is already used by another deck.';
-						$current = 'Deck_edit';
-					}
-					elseif (trim($newname) == '')
-					{
-						$error = 'Cannot change deck name, invalid input.';
-						$current = 'Deck_edit';
-					}
-					else
-					{
-						$deck = $player->GetDeck($curname);
-						
-						if ($deck != false)
-						{
-							$deck->RenameDeck($newname);
-							$_POST['CurrentDeck'] = $newname;
-							
-							$information = "Deck saved.";
-							$current = 'Deck_edit';
-						}
-						else
-						{
-							$error = 'Cannot view deck, name no longer exists.';
-							$current = 'Decks';
-						}
-					}
-					break;
-				}
-				
-				if ($message == 'export_deck') // Decks -> Modify this deck -> Export
-				{
-					$curname = $_POST['CurrentDeck'];
-					$deck = $player->GetDeck($curname);
-					$file = $deck->ToCSV();
-					
-					$content_type = 'text/csv';
-					$file_name = preg_replace("/[^a-zA-Z0-9_-]/i", "_", $deck->Deckname()).'.csv';
-					$file_length = strlen($file);
-					
-					header('Content-Type: '.$content_type.'');
-					header('Content-Disposition: attachment; filename="'.$file_name.'"');
-					header('Content-Length: '.$file_length);
-					echo $file;
-					
-					return; // skip the presentation layer
-				}
-				
-				if ($message == 'import_deck') // Decks -> Modify this deck -> Import
-				{
-					$curname = $_POST['CurrentDeck'];
-					$current = 'Deck_edit';
-					
-					//$supported_types = array("text/csv", "text/comma-separated-values");
-					$supported_types = array("csv");
-					
-					if (($_FILES['uploadedfile']['tmp_name'] == ""))
-						$error = "Invalid input file";
-					else
-					/* MIME file type checking cannot be used, there are browser specific issues (Firefox, Chrome), instead use file extension check
-					if (!in_array($_FILES['uploadedfile']['type'], $supported_types))
-						$error = "Unsupported input file";
-					else
-					*/
-					if (!in_array(end(explode(".", $_FILES['uploadedfile']['name'])), $supported_types))
-						$error = "Unsupported input file";
-					else
-					if (($_FILES['uploadedfile']['size'] > 1*1000 ))
-						$error = "File is too big";
-					else
-					{
-						// load file
-						$file = file_get_contents($_FILES['uploadedfile']['tmp_name']);
-						
-						// import data
-						$deck = $player->GetDeck($curname);
-						
-						if ($deck != false)
-						{
-							$result = $deck->FromCSV($file);
-							if ($result != "Success")	$error = $result;
-							else
-							{
-								$deck->SaveDeck();
-								$_POST['CurrentDeck'] = $deck->Deckname();
-								$information = "Deck successfully imported.";
-							}
-						}
-						else
-						{
-							$error = 'Cannot view deck, name no longer exists.';
-							$current = 'Decks';
-						}
-					}
-					
-					break;
-				}
-				
-				// end deck-related messages
 				
 				// settings-related messages
 				

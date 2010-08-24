@@ -101,7 +101,7 @@
 	</xsl:variable>
 	<xsl:copy-of select="am:htmlSelectBox('ModifiedFilter', $param/ModifiedFilter, $modified, $param/modified_dates)"/>
 
-	<input type="submit" name="filter" value="Apply filters" />
+	<button type="submit" name="filter">Apply filters</button>
 
 	</div>	
 	<div class="misc">
@@ -128,25 +128,25 @@
 			</select>
 		</xsl:for-each>
 
-		<input type="submit" name="set_tokens" value="Set" />
-		<input type="submit" name="auto_tokens" value="Auto" />
+		<button type="submit" name="set_tokens">Set</button>
+		<button type="submit" name="auto_tokens">Auto</button>
 	</div>
 
 	<input type="text" name="NewDeckName" value="{$param/CurrentDeck}" maxlength="20" />
-	<input type="submit" name="rename_deck" value="Rename" />
+	<button type="submit" name="rename_deck">Rename</button>
 
 	<xsl:choose>
 		<xsl:when test="$param/reset = 'no'">
-			<input type="submit" name="reset_deck_prepare" value="Reset" />
+			<button type="submit" name="reset_deck_prepare">Reset</button>
 		</xsl:when>
 		<xsl:otherwise>
-			<input type="submit" name="reset_deck_confirm" value="Confirm reset" />
+			<button type="submit" name="reset_deck_confirm">Confirm reset</button>
 		</xsl:otherwise>
 	</xsl:choose>
 
-	<input type="submit" name="export_deck" value="Export" />
-	<input name="uploadedfile" type="file" style="color: white"/>
-	<input type="submit" name="import_deck" value="Import" />
+	<button type="submit" name="export_deck">Export</button>
+	<input type="file" name="uploadedfile" />
+	<button type="submit" name="import_deck">Import</button>
 
 	</div>
 
@@ -171,7 +171,7 @@
 					<xsl:for-each select="$param/CardList/*">
 						<xsl:sort select="name" order="ascending"/>
 						<!-- if the deck's $classfilter section isn't full yet, display the button that adds the card -->
-						<td><xsl:if test="excluded = 'no'"><noscript><div><input type="submit" name="add_card[{id}]" value="Take" /></div></noscript></xsl:if></td>
+						<td><xsl:if test="excluded = 'no'"><noscript><div><button type="submit" name="add_card" value="{id}">Take</button></div></noscript></xsl:if></td>
 					</xsl:for-each>
 				</tr>
 				</xsl:if>
@@ -206,7 +206,7 @@
 							<xsl:if test="id &gt; 0"><xsl:attribute name="onclick">return RemoveCard(<xsl:value-of select="id" />)</xsl:attribute></xsl:if>
 							<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
 							<xsl:if test="id != 0">
-								<noscript><div><input type="submit" name="return_card[{id}]" value="Return" /></div></noscript>
+								<noscript><div><button type="submit" name="return_card" value="{id}">Return</button></div></noscript>
 							</xsl:if>
 						</td>
 					</xsl:for-each>
