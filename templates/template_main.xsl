@@ -50,6 +50,7 @@
 	<script type="text/javascript" src="javascript/cookie.js"></script>
 	<script type="text/javascript" src="javascript/bbtags.js"></script>
 	<script type="text/javascript" src="javascript/utils.js"></script>
+	<xsl:comment><![CDATA[[if lt IE 9]><script type="text/javascript" src="javascript/ie9.js"></script><![endif]]]></xsl:comment>
 	</head>
 	<body>
 	<form action="index.php" enctype="multipart/form-data" method="post">
