@@ -19,8 +19,8 @@
 	<p>Confirm password</p>
 	<div><input type="password" name="NewPassword2" maxlength="20" /></div>
 	<div>
-	<input type="submit" name="Register" value="Register" />
-	<input type="submit" name="ReturnToLogin" value="Back" />
+	<button type="submit" name="Register">Register</button>
+	<button type="submit" name="ReturnToLogin">Back</button>
 	</div>
 
 	</div>

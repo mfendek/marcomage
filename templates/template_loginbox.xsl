@@ -24,8 +24,8 @@
 			<input type="password" name="Password" maxlength="20" tabindex="2" />
 		</p>
 		<p>
-			<input type="submit" name="Login" value="Login" tabindex="3" />
-			<input type="submit" name="Registration" value="Register" tabindex="4" />
+			<button type="submit" name="Login" tabindex="3">Login</button>
+			<button type="submit" name="Registration" tabindex="4">Register</button>
 		</p>
 	</div>
 

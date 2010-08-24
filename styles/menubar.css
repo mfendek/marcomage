@@ -16,7 +16,7 @@ div#menu_float_right /* one part is floated to the right */
 	text-align: right;
 }
 
-div#menu_float_right > input /* floated section contains refresh button */
+div#menu_float_right > button /* floated section contains refresh button */
 {
 	margin-right: 2ex;
 }

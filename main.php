@@ -211,13 +211,6 @@
 
 			// end cards related messages
 
-			// refresh button :)
-			if (isset($_POST['Refresh']))
-			{
-				$current = $_POST['Refresh'];
-				break;
-			}
-
 			// concepts-related messages
 
 			$temp = array("asc" => "ASC", "desc" => "DESC");
@@ -1804,6 +1797,25 @@
 
 			// end game-related messages
 
+			// begin misc messages
+
+			if (isset($_POST['Refresh'])) // refresh button :)
+			{
+				$current = $_POST['Refresh'];
+				break;
+			}
+
+			if (isset($_POST['reset_notification'])) // reset notification
+			{
+				if ($player->ResetNotification()) $information = 'Notification successfully reset';
+				else $error = 'Failed to reset notification';
+
+				$current = $_POST['reset_notification'];
+				break;
+			}
+
+			// end misc messages
+
 			// Explanation of how message passing is done:
 			//
 			// All requests are retrieved from POST data as <message, value>.
@@ -2370,16 +2382,6 @@
 					else $information = "Password changed";
 					
 					$current = 'Settings';
-					
-					break;
-				}
-				
-				if ($message == 'reset_notification') //reset notification
-				{
-					if ($player->ResetNotification()) $information = 'Notification successfully reset';
-					else $error = 'Failed to reset notification';
-					
-					$current = postdecode(array_shift(array_keys($value)));
 					
 					break;
 				}
