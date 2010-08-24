@@ -43,7 +43,7 @@
 	<part name="Cards">
 		<![CDATA[
 <p><img style="float: right" src="img/screen_card.png" alt="card"/>Every card has a name, a price and an effect. The name and the price are found in the upper part of the card, the effect in the lower part, below the card picture. The price is the ammount of resources needed for a card to be played, each type of resource represented by the color related to the resource. This ammount will be subtracted from the resource stock when the card is played. The card can only be played if you have enough resources to pay for its price. After a card is played, its effect will take place. Every card belongs to some group, indicated by the card's border color. There are three groups: Common, Uncommon and Rare. Common cards have green border, Uncommon brown and Rare yellow. Every player has exactly eight cards in his or hers hand. Your cards are located at the upper part of the screen. Opponent's cards are located in the bottom part of the screen. You can see enemy's cards in his or hers hand.</p>
-<p>Some cards in yours/opponent's hand are marked with "New card" flag. This indicates that this card has been received to the hand only recently. You may want to pay close attention to these cards. In the middle of the game screen are cards last played by each player (it can be very important). In one turn one player plays one card or a player can discard a card instead of playing it. When a card is discarded, its cost is not payed, but its effect will not happen. After a card(s) has been played or discarded a new card(s) will be added to player's hand. The new card will be chosen randomly from the card groups with probabilities 65% for Common, 29% for Uncommon and 6% for Rare, unless a played card says otherwise. Rares can't be drawn by discarding effect of Common cards. Rares can't be drawn after <b>Quick</b> or <b>Swift</b> cards.</p>
+<p>Some cards in yours/opponent's hand are marked with "New card" flag. This indicates that this card has been received to the hand only recently. You may want to pay close attention to these cards. In the middle of the game screen are cards last played by each player (it can be very important). In one turn one player plays one card or a player can discard a card instead of playing it. When a card is discarded, its cost is not payed, but its effect will not happen. After a card(s) has been played or discarded a new card(s) will be added to player's hand. The new card will be chosen randomly from the card groups with probabilities 65% for Common, 29% for Uncommon and 6% for Rare, unless a played card says otherwise. Rares can't be drawn after <b>Quick</b> or <b>Swift</b> cards.</p>
 
 <p>When drawing new card, the system takes into account cards on current player's hand. The system reduces the probability of stocking multiple instances of the same card in hand by doing this procedure:</p>
 
@@ -189,7 +189,7 @@
 	</part>
 	<part name="Deck building">
 		<![CDATA[
-<p>Deck section contains list of all decks. For each deck it is possible to see date and time of last modification, so you can tell how old each deck is. To enter deck details use the [&rarr;] button. If deck is ready for use (contains 45 cards), its name is highlighted in green color.</p>
+<p>Deck section contains list of all decks. For each deck it is possible to see date and time of last modification, so you can tell how old each deck is. To enter deck details click on the deck name. If deck is ready for use (contains 45 cards), its name is highlighted in green color.</p>
 <p><a style="float: right;" href="img/screen_deck_building.png"><img src="img/screen_deck_building_s.png" alt="deck building section"/></a>Deck consists of 15 different cards from each group. A deck name must be different to all your other decks. Deck building section consits of control bar, where buttons that provide deck modifications and card pool modifications (filters), are located. On the left part this bar, there are filters. You can use them to filter out the unnecessary cards from the card pool. When a filter is active, it's border color is highlighted with lime color. There are five filters (all of them can be combined):</p>
 
 <ul>
@@ -389,7 +389,7 @@
 	<li>Normal - all other threads</li>
 </ul>
 
-<p>Forum has a "new post" notification system. If there are new posts in the forum there is an animated image ("book") in the upper menu bar. Threads that contain new posts have the quick access buttons highlighted in red border color. In the threads details, new posts have their date highlighted in yellow color. This system works correctly only if you logout every time you finish your stay at our site.</p>
+<p>Forum has a "new post" notification system. If there are new posts in the forum there is an animated image ("book") in the upper menu bar. Threads that contain new posts have the date and time of last post highlighted in red border color. In the threads details, new posts have their date highlighted in red color. This system works correctly only if you logout every time you finish your stay at our site.</p>
 		]]>
 	</part>
 	<part name="Concepts">
@@ -512,7 +512,7 @@ In the settings section you can upload your own avatar. Avatar must be a jpg, jp
 	<li>Implemented concepts - Top 10 authors of implemented card concepts (only card concepts with status "implemented" are counted)</li>
 </ul>
 
-<p>The difference between "lastest" and "overall" statistics is the fact that "lastest" statistics are reset every time new cards are added to provide fair competition between new and old cards. "overall" statistics are never reset, so the older the card, the bigger is the advantage compared to new, younger cards. Default length of card statistics list is 10, but this can be changed via the card list length selector at the top of the statistics page. Usage factor (which is located near card's details button) is calculated for each card to compare card usage to other cards of the same rarity.</p>
+<p>The difference between "lastest" and "overall" statistics is the fact that "lastest" statistics are reset every time new cards are added to provide fair competition between new and old cards. "overall" statistics are never reset, so the older the card, the bigger is the advantage compared to new, younger cards. Default length of card statistics list is 10, but this can be changed via the card list length selector at the top of the statistics page. Usage factor is calculated for each card to compare card usage to other cards of the same rarity.</p>
 
 <h4>Versus statistics</h4>
 
@@ -538,7 +538,7 @@ In the settings section you can upload your own avatar. Avatar must be a jpg, jp
 <ul>
 	<li>In the players section, player name color holds the information about player's activity
 		<ul>
-			<li><b>Lime</b> (or <b>Green</b>) (online) means that player was active in last 10 minutes. This kind of information can be found in other sections too, for example challenges and games (in here game buttons have italic font style)</li>
+			<li><b>Lime</b> (or <b>Green</b>) (online) means that player was active in last 10 minutes. This kind of information can be found in other sections too, for example challenges and games</li>
 			<li><b>Red</b> (offline) means that player was active in last 7 days</li>
 			<li><b>Dark red</b> (inactive) means that player was active in last 21 days</li>
 			<li><b>Gray</b> (dead) means that player was inactive for more than 21 days</li>
