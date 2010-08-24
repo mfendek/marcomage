@@ -98,7 +98,7 @@ div#forum img, div#thread_details img /* info picture layout (locked thread) */
 	vertical-align: middle;
 }
 
-input.search_button /* search button layout */
+button.search_button /* search button layout */
 {
 	float: right;
 }
@@ -133,7 +133,7 @@ div#forum_new_edit > div > * /* set distance between elements */
 	margin-top: 1ex;
 }
 
-div#forum_new_edit > div > p > input /* input layout */
+div#forum_new_edit > div > p > button /* input layout */
 {
 	margin-left: 1ex;
 	font-size: medium;
@@ -243,7 +243,7 @@ div#post_list > div > div.clear_floats + div /* post layout - post side borders 
 	text-align: right;
 }
 
-div#post_list > div > div.clear_floats + div > input /* post layout - post inputs */
+div#post_list > div > div.clear_floats + div > button /* post layout - post inputs */
 {
 	margin: 0.5ex 1ex 1ex 0ex;
 }

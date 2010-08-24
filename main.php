@@ -793,6 +793,358 @@
 
 			// end deck-related messages
 
+			// begin forum related messages
+
+			// begin section related messages
+
+			if (isset($_POST['new_thread'])) // forum -> section -> new thread
+			{
+				// check access rights
+				if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Section_details'; break; }
+
+				$current = 'New_thread';
+
+				break;
+			}
+
+			if (isset($_POST['create_thread'])) // forum -> section -> new thread -> create new thread
+			{
+				$section_id = $_POST['CurrentSection'];
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Section_details'; break; }
+				// check access rights
+				if ((!$access_rights[$player->Type()]["chng_priority"]) AND ($_POST['Priority'] != "normal")) { $error = 'Access denied.'; $current = 'Section_details'; break; }
+
+				if ((trim($_POST['Title']) == "") OR (trim($_POST['Content']) == "")) { $error = "Invalid input"; $current = "New_thread"; break; }
+
+				if (strlen($_POST['Content']) > POST_LENGTH) { $error = "Thread text is too long"; $current = "New_thread"; break; }
+
+				$thread_id = $forum->Threads->ThreadExists($_POST['Title']);
+				if ($thread_id) { $error = "Thread already exists"; $current = "Thread_details"; $_POST['CurrentThread'] = $thread_id; break; }
+
+				$new_thread = $forum->Threads->CreateThread($_POST['Title'], $player->Name(), $_POST['Priority'], $section_id);
+				if ($new_thread === FALSE) { $error = "Failed to create new thread"; $current = "Section_details"; break; }
+				// $new_thread contains ID of currently created thread, which can be 0
+
+				$new_post = $forum->Threads->Posts->CreatePost($new_thread, $player->Name(), $_POST['Content']);
+				if (!$new_post) { $error = "Failed to create new post"; $current = "Section_details"; break; }
+
+				$forum->Threads->RefreshThread($new_thread); // update post count, last author and last post
+
+				$information = "Thread created";
+				$current = 'Section_details';
+
+				break;
+			}
+
+			if (isset($_POST['forum_search'])) // forum -> Search
+			{
+				$current = 'Forum_search';
+
+				break;
+			}
+
+			// end section related messages
+
+			// begin thread related messages
+
+			if (isset($_POST['thread_lock'])) // forum -> section -> thread -> lock thread
+			{
+				$thread_id = $_POST['CurrentThread'];
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["lock_thread"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+
+				$lock = $forum->Threads->LockThread($thread_id);
+				if (!$lock) { $error = "Failed to lock thread"; $current = "Thread_details"; break; }
+
+				$information = "Thread locked";
+				$current = 'Thread_details';
+
+				break;
+			}
+
+			if (isset($_POST['thread_unlock'])) // forum -> section -> thread -> unlock thread
+			{
+				$thread_id = $_POST['CurrentThread'];
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["lock_thread"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+
+				$lock = $forum->Threads->UnlockThread($thread_id);
+				if (!$lock) { $error = "Failed to unlock thread"; $current = "Thread_details"; break; }
+
+				$information = "Thread unlocked";
+				$current = 'Thread_details';
+
+				break;
+			}
+
+			if (isset($_POST['thread_delete'])) // forum -> section -> thread -> delete thread
+			{
+				// only symbolic functionality... rest is handled below
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["del_all_thread"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+
+				$current = 'Thread_details';
+				break;
+			}
+
+			if (isset($_POST['thread_delete_confirm'])) // forum -> section -> thread -> confirm delete thread
+			{
+				$thread_id = $_POST['CurrentThread'];
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["del_all_thread"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+
+				$delete = $forum->Threads->DeleteThread($thread_id);
+				if (!$delete) { $error = "Failed to delete thread"; $current = "Thread_details"; break; }
+
+				// check for linked card concepts, update when necessary
+				$concept_id = $conceptdb->FindConcept($thread_id);
+
+				if ($concept_id > 0)
+				{
+					$delete = $conceptdb->RemoveThread($concept_id);
+					if (!$delete) { $error = "Failed to unlink matching concept"; $current = "Thread_details"; break; }
+				}
+
+				$information = "Thread deleted";
+				$current = 'Section_details';
+
+				break;
+			}
+
+			if (isset($_POST['new_post'])) // forum -> section -> thread -> new post
+			{
+				$thread_id = $_POST['CurrentThread'];
+
+				// check if thread is locked
+				if ($forum->Threads->IsLocked($thread_id)) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["create_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+
+				$current = 'New_post';
+
+				break;
+			}
+
+			if (isset($_POST['create_post'])) // forum -> section -> thread -> create new post
+			{
+				$thread_id = $_POST['CurrentThread'];
+
+				// check if thread is locked
+				if ($forum->Threads->IsLocked($thread_id)) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["create_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+
+				if (trim($_POST['Content']) == "") { $error = "Invalid input"; $current = "New_post"; break; }
+				if (strlen($_POST['Content']) > POST_LENGTH) { $error = "Post text is too long"; $current = "New_post"; break; }
+
+				$new_post = $forum->Threads->Posts->CreatePost($thread_id, $player->Name(), $_POST['Content']);
+				if (!$new_post) { $error = "Failed to create new post"; $current = "Thread_details"; break; }
+
+				$forum->Threads->RefreshThread($thread_id); // update post count, last author and last post
+
+				$_POST['CurrentPage'] = max(($forum->Threads->Posts->CountPages($thread_id)) - 1, 0);
+				$information = "Post created";
+				$current = 'Thread_details';
+
+				break;
+			}
+
+			if (isset($_POST['quote_post'])) // forum -> section -> thread -> quote post
+			{
+				$thread_id = $_POST['CurrentThread'];
+
+				// check if thread is locked and if you have access to unlock it
+				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["create_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+
+				$current = 'New_post';
+
+				break;
+			}
+
+			if (isset($_POST['edit_thread']))  // forum -> section -> thread -> edit thread
+			{
+				$thread_id = $_POST['CurrentThread'];
+				$thread_data = $forum->Threads->GetThread($thread_id);
+
+				// check if thread is locked and if you have access to unlock it
+				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
+
+				// check access rights
+				if (!(($access_rights[$player->Type()]["edit_all_thread"]) OR ($access_rights[$player->Type()]["edit_own_thread"] AND $thread_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+
+				$current = 'Edit_thread';
+
+				break;
+			}
+
+			if (isset($_POST['modify_thread'])) // forum -> section -> thread -> modify thread
+			{
+				$thread_id = $_POST['CurrentThread'];
+				$thread_data = $forum->Threads->GetThread($thread_id);
+
+				// check if thread is locked and if you have access to unlock it
+				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
+
+				// check access rights
+				if (!(($access_rights[$player->Type()]["edit_all_thread"]) OR ($access_rights[$player->Type()]["edit_own_thread"] AND $thread_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+
+				// check access rights
+				if ((!$access_rights[$player->Type()]["chng_priority"]) AND (isset($_POST['Priority'])) AND ($_POST['Priority'] != $thread_data['Priority'])) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+
+				if (trim($_POST['Title']) == "") { $error = "Invalid input"; $current = "Thread_details"; break; }
+
+				$new_priority = ((isset($_POST['Priority'])) ? $_POST['Priority'] : $thread_data['Priority']);
+
+				$edited_thread = $forum->Threads->EditThread($thread_id, $_POST['Title'], $new_priority);
+				if (!$edited_thread) { $error = "Failed to edit thread"; $current = "Thread_details"; break; }
+
+				$information = "Changes saved";
+				$current = 'Thread_details';
+
+				break;
+			}
+
+			if (isset($_POST['move_thread'])) // forum -> section -> thread -> edit thread -> move thread to a new section
+			{
+				$thread_id = $_POST['CurrentThread'];
+				$new_section = $_POST['section_select'];
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["move_thread"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+
+				$move = $forum->Threads->MoveThread($thread_id, $new_section);
+				if (!$move) { $error = "Failed to change sections"; $current = "Edit_thread"; break; }
+
+				$information = "Section changed";
+				$current = 'Edit_thread';
+
+				break;
+			}
+
+			// end thread related messages
+
+			// begin post related messages
+
+			if (isset($_POST['edit_post'])) // forum -> section -> thread -> edit post
+			{
+				$thread_id = $_POST['CurrentThread'];
+				$_POST['CurrentPost'] = $post_id = $_POST['edit_post'];
+
+				// check if thread is locked and if you have access to unlock it
+				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
+
+				$post_data = $forum->Threads->Posts->GetPost($post_id);
+
+				if (!(($access_rights[$player->Type()]["edit_all_post"]) OR ($access_rights[$player->Type()]["edit_own_post"] AND $post_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+
+				$current = 'Edit_post';
+
+				break;
+			}
+
+			if (isset($_POST['modify_post'])) // forum -> section -> thread -> save edited post
+			{
+				$thread_id = $_POST['CurrentThread'];
+				$post_id = $_POST['CurrentPost'];
+
+				// check if thread is locked and if you have access to unlock it
+				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
+
+				$post_data = $forum->Threads->Posts->GetPost($post_id);
+
+				if (!(($access_rights[$player->Type()]["edit_all_post"]) OR ($access_rights[$player->Type()]["edit_own_post"] AND $post_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+
+				if (trim($_POST['Content']) == "") { $error = "Invalid input"; $current = "Edit_post"; break; }
+				if (strlen($_POST['Content']) > POST_LENGTH) { $error = "Post text is too long"; $current = "Edit_post"; break; }
+
+				$edited_post = $forum->Threads->Posts->EditPost($post_id, $_POST['Content']);
+				if (!$edited_post) { $error = "Failed to edit post"; $current = "Thread_details"; break; }
+
+				$information = "Changes saved";
+				$current = 'Thread_details';
+
+				break;
+			}
+
+			if (isset($_POST['delete_post'])) // forum -> section -> thread -> delete post
+			{
+				// only symbolic functionality... rest is handled below
+				$thread_id = $_POST['CurrentThread'];
+
+				// check if thread is locked and if you have access to unlock it
+				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["del_all_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+
+				$information = "Please confirm post deletion";
+				$current = 'Thread_details';
+				break;
+			}
+
+			if (isset($_POST['delete_post_confirm'])) // forum -> section -> thread -> delete post confirm
+			{
+				$thread_id = $_POST['CurrentThread'];
+				$post_id = $_POST['delete_post_confirm'];
+
+				// check if thread is locked and if you have access to unlock it
+				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["del_all_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+
+				$deleted_post = $forum->Threads->Posts->DeletePost($post_id);
+				if (!$deleted_post) { $error = "Failed to delete post"; $current = "Thread_details"; break; }
+
+				$forum->Threads->RefreshThread($thread_id); // update post count, last author and last post
+
+				$max_page = max($forum->Threads->Posts->CountPages($thread_id) - 1, 0);
+				$_POST['CurrentPage'] = (($_POST['CurrentPage'] <= $max_page) ? $_POST['CurrentPage'] : $max_page);
+
+				$information = "Post deleted";
+				$current = 'Thread_details';
+
+				break;
+			}
+
+			if (isset($_POST['move_post'])) // forum -> section -> thread -> post -> edit post -> move post to a new thread
+			{
+				$thread_id = $_POST['CurrentThread'];
+				$post_id = $_POST['CurrentPost'];
+				$new_thread = $_POST['thread_select'];
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["move_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+
+				$move = $forum->Threads->Posts->MovePost($post_id, $new_thread);
+				if (!$move) { $error = "Failed to change threads"; $current = "Thread_details"; break; }
+
+				 // update post count, last author and last post of both former and target threads
+				$forum->Threads->RefreshThread($thread_id);
+				$forum->Threads->RefreshThread($new_thread);
+
+				$_POST['CurrentPage'] = 0; // go to first page of target thread on success
+				$information = "Thread changed";
+				$current = 'Edit_post';
+
+				break;
+			}
+
+			// end thread related messages
+
+			// end forum related messages
+
 			// Explanation of how message passing is done:
 			//
 			// All requests are retrieved from POST data as <message, value>.
@@ -2042,393 +2394,6 @@
 				
 				// end settings-related messages
 				
-				// begin forum oriented messages
-				
-				// begin section oriented messages
-				
-				if ($message == 'new_thread') // forum -> section -> new thread
-				{				
-					$section_id = $_POST['CurrentSection'];
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Section_details'; break; }
-										
-					$current = 'New_thread';
-					
-					break;
-				}
-				
-				if ($message == 'create_thread') // forum -> section -> new thread -> create new thread
-				{
-					$section_id = $_POST['CurrentSection'];
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Section_details'; break; }
-					// check access rights
-					if ((!$access_rights[$player->Type()]["chng_priority"]) AND ($_POST['Priority'] != "normal")) { $error = 'Access denied.'; $current = 'Section_details'; break; }
-					
-					if ((trim($_POST['Title']) == "") OR (trim($_POST['Content']) == "")) { $error = "Invalid input"; $current = "New_thread"; break; }
-					
-					if (strlen($_POST['Content']) > POST_LENGTH) { $error = "Thread text is too long"; $current = "New_thread"; break; }
-					
-					$thread_id = $forum->Threads->ThreadExists($_POST['Title']);
-					if ($thread_id) { $error = "Thread already exists"; $current = "Thread_details"; break; }
-					
-					$new_thread = $forum->Threads->CreateThread($_POST['Title'], $player->Name(), $_POST['Priority'], $section_id);
-					if ($new_thread === FALSE) { $error = "Failed to create new thread"; $current = "Section_details"; break; }
-					// $new_thread contains ID of currently created thread, which can be 0
-					
-					$new_post = $forum->Threads->Posts->CreatePost($new_thread, $player->Name(), $_POST['Content']);					
-					if (!$new_post) { $error = "Failed to create new post"; $current = "Section_details"; break; }
-					
-					$forum->Threads->RefreshThread($new_thread); // update post count, last author and last post
-					
-					$information = "Thread created";
-										
-					$current = 'Section_details';
-					
-					break;
-				}
-				
-				if ($message == 'forum_search') // forum -> Search
-				{
-					$current = 'Forum_search';
-					
-					break;
-				}
-				
-				// end section oriented messages
-				
-				// begin thread oriented messages
-				
-				if ($message == 'thread_lock') // forum -> section -> thread -> lock thread
-				{
-					$thread_id = $_POST['CurrentThread'];					
-					$current_page = $_POST['CurrentPage'];
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["lock_thread"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
-					
-					$lock = $forum->Threads->LockThread($thread_id);					
-					if (!$lock) { $error = "Failed to lock thread"; $current = "Thread_details"; break; }
-					
-					$information = "Thread locked";
-										
-					$current = 'Thread_details';
-					
-					break;
-				}
-				
-				if ($message == 'thread_unlock') // forum -> section -> thread -> unlock thread
-				{
-					$thread_id = $_POST['CurrentThread'];					
-					$current_page = $_POST['CurrentPage'];
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["lock_thread"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
-					
-					$lock = $forum->Threads->UnlockThread($thread_id);					
-					if (!$lock) { $error = "Failed to unlock thread"; $current = "Thread_details"; break; }
-					
-					$information = "Thread unlocked";
-										
-					$current = 'Thread_details';
-					
-					break;
-				}
-				
-				if ($message == 'thread_delete') // forum -> section -> thread -> delete thread
-				{
-					// only symbolic functionality... rest is handled below
-					$section_id = $_POST['CurrentSection'];
-					$thread_id = $_POST['CurrentThread'];					
-					$current_page = $_POST['CurrentPage'];
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["del_all_thread"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
-										
-					$current = 'Thread_details';
-					break;
-				}
-				
-				if ($message == 'thread_delete_confirm') // forum -> section -> thread -> confirm delete thread
-				{
-					$section_id = $_POST['CurrentSection'];
-					$thread_id = $_POST['CurrentThread'];					
-					$current_page = $_POST['CurrentPage'];
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["del_all_thread"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
-					
-					$delete = $forum->Threads->DeleteThread($thread_id);					
-					if (!$delete) { $error = "Failed to delete thread"; $current = "Thread_details"; break; }
-					
-					// check for linked card concepts, update when necessary
-					$concept_id = $conceptdb->FindConcept($thread_id);
-					
-					if ($concept_id > 0)
-					{
-						$delete = $conceptdb->RemoveThread($concept_id);
-						if (!$delete) { $error = "Failed to unlink matching concept"; $current = "Thread_details"; break; }
-					}
-										
-					$information = "Thread deleted";
-										
-					$current = 'Section_details';
-					
-					break;
-				}
-				
-				if ($message == 'new_post') // forum -> section -> thread -> new post
-				{
-					$thread_id = $_POST['CurrentThread'];
-					
-					// check if thread is locked
-					if ($forum->Threads->IsLocked($thread_id)) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["create_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
-					
-					$current = 'New_post';
-					
-					break;
-				}
-				
-				if ($message == 'quote_post') // forum -> section -> thread -> quote post
-				{
-					$thread_id = $_POST['CurrentThread'];
-					$quoted_post = array_shift(array_keys($value));
-					
-					// check if thread is locked and if you have access to unlock it
-					if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["create_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
-					
-					$current = 'New_post';
-					
-					break;
-				}
-				
-				if ($message == 'create_post') // forum -> section -> thread -> create new post
-				{
-					$thread_id = $_POST['CurrentThread'];
-					
-					// check if thread is locked
-					if ($forum->Threads->IsLocked($thread_id)) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["create_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
-														
-					if (trim($_POST['Content']) == "") { $error = "Invalid input"; $current = "New_post"; break; }
-					
-					if (strlen($_POST['Content']) > POST_LENGTH) { $error = "Post text is too long"; $current = "New_post"; break; }
-									
-					$new_post = $forum->Threads->Posts->CreatePost($thread_id, $player->Name(), $_POST['Content']);					
-					if (!$new_post) { $error = "Failed to create new post"; $current = "Thread_details"; break; }
-					
-					$forum->Threads->RefreshThread($thread_id); // update post count, last author and last post
-					
-					$information = "Post created";
-					
-					$current_page = max(($forum->Threads->Posts->CountPages($thread_id)) - 1, 0);
-										
-					$current = 'Thread_details';
-					
-					break;
-				}
-				
-				if ($message == 'edit_thread') // forum -> section -> thread -> edit thread
-				{
-					$thread_id = $_POST['CurrentThread'];
-					
-					$thread_data = $forum->Threads->GetThread($thread_id);
-					
-					// check if thread is locked and if you have access to unlock it
-					if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
-					
-					// check access rights
-					if (!(($access_rights[$player->Type()]["edit_all_thread"]) OR ($access_rights[$player->Type()]["edit_own_thread"] AND $thread_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
-										
-					$current = 'Edit_thread';
-					
-					break;
-				}
-				
-				if ($message == 'modify_thread') // forum -> section -> thread -> modify thread
-				{
-					$thread_id = $_POST['CurrentThread'];
-					
-					$thread_data = $forum->Threads->GetThread($thread_id);
-					
-					// check if thread is locked and if you have access to unlock it
-					if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
-					
-					// check access rights
-					if (!(($access_rights[$player->Type()]["edit_all_thread"]) OR ($access_rights[$player->Type()]["edit_own_thread"] AND $thread_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
-					
-					// check access rights
-					if ((!$access_rights[$player->Type()]["chng_priority"]) AND (isset($_POST['Priority'])) AND ($_POST['Priority'] != $thread_data['Priority'])) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
-														
-					if (trim($_POST['Title']) == "") { $error = "Invalid input"; $current = "Thread_details"; break; }
-					
-					$new_priority = ((isset($_POST['Priority'])) ? $_POST['Priority'] : $thread_data['Priority']);
-									
-					$edited_thread = $forum->Threads->EditThread($thread_id, $_POST['Title'], $new_priority);					
-					if (!$edited_thread) { $error = "Failed to edit thread"; $current = "Thread_details"; break; }
-					
-					$information = "Changes saved";
-															
-					$current = 'Thread_details';
-					
-					break;
-				}
-				
-				if ($message == 'move_thread') // forum -> section -> thread -> edit thread -> move thread to a new section
-				{
-					$thread_id = $_POST['CurrentThread'];					
-					$new_section = $_POST['section_select'];
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["move_thread"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
-														
-					$move = $forum->Threads->MoveThread($thread_id, $new_section);
-					if (!$move) { $error = "Failed to change sections"; $current = "Edit_thread"; break; }
-					
-					$information = "Section changed";
-															
-					$current = 'Edit_thread';
-					
-					break;
-				}
-				
-				// end thread oriented messages
-				
-				// begin post oriented messages
-				
-				if ($message == 'edit_post') // forum -> section -> thread -> edit post
-				{
-					$thread_id = $_POST['CurrentThread'];
-					$post_id = array_shift(array_keys($value));
-					$current_page = $_POST['CurrentPage'];
-					
-					// check if thread is locked and if you have access to unlock it
-					if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
-					
-					$post_data = $forum->Threads->Posts->GetPost($post_id);
-					
-					if (!(($access_rights[$player->Type()]["edit_all_post"]) OR ($access_rights[$player->Type()]["edit_own_post"] AND $post_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
-										
-					$current = 'Edit_post';
-					
-					break;
-				}
-				
-				if ($message == 'modify_post') // forum -> section -> thread -> save edited post
-				{
-					$thread_id = $_POST['CurrentThread'];
-					$current_page = $_POST['CurrentPage'];
-					$post_id = $_POST['CurrentPost'];
-					
-					// check if thread is locked and if you have access to unlock it
-					if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
-					
-					$post_data = $forum->Threads->Posts->GetPost($post_id);
-					
-					if (!(($access_rights[$player->Type()]["edit_all_post"]) OR ($access_rights[$player->Type()]["edit_own_post"] AND $post_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
-														
-					if (trim($_POST['Content']) == "") { $error = "Invalid input"; $current = "Edit_post"; break; }
-					
-					if (strlen($_POST['Content']) > POST_LENGTH) { $error = "Post text is too long"; $current = "Edit_post"; break; }
-									
-					$edited_post = $forum->Threads->Posts->EditPost($post_id, $_POST['Content']);					
-					if (!$edited_post) { $error = "Failed to edit post"; $current = "Thread_details"; break; }
-					
-					$information = "Changes saved";
-															
-					$current = 'Thread_details';
-					
-					break;
-				}
-				
-				if ($message == 'delete_post') // forum -> section -> thread -> delete post
-				{
-					// only symbolic functionality... rest is handled below
-					$thread_id = $_POST['CurrentThread'];
-					$deleting_post = array_shift(array_keys($value));				
-					$current_page = $_POST['CurrentPage'];
-					
-					// check if thread is locked and if you have access to unlock it
-					if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["del_all_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
-					
-					$information = "Please confirm post deletion";
-					
-					$current = 'Thread_details';
-					break;
-				}
-				
-				if ($message == 'delete_post_confirm') // forum -> section -> thread -> delete post confirm
-				{
-					$thread_id = $_POST['CurrentThread'];
-					$post_id = array_shift(array_keys($value));
-					$current_page = $_POST['CurrentPage'];
-					
-					// check if thread is locked and if you have access to unlock it
-					if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["del_all_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
-					
-					$deleted_post = $forum->Threads->Posts->DeletePost($post_id);
-					if (!$deleted_post) { $error = "Failed to delete post"; $current = "Thread_details"; break; }
-					
-					$forum->Threads->RefreshThread($thread_id); // update post count, last author and last post
-					
-					$max_page = max($forum->Threads->Posts->CountPages($thread_id) - 1, 0);
-					
-					$current_page = (($_POST['CurrentPage'] <= $max_page) ? $_POST['CurrentPage'] : $max_page);
-					
-					$information = "Post deleted";
-										
-					$current = 'Thread_details';
-					
-					break;
-				}
-																
-				if ($message == 'move_post') // forum -> section -> thread -> post -> edit post -> move post to a new thread
-				{
-					$thread_id = $_POST['CurrentThread'];
-					$post_id = $_POST['CurrentPost'];
-					$new_thread = $_POST['thread_select'];
-					$current_page = $_POST['CurrentPage'];
-					
-					// check access rights
-					if (!$access_rights[$player->Type()]["move_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
-					
-					$move = $forum->Threads->Posts->MovePost($post_id, $new_thread);
-					if (!$move) { $error = "Failed to change threads"; $current = "Thread_details"; break; }
-					
-					 // update post count, last author and last post of both former and target threads
-					$forum->Threads->RefreshThread($thread_id);
-					$forum->Threads->RefreshThread($new_thread);
-					
-					$post_data = $forum->Threads->Posts->GetPost($post_id);
-					$current_page = 0; // go to first page of target thread on success
-					
-					$information = "Thread changed";
-					
-					$current = 'Edit_post';
-					
-					break;
-				}
-				
-				// end thread oriented messages
-				
-				// end forum oriented messages
-				
 				// begin players related messages
 				
 				$temp = array("asc" => "ASC", "desc" => "DESC");
@@ -3479,19 +3444,19 @@ case 'Thread_details':
 	$thread_id = $_POST['CurrentThread'];
 	$current_page = (isset($_POST['CurrentPage'])) ? $_POST['CurrentPage'] : 0;
 
-	$thread = $forum->Threads->GetThread($thread_id);
-	if (!$thread) { $display_error = "Invalid forum thread."; break; }
+	$thread_data = $forum->Threads->GetThread($thread_id);
+	if (!$thread_data) { $display_error = "Invalid forum thread."; break; }
 
 	$post_list = $forum->Threads->Posts->ListPosts($thread_id, $current_page);
 	if ($post_list === FALSE) { $display_error = "Invalid thread page."; break; }
 
-	$params['forum_thread']['Thread'] = $thread_data = $forum->Threads->GetThread($thread_id);
+	$params['forum_thread']['Thread'] = $thread_data;
 	$params['forum_thread']['Section'] = $forum->GetSection($thread_data['SectionID']);
 	$params['forum_thread']['Pages'] = $forum->Threads->Posts->CountPages($thread_id);
 	$params['forum_thread']['CurrentPage'] = $current_page;
 	$params['forum_thread']['PostList'] = $post_list;
 	$params['forum_thread']['Delete'] = ((isset($_POST['thread_delete'])) ? 'yes' : 'no');
-	$params['forum_thread']['DeletePost'] = ((isset($deleting_post)) ? $deleting_post : 0);
+	$params['forum_thread']['DeletePost'] = ((isset($_POST['delete_post'])) ? $_POST['delete_post'] : 0);
 	$params['forum_thread']['PlayerName'] = $player->Name();
 	$params['forum_thread']['notification'] = $player->GetNotification();
 	$params['forum_thread']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
@@ -3509,7 +3474,10 @@ case 'Thread_details':
 
 
 case 'New_thread':
-	$params['forum_thread_new']['Section'] = $forum->GetSection($section_id);
+	$section = $forum->GetSection($_POST['CurrentSection']);
+	if (!$section) { $display_error = "Invalid forum section."; break; }
+
+	$params['forum_thread_new']['Section'] = $section;
 	$params['forum_thread_new']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : "");
 	$params['forum_thread_new']['Title'] = ((isset($_POST['Title'])) ? $_POST['Title'] : "");
 	$params['forum_thread_new']['chng_priority'] = (($access_rights[$player->Type()]["chng_priority"]) ? 'yes' : 'no');
@@ -3518,11 +3486,13 @@ case 'New_thread':
 
 
 case 'New_post':
-	// uses: $quoted_post
-	$params['forum_post_new']['Thread'] = $forum->Threads->GetThread($thread_id);
-	if (isset($quoted_post))
+	$thread = $forum->Threads->GetThread($_POST['CurrentThread']);
+	if (!$thread) { $display_error = "Invalid thread."; break; }
+
+	$params['forum_post_new']['Thread'] = $thread;
+	if (isset($_POST['quote_post']))
 	{
-		$post_data = $forum->Threads->Posts->GetPost($quoted_post);
+		$post_data = $forum->Threads->Posts->GetPost($_POST['quote_post']);
 		$quoted_content = '[quote='.$post_data['Author'].']'.$post_data['Content'].'[/quote]';
 	}
 	$params['forum_post_new']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : ((isset($quoted_content)) ? $quoted_content : ''));
@@ -3531,7 +3501,10 @@ case 'New_post':
 
 
 case 'Edit_thread':
-	$params['forum_thread_edit']['Thread'] = $thread_data = $forum->Threads->GetThread($thread_id);
+	$thread_data = $forum->Threads->GetThread($_POST['CurrentThread']);
+	if (!$thread_data) { $display_error = "Invalid thread."; break; }
+
+	$params['forum_thread_edit']['Thread'] = $thread_data;
 	$params['forum_thread_edit']['Section'] = $forum->GetSection($thread_data['SectionID']);
 	$params['forum_thread_edit']['SectionList'] = $forum->ListTargetSections($thread_data['SectionID']);
 	$params['forum_thread_edit']['chng_priority'] = (($access_rights[$player->Type()]["chng_priority"]) ? 'yes' : 'no');
@@ -3541,8 +3514,11 @@ case 'Edit_thread':
 
 
 case 'Edit_post':
+	$post_data = $forum->Threads->Posts->GetPost($_POST['CurrentPost']);
+	if (!$post_data) { $display_error = "Invalid post."; break; }
+
 	$params['forum_post_edit']['Post'] = $post_data;
-	$params['forum_post_edit']['CurrentPage'] = $current_page;
+	$params['forum_post_edit']['CurrentPage'] = $_POST['CurrentPage'];
 	$params['forum_post_edit']['ThreadList'] = $forum->Threads->ListTargetThreads($post_data['ThreadID']);
 	$params['forum_post_edit']['Thread'] = $forum->Threads->GetThread($post_data['ThreadID']);
 	$params['forum_post_edit']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : $post_data['Content']);

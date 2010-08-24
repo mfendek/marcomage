@@ -119,10 +119,10 @@
 <func:function name="am:BBcodeButtons">
 	<xsl:variable name="buttons">
 		<div class="BBcodeButtons">
-			<input type="button" title="Bold" value="B" onclick="addTags('[b]', '[/b]')" />
-			<input type="button" title="Italics" value="I" onclick="addTags('[i]', '[/i]')" />
-			<input type="button" title="Hyperlink" value="Url" onclick="addTags('[url]', '[/url]')" />
-			<input type="button" title="Quote" value="Quote" onclick="addTags('[quote]', '[/quote]')" />
+			<button type="button" title="Bold" onclick="addTags('[b]', '[/b]')">B</button>
+			<button type="button" title="Italics" onclick="addTags('[i]', '[/i]')">I</button>
+			<button type="button" title="Hyperlink" onclick="addTags('[url]', '[/url]')">Url</button>
+			<button type="button" title="Quote" onclick="addTags('[quote]', '[/quote]')">Quote</button>
 		</div>
 	</xsl:variable>
 	<func:result select="exsl:node-set($buttons)"/>

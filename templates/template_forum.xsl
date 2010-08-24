@@ -28,7 +28,7 @@
 	<th><p>Author</p></th>
 	<th><p>Posts</p></th>
 	<th><p>Created</p></th>
-	<th><p><input type="submit" class="search_button" name="forum_search" value="Search" />Last post</p></th>
+	<th><p><button type="submit" class="search_button" name="forum_search">Search</button>Last post</p></th>
 	</tr>
 
 	<xsl:for-each select="$param/sections/*">
@@ -158,7 +158,7 @@
 			</xsl:for-each>
 		</select>
 
-		<input type="submit" name="forum_search" value="Search" />
+		<button type="submit" name="forum_search">Search</button>
 	</div>
 
 	<xsl:choose>
@@ -258,7 +258,7 @@
 	<th><p>Author</p></th>
 	<th><p>Posts</p></th>
 	<th><p>Created</p></th>
-	<th><p><input type="submit" class="search_button" name="forum_search" value="Search" />Last post</p></th>
+	<th><p><button type="submit" class="search_button" name="forum_search">Search</button>Last post</p></th>
 	</tr>
 
 	<tr><td colspan="6">
@@ -275,7 +275,7 @@
 	<xsl:copy-of select="am:forum_navigation('Section_details', 'CurrentSection', $param/section/SectionID, $param/current_page, $param/pages)"/>
 
 	<xsl:if test="$param/create_thread = 'yes'">
-		<input type="submit" name="new_thread" value="New thread" />
+		<button type="submit" name="new_thread">New thread</button>
 	</xsl:if>
 
 	</p>
@@ -381,10 +381,10 @@
 			<xsl:if test="$param/lock_thread = 'yes'">
 				<xsl:choose>
 					<xsl:when test="$thread/Locked = 'no'">
-						<input type="submit" name="thread_lock" value="Lock" />
+						<button type="submit" name="thread_lock">Lock</button>
 					</xsl:when>
 					<xsl:otherwise>
-						<input type="submit" name="thread_unlock" value="Unlock" />
+						<button type="submit" name="thread_unlock">Unlock</button>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:if>
@@ -392,23 +392,23 @@
 			<xsl:if test="$param/del_all_thread = 'yes' and $can_modify = true()">
 				<xsl:choose>
 					<xsl:when test="$param/Delete = 'no'">
-						<input type="submit" name="thread_delete" value="Delete" />
+						<button type="submit" name="thread_delete">Delete</button>
 					</xsl:when>
 					<xsl:otherwise>
-						<input type="submit" name="thread_delete_confirm" value="Confirm delete" />
+						<button type="submit" class="marked_button" name="thread_delete_confirm">Confirm delete</button>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:if>
 
 			<xsl:if test="$param/edit_thread = 'yes' and $can_modify = true()">
-				<input type="submit" name="edit_thread" value="Edit" />
+				<button type="submit" name="edit_thread">Edit</button>
 			</xsl:if>
 
 			<!-- navigation -->
 			<xsl:copy-of select="am:forum_navigation('Thread_details', 'CurrentThread', $thread/ThreadID, $param/CurrentPage, $param/Pages)"/>
 
 			<xsl:if test="$param/create_post = 'yes' and $thread/Locked = 'no'">
-				<input type = "submit" name="new_post" value="New post" />
+				<button type="submit" name="new_post">New post</button>
 			</xsl:if>
 
 			</p>
@@ -450,20 +450,20 @@
 			<div>
 
 			<xsl:if test="$param/create_post = 'yes' and $thread/Locked = 'no'">
-				<input type="submit" name="quote_post[{PostID}]" value="Quote" />
+				<button type="submit" name="quote_post" value="{PostID}">Quote</button>
 			</xsl:if>
 
 			<xsl:if test="($param/edit_all_post = 'yes' or ($param/edit_own_post = 'yes' and $param/PlayerName = Author)) and $can_modify = true()">
-				<input type="submit" name="edit_post[{PostID}]" value="Edit" />
+				<button type="submit" name="edit_post" value="{PostID}">Edit</button>
 			</xsl:if>
 
 			<xsl:if test="$param/del_all_post = 'yes' and $can_modify = true()">
 				<xsl:choose>
 					<xsl:when test="$delete_post != PostID">
-						<input type="submit" name="delete_post[{PostID}]" value="Delete" />
+						<button type="submit" name="delete_post" value="{PostID}">Delete</button>
 					</xsl:when>
 					<xsl:otherwise>
-						<input type="submit" name="delete_post_confirm[{PostID}]" value="Confirm delete" />
+						<button type="submit" class="marked_button" name="delete_post_confirm" value="{PostID}">Confirm delete</button>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:if>
@@ -510,7 +510,7 @@
 		
 		</p>
 		
-		<input type="submit" name="create_thread" value="Create thread" />
+		<button type="submit" name="create_thread">Create thread</button>
 		<a class="button" href="{php:functionString('makeurl', 'Section_details', 'CurrentSection', $section/SectionID)}">Back</a>
 		<xsl:copy-of select="am:BBcodeButtons()"/>
 		<hr/>
@@ -535,7 +535,7 @@
 
 	<div class="skin_text">
 	
-	<input type="submit" name="create_post" value="Create post" />
+	<button type="submit" name="create_post">Create post</button>
 	<a class="button" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $thread/ThreadID)}">Back</a>
 	<xsl:copy-of select="am:BBcodeButtons()"/>
 	<hr/>
@@ -590,7 +590,7 @@
 			</select>
 			</p>
 			
-			<input type="submit" name="modify_thread" value="Save" />
+			<button type="submit" name="modify_thread">Save</button>
 			<a class="button" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $thread/ThreadID)}">Back</a>
 
 			<xsl:if test="$param/move_thread = 'yes'">
@@ -610,7 +610,7 @@
 				
 				</p>
 				
-				<input type="submit" name="move_thread" value="Change section" />
+				<button type="submit" name="move_thread">Change section</button>
 			</xsl:if>
 		</div>
 		<input type="hidden" name="CurrentThread" value="{$thread/ThreadID}"/>
@@ -629,7 +629,7 @@
 	<div id="forum_new_edit">
 		<h3>Edit post</h3>
 		<div class="skin_text">	
-		<input type="submit" name="modify_post" value="Save" />
+		<button type="submit" name="modify_post">Save</button>
 		<a class="button" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $post/ThreadID)}">Back</a>
 		<xsl:copy-of select="am:BBcodeButtons()"/>
 		<hr/>
@@ -650,7 +650,7 @@
 						</xsl:for-each>
 					</select>
 				</p>
-				<input type="submit" name="move_post" value="Change thread" />
+				<button type="submit" name="move_post">Change thread</button>
 			</xsl:if>
 		</xsl:if>
 			
