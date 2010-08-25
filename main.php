@@ -2456,40 +2456,22 @@
 
 			// end replays related messages
 
-			// Explanation of how message passing is done:
-			//
-			// All requests are retrieved from POST data as <message, value>.
-			// Due to the fact that <input> actually has no real 'value' attribute and we can't use <button> (IE incompatibility),
-			// we are forced to use the following (insane) workaround: we will encode both message and value as the 'name' attribute.
-			//
-			// Thanks to an array-like notation, we can store the message and data as
-			//   name="message[data]" value="text"
-			// which when received will be structured as
-			//   $_POST['message'] => Array(['data'] => text)
-			// To extract the value of 'data', do array_shift(array_keys($_POST['message']['data'])).
-			//
-			// Note that 'message' must not contain any non-alphanumeric characters, as browsers escape those to _.
-			// Strangely, this constraint does not apply to the 'data' part enclosed in []'s- although escaping is still neccessary.
-			// Therefore, make use the provided functionality - postencode() when storing, and postdecode() when extracting data.
-			
-			foreach($_POST as $message => $value)
+			// begin statistics related messages
+
+			if (isset($_POST['card_statistics'])) // view card statistics
 			{
-				// begin statistics related messages
-				
-				if ($message == 'card_statistics') // view card statistics
-				{
-					$current = 'Statistics';
-					break;
-				}
-				
-				if ($message == 'other_statistics') // view other statistics
-				{
-					$current = 'Statistics';
-					break;
-				}
-				
-				// end statistics related messages
-			} // foreach($_POST as $msg)
+				$current = 'Statistics';
+				break;
+			}
+
+			if (isset($_POST['other_statistics'])) // view other statistics
+			{
+				$current = 'Statistics';
+				break;
+			}
+
+			// end statistics related messages
+
 		} // inner-page messages
 	} // else ($session)
 
@@ -3765,12 +3747,9 @@ case 'Cards_details':
 
 
 case 'Statistics':
-	// uses: $current_statistic
 	if (isset($_POST['card_statistics'])) $subsection = "card_statistics";
 	elseif (isset($_POST['other_statistics'])) $subsection = "other_statistics";
 	elseif (!isset($subsection)) $subsection = "card_statistics";
-
-	if (!isset($current_statistic)) $current_statistic = "Played";
 
 	$params['statistics']['current_subsection'] = $subsection;
 	$params['statistics']['current_statistic'] = $current_statistic = (isset($_POST['selected_statistic'])) ? $_POST['selected_statistic'] : 'Played';

@@ -63,12 +63,13 @@
 			</xsl:for-each>
 		</select>
 
-		<input type="submit" name="card_statistics" value="Select" />
-		<input type="submit" name="other_statistics" value="Other statistics">
+		<button type="submit" name="card_statistics">Select</button>
+		<button type="submit" name="other_statistics">
 			<xsl:if test="$param/current_subsection = 'other_statistics'">
 				<xsl:attribute name="class">pushed</xsl:attribute>
 			</xsl:if>
-		</input>
+			<xsl:text>Other statistics</xsl:text>
+		</button>
 	</div>
 
 	<div class="skin_label">
