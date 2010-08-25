@@ -50,6 +50,9 @@
 	$forum = new CForum($db);
 	$statistics = new CStatistics($db);
 
+	// remove garbage from GET in case of POST request
+	if (count($_POST) > 0) $_GET = array();
+
 	// process GET request
 	foreach ($_GET as $param_name => $param_value) $_POST[$param_name] = $param_value;
 
@@ -153,7 +156,7 @@
 		}
 
 		// inner-page messages (POST processing), omitted in case of a GET request
-		elseif (count($_GET) == 0)
+		elseif (count($_POST) > 0)
 		{
 			// begin cards related messages
 
