@@ -52,9 +52,9 @@
 		</xsl:variable>
 		<xsl:copy-of select="am:htmlSelectBox('VictoryFilter', $param/VictoryFilter, $victory_types, '')"/>
 
-		<input type="submit" name="filter_replays" value="Apply filters" />
+		<button type="submit" name="filter_replays">Apply filters</button>
 		<xsl:if test="$param/my_replays = 'yes'">
-			<input type="submit" name="my_replays" value="My replays" />
+			<button type="submit" name="my_replays">My replays</button>
 		</xsl:if>
 
 		<!-- navigation -->
@@ -84,21 +84,21 @@
 							<p>
 								<xsl:value-of select="@text"/>
 								<xsl:if test="@sortable = 'yes'">
-									<input type="submit" class="small_button">
+									<button type="submit" class="small_button" value="{@name}">
 										<xsl:if test="$param/cond = @name">
 											<xsl:attribute name="class">small_button pushed</xsl:attribute>
 										</xsl:if>
 										<xsl:choose>
 											<xsl:when test="$param/cond = @name and $param/order = 'DESC'">
-												<xsl:attribute name="name">replays_ord_asc[<xsl:value-of select="@name"/>]</xsl:attribute>
-												<xsl:attribute name="value">\/</xsl:attribute>
+												<xsl:attribute name="name">replays_ord_asc</xsl:attribute>
+												<xsl:text>\/</xsl:text>
 											</xsl:when>
 											<xsl:otherwise>
-												<xsl:attribute name="name">replays_ord_desc[<xsl:value-of select="@name"/>]</xsl:attribute>
-												<xsl:attribute name="value">/\</xsl:attribute>
+												<xsl:attribute name="name">replays_ord_desc</xsl:attribute>
+												<xsl:text>/\</xsl:text>
 											</xsl:otherwise>
 										</xsl:choose>
-									</input>
+									</button>
 								</xsl:if>
 							</p>
 						</th>

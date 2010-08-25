@@ -2403,6 +2403,59 @@
 
 			// end settings related messages
 
+			// begin replays related messages
+
+			$temp = array("asc" => "ASC", "desc" => "DESC");
+			foreach($temp as $type => $order_val)
+			{
+				if (isset($_POST['replays_ord_'.$type])) // select ascending or descending order in game replays list
+				{
+					$_POST['ReplaysCond'] = $_POST['replays_ord_'.$type];
+					$_POST['ReplaysOrder'] = $order_val;
+
+					$current = "Replays";
+
+					break;
+				}
+			}
+
+			if (isset($_POST['filter_replays'])) // use filter in replays list
+			{
+				$_POST['CurrentRepPage'] = 0;
+				$current = 'Replays';
+				break;
+			}
+
+			if (isset($_POST['my_replays'])) // show only current player's replays
+			{
+				$_POST['PlayerFilter'] = $player->Name();
+				$_POST['HiddenCards'] = "none";
+				$_POST['FriendlyPlay'] = "none";
+				$_POST['VictoryFilter'] = "none";
+				$_POST['CurrentRepPage'] = 0;
+
+				$current = 'Replays';
+				break;
+			}
+
+			if (isset($_POST['select_page_replays'])) // Replays -> select page (previous and next button)
+			{
+				$_POST['CurrentRepPage'] = $_POST['select_page_replays'];
+				$current = "Replays";
+
+				break;
+			}
+
+			if (isset($_POST['seek_page_replays'])) // Replays -> select page (page selector)
+			{
+				$_POST['CurrentRepPage'] = $_POST['page_selector'];
+				$current = "Replays";
+
+				break;
+			}
+
+			// end replays related messages
+
 			// Explanation of how message passing is done:
 			//
 			// All requests are retrieved from POST data as <message, value>.
@@ -2421,59 +2474,6 @@
 			
 			foreach($_POST as $message => $value)
 			{
-				// begin replays related messages
-				
-				$temp = array("asc" => "ASC", "desc" => "DESC");
-				foreach($temp as $type => $order_val)
-				{
-					if ($message == 'replays_ord_'.$type) // select ascending or descending order in game replays list
-					{
-						$_POST['ReplaysCond'] = array_shift(array_keys($value));
-						$_POST['ReplaysOrder'] = $order_val;
-						
-						$current = "Replays";
-						
-						break;
-					}
-				}
-				
-				if ($message == 'filter_replays') // use filter in replays list
-				{
-					$_POST['CurrentRepPage'] = 0;
-					$current = 'Replays';
-					break;
-				}
-				
-				if ($message == 'my_replays') // show only current player's replays
-				{
-					$_POST['PlayerFilter'] = $player->Name();
-					$_POST['HiddenCards'] = "none";
-					$_POST['FriendlyPlay'] = "none";
-					$_POST['VictoryFilter'] = "none";
-					$_POST['CurrentRepPage'] = 0;
-					
-					$current = 'Replays';
-					break;
-				}
-				
-				if ($message == 'select_page_replays') // Replays -> select page (previous and next button)
-				{
-					$_POST['CurrentRepPage'] = array_shift(array_keys($value));
-					$current = "Replays";
-					
-					break;
-				}
-				
-				if ($message == 'seek_page_replays') // Replays -> select page (page selector)
-				{
-					$_POST['CurrentRepPage'] = $_POST['page_selector'];
-					$current = "Replays";
-					
-					break;
-				}
-				
-				// end replays related messages
-				
 				// begin statistics related messages
 				
 				if ($message == 'card_statistics') // view card statistics
