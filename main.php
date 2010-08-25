@@ -151,9 +151,9 @@
 			$information = "You have successfully logged out.";
 			$current = "Webpage";
 		}
-		else
-		
-		// inner-page messages
+
+		// inner-page messages (POST processing), omitted in case of a GET request
+		elseif (count($_GET) == 0)
 		{
 			// begin cards related messages
 
@@ -211,7 +211,7 @@
 
 			// end cards related messages
 
-			// concepts-related messages
+			// begin concepts related messages
 
 			$temp = array("asc" => "ASC", "desc" => "DESC");
 			foreach($temp as $type => $order_val)
@@ -543,9 +543,9 @@
 				break;
 			}
 
-			// end concepts-related messages
+			// end concepts related messages
 
-			// deck-related messages
+			// begin deck related messages
 
 			if (isset($_POST['add_card'])) // Decks -> Modify this deck -> Take
 			{
@@ -784,7 +784,7 @@
 				break;
 			}
 
-			// end deck-related messages
+			// end deck related messages
 
 			// begin forum related messages
 
@@ -1138,7 +1138,7 @@
 
 			// end forum related messages
 
-			// game-related messages
+			// begin game related messages
 
 			if (isset($_POST['jump_to_game'])) // Games -> vs. %s
 			{
@@ -1795,7 +1795,7 @@
 				break;
 			}
 
-			// end game-related messages
+			// end game related messages
 
 			// begin misc messages
 
@@ -2173,7 +2173,7 @@
 				break;
 			}
 
-			// end message-related messages
+			// end message related messages
 			
 			// begin profile related messages
 
@@ -2281,7 +2281,7 @@
 
 			// end players related messages
 
-			// settings related messages
+			// begin settings related messages
 
 			if (isset($_POST['user_settings'])) // upload user settings
 			{
@@ -2472,7 +2472,7 @@
 
 			// end statistics related messages
 
-		} // inner-page messages
+		} // inner-page messages (POST processing)
 	} // else ($session)
 
 	} while(0); // end dummy scope
