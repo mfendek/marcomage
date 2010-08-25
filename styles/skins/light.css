@@ -56,19 +56,14 @@ hr /* horizontal line layout */
 	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
 }
 
-input[type="submit"], input[type="button"], button, a.button, .disabled /* submit input layout */
+button, a.button, .disabled /* submit input layout */
 {
 	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
 }
 
-input[disabled], button[disabled] /* disabled submit input */
+button[disabled] /* disabled submit input */
 {
 	color: gray;
-}
-
-input.marked_button, button.marked_button, a.marked_button /* highlighted button */
-{
-	background-color: rgb(5,204,0); /* medium green */
 }
 
 .info /* information message layout */

@@ -60,19 +60,14 @@ input, button, textarea, a.button, .disabled /* input text fields */
 	font-weight: bold;
 }
 
-input[type="submit"], input[type="button"], button, a.button:link, a.button:visited /* submit input layout */
+button, a.button:link, a.button:visited /* submit input layout */
 {
 	color: #dddddd; /* very light gray */
 }
 
-input[disabled], button[disabled] /* disabled submit input */
+button[disabled] /* disabled submit input */
 {
 	color: gray;
-}
-
-input.marked_button, button.marked_button, a.marked_button /* highlighted button */
-{
-	background-color: green;
 }
 
 .info /* information message layout */

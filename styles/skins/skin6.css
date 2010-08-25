@@ -65,7 +65,7 @@ h2,h3,h4,h5 /* heading layout */
 	color: #ffff66; /* sandy yellow */
 }
 
-input[type="submit"], input[type="button"], button, a.button /* submit input layout */
+button, a.button /* submit input layout */
 {
 	background-color: black;
 	border-color: #6495ed; /* light blue */
@@ -78,7 +78,7 @@ input[type="submit"], input[type="button"], button, a.button /* submit input lay
 	border-color: #6495ed; /* light blue */
 }
 
-input[disabled], button[disabled] /* disabled submit input */
+button[disabled] /* disabled submit input */
 {
 	color: gray;
 }
@@ -88,7 +88,7 @@ a.button:link, a.button:visited
 	color: #ffff66; /* sandy yellow */
 }
 
-input.marked_button, button.marked_button, a.marked_button /* highlighted button */
+button.marked_button, a.marked_button:link, a.marked_button:visited /* highlighted button */
 {
 	background-color: yellow;
 	color: black;
@@ -153,7 +153,7 @@ div#forum table /* forum table layout */
 	background-color: #050529; /* very dark blue */
 }
 
-div#forum input, div#forum button
+div#forum button
 {
 	border-color: lime;
 	border-style: outset;

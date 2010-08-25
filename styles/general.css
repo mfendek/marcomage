@@ -104,7 +104,7 @@ th
 	padding: 0ex;
 }
 
-th input, th button /* ordering buttons in the table header */
+th button /* ordering buttons in the table header */
 {
 	margin-left: 2ex;
 }
@@ -148,7 +148,7 @@ input[type="text"], input[type="password"] /* input text fields */
 	border-style: inset;
 }
 
-input[type="submit"], input[type="button"], button /* submit input layout */
+button /* submit input layout */
 {
 	font-weight: bold;
 }
@@ -162,7 +162,7 @@ img.avatar /* avatar picture */
 	vertical-align: middle;
 }
 
-input.small_button, button.small_button, a.small_button /* small button */
+.small_button /* small button */
 {
 	padding: 0ex 0.5ex 0ex 0.5ex;
 	font-size: x-small;
@@ -180,7 +180,7 @@ input.table_checkbox /* checkbox layout */
 	text-align: center;
 }
 
-.filters > input, .filters > button /* set distance between filter buttons */
+.filters > button /* set distance between filter buttons */
 {
 	margin-right: 1ex;
 }
@@ -195,7 +195,7 @@ input.table_checkbox /* checkbox layout */
 	background-color: green;
 }
 
-input.pushed, button.pushed, a.pushed, a.button:active /* selected button */
+button.pushed, a.pushed, a.button:active /* selected button */
 {
 	border-style: inset;
 }
