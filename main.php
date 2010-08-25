@@ -2281,6 +2281,128 @@
 
 			// end players related messages
 
+			// settings related messages
+
+			if (isset($_POST['user_settings'])) // upload user settings
+			{
+				if (strlen($_POST['Hobby']) > HOBBY_LENGTH) { $_POST['Hobby'] = substr($_POST['Hobby'], 0, HOBBY_LENGTH); $warning = "Hobby text is too long"; }
+
+				$settings = $player->GetSettings();
+				$bool_settings = $settings->ListBooleanSettings();
+				$other_settings = $settings->ListOtherSettings();
+
+				// process yes/no settings
+				foreach($bool_settings as $setting) $settings->ChangeSetting($setting, ((isset($_POST[$setting])) ? 'yes' : 'no'));
+				// process other settings
+				foreach($other_settings as $setting)
+					if (isset($_POST[$setting]) and $setting != 'Birthdate'and $setting != 'Avatar') $settings->ChangeSetting($setting, $_POST[$setting]);
+
+				// birthdate is handled separately
+				if( $_POST['Birthyear'] == "" ) $_POST['Birthyear'] = '0000';
+				if( $_POST['Birthmonth'] == "" ) $_POST['Birthmonth'] = '00';
+				if( $_POST['Birthday'] == "" ) $_POST['Birthday'] = '00';
+
+				$result = CheckDateInput($_POST['Birthyear'], $_POST['Birthmonth'], $_POST['Birthday']);
+				if( $result != "" )
+					$error = $result;
+				elseif( intval(date("Y")) <= $_POST['Birthyear'] )
+					$error = "Invalid birthdate";
+				else
+					$settings->ChangeSetting('Birthdate', implode("-", array($_POST['Birthyear'], $_POST['Birthmonth'], $_POST['Birthday'])));
+
+				$settings->SaveSettings();
+
+				$information = "User settings saved";
+				$current = 'Settings';
+
+				break;
+			}
+
+			if (isset($_POST['Avatar'])) //upload avatar
+			{
+				// check access rights
+				if (!$access_rights[$player->Type()]["change_own_avatar"]) { $error = 'Access denied.'; $current = 'Settings'; break; }
+
+				$settings = $player->GetSettings();
+				
+				$former_name = $settings->GetSetting('Avatar');
+				$former_path = 'img/avatars/'.$former_name;
+
+				$type = $_FILES['uploadedfile']['type'];
+				$pos = strrpos($type, "/") + 1;
+
+				$code_type = substr($type, $pos, strlen($type) - $pos);
+				$filtered_name = preg_replace("/[^a-zA-Z0-9_-]/i", "_", $player->Name());
+
+				$code_name = time().$filtered_name.'.'.$code_type;
+				$target_path = 'img/avatars/'.$code_name;
+
+				$supported_types = array("image/jpg", "image/jpeg", "image/gif", "image/png");
+
+				if (($_FILES['uploadedfile']['tmp_name'] == ""))
+					$error = "Invalid input file";
+				else
+				if (($_FILES['uploadedfile']['size'] > 10*1000 ))
+					$error = "File is too big";
+				else
+				if (!in_array($_FILES['uploadedfile']['type'], $supported_types))
+					$error = "Unsupported input file";
+				else
+				if (move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $target_path) == FALSE)
+					$error = "Upload failed, error code ".$_FILES['uploadedfile']['error'];
+				else
+				{
+					if ((file_exists($former_path)) and ($former_name != "noavatar.jpg")) unlink($former_path);
+					$settings->ChangeSetting('Avatar', $code_name);
+					$settings->SaveSettings();
+					$information = "Avatar uploaded";
+				}
+
+				$current = 'Settings';
+
+				break;
+			}
+
+			if (isset($_POST['reset_avatar'])) // reset own avatar
+			{
+				// check access rights
+				if (!$access_rights[$player->Type()]["change_own_avatar"]) { $error = 'Access denied.'; $current = 'Settings'; break; }
+
+				$settings = $player->GetSettings();
+
+				$former_name = $settings->GetSetting('Avatar');
+				$former_path = 'img/avatars/'.$former_name;
+
+				if ((file_exists($former_path)) and ($former_name != "noavatar.jpg")) unlink($former_path);
+				$settings->ChangeSetting('Avatar', "noavatar.jpg");
+				$settings->SaveSettings();
+				$information = "Avatar cleared";
+
+				$current = 'Settings';
+
+				break;
+			}
+
+			if (isset($_POST['changepasswd'])) // change password
+			{
+				if (!isset($_POST['NewPassword']) || !isset ($_POST['NewPassword2']) || trim($_POST['NewPassword']) == '' || trim($_POST['NewPassword2']) == '')
+					$error = "Please enter all required inputs.";
+
+				elseif ($_POST['NewPassword'] != $_POST['NewPassword2'])
+					$error = "The two passwords don't match.";
+
+				elseif (!$logindb->ChangePassword($player->Name(), $_POST['NewPassword']))
+					$error = "Failed to change password.";
+
+				else $information = "Password changed";
+
+				$current = 'Settings';
+
+				break;
+			}
+
+			// end settings related messages
+
 			// Explanation of how message passing is done:
 			//
 			// All requests are retrieved from POST data as <message, value>.
@@ -2299,128 +2421,6 @@
 			
 			foreach($_POST as $message => $value)
 			{
-				// settings-related messages
-				
-				if ($message == 'user_settings') // upload user settings
-				{
-					if (strlen($_POST['Hobby']) > HOBBY_LENGTH) { $_POST['Hobby'] = substr($_POST['Hobby'], 0, HOBBY_LENGTH); $warning = "Hobby text is too long"; }
-
-					$settings = $player->GetSettings();
-					$bool_settings = $settings->ListBooleanSettings();
-					$other_settings = $settings->ListOtherSettings();
-
-					// process yes/no settings
-					foreach($bool_settings as $setting) $settings->ChangeSetting($setting, ((isset($_POST[$setting])) ? 'yes' : 'no'));
-					// process other settings
-					foreach($other_settings as $setting)
-						if (isset($_POST[$setting]) and $setting != 'Birthdate'and $setting != 'Avatar') $settings->ChangeSetting($setting, $_POST[$setting]);
-
-					// birthdate is handled separately
-					if( $_POST['Birthyear'] == "" ) $_POST['Birthyear'] = '0000';
-					if( $_POST['Birthmonth'] == "" ) $_POST['Birthmonth'] = '00';
-					if( $_POST['Birthday'] == "" ) $_POST['Birthday'] = '00';
-
-					$result = CheckDateInput($_POST['Birthyear'], $_POST['Birthmonth'], $_POST['Birthday']);
-					if( $result != "" )
-						$error = $result;
-					elseif( intval(date("Y")) <= $_POST['Birthyear'] )
-						$error = "Invalid birthdate";
-					else
-						$settings->ChangeSetting('Birthdate', implode("-", array($_POST['Birthyear'], $_POST['Birthmonth'], $_POST['Birthday'])));
-
-					$settings->SaveSettings();
-
-					$information = "User settings saved";
-					$current = 'Settings';
-
-					break;
-				}
-				
-				if ($message == 'Avatar') //upload avatar
-				{
-					// check access rights
-					if (!$access_rights[$player->Type()]["change_own_avatar"]) { $error = 'Access denied.'; $current = 'Settings'; break; }
-					
-					$settings = $player->GetSettings();
-					
-					$former_name = $settings->GetSetting('Avatar');
-					$former_path = 'img/avatars/'.$former_name;
-					
-					$type = $_FILES['uploadedfile']['type'];
-					$pos = strrpos($type, "/") + 1;
-					
-					$code_type = substr($type, $pos, strlen($type) - $pos);
-					$filtered_name = preg_replace("/[^a-zA-Z0-9_-]/i", "_", $player->Name());
-					
-					$code_name = time().$filtered_name.'.'.$code_type;
-					$target_path = 'img/avatars/'.$code_name;
-					
-					$supported_types = array("image/jpg", "image/jpeg", "image/gif", "image/png");
-										
-					if (($_FILES['uploadedfile']['tmp_name'] == ""))
-						$error = "Invalid input file";
-					else
-					if (($_FILES['uploadedfile']['size'] > 10*1000 ))
-						$error = "File is too big";
-					else
-					if (!in_array($_FILES['uploadedfile']['type'], $supported_types))
-						$error = "Unsupported input file";
-					else
-					if (move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $target_path) == FALSE)
-						$error = "Upload failed, error code ".$_FILES['uploadedfile']['error'];
-					else
-					{
-						if ((file_exists($former_path)) and ($former_name != "noavatar.jpg")) unlink($former_path);
-						$settings->ChangeSetting('Avatar', $code_name);
-						$settings->SaveSettings();
-						$information = "Avatar uploaded";
-					}
-					
-					$current = 'Settings';
-					
-					break;
-				}
-				
-				if ($message == 'reset_avatar') // reset own avatar
-				{
-					// check access rights
-					if (!$access_rights[$player->Type()]["change_own_avatar"]) { $error = 'Access denied.'; $current = 'Settings'; break; }
-					
-					$settings = $player->GetSettings();
-					
-					$former_name = $settings->GetSetting('Avatar');
-					$former_path = 'img/avatars/'.$former_name;
-					
-					if ((file_exists($former_path)) and ($former_name != "noavatar.jpg")) unlink($former_path);
-					$settings->ChangeSetting('Avatar', "noavatar.jpg");
-					$settings->SaveSettings();
-					$information = "Avatar cleared";
-					
-					$current = 'Settings';
-					
-					break;
-				}
-				
-				if ($message == 'changepasswd') //change password
-				{
-					if (!isset($_POST['NewPassword']) || !isset ($_POST['NewPassword2']) || trim($_POST['NewPassword']) == '' || trim($_POST['NewPassword2']) == '')
-						$error = "Please enter all required inputs.";
-					
-					elseif ($_POST['NewPassword'] != $_POST['NewPassword2'])
-						$error = "The two passwords don't match.";
-					
-					elseif (!$logindb->ChangePassword($player->Name(), $_POST['NewPassword']))
-						$error = "Failed to change password.";
-					
-					else $information = "Password changed";
-					
-					$current = 'Settings';
-					
-					break;
-				}
-				
-				// end settings-related messages
-				
 				// begin replays related messages
 				
 				$temp = array("asc" => "ASC", "desc" => "DESC");

@@ -139,7 +139,11 @@
 
 			<xsl:if test="$param/change_own_avatar = 'yes'">
 				<h4>Avatar options</h4>
-				<p><input name="uploadedfile" type="file" style="color: white"/><input type="submit" name="Avatar" value="Upload avatar" /><input type="submit" name="reset_avatar" value="Clear avatar" /></p>
+				<p>
+					<input type="file" name="uploadedfile" />
+					<button type="submit" name="Avatar">Upload avatar</button>
+					<button type="submit" name="reset_avatar">Clear avatar</button>
+				</p>
 			</xsl:if>
 		</div>
 
@@ -147,10 +151,10 @@
 		<div id="sett_float_right" class="skin_text">
 		<div>
 			<h3>Account settings</h3>
-			<p><input type="submit" name="user_settings" value="Save settings" /></p>
+			<p><button type="submit" name="user_settings">Save settings</button></p>
 			<p><input type="password" name="NewPassword" maxlength="20" />New password</p>
 			<p><input type="password" name="NewPassword2" maxlength="20" />Confirm password</p>
-			<p><input type="submit" name="changepasswd" value="Change password" /></p>
+			<p><button type="submit" name="changepasswd">Change password</button></p>
 
 			<p>
 				<select name="Timezone">

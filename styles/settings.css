@@ -47,7 +47,7 @@ div#sett_float_left > p, div#sett_float_right > div > p /* line spacing */
 	margin-bottom: 0.8ex;
 }
 
-div#settings input /* set distance of inputs from the text */
+div#settings input, div#settings button /* set distance of inputs from the text */
 {
 	margin-right: 2ex;
 }
