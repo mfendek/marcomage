@@ -20,7 +20,7 @@ function clean_url($url) {
 		}
 		$url = ($prefixed) ? $url : 'http://'.$url;
 
-		return htmlspecialchars($url);
+		return str_replace('&amp;', '&', htmlspecialchars($url, ENT_COMPAT, 'UTF-8'));
 }
 
 /* Callback for creating a hyperlink in BBCode */
