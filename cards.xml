@@ -8694,14 +8694,14 @@
     <keywords>Unliving,Durable</keywords>
     <effect><![CDATA[Attack: 5<br />Randomly discards one common card from hand<br />If discarded card was <b>Unliving</b><br />Wall: +5]]></effect>
     <code><![CDATA[
-							$this->Attack(4, $hisdata->Tower, $hisdata->Wall);
+							$this->Attack(5, $hisdata->Tower, $hisdata->Wall);
 							$storage = array();
 							for ($i = 1; $i <= 8; $i++)
 								if (($i != $cardpos) AND ($carddb->GetCard($mydata->Hand[$i])->GetClass() == 'Common')) $storage[] = $i;
 							if (count($storage) > 0)
 							{
 								$dis_index = $storage[array_rand($storage)];
-								if ($carddb->GetCard($mydata->Hand[$dis_index])->HasKeyword("Unliving")) $mydata->Wall+= 4;
+								if ($carddb->GetCard($mydata->Hand[$dis_index])->HasKeyword("Unliving")) $mydata->Wall+= 5;
 								$mydata->Hand[$dis_index] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random');
 								$mydata->NewCards[$dis_index] = 1;
 							}
