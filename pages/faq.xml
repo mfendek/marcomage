@@ -6,7 +6,7 @@
 <hr />
 
 <h4>Q1: I have noticed some unexpected behaviour from the system, I think I have found a bug. What should I do now?</h4>
-<p>A: Go trough F.A.Q. first and if you can't find your answer there please document the bug (screenshot, page source) and send it to either <a href="mailto:illuminati@pobox.sk">Mojko</a> or <a href="mailto:theultramage@gmail.com">theultramage</a>. In the e-mail, try to describe the bug itself, then the circumstances in which the bug appeared. Another option is to either discuss the issue on our forum, in the support section, or use our bug tracking system at <a href="https://netvor.sk/trac/arcomage">https://netvor.sk/trac/arcomage</a>. We will do what we can to solve the problem.</p>
+<p>A: Go trough F.A.Q. and Game manual first and if you can't find your answer there please document the bug (screenshot, page source) and report it on our forum in the support section or send it to either <a href="mailto:illuminati@pobox.sk">Mojko</a> or <a href="mailto:theultramage@gmail.com">theultramage</a>. In the report, try to describe the bug itself, then the circumstances in which the bug appeared. We will do what we can to solve the problem.</p>
 <h4>Q2: I can't log in. How do I fix that?</h4>
 <p>A: If you are sure you have used the right login and password, try to delete cookies for our site in your browser. You should find cookie management in options/preferences/advanced options.</p>
 <h4>Q3: My browser doesn't display your site properly. You have errors in your website. Can you fix it?</h4>
@@ -30,7 +30,7 @@
 <h4>Q8: Is the number of "Swift"/"Quick" cards played in a row limited?</h4>
 <p>A: No. You can make arbitrarily long chains of "Swift"/"Quick" cards.</p>
 <h4>Q9: I used F5 to refresh the game and for some reason a card was played by itself.</h4>
-<p>A: Use OUR refresh button (located on the upper right part of the screen), not the one on the browser. For quick access use shorcut ALT+w.</p>
+<p>A: Use OUR refresh button (located on the left part of the screen, above your empire info), not the one on the browser. For quick access use shorcut ALT+w.</p>
 <h4>Q10: I played a card ("Master of past" for example) that reverses or undos some effect of opponents last played card and it didn't work like it should have.</h4>
 <p>A: You probably played such card after "Swift"/"Quick" card(s). So when you played it, the system no longer had the information what effect was caused by opponent's last round. There is an easy rule for these cards - if you want them to work fine, don't play them after any "Swift"/"Quick" cards.</p>
 <h4>Q11: Some cards have "recently discarded cards" in their effect. What does that mean?</h4>
