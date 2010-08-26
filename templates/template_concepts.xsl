@@ -418,7 +418,7 @@
 						<button type="submit" name="concept_thread">Start discussion</button>
 					</xsl:when>
 					<xsl:when test="$param/data/threadid &gt; 0">
-						<button type="submit" name="thread_details" value="{$param/data/threadid}">View discussion</button>
+						<a class="button" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $param/data/threadid)}">View discussion</a>
 					</xsl:when>
 				</xsl:choose>
 			</p>
