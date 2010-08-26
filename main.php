@@ -2948,7 +2948,7 @@ case 'Messages':
 
 case 'Message_details':
 	$messageid = $_POST['CurrentMessage'];
-	$message = $messagedb->GetMessage($messageid, $player->Name());
+	$message = $messagedb->RetrieveMessage($messageid, $player->Name());
 	if (!$message) { $display_error = "Invalid message."; break; }
 
 	$params['message_details']['PlayerName'] = $player->Name();
