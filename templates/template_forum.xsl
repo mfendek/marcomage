@@ -426,7 +426,7 @@
 
 			<div>
 
-			<h5><xsl:value-of select="Author"/></h5>
+			<h5><a href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><xsl:value-of select="Author"/></a></h5>
 
 			<a href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><img class="avatar" height="60px" width="60px" src="img/avatars/{Avatar}" alt="avatar" /></a>
 
