@@ -17,6 +17,7 @@
 
 		$params = '?location='.urlencode($location); // get location (only mandatory parameter)
 		$raw_args = array_slice(func_get_args(), 1); // get other optional parameters
+		$args = array();
 		foreach ($raw_args as $i => $arg) $args[$i] = urlencode($arg); // sanitize parameters
 
 		// create url from optional parameters
