@@ -16,15 +16,20 @@
 		global $session;
 
 		$params = '?location='.urlencode($location); // get location (only mandatory parameter)
-		$raw_args = array_slice(func_get_args(), 1); // get other optional parameters
-		$args = array();
-		foreach ($raw_args as $i => $arg) $args[$i] = urlencode($arg); // sanitize parameters
+		$args = array_slice(func_get_args(), 1); // get other optional parameters
 
-		// create url from optional parameters
-		foreach ($args as $pos => $param) $params.= (($pos % 2 == 0) ? '&' : '=').$param;
-		$ss_opt = ($session AND !$session->hasCookies()) ? '&Username='.$session->Username().'&SessionID='.$session->SessionID() : '';
+		if ($session AND !$session->hasCookies()) // add session data, if necessary
+		{
+			$args[] = 'Username';
+			$args[] = $session->Username();
+			$args[] = 'SessionID';
+			$args[] = $session->SessionID();
+		}
 
-		return $params.$ss_opt;
+		// create url from optional parameters (sanitize parameters)
+		foreach ($args as $pos => $param) $params.= (($pos % 2 == 0) ? '&' : '=').urlencode($param);
+
+		return $params;
 	}
 
 	///////////////////////////////
