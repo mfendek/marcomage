@@ -28,7 +28,7 @@
 	<th><p>Author</p></th>
 	<th><p>Posts</p></th>
 	<th><p>Created</p></th>
-	<th><p><button type="submit" class="search_button" name="forum_search">Search</button>Last post</p></th>
+	<th><p><button type="submit" class="search_button" name="forum_search">Search</button>Latest post</p></th>
 	</tr>
 
 	<xsl:for-each select="$param/sections/*">
@@ -82,7 +82,7 @@
 							<xsl:if test="am:datediff(LastPost, $param/notification) &lt; 0">
 								<xsl:attribute name="class">new</xsl:attribute>
 							</xsl:if>
-							<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID, 'CurrentPage', am:max(LastPage - 1, 0))}"><xsl:value-of select="am:datetime(LastPost, $param/timezone)" /></a>
+							<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID, 'CurrentPage', am:max(LastPage - 1, 0), '#latest')}"><xsl:value-of select="am:datetime(LastPost, $param/timezone)" /></a>
 							<xsl:text> by </xsl:text>
 							<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', LastAuthor)}"><xsl:value-of select="LastAuthor"/></a>
 						</p>
@@ -173,7 +173,7 @@
 			<th><p>Author</p></th>
 			<th><p>Posts</p></th>
 			<th><p>Created</p></th>
-			<th><p>Last post</p></th>
+			<th><p>Latest post</p></th>
 			</tr>
 
 			<xsl:for-each select="$param/threads/*">
@@ -215,7 +215,7 @@
 								<xsl:if test="am:datediff(LastPost, $param/notification) &lt; 0">
 									<xsl:attribute name="class">new</xsl:attribute>
 								</xsl:if>
-								<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID, 'CurrentPage', am:max(LastPage - 1, 0))}"><xsl:value-of select="am:datetime(LastPost, $param/timezone)" /></a>
+								<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID, 'CurrentPage', am:max(LastPage - 1, 0), '#latest')}"><xsl:value-of select="am:datetime(LastPost, $param/timezone)" /></a>
 								<xsl:text> by </xsl:text>
 								<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', LastAuthor)}"><xsl:value-of select="LastAuthor"/></a>
 							</p>
@@ -258,7 +258,7 @@
 	<th><p>Author</p></th>
 	<th><p>Posts</p></th>
 	<th><p>Created</p></th>
-	<th><p><button type="submit" class="search_button" name="forum_search">Search</button>Last post</p></th>
+	<th><p><button type="submit" class="search_button" name="forum_search">Search</button>Latest post</p></th>
 	</tr>
 
 	<tr><td colspan="6">
@@ -323,7 +323,7 @@
 						<xsl:if test="am:datediff(LastPost, $param/notification) &lt; 0">
 							<xsl:attribute name="class">new</xsl:attribute>
 						</xsl:if>
-						<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID, 'CurrentPage', am:max(LastPage - 1, 0))}"><xsl:value-of select="am:datetime(LastPost, $param/timezone)" /></a>
+						<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID, 'CurrentPage', am:max(LastPage - 1, 0), '#latest')}"><xsl:value-of select="am:datetime(LastPost, $param/timezone)" /></a>
 						<xsl:text> by </xsl:text>
 						<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', LastAuthor)}"><xsl:value-of select="LastAuthor"/></a>
 					</p>
@@ -426,9 +426,14 @@
 
 			<div>
 
-			<h5><a href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><xsl:value-of select="Author"/></a></h5>
+			<h5>
+				<xsl:if test="position() = last()">
+					<a id="latest"></a>
+				</xsl:if>
+				<a id="{concat('post', PostID)}" href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><xsl:value-of select="Author"/></a>
+			</h5>
 
-			<a href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><img class="avatar" height="60px" width="60px" src="img/avatars/{Avatar}" alt="avatar" /></a>
+			<p><a href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><img class="avatar" height="60px" width="60px" src="img/avatars/{Avatar}" alt="avatar" /></a></p>
 
 			<p>
 				<xsl:if test="am:datediff(Created, $param/notification) &lt; 0">
@@ -449,6 +454,8 @@
 
 			<div>
 
+			<a class="permalink" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $thread/ThreadID, concat('#post', PostID))}">Permalink</a>
+
 			<xsl:if test="$param/create_post = 'yes' and $thread/Locked = 'no'">
 				<button type="submit" name="quote_post" value="{PostID}">Quote</button>
 			</xsl:if>
@@ -467,7 +474,9 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:if>
-			
+
+			<div class="clear_floats"></div>
+
 			</div>
 			
 			</div>

@@ -248,6 +248,14 @@ div#post_list > div > div.clear_floats + div > button /* post layout - post inpu
 	margin: 0.5ex 1ex 1ex 0ex;
 }
 
+a.permalink /* permalink layout */
+{
+	float: left;
+	margin-left: 1ex;
+	margin-bottom: 1ex;
+	font-size: small;
+}
+
 p.new /* post layout - new post date */
 {
 	color: red;
