@@ -454,7 +454,7 @@
 
 			<div>
 
-			<a class="permalink" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $thread/ThreadID, concat('#post', PostID))}">Permalink</a>
+			<a class="permalink" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $thread/ThreadID, 'CurrentPage', $param/CurrentPage, concat('#post', PostID))}">Permalink</a>
 
 			<xsl:if test="$param/create_post = 'yes' and $thread/Locked = 'no'">
 				<button type="submit" name="quote_post" value="{PostID}">Quote</button>
