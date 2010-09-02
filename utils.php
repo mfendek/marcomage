@@ -12,18 +12,14 @@
 	function postencode($string) { return rawurlencode($string); }
 	function postdecode($string) { return rawurldecode($string); }
 
-	/**
-	 * Creates a query part of URL from parameter names, values and fragment, which is used to generate internal hyperlinks
-	 * Parameter names and values are sanitized, fragment is not
-	 * First parameter (location) is mandatory and only value is provided
-	 * Optional parameters are always provided as pairs of parameter name and value (there can be arbitrary number of such pairs)
-	 * Fragment is optional and expected to be in form '#fragment_name', which should be urlencoded (shoudn't contain any url-special characters)
-	 * @param string $location current location value
-	 * @param string $param_name url parameter name (part of the optional pair)
-	 * @param string $param_value url paramteter value (part of the optional pair)
-	 * @param string $fragment url fragment (optional)
-	 * @return $url returns query part of URL
-	*/
+	///
+	/// Creates a query part of URL from parameter names, values and fragment, which is used to generate internal hyperlinks.
+	/// Parameter names and values are sanitized, fragment is not.
+	/// First parameter (location) is mandatory and only value is provided.
+	/// Optional parameters are always provided as pairs of parameter name and value (there can be arbitrary number of such pairs).
+	/// Fragment is optional and expected to be in form '#fragment_name', which should be urlencoded (shoudn't contain any url-special characters).
+	/// @param string $location current location value
+	/// @return string query part of URL
 	function makeurl($location)
 	{
 		global $session;
