@@ -45,7 +45,7 @@
 		<xsl:if test="($param/recent_news_only = 'no') or (position() &lt;= 4)">
 
 			<!-- TODO: check if file exists and print error if not -->
-			<xsl:variable name="entry" select="document(am:urlencode(concat('../pages/', .)))/am:entry" />
+			<xsl:variable name="entry" select="document(am:urlencode(concat('pages/', text())))/am:entry" />
 
 			<xsl:if test="string($entry/am:date/text())">
 				<div class="date_time">

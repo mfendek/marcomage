@@ -2551,7 +2551,7 @@ case 'Webpage':
 
 	// list the names of the files to display
 	// (all files whose name matches up to the first space character)
-	$files = preg_grep('/^'.$selected.'( .*)?\.xml/i', scandir('pages',1));
+	$files = preg_grep('/^'.$selected.'( .*)?\.xml/i', scandir('templates/pages',1));
 
 	$params['website']['websections'] = $websections;
 	$params['website']['files'] = $files;
