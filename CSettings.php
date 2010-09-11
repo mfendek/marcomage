@@ -7,10 +7,12 @@
 	class CSettings
 	{
 		private $db;
+		private $cache;
 
 		public function __construct(CDatabase &$database)
 		{
 			$this->db = &$database;
+			$this->cache = array();
 		}
 
 		public function GetDB()
@@ -38,10 +40,14 @@
 
 		public function GetSettings($username)
 		{
+			if( isset($this->cache[$username]) )
+				return $this->cache[$username]; // load from cache
+
 			$settings = new CSetting($username, $this);
-			if( !$settings->LoadSettings() )
+			if( !$settings->LoadSettings() ) // load from db
 				return false;
 
+			$this->cache[$username] = $settings; // cache it
 			return $settings;
 		}
 	}
