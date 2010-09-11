@@ -10,6 +10,7 @@
 		public $status = 'ERROR_DB_OFFLINE';
 		public $queries = 0; // counter
 		public $qtime = 0; // time spent
+		public $log = array(); // query log
 		
 		public function __construct($server, $username, $password, $database)
 		{
@@ -48,6 +49,7 @@
 			
 			$this->queries++;
 			$this->qtime += $t_end - $t_start;
+			$this->log[] = sprintf("[%.2f ms] %s", round(1000*($t_end - $t_start),2), $query);
 			$this->status = 'SUCCESS';
 			return new CResult($result);
 		}
