@@ -2529,7 +2529,8 @@
 		$params["navbar"]['forum_notice'] = ($forum_not AND $forum->NewPosts($player->GetNotification())) ? 'yes' : 'no';
 		$params["navbar"]['message_notice'] = (count($gamedb->ListChallengesTo($player->Name())) + $messagedb->CountUnreadMessages($player->Name()) > 0) ? 'yes' : 'no';
 		$params["navbar"]['concept_notice'] = ($concepts_not AND $conceptdb->NewConcepts($player->GetNotification())) ? 'yes' : 'no';
-		$params["navbar"]['game_notice'] = $gamedb->IsAnyCurrentGame($player->Name()) ? 'yes' : 'no';
+		$params["main"]['current_games'] = $current_games = $gamedb->CountCurrentGames($player->Name());
+		$params["navbar"]['game_notice'] = ($current_games > 0) ? 'yes' : 'no';
 		$params["main"]["skin"] = $settings->GetSetting('Skin');
 		$params["main"]["autorefresh"] = ($current == "Games") ? $settings->GetSetting('Autorefresh') : 0; // apply only in games section
 	}

@@ -13,7 +13,8 @@
 	<xsl:variable name="param" select="$params/main" />
 
 	<xsl:variable name="sections" select="document('sections.xml')/am:sections" />
-	<xsl:variable name="current_section" select="am:lowercase($sections/am:section/am:subsection[text() = $param/section]/../@name)" />
+	<xsl:variable name="section_name" select="$sections/am:section/am:subsection[text() = $param/section]/../@name" />
+	<xsl:variable name="current_section" select="am:lowercase($section_name)" />
 
 	<html xmlns="http://www.w3.org/1999/xhtml" xmlns:am="http://arcomage.netvor.sk" lang="en" xml:lang="en">
 	<head>
@@ -36,7 +37,14 @@
 	</xsl:if>
 	<link rel="stylesheet" href="styles/skins/skin{$param/skin}.css" type="text/css" title="standard style" />
 	<link rel="icon" href="img/favicon.png" type="image/png" />
-	<title>MArcomage</title>
+	<title>
+		<xsl:text>MArcomage</xsl:text>
+		<xsl:if test="$section_name != ''">
+			<xsl:text> - </xsl:text>
+			<xsl:value-of select="$section_name" />
+			<xsl:if test="$section_name = 'Games' and $param/current_games &gt; 0"> (<xsl:value-of select="$param/current_games" />)</xsl:if>
+		</xsl:if>
+	</title>
 	<xsl:if test="$param/autorefresh &gt; 0">
 		<xsl:element name="script">
 			<xsl:attribute name="type">text/javascript</xsl:attribute>
