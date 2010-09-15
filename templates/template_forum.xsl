@@ -423,38 +423,23 @@
 		<xsl:for-each select="$param/PostList/*">
 
 			<div class="skin_text">
+			<div class="post_header">
 
-			<div>
-
-			<h5>
+			<span class="post_title">
 				<xsl:if test="position() = last()">
 					<a id="latest"></a>
 				</xsl:if>
-				<a id="{concat('post', PostID)}" href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><xsl:value-of select="Author"/></a>
-			</h5>
+				<a href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><xsl:value-of select="Author"/></a>
 
-			<p><a href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><img class="avatar" height="60px" width="60px" src="img/avatars/{Avatar}" alt="avatar" /></a></p>
+				<xsl:text> on </xsl:text> 
 
-			<p>
-				<xsl:if test="am:datediff(Created, $param/notification) &lt; 0">
-					<xsl:attribute name="class">new</xsl:attribute>
-				</xsl:if>
-				<xsl:value-of select="am:datetime(Created, $param/timezone)" />
-			</p>
-
-			</div>
-
-			<div>
-
-			<div><xsl:value-of select="am:BBCode_parse_extended(Content)" disable-output-escaping="yes" /></div>
-
-			</div>
-
-			<div class="clear_floats"></div>
-
-			<div>
-
-			<a class="permalink" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $thread/ThreadID, 'CurrentPage', $param/CurrentPage, concat('#post', PostID))}">Permalink</a>
+				<span>
+					<xsl:if test="am:datediff(Created, $param/notification) &lt; 0">
+						<xsl:attribute name="class">new</xsl:attribute>
+					</xsl:if>
+					<xsl:value-of select="am:datetime(Created, $param/timezone)" />
+				</span>
+			</span>
 
 			<xsl:if test="$param/create_post = 'yes' and $thread/Locked = 'no'">
 				<button type="submit" name="quote_post" value="{PostID}">Quote</button>
@@ -475,10 +460,22 @@
 				</xsl:choose>
 			</xsl:if>
 
+			<a id="{concat('post', PostID)}" class="permalink" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $thread/ThreadID, 'CurrentPage', $param/CurrentPage, concat('#post', PostID))}" title="Permalink" >#<xsl:value-of select="PostID" /></a>
+
 			<div class="clear_floats"></div>
 
 			</div>
-			
+
+			<div>
+
+			<div class="post_avatar"><a href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><img class="avatar" height="60px" width="60px" src="img/avatars/{Avatar}" alt="avatar" /></a></div>
+
+			<div class="post_content"><div><xsl:value-of select="am:BBCode_parse_extended(Content)" disable-output-escaping="yes" /></div></div>
+
+			<div class="clear_floats"></div>
+
+			</div>
+
 			</div>
 
 		</xsl:for-each>
