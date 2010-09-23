@@ -125,7 +125,7 @@
 	<li><b>Illusion</b> - if an <b>Illusion</b> card is played after playing a different, non-common <b>Illusion</b> card, next card will be a rare card from enemy deck.</li>
 	<li><b>Legend</b> - if there is a rare card in hand (other then played card) raises lowest facility by one.</li>
 	<li><b>Mage</b> - basic gain 10, bonus gain 3, side-effect (Willpower): If (Magic - Enemy magic &lt; 2) Magic: +1 else Gems: +10</li>
-	<li><b>Nature</b> - if an <b>Nature</b> card is played after playing a different, non-common <b>Nature</b> card, next card will be a rare <b>Nature</b> card.</li>
+	<li><b>Nature</b> - if an <b>Nature</b> card is played after playing a different non-common <b>Nature</b> card, upgrades rarity of highest non-rare <b>Nature</b> card in hand</li>
 	<li><b>Quick</b> - player gets an additional turn, but no production this turn, it is impossible to draw a rare card after a <b>Quick</b> card is played.</li>
 	<li><b>Rebirth</b> - when played and number of <b>Burning</b> cards in game is greater then 3, the card stays on hand and you will get additional 16 gems.</li>
 	<li><b>Restoration</b> - if an <b>Restoration</b> card is played after playing a different, non-common <b>Restoration</b> card, it raises your lowest facility by 1 when your facility is below 3, otherwise it gives you 10 of your lowest resource.</li>
