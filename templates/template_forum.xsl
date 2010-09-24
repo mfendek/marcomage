@@ -63,7 +63,7 @@
 			</td>
 			<td>
 				<p class="headings">
-					<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID)}"><xsl:value-of select="Title" /></a>
+					<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID, 'CurrentPage', 0)}"><xsl:value-of select="Title" /></a>
 				</p>
 			</td>
 			<td>
@@ -196,7 +196,7 @@
 				</td>
 				<td>
 					<p class="headings">
-						<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID)}"><xsl:value-of select="Title" /></a>
+						<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID, 'CurrentPage', 0)}"><xsl:value-of select="Title" /></a>
 					</p>
 				</td>
 				<td>
@@ -304,7 +304,7 @@
 		</td>
 		<td>
 			<p class="headings">
-				<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID)}"><xsl:value-of select="Title" /></a>
+				<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID, 'CurrentPage', 0)}"><xsl:value-of select="Title" /></a>
 			</p>
 		</td>
 		<td>
@@ -542,7 +542,7 @@
 	<div class="skin_text">
 	
 	<button type="submit" name="create_post">Create post</button>
-	<a class="button" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $thread/ThreadID)}">Back</a>
+	<a class="button" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $thread/ThreadID, 'CurrentPage', 0)}">Back</a>
 	<xsl:copy-of select="am:BBcodeButtons()"/>
 	<hr/>
 	
@@ -597,7 +597,7 @@
 			</p>
 			
 			<button type="submit" name="modify_thread">Save</button>
-			<a class="button" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $thread/ThreadID)}">Back</a>
+			<a class="button" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $thread/ThreadID, 'CurrentPage', 0)}">Back</a>
 
 			<xsl:if test="$param/move_thread = 'yes'">
 				<hr/>
@@ -636,7 +636,7 @@
 		<h3>Edit post</h3>
 		<div class="skin_text">	
 		<button type="submit" name="modify_post">Save</button>
-		<a class="button" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $post/ThreadID)}">Back</a>
+		<a class="button" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $post/ThreadID, 'CurrentPage', 0)}">Back</a>
 		<xsl:copy-of select="am:BBcodeButtons()"/>
 		<hr/>
 
