@@ -460,7 +460,7 @@
 				</xsl:choose>
 			</xsl:if>
 
-			<a id="{concat('post', PostID)}" class="permalink" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $thread/ThreadID, 'CurrentPage', $param/CurrentPage, concat('#post', PostID))}" title="Permalink" >#<xsl:value-of select="PostID" /></a>
+			<a id="{concat('post', PostID)}" class="permalink" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $thread/ThreadID, 'CurrentPage', $param/CurrentPage, concat('#post', PostID))}" title="Permalink" >#<xsl:value-of select="position() + $param/CurrentPage * $param/posts_per_page" /></a>
 
 			<div class="clear_floats"></div>
 

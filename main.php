@@ -3433,6 +3433,7 @@ case 'Thread_details':
 	$params['forum_thread']['notification'] = $player->GetNotification();
 	$params['forum_thread']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 	$params['forum_thread']['concept'] = $conceptdb->FindConcept($thread_id);
+	$params['forum_thread']['posts_per_page'] = POSTS_PER_PAGE;
 
 	$params['forum_thread']['lock_thread'] = (($access_rights[$player->Type()]["lock_thread"]) ? 'yes' : 'no');
 	$params['forum_thread']['del_all_thread'] = (($access_rights[$player->Type()]["del_all_thread"]) ? 'yes' : 'no');
