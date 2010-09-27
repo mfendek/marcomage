@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE xsl:stylesheet [ <!ENTITY rarr "&#8594;"> ]>
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
@@ -70,7 +69,7 @@
 									<xsl:if test="ready = 'yes'">
 										<xsl:attribute name="class">button marked_button</xsl:attribute>
 									</xsl:if>
-									<xsl:text>&rarr;</xsl:text>
+									<xsl:text>&gt;</xsl:text>
 								</a>
 							</p>
 						</td>

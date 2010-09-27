@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE xsl:stylesheet [ <!ENTITY rarr "&#8594;"> ]>
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
@@ -140,7 +139,7 @@
 						<td><p><xsl:value-of select="Views"/></p></td>
 						<td>
 							<xsl:if test="Deleted = 'no'">
-								<p><a class="button" href="{php:functionString('makeurl', 'Replay', 'CurrentReplay', GameID, 'PlayerView', 1, 'Turn', 1)}">&rarr;</a></p>
+								<p><a class="button" href="{php:functionString('makeurl', 'Replay', 'CurrentReplay', GameID, 'PlayerView', 1, 'Turn', 1)}">&gt;</a></p>
 							</xsl:if>
 						</td>
 					</tr>

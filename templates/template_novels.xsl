@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE xsl:stylesheet [ <!ENTITY minus "&#8722;"> ]>
 <xsl:stylesheet version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
@@ -33,7 +32,7 @@
 			<xsl:choose>
 			<!-- display expanded novel -->
 			<xsl:when test="$param/novel = @name">
-				<a class="button pushed" href="{php:functionString('makeurl', 'Novels')}">&minus;</a>
+				<a class="button pushed" href="{php:functionString('makeurl', 'Novels')}">-</a>
 				<xsl:text>Book </xsl:text><xsl:value-of select="position()"/><xsl:text>: </xsl:text>
 				<xsl:value-of select="@name"/>
 				<ul>
@@ -42,7 +41,7 @@
 							<xsl:choose>
 							<!-- display expanded chapter -->
 							<xsl:when test="$param/chapter = @name">
-								<a class="button pushed" href="{php:functionString('makeurl', 'Novels', 'novel', $param/novel)}">&minus;</a>
+								<a class="button pushed" href="{php:functionString('makeurl', 'Novels', 'novel', $param/novel)}">-</a>
 								<xsl:text>Chapter </xsl:text><xsl:value-of select="position()"/><xsl:text>: </xsl:text>
 								<xsl:value-of select="@name"/>
 								<ul>
