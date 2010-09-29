@@ -8,6 +8,9 @@
                 extension-element-prefixes="exsl php">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
+<!-- includes -->
+<xsl:include href="template_main.xsl" />
+
 
 <xsl:template match="section[. = 'Replays']">
 	<xsl:variable name="param" select="$params/replays" />
@@ -139,7 +142,7 @@
 						<td><p><xsl:value-of select="Views"/></p></td>
 						<td>
 							<xsl:if test="Deleted = 'no'">
-								<p><a class="button" href="{php:functionString('makeurl', 'Replay', 'CurrentReplay', GameID, 'PlayerView', 1, 'Turn', 1)}">&gt;</a></p>
+								<p><a class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', GameID, 'PlayerView', 1, 'Turn', 1)}">&gt;</a></p>
 							</xsl:if>
 						</td>
 					</tr>
@@ -165,7 +168,7 @@
 </xsl:template>
 
 
-<xsl:template match="section[. = 'Replay']">
+<xsl:template match="section[. = 'Replays_details']">
 	<xsl:variable name="param" select="$params/replay" />
 	<xsl:variable name="turns" select="$param/turns" />
 	<xsl:variable name="current" select="$param/CurrentTurn" />
@@ -176,7 +179,7 @@
 		<!-- begin navigation -->
 		<xsl:choose>
 			<xsl:when test="$current &gt; 1">
-				<a class="button" href="{php:functionString('makeurl', 'Replay', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', am:max($current - 1, 1))}">&lt;</a>
+				<a class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', am:max($current - 1, 1))}">&lt;</a>
 			</xsl:when>
 			<xsl:otherwise>
 				<span class="disabled">&lt;</span>
@@ -185,7 +188,7 @@
 
 		<xsl:choose>
 			<xsl:when test="$current &lt; $turns">
-				<a class="button" href="{php:functionString('makeurl', 'Replay', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', am:min($current + 1, $turns))}">&gt;</a>
+				<a class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', am:min($current + 1, $turns))}">&gt;</a>
 			</xsl:when>
 			<xsl:otherwise>
 				<span class="disabled">&gt;</span>
@@ -199,7 +202,7 @@
 				<xsl:otherwise>1</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<a class="button" href="{php:functionString('makeurl', 'Replay', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $view, 'Turn', $current)}">Switch players</a>
+		<a class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $view, 'Turn', $current)}">Switch players</a>
 		<!-- end navigation -->
 	</p>
 
@@ -310,7 +313,7 @@
 						</xsl:if>
 					</div>
 					<h5>
-						<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', $param/Player1)}"><xsl:value-of select="$param/Player1"/></a>
+						<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player1)}"><xsl:value-of select="$param/Player1"/></a>
 					</h5>
 					<p class="info_label">Tower: <span>
 						<xsl:value-of select="$param/p1Tower"/>
@@ -373,7 +376,7 @@
 						</p>
 					</div>
 					<h5>
-						<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', $param/Player1)}"><xsl:value-of select="$param/Player1"/></a>
+						<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player1)}"><xsl:value-of select="$param/Player1"/></a>
 					</h5>
 					<p class="info_label">Tower: <span>
 						<xsl:value-of select="$param/p1Tower"/>
@@ -643,7 +646,7 @@
 						</xsl:if>
 					</div>
 					<h5>
-						<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', $param/Player2)}"><xsl:value-of select="$param/Player2"/></a>
+						<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player2)}"><xsl:value-of select="$param/Player2"/></a>
 					</h5>
 					<p class="info_label">Tower: <span>
 						<xsl:value-of select="$param/p2Tower"/>
@@ -706,7 +709,7 @@
 						</p>
 					</div>
 					<h5>
-						<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', $param/Player2)}"><xsl:value-of select="$param/Player2"/></a>
+						<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player2)}"><xsl:value-of select="$param/Player2"/></a>
 					</h5>
 					<p class="info_label">Tower: <span>
 						<xsl:value-of select="$param/p2Tower"/>

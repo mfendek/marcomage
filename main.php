@@ -207,7 +207,7 @@
 				}
 
 				$_POST['CurrentThread'] = $thread_id;
-				$current = 'Thread_details';
+				$current = 'Forum_thread';
 
 				break;
 			}
@@ -528,7 +528,7 @@
 				$concept = $conceptdb->GetConcept($concept_id);
 				if (!$concept) { $error = 'No such card.'; $current = 'Concepts'; break; }
 				$thread_id = $concept->ThreadID();
-				if ($thread_id > 0) { $error = "Thread already exists"; $current = "Thread_details"; $_POST['CurrentThread'] = $thread_id; break; }
+				if ($thread_id > 0) { $error = "Thread already exists"; $current = "Forum_thread"; $_POST['CurrentThread'] = $thread_id; break; }
 
 				$concept_name = $concept->Name();
 
@@ -541,7 +541,7 @@
 
 				$_POST['CurrentThread'] = $new_thread;
 				$information = "Thread created";
-				$current = 'Thread_details';
+				$current = 'Forum_thread';
 
 				break;
 			}
@@ -571,7 +571,7 @@
 				else
 					$error = 'Unable to add the chosen card to this deck.';
 
-				$current = 'Deck_edit';
+				$current = 'Decks_edit';
 				break;
 			}
 
@@ -590,7 +590,7 @@
 				else
 					$error = 'Unable to remove the chosen card from this deck.';
 
-				$current = 'Deck_edit';
+				$current = 'Decks_edit';
 				break;
 			}
 
@@ -628,7 +628,7 @@
 				$deck->SaveDeck();
 
 				$information = 'Tokens set.';
-				$current = 'Deck_edit';
+				$current = 'Decks_edit';
 
 				break;
 			}
@@ -643,14 +643,14 @@
 				$deck->SaveDeck();
 
 				$information = 'Tokens set.';
-				$current = 'Deck_edit';
+				$current = 'Decks_edit';
 
 				break;
 			}
 
 			if (isset($_POST['filter'])) // Decks -> Modify this deck -> Apply filters
 			{
-				$current = 'Deck_edit';
+				$current = 'Decks_edit';
 
 				break;
 			}
@@ -658,7 +658,7 @@
 			if (isset($_POST['reset_deck_prepare'])) // Decks -> Reset
 			{
 				// only symbolic functionality... rest is handled below
-				$current = 'Deck_edit';
+				$current = 'Decks_edit';
 
 				break;
 			}
@@ -675,7 +675,7 @@
 				else
 					$error = 'Failed to reset this deck.';
 
-				$current = 'Deck_edit';
+				$current = 'Decks_edit';
 				break;
 			}
 
@@ -690,12 +690,12 @@
 				if ($pos !== false)
 				{
 					$error = 'Cannot change deck name, it is already used by another deck.';
-					$current = 'Deck_edit';
+					$current = 'Decks_edit';
 				}
 				elseif (trim($newname) == '')
 				{
 					$error = 'Cannot change deck name, invalid input.';
-					$current = 'Deck_edit';
+					$current = 'Decks_edit';
 				}
 				else
 				{
@@ -707,7 +707,7 @@
 						$_POST['CurrentDeck'] = $newname;
 						
 						$information = "Deck saved.";
-						$current = 'Deck_edit';
+						$current = 'Decks_edit';
 					}
 					else
 					{
@@ -740,7 +740,7 @@
 			if (isset($_POST['import_deck'])) // Decks -> Modify this deck -> Import
 			{
 				$curname = $_POST['CurrentDeck'];
-				$current = 'Deck_edit';
+				$current = 'Decks_edit';
 
 				//$supported_types = array("text/csv", "text/comma-separated-values");
 				$supported_types = array("csv");
@@ -796,9 +796,9 @@
 			if (isset($_POST['new_thread'])) // forum -> section -> new thread
 			{
 				// check access rights
-				if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Section_details'; break; }
+				if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Forum_section'; break; }
 
-				$current = 'New_thread';
+				$current = 'Forum_thread_new';
 
 				break;
 			}
@@ -808,28 +808,28 @@
 				$section_id = $_POST['CurrentSection'];
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Section_details'; break; }
+				if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Forum_section'; break; }
 				// check access rights
-				if ((!$access_rights[$player->Type()]["chng_priority"]) AND ($_POST['Priority'] != "normal")) { $error = 'Access denied.'; $current = 'Section_details'; break; }
+				if ((!$access_rights[$player->Type()]["chng_priority"]) AND ($_POST['Priority'] != "normal")) { $error = 'Access denied.'; $current = 'Forum_section'; break; }
 
-				if ((trim($_POST['Title']) == "") OR (trim($_POST['Content']) == "")) { $error = "Invalid input"; $current = "New_thread"; break; }
+				if ((trim($_POST['Title']) == "") OR (trim($_POST['Content']) == "")) { $error = "Invalid input"; $current = "Forum_thread_new"; break; }
 
-				if (strlen($_POST['Content']) > POST_LENGTH) { $error = "Thread text is too long"; $current = "New_thread"; break; }
+				if (strlen($_POST['Content']) > POST_LENGTH) { $error = "Thread text is too long"; $current = "Forum_thread_new"; break; }
 
 				$thread_id = $forum->Threads->ThreadExists($_POST['Title']);
-				if ($thread_id) { $error = "Thread already exists"; $current = "Thread_details"; $_POST['CurrentThread'] = $thread_id; break; }
+				if ($thread_id) { $error = "Thread already exists"; $current = "Forum_thread"; $_POST['CurrentThread'] = $thread_id; break; }
 
 				$new_thread = $forum->Threads->CreateThread($_POST['Title'], $player->Name(), $_POST['Priority'], $section_id);
-				if ($new_thread === FALSE) { $error = "Failed to create new thread"; $current = "Section_details"; break; }
+				if ($new_thread === FALSE) { $error = "Failed to create new thread"; $current = "Forum_section"; break; }
 				// $new_thread contains ID of currently created thread, which can be 0
 
 				$new_post = $forum->Threads->Posts->CreatePost($new_thread, $player->Name(), $_POST['Content']);
-				if (!$new_post) { $error = "Failed to create new post"; $current = "Section_details"; break; }
+				if (!$new_post) { $error = "Failed to create new post"; $current = "Forum_section"; break; }
 
 				$forum->Threads->RefreshThread($new_thread); // update post count, last author and last post
 
 				$information = "Thread created";
-				$current = 'Section_details';
+				$current = 'Forum_section';
 
 				break;
 			}
@@ -850,13 +850,13 @@
 				$thread_id = $_POST['CurrentThread'];
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["lock_thread"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+				if (!$access_rights[$player->Type()]["lock_thread"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
 				$lock = $forum->Threads->LockThread($thread_id);
-				if (!$lock) { $error = "Failed to lock thread"; $current = "Thread_details"; break; }
+				if (!$lock) { $error = "Failed to lock thread"; $current = "Forum_thread"; break; }
 
 				$information = "Thread locked";
-				$current = 'Thread_details';
+				$current = 'Forum_thread';
 
 				break;
 			}
@@ -866,13 +866,13 @@
 				$thread_id = $_POST['CurrentThread'];
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["lock_thread"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+				if (!$access_rights[$player->Type()]["lock_thread"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
 				$lock = $forum->Threads->UnlockThread($thread_id);
-				if (!$lock) { $error = "Failed to unlock thread"; $current = "Thread_details"; break; }
+				if (!$lock) { $error = "Failed to unlock thread"; $current = "Forum_thread"; break; }
 
 				$information = "Thread unlocked";
-				$current = 'Thread_details';
+				$current = 'Forum_thread';
 
 				break;
 			}
@@ -882,9 +882,9 @@
 				// only symbolic functionality... rest is handled below
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["del_all_thread"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+				if (!$access_rights[$player->Type()]["del_all_thread"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
-				$current = 'Thread_details';
+				$current = 'Forum_thread';
 				break;
 			}
 
@@ -893,10 +893,10 @@
 				$thread_id = $_POST['CurrentThread'];
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["del_all_thread"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+				if (!$access_rights[$player->Type()]["del_all_thread"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
 				$delete = $forum->Threads->DeleteThread($thread_id);
-				if (!$delete) { $error = "Failed to delete thread"; $current = "Thread_details"; break; }
+				if (!$delete) { $error = "Failed to delete thread"; $current = "Forum_thread"; break; }
 
 				// check for linked card concepts, update when necessary
 				$concept_id = $conceptdb->FindConcept($thread_id);
@@ -904,11 +904,11 @@
 				if ($concept_id > 0)
 				{
 					$delete = $conceptdb->RemoveThread($concept_id);
-					if (!$delete) { $error = "Failed to unlink matching concept"; $current = "Thread_details"; break; }
+					if (!$delete) { $error = "Failed to unlink matching concept"; $current = "Forum_thread"; break; }
 				}
 
 				$information = "Thread deleted";
-				$current = 'Section_details';
+				$current = 'Forum_section';
 
 				break;
 			}
@@ -918,12 +918,12 @@
 				$thread_id = $_POST['CurrentThread'];
 
 				// check if thread is locked
-				if ($forum->Threads->IsLocked($thread_id)) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
+				if ($forum->Threads->IsLocked($thread_id)) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["create_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+				if (!$access_rights[$player->Type()]["create_post"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
-				$current = 'New_post';
+				$current = 'Forum_post_new';
 
 				break;
 			}
@@ -933,22 +933,22 @@
 				$thread_id = $_POST['CurrentThread'];
 
 				// check if thread is locked
-				if ($forum->Threads->IsLocked($thread_id)) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
+				if ($forum->Threads->IsLocked($thread_id)) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["create_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+				if (!$access_rights[$player->Type()]["create_post"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
-				if (trim($_POST['Content']) == "") { $error = "Invalid input"; $current = "New_post"; break; }
-				if (strlen($_POST['Content']) > POST_LENGTH) { $error = "Post text is too long"; $current = "New_post"; break; }
+				if (trim($_POST['Content']) == "") { $error = "Invalid input"; $current = "Forum_post_new"; break; }
+				if (strlen($_POST['Content']) > POST_LENGTH) { $error = "Post text is too long"; $current = "Forum_post_new"; break; }
 
 				$new_post = $forum->Threads->Posts->CreatePost($thread_id, $player->Name(), $_POST['Content']);
-				if (!$new_post) { $error = "Failed to create new post"; $current = "Thread_details"; break; }
+				if (!$new_post) { $error = "Failed to create new post"; $current = "Forum_thread"; break; }
 
 				$forum->Threads->RefreshThread($thread_id); // update post count, last author and last post
 
 				$_POST['CurrentPage'] = max(($forum->Threads->Posts->CountPages($thread_id)) - 1, 0);
 				$information = "Post created";
-				$current = 'Thread_details';
+				$current = 'Forum_thread';
 
 				break;
 			}
@@ -958,12 +958,12 @@
 				$thread_id = $_POST['CurrentThread'];
 
 				// check if thread is locked and if you have access to unlock it
-				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
+				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["create_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+				if (!$access_rights[$player->Type()]["create_post"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
-				$current = 'New_post';
+				$current = 'Forum_post_new';
 
 				break;
 			}
@@ -974,12 +974,12 @@
 				$thread_data = $forum->Threads->GetThread($thread_id);
 
 				// check if thread is locked and if you have access to unlock it
-				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
+				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
 
 				// check access rights
-				if (!(($access_rights[$player->Type()]["edit_all_thread"]) OR ($access_rights[$player->Type()]["edit_own_thread"] AND $thread_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+				if (!(($access_rights[$player->Type()]["edit_all_thread"]) OR ($access_rights[$player->Type()]["edit_own_thread"] AND $thread_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
-				$current = 'Edit_thread';
+				$current = 'Forum_thread_edit';
 
 				break;
 			}
@@ -990,23 +990,23 @@
 				$thread_data = $forum->Threads->GetThread($thread_id);
 
 				// check if thread is locked and if you have access to unlock it
-				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
+				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
 
 				// check access rights
-				if (!(($access_rights[$player->Type()]["edit_all_thread"]) OR ($access_rights[$player->Type()]["edit_own_thread"] AND $thread_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+				if (!(($access_rights[$player->Type()]["edit_all_thread"]) OR ($access_rights[$player->Type()]["edit_own_thread"] AND $thread_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
 				// check access rights
-				if ((!$access_rights[$player->Type()]["chng_priority"]) AND (isset($_POST['Priority'])) AND ($_POST['Priority'] != $thread_data['Priority'])) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+				if ((!$access_rights[$player->Type()]["chng_priority"]) AND (isset($_POST['Priority'])) AND ($_POST['Priority'] != $thread_data['Priority'])) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
-				if (trim($_POST['Title']) == "") { $error = "Invalid input"; $current = "Thread_details"; break; }
+				if (trim($_POST['Title']) == "") { $error = "Invalid input"; $current = "Forum_thread"; break; }
 
 				$new_priority = ((isset($_POST['Priority'])) ? $_POST['Priority'] : $thread_data['Priority']);
 
 				$edited_thread = $forum->Threads->EditThread($thread_id, $_POST['Title'], $new_priority);
-				if (!$edited_thread) { $error = "Failed to edit thread"; $current = "Thread_details"; break; }
+				if (!$edited_thread) { $error = "Failed to edit thread"; $current = "Forum_thread"; break; }
 
 				$information = "Changes saved";
-				$current = 'Thread_details';
+				$current = 'Forum_thread';
 
 				break;
 			}
@@ -1017,13 +1017,13 @@
 				$new_section = $_POST['section_select'];
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["move_thread"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+				if (!$access_rights[$player->Type()]["move_thread"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
 				$move = $forum->Threads->MoveThread($thread_id, $new_section);
-				if (!$move) { $error = "Failed to change sections"; $current = "Edit_thread"; break; }
+				if (!$move) { $error = "Failed to change sections"; $current = "Forum_thread_edit"; break; }
 
 				$information = "Section changed";
-				$current = 'Edit_thread';
+				$current = 'Forum_thread_edit';
 
 				break;
 			}
@@ -1038,13 +1038,13 @@
 				$_POST['CurrentPost'] = $post_id = $_POST['edit_post'];
 
 				// check if thread is locked and if you have access to unlock it
-				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
+				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
 
 				$post_data = $forum->Threads->Posts->GetPost($post_id);
 
-				if (!(($access_rights[$player->Type()]["edit_all_post"]) OR ($access_rights[$player->Type()]["edit_own_post"] AND $post_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+				if (!(($access_rights[$player->Type()]["edit_all_post"]) OR ($access_rights[$player->Type()]["edit_own_post"] AND $post_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
-				$current = 'Edit_post';
+				$current = 'Forum_post_edit';
 
 				break;
 			}
@@ -1055,20 +1055,20 @@
 				$post_id = $_POST['CurrentPost'];
 
 				// check if thread is locked and if you have access to unlock it
-				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
+				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
 
 				$post_data = $forum->Threads->Posts->GetPost($post_id);
 
-				if (!(($access_rights[$player->Type()]["edit_all_post"]) OR ($access_rights[$player->Type()]["edit_own_post"] AND $post_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+				if (!(($access_rights[$player->Type()]["edit_all_post"]) OR ($access_rights[$player->Type()]["edit_own_post"] AND $post_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
-				if (trim($_POST['Content']) == "") { $error = "Invalid input"; $current = "Edit_post"; break; }
-				if (strlen($_POST['Content']) > POST_LENGTH) { $error = "Post text is too long"; $current = "Edit_post"; break; }
+				if (trim($_POST['Content']) == "") { $error = "Invalid input"; $current = "Forum_post_edit"; break; }
+				if (strlen($_POST['Content']) > POST_LENGTH) { $error = "Post text is too long"; $current = "Forum_post_edit"; break; }
 
 				$edited_post = $forum->Threads->Posts->EditPost($post_id, $_POST['Content']);
-				if (!$edited_post) { $error = "Failed to edit post"; $current = "Thread_details"; break; }
+				if (!$edited_post) { $error = "Failed to edit post"; $current = "Forum_thread"; break; }
 
 				$information = "Changes saved";
-				$current = 'Thread_details';
+				$current = 'Forum_thread';
 
 				break;
 			}
@@ -1079,13 +1079,13 @@
 				$thread_id = $_POST['CurrentThread'];
 
 				// check if thread is locked and if you have access to unlock it
-				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
+				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["del_all_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+				if (!$access_rights[$player->Type()]["del_all_post"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
 				$information = "Please confirm post deletion";
-				$current = 'Thread_details';
+				$current = 'Forum_thread';
 				break;
 			}
 
@@ -1095,13 +1095,13 @@
 				$post_id = $_POST['delete_post_confirm'];
 
 				// check if thread is locked and if you have access to unlock it
-				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Thread_details'; break; }
+				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["del_all_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+				if (!$access_rights[$player->Type()]["del_all_post"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
 				$deleted_post = $forum->Threads->Posts->DeletePost($post_id);
-				if (!$deleted_post) { $error = "Failed to delete post"; $current = "Thread_details"; break; }
+				if (!$deleted_post) { $error = "Failed to delete post"; $current = "Forum_thread"; break; }
 
 				$forum->Threads->RefreshThread($thread_id); // update post count, last author and last post
 
@@ -1109,7 +1109,7 @@
 				$_POST['CurrentPage'] = (($_POST['CurrentPage'] <= $max_page) ? $_POST['CurrentPage'] : $max_page);
 
 				$information = "Post deleted";
-				$current = 'Thread_details';
+				$current = 'Forum_thread';
 
 				break;
 			}
@@ -1121,10 +1121,10 @@
 				$new_thread = $_POST['thread_select'];
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["move_post"]) { $error = 'Access denied.'; $current = 'Thread_details'; break; }
+				if (!$access_rights[$player->Type()]["move_post"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
 				$move = $forum->Threads->Posts->MovePost($post_id, $new_thread);
-				if (!$move) { $error = "Failed to change threads"; $current = "Thread_details"; break; }
+				if (!$move) { $error = "Failed to change threads"; $current = "Forum_thread"; break; }
 
 				 // update post count, last author and last post of both former and target threads
 				$forum->Threads->RefreshThread($thread_id);
@@ -1132,7 +1132,7 @@
 
 				$_POST['CurrentPage'] = 0; // go to first page of target thread on success
 				$information = "Thread changed";
-				$current = 'Edit_post';
+				$current = 'Forum_post_edit';
 
 				break;
 			}
@@ -1161,7 +1161,7 @@
 				if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { $error = 'Game already over.'; $current = 'Games'; break; }
 
 				$_POST['CurrentGame'] = $gameid;
-				$current = "Game";
+				$current = "Games_details";
 				break;
 			}
 			
@@ -1209,7 +1209,7 @@
 				if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { $error = 'Game already over.'; $current = 'Games'; break; }
 
 				$_POST['CurrentGame'] = $game->ID();
-				$current = "Game";
+				$current = "Games_details";
 				break;
 			}
 
@@ -1222,17 +1222,17 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to perform game actions
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games_details'; break; }
 
 				$new_note = $_POST['Content'];
 
-				if (strlen($new_note) > MESSAGE_LENGTH) { $error = "Game note is too long"; $current = "Game_note"; break; }
+				if (strlen($new_note) > MESSAGE_LENGTH) { $error = "Game note is too long"; $current = "Games_note"; break; }
 
 				$game->SetNote($player->Name(), $new_note);
 				$game->SaveGame();
 
 				$information = 'Game note saved.';
-				$current = 'Game_note';
+				$current = 'Games_note';
 				break;
 			}
 
@@ -1252,13 +1252,13 @@
 
 				$new_note = $_POST['Content'];
 
-				if (strlen($new_note) > MESSAGE_LENGTH) { $error = "Game note is too long"; $current = "Game_note"; break; }
+				if (strlen($new_note) > MESSAGE_LENGTH) { $error = "Game note is too long"; $current = "Games_note"; break; }
 
 				$game->SetNote($player->Name(), $new_note);
 				$game->SaveGame();
 
 				$information = 'Game note saved.';
-				$current = 'Game';
+				$current = 'Games_details';
 				break;
 			}
 
@@ -1271,13 +1271,13 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to perform game actions
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games_details'; break; }
 
 				$game->ClearNote($player->Name());
 				$game->SaveGame();
 
 				$information = 'Game note cleared.';
-				$current = 'Game_note';
+				$current = 'Games_note';
 				break;
 			}
 
@@ -1290,7 +1290,7 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to perform game actions
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games_details'; break; }
 
 				// disable re-visiting
 				if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { $error = 'Game already over.'; $current = 'Games'; break; }
@@ -1299,7 +1299,7 @@
 				$game->SaveGame();
 
 				$information = 'Game note cleared.';
-				$current = 'Game';
+				$current = 'Games_details';
 				break;
 			}
 
@@ -1314,16 +1314,16 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to send messages in this game
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games_details'; break; }
 
 				// do not post empty messages (prevents accidental send)
-				if (trim($msg) == '') { /*$error = 'You can't send empty chat messages.';*/ $current = 'Game'; break; }
+				if (trim($msg) == '') { /*$error = 'You can't send empty chat messages.';*/ $current = 'Games_details'; break; }
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["chat"]) { $error = 'Access denied.'; $current = 'Game'; break; }
+				if (!$access_rights[$player->Type()]["chat"]) { $error = 'Access denied.'; $current = 'Games_details'; break; }
 
 				$chatdb->SaveChatMessage($game->ID(), $msg, $player->Name());
-				$current = 'Game';
+				$current = 'Games_details';
 				break;
 			}
 
@@ -1338,10 +1338,10 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to perform game actions
-				if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or $game->Surrender != '') { $current = 'Game'; break; }
+				if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or $game->Surrender != '') { $current = 'Games_details'; break; }
 
 				// check card position
-				if (!is_numeric($cardpos)) { $error = 'Invalid card position.'; $current = 'Game'; break; }
+				if (!is_numeric($cardpos)) { $error = 'Invalid card position.'; $current = 'Games_details'; break; }
 
 				// the rest of the checks are done internally
 				$result = $game->PlayCard($player->Name(), $cardpos, 0, 'discard');
@@ -1358,7 +1358,7 @@
 				}
 				else $error = $result;
 
-				$current = "Game";
+				$current = "Games_details";
 				break;
 			}
 
@@ -1374,13 +1374,13 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to perform game actions
-				if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or $game->Surrender != '') { $current = 'Game'; break; }
+				if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or $game->Surrender != '') { $current = 'Games_details'; break; }
 
 				// check card position
-				if (!is_numeric($cardpos)) { $error = 'Invalid card position.'; $current = 'Game'; break; }
+				if (!is_numeric($cardpos)) { $error = 'Invalid card position.'; $current = 'Games_details'; break; }
 
 				// check card mode
-				if (!is_numeric($mode)) { $error = 'Invalid mode.'; $current = 'Game'; break; }
+				if (!is_numeric($mode)) { $error = 'Invalid mode.'; $current = 'Games_details'; break; }
 
 				// the rest of the checks are done internally
 				$result = $game->PlayCard($player->Name(), $cardpos, $mode, 'play');
@@ -1437,7 +1437,7 @@
 				}
 				else $error = $result;
 
-				$current = "Game";
+				$current = "Games_details";
 				break;
 			}
 
@@ -1450,13 +1450,13 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to surrender in this game
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games_details'; break; }
 
 				$result = $game->RequestSurrender($player->Name());
 
 				if ($result == 'OK') $information = 'Surrender request sent.';
 
-				$current = "Game";
+				$current = "Games_details";
 				break;
 			}
 
@@ -1469,13 +1469,13 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to cancel surrender in this game
-				if ($player->Name() != $game->Surrender) { $current = 'Game'; break; }
+				if ($player->Name() != $game->Surrender) { $current = 'Games_details'; break; }
 
 				$result = $game->CancelSurrender();
 
 				if ($result == 'OK') $information = 'Surrender request cancelled.';
 
-				$current = "Game";
+				$current = "Games_details";
 				break;
 			}
 
@@ -1488,13 +1488,13 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to reject surrender in this game
-				if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or ($player->Name() == $game->Surrender)) { $current = 'Game'; break; }
+				if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or ($player->Name() == $game->Surrender)) { $current = 'Games_details'; break; }
 
 				$result = $game->CancelSurrender();
 
 				if ($result == 'OK') $information = 'Surrender request rejected.';
 
-				$current = "Game";
+				$current = "Games_details";
 				break;
 			}
 
@@ -1507,7 +1507,7 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to accept surrender in this game
-				if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or ($player->Name() == $game->Surrender)) { $current = 'Game'; break; }
+				if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or ($player->Name() == $game->Surrender)) { $current = 'Games_details'; break; }
 
 				$result = $game->SurrenderGame();
 
@@ -1554,7 +1554,7 @@
 				}
 				else $error = $result;
 
-				$current = "Game";
+				$current = "Games_details";
 				break;
 			}
 
@@ -1569,10 +1569,10 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to abort this game
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games_details'; break; }
 
 				// only allow aborting abandoned games
-				if (!$playerdb->isDead($game->Name1()) and !$playerdb->isDead($game->Name2())) { $error = 'Action not allowed!'; $current = 'Game'; break; }
+				if (!$playerdb->isDead($game->Name1()) and !$playerdb->isDead($game->Name2())) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
 
 				$result = $game->AbortGame($player->Name());
 
@@ -1580,7 +1580,7 @@
 					$replaydb->FinishReplay($game);
 				else $error = $result;
 
-				$current = "Game";
+				$current = "Games_details";
 				break;
 			}
 
@@ -1595,13 +1595,13 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to abort this game
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Game'; break; }
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games_details'; break; }
 
 				// only allow finishing active games
-				if ($playerdb->isDead($game->Name1()) or $playerdb->isDead($game->Name2())) { $error = 'Action not allowed!'; $current = 'Game'; break; }
+				if ($playerdb->isDead($game->Name1()) or $playerdb->isDead($game->Name2())) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
 
 				// and only if the abort criteria are met
-				if( time() - strtotime($game->LastAction) < 60*60*24*7*3 || $game->Current == $player->Name() ) { $error = 'Action not allowed!'; $current = 'Game'; break; }
+				if( time() - strtotime($game->LastAction) < 60*60*24*7*3 || $game->Current == $player->Name() ) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
 
 				$result = $game->FinishGame($player->Name());
 
@@ -1649,7 +1649,7 @@
 				}
 				else $error = $result;
 
-				$current = "Game";
+				$current = "Games_details";
 				break;
 			}
 
@@ -1665,7 +1665,7 @@
 				if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { $current = 'Games'; break; }
 
 				// only allow if the game is over (stay if not)
-				if ($game->State == 'in progress') { $current = "Game"; break; }
+				if ($game->State == 'in progress') { $current = "Games_details"; break; }
 
 				if ($game->State == 'finished')
 				{
@@ -1900,7 +1900,7 @@
 				$_POST['cur_player'] = postdecode($_POST['prepare_challenge']);
 
 				// this is only used to assist the function below
-				$current = 'Profile';
+				$current = 'Players_details';
 				break;
 			}
 
@@ -1915,16 +1915,16 @@
 				$deck = $deckdb->GetDeck($player->Name(), $deckname);
 
 				// check if such deck exists
-				if (!$deck) { $error = 'Deck '.$deckname.' does not exist!'; $current = 'Profile'; break; }
+				if (!$deck) { $error = 'Deck '.$deckname.' does not exist!'; $current = 'Players_details'; break; }
 
 				// check if the deck is ready (all 45 cards)
-				if (!$deck->isReady()) { $error = 'Deck '.$deckname.' is not yet ready for gameplay!'; $current = 'Profile'; break; }
+				if (!$deck->isReady()) { $error = 'Deck '.$deckname.' is not yet ready for gameplay!'; $current = 'Players_details'; break; }
 
 				// check if such opponent exists
-				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Profile'; break; }
+				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Players_details'; break; }
 
 				// check if that opponent was already challenged, or if there is a game already in progress
-				if ($gamedb->CheckGame($player->Name(), $opponent)) { $error = 'You are already playing against '.htmlencode($opponent).'!'; $current = 'Profile'; break; }
+				if ($gamedb->CheckGame($player->Name(), $opponent)) { $error = 'You are already playing against '.htmlencode($opponent).'!'; $current = 'Players_details'; break; }
 
 				// check if you are within the MAX_GAMES limit
 				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Messages'; break; }
@@ -1934,7 +1934,7 @@
 
 				// create a new challenge
 				$game = $gamedb->CreateGame($player->Name(), $opponent, $deck->DeckData);
-				if (!$game) { $error = 'Failed to create new game!'; $current = 'Profile'; break; }
+				if (!$game) { $error = 'Failed to create new game!'; $current = 'Players_details'; break; }
 
 				// set game modes
 				$hidden_cards = (isset($_POST['HiddenCards']) ? 'yes' : 'no');
@@ -1949,10 +1949,10 @@
 				$challenge_text.= $_POST['Content'];
 
 				$res = $messagedb->SendChallenge($player->Name(), $opponent, $challenge_text, $game->ID());
-				if (!$res) { $error = 'Failed to create new challenge!'; $current = 'Profile'; break; }
+				if (!$res) { $error = 'Failed to create new challenge!'; $current = 'Players_details'; break; }
 
 				$information = 'You have challenged '.htmlencode($opponent).'. Waiting for reply.';
-				$current = 'Profile';
+				$current = 'Players_details';
 				break;
 			}
 
@@ -1962,15 +1962,15 @@
 				$game = $gamedb->GetGame($game_id);
 
 				// check if the challenge exists
-				if (!$game) { $error = 'No such challenge!'; $current = 'Profile'; break; }
+				if (!$game) { $error = 'No such challenge!'; $current = 'Players_details'; break; }
 
 				// check if the game is a a challenge (and not a game in progress)
-				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Profile'; break; }
+				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Players_details'; break; }
 
 				$_POST['cur_player'] = $opponent = $game->Name2();
 
 				// check if such opponent exists
-				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Profile'; break; }
+				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Players_details'; break; }
 
 				// delete t3h challenge/game entry
 				$gamedb->DeleteGame($game->ID());
@@ -1978,7 +1978,7 @@
 				$messagedb->CancelChallenge($game->ID());
 
 				$information = 'You have withdrawn a challenge.';
-				$current = 'Profile';
+				$current = 'Players_details';
 				break;
 			}
 
@@ -1996,7 +1996,7 @@
 				$_POST['cur_player'] = $opponent = $game->Name2();
 
 				// check if such opponent exists
-				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Profile'; break; }
+				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Players_details'; break; }
 
 				// delete t3h challenge/game entry
 				$gamedb->DeleteGame($game->ID());
@@ -2021,7 +2021,7 @@
 				if (!$message) { $error = "No such message!"; $current = "Messages"; break; }
 
 				$_POST['CurrentMessage'] = $messageid;
-				$current = 'Message_details';
+				$current = 'Messages_details';
 				break;
 			}
 
@@ -2036,7 +2036,7 @@
 				if (!$message) { $error = "No such message!"; $current = "Messages"; break; }
 
 				$_POST['CurrentMessage'] = $messageid;
-				$current = 'Message_details';
+				$current = 'Messages_details';
 				break;
 			}
 
@@ -2048,7 +2048,7 @@
 				if (!$message) { $error = "No such message!"; $current = "Messages"; break; }
 
 				$_POST['CurrentMessage'] = $messageid;
-				$current = 'Message_details';
+				$current = 'Messages_details';
 				break;
 			}
 
@@ -2077,9 +2077,9 @@
 
 				// check access rights
 				if (!$access_rights[$player->Type()]["messages"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
-				if ((trim($_POST['Subject']) == "") AND (trim($_POST['Content']) == "")) { $error = "No message input specified"; $current = "Message_new"; break; }
-				if (strlen($_POST['Content']) > MESSAGE_LENGTH) { $error = "Message too long"; $current = "Message_new"; break; }
-				if (!$playerdb->GetPlayer($_POST['Recipient'])) { $error = "Recipient doesn't exist"; $current = "Message_new"; break; }
+				if ((trim($_POST['Subject']) == "") AND (trim($_POST['Content']) == "")) { $error = "No message input specified"; $current = "Messages_new"; break; }
+				if (strlen($_POST['Content']) > MESSAGE_LENGTH) { $error = "Message too long"; $current = "Messages_new"; break; }
+				if (!$playerdb->GetPlayer($_POST['Recipient'])) { $error = "Recipient doesn't exist"; $current = "Messages_new"; break; }
 
 				$message = $messagedb->SendMessage($_POST['Author'], $_POST['Recipient'], $_POST['Subject'], $_POST['Content']);
 
@@ -2099,7 +2099,7 @@
 				$_POST['Recipient'] = postdecode($_POST['message_create']);
 				$_POST['Author'] = $player->Name();
 
-				$current = 'Message_new';
+				$current = 'Messages_new';
 				break;
 			}
 
@@ -2111,7 +2111,7 @@
 				$_POST['Recipient'] = postdecode($_POST['system_notification']);
 				$_POST['Author'] = SYSTEM_NAME;
 
-				$current = 'Message_new';
+				$current = 'Messages_new';
 				break;
 			}
 
@@ -2185,13 +2185,13 @@
 				$_POST['Profile'] = $opponent = postdecode($_POST['change_access']);
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Profile'; break; }
+				if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
 
 				$target = $playerdb->GetPlayer($opponent);
 				$target->ChangeAccessRights($_POST['new_access']);
 
 				$information = 'Access rights changed.';
-				$current = 'Profile';
+				$current = 'Players_details';
 				break;
 			}
 
@@ -2200,7 +2200,7 @@
 				$_POST['Profile'] = $opponent = postdecode($_POST['reset_exp']);
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Profile'; break; }
+				if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
 
 				// reset level end exp
 				$score = $scoredb->GetScore($opponent);
@@ -2213,7 +2213,7 @@
 					if ($i >= DECK_SLOTS) $deckdb->DeleteDeck($opponent, $deck_data['Deckname']);
 
 				$information = 'Exp reset.';
-				$current = 'Profile';
+				$current = 'Players_details';
 				break;
 			}
 
@@ -2225,7 +2225,7 @@
 				if (!$opponent) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Players'; break; }
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["change_all_avatar"]) { $error = 'Access denied.'; $current = 'Profile'; break; }
+				if (!$access_rights[$player->Type()]["change_all_avatar"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
 
 				$settings = $opponent->GetSettings();
 				$former_name = $settings->GetSetting('Avatar');
@@ -2236,7 +2236,7 @@
 				$settings->SaveSettings();
 
 				$information = "Avatar cleared";
-				$current = 'Profile';
+				$current = 'Players_details';
 
 				break;
 			}
@@ -2504,17 +2504,17 @@
 
 	if( !$session )
 	{
-		// login box params
-		$params["loginbox"]["error_msg"] = @$error;
-		$params["loginbox"]["warning_msg"] = @$warning;
-		$params["loginbox"]["info_msg"] = @$information;
-		$params["loginbox"]["current"] = $current;
+		// outer navbar params
+		$params["navbar"]["error_msg"] = @$error;
+		$params["navbar"]["warning_msg"] = @$warning;
+		$params["navbar"]["info_msg"] = @$information;
+		$params["navbar"]["current"] = $current;
 		$params["main"]["skin"] = 0; // default skin (user is not logged in, can't retrieve his settings)
 		$params["main"]["autorefresh"] = 0; // autorefresh is inactive by default
 	}
 	else
 	{
-		// navbar params
+		// inner navbar params
 		$params["navbar"]["player_name"] = $player->Name();
 		$params["navbar"]["level"] = $player->GetLevel();
 		$params["navbar"]["current"] = $current;
@@ -2541,22 +2541,22 @@ switch( $current )
 case 'Webpage':
 	// decide what screen is default (depends on whether the user is logged in)
 	$default_page = ( !$session ) ? 'Main' : 'News';
-	$params['website']['selected'] = $selected = isset($_POST['WebSection']) ? $_POST['WebSection'] : $default_page;
+	$params['webpage']['selected'] = $selected = isset($_POST['WebSection']) ? $_POST['WebSection'] : $default_page;
 
 	$websections = array('Main', 'News', 'Archive', 'Modified', 'Faq', 'Credits', 'History');
 	if (!in_array($selected, $websections)) { $display_error = 'Invalid web section.'; break; }
 
 	// display all news when viewing news archive, display only recent news otherwise
-	if ($selected == 'Archive') { $selected = 'News'; $params['website']['recent_news_only'] = 'no'; }
-	else $params['website']['recent_news_only'] = 'yes';
+	if ($selected == 'Archive') { $selected = 'News'; $params['webpage']['recent_news_only'] = 'no'; }
+	else $params['webpage']['recent_news_only'] = 'yes';
 
 	// list the names of the files to display
 	// (all files whose name matches up to the first space character)
 	$files = preg_grep('/^'.$selected.'( .*)?\.xml/i', scandir('templates/pages',1));
 
-	$params['website']['websections'] = $websections;
-	$params['website']['files'] = $files;
-	$params['website']['timezone'] = ( isset($player) ) ? $player->GetSettings()->GetSetting('Timezone') : '+0';
+	$params['webpage']['websections'] = $websections;
+	$params['webpage']['files'] = $files;
+	$params['webpage']['timezone'] = ( isset($player) ) ? $player->GetSettings()->GetSetting('Timezone') : '+0';
 	break;
 
 
@@ -2571,7 +2571,7 @@ case 'Registration':
 	break;
 
 
-case 'Deck_edit':
+case 'Decks_edit':
 	$currentdeck = $params['deck_edit']['CurrentDeck'] = isset($_POST['CurrentDeck']) ? $_POST['CurrentDeck'] : '';
 	$classfilter = $params['deck_edit']['ClassFilter'] = isset($_POST['ClassFilter']) ? $_POST['ClassFilter'] : 'Common';
 	$costfilter = $params['deck_edit']['CostFilter'] = isset($_POST['CostFilter']) ? $_POST['CostFilter'] : 'none';
@@ -2800,7 +2800,7 @@ case 'Players':
 	break;
 
 
-case 'Profile':
+case 'Players_details':
 
 	// retrieve name of a player we are currently viewing
 	$cur_player = (isset($_POST['Profile'])) ? $_POST['Profile'] : $_POST['cur_player'];
@@ -2947,7 +2947,7 @@ case 'Messages':
 	break;
 
 
-case 'Message_details':
+case 'Messages_details':
 	$messageid = $_POST['CurrentMessage'];
 	$message = $messagedb->RetrieveMessage($messageid, $player->Name());
 	if (!$message) { $display_error = "Invalid message."; break; }
@@ -2974,7 +2974,7 @@ case 'Message_details':
 	break;
 
 
-case 'Message_new':
+case 'Messages_new':
 	$params['message_new']['Author'] = $_POST['Author'];
 	$params['message_new']['Recipient'] = $_POST['Recipient'];
 	$params['message_new']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : '');
@@ -3068,7 +3068,7 @@ case 'Games':
 	break;
 
 
-case 'Game':
+case 'Games_details':
 	$gameid = $_POST['CurrentGame'];
 	$game = $gamedb->GetGame($gameid);
 
@@ -3293,7 +3293,7 @@ case 'Game':
 	break;
 
 
-case 'Deck_view':
+case 'Decks_view':
 	$gameid = $_POST['CurrentGame'];
 	$game = $gamedb->GetGame($gameid);
 
@@ -3320,7 +3320,7 @@ case 'Deck_view':
 	break;
 
 
-case 'Game_note':
+case 'Games_note':
 	$gameid = $_POST['CurrentGame'];
 	$game = $gamedb->GetGame($gameid);
 
@@ -3391,7 +3391,7 @@ case 'Forum_search':
 	break;
 
 
-case 'Section_details':
+case 'Forum_section':
 	$section_id = $_POST['CurrentSection'];
 	$current_page = (isset($_POST['CurrentPage'])) ? $_POST['CurrentPage'] : 0;
 
@@ -3412,7 +3412,7 @@ case 'Section_details':
 	break;
 
 
-case 'Thread_details':
+case 'Forum_thread':
 	$thread_id = $_POST['CurrentThread'];
 	$current_page = (isset($_POST['CurrentPage'])) ? $_POST['CurrentPage'] : 0;
 
@@ -3446,7 +3446,7 @@ case 'Thread_details':
 	break;
 
 
-case 'New_thread':
+case 'Forum_thread_new':
 	$section = $forum->GetSection($_POST['CurrentSection']);
 	if (!$section) { $display_error = "Invalid forum section."; break; }
 
@@ -3458,7 +3458,7 @@ case 'New_thread':
 	break;
 
 
-case 'New_post':
+case 'Forum_post_new':
 	$thread = $forum->Threads->GetThread($_POST['CurrentThread']);
 	if (!$thread) { $display_error = "Invalid thread."; break; }
 
@@ -3473,7 +3473,7 @@ case 'New_post':
 	break;
 
 
-case 'Edit_thread':
+case 'Forum_thread_edit':
 	$thread_data = $forum->Threads->GetThread($_POST['CurrentThread']);
 	if (!$thread_data) { $display_error = "Invalid thread."; break; }
 
@@ -3486,7 +3486,7 @@ case 'Edit_thread':
 	break;
 
 
-case 'Edit_post':
+case 'Forum_post_edit':
 	$post_data = $forum->Threads->Posts->GetPost($_POST['CurrentPost']);
 	if (!$post_data) { $display_error = "Invalid post."; break; }
 
@@ -3520,7 +3520,7 @@ case 'Replays':
 
 	break;
 
-case 'Replay':
+case 'Replays_details':
 	$params['replay']['CurrentReplay'] = $gameid = (isset($_POST['CurrentReplay'])) ? $_POST['CurrentReplay'] : 0;
 	$params['replay']['PlayerView'] = $player_view = (isset($_POST['PlayerView'])) ? $_POST['PlayerView'] : 1;
 	$params['replay']['CurrentTurn'] = $turn = (isset($_POST['Turn']) ? $_POST['Turn'] : 1);
@@ -3778,6 +3778,9 @@ case 'Statistics':
 
 
 default:
+	// no section was matched, redirect to error page
+	$params['error']['message'] = 'Invalid section';
+	$current = 'Error';
 	break;
 }
 
@@ -3786,13 +3789,16 @@ default:
 
 	// which section to display
 	$params["main"]["section"] = $current;
+	$section_name = preg_replace("/_.*/i", '', $current);
+	$params["main"]["section_name"] = $params["navbar"]["section_name"] = $section_name;
+	$module = 'templates/template_'.strtolower($section_name).'.xsl';
 
 	// HTML code generation
 
 	$querytime_end = microtime(TRUE);
 	$xslttime_start = $querytime_end;
 
-	echo XSLT("templates/arcomage.xsl", $params);
+	echo XSLT($module, $params);
 
 	$xslttime_end = microtime(TRUE);
 

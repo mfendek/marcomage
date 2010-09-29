@@ -8,6 +8,9 @@
                 extension-element-prefixes="exsl php">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
+<!-- includes -->
+<xsl:include href="template_main.xsl" />
+
 
 <xsl:template match="section[. = 'Messages']">
 	<xsl:variable name="param" select="$params/messages" />
@@ -70,7 +73,7 @@
 										<xsl:if test="Online = 'yes'">
 											<xsl:attribute name="class">p_online</xsl:attribute>
 										</xsl:if>
-										<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><xsl:value-of select="Author"/></a>
+										<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', Author)}"><xsl:value-of select="Author"/></a>
 									</span>
 									<xsl:text> has challenged you on </xsl:text>
 									<span><xsl:value-of select="am:datetime(Created, $param/timezone)"/></span>
@@ -92,7 +95,7 @@
 										<xsl:if test="Online = 'yes'">
 											<xsl:attribute name="class">p_online</xsl:attribute>
 										</xsl:if>
-										<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', Recipient)}"><xsl:value-of select="Recipient"/></a>
+										<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', Recipient)}"><xsl:value-of select="Recipient"/></a>
 									</span>
 									<xsl:text> on </xsl:text>
 									<span><xsl:value-of select="am:datetime(Created, $param/timezone)"/></span>
@@ -350,7 +353,7 @@
 </xsl:template>
 
 
-<xsl:template match="section[. = 'Message_details']">
+<xsl:template match="section[. = 'Messages_details']">
 	<xsl:variable name="param" select="$params/message_details" />
 
 	<div id="mes_details">
@@ -389,7 +392,7 @@
 </xsl:template>
 
 
-<xsl:template match="section[. = 'Message_new']">
+<xsl:template match="section[. = 'Messages_new']">
 	<xsl:variable name="param" select="$params/message_new" />
 
 	<div id="mes_details">

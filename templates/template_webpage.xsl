@@ -9,9 +9,12 @@
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 <xsl:strip-space elements="*" />
 
+<!-- includes -->
+<xsl:include href="template_main.xsl" />
+
 
 <xsl:template match="section[. = 'Webpage']">
-	<xsl:variable name="param" select="$params/website" />
+	<xsl:variable name="param" select="$params/webpage" />
 
 	<div id="webpage">
 

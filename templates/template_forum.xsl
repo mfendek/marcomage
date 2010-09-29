@@ -11,6 +11,9 @@
                 extension-element-prefixes="date exsl func php str">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
+<!-- includes -->
+<xsl:include href="template_main.xsl" />
+
 
 <xsl:template match="section[. = 'Forum']">
 	<xsl:variable name="param" select="$params/forum_overview" />
@@ -36,7 +39,7 @@
 		<tr><td colspan="6">
 		<div class="skin_label">
 		<h5>
-			<a href="{php:functionString('makeurl', 'Section_details', 'CurrentSection', SectionID)}"><xsl:value-of select="SectionName"/></a>
+			<a href="{php:functionString('makeurl', 'Forum_section', 'CurrentSection', SectionID)}"><xsl:value-of select="SectionName"/></a>
 			( <xsl:value-of select="count" /> ) - <xsl:value-of select="Description" />
 		</h5>
 		<p></p>
@@ -63,11 +66,11 @@
 			</td>
 			<td>
 				<p class="headings">
-					<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID, 'CurrentPage', 0)}"><xsl:value-of select="Title" /></a>
+					<a href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', ThreadID, 'CurrentPage', 0)}"><xsl:value-of select="Title" /></a>
 				</p>
 			</td>
 			<td>
-				<p><a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><xsl:value-of select="Author"/></a></p>
+				<p><a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', Author)}"><xsl:value-of select="Author"/></a></p>
 			</td>
 			<td>
 				<p><xsl:value-of select="PostCount"/></p>
@@ -82,9 +85,9 @@
 							<xsl:if test="am:datediff(LastPost, $param/notification) &lt; 0">
 								<xsl:attribute name="class">new</xsl:attribute>
 							</xsl:if>
-							<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID, 'CurrentPage', am:max(LastPage - 1, 0), '#latest')}"><xsl:value-of select="am:datetime(LastPost, $param/timezone)" /></a>
+							<a href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', ThreadID, 'CurrentPage', am:max(LastPage - 1, 0), '#latest')}"><xsl:value-of select="am:datetime(LastPost, $param/timezone)" /></a>
 							<xsl:text> by </xsl:text>
-							<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', LastAuthor)}"><xsl:value-of select="LastAuthor"/></a>
+							<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', LastAuthor)}"><xsl:value-of select="LastAuthor"/></a>
 						</p>
 					</xsl:when>
 					<xsl:otherwise><p>n/a</p></xsl:otherwise>
@@ -196,11 +199,11 @@
 				</td>
 				<td>
 					<p class="headings">
-						<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID, 'CurrentPage', 0)}"><xsl:value-of select="Title" /></a>
+						<a href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', ThreadID, 'CurrentPage', 0)}"><xsl:value-of select="Title" /></a>
 					</p>
 				</td>
 				<td>
-					<p><a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><xsl:value-of select="Author"/></a></p>
+					<p><a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', Author)}"><xsl:value-of select="Author"/></a></p>
 				</td>
 				<td>
 					<p><xsl:value-of select="PostCount"/></p>
@@ -215,9 +218,9 @@
 								<xsl:if test="am:datediff(LastPost, $param/notification) &lt; 0">
 									<xsl:attribute name="class">new</xsl:attribute>
 								</xsl:if>
-								<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID, 'CurrentPage', am:max(LastPage - 1, 0), '#latest')}"><xsl:value-of select="am:datetime(LastPost, $param/timezone)" /></a>
+								<a href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', ThreadID, 'CurrentPage', am:max(LastPage - 1, 0), '#latest')}"><xsl:value-of select="am:datetime(LastPost, $param/timezone)" /></a>
 								<xsl:text> by </xsl:text>
-								<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', LastAuthor)}"><xsl:value-of select="LastAuthor"/></a>
+								<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', LastAuthor)}"><xsl:value-of select="LastAuthor"/></a>
 							</p>
 						</xsl:when>
 						<xsl:otherwise><p>n/a</p></xsl:otherwise>
@@ -240,7 +243,7 @@
 </xsl:template>
 
 
-<xsl:template match="section[. = 'Section_details']">
+<xsl:template match="section[. = 'Forum_section']">
 	<xsl:variable name="param" select="$params/forum_section" />
 
 	<div id="forum">
@@ -272,7 +275,7 @@
 	<p>
 
 	<!-- navigation -->
-	<xsl:copy-of select="am:forum_navigation('Section_details', 'CurrentSection', $param/section/SectionID, $param/current_page, $param/pages)"/>
+	<xsl:copy-of select="am:forum_navigation('Forum_section', 'CurrentSection', $param/section/SectionID, $param/current_page, $param/pages)"/>
 
 	<xsl:if test="$param/create_thread = 'yes'">
 		<button type="submit" name="new_thread">New thread</button>
@@ -304,11 +307,11 @@
 		</td>
 		<td>
 			<p class="headings">
-				<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID, 'CurrentPage', 0)}"><xsl:value-of select="Title" /></a>
+				<a href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', ThreadID, 'CurrentPage', 0)}"><xsl:value-of select="Title" /></a>
 			</p>
 		</td>
 		<td>
-			<p><a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><xsl:value-of select="Author"/></a></p>
+			<p><a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', Author)}"><xsl:value-of select="Author"/></a></p>
 		</td>
 		<td>
 			<p><xsl:value-of select="PostCount"/></p>
@@ -323,9 +326,9 @@
 						<xsl:if test="am:datediff(LastPost, $param/notification) &lt; 0">
 							<xsl:attribute name="class">new</xsl:attribute>
 						</xsl:if>
-						<a href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', ThreadID, 'CurrentPage', am:max(LastPage - 1, 0), '#latest')}"><xsl:value-of select="am:datetime(LastPost, $param/timezone)" /></a>
+						<a href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', ThreadID, 'CurrentPage', am:max(LastPage - 1, 0), '#latest')}"><xsl:value-of select="am:datetime(LastPost, $param/timezone)" /></a>
 						<xsl:text> by </xsl:text>
-						<a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', LastAuthor)}"><xsl:value-of select="LastAuthor"/></a>
+						<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', LastAuthor)}"><xsl:value-of select="LastAuthor"/></a>
 					</p>
 				</xsl:when>
 				<xsl:otherwise><p>n/a</p></xsl:otherwise>
@@ -345,7 +348,7 @@
 </xsl:template>
 
 	
-<xsl:template match="section[. = 'Thread_details']">
+<xsl:template match="section[. = 'Forum_thread']">
 	<xsl:variable name="param" select="$params/forum_thread" />
 
 	<xsl:variable name="section" select="$param/Section"/>
@@ -363,7 +366,7 @@
 	<xsl:variable name="nav_bar">
 		<div class="thread_bar skin_label">
 			<h5>
-				<a href="{php:functionString('makeurl', 'Section_details', 'CurrentSection', $section/SectionID)}"><xsl:value-of select="$section/SectionName"/></a>
+				<a href="{php:functionString('makeurl', 'Forum_section', 'CurrentSection', $section/SectionID)}"><xsl:value-of select="$section/SectionName"/></a>
 				<xsl:text> - </xsl:text>
 				<xsl:value-of select="$thread/Title"/>
 				<xsl:if test="$thread/Locked = 'yes'">
@@ -405,7 +408,7 @@
 			</xsl:if>
 
 			<!-- navigation -->
-			<xsl:copy-of select="am:forum_navigation('Thread_details', 'CurrentThread', $thread/ThreadID, $param/CurrentPage, $param/Pages)"/>
+			<xsl:copy-of select="am:forum_navigation('Forum_thread', 'CurrentThread', $thread/ThreadID, $param/CurrentPage, $param/Pages)"/>
 
 			<xsl:if test="$param/create_post = 'yes' and $thread/Locked = 'no'">
 				<button type="submit" name="new_post">New post</button>
@@ -429,7 +432,7 @@
 				<xsl:if test="position() = last()">
 					<a id="latest"></a>
 				</xsl:if>
-				<a href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><xsl:value-of select="Author"/></a>
+				<a href="{php:functionString('makeurl', 'Players_details', 'Profile', Author)}"><xsl:value-of select="Author"/></a>
 
 				<xsl:text> on </xsl:text> 
 
@@ -460,7 +463,7 @@
 				</xsl:choose>
 			</xsl:if>
 
-			<a id="{concat('post', PostID)}" class="permalink" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $thread/ThreadID, 'CurrentPage', $param/CurrentPage, concat('#post', PostID))}" title="Permalink" >#<xsl:value-of select="position() + $param/CurrentPage * $param/posts_per_page" /></a>
+			<a id="{concat('post', PostID)}" class="permalink" href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', $thread/ThreadID, 'CurrentPage', $param/CurrentPage, concat('#post', PostID))}" title="Permalink" >#<xsl:value-of select="position() + $param/CurrentPage * $param/posts_per_page" /></a>
 
 			<div class="clear_floats"></div>
 
@@ -468,7 +471,7 @@
 
 			<div>
 
-			<div class="post_avatar"><a href="{php:functionString('makeurl', 'Profile', 'Profile', Author)}"><img class="avatar" height="60px" width="60px" src="img/avatars/{Avatar}" alt="avatar" /></a></div>
+			<div class="post_avatar"><a href="{php:functionString('makeurl', 'Players_details', 'Profile', Author)}"><img class="avatar" height="60px" width="60px" src="img/avatars/{Avatar}" alt="avatar" /></a></div>
 
 			<div class="post_content"><div><xsl:value-of select="am:BBCode_parse_extended(Content)" disable-output-escaping="yes" /></div></div>
 
@@ -491,7 +494,7 @@
 </xsl:template>
 
 
-<xsl:template match="section[. = 'New_thread']">
+<xsl:template match="section[. = 'Forum_thread_new']">
 	<xsl:variable name="param" select="$params/forum_thread_new" />
 
 	<xsl:variable name="section" select="$param/Section"/>
@@ -517,7 +520,7 @@
 		</p>
 		
 		<button type="submit" name="create_thread">Create thread</button>
-		<a class="button" href="{php:functionString('makeurl', 'Section_details', 'CurrentSection', $section/SectionID)}">Back</a>
+		<a class="button" href="{php:functionString('makeurl', 'Forum_section', 'CurrentSection', $section/SectionID)}">Back</a>
 		<xsl:copy-of select="am:BBcodeButtons()"/>
 		<hr/>
 		
@@ -530,7 +533,7 @@
 </xsl:template>
 
 
-<xsl:template match="section[. = 'New_post']">
+<xsl:template match="section[. = 'Forum_post_new']">
 	<xsl:variable name="param" select="$params/forum_post_new" />
 
 	<xsl:variable name="thread" select="$param/Thread" />
@@ -542,7 +545,7 @@
 	<div class="skin_text">
 	
 	<button type="submit" name="create_post">Create post</button>
-	<a class="button" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $thread/ThreadID, 'CurrentPage', 0)}">Back</a>
+	<a class="button" href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', $thread/ThreadID, 'CurrentPage', 0)}">Back</a>
 	<xsl:copy-of select="am:BBcodeButtons()"/>
 	<hr/>
 	
@@ -556,7 +559,7 @@
 </xsl:template>
 
 
-<xsl:template match="section[. = 'Edit_thread']">
+<xsl:template match="section[. = 'Forum_thread_edit']">
 	<xsl:variable name="param" select="$params/forum_thread_edit" />
 
 	<xsl:variable name="section" select="$param/Section"/>
@@ -597,7 +600,7 @@
 			</p>
 			
 			<button type="submit" name="modify_thread">Save</button>
-			<a class="button" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $thread/ThreadID, 'CurrentPage', 0)}">Back</a>
+			<a class="button" href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', $thread/ThreadID, 'CurrentPage', 0)}">Back</a>
 
 			<xsl:if test="$param/move_thread = 'yes'">
 				<hr/>
@@ -624,7 +627,7 @@
 </xsl:template>
 
 
-<xsl:template match="section[. = 'Edit_post']">
+<xsl:template match="section[. = 'Forum_post_edit']">
 	<xsl:variable name="param" select="$params/forum_post_edit" />
 	
 	<xsl:variable name="post" select="$param/Post"/>
@@ -636,7 +639,7 @@
 		<h3>Edit post</h3>
 		<div class="skin_text">	
 		<button type="submit" name="modify_post">Save</button>
-		<a class="button" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $post/ThreadID, 'CurrentPage', 0)}">Back</a>
+		<a class="button" href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', $post/ThreadID, 'CurrentPage', 0)}">Back</a>
 		<xsl:copy-of select="am:BBcodeButtons()"/>
 		<hr/>
 

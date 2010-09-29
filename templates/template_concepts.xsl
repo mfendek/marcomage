@@ -9,6 +9,9 @@
                 extension-element-prefixes="date exsl php">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
+<!-- includes -->
+<xsl:include href="template_main.xsl" />
+
 
 <xsl:template match="section[. = 'Concepts']">
 	<xsl:variable name="param" select="$params/concepts" />
@@ -125,7 +128,7 @@
 				<tr>
 					<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></td>
 					<td><p><a href="{php:functionString('makeurl', 'Concepts_details', 'CurrentConcept', id)}"><xsl:value-of select="name"/></a></p></td>
-					<td><p><a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', author)}"><xsl:value-of select="author"/></a></p></td>
+					<td><p><a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', author)}"><xsl:value-of select="author"/></a></p></td>
 					<td><p><xsl:value-of select="class"/></p></td>
 					<td>
 						<p>
@@ -404,7 +407,7 @@
 
 			<div class="card_preview"><xsl:copy-of select="am:cardstring($param/data, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></div>
 			<div class="limit">
-				<p><span><a class="profile" href="{php:functionString('makeurl', 'Profile', 'Profile', $param/data/author)}"><xsl:value-of select="$param/data/author"/></a></span>Author</p>
+				<p><span><a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/data/author)}"><xsl:value-of select="$param/data/author"/></a></span>Author</p>
 				<p><span><xsl:value-of select="$param/data/name"/></span>Name</p>
 				<p><span><xsl:value-of select="$param/data/class"/></span>Rarity</p>
 				<p><span><xsl:value-of select="$param/data/keywords"/></span>Keywords</p>
@@ -418,7 +421,7 @@
 						<button type="submit" name="concept_thread">Start discussion</button>
 					</xsl:when>
 					<xsl:when test="$param/data/threadid &gt; 0">
-						<a class="button" href="{php:functionString('makeurl', 'Thread_details', 'CurrentThread', $param/data/threadid)}">View discussion</a>
+						<a class="button" href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', $param/data/threadid)}">View discussion</a>
 					</xsl:when>
 				</xsl:choose>
 			</p>
