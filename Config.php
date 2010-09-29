@@ -6,7 +6,7 @@
 
 	// database configuration
 	$server = "localhost";
-	$username = "root";
+	$username = "arcomage";
 	$password = "";
 	$database = "arcomage";
 
