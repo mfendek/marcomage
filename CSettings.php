@@ -162,7 +162,7 @@
 
 		public function ListOtherSettings() // returns list of all non-boolean type setting names
 		{
-			return array('Firstname', 'Surname', 'Birthdate', 'Gender', 'Email', 'Imnumber', 'Country', 'Hobby', 'Avatar', 'Status', 'Timezone', 'Skin', 'Background', 'DefaultFilter', 'Autorefresh');
+			return array('Firstname', 'Surname', 'Birthdate', 'Gender', 'Email', 'Imnumber', 'Country', 'Hobby', 'Avatar', 'Status', 'Timezone', 'Skin', 'Background', 'DefaultFilter', 'Autorefresh', 'Cards_per_row');
 		}
 	}
 ?>

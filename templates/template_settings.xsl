@@ -244,6 +244,31 @@
 				<xsl:text>Auto refresh</xsl:text>
 			</p>
 
+			<xsl:variable name="cards_per_row">
+				<value name="5"  text="5"  />
+				<value name="8"  text="8"  />
+				<value name="10" text="10" />
+				<value name="12" text="12" />
+				<value name="15" text="15" />
+				<value name="20" text="20" />
+				<value name="25" text="25" />
+				<value name="30" text="30" />
+			</xsl:variable>
+
+			<p>
+				<select name="Cards_per_row">
+					<xsl:for-each select="exsl:node-set($cards_per_row)/*">
+						<option value="{@name}">
+							<xsl:if test="$settings/Cards_per_row = @name">
+								<xsl:attribute name="selected">selected</xsl:attribute>
+							</xsl:if>
+							<xsl:value-of select="@text"/>
+						</option>
+					</xsl:for-each>
+				</select>
+				<xsl:text>Cards per row (deck editor)</xsl:text>
+			</p>
+
 			<p><input type="checkbox" name="GamesDetails"><xsl:if test="$settings/GamesDetails = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Advanced games list</p>
 			<p><input type="checkbox" name="Minimize"   ><xsl:if test="$settings/Minimize    = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Minimized game view</p>
 			<p><input type="checkbox" name="Cardtext"   ><xsl:if test="$settings/Cardtext    = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Show card text</p>

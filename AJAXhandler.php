@@ -66,7 +66,7 @@
 			// recalculate the average cost per turn label
 			$avg = implode(";", $deck->AvgCostPerTurn());
 		}
-		else { echo 'Deck section is already full.'; exit; }
+		else { echo 'Unable to add the chosen card to this deck.'; exit; }
 
 		echo implode(",", array($slot, $tokens, $avg));
 	}

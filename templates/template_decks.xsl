@@ -3,8 +3,9 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:exsl="http://exslt.org/common"
                 xmlns:php="http://php.net/xsl"
-                extension-element-prefixes="php">
+                extension-element-prefixes="exsl php">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 <!-- includes -->
@@ -90,6 +91,53 @@
 	<!-- remember the current location across pages -->
 	<div>
 		<input type="hidden" name="CurrentDeck" value="{$param/CurrentDeck}"/>
+		<input type="hidden" name="CardPool" value="{$param/card_pool}"/>
+	</div>
+
+	<div class="misc">
+
+	<div id="tokens">
+		<xsl:for-each select="$param/Tokens/*">
+			<xsl:variable name="token" select="." />
+
+			<select name="Token{position()}">
+				<option value="none">
+					<xsl:if test="$token = 'none'">
+						<xsl:attribute name="selected">selected</xsl:attribute>
+					</xsl:if>
+					<xsl:text>None</xsl:text>
+				</option>
+				<xsl:for-each select="$param/TokenKeywords/*">
+					<option value="{text()}">
+						<xsl:if test="$token = .">
+							<xsl:attribute name="selected">selected</xsl:attribute>
+						</xsl:if>
+						<xsl:value-of select="text()"/>
+					</option>
+				</xsl:for-each>
+			</select>
+		</xsl:for-each>
+
+		<button type="submit" name="set_tokens">Set</button>
+		<button type="submit" name="auto_tokens">Auto</button>
+	</div>
+
+	<input type="text" name="NewDeckName" value="{$param/CurrentDeck}" maxlength="20" />
+	<button type="submit" name="rename_deck">Rename</button>
+
+	<xsl:choose>
+		<xsl:when test="$param/reset = 'no'">
+			<button type="submit" name="reset_deck_prepare">Reset</button>
+		</xsl:when>
+		<xsl:otherwise>
+			<button type="submit" name="reset_deck_confirm">Confirm reset</button>
+		</xsl:otherwise>
+	</xsl:choose>
+
+	<button type="submit" name="export_deck">Export</button>
+	<input type="file" name="uploadedfile" />
+	<button type="submit" name="import_deck">Import</button>
+
 	</div>
 
 	<div class="filters">
@@ -106,6 +154,7 @@
 		<value name="Common"   value="Common"   />
 		<value name="Uncommon" value="Uncommon" />
 		<value name="Rare"     value="Rare"     />
+		<value name="Any"      value="none"     />
 	</xsl:variable>
 	<xsl:copy-of select="am:htmlSelectBox('ClassFilter', $param/ClassFilter, $classes, '')"/>
 
@@ -180,85 +229,69 @@
 	<xsl:copy-of select="am:htmlSelectBox('ModifiedFilter', $param/ModifiedFilter, $modified, $param/modified_dates)"/>
 
 	<button type="submit" name="filter">Apply filters</button>
-
-	</div>	
-	<div class="misc">
-
-	<div id="tokens">
-		<xsl:for-each select="$param/Tokens/*">
-			<xsl:variable name="token" select="." />
-
-			<select name="Token{position()}">
-				<option value="none">
-					<xsl:if test="$token = 'none'">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:text>None</xsl:text>
-				</option>
-				<xsl:for-each select="$param/TokenKeywords/*">
-					<option value="{text()}">
-						<xsl:if test="$token = .">
-							<xsl:attribute name="selected">selected</xsl:attribute>
-						</xsl:if>
-						<xsl:value-of select="text()"/>
-					</option>
-				</xsl:for-each>
-			</select>
-		</xsl:for-each>
-
-		<button type="submit" name="set_tokens">Set</button>
-		<button type="submit" name="auto_tokens">Auto</button>
-	</div>
-
-	<input type="text" name="NewDeckName" value="{$param/CurrentDeck}" maxlength="20" />
-	<button type="submit" name="rename_deck">Rename</button>
-
-	<xsl:choose>
-		<xsl:when test="$param/reset = 'no'">
-			<button type="submit" name="reset_deck_prepare">Reset</button>
-		</xsl:when>
-		<xsl:otherwise>
-			<button type="submit" name="reset_deck_confirm">Confirm reset</button>
-		</xsl:otherwise>
-	</xsl:choose>
-
-	<button type="submit" name="export_deck">Export</button>
-	<input type="file" name="uploadedfile" />
-	<button type="submit" name="import_deck">Import</button>
+	<button type="submit" name="card_pool_switch">
+		<xsl:if test="count($param/CardList/*) &gt; 0">
+			<xsl:attribute name="class">marked_button</xsl:attribute>		
+		</xsl:if>
+		<xsl:choose>
+			<xsl:when test="$param/card_pool = 'yes'">Hide card pool</xsl:when>
+			<xsl:when test="$param/card_pool = 'no'">Show card pool</xsl:when>
+		</xsl:choose>
+	</button>
 
 	</div>
 
 	<!-- cards in card pool -->
-	<div class="scroll">
-	<table cellpadding="0" cellspacing="0">
-		<xsl:choose>
-			<xsl:when test="count($param/CardList/*) &gt; 0">
-				<tr valign="top">
-					<xsl:for-each select="$param/CardList/*">
-						<xsl:sort select="name" order="ascending"/>
-						<td id="card_{id}" >
-							<xsl:if test="excluded = 'no'">
+	<div id="card_pool">
+	<xsl:if test="$param/card_pool = 'no'">
+		<xsl:attribute name="class">hidden</xsl:attribute>		
+	</xsl:if>
+	<!-- sort cards in card pool by card name -->
+	<xsl:variable name="card_list">
+		<xsl:for-each select="$param/CardList/*">
+			<xsl:sort select="name" order="ascending"/>
+			<xsl:copy-of select="." />
+		</xsl:for-each>
+	</xsl:variable>
+	<xsl:variable name="columns" select="$param/cards_per_row"/>
+
+	<xsl:for-each select="exsl:node-set($card_list)/*[position() &lt;= floor(((count(exsl:node-set($card_list)/*) - 1) div $columns)) + 1]">
+		<table cellpadding="0" cellspacing="0">
+			<tr valign="top">
+				<xsl:variable name="i" select="position()"/>
+				<xsl:for-each select="exsl:node-set($card_list)/*[position() &gt;= (($i - 1)*$columns + 1) and position() &lt;= $i*$columns]">
+					<!-- display card slot -->
+					<td id="card_{id}" >
+						<xsl:choose>
+							<xsl:when test="excluded = 'no'">
 								<xsl:attribute name="onclick">return TakeCard(<xsl:value-of select="id" />)</xsl:attribute>
 								<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
-							</xsl:if>
-						</td>
-					</xsl:for-each>
-				</tr>
-				<xsl:if test="$param/Take = 'yes'">
-				<tr>
-					<xsl:for-each select="$param/CardList/*">
-						<xsl:sort select="name" order="ascending"/>
-						<!-- if the deck's $classfilter section isn't full yet, display the button that adds the card -->
-						<td><xsl:if test="excluded = 'no'"><noscript><div><button type="submit" name="add_card" value="{id}">Take</button></div></noscript></xsl:if></td>
-					</xsl:for-each>
-				</tr>
-				</xsl:if>
-			</xsl:when>
-			<xsl:otherwise>
-				<tr><td></td></tr>
-			</xsl:otherwise>
-		</xsl:choose>
-	</table>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:attribute name="class">hidden</xsl:attribute>
+							</xsl:otherwise>
+						</xsl:choose>
+					</td>
+				</xsl:for-each>
+			</tr>
+			<tr>
+				<xsl:variable name="i" select="position()"/>
+				<xsl:for-each select="exsl:node-set($card_list)/*[position() &gt;= (($i - 1)*$columns + 1) and position() &lt;= $i*$columns]">
+					<!-- display Take button if JavaScript is disabled -->
+					<td>
+						<xsl:choose>
+							<xsl:when test="excluded = 'no'">
+								<noscript><div><button type="submit" name="add_card" value="{id}">Take</button></div></noscript>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:attribute name="class">hidden</xsl:attribute>
+							</xsl:otherwise>
+						</xsl:choose>
+					</td>
+				</xsl:for-each>
+			</tr>
+		</table>
+	</xsl:for-each>
 	</div>
 
 	<!-- cards in deck -->

@@ -650,6 +650,7 @@
 
 			if (isset($_POST['filter'])) // Decks -> Modify this deck -> Apply filters
 			{
+				$_POST['CardPool'] = 'yes'; // show card pool after applying filters
 				$current = 'Decks_edit';
 
 				break;
@@ -783,6 +784,14 @@
 						$current = 'Decks';
 					}
 				}
+
+				break;
+			}
+
+			if (isset($_POST['card_pool_switch'])) // Decks -> Show/Hide card pool (used only when JavaScript is disabled)
+			{
+				$_POST['CardPool'] = (isset($_POST['CardPool']) AND $_POST['CardPool'] == 'yes') ? 'no' : 'yes';
+				$current = 'Decks_edit';
 
 				break;
 			}
@@ -2590,6 +2599,7 @@ case 'Decks_edit':
 	if (!$deck) { $display_error = "Invalid deck."; break; }
 
 	$params['deck_edit']['reset'] = ( (isset($_POST["reset_deck_prepare"] )) ? 'yes' : 'no');
+	$params['deck_edit']['card_pool'] = (isset($_POST['CardPool']) AND $_POST['CardPool'] == 'no') ? 'no' : 'yes';
 
 	// load card display settings
 	$settings = $player->GetSettings();
@@ -2597,8 +2607,8 @@ case 'Decks_edit':
 	$params['deck_edit']['c_img'] = $settings->GetSetting('Images');
 	$params['deck_edit']['c_keywords'] = $settings->GetSetting('Keywords');
 	$params['deck_edit']['c_oldlook'] = $settings->GetSetting('OldCardLook');
+	$params['deck_edit']['cards_per_row'] = $settings->GetSetting('Cards_per_row');
 	$params['deck_edit']['Res'] = $deck->AvgCostPerTurn(); // calculate average cost per turn
-	$params['deck_edit']['Take'] = ( $deck->DeckData->Count($classfilter) < 15 ) ? 'yes' : 'no';
 
 	$filter = array();
 	if( $classfilter != 'none' ) $filter['class'] = $classfilter;
@@ -2608,9 +2618,12 @@ case 'Decks_edit':
 	if( $supportfilter != 'none' ) $filter['support'] = $supportfilter;
 	if( $createdfilter != 'none' ) $filter['created'] = $createdfilter;
 	if( $modifiedfilter != 'none' ) $filter['modified'] = $modifiedfilter;
-	$exluded = $deck->DeckData->$classfilter; // cards not present in the deck
+
+	// cards not present in the card pool
+	$excluded = array_merge($deck->DeckData->Common, $deck->DeckData->Uncommon, $deck->DeckData->Rare);
+
 	$card_list = $carddb->GetData($carddb->GetList($filter));
-	foreach ($card_list as $i => $data) $card_list[$i]['excluded'] = (in_array($data['id'], $exluded)) ? 'yes' : 'no';
+	foreach ($card_list as $i => $data) $card_list[$i]['excluded'] = (in_array($data['id'], $excluded)) ? 'yes' : 'no';
 
 	$params['deck_edit']['CardList'] = $card_list;
 

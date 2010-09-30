@@ -17,13 +17,11 @@ function TakeCard(id) // add card to deck via AJAX
 		var avg = result[2];
 
 		var slot = str.concat("#slot_", res_val);
-		if ($.browser.opera) { var scroll_position = $(".scroll").scrollLeft(); } // store current scroll bar position (needed for Opera scroll bar bug)
 
 		// move selected card to deck
 		$(card).removeAttr('onclick'); // disallow the card to be removed from the deck (prevent double clicks)
 		$(card).animate({ opacity: 0 }, 'slow', function() {
-			$(card).animate({ width: 'hide' }, 'slow', function() {
-				if ($.browser.opera) { $(".scroll").scrollLeft(scroll_position); } // scroll to saved position (fixes Opera scroll bar bug)
+			$(card).animate({ width: 'hide', height: 'hide' }, 'slow', function() {
 				$(slot).html($(card).html());
 				$(slot).hide();
 				$(slot).fadeIn('slow');
@@ -72,7 +70,6 @@ function RemoveCard(id) // remove card from deck via AJAX
 		var avg = result[1];
 
 		var slot = str.concat("#slot_", res_val);
-		if ($.browser.opera) { var scroll_position = $(".scroll").scrollLeft(); } // store current scroll bar position (needed for Opera scroll bar bug)
 		var empty = '<div class="karta no_class zero_cost with_bgimage"><div class="null">0</div><h5>Empty</h5><img src="img/cards/g0.jpg" width="80px" height="60px" alt="" /><p></p><div></div></div>';
 
 		// move selected card to card pool
@@ -86,8 +83,7 @@ function RemoveCard(id) // remove card from deck via AJAX
 		$(slot).fadeOut('slow', function() {
 			$(slot).html(empty);
 			$(slot).show();
-			$(card).animate({ width: 'show' }, 'slow', function() {
-				if ($.browser.opera) { $(".scroll").scrollLeft(scroll_position); } // scroll to saved position (fixes Opera scroll bar bug)
+			$(card).animate({ width: 'show', height: 'show' }, 'slow', function() {
 				$(card).animate({ opacity: 1 }, 'slow');
 			});
 		});
@@ -120,12 +116,45 @@ $(document).ready(function() {
 	// blocks ENTER key to prevent section redirects
 	$("input[name!='ChatMessage'][type!='password'], select").keypress(function(event) { if (event.keyCode == '13') { event.preventDefault(); } });
 
-	// scroll card pool when leaving the left or right edge
-	$('.scroll').mouseout(function(event) {
-		var x = event.pageX - this.offsetLeft;
-		var move = ($(this).width() * 3)/4; // calculate 3/4 of current card pool length
-		var str = new String();
-		if (x < 3) { $(".scroll").scrollTo(str.concat("-=", move, "px"), 5000); }
-		else if (x > ($(this).width() - 3)) { $(".scroll").scrollTo(str.concat("+=", move, "px"), 5000); }
+	// show/hide card pool
+	$("button[name='card_pool_switch']").click(function() {
+		if ($("button[name='card_pool_switch']").html() == 'Show card pool') // show card pool
+		{
+			$("button[name='card_pool_switch']").html('Expanding...'); // block switch button while animating
+
+			// repair card pool state if necessary
+			$("#card_pool").hide();
+			$("#card_pool").css('height', 'hide');
+			$("#card_pool").css('opacity', 0);
+
+			// expand card pool
+			$("#card_pool").animate({ height: 'show' }, 'slow', function() {
+				$("#card_pool").animate({ opacity: 1 }, 'slow', function() {
+					$("#card_pool").show();
+
+					// update switch button and hidden data element
+					$("button[name='card_pool_switch']").html('Hide card pool');
+					$("input[name='CardPool']").val('yes');
+				});
+			});
+		}
+		else if ($("button[name='card_pool_switch']").html() == 'Hide card pool') // hide card pool
+		{
+			$("button[name='card_pool_switch']").html('Collapsing...'); // block switch button while animating
+			$("#card_pool").show(); // repair card pool state if necessary
+
+			// collapse card pool
+			$("#card_pool").animate({ opacity: 0 }, 'slow', function() {
+				$("#card_pool").animate({ height: 'hide' }, 'slow', function() {
+					$("#card_pool").hide();
+
+					// update switch button and hidden data element
+					$("button[name='card_pool_switch']").html('Show card pool');
+					$("input[name='CardPool']").val('no');
+				});
+			});
+		}
+
+		return false;
 	});
 });
