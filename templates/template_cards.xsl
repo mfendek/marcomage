@@ -155,11 +155,11 @@
 		<div id="card_details" class="skin_text">
 			<a class="button" href="{php:functionString('makeurl', 'Cards')}">Back</a>
 			<xsl:choose>
-				<xsl:when test="$param/discussion = 'no' and $param/create_thread = 'yes'">
+				<xsl:when test="$param/discussion = 0 and $param/create_thread = 'yes'">
 					<button type="submit" name="card_thread" value="{$param/data/id}" >Start discussion</button>
 				</xsl:when>
-				<xsl:when test="$param/discussion = 'yes'">
-					<button type="submit" name="card_thread" value="{$param/data/id}" >View discussion</button>
+				<xsl:when test="$param/discussion &gt; 0">
+					<a class="button" href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', $param/discussion, 'CurrentPage', 0)}">View discussion</a>
 				</xsl:when>
 			</xsl:choose>
 			<hr />
