@@ -400,9 +400,19 @@
 
 		<div id="card_edit" class="skin_text">
 			<a class="button" href="{php:functionString('makeurl', 'Concepts')}">Back</a>
+			<xsl:choose>
+				<xsl:when test="$param/data/threadid = 0 and $param/create_thread = 'yes'">
+					<button type="submit" name="concept_thread">Start discussion</button>
+				</xsl:when>
+				<xsl:when test="$param/data/threadid &gt; 0">
+					<a class="button" href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', $param/data/threadid)}">View discussion</a>
+				</xsl:when>
+			</xsl:choose>
+
 			<xsl:if test="$param/edit_all_card = 'yes' or ($param/edit_own_card = 'yes' and ($param/PlayerName = author))">
 				<button type="submit" name="edit_concept" value="{$param/data/id}">Edit</button>
 			</xsl:if>
+
 			<hr />
 
 			<div class="card_preview"><xsl:copy-of select="am:cardstring($param/data, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></div>
@@ -415,16 +425,6 @@
 			</div>
 			<p>Note</p>
 			<div class="note"><xsl:copy-of select="am:textencode($param/data/note)" /></div>
-			<p>
-				<xsl:choose>
-					<xsl:when test="$param/data/threadid = 0 and $param/create_thread = 'yes'">
-						<button type="submit" name="concept_thread">Start discussion</button>
-					</xsl:when>
-					<xsl:when test="$param/data/threadid &gt; 0">
-						<a class="button" href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', $param/data/threadid)}">View discussion</a>
-					</xsl:when>
-				</xsl:choose>
-			</p>
 		</div>
 		<input type="hidden" name="CurrentConcept" value="{$param/data/id}" />
 	</div>
