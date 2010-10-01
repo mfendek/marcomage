@@ -69,7 +69,7 @@
 	</keyword>
 	<keyword>
 		<name>Barbarian</name>
-		<description>Basic gain 4, bonus gain 15, side-effect (Devastation): enemy wall will be additionally lowered by amount based on played card rarity (Common - 3 , Uncommon - 8, Rare - 15).</description>
+		<description>Basic gain 4, bonus gain 15, side-effect (Devastation): enemy wall will be additionally lowered by amount based on played card rarity (Common - 3 , Uncommon - 8, Rare - 15). If there is no wall to destroy, enemy stock will be lowered by the same amount instead.</description>
 		<code><![CDATA[
 					$amount = $this->KeywordCount($mydata->Hand, "Barbarian") - 1; // we don't count the played card
 					$token_index = array_search("Barbarian", $mydata->TokenNames);
@@ -81,7 +81,14 @@
 						if ($mydata->TokenValues[$token_index] >= 100)
 						{
 							$damage = array("Common" => 3, "Uncommon" => 8, "Rare" => 15);
-							$hisdata->Wall-= $damage[$card->GetClass()];
+							if ($hisdata->Wall <= 0)
+							{
+								$penalty = $damage[$card->GetClass()];
+								$hisdata->Bricks-= $penalty;
+								$hisdata->Gems-= $penalty;
+								$hisdata->Recruits-= $penalty;
+							}
+							else $hisdata->Wall-= $damage[$card->GetClass()];
 							
 							$mydata->TokenValues[$token_index] = 0;
 						}
