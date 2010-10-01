@@ -10,7 +10,7 @@
 	if (!isset($_POST['Username']) OR $_POST['Username'] == "") { echo 'Invalid username.'; exit; }
 	if (!isset($_POST['SessionID']) OR $_POST['SessionID'] == "") { echo 'Invalid session id.'; exit; }
 
-	require_once('Config.php');
+	require_once('config.php');
 	require_once('CDatabase.php');
 	require_once('CLogin.php');
 	require_once('CCard.php');

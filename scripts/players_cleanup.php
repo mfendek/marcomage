@@ -11,7 +11,7 @@
 
 	*/
 
-	require_once('../Config.php');
+	require_once('../config.php');
 	require_once('../CDatabase.php');
 	require_once('../CLogin.php');
 	require_once('../CScore.php');
