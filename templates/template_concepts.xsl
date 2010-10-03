@@ -24,6 +24,10 @@
 		<!-- begin buttons and filters -->
 
 		<div class="filters">
+		<xsl:choose>
+			<xsl:when test="$param/is_logged_in = 'yes'">
+			<!-- advanced navigation (for authenticated users only) -->
+
 			<xsl:if test="$param/create_card = 'yes'">
 				<button type="submit" name="new_concept">New card</button>
 			</xsl:if>
@@ -73,6 +77,13 @@
 			<!-- upper navigation -->
 			<xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'concepts')"/>
 
+			</xsl:when>
+			<xsl:otherwise>
+				<!-- simple navigation (for anonymous users) -->
+				<xsl:copy-of select="am:simple_navigation('Concepts', 'CurrentConPage', $param/current_page, $param/page_count)"/>
+			</xsl:otherwise>
+		</xsl:choose>
+
 		<!-- end buttons and filters -->
 		</div>
 		
@@ -82,6 +93,7 @@
 				<th>
 					<p>
 						<xsl:text>Card name</xsl:text>
+						<xsl:if test="$param/is_logged_in = 'yes'">
 						<button class="small_button" type="submit" value="Name" >
 							<xsl:if test="$param/current_condition = 'Name'">
 								<xsl:attribute name="class">small_button pushed</xsl:attribute>
@@ -97,6 +109,7 @@
 								</xsl:otherwise>
 							</xsl:choose>
 						</button>
+						</xsl:if>
 					</p>
 				</th>
 				<th><p>Author</p></th>
@@ -104,6 +117,7 @@
 				<th>
 					<p>
 						<xsl:text>Last change</xsl:text>
+						<xsl:if test="$param/is_logged_in = 'yes'">
 						<button class="small_button" type="submit" value="LastChange" >
 							<xsl:if test="$param/current_condition = 'LastChange'">
 								<xsl:attribute name="class">small_button pushed</xsl:attribute>
@@ -119,6 +133,7 @@
 								</xsl:otherwise>
 							</xsl:choose>
 						</button>
+						</xsl:if>
 					</p>
 				</th>
 				<th><p>State</p></th>
@@ -153,10 +168,12 @@
 			</xsl:for-each>
 		</table>
 
-		<div class="filters">
-			<!-- lower navigation -->
-			<xsl:copy-of select="am:lower_navigation($param/page_count, $param/current_page, 'concepts', 'Concepts')"/>
-		</div>
+		<xsl:if test="$param/is_logged_in = 'yes'">
+			<div class="filters">
+				<!-- lower navigation -->
+				<xsl:copy-of select="am:lower_navigation($param/page_count, $param/current_page, 'concepts', 'Concepts')"/>
+			</div>
+		</xsl:if>
 
 		</div>
 

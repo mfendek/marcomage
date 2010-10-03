@@ -64,6 +64,8 @@
 	
 	if( !$session )
 	{
+		$player = $playerdb->GetGuest();
+
 		if (isset($_POST['Login']))
 		{
 			$current = "Webpage";
@@ -112,8 +114,9 @@
 		}
 		else
 		{
-			$public_sections = array('Webpage', 'Help', 'Novels');
-			if (!in_array($current, $public_sections)) $current = "Webpage";
+			$public_sections = array('Webpage', 'Help', 'Novels', 'Forum', 'Cards', 'Concepts');
+			$section_name = preg_replace("/_.*/i", '', $current);
+			if (!in_array($section_name, $public_sections)) $current = "Webpage";
 			$information = "Please log in.";
 		}
 	}
@@ -150,6 +153,7 @@
 		if (isset($_POST['Logout']))
 		{
 			$logindb->Logout($session);
+			$player = $playerdb->GetGuest(); // demote player to guest after logout
 			
 			$information = "You have successfully logged out.";
 			$current = "Webpage";
@@ -2500,9 +2504,18 @@
 	/*	</section>	*/
 
 	/*	<section: PRESENTATION>	*/
-		
-	// whether to display the login box or navigation bar
+
+	// main template data
+	$settings = $player->GetSettings();
 	$params["main"]["is_logged_in"] = ($session) ? 'yes' : 'no';
+	$params["main"]["skin"] = $settings->GetSetting('Skin');
+	$params["main"]["autorefresh"] = ($current == "Games") ? $settings->GetSetting('Autorefresh') : 0; // apply only in games section
+
+	// navbar params
+	$params["navbar"]["error_msg"] = @$error;
+	$params["navbar"]["warning_msg"] = @$warning;
+	$params["navbar"]["info_msg"] = @$information;
+	$params["navbar"]["current"] = $current;
 
 	// session information, if necessary
 	if( $session and !$session->hasCookies() )
@@ -2511,28 +2524,13 @@
 		$params["main"]["sessionid"] = $session->SessionID();
 	}
 
-	if( !$session )
-	{
-		// outer navbar params
-		$params["navbar"]["error_msg"] = @$error;
-		$params["navbar"]["warning_msg"] = @$warning;
-		$params["navbar"]["info_msg"] = @$information;
-		$params["navbar"]["current"] = $current;
-		$params["main"]["skin"] = 0; // default skin (user is not logged in, can't retrieve his settings)
-		$params["main"]["autorefresh"] = 0; // autorefresh is inactive by default
-	}
-	else
+	if( $session )
 	{
 		// inner navbar params
 		$params["navbar"]["player_name"] = $player->Name();
 		$params["navbar"]["level"] = $player->GetLevel();
-		$params["navbar"]["current"] = $current;
-		$params["navbar"]["error_msg"] = @$error;
-		$params["navbar"]["warning_msg"] = @$warning;
-		$params["navbar"]["info_msg"] = @$information;
 
 		// menubar notification (depends on current user's game settings)
-		$settings = $player->GetSettings();
 		$forum_not = ($settings->GetSetting('Forum_notification') == 'yes');
 		$concepts_not = ($settings->GetSetting('Concepts_notification') == 'yes');
 		$params["navbar"]['forum_notice'] = ($forum_not AND $forum->NewPosts($player->GetNotification())) ? 'yes' : 'no';
@@ -2540,10 +2538,8 @@
 		$params["navbar"]['concept_notice'] = ($concepts_not AND $conceptdb->NewConcepts($player->GetNotification())) ? 'yes' : 'no';
 		$params["main"]['current_games'] = $current_games = $gamedb->CountCurrentGames($player->Name());
 		$params["navbar"]['game_notice'] = ($current_games > 0) ? 'yes' : 'no';
-		$params["main"]["skin"] = $settings->GetSetting('Skin');
-		$params["main"]["autorefresh"] = ($current == "Games") ? $settings->GetSetting('Autorefresh') : 0; // apply only in games section
 	}
-	
+
 // now display current inner-page contents
 switch( $current )
 {
@@ -2643,6 +2639,7 @@ case 'Decks':
 	break;
 
 case 'Concepts':
+	$params['concepts']['is_logged_in'] = ($session) ? 'yes' : 'no';
 	// filter initialization
 	$params['concepts']['card_name'] = $name = (isset($_POST['card_name'])) ? trim($_POST['card_name']) : '';
 	$params['concepts']['date_val'] = $date = (isset($_POST['date_filter_concepts'])) ? $_POST['date_filter_concepts'] : 'none';
@@ -3385,6 +3382,7 @@ case 'Settings':
 
 
 case 'Forum':
+	$params['forum_overview']['is_logged_in'] = ($session) ? 'yes' : 'no';
 	$params['forum_overview']['sections'] = $forum->ListSections();	
 	$params['forum_overview']['notification'] = $player->GetNotification();
 	$params['forum_overview']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
@@ -3405,6 +3403,7 @@ case 'Forum_search':
 
 
 case 'Forum_section':
+	$params['forum_section']['is_logged_in'] = ($session) ? 'yes' : 'no';
 	$section_id = $_POST['CurrentSection'];
 	$current_page = (isset($_POST['CurrentPage'])) ? $_POST['CurrentPage'] : 0;
 
@@ -3703,6 +3702,7 @@ case 'Replays_details':
 	break;
 
 case 'Cards':
+	$params['cards']['is_logged_in'] = ($session) ? 'yes' : 'no';
 	$current_page = ((isset($_POST['CurrentCardsPage'])) ? $_POST['CurrentCardsPage'] : 0);
 	if (!is_numeric($current_page) OR $current_page < 0) { $display_error = 'Invalid cards page.'; break; }
 

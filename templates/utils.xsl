@@ -215,6 +215,65 @@
 </func:function>
 
 
+<func:function name="am:simple_navigation">
+	<xsl:param name="location" as="xs:string" />
+	<xsl:param name="page_type" as="xs:string" />
+	<xsl:param name="current" as="xs:integer" />
+	<xsl:param name="page_count" as="xs:integer" />
+
+	<xsl:variable name="output">
+		<xsl:choose>
+			<xsl:when test="$current &gt; 0">
+				<a class="button" href="{php:functionString('makeurl', $location, $page_type, am:max($current - 1, 0))}">&lt;</a>
+			</xsl:when>
+			<xsl:otherwise>
+				<span class="disabled">&lt;</span>
+			</xsl:otherwise>
+		</xsl:choose>
+
+		<xsl:choose>
+			<xsl:when test="$current &gt; 0">
+				<a class="button" href="{php:functionString('makeurl', $location, $page_type, 0)}">First</a>
+			</xsl:when>
+			<xsl:otherwise>
+				<span class="disabled">First</span>
+			</xsl:otherwise>
+		</xsl:choose>
+
+		<xsl:for-each select="str:split(am:numbers(am:max($current - 5, 0), am:min($current + 5, am:max($page_count - 1, 0))), ',')">
+			<xsl:choose>
+				<xsl:when test="$current != .">
+					<a class="button" href="{php:functionString('makeurl', $location, $page_type, text())}"><xsl:value-of select="text()"/></a>
+				</xsl:when>
+				<xsl:otherwise>
+					<span class="disabled"><xsl:value-of select="text()"/></span>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:for-each>
+
+		<xsl:choose>
+			<xsl:when test="$current &lt; am:max($page_count - 1, 0)">
+				<a class="button" href="{php:functionString('makeurl', $location, $page_type, am:max($page_count - 1, 0))}">Last</a>
+			</xsl:when>
+			<xsl:otherwise>
+				<span class="disabled">Last</span>
+			</xsl:otherwise>
+		</xsl:choose>
+
+		<xsl:choose>
+			<xsl:when test="$current &lt; am:max($page_count - 1, 0)">
+				<a class="button" href="{php:functionString('makeurl', $location, $page_type, am:min($current + 1, am:max($page_count - 1, 0)))}">&gt;</a>
+			</xsl:when>
+			<xsl:otherwise>
+				<span class="disabled">&gt;</span>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+
+	<func:result select="$output" />
+</func:function>
+
+
 <func:function name="am:htmlSelectBox">
 	<!-- generates html select box -->
 	<xsl:param name="name" as="xs:string" />

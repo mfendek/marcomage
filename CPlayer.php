@@ -245,13 +245,18 @@
 			$data = $result->Next();
 			return $data['Level'];
 		}
+		
+		public function GetGuest()
+		{
+			return new CGuest();
+		}
 	}
 	
 	
 	class CPlayer
 	{
 		private $Name = '';
-		private $Type = '';
+		protected $Type = '';
 		private $Players = false;
 		
 		public function __construct($username, $type, CPlayers &$Players)
@@ -357,6 +362,36 @@
 		public function ChangeAccessRights($access_right)
 		{
 			return $this->Players->ChangeAccessRights($this->Name, $access_right);
+		}
+	}
+	
+	
+	class CGuest extends CPlayer
+	{
+		public function __construct()
+		{
+			$this->Type = 'guest';
+		}
+
+		public function GetNotification()
+		{
+			return date('Y-m-d H:i:s', time() + 24*60*60); // disable notification
+		}
+
+		public function GetSettings()
+		{
+			global $settingdb;
+
+			$settings = $settingdb->GetGuestSettings();
+			$settings->ChangeSetting('Skin', 0);
+			$settings->ChangeSetting('Timezone', 0);
+			$settings->ChangeSetting('Autorefresh', 0);
+			$settings->ChangeSetting('Cardtext', 'yes');
+			$settings->ChangeSetting('Images', 'yes');
+			$settings->ChangeSetting('Keywords', 'yes');
+			$settings->ChangeSetting('OldCardLook', 'no');
+
+			return $settings;
 		}
 	}
 ?>

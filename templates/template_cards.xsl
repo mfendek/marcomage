@@ -23,6 +23,10 @@
 		<!-- begin buttons and filters -->
 
 		<div class="filters">
+		<xsl:choose>
+			<xsl:when test="$param/is_logged_in = 'yes'">
+			<!-- advanced navigation (for authenticated users only) -->
+
 			<!-- card rarity filter -->
 			<xsl:variable name="classes">
 				<value name="Common"   value="Common"   />
@@ -106,6 +110,13 @@
 
 			<!-- navigation -->
 			<xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'cards')"/>
+
+			</xsl:when>
+			<xsl:otherwise>
+				<!-- simple navigation (for anonymous users) -->
+				<xsl:copy-of select="am:simple_navigation('Cards', 'CurrentCardsPage', $param/current_page, $param/page_count)"/>
+			</xsl:otherwise>
+		</xsl:choose>
 		</div>
 		<!-- end buttons and filters -->
 
@@ -132,10 +143,12 @@
 			</xsl:for-each>
 		</table>
 
-		<div class="filters">
-			<!-- lower navigation -->
-			<xsl:copy-of select="am:lower_navigation($param/page_count, $param/current_page, 'cards', 'Cards')"/>
-		</div>
+		<xsl:if test="$param/is_logged_in = 'yes'">
+			<div class="filters">
+				<!-- lower navigation -->
+				<xsl:copy-of select="am:lower_navigation($param/page_count, $param/current_page, 'cards', 'Cards')"/>
+			</div>
+		</xsl:if>
 
 		</div>
 

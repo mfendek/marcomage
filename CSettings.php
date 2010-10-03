@@ -50,6 +50,11 @@
 			$this->cache[$username] = $settings; // cache it
 			return $settings;
 		}
+
+		public function GetGuestSettings()
+		{
+			return new CSetting('', $this);
+		}
 	}
 
 	class CSetting

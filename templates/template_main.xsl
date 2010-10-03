@@ -220,9 +220,12 @@
 	<!-- sections menubar -->
 	<div id="sections">
 		<xsl:variable name="sections">
-			<value name="Webpage" value="Introduction"   />
-			<value name="Help"    value="Game manual"    />
-			<value name="Novels"  value="Fantasy novels" />
+			<value name="Webpage"  value="Introduction"     />
+			<value name="Help"     value="Game manual"      />
+			<value name="Forum"    value="Discussion forum" />
+			<value name="Cards"    value="MArcomage cards"  />
+			<value name="Concepts" value="Card concepts"    />
+			<value name="Novels"   value="Fantasy novels"   />
 		</xsl:variable>
 		<xsl:for-each select="exsl:node-set($sections)/*">
 			<a class="button" href="{php:functionString('makeurl', @name)}" >

@@ -31,7 +31,12 @@
 	<th><p>Author</p></th>
 	<th><p>Posts</p></th>
 	<th><p>Created</p></th>
-	<th><p><button type="submit" class="search_button" name="forum_search">Search</button>Latest post</p></th>
+	<th>
+		<p>
+			<xsl:if test="$param/is_logged_in = 'yes'"><button type="submit" class="search_button" name="forum_search">Search</button></xsl:if>
+			<xsl:text>Latest post</xsl:text>
+		</p>
+	</th>
 	</tr>
 
 	<xsl:for-each select="$param/sections/*">
@@ -261,7 +266,12 @@
 	<th><p>Author</p></th>
 	<th><p>Posts</p></th>
 	<th><p>Created</p></th>
-	<th><p><button type="submit" class="search_button" name="forum_search">Search</button>Latest post</p></th>
+	<th>
+		<p>
+			<xsl:if test="$param/is_logged_in = 'yes'"><button type="submit" class="search_button" name="forum_search">Search</button></xsl:if>
+			<xsl:text>Latest post</xsl:text>
+		</p>
+	</th>
 	</tr>
 
 	<tr><td colspan="6">
