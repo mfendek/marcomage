@@ -2969,11 +2969,11 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords/>
-    <effect><![CDATA[Tower: +12<br />Next card will be <b>Holy</b>]]></effect>
-    <code><![CDATA[$mydata->Tower+= 12; $nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Holy")), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
+    <keywords>Holy</keywords>
+    <effect><![CDATA[Tower: +12<br />Next card will be non-common <b>Holy</b>]]></effect>
+    <code><![CDATA[$mydata->Tower+= 12; $nextcard = $this->DrawCard(array_merge($carddb->GetList(array('class'=>"Uncommon", 'keyword'=>"Holy")), $carddb->GetList(array('class'=>"Rare", 'keyword'=>"Holy"))), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
     <created>2006-05-01</created>
-    <modified>2009-10-26</modified>
+    <modified>2010-10-03</modified>
   </card>
   <card id="197">
     <name>Daemon</name>
@@ -4457,10 +4457,10 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Replaces your hand with Elf, Elite elf, Elven archer, Elven marksman, Elven priestesses, Elf commando, Elf enchantress and Princess of elves]]></effect>
-    <code><![CDATA[$hand = array (122, 111, 272, 545, 527, 190, 136, 526); shuffle($hand); $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $keys = array_keys($newcards); $mydata->Hand = array_combine($keys, $hand); $mydata->NewCards = $newcards; $nextcard = 0;]]></code>
+    <effect><![CDATA[Replaces your hand with Elite elf, Elven archer, Elven marksman, Elven priestesses, Elf commando, Elf enchantress, Princess of elves and Elven warlock]]></effect>
+    <code><![CDATA[$hand = array (111, 272, 545, 527, 190, 136, 526, 599); shuffle($hand); $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $keys = array_keys($newcards); $mydata->Hand = array_combine($keys, $hand); $mydata->NewCards = $newcards; $nextcard = 0;]]></code>
     <created>2006-05-01</created>
-    <modified>2010-07-22</modified>
+    <modified>2010-10-03</modified>
   </card>
   <card id="293">
     <name>Under siege</name>
@@ -4962,29 +4962,22 @@
     </cost>
     <modes>0</modes>
     <keywords>Holy</keywords>
-    <effect><![CDATA[Replaces up to 3 non-rare cards of lowest rarity with any non-<b>Holy</b> keyword from opponent's hand with common <b>Holy</b>]]></effect>
+    <effect><![CDATA[Replaces up to N common cards with any non-<b>Holy</b> keyword from opponent's hand with common <b>Holy</b><br />N = #<b>Holy</b> in hand (max 4)]]></effect>
     <code><![CDATA[
-						$storage = array("Common" => array(), "Uncommon" => array());
+						$count = min(4, $this->KeyWordCount($mydata->Hand, "Holy"));
 						for ($i = 1; $i <= 8; $i++)
 						{
 							$cur_card = $carddb->GetCard($hisdata->Hand[$i]);
-							$rarity = $cur_card->GetClass();
-							if ($cur_card->HasKeyword('any') AND !$cur_card->HasKeyword('Holy') AND $rarity != 'Rare') $storage[$rarity][] = $i;
-						}
-						if ((count($storage['Common']) + count($storage['Uncommon'])) > 0)
-						{
-							shuffle($storage['Common']); shuffle($storage['Uncommon']);
-							$storage_temp = array_merge($storage['Common'], $storage['Uncommon']);
-							for ($i = 0; ($i < count($storage_temp)) AND ($i < 3); $i++)
+							if ($cur_card->HasKeyword('any') AND !$cur_card->HasKeyword('Holy') AND $cur_card->GetClass() == 'Common' AND $count > 0)
 							{
-								$pos = $storage_temp[$i];
-								$hisdata->Hand[$pos] = $this->DrawCard($carddb->GetList(array('class'=>'Common', 'keyword'=>"Holy")), $hisdata->Hand, $pos, 'DrawCard_list');
-								$hisdata->NewCards[$pos] = 1;
+								$hisdata->Hand[$i] = $this->DrawCard($carddb->GetList(array('class'=>'Common', 'keyword'=>"Holy")), $hisdata->Hand, $i, 'DrawCard_list');
+								$hisdata->NewCards[$i] = 1;
+								$count--;
 							}
 						}
 ]]></code>
     <created>2007-11-25</created>
-    <modified>2010-09-23</modified>
+    <modified>2010-10-03</modified>
   </card>
   <card id="326">
     <name>Guardian angel</name>
@@ -5374,7 +5367,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Replaces all non-<b>Beast</b> cards in hand with <b>Beast</b> cards<br />Stock: -2N<br />N = #replaced cards]]></effect>
+    <effect><![CDATA[Replaces all non-<b>Beast</b> cards in hand with <b>Beast</b> cards<br />Stock: -N<br />N = #replaced cards]]></effect>
     <code><![CDATA[
 								$mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $nextcard = 0; $j = 0;
 								for ($i = 1; $i <= 8; $i++)
@@ -5384,10 +5377,10 @@
 										$mydata->NewCards[$i] = 1;
 										$j++;
 									}
-								$mydata->Bricks-= $j * 2; $mydata->Gems-= $j * 2; $mydata->Recruits-= $j * 2;
+								$mydata->Bricks-= $j; $mydata->Gems-= $j; $mydata->Recruits-= $j;
 ]]></code>
     <created>2008-02-12</created>
-    <modified>2009-10-26</modified>
+    <modified>2010-10-03</modified>
   </card>
   <card id="348">
     <name>Time lock</name>
@@ -6025,53 +6018,65 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Replaces all <b>Barbarian</b>, <b>Brigand</b> and <b>Soldier</b> in game with Merchant, Caravan or Palisade]]></effect>
-    <code><![CDATA[for ($i = 1; $i <= 8; $i++) if (($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Soldier")) OR ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Barbarian")) OR ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Brigand"))) { $mydata->Hand[$i] = $this->DrawCard(array(23, 273, 297), $mydata->Hand, $cardpos, 'DrawCard_list'); $mydata->NewCards[$i] = 1; } for ($i = 1; $i <= 8; $i++) if (($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Soldier")) OR ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Barbarian")) OR ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Brigand"))) { $hisdata->Hand[$i] = $this->DrawCard(array(23, 273, 297), $hisdata->Hand, $cardpos, 'DrawCard_list'); $hisdata->NewCards[$i] = 1; }]]></code>
+    <effect><![CDATA[Replaces all non-rare cards with any keyword in game with Merchant, Caravan or Palisade]]></effect>
+    <code><![CDATA[
+							for ($i = 1; $i <= 8; $i++)
+							{
+								$cur_card = $carddb->GetCard($mydata->Hand[$i]);
+								if ($cur_card->HasKeyword("any") AND $cur_card->GetClass() != 'Rare' AND $i != $cardpos)
+								{
+									$mydata->Hand[$i] = $this->DrawCard(array(23, 273, 297), $mydata->Hand, $i, 'DrawCard_list');
+									$mydata->NewCards[$i] = 1;
+								}
+							}
+							for ($i = 1; $i <= 8; $i++)
+							{
+								$cur_card = $carddb->GetCard($hisdata->Hand[$i]);
+								if ($cur_card->HasKeyword("any") AND $cur_card->GetClass() != 'Rare')
+								{
+									$hisdata->Hand[$i] = $this->DrawCard(array(23, 273, 297), $hisdata->Hand, $i, 'DrawCard_list');
+									$hisdata->NewCards[$i] = 1;
+								}
+							}
+]]></code>
     <created>2008-12-24</created>
-    <modified>2008-12-24</modified>
+    <modified>2010-10-03</modified>
   </card>
   <card id="387">
     <name>Corrosion cloud</name>
     <class>Common</class>
     <cost>
       <bricks>0</bricks>
-      <gems>6</gems>
+      <gems>4</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
     <keywords>Nature</keywords>
-    <effect><![CDATA[Both players discard random non-rare <b>Unliving</b> from hand<br />If discarded card was uncommon<br />Owner's quarry: -1]]></effect>
+    <effect><![CDATA[Replaces all <b>Unliving</b> in game with no keyword Bricks only Wall + no support keyword cards of same rarity]]></effect>
     <code><![CDATA[
-							$storage = array();
 							for ($i = 1; $i <= 8; $i++)
 							{
 								$cur_card = $carddb->GetCard($mydata->Hand[$i]);
-								if (($cur_card->HasKeyword("Unliving")) AND ($cur_card->GetClass() != 'Rare')) $storage[] = $i;
+								$rarity = $cur_card->GetClass();
+								if ($cur_card->HasKeyword("Unliving") AND $i != $cardpos)
+								{
+									$mydata->Hand[$i] = $this->DrawCard($carddb->GetList(array('class'=>$rarity, 'keyword'=>"No keywords", 'cost'=>"Red", 'advanced'=>"Wall: +", 'support'=>"No keywords")), $mydata->Hand, $i, 'DrawCard_list');
+									$mydata->NewCards[$i] = 1;
+								}
 							}
-							if (count($storage) > 0)
-							{
-								$discarded_pos = $storage[array_rand($storage)];
-								if ($carddb->GetCard($mydata->Hand[$discarded_pos])->GetClass() == 'Uncommon') $mydata->Quarry-= 1;
-								$mydata->Hand[$discarded_pos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $discarded_pos, 'DrawCard_random');
-								$mydata->NewCards[$discarded_pos] = 1;
-							}
-							
-							$storage = array();
 							for ($i = 1; $i <= 8; $i++)
 							{
 								$cur_card = $carddb->GetCard($hisdata->Hand[$i]);
-								if (($cur_card->HasKeyword("Unliving")) AND ($cur_card->GetClass() != 'Rare')) $storage[] = $i;
-							}
-							if (count($storage) > 0)
-							{
-								$discarded_pos = $storage[array_rand($storage)];
-								if ($carddb->GetCard($hisdata->Hand[$discarded_pos])->GetClass() == 'Uncommon') $hisdata->Quarry-= 1;
-								$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_random');
-								$hisdata->NewCards[$discarded_pos] = 1;
+								$rarity = $cur_card->GetClass();
+								if ($cur_card->HasKeyword("Unliving"))
+								{
+									$hisdata->Hand[$i] = $this->DrawCard($carddb->GetList(array('class'=>$rarity, 'keyword'=>"No keywords", 'cost'=>"Red", 'advanced'=>"Wall: +", 'support'=>"No keywords")), $hisdata->Hand, $i, 'DrawCard_list');
+									$hisdata->NewCards[$i] = 1;
+								}
 							}
 ]]></code>
     <created>2008-12-24</created>
-    <modified>2010-09-23</modified>
+    <modified>2010-10-03</modified>
   </card>
   <card id="388">
     <name>Greed is good</name>
@@ -9461,11 +9466,11 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords/>
+    <keywords>Illusion</keywords>
     <effect><![CDATA[Wall: +7<br />Bricks: +5]]></effect>
     <code><![CDATA[$mydata->Wall+= 7; $mydata->Bricks+= 5;]]></code>
     <created>2010-09-10</created>
-    <modified>2010-09-10</modified>
+    <modified>2010-10-03</modified>
   </card>
 	<card id="583">
     <name>Moon castle</name>
