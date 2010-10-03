@@ -5314,7 +5314,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Replaces all Zealots with Avenging angels and all Fanatics with Zealots]]></effect>
+    <effect><![CDATA[Replaces all Zealots in hand with Avenging angels and all Fanatics in hand with Zealots]]></effect>
     <code><![CDATA[for ($i = 1; $i <= 8; $i++) if ($mydata->Hand[$i] == 340) { $mydata->Hand[$i] = 341; $mydata->NewCards[$i] = 1; }  elseif ($mydata->Hand[$i] == 341) { $mydata->Hand[$i] = 461; $mydata->NewCards[$i] = 1; }]]></code>
     <created>2008-02-12</created>
     <modified>2010-07-22</modified>
@@ -7770,7 +7770,7 @@
     </cost>
     <modes>8</modes>
     <keywords/>
-    <effect><![CDATA[If targeting self and not New discards the matching card<br />else replace selected card with Ambush<br />Recruits: +2]]></effect>
+    <effect><![CDATA[If targeting self and not New, discards the matching card, else replace selected card with Ambush<br />Recruits: +2]]></effect>
     <code><![CDATA[if (!isset($mynewflags[$cardpos]) AND $mode == $cardpos) { $hisdata->Hand[$cardpos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $cardpos, 'DrawCard_different'); $hisdata->NewCards[$cardpos] = 1; } else { $mydata->Hand[$mode] = 480; $mydata->NewCards[$mode] = 1; $mydata->Recruits+= 2; }]]></code>
     <created>2009-10-24</created>
     <modified>2010-09-10</modified>
