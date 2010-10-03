@@ -55,6 +55,7 @@ div#login_message /* login message layout */
 	text-align: left;
 	margin-left: 1ex;
 	font-weight: bold;
+	min-height: 1em;
 }
 
 div#sections /* login box sections menu */

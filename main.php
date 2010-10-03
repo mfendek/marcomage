@@ -78,6 +78,7 @@
 		elseif (isset($_POST['ReturnToLogin'])) // TODO: rename this
 		{
 			$current = "Webpage";
+			$information = "Please log in.";
 		}
 		elseif (isset($_POST['Register']))
 		{
