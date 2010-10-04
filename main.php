@@ -117,8 +117,10 @@
 		{
 			$public_sections = array('Webpage', 'Help', 'Novels', 'Forum', 'Cards', 'Concepts');
 			$section_name = preg_replace("/_.*/i", '', $current);
-			if (!in_array($section_name, $public_sections)) $current = "Webpage";
-			$information = "Please log in.";
+			if (!in_array($section_name, $public_sections))
+				$display_error = 'Authentication is required to view this page.';
+			else
+				$information = "Please log in.";
 		}
 	}
 	else
