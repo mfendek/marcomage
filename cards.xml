@@ -9422,7 +9422,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Far sight</keywords>
-    <effect><![CDATA[Tower: +12<br />If Tower < Wall<br />Tower: +13]]></effect>
+    <effect><![CDATA[If Tower < Wall<br />Tower: +25<br />else<br />Tower: +12]]></effect>
     <code><![CDATA[if ($mydata->Tower < $mydata->Wall) $mydata->Tower+= 25; else $mydata->Tower+= 12;]]></code>
     <created>2010-09-10</created>
     <modified>2010-09-10</modified>
