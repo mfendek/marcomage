@@ -7230,19 +7230,20 @@
     <effect><![CDATA[Tower: +10<br />Highest facility: +1<br />Lowest facility: +2]]></effect>
     <code><![CDATA[
 							$mydata->Tower+= 10;
-							$min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
 							$max = max($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
 							$fac = array("Quarry" => $mydata->Quarry, "Magic" => $mydata->Magic, "Dungeons" => $mydata->Dungeons);
-							$temp_min = $temp_max = array();
+							$temp_max = array();
 							foreach ($fac as $facility => $f_value)
-							{
-								if ($f_value == $min) $temp_min[$facility] = $f_value;
 								if ($f_value == $max) $temp_max[$facility] = $f_value;
-							}
-							$chosen_min = array_rand($temp_min);
 							$chosen_max = array_rand($temp_max);
-							$mydata->$chosen_min+= 2;
 							$mydata->$chosen_max+= 1;
+							$min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
+							$fac = array("Quarry" => $mydata->Quarry, "Magic" => $mydata->Magic, "Dungeons" => $mydata->Dungeons);
+							$temp_min = array();
+							foreach ($fac as $facility => $f_value)
+								if ($f_value == $min) $temp_min[$facility] = $f_value;
+							$chosen_min = array_rand($temp_min);
+							$mydata->$chosen_min+= 2;
 ]]></code>
     <created>2009-07-22</created>
     <modified>2010-09-10</modified>
@@ -7944,19 +7945,20 @@
     <effect><![CDATA[Wall: +4<br />Highest resource: -3<br />Lowest resource: +3]]></effect>
     <code><![CDATA[
 							$mydata->Wall+= 4;
-							$min = min($mydata->Bricks, $mydata->Gems, $mydata->Recruits);
 							$max = max($mydata->Bricks, $mydata->Gems, $mydata->Recruits);
 							$res = array("Bricks" => $mydata->Bricks, "Gems" => $mydata->Gems, "Recruits" => $mydata->Recruits);
-							$temp_min = $temp_max = array();
+							$temp_max = array();
 							foreach ($res as $resource => $r_value)
-							{
-								if ($r_value == $min) $temp_min[$resource] = $r_value;
 								if ($r_value == $max) $temp_max[$resource] = $r_value;
-							}
-							$chosen_min = array_rand($temp_min);
 							$chosen_max = array_rand($temp_max);
-							$mydata->$chosen_min+= 3;
 							$mydata->$chosen_max-= 3;
+							$min = min($mydata->Bricks, $mydata->Gems, $mydata->Recruits);
+							$res = array("Bricks" => $mydata->Bricks, "Gems" => $mydata->Gems, "Recruits" => $mydata->Recruits);
+							$temp_min = array();
+							foreach ($res as $resource => $r_value)
+								if ($r_value == $min) $temp_min[$resource] = $r_value;
+							$chosen_min = array_rand($temp_min);
+							$mydata->$chosen_min+= 3;
 ]]></code>
     <created>2009-10-24</created>
     <modified>2010-01-11</modified>
