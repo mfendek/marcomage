@@ -5245,7 +5245,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Holy,Soldier</keywords>
-    <effect><![CDATA[Attack: 6<br />If Tower < Enemy tower<br />Attack: 6]]></effect>
+    <effect><![CDATA[If Tower < Enemy tower<br />Attack: 12<br />else<br />Attack: 6]]></effect>
     <code><![CDATA[if ($mydata->Tower < $hisdata->Tower) $this->Attack(12, $hisdata->Tower, $hisdata->Wall); else $this->Attack(6, $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2008-02-12</created>
     <modified>2010-09-23</modified>
@@ -9364,7 +9364,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +3<br />Wall: +8<br />If Tower < 15 or Wall < 15<br />Tower: +2<br />Wall: +4]]></effect>
+    <effect><![CDATA[If Tower < 15 or Wall < 15<br />Tower: +5<br />Wall: +12<br />else<br />Tower: +3<br />Wall: +8]]></effect>
     <code><![CDATA[if ($mydata->Tower < 15 OR $mydata->Wall < 15) { $mydata->Tower+= 5; $mydata->Wall+= 12; } else { $mydata->Tower+= 3; $mydata->Wall+= 8; }]]></code>
     <created>2010-09-10</created>
     <modified>2010-09-10</modified>
