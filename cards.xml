@@ -476,7 +476,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Attack: 22 + N<br />Enemy stock: -N<br />N = <b>#Holy</b> in opponent's hand]]></effect>
+    <effect><![CDATA[Attack: 22 + N<br />Enemy stock: -N<br />N = #<b>Holy</b> in opponent's hand]]></effect>
     <code><![CDATA[$tmp = $this->KeywordCount($hisdata->Hand, "Holy"); $this->Attack(22 + $tmp, $hisdata->Tower, $hisdata->Wall); $hisdata->Bricks-= $tmp; $hisdata->Gems-= $tmp; $hisdata->Recruits-= $tmp;]]></code>
     <created>2006-05-01</created>
     <modified>2010-07-22</modified>
@@ -1350,7 +1350,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Undead</keywords>
-    <effect><![CDATA[Attack: 40 + 8N<br />N = <b>#Undead</b> in hand]]></effect>
+    <effect><![CDATA[Attack: 40 + 8N<br />N = #<b>Undead</b> in hand]]></effect>
     <code><![CDATA[$tmp = ($this->KeywordCount($mydata->Hand, "Undead") * 8) + 40; $this->Attack($tmp, $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2006-05-01</created>
     <modified>2010-09-23</modified>
@@ -5102,7 +5102,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Holy</keywords>
-    <effect><![CDATA[Each player's stock lowered by <b>#Undead</b> in his hand]]></effect>
+    <effect><![CDATA[Each player's stock lowered by #<b>Undead</b> in his hand]]></effect>
     <code><![CDATA[$tmp = $this->KeywordCount($mydata->Hand, "Undead"); $mydata->Bricks-= $tmp; $mydata->Gems-= $tmp; $mydata->Recruits-= $tmp; $tmp = $this->KeywordCount($hisdata->Hand, "Undead"); $hisdata->Bricks-= $tmp; $hisdata->Gems-= $tmp; $hisdata->Recruits-= $tmp;]]></code>
     <created>2007-11-25</created>
     <modified>2010-07-22</modified>
@@ -5767,7 +5767,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Beast,Burning</keywords>
-    <effect><![CDATA[Attack: 13 + 2N<br />Recruits: + N<br />N = <b>#Burning</b> + <b>#Beast</b> in game]]></effect>
+    <effect><![CDATA[Attack: 13 + 2N<br />Recruits: + N<br />N = #<b>Burning</b> + #<b>Beast</b> in game]]></effect>
     <code><![CDATA[$tmp = $this->KeyWordCount($mydata->Hand, "Beast") + $this->KeyWordCount($mydata->Hand, "Burning") + $this->KeyWordCount($hisdata->Hand, "Beast") + $this->KeyWordCount($hisdata->Hand, "Burning"); $this->Attack(13 + 2*$tmp, $hisdata->Tower, $hisdata->Wall); $mydata->Recruits+= $tmp;]]></code>
     <created>2008-07-30</created>
     <modified>2008-07-30</modified>
@@ -5887,7 +5887,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Alliance</keywords>
-    <effect><![CDATA[Attack: 20 + 5N<br />Tower: +3N<br />Wall: +4N<br />Stock: +N<br />N = <b>#Alliance</b> in hand]]></effect>
+    <effect><![CDATA[Attack: 20 + 5N<br />Tower: +3N<br />Wall: +4N<br />Stock: +N<br />N = #<b>Alliance</b> in hand]]></effect>
     <code><![CDATA[$tmp = $this->KeywordCount($mydata->Hand, "Alliance"); $this->Attack(20 + $tmp * 5, $hisdata->Tower, $hisdata->Wall); $mydata->Wall+= $tmp * 4; $mydata->Tower+= $tmp * 3; $mydata->Bricks+= $tmp; $mydata->Gems+= $tmp; $mydata->Recruits+= $tmp;]]></code>
     <created>2008-07-30</created>
     <modified>2008-07-30</modified>
