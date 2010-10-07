@@ -97,7 +97,7 @@
 				{
 				case 'Any keyword': $query .= "contains(am:effect, '<b>')"; break;
 				case 'No keywords': $query .= "not(contains(am:effect, '<b>'))"; break;
-				default           : $query .= "contains(am:effect, '".$filters['support']."')"; //FIXME: no escaping
+				default           : $query .= "contains(am:effect, '<b>".$filters['support']."')"; //FIXME: no escaping
 				}
 			}
 
