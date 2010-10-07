@@ -80,7 +80,7 @@
 	<li>"Last card played by opponent" means last card played by opponent (if opponent played more cards in his round then it is the most recent one)</li>
 	<li>"Recently discarded" means cards discarded by you last round or by opponent (during his last round)</li>
 	<li>"Last round" is a round recently made by some player, cards that refer to changes made by opponent during his last round must be played at the start of the round, otherwise they will have no effect</li>
-	<li>"(max N), (min N)" these are limits applied to each resource type (Bricks, Gems, Recruits). It means that you cannot get more then N of each resource for example.</li>
+	<li>"(max N), (min N)" these are limits applied to each resource type (Bricks, Gems, Recruits). It means that you cannot get more than N of each resource for example.</li>
 	<li>"#Keyword" means number of such keywords either in card present in your hand or in both player's hands (this is specified in the card effect description)</li>
 	<li>"#Keyword1 + #Keyword2" means number of keywords1 plus number of keywords2, note that they are counted independently</li>
 	<li>All decimal numbers are always rounded standard fashion way</li>
@@ -96,7 +96,7 @@
 	<li>Cost of a card is substracted</li>
 	<li>Effect of the card takes place</li>
 	<li>Keywords with side-effects apply</li>
-	<li>Game limits apply (resources cannot be lower then 0, wall below 0, facitlies below 1...)</li>
+	<li>Game limits apply (resources cannot be lower than 0, wall below 0, facitlies below 1...)</li>
 	<li>Resource production</li>
 	<li>End game condition is checked</li>
 </ol>
@@ -115,7 +115,7 @@
 	<li><b>Beast</b> - basic gain 14, bonus gain 10, side-effect (Fierce attack): additional damage will be inflicted upon your enemy based on played card rarity (Common - 2 , Uncommon -  5, Rare - 10).</li>
 	<li><b>Burning</b> - basic gain 3, bonus gain 11, side-effect (Fire blast): replaces one random non-<b>Burning</b> card from enemy hand (if there is one) with Searing fire. Can only replace a card with same or lower rarity as was the played card, but cards with highest replacable rarity are preferred.</li>
 	<li><b>Charge</b> - when card has this keyword, it also has a number next to this keyword. When card is played and the opponent's wall (after the standard attack) is 0, he will receive additional damage equal to number next to charge.</li>
-	<li><b>Destruction</b> - if a <b>Destruction</b> card is played after playing a different non-common <b>Destruction</b> card, it reduces enemy's highest facility by 1 when it is greater then 3, otherwise it reduces opponent's highest resurce by 10.</li>
+	<li><b>Destruction</b> - if a <b>Destruction</b> card is played after playing a different non-common <b>Destruction</b> card, it reduces enemy's highest facility by 1 when it is greater than 3, otherwise it reduces opponent's highest resurce by 10.</li>
 	<li><b>Dragon</b> - if there is another <b>Dragon</b> in hand, next card will be Dragon egg (if there is no Dragon egg card in hand) or Gems production x2 (if there already is a Dragon egg card in hand).</li>
 	<li><b>Durable</b> - card stays on hand.</li>
 	<li><b>Enduring</b> - when card has this keyword, it also has a number next to this keyword. When card is played and the last card played was same as this one, opponent will suffer additional damage equal to number next to Enduring.</li>
@@ -124,11 +124,11 @@
 	<li><b>Frenzy</b> - if there is another <b>Frenzy</b> card in hand, opponent receives bonus damage (recruits cost of the played card).</li>
 	<li><b>Holy</b> - basic gain 25, bonus gain 5, side-effect (Purification): replaces one random <b>Undead</b> card from enemy hand (if there is one) with Purified ashes. Can only replace a card with same or lower rarity as was the played card, but cards with highest replaceable rarity are preferred. You will get additional stock based on replaced card rarity (Common - 1 stock, Uncommon -  2 stock, Rare - 3 stock).</li>
 	<li><b>Illusion</b> - if an <b>Illusion</b> card is played after playing a different non-common <b>Illusion</b> card, next card will be a rare card from enemy deck.</li>
-	<li><b>Legend</b> - if there is a rare card in hand (other then played card), raises lowest facility by one.</li>
+	<li><b>Legend</b> - if there is a rare card in hand (other than played card), raises lowest facility by one.</li>
 	<li><b>Mage</b> - basic gain 10, bonus gain 3, side-effect (Willpower): If (Magic - Enemy magic &lt; 2) Magic: +1 else Gems: +10</li>
 	<li><b>Nature</b> - if a <b>Nature</b> card is played after playing a different non-common <b>Nature</b> card, upgrades rarity of highest non-rare <b>Nature</b> card in hand</li>
 	<li><b>Quick</b> - player gets an additional turn, but no production this turn. It is impossible to draw a rare card after a <b>Quick</b> card is played.</li>
-	<li><b>Rebirth</b> - when played and number of <b>Burning</b> cards in game is greater then 3, the card stays on hand and you will get 16 additional gems.</li>
+	<li><b>Rebirth</b> - when played and number of <b>Burning</b> cards in game is greater than 3, the card stays on hand and you will get 16 additional gems.</li>
 	<li><b>Restoration</b> - if a <b>Restoration</b> card is played after playing a different non-common <b>Restoration</b> card, it raises your lowest facility by 1 when your facility is below 3, otherwise it gives you 10 of your lowest resource.</li>
 	<li><b>Skirmisher</b> - discards one random <b>Charge</b> card from enemy hand (if there is one). Common cards can discard common and uncommon cards, uncommon cards can discard any rarity. Rare cards can also discard any rarity, but they have additional effect (opponent loses stock equal to discarded card cost). Cards with highest discardable rarity are preferred.</li>
 	<li><b>Soldier</b> - basic gain 15, bonus gain 10, side-effect (Veteran troops): half of the recruits cost of the played card will be returned.</li>
@@ -395,7 +395,7 @@
 <p>Please use English only at all times. Forum is divided into sections. Section contains threads - discussions about some topic. There are 3 types of threads:</p>
 <ul>
 	<li>Sticky <img src="img/sticky.gif" width="22px" height="15x" alt="sticky" title="Sticky" class="icon" />- these are always at the top of the threads list</li>
-	<li>Important <img src="img/important.gif" width="18px" height="13px" alt="important" title="Important" class="icon" />- these are more important then other threads</li>
+	<li>Important <img src="img/important.gif" width="18px" height="13px" alt="important" title="Important" class="icon" />- these are more important than other threads</li>
 	<li>Normal - all other threads</li>
 </ul>
 

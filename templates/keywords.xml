@@ -32,7 +32,7 @@
 		<name>Banish</name>
 		<description>Discards one random Durable card from enemy hand (if there is one). Common cards can discard common and uncommon cards, uncommon cards can discard any rarity. Rare cards can also discard any rarity, but they have additional effect (player gains stock equal to discarded card cost). Cards with highest discardable rarity are preferred.</description>
 		<code><![CDATA[
-					// target card is discarded only if it has same or lower rarity then the played card
+					// target card is discarded only if it has same or lower rarity than the played card
 					$rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
 					$storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
 					$played_rank = $rarities[$card->GetClass()];
@@ -156,7 +156,7 @@
 						
 						if ($mydata->TokenValues[$token_index] >= 100)
 						{
-							// target card is discarded only if it has same or lower rarity then the played card
+							// target card is discarded only if it has same or lower rarity than the played card
 							$rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
 							$storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
 							$played_rank = $rarities[$card->GetClass()];
@@ -193,7 +193,7 @@
 	</keyword>
 	<keyword>
 		<name>Destruction</name>
-		<description>If a Destruction card is played after playing a different non-common Destruction card, it reduces enemy's highest facility by 1 when it is greater then 3, otherwise it reduces opponent's highest resurce by 10.</description>
+		<description>If a Destruction card is played after playing a different non-common Destruction card, it reduces enemy's highest facility by 1 when it is greater than 3, otherwise it reduces opponent's highest resurce by 10.</description>
 		<code><![CDATA[
 					if (($mylast_card->HasKeyword("Destruction")) AND ($mylast_action == 'play') AND ($mylast_card->GetClass() != 'Common') AND ($cardid != $mylast_card->GetID()))
 					{
@@ -335,7 +335,7 @@
 						
 						if ($mydata->TokenValues[$token_index] >= 100)
 						{
-							// target card is discarded only if it has same or lower rarity then the played card
+							// target card is discarded only if it has same or lower rarity than the played card
 							$rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
 							$storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
 							$played_rank = $rarities[$card->GetClass()];
@@ -378,7 +378,7 @@
 	</keyword>
 	<keyword>
 		<name>Legend</name>
-		<description>If there is a rare card in hand (other then played card), raises lowest facility by one.</description>
+		<description>If there is a rare card in hand (other than played card), raises lowest facility by one.</description>
 		<code><![CDATA[
 					$found = false;
 					for ($i = 1; $i <= 8; $i++)
@@ -454,7 +454,7 @@
 	</keyword>
 	<keyword>
 		<name>Rebirth</name>
-		<description>when played and number of Burning cards in game is greater then 3, the card stays on hand and you will get 16 additional gems.</description>
+		<description>when played and number of Burning cards in game is greater than 3, the card stays on hand and you will get 16 additional gems.</description>
 		<code><![CDATA[if (($this->KeywordCount($mydata->Hand, "Burning") + $this->KeywordCount($hisdata->Hand, "Burning")) > 3) { $nextcard = $cardid; $mydata->Gems+= 16; }]]></code>
 	</keyword>
 	<keyword>
@@ -490,7 +490,7 @@
 		<name>Skirmisher</name>
 		<description>Discards one random Charge card from enemy hand (if there is one). Common cards can discard common and uncommon cards, uncommon cards can discard any rarity. Rare cards can also discard any rarity, but they have additional effect (opponent loses stock equal to discarded card cost). Cards with highest discardable rarity are preferred.</description>
 		<code><![CDATA[
-					// target card is discarded only if it has same or lower rarity then the played card
+					// target card is discarded only if it has same or lower rarity than the played card
 					$rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
 					$storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
 					$played_rank = $rarities[$card->GetClass()];

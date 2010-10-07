@@ -19,7 +19,7 @@
 	<li>Cost of a card is substracted</li>
 	<li>Effect of the card takes place</li>
 	<li>Keywords with side-effects apply</li>
-	<li>Game limits apply (resources cannot be lower then 0, wall below 0, facitlies below 1...)</li>
+	<li>Game limits apply (resources cannot be lower than 0, wall below 0, facitlies below 1...)</li>
 	<li>Resource production</li>
 	<li>End game condition is checked</li>
 </ol>
