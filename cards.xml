@@ -5049,26 +5049,30 @@
     </cost>
     <modes>0</modes>
     <keywords>Undead</keywords>
-    <effect><![CDATA[Returns your recently discarded <b>Undead</b> to hand (random positions)<br />Attack: 10N<br />N = #replaced cards]]></effect>
+    <effect><![CDATA[If last card played was <b>Undead</b> support, returns your discarded <b>Undead</b> to hand<br />Attack: 10N<br />N = #replaced cards]]></effect>
     <code><![CDATA[
-						$tmp = 0; $temparray = array();
-						if ($mylast_action == 'discard') $temparray[0] = $mydata->LastCard[$mylastcardindex];
-						if (count($discarded_cards[0]) > 0) $temparray = array_merge($discarded_cards[0], $temparray);
-						if (count($hisdata->DisCards[1]) > 0) $temparray = array_merge($temparray, $hisdata->DisCards[1]);
-						$storage = array();
-						for ($i = 0; $i < count($temparray); $i++) if ($carddb->GetCard($temparray[$i])->HasKeyword("Undead")) { $storage[] = $temparray[$i]; }
-						$temparray = $storage;
-						if (count($temparray) > 8) $temparray = array_pad($temparray, 8);
-						$trans_array = array();
-						for ($i = 0; $i < 8; $i++) $trans_array[$i] = $i + 1;
-						shuffle($trans_array);
-						for ($i = 0; $i < count($temparray); $i++)
+						if (($mylast_action == 'play') AND in_array($mylast_card->GetID(), $carddb->GetList(array('support'=>"Undead"))))
 						{
-							$mydata->Hand[$trans_array[$i]] = $temparray[$i];
-							$mydata->NewCards[$trans_array[$i]] = 1;
-							if ($trans_array[$i] == $cardpos) $nextcard = 0;
+							$dis_cards = array();
+							if (count($discarded_cards[0]) > 0) $dis_cards = array_merge($discarded_cards[0], $dis_cards);
+							if (count($hisdata->DisCards[1]) > 0) $dis_cards = array_merge($hisdata->DisCards[1], $dis_cards);
+							$storage = array();
+							for ($i = 0; $i < count($dis_cards); $i++) if ($carddb->GetCard($dis_cards[$i])->HasKeyword("Undead")) { $storage[] = $dis_cards[$i]; }
+							if (count($storage) > 0)
+							{
+								if (count($storage) > 8) $storage = array_pad($storage, 8);
+								$trans = array();
+								for ($i = 0; $i < 8; $i++) $trans[$i] = $i + 1;
+								shuffle($trans);
+								for ($i = 0; $i < count($storage); $i++)
+								{
+									$mydata->Hand[$trans[$i]] = $storage[$i];
+									$mydata->NewCards[$trans[$i]] = 1;
+									if ($trans[$i] == $cardpos) $nextcard = 0;
+								}
+								$this->Attack(count($storage)*10, $hisdata->Tower, $hisdata->Wall);
+							}
 						}
-						$this->Attack(count($temparray)*10, $hisdata->Tower, $hisdata->Wall);
 ]]></code>
     <created>2007-11-25</created>
     <modified>2009-10-26</modified>
