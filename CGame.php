@@ -472,8 +472,8 @@
 			$p1->TokenValues = $p1->TokenChanges = array_fill_keys(array_keys($p1->TokenNames), 0);
 			$p2->TokenValues = $p2->TokenChanges = array_fill_keys(array_keys($p2->TokenNames), 0);
 			
-			$p1->Hand = $this->DrawHand_norare($p1->Deck);
-			$p2->Hand = $this->DrawHand_norare($p2->Deck);
+			$p1->Hand = $this->DrawHand_initial($p1->Deck);
+			$p2->Hand = $this->DrawHand_initial($p2->Deck);
 		}
 		
 		public function SurrenderGame()
@@ -1000,6 +1000,26 @@
 			return $this->DrawHand($deck, 'DrawCard_norare');
 		}
 		
+		// returns initial hand which always consist of 6 common and 2 uncommon cards
+		private function DrawHand_initial(CDeckData $deck)
+		{
+			// initialize empty hand
+			$hand = array(1=> 0, 0, 0, 0, 0, 0, 0, 0);
+
+			// draw 6 common cards
+			for ($i = 1; $i <= 6; $i++) $hand[$i] = $this->DrawCard($deck->Common, $hand, $i, 'DrawCard_list');
+
+			// draw 2 uncommon cards
+			for ($i = 7; $i <= 8; $i++) $hand[$i] = $this->DrawCard($deck->Uncommon, $hand, $i, 'DrawCard_list');
+
+			// shuffle card positions
+			$keys = array_keys($hand);
+			shuffle($hand);
+			$hand = array_combine($keys, $hand);
+
+			return $hand;
+		}
+
 		// returns a new hand consisting of random cards from the specified list of card ids
 		private function DrawHand_list(array $list)
 		{
