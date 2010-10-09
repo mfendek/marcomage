@@ -390,7 +390,7 @@
 
 			<!-- card's image and its border (colored via CSS according to class) -->
 			<xsl:if test="$c_img = 'yes'">
-				<img src="img/concepts/{$card/picture}" width="80px" height="60px" alt="" >
+				<img src="img/concepts/{$card/picture}" width="80px" height="60px" alt="{$card/name}" >
 					<xsl:choose>
 						<xsl:when test="$card/picture">
 							<xsl:attribute name="src">img/concepts/<xsl:value-of select="$card/picture"/></xsl:attribute>
