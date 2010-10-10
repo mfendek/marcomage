@@ -115,7 +115,7 @@
 	<li><b>Beast</b> - basic gain 14, bonus gain 10, side-effect (Fierce attack): additional damage will be inflicted upon your enemy based on played card rarity (Common - 2 , Uncommon -  5, Rare - 10).</li>
 	<li><b>Burning</b> - basic gain 3, bonus gain 11, side-effect (Fire blast): replaces one random non-<b>Burning</b> card from enemy hand (if there is one) with Searing fire. Can only replace a card with same or lower rarity as was the played card, but cards with highest replacable rarity are preferred.</li>
 	<li><b>Charge</b> - when card has this keyword, it also has a number next to this keyword. When card is played and the opponent's wall (after the standard attack) is 0, he will receive additional damage equal to number next to charge.</li>
-	<li><b>Destruction</b> - if a <b>Destruction</b> card is played after playing a different non-common <b>Destruction</b> card, it reduces enemy's highest facility by 1 when it is greater than 3, otherwise it reduces opponent's highest resurce by 10.</li>
+	<li><b>Destruction</b> - if a <b>Destruction</b> card is played after playing a different non-common <b>Destruction</b> card, it reduces enemy's highest facility by 1 when it is greater than 3, otherwise it reduces opponent's highest resource by 10.</li>
 	<li><b>Dragon</b> - if there is another <b>Dragon</b> in hand, next card will be Dragon egg (if there is no Dragon egg card in hand) or Gems production x2 (if there already is a Dragon egg card in hand).</li>
 	<li><b>Durable</b> - card stays on hand.</li>
 	<li><b>Enduring</b> - when card has this keyword, it also has a number next to this keyword. When card is played and the last card played was same as this one, opponent will suffer additional damage equal to number next to Enduring.</li>

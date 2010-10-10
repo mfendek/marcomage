@@ -193,7 +193,7 @@
 	</keyword>
 	<keyword>
 		<name>Destruction</name>
-		<description>If a Destruction card is played after playing a different non-common Destruction card, it reduces enemy's highest facility by 1 when it is greater than 3, otherwise it reduces opponent's highest resurce by 10.</description>
+		<description>If a Destruction card is played after playing a different non-common Destruction card, it reduces enemy's highest facility by 1 when it is greater than 3, otherwise it reduces opponent's highest resource by 10.</description>
 		<code><![CDATA[
 					if (($mylast_card->HasKeyword("Destruction")) AND ($mylast_action == 'play') AND ($mylast_card->GetClass() != 'Common') AND ($cardid != $mylast_card->GetID()))
 					{
