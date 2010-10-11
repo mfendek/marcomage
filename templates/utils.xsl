@@ -325,8 +325,6 @@
 <func:function name="am:cardstring">
 	<xsl:param name="card" />
 	<xsl:param name="c_img" select="'yes'" />
-	<xsl:param name="c_keywords" select="'yes'" />
-	<xsl:param name="c_text" select="'yes'" />
 	<xsl:param name="c_oldlook" select="'no'" />
 
 	<xsl:variable name="cardstring">
@@ -403,42 +401,38 @@
 			</xsl:if>
 
 			<!-- keywords -->
-			<xsl:if test="$c_keywords = 'yes'">
-				<xsl:choose>
-					<xsl:when test="$card/picture">
-						<p><b><xsl:value-of select="$card/keywords"/></b></p>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:variable name="descriptions" select="document('keywords.xml')/am:keywords" />
-						<p>
-							<xsl:for-each select="str:split($card/keywords, ',')">
-								<b>
-									<xsl:variable name="keyword_name" select="." />
-									<xsl:attribute name="title">
-										<xsl:value-of select="$descriptions/am:keyword[contains($keyword_name, am:name)]/am:description"/>
-									</xsl:attribute>
-									<xsl:value-of select="$keyword_name"/>
-									<xsl:text>.</xsl:text>
-								</b>
-							</xsl:for-each>
-						</p>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:if>
+			<xsl:choose>
+				<xsl:when test="$card/picture">
+					<p><b><xsl:value-of select="$card/keywords"/></b></p>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:variable name="descriptions" select="document('keywords.xml')/am:keywords" />
+					<p>
+						<xsl:for-each select="str:split($card/keywords, ',')">
+							<b>
+								<xsl:variable name="keyword_name" select="." />
+								<xsl:attribute name="title">
+									<xsl:value-of select="$descriptions/am:keyword[contains($keyword_name, am:name)]/am:description"/>
+								</xsl:attribute>
+								<xsl:value-of select="$keyword_name"/>
+								<xsl:text>.</xsl:text>
+							</b>
+						</xsl:for-each>
+					</p>
+				</xsl:otherwise>
+			</xsl:choose>
 
 			<!-- card effect -->
-			<xsl:if test="$c_text = 'yes'">
-				<div>
-					<xsl:choose>
-						<xsl:when test="$card/picture">
-							<xsl:copy-of select="am:textencode($card/effect)" />
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="am:cardeffect($card/effect)" disable-output-escaping="yes"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</div>
-			</xsl:if>
+			<div>
+				<xsl:choose>
+					<xsl:when test="$card/picture">
+						<xsl:copy-of select="am:textencode($card/effect)" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="am:cardeffect($card/effect)" disable-output-escaping="yes"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</div>
 
 		</div>
 	</xsl:variable>

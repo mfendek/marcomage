@@ -244,7 +244,7 @@
 				</xsl:choose>
 
 				<!-- display card -->
-				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
+				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook)" />
 			</td>
 		</xsl:for-each>
 	</tr>
@@ -450,11 +450,11 @@
 						<table cellpadding="0" cellspacing="0">
 							<tr>
 								<xsl:for-each select="$param/p1DisCards0/*">
-									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></td>
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook)" /></td>
 								</xsl:for-each>
 								<td style="border-right: thin solid yellow"></td>
 								<xsl:for-each select="$param/p1DisCards1/*">
-									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></td>
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook)" /></td>
 								</xsl:for-each>
 							</tr>
 						</table>
@@ -488,7 +488,7 @@
 											</xsl:otherwise>
 										</xsl:choose>
 									</p>
-									<xsl:copy-of select="am:cardstring(CardData, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
+									<xsl:copy-of select="am:cardstring(CardData, $param/c_img, $param/c_oldlook)" />
 								</td>
 							</xsl:for-each>
 						</xsl:if>
@@ -522,7 +522,7 @@
 											</xsl:otherwise>
 										</xsl:choose>
 									</p>
-									<xsl:copy-of select="am:cardstring(CardData, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
+									<xsl:copy-of select="am:cardstring(CardData, $param/c_img, $param/c_oldlook)" />
 								</td>
 							</xsl:for-each>
 						</xsl:if>
@@ -544,11 +544,11 @@
 						<table cellpadding="0" cellspacing="0">
 							<tr>
 								<xsl:for-each select="$param/p2DisCards1/*">
-									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></td>
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook)" /></td>
 								</xsl:for-each>
 								<td style="border-right: thin solid yellow"></td>
 								<xsl:for-each select="$param/p2DisCards0/*">
-									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></td>
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook)" /></td>
 								</xsl:for-each>
 							</tr>
 						</table>
@@ -814,7 +814,7 @@
 				</xsl:choose>
 
 				<!-- display card -->
-				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
+				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook)" />
 			</td>
 		</xsl:for-each>
 	</tr>

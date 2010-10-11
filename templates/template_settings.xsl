@@ -271,9 +271,7 @@
 
 			<p><input type="checkbox" name="GamesDetails"><xsl:if test="$settings/GamesDetails = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Advanced games list</p>
 			<p><input type="checkbox" name="Minimize"   ><xsl:if test="$settings/Minimize    = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Minimized game view</p>
-			<p><input type="checkbox" name="Cardtext"   ><xsl:if test="$settings/Cardtext    = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Show card text</p>
 			<p><input type="checkbox" name="Images"     ><xsl:if test="$settings/Images      = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Show card images</p>
-			<p><input type="checkbox" name="Keywords"   ><xsl:if test="$settings/Keywords    = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Show card keywords</p>
 			<p><input type="checkbox" name="Nationality"><xsl:if test="$settings/Nationality = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Show nationality in players list</p>
 			<p><input type="checkbox" name="Chatorder"  ><xsl:if test="$settings/Chatorder   = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Reverse chat message order</p>
 			<p><input type="checkbox" name="Avatargame" ><xsl:if test="$settings/Avatargame  = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Show avatar in game</p>

@@ -141,7 +141,7 @@
 			</tr>
 			<xsl:for-each select="$param/list/*">
 				<tr>
-					<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></td>
+					<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook)" /></td>
 					<td><p><a href="{php:functionString('makeurl', 'Concepts_details', 'CurrentConcept', id)}"><xsl:value-of select="name"/></a></p></td>
 					<td><p><a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', author)}"><xsl:value-of select="author"/></a></p></td>
 					<td><p><xsl:value-of select="class"/></p></td>
@@ -321,7 +321,7 @@
 			</xsl:if>
 			<hr />
 
-			<div class="card_preview"><xsl:copy-of select="am:cardstring($param/data, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></div>
+			<div class="card_preview"><xsl:copy-of select="am:cardstring($param/data, $param/c_img, $param/c_oldlook)" /></div>
 			<div class="limit">
 				<p>
 					<span>
@@ -432,7 +432,7 @@
 
 			<hr />
 
-			<div class="card_preview"><xsl:copy-of select="am:cardstring($param/data, $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" /></div>
+			<div class="card_preview"><xsl:copy-of select="am:cardstring($param/data, $param/c_img, $param/c_oldlook)" /></div>
 			<div class="limit">
 				<p><span><a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/data/author)}"><xsl:value-of select="$param/data/author"/></a></span>Author</p>
 				<p><span><xsl:value-of select="$param/data/name"/></span>Name</p>

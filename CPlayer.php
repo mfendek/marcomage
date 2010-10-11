@@ -386,9 +386,7 @@
 			$settings->ChangeSetting('Skin', 0);
 			$settings->ChangeSetting('Timezone', 0);
 			$settings->ChangeSetting('Autorefresh', 0);
-			$settings->ChangeSetting('Cardtext', 'yes');
 			$settings->ChangeSetting('Images', 'yes');
-			$settings->ChangeSetting('Keywords', 'yes');
 			$settings->ChangeSetting('OldCardLook', 'no');
 
 			return $settings;

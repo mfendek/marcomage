@@ -71,7 +71,7 @@
 					<xsl:variable name="i" select="position()"/>
 					<xsl:for-each select="$cards/*[position() &gt;= $i*3-2 and position() &lt;= $i*3]">
 						<td>
-							<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
+							<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook)" />
 						</td>
 					</xsl:for-each>
 				</tr>
@@ -265,7 +265,7 @@
 						<xsl:choose>
 							<xsl:when test="excluded = 'no'">
 								<xsl:attribute name="onclick">return TakeCard(<xsl:value-of select="id" />)</xsl:attribute>
-								<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
+								<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook)" />
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:attribute name="class">hidden</xsl:attribute>
@@ -315,7 +315,7 @@
 					<xsl:for-each select="$cards/*[position() &gt;= $i*3-2 and position() &lt;= $i*3]">
 						<td id="slot_{(($i - 1) * 3) + position() + 15 * ($rarity - 1)}" >
 							<xsl:if test="id &gt; 0"><xsl:attribute name="onclick">return RemoveCard(<xsl:value-of select="id" />)</xsl:attribute></xsl:if>
-							<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_keywords, $param/c_text, $param/c_oldlook)" />
+							<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook)" />
 							<xsl:if test="id != 0">
 								<noscript><div><button type="submit" name="return_card" value="{id}">Return</button></div></noscript>
 							</xsl:if>

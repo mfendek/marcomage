@@ -2602,9 +2602,7 @@ case 'Decks_edit':
 
 	// load card display settings
 	$settings = $player->GetSettings();
-	$params['deck_edit']['c_text'] = $settings->GetSetting('Cardtext');
 	$params['deck_edit']['c_img'] = $settings->GetSetting('Images');
-	$params['deck_edit']['c_keywords'] = $settings->GetSetting('Keywords');
 	$params['deck_edit']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 	$params['deck_edit']['cards_per_row'] = $settings->GetSetting('Cards_per_row');
 	$params['deck_edit']['Res'] = $deck->AvgCostPerTurn(); // calculate average cost per turn
@@ -2673,9 +2671,7 @@ case 'Concepts':
 	$params['concepts']['edit_all_card'] = (($access_rights[$player->Type()]["edit_all_card"]) ? 'yes' : 'no');
 	$params['concepts']['delete_own_card'] = (($access_rights[$player->Type()]["delete_own_card"]) ? 'yes' : 'no');
 	$params['concepts']['delete_all_card'] = (($access_rights[$player->Type()]["delete_all_card"]) ? 'yes' : 'no');
-	$params['concepts']['c_text'] = $settings->GetSetting('Cardtext');
 	$params['concepts']['c_img'] = $settings->GetSetting('Images');
-	$params['concepts']['c_keywords'] = $settings->GetSetting('Keywords');
 	$params['concepts']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 
 	break;
@@ -2707,9 +2703,7 @@ case 'Concepts_edit':
 	$params['concepts_edit']['PlayerName'] = $player->Name();
 	$params['concepts_edit']['delete'] = ((isset($_POST["delete_concept"])) ? 'yes' : 'no');
 	$settings = $player->GetSettings();
-	$params['concepts_edit']['c_text'] = $settings->GetSetting('Cardtext');
 	$params['concepts_edit']['c_img'] = $settings->GetSetting('Images');
-	$params['concepts_edit']['c_keywords'] = $settings->GetSetting('Keywords');
 	$params['concepts_edit']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 
 	break;
@@ -2733,9 +2727,7 @@ case 'Concepts_details':
 	$params['concepts_details']['delete_own_card'] = ($access_rights[$player->Type()]["delete_own_card"]) ? 'yes' : 'no';
 	$params['concepts_details']['delete_all_card'] = ($access_rights[$player->Type()]["delete_all_card"]) ? 'yes' : 'no';
 	$settings = $player->GetSettings();
-	$params['concepts_details']['c_text'] = $settings->GetSetting('Cardtext');
 	$params['concepts_details']['c_img'] = $settings->GetSetting('Images');
-	$params['concepts_details']['c_keywords'] = $settings->GetSetting('Keywords');
 	$params['concepts_details']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 
 	break;
@@ -3111,9 +3103,7 @@ case 'Games_details':
 	// load needed settings
 	$settings = $player->GetSettings();
 	$o_settings = $opponent->GetSettings();
-	$params['game']['c_text'] = $settings->GetSetting('Cardtext');
 	$params['game']['c_img'] = $settings->GetSetting('Images');
-	$params['game']['c_keywords'] = $settings->GetSetting('Keywords');
 	$params['game']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 
 	$params['game']['minimize'] = $settings->GetSetting('Minimize');
@@ -3320,9 +3310,7 @@ case 'Decks_view':
 
 	//load needed settings
 	$settings = $player->GetSettings();
-	$params['deck_view']['c_text'] = $settings->GetSetting('Cardtext');
 	$params['deck_view']['c_img'] = $settings->GetSetting('Images');
-	$params['deck_view']['c_keywords'] = $settings->GetSetting('Keywords');
 	$params['deck_view']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 
 	$params['deck_view']['CurrentGame'] = $gameid;
@@ -3558,9 +3546,7 @@ case 'Replays_details':
 
 	// load needed settings
 	$settings = $player->GetSettings();
-	$params['replay']['c_text'] = $settings->GetSetting('Cardtext');
 	$params['replay']['c_img'] = $settings->GetSetting('Images');
-	$params['replay']['c_keywords'] = $settings->GetSetting('Keywords');
 	$params['replay']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 	$params['replay']['minimize'] = $settings->GetSetting('Minimize');
 	$params['replay']['Background'] = $settings->GetSetting('Background');
@@ -3736,9 +3722,7 @@ case 'Cards':
 
 	// load card display settings
 	$settings = $player->GetSettings();
-	$params['cards']['c_text'] = $settings->GetSetting('Cardtext');
 	$params['cards']['c_img'] = $settings->GetSetting('Images');
-	$params['cards']['c_keywords'] = $settings->GetSetting('Keywords');
 	$params['cards']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 
 	break;
@@ -3759,9 +3743,7 @@ case 'Cards_details':
 
 	// load card display settings
 	$settings = $player->GetSettings();
-	$params['cards_details']['c_text'] = $settings->GetSetting('Cardtext');
 	$params['cards_details']['c_img'] = $settings->GetSetting('Images');
-	$params['cards_details']['c_keywords'] = $settings->GetSetting('Keywords');
 	$params['cards_details']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 
 	break;
