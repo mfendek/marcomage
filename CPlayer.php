@@ -388,6 +388,7 @@
 			$settings->ChangeSetting('Autorefresh', 0);
 			$settings->ChangeSetting('Images', 'yes');
 			$settings->ChangeSetting('OldCardLook', 'no');
+			$settings->ChangeSetting('Insignias', 'yes');
 
 			return $settings;
 		}

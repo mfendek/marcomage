@@ -132,7 +132,7 @@
 			</tr>
 			<xsl:for-each select="$param/CardList/*">
 				<tr>
-					<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook)" /></td>
+					<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
 					<td><p><a href="{php:functionString('makeurl', 'Cards_details', 'card', id)}"><xsl:value-of select="name"/></a></p></td>
 					<td><p><xsl:value-of select="class"/></p></td>
 					<td><p><xsl:value-of select="bricks" />/<xsl:value-of select="gems" />/<xsl:value-of select="recruits" /></p></td>
@@ -177,7 +177,7 @@
 			</xsl:choose>
 			<hr />
 
-			<div class="card_preview"><xsl:copy-of select="am:cardstring($param/data, $param/c_img, $param/c_oldlook)" /></div>
+			<div class="card_preview"><xsl:copy-of select="am:cardstring($param/data, $param/c_img, $param/c_oldlook, $param/c_insignias)" /></div>
 			<div class="limit">
 				<p><span><xsl:value-of select="$param/data/name"/></span>Name</p>
 				<p><span><xsl:value-of select="$param/data/class"/></span>Rarity</p>

@@ -118,3 +118,10 @@ div.hidden_card
 	background-image: url('../img/hidden_card.jpg');
 	background-repeat: repeat;
 }
+
+/* keyword insignia layout */
+img.insignia
+{
+	border: thin solid black;
+	vertical-align: middle;
+}

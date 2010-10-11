@@ -349,7 +349,7 @@
 				</xsl:choose>
 
 				<!-- display card -->
-				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook)" />
+				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias)" />
 				
 				<!-- play button and card modes (buttons are locked when surrender request is active) -->
 				<xsl:if test="Playable = 'yes' and $param/Surrender = ''">
@@ -658,11 +658,11 @@
 						<table cellpadding="0" cellspacing="0">
 							<tr>
 								<xsl:for-each select="$param/MyDisCards0/*">
-									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook)" /></td>
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
 								</xsl:for-each>
 								<td style="border-right: thin solid yellow"></td>
 								<xsl:for-each select="$param/MyDisCards1/*">
-									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook)" /></td>
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
 								</xsl:for-each>
 							</tr>
 						</table>
@@ -696,7 +696,7 @@
 											</xsl:otherwise>
 										</xsl:choose>
 									</p>
-									<xsl:copy-of select="am:cardstring(CardData, $param/c_img, $param/c_oldlook)" />
+									<xsl:copy-of select="am:cardstring(CardData, $param/c_img, $param/c_oldlook, $param/c_insignias)" />
 								</td>
 							</xsl:for-each>
 						</xsl:if>
@@ -730,7 +730,7 @@
 											</xsl:otherwise>
 										</xsl:choose>
 									</p>
-									<xsl:copy-of select="am:cardstring(CardData, $param/c_img, $param/c_oldlook)" />
+									<xsl:copy-of select="am:cardstring(CardData, $param/c_img, $param/c_oldlook, $param/c_insignias)" />
 								</td>
 							</xsl:for-each>
 						</xsl:if>
@@ -752,11 +752,11 @@
 						<table cellpadding="0" cellspacing="0">
 							<tr>
 								<xsl:for-each select="$param/HisDisCards1/*">
-									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook)" /></td>
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
 								</xsl:for-each>
 								<td style="border-right: thin solid yellow"></td>
 								<xsl:for-each select="$param/HisDisCards0/*">
-									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook)" /></td>
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
 								</xsl:for-each>
 							</tr>
 						</table>
@@ -956,7 +956,14 @@
 						<xsl:if test="Change &lt; 0">
 							<xsl:attribute name="style">color: lime</xsl:attribute>
 						</xsl:if>
-						<xsl:value-of select="Name"/>
+						<xsl:choose>
+							<xsl:when test="$param/c_insignias = 'yes'">
+								<img class="insignia" src="img/insignias/{am:file_name(Name)}.png" width="12px" height="12px" alt="{Name}" title="{Name}" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="Name"/>
+							</xsl:otherwise>
+						</xsl:choose>
 						<span><xsl:value-of select="Value"/></span>
 						<xsl:if test="Change != 0">
 							<span class="changes">
@@ -989,7 +996,14 @@
 						<xsl:if test="Change &lt; 0">
 							<xsl:attribute name="style">color: lime</xsl:attribute>
 						</xsl:if>
-						<xsl:value-of select="Name"/>
+						<xsl:choose>
+							<xsl:when test="$param/c_insignias = 'yes'">
+								<img class="insignia" src="img/insignias/{am:file_name(Name)}.png" width="12px" height="12px" alt="{Name}" title="{Name}" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="Name"/>
+							</xsl:otherwise>
+						</xsl:choose>
 						<span><xsl:value-of select="Value"/></span>
 						<xsl:if test="Change != 0">
 							<span class="changes">
@@ -1021,7 +1035,7 @@
 						<div class="hidden_card"></div>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook)" />
+						<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias)" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</td>

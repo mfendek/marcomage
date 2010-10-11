@@ -322,10 +322,17 @@
 </func:function>
 
 
+<func:function name="am:file_name">
+	<xsl:param name="name" as="xs:string" />
+	<func:result select="am:lowercase(str:replace($name, ' ', '_'))" />
+</func:function>
+
+
 <func:function name="am:cardstring">
 	<xsl:param name="card" />
 	<xsl:param name="c_img" select="'yes'" />
 	<xsl:param name="c_oldlook" select="'no'" />
+	<xsl:param name="c_insignias" select="'yes'" />
 
 	<xsl:variable name="cardstring">
 
@@ -409,14 +416,24 @@
 					<xsl:variable name="descriptions" select="document('keywords.xml')/am:keywords" />
 					<p>
 						<xsl:for-each select="str:split($card/keywords, ',')">
-							<b>
-								<xsl:variable name="keyword_name" select="." />
-								<xsl:attribute name="title">
-									<xsl:value-of select="$descriptions/am:keyword[contains($keyword_name, am:name)]/am:description"/>
-								</xsl:attribute>
-								<xsl:value-of select="$keyword_name"/>
-								<xsl:text>.</xsl:text>
-							</b>
+							<xsl:variable name="keyword_name" select="." />
+							<xsl:variable name="keyword" select="$descriptions/am:keyword[contains($keyword_name, am:name)]" />
+							<xsl:choose>
+								<xsl:when test="$c_insignias = 'yes'">
+
+								<img class="insignia" src="img/insignias/{am:file_name($keyword/am:name)}.png" width="12px" height="12px" alt="{$keyword_name}" title="{concat($keyword_name, ' - ', $keyword/am:description)}" />
+
+								</xsl:when>
+								<xsl:otherwise>
+								<b>
+									<xsl:attribute name="title">
+										<xsl:value-of select="$keyword/am:description"/>
+									</xsl:attribute>
+									<xsl:value-of select="$keyword_name"/>
+									<xsl:text>.</xsl:text>
+								</b>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:for-each>
 					</p>
 				</xsl:otherwise>

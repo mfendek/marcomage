@@ -2604,6 +2604,7 @@ case 'Decks_edit':
 	$settings = $player->GetSettings();
 	$params['deck_edit']['c_img'] = $settings->GetSetting('Images');
 	$params['deck_edit']['c_oldlook'] = $settings->GetSetting('OldCardLook');
+	$params['deck_edit']['c_insignias'] = $settings->GetSetting('Insignias');
 	$params['deck_edit']['cards_per_row'] = $settings->GetSetting('Cards_per_row');
 	$params['deck_edit']['Res'] = $deck->AvgCostPerTurn(); // calculate average cost per turn
 
@@ -3105,6 +3106,7 @@ case 'Games_details':
 	$o_settings = $opponent->GetSettings();
 	$params['game']['c_img'] = $settings->GetSetting('Images');
 	$params['game']['c_oldlook'] = $settings->GetSetting('OldCardLook');
+	$params['game']['c_insignias'] = $settings->GetSetting('Insignias');
 
 	$params['game']['minimize'] = $settings->GetSetting('Minimize');
 	$params['game']['mycountry'] = $settings->GetSetting('Country');
@@ -3312,6 +3314,7 @@ case 'Decks_view':
 	$settings = $player->GetSettings();
 	$params['deck_view']['c_img'] = $settings->GetSetting('Images');
 	$params['deck_view']['c_oldlook'] = $settings->GetSetting('OldCardLook');
+	$params['deck_view']['c_insignias'] = $settings->GetSetting('Insignias');
 
 	$params['deck_view']['CurrentGame'] = $gameid;
 
@@ -3548,6 +3551,7 @@ case 'Replays_details':
 	$settings = $player->GetSettings();
 	$params['replay']['c_img'] = $settings->GetSetting('Images');
 	$params['replay']['c_oldlook'] = $settings->GetSetting('OldCardLook');
+	$params['replay']['c_insignias'] = $settings->GetSetting('Insignias');
 	$params['replay']['minimize'] = $settings->GetSetting('Minimize');
 	$params['replay']['Background'] = $settings->GetSetting('Background');
 
@@ -3724,6 +3728,7 @@ case 'Cards':
 	$settings = $player->GetSettings();
 	$params['cards']['c_img'] = $settings->GetSetting('Images');
 	$params['cards']['c_oldlook'] = $settings->GetSetting('OldCardLook');
+	$params['cards']['c_insignias'] = $settings->GetSetting('Insignias');
 
 	break;
 
@@ -3745,6 +3750,7 @@ case 'Cards_details':
 	$settings = $player->GetSettings();
 	$params['cards_details']['c_img'] = $settings->GetSetting('Images');
 	$params['cards_details']['c_oldlook'] = $settings->GetSetting('OldCardLook');
+	$params['cards_details']['c_insignias'] = $settings->GetSetting('Insignias');
 
 	break;
 
