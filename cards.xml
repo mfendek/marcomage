@@ -4896,16 +4896,16 @@
     <name>Unholy shrine</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>7</bricks>
-      <gems>7</gems>
-      <recruits>7</recruits>
+      <bricks>26</bricks>
+      <gems>0</gems>
+      <recruits>0</recruits>
     </cost>
     <modes>8</modes>
     <keywords/>
-    <effect><![CDATA[Discards up to 4 random <b>Undead</b> from hand except the selected card<br />Wall: +10N<br />N = #discarded cards]]></effect>
-    <code><![CDATA[$storage = array(); for ($i = 1; $i <= 8; $i++) if (($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Undead")) AND ($i != $mode)) $storage[$i] = $i; shuffle($storage); $tmp = 0; for ($i = 0; ($i < count($storage) AND ($i < 4)); $i++) { $mydata->Hand[$storage[$i]] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $mydata->NewCards[$storage[$i]] = 1; $tmp++; } $mydata->Wall+= $tmp*10;]]></code>
+    <effect><![CDATA[Discards up to 5 random <b>Undead</b> from hand except the selected card<br />Wall: +10N<br />N = #discarded cards]]></effect>
+    <code><![CDATA[$storage = array(); for ($i = 1; $i <= 8; $i++) if (($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Undead")) AND ($i != $mode)) $storage[$i] = $i; shuffle($storage); $tmp = 0; for ($i = 0; ($i < count($storage) AND ($i < 5)); $i++) { $mydata->Hand[$storage[$i]] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $mydata->NewCards[$storage[$i]] = 1; $tmp++; } $mydata->Wall+= $tmp*10;]]></code>
     <created>2007-11-25</created>
-    <modified>2008-07-30</modified>
+    <modified>2010-10-11</modified>
   </card>
   <card id="322">
     <name>Battle formations</name>
@@ -6777,15 +6777,15 @@
     <class>Rare</class>
     <cost>
       <bricks>0</bricks>
-      <gems>22</gems>
-      <recruits>22</recruits>
+      <gems>24</gems>
+      <recruits>24</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Legend,Durable,Swift,Banish,Enduring (25)</keywords>
+    <keywords>Legend,Durable,Swift,Far sight,Enduring (25)</keywords>
     <effect><![CDATA[Attack: 15]]></effect>
     <code><![CDATA[$this->Attack(15, $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2009-04-11</created>
-    <modified>2010-04-11</modified>
+    <modified>2010-10-11</modified>
   </card>
   <card id="427">
     <name>Darkforge</name>
