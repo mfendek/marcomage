@@ -8531,7 +8531,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Player(s) with least <b>Aqua</b> cards gets<br />Tower: -15<br />Wall: -15<br />Stock: -10]]></effect>
+    <effect><![CDATA[Player(s) with fewest <b>Aqua</b> cards gets<br />Tower: -15<br />Wall: -15<br />Stock: -10]]></effect>
     <code><![CDATA[
 							$my_count = $this->KeywordCount($mydata->Hand, "Aqua"); $his_count = $this->KeywordCount($hisdata->Hand, "Aqua");
 							if ($my_count <= $his_count)
@@ -8781,7 +8781,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Player(s) with least different keywords in hand gets +10 tower]]></effect>
+    <effect><![CDATA[Player(s) with fewest different keywords in hand gets +10 tower]]></effect>
     <code><![CDATA[$mine = $this->CountDistinctKeywords($mydata->Hand); $his = $this->CountDistinctKeywords($hisdata->Hand); if ($mine <= $his) $mydata->Tower+= 10; if ($mine >= $his) $hisdata->Tower+= 10;]]></code>
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
