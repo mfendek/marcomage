@@ -5580,7 +5580,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[If there is a <b>Charge</b> in opponent's hand<br />Wall: +18<br />else<br />Wall:+ 10]]></effect>
+    <effect><![CDATA[Wall: +10<br />If there is a <b>Charge</b> in opponent's hand<br />Wall: +8]]></effect>
     <code><![CDATA[$found = false; for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Charge")) { $found = true; break; } $mydata->Wall+= ($found) ? 18 : 10;]]></code>
     <created>2008-02-12</created>
     <modified>2009-04-11</modified>
