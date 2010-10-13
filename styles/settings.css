@@ -73,6 +73,11 @@ div#settings input[type="checkbox"] /* checkbox layout */
 	border-width: thin;
 }
 
+div#settings input[type="checkbox"] + span /* checkbox description layout */
+{
+	vertical-align: middle;
+}
+
 div#preview /* background image preview */
 {
 	float: right;

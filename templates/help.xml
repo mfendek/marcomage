@@ -470,23 +470,25 @@
 <h4>Layout options</h4>
 
 <ul>
-	<li>Auto refresh - when active, webpage is refreshed automatically in the selected time interval, this applies to games list section only</li>
-	<li>Players list filter - determines default value of the players list filter</li>
-	<li>Advanced games list - display more game details in the games list</li>
-	<li>Minimized game view - remove some graphics in the game section to reduce screen space</li>
-	<li>Show card text - display card effect text description</li>
+	<li>Players list filter - determine default value of the players list filter</li>
+	<li>Skin selection - select a skin that will be used throughout the whole site</li>
+	<li>Game background - select a game background picture that will be shown in the Game section only</li>
+	<li>Auto refresh - activate automatic refresh in the Games list section, which is based on the selected value</li>
+	<li>Cards per row - specify how many cards will fit into one row of the card pool in the deck editor</li>
+	<li>Advanced games list - display Last seen (opponent) and Last game action (game) dates in the Games list section</li>
+	<li>Minimized game view - remove emipre info graphics in the Game section to reduce screen space</li>
 	<li>Show card images - display card image (turn off on slow internet connection)</li>
-	<li>Show card keywords - display card keywords text</li>
+	<li>Show keyword insignias - display card keywords in form of an insignia instead of text form</li>
 	<li>Show nationality in players list - display text description of players' nationality in the players list</li>
 	<li>Reverse chat message order - reverses chat order in the chatbox (game section). By default chat messages are ordered from newest (top) to oldest (bottom)</li>
-	<li>Show avatar in game - display avatar of both players in the game</li>
+	<li>Show avatar in game - display avatars of both players in the game</li>
 	<li>Show avatar in players list - display avatar in players list for all players who have an avatar</li>
 	<li>Avatar display correction for chat - used to prevent Firefox 2.x display bug</li>
 	<li>Old card appearance - display cards with old appearance</li>
 	<li>Battle report messages - when active, system will automaticaly send private message to inform you about a game outcome (when it finishes) or when someone accepts or rejects your challenge</li>
 	<li>Forum notification - display forum notification (new posts) in the menubar</li>
 	<li>Concepts notification - display concepts notification (new concepts) in the menubar</li>
-	<li>Random deck selection - allows to choose a random deck to play with when starting a game</li>
+	<li>Random deck selection - allow to choose a random deck to play with when starting a game</li>
 </ul>
 
 <h4>Menubar notification</h4>

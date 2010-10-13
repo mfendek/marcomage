@@ -120,7 +120,10 @@
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
 				</input>
-				<xsl:text>Friendly play</xsl:text>
+				<span>
+					<xsl:attribute name="title">the game will not effect player's score</xsl:attribute>
+					<xsl:text>Friendly play</xsl:text>
+				</span>
 				<xsl:if test="$settings/FriendlyFlag = 'yes'">
 					<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" />
 				</xsl:if>
@@ -131,7 +134,10 @@
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
 				</input>
-				<xsl:text>Hidden cards</xsl:text>
+				<span>
+					<xsl:attribute name="title">players are unable to see each other's cards</xsl:attribute>
+					<xsl:text>Hidden cards</xsl:text>
+				</span>
 				<xsl:if test="$settings/BlindFlag = 'yes'">
 					<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="icon" title="Hidden cards" />
 				</xsl:if>
@@ -197,7 +203,10 @@
 						</option>
 					</xsl:for-each>
 				</select>
-				<xsl:text>Players list filter</xsl:text>
+				<span>
+					<xsl:attribute name="title">determine default value of the players list filter in the Players section</xsl:attribute>
+					<xsl:text>Players list filter</xsl:text>
+				</span>
 			</p>
 
 			<p>
@@ -212,7 +221,10 @@
 						</option>
 					</xsl:for-each>
 				</select>
-				<xsl:text>Skin selection</xsl:text>
+				<span>
+					<xsl:attribute name="title">select a skin that will be used throughout the whole site</xsl:attribute>
+					<xsl:text>Skin selection</xsl:text>
+				</span>
 			</p>
 
 			<p>
@@ -227,7 +239,10 @@
 						</option>
 					</xsl:for-each>
 				</select>
-				<xsl:text>Game background</xsl:text>
+				<span>
+					<xsl:attribute name="title">select a game background picture that will be shown in the Game section only</xsl:attribute>
+					<xsl:text>Game background</xsl:text>
+				</span>
 			</p>
 
 			<p>
@@ -241,7 +256,10 @@
 						</option>
 					</xsl:for-each>
 				</select>
-				<xsl:text>Auto refresh</xsl:text>
+				<span>
+					<xsl:attribute name="title">activate automatic refresh in the Games list section, which is based on the selected value</xsl:attribute>
+					<xsl:text>Auto refresh</xsl:text>
+				</span>
 			</p>
 
 			<xsl:variable name="cards_per_row">
@@ -266,23 +284,151 @@
 						</option>
 					</xsl:for-each>
 				</select>
-				<xsl:text>Cards per row (deck editor)</xsl:text>
+				<span>
+					<xsl:attribute name="title">specify how many cards will fit into one row of the card pool in the deck editor</xsl:attribute>
+					<xsl:text>Cards per row</xsl:text>
+				</span>
 			</p>
 
-			<p><input type="checkbox" name="GamesDetails"><xsl:if test="$settings/GamesDetails = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Advanced games list</p>
-			<p><input type="checkbox" name="Minimize"   ><xsl:if test="$settings/Minimize    = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Minimized game view</p>
-			<p><input type="checkbox" name="Images"     ><xsl:if test="$settings/Images      = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Show card images</p>
-			<p><input type="checkbox" name="Insignias"  ><xsl:if test="$settings/Insignias   = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Show keyword insignias</p>
-			<p><input type="checkbox" name="Nationality"><xsl:if test="$settings/Nationality = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Show nationality in players list</p>
-			<p><input type="checkbox" name="Chatorder"  ><xsl:if test="$settings/Chatorder   = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Reverse chat message order</p>
-			<p><input type="checkbox" name="Avatargame" ><xsl:if test="$settings/Avatargame  = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Show avatar in game</p>
-			<p><input type="checkbox" name="Avatarlist" ><xsl:if test="$settings/Avatarlist  = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Show avatar in players list</p>
-			<p><input type="checkbox" name="Correction" ><xsl:if test="$settings/Correction  = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Avatar display correction for chat (Firefox 2.x only)</p>
-			<p><input type="checkbox" name="OldCardLook"><xsl:if test="$settings/OldCardLook = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Old card appearance</p>
-			<p><input type="checkbox" name="Reports"    ><xsl:if test="$settings/Reports     = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Battle report messages</p>
-			<p><input type="checkbox" name="Forum_notification"><xsl:if test="$settings/Forum_notification = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Forum notification</p>
-			<p><input type="checkbox" name="Concepts_notification"><xsl:if test="$settings/Concepts_notification = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Concepts notification</p>
-			<p><input type="checkbox" name="RandomDeck"><xsl:if test="$settings/RandomDeck = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>Random deck selection</p>
+			<p>
+				<input type="checkbox" name="GamesDetails">
+					<xsl:if test="$settings/GamesDetails = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">display Last seen (opponent) and Last game action (game) dates in the Games list section</xsl:attribute>
+					<xsl:text>Advanced games list</xsl:text>
+				</span>
+			</p>
+
+			<p>
+				<input type="checkbox" name="Minimize">
+					<xsl:if test="$settings/Minimize = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">remove emipre info graphics in the Game section to reduce screen space</xsl:attribute>
+					<xsl:text>Minimized game view</xsl:text>
+				</span>
+			</p>
+
+			<p>
+				<input type="checkbox" name="Images">
+					<xsl:if test="$settings/Images = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">display card image (turn off on slow internet connection)</xsl:attribute>
+					<xsl:text>Show card images</xsl:text>
+				</span>
+			</p>
+
+			<p>
+				<input type="checkbox" name="Insignias">
+					<xsl:if test="$settings/Insignias = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">display card keywords in form of an insignia instead of text form</xsl:attribute>
+					<xsl:text>Show keyword insignias</xsl:text>
+				</span>
+			</p>
+
+			<p>
+				<input type="checkbox" name="Nationality">
+					<xsl:if test="$settings/Nationality = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">display text description of players' nationality in the players list</xsl:attribute>
+					<xsl:text>Show nationality in players list</xsl:text>
+				</span>
+			</p>
+
+			<p>
+				<input type="checkbox" name="Chatorder">
+					<xsl:if test="$settings/Chatorder = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">reverse chat order in the chatbox (Game section), by default chat messages are ordered from newest (top) to oldest (bottom)</xsl:attribute>
+					<xsl:text>Reverse chat message order</xsl:text>
+				</span>
+			</p>
+
+			<p>
+				<input type="checkbox" name="Avatargame" >
+					<xsl:if test="$settings/Avatargame = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">display avatars of both players in the game</xsl:attribute>
+					<xsl:text>Show avatar in game</xsl:text>
+				</span>
+			</p>
+
+			<p>
+				<input type="checkbox" name="Avatarlist" >
+					<xsl:if test="$settings/Avatarlist = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">display avatar for all players who have an avatar in Players list section</xsl:attribute>
+					<xsl:text>Show avatar in players list</xsl:text>
+				</span>
+			</p>
+
+			<p>
+				<input type="checkbox" name="Correction">
+					<xsl:if test="$settings/Correction = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">used to prevent Firefox 2.x display bug to appear in the chatbox in Game section</xsl:attribute>
+					<xsl:text>Avatar display correction</xsl:text>
+				</span>
+			</p>
+
+			<p>
+				<input type="checkbox" name="OldCardLook">
+					<xsl:if test="$settings/OldCardLook = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">display cards with old appearance</xsl:attribute>
+					<xsl:text>Old card appearance</xsl:text>
+				</span>
+			</p>
+
+			<p>
+				<input type="checkbox" name="Reports">
+					<xsl:if test="$settings/Reports = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">when active, system will automaticaly send private message to inform you about a game outcome (when it finishes) or when someone accepts or rejects your challenge</xsl:attribute>
+					<xsl:text>Battle report messages</xsl:text>
+				</span>
+			</p>
+
+			<p>
+				<input type="checkbox" name="Forum_notification">
+					<xsl:if test="$settings/Forum_notification = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">display forum notification (new posts) in the menubar</xsl:attribute>
+					<xsl:text>Forum notification</xsl:text>
+				</span>
+			</p>
+
+			<p>
+				<input type="checkbox" name="Concepts_notification">
+					<xsl:if test="$settings/Concepts_notification = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">display concepts notification (new concepts) in the menubar</xsl:attribute>
+					<xsl:text>Concepts notification</xsl:text>
+				</span>
+			</p>
+
+			<p>
+				<input type="checkbox" name="RandomDeck">
+					<xsl:if test="$settings/RandomDeck = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">allow to choose a random deck to play with when starting a game</xsl:attribute>
+					<xsl:text>Random deck selection</xsl:text>
+				</span>
+			</p>
 		</div>
 		</div>
 
