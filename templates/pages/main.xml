@@ -8,40 +8,23 @@
 
 <p style="text-align: center">Authors (in alphabetical order): <a href="http://helppage.3dfx.sk/fendek/">Mojmír Fendek</a> (Mojko) and <a href="mailto:theultramage@gmail.com">Viktor Štujber</a> (theultramage)</p>
 
-<h3>Basic information</h3>
-
-<h4>Links</h4>
+<h3>Requirements</h3>
 <ul>
-<li>The project's location: <a href="http://arcomage.netvor.sk/">http://arcomage.netvor.sk/</a>.</li>
-<li>The official #arcomage channel: <a href="irc://irc.freenode.org/arcomage">irc.freenode.org</a>. Everybody's invited!</li>
-<li>A powerful wiki and bug tracking system at <a href="https://netvor.sk/trac/arcomage">https://netvor.sk/trac/arcomage</a>.</li>
-</ul>
-
-<h4>Requirements</h4>
-<ul>
-<li><a href="http://www.w3.org/">W3C</a> standards compatible browser. We recommend <a href="http://www.mozilla.com/en-US/firefox/?from=getfirefox">Firefox</a> for basic users and <a href="http://www.opera.com/">Opera</a> for advanced users. We also support <a href="http://www.google.com/chrome/">Chrome</a> - a browser from <a href="http://www.google.com/">Google</a>. All three mentioned browsers are free. IE should also work fine, but use it only if you must.</li>
-<li>This site is tested and optimized for use on resolutions 800x600, 1024x768 and 1152x864. Higher resolutions (1280x1024) also work fine, lower (640x480) have problems. Full-screen mode should help in this case.</li>
+	<li><a href="http://www.w3.org/">W3C</a> standards compatible browser. We recommend <a href="http://www.mozilla.com/en-US/firefox/?from=getfirefox">Firefox</a> for basic users and <a href="http://www.opera.com/">Opera</a> for advanced users. We also support <a href="http://www.google.com/chrome/">Chrome</a> - a browser from <a href="http://www.google.com/">Google</a>. All three mentioned browsers are free. IE should also work fine, but use it only if you must.</li>
+	<li>This site is tested and optimized for use on resolutions 800x600, 1024x768 and 1152x864. Higher resolutions (1280x1024) also work fine, lower (640x480) have problems. Full-screen mode should help in this case.</li>
 </ul>
 
 <h3>About the game</h3>
 
 <p><a href="http://en.wikipedia.org/wiki/Arcomage">Arcomage</a> is a fantasy turn-based card game. This card game simulates an epic battle between two empires including features such as constructing new buildings, training troops and decimating the enemy empire with standard attacks or sneaky tactics such as intrigue or spells. MArcomage (Multiplayer Arcomage) is an online card game (for two human players) inspired by original Arcomage. There are similarities in gameplay, but there are differences in cards, game rules or victory conditions.</p>
 
-<h4>Single player version</h4>
-
-<p>Download and play single player versions of Arcomage versus AI:</p>
-
-<ul>
-	<li><a href="http://www.x-factor.tym.sk/Arcomage/Arcomage.rar">Original Arcomage</a></li>
-	<li><a href="http://www.gatewayheaven.com/projects/arcomage/">Arcomage Tribute</a> - a fan-made open source project</li>
-</ul>
-
 <h4>Game features</h4>
 
 <ul>
 	<li>Deck building - choose 45 unique cards to construct your own deck</li>
-	<li>Over 400 cards to choose from</li>
+	<li>Over 600 cards to choose from</li>
 	<li>Advanced deck building interface allows you to use multiple filters to find the desired cards quickly</li>
+	<li>Experience based leveling system allows you to unlock extra features</li>
 	<li>Discuss anything Arcomage related on our forum</li>
 	<li>Private messages</li>
 	<li>In game chat</li>
@@ -56,30 +39,23 @@
 	<li>Design your own cards and submit them for implementation</li>
 </ul>
 
-<p>
-<a style="float: left;" href="img/screen_deck_section.png"><img src="img/screen_deck_section_s.png" alt="deck section"/></a>
-<a style="float: right;" href="img/screen_game_section.png"><img src="img/screen_game_section_s.png" alt="deck section"/></a>
-In order to play, a user must construct his or her own deck and challenge other players.
-The battle begins as soon as the other side accepts.
-There is a possibility to chat with your opponent in game.
+<p>In order to play, the player must construct his own deck (there are three preconstructed decks available) and challenge other players. The battle begins as soon as the other side accepts. It is possible to chat with your opponent in game.</p>
 
-Advantage of this game is its turn based play style.
-It allows players to play as often as they like.
-For example you can play few turns a day, but if you want, you can play all the time, provided you find an opponent willing to play all day as well.
+<p>Advantage of this game is its turn based play style. It allows players to play as often as they like. For example you can play few turns a day, but if you want, you can play all the time, provided you find an opponent willing to play all day as well.</p>
 
-Lets have a look at the deck building section (picture on the left).
-You can see the card pool at the top of the page.
-Below are filters, that you can use to select cards that interest you.
-At the bottom is you deck.
-Cards are easily added to and removed from the deck.
-The game is displayed in the right picture.
-You can see your cards at the top, your empire information on the middle-left.
-Your opponent's cards are at the bottom and his empire information is in the middle-right.
-Interesting thing is, that you can see your opponent's cards.
-In the center are located cards played last turn, for both players.
-In all sections there is a navigation bar at the top-most part of the screen, which allows you to change sections.
-For more game information please see the Game manual.
-</p>
+<h4>Links</h4>
+<ul>
+	<li>The project's location: <a href="http://arcomage.netvor.sk/">http://arcomage.netvor.sk/</a>.</li>
+	<li>The official #arcomage channel: <a href="irc://irc.freenode.org/arcomage">irc.freenode.org</a>. Everybody's invited!</li>
+	<li>A powerful wiki and bug tracking system at <a href="https://netvor.sk/trac/arcomage">https://netvor.sk/trac/arcomage</a>.</li>
+	<li><a href="http://www.x-factor.tym.sk/Arcomage/Arcomage.rar">Original Arcomage</a> - standalone version</li>
+	<li><a href="http://www.gatewayheaven.com/projects/arcomage/">Arcomage Tribute</a> - a fan-made open source project (single player only)</li>
+</ul>
+
+<h4>MArcomage preview images</h4>
+
+<p><a href="img/screen_deck_section.png"><img src="img/screen_deck_section_s.png" alt="deck editor"/></a></p>
+<p><a href="img/screen_game_section.png"><img src="img/screen_game_section_s.png" alt="card battle"/></a></p>
 
 </am:content>
 </am:entry>
