@@ -776,7 +776,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Discards highest cost card from opponent's hand<br />Gain cost of the discarded card (max 5)]]></effect>
+    <effect><![CDATA[Discards highest cost card from opponent's hand]]></effect>
     <code><![CDATA[
 							$card_costs = $max_cards = array(); $max = 0;
 							for ($i = 1; $i <= 8; $i++)
@@ -790,15 +790,11 @@
 								if ($cur_cost == $max) $max_cards[] = $i;
 							}
 							$dis_pos = $max_cards[array_rand($max_cards)];
-							$dis_card = $carddb->GetCard($hisdata->Hand[$dis_pos]);
-							$mydata->Bricks+= min($dis_card->GetResources("Bricks"), 5);
-							$mydata->Gems+= min($dis_card->GetResources("Gems"), 5);
-							$mydata->Recruits+= min($dis_card->GetResources("Recruits"), 5);
 							$hisdata->Hand[$dis_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $dis_pos, 'DrawCard_different');
 							$hisdata->NewCards[$dis_pos] = 1;
 ]]></code>
     <created>2006-05-01</created>
-    <modified>2010-07-22</modified>
+    <modified>2010-10-11</modified>
   </card>
   <card id="52">
     <name>Pirates</name>
@@ -5075,7 +5071,7 @@
 						}
 ]]></code>
     <created>2007-11-25</created>
-    <modified>2009-10-26</modified>
+    <modified>2010-10-11</modified>
   </card>
   <card id="331">
     <name>Benediction</name>
@@ -5580,10 +5576,10 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Wall: +10<br />If there is a <b>Charge</b> in opponent's hand<br />Wall: +8]]></effect>
-    <code><![CDATA[$found = false; for ($i = 1; $i <= 8; $i++) if ($carddb->GetCard($hisdata->Hand[$i])->HasKeyword("Charge")) { $found = true; break; } $mydata->Wall+= ($found) ? 18 : 10;]]></code>
+    <effect><![CDATA[Wall: +10<br />If there is a <b>Charge</b> in opponent's hand or <b>Enduring</b> in hand<br />Wall: +8]]></effect>
+    <code><![CDATA[$tmp = $this->KeyWordCount($mydata->Hand, 'Enduring') + $this->KeyWordCount($hisdata->Hand, 'Charge'); $mydata->Wall+= ($tmp > 0) ? 18 : 10;]]></code>
     <created>2008-02-12</created>
-    <modified>2009-04-11</modified>
+    <modified>2010-10-11</modified>
   </card>
   <card id="360">
     <name>Wildfire gem</name>
@@ -6373,10 +6369,10 @@
     </cost>
     <modes>0</modes>
     <keywords>Beast,Soldier,Skirmisher</keywords>
-    <effect><![CDATA[If #<b>Beast</b> in hand > 1 and #<b>Soldier</b> in hand > 1<br />Enemy wall: = 0<br />Always:<br />Attack: 35]]></effect>
-    <code><![CDATA[$b_found = $s_found = false; for ($i = 1; $i <= 8; $i++) if ($i != $cardpos) { if ((!$b_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Beast"))) $b_found = true; if ((!$s_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Soldier"))) $s_found = true; } if ($b_found AND $s_found) $hisdata->Wall = 0; $this->Attack(35, $hisdata->Tower, $hisdata->Wall);]]></code>
+    <effect><![CDATA[If #<b>Beast</b> in hand > 1 and #<b>Soldier</b> in hand > 1<br />Enemy wall is halved<br />Always:<br />Attack: 35]]></effect>
+    <code><![CDATA[$b_found = $s_found = false; for ($i = 1; $i <= 8; $i++) if ($i != $cardpos) { if ((!$b_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Beast"))) $b_found = true; if ((!$s_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Soldier"))) $s_found = true; } if ($b_found AND $s_found) $hisdata->Wall = round($hisdata->Wall/2); $this->Attack(35, $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2008-12-24</created>
-    <modified>2009-04-11</modified>
+    <modified>2010-10-11</modified>
   </card>
   <card id="407">
     <name>Dwarven fortress</name>
@@ -7810,7 +7806,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Disacards all <b>Titan</b> cards from hand<br />Attack: 30N<br />N = #discarded cards]]></effect>
+    <effect><![CDATA[Disacards all <b>Titan</b> cards from hand<br />Attack: 30N<br />N = #unique discarded cards]]></effect>
     <code><![CDATA[
 							$storage = array();
 							for ($i = 1; $i <= 8; $i++)
