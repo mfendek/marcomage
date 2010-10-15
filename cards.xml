@@ -5056,7 +5056,7 @@
 							for ($i = 0; $i < count($dis_cards); $i++) if ($carddb->GetCard($dis_cards[$i])->HasKeyword("Undead")) { $storage[] = $dis_cards[$i]; }
 							if (count($storage) > 0)
 							{
-								if (count($storage) > 8) $storage = array_pad($storage, 8);
+								if (count($storage) > 8) $storage = array_slice($storage, 0, 8);
 								$trans = array();
 								for ($i = 0; $i < 8; $i++) $trans[$i] = $i + 1;
 								shuffle($trans);
