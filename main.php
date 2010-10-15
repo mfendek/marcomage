@@ -1913,7 +1913,7 @@
 				// check access rights
 				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Players'; break; }
 
-				$_POST['cur_player'] = postdecode($_POST['prepare_challenge']);
+				$_POST['Profile'] = postdecode($_POST['prepare_challenge']);
 
 				// this is only used to assist the function below
 				$current = 'Players_details';
@@ -1925,7 +1925,7 @@
 				// check access rights
 				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Players'; break; }
 
-				$_POST['cur_player'] = $opponent = postdecode($_POST['send_challenge']);
+				$_POST['Profile'] = $opponent = postdecode($_POST['send_challenge']);
 				$deckname = isset($_POST['ChallengeDeck']) ? postdecode($_POST['ChallengeDeck']) : '(null)';
 
 				$deck = $deckdb->GetDeck($player->Name(), $deckname);
@@ -1983,10 +1983,10 @@
 				// check if the game is a a challenge (and not a game in progress)
 				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Players_details'; break; }
 
-				$_POST['cur_player'] = $opponent = $game->Name2();
+				$_POST['Profile'] = $opponent = $game->Name2();
 
 				// check if such opponent exists
-				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Players_details'; break; }
+				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Players'; break; }
 
 				// delete t3h challenge/game entry
 				$gamedb->DeleteGame($game->ID());
@@ -2009,10 +2009,10 @@
 				// check if the game is a a challenge (and not a game in progress)
 				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Messages'; break; }
 
-				$_POST['cur_player'] = $opponent = $game->Name2();
+				$_POST['Profile'] = $opponent = $game->Name2();
 
 				// check if such opponent exists
-				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Players_details'; break; }
+				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Messages'; break; }
 
 				// delete t3h challenge/game entry
 				$gamedb->DeleteGame($game->ID());
@@ -2235,9 +2235,9 @@
 
 			if (isset($_POST['reset_avatar_remote'])) // reset some player's avatar
 			{
-				$_POST['cur_player'] = postdecode($_POST['reset_avatar_remote']);
+				$_POST['Profile'] = postdecode($_POST['reset_avatar_remote']);
 
-				$opponent = $playerdb->GetPlayer($_POST['cur_player']);
+				$opponent = $playerdb->GetPlayer($_POST['Profile']);
 				if (!$opponent) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Players'; break; }
 
 				// check access rights
@@ -2809,7 +2809,7 @@ case 'Players':
 case 'Players_details':
 
 	// retrieve name of a player we are currently viewing
-	$cur_player = (isset($_POST['Profile'])) ? $_POST['Profile'] : $_POST['cur_player'];
+	$cur_player = (isset($_POST['Profile'])) ? $_POST['Profile'] : '';
 
 	$p = $playerdb->GetPlayer($cur_player);
 	if (!$p) { $display_error = 'Invalid player.'; break; }
