@@ -51,7 +51,11 @@ div.progress_bar > div  /* exp progress bar - inner part */
 div#details /* set minimum width to whole section (grants immunity to resize) */
 {
 	min-width: 1045px;
-	line-height: 1.6;
+}
+
+div#details > div.skin_text > p + p /* line spacing */
+{
+	margin-top: 1ex;
 }
 
 div#details > div.skin_text /* user details content layout */
@@ -68,9 +72,19 @@ div#details > div.skin_text .detail_value /* player data values */
 	font-weight: bold;
 }
 
+div#details p > .detail_value /* player data values spacing */
+{
+	margin-left: 1ex;
+}
+
+div#details .hobbies /* player hobbies */
+{
+	line-height: 1.6;
+}
+
 div#details h3 /* section name layout */
 {
-	margin: 0ex;
+	margin: 0.5ex 0ex 0ex 0ex;
 }
 
 div#details input[type="checkbox"] /* checkbox layout */
@@ -92,7 +106,7 @@ div.details_float_right img /* avatar and zodiac pictures */
 {
 	background-color: black;
 	padding: 0.5ex;
-	margin: 0.5ex 1ex 0.5ex 1ex;
+	margin: 0.5ex 1ex 0ex 1ex;
 	border: medium ridge white;
 }
 
@@ -104,7 +118,11 @@ div.statistics /* versus statistics layout */
 	margin: 1ex;
 	border: medium ridge white;
 	padding: 0ex 1ex 1ex 1ex;
-	line-height: 1.3;
+}
+
+div.statistics > p + p /* line spacing */
+{
+	margin-top: 0.5ex;
 }
 
 div.statistics > p > span /* float values to the right */
@@ -115,7 +133,7 @@ div.statistics > p > span /* float values to the right */
 
 div.statistics > h4 /* versus statistics heading */
 {
-	margin: 0ex;
+	margin: 0.5ex 0ex 0.5ex 0ex;
 }
 
 .challenge_text /* challenge text input and display layout */

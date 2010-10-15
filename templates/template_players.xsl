@@ -248,8 +248,8 @@
 			</div>
 		</xsl:if>
 
-		<p>First name: <span class="detail_value"><xsl:value-of select="$param/Firstname"/></span></p>
-		<p>Surname: <span class="detail_value"><xsl:value-of select="$param/Surname"/></span></p>
+		<p>First name<span class="detail_value"><xsl:value-of select="$param/Firstname"/></span></p>
+		<p>Surname<span class="detail_value"><xsl:value-of select="$param/Surname"/></span></p>
 
 		<xsl:variable name="gender_color">
 			<xsl:choose>
@@ -259,28 +259,28 @@
 			</xsl:choose>
 		</xsl:variable>
 		
-		<p>Gender: <span class="detail_value" style="color: {$gender_color}"><xsl:value-of select="$param/Gender"/></span></p>
-		<p>E-mail: <span class="detail_value"><xsl:value-of select="$param/Email"/></span></p>
-		<p>ICQ / IM: <span class="detail_value"><xsl:value-of select="$param/Imnumber"/></span></p>
-		<p>Date of birth (dd-mm-yyyy): <span class="detail_value"><xsl:value-of select="$param/Birthdate"/></span></p>
-		<p>Age: <span class="detail_value"><xsl:value-of select="$param/Age"/></span></p>
+		<p>Gender<span class="detail_value" style="color: {$gender_color}"><xsl:value-of select="$param/Gender"/></span></p>
+		<p>E-mail<span class="detail_value"><xsl:value-of select="$param/Email"/></span></p>
+		<p>ICQ / IM<span class="detail_value"><xsl:value-of select="$param/Imnumber"/></span></p>
+		<p>Date of birth (dd-mm-yyyy)<span class="detail_value"><xsl:value-of select="$param/Birthdate"/></span></p>
+		<p>Age<span class="detail_value"><xsl:value-of select="$param/Age"/></span></p>
 		<p>
-			<xsl:text>Rank: </xsl:text>
+			<xsl:text>Rank</xsl:text>
 			<span class="detail_value"><xsl:value-of select="$param/PlayerType"/></span>
 			<xsl:if test="$param/PlayerType != 'user'">
 				<img width="9px" height="12px" src="img/{$param/PlayerType}.png" alt="rank flag" class="icon" title="{$param/PlayerType}" />
 			</xsl:if>
 		</p>
-		<p>Country: <img width="18px" height="12px" src="img/flags/{$param/Country}.gif" alt="country flag" class="icon" title="{$param/Country}" /> <span class="detail_value"><xsl:value-of select="$param/Country"/></span></p>
+		<p>Country<img width="18px" height="12px" src="img/flags/{$param/Country}.gif" alt="country flag" class="icon" title="{$param/Country}" /> <span class="detail_value"><xsl:value-of select="$param/Country"/></span></p>
 		<p>
-			<xsl:text>Status: </xsl:text>
+			<xsl:text>Status</xsl:text>
 			<xsl:if test="$param/Status != 'none'"><img width="20px" height="14px" src="img/{$param/Status}.png" alt="status flag" class="icon" title="{$param/Status}" /></xsl:if>
 			<xsl:if test="$param/FriendlyFlag = 'yes'"><img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" /></xsl:if>
 			<xsl:if test="$param/BlindFlag = 'yes'"><img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="icon" title="Hidden cards" /></xsl:if>
 		</p>
-		<p>Level: <span class="detail_value"><xsl:value-of select="$param/Level"/></span></p>
+		<p>Level<span class="detail_value"><xsl:value-of select="$param/Level"/></span></p>
 		<p>
-			<xsl:text>Experience: </xsl:text>
+			<xsl:text>Experience</xsl:text>
 			<span class="detail_value">
 				<xsl:value-of select="$param/Exp"/>
 				<xsl:text> / </xsl:text>
@@ -288,7 +288,7 @@
 			</span>
 		</p>
 		<p>
-			<xsl:text>Wins / Losses / Draws: </xsl:text>
+			<xsl:text>Wins / Losses / Draws</xsl:text>
 			<span class="detail_value">
 				<xsl:value-of select="$param/Wins"/>
 				<xsl:text> / </xsl:text>
@@ -297,9 +297,10 @@
 				<xsl:value-of select="$param/Draws"/>
 			</span>
 		</p>
-		<p>Free slots: <span class="detail_value"><xsl:value-of select="$param/FreeSlots"/></span></p>
-		<p>Number of posts: <span class="detail_value"><xsl:value-of select="$param/Posts"/></span></p>
-		<p>Registered on: 
+		<p>Free slots<span class="detail_value"><xsl:value-of select="$param/FreeSlots"/></span></p>
+		<p>Number of posts<span class="detail_value"><xsl:value-of select="$param/Posts"/></span></p>
+		<p>
+			<xsl:text>Registered on</xsl:text>
 			<span class="detail_value">
 				<xsl:choose>
 					<xsl:when test="$param/Registered != '0000-00-00 00:00:00'"><xsl:value-of select="am:datetime($param/Registered, $param/timezone)"/></xsl:when>
@@ -307,7 +308,8 @@
 				</xsl:choose>
 			</span>
 		</p>
-		<p>Last seen on: 
+		<p>
+			<xsl:text>Last seen on</xsl:text>
 			<span class="detail_value">
 				<xsl:choose>
 						<xsl:when test="$param/LastQuery != '0000-00-00 00:00:00'"><xsl:value-of select="am:datetime($param/LastQuery, $param/timezone)"/></xsl:when>
@@ -316,8 +318,8 @@
 			</span>
 		</p>
 
-		<p>Hobbies, Interests:</p>
-		<div class="detail_value"><xsl:copy-of select="am:textencode($param/Hobby)"/></div>
+		<p>Hobbies, interests</p>
+		<div class="detail_value hobbies"><xsl:copy-of select="am:textencode($param/Hobby)"/></div>
 
 <!--		
 		check if the player is allowed to challenge this opponent:
