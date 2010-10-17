@@ -12,7 +12,7 @@
 <xsl:template match="section[. = 'Error']">
 	<xsl:variable name="param" select="$params/error" />
 	<h1>Error page</h1>
-	<p class="information_line error" style="font-size: x-large"><xsl:value-of select="$param/message"/></p>
+	<p class="information_line error error_message"><xsl:value-of select="$param/message"/></p>
 </xsl:template>
 
 
