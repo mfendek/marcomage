@@ -1532,6 +1532,7 @@
 					$information = 'Surrender request accepted.';
 					$replaydb->FinishReplay($game);
 				}
+				else $error = $result;
 
 				if (($result == 'OK') AND ($game->GetGameMode('FriendlyPlay') == "no"))
 				{
@@ -1568,7 +1569,6 @@
 
 					$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
 				}
-				else $error = $result;
 
 				$current = "Games_details";
 				break;
