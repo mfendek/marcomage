@@ -73,13 +73,6 @@
 			$data[$player2] = $this->ConvertData($game->GameData[$player2]);
 			$data = serialize($data);
 			
-			$hidden_cards = $game->GetGameMode('HiddenCards');
-			$friendly_play = $game->GetGameMode('FriendlyPlay');
-			$game_modes = array();
-			if ($hidden_cards == "yes") $game_modes[] = 'HiddenCards';
-			if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
-			$game_modes = implode(',', $game_modes);
-			
 			$turn = $this->NumberOfTurns($game_id) + 1;
 			
 			$result = $db->Query('INSERT INTO `replays_data` (`GameID`, `Turn`, `Current`, `Round`, `Data`) VALUES ("'.$db->Escape($game_id).'", "'.$db->Escape($turn).'", "'.$db->Escape($current).'", "'.$db->Escape($round).'", "'.$db->Escape($data).'")');
