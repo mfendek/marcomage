@@ -3055,8 +3055,7 @@ case 'Games':
 			$params['games']['free_games'][$i]['active'] = ($inactivity < 60*10) ? 'yes' : 'no';
 			$params['games']['free_games'][$i]['status'] = $status;
 			$params['games']['free_games'][$i]['gameaction'] = $data['Last Action'];
-			$params['games']['free_games'][$i]['friendly_play'] = (strpos($data['GameModes'], 'FriendlyPlay') !== false) ? 'yes' : 'no';
-			$params['games']['free_games'][$i]['hidden_cards'] = (strpos($data['GameModes'], 'HiddenCards') !== false) ? 'yes' : 'no';
+			$params['games']['free_games'][$i]['game_modes'] = $data['GameModes'];
 		}
 	}
 
@@ -3066,8 +3065,7 @@ case 'Games':
 		{
 			$params['games']['hosted_games'][$i]['gameid'] = $data['GameID'];
 			$params['games']['hosted_games'][$i]['gameaction'] = $data['Last Action'];
-			$params['games']['hosted_games'][$i]['friendly_play'] = (strpos($data['GameModes'], 'FriendlyPlay') !== false) ? 'yes' : 'no';
-			$params['games']['hosted_games'][$i]['hidden_cards'] = (strpos($data['GameModes'], 'HiddenCards') !== false) ? 'yes' : 'no';
+			$params['games']['hosted_games'][$i]['game_modes'] = $data['GameModes'];
 		}
 	}
 

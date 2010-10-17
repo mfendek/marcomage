@@ -187,10 +187,10 @@
 							<td><p><xsl:value-of select="am:datetime(gameaction, $param/timezone)"/></p></td>
 							<td>
 								<p>
-									<xsl:if test="hidden_cards = 'yes'">
+									<xsl:if test="contains(game_modes, 'HiddenCards')">
 										<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="icon" title="Hidden cards" />
 									</xsl:if>
-									<xsl:if test="friendly_play = 'yes'">
+									<xsl:if test="contains(game_modes, 'FriendlyPlay')">
 										<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" />
 									</xsl:if>
 								</p>
@@ -252,10 +252,10 @@
 							<td><p><xsl:value-of select="am:datetime(gameaction, $param/timezone)"/></p></td>
 							<td>
 								<p>
-									<xsl:if test="hidden_cards = 'yes'">
+									<xsl:if test="contains(game_modes, 'HiddenCards')">
 										<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="icon" title="Hidden cards" />
 									</xsl:if>
-									<xsl:if test="friendly_play = 'yes'">
+									<xsl:if test="contains(game_modes, 'FriendlyPlay')">
 										<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" />
 									</xsl:if>
 								</p>
