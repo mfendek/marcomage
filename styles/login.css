@@ -1,8 +1,6 @@
-/*************************************************************
- * MArcomage CSS stylesheet - login and registration section *
- *************************************************************/
-
-/* begin login menu */
+/********************************************
+ * MArcomage CSS stylesheet - login section *
+ ********************************************/
 
 div#login_box /* login box layout */
 {
@@ -67,31 +65,3 @@ div#sections > a.button + a.button /* hyperlink buttons in sections menu */
 {
 	margin-left: 1ex;
 }
-
-/* end login menu */
-
-/* begin registration */
-
-div#registration /* registration layout */
-{
-	text-align: center;
-	padding: 2ex 0ex 2ex 0ex;
-	padding-top: 10ex;
-}
-
-div#registration div > button + button /* set distance between inputs in the registration */
-{
-	margin-left: 3ex;
-}
-
-div#registration > * + * /* set distance between any two neighbouring elements in the registration */
-{
-	margin-top: 0.5ex;
-}
-
-div#registration > h3 /* registration title */
-{
-	font-size: large;
-}
-
-/* end registration */

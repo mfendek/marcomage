@@ -1,0 +1,25 @@
+/***************************************************
+ * MArcomage CSS stylesheet - registration section *
+ ***************************************************/
+
+div#registration /* registration layout */
+{
+	text-align: center;
+	padding: 2ex 0ex 2ex 0ex;
+	padding-top: 10ex;
+}
+
+div#registration div > button + button /* set distance between inputs in the registration */
+{
+	margin-left: 3ex;
+}
+
+div#registration > * + * /* set distance between any two neighbouring elements in the registration */
+{
+	margin-top: 0.5ex;
+}
+
+div#registration > h3 /* registration title */
+{
+	font-size: large;
+}
