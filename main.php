@@ -2598,7 +2598,6 @@ case 'Decks_edit':
 	if (!$deck) { $display_error = "Invalid deck."; break; }
 
 	$params['deck_edit']['reset'] = ( (isset($_POST["reset_deck_prepare"] )) ? 'yes' : 'no');
-	$params['deck_edit']['card_pool'] = (isset($_POST['CardPool']) AND $_POST['CardPool'] == 'no') ? 'no' : 'yes';
 
 	// load card display settings
 	$settings = $player->GetSettings();
@@ -2607,6 +2606,7 @@ case 'Decks_edit':
 	$params['deck_edit']['c_insignias'] = $settings->GetSetting('Insignias');
 	$params['deck_edit']['cards_per_row'] = $settings->GetSetting('Cards_per_row');
 	$params['deck_edit']['Res'] = $deck->AvgCostPerTurn(); // calculate average cost per turn
+	$params['deck_edit']['card_pool'] = ((isset($_POST['CardPool']) AND $_POST['CardPool'] == 'no') OR (!isset($_POST['CardPool']) AND $settings->GetSetting('CardPool') == 'yes')) ? 'no' : 'yes';
 
 	$filter = array();
 	if( $classfilter != 'none' ) $filter['class'] = $classfilter;

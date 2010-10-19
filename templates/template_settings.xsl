@@ -331,6 +331,16 @@
 			</p>
 
 			<p>
+				<input type="checkbox" name="CardPool">
+					<xsl:if test="$settings/CardPool = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">card pool will be hidden by default in the deck editor</xsl:attribute>
+					<xsl:text>Hide card pool</xsl:text>
+				</span>
+			</p>
+
+			<p>
 				<input type="checkbox" name="Nationality">
 					<xsl:if test="$settings/Nationality = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 				</input>
