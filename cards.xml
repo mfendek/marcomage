@@ -4303,7 +4303,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Each player's stock loses N% of each resource, N is his tower height]]></effect>
+    <effect><![CDATA[Each player's stock is multiplied with player tower height / Max tower]]></effect>
     <code><![CDATA[$mydata->Bricks-= (int)round($mydata->Bricks * (($mydata->Tower)/$max_tower)); $mydata->Gems-= (int)round($mydata->Gems * (($mydata->Tower)/$max_tower)); $mydata->Recruits-= (int)round($mydata->Recruits * (($mydata->Tower)/$max_tower)); $hisdata->Bricks-= (int)round($hisdata->Bricks * (($hisdata->Tower)/$max_tower)); $hisdata->Gems-= (int)round($hisdata->Gems * (($hisdata->Tower)/$max_tower)); $hisdata->Recruits-= (int)round($hisdata->Recruits * (($hisdata->Tower)/$max_tower));]]></code>
     <created>2006-05-01</created>
     <modified>2009-10-26</modified>
@@ -4363,8 +4363,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Enemy tower is halved]]></effect>
-    <code><![CDATA[$hisdata->Tower-= (int)round($hisdata->Tower/2);]]></code>
+    <effect><![CDATA[Enemy tower: -50N<br />N = Enemy tower / Max tower]]></effect>
+    <code><![CDATA[$hisdata->Tower-= round(50 * $hisdata->Tower / $max_tower);]]></code>
     <created>2006-05-01</created>
     <modified>2010-07-22</modified>
   </card>
@@ -5913,8 +5913,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: = 50<br />Wall: = 70<br />Stock: +5]]></effect>
-    <code><![CDATA[$mydata->Tower = 50; $mydata->Wall = 70; $mydata->Bricks+= 5; $mydata->Gems+= 5; $mydata->Recruits+= 5;]]></code>
+    <effect><![CDATA[Tower: = Max tower / 2<br />Wall: = Max wall / 2<br />Stock: +5]]></effect>
+    <code><![CDATA[$mydata->Tower = round($max_tower / 2); $mydata->Wall = round($max_wall / 2); $mydata->Bricks+= 5; $mydata->Gems+= 5; $mydata->Recruits+= 5;]]></code>
     <created>2008-07-30</created>
     <modified>2010-09-10</modified>
   </card>
@@ -7439,8 +7439,8 @@
     </cost>
     <modes>0</modes>
     <keywords>Holy,Banish</keywords>
-    <effect><![CDATA[Attack: Max tower - Tower height]]></effect>
-    <code><![CDATA[$this->Attack($max_tower - $mydata->Tower, $hisdata->Tower, $hisdata->Wall);]]></code>
+    <effect><![CDATA[Attack: 100(1 - N)<br />N = Tower height / Max tower]]></effect>
+    <code><![CDATA[$this->Attack(100 - round(100 * $mydata->Tower / $max_tower), $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2009-07-22</created>
     <modified>2010-09-10</modified>
   </card>
