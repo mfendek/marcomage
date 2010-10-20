@@ -134,6 +134,7 @@
 				<h4>Game modes</h4>
 				<p><span><xsl:value-of select="$param/game_modes/hidden"/>%</span>Hidden cards</p>
 				<p><span><xsl:value-of select="$param/game_modes/friendly"/>%</span>Friendly play</p>
+				<p><span><xsl:value-of select="$param/game_modes/long"/>%</span>Long mode</p>
 
 				<h4>Victory types</h4>
 				<xsl:for-each select="$param/victory_types/*">

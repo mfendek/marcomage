@@ -105,6 +105,15 @@
 			$data = $result->Next();
 			$statistics['friendly'] = $data['friendly'];
 
+			// get number of long mode games
+			$result = $db->Query('SELECT COUNT(`GameID`) as `long` FROM `replays_head` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) > 0)');
+
+			if (!$result) return false;
+			if (!$result->Rows()) return false;
+
+			$data = $result->Next();
+			$statistics['long'] = $data['long'];
+
 			// get number of total games games
 			$result = $db->Query('SELECT COUNT(`GameID`) as `total` FROM `replays_head` WHERE (`EndType` != "Pending")');
 

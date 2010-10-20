@@ -31,11 +31,20 @@
 	define("REPLAYS_PER_PAGE", 20); // game replays
 
 	// game configuration
-	$game_config['init_tower'] = 30; // starting tower height
-	$game_config['max_tower'] = 100; // maximum tower height
-	$game_config['init_wall'] = 25; // starting wall height
-	$game_config['max_wall'] = 150; // maximum wall height
-	$game_config['res_victory'] = 400; // sum of all resources
-	$game_config['time_victory'] = 250; // maximum number of rounds
+	// normal mode
+	$game_config['normal']['init_tower'] = 30; // starting tower height
+	$game_config['normal']['max_tower'] = 100; // maximum tower height
+	$game_config['normal']['init_wall'] = 25; // starting wall height
+	$game_config['normal']['max_wall'] = 150; // maximum wall height
+	$game_config['normal']['res_victory'] = 400; // sum of all resources
+	$game_config['normal']['time_victory'] = 250; // maximum number of rounds
+
+	// long mode
+	$game_config['long']['init_tower'] = 60; // starting tower height
+	$game_config['long']['max_tower'] = 200; // maximum tower height
+	$game_config['long']['init_wall'] = 50; // starting wall height
+	$game_config['long']['max_wall'] = 300; // maximum wall height
+	$game_config['long']['res_victory'] = 800; // sum of all resources
+	$game_config['long']['time_victory'] = 1000; // maximum number of rounds
 
 ?>

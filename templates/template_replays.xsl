@@ -40,6 +40,10 @@
 		<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" />
 		<xsl:copy-of select="am:htmlSelectBox('FriendlyPlay', $param/FriendlyPlay, $mode_options, '')"/>
 
+		<!-- long mode filter -->
+		<img width="20px" height="14px" src="img/long_mode.png" alt="long mode" class="icon" title="Long mode" />
+		<xsl:copy-of select="am:htmlSelectBox('LongMode', $param/LongMode, $mode_options, '')"/>
+
 		<!-- victory type filter -->
 		<xsl:variable name="victory_types">
 			<value name="No victory filter"     value="none"         />
@@ -136,6 +140,9 @@
 								</xsl:if>
 								<xsl:if test="contains(GameModes, 'FriendlyPlay')">
 									<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" />
+								</xsl:if>
+								<xsl:if test="contains(GameModes, 'LongMode')">
+									<img width="20px" height="14px" src="img/long_mode.png" alt="long_mode" class="icon" title="Long mode" />
 								</xsl:if>
 							</p>
 						</td>
@@ -771,6 +778,9 @@
 			</xsl:if>
 			<xsl:if test="$param/FriendlyPlay = 'yes'">
 				<img src="img/friendly_play.png" width="20px" height="14px" alt="friendly play" title="Friendly play" class="icon" />
+			</xsl:if>
+			<xsl:if test="$param/LongMode = 'yes'">
+				<img src="img/long_mode.png" width="20px" height="14px" alt="long mode" title="Long mode" class="icon" />
 			</xsl:if>
 		</td>
 		<td></td>

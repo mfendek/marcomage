@@ -118,7 +118,7 @@
 			$activity_q = ($interval != '') ? ' AND `Last Query` >= NOW() - INTERVAL '.$interval.'' : '';
 
 			$query = "
-				SELECT `Username`, `UserType`, `Level`, `Exp`, `Wins`, `Losses`, `Draws`, `Avatar`, `Status`, `FriendlyFlag`, `BlindFlag`, `settings`.`Country`, `Last Query`
+				SELECT `Username`, `UserType`, `Level`, `Exp`, `Wins`, `Losses`, `Draws`, `Avatar`, `Status`, `FriendlyFlag`, `BlindFlag`, `LongFlag`, `settings`.`Country`, `Last Query`
 				FROM `logins` JOIN `settings` USING (`Username`) JOIN `scores` USING (`Username`)
 				WHERE 1 {$name_q}{$status_q}{$activity_q}
 				ORDER BY `".$db->Escape($condition)."` ".$db->Escape($order).", `Username` ASC

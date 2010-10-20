@@ -137,6 +137,10 @@
 			<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" />
 			<xsl:copy-of select="am:htmlSelectBox('FriendlyPlay', $param/FriendlyPlay, $mode_options, '')"/>
 
+			<!-- friendly game filter -->
+			<img width="20px" height="14px" src="img/long_mode.png" alt="long flag" class="icon" title="Long mode" />
+			<xsl:copy-of select="am:htmlSelectBox('LongMode', $param/LongMode, $mode_options, '')"/>
+
 			<button type="submit" name="filter_hosted_games">Apply filters</button>
 		</p>
 		<!-- end filters -->
@@ -193,6 +197,9 @@
 									<xsl:if test="contains(game_modes, 'FriendlyPlay')">
 										<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" />
 									</xsl:if>
+									<xsl:if test="contains(game_modes, 'LongMode')">
+										<img width="20px" height="14px" src="img/long_mode.png" alt="long flag" class="icon" title="Long mode" />
+									</xsl:if>
 								</p>
 							</td>
 							<td>
@@ -234,6 +241,10 @@
 				<input type="checkbox" name="FriendlyMode">
 					<xsl:if test="$param/FriendlyFlag = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 				</input>
+				<img width="20px" height="14px" src="img/long_mode.png" alt="long flag" class="icon" title="Long mode" />
+				<input type="checkbox" name="LongMode">
+					<xsl:if test="$param/LongFlag = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
 				<button type="submit" name="host_game">Host game</button>
 			</p>
 		</xsl:if>
@@ -257,6 +268,9 @@
 									</xsl:if>
 									<xsl:if test="contains(game_modes, 'FriendlyPlay')">
 										<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" />
+									</xsl:if>
+									<xsl:if test="contains(game_modes, 'LongMode')">
+										<img width="20px" height="14px" src="img/long_mode.png" alt="long flag" class="icon" title="Long mode" />
 									</xsl:if>
 								</p>
 							</td>
@@ -984,6 +998,9 @@
 			</xsl:if>
 			<xsl:if test="$param/FriendlyPlay = 'yes'">
 				<img src="img/friendly_play.png" width="20px" height="14px" alt="friendly play" title="Friendly play" class="icon" />
+			</xsl:if>
+			<xsl:if test="$param/LongMode = 'yes'">
+				<img src="img/long_mode.png" width="20px" height="14px" alt="long mode" title="Long mode" class="icon" />
 			</xsl:if>
 		</td>
 		<td></td>

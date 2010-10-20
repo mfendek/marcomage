@@ -142,6 +142,20 @@
 					<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="icon" title="Hidden cards" />
 				</xsl:if>
 			</p>
+			<p>
+				<input type="checkbox" name="LongFlag">
+					<xsl:if test="$settings/LongFlag = 'yes'">
+						<xsl:attribute name="checked">checked</xsl:attribute>
+					</xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">starting and maximum tower and wall values are higher in this game mode</xsl:attribute>
+					<xsl:text>Long mode</xsl:text>
+				</span>
+				<xsl:if test="$settings/LongFlag = 'yes'">
+					<img width="20px" height="14px" src="img/long_mode.png" alt="long flag" class="icon" title="Long mode" />
+				</xsl:if>
+			</p>
 
 			<p>Hobbies, Interests:</p>
 			<p><textarea name="Hobby" rows="5" cols="30"><xsl:value-of select="$settings/Hobby"/></textarea></p>

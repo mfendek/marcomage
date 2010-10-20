@@ -1728,9 +1728,11 @@
 				// set game modes
 				$hidden_cards = (isset($_POST['HiddenMode']) ? 'yes' : 'no');
 				$friendly_play = (isset($_POST['FriendlyMode']) ? 'yes' : 'no');
+				$long_mode = (isset($_POST['LongMode']) ? 'yes' : 'no');
 				$game_modes = array();
 				if ($hidden_cards == "yes") $game_modes[] = 'HiddenCards';
 				if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
+				if ($long_mode == "yes") $game_modes[] = 'LongMode';
 				$game->SetGameModes(implode(',', $game_modes));
 
 				$information = 'Game created. Waiting for opponent to join.';
@@ -1955,13 +1957,16 @@
 				// set game modes
 				$hidden_cards = (isset($_POST['HiddenCards']) ? 'yes' : 'no');
 				$friendly_play = (isset($_POST['FriendlyPlay']) ? 'yes' : 'no');
+				$long_mode = (isset($_POST['LongMode']) ? 'yes' : 'no');
 				$game_modes = array();
 				if ($hidden_cards == "yes") $game_modes[] = 'HiddenCards';
 				if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
+				if ($long_mode == "yes") $game_modes[] = 'LongMode';
 				$game->SetGameModes(implode(',', $game_modes));
 
 				$challenge_text = 'Hide opponent\'s cards: '.$hidden_cards."\n";
 				$challenge_text.= 'Friendly play: '.$friendly_play."\n";
+				$challenge_text.= 'Long mode: '.$long_mode."\n";
 				$challenge_text.= $_POST['Content'];
 
 				$res = $messagedb->SendChallenge($player->Name(), $opponent, $challenge_text, $game->ID());
@@ -2450,6 +2455,7 @@
 				$_POST['PlayerFilter'] = $player->Name();
 				$_POST['HiddenCards'] = "none";
 				$_POST['FriendlyPlay'] = "none";
+				$_POST['LongMode'] = "none";
 				$_POST['VictoryFilter'] = "none";
 				$_POST['CurrentRepPage'] = 0;
 
@@ -2793,6 +2799,7 @@ case 'Players':
 		$entry['status'] = $data['Status'];
 		$entry['friendly_flag'] = ($data['FriendlyFlag'] == 1) ? 'yes' : 'no';
 		$entry['blind_flag'] = ($data['BlindFlag'] == 1) ? 'yes' : 'no';
+		$entry['long_flag'] = ($data['LongFlag'] == 1) ? 'yes' : 'no';
 		$entry['country'] = $data['Country'];
 		$entry['last_query'] = $data['Last Query'];
 		$entry['inactivity'] = time() - strtotime($data['Last Query']);
@@ -2828,6 +2835,7 @@ case 'Players_details':
 	$params['profile']['Status'] = $p_settings->GetSetting('Status');
 	$params['profile']['FriendlyFlag'] = $p_settings->GetSetting('FriendlyFlag');
 	$params['profile']['BlindFlag'] = $p_settings->GetSetting('BlindFlag');
+	$params['profile']['LongFlag'] = $p_settings->GetSetting('LongFlag');
 	$params['profile']['Avatar'] = $p_settings->GetSetting('Avatar');
 	$params['profile']['Email'] = $p_settings->GetSetting('Email');
 	$params['profile']['Imnumber'] = $p_settings->GetSetting('Imnumber');
@@ -2858,6 +2866,7 @@ case 'Players_details':
 	$params['profile']['CurPlayerName'] = $player->Name();
 	$params['profile']['HiddenCards'] = $settings->GetSetting('BlindFlag');
 	$params['profile']['FriendlyPlay'] = $settings->GetSetting('FriendlyFlag');
+	$params['profile']['LongMode'] = $settings->GetSetting('LongFlag');
 	$params['profile']['RandomDeck'] = $settings->GetSetting('RandomDeck');
 	$params['profile']['timezone'] = $settings->GetSetting('Timezone');
 	$params['profile']['send_challenges'] = ($access_rights[$player->Type()]["send_challenges"]) ? 'yes' : 'no';
@@ -2996,6 +3005,7 @@ case 'Games':
 	$params['games']['games_details'] = $settings->GetSetting('GamesDetails');
 	$params['games']['BlindFlag'] = $settings->GetSetting('BlindFlag');
 	$params['games']['FriendlyFlag'] = $settings->GetSetting('FriendlyFlag');
+	$params['games']['LongFlag'] = $settings->GetSetting('LongFlag');
 	$params['games']['RandomDeck'] = $settings->GetSetting('RandomDeck');
 
 	$list = $gamedb->ListGamesData($player->Name());
@@ -3023,9 +3033,10 @@ case 'Games':
 	$params['games']['current_subsection'] = (isset($_POST['subsection'])) ? $_POST['subsection'] : 'free_games';
 	$params['games']['HiddenCards'] = $hidden_f = (isset($_POST['HiddenCards'])) ? $_POST['HiddenCards'] : 'none';
 	$params['games']['FriendlyPlay'] = $friendly_f = (isset($_POST['FriendlyPlay'])) ? $_POST['FriendlyPlay'] : 'none';
+	$params['games']['LongMode'] = $long_f = (isset($_POST['LongMode'])) ? $_POST['LongMode'] : 'none';
 
 	$hostedgames = $gamedb->ListHostedGames($player->Name());
-	$free_games = $gamedb->ListFreeGames($player->Name(), $hidden_f, $friendly_f);
+	$free_games = $gamedb->ListFreeGames($player->Name(), $hidden_f, $friendly_f, $long_f);
 	$params['games']['free_slots'] = $gamedb->CountFreeSlots1($player->Name());
 	$params['games']['decks'] = $decks = $player->ListReadyDecks();
 	$params['games']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)] : '';
@@ -3125,8 +3136,10 @@ case 'Games_details':
 	$params['game']['has_note'] = ($game->GetNote($player->Name()) != "") ? 'yes' : 'no';
 	$params['game']['HiddenCards'] = $game->GetGameMode('HiddenCards');
 	$params['game']['FriendlyPlay'] = $game->GetGameMode('FriendlyPlay');
-	$params['game']['max_tower'] = $game_config['max_tower'];
-	$params['game']['max_wall'] = $game_config['max_wall'];
+	$params['game']['LongMode'] = $long_mode = $game->GetGameMode('LongMode');
+	$g_mode = ($long_mode == 'yes') ? 'long' : 'normal';
+	$params['game']['max_tower'] = $game_config[$g_mode]['max_tower'];
+	$params['game']['max_wall'] = $game_config[$g_mode]['max_wall'];
 
 	// my hand
 	$myhand = $mydata->Hand;
@@ -3509,6 +3522,7 @@ case 'Replays':
 	$params['replays']['PlayerFilter'] = $player_f = (isset($_POST['PlayerFilter'])) ? $_POST['PlayerFilter'] : "none";
 	$params['replays']['HiddenCards'] = $hidden_f = (isset($_POST['HiddenCards'])) ? $_POST['HiddenCards'] : "none";
 	$params['replays']['FriendlyPlay'] = $friendly_f = (isset($_POST['FriendlyPlay'])) ? $_POST['FriendlyPlay'] : "none";
+	$params['replays']['LongMode'] = $long_f = (isset($_POST['LongMode'])) ? $_POST['LongMode'] : "none";
 	$params['replays']['VictoryFilter'] = $victory_f = (isset($_POST['VictoryFilter'])) ? $_POST['VictoryFilter'] : "none";
 
 	if (!isset($_POST['ReplaysOrder'])) $_POST['ReplaysOrder'] = "DESC"; // default ordering
@@ -3516,8 +3530,8 @@ case 'Replays':
 	$params['replays']['order'] = $order = $_POST['ReplaysOrder'];
 	$params['replays']['cond'] = $cond = $_POST['ReplaysCond'];
 
-	$params['replays']['list'] = $replaydb->ListReplays($player_f, $hidden_f, $friendly_f, $victory_f, $current_page, $cond, $order);
-	$params['replays']['page_count'] = $replaydb->CountPages($player_f, $hidden_f, $friendly_f, $victory_f);
+	$params['replays']['list'] = $replaydb->ListReplays($player_f, $hidden_f, $friendly_f, $long_f, $victory_f, $current_page, $cond, $order);
+	$params['replays']['page_count'] = $replaydb->CountPages($player_f, $hidden_f, $friendly_f, $long_f, $victory_f);
 	$params['replays']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 	$params['replays']['players'] = $replay_players = $replaydb->ListPlayers();
 	$params['replays']['my_replays'] = (in_array($player->Name(), $replay_players) ? 'yes' : 'no');
@@ -3563,8 +3577,10 @@ case 'Replays_details':
 	$params['replay']['Current'] = $replay->Current;
 	$params['replay']['HiddenCards'] = $replay->GetGameMode('HiddenCards');
 	$params['replay']['FriendlyPlay'] = $replay->GetGameMode('FriendlyPlay');
-	$params['replay']['max_tower'] = $game_config['max_tower'];
-	$params['replay']['max_wall'] = $game_config['max_wall'];
+	$params['replay']['LongMode'] = $long_mode = $replay->GetGameMode('LongMode');
+	$g_mode = ($long_mode == 'yes') ? 'long' : 'normal';
+	$params['replay']['max_tower'] = $game_config[$g_mode]['max_tower'];
+	$params['replay']['max_wall'] = $game_config[$g_mode]['max_wall'];
 
 	// player1 hand
 	$p1hand = $p1data->Hand;

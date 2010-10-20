@@ -153,6 +153,9 @@
 							<xsl:if test="blind_flag = 'yes'">
 								<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="icon" title="Hidden cards" />
 							</xsl:if>
+							<xsl:if test="long_flag = 'yes'">
+								<img width="20px" height="14px" src="img/long_mode.png" alt="long flag" class="icon" title="Long mode" />
+							</xsl:if>
 						</p>
 					</td>
 					
@@ -277,6 +280,7 @@
 			<xsl:if test="$param/Status != 'none'"><img width="20px" height="14px" src="img/{$param/Status}.png" alt="status flag" class="icon" title="{$param/Status}" /></xsl:if>
 			<xsl:if test="$param/FriendlyFlag = 'yes'"><img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" /></xsl:if>
 			<xsl:if test="$param/BlindFlag = 'yes'"><img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="icon" title="Hidden cards" /></xsl:if>
+			<xsl:if test="$param/LongFlag = 'yes'"><img width="20px" height="14px" src="img/long_mode.png" alt="long flag" class="icon" title="Long mode" /></xsl:if>
 		</p>
 		<p>Level<span class="detail_value"><xsl:value-of select="$param/Level"/></span></p>
 		<p>
@@ -384,6 +388,12 @@
 									<xsl:if test="$param/FriendlyPlay = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 								</input>
 								<xsl:text>Friendly play</xsl:text>
+							</p>
+							<p>
+								<input type="checkbox" name="LongMode">
+									<xsl:if test="$param/LongMode = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+								</input>
+								<xsl:text>Long mode</xsl:text>
 							</p>
 							<xsl:copy-of select="am:BBcodeButtons()"/>
 							<textarea name="Content" rows="10" cols="50"></textarea>

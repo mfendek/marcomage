@@ -180,14 +180,15 @@
 			return $names;
 		}
 		
-		public function ListFreeGames($player, $hidden = "none", $friendly = "none")
+		public function ListFreeGames($player, $hidden = "none", $friendly = "none", $long = "ignore")
 		{
 			// list hosted games, where player can join
 			$hidden_q = ($hidden != "none") ? ' AND FIND_IN_SET("HiddenCards", `GameModes`) '.(($hidden == "include") ? '>' : '=').' 0' : '';
 			$friendly_q = ($friendly != "none") ? ' AND FIND_IN_SET("FriendlyPlay", `GameModes`) '.(($friendly == "include") ? '>' : '=').' 0' : '';
+			$long_q = ($long != "none") ? ' AND FIND_IN_SET("LongMode", `GameModes`) '.(($long == "include") ? '>' : '=').' 0' : '';
 			
 			$db = $this->db;
-			$result = $db->Query('SELECT `GameID`, `Player1`, `Last Action`, `GameModes` FROM `games` WHERE `Player1` != "'.$db->Escape($player).'" AND `Player2` = "" AND `State` = "waiting"'.$hidden_q.$friendly_q.' ORDER BY `Last Action` DESC');
+			$result = $db->Query('SELECT `GameID`, `Player1`, `Last Action`, `GameModes` FROM `games` WHERE `Player1` != "'.$db->Escape($player).'" AND `Player2` = "" AND `State` = "waiting"'.$hidden_q.$friendly_q.$long_q.' ORDER BY `Last Action` DESC');
 			if (!$result) return false;
 			
 			$games = array();
@@ -304,6 +305,7 @@
 		private $Note2;
 		private $HiddenCards; // hide opponent's cards (yes/no)
 		private $FriendlyPlay; // allow game to effect player score (yes/no)
+		private $LongMode; // long game mode (yes/no)
 		public $State; // 'waiting' / 'in progress' / 'finished' / 'P1 over' / 'P2 over'
 		public $Current; // name of the player whose turn it currently is
 		public $Round; // incremented after each play/discard action
@@ -408,6 +410,7 @@
 			$this->Note2 = $data['Note2'];
 			$this->HiddenCards = (strpos($data['GameModes'], 'HiddenCards') !== false) ? 'yes' : 'no';
 			$this->FriendlyPlay = (strpos($data['GameModes'], 'FriendlyPlay') !== false) ? 'yes' : 'no';
+			$this->LongMode = (strpos($data['GameModes'], 'LongMode') !== false) ? 'yes' : 'no';
 			$this->GameData = unserialize($data['Data']);
 			
 			return true;
@@ -429,6 +432,9 @@
 			$this->GameData[$player] = new CGamePlayerData;
 			$this->GameData[$player]->Deck = $deck;
 			
+			// determine game mode (normal or long)
+			$g_mode = ($this->LongMode == 'yes') ? 'long' : 'normal';
+			
 			$this->State = 'in progress';
 			$this->LastAction = date('Y-m-d G:i:s');
 			$this->Current = ((mt_rand(0,1) == 1) ? $this->Player1 : $this->Player2);
@@ -442,8 +448,8 @@
 			$p1->NewCards = $p2->NewCards = $p1->Revealed = $p2->Revealed = null;
 			$p1->DisCards[0] = $p1->DisCards[1] = $p2->DisCards[0] = $p2->DisCards[1] = null; //0 - cards discarded from my hand, 1 - discarded from opponents hand
 			$p1->Changes = $p2->Changes = array ('Quarry'=> 0, 'Magic'=> 0, 'Dungeons'=> 0, 'Bricks'=> 0, 'Gems'=> 0, 'Recruits'=> 0, 'Tower'=> 0, 'Wall'=> 0);
-			$p1->Tower = $p2->Tower = $game_config['init_tower'];
-			$p1->Wall = $p2->Wall = $game_config['init_wall'];
+			$p1->Tower = $p2->Tower = $game_config[$g_mode]['init_tower'];
+			$p1->Wall = $p2->Wall = $game_config[$g_mode]['init_wall'];
 			$p1->Quarry = $p2->Quarry = 3;
 			$p1->Magic = $p2->Magic = 3;
 			$p1->Dungeons = $p2->Dungeons = 3;
@@ -555,13 +561,16 @@
 			if (($cardpos < 1) || ($cardpos > 8)) return 'Wrong card position!';
 			if (($action != 'play') && ($action != 'discard')) return 'Invalid action!';
 			
+			// determine game mode (normal or long)
+			$g_mode = ($this->LongMode == 'yes') ? 'long' : 'normal';
+			
 			// game configuration
-			$max_tower = $game_config['max_tower'];
-			$max_wall = $game_config['max_wall'];
-			$init_tower = $game_config['init_tower'];
-			$init_wall = $game_config['init_wall'];
-			$res_vic = $game_config['res_victory'];
-			$time_vic = $game_config['time_victory'];
+			$max_tower = $game_config[$g_mode]['max_tower'];
+			$max_wall = $game_config[$g_mode]['max_wall'];
+			$init_tower = $game_config[$g_mode]['init_tower'];
+			$init_wall = $game_config[$g_mode]['init_wall'];
+			$res_vic = $game_config[$g_mode]['res_victory'];
+			$time_vic = $game_config[$g_mode]['time_victory'];
 			
 			// prepare basic information
 			$opponent = ($this->Player1 == $playername) ? $this->Player2 : $this->Player1;
@@ -1049,14 +1058,17 @@
 		{
 			global $game_config;
 			
+			// determine game mode (normal or long)
+			$g_mode = ($this->LongMode == 'yes') ? 'long' : 'normal';
+			
 			$data->Quarry = max($data->Quarry, 1);
 			$data->Magic = max($data->Magic, 1);
 			$data->Dungeons = max($data->Dungeons, 1);
 			$data->Bricks = max($data->Bricks, 0);
 			$data->Gems = max($data->Gems, 0);
 			$data->Recruits = max($data->Recruits, 0);
-			$data->Tower = min(max($data->Tower, 0), $game_config['max_tower']);
-			$data->Wall = min(max($data->Wall, 0), $game_config['max_wall']);
+			$data->Tower = min(max($data->Tower, 0), $game_config[$g_mode]['max_tower']);
+			$data->Wall = min(max($data->Wall, 0), $game_config[$g_mode]['max_wall']);
 		}
 		
 		public function CalculateExp($player)
