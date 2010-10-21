@@ -3254,14 +3254,11 @@ case 'Games_details':
 
 	// - <quick game switching menu>
 	$list = $gamedb->ListActiveGames($player->Name());
-	$nextgame_button = false;
 
 	foreach ($list as $i => $data)
 	{
 		$cur_game = $gamedb->GetGame($data['GameID']);
 		$cur_opponent = ($cur_game->Name1() != $player->Name()) ? $cur_game->Name1() : $cur_game->Name2();
-
-		if ($cur_game->Current == $player->Name()) $nextgame_button = true;
 
 		$params['game']['GameList'][$i]['Value'] = $cur_game->ID();
 		$params['game']['GameList'][$i]['Content'] = 'vs. '.htmlencode($cur_opponent);
@@ -3272,8 +3269,9 @@ case 'Games_details':
 	}
 	// - </quick game switching menu>
 
-	// - <'jump to next game' button> 
-	$params['game']['nextgame_button'] = ($nextgame_button) ? 'yes' : 'no';
+	// - <'jump to next game' button>
+	$next_games = $gamedb->NextGameList($player->Name());
+	$params['game']['nextgame_button'] = (count($next_games) > 0) ? 'yes' : 'no';
 
 	// - <game state indicator>
 	$params['game']['opp_isOnline'] = (($opponent->isOnline()) ? 'yes' : 'no');
