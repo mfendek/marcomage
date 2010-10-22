@@ -4958,7 +4958,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Holy</keywords>
-    <effect><![CDATA[Replaces up to N common cards with any non-<b>Holy</b> keyword from opponent's hand with common <b>Holy</b><br />N = #<b>Holy</b> in hand (max 4)]]></effect>
+    <effect><![CDATA[Replaces up to N common non-<b>Holy</b> keyword cards from opponent's hand with common <b>Holy</b><br />N = #<b>Holy</b> in hand (max 4)]]></effect>
     <code><![CDATA[
 						$count = min(4, $this->KeyWordCount($mydata->Hand, "Holy"));
 						for ($i = 1; $i <= 8; $i++)
