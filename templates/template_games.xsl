@@ -420,9 +420,9 @@
 		</td>
 
 		<!-- begin game state indicator -->
-		<xsl:choose>
-			<xsl:when test="$param/GameState = 'in progress'">
-				<td colspan="2">
+		<td colspan="2" style="text-align: center">
+			<xsl:choose>
+				<xsl:when test="$param/GameState = 'in progress'">
 					<p class="info_label">
 						<xsl:choose>
 							<xsl:when test="$param/Surrender = $param/OpponentName">
@@ -439,47 +439,47 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</p>
-				</td>
-				<td></td>
-				<td>
-					<a class="button" href="{php:functionString('makeurl', 'Decks_view', 'CurrentGame', $param/CurrentGame)}">Deck</a>
-					<a class="button" href="{php:functionString('makeurl', 'Games_note', 'CurrentGame', $param/CurrentGame)}" >
-						<xsl:if test="$param/has_note = 'yes'">
-							<xsl:attribute name="class">button marked_button</xsl:attribute>
-						</xsl:if>
-						<xsl:text>Note</xsl:text>
-					</a>
-				</td>
-
-				<!-- begin surrender/abort button -->
-				<td style="text-align: right">
-					<xsl:choose>
-						<xsl:when test="$param/opp_isDead = 'yes'">
-							<button type="submit" name="abort_game">Abort game</button>
-						</xsl:when>
-						<xsl:when test="$param/finish_game = 'yes'">
-							<button type="submit" name="finish_game">Finish game</button>
-						</xsl:when>
-						<xsl:when test="$param/Surrender = $param/OpponentName">
-							<button type="submit" name="accept_surrender">Accept</button>
-							<button type="submit" name="reject_surrender">Reject</button>
-						</xsl:when>
-						<xsl:when test="$param/Surrender = $param/PlayerName">
-							<button type="submit" name="cancel_surrender">Cancel surrender</button>
-						</xsl:when>
-						<xsl:otherwise>
-							<button type="submit" name="surrender">Surrender</button>
-						</xsl:otherwise>
-					</xsl:choose>
-				<!-- end surrender/abort button -->
-				</td>
-			</xsl:when>
-			<xsl:otherwise>
-				<td align="center" colspan="2">
+				</xsl:when>
+				<xsl:otherwise>
 					<button type="submit" name="Confirm">Leave the game</button>
-				</td>
-			</xsl:otherwise>
-		</xsl:choose>
+				</xsl:otherwise>
+			</xsl:choose>
+		</td>
+		<td></td>
+		<td>
+			<a class="button" href="{php:functionString('makeurl', 'Decks_view', 'CurrentGame', $param/CurrentGame)}">Deck</a>
+			<a class="button" href="{php:functionString('makeurl', 'Games_note', 'CurrentGame', $param/CurrentGame)}" >
+				<xsl:if test="$param/has_note = 'yes'">
+					<xsl:attribute name="class">button marked_button</xsl:attribute>
+				</xsl:if>
+				<xsl:text>Note</xsl:text>
+			</a>
+		</td>
+
+		<!-- begin surrender/abort button -->
+		<td style="text-align: right">
+			<xsl:if test="$param/GameState = 'in progress'">
+				<xsl:choose>
+					<xsl:when test="$param/opp_isDead = 'yes'">
+						<button type="submit" name="abort_game">Abort game</button>
+					</xsl:when>
+					<xsl:when test="$param/finish_game = 'yes'">
+						<button type="submit" name="finish_game">Finish game</button>
+					</xsl:when>
+					<xsl:when test="$param/Surrender = $param/OpponentName">
+						<button type="submit" name="accept_surrender">Accept</button>
+						<button type="submit" name="reject_surrender">Reject</button>
+					</xsl:when>
+					<xsl:when test="$param/Surrender = $param/PlayerName">
+						<button type="submit" name="cancel_surrender">Cancel surrender</button>
+					</xsl:when>
+					<xsl:otherwise>
+						<button type="submit" name="surrender">Surrender</button>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:if>
+		<!-- end surrender/abort button -->
+		</td>
 		<!-- end game state indicator -->
 	</tr>
 	<!-- end messages and game buttons -->
