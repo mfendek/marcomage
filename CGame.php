@@ -581,6 +581,12 @@
 			$cardid = $mydata->Hand[$cardpos];
 			$card = $carddb->GetCard($cardid);
 			
+			// verify if there are enough resources
+			if ($action == 'play' AND (($mydata->Bricks < $card->CardData->Bricks) || ($mydata->Gems < $card->CardData->Gems) || ($mydata->Recruits < $card->CardData->Recruits))) return 'Insufficient resources!';
+			
+			// verify mode (depends on card)
+			if ($action == 'play' AND (($mode < 0) OR ($mode > $card->CardData->Modes) OR ($mode == 0 AND $card->CardData->Modes > 0))) return 'Bad mode!';
+			
 			// process card history
 			$mylastcardindex = count($mydata->LastCard);
 			$hislastcardindex = count($hisdata->LastCard);
@@ -633,15 +639,6 @@
 			// branch here according to $action
 			if ($action == 'play')
 			{
-				// verify mode (depends on card)
-				if( $mode < 0
-				||  $mode > $card->CardData->Modes
-				||  $mode == 0 && $card->CardData->Modes > 0
-				  ) return 'Bad mode!';
-				
-				// verify if there are enough resources
-				if (($mydata->Bricks < $card->CardData->Bricks) || ($mydata->Gems < $card->CardData->Gems) || ($mydata->Recruits < $card->CardData->Recruits)) return 'Insufficient resources!';
-				
 				$mydata->Bricks-= $card->CardData->Bricks;
 				$mydata->Gems-= $card->CardData->Gems;
 				$mydata->Recruits-= $card->CardData->Recruits;
