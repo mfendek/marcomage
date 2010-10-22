@@ -1159,28 +1159,6 @@
 
 			// begin game related messages
 
-			if (isset($_POST['jump_to_game'])) // Games -> vs. %s
-			{
-				$gameid = $_POST['games_list'];	
-				$game = $gamedb->GetGame($gameid);
-
-				// check if the game exists
-				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
-
-				// check if this user is allowed to view this game
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games'; break; }
-
-				// check if the game is a game in progress (and not a challenge)
-				if ($game->State == 'waiting') { $error = 'Opponent did not accept the challenge yet!'; $current = 'Games'; break; }
-
-				// disable re-visiting
-				if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { $error = 'Game already over.'; $current = 'Games'; break; }
-
-				$_POST['CurrentGame'] = $gameid;
-				$current = "Games_details";
-				break;
-			}
-			
 			if (isset($_POST['active_game'])) // Games -> next game button
 			{
 				$list = $gamedb->NextGameList($player->Name());
@@ -3251,23 +3229,6 @@ case 'Games_details':
 	}
 
 	$params['game']['HisTokens'] = array_reverse($his_tokens);
-
-	// - <quick game switching menu>
-	$list = $gamedb->ListActiveGames($player->Name());
-
-	foreach ($list as $i => $data)
-	{
-		$cur_game = $gamedb->GetGame($data['GameID']);
-		$cur_opponent = ($cur_game->Name1() != $player->Name()) ? $cur_game->Name1() : $cur_game->Name2();
-
-		$params['game']['GameList'][$i]['Value'] = $cur_game->ID();
-		$params['game']['GameList'][$i]['Content'] = 'vs. '.htmlencode($cur_opponent);
-		$params['game']['GameList'][$i]['Selected'] = (($cur_game->ID() == $_POST['CurrentGame']) ? 'yes' : 'no');
-		$params['game']['GameList'][$i]['is_current'] = ($cur_game->Current == $player->Name()) ? 'yes' : 'no';
-		$params['game']['GameList'][$i]['is_dead'] = ($playerdb->isDead($cur_opponent)) ? 'yes' : 'no';
-		$params['game']['GameList'][$i]['in_progress'] = ($cur_game->State == 'in progress') ? 'yes' : 'no';
-	}
-	// - </quick game switching menu>
 
 	// - <'jump to next game' button>
 	$next_games = $gamedb->NextGameList($player->Name());

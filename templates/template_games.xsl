@@ -383,37 +383,12 @@
 
 	<!-- begin messages and game buttons -->
 	<tr>
-		<!-- begin quick game switching menu -->
+		<td></td>
 		<td>
-			<select name="games_list">
-				<xsl:for-each select="$param/GameList/*">
-					<option value="{Value}">
-						<xsl:if test="Selected = 'yes'">
-							<xsl:attribute name="selected">selected</xsl:attribute>
-						</xsl:if>
-						<xsl:choose>
-							<xsl:when test="in_progress = 'no'">
-								<xsl:attribute name="style">color: #ff69b4</xsl:attribute>
-							</xsl:when>
-							<xsl:when test="in_progress = 'yes' and is_dead = 'yes'">
-								<xsl:attribute name="style">color: gray</xsl:attribute>
-							</xsl:when>
-							<xsl:when test="is_current = 'yes'">
-								<xsl:attribute name="style">color: lime</xsl:attribute>
-							</xsl:when>
-						</xsl:choose>
-						<xsl:value-of select="Content"/>
-					</option>
-				</xsl:for-each>
-			</select>
-		</td>
-		<td>
-			<button type="submit" name="jump_to_game">Select</button>
 			<xsl:if test="$param/nextgame_button = 'yes'">
 				<button type="submit" name="active_game">Next game</button>
 			</xsl:if> 
 		</td>
-		<!-- end quick game switching menu -->
 		<td>
 			<!-- 'refresh' button -->
 			<a class="button" href="{php:functionString('makeurl', 'Games_details', 'CurrentGame', $param/CurrentGame)}" accesskey="w" >Refresh</a>
