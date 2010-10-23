@@ -172,7 +172,7 @@ $(document).ready(function() {
 	// hide radio buttons (selection is done via card)
 	$("input[name='selected_card']").hide();
 
-	// card selection
+	// card selection (via card)
 	$("tr.hand:first-child div.karta").click(function() {
 		if ($("input[name='selected_card']").length > 0) // active only on player's turn
 		{
@@ -184,7 +184,7 @@ $(document).ready(function() {
 				$("div.selected_card").removeClass("selected_card");
 	
 				// select specified card
-				$(this).prevAll("input[name='selected_card']").attr('checked', 'checked');
+				$(this).nextAll("input[name='selected_card']").attr('checked', 'checked');
 				$(this).addClass("selected_card");
 				$(this).animate({ opacity: 0.7 }, 'fast');
 			}
@@ -196,6 +196,13 @@ $(document).ready(function() {
 				$("div.selected_card").removeClass("selected_card");
 			}
 		}
+	});
+
+	// card selection (via card modes)
+	$("select.card_modes").click(function() {
+		var cur_card = $(this).prevAll("div.karta");
+
+		if (!cur_card.hasClass("selected_card")) { cur_card.click(); }
 	});
 
 	// card preview processing

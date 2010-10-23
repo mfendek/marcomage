@@ -135,7 +135,7 @@ div#game
 
 div#game input[type="radio"] /* radio button */
 {
-	padding: 0.5ex;
+	padding: 1ex;
 	margin: 0ex;
 	border-style: solid;
 	border-width: thin;

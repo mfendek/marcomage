@@ -341,18 +341,6 @@
 	<tr valign="top" class="hand">
 		<xsl:for-each select="$param/MyHand/*">
 			<td align="center">
-				<!-- select button and card modes (buttons are locked when surrender request is active) -->
-				<xsl:if test="($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = ''">
-					<input type="radio" name="selected_card" value="{position()}" />
-					<xsl:if test="Playable = 'yes' and Modes &gt; 0">
-						<select name="card_mode[{position()}]" class="card_modes" size="1">
-							<xsl:for-each select="str:split(am:numbers(1, Modes), ',')">
-								<option value="{.}"><xsl:value-of select="."/></option>
-							</xsl:for-each>
-						</select>
-					</xsl:if>
-				</xsl:if>
-
 				<!--  display card flags, if set -->
 				<xsl:choose>
 					<xsl:when test="$param/HiddenCards = 'yes' and Revealed = 'yes'">
@@ -371,6 +359,18 @@
 
 				<!-- display card -->
 				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias)" />
+
+				<!-- select button and card modes (buttons are locked when surrender request is active) -->
+				<xsl:if test="($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = ''">
+					<input type="radio" name="selected_card" value="{position()}" />
+					<xsl:if test="Playable = 'yes' and Modes &gt; 0">
+						<select name="card_mode[{position()}]" class="card_modes" size="1">
+							<xsl:for-each select="str:split(am:numbers(1, Modes), ',')">
+								<option value="{.}"><xsl:value-of select="."/></option>
+							</xsl:for-each>
+						</select>
+					</xsl:if>
+				</xsl:if>
 			</td>
 		</xsl:for-each>
 	</tr>
