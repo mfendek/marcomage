@@ -133,6 +133,14 @@ div#game
 	padding-bottom: 1ex;
 }
 
+div#game input[type="radio"] /* radio button */
+{
+	padding: 0.5ex;
+	margin: 0ex;
+	border-style: solid;
+	border-width: thin;
+}
+
 p.facility /* facilites text */
 {
 	color: white;
@@ -146,6 +154,11 @@ p.resource /* resources text */
 	margin: 2ex 0ex 0ex 0.8ex;
 	font-weight: bold;
 	font-size: medium;
+}
+
+tr.buttons > td /* in game buttons */
+{
+	text-align: center;
 }
 
 td.stats > div /* facilites/resources layout */
@@ -284,11 +297,6 @@ p.token_counter /* token counter layout */
 p.token_counter > span /* token counter value */
 {
 	margin-left: 0.5ex;
-}
-
-td.game_mode_flags /* game mode flags area */
-{
-	text-align: center;
 }
 
 td.game_mode_flags > img /* game mode flags */

@@ -157,4 +157,44 @@ $(document).ready(function() {
 
 		return false;
 	});
+
+	// card selector verification
+	$("button[name='play_card'],button[name='discard_card']").click(function() {
+		if ($("input[name='selected_card']:checked").length == 0)
+		{
+			alert('No card was selected!');
+			return false;
+		}
+
+		return true;
+	});
+
+	// hide radio buttons (selection is done via card)
+  $("input[name='selected_card']").hide();
+
+	// card selection
+	$("tr.hand:first-child div.karta").click(function() {
+		if ($("input[name='selected_card']").length > 0) // active only on player's turn
+		{
+			if (!$(this).hasClass("selected_card")) // case 1: unselected card is selected
+			{
+				// unselect previously selected card
+				$("input[name='selected_card']:checked").removeAttr("checked");
+				$("div.selected_card").animate({ opacity: 1 }, 'fast');
+				$("div.selected_card").removeClass("selected_card");
+	
+				// select specified card
+				$(this).prevAll("input[name='selected_card']").attr('checked', 'checked');
+				$(this).addClass("selected_card");
+				$(this).animate({ opacity: 0.7 }, 'fast');
+			}
+			else // case 2: selected card is reselected
+			{
+				// unselect selected card
+				$("input[name='selected_card']:checked").removeAttr("checked");
+				$("div.selected_card").animate({ opacity: 1 }, 'fast');
+				$("div.selected_card").removeClass("selected_card");
+			}
+		}
+	});
 });

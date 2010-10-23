@@ -341,9 +341,16 @@
 	<tr valign="top" class="hand">
 		<xsl:for-each select="$param/MyHand/*">
 			<td align="center">
-				<!--  display discard button (buttons are locked when surrender request is active) -->
+				<!-- select button and card modes (buttons are locked when surrender request is active) -->
 				<xsl:if test="($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = ''">
-					<button type="submit" name="discard_card" value="{position()}">Discard</button>
+					<input type="radio" name="selected_card" value="{position()}" />
+					<xsl:if test="Playable = 'yes' and Modes &gt; 0">
+						<select name="card_mode[{position()}]" class="card_modes" size="1">
+							<xsl:for-each select="str:split(am:numbers(1, Modes), ',')">
+								<option value="{.}"><xsl:value-of select="."/></option>
+							</xsl:for-each>
+						</select>
+					</xsl:if>
 				</xsl:if>
 
 				<!--  display card flags, if set -->
@@ -364,61 +371,43 @@
 
 				<!-- display card -->
 				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias)" />
-				
-				<!-- play button and card modes (buttons are locked when surrender request is active) -->
-				<xsl:if test="Playable = 'yes' and $param/Surrender = ''">
-					<button type="submit" name="play_card" value="{position()}">Play</button>
-					<xsl:if test="Modes &gt; 0">
-						<select name="card_mode[{position()}]" class="card_modes" size="1">
-							<xsl:for-each select="str:split(am:numbers(1, Modes), ',')">
-								<option value="{.}"><xsl:value-of select="."/></option>
-							</xsl:for-each>
-						</select>
-					</xsl:if>
-				</xsl:if>
 			</td>
 		</xsl:for-each>
 	</tr>
 	<!-- end your cards -->
 
 	<!-- begin messages and game buttons -->
-	<tr>
-		<td></td>
+	<tr class="buttons">
+		<td class="game_mode_flags">
+			<!-- game mode flags -->
+			<xsl:if test="$param/HiddenCards = 'yes'">
+				<img src="img/blind.png" width="20px" height="14px" alt="hidden cards" title="Hidden cards" class="icon" />
+			</xsl:if>
+			<xsl:if test="$param/FriendlyPlay = 'yes'">
+				<img src="img/friendly_play.png" width="20px" height="14px" alt="friendly play" title="Friendly play" class="icon" />
+			</xsl:if>
+			<xsl:if test="$param/LongMode = 'yes'">
+				<img src="img/long_mode.png" width="20px" height="14px" alt="long mode" title="Long mode" class="icon" />
+			</xsl:if>
+		</td>
+		<td>
+			<!-- 'refresh' button -->
+			<a class="button" href="{php:functionString('makeurl', 'Games_details', 'CurrentGame', $param/CurrentGame)}" accesskey="w" >Refresh</a>
+		</td>
 		<td>
 			<xsl:if test="$param/nextgame_button = 'yes'">
 				<button type="submit" name="active_game">Next game</button>
 			</xsl:if> 
 		</td>
 		<td>
-			<!-- 'refresh' button -->
-			<a class="button" href="{php:functionString('makeurl', 'Games_details', 'CurrentGame', $param/CurrentGame)}" accesskey="w" >Refresh</a>
+			<xsl:if test="($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = ''">
+				<button type="submit" name="play_card">Play</button>
+			</xsl:if>
 		</td>
-
-		<!-- begin game state indicator -->
-		<td colspan="2" style="text-align: center">
-			<xsl:choose>
-				<xsl:when test="$param/GameState = 'in progress'">
-					<p class="info_label">
-						<xsl:choose>
-							<xsl:when test="$param/Surrender = $param/OpponentName">
-								<span class="player"><xsl:value-of select="$param/OpponentName"/> wishes to surrender</span>
-							</xsl:when>
-							<xsl:when test="$param/Surrender = $param/PlayerName">
-								<span class="opponent">You have requested to surrender</span>
-							</xsl:when>
-							<xsl:when test="$param/Current = $param/PlayerName">
-								<span class="player"><xsl:text>It is your turn</xsl:text></span>
-							</xsl:when>
-							<xsl:otherwise>
-								<span class="opponent"><xsl:text>It is </xsl:text><xsl:value-of select="$param/OpponentName"/><xsl:text>'s turn</xsl:text></span>
-							</xsl:otherwise>
-						</xsl:choose>
-					</p>
-				</xsl:when>
-				<xsl:otherwise>
-					<button type="submit" name="Confirm">Leave the game</button>
-				</xsl:otherwise>
-			</xsl:choose>
+		<td>
+			<xsl:if test="($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = ''">
+				<button type="submit" name="discard_card">Discard</button>
+			</xsl:if>
 		</td>
 		<td></td>
 		<td>
@@ -432,7 +421,7 @@
 		</td>
 
 		<!-- begin surrender/abort button -->
-		<td style="text-align: right">
+		<td>
 			<xsl:if test="$param/GameState = 'in progress'">
 				<xsl:choose>
 					<xsl:when test="$param/opp_isDead = 'yes'">
@@ -966,19 +955,32 @@
 		</xsl:for-each>	
 	<!-- end my tokens -->
 
-		<td class="game_mode_flags">
-			<!-- game mode flags -->
-			<xsl:if test="$param/HiddenCards = 'yes'">
-				<img src="img/blind.png" width="20px" height="14px" alt="hidden cards" title="Hidden cards" class="icon" />
-			</xsl:if>
-			<xsl:if test="$param/FriendlyPlay = 'yes'">
-				<img src="img/friendly_play.png" width="20px" height="14px" alt="friendly play" title="Friendly play" class="icon" />
-			</xsl:if>
-			<xsl:if test="$param/LongMode = 'yes'">
-				<img src="img/long_mode.png" width="20px" height="14px" alt="long mode" title="Long mode" class="icon" />
-			</xsl:if>
+		<!-- begin game state indicator -->
+		<td colspan="2" style="text-align: center">
+			<xsl:choose>
+				<xsl:when test="$param/GameState = 'in progress'">
+					<p class="info_label">
+						<xsl:choose>
+							<xsl:when test="$param/Surrender = $param/OpponentName">
+								<span class="player"><xsl:value-of select="$param/OpponentName"/> wishes to surrender</span>
+							</xsl:when>
+							<xsl:when test="$param/Surrender = $param/PlayerName">
+								<span class="opponent">You have requested to surrender</span>
+							</xsl:when>
+							<xsl:when test="$param/Current = $param/PlayerName">
+								<span class="player"><xsl:text>It is your turn</xsl:text></span>
+							</xsl:when>
+							<xsl:otherwise>
+								<span class="opponent"><xsl:text>It is </xsl:text><xsl:value-of select="$param/OpponentName"/><xsl:text>'s turn</xsl:text></span>
+							</xsl:otherwise>
+						</xsl:choose>
+					</p>
+				</xsl:when>
+				<xsl:otherwise>
+					<button type="submit" name="Confirm">Leave the game</button>
+				</xsl:otherwise>
+			</xsl:choose>
 		</td>
-		<td></td>
 
 	<!-- begin his tokens -->
 		<xsl:for-each select="$param/HisTokens/*">

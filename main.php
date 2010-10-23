@@ -1323,7 +1323,10 @@
 
 			if (isset($_POST['discard_card'])) // Games -> vs. %s -> Discard
 			{
-				$cardpos = $_POST['discard_card'];
+				// check if there is a selected card
+				if (!isset($_POST['selected_card'])) { $error = 'No card was selected!'; $current = 'Games_details'; break; }
+
+				$cardpos = $_POST['selected_card'];
 
 				$gameid = $_POST['CurrentGame'];
 				$game = $gamedb->GetGame($gameid);
@@ -1358,7 +1361,10 @@
 
 			if (isset($_POST['play_card'])) // Games -> vs. %s -> Play
 			{
-				$cardpos = $_POST['play_card'];
+				// check if there is a selected card
+				if (!isset($_POST['selected_card'])) { $error = 'No card was selected!'; $current = 'Games_details'; break; }
+
+				$cardpos = $_POST['selected_card'];
 				$mode = (isset($_POST['card_mode']) and isset($_POST['card_mode'][$cardpos])) ? $_POST['card_mode'][$cardpos] : 0;
 
 				$gameid = $_POST['CurrentGame'];
@@ -3127,7 +3133,7 @@ case 'Games_details':
 		$entry = array();
 		$entry['CardID'] = $card['id'];
 		$entry['Data'] = $card;
-		$entry['Playable'] = ( $mydata->Bricks >= $card['bricks'] and $mydata->Gems >= $card['gems'] and $mydata->Recruits >= $card['recruits'] and $game->State == 'in progress' and $game->Current == $player->Name() ) ? 'yes' : 'no';
+		$entry['Playable'] = ( $mydata->Bricks >= $card['bricks'] and $mydata->Gems >= $card['gems'] and $mydata->Recruits >= $card['recruits']) ? 'yes' : 'no';
 		$entry['Modes'] = $card['modes'];
 		$entry['NewCard'] = ( isset($mydata->NewCards[$i]) ) ? 'yes' : 'no';
 		$entry['Revealed'] = ( isset($mydata->Revealed[$i]) ) ? 'yes' : 'no';

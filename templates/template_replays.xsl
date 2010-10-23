@@ -258,13 +258,23 @@
 	<!-- end player1 cards -->
 
 	<!-- begin messages and game buttons -->
-	<tr>
+	<tr class="buttons">
+		<td class="game_mode_flags">
+			<!-- game mode flags -->
+			<xsl:if test="$param/HiddenCards = 'yes'">
+				<img src="img/blind.png" width="20px" height="14px" alt="hidden cards" title="Hidden cards" class="icon" />
+			</xsl:if>
+			<xsl:if test="$param/FriendlyPlay = 'yes'">
+				<img src="img/friendly_play.png" width="20px" height="14px" alt="friendly play" title="Friendly play" class="icon" />
+			</xsl:if>
+			<xsl:if test="$param/LongMode = 'yes'">
+				<img src="img/long_mode.png" width="20px" height="14px" alt="long mode" title="Long mode" class="icon" />
+			</xsl:if>
+		</td>
 		<td></td>
 		<td></td>
 		<td></td>
-
-		<!-- game state indicator -->
-		<td colspan="2"><p class="info_label"><xsl:value-of select="$param/Current"/>'s turn</p></td>
+		<td></td>
 		<td></td>
 		<td></td>
 		<td></td>
@@ -771,19 +781,8 @@
 		</xsl:for-each>	
 	<!-- end player1 tokens -->
 
-		<td class="game_mode_flags">
-			<!-- game mode flags -->
-			<xsl:if test="$param/HiddenCards = 'yes'">
-				<img src="img/blind.png" width="20px" height="14px" alt="hidden cards" title="Hidden cards" class="icon" />
-			</xsl:if>
-			<xsl:if test="$param/FriendlyPlay = 'yes'">
-				<img src="img/friendly_play.png" width="20px" height="14px" alt="friendly play" title="Friendly play" class="icon" />
-			</xsl:if>
-			<xsl:if test="$param/LongMode = 'yes'">
-				<img src="img/long_mode.png" width="20px" height="14px" alt="long mode" title="Long mode" class="icon" />
-			</xsl:if>
-		</td>
-		<td></td>
+		<!-- game state indicator -->
+		<td colspan="2"><p class="info_label"><xsl:value-of select="$param/Current"/>'s turn</p></td>
 
 	<!-- begin player2 tokens -->
 		<xsl:for-each select="$param/p2Tokens/*">
