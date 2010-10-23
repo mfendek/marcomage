@@ -170,7 +170,7 @@ $(document).ready(function() {
 	});
 
 	// hide radio buttons (selection is done via card)
-  $("input[name='selected_card']").hide();
+	$("input[name='selected_card']").hide();
 
 	// card selection
 	$("tr.hand:first-child div.karta").click(function() {
@@ -196,5 +196,28 @@ $(document).ready(function() {
 				$("div.selected_card").removeClass("selected_card");
 			}
 		}
+	});
+
+	// card preview processing
+	$("button[name='preview_card']").click(function() {
+		if ($("input[name='selected_card']:checked").length == 0)
+		{
+			alert('No card was selected!');
+			return false;
+		}
+
+		var str = new String();
+		var position = $("input[name='selected_card']:checked").val();
+		var modes = str.concat("select[name='card_mode[", position, "]']");
+		var card_mode = $(modes).val();
+		var username = GetSessionData('Username');
+		var session_id = GetSessionData('SessionID');
+		var game = $("input[name='CurrentGame']").val();
+
+		$.post("AJAXhandler.php", { action: 'preview', Username: username, SessionID: session_id, cardpos: position, mode: card_mode, game_id: game }, function(data){
+			alert(data);
+		});
+
+		return true;
 	});
 });

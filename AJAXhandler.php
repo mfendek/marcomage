@@ -14,7 +14,10 @@
 	require_once('CDatabase.php');
 	require_once('CLogin.php');
 	require_once('CCard.php');
+	require_once('CKeyword.php');
 	require_once('CDeck.php');
+	require_once('CGame.php');
+	require_once('CStatistics.php');
 	require_once('utils.php');
 
 	$db = new CDatabase($server, $username, $password, $database);
@@ -24,7 +27,10 @@
 
 	$logindb = new CLogin($db);
 	$carddb = new CCards();
+	$keyworddb = new CKeywords();
 	$deckdb = new CDecks($db);
+	$gamedb = new CGames($db);
+	$statistics = new CStatistics($db);
 
 	$_POST['Username'] = postdecode($_POST['Username']);
 
@@ -96,5 +102,24 @@
 		else { echo 'Unable to remove the chosen card from this deck.'; exit; }
 
 		echo implode(",", array($slot, $avg));
+	}
+	elseif($_POST['action'] == "preview")
+	{
+		if (!isset($_POST['cardpos']) OR $_POST['cardpos'] == "") { echo 'Invalid card position.'; exit; }
+		if (!isset($_POST['game_id']) OR $_POST['game_id'] == "") { echo 'Invalid game id.'; exit; }
+
+		$cardpos = $_POST['cardpos'];
+		$mode = (isset($_POST['mode']) AND $_POST['mode'] != "") ? $_POST['mode'] : 0;
+		$game_id = $_POST['game_id'];
+
+		// download game
+		$game = $gamedb->GetGame($game_id);
+		if (!$game) { echo 'Invalid game.'; exit; }
+
+		// verify inputs
+		if (!is_numeric($cardpos)) { echo 'Invalid card position.'; exit; }
+		if (!is_numeric($mode)) { echo 'Invalid mode.'; exit; }
+
+		echo $game->PlayPreview($user_name, $cardpos, $mode);
 	}
 ?>

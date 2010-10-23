@@ -873,6 +873,222 @@
 			
 			return 'OK';
 		}
+
+		///
+		/// Simulates impact on the game if specified card would be played (doesn't effect game or statistics)
+		/// Provides results in form of a text message which contains changes on game attributes
+		/// @param string $playername player name
+		/// @param int $cardpos position of the played card
+		/// @param int $mode mode of the played card
+		/// @return string information message
+		public function PlayPreview($playername, $cardpos, $mode)
+		{
+			global $carddb;
+			global $keyworddb;
+			global $statistics;
+			global $game_config;
+			
+			// only allow discarding if the game is still on
+			if ($this->State != 'in progress') return 'Action not allowed!';
+			
+			// only allow action when it's the players' turn
+			if ($this->Current != $playername) return 'Action only allowed on your turn!';
+			
+			// anti-hack
+			if (($cardpos < 1) || ($cardpos > 8)) return 'Wrong card position!';
+			
+			// disable statistics
+			$statistics->Deactivate();
+			
+			// determine game mode (normal or long)
+			$g_mode = ($this->LongMode == 'yes') ? 'long' : 'normal';
+			
+			// game configuration
+			$max_tower = $game_config[$g_mode]['max_tower'];
+			$max_wall = $game_config[$g_mode]['max_wall'];
+			$init_tower = $game_config[$g_mode]['init_tower'];
+			$init_wall = $game_config[$g_mode]['init_wall'];
+			$res_vic = $game_config[$g_mode]['res_victory'];
+			$time_vic = $game_config[$g_mode]['time_victory'];
+			
+			// prepare basic information
+			$opponent = ($this->Player1 == $playername) ? $this->Player2 : $this->Player1;
+			$mydata = &$this->GameData[$playername];
+			$hisdata = &$this->GameData[$opponent];
+			
+			// find out what card is at that position
+			$cardid = $mydata->Hand[$cardpos];
+			$card = $carddb->GetCard($cardid);
+			
+			// verify if there are enough resources
+			if (($mydata->Bricks < $card->CardData->Bricks) || ($mydata->Gems < $card->CardData->Gems) || ($mydata->Recruits < $card->CardData->Recruits)) return 'Insufficient resources!';
+			
+			// verify mode (depends on card)
+			if (($mode < 0) OR ($mode > $card->CardData->Modes) OR ($mode == 0 AND $card->CardData->Modes > 0)) return 'Bad mode!';
+			
+			// process card history
+			$mylastcardindex = count($mydata->LastCard);
+			$hislastcardindex = count($hisdata->LastCard);
+			
+			// prepare supplementary information
+			$mylast_card = $carddb->GetCard($mydata->LastCard[$mylastcardindex]);
+			$mylast_action = $mydata->LastAction[$mylastcardindex];
+			$hislast_card = $carddb->GetCard($hisdata->LastCard[$hislastcardindex]);
+			$hislast_action = $hisdata->LastAction[$hislastcardindex];
+			$hidden_cards = ($this->HiddenCards == 'yes');
+			
+			//we need to store this information, because some cards will need it to make their effect, however after effect this information is not stored
+			$mychanges = $mydata->Changes;
+			$hischanges = $hisdata->Changes;
+			$mynewflags = $mydata->NewCards;
+			$hisnewflags = $hisdata->NewCards;
+			$discarded_cards[0] = $mydata->DisCards[0];
+			$discarded_cards[1] = $mydata->DisCards[1];
+			
+			// create a copy of interesting game attributes
+			$attributes = array('Quarry', 'Magic', 'Dungeons', 'Bricks', 'Gems', 'Recruits', 'Tower', 'Wall');
+			$mydata_temp = $hisdata_temp = array();
+			
+			foreach ($attributes as $attribute)
+			{
+				$mydata_temp[$attribute] = $mydata->$attribute;
+				$hisdata_temp[$attribute] = $hisdata->$attribute;
+			}
+			
+			// clear newcards flag, changes indicator and discarded cards here, if required
+			if (!($mylast_card->IsPlayAgainCard() and $mylast_action == 'play'))
+			{
+				$mydata->NewCards = null;
+				$mydata->Changes = $hisdata->Changes = array ('Quarry'=> 0, 'Magic'=> 0, 'Dungeons'=> 0, 'Bricks'=> 0, 'Gems'=> 0, 'Recruits'=> 0, 'Tower'=> 0, 'Wall'=> 0);
+				$mydata->DisCards[0] = $mydata->DisCards[1] = null;
+				$mydata->TokenChanges = $hisdata->TokenChanges = array_fill_keys(array_keys($mydata->TokenNames), 0);
+			}
+			
+			// by default, opponent goes next (but this may change via card)
+			$nextplayer = $opponent;
+			
+			// next card drawn will be decided randomly unless this changes
+			$nextcard = -1;
+			
+			// default production factor
+			$bricks_production = 1;
+			$gems_production = 1;
+			$recruits_production = 1;
+			
+			$mydata->Bricks-= $card->CardData->Bricks;
+			$mydata->Gems-= $card->CardData->Gems;
+			$mydata->Recruits-= $card->CardData->Recruits;
+			
+			// update copy of game attributes (card cost was substracted)
+			foreach ($mydata_temp as $attribute => $value)
+			{
+				$mydata_temp[$attribute] = $mydata->$attribute;
+				$hisdata_temp[$attribute] = $hisdata->$attribute;
+			}
+			
+			// create a copy of token counters
+			$mytokens_temp = $mydata->TokenValues;
+			$histokens_temp = $hisdata->TokenValues;
+			
+			//create a copy of both players' hands and newcards flags (for difference computations only)
+			$myhand = $mydata->Hand;
+			$hishand = $hisdata->Hand;
+			$mynewcards = $mydata->NewCards;
+			$hisnewcards = $hisdata->NewCards;
+			
+			// execute card action !!!
+			if( eval($card->CardData->Code) === FALSE )
+				error_log("Debug: ".$cardid.": ".$card->CardData->Code);
+
+			// keyword processing
+			if ($card->CardData->Keywords != '')
+			{
+				// list all keywords in order they are to be executed
+				$category_keywords = array('Alliance', 'Aqua', 'Barbarian', 'Beast', 'Brigand', 'Burning', 'Destruction', 'Dragon', 'Holy', 'Illusion', 'Legend', 'Mage', 'Nature', 'Restoration', 'Soldier', 'Titan', 'Undead', 'Unliving');
+				$effect_keywords = array('Durable', 'Quick', 'Swift', 'Far sight', 'Banish', 'Skirmisher', 'Rebirth', 'Flare attack', 'Frenzy', 'Enduring', 'Charge');
+
+				$keywords = array_merge($category_keywords, $effect_keywords);
+				foreach ($keywords as $keyword_name)
+					if ($card->HasKeyWord($keyword_name))
+					{
+						$keyword = $keyworddb->GetKeyword($keyword_name);
+						if( eval($keyword->Code) === FALSE )
+							error_log("Debug: ".$keyword_name.": ".$keyword->Code);
+					}
+			}
+			
+			// apply limits to game attributes
+			$this->ApplyGameLimits($mydata);
+			$this->ApplyGameLimits($hisdata);
+			
+			// apply limits to token counters
+			foreach ($mytokens_temp as $index => $token_val)
+			{
+				$mydata->TokenValues[$index] = max(min($mydata->TokenValues[$index], 100), 0);
+				$hisdata->TokenValues[$index] = max(min($hisdata->TokenValues[$index], 100), 0);
+			}
+			
+			// compute changes on token counters
+			foreach ($mytokens_temp as $index => $token_val)
+			{
+				$mydata->TokenChanges[$index] += $mydata->TokenValues[$index] - $mytokens_temp[$index];
+				$hisdata->TokenChanges[$index] += $hisdata->TokenValues[$index] - $histokens_temp[$index];
+			}
+			
+			// add production at the end of turn
+			$mydata->Bricks+= $bricks_production * $mydata->Quarry;
+			$mydata->Gems+= $gems_production * $mydata->Magic;
+			$mydata->Recruits+= $recruits_production * $mydata->Dungeons;
+			
+			// compute changes on game attributes
+			$attributes = array('Quarry', 'Magic', 'Dungeons', 'Bricks', 'Gems', 'Recruits', 'Tower', 'Wall');
+			foreach ($attributes as $attribute)
+			{
+				$mydata->Changes[$attribute]+= $mydata->$attribute - $mydata_temp[$attribute];
+				$hisdata->Changes[$attribute]+= $hisdata->$attribute - $hisdata_temp[$attribute];
+			}
+			
+			// create result text message
+			$message = array();
+
+			// card name and card mode
+			$message[] = $card->CardData->Name.(($mode > 0) ? ' (mode '.$mode.')' : '');
+
+			// player data
+			$message[] = "\n".$playername."\n";
+
+			$my_part = $his_part = array();
+			// game attributes
+			foreach ($attributes as $attribute)
+				if ($mydata->Changes[$attribute] != 0)
+					$my_part[] = $attribute.': '.$mydata->$attribute.' ('.(($mydata->Changes[$attribute] > 0) ? '+' : '').$mydata->Changes[$attribute].')';
+
+			// tokens
+			foreach ($mytokens_temp as $index => $token_val)
+				if ($mydata->TokenNames[$index] != 'none' AND $mydata->TokenChanges[$index] != 0)
+					$my_part[] = $mydata->TokenNames[$index].': '.$mydata->TokenValues[$index].' ('.(($mydata->TokenChanges[$index] > 0) ? '+' : '').$mydata->TokenValues[$index].')';
+
+			if (count($my_part) == 0) $my_part[] = 'no changes';
+			$message = array_merge($message, $my_part);
+
+			// opponent data
+			$message[] = "\n".$opponent."\n";
+
+			// game attributes
+			foreach ($attributes as $attribute)
+				if ($hisdata->Changes[$attribute] != 0)
+					$his_part[] = $attribute.': '.$hisdata->$attribute.' ('.(($hisdata->Changes[$attribute] > 0) ? '+' : '').$hisdata->Changes[$attribute].')';
+
+			// tokens
+			foreach ($histokens_temp as $index => $token_val)
+				if ($hisdata->TokenNames[$index] != 'none' AND $hisdata->TokenChanges[$index] != 0)
+					$his_part[] = $hisdata->TokenNames[$index].': '.$hisdata->TokenValues[$index].' ('.(($hisdata->TokenChanges[$index] > 0) ? '+' : '').$hisdata->TokenValues[$index].')';
+
+			if (count($his_part) == 0) $his_part[] = 'no changes';
+			$message = array_merge($message, $his_part);
+
+			return implode("\n", $message);
+		}
 		
 		private function KeywordCount(array $hand, $keyword)
 		{

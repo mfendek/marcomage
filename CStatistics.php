@@ -7,15 +7,22 @@
 	class CStatistics
 	{
 		private $db;
+		private $Active;
 
 		public function __construct(CDatabase &$database)
 		{
 			$this->db = &$database;
+			$this->Active = true;
 		}
 
 		public function GetDB()
 		{
 			return $this->db;
+		}
+
+		public function Deactivate()
+		{
+			return $this->Active = false;
 		}
 
 		public function SuggestedConcepts() // calculate top 10 concept authors for suggested concepts
@@ -412,6 +419,7 @@
 
 		public function UpdateCardStats($card_id, $action) // update card statistics (used when card is played, drawn or discarded)
 		{
+			if (!$this->Active) return true; // do not update card statistics when disabled
 			$db = $this->db;
 
 			if ($action == "play") $action_q = 'Played';

@@ -409,7 +409,11 @@
 				<button type="submit" name="discard_card">Discard</button>
 			</xsl:if>
 		</td>
-		<td></td>
+		<td>
+			<xsl:if test="($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = ''">
+				<button type="button" name="preview_card">Preview</button>
+			</xsl:if>
+		</td>
 		<td>
 			<a class="button" href="{php:functionString('makeurl', 'Decks_view', 'CurrentGame', $param/CurrentGame)}">Deck</a>
 			<a class="button" href="{php:functionString('makeurl', 'Games_note', 'CurrentGame', $param/CurrentGame)}" >
