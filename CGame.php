@@ -1066,7 +1066,7 @@
 			// tokens
 			foreach ($mytokens_temp as $index => $token_val)
 				if ($mydata->TokenNames[$index] != 'none' AND $mydata->TokenChanges[$index] != 0)
-					$my_part[] = $mydata->TokenNames[$index].': '.$mydata->TokenValues[$index].' ('.(($mydata->TokenChanges[$index] > 0) ? '+' : '').$mydata->TokenValues[$index].')';
+					$my_part[] = $mydata->TokenNames[$index].': '.$mydata->TokenValues[$index].' ('.(($mydata->TokenChanges[$index] > 0) ? '+' : '').$mydata->TokenChanges[$index].')';
 
 			if (count($my_part) == 0) $my_part[] = 'no changes';
 			$message = array_merge($message, $my_part);
@@ -1082,7 +1082,7 @@
 			// tokens
 			foreach ($histokens_temp as $index => $token_val)
 				if ($hisdata->TokenNames[$index] != 'none' AND $hisdata->TokenChanges[$index] != 0)
-					$his_part[] = $hisdata->TokenNames[$index].': '.$hisdata->TokenValues[$index].' ('.(($hisdata->TokenChanges[$index] > 0) ? '+' : '').$hisdata->TokenValues[$index].')';
+					$his_part[] = $hisdata->TokenNames[$index].': '.$hisdata->TokenValues[$index].' ('.(($hisdata->TokenChanges[$index] > 0) ? '+' : '').$hisdata->TokenChanges[$index].')';
 
 			if (count($his_part) == 0) $his_part[] = 'no changes';
 			$message = array_merge($message, $his_part);
