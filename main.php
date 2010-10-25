@@ -3131,7 +3131,6 @@ case 'Games_details':
 	foreach( $handdata as $i => $card )
 	{
 		$entry = array();
-		$entry['CardID'] = $card['id'];
 		$entry['Data'] = $card;
 		$entry['Playable'] = ( $mydata->Bricks >= $card['bricks'] and $mydata->Gems >= $card['gems'] and $mydata->Recruits >= $card['recruits']) ? 'yes' : 'no';
 		$entry['Modes'] = $card['modes'];
@@ -3189,6 +3188,7 @@ case 'Games_details':
 	{
 		$entry = array();
 		$entry['Data'] = $card;
+		$entry['Playable'] = ( $hisdata->Bricks >= $card['bricks'] and $hisdata->Gems >= $card['gems'] and $hisdata->Recruits >= $card['recruits']) ? 'yes' : 'no';
 		$entry['NewCard'] = ( isset($hisdata->NewCards[$i]) ) ? 'yes' : 'no';
 		$entry['Revealed'] = ( isset($hisdata->Revealed[$i]) ) ? 'yes' : 'no';
 		$params['game']['HisHand'][$i] = $entry;

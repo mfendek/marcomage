@@ -304,6 +304,17 @@ td.game_mode_flags > img /* game mode flags */
 	margin: 0ex;
 }
 
+div.unplayable > div.karta /* unplayable card */
+{
+	opacity: 0.6;
+}
+
+div.selected_card /* selected card */
+{
+	border-style: double;
+	border-color: black;
+}
+
 /* end game */
 
 /* begin game note */

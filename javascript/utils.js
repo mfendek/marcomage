@@ -158,8 +158,25 @@ $(document).ready(function() {
 		return false;
 	});
 
-	// card selector verification
-	$("button[name='play_card'],button[name='discard_card']").click(function() {
+	// card selector verification (play card)
+	$("button[name='play_card']").click(function() {
+		if ($("input[name='selected_card']:checked").length == 0)
+		{
+			alert('No card was selected!');
+			return false;
+		}
+
+		if ($("div.selected_card").parent().hasClass('unplayable'))
+		{
+			alert('Insufficient resources!');
+			return false;
+		}
+
+		return true;
+	});
+
+	// card selector verification (discard card)
+	$("button[name='discard_card']").click(function() {
 		if ($("input[name='selected_card']:checked").length == 0)
 		{
 			alert('No card was selected!');
@@ -172,6 +189,9 @@ $(document).ready(function() {
 	// hide radio buttons (selection is done via card)
 	$("input[name='selected_card']").hide();
 
+	// set initial state for action buttons (partially visible)
+	$("button[name='play_card'],button[name='discard_card'],button[name='preview_card']").css('opacity', 0.6);
+
 	// card selection (via card)
 	$("tr.hand:first-child div.karta").click(function() {
 		if ($("input[name='selected_card']").length > 0) // active only on player's turn
@@ -180,27 +200,41 @@ $(document).ready(function() {
 			{
 				// unselect previously selected card
 				$("input[name='selected_card']:checked").removeAttr("checked");
-				$("div.selected_card").animate({ opacity: 1 }, 'fast');
 				$("div.selected_card").removeClass("selected_card");
-	
+
 				// select specified card
-				$(this).nextAll("input[name='selected_card']").attr('checked', 'checked');
+				$(this).parent().nextAll("input[name='selected_card']").attr('checked', 'checked');
 				$(this).addClass("selected_card");
-				$(this).animate({ opacity: 0.7 }, 'fast');
+
+				if (!$(this).parent().hasClass('unplayable'))
+				{
+					// case 1: card is playable -> show play and preview buttons
+					$("button[name='play_card'],button[name='preview_card']").animate({ opacity: 1 }, 'fast');
+				}
+				else
+				{
+					// case 2: card is unplayable -> hide play and preview buttons
+					$("button[name='play_card'],button[name='preview_card']").animate({ opacity: 0.6 }, 'fast');
+				}
+
+				// show discard button
+				$("button[name='discard_card']").animate({ opacity: 1 }, 'fast');
 			}
 			else // case 2: selected card is reselected
 			{
 				// unselect selected card
 				$("input[name='selected_card']:checked").removeAttr("checked");
-				$("div.selected_card").animate({ opacity: 1 }, 'fast');
 				$("div.selected_card").removeClass("selected_card");
+
+				// return action buttons to initial state
+				$("button[name='play_card'],button[name='discard_card'],button[name='preview_card']").animate({ opacity: 0.6 }, 'fast');
 			}
 		}
 	});
 
 	// card selection (via card modes)
 	$("select.card_modes").click(function() {
-		var cur_card = $(this).prevAll("div.karta");
+		var cur_card = $(this).prevAll("div").children("div.karta");
 
 		if (!cur_card.hasClass("selected_card")) { cur_card.click(); }
 	});
@@ -210,6 +244,12 @@ $(document).ready(function() {
 		if ($("input[name='selected_card']:checked").length == 0)
 		{
 			alert('No card was selected!');
+			return false;
+		}
+
+		if ($("div.selected_card").parent().hasClass('unplayable'))
+		{
+			alert('Insufficient resources!');
 			return false;
 		}
 
@@ -226,5 +266,15 @@ $(document).ready(function() {
 		});
 
 		return true;
+	});
+
+	// highlight unplayable card in case of mouse hover
+	$("div.unplayable > div.karta").mouseenter(function() {
+		$(this).animate({ opacity: 1 }, 'fast');
+	});
+
+	// return highlighted unplayable card to former state in case of mouse leave
+	$("div.unplayable > div.karta").mouseleave(function() {
+		$(this).animate({ opacity: 0.6 }, 'fast');
 	});
 });
