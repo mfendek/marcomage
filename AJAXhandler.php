@@ -120,6 +120,8 @@
 		if (!is_numeric($cardpos)) { echo 'Invalid card position.'; exit; }
 		if (!is_numeric($mode)) { echo 'Invalid mode.'; exit; }
 
+		if ($game->GetGameMode('HiddenCards') == 'yes') { echo 'Action not allowed in this game mode.'; exit; }
+
 		echo $game->PlayPreview($user_name, $cardpos, $mode);
 	}
 ?>
