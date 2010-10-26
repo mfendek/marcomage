@@ -355,6 +355,16 @@
 			</p>
 
 			<p>
+				<input type="checkbox" name="PlayButtons">
+					<xsl:if test="$settings/PlayButtons = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">each card in game will have a local play button (if playable) instead of global play button</xsl:attribute>
+					<xsl:text>Play card buttons</xsl:text>
+				</span>
+			</p>
+
+			<p>
 				<input type="checkbox" name="Nationality">
 					<xsl:if test="$settings/Nationality = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 				</input>

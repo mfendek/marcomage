@@ -483,6 +483,7 @@
 	<li>Show card images - display card image (turn off on slow internet connection)</li>
 	<li>Show keyword insignias - display card keywords in form of an insignia instead of text form</li>
 	<li>Hide card pool - card pool will be hidden by default in the deck editor</li>
+	<li>Play card buttons - each card in game will have a local play button (if playable) instead of global play button</li>
 	<li>Show nationality in players list - display text description of players' nationality in the players list</li>
 	<li>Reverse chat message order - reverses chat order in the chatbox (game section). By default chat messages are ordered from newest (top) to oldest (bottom)</li>
 	<li>Show avatar in game - display avatars of both players in the game</li>

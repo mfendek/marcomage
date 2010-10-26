@@ -159,7 +159,7 @@ $(document).ready(function() {
 	});
 
 	// card selector verification (play card)
-	$("button[name='play_card']").click(function() {
+	$("button[name='play_card'][value='0']").click(function() {
 		if ($("input[name='selected_card']:checked").length == 0)
 		{
 			alert('No card was selected!');
@@ -190,7 +190,7 @@ $(document).ready(function() {
 	$("input[name='selected_card']").hide();
 
 	// set initial state for action buttons (partially visible)
-	$("button[name='play_card'],button[name='discard_card'],button[name='preview_card']").css('opacity', 0.6);
+	$("button[name='play_card'][value='0'],button[name='discard_card'],button[name='preview_card']").css('opacity', 0.6);
 
 	// card selection (via card)
 	$("tr.hand:first-child div.karta").click(function() {
@@ -209,12 +209,12 @@ $(document).ready(function() {
 				if (!$(this).parent().hasClass('unplayable'))
 				{
 					// case 1: card is playable -> show play and preview buttons
-					$("button[name='play_card'],button[name='preview_card']").animate({ opacity: 1 }, 'fast');
+					$("button[name='play_card'][value='0'],button[name='preview_card']").animate({ opacity: 1 }, 'fast');
 				}
 				else
 				{
 					// case 2: card is unplayable -> hide play and preview buttons
-					$("button[name='play_card'],button[name='preview_card']").animate({ opacity: 0.6 }, 'fast');
+					$("button[name='play_card'][value='0'],button[name='preview_card']").animate({ opacity: 0.6 }, 'fast');
 				}
 
 				// show discard button
@@ -227,7 +227,7 @@ $(document).ready(function() {
 				$("div.selected_card").removeClass("selected_card");
 
 				// return action buttons to initial state
-				$("button[name='play_card'],button[name='discard_card'],button[name='preview_card']").animate({ opacity: 0.6 }, 'fast');
+				$("button[name='play_card'][value='0'],button[name='discard_card'],button[name='preview_card']").animate({ opacity: 0.6 }, 'fast');
 			}
 		}
 	});

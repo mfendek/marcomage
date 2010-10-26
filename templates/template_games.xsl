@@ -367,6 +367,9 @@
 
 				<!-- select button and card modes (buttons are locked when surrender request is active) -->
 				<xsl:if test="($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = ''">
+					<xsl:if test="$param/PlayButtons = 'yes' and Playable = 'yes'">
+						<button type="submit" name="play_card" value="{position()}">Play</button> 
+					</xsl:if>
 					<input type="radio" name="selected_card" value="{position()}" />
 					<xsl:if test="Playable = 'yes' and Modes &gt; 0">
 						<select name="card_mode[{position()}]" class="card_modes" size="1">
@@ -405,8 +408,8 @@
 			</xsl:if> 
 		</td>
 		<td>
-			<xsl:if test="($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = ''">
-				<button type="submit" name="play_card">Play</button>
+			<xsl:if test="$param/PlayButtons = 'no' and ($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = ''">
+				<button type="submit" name="play_card" value="0">Play</button>
 			</xsl:if>
 		</td>
 		<td>

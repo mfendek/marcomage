@@ -1361,10 +1361,15 @@
 
 			if (isset($_POST['play_card'])) // Games -> vs. %s -> Play
 			{
-				// check if there is a selected card
-				if (!isset($_POST['selected_card'])) { $error = 'No card was selected!'; $current = 'Games_details'; break; }
+				if ($_POST['play_card'] == 0) // case 1: global play card button was used
+				{
+					// check if there is a selected card
+					if (!isset($_POST['selected_card'])) { $error = 'No card was selected!'; $current = 'Games_details'; break; }
+					$cardpos = $_POST['selected_card'];
+				}
+				else // case 2: local play card button was used
+					$cardpos = $_POST['play_card'];
 
-				$cardpos = $_POST['selected_card'];
 				$mode = (isset($_POST['card_mode']) and isset($_POST['card_mode'][$cardpos])) ? $_POST['card_mode'][$cardpos] : 0;
 
 				$gameid = $_POST['CurrentGame'];
@@ -3106,6 +3111,7 @@ case 'Games_details':
 	$params['game']['hiscountry'] = $o_settings->GetSetting('Country');
 	$params['game']['timezone'] = $settings->GetSetting('Timezone');
 	$params['game']['Background'] = $settings->GetSetting('Background');
+	$params['game']['PlayButtons'] = $settings->GetSetting('PlayButtons');
 
 	$params['game']['GameState'] = $game->State;
 	$params['game']['Round'] = $game->Round;
