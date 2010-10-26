@@ -121,6 +121,7 @@
 		if (!is_numeric($mode)) { echo 'Invalid mode.'; exit; }
 
 		if ($game->GetGameMode('HiddenCards') == 'yes') { echo 'Action not allowed in this game mode.'; exit; }
+		if ($user_name != $game->Name1() AND $user_name != $game->Name2()) { echo 'Action not allowed.'; exit; }
 
 		echo $game->PlayPreview($user_name, $cardpos, $mode);
 	}
