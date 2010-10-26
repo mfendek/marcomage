@@ -415,7 +415,7 @@
 			</xsl:if>
 		</td>
 		<td>
-			<xsl:if test="($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = ''">
+			<xsl:if test="($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = '' and $param/HiddenCards = 'no'">
 				<button type="button" name="preview_card">Preview</button>
 			</xsl:if>
 		</td>
