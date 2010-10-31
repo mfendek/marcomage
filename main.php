@@ -3517,6 +3517,7 @@ case 'Replays_details':
 	// prepare the necessary data
 	$replay = $replaydb->GetReplay($gameid, $turn);
 	if (!$replay) { $display_error = "Invalid replay."; break; }
+	if ($replay->EndType == 'Pending') { $display_error = "Replay is not yet available."; break; }
 	if (!($player_view == 1 OR $player_view == 2)) { $display_error = "Invalid player selection."; break; }
 
 	// increment number of views each time player enters a replay
@@ -3538,7 +3539,7 @@ case 'Replays_details':
 	$params['replay']['minimize'] = $settings->GetSetting('Minimize');
 	$params['replay']['Background'] = $settings->GetSetting('Background');
 
-	$params['replay']['turns'] = $turns = $replay->NumberOfTurns();
+	$params['replay']['turns'] = $replay->NumberOfTurns();
 	$params['replay']['Round'] = $replay->Round;
 	$params['replay']['Outcome'] = $replay->Outcome();
 	$params['replay']['EndType'] = $replay->EndType;
@@ -3678,6 +3679,182 @@ case 'Replays_details':
 	$params['replay']['p2changes'] = $changes;
 
 	break;
+
+
+case 'Replays_history':
+	$params['replays_history']['CurrentReplay'] = $gameid = (isset($_POST['CurrentReplay'])) ? $_POST['CurrentReplay'] : 0;
+
+	$turns = $replaydb->NumberOfTurns($gameid);
+	if (!$turns) { $display_error = "Invalid replay."; break; }
+
+	$params['replays_history']['CurrentTurn'] = $turn = (isset($_POST['Turn']) ? $_POST['Turn'] : $turns);
+
+	// prepare the necessary data
+	$replay = $replaydb->GetReplay($gameid, $turn);
+	if (!$replay) { $display_error = "Invalid replay."; break; }
+	if ($replay->EndType != 'Pending') { $display_error = "Game history is no longer available."; break; }
+
+	// check if this user is allowed to view this replay
+	if ($player->Name() != $replay->Name1() and $player->Name() != $replay->Name2()) { $display_error = 'You are not allowed to access this replay.'; break; }
+
+	// determine player view
+	$player_view = ($player->Name() == $replay->Name1()) ? 1 : 2;
+	$player1 = ($player_view == 1) ? $replay->Name1() : $replay->Name2();
+	$player2 = ($player_view == 1) ? $replay->Name2() : $replay->Name1();
+
+	$replay_data = $replay->ReplayData;
+	$p1data = $replay_data[$player1];
+	$p2data = $replay_data[$player2];
+
+	// load needed settings
+	$settings = $player->GetSettings();
+	$params['replays_history']['c_img'] = $settings->GetSetting('Images');
+	$params['replays_history']['c_oldlook'] = $settings->GetSetting('OldCardLook');
+	$params['replays_history']['c_insignias'] = $settings->GetSetting('Insignias');
+	$params['replays_history']['minimize'] = $settings->GetSetting('Minimize');
+	$params['replays_history']['Background'] = $settings->GetSetting('Background');
+
+	$params['replays_history']['turns'] = $turns;
+	$params['replays_history']['Round'] = $replay->Round;
+	$params['replays_history']['Outcome'] = $replay->Outcome();
+	$params['replays_history']['EndType'] = $replay->EndType;
+	$params['replays_history']['Winner'] = $replay->Winner;
+	$params['replays_history']['Player1'] = $player1;
+	$params['replays_history']['Player2'] = $player2;
+	$params['replays_history']['Current'] = $replay->Current;
+	$params['replays_history']['HiddenCards'] = $replay->GetGameMode('HiddenCards');
+	$params['replays_history']['FriendlyPlay'] = $replay->GetGameMode('FriendlyPlay');
+	$params['replays_history']['LongMode'] = $long_mode = $replay->GetGameMode('LongMode');
+	$g_mode = ($long_mode == 'yes') ? 'long' : 'normal';
+	$params['replays_history']['max_tower'] = $game_config[$g_mode]['max_tower'];
+	$params['replays_history']['max_wall'] = $game_config[$g_mode]['max_wall'];
+
+	// player1 hand
+	$p1hand = $p1data->Hand;
+	$handdata = $carddb->GetData($p1hand);
+	foreach( $handdata as $i => $card )
+	{
+		$entry = array();
+		$entry['Data'] = $card;
+		$entry['NewCard'] = ( isset($p1data->NewCards[$i]) ) ? 'yes' : 'no';
+		$entry['Revealed'] = ( isset($p1data->Revealed[$i]) ) ? 'yes' : 'no';
+		$params['replays_history']['p1Hand'][$i] = $entry;
+	}
+
+	$params['replays_history']['p1Bricks'] = $p1data->Bricks;
+	$params['replays_history']['p1Gems'] = $p1data->Gems;
+	$params['replays_history']['p1Recruits'] = $p1data->Recruits;
+	$params['replays_history']['p1Quarry'] = $p1data->Quarry;
+	$params['replays_history']['p1Magic'] = $p1data->Magic;
+	$params['replays_history']['p1Dungeons'] = $p1data->Dungeons;
+	$params['replays_history']['p1Tower'] = $p1data->Tower;
+	$params['replays_history']['p1Wall'] = $p1data->Wall;
+
+	// player1 discarded cards
+	if( count($p1data->DisCards[0]) > 0 )
+		$params['replays_history']['p1DisCards0'] = $carddb->GetData($p1data->DisCards[0]); // cards discarded from player1 hand
+	if( count($p1data->DisCards[1]) > 0 )
+		$params['replays_history']['p1DisCards1'] = $carddb->GetData($p1data->DisCards[1]); // cards discarded from player2 hand
+
+	// player1 last played cards
+	$p1lastcard = array();
+	$tmp = $carddb->GetData($p1data->LastCard);
+	foreach( $tmp as $i => $card )
+	{
+		$p1lastcard[$i]['CardData'] = $card;
+		$p1lastcard[$i]['CardAction'] = $p1data->LastAction[$i];
+		$p1lastcard[$i]['CardMode'] = $p1data->LastMode[$i];
+		$p1lastcard[$i]['CardPosition'] = $i;
+	}
+	$params['replays_history']['p1LastCard'] = $p1lastcard;
+
+	// player1 tokens
+	$p1_token_names = $p1data->TokenNames;
+	$p1_token_values = $p1data->TokenValues;
+	$p1_token_changes = $p1data->TokenChanges;
+
+	$p1_tokens = array();
+	foreach ($p1_token_names as $index => $value)
+	{
+		$p1_tokens[$index]['Name'] = $p1_token_names[$index];
+		$p1_tokens[$index]['Value'] = $p1_token_values[$index];
+		$p1_tokens[$index]['Change'] = $p1_token_changes[$index];
+	}
+
+	$params['replays_history']['p1Tokens'] = $p1_tokens;
+
+	// player2 hand
+	$p2hand = $p2data->Hand;
+	$handdata = $carddb->GetData($p2hand);
+	foreach( $handdata as $i => $card )
+	{
+		$entry = array();
+		$entry['Data'] = $card;
+		$entry['NewCard'] = ( isset($p2data->NewCards[$i]) ) ? 'yes' : 'no';
+		$entry['Revealed'] = ( isset($p2data->Revealed[$i]) ) ? 'yes' : 'no';
+		$params['replays_history']['p2Hand'][$i] = $entry;
+	}
+
+	$params['replays_history']['p2Bricks'] = $p2data->Bricks;
+	$params['replays_history']['p2Gems'] = $p2data->Gems;
+	$params['replays_history']['p2Recruits'] = $p2data->Recruits;
+	$params['replays_history']['p2Quarry'] = $p2data->Quarry;
+	$params['replays_history']['p2Magic'] = $p2data->Magic;
+	$params['replays_history']['p2Dungeons'] = $p2data->Dungeons;
+	$params['replays_history']['p2Tower'] = $p2data->Tower;
+	$params['replays_history']['p2Wall'] = $p2data->Wall;
+
+	// player2 discarded cards
+	if( count($p2data->DisCards[0]) > 0 )
+		$params['replays_history']['p2DisCards0'] = $carddb->GetData($p2data->DisCards[0]); // cards discarded from player1 hand
+	if( count($p2data->DisCards[1]) > 0 )
+		$params['replays_history']['p2DisCards1'] = $carddb->GetData($p2data->DisCards[1]); // cards discarded from player2 hand
+
+	// player2 last played cards
+	$p2lastcard = array();
+	$tmp = $carddb->GetData($p2data->LastCard);
+	foreach( $tmp as $i => $card )
+	{
+		$p2lastcard[$i]['CardData'] = $card;
+		$p2lastcard[$i]['CardAction'] = $p2data->LastAction[$i];
+		$p2lastcard[$i]['CardMode'] = $p2data->LastMode[$i];
+		$p2lastcard[$i]['CardPosition'] = $i;
+	}
+	$params['replays_history']['p2LastCard'] = $p2lastcard;
+
+	// player2 tokens
+	$p2_token_names = $p2data->TokenNames;
+	$p2_token_values = $p2data->TokenValues;
+	$p2_token_changes = $p2data->TokenChanges;
+
+	$p2_tokens = array();
+	foreach ($p2_token_names as $index => $value)
+	{
+		$p2_tokens[$index]['Name'] = $p2_token_names[$index];
+		$p2_tokens[$index]['Value'] = $p2_token_values[$index];
+		$p2_tokens[$index]['Change'] = $p2_token_changes[$index];
+	}
+
+	$params['replays_history']['p2Tokens'] = array_reverse($p2_tokens);
+
+	// changes
+
+	// player1 resources and tower
+	$changes = array ('Quarry'=> '', 'Magic'=> '', 'Dungeons'=> '', 'Bricks'=> '', 'Gems'=> '', 'Recruits'=> '', 'Tower'=> '', 'Wall'=> '');
+	foreach ($changes as $attribute => $change)
+		$changes[$attribute] = (($p1data->Changes[$attribute] > 0) ? '+' : '').$p1data->Changes[$attribute];
+
+	$params['replays_history']['p1changes'] = $changes;
+
+	// player2 resources and tower
+	$changes = array ('Quarry'=> '', 'Magic'=> '', 'Dungeons'=> '', 'Bricks'=> '', 'Gems'=> '', 'Recruits'=> '', 'Tower'=> '', 'Wall'=> '');
+	foreach ($changes as $attribute => $change)
+		$changes[$attribute] = (($p2data->Changes[$attribute] > 0) ? '+' : '').$p2data->Changes[$attribute];
+
+	$params['replays_history']['p2changes'] = $changes;
+
+	break;
+
 
 case 'Cards':
 	$params['cards']['is_logged_in'] = ($session) ? 'yes' : 'no';

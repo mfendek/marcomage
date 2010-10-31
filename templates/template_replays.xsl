@@ -850,4 +850,661 @@
 </xsl:template>
 
 
+<xsl:template match="section[. = 'Replays_history']">
+	<xsl:variable name="param" select="$params/replays_history" />
+	<xsl:variable name="turns" select="$param/turns" />
+	<xsl:variable name="current" select="$param/CurrentTurn" />
+
+	<div id="game">
+
+	<p class="information_line">
+		<!-- begin navigation -->
+		<xsl:choose>
+			<xsl:when test="$current &gt; 1">
+				<a class="button" href="{php:functionString('makeurl', 'Replays_history', 'CurrentReplay', $param/CurrentReplay, 'Turn', am:max($current - 1, 1))}">&lt;</a>
+			</xsl:when>
+			<xsl:otherwise>
+				<span class="disabled">&lt;</span>
+			</xsl:otherwise>
+		</xsl:choose>
+
+		<xsl:choose>
+			<xsl:when test="$current &lt; $turns">
+				<a class="button" href="{php:functionString('makeurl', 'Replays_history', 'CurrentReplay', $param/CurrentReplay, 'Turn', am:min($current + 1, $turns))}">&gt;</a>
+			</xsl:when>
+			<xsl:otherwise>
+				<span class="disabled">&gt;</span>
+			</xsl:otherwise>
+		</xsl:choose>
+
+		<a class="button" href="{php:functionString('makeurl', 'Games_details', 'CurrentGame', $param/CurrentReplay)}">Back to game</a>
+		<!-- end navigation -->
+	</p>
+
+	<!-- display supportive information -->
+	<p class="information_line info">Round <xsl:value-of select="$param/Round"/></p>
+
+	<!-- four rows: player1 cards, messages and buttons, the current status, player2 cards -->
+	<table class="centered" cellpadding="0" cellspacing="0">
+
+	<xsl:if test="$param/Background != 0">
+		<xsl:attribute name="style">background-image: url('img/backgrounds/bg_<xsl:value-of select="$param/Background"/>.jpg'); background-position: center center; background-repeat: no-repeat;</xsl:attribute>
+	</xsl:if>
+
+	<!-- begin player1 cards -->
+	<tr valign="top" class="hand">
+		<xsl:for-each select="$param/p1Hand/*">
+			<td align="center">
+				<!--  display card flags, if set -->
+				<xsl:choose>
+					<xsl:when test="$param/HiddenCards = 'yes' and Revealed = 'yes'">
+						<div class="flag_space">
+							<xsl:if test="NewCard = 'yes'">
+								<span class="newcard">NEW</span>
+							</xsl:if>
+							<img src="img/revealed.png" class="revealed" width="20px" height="14px" alt="revealed" title="Revealed" />
+						</div>
+						<div class="clear_floats"></div>
+					</xsl:when>
+					<xsl:when test="NewCard = 'yes'">
+						<p class="flag">NEW CARD</p>
+					</xsl:when>
+				</xsl:choose>
+
+				<!-- display card -->
+				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias)" />
+			</td>
+		</xsl:for-each>
+	</tr>
+	<!-- end player1 cards -->
+
+	<!-- begin messages and game buttons -->
+	<tr class="buttons">
+		<td class="game_mode_flags">
+			<!-- game mode flags -->
+			<xsl:if test="$param/HiddenCards = 'yes'">
+				<img src="img/blind.png" width="20px" height="14px" alt="hidden cards" title="Hidden cards" class="icon" />
+			</xsl:if>
+			<xsl:if test="$param/FriendlyPlay = 'yes'">
+				<img src="img/friendly_play.png" width="20px" height="14px" alt="friendly play" title="Friendly play" class="icon" />
+			</xsl:if>
+			<xsl:if test="$param/LongMode = 'yes'">
+				<img src="img/long_mode.png" width="20px" height="14px" alt="long mode" title="Long mode" class="icon" />
+			</xsl:if>
+		</td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<!-- end messages and game buttons -->
+
+	<!-- begin status -->
+	<tr>
+		<!-- begin player1 empire info -->
+		<xsl:choose>
+			<xsl:when test="$param/minimize = 'yes'">
+				<td class="minstats">
+					<div>Quarry: <span>
+						<xsl:value-of select="$param/p1Quarry"/>
+						</span>
+						<xsl:if test="$param/p1changes/Quarry != 0">
+							<span class="changes"><xsl:value-of select="$param/p1changes/Quarry"/></span>
+						</xsl:if>
+					</div>
+					<div>Bricks: <span>
+						<xsl:value-of select="$param/p1Bricks"/>
+						</span>
+						<xsl:if test="$param/p1changes/Bricks != 0">
+							<span class="changes"><xsl:value-of select="$param/p1changes/Bricks"/></span>
+						</xsl:if>
+					</div>
+					<div>Magic: <span>
+						<xsl:value-of select="$param/p1Magic"/>
+						</span>
+						<xsl:if test="$param/p1changes/Magic != 0">
+							<span class="changes"><xsl:value-of select="$param/p1changes/Magic"/></span>
+						</xsl:if>
+					</div>
+					<div>Gems: <span>
+						<xsl:value-of select="$param/p1Gems"/>
+						</span>
+						<xsl:if test="$param/p1changes/Gems != 0">
+							<span class="changes"><xsl:value-of select="$param/p1changes/Gems"/></span>
+						</xsl:if>
+					</div>
+					<div>Dungeon: <span>
+						<xsl:value-of select="$param/p1Dungeons"/>
+						</span>
+						<xsl:if test="$param/p1changes/Dungeons != 0">
+							<span class="changes"><xsl:value-of select="$param/p1changes/Dungeons"/></span>
+						</xsl:if>
+					</div>
+					<div>Recruits: <span>
+						<xsl:value-of select="$param/p1Recruits"/>
+						</span>
+						<xsl:if test="$param/p1changes/Recruits != 0">
+							<span class="changes"><xsl:value-of select="$param/p1changes/Recruits"/></span>
+						</xsl:if>
+					</div>
+					<h5>
+						<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player1)}"><xsl:value-of select="$param/Player1"/></a>
+					</h5>
+					<p class="info_label">Tower: <span>
+						<xsl:value-of select="$param/p1Tower"/>
+						</span>
+						<xsl:if test="$param/p1changes/Tower != 0">
+							<span class="changes"><xsl:value-of select="$param/p1changes/Tower"/></span>
+						</xsl:if>
+					</p>
+					<p class="info_label">Wall: <span>
+						<xsl:value-of select="$param/p1Wall"/>
+						</span>
+						<xsl:if test="$param/p1changes/Wall != 0">
+							<span class="changes"><xsl:value-of select="$param/p1changes/Wall"/></span>
+						</xsl:if>
+					</p>
+				</td>
+			</xsl:when>
+			<xsl:otherwise>
+				<td class="stats">
+					<div>
+						<p class="facility">
+							<xsl:value-of select="$param/p1Quarry"/>
+							<xsl:if test="$param/p1changes/Quarry != 0">
+								<span class="changes"><xsl:value-of select="$param/p1changes/Quarry"/></span>
+							</xsl:if>
+						</p>
+						<p class="resource">
+							<xsl:value-of select="$param/p1Bricks"/>
+							<xsl:if test="$param/p1changes/Bricks != 0">
+								<span class="changes"><xsl:value-of select="$param/p1changes/Bricks"/></span>
+							</xsl:if>
+						</p>
+					</div>
+					<div>
+						<p class="facility">
+							<xsl:value-of select="$param/p1Magic"/>
+							<xsl:if test="$param/p1changes/Magic != 0">
+								<span class="changes"><xsl:value-of select="$param/p1changes/Magic"/></span>
+							</xsl:if>
+						</p>
+						<p class="resource">
+							<xsl:value-of select="$param/p1Gems"/>
+							<xsl:if test="$param/p1changes/Gems != 0">
+								<span class="changes"><xsl:value-of select="$param/p1changes/Gems"/></span>
+							</xsl:if>
+						</p>
+					</div>
+					<div>
+						<p class="facility">
+							<xsl:value-of select="$param/p1Dungeons"/>
+							<xsl:if test="$param/p1changes/Dungeons != 0">
+								<span class="changes"><xsl:value-of select="$param/p1changes/Dungeons"/></span>
+							</xsl:if>
+						</p>
+						<p class="resource">
+							<xsl:value-of select="$param/p1Recruits"/>
+							<xsl:if test="$param/p1changes/Recruits != 0">
+								<span class="changes"><xsl:value-of select="$param/p1changes/Recruits"/></span>
+							</xsl:if>
+						</p>
+					</div>
+					<h5>
+						<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player1)}"><xsl:value-of select="$param/Player1"/></a>
+					</h5>
+					<p class="info_label">Tower: <span>
+						<xsl:value-of select="$param/p1Tower"/>
+						</span>
+						<xsl:if test="$param/p1changes/Tower != 0">
+							<span class="changes"><xsl:value-of select="$param/p1changes/Tower"/></span>
+						</xsl:if>
+					</p>
+					<p class="info_label">Wall: <span>
+						<xsl:value-of select="$param/p1Wall"/>
+						</span>
+						<xsl:if test="$param/p1changes/Wall != 0">
+							<span class="changes"><xsl:value-of select="$param/p1changes/Wall"/></span>
+						</xsl:if>
+					</p>
+				</td>
+			</xsl:otherwise>
+		</xsl:choose>
+		<!-- end player1 empire info -->
+
+		<!-- begin player1 tower and wall -->
+		<xsl:choose>
+			<xsl:when test="$param/minimize = 'yes'">
+				<td></td>
+			</xsl:when>
+			<xsl:otherwise>
+				<td valign="bottom">
+					<table cellpadding="0" cellspacing="0" summary="layout table">
+						<tr>
+							<td valign="bottom">
+								<div style="margin: 0ex 1ex 0ex 1ex;">
+									<img width="65px" style="display:block" alt="" >
+										<xsl:choose>
+											<xsl:when test="$param/p1Tower = $param/max_tower">
+												<xsl:attribute name="src">img/victory_red.png</xsl:attribute>
+												<xsl:attribute name="height">114px</xsl:attribute>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:attribute name="src">img/towera_red.png</xsl:attribute>
+												<xsl:attribute name="height">91px</xsl:attribute>
+											</xsl:otherwise>
+										</xsl:choose>
+									</img>
+									<div class="towerbody" style="margin-left: 14px; height: {170 * $param/p1Tower div $param/max_tower}px;"></div>
+								</div>
+							</td>
+							<td valign="bottom">
+								<xsl:if test="$param/p1Wall &gt; 0">
+									<div>
+										<img src="img/korunka.png" width="19px" height="11px" style="display:block" alt="" />
+										<div class="wallbody" style="height: {270 * $param/p1Wall div $param/max_wall}px;"></div>
+									</div>
+								</xsl:if>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</xsl:otherwise>
+		</xsl:choose>
+		<!-- end player1 tower and wall -->
+
+		<!-- begin player1 discarded cards -->
+		<xsl:choose>
+			<xsl:when test="count($param/p1DisCards0/*) = 0 and count($param/p1DisCards1/*) = 0">
+				<td></td>
+			</xsl:when>
+			<xsl:otherwise>
+				<td align="center">
+					<p class="info_label" style="font-size: small">Discarded</p>
+					<div class="history" style="width: 99px;">
+						<table cellpadding="0" cellspacing="0">
+							<tr>
+								<xsl:for-each select="$param/p1DisCards0/*">
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
+								</xsl:for-each>
+								<td style="border-right: thin solid yellow"></td>
+								<xsl:for-each select="$param/p1DisCards1/*">
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
+								</xsl:for-each>
+							</tr>
+						</table>
+					</div>
+				</td>
+			</xsl:otherwise>
+		</xsl:choose>
+		<!-- end player1 discarded cards -->
+
+		<!-- begin player1 last played card(s) -->
+		<td align="center">
+			<div class="history">
+				<table cellpadding="0" cellspacing="0">
+					<tr>
+						<xsl:if test="count($param/p1LastCard/*) &gt; 0">
+							<xsl:for-each select="$param/p1LastCard/*">
+								<xsl:sort select="CardPosition" order="descending" data-type="number"/>
+								<td align="center">
+									<p>
+										<xsl:choose>
+											<xsl:when test="CardAction = 'play'">
+												<xsl:attribute name="class">flag played</xsl:attribute>
+												<xsl:text>PLAYED</xsl:text>
+												<xsl:if test="CardMode != 0">
+													<xsl:text> mode </xsl:text><xsl:value-of select="CardMode"/>
+												</xsl:if>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:attribute name="class">flag discarded</xsl:attribute>
+												<xsl:text>DISCARDED!</xsl:text>
+											</xsl:otherwise>
+										</xsl:choose>
+									</p>
+									<xsl:copy-of select="am:cardstring(CardData, $param/c_img, $param/c_oldlook, $param/c_insignias)" />
+								</td>
+							</xsl:for-each>
+						</xsl:if>
+					</tr>
+				</table>
+			</div>
+		</td>
+		<!-- end player1 last played card(s) -->
+
+		<!-- begin player2 last played card(s) -->
+		<td align="center">
+			<div class="history">
+				<table cellpadding="0" cellspacing="0">
+					<tr>
+						<xsl:if test="count($param/p2LastCard/*) &gt; 0">
+							<xsl:for-each select="$param/p2LastCard/*">
+								<xsl:sort select="CardPosition" order="descending" data-type="number"/>
+								<td align="center">
+									<p>
+										<xsl:choose>
+											<xsl:when test="CardAction = 'play'">
+												<xsl:attribute name="class">flag played</xsl:attribute>
+												<xsl:text>PLAYED</xsl:text>
+												<xsl:if test="CardMode != 0">
+													<xsl:text> mode </xsl:text><xsl:value-of select="CardMode"/>
+												</xsl:if>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:attribute name="class">flag discarded</xsl:attribute>
+												<xsl:text>DISCARDED!</xsl:text>
+											</xsl:otherwise>
+										</xsl:choose>
+									</p>
+									<xsl:copy-of select="am:cardstring(CardData, $param/c_img, $param/c_oldlook, $param/c_insignias)" />
+								</td>
+							</xsl:for-each>
+						</xsl:if>
+					</tr>
+				</table>
+			</div>
+		</td>
+		<!-- end player2 last played card(s) -->
+
+		<!-- begin player2 discarded cards -->
+		<xsl:choose>
+			<xsl:when test="count($param/p2DisCards0/*) = 0 and count($param/p2DisCards1/*) = 0">
+				<td></td>
+			</xsl:when>
+			<xsl:otherwise>
+				<td align="center">
+					<p class="info_label" style="font-size: small">Discarded</p>
+					<div class="history" style="width: 99px;">
+						<table cellpadding="0" cellspacing="0">
+							<tr>
+								<xsl:for-each select="$param/p2DisCards1/*">
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
+								</xsl:for-each>
+								<td style="border-right: thin solid yellow"></td>
+								<xsl:for-each select="$param/p2DisCards0/*">
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
+								</xsl:for-each>
+							</tr>
+						</table>
+					</div>
+				</td>
+			</xsl:otherwise>
+		</xsl:choose>
+		<!-- end player2 discarded cards -->
+
+		<!-- begin player2 tower and wall -->
+		<xsl:choose>
+			<xsl:when test="$param/minimize = 'yes'">
+				<td></td>
+			</xsl:when>
+			<xsl:otherwise>
+				<td valign="bottom" align="right">
+					<table cellpadding="0" cellspacing="0" summary="layout table">
+						<tr>
+							<td valign="bottom">
+								<xsl:if test="$param/p2Wall &gt; 0">
+									<div>
+										<img src="img/korunka.png" width="19px" height="11px" style="display:block" alt="" />
+										<div class="wallbody" style="height: {270 * $param/p2Wall div $param/max_wall}px;"></div>
+									</div>
+								</xsl:if>
+							</td>
+							<td valign="bottom">
+								<div style="margin: 0ex 1ex 0ex 1ex;">
+									<img width="65px" style="display:block" alt="" >
+										<xsl:choose>
+											<xsl:when test="$param/p2Tower = $param/max_tower">
+												<xsl:attribute name="src">img/victory_blue.png</xsl:attribute>
+												<xsl:attribute name="height">114px</xsl:attribute>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:attribute name="src">img/towera_blue.png</xsl:attribute>
+												<xsl:attribute name="height">91px</xsl:attribute>
+											</xsl:otherwise>
+										</xsl:choose>
+									</img>
+									<div class="towerbody" style="margin-left: 14px; height: {170 * $param/p2Tower div $param/max_tower}px;"></div>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</xsl:otherwise>
+		</xsl:choose>
+		<!-- end player2 tower and wall -->
+
+		<!-- begin player2 empire info -->
+		<xsl:choose>
+			<xsl:when test="$param/minimize = 'yes'">
+				<td class="minstats">
+					<div>Quarry: <span>
+						<xsl:value-of select="$param/p2Quarry"/>
+						</span>
+						<xsl:if test="$param/p2changes/Quarry != 0">
+							<span class="changes"><xsl:value-of select="$param/p2changes/Quarry"/></span>
+						</xsl:if>
+					</div>
+					<div>Bricks: <span>
+						<xsl:value-of select="$param/p2Bricks"/>
+						</span>
+						<xsl:if test="$param/p2changes/Bricks != 0">
+							<span class="changes"><xsl:value-of select="$param/p2changes/Bricks"/></span>
+						</xsl:if>
+					</div>
+					<div>Magic: <span>
+						<xsl:value-of select="$param/p2Magic"/>
+						</span>
+						<xsl:if test="$param/p2changes/Magic != 0">
+							<span class="changes"><xsl:value-of select="$param/p2changes/Magic"/></span>
+						</xsl:if>
+					</div>
+					<div>Gems: <span>
+						<xsl:value-of select="$param/p2Gems"/>
+						</span>
+						<xsl:if test="$param/p2changes/Gems != 0">
+							<span class="changes"><xsl:value-of select="$param/p2changes/Gems"/></span>
+						</xsl:if>
+					</div>
+					<div>Dungeon: <span>
+						<xsl:value-of select="$param/p2Dungeons"/>
+						</span>
+						<xsl:if test="$param/p2changes/Dungeons != 0">
+							<span class="changes"><xsl:value-of select="$param/p2changes/Dungeons"/></span>
+						</xsl:if>
+					</div>
+					<div>Recruits: <span>
+						<xsl:value-of select="$param/p2Recruits"/>
+						</span>
+						<xsl:if test="$param/p2changes/Recruits != 0">
+							<span class="changes"><xsl:value-of select="$param/p2changes/Recruits"/></span>
+						</xsl:if>
+					</div>
+					<h5>
+						<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player2)}"><xsl:value-of select="$param/Player2"/></a>
+					</h5>
+					<p class="info_label">Tower: <span>
+						<xsl:value-of select="$param/p2Tower"/>
+						</span>
+						<xsl:if test="$param/p2changes/Tower != 0">
+							<span class="changes"><xsl:value-of select="$param/p2changes/Tower"/></span>
+						</xsl:if>
+					</p>
+					<p class="info_label">Wall: <span>
+						<xsl:value-of select="$param/p2Wall"/>
+						</span>
+						<xsl:if test="$param/p2changes/Wall != 0">
+							<span class="changes"><xsl:value-of select="$param/p2changes/Wall"/></span>
+						</xsl:if>
+					</p>
+				</td>
+			</xsl:when>
+			<xsl:otherwise>
+				<td class="stats" align="right">
+					<div>
+						<p class="facility">
+							<xsl:value-of select="$param/p2Quarry"/>
+							<xsl:if test="$param/p2changes/Quarry != 0">
+								<span class="changes"><xsl:value-of select="$param/p2changes/Quarry"/></span>
+							</xsl:if>
+						</p>
+						<p class="resource">
+							<xsl:value-of select="$param/p2Bricks"/>
+							<xsl:if test="$param/p2changes/Bricks != 0">
+								<span class="changes"><xsl:value-of select="$param/p2changes/Bricks"/></span>
+							</xsl:if>
+						</p>
+					</div>
+					<div>
+						<p class="facility">
+							<xsl:value-of select="$param/p2Magic"/>
+							<xsl:if test="$param/p2changes/Magic != 0">
+								<span class="changes"><xsl:value-of select="$param/p2changes/Magic"/></span>
+							</xsl:if>
+						</p>
+						<p class="resource">
+							<xsl:value-of select="$param/p2Gems"/>
+							<xsl:if test="$param/p2changes/Gems != 0">
+								<span class="changes"><xsl:value-of select="$param/p2changes/Gems"/></span>
+							</xsl:if>
+						</p>
+					</div>
+					<div>
+						<p class="facility">
+							<xsl:value-of select="$param/p2Dungeons"/>
+							<xsl:if test="$param/p2changes/Dungeons != 0">
+								<span class="changes"><xsl:value-of select="$param/p2changes/Dungeons"/></span>
+							</xsl:if>
+						</p>
+						<p class="resource">
+							<xsl:value-of select="$param/p2Recruits"/>
+							<xsl:if test="$param/p2changes/Recruits != 0">
+								<span class="changes"><xsl:value-of select="$param/p2changes/Recruits"/></span>
+							</xsl:if>
+						</p>
+					</div>
+					<h5>
+						<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player2)}"><xsl:value-of select="$param/Player2"/></a>
+					</h5>
+					<p class="info_label">Tower: <span>
+						<xsl:value-of select="$param/p2Tower"/>
+						</span>
+						<xsl:if test="$param/p2changes/Tower != 0">
+							<span class="changes"><xsl:value-of select="$param/p2changes/Tower"/></span>
+						</xsl:if>
+					</p>
+					<p class="info_label">Wall: <span>
+						<xsl:value-of select="$param/p2Wall"/>
+						</span>
+						<xsl:if test="$param/p2changes/Wall != 0">
+							<span class="changes"><xsl:value-of select="$param/p2changes/Wall"/></span>
+						</xsl:if>
+					</p>
+				</td>
+			</xsl:otherwise>
+		</xsl:choose>
+		<!-- end player2 empire info -->
+	</tr>
+	<!-- end status -->
+
+	<!-- begin tokens -->
+	<tr>
+
+	<!-- begin player1 tokens -->
+		<xsl:for-each select="$param/p1Tokens/*">
+			<td>
+				<xsl:if test="Name != 'none'">
+					<p class="token_counter">
+						<xsl:if test="Change &lt; 0">
+							<xsl:attribute name="style">color: lime</xsl:attribute>
+						</xsl:if>
+						<xsl:choose>
+							<xsl:when test="$param/c_insignias = 'yes'">
+								<img class="insignia" src="img/insignias/{am:file_name(Name)}.png" width="12px" height="12px" alt="{Name}" title="{Name}" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="Name"/>
+							</xsl:otherwise>
+						</xsl:choose>
+						<span><xsl:value-of select="Value"/></span>
+						<xsl:if test="Change != 0">
+							<span class="changes">
+								<xsl:if test="Change &gt; 0">+</xsl:if>
+								<xsl:value-of select="Change"/>
+							</span>
+						</xsl:if>
+					</p>
+				</xsl:if>
+			</td>
+		</xsl:for-each>	
+	<!-- end player1 tokens -->
+
+		<!-- game state indicator -->
+		<td colspan="2"><p class="info_label"><xsl:value-of select="$param/Current"/>'s turn</p></td>
+
+	<!-- begin player2 tokens -->
+		<xsl:for-each select="$param/p2Tokens/*">
+			<td>
+				<xsl:if test="Name != 'none'">
+					<p class="token_counter">
+						<xsl:if test="Change &lt; 0">
+							<xsl:attribute name="style">color: lime</xsl:attribute>
+						</xsl:if>
+						<xsl:choose>
+							<xsl:when test="$param/c_insignias = 'yes'">
+								<img class="insignia" src="img/insignias/{am:file_name(Name)}.png" width="12px" height="12px" alt="{Name}" title="{Name}" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="Name"/>
+							</xsl:otherwise>
+						</xsl:choose>
+						<span><xsl:value-of select="Value"/></span>
+						<xsl:if test="Change != 0">
+							<span class="changes">
+								<xsl:if test="Change &gt; 0">+</xsl:if>
+								<xsl:value-of select="Change"/>
+							</span>
+						</xsl:if>
+					</p>
+				</xsl:if>
+			</td>
+		</xsl:for-each>
+	<!-- end player2 tokens -->
+
+	</tr>
+	<!-- end tokens -->
+
+	<!-- begin player2 cards -->
+	<tr valign="top" class="hand">
+		<xsl:for-each select="$param/p2Hand/*">
+			<td align="center">
+				<!--  display new card indicator, if set -->
+				<xsl:if test="NewCard = 'yes'">
+					<p class="flag">NEW CARD</p>
+				</xsl:if>
+
+				<!-- display card -->
+				<xsl:choose>
+					<xsl:when test="$param/HiddenCards = 'yes' and Revealed = 'no'">
+						<div class="hidden_card"></div>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias)" />
+					</xsl:otherwise>
+				</xsl:choose>
+			</td>
+		</xsl:for-each>
+	</tr>
+	<!-- end player2 cards -->
+
+	</table>
+
+	</div>
+
+</xsl:template>
+
+
 </xsl:stylesheet>

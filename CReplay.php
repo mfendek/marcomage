@@ -98,7 +98,7 @@
 		public function GetReplay($game_id, $turn)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `Player1`, `Player2` FROM `replays_head` WHERE `EndType` != "Pending" AND `GameID` = "'.$db->Escape($game_id).'"');
+			$result = $db->Query('SELECT `Player1`, `Player2` FROM `replays_head` WHERE `GameID` = "'.$db->Escape($game_id).'"');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
@@ -261,7 +261,7 @@
 		public function LoadReplay()
 		{
 			$db = $this->Replays->getDB();
-			$result = $db->Query('SELECT `Winner`, `EndType`, `GameModes` FROM `replays_head` WHERE `EndType` != "Pending" AND `GameID` = "'.$db->Escape($this->ID()).'"');
+			$result = $db->Query('SELECT `Winner`, `EndType`, `GameModes` FROM `replays_head` WHERE `GameID` = "'.$db->Escape($this->ID()).'"');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
