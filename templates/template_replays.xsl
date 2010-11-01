@@ -465,7 +465,7 @@
 					<p class="info_label" style="font-size: small">Discarded</p>
 					<div class="history" style="width: 99px;">
 						<table cellpadding="0" cellspacing="0">
-							<tr>
+							<tr valign="top">
 								<xsl:for-each select="$param/p1DisCards0/*">
 									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
 								</xsl:for-each>
@@ -485,7 +485,7 @@
 		<td align="center">
 			<div class="history">
 				<table cellpadding="0" cellspacing="0">
-					<tr>
+					<tr valign="top">
 						<xsl:if test="count($param/p1LastCard/*) &gt; 0">
 							<xsl:for-each select="$param/p1LastCard/*">
 								<xsl:sort select="CardPosition" order="descending" data-type="number"/>
@@ -519,7 +519,7 @@
 		<td align="center">
 			<div class="history">
 				<table cellpadding="0" cellspacing="0">
-					<tr>
+					<tr valign="top">
 						<xsl:if test="count($param/p2LastCard/*) &gt; 0">
 							<xsl:for-each select="$param/p2LastCard/*">
 								<xsl:sort select="CardPosition" order="descending" data-type="number"/>
@@ -559,7 +559,7 @@
 					<p class="info_label" style="font-size: small">Discarded</p>
 					<div class="history" style="width: 99px;">
 						<table cellpadding="0" cellspacing="0">
-							<tr>
+							<tr valign="top">
 								<xsl:for-each select="$param/p2DisCards1/*">
 									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
 								</xsl:for-each>
@@ -1126,7 +1126,7 @@
 					<p class="info_label" style="font-size: small">Discarded</p>
 					<div class="history" style="width: 99px;">
 						<table cellpadding="0" cellspacing="0">
-							<tr>
+							<tr valign="top">
 								<xsl:for-each select="$param/p1DisCards0/*">
 									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
 								</xsl:for-each>
@@ -1146,7 +1146,7 @@
 		<td align="center">
 			<div class="history">
 				<table cellpadding="0" cellspacing="0">
-					<tr>
+					<tr valign="top">
 						<xsl:if test="count($param/p1LastCard/*) &gt; 0">
 							<xsl:for-each select="$param/p1LastCard/*">
 								<xsl:sort select="CardPosition" order="descending" data-type="number"/>
@@ -1180,7 +1180,7 @@
 		<td align="center">
 			<div class="history">
 				<table cellpadding="0" cellspacing="0">
-					<tr>
+					<tr valign="top">
 						<xsl:if test="count($param/p2LastCard/*) &gt; 0">
 							<xsl:for-each select="$param/p2LastCard/*">
 								<xsl:sort select="CardPosition" order="descending" data-type="number"/>
@@ -1220,7 +1220,7 @@
 					<p class="info_label" style="font-size: small">Discarded</p>
 					<div class="history" style="width: 99px;">
 						<table cellpadding="0" cellspacing="0">
-							<tr>
+							<tr valign="top">
 								<xsl:for-each select="$param/p2DisCards1/*">
 									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
 								</xsl:for-each>
