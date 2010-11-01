@@ -490,6 +490,7 @@
 	<li>Show avatar in players list - display avatar in players list for all players who have an avatar</li>
 	<li>Avatar display correction for chat - used to prevent Firefox 2.x display bug</li>
 	<li>Old card appearance - display cards with old appearance</li>
+	<li>Mini card flags - display mini card flags (new card and revealed flags) within card picture instead of standard card flags</li>
 	<li>Battle report messages - when active, system will automaticaly send private message to inform you about a game outcome (when it finishes) or when someone accepts or rejects your challenge</li>
 	<li>Forum notification - display forum notification (new posts) in the menubar</li>
 	<li>Concepts notification - display concepts notification (new concepts) in the menubar</li>

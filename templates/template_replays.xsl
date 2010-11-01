@@ -236,7 +236,7 @@
 			<td align="center">
 				<!--  display card flags, if set -->
 				<xsl:choose>
-					<xsl:when test="$param/HiddenCards = 'yes' and Revealed = 'yes'">
+					<xsl:when test="$param/HiddenCards = 'yes' and Revealed = 'yes' and $param/c_miniflags = 'no'">
 						<div class="flag_space">
 							<xsl:if test="NewCard = 'yes'">
 								<span class="newcard">NEW</span>
@@ -245,13 +245,13 @@
 						</div>
 						<div class="clear_floats"></div>
 					</xsl:when>
-					<xsl:when test="NewCard = 'yes'">
+					<xsl:when test="NewCard = 'yes' and $param/c_miniflags = 'no'">
 						<p class="flag">NEW CARD</p>
 					</xsl:when>
 				</xsl:choose>
 
 				<!-- display card -->
-				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias)" />
+				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_miniflags, NewCard, Revealed)" />
 			</td>
 		</xsl:for-each>
 	</tr>
@@ -822,7 +822,7 @@
 			<td align="center">
 				<!--  display card flags, if set -->
 				<xsl:choose>
-					<xsl:when test="$param/HiddenCards = 'yes' and Revealed = 'yes'">
+					<xsl:when test="$param/HiddenCards = 'yes' and Revealed = 'yes' and $param/c_miniflags = 'no'">
 						<div class="flag_space">
 							<xsl:if test="NewCard = 'yes'">
 								<span class="newcard">NEW</span>
@@ -831,13 +831,13 @@
 						</div>
 						<div class="clear_floats"></div>
 					</xsl:when>
-					<xsl:when test="NewCard = 'yes'">
+					<xsl:when test="NewCard = 'yes' and $param/c_miniflags = 'no'">
 						<p class="flag">NEW CARD</p>
 					</xsl:when>
 				</xsl:choose>
 
 				<!-- display card -->
-				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias)" />
+				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_miniflags, NewCard, Revealed)" />
 			</td>
 		</xsl:for-each>
 	</tr>
@@ -897,7 +897,7 @@
 			<td align="center">
 				<!--  display card flags, if set -->
 				<xsl:choose>
-					<xsl:when test="$param/HiddenCards = 'yes' and Revealed = 'yes'">
+					<xsl:when test="$param/HiddenCards = 'yes' and Revealed = 'yes' and $param/c_miniflags = 'no'">
 						<div class="flag_space">
 							<xsl:if test="NewCard = 'yes'">
 								<span class="newcard">NEW</span>
@@ -906,13 +906,13 @@
 						</div>
 						<div class="clear_floats"></div>
 					</xsl:when>
-					<xsl:when test="NewCard = 'yes'">
+					<xsl:when test="NewCard = 'yes' and $param/c_miniflags = 'no'">
 						<p class="flag">NEW CARD</p>
 					</xsl:when>
 				</xsl:choose>
 
 				<!-- display card -->
-				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias)" />
+				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_miniflags, NewCard, Revealed)" />
 			</td>
 		</xsl:for-each>
 	</tr>
@@ -1482,7 +1482,7 @@
 		<xsl:for-each select="$param/p2Hand/*">
 			<td align="center">
 				<!--  display new card indicator, if set -->
-				<xsl:if test="NewCard = 'yes' and ($param/HiddenCards = 'no' or Revealed = 'yes')">
+				<xsl:if test="NewCard = 'yes' and ($param/HiddenCards = 'no' or Revealed = 'yes') and $param/c_miniflags = 'no'">
 					<p class="flag">NEW CARD</p>
 				</xsl:if>
 
@@ -1497,7 +1497,7 @@
 						</div>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias)" />
+						<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_miniflags, NewCard)" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</td>

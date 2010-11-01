@@ -343,7 +343,7 @@
 			<td align="center">
 				<!--  display card flags, if set -->
 				<xsl:choose>
-					<xsl:when test="$param/HiddenCards = 'yes' and Revealed = 'yes'">
+					<xsl:when test="$param/HiddenCards = 'yes' and Revealed = 'yes' and $param/c_miniflags = 'no'">
 						<div class="flag_space">
 							<xsl:if test="NewCard = 'yes'">
 								<span class="newcard">NEW</span>
@@ -352,7 +352,7 @@
 						</div>
 						<div class="clear_floats"></div>
 					</xsl:when>
-					<xsl:when test="NewCard = 'yes'">
+					<xsl:when test="NewCard = 'yes' and $param/c_miniflags = 'no'">
 						<p class="flag">NEW CARD</p>
 					</xsl:when>
 				</xsl:choose>
@@ -362,7 +362,7 @@
 					<xsl:if test="($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = '' and Playable = 'no'">
 						<xsl:attribute name="class">unplayable</xsl:attribute>
 					</xsl:if>
-					<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias)" />
+					<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_miniflags, NewCard, Revealed)" />
 				</div>
 
 				<!-- select button and card modes (buttons are locked when surrender request is active) -->
@@ -1034,7 +1034,7 @@
 		<xsl:for-each select="$param/HisHand/*">
 			<td align="center">
 				<!--  display new card indicator, if set -->
-				<xsl:if test="NewCard = 'yes' and ($param/HiddenCards = 'no' or Revealed = 'yes')">
+				<xsl:if test="NewCard = 'yes' and ($param/HiddenCards = 'no' or Revealed = 'yes') and $param/c_miniflags = 'no'">
 					<p class="flag">NEW CARD</p>
 				</xsl:if>
 
@@ -1053,7 +1053,7 @@
 							<xsl:if test="Playable = 'no'">
 								<xsl:attribute name="class">unplayable</xsl:attribute>
 							</xsl:if>
-							<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias)" />
+							<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_miniflags, NewCard)" />
 						</div>
 					</xsl:otherwise>
 				</xsl:choose>

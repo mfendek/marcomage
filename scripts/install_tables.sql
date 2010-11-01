@@ -202,6 +202,7 @@ CREATE TABLE `settings` (
   `Avatarlist` tinyint(1) NOT NULL DEFAULT '1',
   `Correction` tinyint(1) NOT NULL DEFAULT '0',
   `OldCardLook` tinyint(1) NOT NULL DEFAULT '0',
+  `Miniflags` tinyint(1) NOT NULL DEFAULT '0',
   `Reports` tinyint(1) NOT NULL DEFAULT '0',
   `Forum_notification` tinyint(1) NOT NULL DEFAULT '1',
   `Concepts_notification` tinyint(1) NOT NULL DEFAULT '1',

@@ -333,6 +333,9 @@
 	<xsl:param name="c_img" select="'yes'" />
 	<xsl:param name="c_oldlook" select="'no'" />
 	<xsl:param name="c_insignias" select="'yes'" />
+	<xsl:param name="c_miniflags" select="'no'" />
+	<xsl:param name="c_new" select="'no'" />
+	<xsl:param name="c_revealed" select="'no'" />
 
 	<xsl:variable name="cardstring">
 
@@ -402,9 +405,23 @@
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:attribute name="src">img/cards/g<xsl:value-of select="$card/id"/>.jpg</xsl:attribute>
+							<xsl:if test="$c_miniflags = 'yes' and ($c_revealed = 'yes' or $c_new = 'yes')">
+								<xsl:attribute name="style">float: left</xsl:attribute>
+							</xsl:if>
 						</xsl:otherwise>
 					</xsl:choose>
 				</img>
+				<xsl:if test="$c_miniflags = 'yes' and ($c_revealed = 'yes' or $c_new = 'yes')">
+					<div class="miniflags">
+						<xsl:if test="$c_new = 'yes'">
+							<img src="img/new_miniflag.png" width="12px" height="12px" alt="new card" title="New card" />
+						</xsl:if>
+						<xsl:if test="$c_revealed = 'yes'">
+							<img src="img/revealed_miniflag.png" width="12px" height="12px" alt="revealed" title="Revealed" />
+						</xsl:if>
+					</div>
+					<div class="clear_floats"></div>
+				</xsl:if>
 			</xsl:if>
 
 			<!-- keywords -->

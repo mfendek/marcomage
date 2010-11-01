@@ -92,6 +92,27 @@ div.karta.rare_class     > img { border-color: Yellow; }
 div.karta.no_class       > img { border-color: White; }
 
 
+/* card mini flags */
+div.miniflags
+{
+	float: left;
+	margin-top: -63px;
+	margin-left: 3px;
+}
+
+/* card mini flags images */
+div.miniflags > img
+{
+	border: thin solid white;
+}
+
+/* set distance of the card text from the card image (if miniflags setting is active) */
+div.karta > div.clear_floats + p
+{
+	margin-top: 0.5ex;
+}
+
+
 /* set distance of the card text from the card border (left and right) */
 div.karta > p, div.karta > p + div
 {

@@ -425,6 +425,16 @@
 			</p>
 
 			<p>
+				<input type="checkbox" name="Miniflags">
+					<xsl:if test="$settings/Miniflags = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">display mini card flags (new card and revealed flags) within card picture instead of standard card flags</xsl:attribute>
+					<xsl:text>Mini card flags</xsl:text>
+				</span>
+			</p>
+
+			<p>
 				<input type="checkbox" name="Reports">
 					<xsl:if test="$settings/Reports = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 				</input>
