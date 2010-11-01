@@ -2210,7 +2210,7 @@
 				$_POST['Profile'] = $opponent = postdecode($_POST['reset_exp']);
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
+				if (!$access_rights[$player->Type()]["reset_exp"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
 
 				// reset level end exp
 				$score = $scoredb->GetScore($opponent);
