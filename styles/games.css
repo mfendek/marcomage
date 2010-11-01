@@ -109,7 +109,7 @@ p.flag /* card flag */
 	border-style: ridge;
 	-moz-border-radius: 7px;
 	font-size: x-small;
-	width: 86px;
+	max-width: 86px;
 }
 
 p.played /* played card tag */

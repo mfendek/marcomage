@@ -1034,14 +1034,19 @@
 		<xsl:for-each select="$param/HisHand/*">
 			<td align="center">
 				<!--  display new card indicator, if set -->
-				<xsl:if test="NewCard = 'yes'">
+				<xsl:if test="NewCard = 'yes' and ($param/HiddenCards = 'no' or Revealed = 'yes')">
 					<p class="flag">NEW CARD</p>
 				</xsl:if>
 
 				<!-- display card -->
 				<xsl:choose>
 					<xsl:when test="($param/HiddenCards = 'yes') and (Revealed = 'no') and ($param/GameState = 'in progress')">
-						<div class="hidden_card"></div>
+						<div class="hidden_card">
+							<!--  display new card indicator, if set -->
+							<xsl:if test="NewCard = 'yes'">
+								<p class="flag">NEW CARD</p>
+							</xsl:if>
+						</div>
 					</xsl:when>
 					<xsl:otherwise>
 						<div>
