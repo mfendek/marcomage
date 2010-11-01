@@ -106,6 +106,18 @@ function GetSessionData(name) // retrieve session data from cookies (or session 
 	else return $(str.concat("input[name='", name,"'][type='hidden']")).val();
 }
 
+function ResumeReplay() // replay slideshow -> resume replay
+{
+	$("button[name='slideshow']").addClass('pushed');
+	timer = window.setTimeout("$(window.location).attr('href', $('a#next').attr('href'))", 5000);
+}
+
+function PauseReplay() // replay slideshow -> pause replay
+{
+	$("button[name='slideshow']").removeClass('pushed');
+	window.clearTimeout(timer);
+}
+
 $(document).ready(function() {
 
 	// sends in game chat message when ENTER key is hit
@@ -276,5 +288,24 @@ $(document).ready(function() {
 	// return highlighted unplayable card to former state in case of mouse leave
 	$("div.unplayable > div.karta").mouseleave(function() {
 		$(this).animate({ opacity: 0.6 }, 'fast');
+	});
+
+	// replay slideshow initialization
+	var timer; // global timer
+
+	if ($("a#next").length == 1) // apply only in replay section
+	{
+		ResumeReplay();
+	}
+
+	$("button[name='slideshow']").click(function() {
+		if ($("button[name='slideshow']").hasClass('pushed'))
+		{
+			PauseReplay();
+		}
+		else
+		{
+			ResumeReplay();
+		}
 	});
 });

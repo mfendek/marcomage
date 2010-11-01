@@ -195,7 +195,7 @@
 
 		<xsl:choose>
 			<xsl:when test="$current &lt; $turns">
-				<a class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', am:min($current + 1, $turns))}">&gt;</a>
+				<a id="next" class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', am:min($current + 1, $turns))}">&gt;</a>
 			</xsl:when>
 			<xsl:otherwise>
 				<span class="disabled">&gt;</span>
@@ -210,6 +210,9 @@
 			</xsl:choose>
 		</xsl:variable>
 		<a class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $view, 'Turn', $current)}">Switch players</a>
+
+		<!-- slideshow button -->
+		<button type="button" name="slideshow">Play</button>
 		<!-- end navigation -->
 	</p>
 
