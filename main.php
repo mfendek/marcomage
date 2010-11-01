@@ -2251,6 +2251,33 @@
 				break;
 			}
 
+			if (isset($_POST['export_deck_remote'])) // export some player's deck
+			{
+				$_POST['Profile'] = postdecode($_POST['export_deck_remote']);
+
+				$opponent = $playerdb->GetPlayer($_POST['Profile']);
+				if (!$opponent) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Players'; break; }
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["export_deck"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
+
+				$deckname = postdecode($_POST['ExportDeck']);
+				$deck = $opponent->GetDeck($deckname);
+				if (!$deck) { $error = 'No such deck.'; $current = 'Players_details'; break; }
+				$file = $deck->ToCSV();
+
+				$content_type = 'text/csv';
+				$file_name = preg_replace("/[^a-zA-Z0-9_-]/i", "_", $deck->Deckname()).'.csv';
+				$file_length = strlen($file);
+
+				header('Content-Type: '.$content_type.'');
+				header('Content-Disposition: attachment; filename="'.$file_name.'"');
+				header('Content-Length: '.$file_length);
+				echo $file;
+
+				return; // skip the presentation layer
+			}
+
 			// end profile related messages
 
 			// begin players related messages
@@ -2864,6 +2891,7 @@ case 'Players_details':
 	$params['profile']['system_notification'] = ($access_rights[$player->Type()]["system_notification"]) ? 'yes' : 'no';
 	$params['profile']['change_all_avatar'] = ($access_rights[$player->Type()]["change_all_avatar"]) ? 'yes' : 'no';
 	$params['profile']['reset_exp'] = ($access_rights[$player->Type()]["reset_exp"]) ? 'yes' : 'no';
+	$params['profile']['export_deck'] = ($access_rights[$player->Type()]["export_deck"]) ? 'yes' : 'no';
 	$params['profile']['free_slots'] = $gamedb->CountFreeSlots1($player->Name());
 	$params['profile']['decks'] = $decks = $player->ListReadyDecks();
 	$params['profile']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)] : '';
@@ -2880,6 +2908,7 @@ case 'Players_details':
 	}
 
 	$params['profile']['statistics'] = $player->GetVersusStats($p->Name());
+	$params['profile']['export_decks'] = ($access_rights[$player->Type()]["export_deck"]) ? $p->ListDecks() : array();
 
 	break;
 

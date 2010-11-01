@@ -437,7 +437,17 @@
 				</xsl:for-each>
 			</select>
 		</xsl:if>
-		
+
+		<xsl:if test="$param/export_deck = 'yes' and count($param/export_decks/*) &gt; 0">
+			<h4>Export deck</h4>
+			<select name="ExportDeck" size="1">
+				<xsl:for-each select="$param/export_decks/*">
+					<option value="{am:urlencode(Deckname)}"><xsl:value-of select="Deckname"/></option>
+				</xsl:for-each>
+			</select>
+			<button type="submit" name="export_deck_remote" value="{am:urlencode($opponent)}">Export</button>
+		</xsl:if>
+
 		<xsl:if test="$param/system_notification = 'yes'">
 			<h4>System notification</h4>
 			<button type="submit" name="system_notification" value="{am:urlencode($opponent)}">Send system notification</button>

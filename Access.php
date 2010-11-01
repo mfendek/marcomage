@@ -32,6 +32,7 @@
 	"see_all_messages" => true, 
 	"system_notification" => true, 
 	"reset_exp" => true, 
+	"export_deck" => true, 
 	"change_rights" => true);
 	
 	$moderator_rights = array(
@@ -62,6 +63,7 @@
 	"see_all_messages" => false, 
 	"system_notification" => false, 
 	"reset_exp" => false, 
+	"export_deck" => false, 
 	"change_rights" => false);
 	
 	$supervisor_rights = array(
@@ -92,6 +94,7 @@
 	"see_all_messages" => false, 
 	"system_notification" => false, 
 	"reset_exp" => false, 
+	"export_deck" => false, 
 	"change_rights" => false);
 	
 	$user_rights = array(
@@ -122,6 +125,7 @@
 	"see_all_messages" => false, 
 	"system_notification" => false, 
 	"reset_exp" => false, 
+	"export_deck" => false, 
 	"change_rights" => false);
 	
 	$squashed_rights = array(
@@ -152,6 +156,7 @@
 	"see_all_messages" => false, 
 	"system_notification" => false, 
 	"reset_exp" => false, 
+	"export_deck" => false, 
 	"change_rights" => false);
 	
 	$limited_rights = array(
@@ -182,6 +187,7 @@
 	"see_all_messages" => false, 
 	"system_notification" => false, 
 	"reset_exp" => false, 
+	"export_deck" => false, 
 	"change_rights" => false);
 	
 	$banned_rights = array(
@@ -212,6 +218,7 @@
 	"see_all_messages" => false, 
 	"system_notification" => false, 
 	"reset_exp" => false, 
+	"export_deck" => false, 
 	"change_rights" => false);
 	
 	$guest_rights = array(
@@ -242,6 +249,7 @@
 	"see_all_messages" => false, 
 	"system_notification" => false, 
 	"reset_exp" => false, 
+	"export_deck" => false, 
 	"change_rights" => false);
 	
 	$access_rights = array(
