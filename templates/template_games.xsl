@@ -362,7 +362,9 @@
 					<xsl:if test="($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = '' and Playable = 'no'">
 						<xsl:attribute name="class">unplayable</xsl:attribute>
 					</xsl:if>
-					<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_miniflags, NewCard, Revealed)" />
+					<xsl:variable name="revealed" select="$param/c_miniflags = 'yes' and $param/HiddenCards = 'yes' and Revealed = 'yes'" />
+					<xsl:variable name="new_card" select="$param/c_miniflags = 'yes' and NewCard = 'yes'" />
+					<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias, $new_card, $revealed)" />
 				</div>
 
 				<!-- select button and card modes (buttons are locked when surrender request is active) -->
@@ -1053,7 +1055,8 @@
 							<xsl:if test="Playable = 'no'">
 								<xsl:attribute name="class">unplayable</xsl:attribute>
 							</xsl:if>
-							<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_miniflags, NewCard)" />
+							<xsl:variable name="new_card" select="$param/c_miniflags = 'yes' and NewCard = 'yes'" />
+							<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias, $new_card)" />
 						</div>
 					</xsl:otherwise>
 				</xsl:choose>
