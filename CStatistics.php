@@ -199,14 +199,23 @@
 
 			$statistics['other_total'] = $other_total;
 
-			// average game duration
-			$result = $db->Query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays_head` WHERE (`EndType` != "Pending") AND ((`Player1` = "'.$db->Escape($player1).'" AND `Player2` = "'.$db->Escape($player2).'") OR (`Player1` = "'.$db->Escape($player2).'" AND `Player2` = "'.$db->Escape($player1).'"))');
+			// average game duration (normal mode)
+			$result = $db->Query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays_head` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) = 0) AND ((`Player1` = "'.$db->Escape($player1).'" AND `Player2` = "'.$db->Escape($player2).'") OR (`Player1` = "'.$db->Escape($player2).'" AND `Player2` = "'.$db->Escape($player1).'"))');
 
 			if (!$result) return false;
 
 			$data = $result->Next();
 			$statistics['turns'] = $data['Turns'];
 			$statistics['rounds'] = $data['Rounds'];
+
+			// average game duration (long mode)
+			$result = $db->Query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays_head` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) > 0) AND ((`Player1` = "'.$db->Escape($player1).'" AND `Player2` = "'.$db->Escape($player2).'") OR (`Player1` = "'.$db->Escape($player2).'" AND `Player2` = "'.$db->Escape($player1).'"))');
+
+			if (!$result) return false;
+
+			$data = $result->Next();
+			$statistics['turns_long'] = $data['Turns'];
+			$statistics['rounds_long'] = $data['Rounds'];
 
 			return $statistics;
 		}
@@ -274,14 +283,23 @@
 
 			$statistics['other_total'] = $other_total;
 
-			// average game duration
-			$result = $db->Query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays_head` WHERE (`EndType` != "Pending") AND (`Player1` = "'.$db->Escape($player).'" OR `Player2` = "'.$db->Escape($player).'")');
+			// average game duration (normal mode)
+			$result = $db->Query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays_head` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) = 0) AND (`Player1` = "'.$db->Escape($player).'" OR `Player2` = "'.$db->Escape($player).'")');
 
 			if (!$result) return false;
 
 			$data = $result->Next();
 			$statistics['turns'] = $data['Turns'];
 			$statistics['rounds'] = $data['Rounds'];
+
+			// average game duration (long mode)
+			$result = $db->Query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays_head` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) > 0) AND (`Player1` = "'.$db->Escape($player).'" OR `Player2` = "'.$db->Escape($player).'")');
+
+			if (!$result) return false;
+
+			$data = $result->Next();
+			$statistics['turns_long'] = $data['Turns'];
+			$statistics['rounds_long'] = $data['Rounds'];
 
 			return $statistics;
 		}

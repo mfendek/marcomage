@@ -247,6 +247,14 @@
 			<h4>Average game duration</h4>
 			<p><span><xsl:value-of select="$param/statistics/turns"/></span>Turns</p>
 			<p><span><xsl:value-of select="$param/statistics/rounds"/></span>Rounds</p>
+			<p><span><xsl:value-of select="$param/statistics/turns_long"/></span>
+				<xsl:text>Turns</xsl:text>
+				<img width="20px" height="14px" src="img/long_mode.png" alt="long mode" class="icon" title="Long mode" />
+			</p>
+			<p><span><xsl:value-of select="$param/statistics/rounds_long"/></span>
+				<xsl:text>Rounds</xsl:text>
+				<img width="20px" height="14px" src="img/long_mode.png" alt="long mode" class="icon" title="Long mode" />
+			</p>
 
 			</div>
 		</xsl:if>
