@@ -30,7 +30,6 @@
 	<th><p>Topic</p></th>
 	<th><p>Author</p></th>
 	<th><p>Posts</p></th>
-	<th><p>Created</p></th>
 	<th>
 		<p>
 			<xsl:if test="$param/is_logged_in = 'yes'"><button type="submit" class="search_button" name="forum_search">Search</button></xsl:if>
@@ -79,9 +78,6 @@
 			</td>
 			<td>
 				<p><xsl:value-of select="PostCount"/></p>
-			</td>
-			<td>
-				<p><xsl:value-of select="am:datetime(Created, $param/timezone)"/></p>
 			</td>
 			<td>
 				<xsl:choose>
@@ -180,7 +176,6 @@
 			<th><p>Topic</p></th>
 			<th><p>Author</p></th>
 			<th><p>Posts</p></th>
-			<th><p>Created</p></th>
 			<th><p>Latest post</p></th>
 			</tr>
 
@@ -212,9 +207,6 @@
 				</td>
 				<td>
 					<p><xsl:value-of select="PostCount"/></p>
-				</td>
-				<td>
-					<p><xsl:value-of select="am:datetime(Created, $param/timezone)"/></p>
 				</td>
 				<td>
 					<xsl:choose>
@@ -265,7 +257,6 @@
 	<th><p>Topic</p></th>
 	<th><p>Author</p></th>
 	<th><p>Posts</p></th>
-	<th><p>Created</p></th>
 	<th>
 		<p>
 			<xsl:if test="$param/is_logged_in = 'yes'"><button type="submit" class="search_button" name="forum_search">Search</button></xsl:if>
@@ -325,9 +316,6 @@
 		</td>
 		<td>
 			<p><xsl:value-of select="PostCount"/></p>
-		</td>
-		<td>
-			<p><xsl:value-of select="am:datetime(Created, $param/timezone)"/></p>
 		</td>
 		<td>
 			<xsl:choose>
