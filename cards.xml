@@ -9709,8 +9709,8 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Attack: 8<br />Opponent loses 8 random resources<br />Replaces matching card with Caravan]]></effect>
-    <code><![CDATA[$this->Attack(8, $hisdata->Tower, $hisdata->Wall); for ($i = 1; $i <= 8; $i++) { $tmp = mt_rand(0,2); if ($tmp == 0) $hisdata->Bricks--; elseif ($tmp == 1) $hisdata->Gems--; elseif ($tmp == 2) $hisdata->Recruits--; } $hisdata->Hand[$cardpos] = 23; $hisdata->NewCards[$cardpos] = 1;]]></code>
+    <effect><![CDATA[Attack: 8<br />Opponent loses 14 random resources<br />Replaces matching card with Caravan]]></effect>
+    <code><![CDATA[$this->Attack(8, $hisdata->Tower, $hisdata->Wall); for ($i = 1; $i <= 14; $i++) { $tmp = mt_rand(0,2); if ($tmp == 0) $hisdata->Bricks--; elseif ($tmp == 1) $hisdata->Gems--; elseif ($tmp == 2) $hisdata->Recruits--; } $hisdata->Hand[$cardpos] = 23; $hisdata->NewCards[$cardpos] = 1;]]></code>
     <created>2010-09-10</created>
     <modified>2010-11-01</modified>
   </card>
