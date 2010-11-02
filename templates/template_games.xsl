@@ -401,16 +401,16 @@
 			</xsl:if>
 		</td>
 		<td>
+			<xsl:if test="$param/GameState = 'in progress'">
+				<a class="button" href="{php:functionString('makeurl', 'Replays_history', 'CurrentReplay', $param/CurrentGame)}">History</a>
+			</xsl:if>
+		</td>
+		<td>
 			<!-- 'refresh' button -->
 			<a class="button" href="{php:functionString('makeurl', 'Games_details', 'CurrentGame', $param/CurrentGame)}" accesskey="w" >Refresh</a>
 			<xsl:if test="$param/nextgame_button = 'yes'">
 				<button type="submit" name="active_game">Next</button>
 			</xsl:if> 
-		</td>
-		<td>
-			<xsl:if test="$param/GameState = 'in progress'">
-				<a class="button" href="{php:functionString('makeurl', 'Replays_history', 'CurrentReplay', $param/CurrentGame)}">History</a>
-			</xsl:if>
 		</td>
 		<td>
 			<xsl:if test="$param/PlayButtons = 'no' and ($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = ''">
