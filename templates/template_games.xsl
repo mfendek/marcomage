@@ -1036,7 +1036,7 @@
 		<xsl:for-each select="$param/HisHand/*">
 			<td align="center">
 				<!--  display new card indicator, if set -->
-				<xsl:if test="NewCard = 'yes' and ($param/HiddenCards = 'no' or Revealed = 'yes') and $param/c_miniflags = 'no'">
+				<xsl:if test="NewCard = 'yes' and ($param/HiddenCards = 'no' or Revealed = 'yes' or $param/GameState != 'in progress') and $param/c_miniflags = 'no'">
 					<p class="flag">NEW CARD</p>
 				</xsl:if>
 
