@@ -297,7 +297,12 @@
 
 <h4>In case of victory</h4>
 
-<p>Minimum is computed from all victory ratings. For example, if Resource accumulation was evaluated "Major", Tower building was evaluated "Minor" and Tower destruction was evaluated "Minor", the final result will be "Minor". If you want to achieve Major victory you need to satisfy condition for Major victory of all three types.</p>
+<p>Average victory is computed from all victory ratings, the result is rounded down. For example, if Resource accumulation was evaluated "Major", Tower building was evaluated "Minor" and Tower destruction was evaluated "Minor", the final result will be "Minor". If you want to achieve Major victory you need to satisfy condition for Major victory of all three types. Percentages below refer to:</p>
+
+<ul>
+	<li>stock compared to stock needed for resource accumulation victory</li>
+	<li>tower compared to tower needed for tower building victory</li>
+</ul>
 
 <table class="centered skin_text" cellpadding="5">
 	<tr>
@@ -308,27 +313,32 @@
 	</tr>
 	<tr>
 		<th>Resource accumulation</th>
-		<td>Enemy stock below 150</td>
-		<td>Enemy stock between 150 and 300</td>
-		<td>Enemy stock above 300</td>
+		<td>Enemy stock below 33%</td>
+		<td>Enemy stock between 33% and 66%</td>
+		<td>Enemy stock above 66%</td>
 	</tr>
 	<tr>
 		<th>Tower building</th>
-		<td>Enemy tower below 30</td>
-		<td>Enemy tower between 30 and 60</td>
-		<td>Enemy tower above 60</td>
+		<td>Enemy tower below 33%</td>
+		<td>Enemy tower between 33% and 66%</td>
+		<td>Enemy tower above 66%</td>
 	</tr>
 	<tr>
 		<th>Tower destruction</th>
-		<td>Tower above 60</td>
-		<td>Tower between 30 and 60</td>
-		<td>Tower below 30</td>
+		<td>Tower above 66%</td>
+		<td>Tower between 33% and 66%</td>
+		<td>Tower below 33%</td>
 	</tr>
 </table>
 
 <h4>In case of draw or loss</h4>
 
-<p>Maximum is computed from all victory ratings. For example, if Resource accumulation was evaluated "Major", Tower building was evaluated "Minor" and Tower destruction was evaluated "Minor", the final result will be "Major". If you want to achieve Major victory you need to satisfy condition for Major victory of at least one of the three types.</p>
+<p>Average victory is computed from all victory ratings, the result is rounded up. For example, if Resource accumulation was evaluated "Major", Tower building was evaluated "Minor" and Tower destruction was evaluated "Minor", the final result will be "Major". Percentages below refer to:</p>
+
+<ul>
+	<li>stock compared to stock needed for resource accumulation victory</li>
+	<li>tower compared to tower needed for tower building victory</li>
+</ul>
 
 <table class="centered skin_text" cellpadding="5">
 	<tr>
@@ -339,21 +349,21 @@
 	</tr>
 	<tr>
 		<th>Resource accumulation</th>
-		<td>Stock above 300</td>
-		<td>Stock between 150 and 300</td>
-		<td>Stock below 150</td>
+		<td>Stock above 66%</td>
+		<td>Stock between 33% and 66%</td>
+		<td>Stock below 33%</td>
 	</tr>
 	<tr>
 		<th>Tower building</th>
-		<td>Tower above 60</td>
-		<td>Tower between 30 and 60</td>
-		<td>Tower below 30</td>
+		<td>Tower above 66%</td>
+		<td>Tower between 33% and 66%</td>
+		<td>Tower below 33%</td>
 	</tr>
 	<tr>
 		<th>Tower destruction</th>
-		<td>Enemy tower below 30</td>
-		<td>Enemy tower between 30 and 60</td>
-		<td>Enemy tower above 60</td>
+		<td>Enemy tower below 33%</td>
+		<td>Enemy tower between 33% and 66%</td>
+		<td>Enemy tower above 66%</td>
 	</tr>
 </table>
 
@@ -365,7 +375,7 @@
 	<li>Gentle touch (20% EXP) - win by playing a common card</li>
 	<li>Desolator (30% EXP) - win while enemy facilities = 1</li>
 	<li>Titan (45% EXP) - win with the <b>Titan</b> set</li>
-	<li>Assassin (50% EXP) - win within 10 rounds</li>
+	<li>Assassin (50% EXP) - win within 10 rounds (20 rounds in long mode)</li>
 	<li>Collector (70% EXP) - win with at least 4 rare cards in hand (played card doesn't count)</li>
 	<li>Builder (80% EXP) - win with maximum wall</li>
 	<li>Survivor (90% EXP) - win with 1 tower and 0 wall</li>

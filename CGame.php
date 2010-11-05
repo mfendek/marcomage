@@ -1288,6 +1288,15 @@
 		{
 			global $carddb;
 			global $playerdb;
+			global $game_config;
+			
+			// determine game mode (normal or long)
+			$g_mode = ($this->LongMode == 'yes') ? 'long' : 'normal';
+			
+			// game configuration
+			$max_tower = $game_config[$g_mode]['max_tower'];
+			$max_wall = $game_config[$g_mode]['max_wall'];
+			$res_vic = $game_config[$g_mode]['res_victory'];
 			
 			$opponent = ($this->Player1 == $player) ? $this->Player2 : $this->Player1;
 			$mydata = $this->GameData[$player];
@@ -1334,27 +1343,26 @@
 			// third phase: Victory rating
 			if ($win)// if player is winner
 			{
-				$bonus = array('major' => 1.75, 'minor' => 1.25, 'tactical' => 1);
+				$bonus = array(1 => 1, 2 => 1.25, 3 => 1.75); // tactical (1), minor (2) and major (3) victory bonuses
 				$victories = array();
 				
 				// Resource accumulation victory
 				$enemy_stock = $hisdata->Bricks + $hisdata->Gems + $hisdata->Recruits;
-				if ($enemy_stock < 150) $victories[] = 'major';
-				elseif (($enemy_stock >= 150) AND ($enemy_stock <= 300)) $victories[] = 'minor';
-				else $victories[] = 'tactical';
+				if ($enemy_stock < round($res_vic / 3)) $victories[] = 3;
+				elseif (($enemy_stock >= round($res_vic / 3)) AND ($enemy_stock <= round($res_vic * 2 / 3))) $victories[] = 2;
+				else $victories[] = 1;
 				
 				// Tower building victory
-				if ($hisdata->Tower < 30) $victories[] = 'major';
-				elseif (($hisdata->Tower >= 30) AND ($hisdata->Tower <= 60)) $victories[] = 'minor';
-				else $victories[] = 'tactical';
+				if ($hisdata->Tower < round($max_tower / 3)) $victories[] = 3;
+				elseif (($hisdata->Tower >= round($max_tower / 3)) AND ($hisdata->Tower <= round($max_tower * 2 / 3))) $victories[] = 2;
+				else $victories[] = 1;
 				
 				// Tower destruction victory
-				if ($mydata->Tower > 60) $victories[] = 'major';
-				elseif (($mydata->Tower >= 30) AND ($mydata->Tower <= 60)) $victories[] = 'minor';
-				else $victories[] = 'tactical';
+				if ($mydata->Tower > round($max_tower * 2 / 3)) $victories[] = 3;
+				elseif (($mydata->Tower >= round($max_tower / 3)) AND ($mydata->Tower <= round($max_tower * 2 / 3))) $victories[] = 2;
+				else $victories[] = 1;
 				
-				sort($victories);
-				$victory = array_pop($victories); // pick lowest victory rating
+				$victory = floor(array_sum($victories) / count($victories)); // calculate avg (rounded down)
 				$mod = $bonus[$victory];
 				
 				// update exp and message
@@ -1363,27 +1371,26 @@
 			}
 			else // if player is loser
 			{
-				$bonus = array('major' => 1.75, 'minor' => 1.25, 'tactical' => 1);
+				$bonus = array(1 => 1, 2 => 1.25, 3 => 1.75); // tactical (1), minor (2) and major (3) victory bonuses
 				$victories = array();
 				
 				// Resource accumulation victory
 				$stock = $mydata->Bricks + $mydata->Gems + $mydata->Recruits;
-				if ($stock > 300) $victories[] = 'major';
-				elseif (($stock >= 150) AND ($stock <= 300)) $victories[] = 'minor';
-				else $victories[] = 'tactical';
+				if ($stock > round($res_vic * 2 / 3)) $victories[] = 3;
+				elseif (($stock >= round($res_vic / 3)) AND ($stock <= round($res_vic * 2 / 3))) $victories[] = 2;
+				else $victories[] = 1;
 				
 				// Tower building victory
-				if ($mydata->Tower > 60) $victories[] = 'major';
-				elseif (($mydata->Tower >= 30) AND ($mydata->Tower <= 60)) $victories[] = 'minor';
-				else $victories[] = 'tactical';
+				if ($mydata->Tower > round($max_tower * 2 / 3)) $victories[] = 3;
+				elseif (($mydata->Tower >= round($max_tower / 3)) AND ($mydata->Tower <= round($max_tower * 2 / 3))) $victories[] = 2;
+				else $victories[] = 1;
 				
 				// Tower destruction victory
-				if ($hisdata->Tower < 30) $victories[] = 'major';
-				elseif (($hisdata->Tower >= 30) AND ($hisdata->Tower <= 60)) $victories[] = 'minor';
-				else $victories[] = 'tactical';
+				if ($hisdata->Tower < round($max_tower / 3)) $victories[] = 3;
+				elseif (($hisdata->Tower >= round($max_tower / 3)) AND ($hisdata->Tower <= round($max_tower * 2 / 3))) $victories[] = 2;
+				else $victories[] = 1;
 				
-				sort($victories);
-				$victory = array_shift($victories); // pick highest victory rating
+				$victory = ceil(array_sum($victories) / count($victories)); // calculate avg (rounded up)
 				$mod = $bonus[$victory];
 				
 				// update exp and message
@@ -1401,10 +1408,11 @@
 				
 				$awards = array('Assassin' => 0.5, 'Survivor' => 0.9, 'Desolator' => 0.3, 'Builder' => 0.8, 'Gentle touch' => 0.2, 'Collector' => 0.7, 'Titan' => 0.45);
 				$recieved = array();
+				$assassin_limit = ($g_mode == 'long') ? 20 : 10;
 				
-				if ($round < 10 AND $standard_victory) $recieved[] = 'Assassin';// Assassin
+				if ($round <= $assassin_limit AND $standard_victory) $recieved[] = 'Assassin';// Assassin
 				if ($hisdata->Quarry == 1 AND $hisdata->Magic == 1 AND $hisdata->Dungeons == 1) $recieved[] = 'Desolator'; // Desolator
-				if ($mydata->Wall == 150) $recieved[] = 'Builder'; // Builder
+				if ($mydata->Wall == $max_wall) $recieved[] = 'Builder'; // Builder
 				if ($mylast_card->GetClass() == 'Common' AND $mylast_action == 'play' AND $standard_victory) $recieved[] = 'Gentle touch'; // Gentle touch
 				$tmp = 0;
 				for ($i = 1; $i <= 8; $i++)
