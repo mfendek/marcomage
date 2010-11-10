@@ -126,4 +126,9 @@ table.deck th:first-child + th + th > p /* rare cards heading */
 	color: yellow;
 }
 
+.taken > div.karta /* taken card in card pool */
+{
+	opacity: 0.6;
+}
+
 /* end deck */

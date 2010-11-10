@@ -20,14 +20,13 @@ function TakeCard(id) // add card to deck via AJAX
 
 		// move selected card to deck
 		$(card).removeAttr('onclick'); // disallow the card to be removed from the deck (prevent double clicks)
-		$(card).animate({ opacity: 0 }, 'slow', function() {
-			$(card).animate({ width: 'hide', height: 'hide' }, 'slow', function() {
-				$(slot).html($(card).html());
-				$(slot).hide();
-				$(slot).fadeIn('slow');
-				$(slot).attr('onclick', str.concat("return RemoveCard(", id, ")")); // allow a card to be removed from deck
-				$(card).html(''); // remove card from card pool
-			});
+		$(card).find(".karta").animate({ opacity: 0.6 }, 'slow', function() {
+			$(slot).html($(card).html());
+			$(card).addClass('taken'); // mark card as taken
+			$(slot).find(".karta").css("opacity", 1);
+			$(slot).hide();
+			$(slot).fadeIn('slow');
+			$(slot).attr('onclick', str.concat("return RemoveCard(", id, ")")); // allow a card to be removed from deck
 		});
 
 		// update tokens when needed
@@ -75,17 +74,13 @@ function RemoveCard(id) // remove card from deck via AJAX
 		// move selected card to card pool
 		$(slot).removeAttr('onclick'); // disallow the card to be removed from the deck (prevent double clicks)
 		$(slot).find("noscript").remove(); // remove return card button
-		$(card).html($(slot).html());
-		$(card).hide();
-		$(card).css('width', 'hide'); // hide card (set width and opacity to default values for the animation)
-		$(card).css('opacity', 0);
+		$(card).removeClass('taken'); // unmark card as taken
+		$(card).find(".karta").css("opacity", 0.6);
 		$(card).attr('onclick', str.concat("return TakeCard(", id, ")")); // allow a card to be removed from deck
 		$(slot).fadeOut('slow', function() {
 			$(slot).html(empty);
 			$(slot).show();
-			$(card).animate({ width: 'show', height: 'show' }, 'slow', function() {
-				$(card).animate({ opacity: 1 }, 'slow');
-			});
+			$(card).find(".karta").animate({ opacity: 1 }, 'slow');
 		});
 
 		// recalculate avg cost per turn

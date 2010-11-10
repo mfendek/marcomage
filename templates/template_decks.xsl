@@ -265,12 +265,12 @@
 						<xsl:choose>
 							<xsl:when test="excluded = 'no'">
 								<xsl:attribute name="onclick">return TakeCard(<xsl:value-of select="id" />)</xsl:attribute>
-								<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" />
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:attribute name="class">hidden</xsl:attribute>
+								<xsl:attribute name="class">taken</xsl:attribute>
 							</xsl:otherwise>
 						</xsl:choose>
+						<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" />
 					</td>
 				</xsl:for-each>
 			</tr>
@@ -279,14 +279,9 @@
 				<xsl:for-each select="exsl:node-set($card_list)/*[position() &gt;= (($i - 1)*$columns + 1) and position() &lt;= $i*$columns]">
 					<!-- display Take button if JavaScript is disabled -->
 					<td>
-						<xsl:choose>
-							<xsl:when test="excluded = 'no'">
-								<noscript><div><button type="submit" name="add_card" value="{id}">Take</button></div></noscript>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:attribute name="class">hidden</xsl:attribute>
-							</xsl:otherwise>
-						</xsl:choose>
+						<xsl:if test="excluded = 'no'">
+							<noscript><div><button type="submit" name="add_card" value="{id}">Take</button></div></noscript>
+						</xsl:if>
 					</td>
 				</xsl:for-each>
 			</tr>
