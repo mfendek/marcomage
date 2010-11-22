@@ -2603,6 +2603,7 @@ case 'Registration':
 
 case 'Decks_edit':
 	$currentdeck = $params['deck_edit']['CurrentDeck'] = isset($_POST['CurrentDeck']) ? $_POST['CurrentDeck'] : '';
+	$namefilter = $params['deck_edit']['NameFilter'] = isset($_POST['NameFilter']) ? $_POST['NameFilter'] : '';
 	$classfilter = $params['deck_edit']['ClassFilter'] = isset($_POST['ClassFilter']) ? $_POST['ClassFilter'] : 'Common';
 	$costfilter = $params['deck_edit']['CostFilter'] = isset($_POST['CostFilter']) ? $_POST['CostFilter'] : 'none';
 	$keywordfilter = $params['deck_edit']['KeywordFilter'] = isset($_POST['KeywordFilter']) ? $_POST['KeywordFilter'] : 'none';
@@ -2631,6 +2632,7 @@ case 'Decks_edit':
 	$params['deck_edit']['card_pool'] = ((isset($_POST['CardPool']) AND $_POST['CardPool'] == 'no') OR (!isset($_POST['CardPool']) AND $settings->GetSetting('CardPool') == 'yes')) ? 'no' : 'yes';
 
 	$filter = array();
+	if( $namefilter != '' ) $filter['name'] = $namefilter;
 	if( $classfilter != 'none' ) $filter['class'] = $classfilter;
 	if( $keywordfilter != 'none' ) $filter['keyword'] = $keywordfilter;
 	if( $costfilter != 'none' ) $filter['cost'] = $costfilter;
@@ -3894,6 +3896,7 @@ case 'Cards':
 	if (!is_numeric($current_page) OR $current_page < 0) { $display_error = 'Invalid cards page.'; break; }
 
 	$params['cards']['current_page'] = $current_page;
+	$namefilter = $params['cards']['NameFilter'] = isset($_POST['NameFilter']) ? $_POST['NameFilter'] : '';
 	$classfilter = $params['cards']['ClassFilter'] = isset($_POST['ClassFilter']) ? $_POST['ClassFilter'] : 'none';
 	$costfilter = $params['cards']['CostFilter'] = isset($_POST['CostFilter']) ? $_POST['CostFilter'] : 'none';
 	$keywordfilter = $params['cards']['KeywordFilter'] = isset($_POST['KeywordFilter']) ? $_POST['KeywordFilter'] : 'none';
@@ -3907,6 +3910,7 @@ case 'Cards':
 	$params['cards']['modified_dates'] = $carddb->ListModifyDates();
 
 	$filter = array();
+	if( $namefilter != '' ) $filter['name'] = $namefilter;
 	if( $classfilter != 'none' ) $filter['class'] = $classfilter;
 	if( $keywordfilter != 'none' ) $filter['keyword'] = $keywordfilter;
 	if( $costfilter != 'none' ) $filter['cost'] = $costfilter;

@@ -149,6 +149,9 @@
 		<b><xsl:value-of select="$param/Res/Recruits"/></b>
 	</div>
 
+	<!-- card name filter -->
+	<input type="text" name="NameFilter" maxlength="20" size="15" value="{$param/NameFilter}" />
+
 	<!-- card rarity filter -->
 	<xsl:variable name="classes">
 		<value name="Common"   value="Common"   />

@@ -27,6 +27,9 @@
 			<xsl:when test="$param/is_logged_in = 'yes'">
 			<!-- advanced navigation (for authenticated users only) -->
 
+			<!-- card name filter -->
+			<input type="text" name="NameFilter" maxlength="20" size="15" value="{$param/NameFilter}" />
+
 			<!-- card rarity filter -->
 			<xsl:variable name="classes">
 				<value name="Common"   value="Common"   />

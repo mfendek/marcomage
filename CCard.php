@@ -39,6 +39,7 @@
 		 * Constructs a filtering query based on the specified filters.
 		 * Available filters are:
 		 * <ul>
+		 * <li> 'name'     => { <search_substring> }, queries `Name` </li>
 		 * <li> 'class'    => { None | Common | Uncommon | Rare }, queries `Class` </li>
 		 * <li> 'keyword'  => { Any keyword | No keywords | <a specific keyword> }, queries `Keywords` </li>
 		 * <li> 'cost'     => { Red | Blue | Green | Zero | Mixed }, queries `Bricks`, `Gems` and `Recruits` </li>
@@ -51,6 +52,12 @@
 		private function makeFilterQuery(array $filters)
 		{
 			$query = "@id > 0"; // sentinel
+
+			if( isset($filters['name']) )
+			{
+				$query .= " and ";
+				$query .= "contains(am:name, '".$filters['name']."')"; // case-sensitive search
+			}
 
 			if( isset($filters['class']) )
 			{

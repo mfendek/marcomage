@@ -120,8 +120,18 @@ $(document).ready(function() {
 		if (event.keyCode == '13') { event.preventDefault(); $("button[name='send_message']").click(); }
 	});
 
+	// apply card filters (cards and deck edit sections)
+	$("input[name='NameFilter']").keypress(function(event) {
+		if (event.keyCode == '13')
+		{
+			event.preventDefault();
+			$("button[name='filter']").click(); // deck edit section
+			$("button[name='cards_filter']").click(); // cards section
+		}
+	});
+
 	// blocks ENTER key to prevent section redirects
-	$("input[name!='ChatMessage'][type!='password'], select").keypress(function(event) { if (event.keyCode == '13') { event.preventDefault(); } });
+	$("input[name!='ChatMessage'][name!='NameFilter'][type!='password'], select").keypress(function(event) { if (event.keyCode == '13') { event.preventDefault(); } });
 
 	// show/hide card pool
 	$("button[name='card_pool_switch']").click(function() {
