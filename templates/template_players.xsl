@@ -163,16 +163,9 @@
 						<xsl:if test="$param/messages = 'yes'">
 							<button class="small_button" type="submit" name="message_create" value="{name}">m</button>
 						</xsl:if>
-						<xsl:if test="$param/send_challenges = 'yes' and $param/free_slots &gt; 0 and $param/active_decks &gt; 0 and name != $param/PlayerName and challenged = 'no' and playingagainst = 'no' and waitingforack = 'no'">
+						<xsl:if test="$param/send_challenges = 'yes' and $param/free_slots &gt; 0 and $param/active_decks &gt; 0 and name != $param/PlayerName">
 							<button class="small_button" type="submit" name="prepare_challenge" value="{name}">Challenge</button>
 						</xsl:if>
-					</td>
-					<td>
-						<xsl:choose>
-							<xsl:when test="challenged     = 'yes'"><p class="error">waiting for answer</p></xsl:when>
-							<xsl:when test="playingagainst = 'yes'"><p>game already in progress</p></xsl:when>
-							<xsl:when test="waitingforack  = 'yes'"><p class="warning">game over, waiting for opponent</p></xsl:when>
-						</xsl:choose>
 					</td>
 					
 				</tr>
@@ -344,30 +337,7 @@
 			<h4>Challenge options</h4>
 			
 			<xsl:choose>
-			
-				<xsl:when test="$param/waitingforack = 'yes'">
-					<p class="warning">game over, waiting for opponent</p>
-				</xsl:when>
-				
-				<xsl:when test="$param/playingagainst = 'yes'">
-					<p class="info">game already in progress</p>
-				</xsl:when>
-				
-				<xsl:when test="$param/challenged = 'yes'">
-					<xsl:variable name="challenge" select="$param/challenge"/>
-					<p>
-						<span class="error">waiting for answer</span>
-						<button type="submit" name="withdraw_challenge" value="{$challenge/GameID}">Cancel</button>
-					</p>
-					
-					<xsl:if test="$param/challenge/Content != ''">
-						<div class="challenge_text">
-							<xsl:value-of select="am:BBCode_parse_extended($param/challenge/Content)" disable-output-escaping="yes" />
-						</div>
-					</xsl:if>
-					<p class="info">Challenged on <xsl:value-of select="am:datetime($param/challenge/Created, $param/timezone)"/></p>
-				</xsl:when>
-				
+
 				<xsl:when test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
 					<xsl:choose>
 						<xsl:when test="$param/challenging = 'no'">

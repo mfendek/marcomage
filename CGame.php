@@ -89,16 +89,6 @@
 			
 			return $game;
 		}
-
-		public function CheckGame($player1, $player2)
-		{
-			$db = $this->db;
-			$result = $db->Query('SELECT 1 FROM `games` WHERE `Player1` = "'.$db->Escape($player1).'" AND `Player2` = "'.$db->Escape($player2).'"');
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
-			
-			return true;
-		}
 		
 		public function JoinGame($player, $game_id)
 		{
@@ -226,20 +216,6 @@
 			return $games;
 		}
 		
-		public function ListOpponents($player)
-		{
-			// list names of all oppponents from games where specified player is on the left
-			$db = $this->db;
-			$result = $db->Query('SELECT `Player2` FROM `games` WHERE `Player1` = "'.$db->Escape($player).'" AND `State` != "waiting" AND `State` != "P1 over"');
-			if (!$result) return false;
-			
-			$names = array();
-			while( $data = $result->Next() )
-				$names[] = $data['Player2'];
-			
-			return $names;
-		}
-		
 		public function ListGamesData($player)
 		{
 			// $player is either on the left or right side and Status != 'waiting' or 'P? over'
@@ -252,20 +228,6 @@
 				$games[$i] = $result->Next();
 			
 			return $games;
-		}
-		
-		public function ListEndedGames($player)
-		{
-			// list names of all oppponents from ended games where specified player is on the left
-			$db = $this->db;
-			$result = $db->Query('SELECT `Player2` FROM `games` WHERE `Player1` = "'.$db->Escape($player).'" AND `State` = "P1 over"');
-			if (!$result) return false;
-			
-			$names = array();
-			while( $data = $result->Next() )
-				$names[] = $data['Player2'];
-			
-			return $names;
 		}
 		
 		/// return number of games where it's specified player's turn

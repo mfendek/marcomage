@@ -1796,9 +1796,6 @@
 				// check if such opponent exists
 				if (!$playerdb->GetPlayer($opponent)) { $error = 'No such player!'; $current = 'Games'; break; }
 
-				// check if that opponent was already challenged, or if there is a game already in progress
-				if ($gamedb->CheckGame($opponent, $player->Name())) { $error = 'You are already playing against '.htmlencode($opponent).'!'; $current = 'Games'; break; }
-
 				// join the game
 				$gamedb->JoinGame($player->Name(), $game_id);
 				$game = $gamedb->GetGame($game_id); // refresh game data
@@ -1942,9 +1939,6 @@
 
 				// check if such opponent exists
 				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Players_details'; break; }
-
-				// check if that opponent was already challenged, or if there is a game already in progress
-				if ($gamedb->CheckGame($player->Name(), $opponent)) { $error = 'You are already playing against '.htmlencode($opponent).'!'; $current = 'Players_details'; break; }
 
 				// check if you are within the MAX_GAMES limit
 				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Messages'; break; }
@@ -2796,10 +2790,6 @@ case 'Players':
 	$params['players']['show_nationality'] = $settings->GetSetting('Nationality');
 	$params['players']['show_avatars'] = $settings->GetSetting('Avatarlist');
 
-	$opponents = $gamedb->ListOpponents($player->Name());
-	$challengesfrom = $gamedb->ListChallengesFrom($player->Name());
-	$endedgames = $gamedb->ListEndedGames($player->Name());
-
 	$params['players']['free_slots'] = $gamedb->CountFreeSlots1($player->Name());
 
 	$params['players']['messages'] = ($access_rights[$player->Type()]["messages"]) ? 'yes' : 'no';
@@ -2834,9 +2824,6 @@ case 'Players':
 		$entry['country'] = $data['Country'];
 		$entry['last_query'] = $data['Last Query'];
 		$entry['inactivity'] = time() - strtotime($data['Last Query']);
-		$entry['challenged'] = (array_search($opponent, $challengesfrom) !== false) ? 'yes' : 'no';
-		$entry['playingagainst'] = (array_search($opponent, $opponents) !== false) ? 'yes' : 'no';
-		$entry['waitingforack'] = (array_search($opponent, $endedgames) !== false) ? 'yes' : 'no';
 
 		$params['players']['list'][] = $entry;
 	}
@@ -2911,16 +2898,7 @@ case 'Players_details':
 	$params['profile']['decks'] = $decks = $player->ListReadyDecks();
 	$params['profile']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)] : '';
 
-	$params['profile']['challenged'] = (array_search($cur_player, $gamedb->ListChallengesFrom($player->Name())) !== false) ? 'yes' : 'no';
-	$params['profile']['playingagainst'] = (array_search($cur_player, $gamedb->ListOpponents($player->Name())) !== false) ? 'yes' : 'no';
-	$params['profile']['waitingforack'] = (array_search($cur_player, $gamedb->ListEndedGames($player->Name())) !== false) ? 'yes' : 'no';
-
 	$params['profile']['challenging'] = (isset($_POST['prepare_challenge'])) ? 'yes' : 'no';
-
-	if ($params['profile']['challenged'])
-	{
-		$params['profile']['challenge'] = $messagedb->GetChallenge($player->Name(), $cur_player);
-	}
 
 	$params['profile']['statistics'] = $player->GetVersusStats($p->Name());
 	$params['profile']['export_decks'] = ($access_rights[$player->Type()]["export_deck"]) ? $p->ListDecks() : array();
