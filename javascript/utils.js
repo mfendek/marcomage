@@ -115,6 +115,11 @@ function PauseReplay() // replay slideshow -> pause replay
 
 $(document).ready(function() {
 
+	// executes forum search when ENTER key is hit
+	$("input[name='phrase']").keypress(function(event) {
+		if (event.keyCode == '13') { event.preventDefault(); $("button[name='forum_search']").click(); }
+	});
+
 	// sends in game chat message when ENTER key is hit
 	$("input[name='ChatMessage']").keypress(function(event) {
 		if (event.keyCode == '13') { event.preventDefault(); $("button[name='send_message']").click(); }
@@ -131,7 +136,7 @@ $(document).ready(function() {
 	});
 
 	// blocks ENTER key to prevent section redirects
-	$("input[name!='ChatMessage'][name!='NameFilter'][type!='password'], select").keypress(function(event) { if (event.keyCode == '13') { event.preventDefault(); } });
+	$("input[name!='ChatMessage'][name!='NameFilter'][name!='phrase'][type!='password'], select").keypress(function(event) { if (event.keyCode == '13') { event.preventDefault(); } });
 
 	// show/hide card pool
 	$("button[name='card_pool_switch']").click(function() {
