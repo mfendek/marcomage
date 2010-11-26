@@ -83,16 +83,18 @@
 			return $data;
 		}
 		
-		public function CheckLatestPost($author) // check if user is allowed to create a post (he didn't create a post within a 5 second interval)
+		public function GetLatestPost($author)
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT 1 FROM `forum_posts` WHERE `Author` = "'.$db->Escape($author).'" AND `Created` >= NOW() - INTERVAL 5 SECOND AND `Deleted` = FALSE');
+			$result = $db->Query('SELECT `PostID`, `Author`, `Content`, `ThreadID`, `Created` FROM `forum_posts` WHERE `Author` = "'.$db->Escape($author).'" AND `Deleted` = FALSE ORDER BY `Created` DESC LIMIT 1');
 			
 			if (!$result) return false;
-			if (!$result->Rows()) return true;
+			if (!$result->Rows()) return false;
 			
-			return false;
+			$data = $result->Next();
+			
+			return $data;
 		}
 		
 		public function EditPost($post_id, $content)

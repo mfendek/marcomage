@@ -967,8 +967,11 @@
 				if (trim($_POST['Content']) == "") { $error = "Invalid input"; $current = "Forum_post_new"; break; }
 				if (strlen($_POST['Content']) > POST_LENGTH) { $error = "Post text is too long"; $current = "Forum_post_new"; break; }
 
-				if ($forum->Threads->Posts->CheckLatestPost($player->Name()))
-				{ // anti-spam protection (user is allowed to create posts at most every 5 seconds)
+				$latest_post = $forum->Threads->Posts->GetLatestPost($player->Name());
+
+				// anti-spam protection (user is allowed to create posts at most every 5 seconds)
+				if (!$latest_post OR ((time() - strtotime($latest_post['Created'])) > 5))
+				{
 					$new_post = $forum->Threads->Posts->CreatePost($thread_id, $player->Name(), $_POST['Content']);
 					if (!$new_post) { $error = "Failed to create new post"; $current = "Forum_thread"; break; }
 	
