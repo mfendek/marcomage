@@ -31,6 +31,11 @@
 	require_once('parser/parse.php');
 	
 	$db = new CDatabase($server, $username, $password, $database);
+	if( $db->status != 'SUCCESS' )
+	{
+	    header("Content-type: text/html");
+	    die("Unable to connect to database, aborting.");
+	}
 
 	if( !date_default_timezone_set("Etc/UTC")
 	||  !$db->Query("SET time_zone='Etc/UTC'")
