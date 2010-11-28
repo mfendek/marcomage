@@ -246,6 +246,17 @@
 			return $data['Level'];
 		}
 		
+		public function GetGameSlots($playername)
+		{
+			$db = $this->db;
+			$result = $db->Query('SELECT `GameSlots` FROM `scores` WHERE `Username` = "'.$db->Escape($playername).'"');
+			if (!$result) return false;
+			if (!$result->Rows()) return false;
+			
+			$data = $result->Next();
+			return $data['GameSlots'];
+		}
+		
 		public function GetGuest()
 		{
 			return new CGuest();
@@ -321,6 +332,11 @@
 		public function GetLevel()
 		{
 			return $this->Players->GetLevel($this->Name);
+		}
+		
+		public function GetGameSlots()
+		{
+			return $this->Players->GetGameSlots($this->Name);
 		}
 		
 		public function GetDeck($deckname)

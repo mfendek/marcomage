@@ -119,7 +119,7 @@
 			
 			$data = $result->Next();
 			
-			return max(0, MAX_GAMES + floor($playerdb->GetLevel($player) / BONUS_GAME_SLOTS) - $data['count']); // make sure the result is not negative
+			return max(0, MAX_GAMES + $playerdb->GetGameSlots($player) - $data['count']); // make sure the result is not negative
 		}
 		
 		public function CountFreeSlots2($player) // used only when accepting a challenge
@@ -139,7 +139,7 @@
 			
 			$data = $result->Next();
 			
-			return max(0, MAX_GAMES + floor($playerdb->GetLevel($player) / BONUS_GAME_SLOTS) - $data['count']);
+			return max(0, MAX_GAMES + $playerdb->GetGameSlots($player) - $data['count']);
 		}
 		
 		public function ListChallengesFrom($player)
