@@ -117,8 +117,8 @@
 
 			</xsl:when>
 			<xsl:otherwise>
-			<!-- simple navigation (for anonymous users) -->
-			<div class="filters"><xsl:copy-of select="am:simple_navigation('Cards', 'CurrentCardsPage', $param/current_page, $param/page_count)"/></div>
+				<!-- simple navigation (for anonymous users) -->
+				<div class="filters"><xsl:copy-of select="am:simple_navigation('Cards', 'CurrentCardsPage', $param/current_page, $param/page_count)"/></div>
 			</xsl:otherwise>
 		</xsl:choose>
 		<!-- end buttons and filters -->
