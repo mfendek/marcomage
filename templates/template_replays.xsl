@@ -5,7 +5,8 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exsl="http://exslt.org/common"
                 xmlns:php="http://php.net/xsl"
-                extension-element-prefixes="exsl php">
+                xmlns:str="http://exslt.org/strings"
+                extension-element-prefixes="exsl php str">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 <!-- includes -->
@@ -185,6 +186,8 @@
 
 	<p class="information_line">
 		<!-- begin navigation -->
+
+		<!-- previous -->
 		<xsl:choose>
 			<xsl:when test="$current &gt; 1">
 				<a class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', am:max($current - 1, 1))}">&lt;</a>
@@ -194,6 +197,39 @@
 			</xsl:otherwise>
 		</xsl:choose>
 
+		<!-- first -->
+		<xsl:choose>
+			<xsl:when test="$current &gt; 1">
+				<a class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', 1)}">First</a>
+			</xsl:when>
+			<xsl:otherwise>
+				<span class="disabled">First</span>
+			</xsl:otherwise>
+		</xsl:choose>
+
+		<!-- page selection -->
+		<xsl:for-each select="str:split(am:numbers(am:max($current - 5, 1), am:min($current + 5, $turns)), ',')">
+			<xsl:choose>
+				<xsl:when test="$current != .">
+					<a class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', text())}"><xsl:value-of select="text()"/></a>
+				</xsl:when>
+				<xsl:otherwise>
+					<span class="disabled"><xsl:value-of select="text()"/></span>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:for-each>
+
+		<!-- last -->
+		<xsl:choose>
+			<xsl:when test="$current &lt; $turns">
+				<a class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', $turns)}">Last</a>
+			</xsl:when>
+			<xsl:otherwise>
+				<span class="disabled">Last</span>
+			</xsl:otherwise>
+		</xsl:choose>
+
+		<!-- next -->
 		<xsl:choose>
 			<xsl:when test="$current &lt; $turns">
 				<a id="next" class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', am:min($current + 1, $turns))}">&gt;</a>
