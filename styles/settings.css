@@ -78,6 +78,15 @@ div#settings input[type="checkbox"] + span /* checkbox description layout */
 	vertical-align: middle;
 }
 
+div#settings input[type="radio"] /* radio button */
+{
+	padding: 1ex;
+	margin: 0ex;
+	border-style: solid;
+	border-width: thin;
+	margin-right: 1ex;
+}
+
 div#preview /* background image preview */
 {
 	float: right;

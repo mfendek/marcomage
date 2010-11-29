@@ -168,6 +168,33 @@
 					<button type="submit" name="reset_avatar">Clear avatar</button>
 				</p>
 			</xsl:if>
+
+			<h4>MArcomage shop (<xsl:value-of select="$param/gold"/> gold available)</h4>
+			<p>Bonus game slots already purchased: <b><xsl:value-of select="$param/game_slots"/></b></p>
+			<p>Bonus deck slots already purchased: <b><xsl:value-of select="$param/deck_slots"/></b></p>
+			<p>
+				<input type="radio" name="selected_item" value="game_slot">
+					<xsl:if test="$param/gold &lt; $param/game_slot_cost"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">more game slots will allow you to play more games at the same time</xsl:attribute>
+					<xsl:text>bonus game slot for </xsl:text>
+					<xsl:value-of select="$param/game_slot_cost"/>
+					<xsl:text> gold</xsl:text>
+				</span>
+			</p>
+			<p>
+				<input type="radio" name="selected_item" value="deck_slot">
+					<xsl:if test="$param/gold &lt; $param/deck_slot_cost"><xsl:attribute name="disabled">disabled</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">more deck slots will allow you to have more decks to play with</xsl:attribute>
+					<xsl:text>bonus deck slot for </xsl:text>
+					<xsl:value-of select="$param/deck_slot_cost"/>
+					<xsl:text> gold</xsl:text>
+				</span>
+			</p>
+			<p><button type="submit" name="buy_item">Purchase item</button></p>
 		</div>
 
 		<!-- game settings -->

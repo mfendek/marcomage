@@ -163,6 +163,7 @@ CREATE TABLE `scores` (
   `Username` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `Level` int(10) unsigned NOT NULL DEFAULT '0',
   `Exp` int(10) unsigned NOT NULL DEFAULT '0',
+  `Gold` int(10) unsigned NOT NULL DEFAULT '0',
   `Wins` int(10) unsigned NOT NULL DEFAULT '0',
   `Losses` int(10) unsigned NOT NULL DEFAULT '0',
   `Draws` int(10) unsigned NOT NULL DEFAULT '0',

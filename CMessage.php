@@ -43,9 +43,7 @@
 		
 		public function LevelUp($player, $new_level)
 		{
-			$game_slot = (($new_level % BONUS_GAME_SLOTS) == 0) ? "\n".'You gained bonus game slot.' : '';
-			$decks_slot = (($new_level % BONUS_DECK_SLOTS) == 0) ? "\n".'You gained bonus deck slot.' : '';
-			$this->SendMessage("MArcomage", $player, 'Level up ('.$new_level.')', 'Congratulations, you have reached level '.$new_level.'.'.$game_slot.$decks_slot);
+			$this->SendMessage("MArcomage", $player, 'Level up ('.$new_level.')', 'Congratulations, you have reached level '.$new_level.'.');
 		}
 		
 		public function GetMessage($messageid, $player_name)

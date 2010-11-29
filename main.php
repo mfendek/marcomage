@@ -1442,10 +1442,6 @@
 						if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
 						if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
 
-						// add bonus deck slot every 6th level
-						if ($levelup1 AND (($p1->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player1, time());
-						if ($levelup2 AND (($p2->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player2, time());
-
 						// send battle report message
 						$outcome = $game->Outcome();
 						$winner = $game->Winner;
@@ -1563,10 +1559,6 @@
 					if ($levelup1 AND ($player_rep == "yes")) $messagedb->LevelUp($player->Name(), $score1->ScoreData->Level);
 					if ($levelup2 AND ($opponent_rep == "yes")) $messagedb->LevelUp($opponent->Name(), $score2->ScoreData->Level);
 
-					// add bonus deck slot every 6th level
-					if ($levelup1 AND (($player->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player->Name(), time());
-					if ($levelup2 AND (($opponent->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($opponent->Name(), time());
-
 					// send battle report message
 					$outcome = $game->Outcome();
 					$winner = $game->Winner;
@@ -1656,10 +1648,6 @@
 					// send level up messages
 					if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
 					if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
-
-					// add bonus deck slot every 6th level
-					if ($levelup1 AND (($p1->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player1, time());
-					if ($levelup2 AND (($p2->GetLevel() % BONUS_DECK_SLOTS) == 0)) $deckdb->CreateDeck($player2, time());
 
 					// send battle report message
 					$outcome = $game->Outcome();
@@ -2449,6 +2437,34 @@
 				$current = 'Settings';
 
 				break;
+			}
+
+			if (isset($_POST['buy_item'])) // buy item at MArcomage shop (currently in settings section)
+			{
+				$score = $player->GetScore();
+
+				if (!isset($_POST['selected_item'])) { $error = 'Invalid item selection.'; $current = 'Settings'; break; }
+
+				if ($_POST['selected_item'] == 'game_slot') // buy game slot
+				{
+					$res = $score->BuyItem(GAME_SLOT_COST);
+					if (!$res) { $error = 'Not enough gold.'; $current = 'Settings'; break; }
+					$score->ScoreData->GameSlots++;
+					$score->SaveScore();
+					$information = 'Game slot has been successfully purchased.';
+				}
+				elseif ($_POST['selected_item'] == 'deck_slot') // buy deck slot
+				{
+					$res = $score->BuyItem(DECK_SLOT_COST);
+					if (!$res) { $error = 'Not enough gold.'; $current = 'Settings'; break; }
+
+					$deck = $deckdb->CreateDeck($player->Name(), time());
+					if (!$deck) { $error = 'Transaction failed.'; $current = 'Settings'; break; }
+					$score->SaveScore();
+					$information = 'Deck slot has been successfully purchased.';
+				}
+
+				$current = 'Settings';
 			}
 
 			// end settings related messages
@@ -3362,6 +3378,13 @@ case 'Settings':
 	$params['settings']['current_settings'] = $settings->GetAll();
 	$params['settings']['PlayerType'] = $player->Type();
 	$params['settings']['change_own_avatar'] = (($access_rights[$player->Type()]["change_own_avatar"]) ? 'yes' : 'no');
+
+	$score = $player->GetScore();
+	$params['settings']['gold'] = $score->ScoreData->Gold;
+	$params['settings']['game_slots'] = $score->ScoreData->GameSlots;
+	$params['settings']['deck_slots'] = max(0,count($player->ListDecks()) - DECK_SLOTS);
+	$params['settings']['game_slot_cost'] = GAME_SLOT_COST;
+	$params['settings']['deck_slot_cost'] = DECK_SLOT_COST;
 
 	//date is handled separately
 	$birthdate = $settings->GetSetting('Birthdate');

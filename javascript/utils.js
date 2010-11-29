@@ -318,4 +318,20 @@ $(document).ready(function() {
 			ResumeReplay();
 		}
 	});
+
+	// purchase item (MArcomage shop)
+	$("button[name='buy_item']").click(function() {
+		var selected = $("input[name='selected_item']:checked");
+
+		if (selected.length == 0)
+		{
+			alert('Invalid item selection.');
+			return false;
+		}
+		else // request confirmation
+		{
+			var str = new String();
+			return confirm(str.concat("Do you really want to purchase ", selected.next().html(), "?"))
+		}
+	});
 });

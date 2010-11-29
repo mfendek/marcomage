@@ -86,12 +86,13 @@
 		public function LoadScore()
 		{
 			$db = $this->Scores->getDB();
-			$result = $db->Query('SELECT `Level`, `Exp`, `Wins`, `Losses`, `Draws`, `GameSlots` FROM `scores` WHERE `Username` = "'.$db->Escape($this->Username).'"');
+			$result = $db->Query('SELECT `Level`, `Exp`, `Gold`, `Wins`, `Losses`, `Draws`, `GameSlots` FROM `scores` WHERE `Username` = "'.$db->Escape($this->Username).'"');
 			if (!$result) return false;
 			
 			$data = $result->Next();
 			$this->ScoreData->Level = $data['Level'];
 			$this->ScoreData->Exp = $data['Exp'];
+			$this->ScoreData->Gold = $data['Gold'];
 			$this->ScoreData->Wins = $data['Wins'];
 			$this->ScoreData->Losses = $data['Losses'];
 			$this->ScoreData->Draws = $data['Draws'];
@@ -103,7 +104,7 @@
 		public function SaveScore()
 		{
 			$db = $this->Scores->getDB();
-			$result = $db->Query('UPDATE `scores` SET `Level` = '.$this->ScoreData->Level.', `Exp` = '.$this->ScoreData->Exp.', `Wins` = '.$this->ScoreData->Wins.', `Losses` = '.$this->ScoreData->Losses.', `Draws` = '.$this->ScoreData->Draws.', `GameSlots` = '.$this->ScoreData->GameSlots.' WHERE `Username` = "'.$db->Escape($this->Username).'"');
+			$result = $db->Query('UPDATE `scores` SET `Level` = '.$this->ScoreData->Level.', `Exp` = '.$this->ScoreData->Exp.', `Gold` = '.$this->ScoreData->Gold.', `Wins` = '.$this->ScoreData->Wins.', `Losses` = '.$this->ScoreData->Losses.', `Draws` = '.$this->ScoreData->Draws.', `GameSlots` = '.$this->ScoreData->GameSlots.' WHERE `Username` = "'.$db->Escape($this->Username).'"');
 			if (!$result) return false;
 			
 			return true;
@@ -115,10 +116,11 @@
 			$nextlevel = $this->Scores->NextLevel($this->ScoreData->Level);
 			$current_exp = $this->ScoreData->Exp + $exp;
 			
-			if ($current_exp >= $nextlevel)
+			if ($current_exp >= $nextlevel) // level up (gains 100 gold at levelup)
 			{
 				$current_exp-= $nextlevel;
 				$this->ScoreData->Level++;
+				$this->ScoreData->Gold+= 100;
 				$level_up = true;
 			}
 			
@@ -131,7 +133,16 @@
 		{
 			$this->ScoreData->Exp = 0;
 			$this->ScoreData->Level = 0;
+			$this->ScoreData->Gold = 0;
 			$this->ScoreData->GameSlots = 0;
+		}
+		
+		public function BuyItem($gold) // purchase item if player can afford it
+		{
+			if ($this->ScoreData->Gold < $gold) return false;
+			$this->ScoreData->Gold-= $gold;
+			
+			return true;
 		}
 	}
 	
@@ -140,6 +151,7 @@
 	{
 		public $Level = 0;
 		public $Exp = 0;
+		public $Gold = 0;
 		public $Wins = 0;
 		public $Losses = 0;
 		public $Draws = 0;
