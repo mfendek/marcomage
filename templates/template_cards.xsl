@@ -22,10 +22,10 @@
 
 		<!-- begin buttons and filters -->
 
-		<div class="filters">
 		<xsl:choose>
 			<xsl:when test="$param/is_logged_in = 'yes'">
 			<!-- advanced navigation (for authenticated users only) -->
+			<div class="filters">
 
 			<!-- card name filter -->
 			<input type="text" name="NameFilter" maxlength="20" size="15" value="{$param/NameFilter}" />
@@ -110,17 +110,17 @@
 			<xsl:copy-of select="am:htmlSelectBox('ModifiedFilter', $param/ModifiedFilter, $modified, $param/modified_dates)"/>
 
 			<button type="submit" name="cards_filter" >Apply filters</button>
+			</div>
 
 			<!-- navigation -->
-			<xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'cards')"/>
+			<div class="filters"><xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'cards')"/></div>
 
 			</xsl:when>
 			<xsl:otherwise>
-				<!-- simple navigation (for anonymous users) -->
-				<xsl:copy-of select="am:simple_navigation('Cards', 'CurrentCardsPage', $param/current_page, $param/page_count)"/>
+			<!-- simple navigation (for anonymous users) -->
+			<div class="filters"><xsl:copy-of select="am:simple_navigation('Cards', 'CurrentCardsPage', $param/current_page, $param/page_count)"/></div>
 			</xsl:otherwise>
 		</xsl:choose>
-		</div>
 		<!-- end buttons and filters -->
 
 		<table cellspacing="0" class="skin_text">

@@ -23,10 +23,10 @@
 
 		<!-- begin buttons and filters -->
 
-		<div class="filters">
 		<xsl:choose>
 			<xsl:when test="$param/is_logged_in = 'yes'">
 			<!-- advanced navigation (for authenticated users only) -->
+			<div class="filters">
 
 			<xsl:if test="$param/create_card = 'yes'">
 				<button type="submit" name="new_concept">New card</button>
@@ -73,19 +73,19 @@
 			<xsl:if test="$param/mycards = 'yes'">
 				<button type="submit" name="my_concepts">My cards</button>
 			</xsl:if>
+			</div>
 
 			<!-- upper navigation -->
-			<xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'concepts')"/>
+			<div class="filters"><xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'concepts')"/></div>
 
 			</xsl:when>
 			<xsl:otherwise>
 				<!-- simple navigation (for anonymous users) -->
-				<xsl:copy-of select="am:simple_navigation('Concepts', 'CurrentConPage', $param/current_page, $param/page_count)"/>
+				<div class="filters"><xsl:copy-of select="am:simple_navigation('Concepts', 'CurrentConPage', $param/current_page, $param/page_count)"/></div>
 			</xsl:otherwise>
 		</xsl:choose>
 
 		<!-- end buttons and filters -->
-		</div>
 		
 		<table cellspacing="0" class="skin_text">
 			<tr>

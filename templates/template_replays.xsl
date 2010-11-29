@@ -62,7 +62,8 @@
 		<xsl:if test="$param/my_replays = 'yes'">
 			<button type="submit" name="my_replays">My replays</button>
 		</xsl:if>
-
+	</div>
+	<div class="filters">
 		<!-- navigation -->
 		<xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'replays')"/>
 	</div>

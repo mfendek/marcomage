@@ -141,31 +141,49 @@
 	<xsl:param name="button_name" as="xs:string" />
 
 	<xsl:variable name="output">
-		<!-- arrow buttons selector -->
+		<!-- previous -->
 		<button type="submit" name="{concat('select_page_', $button_name)}" value="{am:max($current - 1, 0)}">
 			<xsl:if test="$current = 0">
 				<xsl:attribute name="disabled">disabled</xsl:attribute>
 			</xsl:if>
 			<xsl:text>&lt;</xsl:text>
 		</button>
+
+		<!-- first -->
+		<button type="submit" name="{concat('select_page_', $button_name)}" value="0">
+			<xsl:if test="$current = 0">
+				<xsl:attribute name="disabled">disabled</xsl:attribute>
+			</xsl:if>
+			<xsl:text>First</xsl:text>
+		</button>
+
+		<xsl:if test="$page_count &gt; 0">
+			<!-- page selecion -->
+			<xsl:for-each select="str:split(am:numbers(am:max($current - 5, 0), am:min($current + 5, am:max($page_count - 1, 0))), ',')">
+				<button type="submit" name="{concat('select_page_', $button_name)}" value="{text()}">
+					<xsl:if test="$current = .">
+						<xsl:attribute name="disabled">disabled</xsl:attribute>
+					</xsl:if>
+					<xsl:value-of select="text()"/>
+				</button>
+			</xsl:for-each>
+		</xsl:if>
+
+		<!-- last -->
+		<button type="submit" name="{concat('select_page_', $button_name)}" value="{am:max($page_count - 1, 0)}">
+			<xsl:if test="$current = am:max($page_count - 1, 0)">
+				<xsl:attribute name="disabled">disabled</xsl:attribute>
+			</xsl:if>
+			<xsl:text>Last</xsl:text>
+		</button>
+
+		<!-- next -->
 		<button type="submit" name="{concat('select_page_', $button_name)}" value="{am:min($current + 1, $page_count - 1)}">
 			<xsl:if test="$current = am:max($page_count - 1, 0)">
 				<xsl:attribute name="disabled">disabled</xsl:attribute>
 			</xsl:if>
 			<xsl:text>&gt;</xsl:text>
 		</button>
-		<xsl:if test="$page_count &gt; 0">
-			<!-- page selector -->
-			<select name="page_selector">
-				<xsl:for-each select="am:page_list($page_count)">
-					<option value="{.}">
-						<xsl:if test="$current = ."><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-						<xsl:value-of select="."/>
-					</option>
-				</xsl:for-each>
-			</select>
-			<button type="submit" name="{concat('seek_page_', $button_name)}">Select</button>
-		</xsl:if>
 	</xsl:variable>
 
 	<func:result select="$output" />

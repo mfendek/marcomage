@@ -193,14 +193,6 @@
 				break;
 			}
 
-			if (isset($_POST['seek_page_cards'])) // Cards -> select page (page selector)
-			{
-				$_POST['CurrentCardsPage'] = $_POST['page_selector'];
-				$current = 'Cards';
-
-				break;
-			}
-
 			if (isset($_POST['card_thread'])) // find matching thread for specified card or create a new matching thread
 			{
 				$card_id = $_POST['card_thread'];
@@ -269,14 +261,6 @@
 			if (isset($_POST['select_page_concepts'])) // Concepts -> select page (previous and next button)
 			{
 				$_POST['CurrentConPage'] = $_POST['select_page_concepts'];
-				$current = "Concepts";
-
-				break;
-			}
-
-			if (isset($_POST['seek_page_concepts'])) // Concepts -> select page (Jump to page)
-			{
-				$_POST['CurrentConPage'] = $_POST['page_selector'];
 				$current = "Concepts";
 
 				break;
@@ -2152,14 +2136,6 @@
 				break;
 			}
 
-			if (isset($_POST['seek_page_messages'])) // Messages -> select page (Jump to page)
-			{
-				$_POST['CurrentMesPage'] = $_POST['page_selector'];
-				$current = "Messages";
-
-				break;
-			}
-
 			if (isset($_POST['Delete_mass'])) // Messages -> delete selected messages
 			{
 				$deleted_messages = array();
@@ -2324,14 +2300,6 @@
 			if (isset($_POST['select_page_players'])) // Players -> select page (previous and next button)
 			{
 				$_POST['CurrentPlayersPage'] = $_POST['select_page_players'];
-				$current = "Players";
-
-				break;
-			}
-
-			if (isset($_POST['seek_page_players'])) // Players -> select page (Jump to page)
-			{
-				$_POST['CurrentPlayersPage'] = $_POST['page_selector'];
 				$current = "Players";
 
 				break;
@@ -2528,14 +2496,6 @@
 			if (isset($_POST['select_page_replays'])) // Replays -> select page (previous and next button)
 			{
 				$_POST['CurrentRepPage'] = $_POST['select_page_replays'];
-				$current = "Replays";
-
-				break;
-			}
-
-			if (isset($_POST['seek_page_replays'])) // Replays -> select page (page selector)
-			{
-				$_POST['CurrentRepPage'] = $_POST['page_selector'];
 				$current = "Replays";
 
 				break;
