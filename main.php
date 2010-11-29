@@ -2276,6 +2276,26 @@
 				return; // skip the presentation layer
 			}
 
+			if (isset($_POST['add_gold'])) // Players -> User details -> Add gold
+			{
+				$_POST['Profile'] = $opponent = postdecode($_POST['add_gold']);
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["reset_exp"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
+
+				// check user input
+				if (!isset($_POST['gold_amount']) OR trim($_POST['gold_amount']) == '' OR !is_numeric($_POST['gold_amount'])) { $error = 'Invalid gold amount.'; $current = 'Players_details'; break; }
+
+				// add gold
+				$score = $scoredb->GetScore($opponent);
+				$score->ScoreData->Gold+= $_POST['gold_amount'];
+				$score->SaveScore();
+
+				$information = 'Gold successfully added.';
+				$current = 'Players_details';
+				break;
+			}
+
 			// end profile related messages
 
 			// begin players related messages
@@ -2884,6 +2904,7 @@ case 'Players_details':
 	$params['profile']['Wins'] = $score->ScoreData->Wins;
 	$params['profile']['Losses'] = $score->ScoreData->Losses;
 	$params['profile']['Draws'] = $score->ScoreData->Draws;
+	$params['profile']['Gold'] = $score->ScoreData->Gold;
 	$params['profile']['Posts'] = $forum->Threads->Posts->CountPosts($cur_player);
 
 	if( $p_settings->GetSetting('Birthdate') != "0000-00-00" )

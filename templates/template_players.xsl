@@ -439,6 +439,12 @@
 		<xsl:if test="$param/reset_exp = 'yes'">
 			<h4>Reset exp</h4>
 			<button type="submit" name="reset_exp" value="{am:urlencode($opponent)}">Reset</button>
+
+			<h4>Add gold (<xsl:value-of select="$opponent"/> has <xsl:value-of select="$param/Gold"/> gold)</h4>
+			<p>
+				<input type="text" name="gold_amount" maxlength="4" size="4" />
+				<button type="submit" name="add_gold" value="{am:urlencode($opponent)}">Add</button>
+			</p>
 		</xsl:if>
 
 		<div class="clear_floats"></div>
