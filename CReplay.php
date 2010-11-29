@@ -199,6 +199,40 @@
 			
 			return true;
 		}
+
+		public function AssignThread($replay_id, $thread_id)
+		{
+			$db = $this->db;
+
+			$result = $db->Query('UPDATE `replays_head` SET `ThreadID` = "'.$db->Escape($thread_id).'" WHERE `GameID` = "'.$db->Escape($replay_id).'"');
+
+			if (!$result) return false;
+
+			return true;
+		}
+
+		public function RemoveThread($replay_id)
+		{
+			$db = $this->db;
+
+			$result = $db->Query('UPDATE `replays_head` SET `ThreadID` = 0 WHERE `GameID` = "'.$db->Escape($replay_id).'"');
+
+			if (!$result) return false;
+
+			return true;
+		}
+
+		public function FindReplay($thread_id)
+		{
+			$db = $this->db;
+
+			$result = $db->Query('SELECT `GameID` FROM `replays_head` WHERE `ThreadID` = "'.$db->Escape($thread_id).'"');
+			if (!$result OR !$result->Rows()) return 0;
+
+			$data = $result->Next();
+
+			return $data['GameID'];
+		}
 	}
 	
 	
@@ -216,6 +250,7 @@
 		public $Round;
 		public $Winner;
 		public $EndType;
+		public $ThreadID;
 		public $ReplayData;
 		
 		public function __construct($gameid, $turn, $player1, $player2, CReplays $Replays)
@@ -261,7 +296,7 @@
 		public function LoadReplay()
 		{
 			$db = $this->Replays->getDB();
-			$result = $db->Query('SELECT `Winner`, `EndType`, `GameModes` FROM `replays_head` WHERE `GameID` = "'.$db->Escape($this->ID()).'"');
+			$result = $db->Query('SELECT `Winner`, `EndType`, `GameModes`, `ThreadID` FROM `replays_head` WHERE `GameID` = "'.$db->Escape($this->ID()).'"');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
@@ -271,6 +306,7 @@
 			$this->HiddenCards = (strpos($data['GameModes'], 'HiddenCards') !== false) ? 'yes' : 'no';
 			$this->FriendlyPlay = (strpos($data['GameModes'], 'FriendlyPlay') !== false) ? 'yes' : 'no';
 			$this->LongMode = (strpos($data['GameModes'], 'LongMode') !== false) ? 'yes' : 'no';
+			$this->ThreadID = $data['ThreadID'];
 			
 			$result = $db->Query('SELECT `Current`, `Round`, `Data` FROM `replays_data` WHERE `GameID` = "'.$db->Escape($this->ID()).'" AND `Turn` = "'.$db->Escape($this->Turn()).'"');
 			if (!$result) return false;
@@ -315,6 +351,11 @@
 				'Pending' => 'Pending'
 			);
 			return $outcomes[$this->EndType];
+		}
+
+		public function AssignThread($thread_id)
+		{
+			return $this->Replays->AssignThread($this->ID(), $thread_id);
 		}
 	}
 	

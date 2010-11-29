@@ -248,6 +248,16 @@
 		</xsl:variable>
 		<a class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $view, 'Turn', $current)}">Switch players</a>
 
+		<!-- discussion -->
+		<xsl:choose>
+			<xsl:when test="$param/ThreadID = 0 and $param/create_thread = 'yes'">
+				<button type="submit" name="replay_thread" value="{$param/CurrentReplay}" >Start discussion</button>
+			</xsl:when>
+			<xsl:when test="$param/ThreadID &gt; 0">
+				<a class="button" href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', $param/ThreadID, 'CurrentPage', 0)}">View discussion</a>
+			</xsl:when>
+		</xsl:choose>
+
 		<!-- slideshow button -->
 		<button type="button" name="slideshow">Play</button>
 		<!-- end navigation -->

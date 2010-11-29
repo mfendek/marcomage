@@ -917,6 +917,15 @@
 					if (!$delete) { $error = "Failed to unlink matching concept"; $current = "Forum_thread"; break; }
 				}
 
+				// check for linked replays, update when necessary
+				$replay_id = $replaydb->FindReplay($thread_id);
+
+				if ($replay_id > 0)
+				{
+					$delete = $replaydb->RemoveThread($replay_id);
+					if (!$delete) { $error = "Failed to unlink matching replay"; $current = "Forum_thread"; break; }
+				}
+
 				$information = "Thread deleted";
 				$current = 'Forum_section';
 
@@ -2501,6 +2510,35 @@
 				break;
 			}
 
+			if (isset($_POST['replay_thread'])) // create new thread for specified replay
+			{
+				$replay_id = $_POST['replay_thread'];
+				$section_id = 9; // section for discussing replays
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Replays'; break; }
+
+				$replay = $replaydb->GetReplay($replay_id, 1);
+				if (!$replay) { $error = 'No such replay.'; $current = 'Replays'; break; }
+				$thread_id = $replay->ThreadID;
+				if ($thread_id > 0) { $error = "Thread already exists"; $current = "Forum_thread"; $_POST['CurrentThread'] = $thread_id; break; }
+
+				$thread_name = $replay->Name1()." vs ".$replay->Name2()." (".$replay_id.")";
+
+				$new_thread = $forum->Threads->CreateThread($thread_name, $player->Name(), 'normal', $section_id);
+				if ($new_thread === false) { $error = "Failed to create new thread"; $current = "Replays"; break; }
+				// $new_thread contains ID of currently created thread, which can be 0
+
+				$result = $replay->AssignThread($new_thread);
+				if (!$result) { $error = "Failed to assign new thread"; $current = "Replays"; break; }
+
+				$_POST['CurrentThread'] = $new_thread;
+				$information = "Thread created";
+				$current = 'Forum_thread';
+
+				break;
+			}
+
 			// end replays related messages
 
 			// begin statistics related messages
@@ -3451,6 +3489,7 @@ case 'Forum_thread':
 	$params['forum_thread']['notification'] = $player->GetNotification();
 	$params['forum_thread']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 	$params['forum_thread']['concept'] = $conceptdb->FindConcept($thread_id);
+	$params['forum_thread']['replay'] = $replaydb->FindReplay($thread_id);
 	$params['forum_thread']['posts_per_page'] = POSTS_PER_PAGE;
 
 	$params['forum_thread']['lock_thread'] = (($access_rights[$player->Type()]["lock_thread"]) ? 'yes' : 'no');
@@ -3550,6 +3589,8 @@ case 'Replays_details':
 	if ($replay->EndType == 'Pending') { $display_error = "Replay is not yet available."; break; }
 	if (!($player_view == 1 OR $player_view == 2)) { $display_error = "Invalid player selection."; break; }
 
+	$params['replay']['create_thread'] = ($access_rights[$player->Type()]["create_thread"]) ? 'yes' : 'no';
+
 	// increment number of views each time player enters a replay
 	if ($turn == 1 AND $player_view == 1) $replay->IncrementViews();
 
@@ -3575,6 +3616,7 @@ case 'Replays_details':
 	$params['replay']['Outcome'] = $replay->Outcome();
 	$params['replay']['EndType'] = $replay->EndType;
 	$params['replay']['Winner'] = $replay->Winner;
+	$params['replay']['ThreadID'] = $replay->ThreadID;
 	$params['replay']['Player1'] = $player1;
 	$params['replay']['Player2'] = $player2;
 	$params['replay']['Current'] = $replay->Current;

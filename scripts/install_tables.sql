@@ -97,6 +97,7 @@ CREATE TABLE `replays_head` (
   `Finished` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   `Views` int(10) unsigned NOT NULL DEFAULT '0',
+  `ThreadID` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`GameID`),
   KEY `Player1` (`Player1`),
   KEY `Player2` (`Player2`),
@@ -319,8 +320,9 @@ INSERT INTO `forum_sections` (`SectionID`, `SectionName`, `Description`, `Sectio
 (1, 'General', 'main discussion about MArcomage', 1),
 (2, 'Development', 'suggest and discuss new features that could be added', 2),
 (3, 'Support', 'report bugs, exploits and technical difficulties', 3),
-(4, 'Contests', 'help MArcomage to become a better site', 6),
-(5, 'Novels', 'discuss our fantasy novels section', 8),
+(4, 'Contests', 'help MArcomage to become a better site', 7),
+(5, 'Novels', 'discuss our fantasy novels section', 9),
 (6, 'Concepts', 'discuss card suggestions', 5),
 (7, 'Cards', 'discuss existing cards', 4),
-(8, 'Off topic', 'everything else', 7);
+(8, 'Off topic', 'everything else', 8),
+(9, 'Replays', 'discuss game replays', 6);

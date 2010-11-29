@@ -372,12 +372,17 @@
 				</xsl:if>
 			</h5>
 			<p>
-			<xsl:if test="$param/concept &gt; 0">
-				<a class="button" href="{php:functionString('makeurl', 'Concepts_details', 'CurrentConcept', $param/concept)}">View concept</a>
-			</xsl:if>
-			<xsl:if test="$thread/CardID &gt; 0">
-				<a class="button" href="{php:functionString('makeurl', 'Cards_details', 'card', $thread/CardID)}">View card</a>
-			</xsl:if>
+			<xsl:choose>
+				<xsl:when test="$param/concept &gt; 0">
+					<a class="button" href="{php:functionString('makeurl', 'Concepts_details', 'CurrentConcept', $param/concept)}">View concept</a>
+				</xsl:when>
+				<xsl:when test="$thread/CardID &gt; 0">
+					<a class="button" href="{php:functionString('makeurl', 'Cards_details', 'card', $thread/CardID)}">View card</a>
+				</xsl:when>
+				<xsl:when test="$param/replay &gt; 0">
+					<a class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', $param/replay, 'PlayerView', 1, 'Turn', 1)}">View replay</a>
+				</xsl:when>
+			</xsl:choose>
 
 			<xsl:if test="$param/lock_thread = 'yes'">
 				<xsl:choose>
