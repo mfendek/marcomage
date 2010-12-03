@@ -1373,47 +1373,72 @@
 				$awards = array(
 				'Gentle touch' => 2, 
 				'Desolator' => 3, 
+				'Dragon' => 3, 
+				'Carpenter' => 4, 
 				'Titan' => 4, 
 				'Assassin' => 5, 
+				'Snob' => 6, 
 				'Collector' => 7, 
 				'Builder' => 8, 
 				'Survivor' => 9
 				);
 				ksort($awards); // sort alphabetically
 				
-				$recieved = array();
+				$received = array();
 				$assassin_limit = ($g_mode == 'long') ? 20 : 10;
 				
-				if ($round <= $assassin_limit AND $standard_victory) $recieved[] = 'Assassin';// Assassin
-				if ($hisdata->Quarry == 1 AND $hisdata->Magic == 1 AND $hisdata->Dungeons == 1) $recieved[] = 'Desolator'; // Desolator
-				if ($mydata->Wall == $max_wall) $recieved[] = 'Builder'; // Builder
-				if ($mylast_card->GetClass() == 'Common' AND $mylast_action == 'play' AND $standard_victory) $recieved[] = 'Gentle touch'; // Gentle touch
+				// Assassin
+				if ($round <= $assassin_limit AND $standard_victory) $received[] = 'Assassin';
+				
+				// Desolator
+				if ($hisdata->Quarry == 1 AND $hisdata->Magic == 1 AND $hisdata->Dungeons == 1) $received[] = 'Desolator';
+				
+				// Dragon
+				if ($mylast_card->HasKeyword("Dragon") AND $mylast_action == 'play' AND $standard_victory) $received[] = 'Dragon';
+				
+				// Carpenter
+				if ($mydata->Quarry >= 6 AND $mydata->Magic >= 6 AND $mydata->Dungeons >= 6) $received[] = 'Carpenter';
+				
+				// Builder
+				if ($mydata->Wall == $max_wall) $received[] = 'Builder';
+				
+				// Gentle touch
+				if ($mylast_card->GetClass() == 'Common' AND $mylast_action == 'play' AND $standard_victory) $received[] = 'Gentle touch';
+				
+				// Snob
+				if ($mylast_action == 'discard' AND $standard_victory) $received[] = 'Snob';
+				
+				// Collector
 				$tmp = 0;
 				for ($i = 1; $i <= 8; $i++)
 				{
 					$cur_card = $carddb->GetCard($mydata->Hand[$i]);
 					if ($cur_card->GetClass() == "Rare") $tmp++;
 				}
-				if ($tmp >= 4) $recieved[] = 'Collector'; // Collector
-				if ($mylast_card->GetID() == 315 AND $mylast_action == 'play' AND $endtype == 'Destruction') $recieved[] = 'Titan'; // Titan
-				if (($mydata->Tower == 1) AND ($mydata->Wall == 0)) $recieved[] = 'Survivor'; // Survivor
+				if ($tmp >= 4) $received[] = 'Collector';
+				
+				// Titan
+				if ($mylast_card->GetID() == 315 AND $mylast_action == 'play' AND $endtype == 'Destruction') $received[] = 'Titan';
+				
+				// Survivor
+				if (($mydata->Tower == 1) AND ($mydata->Wall == 0)) $received[] = 'Survivor';
 				
 				// update message, calculate gold
-				if (count($recieved) > 0)
+				if (count($received) > 0)
 				{
 					$award_temp = array();
-					foreach ($recieved as $award)
+					foreach ($received as $award)
 					{
 						$gold+= $awards[$award];
 						$award_temp[] = $award.' ('.$awards[$award].' gold)';
 					}
-					$message.= 'Awards'."\n".implode("\n", $award_temp)."\n"."\n".'Total award gain: '.$gold.' gold'."\n";
+					$message.= 'Awards'."\n".implode("\n", $award_temp)."\n";
 				}
 				else $message.= 'Awards'."\n".'None achieved'."\n";
 			}
 			
 			// finalize report
-			$message.= "\n".'You gained '.$exp.' EXP';
+			$message.= "\n".'You gained '.$exp.' EXP'.(($gold > 0) ? ' and '.$gold.' gold' : '');
 			
 			return array('exp' => $exp, 'gold' => $gold, 'message' => $message);
 		}
