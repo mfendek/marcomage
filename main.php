@@ -1330,56 +1330,27 @@
 				break;
 			}
 
-			if (isset($_POST['discard_card'])) // Games -> vs. %s -> Discard
+			if (isset($_POST['play_card']) OR isset($_POST['discard_card'])) // Games -> vs. %s -> Play/Discard
 			{
-				// check if there is a selected card
-				if (!isset($_POST['selected_card'])) { $error = 'No card was selected!'; $current = 'Games_details'; break; }
+				// determine card action
+				$action = (isset($_POST['play_card'])) ? 'play' : ((isset($_POST['discard_card'])) ? 'discard' : '');
 
-				$cardpos = $_POST['selected_card'];
+				// check action
+				if ($action == '') { $error = 'Invalid game action!'; $current = 'Games_details'; break; }
 
-				$gameid = $_POST['CurrentGame'];
-				$game = $gamedb->GetGame($gameid);
-
-				// check if the game exists
-				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
-
-				// check if this user is allowed to perform game actions
-				if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or $game->Surrender != '') { $current = 'Games_details'; break; }
-
-				// check card position
-				if (!is_numeric($cardpos)) { $error = 'Invalid card position.'; $current = 'Games_details'; break; }
-
-				// the rest of the checks are done internally
-				$result = $game->PlayCard($player->Name(), $cardpos, 0, 'discard');
-
-				if ($result == 'OK')
-				{
-					$game->SaveGame();
-					$replaydb->UpdateReplay($game);
-
-					if ($game->State == "finished")
-						$replaydb->FinishReplay($game);
-
-					$information = "You have discarded a card.";
-				}
-				else $error = $result;
-
-				$current = "Games_details";
-				break;
-			}
-
-			if (isset($_POST['play_card'])) // Games -> vs. %s -> Play
-			{
-				if ($_POST['play_card'] == 0) // case 1: global play card button was used
+				// case 1: local play card button was used
+				if ($action == 'play' AND $_POST['play_card'] > 0)
+					$cardpos = $_POST['play_card'];
+				// case 2: global play/discard card button was used
+				else
 				{
 					// check if there is a selected card
 					if (!isset($_POST['selected_card'])) { $error = 'No card was selected!'; $current = 'Games_details'; break; }
 					$cardpos = $_POST['selected_card'];
 				}
-				else // case 2: local play card button was used
-					$cardpos = $_POST['play_card'];
 
 				$mode = (isset($_POST['card_mode']) and isset($_POST['card_mode'][$cardpos])) ? $_POST['card_mode'][$cardpos] : 0;
+				if ($action == 'discard') $mode = 0; // card mode doesn't apply for discard action
 
 				$gameid = $_POST['CurrentGame'];
 				$game = $gamedb->GetGame($gameid);
@@ -1397,7 +1368,7 @@
 				if (!is_numeric($mode)) { $error = 'Invalid mode.'; $current = 'Games_details'; break; }
 
 				// the rest of the checks are done internally
-				$result = $game->PlayCard($player->Name(), $cardpos, $mode, 'play');
+				$result = $game->PlayCard($player->Name(), $cardpos, $mode, $action);
 
 				if ($result == 'OK')
 				{
