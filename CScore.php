@@ -137,6 +137,11 @@
 			$this->ScoreData->GameSlots = 0;
 		}
 		
+		public function AddGold($gold)
+		{
+			$this->ScoreData->Gold+= $gold;
+		}
+		
 		public function BuyItem($gold) // purchase item if player can afford it
 		{
 			if ($this->ScoreData->Gold < $gold) return false;

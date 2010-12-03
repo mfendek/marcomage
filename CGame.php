@@ -1271,6 +1271,7 @@
 			
 			$win = ($player == $winner);
 			$exp = 100; // base exp
+			$gold = 0; // base gold
 			$message = 'Base = '.$exp.' EXP'."\n";
 			
 			// first phase: Game rating
@@ -1360,7 +1361,7 @@
 				$message.= 'Victory rating'."\n".'Modifier: '.$mod.', Total: '.$exp.' EXP'."\n";
 			}
 			
-			//fourth phase: Awards
+			// fourth phase: Awards
 			if ($win)
 			{
 				$mylastcardindex = count($mydata->LastCard);
@@ -1368,7 +1369,18 @@
 				$mylast_action = $mydata->LastAction[$mylastcardindex];
 				$standard_victory = ($endtype == 'Resource' OR $endtype == 'Construction' OR $endtype == 'Destruction');
 				
-				$awards = array('Assassin' => 0.5, 'Survivor' => 0.9, 'Desolator' => 0.3, 'Builder' => 0.8, 'Gentle touch' => 0.2, 'Collector' => 0.7, 'Titan' => 0.45);
+				// awards list 'award_name' => 'gold_gain'
+				$awards = array(
+				'Gentle touch' => 2, 
+				'Desolator' => 3, 
+				'Titan' => 4, 
+				'Assassin' => 5, 
+				'Collector' => 7, 
+				'Builder' => 8, 
+				'Survivor' => 9
+				);
+				ksort($awards); // sort alphabetically
+				
 				$recieved = array();
 				$assassin_limit = ($g_mode == 'long') ? 20 : 10;
 				
@@ -1386,19 +1398,16 @@
 				if ($mylast_card->GetID() == 315 AND $mylast_action == 'play' AND $endtype == 'Destruction') $recieved[] = 'Titan'; // Titan
 				if (($mydata->Tower == 1) AND ($mydata->Wall == 0)) $recieved[] = 'Survivor'; // Survivor
 				
-				// update exp and message
+				// update message, calculate gold
 				if (count($recieved) > 0)
 				{
-					$mod = 0;
 					$award_temp = array();
 					foreach ($recieved as $award)
 					{
-						$mod+= $awards[$award];
-						$award_temp[] = $award.' ('.$awards[$award].')';
+						$gold+= $awards[$award];
+						$award_temp[] = $award.' ('.$awards[$award].' gold)';
 					}
-					$tmp = round($exp * (1 + $mod));
-					$message.= 'Awards'."\n".implode(", ", $award_temp)."\n".'Bonus: '.$mod.', Total: '.($tmp - $exp).' EXP'."\n";
-					$exp = $tmp;
+					$message.= 'Awards'."\n".implode("\n", $award_temp)."\n"."\n".'Total award gain: '.$gold.' gold'."\n";
 				}
 				else $message.= 'Awards'."\n".'None achieved'."\n";
 			}
@@ -1406,7 +1415,7 @@
 			// finalize report
 			$message.= "\n".'You gained '.$exp.' EXP';
 			
-			return array('exp' => $exp, 'message' => $message);
+			return array('exp' => $exp, 'gold' => $gold, 'message' => $message);
 		}
 	}
 	

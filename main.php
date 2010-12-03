@@ -1428,6 +1428,8 @@
 
 						$levelup1 = $score1->AddExp($exp1['exp']);
 						$levelup2 = $score2->AddExp($exp2['exp']);
+						$score1->AddGold($exp1['gold']);
+						$score2->AddGold($exp2['gold']);
 						$score1->SaveScore();
 						$score2->SaveScore();
 
@@ -1541,11 +1543,13 @@
 					$score1 = $scoredb->GetScore($game->Winner);
 					$score1->ScoreData->Wins++;
 					$levelup1 = $score1->AddExp($exp1['exp']);
+					$score1->AddGold($exp1['gold']);
 					$score1->SaveScore();
 
 					$score2 = $scoredb->GetScore($loser);
 					$score2->ScoreData->Losses++;
 					$levelup2 = $score2->AddExp($exp2['exp']);
+					$score2->AddGold($exp2['gold']);
 					$score2->SaveScore();
 
 					// send level up messages
@@ -1635,6 +1639,8 @@
 
 					$levelup1 = $score1->AddExp($exp1['exp']);
 					$levelup2 = $score2->AddExp($exp2['exp']);
+					$score1->AddGold($exp1['gold']);
+					$score2->AddGold($exp2['gold']);
 					$score1->SaveScore();
 					$score2->SaveScore();
 
@@ -2273,7 +2279,7 @@
 
 				// add gold
 				$score = $scoredb->GetScore($opponent);
-				$score->ScoreData->Gold+= $_POST['gold_amount'];
+				$score->AddGold($_POST['gold_amount']);
 				$score->SaveScore();
 
 				$information = 'Gold successfully added.';
