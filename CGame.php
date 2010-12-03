@@ -1362,6 +1362,8 @@
 			}
 			
 			// fourth phase: Awards
+			$received = array();
+			
 			if ($win)
 			{
 				$mylastcardindex = count($mydata->LastCard);
@@ -1384,7 +1386,6 @@
 				);
 				ksort($awards); // sort alphabetically
 				
-				$received = array();
 				$assassin_limit = ($g_mode == 'long') ? 20 : 10;
 				
 				// Assassin
@@ -1440,7 +1441,7 @@
 			// finalize report
 			$message.= "\n".'You gained '.$exp.' EXP'.(($gold > 0) ? ' and '.$gold.' gold' : '');
 			
-			return array('exp' => $exp, 'gold' => $gold, 'message' => $message);
+			return array('exp' => $exp, 'gold' => $gold, 'message' => $message, 'awards' => $received);
 		}
 	}
 	

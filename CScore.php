@@ -62,6 +62,7 @@
 	{
 		private $Username = '';
 		private $Scores = false;
+		private $AwardsList = array('Assassin', 'Builder', 'Carpenter', 'Collector', 'Desolator', 'Dragon', 'Gentle_touch', 'Snob', 'Survivor', 'Titan');
 		public $ScoreData = false;
 		
 		public function __construct($username, CScores &$Scores)
@@ -86,7 +87,10 @@
 		public function LoadScore()
 		{
 			$db = $this->Scores->getDB();
-			$result = $db->Query('SELECT `Level`, `Exp`, `Gold`, `Wins`, `Losses`, `Draws`, `GameSlots` FROM `scores` WHERE `Username` = "'.$db->Escape($this->Username).'"');
+			$awards_q = '';
+			foreach ($this->AwardsList as $award) $awards_q.= ', `'.$award.'`';
+			
+			$result = $db->Query('SELECT `Level`, `Exp`, `Gold`, `Wins`, `Losses`, `Draws`, `GameSlots`'.$awards_q.' FROM `scores` WHERE `Username` = "'.$db->Escape($this->Username).'"');
 			if (!$result) return false;
 			
 			$data = $result->Next();
@@ -98,13 +102,20 @@
 			$this->ScoreData->Draws = $data['Draws'];
 			$this->ScoreData->GameSlots = $data['GameSlots'];
 			
+			// load awards
+			foreach ($this->AwardsList as $award) $this->ScoreData->Awards[$award] = $data[$award];
+			
 			return true;
 		}
 		
 		public function SaveScore()
 		{
 			$db = $this->Scores->getDB();
-			$result = $db->Query('UPDATE `scores` SET `Level` = '.$this->ScoreData->Level.', `Exp` = '.$this->ScoreData->Exp.', `Gold` = '.$this->ScoreData->Gold.', `Wins` = '.$this->ScoreData->Wins.', `Losses` = '.$this->ScoreData->Losses.', `Draws` = '.$this->ScoreData->Draws.', `GameSlots` = '.$this->ScoreData->GameSlots.' WHERE `Username` = "'.$db->Escape($this->Username).'"');
+			
+			$awards_q = '';
+			foreach ($this->AwardsList as $award) $awards_q.= ', `'.$award.'` = '.$this->ScoreData->Awards[$award];
+			
+			$result = $db->Query('UPDATE `scores` SET `Level` = '.$this->ScoreData->Level.', `Exp` = '.$this->ScoreData->Exp.', `Gold` = '.$this->ScoreData->Gold.', `Wins` = '.$this->ScoreData->Wins.', `Losses` = '.$this->ScoreData->Losses.', `Draws` = '.$this->ScoreData->Draws.', `GameSlots` = '.$this->ScoreData->GameSlots.''.$awards_q.' WHERE `Username` = "'.$db->Escape($this->Username).'"');
 			if (!$result) return false;
 			
 			return true;
@@ -149,6 +160,19 @@
 			
 			return true;
 		}
+		
+		public function GainAwards(array $awards) // update score on specified game awards
+		{
+			if (count($awards) == 0) return false;
+			
+			foreach ($awards as $award)
+			{
+				$award = str_replace(' ', '_', $award); // replace WS with _
+				if (in_array($award, $this->AwardsList)) $this->ScoreData->Awards[$award]++;
+			}
+			
+			return true;
+		}
 	}
 	
 	
@@ -161,5 +185,6 @@
 		public $Losses = 0;
 		public $Draws = 0;
 		public $GameSlots = 0;
+		public $Awards;
 	}
 ?>

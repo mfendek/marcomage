@@ -1401,6 +1401,8 @@
 						$levelup2 = $score2->AddExp($exp2['exp']);
 						$score1->AddGold($exp1['gold']);
 						$score2->AddGold($exp2['gold']);
+						$score1->GainAwards($exp1['awards']);
+						$score2->GainAwards($exp2['awards']);
 						$score1->SaveScore();
 						$score2->SaveScore();
 
@@ -1515,12 +1517,14 @@
 					$score1->ScoreData->Wins++;
 					$levelup1 = $score1->AddExp($exp1['exp']);
 					$score1->AddGold($exp1['gold']);
+					$score1->GainAwards($exp1['awards']);
 					$score1->SaveScore();
 
 					$score2 = $scoredb->GetScore($loser);
 					$score2->ScoreData->Losses++;
 					$levelup2 = $score2->AddExp($exp2['exp']);
 					$score2->AddGold($exp2['gold']);
+					$score2->GainAwards($exp2['awards']);
 					$score2->SaveScore();
 
 					// send level up messages
@@ -1612,6 +1616,8 @@
 					$levelup2 = $score2->AddExp($exp2['exp']);
 					$score1->AddGold($exp1['gold']);
 					$score2->AddGold($exp2['gold']);
+					$score1->GainAwards($exp1['awards']);
+					$score2->GainAwards($exp2['awards']);
 					$score1->SaveScore();
 					$score2->SaveScore();
 

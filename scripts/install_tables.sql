@@ -169,6 +169,16 @@ CREATE TABLE `scores` (
   `Losses` int(10) unsigned NOT NULL DEFAULT '0',
   `Draws` int(10) unsigned NOT NULL DEFAULT '0',
   `GameSlots` int(5) unsigned NOT NULL DEFAULT '0',
+  `Assassin` int(5) unsigned NOT NULL DEFAULT '0',
+  `Builder` int(5) unsigned NOT NULL DEFAULT '0',
+  `Carpenter` int(5) unsigned NOT NULL DEFAULT '0',
+  `Collector` int(5) unsigned NOT NULL DEFAULT '0',
+  `Desolator` int(5) unsigned NOT NULL DEFAULT '0',
+  `Dragon` int(5) unsigned NOT NULL DEFAULT '0',
+  `Gentle_touch` int(5) unsigned NOT NULL DEFAULT '0',
+  `Snob` int(5) unsigned NOT NULL DEFAULT '0',
+  `Survivor` int(5) unsigned NOT NULL DEFAULT '0',
+  `Titan` int(5) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
