@@ -62,7 +62,7 @@
 	{
 		private $Username = '';
 		private $Scores = false;
-		private $AwardsList = array('Assassin', 'Builder', 'Carpenter', 'Collector', 'Desolator', 'Dragon', 'Gentle_touch', 'Snob', 'Survivor', 'Titan');
+		private $AwardsList = array('Assassin', 'Builder', 'Carpenter', 'Collector', 'Desolator', 'Dragon', 'Gentle_touch', 'Snob', 'Survivor', 'Titan', 'Quarry', 'Magic', 'Dungeons', 'Rares', 'Tower', 'Wall', 'TowerDamage', 'WallDamage');
 		public $ScoreData = false;
 		
 		public function __construct($username, CScores &$Scores)
@@ -165,11 +165,18 @@
 		{
 			if (count($awards) == 0) return false;
 			
-			foreach ($awards as $award)
-			{
-				$award = str_replace(' ', '_', $award); // replace WS with _
-				if (in_array($award, $this->AwardsList)) $this->ScoreData->Awards[$award]++;
-			}
+			foreach ($awards as $award) $this->UpdateAward($award);
+			
+			return true;
+		}
+		
+		public function UpdateAward($award, $amount = 1) // update score on specified game award by specified amount
+		{
+			$award = str_replace(' ', '_', $award); // replace WS with _
+			
+			if (!in_array($award, $this->AwardsList)) return false;
+			
+			$this->ScoreData->Awards[$award]+= $amount;
 			
 			return true;
 		}
@@ -185,6 +192,6 @@
 		public $Losses = 0;
 		public $Draws = 0;
 		public $GameSlots = 0;
-		public $Awards;
+		public $Awards; // game awards gained by player 'award_name' => 'award_count'
 	}
 ?>

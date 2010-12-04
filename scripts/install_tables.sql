@@ -179,6 +179,14 @@ CREATE TABLE `scores` (
   `Snob` int(5) unsigned NOT NULL DEFAULT '0',
   `Survivor` int(5) unsigned NOT NULL DEFAULT '0',
   `Titan` int(5) unsigned NOT NULL DEFAULT '0',
+  `Quarry` int(5) unsigned NOT NULL DEFAULT '0',
+  `Magic` int(5) unsigned NOT NULL DEFAULT '0',
+  `Dungeons` int(5) unsigned NOT NULL DEFAULT '0',
+  `Rares` int(5) unsigned NOT NULL DEFAULT '0',
+  `Tower` int(10) unsigned NOT NULL DEFAULT '0',
+  `Wall` int(10) unsigned NOT NULL DEFAULT '0',
+  `TowerDamage` int(10) unsigned NOT NULL DEFAULT '0',
+  `WallDamage` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

@@ -510,6 +510,7 @@
 		{
 			global $carddb;
 			global $keyworddb;
+			global $scoredb;
 			global $statistics;
 			global $game_config;
 			
@@ -601,6 +602,11 @@
 			// branch here according to $action
 			if ($action == 'play')
 			{
+				$score = $scoredb->GetScore($playername);
+				// update player score (award 'Rares' - number of rare cards played)
+				if ($card->GetClass() == 'Rare') $score->UpdateAward('Rares');
+				
+				// subtract card cost
 				$mydata->Bricks-= $card->CardData->Bricks;
 				$mydata->Gems-= $card->CardData->Gems;
 				$mydata->Recruits-= $card->CardData->Recruits;
@@ -697,12 +703,27 @@
 			$mydata->Recruits+= $recruits_production * $mydata->Dungeons;
 			
 			// compute changes on game attributes
+			$my_diffs = $his_diffs = array();
 			$attributes = array('Quarry', 'Magic', 'Dungeons', 'Bricks', 'Gems', 'Recruits', 'Tower', 'Wall');
 			foreach ($attributes as $attribute)
 			{
-				$mydata->Changes[$attribute]+= $mydata->$attribute - $mydata_temp[$attribute];
-				$hisdata->Changes[$attribute]+= $hisdata->$attribute - $hisdata_temp[$attribute];
+				$my_diffs[$attribute] = $my_diff = $mydata->$attribute - $mydata_temp[$attribute];
+				$mydata->Changes[$attribute]+= $my_diff;
+				
+				$his_diffs[$attribute] = $his_diff = $hisdata->$attribute - $hisdata_temp[$attribute];
+				$hisdata->Changes[$attribute]+= $his_diff;
 			}
+			
+			// update player score (awards 'Quarry', 'Magic', 'Dungeons', 'Tower', 'Wall')
+			foreach (array('Quarry', 'Magic', 'Dungeons', 'Tower', 'Wall') as $attribute)
+				if ($my_diffs[$attribute] > 0) $score->UpdateAward($attribute, $my_diffs[$attribute]);
+			
+			// update player score (award 'TowerDamage' and 'WallDamage')
+			foreach (array('Tower', 'Wall') as $attribute)
+				if ($his_diffs[$attribute] < 0) $score->UpdateAward($attribute.'Damage', ($his_diffs[$attribute] * (-1)));
+			
+			// save player score
+			$score->SaveScore();
 			
 			// draw card at the end of turn
 			if( $nextcard > 0 )
