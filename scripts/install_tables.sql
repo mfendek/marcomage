@@ -176,6 +176,7 @@ CREATE TABLE `scores` (
   `Desolator` int(5) unsigned NOT NULL DEFAULT '0',
   `Dragon` int(5) unsigned NOT NULL DEFAULT '0',
   `Gentle_touch` int(5) unsigned NOT NULL DEFAULT '0',
+  `Saboteur` int(5) unsigned NOT NULL DEFAULT '0',
   `Snob` int(5) unsigned NOT NULL DEFAULT '0',
   `Survivor` int(5) unsigned NOT NULL DEFAULT '0',
   `Titan` int(5) unsigned NOT NULL DEFAULT '0',

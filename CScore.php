@@ -62,7 +62,7 @@
 	{
 		private $Username = '';
 		private $Scores = false;
-		private $AwardsList = array('Assassin', 'Builder', 'Carpenter', 'Collector', 'Desolator', 'Dragon', 'Gentle_touch', 'Snob', 'Survivor', 'Titan', 'Quarry', 'Magic', 'Dungeons', 'Rares', 'Tower', 'Wall', 'TowerDamage', 'WallDamage');
+		private $AwardsList = array('Assassin', 'Builder', 'Carpenter', 'Collector', 'Desolator', 'Dragon', 'Gentle_touch', 'Saboteur', 'Snob', 'Survivor', 'Titan', 'Quarry', 'Magic', 'Dungeons', 'Rares', 'Tower', 'Wall', 'TowerDamage', 'WallDamage');
 		public $ScoreData = false;
 		
 		public function __construct($username, CScores &$Scores)

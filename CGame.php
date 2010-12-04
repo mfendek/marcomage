@@ -1394,6 +1394,7 @@
 				
 				// awards list 'award_name' => 'gold_gain'
 				$awards = array(
+				'Saboteur' => 1, 
 				'Gentle touch' => 2, 
 				'Desolator' => 3, 
 				'Dragon' => 3, 
@@ -1441,6 +1442,9 @@
 				
 				// Titan
 				if ($mylast_card->GetID() == 315 AND $mylast_action == 'play' AND $endtype == 'Destruction') $received[] = 'Titan';
+				
+				// Saboteur
+				if ($hisdata->Tower == 0 AND $hisdata->Wall > 0 AND $standard_victory) $received[] = 'Saboteur';
 				
 				// Survivor
 				if (($mydata->Tower == 1) AND ($mydata->Wall == 0)) $received[] = 'Survivor';
