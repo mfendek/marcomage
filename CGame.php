@@ -536,6 +536,7 @@
 			$time_vic = $game_config[$g_mode]['time_victory'];
 			
 			// prepare basic information
+			$score = $scoredb->GetScore($playername);
 			$opponent = ($this->Player1 == $playername) ? $this->Player2 : $this->Player1;
 			$mydata = &$this->GameData[$playername];
 			$hisdata = &$this->GameData[$opponent];
@@ -602,7 +603,6 @@
 			// branch here according to $action
 			if ($action == 'play')
 			{
-				$score = $scoredb->GetScore($playername);
 				// update player score (award 'Rares' - number of rare cards played)
 				if ($card->GetClass() == 'Rare') $score->UpdateAward('Rares');
 				
