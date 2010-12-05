@@ -7,10 +7,12 @@
 	class CScores
 	{
 		private $db;
+		public $Awards;
 		
 		public function __construct(CDatabase &$database)
 		{
 			$this->db = &$database;
+			$this->Awards = new CAwards();
 		}
 		
 		public function GetDB()
@@ -62,7 +64,7 @@
 	{
 		private $Username = '';
 		private $Scores = false;
-		private $AwardsList = array('Assassin', 'Builder', 'Carpenter', 'Collector', 'Desolator', 'Dragon', 'Gentle_touch', 'Saboteur', 'Snob', 'Survivor', 'Titan', 'Quarry', 'Magic', 'Dungeons', 'Rares', 'Tower', 'Wall', 'TowerDamage', 'WallDamage');
+		private $AwardsList;
 		public $ScoreData = false;
 		
 		public function __construct($username, CScores &$Scores)
@@ -70,6 +72,7 @@
 			$this->Username = $username;
 			$this->Scores = &$Scores;
 			$this->ScoreData = new CScoreData;
+			$this->AwardsList = $this->Scores->Awards->AwardsNames();
 		}
 		
 		public function __destruct()
@@ -172,13 +175,118 @@
 		
 		public function UpdateAward($award, $amount = 1) // update score on specified game award by specified amount
 		{
+			global $messagedb;
+			
 			$award = str_replace(' ', '_', $award); // replace WS with _
 			
+			// check if award is supported
 			if (!in_array($award, $this->AwardsList)) return false;
 			
+			$before = $this->ScoreData->Awards[$award];
 			$this->ScoreData->Awards[$award]+= $amount;
+			$after = $this->ScoreData->Awards[$award];
+			
+			// check if player gained achievement of specified award
+			$achievement = $this->CheckAward($award, $before, $after);
+			
+			if ($achievement)
+			{
+				// reward player with gold
+				$this->AddGold($achievement['reward']);
+				
+				// inform player about achievement gain
+				$messagedb->AchievementNotification($this->Username(), $achievement['name'], $achievement['reward']);
+				
+				// check final achievement of the same tier as recently gained achievement
+				if ($this->CheckFinalAchievement($achievement['tier']))
+				{
+					// get final achievement data
+					$final = $this->FinalAchievements($achievement['tier']);
+					
+					// reward player with gold
+					$this->AddGold($final['reward']);
+					
+					// inform player about achievement gain
+					$messagedb->AchievementNotification($this->Username(), $final['name'], $final['reward']);
+				}
+			}
 			
 			return true;
+		}
+		
+		public function AchievementsData() // get all achievements data (group by tier)
+		{
+			$data = array();
+			
+			// prepare achievements data
+			foreach ($this->AwardsList as $award)
+			{
+				$achievements = $this->Scores->Awards->GetAchievements($award);
+				foreach ($achievements as $achievement)
+				{
+					$achievement['count'] = $this->ScoreData->Awards[$award];
+					$data[$achievement['tier']][] = $achievement;
+				}
+			}
+			
+			// add final achievement data
+			$final = $this->FinalAchievements();
+			foreach ($final as $tier => $achievement)
+			{
+				// in this case condition holds the information if player has this achievement (yes/no)
+				$achievement['condition'] = ($this->CheckFinalAchievement($tier)) ? 'yes' : 'no';
+				$achievement['count'] = '';
+				$achievement['tier'] = $tier;
+				$data[$tier][] = $achievement;
+			}
+			
+			return $data;
+		}
+		
+		private function CheckAward($award, $before, $after) // check if any achievement of specified award was gained
+		{
+			$achievements = $this->Scores->Awards->GetAchievements($award);
+			
+			foreach ($achievements as $achievement)
+				if ($before < $achievement['condition'] AND $after >= $achievement['condition']) return $achievement;
+			
+			return false;
+		}
+		
+		private function CheckFinalAchievement($tier) // check if player has final achievement with specified tier
+		{
+			foreach ($this->AwardsList as $award)
+				if (!$this->CheckAchievement($award, $tier)) return false;
+			
+			return true;
+		}
+		
+		private function CheckAchievement($award, $tier) // check if player has achievement of specified award with specified tier
+		{
+			$achievement = $this->Scores->Awards->GetAchievement($award, $tier);
+			
+			if ($this->ScoreData->Awards[$award] < $achievement['condition']) return false;
+			
+			return true;
+		}
+		
+		private function FinalAchievements($tier = '') // returns final achievement(s) data based on specified tier (optional)
+		{
+			// final achievement is gained only if player already has all other achievements of the same tier
+			
+			// Veteran (final achievement tier 1)
+			$final[1]['name'] = 'Veteran';
+			$final[1]['reward'] = '1250';
+			
+			// Champion (final achievement tier 2)
+			$final[2]['name'] = 'Champion';
+			$final[2]['reward'] = '2500';
+			
+			// Grandmaster (final achievement tier 3)
+			$final[3]['name'] = 'Grandmaster';
+			$final[3]['reward'] = '3750';
+			
+			return (($tier != '') ? $final[$tier] : $final);
 		}
 	}
 	

@@ -46,6 +46,11 @@
 			$this->SendMessage("MArcomage", $player, 'Level up ('.$new_level.')', 'Congratulations, you have reached level '.$new_level.'.');
 		}
 		
+		public function AchievementNotification($player, $achievement, $gold)
+		{
+			$this->SendMessage("MArcomage", $player, 'Achievement gained', 'Congratulations, you have gained the '.$achievement.' achievement and '.$gold.' gold reward.');
+		}
+		
 		public function GetMessage($messageid, $player_name)
 		{	// get message for message details section
 			$db = $this->db;

@@ -11,6 +11,7 @@
 	require_once('config.php');
 	require_once('CDatabase.php');
 	require_once('CLogin.php');
+	require_once('CAward.php');
 	require_once('CScore.php');
 	require_once('CCard.php');
 	require_once('CKeyword.php');
