@@ -33,17 +33,21 @@
 		public function GetAchievements($award_name) // get achievement list of specified award
 		{
 			$db = $this->getDB();
-			$result = $db->xpath('/am:awards/am:award[@name="'.$award_name.'"]/am:achievement');
+			$result = $db->xpath('/am:awards/am:award[@name="'.$award_name.'"]');
 
 			if ($result === false OR count($result) == 0) return array();
 
+			$award_data = &$result[0];
+			$description = $award_data->attributes()->desc;
 			$i = 1;
 			$achievements = array();
-			foreach ($result as $achievement)
+			foreach ($award_data->children() as $achievement)
 			{
 				foreach ($achievement->attributes() as $attr_name => $attr_value)
 					$achievements[$i][$attr_name] = (string)$attr_value;
 
+				// achievement description (replace # in the award description template by the achievement condition)
+				$achievements[$i]['desc'] = str_replace('#', $achievements[$i]['condition'], $description);
 				$achievements[$i]['tier'] = $i; // achievement tier (depends on position in the XML file)
 
 				$i++;

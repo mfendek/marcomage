@@ -277,14 +277,17 @@
 			// Veteran (final achievement tier 1)
 			$final[1]['name'] = 'Veteran';
 			$final[1]['reward'] = '1250';
+			$final[1]['desc'] = 'gain every tier 1 achievement';
 			
 			// Champion (final achievement tier 2)
 			$final[2]['name'] = 'Champion';
 			$final[2]['reward'] = '2500';
+			$final[2]['desc'] = 'gain every tier 2 achievement';
 			
 			// Grandmaster (final achievement tier 3)
 			$final[3]['name'] = 'Grandmaster';
 			$final[3]['reward'] = '3750';
+			$final[3]['desc'] = 'gain every tier 3 achievement';
 			
 			return (($tier != '') ? $final[$tier] : $final);
 		}
