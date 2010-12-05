@@ -34,6 +34,7 @@
 					<xsl:if test="$param/games_details = 'yes'">
 						<th><p>Last game action</p></th>
 					</xsl:if>
+					<th><p>Modes</p></th>
 					<th><p>Info</p></th>
 					<th></th>
 				</tr>
@@ -54,6 +55,19 @@
 						<xsl:if test="$param/games_details = 'yes'">
 							<td><p><xsl:value-of select="am:datetime(gameaction, $param/timezone)"/></p></td>
 						</xsl:if>
+						<td>
+							<p>
+								<xsl:if test="contains(game_modes, 'HiddenCards')">
+									<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="icon" title="Hidden cards" />
+								</xsl:if>
+								<xsl:if test="contains(game_modes, 'FriendlyPlay')">
+									<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" />
+								</xsl:if>
+								<xsl:if test="contains(game_modes, 'LongMode')">
+									<img width="20px" height="14px" src="img/long_mode.png" alt="long flag" class="icon" title="Long mode" />
+								</xsl:if>
+							</p>
+						</td>
 						<td>
 							<xsl:choose>
 								<xsl:when test="gamestate = 'in progress' and isdead = 'yes'">
