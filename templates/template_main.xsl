@@ -44,12 +44,12 @@
 	<link rel="stylesheet" href="styles/skins/skin{$param/skin}.css" type="text/css" title="standard style" />
 	<link rel="icon" href="img/favicon.png" type="image/png" />
 	<title>
-		<xsl:text>MArcomage</xsl:text>
 		<xsl:if test="$section_name != ''">
-			<xsl:text> - </xsl:text>
 			<xsl:value-of select="$section_name" />
 			<xsl:if test="$section_name = 'Games' and $param/current_games &gt; 0"> (<xsl:value-of select="$param/current_games" />)</xsl:if>
+			<xsl:text> - </xsl:text>
 		</xsl:if>
+		<xsl:text>MArcomage</xsl:text>
 	</title>
 	<script type="text/javascript" src="javascript/jquery.js"></script>
 	<script type="text/javascript" src="javascript/scrollto.js"></script>
