@@ -88,7 +88,24 @@
 	<li>All decimal numbers are always rounded standard fashion way</li>
 	<li>"If New" condition is satysfied when the played card had the "NEW CARD" flag above</li>
 	<li>"matching card" is the card in opponent's hand which is in the same position as played card</li>
+	<li>"Max tower" means maximum possible tower height which is 100 in normal mode and 200 in long mode</li>
+	<li>"Max wall" means maximum possible wall height which is 150 in normal mode and 300 in long mode</li>
 </ul>
+		]]>
+	</part>
+	<part name="Card summoning">
+		<![CDATA[
+<p>Some cards have summoning effect when played. Such cards have "next card will be" text in their effect description for example. In the summoning card description there are conditions present, which specify the card that can be possibly summoned. Possible conditions are same as filter options in the deck section:</p>
+
+<ul>
+	<li>card rarity filter (common, uncommon, rare)</li>
+	<li>card keyword filter (selected keyword)</li>
+	<li>card cost filter (bricks only, recruits only, gems only, mixed cost, zero cost)</li>
+	<li>advanced filter (filter based on card effect - attack cards, wall building cards...)</li>
+	<li>support filter (cards that have effect based on some keyword)</li>
+</ul>
+
+<p>Note that unlike standard drawing, card summoning picks the summoned card from the list of all possible cards (that match the filters) with equal probability. To see the list of all possible cards (that can be summoned) go to deck section, configure the filters accoring to summoning description and view the card list.</p>
 		]]>
 	</part>
 	<part name="Turn actions">
