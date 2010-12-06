@@ -16,7 +16,7 @@
 		<![CDATA[
 <h4>Game attributes: Resources, facilities, resource production, tower and wall</h4>
 <p>Every player has three types of resources: Bricks, Gems and Recruits, and three types of resource production facilities: Quarry, Magic and Dungeon (generating resources in the corresponding order). Bricks are the basic building material, used mostly for constructing buildings. Magic powered soul gems (shortly gems) represent the magical power at your disposal. And finally, recruits represent your living or fighting power (amount of creatures, soldiers and weapons). At the end of round, for each facility of certain type, one resource of the corresponding type is added to the active player's stock. Example: If Quarry = 3, at the end of round, three Bricks will be added to the stock. The number of facilities of any kind cannot drop below one, and the amount of a resource of a certain type cannot be lower than zero. Your resources and facilities are located in the center-left part of the screen. Opponent's resources and facilities are located in the center-right part of the screen.</p>
-<p>Every player has his/her own tower and wall, each having a height. Tower height can be at most 100 (200 in long mode), wall has height limit 150 (300 in long mode). In the case of a standard enemy attack, the attack will first lower the wall. Only after the wall height is zero and some attack power still remains will the tower be lowered. Example: Enemy attacks with an attack power of 25, wall height is 10, tower height is 20. After the attack, the wall height will be zero and the tower height will be 5. There are some cards that do damage to the tower directly, bypassing the wall. Tower and wall information are located in the bottom-left part (yours) and bottom-right (opponent's). Moreover, if some of these game attributes were changed due to effect of some card, it will be indicated by a small number next to the effected attribute. Cost of a played card is not displayed in the changes.</p>
+<p>Every player has his/her own tower and wall, each having a height. Tower height can be at most 100 (150 in long mode), wall has height limit 150 (225 in long mode). In the case of a standard enemy attack, the attack will first lower the wall. Only after the wall height is zero and some attack power still remains will the tower be lowered. Example: Enemy attacks with an attack power of 25, wall height is 10, tower height is 20. After the attack, the wall height will be zero and the tower height will be 5. There are some cards that do damage to the tower directly, bypassing the wall. Tower and wall information are located in the bottom-left part (yours) and bottom-right (opponent's). Moreover, if some of these game attributes were changed due to effect of some card, it will be indicated by a small number next to the effected attribute. Cost of a played card is not displayed in the changes.</p>
 		]]>
 	</part>
 	<part name="Victory types">
@@ -24,9 +24,9 @@
 <p>The goal of the game is to defeat your opponent by reaching one or more victory conditions. The following outcomes are possible:</p>
 <ul>
 	<li><b>tower destruction</b> - raze the enemy tower to the ground to win - meaning, lower the enemy tower to zero height. Usually achieved by green cards and standard attacks.</li>
-	<li><b>tower building</b> - build up your tower to height 100 (200 in long mode) to win. Usually achieved by delaying enemy attacks while building your tower.</li>
-	<li><b>resource accumulation</b> - accumulate 400 (800 in long mode) of resources (total sum) to win. Beware of cards that cripple your stock.</li>
-	<li><b>timeout</b> - each game is limited to 250 (1000 in long mode) rounds. Afterwards, both players' states are compared (in the order: tower, wall, no. of facilities, sum of resources). Whoever has more (in that order), wins. Otherwise the game is declared a draw.</li>
+	<li><b>tower building</b> - build up your tower to height 100 (150 in long mode) to win. Usually achieved by delaying enemy attacks while building your tower.</li>
+	<li><b>resource accumulation</b> - accumulate 400 (600 in long mode) of resources (total sum) to win. Beware of cards that cripple your stock.</li>
+	<li><b>timeout</b> - each game is limited to 250 (375 in long mode) rounds. Afterwards, both players' states are compared (in the order: tower, wall, no. of facilities, sum of resources). Whoever has more (in that order), wins. Otherwise the game is declared a draw.</li>
 </ul>
 <p>Special rules apply in the case where both players achieve a victory condition simultaneously. If the victory type for both is the same, the result is, logically, a draw. If the victory types are different, the following rule is used to determine the winner:</p>
 <p>Destruction victory > Tower bulding victory > Resource victory > Timeout victory.</p>
@@ -88,8 +88,8 @@
 	<li>All decimal numbers are always rounded standard fashion way</li>
 	<li>"If New" condition is satysfied when the played card had the "NEW CARD" flag above</li>
 	<li>"matching card" is the card in opponent's hand which is in the same position as played card</li>
-	<li>"Max tower" means maximum possible tower height which is 100 in normal mode and 200 in long mode</li>
-	<li>"Max wall" means maximum possible wall height which is 150 in normal mode and 300 in long mode</li>
+	<li>"Max tower" means maximum possible tower height which is 100 in normal mode and 150 in long mode</li>
+	<li>"Max wall" means maximum possible wall height which is 150 in normal mode and 225 in long mode</li>
 </ul>
 		]]>
 	</part>
@@ -250,7 +250,7 @@
 <ul>
 	<li><img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="icon" title="Hidden cards" /> Hide opponent's cards - this mode will disable the ability to see opponent's cards for both players</li>
 	<li><img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" /> Friendly play - allows to play games, where the game outcome doesn't effect score or experience of the players</li>
-	<li><img width="20px" height="14px" src="img/long_mode.png" alt="long mode" class="icon" title="Long mode" /> Long mode - starting and maximum tower and wall values are doubled, resource victory condition is also doubled, timeout victory is set to 1000 rounds</li>
+	<li><img width="20px" height="14px" src="img/long_mode.png" alt="long mode" class="icon" title="Long mode" /> Long mode - starting and maximum tower and wall values are higher (1.5 times), resource and timeout victory condition as well</li>
 </ul>
 
 <p>Each player can configure his status in settings section. Player status can be seen by other players and can be used to help you find the desired opponent. There are four options available:</p>

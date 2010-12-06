@@ -40,11 +40,11 @@
 	$game_config['normal']['time_victory'] = 250; // maximum number of rounds
 
 	// long mode
-	$game_config['long']['init_tower'] = 60; // starting tower height
-	$game_config['long']['max_tower'] = 200; // maximum tower height
-	$game_config['long']['init_wall'] = 50; // starting wall height
-	$game_config['long']['max_wall'] = 300; // maximum wall height
-	$game_config['long']['res_victory'] = 800; // sum of all resources
-	$game_config['long']['time_victory'] = 1000; // maximum number of rounds
+	$game_config['long']['init_tower'] = 45; // starting tower height
+	$game_config['long']['max_tower'] = 150; // maximum tower height
+	$game_config['long']['init_wall'] = 38; // starting wall height
+	$game_config['long']['max_wall'] = 225; // maximum wall height
+	$game_config['long']['res_victory'] = 600; // sum of all resources
+	$game_config['long']['time_victory'] = 375; // maximum number of rounds
 
 ?>
