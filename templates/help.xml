@@ -265,7 +265,7 @@
 	</part>
 	<part name="Player rating system">
 		<![CDATA[
-<p>Players gather experience by playing games. When enough experience is gathered, a player will gain a new level. Higher level ensures a higher place in the ladder of all players and grants extra game and deck slots. Each 4th level grants a bonus game slot and each 6th level grants bonus deck slot. Based on player's performance in the game, the experience amount is calculated. To level up on the Nth level you need 500 + (50 * N) + (200 * [N/5]) + (100 * [N/10]^{2}) EXP. The [] is operation floor, which is nearest lower integer number (for exmaple: [1] = 1, [1.3] = 1, [1.9] = 1, [2.2] = 2). Base EXP for one game is 100 EXP. Experience calculation is divided into four phases.</p>
+<p>Players gather experience by playing games. When enough experience is gathered, a player will gain a new level. Higher level ensures a higher place in the ladder of all players. Each time a player gains a new level, he also gains 100 gold as well (which can be used to buy additional game and deck slots in the Setting section at the MArcomage shop). Based on player's performance in the game, the experience amount is calculated. To level up on the Nth level you need 500 + (50 * N) + (200 * [N/5]) + (100 * [N/10]^{2}) EXP. The [] is operation floor, which is nearest lower integer number (for exmaple: [1] = 1, [1.3] = 1, [1.9] = 1, [2.2] = 2). Base EXP for one game is 100 EXP and base gold is 0. Gold can be gained only in the fourth phase by gaining game awards. Rating system calculation is divided into four phases.</p>
 
 <h4>First phase: Game rating</h4>
 <p>From the perspective of one player the game can have several outcomes, each of them is handled separately. Below, there is a list of experience modifiers - one for each game outcome. This modifier applies onto the base EXP.</p>
@@ -386,19 +386,23 @@
 
 <h4>Fourth phase: Awards</h4>
 
-<p>This phase effects only the victor and allows you to gather extra EXP when certain conditions are satisfied. Any number of awards can be collected.</p>
+<p>This phase effects only the victor and allows you to gather extra gold when certain conditions are satisfied. Any number of awards can be collected.</p>
 
 <ul>
-	<li>Gentle touch (20% EXP) - win by playing a common card</li>
-	<li>Desolator (30% EXP) - win while enemy facilities = 1</li>
-	<li>Titan (45% EXP) - win with the <b>Titan</b> set</li>
-	<li>Assassin (50% EXP) - win within 10 rounds (20 rounds in long mode)</li>
-	<li>Collector (70% EXP) - win with at least 4 rare cards in hand (played card doesn't count)</li>
-	<li>Builder (80% EXP) - win with maximum wall</li>
-	<li>Survivor (90% EXP) - win with 1 tower and 0 wall</li>
+	<li>Saboteur (1 gold) - win by destroying opponent's tower, but opponent's wall must not be completely destroyed</li>
+	<li>Gentle touch (2 gold) - win by playing a common card</li>
+	<li>Desolator (3 gold) - win while enemy facilities = 1</li>
+	<li>Dragon (3 gold) - win by playing a <b>Dragon</b></li>
+	<li>Carpenter (4 gold) - win while each of your facility has at least double its starting value</li>
+	<li>Titan (4 gold) - win with the <b>Titan</b> set</li>
+	<li>Assassin (5 gold) - win within 10 rounds (20 rounds in long mode)</li>
+	<li>Snob (6 gold) - win by discarding a card by standard discard action</li>
+	<li>Collector (7 gold) - win with at least 4 rare cards in hand (played card doesn't count)</li>
+	<li>Builder (8 gold) - win with maximum wall</li>
+	<li>Survivor (9 gold) - win with 1 tower and 0 wall</li>
 </ul>
 
-<p>After the game the system will send you a message about the outcome of the game - a game report (when battle reports option is active). It will show you how much EXP you got in each phase and how much EXP did you get in the end. Also, when you gain next level, the system will sent you an information message about it.</p>
+<p>After the game the system will send you a message about the outcome of the game - a game report (when battle reports option is active). It will show you how much EXP or gold you got in each phase and how much EXP and gold did you get in the end. Also, when you gain next level, the system will sent you an information message about it.</p>
 		]]>
 	</part>
 	<part name="Messages">
