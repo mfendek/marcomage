@@ -62,14 +62,14 @@
 							$mydata->Gems+= $dis_card->GetResources('Gems');
 							$mydata->Recruits+= $dis_card->GetResources('Recruits');
 						}
-						$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_random');
+						$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_different');
 						$hisdata->NewCards[$discarded_pos] = 1;
 					}
 ]]></code>
 	</keyword>
 	<keyword>
 		<name>Barbarian</name>
-		<description>Basic gain 4, bonus gain 15, side-effect (Devastation): enemy wall will be additionally lowered by amount based on played card rarity (Common - 3 , Uncommon - 8, Rare - 15). If there is no wall to destroy, enemy stock will be lowered by the same amount instead.</description>
+		<description>Basic gain 4, bonus gain 15, side-effect (Devastation): enemy wall will be additionally lowered by amount based on played card rarity (Common - 3 , Uncommon - 8, Rare - 15). If there is no wall to destroy, enemy stock will be lowered by half the amount instead.</description>
 		<code><![CDATA[
 					$amount = $this->KeywordCount($mydata->Hand, "Barbarian") - 1; // we don't count the played card
 					$token_index = array_search("Barbarian", $mydata->TokenNames);
@@ -83,7 +83,7 @@
 							$damage = array("Common" => 3, "Uncommon" => 8, "Rare" => 15);
 							if ($hisdata->Wall <= 0)
 							{
-								$penalty = $damage[$card->GetClass()];
+								$penalty = round($damage[$card->GetClass()] / 2);
 								$hisdata->Bricks-= $penalty;
 								$hisdata->Gems-= $penalty;
 								$hisdata->Recruits-= $penalty;
@@ -188,8 +188,8 @@
 	</keyword>
 	<keyword>
 		<name>Charge</name>
-		<description>when card has this keyword, it also has a number next to this keyword. When card is played and the opponent's wall (after the standard attack) is 0, he will receive additional damage equal to number next to charge.</description>
-		<code><![CDATA[$charge_damage = $this->KeywordValue($card->GetKeywords(), 'Charge'); if ($hisdata->Wall == 0) $hisdata->Tower-= $charge_damage;]]></code>
+		<description>when card has this keyword, it also has a number next to this keyword. When card is played and the opponent's wall (after the standard attack) is 0, he will receive additional damage equal to number next to charge, otherwise opponent loses random resources equal to number next to charge.</description>
+		<code><![CDATA[$charge_damage = $this->KeywordValue($card->GetKeywords(), 'Charge'); if ($hisdata->Wall == 0) $hisdata->Tower-= $charge_damage; else for ($i = 1; $i <= $charge_damage; $i++) { $tmp = mt_rand(0,2); if ($tmp == 0) $hisdata->Bricks--; elseif ($tmp == 1) $hisdata->Gems--; elseif ($tmp == 2) $hisdata->Recruits--; }]]></code>
 	</keyword>
 	<keyword>
 		<name>Destruction</name>
@@ -520,7 +520,7 @@
 							$hisdata->Gems-= $dis_card->GetResources('Gems');
 							$hisdata->Recruits-= $dis_card->GetResources('Recruits');
 						}
-						$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_random');
+						$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_different');
 						$hisdata->NewCards[$discarded_pos] = 1;
 					}
 ]]></code>
