@@ -43,13 +43,15 @@ CREATE TABLE `concepts` (
 -- 
 
 CREATE TABLE `decks` (
+  `DeckID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Username` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `Deckname` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `Ready` tinyint(1) NOT NULL DEFAULT '0',
   `Data` text COLLATE utf8_unicode_ci NOT NULL,
   `Modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`Username`,`Deckname`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY (`DeckID`),
+  KEY `Username` (`Username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 

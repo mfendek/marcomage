@@ -55,7 +55,7 @@
 					<option value="{am:urlencode($param/random_deck)}">select random</option>
 				</xsl:if>
 				<xsl:for-each select="$param/decks/*">
-					<option value="{am:urlencode(text())}"><xsl:value-of select="text()"/></option>
+					<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
 				</xsl:for-each>
 			</select>
 		</p>

@@ -28,7 +28,7 @@
 						<xsl:if test="Ready = 'yes'">
 							<xsl:attribute name="class">p_online</xsl:attribute>
 						</xsl:if>
-						<a href="{php:functionString('makeurl', 'Decks_edit', 'CurrentDeck', Deckname)}"><xsl:value-of select="Deckname"/></a>
+						<a href="{php:functionString('makeurl', 'Decks_edit', 'CurrentDeck', DeckID)}"><xsl:value-of select="Deckname"/></a>
 					</p>
 				</td>
 				<td>
@@ -122,7 +122,7 @@
 		<button type="submit" name="auto_tokens">Auto</button>
 	</div>
 
-	<input type="text" name="NewDeckName" value="{$param/CurrentDeck}" maxlength="20" />
+	<input type="text" name="NewDeckName" value="{$param/deckname}" maxlength="20" />
 	<button type="submit" name="rename_deck">Rename</button>
 
 	<xsl:choose>

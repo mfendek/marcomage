@@ -351,7 +351,7 @@
 										<option value="{am:urlencode($param/random_deck)}">select random</option>
 									</xsl:if>
 									<xsl:for-each select="$param/decks/*">
-										<option value="{am:urlencode(text())}"><xsl:value-of select="text()"/></option>
+										<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
 									</xsl:for-each>
 								</select>
 							</p>
@@ -420,7 +420,7 @@
 			<h4>Export deck</h4>
 			<select name="ExportDeck" size="1">
 				<xsl:for-each select="$param/export_decks/*">
-					<option value="{am:urlencode(Deckname)}"><xsl:value-of select="Deckname"/></option>
+					<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
 				</xsl:for-each>
 			</select>
 			<button type="submit" name="export_deck_remote" value="{am:urlencode($opponent)}">Export</button>

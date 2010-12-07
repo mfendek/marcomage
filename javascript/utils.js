@@ -8,7 +8,7 @@ function TakeCard(id) // add card to deck via AJAX
 	var session_id = GetSessionData('SessionID');
 	var deck = $("input[name='CurrentDeck']").val();
 
-	$.post("AJAXhandler.php", { action: 'take', Username: username, SessionID: session_id, deckname: deck, card_id: id }, function(data){
+	$.post("AJAXhandler.php", { action: 'take', Username: username, SessionID: session_id, deck_id: deck, card_id: id }, function(data){
 		// process result
 		var result = data.split(",");
 		if (result.length == 1) { alert(result[0]); return false; } // AJAX failed, display error message
@@ -61,7 +61,7 @@ function RemoveCard(id) // remove card from deck via AJAX
 	var session_id = GetSessionData('SessionID');
 	var deck = $("input[name='CurrentDeck']").val();
 
-	$.post("AJAXhandler.php", { action: 'remove', Username: username, SessionID: session_id, deckname: deck, card_id: id }, function(data){
+	$.post("AJAXhandler.php", { action: 'remove', Username: username, SessionID: session_id, deck_id: deck, card_id: id }, function(data){
 		// process result
 		var result = data.split(",");
 		if (result.length == 1) { alert(result[0]); return true; } // AJAX failed, display error message

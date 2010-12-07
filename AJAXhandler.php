@@ -42,15 +42,15 @@
 
 	if ($_POST['action'] == "take")
 	{
-		if (!isset($_POST['deckname']) OR $_POST['deckname'] == "") { echo 'Invalid deck name.'; exit; }
+		if (!isset($_POST['deck_id']) OR $_POST['deck_id'] == "") { echo 'Invalid deck ID.'; exit; }
 		if (!isset($_POST['card_id']) OR $_POST['card_id'] == "") { echo 'Invalid card.'; exit; }
 
-		$deck_name = $_POST['deckname'];
+		$deck_id = $_POST['deck_id'];
 		$card_id = $_POST['card_id'];
 		$tokens = 'no'; // default results
 
 		// validate deck
-		$deck = $deckdb->GetDeck($user_name, $deck_name);
+		$deck = $deckdb->GetDeck($user_name, $deck_id);
 		if (!$deck) { echo 'Invalid deck'; exit; }
 
 		// verify card
@@ -78,14 +78,14 @@
 	}
 	elseif($_POST['action'] == "remove")
 	{
-		if (!isset($_POST['deckname']) OR $_POST['deckname'] == "") { echo 'Invalid deck name.'; exit; }
+		if (!isset($_POST['deck_id']) OR $_POST['deck_id'] == "") { echo 'Invalid deck name.'; exit; }
 		if (!isset($_POST['card_id']) OR $_POST['card_id'] == "") { echo 'Invalid card.'; exit; }
 
-		$deck_name = $_POST['deckname'];
+		$deck_id = $_POST['deck_id'];
 		$card_id = $_POST['card_id'];
 
 		// download deck
-		$deck = $deckdb->GetDeck($user_name, $deck_name);
+		$deck = $deckdb->GetDeck($user_name, $deck_id);
 		if (!$deck) { echo 'Invalid deck'; exit; }
 
 		// verify card

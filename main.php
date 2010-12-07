@@ -555,10 +555,10 @@
 			if (isset($_POST['add_card'])) // Decks -> Modify this deck -> Take
 			{
 				$cardid = $_POST['add_card'];
-				$deckname = $_POST['CurrentDeck'];
+				$deck_id = $_POST['CurrentDeck'];
 
 				//download deck
-				$deck = $player->GetDeck($deckname);
+				$deck = $player->GetDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
 
 				// add card, saving the deck on success
@@ -580,10 +580,10 @@
 			if (isset($_POST['return_card'])) // Decks -> Modify this deck -> Return
 			{
 				$cardid = $_POST['return_card'];
-				$deckname = $_POST['CurrentDeck'];
+				$deck_id = $_POST['CurrentDeck'];
 
 				// download deck
-				$deck = $player->GetDeck($deckname);
+				$deck = $player->GetDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
 
 				// remove card, saving the deck on success
@@ -598,8 +598,8 @@
 
 			if (isset($_POST['set_tokens'])) // Decks -> Set tokens
 			{
-				$deckname = $_POST['CurrentDeck'];
-				$deck = $player->GetDeck($deckname);
+				$deck_id = $_POST['CurrentDeck'];
+				$deck = $player->GetDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
 
 				// read tokens from inputs
@@ -637,8 +637,8 @@
 
 			if (isset($_POST['auto_tokens'])) // Decks -> Assign tokens automatically
 			{
-				$deckname = $_POST['CurrentDeck'];
-				$deck = $player->GetDeck($deckname);
+				$deck_id = $_POST['CurrentDeck'];
+				$deck = $player->GetDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
 
 				$deck->SetAutoTokens();					
@@ -668,8 +668,8 @@
 
 			if (isset($_POST['reset_deck_confirm'])) // Decks -> Modify this deck -> Confirm reset
 			{
-				$deckname = $_POST['CurrentDeck'];
-				$deck = $player->GetDeck($deckname);
+				$deck_id = $_POST['CurrentDeck'];
+				$deck = $player->GetDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
 
 				// reset deck, saving it on success
@@ -684,7 +684,7 @@
 
 			if (isset($_POST['rename_deck'])) // Decks -> Modify this deck -> Rename
 			{
-				$curname = $_POST['CurrentDeck'];
+				$deck_id = $_POST['CurrentDeck'];
 				$newname = $_POST['NewDeckName'];
 				$list = $player->ListDecks();
 				$deck_names = array();
@@ -702,12 +702,11 @@
 				}
 				else
 				{
-					$deck = $player->GetDeck($curname);
+					$deck = $player->GetDeck($deck_id);
 
 					if ($deck != false)
 					{
 						$deck->RenameDeck($newname);
-						$_POST['CurrentDeck'] = $newname;
 						
 						$information = "Deck saved.";
 						$current = 'Decks_edit';
@@ -723,8 +722,8 @@
 
 			if (isset($_POST['export_deck'])) // Decks -> Modify this deck -> Export
 			{
-				$curname = $_POST['CurrentDeck'];
-				$deck = $player->GetDeck($curname);
+				$deck_id = $_POST['CurrentDeck'];
+				$deck = $player->GetDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
 				$file = $deck->ToCSV();
 
@@ -742,7 +741,7 @@
 
 			if (isset($_POST['import_deck'])) // Decks -> Modify this deck -> Import
 			{
-				$curname = $_POST['CurrentDeck'];
+				$deck_id = $_POST['CurrentDeck'];
 				$current = 'Decks_edit';
 
 				//$supported_types = array("text/csv", "text/comma-separated-values");
@@ -767,7 +766,7 @@
 					$file = file_get_contents($_FILES['uploadedfile']['tmp_name']);
 
 					// import data
-					$deck = $player->GetDeck($curname);
+					$deck = $player->GetDeck($deck_id);
 
 					if ($deck != false)
 					{
@@ -776,7 +775,6 @@
 						else
 						{
 							$deck->SaveDeck();
-							$_POST['CurrentDeck'] = $deck->Deckname();
 							$information = "Deck successfully imported.";
 						}
 					}
@@ -1679,14 +1677,14 @@
 				// check access rights
 				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
 
-				$deckname = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
-				$deck = $deckdb->GetDeck($player->Name(), $deckname);
+				$deck_id = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
+				$deck = $player->GetDeck($deck_id);
 
 				// check if such deck exists
-				if (!$deck) { $error = 'Deck '.$deckname.' does not exist!'; $current = 'Games'; break; }
+				if (!$deck) { $error = 'Deck does not exist!'; $current = 'Games'; break; }
 
 				// check if the deck is ready (all 45 cards)
-				if (!$deck->isReady()) { $error = 'Deck '.$deckname.' is not yet ready for gameplay!'; $current = 'Games'; break; }
+				if (!$deck->isReady()) { $error = 'Deck '.$deck->Deckname().' is not yet ready for gameplay!'; $current = 'Games'; break; }
 
 				// check if you are within the MAX_GAMES limit
 				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Games'; break; }
@@ -1752,8 +1750,8 @@
 
 				$opponent = $game->Name1();
 
-				$deckname = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
-				$deck = $deckdb->GetDeck($player->Name(), $deckname);
+				$deck_id = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
+				$deck = $player->GetDeck($deck_id);
 
 				// check if such deck exists
 				if (!$deck) { $error = 'No such deck!'; $current = 'Games'; break; }
@@ -1825,8 +1823,8 @@
 
 				$opponent = $game->Name1();
 
-				$deckname = isset($_POST['AcceptDeck']) ? postdecode($_POST['AcceptDeck']) : '(null)';
-				$deck = $deckdb->GetDeck($player->Name(), $deckname);
+				$deck_id = isset($_POST['AcceptDeck']) ? postdecode($_POST['AcceptDeck']) : '(null)';
+				$deck = $player->GetDeck($deck_id);
 
 				// check if such deck exists
 				if (!$deck) { $error = 'No such deck!'; $current = 'Messages'; break; }
@@ -1895,15 +1893,15 @@
 				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Players'; break; }
 
 				$_POST['Profile'] = $opponent = postdecode($_POST['send_challenge']);
-				$deckname = isset($_POST['ChallengeDeck']) ? postdecode($_POST['ChallengeDeck']) : '(null)';
+				$deck_id = isset($_POST['ChallengeDeck']) ? postdecode($_POST['ChallengeDeck']) : '(null)';
 
-				$deck = $deckdb->GetDeck($player->Name(), $deckname);
+				$deck = $player->GetDeck($deck_id);
 
 				// check if such deck exists
-				if (!$deck) { $error = 'Deck '.$deckname.' does not exist!'; $current = 'Players_details'; break; }
+				if (!$deck) { $error = 'Deck does not exist!'; $current = 'Players_details'; break; }
 
 				// check if the deck is ready (all 45 cards)
-				if (!$deck->isReady()) { $error = 'Deck '.$deckname.' is not yet ready for gameplay!'; $current = 'Players_details'; break; }
+				if (!$deck->isReady()) { $error = 'Deck '.$deck->Deckname().' is not yet ready for gameplay!'; $current = 'Players_details'; break; }
 
 				// check if such opponent exists
 				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Players_details'; break; }
@@ -2187,7 +2185,7 @@
 				// delete bonus deck slots
 				$decks = $deckdb->ListDecks($opponent);
 				foreach ($decks as $i => $deck_data)
-					if ($i >= DECK_SLOTS) $deckdb->DeleteDeck($opponent, $deck_data['Deckname']);
+					if ($i >= DECK_SLOTS) $deckdb->DeleteDeck($opponent, $deck_data['DeckID']);
 
 				$information = 'Exp reset.';
 				$current = 'Players_details';
@@ -2228,8 +2226,8 @@
 				// check access rights
 				if (!$access_rights[$player->Type()]["export_deck"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
 
-				$deckname = postdecode($_POST['ExportDeck']);
-				$deck = $opponent->GetDeck($deckname);
+				$deck_id = postdecode($_POST['ExportDeck']);
+				$deck = $opponent->GetDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Players_details'; break; }
 				$file = $deck->ToCSV();
 
@@ -2680,6 +2678,7 @@ case 'Decks_edit':
 	foreach (array('Common', 'Uncommon', 'Rare') as $class)
 		$params['deck_edit']['DeckCards'][$class] = $carddb->GetData($deck->DeckData->$class);
 
+	$params['deck_edit']['deckname'] = $deck->Deckname();
 	$params['deck_edit']['Tokens'] = $deck->DeckData->Tokens;
 	$params['deck_edit']['TokenKeywords'] = $carddb->TokenKeywords();
 
@@ -2687,7 +2686,7 @@ case 'Decks_edit':
 
 
 case 'Decks':
-	$params['decks']['list'] = $list = $player->ListDecks();
+	$params['decks']['list'] = $player->ListDecks();
 	$params['decks']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 
 	break;
@@ -2918,7 +2917,7 @@ case 'Players_details':
 	$params['profile']['export_deck'] = ($access_rights[$player->Type()]["export_deck"]) ? 'yes' : 'no';
 	$params['profile']['free_slots'] = $gamedb->CountFreeSlots1($player->Name());
 	$params['profile']['decks'] = $decks = $player->ListReadyDecks();
-	$params['profile']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)] : '';
+	$params['profile']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)]['DeckID'] : '';
 
 	$params['profile']['challenging'] = (isset($_POST['prepare_challenge'])) ? 'yes' : 'no';
 
@@ -2944,7 +2943,7 @@ case 'Messages':
 	$params['messages']['system_name'] = SYSTEM_NAME;
 
 	$decks = $params['messages']['decks'] = $player->ListReadyDecks();
-	$params['messages']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)] : '';
+	$params['messages']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)]['DeckID'] : '';
 	$params['messages']['deck_count'] = count($decks);
 	$params['messages']['free_slots'] = $gamedb->CountFreeSlots2($player->Name());
 
@@ -3073,7 +3072,7 @@ case 'Games':
 	$free_games = $gamedb->ListFreeGames($player->Name(), $hidden_f, $friendly_f, $long_f);
 	$params['games']['free_slots'] = $gamedb->CountFreeSlots1($player->Name());
 	$params['games']['decks'] = $decks = $player->ListReadyDecks();
-	$params['games']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)] : '';
+	$params['games']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)]['DeckID'] : '';
 
 	if (count($free_games) > 0)
 	{

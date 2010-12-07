@@ -24,31 +24,36 @@
 			$logindb->Register($playername, $password);
 			$scoredb->CreateScore($playername);
 			foreach (array('deck 1', 'deck 2', 'deck 3', 'deck 4', 'deck 5', 'deck 6', 'deck 7', 'deck 8') as $deckname)
-				$deckdb->CreateDeck($playername, $deckname);
+			{
+				$deck = $deckdb->CreateDeck($playername, $deckname);
+				
+				// create 3 starter decks
+				if ($deck->Deckname() == 'deck 1')
+				{
+					$deck->DeckData->Common = array(1=>54, 240, 71, 256, 250, 259, 261, 113, 247, 79, 57, 140, 7, 236, 257);
+					$deck->DeckData->Uncommon =  array(1=>28, 189, 83, 10, 204, 211, 230, 36, 150, 201, 53, 96, 180, 164, 208);
+					$deck->DeckData->Rare = array(1=>32, 197, 75, 74, 151, 61, 69, 66, 232, 229, 291, 21, 126, 182, 181);
+					
+					$deck->SaveDeck();
+				}
+				elseif ($deck->Deckname() == 'deck 2')
+				{
+					$deck->DeckData->Common = array(1=>1, 289, 23, 149, 359, 18, 260, 119, 26, 275, 271, 176, 60, 122, 272) ;
+					$deck->DeckData->Uncommon = array(1=>146, 163, 162, 164, 175, 266, 5, 154, 49, 136, 195, 35, 174, 270, 89);
+					$deck->DeckData->Rare = array(1=>235, 295, 178, 379, 161, 192, 4, 167, 233, 156, 67, 339, 169, 141, 148);
+					
+					$deck->SaveDeck();
+				}
+				elseif ($deck->Deckname() == 'deck 3')
+				{
+					$deck->DeckData->Common = array(1=>356, 45, 1, 260, 79, 238, 140, 368, 274, 269, 160, 362, 26, 300, 91);
+					$deck->DeckData->Uncommon = array(1=>29, 267, 84, 19, 47, 191, 320, 123, 98, 3, 8, 58, 109, 96, 52);
+					$deck->DeckData->Rare = array(1=>115, 108, 127, 86, 110, 138, 181, 242, 222, 249, 4, 277, 293, 199, 128);
+					
+					$deck->SaveDeck();
+				}
+			}
 			$settingdb->CreateSettings($playername);
-			
-			// create 3 starter decks
-			
-			$deck = $deckdb->GetDeck($playername, 'deck 1');
-			$deck->DeckData->Common = array(1=>54, 240, 71, 256, 250, 259, 261, 113, 247, 79, 57, 140, 7, 236, 257);
-			$deck->DeckData->Uncommon =  array(1=>28, 189, 83, 10, 204, 211, 230, 36, 150, 201, 53, 96, 180, 164, 208);
-			$deck->DeckData->Rare = array(1=>32, 197, 75, 74, 151, 61, 69, 66, 232, 229, 291, 21, 126, 182, 181);
-			
-			$deck->SaveDeck();
-			
-			$deck = $deckdb->GetDeck($playername, 'deck 2');
-			$deck->DeckData->Common = array(1=>1, 289, 23, 149, 359, 18, 260, 119, 26, 275, 271, 176, 60, 122, 272) ;
-			$deck->DeckData->Uncommon = array(1=>146, 163, 162, 164, 175, 266, 5, 154, 49, 136, 195, 35, 174, 270, 89);
-			$deck->DeckData->Rare = array(1=>235, 295, 178, 379, 161, 192, 4, 167, 233, 156, 67, 339, 169, 141, 148);
-			
-			$deck->SaveDeck();
-			
-			$deck = $deckdb->GetDeck($playername, 'deck 3');
-			$deck->DeckData->Common = array(1=>356, 45, 1, 260, 79, 238, 140, 368, 274, 269, 160, 362, 26, 300, 91);
-			$deck->DeckData->Uncommon = array(1=>29, 267, 84, 19, 47, 191, 320, 123, 98, 3, 8, 58, 109, 96, 52);
-			$deck->DeckData->Rare = array(1=>115, 108, 127, 86, 110, 138, 181, 242, 222, 249, 4, 277, 293, 199, 128);
-			
-			$deck->SaveDeck();
 			
 			// create the object
 			return new CPlayer($playername, "user", $this);
@@ -73,7 +78,7 @@
 
 			foreach ($deckdb->ListDecks($playername) as $deck_data)
 			{
-				$res = $deckdb->DeleteDeck($playername, $deck_data['Deckname']);
+				$res = $deckdb->DeleteDeck($playername, $deck_data['DeckID']);
 				$result[] = (($res) ? 'Success' : 'FAILED!!!').' at DeleteDeck '.htmlencode($deck_data['Deckname']);
 			}
 
@@ -339,10 +344,10 @@
 			return $this->Players->GetGameSlots($this->Name);
 		}
 		
-		public function GetDeck($deckname)
+		public function GetDeck($deck_id)
 		{
 			global $deckdb;
-			return $deckdb->GetDeck($this->Name, $deckname);
+			return $deckdb->GetDeck($this->Name, $deck_id);
 		}
 		
 		public function ListDecks()
