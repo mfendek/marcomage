@@ -1690,7 +1690,7 @@
 				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Games'; break; }
 
 				// create a new challenge
-				$game = $gamedb->CreateGame($player->Name(), '', $deck->DeckData);
+				$game = $gamedb->CreateGame($player->Name(), '', $deck);
 				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
 
 				// set game modes
@@ -1765,7 +1765,7 @@
 				// join the game
 				$gamedb->JoinGame($player->Name(), $game_id);
 				$game = $gamedb->GetGame($game_id); // refresh game data
-				$game->StartGame($player->Name(), $deck->DeckData);
+				$game->StartGame($player->Name(), $deck);
 				$game->SaveGame();
 				$replaydb->CreateReplay($game); // create game replay
 
@@ -1839,7 +1839,7 @@
 				if ($game->Name2() != $player->Name()) { $error = 'Invalid player'; $current = 'Messages'; break; }
 
 				// accept the challenge
-				$game->StartGame($player->Name(), $deck->DeckData);
+				$game->StartGame($player->Name(), $deck);
 				$game->SaveGame();
 				$replaydb->CreateReplay($game); // create game replay
 				$messagedb->CancelChallenge($game->ID());
@@ -1913,7 +1913,7 @@
 				if (strlen($_POST['Content']) > CHALLENGE_LENGTH) { $error = "Message too long"; $current = "Details"; break; }
 
 				// create a new challenge
-				$game = $gamedb->CreateGame($player->Name(), $opponent, $deck->DeckData);
+				$game = $gamedb->CreateGame($player->Name(), $opponent, $deck);
 				if (!$game) { $error = 'Failed to create new game!'; $current = 'Players_details'; break; }
 
 				// set game modes

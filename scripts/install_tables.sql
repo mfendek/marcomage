@@ -71,6 +71,8 @@ CREATE TABLE `games` (
   `EndType` enum('Pending','Surrender','Abort','Abandon','Destruction','Draw','Construction','Resource','Timeout') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Pending',
   `Last Action` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Data` text COLLATE utf8_unicode_ci NOT NULL,
+  `DeckID1` int(10) unsigned NOT NULL DEFAULT '0',
+  `DeckID2` int(10) unsigned NOT NULL DEFAULT '0',
   `Note1` text COLLATE utf8_unicode_ci NOT NULL,
   `Note2` text COLLATE utf8_unicode_ci NOT NULL,
   `GameModes` set('HiddenCards','FriendlyPlay','LongMode') COLLATE utf8_unicode_ci NOT NULL,

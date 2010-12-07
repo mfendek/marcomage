@@ -18,14 +18,14 @@
 			return $this->db;
 		}
 		
-		public function CreateGame($player1, $player2, $deck1)
+		public function CreateGame($player1, $player2, CDeck $deck1)
 		{
 			$db = $this->db;
 			
 			$game_data[$player1] = new CGamePlayerData;
-			$game_data[$player1]->Deck = $deck1;
+			$game_data[$player1]->Deck = $deck1->DeckData;
 			
-			$result = $db->Query('INSERT INTO `games` (`Player1`, `Player2`, `Data`) VALUES ("'.$db->Escape($player1).'", "'.$db->Escape($player2).'", "'.$db->Escape(serialize($game_data)).'")');
+			$result = $db->Query('INSERT INTO `games` (`Player1`, `Player2`, `Data`, `DeckID1`) VALUES ("'.$db->Escape($player1).'", "'.$db->Escape($player2).'", "'.$db->Escape(serialize($game_data)).'", "'.$db->Escape($deck1->ID()).'")');
 			if (!$result) return false;
 			
 			$game = new CGame($db->LastID(), $player1, $player2, $this);
@@ -263,6 +263,8 @@
 		private $GameID;
 		private $Player1;
 		private $Player2;
+		private $DeckID1; // player's 1 deck slot reference ID (statistics purposes only)
+		private $DeckID2; // player's 2 deck slot reference ID (statistics purposes only)
 		private $Note1;
 		private $Note2;
 		private $HiddenCards; // hide opponent's cards (yes/no)
@@ -304,6 +306,16 @@
 		public function Name2()
 		{
 			return $this->Player2;
+		}
+		
+		public function DeckID1()
+		{
+			return $this->DeckID1;
+		}
+		
+		public function DeckID2()
+		{
+			return $this->DeckID2;
 		}
 		
 		public function Outcome()
@@ -356,7 +368,7 @@
 		public function LoadGame()
 		{
 			$db = $this->Games->getDB();
-			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Surrender`, `EndType`, `Last Action`, `Data`, `Note1`, `Note2`, `GameModes` FROM `games` WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
+			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Surrender`, `EndType`, `Last Action`, `Data`, `DeckID1`, `DeckID2`, `Note1`, `Note2`, `GameModes` FROM `games` WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
@@ -368,6 +380,8 @@
 			$this->Surrender = $data['Surrender'];
 			$this->EndType = $data['EndType'];
 			$this->LastAction = $data['Last Action'];
+			$this->DeckID1 = $data['DeckID1'];
+			$this->DeckID2 = $data['DeckID2'];
 			$this->Note1 = $data['Note1'];
 			$this->Note2 = $data['Note2'];
 			$this->HiddenCards = (strpos($data['GameModes'], 'HiddenCards') !== false) ? 'yes' : 'no';
@@ -381,18 +395,21 @@
 		public function SaveGame()
 		{
 			$db = $this->Games->getDB();
-			$result = $db->Query('UPDATE `games` SET `State` = "'.$db->Escape($this->State).'", `Current` = "'.$db->Escape($this->Current).'", `Round` = "'.$db->Escape($this->Round).'", `Winner` = "'.$db->Escape($this->Winner).'", `Surrender` = "'.$db->Escape($this->Surrender).'", `EndType` = "'.$db->Escape($this->EndType).'", `Last Action` = "'.$db->Escape($this->LastAction).'", `Data` = "'.$db->Escape(serialize($this->GameData)).'", `Note1` = "'.$db->Escape($this->Note1).'", `Note2` = "'.$db->Escape($this->Note2).'" WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
+			$result = $db->Query('UPDATE `games` SET `State` = "'.$db->Escape($this->State).'", `Current` = "'.$db->Escape($this->Current).'", `Round` = "'.$db->Escape($this->Round).'", `Winner` = "'.$db->Escape($this->Winner).'", `Surrender` = "'.$db->Escape($this->Surrender).'", `EndType` = "'.$db->Escape($this->EndType).'", `Last Action` = "'.$db->Escape($this->LastAction).'", `Data` = "'.$db->Escape(serialize($this->GameData)).'", `DeckID1` = "'.$db->Escape($this->DeckID1).'", `DeckID2` = "'.$db->Escape($this->DeckID2).'", `Note1` = "'.$db->Escape($this->Note1).'", `Note2` = "'.$db->Escape($this->Note2).'" WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
 			if (!$result) return false;
 			
 			return true;
 		}
 		
-		public function StartGame($player, $deck)
+		public function StartGame($player, CDeck $deck)
 		{
 			global $game_config;
 			
 			$this->GameData[$player] = new CGamePlayerData;
-			$this->GameData[$player]->Deck = $deck;
+			$this->GameData[$player]->Deck = $deck->DeckData;
+			
+			// update deck slot reference
+			$this->DeckID2 = $deck->ID();
 			
 			// determine game mode (normal or long)
 			$g_mode = ($this->LongMode == 'yes') ? 'long' : 'normal';
