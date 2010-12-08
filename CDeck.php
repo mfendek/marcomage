@@ -61,7 +61,7 @@
 		public function ListDecks($username)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `DeckID`, `Deckname`, `Modified`, (CASE WHEN `Ready` = TRUE THEN "yes" ELSE "no" END) as `Ready` FROM `decks` WHERE `Username` = "'.$db->Escape($username).'"');
+			$result = $db->Query('SELECT `DeckID`, `Deckname`, `Modified`, (CASE WHEN `Ready` = TRUE THEN "yes" ELSE "no" END) as `Ready`, `Wins`, `Losses`, `Draws` FROM `decks` WHERE `Username` = "'.$db->Escape($username).'"');
 			if (!$result) return false;
 			
 			$decks = array();
@@ -81,6 +81,29 @@
 				$decks[] = $data;
 			return $decks;
 		}
+		
+		public function UpdateStatistics($player1, $player2, $deck_id1, $deck_id2, $winner)
+		{
+			// update player 1 deck statistics
+			$deck1 = $this->GetDeck($player1, $deck_id1);
+			if ($deck1)
+			{
+				if ($winner == $player1) $deck1->Wins++;
+				elseif ($winner == $player2) $deck1->Losses++;
+				else $deck1->Draws++;
+				$deck1->SaveDeck();
+			}
+
+			// update player 2 deck statistics
+			$deck2 = $this->GetDeck($player2, $deck_id2);
+			if ($deck2)
+			{
+				if ($winner == $player2) $deck2->Wins++;
+				elseif ($winner == $player1) $deck2->Losses++;
+				else $deck2->Draws++;
+				$deck2->SaveDeck();
+			}
+		}
 	}
 	
 	
@@ -91,6 +114,9 @@
 		private $Deckname;
 		private $Decks;
 		public $DeckData;
+		public $Wins;
+		public $Losses;
+		public $Draws;
 		
 		public function __construct($deck_id, $username, $deckname, CDecks &$Decks)
 		{
@@ -128,12 +154,15 @@
 		public function LoadDeck()
 		{
 			$db = $this->Decks->getDB();
-			$result = $db->Query('SELECT `Data` FROM `decks` WHERE `Username` = "'.$db->Escape($this->Username).'" AND `DeckID` = "'.$db->Escape($this->DeckID).'"');
+			$result = $db->Query('SELECT `Data`, `Wins`, `Losses`, `Draws` FROM `decks` WHERE `Username` = "'.$db->Escape($this->Username).'" AND `DeckID` = "'.$db->Escape($this->DeckID).'"');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
 			$data = $result->Next();
 			$this->DeckData = unserialize($data['Data']);
+			$this->Wins = $data['Wins'];
+			$this->Losses = $data['Losses'];
+			$this->Draws = $data['Draws'];
 			
 			return true;
 		}
@@ -141,7 +170,7 @@
 		public function SaveDeck()
 		{
 			$db = $this->Decks->getDB();
-			$result = $db->Query('UPDATE `decks` SET `Ready` = '.($this->isReady() ? 'TRUE' : 'FALSE').', `Data` = "'.$db->Escape(serialize($this->DeckData)).'" WHERE `Username` = "'.$db->Escape($this->Username).'" AND `DeckID` = "'.$db->Escape($this->DeckID).'"');
+			$result = $db->Query('UPDATE `decks` SET `Ready` = '.($this->isReady() ? 'TRUE' : 'FALSE').', `Data` = "'.$db->Escape(serialize($this->DeckData)).'", `Wins` = "'.$db->Escape($this->Wins).'", `Losses` = "'.$db->Escape($this->Losses).'", `Draws` = "'.$db->Escape($this->Draws).'" WHERE `Username` = "'.$db->Escape($this->Username).'" AND `DeckID` = "'.$db->Escape($this->DeckID).'"');
 			if (!$result) return false;
 			
 			return true;
@@ -156,6 +185,13 @@
 			$this->Deckname = $newdeckname;
 			
 			return true;
+		}
+		
+		public function ResetStatistics()
+		{
+			$this->Wins = 0;
+			$this->Losses = 0;
+			$this->Draws = 0;
 		}
 
 		/**

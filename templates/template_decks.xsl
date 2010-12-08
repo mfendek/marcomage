@@ -19,6 +19,9 @@
 	<table cellspacing="0" class="skin_text">
 		<tr>
 			<th><p>Deck name</p></th>
+			<th><p>Wins</p></th>
+			<th><p>Losses</p></th>
+			<th><p>Draws</p></th>
 			<th><p>Last change</p></th>
 		</tr>
 		<xsl:for-each select="$param/list/*">
@@ -31,6 +34,9 @@
 						<a href="{php:functionString('makeurl', 'Decks_edit', 'CurrentDeck', DeckID)}"><xsl:value-of select="Deckname"/></a>
 					</p>
 				</td>
+				<td><p><xsl:value-of select="Wins"/></p></td>
+				<td><p><xsl:value-of select="Losses"/></p></td>
+				<td><p><xsl:value-of select="Draws"/></p></td>
 				<td>
 					<p>
 						<xsl:choose>
@@ -122,6 +128,15 @@
 		<button type="submit" name="auto_tokens">Auto</button>
 	</div>
 
+	<p class="deck_stats">
+		<xsl:attribute name="title">deck statistics (wins / losses / draws)</xsl:attribute>
+		<b><xsl:value-of select="$param/wins"/></b>
+		<xsl:text> / </xsl:text>
+		<b><xsl:value-of select="$param/losses"/></b>
+		<xsl:text> / </xsl:text>
+		<b><xsl:value-of select="$param/draws"/></b>
+	</p>
+
 	<input type="text" name="NewDeckName" value="{$param/deckname}" maxlength="20" />
 	<button type="submit" name="rename_deck">Rename</button>
 
@@ -137,6 +152,14 @@
 	<button type="submit" name="export_deck">Export</button>
 	<input type="file" name="uploadedfile" />
 	<button type="submit" name="import_deck">Import</button>
+	<xsl:choose>
+		<xsl:when test="$param/reset_stats = 'no'">
+			<button type="submit" name="reset_stats_prepare">Reset statistics</button>
+		</xsl:when>
+		<xsl:otherwise>
+			<button type="submit" name="reset_stats_confirm">Confirm reset</button>
+		</xsl:otherwise>
+	</xsl:choose>
 
 	</div>
 

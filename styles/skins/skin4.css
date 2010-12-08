@@ -89,7 +89,7 @@ p.flag, span.newcard /* new card flag (indicated above a new card) */
 	background-color: rgb(50, 50, 75); /* dark blue */
 }
 
-div#cost_per_turn /* avg cost per turn indicator layout */
+div#cost_per_turn, p.deck_stats /* avg cost per turn indicator layout */
 {
 	background-color: rgb(50, 50, 75); /* dark blue */
 }

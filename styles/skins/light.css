@@ -131,7 +131,7 @@ div.chatbox > p > span:first-child /* date-time info in chatbox */
 	color: blue;
 }
 
-div#cost_per_turn /* avg cost per turn indicator layout */
+div#cost_per_turn, p.deck_stats /* avg cost per turn indicator layout */
 {
 	border: 2px outset black;
 	color: black;

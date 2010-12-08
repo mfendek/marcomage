@@ -420,7 +420,16 @@
 			<h4>Export deck</h4>
 			<select name="ExportDeck" size="1">
 				<xsl:for-each select="$param/export_decks/*">
-					<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
+					<option value="{am:urlencode(DeckID)}">
+						<xsl:value-of select="Deckname"/>
+						<xsl:text> (</xsl:text>
+						<xsl:value-of select="Wins"/>
+						<xsl:text> / </xsl:text>
+						<xsl:value-of select="Losses"/>
+						<xsl:text> / </xsl:text>
+						<xsl:value-of select="Draws"/>
+						<xsl:text>)</xsl:text>
+					</option>
 				</xsl:for-each>
 			</select>
 			<button type="submit" name="export_deck_remote" value="{am:urlencode($opponent)}">Export</button>

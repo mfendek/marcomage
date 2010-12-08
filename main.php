@@ -674,9 +674,35 @@
 
 				// reset deck, saving it on success
 				if( $deck->ResetDeck() )
+				{
+					$deck->ResetStatistics();
 					$deck->SaveDeck();
+				}
 				else
 					$error = 'Failed to reset this deck.';
+
+				$current = 'Decks_edit';
+				break;
+			}
+
+			if (isset($_POST['reset_stats_prepare'])) // Decks -> Reset statistics
+			{
+				// only symbolic functionality... rest is handled below
+				$current = 'Decks_edit';
+
+				break;
+			}
+
+			if (isset($_POST['reset_stats_confirm'])) // Decks -> Reset statistics -> Confirm reset
+			{
+				$deck_id = $_POST['CurrentDeck'];
+				$deck = $player->GetDeck($deck_id);
+				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
+
+				// reset deck statistics
+				$deck->ResetStatistics();
+				$deck->SaveDeck();
+				$information = 'Deck statistics successfully reset.';
 
 				$current = 'Decks_edit';
 				break;
@@ -1388,6 +1414,9 @@
 						$p1_rep = $p1->GetSettings()->GetSetting('Reports');
 						$p2_rep = $p2->GetSettings()->GetSetting('Reports');
 
+						// update deck statistics
+						$deckdb->UpdateStatistics($player1, $player2, $game->DeckID1(), $game->DeckID2(), $game->Winner);
+
 						// update score
 						$score1 = $scoredb->GetScore($player1);
 						$score2 = $scoredb->GetScore($player2);
@@ -1511,6 +1540,9 @@
 					$opponent_rep = $opponent->GetSettings()->GetSetting('Reports');
 					$player_rep = $player->GetSettings()->GetSetting('Reports');
 
+					// update deck statistics
+					$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
+
 					// update score
 					$score1 = $scoredb->GetScore($game->Winner);
 					$score1->ScoreData->Wins++;
@@ -1602,6 +1634,9 @@
 					$p2 = $playerdb->GetPlayer($player2);
 					$p1_rep = $p1->GetSettings()->GetSetting('Reports');
 					$p2_rep = $p2->GetSettings()->GetSetting('Reports');
+
+					// update deck statistics
+					$deckdb->UpdateStatistics($player1, $player2, $game->DeckID1(), $game->DeckID2(), $game->Winner);
 
 					// update score
 					$score1 = $scoredb->GetScore($player1);
@@ -2647,6 +2682,7 @@ case 'Decks_edit':
 	if (!$deck) { $display_error = "Invalid deck."; break; }
 
 	$params['deck_edit']['reset'] = ( (isset($_POST["reset_deck_prepare"] )) ? 'yes' : 'no');
+	$params['deck_edit']['reset_stats'] = (isset($_POST["reset_stats_prepare"] )) ? 'yes' : 'no';
 
 	// load card display settings
 	$settings = $player->GetSettings();
@@ -2679,6 +2715,9 @@ case 'Decks_edit':
 		$params['deck_edit']['DeckCards'][$class] = $carddb->GetData($deck->DeckData->$class);
 
 	$params['deck_edit']['deckname'] = $deck->Deckname();
+	$params['deck_edit']['wins'] = $deck->Wins;
+	$params['deck_edit']['losses'] = $deck->Losses;
+	$params['deck_edit']['draws'] = $deck->Draws;
 	$params['deck_edit']['Tokens'] = $deck->DeckData->Tokens;
 	$params['deck_edit']['TokenKeywords'] = $carddb->TokenKeywords();
 

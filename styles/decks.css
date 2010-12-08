@@ -54,9 +54,17 @@ div#cost_per_turn /* avg cost per turn indicator layout */
 	padding: 0ex 0.5ex 0ex 0.5ex;
 }
 
-div#cost_per_turn > b /* set distance between avg cost per turn indicators */
+div#cost_per_turn > b, p.deck_stats > b /* set distance between avg cost per turn indicators */
 {
 	margin-left: 0.5ex;
+}
+
+p.deck_stats /* deck statistics */
+{
+	float: right;
+	margin-right: 1ex;
+	-moz-border-radius: 7px;
+	padding: 0ex 0.5ex 0ex 0.5ex;
 }
 
 div#tokens /* tokens layout */
