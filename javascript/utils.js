@@ -334,4 +334,75 @@ $(document).ready(function() {
 			return confirm(str.concat("Do you really want to purchase ", selected.next().html(), "?"))
 		}
 	});
+
+	// card concept delete confirmation
+	$("button[name='delete_concept']").click(function() {
+		if (confirm("All of the card concept data will be deleted. Are you sure you want to continue?"))
+		{
+			// skip standard confirmation
+			$("button[name='delete_concept']").attr('name', 'delete_concept_confirm');
+			return true;
+		}
+		else return false;
+	});
+
+	// deck reset confirmation
+	$("button[name='reset_deck_prepare']").click(function() {
+		if (confirm("All cards will be removed from the deck, all token counters will be reset and deck statistics will be reset as well. Are you sure you want to continue?"))
+		{
+			// skip standard confirmation
+			$("button[name='reset_deck_prepare']").attr('name', 'reset_deck_confirm');
+			return true;
+		}
+		else return false;
+	});
+
+	// deck statistics reset confirmation
+	$("button[name='reset_stats_prepare']").click(function() {
+		if (confirm("Deck statistics will be reset. Are you sure you want to continue?"))
+		{
+			// skip standard confirmation
+			$("button[name='reset_stats_prepare']").attr('name', 'reset_stats_confirm');
+			return true;
+		}
+		else return false;
+	});
+
+	// forum thread delete confirmation
+	$("button[name='thread_delete']").click(function() {
+		if (confirm("Current thread and all its posts will be deleted. Are you sure you want to continue?"))
+		{
+			// skip standard confirmation
+			$("button[name='thread_delete']").attr('name', 'thread_delete_confirm');
+			return true;
+		}
+		else return false;
+	});
+
+	// forum post delete confirmation
+	$("button[name='delete_post']").click(function() {
+		if (confirm("Current post will be deleted. Are you sure you want to continue?"))
+		{
+			// skip standard confirmation
+			$("button[name='delete_post']").attr('name', 'delete_post_confirm');
+			return true;
+		}
+		else return false;
+	});
+
+	// message delete confirmation
+	$("button[name='message_delete']").click(function() {
+		if (confirm("Current message will be deleted. Are you sure you want to continue?"))
+		{
+			// skip standard confirmation
+			$("button[name='message_delete']").attr('name', 'message_delete_confirm');
+			return true;
+		}
+		else return false;
+	});
+
+	// mass message delete confirmation
+	$("button[name='Delete_mass']").click(function() {
+		return confirm("All selected messages will be deleted. Are you sure you want to continue?");
+	});
 });

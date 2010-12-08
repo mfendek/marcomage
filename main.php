@@ -677,6 +677,7 @@
 				{
 					$deck->ResetStatistics();
 					$deck->SaveDeck();
+					$information = 'Deck successfully reset.';
 				}
 				else
 					$error = 'Failed to reset this deck.';

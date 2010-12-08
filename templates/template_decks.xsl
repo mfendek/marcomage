@@ -145,7 +145,7 @@
 			<button type="submit" name="reset_deck_prepare">Reset</button>
 		</xsl:when>
 		<xsl:otherwise>
-			<button type="submit" name="reset_deck_confirm">Confirm reset</button>
+			<button type="submit" name="reset_deck_confirm" class="marked_button">Confirm reset</button>
 		</xsl:otherwise>
 	</xsl:choose>
 
@@ -157,7 +157,7 @@
 			<button type="submit" name="reset_stats_prepare">Reset statistics</button>
 		</xsl:when>
 		<xsl:otherwise>
-			<button type="submit" name="reset_stats_confirm">Confirm reset</button>
+			<button type="submit" name="reset_stats_confirm" class="marked_button">Confirm reset</button>
 		</xsl:otherwise>
 	</xsl:choose>
 
