@@ -120,6 +120,16 @@ $(document).ready(function() {
 		if (event.keyCode == '13') { event.preventDefault(); $("button[name='forum_search']").click(); }
 	});
 
+	// apply player filters (players section)
+	$("input[name='pname_filter']").keypress(function(event) {
+		if (event.keyCode == '13') { event.preventDefault(); $("button[name='filter_players']").click(); }
+	});
+
+	// apply card filters (concepts section)
+	$("input[name='card_name']").keypress(function(event) {
+		if (event.keyCode == '13') { event.preventDefault(); $("button[name='concepts_filter']").click(); }
+	});
+
 	// sends in game chat message when ENTER key is hit
 	$("input[name='ChatMessage']").keypress(function(event) {
 		if (event.keyCode == '13') { event.preventDefault(); $("button[name='send_message']").click(); }
@@ -136,7 +146,7 @@ $(document).ready(function() {
 	});
 
 	// blocks ENTER key to prevent section redirects
-	$("input[name!='ChatMessage'][name!='NameFilter'][name!='phrase'][type!='password'], select").keypress(function(event) { if (event.keyCode == '13') { event.preventDefault(); } });
+	$("input[name!='ChatMessage'][name!='NameFilter'][name!='phrase'][name!='card_name'][name!='pname_filter'][type!='password'], select").keypress(function(event) { if (event.keyCode == '13') { event.preventDefault(); } });
 
 	// show/hide card pool
 	$("button[name='card_pool_switch']").click(function() {
