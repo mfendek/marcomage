@@ -28,7 +28,7 @@
 	<div id="players">
 		<div class="filters">
 			<!-- begin name filter -->
-			<input type="text" name="pname_filter" maxlength="20" size="20" value="{$param/pname_filter}" />
+			<input type="text" name="pname_filter" maxlength="20" size="20" value="{$param/pname_filter}" title="search phrase for player names" />
 
 			<!-- activity filter -->
 			<xsl:variable name="activity_types">

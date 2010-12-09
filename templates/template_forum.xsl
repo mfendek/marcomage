@@ -113,7 +113,7 @@
 	<h4>Search</h4>
 	
 	<div class="filters">
-		<input type="text" name="phrase" maxlength="50" size="30" value="{$param/phrase}" />
+		<input type="text" name="phrase" maxlength="50" size="30" value="{$param/phrase}" title="search phrase" />
 
 		<!-- target selector -->
 		<xsl:variable name="targets">

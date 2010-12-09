@@ -33,7 +33,7 @@
 			</xsl:if>
 
 			<!-- card name filter -->
-			<input type="text" name="card_name" maxlength="64" size="30" value="{$param/card_name}" />
+			<input type="text" name="card_name" maxlength="64" size="30" value="{$param/card_name}" title="search phrase for card name" />
 
 			<!-- date filter -->
 			<xsl:variable name="dates">

@@ -28,7 +28,7 @@
 			<div class="filters">
 
 			<!-- card name filter -->
-			<input type="text" name="NameFilter" maxlength="20" size="15" value="{$param/NameFilter}" />
+			<input type="text" name="NameFilter" maxlength="20" size="15" value="{$param/NameFilter}" title="search phrase for card name (CASE sensitive, type first letter as capital if you want the card name to start with that letter)" />
 
 			<!-- card rarity filter -->
 			<xsl:variable name="classes">

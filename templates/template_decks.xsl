@@ -165,7 +165,7 @@
 
 	<div class="filters">
 
-	<div id="cost_per_turn">
+	<div id="cost_per_turn" title="average cost per turn (bricks, gems, recruits)">
 		<xsl:text>Avg cost / turn</xsl:text>
 		<b><xsl:value-of select="$param/Res/Bricks"/></b>
 		<b><xsl:value-of select="$param/Res/Gems"/></b>
@@ -173,7 +173,7 @@
 	</div>
 
 	<!-- card name filter -->
-	<input type="text" name="NameFilter" maxlength="20" size="15" value="{$param/NameFilter}" />
+	<input type="text" name="NameFilter" maxlength="20" size="15" value="{$param/NameFilter}" title="search phrase for card name (CASE sensitive, type first letter as capital if you want the card name to start with that letter)" />
 
 	<!-- card rarity filter -->
 	<xsl:variable name="classes">
