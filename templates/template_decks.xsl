@@ -210,6 +210,7 @@
 		<value name="Discard"        value="Discard"       />
 		<value name="Replace"        value="Replace"       />
 		<value name="Reveal"         value="Reveal"        />
+		<value name="Summon"         value="Summons"       />
 		<value name="Production"     value="Production"    />
 		<value name="Wall +"         value="Wall: +"       />
 		<value name="Wall -"         value="Wall: -"       />

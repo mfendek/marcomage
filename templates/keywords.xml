@@ -222,7 +222,7 @@
 	</keyword>
 	<keyword>
 		<name>Dragon</name>
-		<description>If there is another Dragon in hand, next card will be Dragon egg (if there is no Dragon egg card in hand) or Gems production x2 (if there already is a Dragon egg card in hand).</description>
+		<description>If there is another Dragon in hand, summons Dragon egg (if there is no Dragon egg card in hand) or Gems production x2 (if there already is a Dragon egg card in hand).</description>
 		<code><![CDATA[
 					if ($this->KeywordCount($mydata->Hand, "Dragon") > 1)
 					{
@@ -373,7 +373,7 @@
 	</keyword>
 	<keyword>
 		<name>Illusion</name>
-		<description>If an Illusion card is played after playing a different non-common Illusion card, next card will be a rare card from enemy deck.</description>
+		<description>If an Illusion card is played after playing a different non-common Illusion card, summons a rare card from enemy deck.</description>
 		<code><![CDATA[if ($mylast_card->HasKeyword("Illusion") AND $mylast_action == 'play' AND $mylast_card->GetClass() != 'Common' AND $cardid != $mylast_card->GetID()) $nextcard = $this->DrawCard($hisdata->Deck->Rare, $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
 	</keyword>
 	<keyword>
