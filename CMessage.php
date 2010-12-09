@@ -33,22 +33,22 @@
 			$winner = ($winner != '') ? 'Winner: '.$winner : '';
 			
 			if ($player1_reports == "yes")
-				$this->SendMessage("MArcomage", $player1, "Battle report", "Opponent: $player2\nOutcome: {$outcome}\n".$winner."\nHide opponent's cards: ".$hidden."\n".$message1);
+				$this->SendMessage(SYSTEM_NAME, $player1, "Battle report", "Opponent: $player2\nOutcome: {$outcome}\n".$winner."\nHide opponent's cards: ".$hidden."\n".$message1);
 			
 			if ($player2_reports == "yes")
-				$this->SendMessage("MArcomage", $player2, "Battle report", "Opponent: $player1\nOutcome: {$outcome}\n".$winner."\nHide opponent's cards: ".$hidden."\n".$message2);
+				$this->SendMessage(SYSTEM_NAME, $player2, "Battle report", "Opponent: $player1\nOutcome: {$outcome}\n".$winner."\nHide opponent's cards: ".$hidden."\n".$message2);
 			
 			return true;
 		}
 		
 		public function LevelUp($player, $new_level)
 		{
-			$this->SendMessage("MArcomage", $player, 'Level up ('.$new_level.')', 'Congratulations, you have reached level '.$new_level.'.');
+			$this->SendMessage(SYSTEM_NAME, $player, 'Level up ('.$new_level.')', 'Congratulations, you have reached level '.$new_level.'.');
 		}
 		
 		public function AchievementNotification($player, $achievement, $gold)
 		{
-			$this->SendMessage("MArcomage", $player, 'Achievement gained', 'Congratulations, you have gained the '.$achievement.' achievement and '.$gold.' gold reward.');
+			$this->SendMessage(SYSTEM_NAME, $player, 'Achievement gained', 'Congratulations, you have gained the '.$achievement.' achievement and '.$gold.' gold reward.');
 		}
 		
 		public function WelcomeMessage($player)
@@ -60,7 +60,7 @@
 			$message.= 'Good luck and have fun,'."\n"."\n";
 			$message.= 'MArcomage development team'."\n";
 			
-			$this->SendMessage("MArcomage", $player, 'Welcome to MArcomage', $message);
+			$this->SendMessage(SYSTEM_NAME, $player, 'Welcome to MArcomage', $message);
 		}
 		
 		public function GetMessage($messageid, $player_name)
