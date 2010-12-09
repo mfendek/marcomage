@@ -19,6 +19,7 @@
 			global $scoredb;
 			global $deckdb;
 			global $settingdb;
+			global $messagedb;
 			
 			// add all associated entries (login, score, decks, settings)
 			$logindb->Register($playername, $password);
@@ -54,6 +55,7 @@
 				}
 			}
 			$settingdb->CreateSettings($playername);
+			$messagedb->WelcomeMessage($playername);
 			
 			// create the object
 			return new CPlayer($playername, "user", $this);

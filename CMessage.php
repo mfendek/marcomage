@@ -51,6 +51,18 @@
 			$this->SendMessage("MArcomage", $player, 'Achievement gained', 'Congratulations, you have gained the '.$achievement.' achievement and '.$gold.' gold reward.');
 		}
 		
+		public function WelcomeMessage($player)
+		{
+			$message = 'Welcome '.$player.','."\n"."\n";
+			$message.= 'MArcomage team has created three starter decks for you. To quickly start a game, go to "Games" section, "Hosted games" subsection where you can either host or join a game. If you want to play a game with a specific player, you can find his profile in the "Players" section where you can challenge him directly.'."\n"."\n";
+			$message.= 'To improve your play strategy you need to improve your decks. You can do this in the "Decks" section. In addition to three starter decks which can be modified as you see fit, there are multiple empty decks that are awaiting your customization.'."\n"."\n";
+			$message.= 'MArcomage can be configured to your best liking in the "Settings" section. Be sure to check it out. There are many interesting features that are just waiting to be discovered. To learn more about them, seek them out in the "Help" section.'."\n"."\n";
+			$message.= 'Good luck and have fun,'."\n"."\n";
+			$message.= 'MArcomage development team'."\n";
+			
+			$this->SendMessage("MArcomage", $player, 'Welcome to MArcomage', $message);
+		}
+		
 		public function GetMessage($messageid, $player_name)
 		{	// get message for message details section
 			$db = $this->db;
