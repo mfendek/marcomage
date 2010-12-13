@@ -621,7 +621,7 @@
 			if ($action == 'play')
 			{
 				// update player score (award 'Rares' - number of rare cards played)
-				if ($card->GetClass() == 'Rare') $score->UpdateAward('Rares');
+				if ($card->GetClass() == 'Rare' and $this->FriendlyPlay == 'no') $score->UpdateAward('Rares');
 				
 				// subtract card cost
 				$mydata->Bricks-= $card->CardData->Bricks;
@@ -731,16 +731,19 @@
 				$hisdata->Changes[$attribute]+= $his_diff;
 			}
 			
-			// update player score (awards 'Quarry', 'Magic', 'Dungeons', 'Tower', 'Wall')
-			foreach (array('Quarry', 'Magic', 'Dungeons', 'Tower', 'Wall') as $attribute)
-				if ($my_diffs[$attribute] > 0) $score->UpdateAward($attribute, $my_diffs[$attribute]);
-			
-			// update player score (award 'TowerDamage' and 'WallDamage')
-			foreach (array('Tower', 'Wall') as $attribute)
-				if ($his_diffs[$attribute] < 0) $score->UpdateAward($attribute.'Damage', ($his_diffs[$attribute] * (-1)));
-			
-			// save player score
-			$score->SaveScore();
+			if ($this->FriendlyPlay == 'no')
+			{
+				// update player score (awards 'Quarry', 'Magic', 'Dungeons', 'Tower', 'Wall')
+				foreach (array('Quarry', 'Magic', 'Dungeons', 'Tower', 'Wall') as $attribute)
+					if ($my_diffs[$attribute] > 0) $score->UpdateAward($attribute, $my_diffs[$attribute]);
+				
+				// update player score (award 'TowerDamage' and 'WallDamage')
+				foreach (array('Tower', 'Wall') as $attribute)
+					if ($his_diffs[$attribute] < 0) $score->UpdateAward($attribute.'Damage', ($his_diffs[$attribute] * (-1)));
+				
+				// save player score
+				$score->SaveScore();
+			}
 			
 			// draw card at the end of turn
 			if( $nextcard > 0 )
