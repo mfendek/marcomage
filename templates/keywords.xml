@@ -423,29 +423,8 @@
 	</keyword>
 	<keyword>
 		<name>Nature</name>
-		<description>If a Nature card is played after playing a different non-common Nature card, upgrades rarity of highest non-rare Nature card in hand.</description>
-		<code><![CDATA[
-					if ($mylast_card->HasKeyword("Nature") AND $mylast_action == 'play' AND $mylast_card->GetClass() != 'Common' AND $cardid != $mylast_card->GetID())
-					{
-						$storage = array("Common" => array(), "Uncommon" => array());
-						for ($i = 1; $i <= 8; $i++)
-							if ($i != $cardpos)
-							{
-								$cur_card = $carddb->GetCard($mydata->Hand[$i]);
-								$rarity = $cur_card->GetClass();
-								if ($cur_card->HasKeyword("Nature") AND $rarity != 'Rare') $storage[$rarity][] = $i;
-							}
-						if ((count($storage['Common']) + count($storage['Uncommon'])) > 0)
-						{
-							shuffle($storage['Common']); shuffle($storage['Uncommon']);
-							$rarity = (count($storage['Uncommon']) > 0) ? 'Rare' : 'Uncommon';
-							$storage_temp = array_merge($storage['Common'], $storage['Uncommon']);
-							$pos = array_pop($storage_temp);
-							$mydata->Hand[$pos] = $this->DrawCard($carddb->GetList(array('class'=>$rarity, 'keyword'=>"Nature")), $mydata->Hand, $pos, 'DrawCard_list');
-							$mydata->NewCards[$pos] = 1;
-						}
-					}
-]]></code>
+		<description>If a Nature card is played after playing a different non-common Nature card, summons a rare Nature card.</description>
+		<code><![CDATA[if ($mylast_card->HasKeyword("Nature") AND $mylast_action == 'play' AND $mylast_card->GetClass() != 'Common' AND $cardid != $mylast_card->GetID()) $nextcard = $this->DrawCard($carddb->GetList(array('class'=>"Rare", 'keyword'=>"Nature")), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
 	</keyword>
 	<keyword>
 		<name>Quick</name>
