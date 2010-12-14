@@ -13,7 +13,7 @@
 	</award>
 	<award name="Quarry" desc="increase your quarry by #">
 		<achievement name="Sculptor" condition="250" reward="25" />
-		<achievement name="Stone mason" condition="500" reward="50" />
+		<achievement name="Mason" condition="500" reward="50" />
 		<achievement name="Architect" condition="750" reward="75" />
 	</award>
 	<award name="Magic" desc="increase your magic by #">
@@ -29,7 +29,7 @@
 	<award name="Tower" desc="build # tower">
 		<achievement name="Tower guard" condition="50000" reward="30" />
 		<achievement name="Honor guard" condition="100000" reward="60" />
-		<achievement name="Kings guard" condition="150000" reward="90" />
+		<achievement name="Royal guard" condition="150000" reward="90" />
 	</award>
 	<award name="TowerDamage" desc="inflict # tower damage to your opponent">
 		<achievement name="Assailant" condition="50000" reward="30" />

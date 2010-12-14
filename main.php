@@ -2967,6 +2967,23 @@ case 'Players_details':
 	break;
 
 
+case 'Players_achievements':
+
+	// retrieve name of a player we are currently viewing
+	$cur_player = (isset($_POST['Profile'])) ? $_POST['Profile'] : '';
+
+	$p = $playerdb->GetPlayer($cur_player);
+	if (!$p) { $display_error = 'Invalid player.'; break; }
+
+	$score = $p->GetScore();
+
+	$params['achievements']['PlayerName'] = $p->Name();
+	$params['achievements']['data'] = $score->AchievementsData();
+
+
+	break;
+
+
 case 'Messages':
 	$current_subsection = isset($_POST['challengebox']) ? $_POST['challengebox'] : "incoming";
 	$current_location = ((isset($_POST['CurrentLocation'])) ? $_POST['CurrentLocation'] : "inbox");

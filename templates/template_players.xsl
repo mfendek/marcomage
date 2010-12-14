@@ -252,6 +252,10 @@
 			</div>
 		</xsl:if>
 
+		<p class="player_achievements">
+			<a href="{php:functionString('makeurl', 'Players_achievements', 'Profile', $param/PlayerName)}"><xsl:value-of select="$param/PlayerName"/>'s achievements</a>
+		</p>
+
 		<p>First name<span class="detail_value"><xsl:value-of select="$param/Firstname"/></span></p>
 		<p>Surname<span class="detail_value"><xsl:value-of select="$param/Surname"/></span></p>
 
@@ -458,6 +462,94 @@
 
 		<div class="clear_floats"></div>
 	</div>
+	</div>
+</xsl:template>
+
+
+<xsl:template match="section[. = 'Players_achievements']">
+	<xsl:variable name="param" select="$params/achievements" />
+	<xsl:variable name="opponent" select="$param/PlayerName" />
+
+	<div id="achievements">
+		<h3><xsl:value-of select="$param/PlayerName"/>'s achievements</h3>
+
+		<table class="centered skin_label" cellpadding="0" cellspacing="0" >
+
+		<!-- table header -->
+		<tr>
+			<xsl:for-each select="$param/data/*">
+				<th><p>Tier <xsl:value-of select="position()"/></p></th>
+			</xsl:for-each>
+		</tr>
+
+		<!-- table body -->
+		<tr>
+			<!-- number of columns (configurable) -->
+			<xsl:variable name="columns" select="3"/>
+			<xsl:for-each select="$param/data/*">
+				<td>
+					<table cellpadding="0" cellspacing="0">
+					<xsl:variable name="cur_tier" select="current()"/>
+
+					<xsl:for-each select="current()/*[position() &lt;= floor(((count(current()/*) - 1) div $columns)) + 1]">
+						<tr>
+							<xsl:variable name="i" select="position()"/>
+							<xsl:for-each select="exsl:node-set($cur_tier)/*[position() &gt;= (($i - 1)*$columns + 1) and position() &lt;= $i*$columns]">
+								<td>
+									<img class="achievement" height="100px" width="100px" alt="{name}" >
+									<xsl:choose>
+										<!-- case 1: final achievement -->
+										<xsl:when test="count = ''">
+											<xsl:attribute name="src">
+												<xsl:text>img/achievements/</xsl:text>
+												<xsl:value-of select="am:file_name(name)"/>
+												<xsl:if test="condition = 'yes'">_gained</xsl:if>
+												<xsl:text>.png</xsl:text>
+											</xsl:attribute>
+											<xsl:attribute name="title">
+												<xsl:value-of select="name"/>
+												<xsl:text> - </xsl:text>
+												<xsl:value-of select="desc"/>
+												<xsl:text> (</xsl:text>
+												<xsl:value-of select="reward"/>
+												<xsl:text> gold reward)</xsl:text>
+												<xsl:if test="condition = 'yes'"> achievement already gained</xsl:if>
+											</xsl:attribute>
+										</xsl:when>
+										<!-- case 2: regular achievement -->
+										<xsl:otherwise>
+											<xsl:attribute name="src">
+												<xsl:text>img/achievements/</xsl:text>
+												<xsl:value-of select="am:file_name(name)"/>
+												<xsl:if test="count &gt;= condition">_gained</xsl:if>
+												<xsl:text>.png</xsl:text>
+											</xsl:attribute>
+											<xsl:attribute name="title">
+												<xsl:value-of select="name"/>
+												<xsl:text> (</xsl:text>
+												<xsl:value-of select="count"/>
+												<xsl:text> / </xsl:text>
+												<xsl:value-of select="condition"/>
+												<xsl:text> ) - </xsl:text>
+												<xsl:value-of select="desc"/>
+												<xsl:text> (</xsl:text>
+												<xsl:value-of select="reward"/>
+												<xsl:text> gold reward)</xsl:text>
+												<xsl:if test="count &gt;= condition"> achievement already gained</xsl:if>
+											</xsl:attribute>
+										</xsl:otherwise>
+									</xsl:choose>
+									</img>
+								</td>
+							</xsl:for-each>
+						</tr>
+					</xsl:for-each>
+					</table>
+				</td>
+			</xsl:for-each>
+		</tr>
+
+	</table>
 	</div>
 </xsl:template>
 

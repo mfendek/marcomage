@@ -13,7 +13,7 @@
 	color: #cccccc; /* light gray */
 }
 
-.skin_text, .skin_label /* border layout */
+.skin_text, .skin_label, img.achievement /* border layout */
 {
 	border: 2px outset #cccccc;
 	-moz-border-radius: 7px;

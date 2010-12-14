@@ -142,4 +142,52 @@ div.statistics > h4 /* versus statistics heading */
 	margin-bottom: 1ex;
 }
 
+p.player_achievements /* player achievements link */
+{
+	margin-top: 1ex;
+	margin-bottom: 2ex;
+	font-size: large;
+	font-weight: bold;
+}
+
+p.player_achievements > a /* player achievements link */
+{
+	border: medium ridge white;
+	padding: 0.5ex 1ex 1ex 1ex;
+}
+
 /* end user details */
+
+/* begin user achievements */
+
+div#achievements /* set minimum width to whole section (grants immunity to resize) */
+{
+	min-width: 1045px;
+}
+
+div#achievements h3 /* section name layout */
+{
+	margin: 0.5ex 0ex 1ex 0ex;
+}
+
+div#achievements > table /* achievements table */
+{
+	margin-bottom: 1ex;
+}
+
+div#achievements > table table /* achievements inner table */
+{
+	padding: 1ex;
+}
+
+div#achievements table p /* achievements table spacing */
+{
+	margin: 1ex;
+}
+
+div#achievements img.achievement /* achievement picture */
+{
+	margin: 0.5ex;
+}
+
+/* end user achievements */
