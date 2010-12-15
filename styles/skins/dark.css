@@ -2,6 +2,8 @@
  * MArcomage CSS stylesheet - skins - dark skin template *
  *********************************************************/
 
+@import url("../../javascript/jquery/dark/jquery_ui.css"); /* import JQuery dark skin */
+
 .skin_text /* text element layout */
 {
 	color: #cccccc; /* light gray */
