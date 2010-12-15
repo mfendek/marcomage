@@ -2,7 +2,7 @@
  * MArcomage CSS stylesheet - skins - light skin template *
  **********************************************************/
 
-@import url("../../javascript/jquery/light/jquery_ui.css"); /* import JQuery light skin */
+@import url("../../javascript/jquery/light/jquery_ui_light.css"); /* import JQuery light skin */
 
 .skin_label /* label element layout */
 {
