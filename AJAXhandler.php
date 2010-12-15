@@ -125,4 +125,47 @@
 
 		echo $game->PlayPreview($user_name, $cardpos, $mode);
 	}
+	elseif($_POST['action'] == "save_note")
+	{
+		if (!isset($_POST['note'])) { echo 'Invalid game note.'; exit; }
+		if (!isset($_POST['game_id']) OR $_POST['game_id'] == "") { echo 'Invalid game id.'; exit; }
+
+		$note = $_POST['note'];
+		$game_id = $_POST['game_id'];
+
+		// download game
+		$game = $gamedb->GetGame($game_id);
+		if (!$game) { echo 'Invalid game.'; exit; }
+
+		// check access
+		if ($user_name != $game->Name1() AND $user_name != $game->Name2()) { echo 'Action not allowed.'; exit; }
+
+		// verify inputs
+		if (strlen($note) > MESSAGE_LENGTH) { $error = "Game note is too long"; exit; }
+
+		$game->SetNote($user_name, $note);
+		$result = $game->SaveGame();
+
+		if ($result) echo "Game note saved";
+		else echo "Failed to save game note";
+	}
+	elseif($_POST['action'] == "clear_note")
+	{
+		if (!isset($_POST['game_id']) OR $_POST['game_id'] == "") { echo 'Invalid game id.'; exit; }
+
+		$game_id = $_POST['game_id'];
+
+		// download game
+		$game = $gamedb->GetGame($game_id);
+		if (!$game) { echo 'Invalid game.'; exit; }
+
+		// check access
+		if ($user_name != $game->Name1() AND $user_name != $game->Name2()) { echo 'Action not allowed.'; exit; }
+
+		$game->ClearNote($user_name);
+		$result = $game->SaveGame();
+
+		if ($result) echo "Game note cleared";
+		else echo "Failed to clear game note";
+	}
 ?>

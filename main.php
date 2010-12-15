@@ -3228,6 +3228,7 @@ case 'Games_details':
 	$params['game']['has_note'] = ($game->GetNote($player->Name()) != "") ? 'yes' : 'no';
 	$params['game']['HiddenCards'] = $game->GetGameMode('HiddenCards');
 	$params['game']['FriendlyPlay'] = $game->GetGameMode('FriendlyPlay');
+	$params['game']['GameNote'] = $game->GetNote($player->Name());
 	$params['game']['LongMode'] = $long_mode = $game->GetGameMode('LongMode');
 	$g_mode = ($long_mode == 'yes') ? 'long' : 'normal';
 	$params['game']['max_tower'] = $game_config[$g_mode]['max_tower'];

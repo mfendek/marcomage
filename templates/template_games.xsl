@@ -443,7 +443,7 @@
 		</td>
 		<td>
 			<a class="button" href="{php:functionString('makeurl', 'Decks_view', 'CurrentGame', $param/CurrentGame)}">Deck</a>
-			<a class="button" href="{php:functionString('makeurl', 'Games_note', 'CurrentGame', $param/CurrentGame)}" >
+			<a class="button" id="game_note" href="{php:functionString('makeurl', 'Games_note', 'CurrentGame', $param/CurrentGame)}" >
 				<xsl:if test="$param/has_note = 'yes'">
 					<xsl:attribute name="class">button marked_button</xsl:attribute>
 				</xsl:if>
@@ -1133,6 +1133,11 @@
 		<div style="clear: both"></div>
 	</div>
 	<!-- end chatboard -->
+
+	<!-- game note dialog (do not display) -->
+	<div id="game_note_dialog" title="Game note" style="display: none">
+		<textarea name="Content" rows="10" cols="50"><xsl:value-of select="$param/GameNote"/></textarea>
+	</div>
 
 	</div>
 

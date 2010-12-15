@@ -415,4 +415,71 @@ $(document).ready(function() {
 	$("button[name='Delete_mass']").click(function() {
 		return confirm("All selected messages will be deleted. Are you sure you want to continue?");
 	});
+
+	// open game note
+	$("a#game_note").click(function(event) {
+		 event.preventDefault();
+		 $("#game_note_dialog").dialog("open");
+	});
+
+	// game note handler
+	$("#game_note_dialog").dialog({
+		autoOpen: false,
+		show: "fade",
+		hide: "fade",
+		buttons: {
+			Save: function()
+			{
+				var game_note = $("textarea[name='Content']").val();
+
+				// check user input
+				if (game_note.length > 1000) alert('Game note is too long');
+				else
+				{
+					var username = GetSessionData('Username');
+					var session_id = GetSessionData('SessionID');
+					var game = $("input[name='CurrentGame']").val();
+
+					$.post("AJAXhandler.php", { action: 'save_note', Username: username, SessionID: session_id, game_id: game, note: game_note }, function(data){
+						if (data == "Game note saved")
+						{
+							// update note button highlight
+							// case 1: note is empty (remove highlight)
+							if (game_note == "")
+								$("a#game_note").removeClass('marked_button');
+
+							// case 2: note is not empty (add highlight if not present)
+							else if (!$("a#game_note").hasClass('marked_button'))
+								$("a#game_note").addClass('marked_button');
+
+							$("#game_note_dialog").dialog("close");
+						}
+						else alert(data); // print error message
+					});
+				}
+			},
+			Clear: function()
+			{
+				var username = GetSessionData('Username');
+				var session_id = GetSessionData('SessionID');
+				var game = $("input[name='CurrentGame']").val();
+
+				$.post("AJAXhandler.php", { action: 'clear_note', Username: username, SessionID: session_id, game_id: game }, function(data){
+					if (data == "Game note cleared")
+					{
+						// clear input field
+						$("textarea[name='Content']").val('');
+
+						// update note button highlight (remove highlight)
+						$("a#game_note").removeClass('marked_button');
+					}
+					else alert(data); // print error message
+				});
+			},
+			Back: function()
+			{
+				$(this).dialog("close");
+			}
+		}
+	});
 });
