@@ -237,6 +237,7 @@ $(document).ready(function() {
 				// select specified card
 				$(this).parent().nextAll("input[name='selected_card']").attr('checked', 'checked');
 				$(this).addClass("selected_card");
+				$(this).effect('highlight');
 
 				if (!$(this).parent().hasClass('unplayable'))
 				{
