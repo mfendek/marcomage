@@ -51,7 +51,9 @@
 		</xsl:if>
 		<xsl:text>MArcomage</xsl:text>
 	</title>
-	<script type="text/javascript" src="javascript/jquery.js"></script>
+	<link rel="stylesheet" href="javascript/jquery/jquery_ui.css" type="text/css" title="standard style" />
+	<script type="text/javascript" src="javascript/jquery/jquery.js"></script>
+	<script type="text/javascript" src="javascript/jquery/jquery_ui.js"></script>
 	<script type="text/javascript" src="javascript/scrollto.js"></script>
 	<script type="text/javascript" src="javascript/cookie.js"></script>
 	<script type="text/javascript" src="javascript/bbtags.js"></script>
