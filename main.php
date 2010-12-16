@@ -2351,17 +2351,31 @@
 					if (isset($_POST[$setting]) and $setting != 'Birthdate'and $setting != 'Avatar') $settings->ChangeSetting($setting, $_POST[$setting]);
 
 				// birthdate is handled separately
-				if( $_POST['Birthyear'] == "" ) $_POST['Birthyear'] = '0000';
-				if( $_POST['Birthmonth'] == "" ) $_POST['Birthmonth'] = '00';
-				if( $_POST['Birthday'] == "" ) $_POST['Birthday'] = '00';
+				if (!isset($_POST['Birthdate'])) $warning = "Invalid birthdate";
 
-				$result = CheckDateInput($_POST['Birthyear'], $_POST['Birthmonth'], $_POST['Birthday']);
-				if( $result != "" )
-					$error = $result;
-				elseif( intval(date("Y")) <= $_POST['Birthyear'] )
-					$error = "Invalid birthdate";
-				else
-					$settings->ChangeSetting('Birthdate', implode("-", array($_POST['Birthyear'], $_POST['Birthmonth'], $_POST['Birthday'])));
+				if ($_POST['Birthdate'] != "") // birthdate is not mandatory
+				{
+					$birthdate = explode("-", $_POST['Birthdate']);
+
+					// date is expected to be in format dd-mm-yyyy
+					if (count($birthdate) != 3) $warning = "Invalid birthdate";
+
+					if (!isset($warning))
+					{
+						list($day, $month, $year) = explode("-", $_POST['Birthdate']);
+
+						$result = CheckDateInput($year, $month, $day);
+						if( $result != "" )
+							$warning = $result;
+						elseif( time() <= strtotime(implode("-", array($year, $month, $day))) ) // disallow future dates
+							$warning = "Invalid birthdate";
+
+						$new_birthdate = implode("-", array($year, $month, $day));
+					}
+				}
+				else $new_birthdate = "0000-00-00";
+
+				if (!isset($warning)) $settings->ChangeSetting('Birthdate', $new_birthdate);
 
 				$settings->SaveSettings();
 
@@ -3449,19 +3463,18 @@ case 'Settings':
 
 	//date is handled separately
 	$birthdate = $settings->GetSetting('Birthdate');
-	list($year, $month, $day) = explode("-", $birthdate);
 
 	if( $birthdate != "0000-00-00" )
 	{
 		$params['settings']['current_settings']["Age"] = $settings->Age();
 		$params['settings']['current_settings']["Sign"] = $settings->Sign();
-		$params['settings']['current_settings']["Birthdate"] = array('year'=>$year, 'month'=>$month, 'day'=>$day);
+		$params['settings']['current_settings']["Birthdate"] = date("d-m-Y", strtotime($birthdate));
 	}
 	else
 	{
 		$params['settings']['current_settings']["Age"] = "Unknown";
 		$params['settings']['current_settings']["Sign"] = "Unknown";
-		$params['settings']['current_settings']["Birthdate"] = array('year'=>'', 'month'=>'', 'day'=>'');
+		$params['settings']['current_settings']["Birthdate"] = "";
 	}
 
 	break;

@@ -483,4 +483,15 @@ $(document).ready(function() {
 			}
 		}
 	});
+
+	// birthdate datepicker (settings)
+	$("input[name='Birthdate']").datepicker(
+		{
+			dateFormat: "dd-mm-yy",
+			maxDate: 0,
+			showButtonPanel: true,
+			changeYear: true,
+			showAnim: "fadeIn"
+		}
+	);
 });

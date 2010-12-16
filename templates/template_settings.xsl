@@ -66,9 +66,7 @@
 			</p>
 
 			<p>
-				<input type="text" name="Birthday" maxlength="2" size="2" value="{$settings/Birthdate/day}" />
-				<input type="text" name="Birthmonth" maxlength="2" size="2" value="{$settings/Birthdate/month}" />
-				<input type="text" name="Birthyear" maxlength="4" size="4" value="{$settings/Birthdate/year}" />
+				<input type="text" name="Birthdate" maxlength="10" size="10" value="{$settings/Birthdate}" />
 				<xsl:text>Date of birth (dd-mm-yyyy)</xsl:text>
 			</p>
 
