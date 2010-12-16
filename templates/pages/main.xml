@@ -49,6 +49,18 @@
 	<li><a href="http://www.gatewayheaven.com/projects/arcomage/">Arcomage Tribute</a> - a fan-made open source project (single player only)</li>
 </ul>
 
+<h4>Powered by</h4>
+<ul>
+	<li><a href="http://www.mysql.com/">MySQL</a> - the world's most popular open source database</li>
+	<li><a href="http://www.php.net/">PHP</a> - a widely-used general-purpose scripting language</li>
+	<li><a href="http://www.apache.org/">Apache web server</a> - the most popular web server (secure, efficient and extensible)</li>
+	<li><a href="http://www.w3schools.com/xhtml/default.asp">XHTML</a> - a stricter and cleaner version of HTML</li>
+	<li><a href="http://www.w3schools.com/xml/default.asp">XML</a> and <a href="http://www.w3schools.com/xsl/default.asp">XSLT</a> - a structural way to store data and transform them to XHTML</li>
+	<li><a href="http://www.w3schools.com/css/default.asp">CSS 2.1</a> and <a href="http://www.css3.info/">CSS 3</a> - an optimal way to manage webpage layout</li>
+	<li><a href="http://subversion.tigris.org/">Subversion</a> - a version control tool for software development projects</li>
+	<li><a href="http://trac.edgewall.org/">Trac</a> - an enhanced wiki and issue tracking system for software development projects</li>
+</ul>
+
 <h4>MArcomage preview images</h4>
 
 <p><a href="img/screen_deck_section.png"><img src="img/screen_deck_section_s.png" alt="deck editor"/></a></p>
