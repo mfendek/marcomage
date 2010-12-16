@@ -56,9 +56,14 @@
 	<li><a href="http://www.apache.org/">Apache web server</a> - the most popular web server (secure, efficient and extensible)</li>
 	<li><a href="http://www.w3schools.com/xhtml/default.asp">XHTML</a> - a stricter and cleaner version of HTML</li>
 	<li><a href="http://www.w3schools.com/xml/default.asp">XML</a> and <a href="http://www.w3schools.com/xsl/default.asp">XSLT</a> - a structural way to store data and transform them to XHTML</li>
-	<li><a href="http://www.w3schools.com/css/default.asp">CSS 2.1</a> and <a href="http://www.css3.info/">CSS 3</a> - an optimal way to manage webpage layout</li>
+	<li><a href="http://www.w3schools.com/css/default.asp">CSS 2.1</a> and <a href="http://www.css3.info/">CSS 3</a> - an optimal way to manage web page layout</li>
 	<li><a href="http://subversion.tigris.org/">Subversion</a> - a version control tool for software development projects</li>
 	<li><a href="http://trac.edgewall.org/">Trac</a> - an enhanced wiki and issue tracking system for software development projects</li>
+	<li><a href="http://www.w3schools.com/js/default.asp">JavaScript</a> - is used to enhance user experience with dynamic functionality of web pages</li>
+	<li><a href="http://jquery.com/">JQuery</a> - a fast and concise JavaScript Library that simplifies HTML document traversing, event handling, animating, and Ajax interactions for rapid web development</li>
+	<li><a href="http://jqueryui.com/home">JQuery UI</a> - provides abstractions for low-level interaction and animation, advanced effects and high-level, themeable widgets</li>
+	<li><a href="http://code.google.com/p/ie7-js/">ie7-js</a> - a JavaScript library to make MSIE behave like a standards-compliant browser</li>
+	<li><a href="http://www.exslt.org/">EXSLT</a> - a community initiative to provide extensions to XSLT</li>
 </ul>
 
 <h4>MArcomage preview images</h4>
