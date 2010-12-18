@@ -58,14 +58,6 @@
 	<script type="text/javascript" src="javascript/bbtags.js"></script>
 	<script type="text/javascript" src="javascript/utils.js"></script>
 	<xsl:comment><![CDATA[[if lt IE 9]><script type="text/javascript" src="javascript/ie9.js"></script><![endif]]]></xsl:comment>
-	<xsl:if test="$param/autorefresh &gt; 0">
-		<xsl:element name="script">
-			<xsl:attribute name="type">text/javascript</xsl:attribute>
-			<xsl:text>setTimeout('window.location.reload()', </xsl:text>
-			<xsl:value-of select="$param/autorefresh" />
-			<xsl:text>000);</xsl:text>
-		</xsl:element>
-	</xsl:if>
 	</head>
 	<body>
 	<form action="" enctype="multipart/form-data" method="post">

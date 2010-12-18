@@ -2610,7 +2610,6 @@
 	$settings = $player->GetSettings();
 	$params["main"]["is_logged_in"] = ($session) ? 'yes' : 'no';
 	$params["main"]["skin"] = $settings->GetSetting('Skin');
-	$params["main"]["autorefresh"] = ($current == "Games") ? $settings->GetSetting('Autorefresh') : 0; // apply only in games section
 
 	// navbar params
 	$params["navbar"]["error_msg"] = @$error;
@@ -3110,6 +3109,7 @@ case 'Games':
 	$params['games']['FriendlyFlag'] = $settings->GetSetting('FriendlyFlag');
 	$params['games']['LongFlag'] = $settings->GetSetting('LongFlag');
 	$params['games']['RandomDeck'] = $settings->GetSetting('RandomDeck');
+	$params['games']['autorefresh'] = $settings->GetSetting('Autorefresh');
 
 	$list = $gamedb->ListGamesData($player->Name());
 	if (count($list) > 0)
@@ -3228,6 +3228,7 @@ case 'Games_details':
 	$params['game']['timezone'] = $settings->GetSetting('Timezone');
 	$params['game']['Background'] = $settings->GetSetting('Background');
 	$params['game']['PlayButtons'] = $settings->GetSetting('PlayButtons');
+	$params['game']['autorefresh'] = $settings->GetSetting('Autorefresh');
 
 	$params['game']['GameState'] = $game->State;
 	$params['game']['Round'] = $game->Round;

@@ -16,6 +16,10 @@
 	<xsl:variable name="param" select="$params/games" />
 	<xsl:variable name="activedecks" select="count($param/decks/*)" />
 	<xsl:variable name="list" select="$param/list" />
+	<!-- autorefresh -->
+	<xsl:if test="$param/autorefresh &gt; 0">
+		<xsl:copy-of select="am:autorefresh($param/autorefresh)"/>
+	</xsl:if>
 
 	<div id="games">
 
@@ -313,6 +317,11 @@
 
 <xsl:template match="section[. = 'Games_details']">
 	<xsl:variable name="param" select="$params/game" />
+	<!-- autorefresh -->
+	<xsl:if test="$param/autorefresh &gt; 0">
+		<xsl:copy-of select="am:autorefresh($param/autorefresh)"/>
+	</xsl:if>
+
 	<!-- scrolls chatbox to bottom if reverse chatorder setting is active -->
 	<xsl:if test="$param/reverse_chat = 'yes'">
 		<xsl:element name="script">

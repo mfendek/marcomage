@@ -1,5 +1,12 @@
 // MArcomage JavaScript support functions
 
+function Refresh() // refresh user screen
+{
+	// do not use window.location.reload() because it may cause redundant POST request
+	// do not use direct assing to window.location.href because each reload will be stored in browsing history
+	window.location.replace(window.location.href);
+}
+
 function TakeCard(id) // add card to deck via AJAX
 {
 	var str = new String();

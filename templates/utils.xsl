@@ -57,6 +57,23 @@
 </func:function>
 
 
+<func:function name="am:autorefresh">
+	<xsl:param name="refresh_rate" as="xs:integer" />
+
+	<!-- autorefresh JavaScript element -->
+	<xsl:variable name="output">
+		<xsl:element name="script">
+			<xsl:attribute name="type">text/javascript</xsl:attribute>
+			<xsl:text>$(document).ready(function() { window.setTimeout('Refresh()', </xsl:text>
+			<xsl:value-of select="$refresh_rate" />
+			<xsl:text>000); });</xsl:text>
+		</xsl:element>
+	</xsl:variable>
+
+	<func:result select="$output" />
+</func:function>
+
+
 <func:function name="am:min">
 	<xsl:param name="num1" as="xs:integer" />
 	<xsl:param name="num2" as="xs:integer" />
