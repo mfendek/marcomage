@@ -104,7 +104,7 @@ function GetSessionData(name) // retrieve session data from cookies (or session 
 function ResumeReplay() // replay slideshow -> resume replay
 {
 	$("button[name='slideshow']").addClass('pushed');
-	timer = window.setTimeout("$(window.location).attr('href', $('a#next').attr('href'))", 5000);
+	timer = window.setTimeout("window.location.href = $('a#next').attr('href')", 5000);
 }
 
 function PauseReplay() // replay slideshow -> pause replay
