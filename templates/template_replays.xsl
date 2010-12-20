@@ -258,8 +258,8 @@
 			</xsl:when>
 		</xsl:choose>
 
-		<!-- slideshow button -->
-		<button type="button" name="slideshow">Play</button>
+		<!-- slideshow button (hide by default - has no functionality without JavaScript) -->
+		<button type="button" name="slideshow" style="display: none">Play</button>
 		<!-- end navigation -->
 	</p>
 

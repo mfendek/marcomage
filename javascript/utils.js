@@ -110,13 +110,13 @@ function GetSessionData(name) // retrieve session data from cookies (or session 
 
 function ResumeReplay() // replay slideshow -> resume replay
 {
-	$("button[name='slideshow']").addClass('pushed');
+	$("button[name='slideshow']").html('Pause');
 	timer = window.setTimeout("window.location.href = $('a#next').attr('href')", 5000);
 }
 
 function PauseReplay() // replay slideshow -> pause replay
 {
-	$("button[name='slideshow']").removeClass('pushed');
+	$("button[name='slideshow']").html('Play');
 	window.clearTimeout(timer);
 }
 
@@ -323,15 +323,16 @@ $(document).ready(function() {
 
 	if ($("a#next").length == 1) // apply only in replay section
 	{
+		$("button[name='slideshow']").css('display', 'inline'); // show play/pause button
 		ResumeReplay();
 	}
 
 	$("button[name='slideshow']").click(function() {
-		if ($("button[name='slideshow']").hasClass('pushed'))
+		if ($("button[name='slideshow']").html() == 'Pause')
 		{
 			PauseReplay();
 		}
-		else
+		else if ($("button[name='slideshow']").html() == 'Play')
 		{
 			ResumeReplay();
 		}
