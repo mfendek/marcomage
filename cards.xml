@@ -65,16 +65,16 @@
     <name>Great Wall of China</name>
     <class>Rare</class>
     <cost>
-      <bricks>35</bricks>
+      <bricks>40</bricks>
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords/>
-    <effect><![CDATA[Wall: +75]]></effect>
-    <code><![CDATA[$mydata->Wall+= 75;]]></code>
+    <keywords>Far sight</keywords>
+    <effect><![CDATA[Wall: +N<br />N = Max wall / 2]]></effect>
+    <code><![CDATA[$mydata->Wall+= round($max_wall / 2);]]></code>
     <created>2006-05-01</created>
-    <modified>2010-01-20</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="5">
     <name>Curse</name>
@@ -100,11 +100,11 @@
       <recruits>30</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Dragon</keywords>
+    <keywords>Dragon,Charge (25)</keywords>
     <effect><![CDATA[Attack: 50]]></effect>
     <code><![CDATA[$this->Attack(50, $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2006-05-01</created>
-    <modified>2007-05-08</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="7">
     <name>Knight</name>
@@ -160,11 +160,11 @@
       <recruits>12</recruits>
     </cost>
     <modes>2</modes>
-    <keywords>Unliving</keywords>
+    <keywords>Unliving,Skirmisher</keywords>
     <effect><![CDATA[Attack: 21<br />Mode1:<br />Bricks: +8<br />Mode2:<br />Recruits: +6]]></effect>
     <code><![CDATA[$this->Attack(21, $hisdata->Tower, $hisdata->Wall); if ($mode == 1) $mydata->Bricks+=8; elseif ($mode == 2) $mydata->Recruits+= 6;]]></code>
     <created>2006-11-14</created>
-    <modified>2010-09-23</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="11">
     <name>Meditation</name>
@@ -595,11 +595,11 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords/>
+    <keywords>Skirmisher</keywords>
     <effect><![CDATA[Tower: +2<br />Wall: +3]]></effect>
     <code><![CDATA[$mydata->Tower+= 2; $mydata->Wall+= 3;]]></code>
     <created>2006-05-01</created>
-    <modified>2010-09-23</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="40">
     <name>Sorrow</name>
@@ -625,11 +625,11 @@
       <recruits>0</recruits>
     </cost>
     <modes>2</modes>
-    <keywords>Unliving</keywords>
+    <keywords>Unliving,Skirmisher</keywords>
     <effect><![CDATA[Mode1:<br />Wall: +8<br />Mode2:<br />Enemy wall: -9]]></effect>
     <code><![CDATA[if ($mode == 1) $mydata->Wall+=8; elseif ($mode == 2) $hisdata->Wall-= 9;]]></code>
     <created>2006-11-14</created>
-    <modified>2007-11-25</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="42">
     <name>Lady Ellena</name>
@@ -697,14 +697,14 @@
     <cost>
       <bricks>0</bricks>
       <gems>0</gems>
-      <recruits>4</recruits>
+      <recruits>8</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Banish</keywords>
-    <effect><![CDATA[Attack: 6]]></effect>
-    <code><![CDATA[$this->Attack(6, $hisdata->Tower, $hisdata->Wall);]]></code>
+    <keywords>Charge (8)</keywords>
+    <effect><![CDATA[Enemy wall: -8]]></effect>
+    <code><![CDATA[$hisdata->Wall-= 8;]]></code>
     <created>2006-05-01</created>
-    <modified>2008-07-30</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="47">
     <name>Great wall</name>
@@ -716,10 +716,10 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Wall: +35]]></effect>
-    <code><![CDATA[$mydata->Wall+= 35;]]></code>
+    <effect><![CDATA[Wall: +35<br />Bricks: +5]]></effect>
+    <code><![CDATA[$mydata->Wall+= 35; $mydata->Bricks+= 5;]]></code>
     <created>2006-05-01</created>
-    <modified>2006-05-01</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="48">
     <name>School of Restoration</name>
@@ -943,11 +943,11 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Dragon</keywords>
+    <keywords>Dragon,Banish</keywords>
     <effect><![CDATA[Attack: 50]]></effect>
     <code><![CDATA[$this->Attack(50, $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2006-05-01</created>
-    <modified>2007-05-08</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="62">
     <name>Catapult</name>
@@ -1328,7 +1328,7 @@
     <name>Pyramids</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>80</bricks>
+      <bricks>68</bricks>
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
@@ -1337,7 +1337,7 @@
     <effect><![CDATA[Tower: +80]]></effect>
     <code><![CDATA[$mydata->Tower+= 80;]]></code>
     <created>2006-05-01</created>
-    <modified>2006-05-01</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="88">
     <name>Undead host</name>
@@ -1407,12 +1407,12 @@
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
-    <modes>3</modes>
-    <keywords>Dragon,Unliving</keywords>
-    <effect><![CDATA[Mode1:<br />Attack: 50<br />Mode2:<br />Wall: +60<br />Mode3:<br />Enemy wall: -70]]></effect>
-    <code><![CDATA[if ($mode == 1) $this->Attack(50, $hisdata->Tower, $hisdata->Wall); elseif ($mode == 2) $mydata->Wall+= 60; elseif ($mode == 3) $hisdata->Wall-= 70;]]></code>
+    <modes>2</modes>
+    <keywords>Dragon,Unliving,Charge (16)</keywords>
+    <effect><![CDATA[Mode1:<br />Attack: 55<br />Mode2:<br />Wall: +65]]></effect>
+    <code><![CDATA[if ($mode == 1) $this->Attack(55, $hisdata->Tower, $hisdata->Wall); elseif ($mode == 2) $mydata->Wall+= 65;]]></code>
     <created>2006-05-01</created>
-    <modified>2010-07-22</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="93">
     <name>Clay golem</name>
@@ -1468,11 +1468,11 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Quick,Charge (4)</keywords>
-    <effect><![CDATA[Attack: 1<br />Gems: +3]]></effect>
-    <code><![CDATA[$this->Attack(1, $hisdata->Tower, $hisdata->Wall); $mydata->Gems+= 3;]]></code>
+    <keywords>Quick,Charge (3)</keywords>
+    <effect><![CDATA[Gems: +3]]></effect>
+    <code><![CDATA[$mydata->Gems+= 3;]]></code>
     <created>2006-05-01</created>
-    <modified>2009-11-16</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="97">
     <name>Conscript</name>
@@ -1678,11 +1678,11 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
-    <keywords/>
+    <keywords>Undead,Skirmisher</keywords>
     <effect><![CDATA[Attack: 35<br />Enemy recruits: -10]]></effect>
     <code><![CDATA[$this->Attack(35, $hisdata->Tower, $hisdata->Wall); $hisdata->Recruits-= 10;]]></code>
     <created>2006-05-01</created>
-    <modified>2006-05-01</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="111">
     <name>Elite elf</name>
@@ -1708,11 +1708,11 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Undead</keywords>
-    <effect><![CDATA[Attack: 13]]></effect>
-    <code><![CDATA[$this->Attack(13, $hisdata->Tower, $hisdata->Wall);]]></code>
+    <keywords>Undead,Charge (3)</keywords>
+    <effect><![CDATA[Attack: 10]]></effect>
+    <code><![CDATA[$this->Attack(10, $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2006-05-01</created>
-    <modified>2010-09-10</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="113">
     <name>Skeleton warriors</name>
@@ -1723,11 +1723,11 @@
       <recruits>3</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Undead</keywords>
+    <keywords>Undead,Skirmisher</keywords>
     <effect><![CDATA[Attack: 7]]></effect>
     <code><![CDATA[$this->Attack(7, $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2006-05-01</created>
-    <modified>2009-10-26</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="114">
     <name>Zombie</name>
@@ -1884,15 +1884,15 @@
     <class>Rare</class>
     <cost>
       <bricks>0</bricks>
-      <gems>22</gems>
-      <recruits>22</recruits>
+      <gems>13</gems>
+      <recruits>0</recruits>
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Attack: 70<br />Tower: -20<br />Wall: -50]]></effect>
-    <code><![CDATA[$this->Attack(70, $hisdata->Tower, $hisdata->Wall); $mydata->Tower-= 20; $mydata->Wall-= 50;]]></code>
+    <effect><![CDATA[Wall: -70<br />Attack: N<br />N = Wall height lost]]></effect>
+    <code><![CDATA[$lowered = $mydata->Wall - max($mydata->Wall - 70, 0); $mydata->Wall-= $lowered; $this->Attack($lowered, $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2006-05-01</created>
-    <modified>2010-07-22</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="125">
     <name>Archangel</name>
@@ -1948,11 +1948,11 @@
       <recruits>25</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Dragon</keywords>
+    <keywords>Dragon,Skirmisher</keywords>
     <effect><![CDATA[Attack: 45<br />Enemy gems: -10]]></effect>
     <code><![CDATA[$this->Attack(45, $hisdata->Tower, $hisdata->Wall); $hisdata->Gems-= 10;]]></code>
     <created>2006-05-01</created>
-    <modified>2007-05-08</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="129">
     <name>Wealth</name>
@@ -1978,18 +1978,18 @@
       <recruits>30</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Aqua</keywords>
+    <keywords>Aqua,Charge (8)</keywords>
     <effect><![CDATA[Attack: 30<br />If Enemy wall = 0<br />Recruits: +20]]></effect>
     <code><![CDATA[$this->Attack(30, $hisdata->Tower, $hisdata->Wall); if ($hisdata->Wall <= 0) $mydata->Recruits+= 20;]]></code>
     <created>2006-05-01</created>
-    <modified>2010-11-01</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="131">
     <name>Dragon egg</name>
     <class>Uncommon</class>
     <cost>
       <bricks>0</bricks>
-      <gems>15</gems>
+      <gems>13</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
@@ -1997,7 +1997,7 @@
     <effect><![CDATA[Summons a <b>Dragon</b><br />If there is a <b>Dragon</b> in hand it will be a rare <b>Dragon</b>]]></effect>
     <code><![CDATA[$filters = ($this->KeywordCount($mydata->Hand, "Dragon") > 0) ? array('class'=>"Rare", 'keyword'=>"Dragon") : array('keyword'=>"Dragon"); $nextcard = $this->DrawCard($carddb->GetList($filters), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
     <created>2006-05-01</created>
-    <modified>2009-06-22</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="132">
     <name>Tubular bells</name>
@@ -2184,15 +2184,15 @@
     <class>Rare</class>
     <cost>
       <bricks>0</bricks>
-      <gems>20</gems>
-      <recruits>8</recruits>
+      <gems>19</gems>
+      <recruits>13</recruits>
     </cost>
     <modes>0</modes>
     <keywords>Undead</keywords>
-    <effect><![CDATA[Attack: 20<br />Summons rare <b>Undead</b>]]></effect>
-    <code><![CDATA[$this->Attack(20, $hisdata->Tower, $hisdata->Wall); $nextcard = $this->DrawCard($carddb->GetList(array('class'=>"Rare", 'keyword'=>"Undead")), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
+    <effect><![CDATA[Attack: 20<br />Summons rare <b>Undead</b><br />Gain cost of the summoned card (max 13)]]></effect>
+    <code><![CDATA[$this->Attack(20, $hisdata->Tower, $hisdata->Wall); $nextcard = $this->DrawCard($carddb->GetList(array('class'=>"Rare", 'keyword'=>"Undead")), $mydata->Hand, $cardpos, 'DrawCard_list'); $cur_card = $carddb->GetCard($nextcard); $mydata->Bricks+= min($cur_card->GetResources("Bricks"), 13); $mydata->Gems+= min($cur_card->GetResources("Gems"), 13); $mydata->Recruits+= min($cur_card->GetResources("Recruits"), 13);]]></code>
     <created>2006-05-01</created>
-    <modified>2010-07-22</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="145">
     <name>Necromancy</name>
@@ -2308,11 +2308,11 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords/>
+    <keywords>Illusion</keywords>
     <effect><![CDATA[Switches your hand with opponent's hand]]></effect>
     <code><![CDATA[$mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $tmp = $mydata->Hand; $mydata->Hand = $hisdata->Hand; $hisdata->Hand = $tmp; $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $hisdata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;]]></code>
     <created>2006-05-01</created>
-    <modified>2010-07-22</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="153">
     <name>Acolyte</name>
@@ -2399,10 +2399,10 @@
     </cost>
     <modes>0</modes>
     <keywords>Nature</keywords>
-    <effect><![CDATA[Enemy bricks: -50]]></effect>
-    <code><![CDATA[$hisdata->Bricks-= 50;]]></code>
+    <effect><![CDATA[Enemy wall: -N<br />N = 50 - #Enemy bricks<br />Enemy bricks: -50]]></effect>
+    <code><![CDATA[$lowered = $hisdata->Bricks - max($hisdata->Bricks - 50, 0); $hisdata->Bricks-= $lowered; $hisdata->Wall-= 50 - $lowered;]]></code>
     <created>2006-05-01</created>
-    <modified>2009-10-26</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="159">
     <name>Scepter of summoning</name>
@@ -2558,7 +2558,7 @@
     <name>Valhalla</name>
     <class>Rare</class>
     <cost>
-      <bricks>10</bricks>
+      <bricks>0</bricks>
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
@@ -2567,7 +2567,7 @@
     <effect><![CDATA[Tower: -20<br />Wall: +70<br/>Won't lower tower below 1]]></effect>
     <code><![CDATA[$mydata->Tower-= 20; $mydata->Tower = max(1, $mydata->Tower); $mydata->Wall+= 70;]]></code>
     <created>2006-05-01</created>
-    <modified>2007-08-18</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="170">
     <name>Gift from the heavens</name>
@@ -2690,19 +2690,28 @@
     <modified>2008-12-24</modified>
   </card>
   <card id="178">
-    <name>Battalion of fear</name>
+    <name>Army of darkness</name>
     <class>Rare</class>
     <cost>
       <bricks>0</bricks>
-      <gems>5</gems>
+      <gems>13</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
     <keywords>Undead</keywords>
-    <effect><![CDATA[Attack: #Recruits<br />Recruits: = 0]]></effect>
-    <code><![CDATA[$this->Attack($mydata->Recruits, $hisdata->Tower, $hisdata->Wall); $mydata->Recruits= 0;]]></code>
+    <effect><![CDATA[Attack: N * M<br />Recruits: = 0<br />N = #Recruits<br />M = #<b>Undead</b> rares in hand / 2]]></effect>
+    <code><![CDATA[
+								$rares = 0;
+								for ($i = 1; $i <= 8; $i++)
+								{
+									$cur_card = $carddb->GetCard($mydata->Hand[$i]);
+									if ($cur_card->HasKeyword("Undead") and $cur_card->GetClass() == 'Rare') $rares++;
+								}
+								$this->Attack($mydata->Recruits * round($rares / 2), $hisdata->Tower, $hisdata->Wall);
+								$mydata->Recruits= 0;
+]]></code>
     <created>2006-05-01</created>
-    <modified>2007-05-08</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="179">
     <name>Redesign</name>
@@ -2878,11 +2887,11 @@
       <recruits>11</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Alliance,Far sight</keywords>
+    <keywords>Alliance,Far sight,Skirmisher</keywords>
     <effect><![CDATA[Attack: 11<br />Gems production x2]]></effect>
     <code><![CDATA[$this->Attack(11, $hisdata->Tower, $hisdata->Wall); $gems_production*= 2;]]></code>
     <created>2006-05-01</created>
-    <modified>2010-06-21</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="191">
     <name>Ivory tower</name>
@@ -3129,15 +3138,15 @@
     <class>Uncommon</class>
     <cost>
       <bricks>0</bricks>
-      <gems>7</gems>
+      <gems>5</gems>
       <recruits>5</recruits>
     </cost>
-    <modes>0</modes>
+    <modes>8</modes>
     <keywords/>
-    <effect><![CDATA[Attack: N<br />N = #Enemy recruits - #Enemy gems (max 23)<br />If N > 15<br/>Enemy recruits: -N]]></effect>
-    <code><![CDATA[$tmp = max(0, $hisdata->Recruits - $hisdata->Gems); $tmp = min(23, $tmp); $this->Attack($tmp, $hisdata->Tower, $hisdata->Wall); if ($tmp > 15) { $hisdata->Recruits-= $tmp; }]]></code>
+    <effect><![CDATA[Summons selected card in opponent's hand]]></effect>
+    <code><![CDATA[$nextcard = $hisdata->Hand[$mode];]]></code>
     <created>2007-03-26</created>
-    <modified>2007-08-18</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="208">
     <name>Overseer</name>
@@ -3162,12 +3171,12 @@
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
-    <modes>0</modes>
+    <modes>2</modes>
     <keywords/>
-    <effect><![CDATA[Wall: +70<br />Quarry: -1<br />Dungeon: -1]]></effect>
-    <code><![CDATA[$mydata->Wall+= 70; $mydata->Quarry-= 1; $mydata->Dungeons-= 1;]]></code>
+    <effect><![CDATA[Wall: +70<br />Mode1:<br />Quarry: -1<br />Mode2:<br />Dungeon: -1]]></effect>
+    <code><![CDATA[$mydata->Wall+= 70; if ($mode == 1) $mydata->Quarry-= 1; elseif ($mode == 2) $mydata->Dungeons-= 1;]]></code>
     <created>2006-05-01</created>
-    <modified>2009-10-26</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="210">
     <name>Rescue and resistance</name>
@@ -3294,45 +3303,45 @@
     <class>Rare</class>
     <cost>
       <bricks>0</bricks>
-      <gems>25</gems>
+      <gems>29</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Attack: #Enemy gems<br />Enemy gems: = 0]]></effect>
-    <code><![CDATA[$this->Attack($hisdata->Gems, $hisdata->Tower, $hisdata->Wall); $hisdata->Gems= 0;]]></code>
+    <effect><![CDATA[Enemy gems: = 0<br />Enemy magic: = #Enemy magic / 2]]></effect>
+    <code><![CDATA[$hisdata->Gems= 0; $hisdata->Magic = round($hisdata->Magic / 2);]]></code>
     <created>2006-11-14</created>
-    <modified>2010-07-22</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="219">
     <name>Earth eater</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>5</bricks>
+      <bricks>12</bricks>
       <gems>0</gems>
-      <recruits>7</recruits>
+      <recruits>8</recruits>
     </cost>
-    <modes>0</modes>
+    <modes>2</modes>
     <keywords>Unliving</keywords>
-    <effect><![CDATA[Attack: N<br />N = #Enemy bricks - #Enemy recruits (max 23)<br />If N > 15<br />Enemy bricks: -N ]]></effect>
-    <code><![CDATA[$tmp = max(0, $hisdata->Bricks - $hisdata->Recruits); $tmp = min(23, $tmp); $this->Attack($tmp, $hisdata->Tower, $hisdata->Wall); if ($tmp > 15) { $hisdata->Bricks-= $tmp; }]]></code>
+    <effect><![CDATA[Mode1:<br />Attack: 16<br />Mode2:<br />Wall: +13<br />Enemy wall: -13]]></effect>
+    <code><![CDATA[if ($mode == 1) $this->Attack(16, $hisdata->Tower, $hisdata->Wall); elseif ($mode == 2) { $mydata->Wall+= 13; $hisdata->Wall-= 13; }]]></code>
     <created>2007-03-26</created>
-    <modified>2007-08-18</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="220">
     <name>Enforcer</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>7</bricks>
-      <gems>5</gems>
-      <recruits>0</recruits>
+      <bricks>0</bricks>
+      <gems>0</gems>
+      <recruits>15</recruits>
     </cost>
-    <modes>0</modes>
+    <modes>2</modes>
     <keywords/>
-    <effect><![CDATA[Attack: N<br />N = #Enemy gems - #Enemy bricks (max 23)<br />If N > 15<br/>Enemy gems: -N]]></effect>
-    <code><![CDATA[$tmp = max(0, $hisdata->Gems - $hisdata->Bricks); $tmp = min(23, $tmp); $this->Attack($tmp, $hisdata->Tower, $hisdata->Wall); if ($tmp > 15) { $hisdata->Gems-= $tmp; }]]></code>
+    <effect><![CDATA[Attack: 26<br />Mode1:<br />Stock: -2<br />Mode2:<br />Tower: -5<br />Wall: -5]]></effect>
+    <code><![CDATA[$this->Attack(26, $hisdata->Tower, $hisdata->Wall); if ($mode == 1) { $mydata->Bricks-= 2; $mydata->Gems-= 2; $mydata->Recruits-= 2; } elseif ($mode == 2) { $mydata->Tower-= 5; $mydata->Wall-= 5; }]]></code>
     <created>2007-03-26</created>
-    <modified>2007-08-18</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="221">
     <name>Implosion</name>
@@ -3443,7 +3452,7 @@
     <name>Forgotten castle</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>50</bricks>
+      <bricks>46</bricks>
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
@@ -3452,22 +3461,22 @@
     <effect><![CDATA[Tower: +35<br/>Stock: +10]]></effect>
     <code><![CDATA[$mydata->Tower+= 35; $mydata->Bricks+= 10; $mydata->Gems+= 10; $mydata->Recruits+= 10;]]></code>
     <created>2007-05-08</created>
-    <modified>2007-08-18</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="229">
-    <name>Storm of bricks</name>
+    <name>Apocalyptic rain</name>
     <class>Rare</class>
     <cost>
       <bricks>0</bricks>
-      <gems>15</gems>
+      <gems>34</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Destruction</keywords>
-    <effect><![CDATA[Attack: #Bricks<br />Bricks: = 0]]></effect>
-    <code><![CDATA[$this->Attack($mydata->Bricks, $hisdata->Tower, $hisdata->Wall); $mydata->Bricks= 0;]]></code>
+    <keywords>Destruction,Nature</keywords>
+    <effect><![CDATA[Attack: N * M / 2<br />N = #Bricks<br />M = #Magic<br />Bricks: = 0]]></effect>
+    <code><![CDATA[$this->Attack(round(($mydata->Bricks * $mydata->Magic) / 2), $hisdata->Tower, $hisdata->Wall); $mydata->Bricks= 0;]]></code>
     <created>2006-05-01</created>
-    <modified>2010-09-23</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="230">
     <name>Locust swarm</name>
@@ -3548,7 +3557,7 @@
     <name>Architect academy</name>
     <class>Rare</class>
     <cost>
-      <bricks>25</bricks>
+      <bricks>30</bricks>
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
@@ -3557,22 +3566,22 @@
     <effect><![CDATA[Tower: +15<br />Quarry: +1]]></effect>
     <code><![CDATA[$mydata->Tower+= 15; $mydata->Quarry+= 1;]]></code>
     <created>2006-05-01</created>
-    <modified>2010-03-14</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="236">
-    <name>Centaur patrol troop</name>
+    <name>Centaur tribe</name>
     <class>Common</class>
     <cost>
       <bricks>0</bricks>
       <gems>0</gems>
-      <recruits>2</recruits>
+      <recruits>6</recruits>
     </cost>
-    <modes>0</modes>
-    <keywords>Beast,Charge (1)</keywords>
-    <effect><![CDATA[Attack: 5<br />Tower: -1]]></effect>
-    <code><![CDATA[$this->Attack(5, $hisdata->Tower, $hisdata->Wall); $mydata->Tower-= 1;]]></code>
+    <modes>2</modes>
+    <keywords>Beast,Skirmisher</keywords>
+    <effect><![CDATA[Attack: 12<br />Mode1:<br />Tower: -2<br />Mode2:<br />Wall: -4]]></effect>
+    <code><![CDATA[$this->Attack(12, $hisdata->Tower, $hisdata->Wall); if ($mode == 1) $mydata->Tower-= 2; elseif ($mode == 2) $mydata->Wall-= 4;]]></code>
     <created>2006-05-01</created>
-    <modified>2007-08-18</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="237">
     <name>Guard post</name>
@@ -4096,10 +4105,10 @@
     </cost>
     <modes>2</modes>
     <keywords/>
-    <effect><![CDATA[Mode1:<br />Attack: 30<br />Mode2:<br />Wall: +33]]></effect>
-    <code><![CDATA[if ($mode == 1) $this->Attack(30, $hisdata->Tower, $hisdata->Wall); elseif ($mode == 2) $mydata->Wall+= 33;]]></code>
+    <effect><![CDATA[Mode1:<br />Attack: 34<br />Mode2:<br />Wall: +38]]></effect>
+    <code><![CDATA[if ($mode == 1) $this->Attack(34, $hisdata->Tower, $hisdata->Wall); elseif ($mode == 2) $mydata->Wall+= 38;]]></code>
     <created>2006-05-01</created>
-    <modified>2008-01-29</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="269">
     <name>Militia</name>
@@ -4260,11 +4269,11 @@
       <recruits>5</recruits>
     </cost>
     <modes>2</modes>
-    <keywords>Soldier</keywords>
-    <effect><![CDATA[Mode1:<br />Attack: 7<br />Mode2:<br />Wall +6]]></effect>
-    <code><![CDATA[if ($mode == 1) $this->Attack(7, $hisdata->Tower, $hisdata->Wall); elseif ($mode == 2) $mydata->Wall+= 6;]]></code>
+    <keywords>Soldier,Skirmisher</keywords>
+    <effect><![CDATA[Mode1:<br />Attack: 7<br />Mode2:<br />Wall +7]]></effect>
+    <code><![CDATA[if ($mode == 1) $this->Attack(7, $hisdata->Tower, $hisdata->Wall); elseif ($mode == 2) $mydata->Wall+= 7;]]></code>
     <created>2006-05-01</created>
-    <modified>2010-07-22</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="280">
     <name>Word of power</name>
@@ -4291,10 +4300,10 @@
     </cost>
     <modes>0</modes>
     <keywords>Barbarian</keywords>
-    <effect><![CDATA[Attack: 11 - N<br />N = Tower height / 20]]></effect>
-    <code><![CDATA[$this->Attack(11 - (int)round($mydata->Tower/20), $hisdata->Tower, $hisdata->Wall);]]></code>
+    <effect><![CDATA[Attack: 13 - 5N<br />N = Tower height / Max tower]]></effect>
+    <code><![CDATA[$this->Attack(13 - round(5*($mydata->Tower/$max_tower)), $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2006-05-01</created>
-    <modified>2007-08-18</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="282">
     <name>Luxury tax</name>
@@ -4366,10 +4375,10 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Enemy tower is halved (max 50)]]></effect>
-    <code><![CDATA[$hisdata->Tower-= min(50, round($hisdata->Tower / 2));]]></code>
+    <effect><![CDATA[Enemy tower is halved]]></effect>
+    <code><![CDATA[$hisdata->Tower-= round($hisdata->Tower / 2);]]></code>
     <created>2006-05-01</created>
-    <modified>2010-11-01</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="287">
     <name>Revolt</name>
@@ -4515,11 +4524,11 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords/>
+    <keywords>Skirmisher</keywords>
     <effect><![CDATA[Wall: +14]]></effect>
     <code><![CDATA[$mydata->Wall+= 14;]]></code>
     <created>2006-05-01</created>
-    <modified>2009-10-26</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="297">
     <name>Palisade wall</name>
@@ -5096,15 +5105,15 @@
     <class>Common</class>
     <cost>
       <bricks>0</bricks>
-      <gems>1</gems>
+      <gems>2</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Holy,Banish</keywords>
-    <effect><![CDATA[Each player's stock lowered by #<b>Undead</b> in his hand]]></effect>
-    <code><![CDATA[$tmp = $this->KeywordCount($mydata->Hand, "Undead"); $mydata->Bricks-= $tmp; $mydata->Gems-= $tmp; $mydata->Recruits-= $tmp; $tmp = $this->KeywordCount($hisdata->Hand, "Undead"); $hisdata->Bricks-= $tmp; $hisdata->Gems-= $tmp; $hisdata->Recruits-= $tmp;]]></code>
+    <keywords/>
+    <effect><![CDATA[Recruits production x2<br />If Tower or Wall was damaged during opponent's last round<br />Enemy stock: -2]]></effect>
+    <code><![CDATA[$recruits_production*= 2; if ((($mychanges['Tower'] < 0) OR ($mychanges['Wall'] < 0)) AND !($mylast_card->IsPlayAgainCard() AND $mylast_action == 'play')) { $hisdata->Bricks-= 2; $hisdata->Gems-= 2; $hisdata->Recruits-= 2; }]]></code>
     <created>2007-11-25</created>
-    <modified>2010-11-01</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="333">
     <name>Death wave</name>
@@ -5686,30 +5695,31 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Each player pays 2 stock for each <b>Quick</b> and 3 stock for each <b>Swift</b> card played during last round]]></effect>
+    <effect><![CDATA[Each player pays 2 stock for each <b>Quick</b> and 3 stock for each <b>Swift</b> in his hand]]></effect>
     <code><![CDATA[
 						$quick = $swift = 0;
-						for ($i = 1; $i <= $mylastcardindex; $i++)
-						{
-							$cur_card = $carddb->GetCard($mydata->LastCard[$i]);
-							if ($cur_card->HasKeyword("Swift") AND $mydata->LastAction[$i] == 'play') $swift++;
-							elseif ($cur_card->HasKeyword("Quick") AND $mydata->LastAction[$i] == 'play') $quick++;
-						}
+						for ($i = 1; $i <= 8; $i++)
+							if ($i != $cardpos)
+							{
+								$cur_card = $carddb->GetCard($mydata->Hand[$i]);
+								if ($cur_card->HasKeyword("Swift")) $swift++;
+								elseif ($cur_card->HasKeyword("Quick")) $quick++;
+							}
 						$tmp = 2*$quick + 3*$swift;
 						$mydata->Bricks-= $tmp; $mydata->Gems-= $tmp; $mydata->Recruits-= $tmp;
 
 						$quick = $swift = 0;
-						for ($i = 1; $i <= $hislastcardindex; $i++)
+						for ($i = 1; $i <= 8; $i++)
 						{
-							$cur_card = $carddb->GetCard($hisdata->LastCard[$i]);
-							if ($cur_card->HasKeyword("Swift") AND $hisdata->LastAction[$i] == 'play') $swift++;
-							elseif ($cur_card->HasKeyword("Quick") AND $hisdata->LastAction[$i] == 'play') $quick++;
+							$cur_card = $carddb->GetCard($hisdata->Hand[$i]);
+							if ($cur_card->HasKeyword("Swift")) $swift++;
+							elseif ($cur_card->HasKeyword("Quick")) $quick++;
 						}
 						$tmp = 2*$quick + 3*$swift;
 						$hisdata->Bricks-= $tmp; $hisdata->Gems-= $tmp; $hisdata->Recruits-= $tmp;
 ]]></code>
     <created>2008-07-30</created>
-    <modified>2010-07-22</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="366">
     <name>Graceful charity</name>
@@ -5780,11 +5790,11 @@
       <recruits>16</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Dragon,Soldier</keywords>
-    <effect><![CDATA[Attack: 27<br />If #<b>Soldier</b> in hand > 1 and #<b>Dragon</b> in hand > 1<br />Enemy tower: -14]]></effect>
-    <code><![CDATA[$this->Attack(27, $hisdata->Tower, $hisdata->Wall); $d_found = $s_found = false; for ($i = 1; $i <= 8; $i++) if ($i != $cardpos) { if ((!$d_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Dragon"))) $d_found = true; if ((!$s_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Soldier"))) $s_found = true; } if ($d_found AND $s_found) $hisdata->Tower-= 14;]]></code>
+    <keywords>Dragon,Soldier,Charge (9)</keywords>
+    <effect><![CDATA[Attack: 23<br />If #<b>Dragon</b> in hand > 1<br />Enemy tower: -11]]></effect>
+    <code><![CDATA[$this->Attack(23, $hisdata->Tower, $hisdata->Wall); if ($this->KeywordCount($mydata->Hand, "Dragon") > 1) $hisdata->Tower-= 11;]]></code>
     <created>2008-07-30</created>
-    <modified>2008-07-30</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="371">
     <name>Frost unicorn</name>
@@ -5870,11 +5880,11 @@
       <recruits>31</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Beast,Soldier</keywords>
-    <effect><![CDATA[Attack: 19<br />If #<b>Beast</b> in hand > 1<br />Attack: 15<br />If #<b>Soldier</b> in hand > 1<br />Attack: 15]]></effect>
-    <code><![CDATA[$b_found = $s_found = false; for ($i = 1; $i <= 8; $i++) if ($i != $cardpos) { if ((!$b_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Beast"))) $b_found = true; if ((!$s_found) AND ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Soldier"))) $s_found = true; } $this->Attack(19 + (($b_found) ? 15 : 0) + (($s_found) ? 15 :  0), $hisdata->Tower, $hisdata->Wall);]]></code>
+    <keywords>Beast,Soldier,Charge (19)</keywords>
+    <effect><![CDATA[If #<b>Beast</b> in hand > 1 and #<b>Soldier</b> in hand > 1<br />Attack: 30<br />else<br />Enemy wall: -30]]></effect>
+    <code><![CDATA[if (($this->KeywordCount($mydata->Hand, "Beast")) > 1 and ($this->KeywordCount($mydata->Hand, "Soldier") > 1)) $this->Attack(30, $hisdata->Tower, $hisdata->Wall); else $hisdata->Wall-= 30;]]></code>
     <created>2008-07-30</created>
-    <modified>2010-01-20</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="377">
     <name>Mountain king</name>
@@ -6419,7 +6429,7 @@
     <modified>2010-11-01</modified>
   </card>
   <card id="409">
-    <name>Dragon slayer</name>
+    <name>Monster slayer</name>
     <class>Uncommon</class>
     <cost>
       <bricks>0</bricks>
@@ -6427,8 +6437,8 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
-    <keywords/>
-    <effect><![CDATA[Attack: 16<br />Discards highest rarity <b>Dragon</b> from opponent's hand<br />Gain cost of the discarded card (max 10)]]></effect>
+    <keywords>Soldier,Skirmisher</keywords>
+    <effect><![CDATA[Attack: 16<br />Discards highest rarity <b>Unliving</b>, <b>Undead</b> or <b>Dragon</b> from opponent's hand]]></effect>
     <code><![CDATA[
 							$this->Attack(16, $hisdata->Tower, $hisdata->Wall);
 							$storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
@@ -6436,23 +6446,19 @@
 							{
 								$cur_card = $carddb->GetCard($hisdata->Hand[$i]);
 								$rarity = $cur_card->GetClass();
-								if ($cur_card->HasKeyword("Dragon")) $storage[$rarity][] = $i;
+								if ($cur_card->HasKeyword("Dragon") OR $cur_card->HasKeyword("Undead") OR $cur_card->HasKeyword("Unliving")) $storage[$rarity][] = $i;
 							}
 							if ((count($storage['Common']) + count($storage['Uncommon']) + count($storage['Rare'])) > 0)
 							{
 								shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
 								$storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
 								$discarded_pos = array_pop($storage_temp);
-								$dis_card = $carddb->GetCard($hisdata->Hand[$discarded_pos]);
-								$mydata->Bricks+= min($dis_card->GetResources("Bricks"), 10);
-								$mydata->Gems+= min($dis_card->GetResources("Gems"), 10);
-								$mydata->Recruits+= min($dis_card->GetResources("Recruits"), 10);
 								$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_different');
 								$hisdata->NewCards[$discarded_pos] = 1;
 							}
 ]]></code>
     <created>2008-12-24</created>
-    <modified>2010-09-23</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="410">
     <name>Shadow fairy</name>
@@ -6994,10 +7000,10 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +16<br />Enemy tower: -10<br />If there is a <b>Soldier</b> in hand<br />Enemy tower: -6]]></effect>
-    <code><![CDATA[$mydata->Tower+= 16; if ($this->KeywordCount($mydata->Hand, "Soldier") > 0) $hisdata->Tower-= 16; else $hisdata->Tower-= 10;]]></code>
+    <effect><![CDATA[Tower: +16<br />Enemy tower: -6<br />If there is a <b>Far sight</b> and a <b>Soldier</b> in hand<br />Enemy tower: -10]]></effect>
+    <code><![CDATA[$mydata->Tower+= 16; if ($this->KeywordCount($mydata->Hand, "Far sight") > 0 AND $this->KeywordCount($mydata->Hand, "Soldier") > 0) $hisdata->Tower-= 16; else $hisdata->Tower-= 6;]]></code>
     <created>2009-04-11</created>
-    <modified>2009-04-11</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="437">
     <name>Battlements</name>
@@ -7442,10 +7448,10 @@
     </cost>
     <modes>0</modes>
     <keywords>Holy,Banish</keywords>
-    <effect><![CDATA[Attack: 100(1 - N)<br />N = Tower height / Max tower]]></effect>
-    <code><![CDATA[$this->Attack(100 - round(100 * $mydata->Tower / $max_tower), $hisdata->Tower, $hisdata->Wall);]]></code>
+    <effect><![CDATA[Attack: Max tower - Tower height]]></effect>
+    <code><![CDATA[$this->Attack($max_tower - $mydata->Tower, $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2009-07-22</created>
-    <modified>2010-09-10</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="462">
     <name>Relic hunter</name>
@@ -7793,11 +7799,11 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Illusion,Undead</keywords>
+    <keywords>Illusion,Undead,Charge (1)</keywords>
     <effect><![CDATA[If Enemy wall > 20<br />Gems: +3<br />Always:<br />Attack: 7]]></effect>
     <code><![CDATA[if ($hisdata->Wall > 20) $mydata->Gems+= 3; $this->Attack(7, $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2009-10-24</created>
-    <modified>2009-10-24</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="482">
     <name>Wicked Ritual</name>
@@ -7881,15 +7887,15 @@
     <class>Common</class>
     <cost>
       <bricks>0</bricks>
-      <gems>1</gems>
+      <gems>0</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Restoration</keywords>
-    <effect><![CDATA[If Enemy gems - Gems > 2<br />Gems: +7]]></effect>
-    <code><![CDATA[if (($hisdata->Gems - $mydata->Gems) > 2) $mydata->Gems+= 7;]]></code>
+    <keywords/>
+    <effect><![CDATA[Player(s) with lowest gems gets<br />Gems: +6<br />His opponent gets<br />Gems: +2]]></effect>
+    <code><![CDATA[if ($mydata->Gems <= $hisdata->Gems) { $mydata->Gems+= 6; $hisdata->Gems+= 2; } if ($hisdata->Gems <= $mydata->Gems) { $hisdata->Gems+= 6; $mydata->Gems+= 2; }]]></code>
     <created>2009-10-24</created>
-    <modified>2010-11-01</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="487">
     <name>Moon shrine</name>
@@ -7945,7 +7951,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Wall: +4<br />Highest resource: -3<br />Lowest resource: +3]]></effect>
+    <effect><![CDATA[Wall: +4<br />Highest resource: -3<br />Lowest resource: +4]]></effect>
     <code><![CDATA[
 							$mydata->Wall+= 4;
 							$max = max($mydata->Bricks, $mydata->Gems, $mydata->Recruits);
@@ -7961,10 +7967,10 @@
 							foreach ($res as $resource => $r_value)
 								if ($r_value == $min) $temp_min[$resource] = $r_value;
 							$chosen_min = array_rand($temp_min);
-							$mydata->$chosen_min+= 3;
+							$mydata->$chosen_min+= 4;
 ]]></code>
     <created>2009-10-24</created>
-    <modified>2010-01-11</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="490">
     <name>Magic portal</name>
@@ -7991,10 +7997,10 @@
     </cost>
     <modes>0</modes>
     <keywords>Swift</keywords>
-    <effect><![CDATA[If Wall > Enemy wall<br />Enemy tower: -11<br />else<br />Gems: +9]]></effect>
-    <code><![CDATA[if ($mydata->Wall > $hisdata->Wall) $hisdata->Tower-= 11; else $mydata->Gems+= 9;]]></code>
+    <effect><![CDATA[If Wall > Enemy wall<br />Enemy tower: -8<br />else<br />Gems production x2]]></effect>
+    <code><![CDATA[if ($mydata->Wall > $hisdata->Wall) $hisdata->Tower-= 8; else $gems_production*= 2;]]></code>
     <created>2009-11-16</created>
-    <modified>2009-11-16</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="492">
     <name>Lighthouse</name>
@@ -8076,7 +8082,7 @@
     <class>Uncommon</class>
     <cost>
       <bricks>0</bricks>
-      <gems>8</gems>
+      <gems>13</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
@@ -8084,7 +8090,7 @@
     <effect><![CDATA[Replaces matching card in opponent's hand and its neigbouring cards with Wind]]></effect>
     <code><![CDATA[$hisdata->Hand[$cardpos] = 247; $hisdata->NewCards[$cardpos] = 1; if ($cardpos > 1) { $hisdata->Hand[$cardpos - 1] = 247; $hisdata->NewCards[$cardpos - 1] = 1; } if ($cardpos < 8) { $hisdata->Hand[$cardpos + 1] = 247; $hisdata->NewCards[$cardpos + 1] = 1; }]]></code>
     <created>2010-01-20</created>
-    <modified>2010-01-20</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="498">
     <name>Thief hideout</name>
@@ -8155,11 +8161,11 @@
       <recruits>4</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Enduring (7)</keywords>
-    <effect><![CDATA[Attack: 4<br />Summons Orc brute, Elite orc or Ogre]]></effect>
-    <code><![CDATA[$this->Attack(4, $hisdata->Tower, $hisdata->Wall); $nextcard = $this->DrawCard(array(502, 240, 46), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
+    <keywords>Skirmisher</keywords>
+    <effect><![CDATA[Wall: +4<br />Enemy wall: -4]]></effect>
+    <code><![CDATA[$mydata->Wall+= 4; $hisdata->Wall-= 4;]]></code>
     <created>2010-01-20</created>
-    <modified>2010-01-20</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="503">
     <name>Temple guard</name>
@@ -8185,11 +8191,11 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Aqua</keywords>
+    <keywords>Aqua,Skirmisher</keywords>
     <effect><![CDATA[Attack: 1<br />If New<br />Attack: 4]]></effect>
     <code><![CDATA[$this->Attack(((isset($mynewflags[$cardpos])) ? 5 : 1), $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2010-01-20</created>
-    <modified>2010-03-14</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="505">
     <name>Kraken</name>
@@ -8251,11 +8257,11 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Far sight</keywords>
+    <keywords>Far sight,Skirmisher</keywords>
     <effect><![CDATA[If Enemy tower is not divisible by 5<br />Enemy tower is lowered to the next height that is divisible by 5]]></effect>
     <code><![CDATA[$hisdata->Tower = floor($hisdata->Tower/5) * 5;]]></code>
     <created>2010-01-20</created>
-    <modified>2010-06-21</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="509">
     <name>Breeze</name>
@@ -8281,7 +8287,7 @@
       <recruits>13</recruits>
     </cost>
     <modes>0</modes>
-    <keywords/>
+    <keywords>Far sight</keywords>
     <effect><![CDATA[Attack: 13<br />Wall: +2N<br />Enemy recruits: -N<br />N = recruits cost of highest cost <b>Beast</b> or <b>Frenzy</b> in opponent's hand]]></effect>
     <code><![CDATA[$this->Attack(13, $hisdata->Tower, $hisdata->Wall);
 							$max = 0;
@@ -8294,7 +8300,7 @@
 							$hisdata->Recruits-= $max;
 ]]></code>
     <created>2010-01-20</created>
-    <modified>2010-07-22</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="511">
     <name>Farm</name>
@@ -8306,10 +8312,10 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +2<br />Wall: +2<br />If last card was discarded<br />Stock: +3]]></effect>
-    <code><![CDATA[$mydata->Tower+= 2; $mydata->Wall+= 2; if ($mylast_action == "discard") { $mydata->Bricks+= 3; $mydata->Gems+= 3; $mydata->Recruits+= 3; }]]></code>
+    <effect><![CDATA[Tower: +2<br />Wall: +2<br />If last card was discarded<br />Stock: +4]]></effect>
+    <code><![CDATA[$mydata->Tower+= 2; $mydata->Wall+= 2; if ($mylast_action == "discard") { $mydata->Bricks+= 4; $mydata->Gems+= 4; $mydata->Recruits+= 4; }]]></code>
     <created>2010-01-20</created>
-    <modified>2010-01-20</modified>
+    <modified>2010-12-24</modified>
   </card>
   <card id="512">
     <name>Reinforced gate</name>
@@ -8346,29 +8352,36 @@
     <class>Uncommon</class>
     <cost>
       <bricks>0</bricks>
-      <gems>15</gems>
+      <gems>26</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Burning,Banish</keywords>
-    <effect><![CDATA[Stock: -10<br />Enemy stock: -10<br />Each player suffers 1 damage for each resource he lost]]></effect>
+    <keywords>Burning,Destruction</keywords>
+    <effect><![CDATA[Player(s) with fewest <b>Burning</b> cards gets<br />Stock: -10<br />Each player suffers 1 damage for each resource he lost]]></effect>
     <code><![CDATA[
+							$my_count = $this->KeywordCount($mydata->Hand, "Burning");
+							$his_count = $this->KeywordCount($hisdata->Hand, "Burning");
 							$res = array('Bricks', 'Gems', 'Recruits');
 							$my_dmg = $his_dmg = 0;
-							foreach ($res as $resource)
-							{
-								$lowered = $mydata->$resource - max($mydata->$resource - 10, 0);
-								$mydata->$resource-= $lowered;
-								$my_dmg+= $lowered;
-								$lowered = $hisdata->$resource - max($hisdata->$resource - 10, 0);
-								$hisdata->$resource-= $lowered;
-								$his_dmg+= $lowered;
-							}
-							$this->Attack($my_dmg, $mydata->Tower, $mydata->Wall);
-							$this->Attack($his_dmg, $hisdata->Tower, $hisdata->Wall);
+							if ($my_count <= $his_count)
+								foreach ($res as $resource)
+								{
+									$lowered = $mydata->$resource - max($mydata->$resource - 10, 0);
+									$mydata->$resource-= $lowered;
+									$my_dmg+= $lowered;
+								}
+							if ($my_count >= $his_count)
+								foreach ($res as $resource)
+								{
+									$lowered = $hisdata->$resource - max($hisdata->$resource - 10, 0);
+									$hisdata->$resource-= $lowered;
+									$his_dmg+= $lowered;
+								}
+							if ($my_dmg > 0) $this->Attack($my_dmg, $mydata->Tower, $mydata->Wall);
+							if ($his_dmg > 0) $this->Attack($his_dmg, $hisdata->Tower, $hisdata->Wall);
 ]]></code>
     <created>2010-03-14</created>
-    <modified>2010-11-01</modified>
+    <modified>2010-12-24</modified>
   </card>
 	<card id="515">
     <name>Koschei the Deathless</name>
@@ -8449,7 +8462,7 @@
     <name>Desert outpost</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>15</bricks>
+      <bricks>17</bricks>
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
@@ -8458,7 +8471,7 @@
     <effect><![CDATA[Tower: +5<br />Wall: +10<br />Gems: +5<br />Recruits: +5]]></effect>
     <code><![CDATA[$mydata->Tower+= 5; $mydata->Wall+= 10; $mydata->Gems+= 5; $mydata->Recruits+= 5;]]></code>
     <created>2010-03-14</created>
-    <modified>2010-07-22</modified>
+    <modified>2010-12-24</modified>
   </card>
 	<card id="521">
     <name>Mermaid</name>
@@ -8944,11 +8957,11 @@
       <recruits>7</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Beast</keywords>
-    <effect><![CDATA[Attack: 7<br />If there is a Goblin in your hand<br />Recruits: +4]]></effect>
-    <code><![CDATA[$found = false; for ($i = 1; $i <= 8; $i++) if ($mydata->Hand[$i] == 13) $found = true; $this->Attack(7, $hisdata->Tower, $hisdata->Wall); if ($found) $mydata->Recruits+= 4;]]></code>
+    <keywords>Beast,Charge (5)</keywords>
+    <effect><![CDATA[Attack: 5]]></effect>
+    <code><![CDATA[$this->Attack(5, $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2010-06-21</created>
-    <modified>2010-06-21</modified>
+    <modified>2010-12-24</modified>
   </card>
 	<card id="549">
     <name>Goblin regiment</name>
@@ -9157,10 +9170,10 @@
     </cost>
     <modes>0</modes>
     <keywords>Destruction</keywords>
-    <effect><![CDATA[If <b>Mage</b> tokens > 60<br />Enemy tower: -8<br /><b>Mage</b> tokens: -40<br />else<br />Enemy wall: -8]]></effect>
-    <code><![CDATA[$tmp = array_search("Mage", $mydata->TokenNames); if ($tmp AND $mydata->TokenValues[$tmp] > 60) { $hisdata->Tower-= 8; $mydata->TokenValues[$tmp]-= 40; } else $hisdata->Wall-= 8;]]></code>
+    <effect><![CDATA[Enemy stock: -2<br />If <b>Mage</b> tokens > 60<br />Enemy stock: -3]]></effect>
+    <code><![CDATA[$tmp = array_search("Mage", $mydata->TokenNames); $reduction = ($tmp AND $mydata->TokenValues[$tmp] > 60) ? 5 : 2; $hisdata->Bricks-= $reduction; $hisdata->Gems-= $reduction; $hisdata->Recruits-= $reduction;]]></code>
     <created>2010-06-21</created>
-    <modified>2010-07-22</modified>
+    <modified>2010-12-24</modified>
   </card>
 	<card id="562">
     <name>Divine guidance</name>
@@ -9232,10 +9245,10 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Stock: +2N<br />N = #Wheat farms in hand]]></effect>
-    <code><![CDATA[$tmp = 0; for ($i = 1; $i <= 8; $i++) if ($mydata->Hand[$i] == 566) $tmp++; $tmp = ($tmp * 2); $mydata->Bricks+= $tmp; $mydata->Gems+= $tmp; $mydata->Recruits+= $tmp;]]></code>
+    <effect><![CDATA[Stock: +3N - 1<br />N = #Wheat farms in hand]]></effect>
+    <code><![CDATA[$tmp = 0; for ($i = 1; $i <= 8; $i++) if ($mydata->Hand[$i] == 566) $tmp++; $tmp = 3*$tmp - 1; $mydata->Bricks+= $tmp; $mydata->Gems+= $tmp; $mydata->Recruits+= $tmp;]]></code>
     <created>2010-06-21</created>
-    <modified>2010-07-22</modified>
+    <modified>2010-12-24</modified>
   </card>
 	<card id="567">
     <name>Jungle river</name>
@@ -9351,11 +9364,11 @@
       <recruits>20</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Far sight,Banish</keywords>
+    <keywords>Far sight,Banish,Skirmisher</keywords>
     <effect><![CDATA[Attack: 35<br />If #different keywords in hand > #different keywords in opponent's hand<br />Attack: 30]]></effect>
     <code><![CDATA[$tmp = ($this->CountDistinctKeywords($mydata->Hand) > $this->CountDistinctKeywords($hisdata->Hand)) ? 65 : 35; $this->Attack($tmp, $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2010-06-21</created>
-    <modified>2010-11-01</modified>
+    <modified>2010-12-24</modified>
   </card>
 	<card id="575">
     <name>Chateau</name>
@@ -9509,7 +9522,7 @@
     <cost>
       <bricks>0</bricks>
       <gems>0</gems>
-      <recruits>6</recruits>
+      <recruits>7</recruits>
     </cost>
     <modes>0</modes>
     <keywords>Alliance,Durable,Enduring (6)</keywords>
@@ -9532,7 +9545,7 @@
 							}
 ]]></code>
     <created>2010-09-10</created>
-    <modified>2010-09-10</modified>
+    <modified>2010-12-24</modified>
   </card>
 	<card id="585">
     <name>Barbz's pupil</name>
@@ -9544,10 +9557,10 @@
     </cost>
     <modes>8</modes>
     <keywords>Brigand</keywords>
-    <effect><![CDATA[Attack: 6<br />Summons selected uncommon card in opponent's hand]]></effect>
-    <code><![CDATA[$this->Attack(6, $hisdata->Tower, $hisdata->Wall); if ($carddb->GetCard($hisdata->Hand[$mode])->GetClass() == 'Uncommon') $nextcard = $hisdata->Hand[$mode];]]></code>
+    <effect><![CDATA[Attack: 6<br />Summons selected non-rare card in opponent's hand]]></effect>
+    <code><![CDATA[$this->Attack(6, $hisdata->Tower, $hisdata->Wall); if ($carddb->GetCard($hisdata->Hand[$mode])->GetClass() != 'Rare') $nextcard = $hisdata->Hand[$mode];]]></code>
     <created>2010-09-10</created>
-    <modified>2010-09-10</modified>
+    <modified>2010-12-24</modified>
   </card>
 	<card id="586">
     <name>Mithril miner</name>
@@ -9597,32 +9610,19 @@
       <gems>0</gems>
       <recruits>1</recruits>
     </cost>
-    <modes>0</modes>
+    <modes>8</modes>
     <keywords/>
-    <effect><![CDATA[If there is a Wheat farm in hand replace up to 2 other common cards in hand with Wheat farm]]></effect>
+    <effect><![CDATA[Replace a card from hand with Wheat farm<br />Summons Wheat farm]]></effect>
     <code><![CDATA[
-						$tmp = 0;
-						for ($i = 1; $i <= 8; $i++)
-							if ($mydata->Hand[$i] == 566) $tmp++;
-						if ($tmp > 0)
+						if ($mode != $cardpos)
 						{
-							$storage = array();
-							for ($i = 1; $i <= 8; $i++)
-								if (($i != $cardpos) AND $mydata->Hand[$i] != 566 AND $carddb->GetCard($mydata->Hand[$i])->GetClass() == 'Common') $storage[] = $i;
-
-							if (count($storage) > 0)
-							{
-								shuffle($storage);
-								for ($i = 0; ($i < count($storage)) AND ($i < 2); $i++)
-								{
-									$mydata->Hand[$storage[$i]] = 566;
-									$mydata->NewCards[$storage[$i]] = 1;
-								}
-							}
+							$mydata->Hand[$mode] = 566;
+							$mydata->NewCards[$mode] = 1;
 						}
+						$nextcard = 566;
 ]]></code>
     <created>2010-09-10</created>
-    <modified>2010-09-10</modified>
+    <modified>2010-12-24</modified>
   </card>
 	<card id="589">
     <name>Librarian</name>
@@ -9663,11 +9663,11 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Unliving</keywords>
+    <keywords>Unliving,Far sight</keywords>
     <effect><![CDATA[Attack: 30 + 4N<br />Quarry: +N / 2<br />N = #<b>Unliving</b> in hand]]></effect>
     <code><![CDATA[$tmp = $this->KeywordCount($mydata->Hand, "Unliving"); $this->Attack(30 + 4 * $tmp, $hisdata->Tower, $hisdata->Wall); $mydata->Quarry+= round($tmp/2);]]></code>
     <created>2010-09-10</created>
-    <modified>2010-09-10</modified>
+    <modified>2010-12-24</modified>
   </card>
 	<card id="592">
     <name>Eternal dream</name>
@@ -9694,10 +9694,10 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Gems: +8<br />If there is a <b>Far sight</b> in hand<br />Enemy Tower: -20<br />else<br />Attack: 22]]></effect>
-    <code><![CDATA[$mydata->Gems+= 8; if ($this->KeywordCount($mydata->Hand, "Far sight") > 0) $hisdata->Tower-= 20; else $this->Attack(22, $hisdata->Tower, $hisdata->Wall);]]></code>
+    <effect><![CDATA[Gems: +8<br />If there is a <b>Far sight</b> in hand<br />Enemy Tower: -18<br />else<br />Attack: 20]]></effect>
+    <code><![CDATA[$mydata->Gems+= 8; if ($this->KeywordCount($mydata->Hand, "Far sight") > 0) $hisdata->Tower-= 18; else $this->Attack(20, $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2010-09-10</created>
-    <modified>2010-09-10</modified>
+    <modified>2010-12-24</modified>
   </card>
 	<card id="594">
     <name>Desert traveler</name>
@@ -9724,10 +9724,10 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Attack: 3<br />Opponent loses 5 random resources<br />Replaces non-rare matching card with Palisade wall]]></effect>
-    <code><![CDATA[$this->Attack(3, $hisdata->Tower, $hisdata->Wall); for ($i = 1; $i <= 5; $i++) { $tmp = mt_rand(0,2); if ($tmp == 0) $hisdata->Bricks--; elseif ($tmp == 1) $hisdata->Gems--; elseif ($tmp == 2) $hisdata->Recruits--; } if ($carddb->GetCard($hisdata->Hand[$cardpos])->GetClass() != "Rare") { $hisdata->Hand[$cardpos] = 297; $hisdata->NewCards[$cardpos] = 1; }]]></code>
+    <effect><![CDATA[Opponent loses 5 random resources<br />Replaces non-rare matching card with Palisade wall]]></effect>
+    <code><![CDATA[for ($i = 1; $i <= 5; $i++) { $tmp = mt_rand(0,2); if ($tmp == 0) $hisdata->Bricks--; elseif ($tmp == 1) $hisdata->Gems--; elseif ($tmp == 2) $hisdata->Recruits--; } if ($carddb->GetCard($hisdata->Hand[$cardpos])->GetClass() != "Rare") { $hisdata->Hand[$cardpos] = 297; $hisdata->NewCards[$cardpos] = 1; }]]></code>
     <created>2010-09-10</created>
-    <modified>2010-11-01</modified>
+    <modified>2010-12-24</modified>
   </card>
 	<card id="596">
     <name>Myr's academy</name>
@@ -9768,11 +9768,11 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Barbarian</keywords>
+    <keywords>Barbarian,Charge (2)</keywords>
     <effect><![CDATA[Attack: 8 <br />You lose 6 random resources]]></effect>
     <code><![CDATA[$this->Attack(8, $hisdata->Tower, $hisdata->Wall); for ($i = 1; $i <= 6; $i++) { $tmp = mt_rand(0,2); if ($tmp == 0) $mydata->Bricks--; elseif ($tmp == 1) $mydata->Gems--; elseif ($tmp == 2) $mydata->Recruits--; }]]></code>
     <created>2010-09-10</created>
-    <modified>2010-09-10</modified>
+    <modified>2010-12-24</modified>
   </card>
 	<card id="599">
     <name>Elven warlock</name>
@@ -9784,10 +9784,10 @@
     </cost>
     <modes>0</modes>
     <keywords>Alliance,Mage</keywords>
-    <effect><![CDATA[Attack: 32<br />Gems production x10<br />]]></effect>
-    <code><![CDATA[$this->Attack(32, $hisdata->Tower, $hisdata->Wall); $gems_production*= 10;]]></code>
+    <effect><![CDATA[Attack: 8N<br />N = #Magic<br />Gems production x6<br />]]></effect>
+    <code><![CDATA[$this->Attack(8*$mydata->Magic, $hisdata->Tower, $hisdata->Wall); $gems_production*= 6;]]></code>
     <created>2010-10-03</created>
-    <modified>2010-10-03</modified>
+    <modified>2010-12-24</modified>
   </card>
 	<card id="600">
     <name>Battle rager</name>
@@ -9798,11 +9798,11 @@
       <recruits>16</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Barbarian,Frenzy</keywords>
+    <keywords>Barbarian,Skirmisher,Frenzy</keywords>
     <effect><![CDATA[If #<b>Frenzy</b> in hand > 1<br />Attack: 10<br />else<br />Attack: 21]]></effect>
     <code><![CDATA[$tmp = ($this->KeywordCount($mydata->Hand, "Frenzy") > 1) ? 10 : 21; $this->Attack($tmp, $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2010-10-03</created>
-    <modified>2010-10-03</modified>
+    <modified>2010-12-24</modified>
   </card>
 	<card id="601">
     <name>Whirlwind</name>
@@ -9859,10 +9859,10 @@
     </cost>
     <modes>0</modes>
     <keywords>Beast,Durable</keywords>
-    <effect><![CDATA[Dungeon: +1<br />Attack: 10N<br />N = #Dungeon - #Enemy dungeon]]></effect>
-    <code><![CDATA[$mydata->Dungeons+= 1; $tmp = max(0, $mydata->Dungeons - $hisdata->Dungeons); $this->Attack(10*$tmp, $hisdata->Tower, $hisdata->Wall);]]></code>
+    <effect><![CDATA[Dungeon: +1<br />Attack: 10N<br />N = #Dungeon - #Enemy dungeon<br />Recruits production x0]]></effect>
+    <code><![CDATA[$mydata->Dungeons+= 1; $tmp = max(0, $mydata->Dungeons - $hisdata->Dungeons); $this->Attack(10*$tmp, $hisdata->Tower, $hisdata->Wall); $recruits_production = 0;]]></code>
     <created>2010-10-03</created>
-    <modified>2010-10-03</modified>
+    <modified>2010-12-24</modified>
   </card>
 	<card id="605">
     <name>War preparations</name>
@@ -9919,23 +9919,21 @@
     </cost>
     <modes>0</modes>
     <keywords>Burning,Holy</keywords>
-    <effect><![CDATA[Both players discard all cards not from their deck (can't draw rare cards)]]></effect>
+    <effect><![CDATA[Both players discard all non-rare cards not from their deck (can't draw rare cards)]]></effect>
     <code><![CDATA[
-							$my_deck_cards = array_merge($mydata->Deck->Common, $mydata->Deck->Uncommon, $mydata->Deck->Rare);
 							for ($i = 1; $i <= 8; $i++)
 							{
 								$cur_card = $mydata->Hand[$i];
-								if (!in_array($cur_card, $my_deck_cards) AND $i != $cardpos)
+								if ($carddb->GetCard($cur_card)->GetClass() != "Rare" AND !in_array($cur_card, $mydata->Deck->Common) AND $i != $cardpos)
 								{
 									$mydata->Hand[$i] = $this->DrawCard($mydata->Deck, $mydata->Hand, $i, 'DrawCard_norare');
 									$mydata->NewCards[$i] = 1;
 								}
 							}
-							$his_deck_cards = array_merge($hisdata->Deck->Common, $hisdata->Deck->Uncommon, $hisdata->Deck->Rare);
 							for ($i = 1; $i <= 8; $i++)
 							{
 								$cur_card = $hisdata->Hand[$i];
-								if (!in_array($cur_card, $his_deck_cards))
+								if ($carddb->GetCard($cur_card)->GetClass() != "Rare" AND !in_array($cur_card, $hisdata->Deck->Common))
 								{
 									$hisdata->Hand[$i] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $i, 'DrawCard_norare');
 									$hisdata->NewCards[$i] = 1;
@@ -9943,6 +9941,6 @@
 							}
 ]]></code>
     <created>2010-10-03</created>
-    <modified>2010-10-03</modified>
+    <modified>2010-12-24</modified>
   </card>
 </cards>
