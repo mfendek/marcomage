@@ -9921,19 +9921,21 @@
     <keywords>Burning,Holy</keywords>
     <effect><![CDATA[Both players discard all non-rare cards not from their deck (can't draw rare cards)]]></effect>
     <code><![CDATA[
+							$my_cards = array_merge($mydata->Deck->Common, $mydata->Deck->Uncommon);
 							for ($i = 1; $i <= 8; $i++)
 							{
 								$cur_card = $mydata->Hand[$i];
-								if ($carddb->GetCard($cur_card)->GetClass() != "Rare" AND !in_array($cur_card, $mydata->Deck->Common) AND $i != $cardpos)
+								if ($carddb->GetCard($cur_card)->GetClass() != "Rare" AND !in_array($cur_card, $my_cards) AND $i != $cardpos)
 								{
 									$mydata->Hand[$i] = $this->DrawCard($mydata->Deck, $mydata->Hand, $i, 'DrawCard_norare');
 									$mydata->NewCards[$i] = 1;
 								}
 							}
+							$his_cards = array_merge($hisdata->Deck->Common, $hisdata->Deck->Uncommon);
 							for ($i = 1; $i <= 8; $i++)
 							{
 								$cur_card = $hisdata->Hand[$i];
-								if ($carddb->GetCard($cur_card)->GetClass() != "Rare" AND !in_array($cur_card, $hisdata->Deck->Common))
+								if ($carddb->GetCard($cur_card)->GetClass() != "Rare" AND !in_array($cur_card, $his_cards))
 								{
 									$hisdata->Hand[$i] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $i, 'DrawCard_norare');
 									$hisdata->NewCards[$i] = 1;
