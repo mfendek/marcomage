@@ -101,7 +101,7 @@
 
 	<div id="menu_float_left">
 	<p>
-		<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/player_name)}"><xsl:value-of select="$param/player_name"/></a>
+		<a href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/player_name)}"><xsl:value-of select="$param/player_name"/></a>
 		<xsl:text> (</xsl:text>
 		<xsl:value-of select="$param/level"/>
 		<xsl:text>)</xsl:text>
