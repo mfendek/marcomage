@@ -7,6 +7,11 @@ function Refresh() // refresh user screen
 	window.location.replace(window.location.href);
 }
 
+function GameRefresh() // refresh user screen within the game
+{
+	window.location.replace($('a#game_refresh').attr('href'));
+}
+
 function TakeCard(id) // add card to deck via AJAX
 {
 	var str = new String();

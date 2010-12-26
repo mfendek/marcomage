@@ -317,9 +317,14 @@
 
 <xsl:template match="section[. = 'Games_details']">
 	<xsl:variable name="param" select="$params/game" />
-	<!-- autorefresh -->
+	<!-- autorefresh (disable autorefresh when user is using chat) -->
 	<xsl:if test="$param/autorefresh &gt; 0">
-		<xsl:copy-of select="am:autorefresh($param/autorefresh)"/>
+		<xsl:element name="script">
+			<xsl:attribute name="type">text/javascript</xsl:attribute>
+			<xsl:text>$(document).ready(function() { timer = window.setTimeout('GameRefresh()', </xsl:text>
+			<xsl:value-of select="$param/autorefresh" />
+			<xsl:text>000); $("input[name='ChatMessage']").keypress(function(event) { window.clearTimeout(timer); }); });</xsl:text>
+		</xsl:element>
 	</xsl:if>
 
 	<!-- scrolls chatbox to bottom if reverse chatorder setting is active -->
@@ -430,7 +435,7 @@
 		</td>
 		<td>
 			<!-- 'refresh' button -->
-			<a class="button" href="{php:functionString('makeurl', 'Games_details', 'CurrentGame', $param/CurrentGame)}" accesskey="w" >Refresh</a>
+			<a class="button" id="game_refresh" href="{php:functionString('makeurl', 'Games_details', 'CurrentGame', $param/CurrentGame)}" accesskey="w" >Refresh</a>
 			<xsl:if test="$param/nextgame_button = 'yes'">
 				<button type="submit" name="active_game">Next</button>
 			</xsl:if> 
