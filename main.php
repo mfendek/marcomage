@@ -3465,7 +3465,7 @@ case 'Settings':
 	//date is handled separately
 	$birthdate = $settings->GetSetting('Birthdate');
 
-	if( $birthdate != "0000-00-00" )
+	if( $birthdate AND $birthdate != "0000-00-00" )
 	{
 		$params['settings']['current_settings']["Age"] = $settings->Age();
 		$params['settings']['current_settings']["Sign"] = $settings->Sign();
