@@ -11,17 +11,6 @@ div#decks /* center buttons in deck list */
 	margin-bottom: 1ex;
 }
 
-div#decks a /* standard hyperlink */
-{
-	text-decoration: none;
-	color: inherit;
-}
-
-div#decks tr.table_row:hover a /* standard hyperlink hover layout */
-{
-	text-decoration: underline;
-}
-
 div#decks > table /* decks list layout */
 {
 	margin-left: auto;

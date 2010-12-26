@@ -31,7 +31,7 @@
 						<xsl:if test="Ready = 'yes'">
 							<xsl:attribute name="class">p_online</xsl:attribute>
 						</xsl:if>
-						<a href="{php:functionString('makeurl', 'Decks_edit', 'CurrentDeck', DeckID)}"><xsl:value-of select="Deckname"/></a>
+						<xsl:value-of select="Deckname"/>
 					</p>
 				</td>
 				<td><p><xsl:value-of select="Wins"/></p></td>
@@ -45,6 +45,7 @@
 						</xsl:choose>
 					</p>
 				</td>
+				<td><p><a class="button" href="{php:functionString('makeurl', 'Decks_edit', 'CurrentDeck', DeckID)}">&gt;</a></p></td>
 			</tr>
 		</xsl:for-each>
 	</table>
