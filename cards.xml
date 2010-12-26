@@ -7893,7 +7893,7 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Player(s) with lowest gems gets<br />Gems: +6<br />His opponent gets<br />Gems: +2]]></effect>
-    <code><![CDATA[if ($mydata->Gems <= $hisdata->Gems) { $mydata->Gems+= 6; $hisdata->Gems+= 2; } if ($hisdata->Gems <= $mydata->Gems) { $hisdata->Gems+= 6; $mydata->Gems+= 2; }]]></code>
+    <code><![CDATA[if ($mydata->Gems < $hisdata->Gems) { $mydata->Gems+= 6; $hisdata->Gems+= 2; } elseif ($hisdata->Gems < $mydata->Gems) { $hisdata->Gems+= 6; $mydata->Gems+= 2; } else { $mydata->Gems+= 8; $hisdata->Gems+= 8; }]]></code>
     <created>2009-10-24</created>
     <modified>2010-12-24</modified>
   </card>
