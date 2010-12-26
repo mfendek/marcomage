@@ -191,7 +191,7 @@
 		<description>when card has this keyword, it also has a number next to this keyword. When card is played and the opponent's wall (after the standard attack) is 0, he will receive additional damage equal to number next to charge, otherwise opponent loses random resources equal to number next to charge. If opponent has more resources of certain type compared to his other resources, they are more likely to be reduced.</description>
 		<code><![CDATA[
 					$charge_damage = $this->KeywordValue($card->GetKeywords(), 'Charge');
-					if ($hisdata->Wall == 0) $hisdata->Tower-= $charge_damage;
+					if ($hisdata->Wall <= 0) $hisdata->Tower-= $charge_damage;
 					else
 					{
 						$bricks = max(0, $hisdata->Bricks);
