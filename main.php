@@ -1402,7 +1402,12 @@
 					$replaydb->UpdateReplay($game);
 
 					if ($game->State == 'finished')
+					{
 						$replaydb->FinishReplay($game);
+
+						// update deck statistics
+						$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
+					}
 
 					if (($game->State == 'finished') AND ($game->GetGameMode('FriendlyPlay') == "no"))
 					{
@@ -1414,9 +1419,6 @@
 						$p2 = $playerdb->GetPlayer($player2);
 						$p1_rep = $p1->GetSettings()->GetSetting('Reports');
 						$p2_rep = $p2->GetSettings()->GetSetting('Reports');
-
-						// update deck statistics
-						$deckdb->UpdateStatistics($player1, $player2, $game->DeckID1(), $game->DeckID2(), $game->Winner);
 
 						// update score
 						$score1 = $scoredb->GetScore($player1);
@@ -1529,6 +1531,9 @@
 				{
 					$information = 'Surrender request accepted.';
 					$replaydb->FinishReplay($game);
+
+					// update deck statistics
+					$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
 				}
 				else $error = $result;
 
@@ -1540,9 +1545,6 @@
 					$opponent = $playerdb->GetPlayer($loser);
 					$opponent_rep = $opponent->GetSettings()->GetSetting('Reports');
 					$player_rep = $player->GetSettings()->GetSetting('Reports');
-
-					// update deck statistics
-					$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
 
 					// update score
 					$score1 = $scoredb->GetScore($game->Winner);
@@ -1623,7 +1625,12 @@
 				$result = $game->FinishGame($player->Name());
 
 				if ($result == 'OK')
+				{
 					$replaydb->FinishReplay($game);
+
+					// update deck statistics
+					$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
+				}
 
 				if (($result == 'OK') AND ($game->GetGameMode('FriendlyPlay') == "no"))
 				{
@@ -1635,9 +1642,6 @@
 					$p2 = $playerdb->GetPlayer($player2);
 					$p1_rep = $p1->GetSettings()->GetSetting('Reports');
 					$p2_rep = $p2->GetSettings()->GetSetting('Reports');
-
-					// update deck statistics
-					$deckdb->UpdateStatistics($player1, $player2, $game->DeckID1(), $game->DeckID2(), $game->Winner);
 
 					// update score
 					$score1 = $scoredb->GetScore($player1);
