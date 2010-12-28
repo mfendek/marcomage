@@ -47,11 +47,11 @@ div.karta.mixed_cost  { background-color: #b8860b; } /* DarkGoldenRod */
 div.karta.zero_cost   { background-color: #dcdcdc; } /* Gainsboro */
 
 /* background image, based on cost */
-div.karta.bricks_cost.with_bgimage { background-image: url('../img/bricks_cost.jpg'); }
-div.karta.gem_cost.with_bgimage    { background-image: url('../img/gem_cost.jpg');    }
-div.karta.rec_cost.with_bgimage    { background-image: url('../img/rec_cost.jpg');    }
-div.karta.mixed_cost.with_bgimage  { background-image: url('../img/mixed_cost.jpg');  }
-div.karta.zero_cost.with_bgimage   { background-image: url('../img/zero_cost.jpg');   }
+div.karta.bricks_cost.with_bgimage { background-image: url('../img/card/bricks_bg.jpg'); }
+div.karta.gem_cost.with_bgimage    { background-image: url('../img/card/gems_bg.jpg');    }
+div.karta.rec_cost.with_bgimage    { background-image: url('../img/card/recruits_bg.jpg');    }
+div.karta.mixed_cost.with_bgimage  { background-image: url('../img/card/mixed_bg.jpg');  }
+div.karta.zero_cost.with_bgimage   { background-image: url('../img/card/zero_bg.jpg');   }
 
 
 /* card title */
@@ -77,11 +77,11 @@ div.all, div.null, div.rek, div.gemy, div.tehla
 	text-align: center;
 	float: right;	
 }
-div.karta > div.tehla { background-image: url('../img/tehly.png');   }
-div.karta > div.all   { background-image: url('../img/all.png');     }
-div.karta > div.null  { background-image: url('../img/null.png');    }
-div.karta > div.gemy  { background-image: url('../img/gemy.png');    }
-div.karta > div.rek   { background-image: url('../img/reckuts.png'); }
+div.karta > div.tehla { background-image: url('../img/card/bricks_cost.png');   }
+div.karta > div.all   { background-image: url('../img/card/mixed_cost.png');     }
+div.karta > div.null  { background-image: url('../img/card/zero_cost.png');    }
+div.karta > div.gemy  { background-image: url('../img/card/gems_cost.png');    }
+div.karta > div.rek   { background-image: url('../img/card/recruits_cost.png'); }
 
 
 /* border around the card image, based on rarity */

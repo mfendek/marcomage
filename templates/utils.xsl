@@ -448,10 +448,10 @@
 				<xsl:if test="$c_revealed or $c_new">
 					<div class="miniflags">
 						<xsl:if test="$c_new">
-							<img src="img/new_miniflag.png" width="12px" height="12px" alt="new card" title="New card" />
+							<img src="img/card/new_miniflag.png" width="12px" height="12px" alt="new card" title="New card" />
 						</xsl:if>
 						<xsl:if test="$c_revealed">
-							<img src="img/revealed_miniflag.png" width="12px" height="12px" alt="revealed" title="Revealed" />
+							<img src="img/card/revealed_miniflag.png" width="12px" height="12px" alt="revealed" title="Revealed" />
 						</xsl:if>
 					</div>
 					<div class="clear_floats"></div>
