@@ -214,7 +214,7 @@ img.icon /* icon image */
 blockquote > div /* quote text layout */
 {
 	padding: 1.8em 0.8em 0.8em 0.8em;
-	background-image: url('../img/BBCode/quote.gif');
+	background-image: url('../img/quote.gif');
 	background-position: 10px 10px;
 	background-repeat: no-repeat;
 	font-size: small;
