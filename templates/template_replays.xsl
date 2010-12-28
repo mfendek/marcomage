@@ -291,7 +291,7 @@
 							<xsl:if test="NewCard = 'yes'">
 								<span class="newcard">NEW</span>
 							</xsl:if>
-							<img src="img/revealed.png" class="revealed" width="20px" height="14px" alt="revealed" title="Revealed" />
+							<img src="img/game/revealed.png" class="revealed" width="20px" height="14px" alt="revealed" title="Revealed" />
 						</div>
 						<div class="clear_floats"></div>
 					</xsl:when>
@@ -480,11 +480,11 @@
 									<img width="65px" style="display:block" alt="" >
 										<xsl:choose>
 											<xsl:when test="$param/p1Tower = $param/max_tower">
-												<xsl:attribute name="src">img/victory_red.png</xsl:attribute>
+												<xsl:attribute name="src">img/game/victory_top_red.png</xsl:attribute>
 												<xsl:attribute name="height">114px</xsl:attribute>
 											</xsl:when>
 											<xsl:otherwise>
-												<xsl:attribute name="src">img/towera_red.png</xsl:attribute>
+												<xsl:attribute name="src">img/game/tower_top_red.png</xsl:attribute>
 												<xsl:attribute name="height">91px</xsl:attribute>
 											</xsl:otherwise>
 										</xsl:choose>
@@ -495,7 +495,7 @@
 							<td valign="bottom">
 								<xsl:if test="$param/p1Wall &gt; 0">
 									<div>
-										<img src="img/korunka.png" width="19px" height="11px" style="display:block" alt="" />
+										<img src="img/game/wall_top.png" width="19px" height="11px" style="display:block" alt="" />
 										<div class="wallbody" style="height: {270 * $param/p1Wall div $param/max_wall}px;"></div>
 									</div>
 								</xsl:if>
@@ -639,7 +639,7 @@
 							<td valign="bottom">
 								<xsl:if test="$param/p2Wall &gt; 0">
 									<div>
-										<img src="img/korunka.png" width="19px" height="11px" style="display:block" alt="" />
+										<img src="img/game/wall_top.png" width="19px" height="11px" style="display:block" alt="" />
 										<div class="wallbody" style="height: {270 * $param/p2Wall div $param/max_wall}px;"></div>
 									</div>
 								</xsl:if>
@@ -649,11 +649,11 @@
 									<img width="65px" style="display:block" alt="" >
 										<xsl:choose>
 											<xsl:when test="$param/p2Tower = $param/max_tower">
-												<xsl:attribute name="src">img/victory_blue.png</xsl:attribute>
+												<xsl:attribute name="src">img/game/victory_top_blue.png</xsl:attribute>
 												<xsl:attribute name="height">114px</xsl:attribute>
 											</xsl:when>
 											<xsl:otherwise>
-												<xsl:attribute name="src">img/towera_blue.png</xsl:attribute>
+												<xsl:attribute name="src">img/game/tower_top_blue.png</xsl:attribute>
 												<xsl:attribute name="height">91px</xsl:attribute>
 											</xsl:otherwise>
 										</xsl:choose>
@@ -879,7 +879,7 @@
 							<xsl:if test="NewCard = 'yes'">
 								<span class="newcard">NEW</span>
 							</xsl:if>
-							<img src="img/revealed.png" class="revealed" width="20px" height="14px" alt="revealed" title="Revealed" />
+							<img src="img/game/revealed.png" class="revealed" width="20px" height="14px" alt="revealed" title="Revealed" />
 						</div>
 						<div class="clear_floats"></div>
 					</xsl:when>
@@ -956,7 +956,7 @@
 							<xsl:if test="NewCard = 'yes'">
 								<span class="newcard">NEW</span>
 							</xsl:if>
-							<img src="img/revealed.png" class="revealed" width="20px" height="14px" alt="revealed" title="Revealed" />
+							<img src="img/game/revealed.png" class="revealed" width="20px" height="14px" alt="revealed" title="Revealed" />
 						</div>
 						<div class="clear_floats"></div>
 					</xsl:when>
@@ -1145,11 +1145,11 @@
 									<img width="65px" style="display:block" alt="" >
 										<xsl:choose>
 											<xsl:when test="$param/p1Tower = $param/max_tower">
-												<xsl:attribute name="src">img/victory_red.png</xsl:attribute>
+												<xsl:attribute name="src">img/game/victory_top_red.png</xsl:attribute>
 												<xsl:attribute name="height">114px</xsl:attribute>
 											</xsl:when>
 											<xsl:otherwise>
-												<xsl:attribute name="src">img/towera_red.png</xsl:attribute>
+												<xsl:attribute name="src">img/game/tower_top_red.png</xsl:attribute>
 												<xsl:attribute name="height">91px</xsl:attribute>
 											</xsl:otherwise>
 										</xsl:choose>
@@ -1160,7 +1160,7 @@
 							<td valign="bottom">
 								<xsl:if test="$param/p1Wall &gt; 0">
 									<div>
-										<img src="img/korunka.png" width="19px" height="11px" style="display:block" alt="" />
+										<img src="img/game/wall_top.png" width="19px" height="11px" style="display:block" alt="" />
 										<div class="wallbody" style="height: {270 * $param/p1Wall div $param/max_wall}px;"></div>
 									</div>
 								</xsl:if>
@@ -1304,7 +1304,7 @@
 							<td valign="bottom">
 								<xsl:if test="$param/p2Wall &gt; 0">
 									<div>
-										<img src="img/korunka.png" width="19px" height="11px" style="display:block" alt="" />
+										<img src="img/game/wall_top.png" width="19px" height="11px" style="display:block" alt="" />
 										<div class="wallbody" style="height: {270 * $param/p2Wall div $param/max_wall}px;"></div>
 									</div>
 								</xsl:if>
@@ -1314,11 +1314,11 @@
 									<img width="65px" style="display:block" alt="" >
 										<xsl:choose>
 											<xsl:when test="$param/p2Tower = $param/max_tower">
-												<xsl:attribute name="src">img/victory_blue.png</xsl:attribute>
+												<xsl:attribute name="src">img/game/victory_top_blue.png</xsl:attribute>
 												<xsl:attribute name="height">114px</xsl:attribute>
 											</xsl:when>
 											<xsl:otherwise>
-												<xsl:attribute name="src">img/towera_blue.png</xsl:attribute>
+												<xsl:attribute name="src">img/game/tower_top_blue.png</xsl:attribute>
 												<xsl:attribute name="height">91px</xsl:attribute>
 											</xsl:otherwise>
 										</xsl:choose>
