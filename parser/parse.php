@@ -46,6 +46,29 @@ function do_bbcode_url ($action, $attributes, $content, $params, &$node_object) 
     
 }
 
+/* Callback for creating an internal link in BBCode */
+function do_bbcode_link ($action, $attributes, $content, $params, &$node_object) {
+    if ($action == 'validate') {
+        return true;
+    }
+    // the code was specified as follows: [link]http://.../[/link]
+    if (!isset ($attributes['default'])) {
+    	$content = clean_url($content);
+    	if (($l = strlen($content))>BBCODE_URL_MAXLEN) {
+      	$t = (int)(BBCODE_URL_MAXLEN/2);
+      	// Wedge an ellipsis in
+        $inner = substr($content, 0, $t) . '&hellip;' . substr($content, $l-$t);
+      } 
+			else {
+      	$inner = $content;
+            }
+      return '<a href="?'.preg_replace("/.*\?/i", '', $content).'">'.$inner.'</a>';
+    }
+    // the code was specified as follows: [link=http://.../]Text[/link]
+    return '<a href="?'.preg_replace("/.*\?/i", '', clean_url($attributes['default'])).'">'.$content.'</a>';
+    
+}
+
 function do_bbcode_quote($action, $attributes, $content, $params, &$node_object) {
 	if ($action == 'validate') {
 		return true;
@@ -82,6 +105,8 @@ quoting) for just the forums? Just an idea.
 				array ('start_tag' => '<i>', 'end_tag' => '</i>'),
         'inline', array ('block', 'inline'), array ());
     if ($extended) {
+			$bbcode->addCode ('link', 'usecontent?', 'do_bbcode_link', array ('usecontent_param' => 'default'),
+                  'link', array ('block', 'inline'), array ('link'));
 			$bbcode->addCode ('url', 'usecontent?', 'do_bbcode_url', array ('usecontent_param' => 'default'),
                   'link', array ('block', 'inline'), array ('link'));
       $bbcode->addCode ('quote', 'callback-replace', 'do_bbcode_quote', 

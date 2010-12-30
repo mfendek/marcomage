@@ -573,8 +573,10 @@ In the settings section you can upload your own avatar. Avatar must be a jpg, jp
 <ul>
 	<li>[b]some_text[/b] will add bold font weight to <b>some_text</b></li>
 	<li>[i]some_text[/i] will add italic style to <i>some_text</i></li>
-	<li>[url]some_url[/url] will make a hyperlink from the provided some_url</li>
-	<li>[url=some_url]some text[/url] will make a hyperlink from some text pointing to location described by some_url</li>
+	<li>[link]internal_url[/link] will make a hyperlink from the provided internal_url (used to reference pages within MArcomage website)</li>
+	<li>[link=internal_url]some text[/link] will make a hyperlink from some text pointing to location described by internal_url (used to reference pages within MArcomage website)</li>
+	<li>[url]external_url[/url] will make a hyperlink from the provided external_url (used to reference pages outside MArcomage website)</li>
+	<li>[url=external_url]some text[/url] will make a hyperlink from some text pointing to location described by external_url (used to reference pages outside MArcomage website)</li>
 	<li>[quote]some_text[/quote] will make a quote containing some_text</li>
 	<li>[quote=some_name]some_text[/quote] will make a quote containing some_text with some_name as quote author</li>
 </ul>

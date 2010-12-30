@@ -138,7 +138,8 @@
 		<div class="BBcodeButtons">
 			<button type="button" title="Bold" onclick="addTags('[b]', '[/b]')">B</button>
 			<button type="button" title="Italics" onclick="addTags('[i]', '[/i]')">I</button>
-			<button type="button" title="Hyperlink" onclick="addTags('[url]', '[/url]')">Url</button>
+			<button type="button" title="Internal hyperlink" onclick="addTags('[link]', '[/link]')">Link</button>
+			<button type="button" title="External hyperlink" onclick="addTags('[url]', '[/url]')">Url</button>
 			<button type="button" title="Quote" onclick="addTags('[quote]', '[/quote]')">Quote</button>
 		</div>
 	</xsl:variable>
