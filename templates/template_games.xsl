@@ -675,8 +675,8 @@
 				<td></td>
 			</xsl:when>
 			<xsl:otherwise>
-				<td align="center">
-					<p class="info_label" style="font-size: small">Discarded</p>
+				<td align="center" valign="top">
+					<p class="info_label history_label">Discarded</p>
 					<div class="history" style="width: 99px;">
 						<table cellpadding="0" cellspacing="0">
 							<tr valign="top">
@@ -696,7 +696,7 @@
 		<!-- end discarded cards -->
 
 		<!-- begin your last played card(s) -->
-		<td align="center">
+		<td align="center" valign="top">
 			<div class="history">
 				<table cellpadding="0" cellspacing="0">
 					<tr valign="top">
@@ -730,7 +730,7 @@
 		<!-- end your last played card(s) -->
 
 		<!-- begin his last played card(s) -->
-		<td align="center">
+		<td align="center" valign="top">
 			<div class="history">
 				<table cellpadding="0" cellspacing="0">
 					<tr valign="top">
@@ -769,8 +769,8 @@
 				<td></td>
 			</xsl:when>
 			<xsl:otherwise>
-				<td align="center">
-					<p class="info_label" style="font-size: small">Discarded</p>
+				<td align="center" valign="top">
+					<p class="info_label history_label">Discarded</p>
 					<div class="history" style="width: 99px;">
 						<table cellpadding="0" cellspacing="0">
 							<tr valign="top">

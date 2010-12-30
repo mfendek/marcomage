@@ -225,6 +225,12 @@ select.card_modes /* card mode selector */
 	margin-left: 2.5ex;
 }
 
+p.history_label /* card history label */
+{
+	font-size: small;
+	margin-top: 1ex;
+}
+
 div.history /* history of played cards */
 {
 	overflow: auto;
