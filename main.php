@@ -2314,6 +2314,7 @@
 				{
 					$_POST['CurrentCondition'] = $_POST['players_ord_'.$type];
 					$_POST['CurrentOrder'] = $order_val;
+					$_POST['achievement_sort'] = 'none'; // disable achievement sort option
 
 					$current = "Players";
 					break;
@@ -2847,6 +2848,14 @@ case 'Players':
 	// defaults for list ordering
 	if (!isset($_POST['CurrentOrder'])) $_POST['CurrentOrder'] = "DESC";
 	if (!isset($_POST['CurrentCondition'])) $_POST['CurrentCondition'] = "Level";
+	$params['players']['achievement_sort'] = $achievement_sort = (isset($_POST['achievement_sort'])) ? $_POST['achievement_sort'] : 'none';
+
+	// sort by achievement (special sort option)
+	if ($achievement_sort != 'none')
+	{
+		$_POST['CurrentOrder'] = 'DESC';
+		$_POST['CurrentCondition'] = $achievement_sort;
+	}
 
 	$params['players']['order'] = $order = $_POST['CurrentOrder'];
 	$params['players']['condition'] = $condition = $_POST['CurrentCondition'];

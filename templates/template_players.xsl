@@ -49,6 +49,31 @@
 			</xsl:variable>
 			<xsl:copy-of select="am:htmlSelectBox('status_filter', $param/status_filter, $status_types, '')"/>
 
+			<!-- achievement sort (special sort option) -->
+			<xsl:variable name="achievement_types">
+				<value name="No achievement sort" value="none"         />
+				<value name="Quarry gained"       value="Quarry"       />
+				<value name="Magic gained"        value="Magic"        />
+				<value name="Dungeons gained"     value="Dungeons"     />
+				<value name="Rares played"        value="Rares"        />
+				<value name="Tower built"         value="Tower"        />
+				<value name="Wall built"          value="Wall"         />
+				<value name="Tower destroyed"     value="TowerDamage"  />
+				<value name="Wall destroyed"      value="WallDamage"   />
+				<value name="Assassin"            value="Assassin"     />
+				<value name="Builder"             value="Builder"      />
+				<value name="Carpenter"           value="Carpenter"    />
+				<value name="Collector"           value="Collector"    />
+				<value name="Desolator"           value="Desolator"    />
+				<value name="Dragon"              value="Dragon"       />
+				<value name="Gentle touch"        value="Gentle_touch" />
+				<value name="Saboteur"            value="Saboteur"     />
+				<value name="Snob"                value="Snob"         />
+				<value name="Survivor"            value="Survivor"     />
+				<value name="Titan"               value="Titan"        />
+			</xsl:variable>
+			<xsl:copy-of select="am:htmlSelectBox('achievement_sort', $param/achievement_sort, $achievement_types, '')"/>
+
 			<button type="submit" name="filter_players">Apply filters</button>
 
 			<!-- upper navigation -->
