@@ -426,7 +426,9 @@
 	</part>
 	<part name="Forum">
 		<![CDATA[
-<p>Please use English only at all times. Forum is divided into sections. Section contains threads - discussions about some topic. There are 3 types of threads:</p>
+<p>Please be polite, present your arguments without verbal hostility between people (try not to use unnecessarily vulgar terms) and use English only at all times. Note that this site is intended for players of any age. Before posting, please make sure to use the forum search to check if there isn't already a thread about the topic you wish to discuss. You may also find the answer you seek in the <a href="?location=Webpage&amp;WebSection=Faq">FAQ</a>.</p>
+
+<p>Forum is divided into sections. Section contains threads - discussions about some topic. There are 3 types of threads:</p>
 <ul>
 	<li>Sticky <img src="img/sticky.gif" width="22px" height="15x" alt="sticky" title="Sticky" class="icon" />- these are always at the top of the threads list</li>
 	<li>Important <img src="img/important.gif" width="18px" height="13px" alt="important" title="Important" class="icon" />- these are more important than other threads</li>
