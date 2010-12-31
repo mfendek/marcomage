@@ -3727,7 +3727,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
-    <keywords>Durable,Unliving</keywords>
+    <keywords>Unliving,Durable</keywords>
     <effect><![CDATA[Enemy tower: -10<br />Enemy wall: -10]]></effect>
     <code><![CDATA[$hisdata->Tower-= 10; $hisdata->Wall-= 10;]]></code>
     <created>2006-05-01</created>
