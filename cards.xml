@@ -4820,10 +4820,10 @@
     </cost>
     <modes>0</modes>
     <keywords>Titan</keywords>
-    <effect><![CDATA[If all <b>Titan</b> cards are present in hand<br />Instant destruction victory]]></effect>
-    <code><![CDATA[if (in_array(302, $mydata->Hand) and in_array(303, $mydata->Hand) and in_array(310, $mydata->Hand) and in_array(311, $mydata->Hand) and in_array(312, $mydata->Hand)) { $hisdata->Tower= 0; $hisdata->Wall= 0; }]]></code>
+    <effect><![CDATA[If all <b>Titan</b> cards are present in hand<br />Instant destruction victory<br />else<br />Summons a <b>Titan</b> not present in hand]]></effect>
+    <code><![CDATA[if (in_array(302, $mydata->Hand) and in_array(303, $mydata->Hand) and in_array(310, $mydata->Hand) and in_array(311, $mydata->Hand) and in_array(312, $mydata->Hand)) { $hisdata->Tower= 0; $hisdata->Wall= 0; } else { $titans = array_diff($carddb->GetList(array('keyword'=>"Titan")), $mydata->Hand); if (count($titans) > 0) $nextcard = $this->DrawCard($titans, $mydata->Hand, $cardpos, 'DrawCard_list'); }]]></code>
     <created>2007-08-19</created>
-    <modified>2008-07-30</modified>
+    <modified>2011-01-01</modified>
   </card>
   <card id="316">
     <name>Lich</name>
