@@ -550,14 +550,14 @@
 	</keyword>
 	<keyword>
 		<name>Titan</name>
-		<description>Basic gain 22, bonus gain 5, side-effect (Titan's will): summons a Titan.</description>
+		<description>Basic gain 24, bonus gain 5, side-effect (Titan's will): summons a Titan.</description>
 		<code><![CDATA[
 					$amount = $this->KeywordCount($mydata->Hand, "Titan") - 1; // we don't count the played card
 					$token_index = array_search("Titan", $mydata->TokenNames);
 					
 					if ($token_index)
 					{
-						$mydata->TokenValues[$token_index]+= 22 + $amount * 5; // basic gain + bonus gain
+						$mydata->TokenValues[$token_index]+= 24 + $amount * 5; // basic gain + bonus gain
 						
 						if ($mydata->TokenValues[$token_index] >= 100)
 						{
