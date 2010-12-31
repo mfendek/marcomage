@@ -550,7 +550,7 @@
 	</keyword>
 	<keyword>
 		<name>Titan</name>
-		<description>Basic gain 22, bonus gain 5, side-effect (Titan's will): next card received will be a Titan.</description>
+		<description>Basic gain 22, bonus gain 5, side-effect (Titan's will): summons a Titan.</description>
 		<code><![CDATA[
 					$amount = $this->KeywordCount($mydata->Hand, "Titan") - 1; // we don't count the played card
 					$token_index = array_search("Titan", $mydata->TokenNames);
