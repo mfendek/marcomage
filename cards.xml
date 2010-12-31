@@ -8332,7 +8332,7 @@
     <created>2010-03-14</created>
     <modified>2010-07-22</modified>
   </card>
-	<card id="513">
+  <card id="513">
     <name>Veteran militia</name>
     <class>Uncommon</class>
     <cost>
@@ -8347,7 +8347,7 @@
     <created>2010-03-14</created>
     <modified>2010-07-22</modified>
   </card>
-	<card id="514">
+  <card id="514">
     <name>Firestorm</name>
     <class>Uncommon</class>
     <cost>
@@ -8383,7 +8383,7 @@
     <created>2010-03-14</created>
     <modified>2010-12-24</modified>
   </card>
-	<card id="515">
+  <card id="515">
     <name>Koschei the Deathless</name>
     <class>Rare</class>
     <cost>
@@ -8398,7 +8398,7 @@
     <created>2010-03-14</created>
     <modified>2010-03-14</modified>
   </card>
-	<card id="516">
+  <card id="516">
     <name>Frozen flame</name>
     <class>Common</class>
     <cost>
@@ -8413,7 +8413,7 @@
     <created>2010-03-14</created>
     <modified>2010-03-14</modified>
   </card>
-	<card id="517">
+  <card id="517">
     <name>Cockatrice</name>
     <class>Rare</class>
     <cost>
@@ -8428,7 +8428,7 @@
     <created>2010-03-14</created>
     <modified>2010-03-14</modified>
   </card>
-	<card id="518">
+  <card id="518">
     <name>Thieves guild</name>
     <class>Common</class>
     <cost>
@@ -8443,7 +8443,7 @@
     <created>2010-03-14</created>
     <modified>2010-03-14</modified>
   </card>
-	<card id="519">
+  <card id="519">
     <name>Lake fairy</name>
     <class>Common</class>
     <cost>
@@ -8458,7 +8458,7 @@
     <created>2010-03-14</created>
     <modified>2010-09-23</modified>
   </card>
-	<card id="520">
+  <card id="520">
     <name>Desert outpost</name>
     <class>Uncommon</class>
     <cost>
@@ -8473,7 +8473,7 @@
     <created>2010-03-14</created>
     <modified>2010-12-24</modified>
   </card>
-	<card id="521">
+  <card id="521">
     <name>Mermaid</name>
     <class>Common</class>
     <cost>
@@ -8488,7 +8488,7 @@
     <created>2010-03-14</created>
     <modified>2010-03-14</modified>
   </card>
-	<card id="522">
+  <card id="522">
     <name>Sunken ruins</name>
     <class>Common</class>
     <cost>
@@ -8503,7 +8503,7 @@
     <created>2010-03-14</created>
     <modified>2010-03-14</modified>
   </card>
-	<card id="523">
+  <card id="523">
     <name>Whale</name>
     <class>Uncommon</class>
     <cost>
@@ -8518,7 +8518,7 @@
     <created>2010-03-14</created>
     <modified>2010-03-14</modified>
   </card>
-	<card id="524">
+  <card id="524">
     <name>Sea serpent</name>
     <class>Common</class>
     <cost>
@@ -8533,7 +8533,7 @@
     <created>2010-03-14</created>
     <modified>2010-03-14</modified>
   </card>
-	<card id="525">
+  <card id="525">
     <name>Poseidon's wrath</name>
     <class>Uncommon</class>
     <cost>
@@ -8566,7 +8566,7 @@
     <created>2010-03-14</created>
     <modified>2010-04-11</modified>
   </card>
-	<card id="526">
+  <card id="526">
     <name>Princess of elves</name>
     <class>Rare</class>
     <cost>
@@ -8581,7 +8581,7 @@
     <created>2010-03-14</created>
     <modified>2010-09-10</modified>
   </card>
-	<card id="527">
+  <card id="527">
     <name>Elven priestesses</name>
     <class>Common</class>
     <cost>
@@ -8606,7 +8606,7 @@
     <created>2010-03-14</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="528">
+  <card id="528">
     <name>Legacy of Barbz</name>
     <class>Uncommon</class>
     <cost>
@@ -8640,7 +8640,7 @@
     <created>2010-03-14</created>
     <modified>2010-03-14</modified>
   </card>
-	<card id="529">
+  <card id="529">
     <name>Waterfall</name>
     <class>Common</class>
     <cost>
@@ -8655,7 +8655,7 @@
     <created>2010-03-14</created>
     <modified>2010-03-14</modified>
   </card>
-	<card id="530">
+  <card id="530">
     <name>Ocean queen</name>
     <class>Rare</class>
     <cost>
@@ -8670,7 +8670,7 @@
     <created>2010-03-14</created>
     <modified>2010-03-14</modified>
   </card>
-	<card id="531">
+  <card id="531">
     <name>Exiled</name>
     <class>Common</class>
     <cost>
@@ -8685,7 +8685,7 @@
     <created>2010-03-14</created>
     <modified>2010-03-14</modified>
   </card>
-	<card id="532">
+  <card id="532">
     <name>Pixie</name>
     <class>Common</class>
     <cost>
@@ -8711,7 +8711,7 @@
     <created>2010-03-14</created>
     <modified>2010-03-14</modified>
   </card>
-	<card id="533">
+  <card id="533">
     <name>Chaos gargoyle</name>
     <class>Common</class>
     <cost>
@@ -8738,7 +8738,7 @@
     <created>2010-06-21</created>
     <modified>2010-07-22</modified>
   </card>
-	<card id="534">
+  <card id="534">
     <name>Sniper</name>
     <class>Common</class>
     <cost>
@@ -8753,7 +8753,7 @@
     <created>2010-06-21</created>
     <modified>2010-09-10</modified>
   </card>
-	<card id="535">
+  <card id="535">
     <name>Urk the Conqueror</name>
     <class>Rare</class>
     <cost>
@@ -8768,7 +8768,7 @@
     <created>2010-06-21</created>
     <modified>2010-11-01</modified>
   </card>
-	<card id="536">
+  <card id="536">
     <name>Rage of Urk</name>
     <class>Rare</class>
     <cost>
@@ -8783,7 +8783,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="537">
+  <card id="537">
     <name>Minaret</name>
     <class>Common</class>
     <cost>
@@ -8798,7 +8798,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="538">
+  <card id="538">
     <name>Forest guardian</name>
     <class>Common</class>
     <cost>
@@ -8813,7 +8813,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="539">
+  <card id="539">
     <name>Book of life</name>
     <class>Common</class>
     <cost>
@@ -8828,7 +8828,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="540">
+  <card id="540">
     <name>White lady</name>
     <class>Common</class>
     <cost>
@@ -8843,7 +8843,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="541">
+  <card id="541">
     <name>Forest spirit</name>
     <class>Uncommon</class>
     <cost>
@@ -8858,7 +8858,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="542">
+  <card id="542">
     <name>Seth</name>
     <class>Rare</class>
     <cost>
@@ -8873,7 +8873,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="543">
+  <card id="543">
     <name>Deathwood shaman</name>
     <class>Uncommon</class>
     <cost>
@@ -8888,7 +8888,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="544">
+  <card id="544">
     <name>Black unicorn</name>
     <class>Uncommon</class>
     <cost>
@@ -8903,7 +8903,7 @@
     <created>2010-06-21</created>
     <modified>2010-11-01</modified>
   </card>
-	<card id="545">
+  <card id="545">
     <name>Elven marksman</name>
     <class>Common</class>
     <cost>
@@ -8918,7 +8918,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="546">
+  <card id="546">
     <name>Dwarven elder</name>
     <class>Rare</class>
     <cost>
@@ -8933,7 +8933,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="547">
+  <card id="547">
     <name>Flame lord</name>
     <class>Rare</class>
     <cost>
@@ -8948,7 +8948,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="548">
+  <card id="548">
     <name>War wolf</name>
     <class>Common</class>
     <cost>
@@ -8963,7 +8963,7 @@
     <created>2010-06-21</created>
     <modified>2010-12-24</modified>
   </card>
-	<card id="549">
+  <card id="549">
     <name>Goblin regiment</name>
     <class>Uncommon</class>
     <cost>
@@ -8978,7 +8978,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="550">
+  <card id="550">
     <name>Sea priestess</name>
     <class>Common</class>
     <cost>
@@ -8993,7 +8993,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="551">
+  <card id="551">
     <name>Spectral siren</name>
     <class>Uncommon</class>
     <cost>
@@ -9008,7 +9008,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="552">
+  <card id="552">
     <name>Leviathan</name>
     <class>Rare</class>
     <cost>
@@ -9023,7 +9023,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="553">
+  <card id="553">
     <name>Hidden lagoon</name>
     <class>Common</class>
     <cost>
@@ -9038,7 +9038,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="554">
+  <card id="554">
     <name>Northern fortress</name>
     <class>Uncommon</class>
     <cost>
@@ -9053,7 +9053,7 @@
     <created>2010-06-21</created>
     <modified>2010-07-22</modified>
   </card>
-	<card id="555">
+  <card id="555">
     <name>Trickster</name>
     <class>Uncommon</class>
     <cost>
@@ -9068,7 +9068,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="556">
+  <card id="556">
     <name>Dwarven watchtower</name>
     <class>Common</class>
     <cost>
@@ -9083,7 +9083,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="557">
+  <card id="557">
     <name>Confusion</name>
     <class>Uncommon</class>
     <cost>
@@ -9098,7 +9098,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="558">
+  <card id="558">
     <name>Magic spring</name>
     <class>Common</class>
     <cost>
@@ -9113,7 +9113,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="559">
+  <card id="559">
     <name>River thief</name>
     <class>Common</class>
     <cost>
@@ -9128,7 +9128,7 @@
     <created>2010-06-21</created>
     <modified>2010-07-22</modified>
   </card>
-	<card id="560">
+  <card id="560">
     <name>Sea gate</name>
     <class>Uncommon</class>
     <cost>
@@ -9160,7 +9160,7 @@
     <created>2010-06-21</created>
     <modified>2010-07-22</modified>
   </card>
-	<card id="561">
+  <card id="561">
     <name>Arcane bolt</name>
     <class>Common</class>
     <cost>
@@ -9175,7 +9175,7 @@
     <created>2010-06-21</created>
     <modified>2010-12-24</modified>
   </card>
-	<card id="562">
+  <card id="562">
     <name>Divine guidance</name>
     <class>Common</class>
     <cost>
@@ -9190,7 +9190,7 @@
     <created>2010-06-21</created>
     <modified>2010-07-22</modified>
   </card>
-	<card id="563">
+  <card id="563">
     <name>Lancer</name>
     <class>Uncommon</class>
     <cost>
@@ -9205,7 +9205,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="564">
+  <card id="564">
     <name>Summon master</name>
     <class>Uncommon</class>
     <cost>
@@ -9220,7 +9220,7 @@
     <created>2010-06-21</created>
     <modified>2010-07-22</modified>
   </card>
-	<card id="565">
+  <card id="565">
     <name>Titan's worshipper</name>
     <class>Uncommon</class>
     <cost>
@@ -9235,7 +9235,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="566">
+  <card id="566">
     <name>Wheat farm</name>
     <class>Common</class>
     <cost>
@@ -9250,7 +9250,7 @@
     <created>2010-06-21</created>
     <modified>2010-12-24</modified>
   </card>
-	<card id="567">
+  <card id="567">
     <name>Jungle river</name>
     <class>Common</class>
     <cost>
@@ -9265,7 +9265,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="568">
+  <card id="568">
     <name>Flesh golem</name>
     <class>Common</class>
     <cost>
@@ -9280,7 +9280,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="569">
+  <card id="569">
     <name>Dream shift</name>
     <class>Uncommon</class>
     <cost>
@@ -9295,7 +9295,7 @@
     <created>2010-06-21</created>
     <modified>2010-11-01</modified>
   </card>
-	<card id="570">
+  <card id="570">
     <name>Swamp</name>
     <class>Common</class>
     <cost>
@@ -9310,7 +9310,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="571">
+  <card id="571">
     <name>Flame obelisk</name>
     <class>Uncommon</class>
     <cost>
@@ -9325,7 +9325,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="572">
+  <card id="572">
     <name>Stables</name>
     <class>Common</class>
     <cost>
@@ -9340,7 +9340,7 @@
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
   </card>
-	<card id="573">
+  <card id="573">
     <name>Laputa the Flying fortress</name>
     <class>Rare</class>
     <cost>
@@ -9355,7 +9355,7 @@
     <created>2010-06-21</created>
     <modified>2011-01-01</modified>
   </card>
-	<card id="574">
+  <card id="574">
     <name>Alucard</name>
     <class>Rare</class>
     <cost>
@@ -9370,7 +9370,7 @@
     <created>2010-06-21</created>
     <modified>2010-12-24</modified>
   </card>
-	<card id="575">
+  <card id="575">
     <name>Chateau</name>
     <class>Common</class>
     <cost>
@@ -9385,7 +9385,7 @@
     <created>2010-09-10</created>
     <modified>2010-09-10</modified>
   </card>
-	<card id="576">
+  <card id="576">
     <name>Necroent</name>
     <class>Uncommon</class>
     <cost>
@@ -9400,7 +9400,7 @@
     <created>2010-09-10</created>
     <modified>2010-09-10</modified>
   </card>
-	<card id="577">
+  <card id="577">
     <name>Seiryu</name>
     <class>Rare</class>
     <cost>
@@ -9415,7 +9415,7 @@
     <created>2010-09-10</created>
     <modified>2010-09-10</modified>
   </card>
-	<card id="578">
+  <card id="578">
     <name>Deathwood necromancer</name>
     <class>Common</class>
     <cost>
@@ -9430,7 +9430,7 @@
     <created>2010-09-10</created>
     <modified>2010-09-10</modified>
   </card>
-	<card id="579">
+  <card id="579">
     <name>Citadel towers</name>
     <class>Uncommon</class>
     <cost>
@@ -9445,7 +9445,7 @@
     <created>2010-09-10</created>
     <modified>2010-09-10</modified>
   </card>
-	<card id="580">
+  <card id="580">
     <name>Wizard's tower</name>
     <class>Common</class>
     <cost>
@@ -9460,7 +9460,7 @@
     <created>2010-09-10</created>
     <modified>2010-09-10</modified>
   </card>
-	<card id="581">
+  <card id="581">
     <name>Mountain berserker</name>
     <class>Common</class>
     <cost>
@@ -9475,7 +9475,7 @@
     <created>2010-09-10</created>
     <modified>2010-09-10</modified>
   </card>
-	<card id="582">
+  <card id="582">
     <name>Magical defense</name>
     <class>Common</class>
     <cost>
@@ -9490,7 +9490,7 @@
     <created>2010-09-10</created>
     <modified>2010-10-03</modified>
   </card>
-	<card id="583">
+  <card id="583">
     <name>Moon castle</name>
     <class>Uncommon</class>
     <cost>
@@ -9516,7 +9516,7 @@
     <created>2010-09-10</created>
     <modified>2010-09-10</modified>
   </card>
-	<card id="584">
+  <card id="584">
     <name>Chaos dwarf</name>
     <class>Common</class>
     <cost>
@@ -9547,7 +9547,7 @@
     <created>2010-09-10</created>
     <modified>2010-12-24</modified>
   </card>
-	<card id="585">
+  <card id="585">
     <name>Barbz's pupil</name>
     <class>Common</class>
     <cost>
@@ -9562,7 +9562,7 @@
     <created>2010-09-10</created>
     <modified>2010-12-24</modified>
   </card>
-	<card id="586">
+  <card id="586">
     <name>Mithril miner</name>
     <class>Common</class>
     <cost>
@@ -9587,7 +9587,7 @@
     <created>2010-09-10</created>
     <modified>2010-09-10</modified>
   </card>
-	<card id="587">
+  <card id="587">
     <name>Working together</name>
     <class>Common</class>
     <cost>
@@ -9602,7 +9602,7 @@
     <created>2010-09-10</created>
     <modified>2010-09-10</modified>
   </card>
-	<card id="588">
+  <card id="588">
     <name>Harvest fairy</name>
     <class>Common</class>
     <cost>
@@ -9624,7 +9624,7 @@
     <created>2010-09-10</created>
     <modified>2010-12-24</modified>
   </card>
-	<card id="589">
+  <card id="589">
     <name>Librarian</name>
     <class>Common</class>
     <cost>
@@ -9639,7 +9639,7 @@
     <created>2010-09-10</created>
     <modified>2010-09-23</modified>
   </card>
-	<card id="590">
+  <card id="590">
     <name>Golem Messenger</name>
     <class>Common</class>
     <cost>
@@ -9654,7 +9654,7 @@
     <created>2010-09-10</created>
     <modified>2010-09-10</modified>
   </card>
-	<card id="591">
+  <card id="591">
     <name>Colossus of Kran</name>
     <class>Rare</class>
     <cost>
@@ -9669,7 +9669,7 @@
     <created>2010-09-10</created>
     <modified>2010-12-24</modified>
   </card>
-	<card id="592">
+  <card id="592">
     <name>Eternal dream</name>
     <class>Uncommon</class>
     <cost>
@@ -9684,7 +9684,7 @@
     <created>2010-09-10</created>
     <modified>2010-09-10</modified>
   </card>
-	<card id="593">
+  <card id="593">
     <name>Witch rider</name>
     <class>Uncommon</class>
     <cost>
@@ -9699,7 +9699,7 @@
     <created>2010-09-10</created>
     <modified>2010-12-24</modified>
   </card>
-	<card id="594">
+  <card id="594">
     <name>Desert traveler</name>
     <class>Uncommon</class>
     <cost>
@@ -9714,7 +9714,7 @@
     <created>2010-09-10</created>
     <modified>2010-11-01</modified>
   </card>
-	<card id="595">
+  <card id="595">
     <name>Thug</name>
     <class>Common</class>
     <cost>
@@ -9729,7 +9729,7 @@
     <created>2010-09-10</created>
     <modified>2010-12-24</modified>
   </card>
-	<card id="596">
+  <card id="596">
     <name>Myr's academy</name>
     <class>Rare</class>
     <cost>
@@ -9744,7 +9744,7 @@
     <created>2010-09-10</created>
     <modified>2010-09-10</modified>
   </card>
-	<card id="597">
+  <card id="597">
     <name>Fireball</name>
     <class>Common</class>
     <cost>
@@ -9759,7 +9759,7 @@
     <created>2010-09-10</created>
     <modified>2011-01-01</modified>
   </card>
-	<card id="598">
+  <card id="598">
     <name>Urk's tribe</name>
     <class>Common</class>
     <cost>
@@ -9774,7 +9774,7 @@
     <created>2010-09-10</created>
     <modified>2010-12-24</modified>
   </card>
-	<card id="599">
+  <card id="599">
     <name>Elven warlock</name>
     <class>Rare</class>
     <cost>
@@ -9789,7 +9789,7 @@
     <created>2010-10-03</created>
     <modified>2010-12-24</modified>
   </card>
-	<card id="600">
+  <card id="600">
     <name>Battle rager</name>
     <class>Uncommon</class>
     <cost>
@@ -9804,7 +9804,7 @@
     <created>2010-10-03</created>
     <modified>2010-12-24</modified>
   </card>
-	<card id="601">
+  <card id="601">
     <name>Whirlwind</name>
     <class>Uncommon</class>
     <cost>
@@ -9819,7 +9819,7 @@
     <created>2010-10-03</created>
     <modified>2010-10-03</modified>
   </card>
-	<card id="602">
+  <card id="602">
     <name>Northern mountains</name>
     <class>Common</class>
     <cost>
@@ -9834,7 +9834,7 @@
     <created>2010-10-03</created>
     <modified>2010-10-03</modified>
   </card>
-	<card id="603">
+  <card id="603">
     <name>Wolf mistress</name>
     <class>Uncommon</class>
     <cost>
@@ -9849,7 +9849,7 @@
     <created>2010-10-03</created>
     <modified>2010-10-03</modified>
   </card>
-	<card id="604">
+  <card id="604">
     <name>Byakko</name>
     <class>Rare</class>
     <cost>
@@ -9864,7 +9864,7 @@
     <created>2010-10-03</created>
     <modified>2010-12-24</modified>
   </card>
-	<card id="605">
+  <card id="605">
     <name>War preparations</name>
     <class>Common</class>
     <cost>
@@ -9879,7 +9879,7 @@
     <created>2010-10-03</created>
     <modified>2010-10-03</modified>
   </card>
-	<card id="606">
+  <card id="606">
     <name>Poison frog</name>
     <class>Common</class>
     <cost>
@@ -9894,7 +9894,7 @@
     <created>2010-10-03</created>
     <modified>2010-10-03</modified>
   </card>
-	<card id="607">
+  <card id="607">
     <name>Fire fox</name>
     <class>Common</class>
     <cost>
@@ -9945,7 +9945,7 @@
     <created>2010-10-03</created>
     <modified>2010-12-24</modified>
   </card>
-	<card id="609">
+  <card id="609">
     <name>Warhound</name>
     <class>Common</class>
     <cost>
@@ -9960,7 +9960,7 @@
     <created>2011-01-01</created>
     <modified>2011-01-01</modified>
   </card>
-	<card id="610">
+  <card id="610">
     <name>Succubus</name>
     <class>Uncommon</class>
     <cost>
@@ -9975,7 +9975,7 @@
     <created>2011-01-01</created>
     <modified>2011-01-01</modified>
   </card>
-	<card id="611">
+  <card id="611">
     <name>Infinite weapon works</name>
     <class>Rare</class>
     <cost>
@@ -9990,7 +9990,7 @@
     <created>2011-01-01</created>
     <modified>2011-01-01</modified>
   </card>
-	<card id="612">
+  <card id="612">
     <name>Corrupted woods</name>
     <class>Rare</class>
     <cost>
@@ -10005,7 +10005,7 @@
     <created>2011-01-01</created>
     <modified>2011-01-01</modified>
   </card>
-	<card id="613">
+  <card id="613">
     <name>Atlantis</name>
     <class>Rare</class>
     <cost>
@@ -10020,7 +10020,7 @@
     <created>2011-01-01</created>
     <modified>2011-01-01</modified>
   </card>
-	<card id="614">
+  <card id="614">
     <name>Crystal cavern</name>
     <class>Rare</class>
     <cost>
@@ -10035,7 +10035,7 @@
     <created>2011-01-01</created>
     <modified>2011-01-01</modified>
   </card>
-	<card id="615">
+  <card id="615">
     <name>Ancient dragon</name>
     <class>Rare</class>
     <cost>
@@ -10050,7 +10050,7 @@
     <created>2011-01-01</created>
     <modified>2011-01-01</modified>
   </card>
-	<card id="616">
+  <card id="616">
     <name>Genbu</name>
     <class>Rare</class>
     <cost>
@@ -10065,7 +10065,7 @@
     <created>2011-01-01</created>
     <modified>2011-01-01</modified>
   </card>
-	<card id="617">
+  <card id="617">
     <name>Dwarven forge</name>
     <class>Uncommon</class>
     <cost>
@@ -10088,7 +10088,7 @@
     <created>2011-01-01</created>
     <modified>2011-01-01</modified>
   </card>
-	<card id="618">
+  <card id="618">
     <name>Dwarven guard</name>
     <class>Uncommon</class>
     <cost>
@@ -10103,7 +10103,7 @@
     <created>2011-01-01</created>
     <modified>2011-01-01</modified>
   </card>
-	<card id="619">
+  <card id="619">
     <name>Dwarven wall</name>
     <class>Common</class>
     <cost>
@@ -10118,7 +10118,7 @@
     <created>2011-01-01</created>
     <modified>2011-01-01</modified>
   </card>
-	<card id="620">
+  <card id="620">
     <name>Wish</name>
     <class>Common</class>
     <cost>
@@ -10133,7 +10133,7 @@
     <created>2011-01-01</created>
     <modified>2011-01-01</modified>
   </card>
-	<card id="621">
+  <card id="621">
     <name>Warpriest</name>
     <class>Uncommon</class>
     <cost>
@@ -10148,7 +10148,7 @@
     <created>2011-01-01</created>
     <modified>2011-01-01</modified>
   </card>
-	<card id="622">
+  <card id="622">
     <name>Dragon nest</name>
     <class>Rare</class>
     <cost>
@@ -10163,7 +10163,7 @@
     <created>2011-01-01</created>
     <modified>2011-01-01</modified>
   </card>
-	<card id="623">
+  <card id="623">
     <name>Reunion of the tribes</name>
     <class>Rare</class>
     <cost>
