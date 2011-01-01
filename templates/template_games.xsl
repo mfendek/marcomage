@@ -317,6 +317,8 @@
 
 <xsl:template match="section[. = 'Games_details']">
 	<xsl:variable name="param" select="$params/game" />
+	<xsl:variable name="my_turn" select="$param/GameState = 'in progress' and $param/Current = $param/PlayerName and $param/Surrender = ''" />
+
 	<!-- autorefresh (disable autorefresh when user is using chat) -->
 	<xsl:if test="$param/autorefresh &gt; 0">
 		<xsl:element name="script">
@@ -387,7 +389,7 @@
 
 				<!-- display card -->
 				<div>
-					<xsl:if test="($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = '' and Playable = 'no'">
+					<xsl:if test="$my_turn and Playable = 'no'">
 						<xsl:attribute name="class">unplayable</xsl:attribute>
 					</xsl:if>
 					<xsl:variable name="revealed" select="$param/c_miniflags = 'yes' and $param/HiddenCards = 'yes' and Revealed = 'yes'" />
@@ -396,7 +398,7 @@
 				</div>
 
 				<!-- select button and card modes (buttons are locked when surrender request is active) -->
-				<xsl:if test="($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = ''">
+				<xsl:if test="$my_turn">
 					<xsl:if test="$param/PlayButtons = 'yes' and Playable = 'yes'">
 						<button type="submit" name="play_card" value="{position()}">Play</button> 
 					</xsl:if>
@@ -441,17 +443,17 @@
 			</xsl:if> 
 		</td>
 		<td>
-			<xsl:if test="$param/PlayButtons = 'no' and ($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = ''">
+			<xsl:if test="$param/PlayButtons = 'no' and $my_turn">
 				<button type="submit" name="play_card" value="0">Play</button>
 			</xsl:if>
 		</td>
 		<td>
-			<xsl:if test="($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = ''">
+			<xsl:if test="$my_turn">
 				<button type="submit" name="discard_card">Discard</button>
 			</xsl:if>
 		</td>
 		<td>
-			<xsl:if test="($param/GameState = 'in progress') and ($param/Current = $param/PlayerName) and $param/Surrender = '' and $param/HiddenCards = 'no'">
+			<xsl:if test="$my_turn and $param/HiddenCards = 'no'">
 				<button type="button" name="preview_card">Preview</button>
 			</xsl:if>
 		</td>
