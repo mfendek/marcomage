@@ -34,15 +34,15 @@
 		</xsl:variable>
 
 		<!-- hidden cards filter -->
-		<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="icon" title="Hidden cards" />
+		<img class="icon" width="20px" height="14px" src="img/blind.png" alt="Hidden cards" title="Hidden cards" />
 		<xsl:copy-of select="am:htmlSelectBox('HiddenCards', $param/HiddenCards, $mode_options, '')"/>
 
 		<!-- friendly game filter -->
-		<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" />
+		<img class="icon" width="20px" height="14px" src="img/friendly_play.png" alt="Friendly play" title="Friendly play" />
 		<xsl:copy-of select="am:htmlSelectBox('FriendlyPlay', $param/FriendlyPlay, $mode_options, '')"/>
 
 		<!-- long mode filter -->
-		<img width="20px" height="14px" src="img/long_mode.png" alt="long mode" class="icon" title="Long mode" />
+		<img class="icon" width="20px" height="14px" src="img/long_mode.png" alt="Long mode" title="Long mode" />
 		<xsl:copy-of select="am:htmlSelectBox('LongMode', $param/LongMode, $mode_options, '')"/>
 
 		<!-- victory type filter -->
@@ -138,13 +138,13 @@
 						<td>
 							<p>
 								<xsl:if test="contains(GameModes, 'HiddenCards')">
-									<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="icon" title="Hidden cards" />
+									<img class="icon" width="20px" height="14px" src="img/blind.png" alt="Hidden cards" title="Hidden cards" />
 								</xsl:if>
 								<xsl:if test="contains(GameModes, 'FriendlyPlay')">
-									<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" />
+									<img class="icon" width="20px" height="14px" src="img/friendly_play.png" alt="Friendly play" title="Friendly play" />
 								</xsl:if>
 								<xsl:if test="contains(GameModes, 'LongMode')">
-									<img width="20px" height="14px" src="img/long_mode.png" alt="long_mode" class="icon" title="Long mode" />
+									<img class="icon" width="20px" height="14px" src="img/long_mode.png" alt="Long mode" title="Long mode" />
 								</xsl:if>
 							</p>
 						</td>
@@ -314,13 +314,13 @@
 		<td class="game_mode_flags">
 			<!-- game mode flags -->
 			<xsl:if test="$param/HiddenCards = 'yes'">
-				<img src="img/blind.png" width="20px" height="14px" alt="hidden cards" title="Hidden cards" class="icon" />
+				<img class="icon" src="img/blind.png" width="20px" height="14px" alt="Hidden cards" title="Hidden cards" />
 			</xsl:if>
 			<xsl:if test="$param/FriendlyPlay = 'yes'">
-				<img src="img/friendly_play.png" width="20px" height="14px" alt="friendly play" title="Friendly play" class="icon" />
+				<img class="icon" src="img/friendly_play.png" width="20px" height="14px" alt="Friendly play" title="Friendly play" />
 			</xsl:if>
 			<xsl:if test="$param/LongMode = 'yes'">
-				<img src="img/long_mode.png" width="20px" height="14px" alt="long mode" title="Long mode" class="icon" />
+				<img class="icon" src="img/long_mode.png" width="20px" height="14px" alt="Long mode" title="Long mode" />
 			</xsl:if>
 		</td>
 		<td></td>
@@ -979,13 +979,13 @@
 		<td class="game_mode_flags">
 			<!-- game mode flags -->
 			<xsl:if test="$param/HiddenCards = 'yes'">
-				<img src="img/blind.png" width="20px" height="14px" alt="hidden cards" title="Hidden cards" class="icon" />
+				<img class="icon" src="img/blind.png" width="20px" height="14px" alt="Hidden cards" title="Hidden cards" />
 			</xsl:if>
 			<xsl:if test="$param/FriendlyPlay = 'yes'">
-				<img src="img/friendly_play.png" width="20px" height="14px" alt="friendly play" title="Friendly play" class="icon" />
+				<img class="icon" src="img/friendly_play.png" width="20px" height="14px" alt="Friendly play" title="Friendly play" />
 			</xsl:if>
 			<xsl:if test="$param/LongMode = 'yes'">
-				<img src="img/long_mode.png" width="20px" height="14px" alt="long mode" title="Long mode" class="icon" />
+				<img class="icon" src="img/long_mode.png" width="20px" height="14px" alt="Long mode" title="Long mode" />
 			</xsl:if>
 		</td>
 		<td></td>

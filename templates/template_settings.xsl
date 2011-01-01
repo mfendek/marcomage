@@ -85,7 +85,7 @@
 					</xsl:for-each>
 				</select>
 				<xsl:text>Country</xsl:text>
-				<img width="18px" height="12px" src="img/flags/{$settings/Country}.gif" alt="country flag" class="icon" title="{$settings/Country}" />
+				<img class="icon" width="18px" height="12px" src="img/flags/{$settings/Country}.gif" alt="country flag" title="{$settings/Country}" />
 			</p>
 
 			<xsl:variable name="status_types">
@@ -108,7 +108,7 @@
 					</xsl:for-each>
 				</select>
 				<xsl:text>Status</xsl:text>
-				<xsl:if test="$settings/Status != 'none'"><img width="20px" height="14px" src="img/{$settings/Status}.png" alt="status flag" class="icon" title="{$settings/Status}" /></xsl:if>
+				<xsl:if test="$settings/Status != 'none'"><img class="icon" width="20px" height="14px" src="img/{$settings/Status}.png" alt="status flag" title="{$settings/Status}" /></xsl:if>
 			</p>
 
 			<p>Game mode flags</p>
@@ -123,7 +123,7 @@
 					<xsl:text>Friendly play</xsl:text>
 				</span>
 				<xsl:if test="$settings/FriendlyFlag = 'yes'">
-					<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" />
+					<img class="icon" width="20px" height="14px" src="img/friendly_play.png" alt="Friendly play" title="Friendly play" />
 				</xsl:if>
 			</p>
 			<p>
@@ -137,7 +137,7 @@
 					<xsl:text>Hidden cards</xsl:text>
 				</span>
 				<xsl:if test="$settings/BlindFlag = 'yes'">
-					<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="icon" title="Hidden cards" />
+					<img class="icon" width="20px" height="14px" src="img/blind.png" alt="Hidden cards" title="Hidden cards" />
 				</xsl:if>
 			</p>
 			<p>
@@ -151,7 +151,7 @@
 					<xsl:text>Long mode</xsl:text>
 				</span>
 				<xsl:if test="$settings/LongFlag = 'yes'">
-					<img width="20px" height="14px" src="img/long_mode.png" alt="long flag" class="icon" title="Long mode" />
+					<img class="icon" width="20px" height="14px" src="img/long_mode.png" alt="Long mode" title="Long mode" />
 				</xsl:if>
 			</p>
 

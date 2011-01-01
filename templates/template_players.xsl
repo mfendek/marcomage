@@ -139,7 +139,7 @@
 						<td><p><xsl:value-of select="country"/></p></td>
 					</xsl:if>
 					
-					<td><img width="18px" height="12px" src="img/flags/{country}.gif" alt="country flag" class="icon" title="{country}" /></td>
+					<td><img class="icon" width="18px" height="12px" src="img/flags/{country}.gif" alt="country flag" title="{country}" /></td>
 
 					<xsl:variable name="player_class">
 						<xsl:choose> <!-- choose name color according to inactivity time -->
@@ -153,7 +153,7 @@
 						<p class="{$player_class}">
 							<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', name)}"><xsl:value-of select="name"/></a>
 							<xsl:if test="rank != 'user'"> <!-- player rank -->
-								<img width="9px" height="12px" src="img/{rank}.png" alt="rank flag" class="icon" title="{rank}" />
+								<img class="icon" width="9px" height="12px" src="img/{rank}.png" alt="rank flag" title="{rank}" />
 							</xsl:if>
 						</p>
 					</td>
@@ -170,16 +170,16 @@
 					<td>
 						<p>
 							<xsl:if test="status != 'none'">
-								<img width="20px" height="14px" src="img/{status}.png" alt="status flag" class="icon" title="{status}" />
+								<img class="icon" width="20px" height="14px" src="img/{status}.png" alt="status flag" title="{status}" />
 							</xsl:if>
 							<xsl:if test="friendly_flag = 'yes'">
-								<img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" />
+								<img class="icon" width="20px" height="14px" src="img/friendly_play.png" alt="Friendly play" title="Friendly play" />
 							</xsl:if>
 							<xsl:if test="blind_flag = 'yes'">
-								<img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="icon" title="Hidden cards" />
+								<img class="icon" width="20px" height="14px" src="img/blind.png" alt="Hidden cards" title="Hidden cards" />
 							</xsl:if>
 							<xsl:if test="long_flag = 'yes'">
-								<img width="20px" height="14px" src="img/long_mode.png" alt="long flag" class="icon" title="Long mode" />
+								<img class="icon" width="20px" height="14px" src="img/long_mode.png" alt="Long mode" title="Long mode" />
 							</xsl:if>
 						</p>
 					</td>
@@ -267,11 +267,11 @@
 			<p><span><xsl:value-of select="$param/statistics/rounds"/></span>Rounds</p>
 			<p><span><xsl:value-of select="$param/statistics/turns_long"/></span>
 				<xsl:text>Turns</xsl:text>
-				<img width="20px" height="14px" src="img/long_mode.png" alt="long mode" class="icon" title="Long mode" />
+				<img class="icon" width="20px" height="14px" src="img/long_mode.png" alt="Long mode" title="Long mode" />
 			</p>
 			<p><span><xsl:value-of select="$param/statistics/rounds_long"/></span>
 				<xsl:text>Rounds</xsl:text>
-				<img width="20px" height="14px" src="img/long_mode.png" alt="long mode" class="icon" title="Long mode" />
+				<img class="icon" width="20px" height="14px" src="img/long_mode.png" alt="Long mode" title="Long mode" />
 			</p>
 
 			</div>
@@ -301,16 +301,16 @@
 			<xsl:text>Rank</xsl:text>
 			<span class="detail_value"><xsl:value-of select="$param/PlayerType"/></span>
 			<xsl:if test="$param/PlayerType != 'user'">
-				<img width="9px" height="12px" src="img/{$param/PlayerType}.png" alt="rank flag" class="icon" title="{$param/PlayerType}" />
+				<img class="icon" width="9px" height="12px" src="img/{$param/PlayerType}.png" alt="rank flag" title="{$param/PlayerType}" />
 			</xsl:if>
 		</p>
-		<p>Country<img width="18px" height="12px" src="img/flags/{$param/Country}.gif" alt="country flag" class="icon" title="{$param/Country}" /> <span class="detail_value"><xsl:value-of select="$param/Country"/></span></p>
+		<p>Country<img class="icon" width="18px" height="12px" src="img/flags/{$param/Country}.gif" alt="country flag" title="{$param/Country}" /> <span class="detail_value"><xsl:value-of select="$param/Country"/></span></p>
 		<p>
 			<xsl:text>Status</xsl:text>
-			<xsl:if test="$param/Status != 'none'"><img width="20px" height="14px" src="img/{$param/Status}.png" alt="status flag" class="icon" title="{$param/Status}" /></xsl:if>
-			<xsl:if test="$param/FriendlyFlag = 'yes'"><img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" /></xsl:if>
-			<xsl:if test="$param/BlindFlag = 'yes'"><img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="icon" title="Hidden cards" /></xsl:if>
-			<xsl:if test="$param/LongFlag = 'yes'"><img width="20px" height="14px" src="img/long_mode.png" alt="long flag" class="icon" title="Long mode" /></xsl:if>
+			<xsl:if test="$param/Status != 'none'"><img class="icon" width="20px" height="14px" src="img/{$param/Status}.png" alt="status flag" title="{$param/Status}" /></xsl:if>
+			<xsl:if test="$param/FriendlyFlag = 'yes'"><img class="icon" width="20px" height="14px" src="img/friendly_play.png" alt="Friendly play" title="Friendly play" /></xsl:if>
+			<xsl:if test="$param/BlindFlag = 'yes'"><img class="icon" width="20px" height="14px" src="img/blind.png" alt="Hidden cards" title="Hidden cards" /></xsl:if>
+			<xsl:if test="$param/LongFlag = 'yes'"><img class="icon" width="20px" height="14px" src="img/long_mode.png" alt="Long mode" title="Long mode" /></xsl:if>
 		</p>
 		<p>Level<span class="detail_value"><xsl:value-of select="$param/Level"/></span></p>
 		<p>
