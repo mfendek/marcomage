@@ -879,12 +879,12 @@
 
 		///
 		/// Simulates impact on the game if specified card would be played (doesn't effect game or statistics)
-		/// Provides results in form of a text message which contains changes on game attributes
+		/// Provides results in form of an array containing all game attributes and their changes
 		/// @param string $playername player name
 		/// @param int $cardpos position of the played card
 		/// @param int $mode mode of the played card
-		/// @return string information message
-		public function PlayPreview($playername, $cardpos, $mode)
+		/// @return array game attributes and their changes
+		public function CalculatePreview($playername, $cardpos, $mode)
 		{
 			global $carddb;
 			global $keyworddb;
@@ -916,8 +916,8 @@
 			
 			// prepare basic information
 			$opponent = ($this->Player1 == $playername) ? $this->Player2 : $this->Player1;
-			$mydata = &$this->GameData[$playername];
-			$hisdata = &$this->GameData[$opponent];
+			$mydata = $this->GameData[$playername];
+			$hisdata = $this->GameData[$opponent];
 			
 			// find out what card is at that position
 			$cardid = $mydata->Hand[$cardpos];
@@ -1051,41 +1051,116 @@
 				$hisdata->Changes[$attribute]+= $hisdata->$attribute - $hisdata_temp[$attribute];
 			}
 			
+			$result = array();
+
+			// card data
+			$result['card']['name'] = $card->CardData->Name;
+			$result['card']['mode'] = $mode;
+			$result['card']['position'] = $cardpos;
+
+			// player data
+			$result['player']['name'] = $playername;
+
+			// game attributes
+			$my_attr = array();
+			foreach ($attributes as $attribute) $my_attr[$attribute] = $mydata->$attribute;
+			$result['player']['attributes'] = $my_attr;
+			$result['player']['changes'] = $mydata->Changes;
+
+			// tokens
+			$my_tokens = $my_tokens_changes = array();
+			foreach ($mytokens_temp as $index => $token_val)
+				if ($mydata->TokenNames[$index] != 'none')
+				{
+					$token_name = $mydata->TokenNames[$index];
+					$my_tokens[$token_name] = $mydata->TokenValues[$index];
+					$my_tokens_changes[$token_name] = $mydata->TokenChanges[$index];
+				}
+
+			$result['player']['tokens'] = $my_tokens;
+			$result['player']['tokens_changes'] = $my_tokens_changes;
+
+			// opponent data
+			$result['opponent']['name'] = $opponent;
+
+			// game attributes
+			$his_attr = array();
+			foreach ($attributes as $attribute) $his_attr[$attribute] = $hisdata->$attribute;
+			$result['opponent']['attributes'] = $his_attr;
+			$result['opponent']['changes'] = $hisdata->Changes;
+
+			// tokens
+			$his_tokens = $his_tokens_changes = array();
+			foreach ($histokens_temp as $index => $token_val)
+				if ($hisdata->TokenNames[$index] != 'none')
+				{
+					$token_name = $hisdata->TokenNames[$index];
+					$his_tokens[$token_name] = $hisdata->TokenValues[$index];
+					$his_tokens_changes[$token_name] = $hisdata->TokenChanges[$index];
+				}
+
+			$result['opponent']['tokens'] = $his_tokens;
+			$result['opponent']['tokens_changes'] = $his_tokens_changes;
+
+			return $result;
+		}
+
+		///
+		/// Format game attributes and their changes into a text message
+		/// @param array $game_attributes game attributes and their changes
+		/// @return string information message
+		public function FormatPreview(array $game_attributes)
+		{
+			$card_name = $game_attributes['card']['name'];
+			$card_mode = $game_attributes['card']['mode'];
+
+			$my_name = $game_attributes['player']['name'];
+			$my_attr = $game_attributes['player']['attributes'];
+			$my_changes = $game_attributes['player']['changes'];
+			$my_tokens = $game_attributes['player']['tokens'];
+			$my_tokens_changes = $game_attributes['player']['tokens_changes'];
+
+			$his_name = $game_attributes['opponent']['name'];
+			$his_attr = $game_attributes['opponent']['attributes'];
+			$his_changes = $game_attributes['opponent']['changes'];
+			$his_tokens = $game_attributes['opponent']['tokens'];
+			$his_tokens_changes = $game_attributes['opponent']['tokens_changes'];
+
 			// create result text message
 			$message = array();
 
 			// card name and card mode
-			$message[] = $card->CardData->Name.(($mode > 0) ? ' (mode '.$mode.')' : '');
+			$message[] = $card_name.(($card_mode > 0) ? ' (mode '.$card_mode.')' : '');
 
 			// player data
-			$message[] = "\n".$playername."\n";
+			$message[] = "\n".$my_name."\n";
 
 			$my_part = $his_part = array();
 			// game attributes
-			foreach ($attributes as $attribute)
-				if ($mydata->Changes[$attribute] != 0)
-					$my_part[] = $attribute.': '.$mydata->$attribute.' ('.(($mydata->Changes[$attribute] > 0) ? '+' : '').$mydata->Changes[$attribute].')';
+			foreach ($my_attr as $attr_name => $attr_value)
+				if ($my_changes[$attr_name] != 0)
+					$my_part[] = $attr_name.': '.$attr_value.' ('.(($my_changes[$attr_name] > 0) ? '+' : '').$my_changes[$attr_name].')';
 
 			// tokens
-			foreach ($mytokens_temp as $index => $token_val)
-				if ($mydata->TokenNames[$index] != 'none' AND $mydata->TokenChanges[$index] != 0)
-					$my_part[] = $mydata->TokenNames[$index].': '.$mydata->TokenValues[$index].' ('.(($mydata->TokenChanges[$index] > 0) ? '+' : '').$mydata->TokenChanges[$index].')';
+			foreach ($my_tokens as $token_name => $token_value)
+				if ($my_tokens_changes[$token_name] != 0)
+					$my_part[] = $token_name.': '.$token_value.' ('.(($my_tokens_changes[$token_name] > 0) ? '+' : '').$my_tokens_changes[$token_name].')';
 
 			if (count($my_part) == 0) $my_part[] = 'no changes';
 			$message = array_merge($message, $my_part);
 
 			// opponent data
-			$message[] = "\n".$opponent."\n";
+			$message[] = "\n".$his_name."\n";
 
 			// game attributes
-			foreach ($attributes as $attribute)
-				if ($hisdata->Changes[$attribute] != 0)
-					$his_part[] = $attribute.': '.$hisdata->$attribute.' ('.(($hisdata->Changes[$attribute] > 0) ? '+' : '').$hisdata->Changes[$attribute].')';
+			foreach ($his_attr as $attr_name => $attr_value)
+				if ($his_changes[$attr_name] != 0)
+					$his_part[] = $attr_name.': '.$attr_value.' ('.(($his_changes[$attr_name] > 0) ? '+' : '').$his_changes[$attr_name].')';
 
 			// tokens
-			foreach ($histokens_temp as $index => $token_val)
-				if ($hisdata->TokenNames[$index] != 'none' AND $hisdata->TokenChanges[$index] != 0)
-					$his_part[] = $hisdata->TokenNames[$index].': '.$hisdata->TokenValues[$index].' ('.(($hisdata->TokenChanges[$index] > 0) ? '+' : '').$hisdata->TokenChanges[$index].')';
+			foreach ($his_tokens as $token_name => $token_value)
+				if ($his_tokens_changes[$token_name] != 0)
+					$his_part[] = $token_name.': '.$token_value.' ('.(($his_tokens_changes[$token_name] > 0) ? '+' : '').$his_tokens_changes[$token_name].')';
 
 			if (count($his_part) == 0) $his_part[] = 'no changes';
 			$message = array_merge($message, $his_part);
