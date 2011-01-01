@@ -45,6 +45,10 @@
 		<img class="icon" width="20px" height="14px" src="img/long_mode.png" alt="Long mode" title="Long mode" />
 		<xsl:copy-of select="am:htmlSelectBox('LongMode', $param/LongMode, $mode_options, '')"/>
 
+		<!-- ai mode filter -->
+		<img class="icon" width="20px" height="14px" src="img/ai_mode.png" alt="AI mode" title="AI mode" />
+		<xsl:copy-of select="am:htmlSelectBox('AIMode', $param/AIMode, $mode_options, '')"/>
+
 		<!-- victory type filter -->
 		<xsl:variable name="victory_types">
 			<value name="No victory filter"     value="none"         />
@@ -145,6 +149,9 @@
 								</xsl:if>
 								<xsl:if test="contains(GameModes, 'LongMode')">
 									<img class="icon" width="20px" height="14px" src="img/long_mode.png" alt="Long mode" title="Long mode" />
+								</xsl:if>
+								<xsl:if test="contains(GameModes, 'AIMode')">
+									<img class="icon" width="20px" height="14px" src="img/ai_mode.png" alt="AI mode" title="AI mode" />
 								</xsl:if>
 							</p>
 						</td>
@@ -321,6 +328,9 @@
 			</xsl:if>
 			<xsl:if test="$param/LongMode = 'yes'">
 				<img class="icon" src="img/long_mode.png" width="20px" height="14px" alt="Long mode" title="Long mode" />
+			</xsl:if>
+			<xsl:if test="$param/AIMode = 'yes'">
+				<img class="icon" src="img/ai_mode.png" width="20px" height="14px" alt="AI mode" title="AI mode" />
 			</xsl:if>
 		</td>
 		<td></td>
@@ -986,6 +996,9 @@
 			</xsl:if>
 			<xsl:if test="$param/LongMode = 'yes'">
 				<img class="icon" src="img/long_mode.png" width="20px" height="14px" alt="Long mode" title="Long mode" />
+			</xsl:if>
+			<xsl:if test="$param/AIMode = 'yes'">
+				<img class="icon" src="img/ai_mode.png" width="20px" height="14px" alt="AI mode" title="AI mode" />
 			</xsl:if>
 		</td>
 		<td></td>

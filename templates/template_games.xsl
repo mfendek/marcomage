@@ -70,6 +70,9 @@
 								<xsl:if test="contains(game_modes, 'LongMode')">
 									<img class="icon" width="20px" height="14px" src="img/long_mode.png" alt="Long mode" title="Long mode" />
 								</xsl:if>
+								<xsl:if test="contains(game_modes, 'AIMode')">
+									<img class="icon" width="20px" height="14px" src="img/ai_mode.png" alt="AI mode" title="AI mode" />
+								</xsl:if>
 							</p>
 						</td>
 						<td>
@@ -166,7 +169,7 @@
 		<!-- selected deck -->
 		<xsl:if test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
 			<p class="misc">
-				<xsl:text>Select deck </xsl:text>
+				<span>Select deck</span>
 				<select name="SelectedDeck" size="1">
 					<xsl:if test="$param/RandomDeck = 'yes'">
 						<option value="{am:urlencode($param/random_deck)}">select random</option>
@@ -243,14 +246,6 @@
 		<!-- host new game interface -->
 		<xsl:if test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
 			<p class="misc">
-				<select name="SelectedDeck" size="1">
-					<xsl:if test="$param/RandomDeck = 'yes'">
-						<option value="{am:urlencode($param/random_deck)}">select random</option>
-					</xsl:if>
-					<xsl:for-each select="$param/decks/*">
-						<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
-					</xsl:for-each>
-				</select>
 				<img class="icon" width="20px" height="14px" src="img/blind.png" alt="Hidden cards" title="Hidden cards" />
 				<input type="checkbox" name="HiddenMode">
 					<xsl:if test="$param/BlindFlag = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
@@ -264,6 +259,28 @@
 					<xsl:if test="$param/LongFlag = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 				</input>
 				<button type="submit" name="host_game">Host game</button>
+				<button type="submit" name="ai_game">Play vs AI</button>
+			</p>
+			<p class="misc">
+				<span>Select deck</span>
+				<select name="SelectedDeck" size="1" title="your deck">
+					<xsl:if test="$param/RandomDeck = 'yes'">
+						<option value="{am:urlencode($param/random_deck)}">select random</option>
+					</xsl:if>
+					<xsl:for-each select="$param/decks/*">
+						<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
+					</xsl:for-each>
+				</select>
+				<span>Select AI deck</span>
+				<select name="SelectedAIDeck" size="1" title="AI deck (used only when playing against AI)">
+					<option value="starter_deck">starter deck</option>
+					<xsl:if test="$param/RandomDeck = 'yes'">
+						<option value="{am:urlencode($param/random_deck)}">select random</option>
+					</xsl:if>
+					<xsl:for-each select="$param/decks/*">
+						<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
+					</xsl:for-each>
+				</select>
 			</p>
 		</xsl:if>
 
@@ -429,6 +446,9 @@
 			<xsl:if test="$param/LongMode = 'yes'">
 				<img class="icon" src="img/long_mode.png" width="20px" height="14px" alt="Long mode" title="Long mode" />
 			</xsl:if>
+			<xsl:if test="$param/AIMode = 'yes'">
+				<img class="icon" src="img/ai_mode.png" width="20px" height="14px" alt="AI mode" title="AI mode" />
+			</xsl:if>
 		</td>
 		<td>
 			<xsl:if test="$param/GameState = 'in progress'">
@@ -442,16 +462,23 @@
 				<button type="submit" name="active_game">Next</button>
 			</xsl:if> 
 		</td>
-		<td>
-			<xsl:if test="$param/PlayButtons = 'no' and $my_turn">
-				<button type="submit" name="play_card" value="0">Play</button>
-			</xsl:if>
-		</td>
-		<td>
-			<xsl:if test="$my_turn">
-				<button type="submit" name="discard_card">Discard</button>
-			</xsl:if>
-		</td>
+		<xsl:choose>
+			<xsl:when test="$param/AIMode = 'yes' and not($my_turn) and $param/GameState = 'in progress'">
+				<td colspan="2"><button type="submit" name="ai_move">Execute AI move</button></td>
+			</xsl:when>
+			<xsl:otherwise>
+				<td>
+					<xsl:if test="$param/PlayButtons = 'no' and $my_turn">
+						<button type="submit" name="play_card" value="0">Play</button>
+					</xsl:if>
+				</td>
+				<td>
+					<xsl:if test="$my_turn">
+						<button type="submit" name="discard_card">Discard</button>
+					</xsl:if>
+				</td>
+			</xsl:otherwise>
+		</xsl:choose>
 		<td>
 			<xsl:if test="$my_turn and $param/HiddenCards = 'no'">
 				<button type="button" name="preview_card">Preview</button>
@@ -1098,6 +1125,10 @@
 	</table>
 
 	<!-- begin chatboard -->
+
+	<!-- chatboard is not available in AI mode -->
+	<xsl:if test="$param/AIMode = 'no'">
+
 	<div class="chatsection">
 		<!-- avatars normal version -->
 		<xsl:if test="($param/display_avatar = 'yes') and ($param/correction = 'no')">
@@ -1148,6 +1179,9 @@
 
 		<div style="clear: both"></div>
 	</div>
+
+	</xsl:if>
+
 	<!-- end chatboard -->
 
 	<!-- game note dialog (do not display) -->

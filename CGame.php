@@ -270,6 +270,7 @@
 		private $HiddenCards; // hide opponent's cards (yes/no)
 		private $FriendlyPlay; // allow game to effect player score (yes/no)
 		private $LongMode; // long game mode (yes/no)
+		private $AIMode; // ai game mode (yes/no)
 		public $State; // 'waiting' / 'in progress' / 'finished' / 'P1 over' / 'P2 over'
 		public $Current; // name of the player whose turn it currently is
 		public $Round; // incremented after each play/discard action
@@ -387,6 +388,7 @@
 			$this->HiddenCards = (strpos($data['GameModes'], 'HiddenCards') !== false) ? 'yes' : 'no';
 			$this->FriendlyPlay = (strpos($data['GameModes'], 'FriendlyPlay') !== false) ? 'yes' : 'no';
 			$this->LongMode = (strpos($data['GameModes'], 'LongMode') !== false) ? 'yes' : 'no';
+			$this->AIMode = (strpos($data['GameModes'], 'AIMode') !== false) ? 'yes' : 'no';
 			$this->GameData = unserialize($data['Data']);
 			
 			return true;
@@ -1562,6 +1564,60 @@
 			$message.= "\n".'You gained '.$exp.' EXP'.(($gold > 0) ? ' and '.$gold.' gold' : '');
 			
 			return array('exp' => $exp, 'gold' => $gold, 'message' => $message, 'awards' => $received);
+		}
+
+		public function DetermineAIMove()
+		{
+			global $carddb;
+			global $game_config;
+
+			// determine game mode (normal or long)
+			$g_mode = ($this->LongMode == 'yes') ? 'long' : 'normal';
+
+			// game configuration
+			$max_tower = $game_config[$g_mode]['max_tower'];
+			$max_wall = $game_config[$g_mode]['max_wall'];
+			$init_tower = $game_config[$g_mode]['init_tower'];
+			$init_wall = $game_config[$g_mode]['init_wall'];
+			$res_vic = $game_config[$g_mode]['res_victory'];
+			$time_vic = $game_config[$g_mode]['time_victory'];
+
+			// prepare basic information
+			$opponent = ($this->Player1 == SYSTEM_NAME) ? $this->Player2 : $this->Player1;
+			$mydata = $this->GameData[SYSTEM_NAME];
+			$hisdata = $this->GameData[$opponent];
+
+			// simple AI
+
+			// determine set of playable cards
+			// if there is at least one, pick one at random
+			// otherwise discard random card
+
+			// determine playable cards
+			$playable_positions = array(); // 'card_position' => 'card modes'
+			$myhand = $mydata->Hand;
+			$handdata = $carddb->GetData($myhand);
+
+			foreach( $handdata as $i => $card )
+				if ($mydata->Bricks >= $card['bricks'] and $mydata->Gems >= $card['gems'] and $mydata->Recruits >= $card['recruits'])
+					$playable_positions[$i] = $card['modes'];
+
+			if (count($playable_positions) > 0)
+			{
+				$action = 'play';
+				$cardpos = array_rand($playable_positions);
+				$modes = $playable_positions[$cardpos];
+				// pick random mode, if card has multiple modes
+				$mode = ($modes > 0) ? mt_rand(1,$modes) : 0;
+			}
+			else
+			{
+				$action = 'discard';
+				$cardpos = mt_rand(1,8);
+				$mode = 0;
+			}
+
+			return array('action' => $action, 'cardpos' => $cardpos, 'mode' => $mode);
 		}
 	}
 	

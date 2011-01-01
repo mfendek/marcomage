@@ -34,10 +34,12 @@
 			$hidden_cards = $game->GetGameMode('HiddenCards');
 			$friendly_play = $game->GetGameMode('FriendlyPlay');
 			$long_mode = $game->GetGameMode('LongMode');
+			$ai_mode = $game->GetGameMode('AIMode');
 			$game_modes = array();
 			if ($hidden_cards == "yes") $game_modes[] = 'HiddenCards';
 			if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
 			if ($long_mode == "yes") $game_modes[] = 'LongMode';
+			if ($ai_mode == "yes") $game_modes[] = 'AIMode';
 			$game_modes = implode(',', $game_modes);
 			
 			$result = $db->Query('INSERT INTO `replays_head` (`GameID`, `Player1`, `Player2`, `GameModes`) VALUES ("'.$db->Escape($game_id).'", "'.$db->Escape($player1).'", "'.$db->Escape($player2).'", "'.$db->Escape($game_modes).'")');
@@ -113,7 +115,7 @@
 			return $replay;
 		}
 		
-		public function ListReplays($player, $hidden, $friendly, $long, $victory, $page, $condition, $order)
+		public function ListReplays($player, $hidden, $friendly, $long, $ai, $victory, $page, $condition, $order)
 		{
 			$db = $this->db;
 			
@@ -122,8 +124,9 @@
 			$hidden_q = ($hidden != "none") ? ' AND FIND_IN_SET("HiddenCards", `GameModes`) '.(($hidden == "include") ? '>' : '=').' 0' : '';
 			$friendly_q = ($friendly != "none") ? ' AND FIND_IN_SET("FriendlyPlay", `GameModes`) '.(($friendly == "include") ? '>' : '=').' 0' : '';
 			$long_q = ($long != "none") ? ' AND FIND_IN_SET("LongMode", `GameModes`) '.(($long == "include") ? '>' : '=').' 0' : '';
+			$ai_q = ($ai != "none") ? ' AND FIND_IN_SET("AIMode", `GameModes`) '.(($ai == "include") ? '>' : '=').' 0' : '';
 			
-			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2`, `Started`, `Finished`, `Rounds`, `Turns`, `GameModes`, `Winner`, `EndType`, (CASE WHEN `Deleted` = TRUE THEN "yes" ELSE "no" END) as `Deleted`, `Views` FROM `replays_head` WHERE '.$victory_q.$player_q.$hidden_q.$friendly_q.$long_q.' ORDER BY `'.$db->Escape($condition).'` '.$db->Escape($order).' LIMIT '.(REPLAYS_PER_PAGE * $db->Escape($page)).' , '.REPLAYS_PER_PAGE.'');
+			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2`, `Started`, `Finished`, `Rounds`, `Turns`, `GameModes`, `Winner`, `EndType`, (CASE WHEN `Deleted` = TRUE THEN "yes" ELSE "no" END) as `Deleted`, `Views` FROM `replays_head` WHERE '.$victory_q.$player_q.$hidden_q.$friendly_q.$long_q.$ai_q.' ORDER BY `'.$db->Escape($condition).'` '.$db->Escape($order).' LIMIT '.(REPLAYS_PER_PAGE * $db->Escape($page)).' , '.REPLAYS_PER_PAGE.'');
 			if (!$result) return false;
 			
 			$replays = array();
@@ -133,7 +136,7 @@
 			return $replays;
 		}
 		
-		public function CountPages($player, $hidden, $friendly, $long, $victory)
+		public function CountPages($player, $hidden, $friendly, $long, $ai, $victory)
 		{	
 			$db = $this->db;
 			
@@ -142,8 +145,9 @@
 			$hidden_q = ($hidden != "none") ? ' AND FIND_IN_SET("HiddenCards", `GameModes`) '.(($hidden == "include") ? '>' : '=').' 0' : '';
 			$friendly_q = ($friendly != "none") ? ' AND FIND_IN_SET("FriendlyPlay", `GameModes`) '.(($friendly == "include") ? '>' : '=').' 0' : '';
 			$long_q = ($long != "none") ? ' AND FIND_IN_SET("LongMode", `GameModes`) '.(($long == "include") ? '>' : '=').' 0' : '';
+			$ai_q = ($ai != "none") ? ' AND FIND_IN_SET("AIMode", `GameModes`) '.(($ai == "include") ? '>' : '=').' 0' : '';
 			
-			$result = $db->Query('SELECT COUNT(`GameID`) as `Count` FROM `replays_head` WHERE '.$victory_q.$player_q.$hidden_q.$friendly_q.$long_q.'');
+			$result = $db->Query('SELECT COUNT(`GameID`) as `Count` FROM `replays_head` WHERE '.$victory_q.$player_q.$hidden_q.$friendly_q.$long_q.$ai_q.'');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
@@ -246,6 +250,7 @@
 		private $HiddenCards;
 		private $FriendlyPlay;
 		private $LongMode;
+		private $AIMode;
 		public $Current;
 		public $Round;
 		public $Winner;
@@ -306,6 +311,7 @@
 			$this->HiddenCards = (strpos($data['GameModes'], 'HiddenCards') !== false) ? 'yes' : 'no';
 			$this->FriendlyPlay = (strpos($data['GameModes'], 'FriendlyPlay') !== false) ? 'yes' : 'no';
 			$this->LongMode = (strpos($data['GameModes'], 'LongMode') !== false) ? 'yes' : 'no';
+			$this->AIMode = (strpos($data['GameModes'], 'AIMode') !== false) ? 'yes' : 'no';
 			$this->ThreadID = $data['ThreadID'];
 			
 			$result = $db->Query('SELECT `Current`, `Round`, `Data` FROM `replays_data` WHERE `GameID` = "'.$db->Escape($this->ID()).'" AND `Turn` = "'.$db->Escape($this->Turn()).'"');

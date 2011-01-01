@@ -1348,6 +1348,9 @@
 				// do not post empty messages (prevents accidental send)
 				if (trim($msg) == '') { /*$error = 'You can't send empty chat messages.';*/ $current = 'Games_details'; break; }
 
+				// check if chat is allowed (can't chat with a computer player)
+				if ($game->GetGameMode('AIMode') == 'yes') { $error = 'Chat not allowed!'; $current = 'Games_details'; break; }
+
 				// check access rights
 				if (!$access_rights[$player->Type()]["chat"]) { $error = 'Access denied.'; $current = 'Games_details'; break; }
 
@@ -1457,6 +1460,49 @@
 				break;
 			}
 
+			if (isset($_POST['ai_move'])) // Games -> vs. %s -> Execute AI move
+			{
+				$gameid = $_POST['CurrentGame'];
+				$game = $gamedb->GetGame($gameid);
+
+				// check if the game exists
+				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
+
+				// check if this user is allowed to perform game actions
+				if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or $game->Surrender != '') { $current = 'Games_details'; break; }
+
+				// check if AI move is allowed
+				if ($game->GetGameMode('AIMode') == 'no') { $error = 'AI move not allowed!'; $current = 'Games_details'; break; }
+
+				// the rest of the checks are done internally
+				$decision = $game->DetermineAIMove();
+				$cardpos = $decision['cardpos'];
+				$mode = $decision['mode'];
+				$action = $decision['action'];
+
+				$result = $game->PlayCard(SYSTEM_NAME, $cardpos, $mode, $action);
+
+				if ($result == 'OK')
+				{
+					$game->SaveGame();
+					$replaydb->UpdateReplay($game);
+
+					if ($game->State == 'finished')
+					{
+						$replaydb->FinishReplay($game);
+
+						// update deck statistics
+						$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
+					}
+
+					$information = "You have played a card.";
+				}
+				else $error = $result;
+
+				$current = "Games_details";
+				break;
+			}
+
 			if (isset($_POST['surrender'])) // Games -> vs. %s -> Surrender -> send surrender request to opponent
 			{
 				$gameid = $_POST['CurrentGame'];
@@ -1471,6 +1517,22 @@
 				$result = $game->RequestSurrender($player->Name());
 
 				if ($result == 'OK') $information = 'Surrender request sent.';
+
+				// accept surrender request in case of AI game
+				if ($game->GetGameMode('AIMode') == 'yes')
+				{
+					$result = $game->SurrenderGame();
+
+					if ($result == 'OK')
+					{
+						$information = 'Surrender request accepted.';
+						$replaydb->FinishReplay($game);
+
+						// update deck statistics
+						$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
+					}
+					else $error = $result;
+				}
 
 				$current = "Games_details";
 				break;
@@ -1691,9 +1753,9 @@
 				// only allow if the game is over (stay if not)
 				if ($game->State == 'in progress') { $current = "Games_details"; break; }
 
-				if ($game->State == 'finished')
+				if ($game->State == 'finished' and $game->GetGameMode('AIMode') == 'no')
 				{
-					// we are the first one to acknowledge
+					// we are the first one to acknowledge and opponent isn't a computer player
 					$game->State = ($game->Name1() == $player->Name()) ? 'P1 over' : 'P2 over';
 					$game->SaveGame();
 					// inform other player about leaving the game
@@ -1701,7 +1763,7 @@
 				}
 				else // 'P1 over' or 'P2 over'
 				{
-					// the other player has already acknowledged
+					// the other player has already acknowledged (auto-acknowledge in case of a computer player)
 					$gamedb->DeleteGame($game->ID());
 					$chatdb->DeleteChat($game->ID());
 				}
@@ -1788,6 +1850,9 @@
 				// check if you are within the MAX_GAMES limit
 				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'You may only have '.MAX_GAMES.' simultaneous games at once (this also includes your challenges).'; $current = 'Games'; break; }
 
+				// check if the game can be joined (can't join game against a computer player)
+				if ($game->GetGameMode('AIMode') == 'yes') { $error = 'Failed to join the game!'; $current = 'Games'; break; }
+
 				$opponent = $game->Name1();
 
 				$deck_id = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
@@ -1810,6 +1875,70 @@
 				$replaydb->CreateReplay($game); // create game replay
 
 				$information = 'You have joined '.htmlencode($opponent).'\'s game.';
+				$current = 'Games';
+				break;
+			}
+
+			if (isset($_POST['ai_game'])) // Games -> create AI game
+			{
+				$_POST['subsection'] = 'hosted_games';
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
+
+				$deck_id = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
+				$deck = $player->GetDeck($deck_id);
+
+				// process AI deck
+				$ai_deck_id = isset($_POST['SelectedAIDeck']) ? $_POST['SelectedAIDeck'] : 'starter_deck';
+				if ($ai_deck_id == 'starter_deck')
+				{
+					// pick random starter deck
+					$starter_decks = $deckdb->StarterDecks();
+					$ai_deck = $starter_decks[array_rand($starter_decks)];
+				}
+				else // use deck provided by player
+					$ai_deck = $player->GetDeck($ai_deck_id);
+
+				// check if such deck exists
+				if (!$ai_deck) { $error = 'Deck does not exist!'; $current = 'Games'; break; }
+
+				// check if the deck is ready (all 45 cards)
+				if (!$ai_deck->isReady()) { $error = 'Deck '.$deck->Deckname().' is not yet ready for gameplay!'; $current = 'Games'; break; }
+
+				// check if such deck exists
+				if (!$deck ) { $error = 'Deck does not exist!'; $current = 'Games'; break; }
+
+				// check if the deck is ready (all 45 cards)
+				if (!$deck->isReady()) { $error = 'Deck '.$deck->Deckname().' is not yet ready for gameplay!'; $current = 'Games'; break; }
+
+				// check if you are within the MAX_GAMES limit
+				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Games'; break; }
+
+				// create a new game
+				$game = $gamedb->CreateGame($player->Name(), '', $deck);
+				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
+
+				// set game modes
+				$hidden_cards = (isset($_POST['HiddenMode']) ? 'yes' : 'no');
+				$friendly_play = 'yes'; // always active in AI game
+				$long_mode = (isset($_POST['LongMode']) ? 'yes' : 'no');
+				$ai_mode = 'yes'; // always active in AI game
+				$game_modes = array();
+				if ($hidden_cards == "yes") $game_modes[] = 'HiddenCards';
+				if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
+				if ($long_mode == "yes") $game_modes[] = 'LongMode';
+				if ($ai_mode == "yes") $game_modes[] = 'AIMode';
+				$game->SetGameModes(implode(',', $game_modes));
+
+				// join the computer player
+				$gamedb->JoinGame(SYSTEM_NAME, $game->ID());
+				$game = $gamedb->GetGame($game->ID()); // refresh game data
+				$game->StartGame(SYSTEM_NAME, $ai_deck);
+				$game->SaveGame();
+				$replaydb->CreateReplay($game); // create game replay
+
+				$information = 'Game vs AI created.';
 				$current = 'Games';
 				break;
 			}
@@ -3130,7 +3259,9 @@ case 'Games':
 		foreach ($list as $i => $data)
 		{
 			$opponent = ($data['Player1'] != $player->Name()) ? $data['Player1'] : $data['Player2'];
-			$last_seen = $playerdb->LastQuery($opponent);
+
+			// use default value in case of computer opponent
+			$last_seen = (strpos($data['GameModes'], 'AIMode') !== false) ? date('Y-m-d H:i:s') : $playerdb->LastQuery($opponent);
 			$inactivity = time() - strtotime($last_seen);
 
 			$params['games']['list'][$i]['opponent'] = $opponent;
@@ -3220,9 +3351,10 @@ case 'Games_details':
 	if ( (($player->Name() == $player1) && ($game->State == 'P1 over')) || (($player->Name() == $player2) && ($game->State == 'P2 over')) ) { $display_error = 'Game is already over.'; break; }
 
 	// prepare the neccessary data
-	$opponent = $playerdb->GetPlayer(($player1 != $player->Name()) ? $player1 : $player2);
+	$opponent_name = ($player1 != $player->Name()) ? $player1 : $player2;
+	$opponent = ($game->GetGameMode('AIMode') == 'yes') ? $playerdb->GetGuest() : $playerdb->GetPlayer($opponent_name);
 	$mydata = &$game->GameData[$player->Name()];
-	$hisdata = &$game->GameData[$opponent->Name()];
+	$hisdata = &$game->GameData[$opponent_name];
 
 	$params['game']['CurrentGame'] = $gameid;
 	$params['game']['chat'] = (($access_rights[$player->Type()]["chat"]) ? 'yes' : 'no');
@@ -3250,7 +3382,7 @@ case 'Games_details':
 	$params['game']['Winner'] = $game->Winner;
 	$params['game']['Surrender'] = $game->Surrender;
 	$params['game']['PlayerName'] = $player->Name();
-	$params['game']['OpponentName'] = $opponent->Name();
+	$params['game']['OpponentName'] = $opponent_name;
 	$params['game']['Current'] = $game->Current;
 	$params['game']['Timestamp'] = $game->LastAction;
 	$params['game']['has_note'] = ($game->GetNote($player->Name()) != "") ? 'yes' : 'no';
@@ -3259,6 +3391,7 @@ case 'Games_details':
 	$params['game']['GameNote'] = $game->GetNote($player->Name());
 	$params['game']['LongMode'] = $long_mode = $game->GetGameMode('LongMode');
 	$g_mode = ($long_mode == 'yes') ? 'long' : 'normal';
+	$params['game']['AIMode'] = $game->GetGameMode('AIMode');
 	$params['game']['max_tower'] = $game_config[$g_mode]['max_tower'];
 	$params['game']['max_wall'] = $game_config[$g_mode]['max_wall'];
 
@@ -3632,6 +3765,7 @@ case 'Replays':
 	$params['replays']['HiddenCards'] = $hidden_f = (isset($_POST['HiddenCards'])) ? $_POST['HiddenCards'] : "none";
 	$params['replays']['FriendlyPlay'] = $friendly_f = (isset($_POST['FriendlyPlay'])) ? $_POST['FriendlyPlay'] : "none";
 	$params['replays']['LongMode'] = $long_f = (isset($_POST['LongMode'])) ? $_POST['LongMode'] : "none";
+	$params['replays']['AIMode'] = $ai_f = (isset($_POST['AIMode'])) ? $_POST['AIMode'] : "none";
 	$params['replays']['VictoryFilter'] = $victory_f = (isset($_POST['VictoryFilter'])) ? $_POST['VictoryFilter'] : "none";
 
 	if (!isset($_POST['ReplaysOrder'])) $_POST['ReplaysOrder'] = "DESC"; // default ordering
@@ -3639,8 +3773,8 @@ case 'Replays':
 	$params['replays']['order'] = $order = $_POST['ReplaysOrder'];
 	$params['replays']['cond'] = $cond = $_POST['ReplaysCond'];
 
-	$params['replays']['list'] = $replaydb->ListReplays($player_f, $hidden_f, $friendly_f, $long_f, $victory_f, $current_page, $cond, $order);
-	$params['replays']['page_count'] = $replaydb->CountPages($player_f, $hidden_f, $friendly_f, $long_f, $victory_f);
+	$params['replays']['list'] = $replaydb->ListReplays($player_f, $hidden_f, $friendly_f, $long_f, $ai_f, $victory_f, $current_page, $cond, $order);
+	$params['replays']['page_count'] = $replaydb->CountPages($player_f, $hidden_f, $friendly_f, $long_f, $ai_f, $victory_f);
 	$params['replays']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 	$params['replays']['players'] = $replay_players = $replaydb->ListPlayers();
 	$params['replays']['my_replays'] = (in_array($player->Name(), $replay_players) ? 'yes' : 'no');
@@ -3693,6 +3827,7 @@ case 'Replays_details':
 	$params['replay']['FriendlyPlay'] = $replay->GetGameMode('FriendlyPlay');
 	$params['replay']['LongMode'] = $long_mode = $replay->GetGameMode('LongMode');
 	$g_mode = ($long_mode == 'yes') ? 'long' : 'normal';
+	$params['replay']['AIMode'] = $replay->GetGameMode('AIMode');
 	$params['replay']['max_tower'] = $game_config[$g_mode]['max_tower'];
 	$params['replay']['max_wall'] = $game_config[$g_mode]['max_wall'];
 
@@ -3869,6 +4004,7 @@ case 'Replays_history':
 	$params['replays_history']['FriendlyPlay'] = $replay->GetGameMode('FriendlyPlay');
 	$params['replays_history']['LongMode'] = $long_mode = $replay->GetGameMode('LongMode');
 	$g_mode = ($long_mode == 'yes') ? 'long' : 'normal';
+	$params['replays_history']['AIMode'] = $replay->GetGameMode('AIMode');
 	$params['replays_history']['max_tower'] = $game_config[$g_mode]['max_tower'];
 	$params['replays_history']['max_wall'] = $game_config[$g_mode]['max_wall'];
 

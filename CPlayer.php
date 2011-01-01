@@ -378,6 +378,16 @@
 			$this->Type = 'guest';
 		}
 
+		public function isOnline()
+		{
+			return true;
+		}
+
+		public function isDead()
+		{
+			return false;
+		}
+
 		public function GetNotification()
 		{
 			return date('Y-m-d H:i:s', time() + 24*60*60); // disable notification
@@ -394,6 +404,8 @@
 			$settings->ChangeSetting('Images', 'yes');
 			$settings->ChangeSetting('OldCardLook', 'no');
 			$settings->ChangeSetting('Insignias', 'yes');
+			$settings->ChangeSetting('Country', 'Unknown');
+			$settings->ChangeSetting('Avatar', 'noavatar.jpg');
 
 			return $settings;
 		}
