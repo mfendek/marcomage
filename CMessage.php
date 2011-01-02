@@ -54,7 +54,7 @@
 		public function WelcomeMessage($player)
 		{
 			$message = 'Welcome '.$player.','."\n"."\n";
-			$message.= 'MArcomage team has created three starter decks for you. To quickly start a game, go to "Games" section, "Hosted games" subsection where you can either host or join a game. If you want to play a game with a specific player, you can find his profile in the "Players" section where you can challenge him directly.'."\n"."\n";
+			$message.= 'MArcomage team has created three starter decks for you. To quickly start a game against a computer player, go to "Games" section and click on the "Quick game vs AI" button. To quickly start a game against a human player, go to "Games" section, "Hosted games" subsection where you can either host or join a game. If you want to play a game with a specific player, you can find his profile in the "Players" section where you can challenge him directly.'."\n"."\n";
 			$message.= 'To improve your play strategy you need to improve your decks. You can do this in the "Decks" section. In addition to three starter decks which can be modified as you see fit, there are multiple empty decks that are awaiting your customization.'."\n"."\n";
 			$message.= 'MArcomage can be configured to your best liking in the "Settings" section. Be sure to check it out. There are many interesting features that are just waiting to be discovered. To learn more about them, seek them out in the "Help" section.'."\n"."\n";
 			$message.= 'Good luck and have fun,'."\n"."\n";
