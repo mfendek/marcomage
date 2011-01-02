@@ -25,9 +25,9 @@
 	<xsl:variable name="current_section" select="am:lowercase($section_name)" />
 
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="description" content="Arcomage multiplayer on-line fantasy card game" />
+	<meta name="description" content="Arcomage single player and multiplayer on-line fantasy card game" />
 	<meta name="author" content="Mojmír Fendek, Viktor Štujber" />
-	<meta name="keywords" content="Arcomage, MArcomage, free, online, fantasy, card game, fantasy novels"/>
+	<meta name="keywords" content="Arcomage, MArcomage, single player, multiplayer, free, online, fantasy, card game, fantasy novels"/>
 	<link rel="stylesheet" href="styles/general.css" type="text/css" title="standard style" />
 	<link rel="stylesheet" href="styles/card.css" type="text/css" title="standard style" />
 	<xsl:choose>
