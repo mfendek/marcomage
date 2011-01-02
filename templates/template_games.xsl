@@ -178,6 +178,7 @@
 						<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
 					</xsl:for-each>
 				</select>
+				<button type="submit" name="quick_game">Quick game vs AI</button>
 			</p>
 		</xsl:if>
 

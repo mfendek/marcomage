@@ -1943,6 +1943,56 @@
 				break;
 			}
 
+			if (isset($_POST['quick_game'])) // Games -> create quick AI game
+			{
+				// check access rights
+				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
+
+				$deck_id = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
+				$deck = $player->GetDeck($deck_id);
+
+				// check if such deck exists
+				if (!$deck ) { $error = 'Deck does not exist!'; $current = 'Games'; break; }
+
+				// check if the deck is ready (all 45 cards)
+				if (!$deck->isReady()) { $error = 'Deck '.$deck->Deckname().' is not yet ready for gameplay!'; $current = 'Games'; break; }
+
+				// check if you are within the MAX_GAMES limit
+				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Games'; break; }
+
+				// pick random starter deck
+				$starter_decks = $deckdb->StarterDecks();
+				$ai_deck = $starter_decks[array_rand($starter_decks)];
+
+				// create a new game
+				$game = $gamedb->CreateGame($player->Name(), '', $deck);
+				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
+
+				// set game modes
+				$hidden_cards = 'no';
+				$friendly_play = 'yes'; // always active in AI game
+				$long_mode = 'no';
+				$ai_mode = 'yes'; // always active in AI game
+				$game_modes = array();
+				if ($hidden_cards == "yes") $game_modes[] = 'HiddenCards';
+				if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
+				if ($long_mode == "yes") $game_modes[] = 'LongMode';
+				if ($ai_mode == "yes") $game_modes[] = 'AIMode';
+				$game->SetGameModes(implode(',', $game_modes));
+
+				// join the computer player
+				$gamedb->JoinGame(SYSTEM_NAME, $game->ID());
+				$game = $gamedb->GetGame($game->ID()); // refresh game data
+				$game->StartGame(SYSTEM_NAME, $ai_deck);
+				$game->SaveGame();
+				$replaydb->CreateReplay($game); // create game replay
+				$_POST['CurrentGame'] = $game->ID();
+
+				$information = 'Game vs AI created.';
+				$current = "Games_details";
+				break;
+			}
+
 			if (isset($_POST['filter_hosted_games'])) // use filter in hosted games view
 			{
 				$_POST['subsection'] = 'free_games';
