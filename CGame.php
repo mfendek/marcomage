@@ -1613,7 +1613,32 @@
 			else
 			{
 				$action = 'discard';
-				$cardpos = mt_rand(1,8);
+
+				// calculate resources missing for each card
+				$max = 0;
+				$missing_res = array();
+				foreach( $handdata as $i => $card )
+				{
+					$missing = max(0,$card['bricks'] - $mydata->Bricks) + max(0,$card['gems'] - $mydata->Gems) + max(0,$card['recruits'] - $mydata->Recruits);
+					$missing_res[$i] = $missing;
+					$max = max($max, $missing);
+				}
+
+				// pick cards with most resources missing to play (sort by card rarity)
+				$storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
+
+				foreach ($missing_res as $i => $missing)
+					if ($missing == $max)
+					{
+						$card_rarity = $handdata[$i]['class'];
+						$storage[$card_rarity][] = $i;
+					}
+
+				// pick preferably cards with lower rarity, but choose random card within the rarity group
+				shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
+				$storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
+				$cardpos = array_shift($storage_temp);
+
 				$mode = 0;
 			}
 
