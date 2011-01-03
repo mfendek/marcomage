@@ -1708,10 +1708,19 @@
 			// choose a card for discarding
 			if ($action == 'discard')
 			{
+				$rares = $rest = $selected = array();
+				// split cards into two groups based on rarity (rares and the rest)
+				foreach( $handdata as $i => $card )
+					if ($card['class'] == 'Rare') $rares[$i] = $card;
+					else $rest[$i] = $card;
+
+				// don't discard rares unless there is no other choice
+				$selected = (count($rest) == 0) ? $rares : $rest;
+
 				// calculate resources missing for each card
 				$max = 0;
 				$missing_res = array();
-				foreach( $handdata as $i => $card )
+				foreach( $selected as $i => $card )
 				{
 					$missing = max(0,$card['bricks'] - $mydata->Bricks) + max(0,$card['gems'] - $mydata->Gems) + max(0,$card['recruits'] - $mydata->Recruits);
 					$missing_res[$i] = $missing;
