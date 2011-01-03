@@ -257,6 +257,7 @@
 	<li><img class="icon" width="20px" height="14px" src="img/blind.png" alt="Hidden cards" title="Hidden cards" /> Hide opponent's cards - this mode will disable the ability to see opponent's cards for both players</li>
 	<li><img class="icon" width="20px" height="14px" src="img/friendly_play.png" alt="Friendly play" title="Friendly play" /> Friendly play - allows to play games, where the game outcome doesn't effect score or experience of the players</li>
 	<li><img class="icon" width="20px" height="14px" src="img/long_mode.png" alt="Long mode" title="Long mode" /> Long mode - starting and maximum tower and wall values are higher (1.5 times), resource and timeout victory condition as well</li>
+	<li><img class="icon" width="20px" height="14px" src="img/ai_mode.png" alt="AI mode" title="AI mode" /> AI mode - game against a computer player (this mode will also activate Friendly play game mode)</li>
 </ul>
 
 <p>Each player can configure his status in settings section. Player status can be seen by other players and can be used to help you find the desired opponent. There are four options available:</p>
