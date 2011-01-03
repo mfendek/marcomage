@@ -49,7 +49,7 @@
 								<xsl:if test="active = 'yes'">
 									<xsl:attribute name="class">p_online</xsl:attribute>
 								</xsl:if>
-								<xsl:value-of select="opponent"/>
+								<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', opponent)}"><xsl:value-of select="opponent"/></a>
 							</p>
 						</td>
 						<xsl:if test="$param/games_details = 'yes'">
