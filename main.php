@@ -18,6 +18,7 @@
 	require_once('CConcept.php');
 	require_once('CDeck.php');
 	require_once('CGame.php');
+	require_once('CGameAI.php');
 	require_once('CReplay.php');
 	require_once('CSettings.php');
 	require_once('CChat.php');
