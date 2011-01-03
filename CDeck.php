@@ -109,25 +109,29 @@
 		{
 			$starter_decks = $starter_data = array();
 
-			$starter_data[1]['Common'] = array(1=>54, 240, 71, 256, 250, 259, 261, 113, 247, 79, 57, 140, 7, 236, 257);
-			$starter_data[1]['Uncommon'] = array(1=>28, 189, 83, 10, 204, 211, 230, 36, 150, 201, 53, 96, 180, 164, 208);
-			$starter_data[1]['Rare'] = array(1=>32, 197, 75, 74, 151, 61, 69, 66, 232, 229, 291, 21, 126, 182, 181);
+			$deck_data = new CDeckData;
+			$deck_data->Common = array(1=>54, 240, 71, 256, 250, 259, 261, 113, 247, 79, 57, 140, 7, 236, 257);
+			$deck_data->Uncommon = array(1=>28, 189, 83, 10, 204, 211, 230, 36, 150, 201, 53, 96, 180, 164, 208);
+			$deck_data->Rare = array(1=>32, 197, 75, 74, 151, 61, 69, 66, 232, 229, 291, 21, 126, 182, 181);
+			$starter_data[1] = $deck_data;
 
-			$starter_data[2]['Common'] = array(1=>1, 289, 23, 149, 359, 18, 260, 119, 26, 275, 271, 176, 60, 122, 272);
-			$starter_data[2]['Uncommon'] = array(1=>146, 163, 162, 164, 175, 266, 5, 154, 49, 136, 195, 35, 174, 270, 89);
-			$starter_data[2]['Rare'] = array(1=>235, 295, 178, 379, 161, 192, 4, 167, 233, 156, 67, 339, 169, 141, 148);
+			$deck_data = new CDeckData;
+			$deck_data->Common = array(1=>1, 289, 23, 149, 359, 18, 260, 119, 26, 275, 271, 176, 60, 122, 272);
+			$deck_data->Uncommon = array(1=>146, 163, 162, 164, 175, 266, 5, 154, 49, 136, 195, 35, 174, 270, 89);
+			$deck_data->Rare = array(1=>235, 295, 178, 379, 161, 192, 4, 167, 233, 156, 67, 339, 169, 141, 148);
+			$starter_data[2] = $deck_data;
 
-			$starter_data[3]['Common'] = array(1=>356, 45, 1, 260, 79, 238, 140, 368, 274, 269, 160, 362, 26, 300, 91);
-			$starter_data[3]['Uncommon'] = array(1=>29, 267, 84, 19, 47, 191, 320, 123, 98, 3, 8, 58, 109, 96, 52);
-			$starter_data[3]['Rare'] = array(1=>115, 108, 127, 86, 110, 138, 181, 242, 222, 249, 4, 277, 293, 199, 128);
+			$deck_data = new CDeckData;
+			$deck_data->Common = array(1=>356, 45, 1, 260, 79, 238, 140, 368, 274, 269, 160, 362, 26, 300, 91);
+			$deck_data->Uncommon = array(1=>29, 267, 84, 19, 47, 191, 320, 123, 98, 3, 8, 58, 109, 96, 52);
+			$deck_data->Rare = array(1=>115, 108, 127, 86, 110, 138, 181, 242, 222, 249, 4, 277, 293, 199, 128);
+			$starter_data[3] = $deck_data;
 
 			foreach ($starter_data as $i => $deck_data)
 			{
 				$deck_name = 'deck '.$i;
 				$curent_deck = new CDeck(0, SYSTEM_NAME, $deck_name, $this);
-				$curent_deck->DeckData->Common = $deck_data['Common'];
-				$curent_deck->DeckData->Uncommon =  $deck_data['Uncommon'];
-				$curent_deck->DeckData->Rare = $deck_data['Rare'];
+				$curent_deck->LoadData($deck_data);
 
 				$starter_decks[$deck_name] = $curent_deck;
 			}
@@ -485,6 +489,11 @@
 			$this->DeckData->Tokens = array_combine(array(1, 2, 3), $tokens);
 			
 			return "Success";
+		}
+		
+		public function LoadData(CDeckData $deck_data)
+		{
+			$this->DeckData = $deck_data;
 		}
 		
 	}

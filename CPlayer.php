@@ -32,7 +32,8 @@
 				// create starter deck
 				if (isset($starter_decks[$deck->Deckname()]))
 				{
-					$deck->DeckData = $starter_decks[$deck->Deckname()]->DeckData;
+					$starter_deck = $starter_decks[$deck->Deckname()];
+					$deck->LoadData($starter_deck->DeckData);
 					$deck->SaveDeck();
 				}
 			}
