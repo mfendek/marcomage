@@ -1772,21 +1772,21 @@
 			$static['his']['Wall'] = 6;
 
 			// dynamic configuration (adjustment factor based on current game situation)
-			$dynamic['mine']['Quarry'] = ($mydata->Quarry < 3) ? 1.5 : (($mydata->Quarry > 3) ? 0.7 : 1);
-			$dynamic['mine']['Magic'] = ($mydata->Magic < 3) ? 1.5 : (($mydata->Magic > 3) ? 0.7 : 1);
-			$dynamic['mine']['Dungeons'] = ($mydata->Dungeons < 3) ? 1.5 : (($mydata->Dungeons > 3) ? 0.7 : 1);
-			$dynamic['mine']['Bricks'] = 1;
-			$dynamic['mine']['Gems'] = 1;
-			$dynamic['mine']['Recruits'] = 1;
+			$dynamic['mine']['Quarry'] = ($mydata->Quarry <= 3) ? 1.5 : (($mydata->Quarry > 4) ? 0.7 : 1);
+			$dynamic['mine']['Magic'] = ($mydata->Magic <= 3) ? 1.5 : (($mydata->Magic > 4) ? 0.7 : 1);
+			$dynamic['mine']['Dungeons'] = ($mydata->Dungeons <= 3) ? 1.5 : (($mydata->Dungeons > 4) ? 0.7 : 1);
+			$dynamic['mine']['Bricks'] = ($mydata->Bricks <= 6) ? 1.2 : 1;
+			$dynamic['mine']['Gems'] = ($mydata->Gems <= 6) ? 1.2 : 1;
+			$dynamic['mine']['Recruits'] = ($mydata->Recruits <= 6) ? 1.2 : 1;
 			$dynamic['mine']['Tower'] = ($mydata->Tower <= 20) ? 1.5 : (($mydata->Tower >= ($max_tower - 20)) ? 1.5 : 1);
 			$dynamic['mine']['Wall'] = ($mydata->Wall <= 15) ? 1.5 : 1;
 
 			$dynamic['his']['Quarry'] = ($mydata->Quarry == 1) ? 0 : (($mydata->Quarry > 4) ? 0.7 : 1);
 			$dynamic['his']['Magic'] = ($mydata->Magic == 1) ? 0 : (($mydata->Magic > 4) ? 0.7 : 1);
 			$dynamic['his']['Dungeons'] = ($mydata->Dungeons == 1) ? 0 : (($mydata->Dungeons > 4) ? 0.7 : 1);
-			$dynamic['his']['Bricks'] = 1;
-			$dynamic['his']['Gems'] = 1;
-			$dynamic['his']['Recruits'] = 1;
+			$dynamic['his']['Bricks'] = ($hisdata->Bricks <= 6) ? 1.2 : 1;
+			$dynamic['his']['Gems'] = ($hisdata->Gems <= 6) ? 1.2 : 1;
+			$dynamic['his']['Recruits'] = ($hisdata->Recruits <= 6) ? 1.2 : 1;
 			$dynamic['his']['Tower'] = ($hisdata->Tower <= 20) ? 1.5 : (($hisdata->Tower >= ($max_tower - 20)) ? 1.5 : 1);
 			$dynamic['his']['Wall'] = ($hisdata->Wall <= 15) ? 1.5 : 1;
 
