@@ -121,6 +121,26 @@
 			$data = $result->Next();
 			$statistics['long'] = $data['long'];
 
+			// get number of AI mode games
+			$result = $db->Query('SELECT COUNT(`GameID`) as `ai` FROM `replays_head` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("AIMode", `GameModes`) > 0)');
+
+			if (!$result) return false;
+			if (!$result->Rows()) return false;
+
+			$data = $result->Next();
+			$statistics['ai'] = $data['ai'];
+
+			// get number of AI victories
+			$result = $db->Query('SELECT COUNT(`GameID`) as `ai_wins` FROM `replays_head` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("AIMode", `GameModes`) > 0) AND `Winner` = "'.SYSTEM_NAME.'"');
+
+			if (!$result) return false;
+			if (!$result->Rows()) return false;
+
+			$data = $result->Next();
+			$ai_wins = $data['ai_wins'];
+
+			$ai_win_ratio = round(($ai_wins / $statistics['ai']) * 100, 2);
+
 			// get number of total games games
 			$result = $db->Query('SELECT COUNT(`GameID`) as `total` FROM `replays_head` WHERE (`EndType` != "Pending")');
 
@@ -132,6 +152,9 @@
 
 			// calculate percentage
 			foreach ($statistics as $statistic => $value) $statistics[$statistic] = round(($value / $total_games) * 100, 2);
+
+			// calculate AI win ratio
+			$statistics['ai_wins'] = $ai_win_ratio;
 
 			return $statistics;
 		}
