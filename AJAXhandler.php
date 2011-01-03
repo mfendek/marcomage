@@ -17,6 +17,7 @@
 	require_once('CKeyword.php');
 	require_once('CDeck.php');
 	require_once('CGame.php');
+	require_once('CGameAI.php');
 	require_once('CStatistics.php');
 	require_once('utils.php');
 
