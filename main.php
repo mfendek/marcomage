@@ -99,11 +99,6 @@
 				$current = "Registration";
 				$error = "Please enter all required inputs.";
 			}
-//	  elseif (preg_match("(<|>|'|\"|:)", $_POST['NewUsername']))
-//	  {
-//		  $current = "Registration";
-//		  $error = "Name contains invalid characters.";
-//	  }
 			elseif ($_POST['NewPassword'] != $_POST['NewPassword2'])
 			{
 				$current = "Registration";
