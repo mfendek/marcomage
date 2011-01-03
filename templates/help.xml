@@ -254,17 +254,17 @@
 
 <p>It is possible to choose from several game modes, when starting a new game:</p>
 <ul>
-	<li><img width="20px" height="14px" src="img/blind.png" alt="blind flag" class="icon" title="Hidden cards" /> Hide opponent's cards - this mode will disable the ability to see opponent's cards for both players</li>
-	<li><img width="20px" height="14px" src="img/friendly_play.png" alt="friendly flag" class="icon" title="Friendly play" /> Friendly play - allows to play games, where the game outcome doesn't effect score or experience of the players</li>
-	<li><img width="20px" height="14px" src="img/long_mode.png" alt="long mode" class="icon" title="Long mode" /> Long mode - starting and maximum tower and wall values are higher (1.5 times), resource and timeout victory condition as well</li>
+	<li><img class="icon" width="20px" height="14px" src="img/blind.png" alt="Hidden cards" title="Hidden cards" /> Hide opponent's cards - this mode will disable the ability to see opponent's cards for both players</li>
+	<li><img class="icon" width="20px" height="14px" src="img/friendly_play.png" alt="Friendly play" title="Friendly play" /> Friendly play - allows to play games, where the game outcome doesn't effect score or experience of the players</li>
+	<li><img class="icon" width="20px" height="14px" src="img/long_mode.png" alt="Long mode" title="Long mode" /> Long mode - starting and maximum tower and wall values are higher (1.5 times), resource and timeout victory condition as well</li>
 </ul>
 
 <p>Each player can configure his status in settings section. Player status can be seen by other players and can be used to help you find the desired opponent. There are four options available:</p>
 <ul>
-	<li><img width="20px" height="14px" src="img/ready.png" alt="status flag" class="icon" title="ready" /> Looking for game - you want to play a normal game</li>
-	<li><img width="20px" height="14px" src="img/quick.png" alt="status flag" class="icon" title="quick" /> Looking for quick game - you want to play a quick game (play online until the game finishes without interruptions)</li>
-	<li><img width="20px" height="14px" src="img/dnd.png" alt="status flag" class="icon" title="dnd" /> Do not disturb - you don't want to play games right now</li>
-	<li><img width="20px" height="14px" src="img/newbie.png" alt="status flag" class="icon" title="newbie" /> Newbie - new player, this is the default setting</li>
+	<li><img class="icon" width="20px" height="14px" src="img/ready.png" alt="status flag" title="ready" /> Looking for game - you want to play a normal game</li>
+	<li><img class="icon" width="20px" height="14px" src="img/quick.png" alt="status flag" title="quick" /> Looking for quick game - you want to play a quick game (play online until the game finishes without interruptions)</li>
+	<li><img class="icon" width="20px" height="14px" src="img/dnd.png" alt="status flag" title="dnd" /> Do not disturb - you don't want to play games right now</li>
+	<li><img class="icon" width="20px" height="14px" src="img/newbie.png" alt="status flag" title="newbie" /> Newbie - new player, this is the default setting</li>
 </ul>
 <p>For example if you want to play a quick game, select "Looking for quick game" status. It is possible to use filter in players list section to filter out players with a specific status, so in this case, only players that are looking for a quick game. All icon images have their description displayed when hovering over them with mouse cursor.</p>
 		]]>
@@ -436,8 +436,8 @@
 
 <p>Forum is divided into sections. Section contains threads - discussions about some topic. There are 3 types of threads:</p>
 <ul>
-	<li>Sticky <img src="img/sticky.gif" width="22px" height="15x" alt="sticky" title="Sticky" class="icon" />- these are always at the top of the threads list</li>
-	<li>Important <img src="img/important.gif" width="18px" height="13px" alt="important" title="Important" class="icon" />- these are more important than other threads</li>
+	<li>Sticky <img class="icon" src="img/sticky.gif" width="22px" height="15x" alt="sticky" title="Sticky" />- these are always at the top of the threads list</li>
+	<li>Important <img class="icon" src="img/important.gif" width="18px" height="13px" alt="important" title="Important" />- these are more important than other threads</li>
 	<li>Normal - all other threads</li>
 </ul>
 
