@@ -180,17 +180,17 @@ td.stats > div + h5, td.minstats > div + h5 /* player and opponent names */
 
 td.stats > div:first-child /* quarry/bricks layout image */
 {
-	background-image: url('../img/game/bricks.jpg');
+	background-image: url('../img/game/bricks.png');
 }
 
 td.stats > div:first-child + div /* magic/gems layout image */
 {
-	background-image: url('../img/game/gems.jpg');
+	background-image: url('../img/game/gems.png');
 }
 
 td.stats > div:first-child + div + div /* dungeon/recruits layout image */
 {
-	background-image: url('../img/game/recruits.jpg');
+	background-image: url('../img/game/recruits.png');
 }
 
 td.stats > h5 > img, td.minstats > h5 > img /* flag image*/
@@ -277,7 +277,7 @@ div#chat_inputs > input[type="text"] /* chat message input */
 
 div.towerbody /* body part of the tower */
 {
-	background-image: url('../img/game/tower_body.jpg');
+	background-image: url('../img/game/tower_body.png');
 	background-position: bottom left;
 	background-repeat: repeat-y;
 	width: 37px;
@@ -285,7 +285,7 @@ div.towerbody /* body part of the tower */
 
 div.wallbody /* body part of the wall */
 {
-	background-image: url('../img/game/wall_body.jpg');
+	background-image: url('../img/game/wall_body.png');
 	background-position: bottom left;
 	background-repeat: repeat-y;
 	width: 19px;
