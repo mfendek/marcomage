@@ -49,30 +49,32 @@
 			</xsl:variable>
 			<xsl:copy-of select="am:htmlSelectBox('status_filter', $param/status_filter, $status_types, '')"/>
 
-			<!-- achievement sort (special sort option) -->
-			<xsl:variable name="achievement_types">
-				<value name="No achievement sort" value="none"         />
-				<value name="Quarry gained"       value="Quarry"       />
-				<value name="Magic gained"        value="Magic"        />
-				<value name="Dungeons gained"     value="Dungeons"     />
-				<value name="Rares played"        value="Rares"        />
-				<value name="Tower built"         value="Tower"        />
-				<value name="Wall built"          value="Wall"         />
-				<value name="Tower destroyed"     value="TowerDamage"  />
-				<value name="Wall destroyed"      value="WallDamage"   />
-				<value name="Assassin"            value="Assassin"     />
-				<value name="Builder"             value="Builder"      />
-				<value name="Carpenter"           value="Carpenter"    />
-				<value name="Collector"           value="Collector"    />
-				<value name="Desolator"           value="Desolator"    />
-				<value name="Dragon"              value="Dragon"       />
-				<value name="Gentle touch"        value="Gentle_touch" />
-				<value name="Saboteur"            value="Saboteur"     />
-				<value name="Snob"                value="Snob"         />
-				<value name="Survivor"            value="Survivor"     />
-				<value name="Titan"               value="Titan"        />
+			<!-- players list sort -->
+			<xsl:variable name="sort_types">
+				<value name="Level"           value="Level"        />
+				<value name="Username"        value="Username"     />
+				<value name="Country"         value="Country"      />
+				<value name="Quarry gained"   value="Quarry"       />
+				<value name="Magic gained"    value="Magic"        />
+				<value name="Dungeons gained" value="Dungeons"     />
+				<value name="Rares played"    value="Rares"        />
+				<value name="Tower built"     value="Tower"        />
+				<value name="Wall built"      value="Wall"         />
+				<value name="Tower destroyed" value="TowerDamage"  />
+				<value name="Wall destroyed"  value="WallDamage"   />
+				<value name="Assassin"        value="Assassin"     />
+				<value name="Builder"         value="Builder"      />
+				<value name="Carpenter"       value="Carpenter"    />
+				<value name="Collector"       value="Collector"    />
+				<value name="Desolator"       value="Desolator"    />
+				<value name="Dragon"          value="Dragon"       />
+				<value name="Gentle touch"    value="Gentle_touch" />
+				<value name="Saboteur"        value="Saboteur"     />
+				<value name="Snob"            value="Snob"         />
+				<value name="Survivor"        value="Survivor"     />
+				<value name="Titan"           value="Titan"        />
 			</xsl:variable>
-			<xsl:copy-of select="am:htmlSelectBox('achievement_sort', $param/achievement_sort, $achievement_types, '')"/>
+			<xsl:copy-of select="am:htmlSelectBox('players_sort', $param/players_sort, $sort_types, '')"/>
 
 			<button type="submit" name="filter_players">Apply filters</button>
 
@@ -100,26 +102,7 @@
 				
 				<xsl:for-each select="exsl:node-set($columns)/*">
 					<th>
-						<p>
-							<xsl:value-of select="@text"/>
-							<xsl:if test="@sortable = 'yes'">
-								<button type="submit" class="small_button" value="{@name}">
-									<xsl:if test="$param/condition = @name">
-										<xsl:attribute name="class">small_button pushed</xsl:attribute>
-									</xsl:if>
-									<xsl:choose>
-										<xsl:when test="$param/condition = @name and $param/order = 'DESC'">
-											<xsl:attribute name="name">players_ord_asc</xsl:attribute>
-											<xsl:text>\/</xsl:text>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:attribute name="name">players_ord_desc</xsl:attribute>
-											<xsl:text>/\</xsl:text>
-										</xsl:otherwise>
-									</xsl:choose>
-								</button>
-							</xsl:if>
-						</p>
+						<p><xsl:value-of select="@text"/></p>
 					</th>
 				</xsl:for-each>
 			</tr>
@@ -203,8 +186,6 @@
 		</div>
 
 		<input type ="hidden" name="CurrentPlayersPage" value="{$param/current_page}" />
-		<input type ="hidden" name="CurrentOrder" value="{$param/order}" />
-		<input type ="hidden" name="CurrentCondition" value="{$param/condition}" />
 
 	</div>
 </xsl:template>

@@ -2482,20 +2482,6 @@
 
 			// begin players related messages
 
-			$temp = array("asc" => "ASC", "desc" => "DESC");
-			foreach($temp as $type => $order_val)
-			{
-				if (isset($_POST['players_ord_'.$type])) // select ascending or descending order in players list
-				{
-					$_POST['CurrentCondition'] = $_POST['players_ord_'.$type];
-					$_POST['CurrentOrder'] = $order_val;
-					$_POST['achievement_sort'] = 'none'; // disable achievement sort option
-
-					$current = "Players";
-					break;
-				}
-			}
-
 			if (isset($_POST['filter_players'])) // use player filter in players list
 			{
 				$_POST['CurrentPlayersPage'] = 0;
@@ -3021,19 +3007,11 @@ case 'Concepts_details':
 case 'Players':	
 
 	// defaults for list ordering
-	if (!isset($_POST['CurrentOrder'])) $_POST['CurrentOrder'] = "DESC";
-	if (!isset($_POST['CurrentCondition'])) $_POST['CurrentCondition'] = "Level";
-	$params['players']['achievement_sort'] = $achievement_sort = (isset($_POST['achievement_sort'])) ? $_POST['achievement_sort'] : 'none';
+	$params['players']['players_sort'] = $condition = (isset($_POST['players_sort'])) ? $_POST['players_sort'] : 'Level';
 
-	// sort by achievement (special sort option)
-	if ($achievement_sort != 'none')
-	{
-		$_POST['CurrentOrder'] = 'DESC';
-		$_POST['CurrentCondition'] = $achievement_sort;
-	}
-
-	$params['players']['order'] = $order = $_POST['CurrentOrder'];
-	$params['players']['condition'] = $condition = $_POST['CurrentCondition'];
+	// choose correct sorting order
+	$asc_order = array('Country', 'Username');
+	$order = (in_array($condition, $asc_order)) ? 'ASC' : 'DESC';
 
 	$settings = $player->GetSettings();
 
