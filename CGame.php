@@ -1057,6 +1057,10 @@
 				$hisdata->Changes[$attribute]+= $hisdata->$attribute - $hisdata_temp[$attribute];
 			}
 			
+			// draw card by card effect)
+			if ($nextcard > 0)
+				$mydata->Hand[$cardpos] = $nextcard;
+			
 			$result = array();
 
 			// card data
@@ -1066,6 +1070,13 @@
 
 			// player data
 			$result['player']['name'] = $playername;
+
+			// calculate changes in hand
+			$hand_changes = array();
+			for ($i = 1; $i <= 8; $i++)
+				if ($myhand[$i] != $mydata->Hand[$i]) $hand_changes[$i] = $mydata->Hand[$i];
+
+			$result['player']['hand_changes'] = $hand_changes;
 
 			// game attributes
 			$my_attr = array();
@@ -1088,6 +1099,13 @@
 
 			// opponent data
 			$result['opponent']['name'] = $opponent;
+
+			// calculate changes in hand
+			$hand_changes = array();
+			for ($i = 1; $i <= 8; $i++)
+				if ($hishand[$i] != $hisdata->Hand[$i]) $hand_changes[$i] = $hisdata->Hand[$i];
+
+			$result['opponent']['hand_changes'] = $hand_changes;
 
 			// game attributes
 			$his_attr = array();

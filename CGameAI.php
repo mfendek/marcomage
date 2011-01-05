@@ -124,9 +124,10 @@
 			// determine playable cards
 			$playable_positions = array(); // 'card_position' => 'card modes'
 			$myhand = $mydata->Hand;
-			$handdata = $carddb->GetData($myhand);
+			$my_handdata = $carddb->GetData($myhand);
+			$his_handdata = $carddb->GetData($hisdata->Hand);
 
-			foreach( $handdata as $i => $card )
+			foreach( $my_handdata as $i => $card )
 				if ($mydata->Bricks >= $card['bricks'] and $mydata->Gems >= $card['gems'] and $mydata->Recruits >= $card['recruits'])
 					$playable_positions[] = $i;
 
@@ -140,7 +141,7 @@
 
 				foreach ($playable_positions as $pos)
 				{
-					$card = $handdata[$pos];
+					$card = $my_handdata[$pos];
 					$play_again = (strpos($card['keywords'], 'Quick') !== false or strpos($card['keywords'], 'Swift') !== false);
 
 					if ($card['modes'] > 0) $modes = array_keys(array_fill(1, $card['modes'], 0));
@@ -166,14 +167,43 @@
 						foreach ($his_attributes as $attr_name => $attr_value)
 							$points+= ($his_attributes[$attr_name] - $his_after[$attr_name]) * $ai_config['his'][$attr_name];
 
+						// add extra points in case of play again card
+						if ($play_again) $points+= 300;
+
+						// analyze rare cards in hand
+						$my_handchanges = $player_data['hand_changes'];
+						$his_handchanges = $opponent_data['hand_changes'];
+
+						// gain extra points if rare cards were added to player's hand (summoning related cards)
+						if (count($my_handchanges) > 0)
+							foreach ($my_handchanges as $card_pos => $cur_card)
+							{
+								$card_data = $carddb->GetCard($cur_card);
+								if ($card_data->GetClass() == 'Rare')
+									$points+= 150;
+							}
+
+						// gain extra points if rare cards were discarded from opponent's hand (discard related cards)
+						if (count($his_handchanges) > 0)
+							foreach ($his_handchanges as $card_pos => $cur_card)
+							{
+								$card_data = $his_handdata[$card_pos];
+								if ($card_data['class'] == 'Rare')
+								{
+									// determine how soon is opponent going to be able to play this card
+									$cost_needed = $card_data['bricks'] + $card_data['gems'] + $card_data['recruits'];
+									$cost_missing = max(0, $card_data['bricks'] - $his_attributes['Bricks']) + max(0, $card_data['gems'] - $his_attributes['Gems']) + max(0, $card_data['recruits'] - $his_attributes['Recruits']);
+
+									$play_ratio = ($cost_needed > 0 ) ? ($cost_needed - $cost_missing) / $cost_needed : 1;
+									$points+= 250 * $play_ratio;
+								}
+							}
+
 						// evaluate how efficiently was the stock spent
 						$stock_before = $my_attributes['Bricks'] + $my_attributes['Gems'] + $my_attributes['Recruits'];
 						$card_cost = $card['bricks'] + $card['gems'] + $card['recruits'];
 						$stock_ratio = ($stock_before > 0) ? $card_cost / $stock_before : 1;
 						$points+= $points * $stock_ratio;
-
-						// add extra points in case of play again card
-						if ($play_again) $points+= 300;
 
 						// check victory and loss conditions
 						$victory = ($his_after['Tower'] <= 0 or $my_after['Tower'] >= $max_tower or ($my_after['Bricks'] + $my_after['Gems'] + $my_after['Recruits']) >= $res_vic);
@@ -221,7 +251,7 @@
 			{
 				$rares = $rest = $selected = array();
 				// split cards into two groups based on rarity (rares and the rest)
-				foreach( $handdata as $i => $card )
+				foreach( $my_handdata as $i => $card )
 					if ($card['class'] == 'Rare') $rares[$i] = $card;
 					else $rest[$i] = $card;
 
@@ -244,7 +274,7 @@
 				foreach ($missing_res as $i => $missing)
 					if ($missing == $max)
 					{
-						$card_rarity = $handdata[$i]['class'];
+						$card_rarity = $my_handdata[$i]['class'];
 						$storage[$card_rarity][] = $i;
 					}
 

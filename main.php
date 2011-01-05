@@ -1491,7 +1491,7 @@
 						$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
 					}
 
-					$information = "You have played a card.";
+					$information = "AI move executed.";
 				}
 				else $error = $result;
 
