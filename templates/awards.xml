@@ -8,7 +8,7 @@
 	</award>
 	<award name="WallDamage" desc="inflict # wall damage to your opponent">
 		<achievement name="Invader" condition="50000" reward="20" />
-		<achievement name="Ransaker" condition="100000" reward="40" />
+		<achievement name="Ransacker" condition="100000" reward="40" />
 		<achievement name="Ravager" condition="150000" reward="60" />
 	</award>
 	<award name="Quarry" desc="increase your quarry by #">
