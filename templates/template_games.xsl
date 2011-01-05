@@ -136,6 +136,13 @@
 			</xsl:if>
 			<xsl:text>My games</xsl:text>
 		</a>
+
+		<a class="button" href="{php:functionString('makeurl', 'Games', 'subsection', 'ai_games')}">
+			<xsl:if test="$param/current_subsection = 'ai_games'">
+				<xsl:attribute name="class">button pushed</xsl:attribute>
+			</xsl:if>
+			<xsl:text>AI games</xsl:text>
+		</a>
 	</p>
 
 	<xsl:choose>
@@ -260,21 +267,10 @@
 					<xsl:if test="$param/LongFlag = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 				</input>
 				<button type="submit" name="host_game">Host game</button>
-				<button type="submit" name="ai_game">Play vs AI</button>
 			</p>
 			<p class="misc">
 				<span>Select deck</span>
-				<select name="SelectedDeck" size="1" title="your deck">
-					<xsl:if test="$param/RandomDeck = 'yes'">
-						<option value="{am:urlencode($param/random_deck)}">select random</option>
-					</xsl:if>
-					<xsl:for-each select="$param/decks/*">
-						<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
-					</xsl:for-each>
-				</select>
-				<span>Select AI deck</span>
-				<select name="SelectedAIDeck" size="1" title="AI deck (used only when playing against AI)">
-					<option value="starter_deck">starter deck</option>
+				<select name="SelectedDeck" size="1">
 					<xsl:if test="$param/RandomDeck = 'yes'">
 						<option value="{am:urlencode($param/random_deck)}">select random</option>
 					</xsl:if>
@@ -322,6 +318,48 @@
 
 		</xsl:when>
 		<!-- end hosted games subsection -->
+
+		<!-- begin subsection AI games -->
+		<xsl:when test="$param/current_subsection = 'ai_games'">
+
+		<!-- host new AI game interface -->
+		<xsl:if test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
+			<p class="misc">
+				<img class="icon" width="20px" height="14px" src="img/blind.png" alt="Hidden cards" title="Hidden cards" />
+				<input type="checkbox" name="HiddenMode">
+					<xsl:if test="$param/BlindFlag = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<img class="icon" width="20px" height="14px" src="img/long_mode.png" alt="Long mode" title="Long mode" />
+				<input type="checkbox" name="LongMode">
+					<xsl:if test="$param/LongFlag = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<button type="submit" name="ai_game">Create game</button>
+			</p>
+			<p class="misc" style="margin-bottom: 0.5ex">
+				<span>Select deck</span>
+				<select name="SelectedDeck" size="1" title="your deck">
+					<xsl:if test="$param/RandomDeck = 'yes'">
+						<option value="{am:urlencode($param/random_deck)}">select random</option>
+					</xsl:if>
+					<xsl:for-each select="$param/decks/*">
+						<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
+					</xsl:for-each>
+				</select>
+				<span>Select AI deck</span>
+				<select name="SelectedAIDeck" size="1" title="AI deck (used only when playing against AI)">
+					<option value="starter_deck">starter deck</option>
+					<xsl:if test="$param/RandomDeck = 'yes'">
+						<option value="{am:urlencode($param/random_deck)}">select random</option>
+					</xsl:if>
+					<xsl:for-each select="$param/decks/*">
+						<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
+					</xsl:for-each>
+				</select>
+			</p>
+		</xsl:if>
+
+		</xsl:when>
+		<!-- end AI games subsection -->
 	</xsl:choose>
 
 	</div>

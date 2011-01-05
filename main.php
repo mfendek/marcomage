@@ -1877,7 +1877,7 @@
 
 			if (isset($_POST['ai_game'])) // Games -> create AI game
 			{
-				$_POST['subsection'] = 'hosted_games';
+				$_POST['subsection'] = 'ai_games';
 
 				// check access rights
 				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
