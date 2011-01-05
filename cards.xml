@@ -4973,14 +4973,21 @@
     <effect><![CDATA[Replaces up to N common non-<b>Holy</b> keyword cards from opponent's hand with common <b>Holy</b><br />N = #<b>Holy</b> in hand (max 4)]]></effect>
     <code><![CDATA[
 						$count = min(4, $this->KeyWordCount($mydata->Hand, "Holy"));
+						$storage = array();
 						for ($i = 1; $i <= 8; $i++)
 						{
 							$cur_card = $carddb->GetCard($hisdata->Hand[$i]);
-							if ($cur_card->HasKeyword('any') AND !$cur_card->HasKeyword('Holy') AND $cur_card->GetClass() == 'Common' AND $count > 0)
+							if ($cur_card->HasKeyword('any') AND !$cur_card->HasKeyword('Holy') AND $cur_card->GetClass() == 'Common')
+								$storage[] = $i;
+						}
+						if (count($storage) > 0)
+						{
+							shuffle($storage);
+							for ($i = 0; ($i < count($storage)) AND ($i < $count); $i++)
 							{
-								$hisdata->Hand[$i] = $this->DrawCard($carddb->GetList(array('class'=>'Common', 'keyword'=>"Holy")), $hisdata->Hand, $i, 'DrawCard_list');
-								$hisdata->NewCards[$i] = 1;
-								$count--;
+								$cur_pos = $storage[$i];
+								$hisdata->Hand[$cur_pos] = $this->DrawCard($carddb->GetList(array('class'=>'Common', 'keyword'=>"Holy")), $hisdata->Hand, $cur_pos, 'DrawCard_list');
+								$hisdata->NewCards[$cur_pos] = 1;
 							}
 						}
 ]]></code>
