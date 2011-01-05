@@ -185,9 +185,18 @@ div#achievements table p /* achievements table spacing */
 	margin: 1ex;
 }
 
+div#achievements table table p /* achievement name */
+{
+	font-size: small;
+	font-weight: bold;
+	text-align: center;
+	margin-top: 0.5ex;
+	margin-bottom: 0.5ex;
+}
+
 div#achievements img.achievement /* achievement picture */
 {
-	margin: 0.5ex;
+	margin: 0.5ex 0.5ex 1ex 0.5ex;
 }
 
 /* end user achievements */

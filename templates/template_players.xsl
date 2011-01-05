@@ -521,6 +521,13 @@
 							<xsl:variable name="i" select="position()"/>
 							<xsl:for-each select="exsl:node-set($cur_tier)/*[position() &gt;= (($i - 1)*$columns + 1) and position() &lt;= $i*$columns]">
 								<td>
+									<p>
+										<xsl:if test="(count = '' and condition = 'yes') or (count != '' and count &gt;= condition)">
+											<!-- highlight gained achievement -->
+											<xsl:attribute name="class">info</xsl:attribute>
+										</xsl:if>
+										<xsl:value-of select="name"/>
+									</p>
 									<img class="achievement" height="100px" width="100px" alt="{name}" >
 									<xsl:choose>
 										<!-- case 1: final achievement -->
