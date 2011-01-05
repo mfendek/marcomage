@@ -175,7 +175,7 @@
 						$his_handchanges = $opponent_data['hand_changes'];
 
 						// gain extra points if rare cards were added to player's hand (summoning related cards)
-						if (count($my_handchanges) > 0)
+						if (is_array($my_handchanges))
 							foreach ($my_handchanges as $card_pos => $cur_card)
 							{
 								$card_data = $carddb->GetCard($cur_card);
@@ -184,7 +184,7 @@
 							}
 
 						// gain extra points if rare cards were discarded from opponent's hand (discard related cards)
-						if (count($his_handchanges) > 0)
+						if (is_array($his_handchanges))
 							foreach ($his_handchanges as $card_pos => $cur_card)
 							{
 								$card_data = $his_handdata[$card_pos];
