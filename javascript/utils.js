@@ -81,7 +81,7 @@ function RemoveCard(id) // remove card from deck via AJAX
 		var avg = result[1];
 
 		var slot = str.concat("#slot_", res_val);
-		var empty = '<div class="karta no_class zero_cost with_bgimage"><div class="null">0</div><h5>Empty</h5><img src="img/cards/g0.jpg" width="80px" height="60px" alt="" /><p></p><div></div></div>';
+		var empty = '<div class="karta no_class zero_cost with_bgimage"><div class="null">0</div><h5>Empty</h5><img src="img/cards/card_0.png" width="80px" height="60px" alt="" /><p></p><div></div></div>';
 
 		// move selected card to card pool
 		$(slot).removeAttr('onclick'); // disallow the card to be removed from the deck (prevent double clicks)
