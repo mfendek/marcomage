@@ -113,7 +113,9 @@
 					<xsl:if test="$param/show_avatars = 'yes'">
 						<td>
 							<xsl:if test="avatar != 'noavatar.jpg'">
-								<img class="avatar" height="60px" width="60px" src="img/avatars/{avatar}" alt="avatar" />
+								<a href="{php:functionString('makeurl', 'Players_details', 'Profile', name)}">
+									<img class="avatar" height="60px" width="60px" src="img/avatars/{avatar}" alt="avatar" />
+								</a>
 							</xsl:if>
 						</td>
 					</xsl:if>
