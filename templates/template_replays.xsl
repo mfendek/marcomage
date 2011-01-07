@@ -414,12 +414,14 @@
 				<td class="stats">
 					<div>
 						<p class="facility">
+							<xsl:attribute name="title">Quarry: <xsl:value-of select="$param/p1Quarry"/> (Facilities total: <xsl:value-of select="$param/p1Quarry + $param/p1Magic + $param/p1Dungeons"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p1Quarry"/>
 							<xsl:if test="$param/p1changes/Quarry != 0">
 								<span class="changes"><xsl:value-of select="$param/p1changes/Quarry"/></span>
 							</xsl:if>
 						</p>
 						<p class="resource">
+							<xsl:attribute name="title">Bricks: <xsl:value-of select="$param/p1Bricks"/> (Resources total: <xsl:value-of select="$param/p1Bricks + $param/p1Gems + $param/p1Recruits"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p1Bricks"/>
 							<xsl:if test="$param/p1changes/Bricks != 0">
 								<span class="changes"><xsl:value-of select="$param/p1changes/Bricks"/></span>
@@ -428,12 +430,14 @@
 					</div>
 					<div>
 						<p class="facility">
+							<xsl:attribute name="title">Magic: <xsl:value-of select="$param/p1Magic"/> (Facilities total: <xsl:value-of select="$param/p1Quarry + $param/p1Magic + $param/p1Dungeons"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p1Magic"/>
 							<xsl:if test="$param/p1changes/Magic != 0">
 								<span class="changes"><xsl:value-of select="$param/p1changes/Magic"/></span>
 							</xsl:if>
 						</p>
 						<p class="resource">
+							<xsl:attribute name="title">Gems: <xsl:value-of select="$param/p1Gems"/> (Resources total: <xsl:value-of select="$param/p1Bricks + $param/p1Gems + $param/p1Recruits"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p1Gems"/>
 							<xsl:if test="$param/p1changes/Gems != 0">
 								<span class="changes"><xsl:value-of select="$param/p1changes/Gems"/></span>
@@ -442,12 +446,14 @@
 					</div>
 					<div>
 						<p class="facility">
+							<xsl:attribute name="title">Dungeon: <xsl:value-of select="$param/p1Dungeons"/> (Facilities total: <xsl:value-of select="$param/p1Quarry + $param/p1Magic + $param/p1Dungeons"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p1Dungeons"/>
 							<xsl:if test="$param/p1changes/Dungeons != 0">
 								<span class="changes"><xsl:value-of select="$param/p1changes/Dungeons"/></span>
 							</xsl:if>
 						</p>
 						<p class="resource">
+							<xsl:attribute name="title">Recruits: <xsl:value-of select="$param/p1Recruits"/> (Resources total: <xsl:value-of select="$param/p1Bricks + $param/p1Gems + $param/p1Recruits"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p1Recruits"/>
 							<xsl:if test="$param/p1changes/Recruits != 0">
 								<span class="changes"><xsl:value-of select="$param/p1changes/Recruits"/></span>
@@ -457,16 +463,18 @@
 					<h5>
 						<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player1)}"><xsl:value-of select="$param/Player1"/></a>
 					</h5>
-					<p class="info_label">Tower: <span>
-						<xsl:value-of select="$param/p1Tower"/>
-						</span>
+					<p class="info_label">
+						<xsl:attribute name="title">Tower: <xsl:value-of select="$param/p1Tower"/> (Castle total: <xsl:value-of select="$param/p1Tower + $param/p1Wall"/>)</xsl:attribute>
+						<xsl:text>Tower: </xsl:text>
+						<span><xsl:value-of select="$param/p1Tower"/></span>
 						<xsl:if test="$param/p1changes/Tower != 0">
 							<span class="changes"><xsl:value-of select="$param/p1changes/Tower"/></span>
 						</xsl:if>
 					</p>
-					<p class="info_label">Wall: <span>
-						<xsl:value-of select="$param/p1Wall"/>
-						</span>
+					<p class="info_label">
+						<xsl:attribute name="title">Wall: <xsl:value-of select="$param/p1Wall"/> (Castle total: <xsl:value-of select="$param/p1Tower + $param/p1Wall"/>)</xsl:attribute>
+						<xsl:text>Wall: </xsl:text>
+						<span><xsl:value-of select="$param/p1Wall"/></span>
 						<xsl:if test="$param/p1changes/Wall != 0">
 							<span class="changes"><xsl:value-of select="$param/p1changes/Wall"/></span>
 						</xsl:if>
@@ -747,12 +755,14 @@
 				<td class="stats" align="right">
 					<div>
 						<p class="facility">
+							<xsl:attribute name="title">Quarry: <xsl:value-of select="$param/p2Quarry"/> (Facilities total: <xsl:value-of select="$param/p2Quarry + $param/p2Magic + $param/p2Dungeons"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p2Quarry"/>
 							<xsl:if test="$param/p2changes/Quarry != 0">
 								<span class="changes"><xsl:value-of select="$param/p2changes/Quarry"/></span>
 							</xsl:if>
 						</p>
 						<p class="resource">
+							<xsl:attribute name="title">Bricks: <xsl:value-of select="$param/p2Bricks"/> (Resources total: <xsl:value-of select="$param/p2Bricks + $param/p2Gems + $param/p2Recruits"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p2Bricks"/>
 							<xsl:if test="$param/p2changes/Bricks != 0">
 								<span class="changes"><xsl:value-of select="$param/p2changes/Bricks"/></span>
@@ -761,12 +771,14 @@
 					</div>
 					<div>
 						<p class="facility">
+							<xsl:attribute name="title">Magic: <xsl:value-of select="$param/p2Magic"/> (Facilities total: <xsl:value-of select="$param/p2Quarry + $param/p2Magic + $param/p2Dungeons"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p2Magic"/>
 							<xsl:if test="$param/p2changes/Magic != 0">
 								<span class="changes"><xsl:value-of select="$param/p2changes/Magic"/></span>
 							</xsl:if>
 						</p>
 						<p class="resource">
+							<xsl:attribute name="title">Gems: <xsl:value-of select="$param/p2Gems"/> (Resources total: <xsl:value-of select="$param/p2Bricks + $param/p2Gems + $param/p2Recruits"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p2Gems"/>
 							<xsl:if test="$param/p2changes/Gems != 0">
 								<span class="changes"><xsl:value-of select="$param/p2changes/Gems"/></span>
@@ -775,12 +787,14 @@
 					</div>
 					<div>
 						<p class="facility">
+							<xsl:attribute name="title">Dungeons: <xsl:value-of select="$param/p2Dungeons"/> (Facilities total: <xsl:value-of select="$param/p2Quarry + $param/p2Magic + $param/p2Dungeons"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p2Dungeons"/>
 							<xsl:if test="$param/p2changes/Dungeons != 0">
 								<span class="changes"><xsl:value-of select="$param/p2changes/Dungeons"/></span>
 							</xsl:if>
 						</p>
 						<p class="resource">
+							<xsl:attribute name="title">Recruits: <xsl:value-of select="$param/p2Recruits"/> (Resources total: <xsl:value-of select="$param/p2Bricks + $param/p2Gems + $param/p2Recruits"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p2Recruits"/>
 							<xsl:if test="$param/p2changes/Recruits != 0">
 								<span class="changes"><xsl:value-of select="$param/p2changes/Recruits"/></span>
@@ -790,16 +804,18 @@
 					<h5>
 						<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player2)}"><xsl:value-of select="$param/Player2"/></a>
 					</h5>
-					<p class="info_label">Tower: <span>
-						<xsl:value-of select="$param/p2Tower"/>
-						</span>
+					<p class="info_label">
+						<xsl:attribute name="title">Tower: <xsl:value-of select="$param/p2Tower"/> (Castle total: <xsl:value-of select="$param/p2Tower + $param/p2Wall"/>)</xsl:attribute>
+						<xsl:text>Tower: </xsl:text>
+						<span><xsl:value-of select="$param/p2Tower"/></span>
 						<xsl:if test="$param/p2changes/Tower != 0">
 							<span class="changes"><xsl:value-of select="$param/p2changes/Tower"/></span>
 						</xsl:if>
 					</p>
-					<p class="info_label">Wall: <span>
-						<xsl:value-of select="$param/p2Wall"/>
-						</span>
+					<p class="info_label">
+						<xsl:attribute name="title">Wall: <xsl:value-of select="$param/p2Wall"/> (Castle total: <xsl:value-of select="$param/p2Tower + $param/p2Wall"/>)</xsl:attribute>
+						<xsl:text>Wall: </xsl:text>
+						<span><xsl:value-of select="$param/p2Wall"/></span>
 						<xsl:if test="$param/p2changes/Wall != 0">
 							<span class="changes"><xsl:value-of select="$param/p2changes/Wall"/></span>
 						</xsl:if>
@@ -1082,12 +1098,14 @@
 				<td class="stats">
 					<div>
 						<p class="facility">
+							<xsl:attribute name="title">Quarry: <xsl:value-of select="$param/p1Quarry"/> (Facilities total: <xsl:value-of select="$param/p1Quarry + $param/p1Magic + $param/p1Dungeons"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p1Quarry"/>
 							<xsl:if test="$param/p1changes/Quarry != 0">
 								<span class="changes"><xsl:value-of select="$param/p1changes/Quarry"/></span>
 							</xsl:if>
 						</p>
 						<p class="resource">
+							<xsl:attribute name="title">Bricks: <xsl:value-of select="$param/p1Bricks"/> (Resources total: <xsl:value-of select="$param/p1Bricks + $param/p1Gems + $param/p1Recruits"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p1Bricks"/>
 							<xsl:if test="$param/p1changes/Bricks != 0">
 								<span class="changes"><xsl:value-of select="$param/p1changes/Bricks"/></span>
@@ -1096,12 +1114,14 @@
 					</div>
 					<div>
 						<p class="facility">
+							<xsl:attribute name="title">Magic: <xsl:value-of select="$param/p1Magic"/> (Facilities total: <xsl:value-of select="$param/p1Quarry + $param/p1Magic + $param/p1Dungeons"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p1Magic"/>
 							<xsl:if test="$param/p1changes/Magic != 0">
 								<span class="changes"><xsl:value-of select="$param/p1changes/Magic"/></span>
 							</xsl:if>
 						</p>
 						<p class="resource">
+							<xsl:attribute name="title">Gems: <xsl:value-of select="$param/p1Gems"/> (Resources total: <xsl:value-of select="$param/p1Bricks + $param/p1Gems + $param/p1Recruits"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p1Gems"/>
 							<xsl:if test="$param/p1changes/Gems != 0">
 								<span class="changes"><xsl:value-of select="$param/p1changes/Gems"/></span>
@@ -1110,12 +1130,14 @@
 					</div>
 					<div>
 						<p class="facility">
+							<xsl:attribute name="title">Dungeon: <xsl:value-of select="$param/p1Dungeons"/> (Facilities total: <xsl:value-of select="$param/p1Quarry + $param/p1Magic + $param/p1Dungeons"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p1Dungeons"/>
 							<xsl:if test="$param/p1changes/Dungeons != 0">
 								<span class="changes"><xsl:value-of select="$param/p1changes/Dungeons"/></span>
 							</xsl:if>
 						</p>
 						<p class="resource">
+							<xsl:attribute name="title">Recruits: <xsl:value-of select="$param/p1Recruits"/> (Resources total: <xsl:value-of select="$param/p1Bricks + $param/p1Gems + $param/p1Recruits"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p1Recruits"/>
 							<xsl:if test="$param/p1changes/Recruits != 0">
 								<span class="changes"><xsl:value-of select="$param/p1changes/Recruits"/></span>
@@ -1125,16 +1147,18 @@
 					<h5>
 						<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player1)}"><xsl:value-of select="$param/Player1"/></a>
 					</h5>
-					<p class="info_label">Tower: <span>
-						<xsl:value-of select="$param/p1Tower"/>
-						</span>
+					<p class="info_label">
+						<xsl:attribute name="title">Tower: <xsl:value-of select="$param/p1Tower"/> (Castle total: <xsl:value-of select="$param/p1Tower + $param/p1Wall"/>)</xsl:attribute>
+						<xsl:text>Tower: </xsl:text>
+						<span><xsl:value-of select="$param/p1Tower"/></span>
 						<xsl:if test="$param/p1changes/Tower != 0">
 							<span class="changes"><xsl:value-of select="$param/p1changes/Tower"/></span>
 						</xsl:if>
 					</p>
-					<p class="info_label">Wall: <span>
-						<xsl:value-of select="$param/p1Wall"/>
-						</span>
+					<p class="info_label">
+						<xsl:attribute name="title">Wall: <xsl:value-of select="$param/p1Wall"/> (Castle total: <xsl:value-of select="$param/p1Tower + $param/p1Wall"/>)</xsl:attribute>
+						<xsl:text>Wall: </xsl:text>
+						<span><xsl:value-of select="$param/p1Wall"/></span>
 						<xsl:if test="$param/p1changes/Wall != 0">
 							<span class="changes"><xsl:value-of select="$param/p1changes/Wall"/></span>
 						</xsl:if>
@@ -1415,12 +1439,14 @@
 				<td class="stats" align="right">
 					<div>
 						<p class="facility">
+							<xsl:attribute name="title">Quarry: <xsl:value-of select="$param/p2Quarry"/> (Facilities total: <xsl:value-of select="$param/p2Quarry + $param/p2Magic + $param/p2Dungeons"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p2Quarry"/>
 							<xsl:if test="$param/p2changes/Quarry != 0">
 								<span class="changes"><xsl:value-of select="$param/p2changes/Quarry"/></span>
 							</xsl:if>
 						</p>
 						<p class="resource">
+							<xsl:attribute name="title">Bricks: <xsl:value-of select="$param/p2Bricks"/> (Resources total: <xsl:value-of select="$param/p2Bricks + $param/p2Gems + $param/p2Recruits"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p2Bricks"/>
 							<xsl:if test="$param/p2changes/Bricks != 0">
 								<span class="changes"><xsl:value-of select="$param/p2changes/Bricks"/></span>
@@ -1429,12 +1455,14 @@
 					</div>
 					<div>
 						<p class="facility">
+							<xsl:attribute name="title">Magic: <xsl:value-of select="$param/p2Magic"/> (Facilities total: <xsl:value-of select="$param/p2Quarry + $param/p2Magic + $param/p2Dungeons"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p2Magic"/>
 							<xsl:if test="$param/p2changes/Magic != 0">
 								<span class="changes"><xsl:value-of select="$param/p2changes/Magic"/></span>
 							</xsl:if>
 						</p>
 						<p class="resource">
+							<xsl:attribute name="title">Gems: <xsl:value-of select="$param/p2Gems"/> (Resources total: <xsl:value-of select="$param/p2Bricks + $param/p2Gems + $param/p2Recruits"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p2Gems"/>
 							<xsl:if test="$param/p2changes/Gems != 0">
 								<span class="changes"><xsl:value-of select="$param/p2changes/Gems"/></span>
@@ -1443,12 +1471,14 @@
 					</div>
 					<div>
 						<p class="facility">
+							<xsl:attribute name="title">Dungeons: <xsl:value-of select="$param/p2Dungeons"/> (Facilities total: <xsl:value-of select="$param/p2Quarry + $param/p2Magic + $param/p2Dungeons"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p2Dungeons"/>
 							<xsl:if test="$param/p2changes/Dungeons != 0">
 								<span class="changes"><xsl:value-of select="$param/p2changes/Dungeons"/></span>
 							</xsl:if>
 						</p>
 						<p class="resource">
+							<xsl:attribute name="title">Recruits: <xsl:value-of select="$param/p2Recruits"/> (Resources total: <xsl:value-of select="$param/p2Bricks + $param/p2Gems + $param/p2Recruits"/>)</xsl:attribute>
 							<xsl:value-of select="$param/p2Recruits"/>
 							<xsl:if test="$param/p2changes/Recruits != 0">
 								<span class="changes"><xsl:value-of select="$param/p2changes/Recruits"/></span>
@@ -1458,16 +1488,18 @@
 					<h5>
 						<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player2)}"><xsl:value-of select="$param/Player2"/></a>
 					</h5>
-					<p class="info_label">Tower: <span>
-						<xsl:value-of select="$param/p2Tower"/>
-						</span>
+					<p class="info_label">
+						<xsl:attribute name="title">Tower: <xsl:value-of select="$param/p2Tower"/> (Castle total: <xsl:value-of select="$param/p2Tower + $param/p2Wall"/>)</xsl:attribute>
+						<xsl:text>Tower: </xsl:text>
+						<span><xsl:value-of select="$param/p2Tower"/></span>
 						<xsl:if test="$param/p2changes/Tower != 0">
 							<span class="changes"><xsl:value-of select="$param/p2changes/Tower"/></span>
 						</xsl:if>
 					</p>
-					<p class="info_label">Wall: <span>
-						<xsl:value-of select="$param/p2Wall"/>
-						</span>
+					<p class="info_label">
+						<xsl:attribute name="title">Wall: <xsl:value-of select="$param/p2Wall"/> (Castle total: <xsl:value-of select="$param/p2Tower + $param/p2Wall"/>)</xsl:attribute>
+						<xsl:text>Wall: </xsl:text>
+						<span><xsl:value-of select="$param/p2Wall"/></span>
 						<xsl:if test="$param/p2changes/Wall != 0">
 							<span class="changes"><xsl:value-of select="$param/p2changes/Wall"/></span>
 						</xsl:if>
