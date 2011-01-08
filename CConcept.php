@@ -190,6 +190,9 @@
 			// check card cost - value validity (cannot have 3 different values)
 			if (($data['bricks'] > 0) AND ($data['gems'] > 0) AND ($data['recruits'] > 0) AND !(($data['bricks'] == $data['gems']) AND ($data['gems'] == $data['recruits']))) $error = "Invalid cost input";
 
+			// check state
+			if (!in_array($data['state'], array('waiting','rejected','interesting','implemented'))) $error = "Invalid concept state";
+
 			// check input length
 			if (strlen($data['effect']) > EFFECT_LENGTH) $error = "Card effect text is too long";
 			if (count(explode("\n", $data['effect'])) > EFFECT_LINES) $error = "Card effect text has too many lines";

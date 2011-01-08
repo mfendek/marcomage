@@ -1049,6 +1049,9 @@
 
 				$new_priority = ((isset($_POST['Priority'])) ? $_POST['Priority'] : $thread_data['Priority']);
 
+				// validate priority
+				if (isset($_POST['Priority']) and !in_array($_POST['Priority'], array('normal','important','sticky'))) { $error = "Invalid thread priority."; $current = 'Forum_thread_edit'; break; }
+
 				$edited_thread = $forum->Threads->EditThread($thread_id, $_POST['Title'], $new_priority);
 				if (!$edited_thread) { $error = "Failed to edit thread"; $current = "Forum_thread"; break; }
 
@@ -2377,6 +2380,9 @@
 				// check access rights
 				if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
 
+				// validate player type
+				if (isset($_POST['new_access']) and !in_array($_POST['new_access'], array('user','moderator','supervisor','admin','squashed','limited','banned'))) { $error = "Invalid user type."; $current = 'Players_details'; break; }
+
 				$target = $playerdb->GetPlayer($opponent);
 				$target->ChangeAccessRights($_POST['new_access']);
 
@@ -2505,6 +2511,15 @@
 			if (isset($_POST['user_settings'])) // upload user settings
 			{
 				if (strlen($_POST['Hobby']) > HOBBY_LENGTH) { $_POST['Hobby'] = substr($_POST['Hobby'], 0, HOBBY_LENGTH); $warning = "Hobby text is too long"; }
+
+				// validate player status
+				if (isset($_POST['Status']) and !in_array($_POST['Status'], array('newbie','ready','quick','dnd','none'))) { $_POST['Status'] = 'none'; $warning = "Invalid player status."; }
+
+				// validate default player filter setting
+				if (isset($_POST['DefaultFilter']) and !in_array($_POST['DefaultFilter'], array('none','active','offline','all'))) { $_POST['DefaultFilter'] = 'none'; $warning = "Invalid player filter."; }
+
+				// validate gender setting
+				if (isset($_POST['Gender']) and !in_array($_POST['Gender'], array('none','male','female'))) { $_POST['Gender'] = 'none'; $warning = "Invalid gender setting."; }
 
 				$settings = $player->GetSettings();
 				$bool_settings = $settings->ListBooleanSettings();
