@@ -220,7 +220,6 @@ CREATE TABLE `settings` (
   `BlindFlag` tinyint(1) NOT NULL DEFAULT '0',
   `LongFlag` tinyint(1) NOT NULL DEFAULT '0',
   `Timezone` char(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-  `Minimize` tinyint(1) NOT NULL DEFAULT '0',
   `Images` tinyint(1) NOT NULL DEFAULT '1',
   `Insignias` tinyint(1) NOT NULL DEFAULT '1',
   `CardPool` tinyint(1) NOT NULL DEFAULT '0',

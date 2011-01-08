@@ -3406,7 +3406,6 @@ case 'Games_details':
 	$params['game']['c_insignias'] = $settings->GetSetting('Insignias');
 	$params['game']['c_miniflags'] = $settings->GetSetting('Miniflags');
 
-	$params['game']['minimize'] = $settings->GetSetting('Minimize');
 	$params['game']['mycountry'] = $settings->GetSetting('Country');
 	$params['game']['hiscountry'] = $o_settings->GetSetting('Country');
 	$params['game']['timezone'] = $settings->GetSetting('Timezone');
@@ -3850,7 +3849,6 @@ case 'Replays_details':
 	$params['replay']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 	$params['replay']['c_insignias'] = $settings->GetSetting('Insignias');
 	$params['replay']['c_miniflags'] = $settings->GetSetting('Miniflags');
-	$params['replay']['minimize'] = $settings->GetSetting('Minimize');
 	$params['replay']['Background'] = $settings->GetSetting('Background');
 
 	$params['replay']['turns'] = $replay->NumberOfTurns();
@@ -4028,7 +4026,6 @@ case 'Replays_history':
 	$params['replays_history']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 	$params['replays_history']['c_insignias'] = $settings->GetSetting('Insignias');
 	$params['replays_history']['c_miniflags'] = $settings->GetSetting('Miniflags');
-	$params['replays_history']['minimize'] = $settings->GetSetting('Minimize');
 	$params['replays_history']['Background'] = $settings->GetSetting('Background');
 
 	$params['replays_history']['turns'] = $turns;

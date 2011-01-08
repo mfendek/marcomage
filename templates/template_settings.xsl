@@ -340,16 +340,6 @@
 			</p>
 
 			<p>
-				<input type="checkbox" name="Minimize">
-					<xsl:if test="$settings/Minimize = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
-				</input>
-				<span>
-					<xsl:attribute name="title">remove emipre info graphics in the Game section to reduce screen space</xsl:attribute>
-					<xsl:text>Minimized game view</xsl:text>
-				</span>
-			</p>
-
-			<p>
 				<input type="checkbox" name="Images">
 					<xsl:if test="$settings/Images = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 				</input>

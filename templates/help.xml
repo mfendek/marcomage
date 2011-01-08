@@ -519,7 +519,6 @@
 	<li>Auto refresh - activate automatic refresh in the Games list section, which is based on the selected value</li>
 	<li>Cards per row - specify how many cards will fit into one row of the card pool in the deck editor</li>
 	<li>Advanced games list - display Last seen (opponent) and Last game action (game) dates in the Games list section</li>
-	<li>Minimized game view - remove emipre info graphics in the Game section to reduce screen space</li>
 	<li>Show card images - display card image (turn off on slow internet connection)</li>
 	<li>Show keyword insignias - display card keywords in form of an insignia instead of text form</li>
 	<li>Hide card pool - card pool will be hidden by default in the deck editor</li>

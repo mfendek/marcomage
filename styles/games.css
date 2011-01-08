@@ -170,7 +170,7 @@ td.stats > div /* facilites/resources layout */
 	text-align: left;
 }
 
-td.stats > div + h5, td.minstats > div + h5 /* player and opponent names */
+td.stats > div + h5 /* player and opponent names */
 {
 	font-weight: bold;
 	margin: 1ex 0ex 0.5ex 0ex;
@@ -193,7 +193,7 @@ td.stats > div:first-child + div + div /* dungeon/recruits layout image */
 	background-image: url('../img/game/recruits.png');
 }
 
-td.stats > h5 > img, td.minstats > h5 > img /* flag image*/
+td.stats > h5 > img /* flag image*/
 {
 	margin-left: 0.5ex;
 	margin-right: 0.5ex;
@@ -204,12 +204,6 @@ span.changes /* attributes changes layout */
 	margin-left: 0.3ex;
 	font-size: x-small;
 	font-weight: normal;
-}
-
-td.minstats > div /* minimized game view layout */
-{
-	text-align: center;
-	font-size: small;
 }
 
 p.info_label /* information label used in multiple instances in game section */
