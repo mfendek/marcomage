@@ -365,8 +365,7 @@
 		<div class="thread_bar skin_label">
 			<h5>
 				<a href="{php:functionString('makeurl', 'Forum_section', 'CurrentSection', $section/SectionID)}"><xsl:value-of select="$section/SectionName"/></a>
-				<xsl:text> - </xsl:text>
-				<xsl:value-of select="$thread/Title"/>
+				<a href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', $thread/ThreadID, 'CurrentPage', $param/CurrentPage)}"><xsl:value-of select="$thread/Title" /></a>
 				<xsl:if test="$thread/Locked = 'yes'">
 					<img src="img/locked.gif" width="15px" height="16px" alt="locked" title="Locked" class="icon" />
 				</xsl:if>
