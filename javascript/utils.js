@@ -1,10 +1,11 @@
 // MArcomage JavaScript support functions
 
-function Refresh() // refresh user screen
+function Refresh() // refresh user screen (top-level sections only)
 {
 	// do not use window.location.reload() because it may cause redundant POST request
-	// do not use direct assing to window.location.href because each reload will be stored in browsing history
-	window.location.replace(window.location.href);
+	// do not use direct assigning to window.location.href because each reload will be stored in browsing history
+	// do not use window.location.href as a source, because it may contain garbage
+	window.location.replace($('div#menu_center > a.pushed').attr('href'));
 }
 
 function GameRefresh() // refresh user screen within the game
