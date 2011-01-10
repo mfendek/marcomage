@@ -68,9 +68,9 @@
 			$dynamic['mine']['Tower'] = ($mydata->Tower <= 20) ? 1.5 : (($mydata->Tower >= ($max_tower - 20)) ? 1.5 : 1);
 			$dynamic['mine']['Wall'] = ($mydata->Wall <= 15) ? 1.5 : 1;
 
-			$dynamic['his']['Quarry'] = ($mydata->Quarry == 1) ? 0 : (($mydata->Quarry > 4) ? 0.7 : 1);
-			$dynamic['his']['Magic'] = ($mydata->Magic == 1) ? 0 : (($mydata->Magic > 4) ? 0.7 : 1);
-			$dynamic['his']['Dungeons'] = ($mydata->Dungeons == 1) ? 0 : (($mydata->Dungeons > 4) ? 0.7 : 1);
+			$dynamic['his']['Quarry'] = ($hisdata->Quarry <= 3) ? 1.5 : (($hisdata->Quarry > 4) ? 0.7 : 1);
+			$dynamic['his']['Magic'] = ($hisdata->Magic <= 3) ? 1.5 : (($hisdata->Magic > 4) ? 0.7 : 1);
+			$dynamic['his']['Dungeons'] = ($hisdata->Dungeons <= 3) ? 1.5 : (($hisdata->Dungeons > 4) ? 0.7 : 1);
 			$dynamic['his']['Bricks'] = ($hisdata->Bricks <= 6) ? 1.2 : 1;
 			$dynamic['his']['Gems'] = ($hisdata->Gems <= 6) ? 1.2 : 1;
 			$dynamic['his']['Recruits'] = ($hisdata->Recruits <= 6) ? 1.2 : 1;
