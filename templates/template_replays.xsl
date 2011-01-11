@@ -273,7 +273,13 @@
 	<!-- display supportive information -->
 	<xsl:choose>
 		<xsl:when test="$current = $turns">
-			<p class="information_line info"><xsl:value-of select="$param/Winner"/> has won in round <xsl:value-of select="$param/Round"/> (turn <xsl:value-of select="$current"/>). <xsl:value-of select="$param/Outcome"/>.</p>
+			<p class="information_line info">
+				<xsl:choose>
+					<xsl:when test="$param/Winner != ''"><xsl:value-of select="$param/Winner"/> has won in round <xsl:value-of select="$param/Round"/> (turn <xsl:value-of select="$current"/>). <xsl:value-of select="$param/Outcome"/>.</xsl:when>
+					<xsl:when test="($param/Winner = '') and ($param/EndType = 'Draw')">Game ended in a draw in round <xsl:value-of select="$param/Round"/> (turn <xsl:value-of select="$current"/>).</xsl:when>
+					<xsl:when test="($param/Winner = '') and ($param/EndType = 'Abort')">Game was aborted in round <xsl:value-of select="$param/Round"/> (turn <xsl:value-of select="$current"/>).</xsl:when>
+				</xsl:choose>
+			</p>
 		</xsl:when>
 		<xsl:otherwise>
 			<p class="information_line info">Round <xsl:value-of select="$param/Round"/> (turn <xsl:value-of select="$current"/> of <xsl:value-of select="$turns"/>)</p>
