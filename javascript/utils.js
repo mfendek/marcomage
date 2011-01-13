@@ -431,6 +431,11 @@ $(document).ready(function() {
 		return confirm("All selected messages will be deleted. Are you sure you want to continue?");
 	});
 
+	// start discussion confirmation
+	$("button[name='card_thread'], button[name='concept_thread'], button[name='replay_thread']").click(function() {
+		return confirm("Are you sure you want to start a discussion?");
+	});
+
 	// open game note
 	$("a#game_note").click(function(event) {
 		 event.preventDefault();
