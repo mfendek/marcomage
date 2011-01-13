@@ -8,7 +8,7 @@ div#cards /* cards section layout */
 	text-align: center;
 }
 
-div#cards > h3, div#cards_details > h3 /* cards heading layout */
+div#cards_details > h3 /* cards heading layout */
 {
 	margin: 0ex;
 }

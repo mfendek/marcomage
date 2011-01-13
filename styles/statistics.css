@@ -18,11 +18,6 @@ div#statistics p /* set distance between separate lines */
 	margin-top: 0.5ex;
 }
 
-div#statistics h3 /* section heading */
-{
-	margin: 0ex;
-}
-
 div#statistics h4 /* column heading */
 {
 	margin-top: 1ex;

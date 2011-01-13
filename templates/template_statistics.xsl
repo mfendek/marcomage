@@ -16,8 +16,6 @@
 	<xsl:variable name="param" select="$params/statistics" />
 
 <div id="statistics">
-	<h3>Statistics</h3>
-
 	<!-- subsection navigation -->
 	<div class="filters">
 		<xsl:variable name="types">

@@ -16,8 +16,6 @@
 	<xsl:variable name="param" select="$params/cards" />
 
 <div id="cards">
-		<h3>Cards</h3>
-
 		<div id="cards_table">
 
 		<!-- begin buttons and filters -->

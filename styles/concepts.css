@@ -10,7 +10,7 @@ div#concepts /* concepts section layout */
 	text-align: center;
 }
 
-div#concepts > h3, div#concepts_edit > h3 /* concepts heading layout */
+div#concepts_edit > h3 /* concepts heading layout */
 {
 	margin: 0ex;
 }

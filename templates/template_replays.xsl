@@ -17,8 +17,6 @@
 	<xsl:variable name="param" select="$params/replays" />
 
 	<div id="games">
-
-	<h3>Game replays</h3>
 	<!-- begin filters and navigation -->
 	<div class="filters">
 		<!-- player filter -->
