@@ -19,8 +19,6 @@
 	<xsl:variable name="param" select="$params/forum_overview" />
 
 	<div id="forum">
-	<h3>MArcomage discussion forum</h3>
-	<h4>Sections list</h4>
 
 	<div class="skin_text">
 	<table cellspacing="0" cellpadding="0">
@@ -109,9 +107,6 @@
 
 	<div id="forum">
 
-	<h3>MArcomage discussion forum</h3>
-	<h4>Search</h4>
-	
 	<div class="filters">
 		<input type="text" name="phrase" maxlength="50" size="30" value="{$param/phrase}" title="search phrase" />
 
@@ -245,9 +240,6 @@
 
 	<div id="forum">
 
-	<h3>MArcomage discussion forum</h3>
-	<h4>Section details</h4>
-
 	<div class="skin_text">
 
 	<table cellspacing="0" cellpadding="0">
@@ -356,15 +348,12 @@
 	<xsl:variable name="can_modify" select="$thread/Locked = 'no' or $param/lock_thread = 'yes'"/>
 
 	<div id="thread_details">
-		
-	<h3>MArcomage discussion forum</h3>
-		
-	<h4>Thread details</h4>
 
 	<xsl:variable name="nav_bar">
 		<div class="thread_bar skin_label">
 			<h5>
 				<a href="{php:functionString('makeurl', 'Forum_section', 'CurrentSection', $section/SectionID)}"><xsl:value-of select="$section/SectionName"/></a>
+				<span>&gt;</span>
 				<a href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', $thread/ThreadID, 'CurrentPage', $param/CurrentPage)}"><xsl:value-of select="$thread/Title" /></a>
 				<xsl:if test="$thread/Locked = 'yes'">
 					<img src="img/locked.gif" width="15px" height="16px" alt="locked" title="Locked" class="icon" />
@@ -542,7 +531,7 @@
 
 	<div id="forum_new_edit">
 
-	<h3>New post in thread - <span><xsl:value-of select="$thread/Title"/></span></h3>
+	<h3>New post in thread <span><xsl:value-of select="$thread/Title"/></span></h3>
 
 	<div class="skin_text">
 	

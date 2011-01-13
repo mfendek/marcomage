@@ -11,20 +11,9 @@ div#forum /* forum layout */
 	min-width: 1045px;
 }
 
-div#forum h4 + div /* forum content layout */
+div#forum > div /* forum content layout */
 {
 	margin: 2ex 1ex 1ex 1ex;
-}
-
-div#forum > h3 /* forum title layout */
-{
-	margin: 0ex;
-}
-
-div#forum > h4 /* forum subtitle layout */
-{
-	margin: 0ex;
-	font-size: large;
 }
 
 div#forum a /* standard hyperlink */
@@ -175,7 +164,7 @@ div.thread_bar /* thread navigation menu layout (top and bottom) */
 div.thread_bar > h5 /* thread navigation menu - heading description */
 {
 	float: left;
-	width: 35%;
+	width: 50%;
 	font-size: medium;
 	text-align: left;
 	margin: 1ex 0ex 1ex 1ex;
@@ -184,9 +173,13 @@ div.thread_bar > h5 /* thread navigation menu - heading description */
 div.thread_bar > h5 > a  /* thread navigation menu - heading text */
 {
 	font-size: large;
-	margin-left: 1ex;
 	text-decoration: none;
 	color: inherit;
+}
+
+div.thread_bar > h5 > *  /* thread navigation menu - spacing */
+{
+	margin-left: 1ex;
 }
 
 div.thread_bar:hover > h5 > a  /* thread navigation menu - hover layot */
@@ -197,7 +190,7 @@ div.thread_bar:hover > h5 > a  /* thread navigation menu - hover layot */
 div.thread_bar > p /* thread navigation menu - right part with buttons */
 {
 	float: right;
-	width: 62%;
+	width: 47%;
 	text-align: right;
 	margin: 1ex 1ex 1ex 0ex;
 }
