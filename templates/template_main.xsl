@@ -44,6 +44,10 @@
 	<link rel="stylesheet" href="styles/skins/skin{$param/skin}.css" type="text/css" title="standard style" />
 	<link rel="icon" href="img/favicon.png" type="image/png" />
 	<title>
+		<xsl:if test="$param/subsection != ''">
+			<xsl:value-of select="$param/subsection" />
+			<xsl:text> - </xsl:text>
+		</xsl:if>
 		<xsl:if test="$section_name != ''">
 			<xsl:value-of select="$section_name" />
 			<xsl:if test="$section_name = 'Games' and $param/current_games &gt; 0"> (<xsl:value-of select="$param/current_games" />)</xsl:if>

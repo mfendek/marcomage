@@ -2827,7 +2827,7 @@ switch( $current )
 case 'Webpage':
 	// decide what screen is default (depends on whether the user is logged in)
 	$default_page = ( !$session ) ? 'Main' : 'News';
-	$params['webpage']['selected'] = $selected = isset($_POST['WebSection']) ? $_POST['WebSection'] : $default_page;
+	$params['webpage']['selected'] = $subsection_name = $selected = isset($_POST['WebSection']) ? $_POST['WebSection'] : $default_page;
 
 	$websections = array('Main', 'News', 'Archive', 'Modified', 'Faq', 'Credits', 'History');
 	if (!in_array($selected, $websections)) { $display_error = 'Invalid web section.'; break; }
@@ -2847,7 +2847,7 @@ case 'Webpage':
 
 
 case 'Help':
-	$params['help']['part'] = (isset($_POST['help_part'])) ? $_POST['help_part'] : 'Introduction';
+	$params['help']['part'] = $subsection_name = (isset($_POST['help_part'])) ? $_POST['help_part'] : 'Introduction';
 
 	break;
 
@@ -2909,7 +2909,7 @@ case 'Decks_edit':
 	foreach (array('Common', 'Uncommon', 'Rare') as $class)
 		$params['deck_edit']['DeckCards'][$class] = $carddb->GetData($deck->DeckData->$class);
 
-	$params['deck_edit']['deckname'] = $deck->Deckname();
+	$params['deck_edit']['deckname'] = $subsection_name = $deck->Deckname();
 	$params['deck_edit']['wins'] = $deck->Wins;
 	$params['deck_edit']['losses'] = $deck->Losses;
 	$params['deck_edit']['draws'] = $deck->Draws;
@@ -2966,6 +2966,7 @@ case 'Concepts':
 case 'Concepts_new':
 	$params['concepts_new']['data'] = (isset($data)) ? $data : array();
 	$params['concepts_new']['stored'] = (isset($data)) ? 'yes' : 'no';
+	$subsection_name = "New concept";
 
 	break;
 
@@ -2991,6 +2992,7 @@ case 'Concepts_edit':
 	$settings = $player->GetSettings();
 	$params['concepts_edit']['c_img'] = $settings->GetSetting('Images');
 	$params['concepts_edit']['c_oldlook'] = $settings->GetSetting('OldCardLook');
+	$subsection_name = $data['name'];
 
 	break;
 
@@ -3015,6 +3017,7 @@ case 'Concepts_details':
 	$settings = $player->GetSettings();
 	$params['concepts_details']['c_img'] = $settings->GetSetting('Images');
 	$params['concepts_details']['c_oldlook'] = $settings->GetSetting('OldCardLook');
+	$subsection_name = $data['name'];
 
 	break;
 
@@ -3096,7 +3099,7 @@ case 'Players_details':
 	$p_settings = $p->GetSettings();
 	$score = $scoredb->GetScore($cur_player);
 
-	$params['profile']['PlayerName'] = $p->Name();
+	$params['profile']['PlayerName'] = $subsection_name = $p->Name();
 	$params['profile']['PlayerType'] = $p->Type();
 	$params['profile']['LastQuery'] = $p->LastQuery();
 	$params['profile']['Registered'] = $p->Registered();
@@ -3164,7 +3167,7 @@ case 'Players_details':
 case 'Players_achievements':
 
 	// retrieve name of a player we are currently viewing
-	$cur_player = (isset($_POST['Profile'])) ? $_POST['Profile'] : '';
+	$cur_player = $subsection_name = (isset($_POST['Profile'])) ? $_POST['Profile'] : '';
 
 	$p = $playerdb->GetPlayer($cur_player);
 	if (!$p) { $display_error = 'Invalid player.'; break; }
@@ -3629,6 +3632,7 @@ case 'Novels':
 	$params['novels']['chapter'] = $chapter = ( isset($_POST['chapter']) ) ? $_POST['chapter'] : "";
 	$params['novels']['part'] = $part = ( isset($_POST['part']) ) ? $_POST['part'] : "";
 	$params['novels']['page'] = $page = ( isset($_POST['page']) ) ? $_POST['page'] : "";
+	$subsection_name = $part.(($part != '') ? ' - ' : '').$chapter.(($chapter != '') ? ' - ' : '').$novel;
 
 	break;
 
@@ -3682,6 +3686,7 @@ case 'Forum_search':
 	$params['forum_search']['sections'] = $forum->ListTargetSections();
 	$params['forum_search']['notification'] = $player->GetNotification();
 	$params['forum_search']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
+	$subsection_name = "Search";
 
 	break;
 
@@ -3704,6 +3709,7 @@ case 'Forum_section':
 	$params['forum_section']['create_thread'] = (($access_rights[$player->Type()]["create_thread"]) ? 'yes' : 'no');
 	$params['forum_section']['notification'] = $player->GetNotification();
 	$params['forum_section']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
+	$subsection_name = $section['SectionName'];
 
 	break;
 
@@ -3739,6 +3745,7 @@ case 'Forum_thread':
 	$params['forum_thread']['del_all_post'] = (($access_rights[$player->Type()]["del_all_post"]) ? 'yes' : 'no');
 	$params['forum_thread']['edit_all_post'] = (($access_rights[$player->Type()]["edit_all_post"]) ? 'yes' : 'no');
 	$params['forum_thread']['edit_own_post'] = (($access_rights[$player->Type()]["edit_own_post"]) ? 'yes' : 'no');
+	$subsection_name = $thread_data['Title'];
 
 	break;
 
@@ -3751,6 +3758,7 @@ case 'Forum_thread_new':
 	$params['forum_thread_new']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : "");
 	$params['forum_thread_new']['Title'] = ((isset($_POST['Title'])) ? $_POST['Title'] : "");
 	$params['forum_thread_new']['chng_priority'] = (($access_rights[$player->Type()]["chng_priority"]) ? 'yes' : 'no');
+	$subsection_name = "New thread";
 
 	break;
 
@@ -3766,6 +3774,7 @@ case 'Forum_post_new':
 		$quoted_content = '[quote='.$post_data['Author'].']'.$post_data['Content'].'[/quote]';
 	}
 	$params['forum_post_new']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : ((isset($quoted_content)) ? $quoted_content : ''));
+	$subsection_name = $thread['Title'];
 
 	break;
 
@@ -3779,6 +3788,7 @@ case 'Forum_thread_edit':
 	$params['forum_thread_edit']['SectionList'] = $forum->ListTargetSections($thread_data['SectionID']);
 	$params['forum_thread_edit']['chng_priority'] = (($access_rights[$player->Type()]["chng_priority"]) ? 'yes' : 'no');
 	$params['forum_thread_edit']['move_thread'] = (($access_rights[$player->Type()]["move_thread"]) ? 'yes' : 'no');
+	$subsection_name = $thread_data['Title'];
 
 	break;
 
@@ -3790,9 +3800,10 @@ case 'Forum_post_edit':
 	$params['forum_post_edit']['Post'] = $post_data;
 	$params['forum_post_edit']['CurrentPage'] = $_POST['CurrentPage'];
 	$params['forum_post_edit']['ThreadList'] = $forum->Threads->ListTargetThreads($post_data['ThreadID']);
-	$params['forum_post_edit']['Thread'] = $forum->Threads->GetThread($post_data['ThreadID']);
+	$params['forum_post_edit']['Thread'] = $thread = $forum->Threads->GetThread($post_data['ThreadID']);
 	$params['forum_post_edit']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : $post_data['Content']);
 	$params['forum_post_edit']['move_post'] = (($access_rights[$player->Type()]["move_post"]) ? 'yes' : 'no');
+	$subsection_name = $thread['Title'];
 
 	break;
 
@@ -4219,7 +4230,7 @@ case 'Cards_details':
 	$card = $carddb->GetCard($card_id);
 	if ($card->CardData->Name == "Invalid Card") { $display_error = 'Invalid card.'; break; }
 
-	$params['cards_details']['data'] = $card->GetData();
+	$params['cards_details']['data'] = $data = $card->GetData();
 	$thread_id = $forum->Threads->CardThread($card_id);
 	$params['cards_details']['discussion'] = ($thread_id) ? $thread_id : 0;
 	$params['cards_details']['create_thread'] = ($access_rights[$player->Type()]["create_thread"]) ? 'yes' : 'no';
@@ -4230,6 +4241,7 @@ case 'Cards_details':
 	$params['cards_details']['c_img'] = $settings->GetSetting('Images');
 	$params['cards_details']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 	$params['cards_details']['c_insignias'] = $settings->GetSetting('Insignias');
+	$subsection_name = $data['name'];
 
 	break;
 
@@ -4275,6 +4287,7 @@ default:
 	$section_name = preg_replace("/_.*/i", '', $current);
 	$params["main"]["section_name"] = $params["navbar"]["section_name"] = $section_name;
 	$module = 'templates/template_'.strtolower($section_name).'.xsl';
+	$params["main"]["subsection"] = (isset($subsection_name)) ? $subsection_name : "";
 
 	// HTML code generation
 
