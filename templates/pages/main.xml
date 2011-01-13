@@ -8,13 +8,11 @@
 
 <p style="text-align: center">Authors (in alphabetical order): <a href="http://helppage.3dfx.sk/fendek/">Mojmír Fendek</a> (Mojko) and <a href="mailto:theultramage@gmail.com">Viktor Štujber</a> (theultramage)</p>
 
+<p>MArcomage (Multiplayer Arcomage) is an online card game inspired by original Arcomage. It's possible to play either against a human player or a computer player. <a href="http://en.wikipedia.org/wiki/Arcomage">Arcomage</a> is a fantasy turn-based card game. This card game simulates an epic battle between two empires including features such as constructing new buildings, training troops and decimating the enemy empire with standard attacks or sneaky tactics such as intrigue or spells. There are similarities in gameplay, but there are differences in cards, game rules and victory conditions.</p>
+
 <p><a href="http://www.w3.org/">W3C</a> standards compatible browser with enabled JavaScript and Cookies is recommended for full experience. We recommend <a href="http://www.mozilla.com/en-US/firefox/?from=getfirefox">Firefox</a> or <a href="http://www.google.com/chrome/">Chrome</a> for basic users and <a href="http://www.opera.com/">Opera</a> for advanced users.</p>
 
-<h3>About the game</h3>
-
-<p><a href="http://en.wikipedia.org/wiki/Arcomage">Arcomage</a> is a fantasy turn-based card game. This card game simulates an epic battle between two empires including features such as constructing new buildings, training troops and decimating the enemy empire with standard attacks or sneaky tactics such as intrigue or spells. MArcomage (Multiplayer Arcomage) is an online card game inspired by original Arcomage. It's possible to play either against a human player or a computer player. There are similarities in gameplay, but there are differences in cards, game rules or victory conditions.</p>
-
-<h4>Game features</h4>
+<h4>Features</h4>
 
 <ul>
 	<li>Deck building - choose 45 unique cards to construct your own deck</li>
