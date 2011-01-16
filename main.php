@@ -3330,6 +3330,7 @@ case 'Games':
 	$params['games']['free_slots'] = $gamedb->CountFreeSlots1($player->Name());
 	$params['games']['decks'] = $decks = $player->ListReadyDecks();
 	$params['games']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)]['DeckID'] : '';
+	$params['games']['random_ai_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)]['DeckID'] : '';
 
 	if (count($free_games) > 0)
 	{
