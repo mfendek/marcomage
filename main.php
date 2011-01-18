@@ -3415,7 +3415,8 @@ case 'Games_details':
 	$params['game']['timezone'] = $settings->GetSetting('Timezone');
 	$params['game']['Background'] = $settings->GetSetting('Background');
 	$params['game']['PlayButtons'] = $settings->GetSetting('PlayButtons');
-	$params['game']['autorefresh'] = $settings->GetSetting('Autorefresh');
+	// disable autorefresh if it's player's turn
+	$params['game']['autorefresh'] = ($player->Name() == $game->Current) ? 0 : $settings->GetSetting('Autorefresh');
 
 	$params['game']['GameState'] = $game->State;
 	$params['game']['Round'] = $game->Round;

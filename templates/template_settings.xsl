@@ -296,7 +296,7 @@
 					</xsl:for-each>
 				</select>
 				<span>
-					<xsl:attribute name="title">activate automatic refresh in the Games list section, which is based on the selected value</xsl:attribute>
+					<xsl:attribute name="title">activate automatic refresh in the Games section, which is based on the selected value</xsl:attribute>
 					<xsl:text>Auto refresh</xsl:text>
 				</span>
 			</p>

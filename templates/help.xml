@@ -516,7 +516,7 @@
 	<li>Players list filter - determine default value of the players list filter</li>
 	<li>Skin selection - select a skin that will be used throughout the whole site</li>
 	<li>Game background - select a game background picture that will be shown in the Game section only</li>
-	<li>Auto refresh - activate automatic refresh in the Games list section, which is based on the selected value</li>
+	<li>Auto refresh - activate automatic refresh in the Games section, which is based on the selected value</li>
 	<li>Cards per row - specify how many cards will fit into one row of the card pool in the deck editor</li>
 	<li>Advanced games list - display Last seen (opponent) and Last game action (game) dates in the Games list section</li>
 	<li>Show card images - display card image (turn off on slow internet connection)</li>
