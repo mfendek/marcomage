@@ -19,24 +19,8 @@
 			$this->Game = $game;
 		}
 
-		private function Config()
+		private function StaticConfig()
 		{
-			global $game_config;
-
-			$game = $this->Game;
-
-			// determine game mode (normal or long)
-			$g_mode = ($game->GetGameMode('LongMode') == 'yes') ? 'long' : 'normal';
-
-			// game configuration
-			$max_tower = $game_config[$g_mode]['max_tower'];
-			$max_wall = $game_config[$g_mode]['max_wall'];
-
-			// prepare basic information
-			$opponent = ($game->Name1() == SYSTEM_NAME) ? $game->Name2() : $game->Name1();
-			$mydata = $game->GameData[SYSTEM_NAME];
-			$hisdata = $game->GameData[$opponent];
-
 			// AI behavior configuration (more points, more likely to choose such action)
 
 			// static configuration (base value)
@@ -58,6 +42,29 @@
 			$static['his']['Tower'] = 9;
 			$static['his']['Wall'] = 6;
 
+			return $static;
+		}
+
+		private function DynamicConfig()
+		{
+			global $game_config;
+
+			$game = $this->Game;
+
+			// determine game mode (normal or long)
+			$g_mode = ($game->GetGameMode('LongMode') == 'yes') ? 'long' : 'normal';
+
+			// game configuration
+			$max_tower = $game_config[$g_mode]['max_tower'];
+			$max_wall = $game_config[$g_mode]['max_wall'];
+
+			// prepare basic information
+			$opponent = ($game->Name1() == SYSTEM_NAME) ? $game->Name2() : $game->Name1();
+			$mydata = $game->GameData[SYSTEM_NAME];
+			$hisdata = $game->GameData[$opponent];
+
+			// AI behavior configuration (more points, more likely to choose such action)
+
 			// dynamic configuration (adjustment factor based on current game situation)
 			$dynamic['mine']['Quarry'] = ($mydata->Quarry <= 3) ? 1.5 : (($mydata->Quarry > 4) ? 0.7 : 1);
 			$dynamic['mine']['Magic'] = ($mydata->Magic <= 3) ? 1.5 : (($mydata->Magic > 4) ? 0.7 : 1);
@@ -77,8 +84,16 @@
 			$dynamic['his']['Tower'] = ($hisdata->Tower <= 20) ? 1.5 : (($hisdata->Tower >= ($max_tower - 20)) ? 1.5 : 1);
 			$dynamic['his']['Wall'] = ($hisdata->Wall <= 15) ? 1.5 : 1;
 
+			return $dynamic;
+		}
+
+		private function Config()
+		{
 			// compute adjusted points (base value * adjustment factor)
 			$ai_config = array();
+			$static = $this->StaticConfig();
+			$dynamic = $this->DynamicConfig();
+
 			foreach (array('mine', 'his') as $side)
 				foreach ($static[$side] as $name => $value)
 					$ai_config[$side][$name] = $value * $dynamic[$side][$name];
