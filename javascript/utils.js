@@ -8,6 +8,11 @@ function Refresh() // refresh user screen (top-level sections only)
 	window.location.replace($('div#menu_center > a.pushed').attr('href'));
 }
 
+function GamesRefresh() // refresh user screen within the games list section
+{
+	window.location.replace($('div#hosted_games > p > a.pushed').attr('href'));
+}
+
 function GameRefresh() // refresh user screen within the game
 {
 	window.location.replace($('a#game_refresh').attr('href'));

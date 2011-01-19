@@ -16,9 +16,15 @@
 	<xsl:variable name="param" select="$params/games" />
 	<xsl:variable name="activedecks" select="count($param/decks/*)" />
 	<xsl:variable name="list" select="$param/list" />
+
 	<!-- autorefresh -->
 	<xsl:if test="$param/autorefresh &gt; 0">
-		<xsl:copy-of select="am:autorefresh($param/autorefresh)"/>
+		<xsl:element name="script">
+			<xsl:attribute name="type">text/javascript</xsl:attribute>
+			<xsl:text>$(document).ready(function() { window.setTimeout('GamesRefresh()', </xsl:text>
+			<xsl:value-of select="$param/autorefresh" />
+			<xsl:text>000); });</xsl:text>
+		</xsl:element>
 	</xsl:if>
 
 	<div id="games">
