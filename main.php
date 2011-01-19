@@ -19,6 +19,7 @@
 	require_once('CDeck.php');
 	require_once('CGame.php');
 	require_once('CGameAI.php');
+	require_once('CChallenges.php');
 	require_once('CReplay.php');
 	require_once('CSettings.php');
 	require_once('CChat.php');
@@ -54,6 +55,7 @@
 	$conceptdb = new CConcepts($db);
 	$deckdb = new CDecks($db);
 	$gamedb = new CGames($db);
+	$challengesdb = new CChallenges();
 	$replaydb = new CReplays($db);
 	$chatdb = new CChats($db);
 	$settingdb = new CSettings($db);
@@ -1942,6 +1944,63 @@
 				break;
 			}
 
+			if (isset($_POST['ai_challenge'])) // Games -> create AI challenge game
+			{
+				$_POST['subsection'] = 'ai_games';
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
+
+				$deck_id = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
+				$deck = $player->GetDeck($deck_id);
+
+				// check if such deck exists
+				if (!$deck ) { $error = 'Deck does not exist!'; $current = 'Games'; break; }
+
+				// check if the deck is ready (all 45 cards)
+				if (!$deck->isReady()) { $error = 'Deck '.$deck->Deckname().' is not yet ready for gameplay!'; $current = 'Games'; break; }
+
+				// check if you are within the MAX_GAMES limit
+				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Games'; break; }
+
+				// check AI challenge
+				$challenge_name = isset($_POST['selected_challenge']) ? $_POST['selected_challenge'] : '';
+				$challenge = $challengesdb->GetChallenge($challenge_name);
+
+				if (!$challenge) { $error = 'Invalid AI challenge.'; $current = 'Games'; break; }
+
+				// prepare AI deck
+				$challenge_decks = $deckdb->ChallengeDecks();
+				$ai_deck = $challenge_decks[$challenge_name];
+
+				// create a new game
+				$game = $gamedb->CreateGame($player->Name(), '', $deck);
+				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
+
+				// set game modes (predefined for AI challenge)
+				$hidden_cards = 'no';
+				$friendly_play = 'yes';
+				$long_mode = 'no';
+				$ai_mode = 'yes';
+				$game_modes = array();
+				if ($hidden_cards == "yes") $game_modes[] = 'HiddenCards';
+				if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
+				if ($long_mode == "yes") $game_modes[] = 'LongMode';
+				if ($ai_mode == "yes") $game_modes[] = 'AIMode';
+				$game->SetGameModes(implode(',', $game_modes));
+
+				// join the computer player
+				$gamedb->JoinGame(SYSTEM_NAME, $game->ID());
+				$game = $gamedb->GetGame($game->ID()); // refresh game data
+				$game->StartGame(SYSTEM_NAME, $ai_deck, $challenge_name);
+				$game->SaveGame();
+				$replaydb->CreateReplay($game); // create game replay
+
+				$information = 'AI challenge created.';
+				$current = "Games";
+				break;
+			}
+
 			if (isset($_POST['quick_game'])) // Games -> create quick AI game
 			{
 				// check access rights
@@ -3317,6 +3376,7 @@ case 'Games':
 			$params['games']['list'][$i]['lastseen'] = $last_seen;
 			$params['games']['list'][$i]['finishable'] = (time() - strtotime($data['Last Action']) >= 60*60*24*7*3 and $data['Current'] != $player->Name()) ? 'yes' : 'no';
 			$params['games']['list'][$i]['game_modes'] = $data['GameModes'];
+			$params['games']['list'][$i]['ai'] = $data['AI'];
 		}
 	}
 
@@ -3331,6 +3391,7 @@ case 'Games':
 	$params['games']['decks'] = $decks = $player->ListReadyDecks();
 	$params['games']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)]['DeckID'] : '';
 	$params['games']['random_ai_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)]['DeckID'] : '';
+	$params['games']['ai_challenges'] = $challengesdb->ListChallenges();
 
 	if (count($free_games) > 0)
 	{
@@ -3426,6 +3487,7 @@ case 'Games_details':
 	$params['game']['Surrender'] = $game->Surrender;
 	$params['game']['PlayerName'] = $player->Name();
 	$params['game']['OpponentName'] = $opponent_name;
+	$params['game']['AI'] = $game->AI;
 	$params['game']['Current'] = $game->Current;
 	$params['game']['Timestamp'] = $game->LastAction;
 	$params['game']['has_note'] = ($game->GetNote($player->Name()) != "") ? 'yes' : 'no';
@@ -3873,6 +3935,7 @@ case 'Replays_details':
 	$params['replay']['Player1'] = $player1;
 	$params['replay']['Player2'] = $player2;
 	$params['replay']['Current'] = $replay->Current;
+	$params['replay']['AI'] = $replay->AI;
 	$params['replay']['HiddenCards'] = $replay->GetGameMode('HiddenCards');
 	$params['replay']['FriendlyPlay'] = $replay->GetGameMode('FriendlyPlay');
 	$params['replay']['LongMode'] = $long_mode = $replay->GetGameMode('LongMode');
@@ -4049,6 +4112,7 @@ case 'Replays_history':
 	$params['replays_history']['Player1'] = $player1;
 	$params['replays_history']['Player2'] = $player2;
 	$params['replays_history']['Current'] = $replay->Current;
+	$params['replays_history']['AI'] = $replay->AI;
 	$params['replays_history']['HiddenCards'] = $replay->GetGameMode('HiddenCards');
 	$params['replays_history']['FriendlyPlay'] = $replay->GetGameMode('FriendlyPlay');
 	$params['replays_history']['LongMode'] = $long_mode = $replay->GetGameMode('LongMode');

@@ -47,6 +47,29 @@ div#hosted_games /* hosted games subsection */
 	margin: 0ex 1ex 1ex 0ex;
 }
 
+div#ai_challenges /* AI challenges section */
+{
+	margin-left: 1ex;
+	margin-right: 1ex;
+}
+
+div#ai_challenges > div /* AI challenges list */
+{
+	margin: 1ex auto 1ex auto;
+	padding: 1ex;
+	max-width: 50em;
+}
+
+div#ai_challenges h4 /* AI challenge heading */
+{
+	margin: 0ex 0ex 0.5ex 0ex;
+}
+
+div#ai_challenges p /* AI challenge body */
+{
+	text-align: justify;
+}
+
 div#active_games h3, div#hosted_games h3 /* subsection heading */
 {
 	margin: 2ex;

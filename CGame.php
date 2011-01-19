@@ -220,7 +220,7 @@
 		{
 			// $player is either on the left or right side and Status != 'waiting' or 'P? over'
 			$db = $this->db;
-			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2`, `State`, `Current`, `Round`, `Last Action`, `GameModes` FROM `games` WHERE (`Player1` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P2 over"))');
+			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2`, `State`, `Current`, `Round`, `Last Action`, `GameModes`, `AI` FROM `games` WHERE (`Player1` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P2 over"))');
 			if (!$result) return false;
 			
 			$games = array();
@@ -280,6 +280,7 @@
 		public $EndType; // game end type: 'Pending', 'Construction', 'Destruction', 'Resource', 'Timeout', 'Draw', 'Surrender', 'Abort', 'Abandon'
 		public $LastAction; // timestamp of the most recent action
 		public $GameData; // array (name => CGamePlayerData)
+		public $AI; // AI challenge name (optional)
 		
 		public function __construct($gameid, $player1, $player2, CGames $Games)
 		{
@@ -370,7 +371,7 @@
 		public function LoadGame()
 		{
 			$db = $this->Games->getDB();
-			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Surrender`, `EndType`, `Last Action`, `Data`, `DeckID1`, `DeckID2`, `Note1`, `Note2`, `GameModes` FROM `games` WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
+			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Surrender`, `EndType`, `Last Action`, `Data`, `DeckID1`, `DeckID2`, `Note1`, `Note2`, `GameModes`, `AI` FROM `games` WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			
@@ -386,6 +387,7 @@
 			$this->DeckID2 = $data['DeckID2'];
 			$this->Note1 = $data['Note1'];
 			$this->Note2 = $data['Note2'];
+			$this->AI = $data['AI'];
 			$this->HiddenCards = (strpos($data['GameModes'], 'HiddenCards') !== false) ? 'yes' : 'no';
 			$this->FriendlyPlay = (strpos($data['GameModes'], 'FriendlyPlay') !== false) ? 'yes' : 'no';
 			$this->LongMode = (strpos($data['GameModes'], 'LongMode') !== false) ? 'yes' : 'no';
@@ -393,7 +395,7 @@
 			$this->GameData = unserialize($data['Data']);
 			
 			// initialize game AI
-			$this->GameAI = new CGameAI($this);
+			$this->GameAI = ($this->AI != '') ? new CChallengeAI($this) : new CGameAI($this);
 			
 			return true;
 		}
@@ -401,15 +403,16 @@
 		public function SaveGame()
 		{
 			$db = $this->Games->getDB();
-			$result = $db->Query('UPDATE `games` SET `State` = "'.$db->Escape($this->State).'", `Current` = "'.$db->Escape($this->Current).'", `Round` = "'.$db->Escape($this->Round).'", `Winner` = "'.$db->Escape($this->Winner).'", `Surrender` = "'.$db->Escape($this->Surrender).'", `EndType` = "'.$db->Escape($this->EndType).'", `Last Action` = "'.$db->Escape($this->LastAction).'", `Data` = "'.$db->Escape(serialize($this->GameData)).'", `DeckID1` = "'.$db->Escape($this->DeckID1).'", `DeckID2` = "'.$db->Escape($this->DeckID2).'", `Note1` = "'.$db->Escape($this->Note1).'", `Note2` = "'.$db->Escape($this->Note2).'" WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
+			$result = $db->Query('UPDATE `games` SET `State` = "'.$db->Escape($this->State).'", `Current` = "'.$db->Escape($this->Current).'", `Round` = "'.$db->Escape($this->Round).'", `Winner` = "'.$db->Escape($this->Winner).'", `Surrender` = "'.$db->Escape($this->Surrender).'", `EndType` = "'.$db->Escape($this->EndType).'", `Last Action` = "'.$db->Escape($this->LastAction).'", `Data` = "'.$db->Escape(serialize($this->GameData)).'", `DeckID1` = "'.$db->Escape($this->DeckID1).'", `DeckID2` = "'.$db->Escape($this->DeckID2).'", `Note1` = "'.$db->Escape($this->Note1).'", `Note2` = "'.$db->Escape($this->Note2).'", `AI` = "'.$db->Escape($this->AI).'" WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
 			if (!$result) return false;
 			
 			return true;
 		}
 		
-		public function StartGame($player, CDeck $deck)
+		public function StartGame($player, CDeck $deck, $challenge_name = '')
 		{
 			global $game_config;
+			global $challengesdb;
 			
 			$this->GameData[$player] = new CGamePlayerData;
 			$this->GameData[$player]->Deck = $deck->DeckData;
@@ -465,6 +468,26 @@
 			
 			$p1->Hand = $this->DrawHand_initial($p1->Deck);
 			$p2->Hand = $this->DrawHand_initial($p2->Deck);
+			
+			// process AI challenge (done only if the game is an AI challenge)
+			if ($challenge_name != '')
+			{
+				$this->AI = $challenge_name;
+				
+				// load AI challenge data
+				$challenge = $challengesdb->GetChallenge($challenge_name);
+				if ($challenge)
+				{
+					$p1_init = $challenge->Init['his'];
+					$p2_init = $challenge->Init['mine'];
+					
+					foreach ($p1_init as $attr_name => $attr_value)
+						$p1->$attr_name = $attr_value;
+					
+					foreach ($p2_init as $attr_name => $attr_value)
+						$p2->$attr_name = $attr_value;
+				}
+			}
 		}
 		
 		public function SurrenderGame()

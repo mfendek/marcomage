@@ -138,6 +138,51 @@
 
 			return $starter_decks;
 		}
+
+		public function ChallengeDecks()
+		{
+			$challenge_decks = $challenge_data = array();
+
+			// Grofgul's deck
+			$deck_data = new CDeckData;
+			$deck_data->Common = array(1=>71,619,71,586,586,60,258,619,584,584,584,60,584,556,119);
+			$deck_data->Uncommon = array(1=>617,405,375,123,154,388,618,429,432,388,118,617,174,617,388);
+			$deck_data->Rare = array(1=>407,546,407,546,546,546,389,389,389,199,389,407,199,199,546);
+			$deck_data->Tokens[1] = "Alliance";
+			$challenge_data['Grofgul'] = $deck_data;
+
+			// Marquis' deck
+			$deck_data = new CDeckData;
+			$deck_data->Common = array(1=>578,445,481,484,538,402,570,114,112,578,578,578,445,484,538);
+			$deck_data->Uncommon = array(1=>543,576,120,133,230,186,321,296,28,446,543,576,543,576,120);
+			$deck_data->Rare = array(1=>612, 612, 612, 612, 612, 612, 612, 612, 612, 612, 612, 612, 612, 612, 612);
+			$deck_data->Tokens[1] = "Undead";
+			$challenge_data['Marquis'] = $deck_data;
+
+			// Demetrios' deck
+			$deck_data = new CDeckData;
+			$deck_data->Common = array(1=>561,416,606,524,570,559,521,524,149,278,512,501,606,559,606);
+			$deck_data->Uncommon = array(1=>14,3,84,37,29,497,162,206,514,348,523,505,525,525,523);
+			$deck_data->Rare = array(1=>161,229,285,222,530,182,434,161,229,285,222,530,182,434,161);
+			$challenge_data['Demetrios'] = $deck_data;
+
+			// Sophie's deck
+			$deck_data = new CDeckData;
+			$deck_data->Common = array(1=>417,18,278,275,395,490,537,582,586,587,582,587,537,537,278);
+			$deck_data->Uncommon = array(1=>231,155,5,200,492,87,137,386,72,72,155,492,5,231,137);
+			$deck_data->Rare = array(1=>295,499,143,517,64,401,67,294,148,21,209,231,143,517,499);
+			$challenge_data['Sophie'] = $deck_data;
+
+			foreach ($challenge_data as $deck_name => $deck_data)
+			{
+				$curent_deck = new CDeck(0, SYSTEM_NAME, $deck_name, $this);
+				$curent_deck->LoadData($deck_data);
+
+				$challenge_decks[$deck_name] = $curent_deck;
+			}
+
+			return $challenge_decks;
+		}
 	}
 	
 	

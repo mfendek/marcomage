@@ -151,6 +151,9 @@
 								<xsl:if test="contains(GameModes, 'AIMode')">
 									<img class="icon" width="20px" height="14px" src="img/ai_mode.png" alt="AI mode" title="AI mode" />
 								</xsl:if>
+								<xsl:if test="AI != ''">
+									<img class="icon" width="20px" height="14px" src="img/ai_challenge.png" alt="AI challenge - {AI}" title="AI challenge - {AI}" />
+								</xsl:if>
 							</p>
 						</td>
 						<td><p><xsl:value-of select="Views"/></p></td>
@@ -335,6 +338,9 @@
 			</xsl:if>
 			<xsl:if test="$param/AIMode = 'yes'">
 				<img class="icon" src="img/ai_mode.png" width="20px" height="14px" alt="AI mode" title="AI mode" />
+			</xsl:if>
+			<xsl:if test="$param/AI != ''">
+				<img class="icon" src="img/ai_challenge.png" width="20px" height="14px" alt="AI challenge - {$param/AI}" title="AI challenge - {$param/AI}" />
 			</xsl:if>
 		</td>
 		<td></td>
@@ -871,6 +877,9 @@
 			</xsl:if>
 			<xsl:if test="$param/AIMode = 'yes'">
 				<img class="icon" src="img/ai_mode.png" width="20px" height="14px" alt="AI mode" title="AI mode" />
+			</xsl:if>
+			<xsl:if test="$param/AI != ''">
+				<img class="icon" src="img/ai_challenge.png" width="20px" height="14px" alt="AI challenge - {$param/AI}" title="AI challenge - {$param/AI}" />
 			</xsl:if>
 		</td>
 		<td></td>

@@ -79,6 +79,9 @@
 								<xsl:if test="contains(game_modes, 'AIMode')">
 									<img class="icon" width="20px" height="14px" src="img/ai_mode.png" alt="AI mode" title="AI mode" />
 								</xsl:if>
+								<xsl:if test="ai != ''">
+									<img class="icon" width="20px" height="14px" src="img/ai_challenge.png" alt="AI challenge - {ai}" title="AI challenge - {ai}" />
+								</xsl:if>
 							</p>
 						</td>
 						<td>
@@ -364,6 +367,30 @@
 			</p>
 		</xsl:if>
 
+		<!-- AI challenge interface -->
+		<xsl:if test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
+			<p class="misc">
+				<span>Select AI challenge</span>
+				<select name="selected_challenge" size="1">
+					<xsl:for-each select="$param/ai_challenges/*">
+						<xsl:sort select="fullname" order="ascending" />
+						<option value="{name}"><xsl:value-of select="fullname"/></option>
+					</xsl:for-each>
+				</select>
+				<button type="submit" name="ai_challenge">Play challenge</button>
+			</p>
+		</xsl:if>
+
+		<div id="ai_challenges">
+			<xsl:for-each select="$param/ai_challenges/*">
+				<xsl:sort select="fullname" order="ascending" />
+				<div class="skin_text">
+					<h4><xsl:value-of select="fullname"/></h4>
+					<p><xsl:value-of select="description"/></p>
+				</div>
+			</xsl:for-each>
+		</div>
+
 		</xsl:when>
 		<!-- end AI games subsection -->
 	</xsl:choose>
@@ -493,6 +520,9 @@
 			</xsl:if>
 			<xsl:if test="$param/AIMode = 'yes'">
 				<img class="icon" src="img/ai_mode.png" width="20px" height="14px" alt="AI mode" title="AI mode" />
+			</xsl:if>
+			<xsl:if test="$param/AI != ''">
+				<img class="icon" src="img/ai_challenge.png" width="20px" height="14px" alt="AI challenge - {$param/AI}" title="AI challenge - {$param/AI}" />
 			</xsl:if>
 		</td>
 		<td>

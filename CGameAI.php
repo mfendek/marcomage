@@ -12,14 +12,14 @@
 <?php
 	class CGameAI
 	{
-		private $Game;
+		protected $Game;
 
 		public function __construct(CGame $game)
 		{
 			$this->Game = $game;
 		}
 
-		private function StaticConfig()
+		protected function StaticConfig()
 		{
 			// AI behavior configuration (more points, more likely to choose such action)
 
@@ -45,7 +45,7 @@
 			return $static;
 		}
 
-		private function DynamicConfig()
+		protected function DynamicConfig()
 		{
 			global $game_config;
 
@@ -87,7 +87,7 @@
 			return $dynamic;
 		}
 
-		private function Config()
+		protected function Config()
 		{
 			// compute adjusted points (base value * adjustment factor)
 			$ai_config = array();
@@ -302,6 +302,28 @@
 			}
 
 			return array('action' => $action, 'cardpos' => $cardpos, 'mode' => $mode);
+		}
+	}
+
+	class CChallengeAI extends CGameAI
+	{
+		private $Name;
+
+		public function __construct(CGame $game)
+		{
+			parent:: __construct($game);
+			$this->Name = $game->AI;
+		}
+
+		protected function StaticConfig()
+		{
+			global $challengesdb;
+
+			// load configuration data from challenges database
+			$challenge = $challengesdb->GetChallenge($this->Name);
+			if (!$challenge) return parent:: StaticConfig();
+
+			return $challenge->Config;
 		}
 	}
 ?>
