@@ -1411,6 +1411,14 @@
 
 						// update deck statistics
 						$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
+
+						// update AI challenge score in case of AI challenge game
+						if ($game->AI != '' and $game->Winner == $player->Name())
+						{
+							$score = $player->GetScore();
+							$score->UpdateAward('Challenges');
+							$score->SaveScore();
+						}
 					}
 
 					if (($game->State == 'finished') AND ($game->GetGameMode('FriendlyPlay') == "no"))

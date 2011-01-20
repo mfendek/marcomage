@@ -41,6 +41,11 @@
 		<achievement name="Magician" condition="1000" reward="70" />
 		<achievement name="Archmage" condition="1500" reward="105" />
 	</award>
+	<award name="Challenges" desc="win # AI challenges">
+		<achievement name="Adventurer" condition="100" reward="40" />
+		<achievement name="Explorer" condition="200" reward="80" />
+		<achievement name="Vanguard" condition="300" reward="120" />
+	</award>
 	<award name="Saboteur" desc="gain # saboteur awards">
 		<achievement name="Intruder" condition="50" reward="25" />
 		<achievement name="Backstabber" condition="100" reward="50" />

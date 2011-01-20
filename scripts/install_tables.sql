@@ -197,6 +197,7 @@ CREATE TABLE `scores` (
   `Wall` int(10) unsigned NOT NULL DEFAULT '0',
   `TowerDamage` int(10) unsigned NOT NULL DEFAULT '0',
   `WallDamage` int(10) unsigned NOT NULL DEFAULT '0',
+  `Challenges` int(5) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
