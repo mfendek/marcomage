@@ -3136,7 +3136,6 @@ case 'Players':
 		$entry['name'] = $data['Username'];
 		$entry['rank'] = $data['UserType'];
 		$entry['level'] = $data['Level'];
-		$entry['exp'] = $data['Exp'] / $scoredb->NextLevel($data['Level']);
 		$entry['wins'] = $data['Wins'];
 		$entry['losses'] = $data['Losses'];
 		$entry['draws'] = $data['Draws'];
@@ -3186,6 +3185,7 @@ case 'Players_details':
 	$params['profile']['FreeSlots'] = $p->FreeSlots();
 	$params['profile']['Exp'] = $score->ScoreData->Exp;
 	$params['profile']['NextLevel'] = $scoredb->NextLevel($score->ScoreData->Level);
+	$params['profile']['ExpBar'] = $score->ScoreData->Exp / $scoredb->NextLevel($score->ScoreData->Level);
 	$params['profile']['Wins'] = $score->ScoreData->Wins;
 	$params['profile']['Losses'] = $score->ScoreData->Losses;
 	$params['profile']['Draws'] = $score->ScoreData->Draws;

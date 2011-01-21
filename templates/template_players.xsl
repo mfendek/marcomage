@@ -92,7 +92,6 @@
 					<column name="Country"    text="Flag"       sortable="yes" />
 					<column name="Username"   text="Username"   sortable="yes" />
 					<column name="Level"      text="Level"      sortable="yes" />
-					<column name="Exp"        text="Exp"        sortable="no"  />
 					<column name="Wins"       text="Wins"       sortable="no"  />
 					<column name="Losses"     text="Losses"     sortable="no"  />
 					<column name="Draws"      text="Draws"      sortable="no"  />
@@ -144,11 +143,6 @@
 					</td>
 
 					<td><p><xsl:value-of select="level"/></p></td>
-					<td>
-						<div class="progress_bar">
-							<div><xsl:attribute name="style">width: <xsl:value-of select="round(exp * 50)"/>px</xsl:attribute></div>
-						</div>
-					</td>
 					<td><p><xsl:value-of select="wins"/></p></td>
 					<td><p><xsl:value-of select="losses"/></p></td>
 					<td><p><xsl:value-of select="draws"/></p></td>
@@ -264,6 +258,60 @@
 			<a href="{php:functionString('makeurl', 'Players_achievements', 'Profile', $param/PlayerName)}"><xsl:value-of select="$param/PlayerName"/>'s achievements</a>
 		</p>
 
+		<p>Level<span class="detail_value"><xsl:value-of select="$param/Level"/></span></p>
+		<div class="progress_bar">
+			<xsl:attribute name="title">
+				<xsl:value-of select="$param/Exp"/>
+				<xsl:text> / </xsl:text>
+				<xsl:value-of select="$param/NextLevel"/>
+				</xsl:attribute>
+			<div><xsl:attribute name="style">width: <xsl:value-of select="round($param/ExpBar * 200)"/>px</xsl:attribute></div>
+		</div>
+		<p>
+			<xsl:text>Wins / Losses / Draws</xsl:text>
+			<span class="detail_value">
+				<xsl:value-of select="$param/Wins"/>
+				<xsl:text> / </xsl:text>
+				<xsl:value-of select="$param/Losses"/>
+				<xsl:text> / </xsl:text>
+				<xsl:value-of select="$param/Draws"/>
+			</span>
+		</p>
+		<p>Free slots<span class="detail_value"><xsl:value-of select="$param/FreeSlots"/></span></p>
+		<p>
+			<xsl:text>Rank</xsl:text>
+			<span class="detail_value"><xsl:value-of select="$param/PlayerType"/></span>
+			<xsl:if test="$param/PlayerType != 'user'">
+				<img class="icon" width="9px" height="12px" src="img/{$param/PlayerType}.png" alt="rank flag" title="{$param/PlayerType}" />
+			</xsl:if>
+		</p>
+		<p>
+			<xsl:text>Status</xsl:text>
+			<xsl:if test="$param/Status != 'none'"><img class="icon" width="20px" height="14px" src="img/{$param/Status}.png" alt="status flag" title="{$param/Status}" /></xsl:if>
+			<xsl:if test="$param/FriendlyFlag = 'yes'"><img class="icon" width="20px" height="14px" src="img/friendly_play.png" alt="Friendly play" title="Friendly play" /></xsl:if>
+			<xsl:if test="$param/BlindFlag = 'yes'"><img class="icon" width="20px" height="14px" src="img/blind.png" alt="Hidden cards" title="Hidden cards" /></xsl:if>
+			<xsl:if test="$param/LongFlag = 'yes'"><img class="icon" width="20px" height="14px" src="img/long_mode.png" alt="Long mode" title="Long mode" /></xsl:if>
+		</p>
+		<p>Country<img class="icon" width="18px" height="12px" src="img/flags/{$param/Country}.gif" alt="country flag" title="{$param/Country}" /> <span class="detail_value"><xsl:value-of select="$param/Country"/></span></p>
+		<p>Forum posts<span class="detail_value"><xsl:value-of select="$param/Posts"/></span></p>
+		<p>
+			<xsl:text>Registered</xsl:text>
+			<span class="detail_value">
+				<xsl:choose>
+					<xsl:when test="$param/Registered != '0000-00-00 00:00:00'"><xsl:value-of select="am:datetime($param/Registered, $param/timezone)"/></xsl:when>
+				<xsl:otherwise>Before 18. August, 2009</xsl:otherwise>
+				</xsl:choose>
+			</span>
+		</p>
+		<p>
+			<xsl:text>Last seen</xsl:text>
+			<span class="detail_value">
+				<xsl:choose>
+						<xsl:when test="$param/LastQuery != '0000-00-00 00:00:00'"><xsl:value-of select="am:datetime($param/LastQuery, $param/timezone)"/></xsl:when>
+					<xsl:otherwise>n/a</xsl:otherwise>
+				</xsl:choose>
+			</span>
+		</p>
 		<p>First name<span class="detail_value"><xsl:value-of select="$param/Firstname"/></span></p>
 		<p>Surname<span class="detail_value"><xsl:value-of select="$param/Surname"/></span></p>
 
@@ -280,60 +328,6 @@
 		<p>ICQ / IM<span class="detail_value"><xsl:value-of select="$param/Imnumber"/></span></p>
 		<p>Date of birth (dd-mm-yyyy)<span class="detail_value"><xsl:value-of select="$param/Birthdate"/></span></p>
 		<p>Age<span class="detail_value"><xsl:value-of select="$param/Age"/></span></p>
-		<p>
-			<xsl:text>Rank</xsl:text>
-			<span class="detail_value"><xsl:value-of select="$param/PlayerType"/></span>
-			<xsl:if test="$param/PlayerType != 'user'">
-				<img class="icon" width="9px" height="12px" src="img/{$param/PlayerType}.png" alt="rank flag" title="{$param/PlayerType}" />
-			</xsl:if>
-		</p>
-		<p>Country<img class="icon" width="18px" height="12px" src="img/flags/{$param/Country}.gif" alt="country flag" title="{$param/Country}" /> <span class="detail_value"><xsl:value-of select="$param/Country"/></span></p>
-		<p>
-			<xsl:text>Status</xsl:text>
-			<xsl:if test="$param/Status != 'none'"><img class="icon" width="20px" height="14px" src="img/{$param/Status}.png" alt="status flag" title="{$param/Status}" /></xsl:if>
-			<xsl:if test="$param/FriendlyFlag = 'yes'"><img class="icon" width="20px" height="14px" src="img/friendly_play.png" alt="Friendly play" title="Friendly play" /></xsl:if>
-			<xsl:if test="$param/BlindFlag = 'yes'"><img class="icon" width="20px" height="14px" src="img/blind.png" alt="Hidden cards" title="Hidden cards" /></xsl:if>
-			<xsl:if test="$param/LongFlag = 'yes'"><img class="icon" width="20px" height="14px" src="img/long_mode.png" alt="Long mode" title="Long mode" /></xsl:if>
-		</p>
-		<p>Level<span class="detail_value"><xsl:value-of select="$param/Level"/></span></p>
-		<p>
-			<xsl:text>Experience</xsl:text>
-			<span class="detail_value">
-				<xsl:value-of select="$param/Exp"/>
-				<xsl:text> / </xsl:text>
-				<xsl:value-of select="$param/NextLevel"/>
-			</span>
-		</p>
-		<p>
-			<xsl:text>Wins / Losses / Draws</xsl:text>
-			<span class="detail_value">
-				<xsl:value-of select="$param/Wins"/>
-				<xsl:text> / </xsl:text>
-				<xsl:value-of select="$param/Losses"/>
-				<xsl:text> / </xsl:text>
-				<xsl:value-of select="$param/Draws"/>
-			</span>
-		</p>
-		<p>Free slots<span class="detail_value"><xsl:value-of select="$param/FreeSlots"/></span></p>
-		<p>Number of posts<span class="detail_value"><xsl:value-of select="$param/Posts"/></span></p>
-		<p>
-			<xsl:text>Registered on</xsl:text>
-			<span class="detail_value">
-				<xsl:choose>
-					<xsl:when test="$param/Registered != '0000-00-00 00:00:00'"><xsl:value-of select="am:datetime($param/Registered, $param/timezone)"/></xsl:when>
-				<xsl:otherwise>Before 18. August, 2009</xsl:otherwise>
-				</xsl:choose>
-			</span>
-		</p>
-		<p>
-			<xsl:text>Last seen on</xsl:text>
-			<span class="detail_value">
-				<xsl:choose>
-						<xsl:when test="$param/LastQuery != '0000-00-00 00:00:00'"><xsl:value-of select="am:datetime($param/LastQuery, $param/timezone)"/></xsl:when>
-					<xsl:otherwise>n/a</xsl:otherwise>
-				</xsl:choose>
-			</span>
-		</p>
 
 		<p>Hobbies, interests</p>
 		<div class="detail_value hobbies"><xsl:copy-of select="am:textencode($param/Hobby)"/></div>

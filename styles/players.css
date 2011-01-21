@@ -30,20 +30,6 @@ div#players .filters /* filters */
 	margin: 1ex 0ex 2ex 2ex;
 }
 
-div.progress_bar /* exp progress bar */
-{
-	border: thin solid black;
-	margin: 0ex 1ex 0ex 1ex;
-	text-align: left;
-	width: 50px;
-}
-
-div.progress_bar > div  /* exp progress bar - inner part */
-{
-	height: 1.5ex;
-	background-color: green;
-}
-
 /* end playerslist */
 
 /* begin user details */
@@ -154,6 +140,21 @@ p.player_achievements > a /* player achievements link */
 {
 	border: medium ridge white;
 	padding: 0.5ex 1ex 1ex 1ex;
+}
+
+div.progress_bar /* exp progress bar */
+{
+	border: thin solid black;
+	text-align: left;
+	margin-top: 1ex;
+	margin-bottom: 1ex;
+	width: 200px;
+}
+
+div.progress_bar > div  /* exp progress bar - inner part */
+{
+	height: 2ex;
+	background-color: green;
 }
 
 /* end user details */
