@@ -66,25 +66,39 @@
 			// AI behavior configuration (more points, more likely to choose such action)
 
 			// dynamic configuration (adjustment factor based on current game situation)
-			$dynamic['mine']['Quarry'] = ($mydata->Quarry <= 3) ? 1.5 : (($mydata->Quarry > 4) ? 0.7 : 1);
-			$dynamic['mine']['Magic'] = ($mydata->Magic <= 3) ? 1.5 : (($mydata->Magic > 4) ? 0.7 : 1);
-			$dynamic['mine']['Dungeons'] = ($mydata->Dungeons <= 3) ? 1.5 : (($mydata->Dungeons > 4) ? 0.7 : 1);
-			$dynamic['mine']['Bricks'] = ($mydata->Bricks <= 6) ? 1.2 : 1;
-			$dynamic['mine']['Gems'] = ($mydata->Gems <= 6) ? 1.2 : 1;
-			$dynamic['mine']['Recruits'] = ($mydata->Recruits <= 6) ? 1.2 : 1;
-			$dynamic['mine']['Tower'] = ($mydata->Tower <= 20) ? 1.5 : (($mydata->Tower >= ($max_tower - 20)) ? 1.5 : 1);
-			$dynamic['mine']['Wall'] = ($mydata->Wall <= 15) ? 1.5 : 1;
+			foreach (array('Quarry', 'Magic', 'Dungeons') as $facility)
+			{
+				$dynamic['mine'][$facility] = $this->FacilityEval($mydata->$facility);
+				$dynamic['his'][$facility] = $this->FacilityEval($hisdata->$facility);
+			}
 
-			$dynamic['his']['Quarry'] = ($hisdata->Quarry <= 3) ? 1.5 : (($hisdata->Quarry > 4) ? 0.7 : 1);
-			$dynamic['his']['Magic'] = ($hisdata->Magic <= 3) ? 1.5 : (($hisdata->Magic > 4) ? 0.7 : 1);
-			$dynamic['his']['Dungeons'] = ($hisdata->Dungeons <= 3) ? 1.5 : (($hisdata->Dungeons > 4) ? 0.7 : 1);
-			$dynamic['his']['Bricks'] = ($hisdata->Bricks <= 6) ? 1.2 : 1;
-			$dynamic['his']['Gems'] = ($hisdata->Gems <= 6) ? 1.2 : 1;
-			$dynamic['his']['Recruits'] = ($hisdata->Recruits <= 6) ? 1.2 : 1;
-			$dynamic['his']['Tower'] = ($hisdata->Tower <= 20) ? 1.5 : (($hisdata->Tower >= ($max_tower - 20)) ? 1.5 : 1);
-			$dynamic['his']['Wall'] = ($hisdata->Wall <= 15) ? 1.5 : 1;
+			foreach (array('Bricks', 'Gems', 'Recruits') as $resource)
+			{
+				$dynamic['mine'][$resource] = $this->ResourceEval($mydata->$resource);
+				$dynamic['his'][$resource] = $this->ResourceEval($hisdata->$resource);
+			}
+
+			$dynamic['mine']['Tower'] = $this->TowerEval($mydata->Tower, $max_tower);
+			$dynamic['mine']['Wall'] = $this->WallEval($mydata->Wall, $max_wall);
+			$dynamic['his']['Tower'] = $this->TowerEval($hisdata->Tower, $max_tower);
+			$dynamic['his']['Wall'] = $this->WallEval($hisdata->Wall, $max_wall);
 
 			return $dynamic;
+		}
+
+		protected function FacilityEval($facility) { return min(2.5, (6 / (pow($facility, 2))) + 0.6); }
+		protected function ResourceEval($resource) { return ((20 / ($resource + 40)) + 0.8); }
+
+		protected function TowerEval($tower, $max_tower)
+		{
+			$ratio = ($tower / $max_tower) * 100;
+			return ((pow(($ratio - 50), 2) / 3000) + 0.9);
+		}
+
+		protected function WallEval($wall, $max_wall)
+		{
+			$ratio = ($wall / $max_wall) * 100;
+			return min(1.5, (5 / ($ratio + 5)) + 0.85);
 		}
 
 		protected function Config()
