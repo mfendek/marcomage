@@ -1988,7 +1988,7 @@
 				// set game modes (predefined for AI challenge)
 				$hidden_cards = 'no';
 				$friendly_play = 'yes';
-				$long_mode = 'no';
+				$long_mode = 'yes';
 				$ai_mode = 'yes';
 				$game_modes = array();
 				if ($hidden_cards == "yes") $game_modes[] = 'HiddenCards';
