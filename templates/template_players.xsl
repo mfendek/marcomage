@@ -58,6 +58,7 @@
 				<value name="Magic gained"    value="Magic"        />
 				<value name="Dungeons gained" value="Dungeons"     />
 				<value name="Rares played"    value="Rares"        />
+				<value name="AI challenges"   value="Challenges"   />
 				<value name="Tower built"     value="Tower"        />
 				<value name="Wall built"      value="Wall"         />
 				<value name="Tower destroyed" value="TowerDamage"  />
