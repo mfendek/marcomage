@@ -47,6 +47,20 @@
 			return $challenges;
 		}
 
+		public function ListChallengeNames() // get list of AI challenges names
+		{
+			$db = $this->getDB();
+			$result = $db->xpath('/am:challenges/am:challenge');
+
+			if ($result === false OR count($result) == 0) return array();
+
+			$challenges = array();
+			foreach ($result as $challenge)
+				$challenges[] = (string)$challenge->attributes()->name;
+
+			return $challenges;
+		}
+
 		public function GetChallenge($challenge_name)
 		{
 			$db = $this->getDB();

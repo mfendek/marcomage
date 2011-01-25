@@ -116,7 +116,7 @@
 			return $replay;
 		}
 		
-		public function ListReplays($player, $hidden, $friendly, $long, $ai, $victory, $page, $condition, $order)
+		public function ListReplays($player, $hidden, $friendly, $long, $ai, $challenge, $victory, $page, $condition, $order)
 		{
 			$db = $this->db;
 			
@@ -126,8 +126,9 @@
 			$friendly_q = ($friendly != "none") ? ' AND FIND_IN_SET("FriendlyPlay", `GameModes`) '.(($friendly == "include") ? '>' : '=').' 0' : '';
 			$long_q = ($long != "none") ? ' AND FIND_IN_SET("LongMode", `GameModes`) '.(($long == "include") ? '>' : '=').' 0' : '';
 			$ai_q = ($ai != "none") ? ' AND FIND_IN_SET("AIMode", `GameModes`) '.(($ai == "include") ? '>' : '=').' 0' : '';
+			$ch_q = ($challenge != "none") ? (($challenge == 'include') ? ' AND `AI` != ""' : (($challenge == 'exclude') ? ' AND `AI` = ""' : ' AND `AI` = "'.$db->Escape($challenge).'"')) : '';
 			
-			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2`, `Started`, `Finished`, `Rounds`, `Turns`, `GameModes`, `AI`, `Winner`, `EndType`, (CASE WHEN `Deleted` = TRUE THEN "yes" ELSE "no" END) as `Deleted`, `Views` FROM `replays_head` WHERE '.$victory_q.$player_q.$hidden_q.$friendly_q.$long_q.$ai_q.' ORDER BY `'.$db->Escape($condition).'` '.$db->Escape($order).' LIMIT '.(REPLAYS_PER_PAGE * $db->Escape($page)).' , '.REPLAYS_PER_PAGE.'');
+			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2`, `Started`, `Finished`, `Rounds`, `Turns`, `GameModes`, `AI`, `Winner`, `EndType`, (CASE WHEN `Deleted` = TRUE THEN "yes" ELSE "no" END) as `Deleted`, `Views` FROM `replays_head` WHERE '.$victory_q.$player_q.$hidden_q.$friendly_q.$long_q.$ai_q.$ch_q.' ORDER BY `'.$db->Escape($condition).'` '.$db->Escape($order).' LIMIT '.(REPLAYS_PER_PAGE * $db->Escape($page)).' , '.REPLAYS_PER_PAGE.'');
 			if (!$result) return false;
 			
 			$replays = array();
@@ -137,7 +138,7 @@
 			return $replays;
 		}
 		
-		public function CountPages($player, $hidden, $friendly, $long, $ai, $victory)
+		public function CountPages($player, $hidden, $friendly, $long, $ai, $challenge, $victory)
 		{	
 			$db = $this->db;
 			
@@ -147,8 +148,9 @@
 			$friendly_q = ($friendly != "none") ? ' AND FIND_IN_SET("FriendlyPlay", `GameModes`) '.(($friendly == "include") ? '>' : '=').' 0' : '';
 			$long_q = ($long != "none") ? ' AND FIND_IN_SET("LongMode", `GameModes`) '.(($long == "include") ? '>' : '=').' 0' : '';
 			$ai_q = ($ai != "none") ? ' AND FIND_IN_SET("AIMode", `GameModes`) '.(($ai == "include") ? '>' : '=').' 0' : '';
+			$ch_q = ($challenge != "none") ? (($challenge == 'include') ? ' AND `AI` != ""' : (($challenge == 'exclude') ? ' AND `AI` = ""' : ' AND `AI` = "'.$db->Escape($challenge).'"')) : '';
 			
-			$result = $db->Query('SELECT COUNT(`GameID`) as `Count` FROM `replays_head` WHERE '.$victory_q.$player_q.$hidden_q.$friendly_q.$long_q.$ai_q.'');
+			$result = $db->Query('SELECT COUNT(`GameID`) as `Count` FROM `replays_head` WHERE '.$victory_q.$player_q.$hidden_q.$friendly_q.$long_q.$ai_q.$ch_q.'');
 			if (!$result) return false;
 			if (!$result->Rows()) return false;
 			

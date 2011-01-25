@@ -112,7 +112,8 @@ CREATE TABLE `replays_head` (
   KEY `Player2` (`Player2`),
   KEY `EndType` (`EndType`),
   KEY `GameModes` (`GameModes`),
-  KEY `Finished` (`Finished`)
+  KEY `Finished` (`Finished`),
+  KEY `AI` (`AI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

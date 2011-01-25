@@ -25,6 +25,20 @@
 		</xsl:variable>
 		<xsl:copy-of select="am:htmlSelectBox('PlayerFilter', $param/PlayerFilter, $players, $param/players)"/>
 
+		<!-- victory type filter -->
+		<xsl:variable name="victory_types">
+			<value name="No victory filter"     value="none"         />
+			<value name="Tower building"        value="Construction" />
+			<value name="Tower destruction"     value="Destruction"  />
+			<value name="Resource accumulation" value="Resource"     />
+			<value name="Timeout"               value="Timeout"      />
+			<value name="Draw"                  value="Draw"         />
+			<value name="Surrender"             value="Surrender"    />
+			<value name="Aborted"               value="Abort"        />
+			<value name="Abandon"               value="Abandon"      />
+		</xsl:variable>
+		<xsl:copy-of select="am:htmlSelectBox('VictoryFilter', $param/VictoryFilter, $victory_types, '')"/>
+
 		<xsl:variable name="mode_options">
 			<value name="ignore"  value="none"    />
 			<value name="include" value="include" />
@@ -47,19 +61,9 @@
 		<img class="icon" width="20px" height="14px" src="img/ai_mode.png" alt="AI mode" title="AI mode" />
 		<xsl:copy-of select="am:htmlSelectBox('AIMode', $param/AIMode, $mode_options, '')"/>
 
-		<!-- victory type filter -->
-		<xsl:variable name="victory_types">
-			<value name="No victory filter"     value="none"         />
-			<value name="Tower building"        value="Construction" />
-			<value name="Tower destruction"     value="Destruction"  />
-			<value name="Resource accumulation" value="Resource"     />
-			<value name="Timeout"               value="Timeout"      />
-			<value name="Draw"                  value="Draw"         />
-			<value name="Surrender"             value="Surrender"    />
-			<value name="Aborted"               value="Abort"        />
-			<value name="Abandon"               value="Abandon"      />
-		</xsl:variable>
-		<xsl:copy-of select="am:htmlSelectBox('VictoryFilter', $param/VictoryFilter, $victory_types, '')"/>
+		<!-- ai challenge filter -->
+		<img class="icon" width="20px" height="14px" src="img/ai_challenge.png" alt="AI challenge" title="AI challenge" />
+		<xsl:copy-of select="am:htmlSelectBox('AIChallenge', $param/AIChallenge, $mode_options, $param/ai_challenges)"/>
 
 		<button type="submit" name="filter_replays">Apply filters</button>
 		<xsl:if test="$param/my_replays = 'yes'">

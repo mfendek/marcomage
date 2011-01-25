@@ -2776,6 +2776,8 @@
 				$_POST['FriendlyPlay'] = "none";
 				$_POST['LongMode'] = "none";
 				$_POST['VictoryFilter'] = "none";
+				$_POST['AIMode'] = "none";
+				$_POST['AIChallenge'] = "none";
 				$_POST['CurrentRepPage'] = 0;
 
 				$current = 'Replays';
@@ -3887,6 +3889,7 @@ case 'Replays':
 	$params['replays']['FriendlyPlay'] = $friendly_f = (isset($_POST['FriendlyPlay'])) ? $_POST['FriendlyPlay'] : "none";
 	$params['replays']['LongMode'] = $long_f = (isset($_POST['LongMode'])) ? $_POST['LongMode'] : "none";
 	$params['replays']['AIMode'] = $ai_f = (isset($_POST['AIMode'])) ? $_POST['AIMode'] : "none";
+	$params['replays']['AIChallenge'] = $ch_f = (isset($_POST['AIChallenge'])) ? $_POST['AIChallenge'] : "none";
 	$params['replays']['VictoryFilter'] = $victory_f = (isset($_POST['VictoryFilter'])) ? $_POST['VictoryFilter'] : "none";
 
 	if (!isset($_POST['ReplaysOrder'])) $_POST['ReplaysOrder'] = "DESC"; // default ordering
@@ -3894,11 +3897,12 @@ case 'Replays':
 	$params['replays']['order'] = $order = $_POST['ReplaysOrder'];
 	$params['replays']['cond'] = $cond = $_POST['ReplaysCond'];
 
-	$params['replays']['list'] = $replaydb->ListReplays($player_f, $hidden_f, $friendly_f, $long_f, $ai_f, $victory_f, $current_page, $cond, $order);
-	$params['replays']['page_count'] = $replaydb->CountPages($player_f, $hidden_f, $friendly_f, $long_f, $ai_f, $victory_f);
+	$params['replays']['list'] = $replaydb->ListReplays($player_f, $hidden_f, $friendly_f, $long_f, $ai_f, $ch_f, $victory_f, $current_page, $cond, $order);
+	$params['replays']['page_count'] = $replaydb->CountPages($player_f, $hidden_f, $friendly_f, $long_f, $ai_f, $ch_f, $victory_f);
 	$params['replays']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 	$params['replays']['players'] = $replay_players = $replaydb->ListPlayers();
 	$params['replays']['my_replays'] = (in_array($player->Name(), $replay_players) ? 'yes' : 'no');
+	$params['replays']['ai_challenges'] = $challengesdb->ListChallengeNames();
 
 	break;
 
