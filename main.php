@@ -3166,6 +3166,7 @@ case 'Players_details':
 
 	$p_settings = $p->GetSettings();
 	$score = $scoredb->GetScore($cur_player);
+	$player_decks = $p->ListDecks();
 
 	$params['profile']['PlayerName'] = $subsection_name = $p->Name();
 	$params['profile']['PlayerType'] = $p->Type();
@@ -3192,6 +3193,8 @@ case 'Players_details':
 	$params['profile']['Losses'] = $score->ScoreData->Losses;
 	$params['profile']['Draws'] = $score->ScoreData->Draws;
 	$params['profile']['Gold'] = $score->ScoreData->Gold;
+	$params['profile']['game_slots'] = $score->ScoreData->GameSlots;
+	$params['profile']['deck_slots'] = max(0,count($player_decks) - DECK_SLOTS);
 	$params['profile']['Posts'] = $forum->Threads->Posts->CountPosts($cur_player);
 
 	if( $p_settings->GetSetting('Birthdate') != "0000-00-00" )
@@ -3228,7 +3231,7 @@ case 'Players_details':
 	$params['profile']['challenging'] = (isset($_POST['prepare_challenge'])) ? 'yes' : 'no';
 
 	$params['profile']['statistics'] = $player->GetVersusStats($p->Name());
-	$params['profile']['export_decks'] = ($access_rights[$player->Type()]["export_deck"]) ? $p->ListDecks() : array();
+	$params['profile']['export_decks'] = ($access_rights[$player->Type()]["export_deck"]) ? $player_decks : array();
 
 	break;
 

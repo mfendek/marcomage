@@ -294,6 +294,9 @@
 			<xsl:if test="$param/LongFlag = 'yes'"><img class="icon" width="20px" height="14px" src="img/long_mode.png" alt="Long mode" title="Long mode" /></xsl:if>
 		</p>
 		<p>Country<img class="icon" width="18px" height="12px" src="img/flags/{$param/Country}.gif" alt="country flag" title="{$param/Country}" /> <span class="detail_value"><xsl:value-of select="$param/Country"/></span></p>
+		<p>Gold<span class="detail_value"><xsl:value-of select="$param/Gold"/></span></p>
+		<p>Bonus game slots<span class="detail_value"><xsl:value-of select="$param/game_slots"/></span></p>
+		<p>Bonus deck slots<span class="detail_value"><xsl:value-of select="$param/deck_slots"/></span></p>
 		<p>Forum posts<span class="detail_value"><xsl:value-of select="$param/Posts"/></span></p>
 		<p>
 			<xsl:text>Registered</xsl:text>
