@@ -270,6 +270,16 @@
 <p>For example if you want to play a quick game, select "Looking for quick game" status. It is possible to use filter in players list section to filter out players with a specific status, so in this case, only players that are looking for a quick game. All icon images have their description displayed when hovering over them with mouse cursor.</p>
 		]]>
 	</part>
+	<part name="AI game">
+		<![CDATA[
+<p>In an AI game you play against a computer opponent. AI games have some restrictions that normal games don't. AI games are always played in Friendly play game mode, so their outcome doesn't effect player's score. Other restrictions depend on the AI game type.</p>
+
+<ul>
+	<li><img class="icon" width="20px" height="14px" src="img/ai_mode.png" alt="AI mode" title="AI mode" />normal AI game - you are playing against normal AI, which uses starter deck by default and applies general strategy. You can also give the AI one of your own decks to play with by either random or manual selection.</li>
+	<li><img class="icon" width="20px" height="14px" src="img/ai_challenge.png" alt="AI challenge" title="AI challenge" />AI challenge - you are playing against custom AI, which uses only one special deck and applies a special strategy that is optimized for its deck. AI challenges are more difficult, because in addition to specialized game strategy, the computer player starts with an advantage. AI challenges are always played in Long game mode.</li>
+</ul>
+		]]>
+	</part>
 	<part name="Player rating system">
 		<![CDATA[
 <p>Players gather experience by playing games. When enough experience is gathered, a player will gain a new level. Higher level ensures a higher place in the ladder of all players. Each time a player gains a new level, he also gains 100 gold as well (which can be used to buy additional game and deck slots in the Setting section at the MArcomage shop). Based on player's performance in the game, the experience amount is calculated. To level up on the Nth level you need 500 + (50 * N) + (200 * [N/5]) + (100 * [N/10]^{2}) EXP. The [] is operation floor, which is nearest lower integer number (for exmaple: [1] = 1, [1.3] = 1, [1.9] = 1, [2.2] = 2). Base EXP for one game is 100 EXP and base gold is 0. Gold can be gained only in the fourth phase by gaining game awards. Rating system calculation is divided into four phases.</p>
