@@ -125,8 +125,10 @@
 		if ($user_name != $game->Name1() AND $user_name != $game->Name2()) { echo 'Action not allowed.'; exit; }
 
 		$preview_data = $game->CalculatePreview($user_name, $cardpos, $mode);
-
-		echo $game->FormatPreview($preview_data);
+		if (!is_array($preview_data))
+			echo $preview_data;
+		else
+			echo $game->FormatPreview($preview_data);
 	}
 	elseif($_POST['action'] == "save_note")
 	{
