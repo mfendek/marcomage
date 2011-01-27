@@ -45,6 +45,16 @@
 			return $static;
 		}
 
+		protected function MiscConfig()
+		{
+			// misc configuration (special actions)
+			$misc['play_again'] = 300;
+			$misc['summon'] = 150;
+			$misc['discard'] = 250;
+
+			return $misc;
+		}
+
 		protected function DynamicConfig()
 		{
 			global $game_config;
@@ -167,6 +177,7 @@
 				$max_points = 0;
 				$choices = array();
 				$ai_config = $this->Config();
+				$misc_config = $this->MiscConfig();
 
 				foreach ($playable_positions as $pos)
 				{
@@ -197,7 +208,7 @@
 							$points+= ($his_attributes[$attr_name] - $his_after[$attr_name]) * $ai_config['his'][$attr_name];
 
 						// add extra points in case of play again card
-						if ($play_again) $points+= 300;
+						if ($play_again) $points+= $misc_config['play_again'];
 
 						// analyze rare cards in hand
 						$my_handchanges = $player_data['hand_changes'];
@@ -209,7 +220,7 @@
 							{
 								$card_data = $carddb->GetCard($cur_card);
 								if ($card_data->GetClass() == 'Rare')
-									$points+= 150;
+									$points+= $misc_config['summon'];
 							}
 
 						// gain extra points if rare cards were discarded from opponent's hand (discard related cards)
@@ -224,7 +235,7 @@
 									$cost_missing = max(0, $card_data['bricks'] - $his_attributes['Bricks']) + max(0, $card_data['gems'] - $his_attributes['Gems']) + max(0, $card_data['recruits'] - $his_attributes['Recruits']);
 
 									$play_ratio = ($cost_needed > 0 ) ? ($cost_needed - $cost_missing) / $cost_needed : 1;
-									$points+= 250 * $play_ratio;
+									$points+= $misc_config['discard'] * $play_ratio;
 								}
 							}
 
