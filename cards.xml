@@ -9817,7 +9817,7 @@
     <modes>0</modes>
     <keywords>Quick</keywords>
     <effect><![CDATA[Enemy wall: -3<br />Enemy stock: -1<br />Shuffles your hand]]></effect>
-    <code><![CDATA[$hisdata->Wall-= 3; $hisdata->Bricks-= 1; $hisdata->Gems-= 1; $hisdata->Recruits-= 1; $mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_random'); $nextcard = 0; $hand = $mydata->Hand; shuffle($hand); $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $keys = array_keys($newcards); $mydata->Hand = array_combine($keys, $hand); $mydata->NewCards = $newcards;]]></code>
+    <code><![CDATA[$hisdata->Wall-= 3; $hisdata->Bricks-= 1; $hisdata->Gems-= 1; $hisdata->Recruits-= 1; $mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, 'DrawCard_norare'); $nextcard = 0; $hand = $mydata->Hand; shuffle($hand); $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $keys = array_keys($newcards); $mydata->Hand = array_combine($keys, $hand); $mydata->NewCards = $newcards;]]></code>
     <created>2010-10-03</created>
     <modified>2010-10-03</modified>
   </card>
