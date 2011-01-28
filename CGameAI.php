@@ -48,9 +48,11 @@
 		protected function MiscConfig()
 		{
 			// misc configuration (special actions)
-			$misc['play_again'] = 300;
-			$misc['summon'] = 150;
-			$misc['discard'] = 250;
+			$misc['play_again'] = 300; // play again cards (Quick and Swift)
+			$misc['summon'] = 150; // summon rare cards
+			$misc['discard'] = 250; // discard rare cards
+			$misc['cleanup'] = 50; // discard poison cards (common cards not from deck)
+			$misc['poison'] = 50; // add poison cards
 
 			return $misc;
 		}
@@ -214,29 +216,74 @@
 						$my_handchanges = $player_data['hand_changes'];
 						$his_handchanges = $opponent_data['hand_changes'];
 
-						// gain extra points if rare cards were added to player's hand (summoning related cards)
 						if (is_array($my_handchanges))
 							foreach ($my_handchanges as $card_pos => $cur_card)
 							{
+								// previous card
+								$prev_card = $my_handdata[$card_pos];
+								$prev_class = $prev_card['class'];
+
+								// new card
 								$card_data = $carddb->GetCard($cur_card);
-								if ($card_data->GetClass() == 'Rare')
+								$card_class = $card_data->GetClass();
+
+								// gain extra points if rare cards were added to player's hand (summoning related cards)
+								if ($card_class == 'Rare')
 									$points+= $misc_config['summon'];
+
+								// lose points if rare cards were discarded from hand (ignore played card position)
+								if ($card_pos != $pos and $prev_class == 'Rare')
+								{
+									// determine how soon is possible to play this card
+									$cost_needed = $prev_card['bricks'] + $prev_card['gems'] + $prev_card['recruits'];
+									$cost_missing = max(0, $prev_card['bricks'] - $my_attributes['Bricks']) + max(0, $prev_card['gems'] - $my_attributes['Gems']) + max(0, $prev_card['recruits'] - $my_attributes['Recruits']);
+
+									$play_ratio = ($cost_needed > 0 ) ? ($cost_needed - $cost_missing) / $cost_needed : 1;
+									$points-= $misc_config['discard'] * $play_ratio;
+								}
+
+								// gain extra points in case poison cards were discarded from hand
+								if ($prev_class == 'Common' and !in_array($prev_card['id'], $mydata->Deck->Common) and in_array($cur_card, $mydata->Deck->$card_class))
+									$points+= $misc_config['cleanup'];
+
+								// lose points in case poison cards were added to hand
+								if ($card_class == 'Common' and !in_array($cur_card, $mydata->Deck->Common) and in_array($prev_card['id'], $mydata->Deck->$prev_class))
+									$points-= $misc_config['poison'];
 							}
 
-						// gain extra points if rare cards were discarded from opponent's hand (discard related cards)
 						if (is_array($his_handchanges))
 							foreach ($his_handchanges as $card_pos => $cur_card)
 							{
-								$card_data = $his_handdata[$card_pos];
-								if ($card_data['class'] == 'Rare')
+								// previous card
+								$prev_card = $his_handdata[$card_pos];
+								$prev_class = $prev_card['class'];
+
+								// new card
+								$card_data = $carddb->GetCard($cur_card);
+								$card_class = $card_data->GetClass();
+
+								// lose points if rare cards were added to opponent's hand
+								if ($card_class == 'Rare')
+									$points-= $misc_config['summon'];
+
+								// gain extra points if rare cards were discarded from opponent's hand (discard related cards)
+								if ($prev_class == 'Rare')
 								{
 									// determine how soon is opponent going to be able to play this card
-									$cost_needed = $card_data['bricks'] + $card_data['gems'] + $card_data['recruits'];
-									$cost_missing = max(0, $card_data['bricks'] - $his_attributes['Bricks']) + max(0, $card_data['gems'] - $his_attributes['Gems']) + max(0, $card_data['recruits'] - $his_attributes['Recruits']);
+									$cost_needed = $prev_card['bricks'] + $prev_card['gems'] + $prev_card['recruits'];
+									$cost_missing = max(0, $prev_card['bricks'] - $his_attributes['Bricks']) + max(0, $prev_card['gems'] - $his_attributes['Gems']) + max(0, $prev_card['recruits'] - $his_attributes['Recruits']);
 
 									$play_ratio = ($cost_needed > 0 ) ? ($cost_needed - $cost_missing) / $cost_needed : 1;
 									$points+= $misc_config['discard'] * $play_ratio;
 								}
+
+								// lose points in case poison cards were discarded from opponent's hand
+								if ($prev_class == 'Common' and !in_array($prev_card['id'], $hisdata->Deck->Common) and in_array($cur_card, $hisdata->Deck->$card_class))
+									$points-= $misc_config['cleanup'];
+
+								// gain extra points in case poison cards were added to opponent's hand
+								if ($card_class == 'Common' and !in_array($cur_card, $hisdata->Deck->Common) and in_array($prev_card['id'], $hisdata->Deck->$prev_class))
+									$points+= $misc_config['poison'];
 							}
 
 						// evaluate how efficiently was the stock spent
