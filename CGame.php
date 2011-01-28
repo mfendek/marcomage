@@ -597,6 +597,9 @@
 			// verify mode (depends on card)
 			if ($action == 'play' AND (($mode < 0) OR ($mode > $card->CardData->Modes) OR ($mode == 0 AND $card->CardData->Modes > 0))) return 'Bad mode!';
 			
+			// AI challenge check (rare cards are not allowed to be played by player in this game mode)
+			if ($action == 'play' AND $this->AI != '' AND $card->GetClass() == 'Rare' AND $playername != SYSTEM_NAME) return "Rare cards can't be played in this game mode!";
+			
 			// process card history
 			$mylastcardindex = count($mydata->LastCard);
 			$hislastcardindex = count($hisdata->LastCard);
@@ -957,6 +960,9 @@
 			
 			// verify mode (depends on card)
 			if (($mode < 0) OR ($mode > $card->CardData->Modes) OR ($mode == 0 AND $card->CardData->Modes > 0)) return 'Bad mode!';
+			
+			// AI challenge check (rare cards are not allowed to be played by player in this game mode)
+			if ($this->AI != '' AND $card->GetClass() == 'Rare' AND $playername != SYSTEM_NAME) return "Rare cards can't be played in this game mode!";
 			
 			// process card history
 			$mylastcardindex = count($mydata->LastCard);

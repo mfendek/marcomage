@@ -218,7 +218,7 @@ $(document).ready(function() {
 
 		if ($("div.selected_card").parent().hasClass('unplayable'))
 		{
-			alert('Insufficient resources!');
+			alert("Card can't be played.");
 			return false;
 		}
 
@@ -300,7 +300,7 @@ $(document).ready(function() {
 
 		if ($("div.selected_card").parent().hasClass('unplayable'))
 		{
-			alert('Insufficient resources!');
+			alert("Card can't be played.");
 			return false;
 		}
 

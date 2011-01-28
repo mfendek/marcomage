@@ -276,7 +276,13 @@
 
 <ul>
 	<li><img class="icon" width="20px" height="14px" src="img/ai_mode.png" alt="AI mode" title="AI mode" />normal AI game - you are playing against normal AI, which uses starter deck by default and applies general strategy. You can also give the AI one of your own decks to play with by either random or manual selection.</li>
-	<li><img class="icon" width="20px" height="14px" src="img/ai_challenge.png" alt="AI challenge" title="AI challenge" />AI challenge - you are playing against custom AI, which uses only one special deck and applies a special strategy that is optimized for its deck. AI challenges are more difficult, because in addition to specialized game strategy, the computer player starts with an advantage. AI challenges are always played in Long game mode.</li>
+	<li><img class="icon" width="20px" height="14px" src="img/ai_challenge.png" alt="AI challenge" title="AI challenge" />AI challenge - you are playing against custom AI, which uses only one special deck. AI challenges are always played in Long game mode. AI challenges are more difficult because:
+		<ul>
+			<li>AI uses specialized strategy which is optimized for its deck</li>
+			<li>AI starts with an advantage (resources and facilities)</li>
+			<li>you can't play rare cards, although you can still draw them</li>
+		</ul>
+	</li>
 </ul>
 		]]>
 	</part>

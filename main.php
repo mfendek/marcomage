@@ -3520,7 +3520,8 @@ case 'Games_details':
 	{
 		$entry = array();
 		$entry['Data'] = $card;
-		$entry['Playable'] = ( $mydata->Bricks >= $card['bricks'] and $mydata->Gems >= $card['gems'] and $mydata->Recruits >= $card['recruits']) ? 'yes' : 'no';
+		$blocked = ($game->AI != '' AND $card['class'] == 'Rare'); // block playability of rare card is case of AI challenge
+		$entry['Playable'] = ( $mydata->Bricks >= $card['bricks'] and $mydata->Gems >= $card['gems'] and $mydata->Recruits >= $card['recruits'] and !$blocked) ? 'yes' : 'no';
 		$entry['Modes'] = $card['modes'];
 		$entry['NewCard'] = ( isset($mydata->NewCards[$i]) ) ? 'yes' : 'no';
 		$entry['Revealed'] = ( isset($mydata->Revealed[$i]) ) ? 'yes' : 'no';
