@@ -1209,7 +1209,13 @@
 				</p>
 			</div>
 			<h5>
-				<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player2)}"><xsl:value-of select="$param/Player2"/></a>
+				<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player2)}">
+					<!-- rename opponent to actual AI name in case of AI challenge -->
+					<xsl:choose>
+						<xsl:when test="$param/AI != ''"><xsl:value-of select="$param/AI"/></xsl:when>
+						<xsl:otherwise><xsl:value-of select="$param/Player2"/></xsl:otherwise>
+					</xsl:choose>
+				</a>
 			</h5>
 			<p class="info_label">
 				<xsl:attribute name="title">Tower: <xsl:value-of select="$param/p2Tower"/> (Castle total: <xsl:value-of select="$param/p2Tower + $param/p2Wall"/>)</xsl:attribute>

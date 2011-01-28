@@ -55,7 +55,13 @@
 								<xsl:if test="active = 'yes'">
 									<xsl:attribute name="class">p_online</xsl:attribute>
 								</xsl:if>
-								<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', opponent)}"><xsl:value-of select="opponent"/></a>
+								<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', opponent)}">
+									<!-- rename opponent to actual AI name in case of AI challenge -->
+									<xsl:choose>
+										<xsl:when test="ai != ''"><xsl:value-of select="ai"/></xsl:when>
+										<xsl:otherwise><xsl:value-of select="opponent"/></xsl:otherwise>
+									</xsl:choose>
+								</a>
 							</p>
 						</td>
 						<xsl:if test="$param/games_details = 'yes'">
@@ -915,7 +921,13 @@
 					<xsl:attribute name="class">player</xsl:attribute>
 				</xsl:if>
 				<img class="icon" width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" title="{$param/hiscountry}" />
-				<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/OpponentName)}"><xsl:value-of select="$param/OpponentName"/></a>
+				<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/OpponentName)}">
+					<!-- rename opponent to actual AI name in case of AI challenge -->
+					<xsl:choose>
+						<xsl:when test="$param/AI != ''"><xsl:value-of select="$param/AI"/></xsl:when>
+						<xsl:otherwise><xsl:value-of select="$param/OpponentName"/></xsl:otherwise>
+					</xsl:choose>
+				</a>
 			</h5>
 			<p class="info_label">
 				<xsl:attribute name="title">Tower: <xsl:value-of select="$param/HisTower"/> (Castle total: <xsl:value-of select="$param/HisTower + $param/HisWall"/>)</xsl:attribute>
