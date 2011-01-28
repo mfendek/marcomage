@@ -1862,8 +1862,6 @@
 				// check if the game can be joined (can't join game against a computer player)
 				if ($game->GetGameMode('AIMode') == 'yes') { $error = 'Failed to join the game!'; $current = 'Games'; break; }
 
-				$opponent = $game->Name1();
-
 				$deck_id = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
 				$deck = $player->GetDeck($deck_id);
 
@@ -1874,7 +1872,15 @@
 				if (!$deck->isReady()) { $error = 'This deck is not yet ready for gameplay!'; $current = 'Decks'; break; }
 
 				// check if such opponent exists
-				if (!$playerdb->GetPlayer($opponent)) { $error = 'No such player!'; $current = 'Games'; break; }
+				$opponent_name = $game->Name1();
+				$opponent = $playerdb->GetPlayer($opponent_name);
+				if (!$opponent) { $error = 'No such player!'; $current = 'Games'; break; }
+
+				// check if simultaneous games are allowed (depends on host settings)
+				$game_limit = $opponent->GetSettings()->GetSetting('GameLimit');
+
+				if ($game_limit == 'yes' and $gamedb->CheckGame($player->Name(), $opponent_name))
+					{ $error = htmlencode($opponent_name)." doesn't wish to play with you more than one game at the same time."; $current = 'Games'; break; }
 
 				// join the game
 				$gamedb->JoinGame($player->Name(), $game_id);
@@ -1883,7 +1889,7 @@
 				$game->SaveGame();
 				$replaydb->CreateReplay($game); // create game replay
 
-				$information = 'You have joined '.htmlencode($opponent).'\'s game.';
+				$information = 'You have joined '.htmlencode($opponent_name).'\'s game.';
 				$current = 'Games';
 				break;
 			}

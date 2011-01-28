@@ -245,6 +245,7 @@ CREATE TABLE `settings` (
   `Autorefresh` int(5) unsigned NOT NULL DEFAULT '0',
   `Cards_per_row` int(2) unsigned NOT NULL DEFAULT '10',
   `RandomDeck` tinyint(1) NOT NULL DEFAULT '1',
+  `GameLimit` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY  (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

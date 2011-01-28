@@ -550,6 +550,7 @@
 	<li>Forum notification - display forum notification (new posts) in the menubar</li>
 	<li>Concepts notification - display concepts notification (new concepts) in the menubar</li>
 	<li>Random deck selection - allow to choose a random deck to play with when starting a game</li>
+	<li>Disallow simultaneous games - disallow simultaneous games against the same opponent</li>
 </ul>
 
 <h4>Menubar notification</h4>

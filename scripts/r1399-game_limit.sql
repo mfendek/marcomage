@@ -1,0 +1,1 @@
+ALTER TABLE `settings`  ADD `GameLimit` BOOL NOT NULL DEFAULT '0';

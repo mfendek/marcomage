@@ -488,6 +488,16 @@
 					<xsl:text>Random deck selection</xsl:text>
 				</span>
 			</p>
+
+			<p>
+				<input type="checkbox" name="GameLimit">
+					<xsl:if test="$settings/GameLimit = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">disallow simultaneous games against the same opponent</xsl:attribute>
+					<xsl:text>Disallow simultaneous games</xsl:text>
+				</span>
+			</p>
 		</div>
 		</div>
 

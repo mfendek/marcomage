@@ -254,6 +254,19 @@
 			
 			return $game_data;
 		}
+
+		// check if there is already a game between two specified players
+		public function CheckGame($player1, $player2)
+		{
+			$db = $this->db;
+
+			$result = $db->Query('SELECT 1 FROM `games` WHERE `State` = "in progress" AND ((`Player1` = "'.$db->Escape($player1).'" AND `Player2` = "'.$db->Escape($player2).'") OR (`Player1` = "'.$db->Escape($player2).'" AND `Player2` = "'.$db->Escape($player1).'"))');
+
+			if (!$result) return false;
+			if (!$result->Rows()) return false;
+
+			return true;
+		}
 	}
 	
 	
