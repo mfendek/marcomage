@@ -1294,7 +1294,15 @@
 
 			while (1)
 			{
-				$nextcard = $this->$draw_function($source, $hand[$card_pos]);
+				if (!isset($card_pos) or !is_numeric($card_pos) or ($card_pos < 1) or ($card_pos > 8))
+				{
+					error_log('Debug: invalid card position: '.$card_pos.'');
+					$cur_card = 0;
+				}
+				else
+					$cur_card = $hand[$card_pos];
+				
+				$nextcard = $this->$draw_function($source, $cur_card);
 				
 				// count the number of occurences of the same card on other slots
 				$match = 0;

@@ -6933,31 +6933,45 @@
 								if ($i != $cardpos)
 								{
 									$cur_cost = $my_costs[$i];
-									if ($cur_cost == $my_min) $my_low[$i] = $i;
-									elseif ($cur_cost == $my_max) $my_high[$i] = $i;
+									if ($cur_cost == $my_min) $my_low[] = $i;
+									if ($cur_cost == $my_max) $my_high[] = $i;
 								}
 								$cur_cost = $his_costs[$i];
-								if ($cur_cost == $his_min) $his_low[$i] = $i;
-								elseif ($cur_cost == $his_max) $his_high[$i] = $i;
+								if ($cur_cost == $his_min) $his_low[] = $i;
+								if ($cur_cost == $his_max) $his_high[] = $i;
 							}
-							$my_dis = array_rand($my_low);
-							$his_dis = array_rand($his_low);
-							$mydata->Hand[$my_dis] = $this->DrawCard($mydata->Deck, $mydata->Hand, $my_dis, 'DrawCard_different');
-							$mydata->NewCards[$my_dis] = 1;
-							$hisdata->Hand[$his_dis] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $his_dis, 'DrawCard_different');
-							$hisdata->NewCards[$his_dis] = 1;
-							if ($my_max > 0)
+							
+							if ($my_min == $my_max)
 							{
-								$my_dis = array_rand($my_high);
-								$mydata->Hand[$my_dis] = $this->DrawCard($mydata->Deck, $mydata->Hand, $my_dis, 'DrawCard_different');
-								$mydata->NewCards[$my_dis] = 1;
+								shuffle($my_high);
+								$my_low_dis = array_pop($my_high);
+								$my_high_dis = array_pop($my_high);
 							}
-							if ($his_max > 0)
+							else
 							{
-								$his_dis = array_rand($his_high);
-								$hisdata->Hand[$his_dis] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $his_dis, 'DrawCard_different');
-								$hisdata->NewCards[$his_dis] = 1;
+								$my_low_dis = $my_low[array_rand($my_low)];
+								$my_high_dis = $my_high[array_rand($my_high)];
 							}
+							$mydata->Hand[$my_low_dis] = $this->DrawCard($mydata->Deck, $mydata->Hand, $my_low_dis, 'DrawCard_different');
+							$mydata->Hand[$my_high_dis] = $this->DrawCard($mydata->Deck, $mydata->Hand, $my_high_dis, 'DrawCard_different');
+							$mydata->NewCards[$my_low_dis] = 1;
+							$mydata->NewCards[$my_high_dis] = 1;
+							
+							if ($his_min == $his_max)
+							{
+								shuffle($his_high);
+								$his_low_dis = array_pop($his_high);
+								$his_high_dis = array_pop($his_high);
+							}
+							else
+							{
+								$his_low_dis = $his_low[array_rand($his_low)];
+								$his_high_dis = $his_high[array_rand($his_high)];
+							}
+							$hisdata->Hand[$his_low_dis] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $his_low_dis, 'DrawCard_different');
+							$hisdata->Hand[$his_high_dis] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $his_high_dis, 'DrawCard_different');
+							$hisdata->NewCards[$his_low_dis] = 1;
+							$hisdata->NewCards[$his_high_dis] = 1;
 ]]></code>
     <created>2009-04-11</created>
     <modified>2009-04-11</modified>
