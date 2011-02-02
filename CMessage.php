@@ -230,7 +230,7 @@
 			return $pages;
 		}
 		
-		public function ListAllMessages($player, $date, $name, $condition, $order, $page)
+		public function ListAllMessages($date, $name, $condition, $order, $page)
 		{	// used when admin want to see list of all messages (including deleted ones)
 			$db = $this->db;
 			
@@ -247,7 +247,7 @@
 			return $messages;
 		}
 		
-		public function CountPagesAll($player, $date, $name)
+		public function CountPagesAll($date, $name)
 		{	
 			$db = $this->db;
 			
@@ -307,7 +307,7 @@
 			return $names;
 		}
 		
-		public function ListAllNames($player, $date)
+		public function ListAllNames($date)
 		{	// get list of authors of all messages
 			$db = $this->db;
 			

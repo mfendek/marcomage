@@ -3289,29 +3289,26 @@ case 'Messages':
 
 	if ($current_location == "all_mail")
 	{
-		$list_type = "ListAllMessages";
-		$name_type = "ListAllNames";
-		$pages_type = "CountPagesAll";
+		$messages = $messagedb->ListAllMessages($date, $name, $current_condition, $current_order, $current_page);
+		$page_count = $messagedb->CountPagesAll($date, $name);
+		$name_list = $messagedb->ListAllNames($date);
 	}
 	elseif ($current_location == "sent_mail")
 	{
-		$list_type = "ListMessagesFrom";
-		$name_type = "ListNamesFrom";
-		$pages_type = "CountPagesFrom";
+		$messages = $messagedb->ListMessagesFrom($player->Name(), $date, $name, $current_condition, $current_order, $current_page);
+		$page_count = $messagedb->CountPagesFrom($player->Name(), $date, $name);
+		$name_list = $messagedb->ListNamesFrom($player->Name(), $date);
 	}
 	else
 	{
-		$list_type = "ListMessagesTo";
-		$name_type = "ListNamesTo";
-		$pages_type = "CountPagesTo";
+		$messages = $messagedb->ListMessagesTo($player->Name(), $date, $name, $current_condition, $current_order, $current_page);
+		$page_count = $messagedb->CountPagesTo($player->Name(), $date, $name);
+		$name_list = $messagedb->ListNamesTo($player->Name(), $date);
 	}
 
-	$list = $messagedb->$list_type($player->Name(), $date, $name, $current_condition, $current_order, $current_page);
-	$name_list = $messagedb->$name_type($player->Name(), $date);
-
-	$params['messages']['page_count'] = $messagedb->$pages_type($player->Name(), $date, $name);
-	$params['messages']['messages'] = $list;
-	$params['messages']['messages_count'] = count($list);
+	$params['messages']['messages'] = $messages;
+	$params['messages']['page_count'] = $page_count;
+	$params['messages']['messages_count'] = count($messages);
 	$params['messages']['current_location'] = $current_location;
 	$params['messages']['name_filter'] = $name_list;
 	$params['messages']['current_page'] = $current_page;
