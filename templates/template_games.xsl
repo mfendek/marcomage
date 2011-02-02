@@ -660,7 +660,7 @@
 				<img class="icon" width="18px" height="12px" src="img/flags/{$param/mycountry}.gif" alt="country flag" title="{$param/mycountry}" />
 			</h5>
 			<p class="info_label">
-				<xsl:attribute name="title">Tower: <xsl:value-of select="$param/MyTower"/> (Castle total: <xsl:value-of select="$param/MyTower + $param/MyWall"/>)</xsl:attribute>
+				<xsl:attribute name="title">Tower: <xsl:value-of select="$param/MyTower"/> / <xsl:value-of select="$param/max_tower"/> (Castle total: <xsl:value-of select="$param/MyTower + $param/MyWall"/> / <xsl:value-of select="$param/max_tower + $param/max_wall"/>)</xsl:attribute>
 				<xsl:text>Tower: </xsl:text>
 				<span><xsl:value-of select="$param/MyTower"/></span>
 				<xsl:if test="$param/mychanges/Tower != 0">
@@ -668,7 +668,7 @@
 				</xsl:if>
 			</p>
 			<p class="info_label">
-				<xsl:attribute name="title">Wall: <xsl:value-of select="$param/MyWall"/> (Castle total: <xsl:value-of select="$param/MyTower + $param/MyWall"/>)</xsl:attribute>
+				<xsl:attribute name="title">Wall: <xsl:value-of select="$param/MyWall"/> / <xsl:value-of select="$param/max_wall"/> (Castle total: <xsl:value-of select="$param/MyTower + $param/MyWall"/> / <xsl:value-of select="$param/max_tower + $param/max_wall"/>)</xsl:attribute>
 				<xsl:text>Wall: </xsl:text>
 				<span><xsl:value-of select="$param/MyWall"/></span>
 				<xsl:if test="$param/mychanges/Wall != 0">
@@ -930,7 +930,7 @@
 				</a>
 			</h5>
 			<p class="info_label">
-				<xsl:attribute name="title">Tower: <xsl:value-of select="$param/HisTower"/> (Castle total: <xsl:value-of select="$param/HisTower + $param/HisWall"/>)</xsl:attribute>
+				<xsl:attribute name="title">Tower: <xsl:value-of select="$param/HisTower"/> / <xsl:value-of select="$param/max_tower"/> (Castle total: <xsl:value-of select="$param/HisTower + $param/HisWall"/> / <xsl:value-of select="$param/max_tower + $param/max_wall"/>)</xsl:attribute>
 				<xsl:text>Tower: </xsl:text>
 				<span><xsl:value-of select="$param/HisTower"/></span>
 				<xsl:if test="$param/hischanges/Tower != 0">
@@ -938,7 +938,7 @@
 				</xsl:if>
 			</p>
 			<p class="info_label">
-				<xsl:attribute name="title">Wall: <xsl:value-of select="$param/HisWall"/> (Castle total: <xsl:value-of select="$param/HisTower + $param/HisWall"/>)</xsl:attribute>
+				<xsl:attribute name="title">Wall: <xsl:value-of select="$param/HisWall"/> / <xsl:value-of select="$param/max_wall"/> (Castle total: <xsl:value-of select="$param/HisTower + $param/HisWall"/> / <xsl:value-of select="$param/max_tower + $param/max_wall"/>)</xsl:attribute>
 				<xsl:text>Wall: </xsl:text>
 				<span><xsl:value-of select="$param/HisWall"/></span>
 				<xsl:if test="$param/hischanges/Wall != 0">

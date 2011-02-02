@@ -413,7 +413,7 @@
 				<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player1)}"><xsl:value-of select="$param/Player1"/></a>
 			</h5>
 			<p class="info_label">
-				<xsl:attribute name="title">Tower: <xsl:value-of select="$param/p1Tower"/> (Castle total: <xsl:value-of select="$param/p1Tower + $param/p1Wall"/>)</xsl:attribute>
+				<xsl:attribute name="title">Tower: <xsl:value-of select="$param/p1Tower"/> / <xsl:value-of select="$param/max_tower"/>  (Castle total: <xsl:value-of select="$param/p1Tower + $param/p1Wall"/> / <xsl:value-of select="$param/max_tower + $param/max_wall"/>)</xsl:attribute>
 				<xsl:text>Tower: </xsl:text>
 				<span><xsl:value-of select="$param/p1Tower"/></span>
 				<xsl:if test="$param/p1changes/Tower != 0">
@@ -421,7 +421,7 @@
 				</xsl:if>
 			</p>
 			<p class="info_label">
-				<xsl:attribute name="title">Wall: <xsl:value-of select="$param/p1Wall"/> (Castle total: <xsl:value-of select="$param/p1Tower + $param/p1Wall"/>)</xsl:attribute>
+				<xsl:attribute name="title">Wall: <xsl:value-of select="$param/p1Wall"/> / <xsl:value-of select="$param/max_wall"/>  (Castle total: <xsl:value-of select="$param/p1Tower + $param/p1Wall"/> / <xsl:value-of select="$param/max_tower + $param/max_wall"/>)</xsl:attribute>
 				<xsl:text>Wall: </xsl:text>
 				<span><xsl:value-of select="$param/p1Wall"/></span>
 				<xsl:if test="$param/p1changes/Wall != 0">
@@ -673,7 +673,7 @@
 				<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player2)}"><xsl:value-of select="$param/Player2"/></a>
 			</h5>
 			<p class="info_label">
-				<xsl:attribute name="title">Tower: <xsl:value-of select="$param/p2Tower"/> (Castle total: <xsl:value-of select="$param/p2Tower + $param/p2Wall"/>)</xsl:attribute>
+				<xsl:attribute name="title">Tower: <xsl:value-of select="$param/p2Tower"/> / <xsl:value-of select="$param/max_tower"/>  (Castle total: <xsl:value-of select="$param/p2Tower + $param/p2Wall"/> / <xsl:value-of select="$param/max_tower + $param/max_wall"/>)</xsl:attribute>
 				<xsl:text>Tower: </xsl:text>
 				<span><xsl:value-of select="$param/p2Tower"/></span>
 				<xsl:if test="$param/p2changes/Tower != 0">
@@ -681,7 +681,7 @@
 				</xsl:if>
 			</p>
 			<p class="info_label">
-				<xsl:attribute name="title">Wall: <xsl:value-of select="$param/p2Wall"/> (Castle total: <xsl:value-of select="$param/p2Tower + $param/p2Wall"/>)</xsl:attribute>
+				<xsl:attribute name="title">Wall: <xsl:value-of select="$param/p2Wall"/> / <xsl:value-of select="$param/max_wall"/>  (Castle total: <xsl:value-of select="$param/p2Tower + $param/p2Wall"/> / <xsl:value-of select="$param/max_tower + $param/max_wall"/>)</xsl:attribute>
 				<xsl:text>Wall: </xsl:text>
 				<span><xsl:value-of select="$param/p2Wall"/></span>
 				<xsl:if test="$param/p2changes/Wall != 0">
@@ -952,7 +952,7 @@
 				<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player1)}"><xsl:value-of select="$param/Player1"/></a>
 			</h5>
 			<p class="info_label">
-				<xsl:attribute name="title">Tower: <xsl:value-of select="$param/p1Tower"/> (Castle total: <xsl:value-of select="$param/p1Tower + $param/p1Wall"/>)</xsl:attribute>
+				<xsl:attribute name="title">Tower: <xsl:value-of select="$param/p1Tower"/> / <xsl:value-of select="$param/max_tower"/>  (Castle total: <xsl:value-of select="$param/p1Tower + $param/p1Wall"/> / <xsl:value-of select="$param/max_tower + $param/max_wall"/>)</xsl:attribute>
 				<xsl:text>Tower: </xsl:text>
 				<span><xsl:value-of select="$param/p1Tower"/></span>
 				<xsl:if test="$param/p1changes/Tower != 0">
@@ -960,7 +960,7 @@
 				</xsl:if>
 			</p>
 			<p class="info_label">
-				<xsl:attribute name="title">Wall: <xsl:value-of select="$param/p1Wall"/> (Castle total: <xsl:value-of select="$param/p1Tower + $param/p1Wall"/>)</xsl:attribute>
+				<xsl:attribute name="title">Wall: <xsl:value-of select="$param/p1Wall"/> / <xsl:value-of select="$param/max_wall"/>  (Castle total: <xsl:value-of select="$param/p1Tower + $param/p1Wall"/> / <xsl:value-of select="$param/max_tower + $param/max_wall"/>)</xsl:attribute>
 				<xsl:text>Wall: </xsl:text>
 				<span><xsl:value-of select="$param/p1Wall"/></span>
 				<xsl:if test="$param/p1changes/Wall != 0">
@@ -1218,7 +1218,7 @@
 				</a>
 			</h5>
 			<p class="info_label">
-				<xsl:attribute name="title">Tower: <xsl:value-of select="$param/p2Tower"/> (Castle total: <xsl:value-of select="$param/p2Tower + $param/p2Wall"/>)</xsl:attribute>
+				<xsl:attribute name="title">Tower: <xsl:value-of select="$param/p2Tower"/> / <xsl:value-of select="$param/max_tower"/>  (Castle total: <xsl:value-of select="$param/p2Tower + $param/p2Wall"/> / <xsl:value-of select="$param/max_tower + $param/max_wall"/>)</xsl:attribute>
 				<xsl:text>Tower: </xsl:text>
 				<span><xsl:value-of select="$param/p2Tower"/></span>
 				<xsl:if test="$param/p2changes/Tower != 0">
@@ -1226,7 +1226,7 @@
 				</xsl:if>
 			</p>
 			<p class="info_label">
-				<xsl:attribute name="title">Wall: <xsl:value-of select="$param/p2Wall"/> (Castle total: <xsl:value-of select="$param/p2Tower + $param/p2Wall"/>)</xsl:attribute>
+				<xsl:attribute name="title">Wall: <xsl:value-of select="$param/p2Wall"/> / <xsl:value-of select="$param/max_wall"/> (Castle total: <xsl:value-of select="$param/p2Tower + $param/p2Wall"/> / <xsl:value-of select="$param/max_tower + $param/max_wall"/>)</xsl:attribute>
 				<xsl:text>Wall: </xsl:text>
 				<span><xsl:value-of select="$param/p2Wall"/></span>
 				<xsl:if test="$param/p2changes/Wall != 0">
