@@ -326,7 +326,7 @@
 				return false; // should never happen!
 
 			// record the new card
-			$this->DeckData->{$class}[$pos] = $cardid;
+			$this->DeckData->{$class}[$pos] = (int)$cardid;
 
 			$classes = array('Common' => 0, 'Uncommon' => 1, 'Rare' => 2);
 
