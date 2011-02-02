@@ -2424,10 +2424,7 @@
 
 				for ($i = 1; $i<= MESSAGES_PER_PAGE; $i++)
 					if (isset($_POST['Mass_delete_'.$i]))
-					{
-						$current_message = array_shift(array_keys($_POST['Mass_delete_'.$i]));
-						array_push($deleted_messages, $current_message);
-					}
+						$deleted_messages[] = $_POST['Mass_delete_'.$i];
 
 				if (count($deleted_messages) > 0)
 				{

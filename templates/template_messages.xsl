@@ -320,7 +320,7 @@
 								<xsl:text>+</xsl:text>
 							</button>
 							<xsl:if test="$param/current_location != 'all_mail'">
-								<input type="checkbox" class="table_checkbox" name="Mass_delete_{position()}[{MessageID}]" />
+								<input type="checkbox" class="table_checkbox" name="Mass_delete_{position()}" value="{MessageID}" />
 							</xsl:if>
 							<xsl:if test="(($param/send_messages = 'yes') and ($param/current_location = 'inbox') and (Author != $param/system_name) and (Author != $param/PlayerName))">
 								<button class="small_button" type="submit" name="message_create" value="{Author}">R</button>
