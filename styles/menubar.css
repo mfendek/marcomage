@@ -47,5 +47,12 @@ div#menu_float_left /* one part is floated to the left */
 div#menu_float_left > p /* set the distance from the left border of the screen for player name */
 {
 	margin-left: 1ex;
+	padding-left: 0.5ex;
+	padding-right: 0.5ex;
 	font-weight: bold;
+}
+
+div#menu_float_left > p > a /* profile link */
+{
+	text-decoration: none;
 }

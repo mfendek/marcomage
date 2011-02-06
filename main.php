@@ -2881,7 +2881,6 @@
 	{
 		// inner navbar params
 		$params["navbar"]["player_name"] = $player->Name();
-		$params["navbar"]["level"] = $player->GetLevel();
 
 		// menubar notification (depends on current user's game settings)
 		$forum_not = ($settings->GetSetting('Forum_notification') == 'yes');
