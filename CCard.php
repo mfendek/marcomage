@@ -56,7 +56,7 @@
 			if( isset($filters['name']) )
 			{
 				$query .= " and ";
-				$query .= "contains(am:name, '".$filters['name']."')"; // case-sensitive search
+				$query .= "contains(am:name, '".preg_replace("/[^a-zA-Z0-9 ]/i", '', $filters['name'])."')"; // case-sensitive search
 			}
 
 			if( isset($filters['class']) )
