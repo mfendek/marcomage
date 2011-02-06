@@ -33,6 +33,18 @@ div#login_inputs /* login inputs layout */
 	margin-left: 1ex;
 }
 
+div#facebook_link /* facebook picture link */
+{
+	float: right;
+	margin-top: 1ex;
+	margin-right: 1ex;
+}
+
+div#facebook_link img /* override default border style */
+{
+	border-style: none;
+}
+
 div#login_inputs > p > button[type="submit"] /* login box spacing */
 {
 	margin-top: 1ex;

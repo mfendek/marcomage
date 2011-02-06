@@ -198,6 +198,10 @@
 		</p>
 	</div>
 
+	<div id="facebook_link">
+		<a href="http://www.facebook.com/pages/MArcomage/182322255140456"><img src="img/facebook.png" width="92px" height="50px" alt="facebook page" /></a>
+	</div>
+
 	<h1>MArcomage</h1>
 	<h2>Free multiplayer on-line fantasy card game</h2>
 
