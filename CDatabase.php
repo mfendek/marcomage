@@ -6,7 +6,7 @@
 <?php
 	class CDatabase
 	{
-		private $db = false;
+		private $db = false; // mysqli object
 		public $status = 'ERROR_DB_OFFLINE';
 		public $queries = 0; // counter
 		public $qtime = 0; // time spent
@@ -14,13 +14,13 @@
 		
 		public function __construct($server, $username, $password, $database)
 		{
-			$db = mysql_connect($server, $username, $password);
+			$db = mysqli_connect($server, $username, $password);
 			if (!$db) { $this->status = 'ERROR_MYSQL_CONNECT'; return; };
 			
-			$status = mysql_select_db($database, $db);
+			$status = $db->select_db($database);
 			if (!$status) { $this->status = 'ERROR_MYSQL_SELECT_DB'; return; };
 			
-			$status = mysql_query("SET NAMES utf8 COLLATE utf8_unicode_ci", $db);
+			$status = $db->query("SET NAMES utf8 COLLATE utf8_unicode_ci");
 			if (!$status) { $this->status = 'ERROR_MYSQL_SET_NAMES'; return; };
 			
 			$this->db = $db;
@@ -35,27 +35,32 @@
 		
 		public function Escape($string)
 		{
-			return mysql_real_escape_string($string, $this->db);
+			return $this->db->escape_string($string);
 		}
 		
 		public function LastID()
 		{
-			return mysql_insert_id();
+			return $this->db->insert_id;
 		}
 		
-		public function Query($query)
+		public function Query($query, array $params = array())
 		{
-			if (!$this->db) { $this->status = 'ERROR_DB_OFFLINE'; return false; };
+			$db = $this->db;
+			if( $db === false ) { $this->status = 'ERROR_DB_OFFLINE'; return false; };
 			
 			$t_start = microtime(TRUE);
-			$result = mysql_query($query, $this->db);
+			$result = $db->query($query);
 			$t_end = microtime(TRUE);
-			if( $result === false ) { $this->status = 'ERROR_MYSQL_QUERY: '.mysql_error($this->db); return false; };
+			if( $result === false ) { $this->status = 'ERROR_MYSQL_QUERY: '.$db->error; return false; };
 
 			$data = array();
-			if( is_resource($result) )
-				while( ($row = mysql_fetch_array($result, MYSQL_ASSOC)) !== false )
+			if( is_object($result) )
+			{
+				while( ($row = $result->fetch_assoc()) !== NULL )
 					$data[] = $row;
+
+				$result->free();
+			}
 			
 			$this->queries++;
 			$this->qtime += $t_end - $t_start;
