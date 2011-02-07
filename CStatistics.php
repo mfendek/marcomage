@@ -118,7 +118,7 @@
 			$data = $result[0];
 			$ai_wins = $data['ai_wins'];
 
-			$ai_win_ratio = round(($ai_wins / $statistics['ai']) * 100, 2);
+			$ai_win_ratio = ($statistics['ai'] > 0) ? round(($ai_wins / $statistics['ai']) * 100, 2) : 0;
 
 			// get number of AI challenge games
 			$result = $db->Query('SELECT COUNT(`GameID`) as `challenge` FROM `replays_head` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("AIMode", `GameModes`) > 0) AND `AI` != ""');
@@ -134,7 +134,7 @@
 			$data = $result[0];
 			$challenge_wins = $data['challenge_wins'];
 
-			$challenge_win_ratio = round(($challenge_wins / $statistics['challenge']) * 100, 2);
+			$challenge_win_ratio = ($statistics['challenge'] > 0) ? round(($challenge_wins / $statistics['challenge']) * 100, 2) : 0;
 
 			// get number of total games games
 			$result = $db->Query('SELECT COUNT(`GameID`) as `total` FROM `replays_head` WHERE (`EndType` != "Pending")');
@@ -144,7 +144,7 @@
 			$total_games = $data['total'];
 
 			// calculate percentage
-			foreach ($statistics as $statistic => $value) $statistics[$statistic] = round(($value / $total_games) * 100, 2);
+			foreach ($statistics as $statistic => $value) $statistics[$statistic] = ($total_games > 0) ? round(($value / $total_games) * 100, 2) : 0;
 
 			// calculate AI win ratio
 			$statistics['ai_wins'] = $ai_win_ratio;
@@ -173,7 +173,7 @@
 				}
 
 				// calculate percentage
-				foreach ($statistics['wins'] as $i => $data) $statistics['wins'][$i]['ratio'] = round(($data['count'] / $wins_total) * 100, 1);
+				foreach ($statistics['wins'] as $i => $data) $statistics['wins'][$i]['ratio'] = ($wins_total > 0) ? round(($data['count'] / $wins_total) * 100, 1) : 0;
 			}
 
 			$statistics['wins_total'] = $wins_total;
@@ -193,7 +193,7 @@
 				}
 
 				// calculate percentage
-				foreach ($statistics['losses'] as $i => $data) $statistics['losses'][$i]['ratio'] = round(($data['count'] / $losses_total) * 100, 1);
+				foreach ($statistics['losses'] as $i => $data) $statistics['losses'][$i]['ratio'] = ($losses_total > 0) ? round(($data['count'] / $losses_total) * 100, 1) : 0;
 			}
 
 			$statistics['losses_total'] = $losses_total;
@@ -213,7 +213,7 @@
 				}
 
 				// calculate percentage
-				foreach ($statistics['other'] as $i => $data) $statistics['other'][$i]['ratio'] = round(($data['count'] / $other_total) * 100, 2);
+				foreach ($statistics['other'] as $i => $data) $statistics['other'][$i]['ratio'] = ($other_total > 0) ? round(($data['count'] / $other_total) * 100, 2) : 0;
 			}
 
 			$statistics['other_total'] = $other_total;
@@ -257,7 +257,7 @@
 				}
 
 				// calculate percentage
-				foreach ($statistics['wins'] as $i => $data) $statistics['wins'][$i]['ratio'] = round(($data['count'] / $wins_total) * 100, 1);
+				foreach ($statistics['wins'] as $i => $data) $statistics['wins'][$i]['ratio'] = ($wins_total > 0) ? round(($data['count'] / $wins_total) * 100, 1) : 0;
 			}
 
 			$statistics['wins_total'] = $wins_total;
@@ -277,7 +277,7 @@
 				}
 
 				// calculate percentage
-				foreach ($statistics['losses'] as $i => $data) $statistics['losses'][$i]['ratio'] = round(($data['count'] / $losses_total) * 100, 1);
+				foreach ($statistics['losses'] as $i => $data) $statistics['losses'][$i]['ratio'] = ($losses_total > 0) ? round(($data['count'] / $losses_total) * 100, 1) : 0;
 			}
 
 			$statistics['losses_total'] = $losses_total;
@@ -297,7 +297,7 @@
 				}
 
 				// calculate percentage
-				foreach ($statistics['other'] as $i => $data) $statistics['other'][$i]['ratio'] = round(($data['count'] / $other_total) * 100, 2);
+				foreach ($statistics['other'] as $i => $data) $statistics['other'][$i]['ratio'] = ($other_total > 0) ? round(($data['count'] / $other_total) * 100, 2) : 0;
 			}
 
 			$statistics['other_total'] = $other_total;
@@ -351,7 +351,7 @@
 			}
 
 			// calculate percentage
-			foreach ($skins as $skin_id => $skin) $skins[$skin_id]['count'] = round(($skin['count'] / $total) * 100, 2);
+			foreach ($skins as $skin_id => $skin) $skins[$skin_id]['count'] = ($total > 0) ? round(($skin['count'] / $total) * 100, 2) : 0;
 
 			return $skins;
 		}
@@ -386,7 +386,7 @@
 			}
 
 			// calculate percentage
-			foreach ($backgrounds as $bg_id => $background) $backgrounds[$bg_id]['count'] = round(($background['count'] / $total) * 100, 2);
+			foreach ($backgrounds as $bg_id => $background) $backgrounds[$bg_id]['count'] = ($total > 0) ? round(($background['count'] / $total) * 100, 2) : 0;
 
 			return $backgrounds;
 		}
