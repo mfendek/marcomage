@@ -22,9 +22,19 @@
 	require_once('utils.php');
 
 	$db = new CDatabase($server, $username, $password, $database);
+	if( $db->status != 'SUCCESS' )
+	{
+	    header("Content-type: text/html");
+	    die("Unable to connect to database, aborting.");
+	}
 
-	date_default_timezone_set("Etc/UTC");
-	$db->Query("SET time_zone='Etc/UTC'");
+	if( !date_default_timezone_set("Etc/UTC")
+	||  !$db->Query("SET time_zone='Etc/UTC'")
+	&&  !$db->Query("SET time_zone='+0:00'") )
+	{
+		header("Content-type: text/html");
+		die("Unable to configure time zone, aborting.");
+	}
 
 	$logindb = new CLogin($db);
 	$carddb = new CCards();
