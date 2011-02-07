@@ -84,10 +84,9 @@
 			$db = $this->db;
 			//TODO: instead of this, use a multijoin to check if $playername is in all required tables
 			$result = $db->Query('SELECT `UserType` FROM `logins` WHERE `Username` = "'.$db->Escape($playername).'"');
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 			
-			$data = $result->Next(); 
+			$data = $result[0];
 			$type = $data['UserType'];
 			
 			return new CPlayer($playername, $type, $this);
@@ -115,13 +114,9 @@
 				LIMIT ".(PLAYERS_PER_PAGE * $db->Escape($page)).", ".PLAYERS_PER_PAGE."";
     
 			$result = $db->Query($query);
-			if (!$result) return false;
-			
-			$list = array();
-			while( $data = $result->Next() )
-				$list[] = $data;
+			if ($result === false) return false;
 
-			return $list;
+			return $result;
 		}
 		
 		public function CountPages($activity, $status, $name)
@@ -139,9 +134,9 @@
 			$activity_q = ($interval != '') ? ' AND `Last Query` >= NOW() - INTERVAL '.$interval.'' : '';
 
 			$result = $db->Query('SELECT COUNT(`Username`) as `Count` FROM `logins`'.$status_q.' WHERE 1'.$activity_q.$name_q.'');
-			if (!$result) return false;
+			if ($result === false) return false;
 
-			$data = $result->Next();
+			$data = $result[0];
 			
 			$pages = ceil($data['Count'] / PLAYERS_PER_PAGE);
 			
@@ -154,7 +149,7 @@
 			
 			$result = $db->Query('UPDATE `logins` SET `UserType` = "'.$db->Escape($access_right).'" WHERE `Username` = "'.$db->Escape($playername).'"');
 			
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			return true;
 		}
@@ -164,8 +159,7 @@
 			$db = $this->db;
 			
 			$result = $db->Query('UPDATE `logins` SET `Notification` = `Last Query` WHERE `Username` = "'.$db->Escape($playername).'"');
-			
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			return true;
 		}
@@ -174,10 +168,9 @@
 		{
 			$db = $this->db;
 			$result = $db->Query('SELECT `Last Query` FROM `logins` WHERE `Username` = "'.$db->Escape($playername).'"');
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 			
-			$data = $result->Next();
+			$data = $result[0];
 			return( time() - strtotime($data['Last Query']) < 60*10 );
 		}
 		
@@ -185,10 +178,9 @@
 		{
 			$db = $this->db;
 			$result = $db->Query('SELECT `Last Query` FROM `logins` WHERE `Username` = "'.$db->Escape($playername).'"');
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 			
-			$data = $result->Next();
+			$data = $result[0];
 			return ( time() - strtotime($data['Last Query']) > 60*60*24*7*3 );
 		}
 		
@@ -196,10 +188,9 @@
 		{
 			$db = $this->db;
 			$result = $db->Query('SELECT `Notification` FROM `logins` WHERE `Username` = "'.$db->Escape($playername).'"');
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 			
-			$data = $result->Next();
+			$data = $result[0];
 			return $data['Notification'];
 		}
 		
@@ -207,10 +198,9 @@
 		{
 			$db = $this->db;
 			$result = $db->Query('SELECT `Last Query` FROM `logins` WHERE `Username` = "'.$db->Escape($playername).'"');
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 			
-			$data = $result->Next();
+			$data = $result[0];
 			return $data['Last Query'];
 		}
 		
@@ -218,10 +208,9 @@
 		{
 			$db = $this->db;
 			$result = $db->Query('SELECT `Registered` FROM `logins` WHERE `Username` = "'.$db->Escape($playername).'"');
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 			
-			$data = $result->Next();
+			$data = $result[0];
 			return $data['Registered'];
 		}
 		
@@ -229,10 +218,9 @@
 		{
 			$db = $this->db;
 			$result = $db->Query('SELECT `Level` FROM `scores` WHERE `Username` = "'.$db->Escape($playername).'"');
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 			
-			$data = $result->Next();
+			$data = $result[0];
 			return $data['Level'];
 		}
 		
@@ -240,10 +228,9 @@
 		{
 			$db = $this->db;
 			$result = $db->Query('SELECT `GameSlots` FROM `scores` WHERE `Username` = "'.$db->Escape($playername).'"');
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 			
-			$data = $result->Next();
+			$data = $result[0];
 			return $data['GameSlots'];
 		}
 		

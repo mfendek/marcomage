@@ -31,9 +31,9 @@
 	    die("Unable to connect to database, aborting.");
 	}
 
-	if( !date_default_timezone_set("Etc/UTC")
-	||  !$db->Query("SET time_zone='Etc/UTC'")
-	&&  !$db->Query("SET time_zone='+0:00'") )
+	if( false === date_default_timezone_set("Etc/UTC")
+	||  false === $db->Query("SET time_zone='Etc/UTC'")
+	&&  false === $db->Query("SET time_zone='+0:00'") )
 	{
 		header("Content-type: text/html");
 		die("Unable to configure time zone, aborting.");

@@ -28,8 +28,7 @@
 			$db = $this->db;
 
 			$result = $db->Query('INSERT INTO `concepts` (`Name`, `Class`, `Bricks`, `Gems`, `Recruits`, `Effect`, `Keywords`, `Note`, `Author`) VALUES ("'.$db->Escape($data['name']).'", "'.$db->Escape($data['class']).'", "'.$db->Escape($data['bricks']).'", "'.$db->Escape($data['gems']).'", "'.$data['recruits'].'", "'.$db->Escape($data['effect']).'", "'.$db->Escape($data['keywords']).'", "'.$db->Escape($data['note']).'", "'.$db->Escape($data['author']).'")');
-
-			if (!$result) return false;
+			if ($result === false) return false;
 
 			return $db->LastID();
 		}
@@ -39,8 +38,7 @@
 			$db = $this->db;
 
 			$result = $db->Query('UPDATE `concepts` SET `Name` = "'.$db->Escape($data['name']).'", `Class` = "'.$db->Escape($data['class']).'", `Bricks` = "'.$db->Escape($data['bricks']).'", `Gems` = "'.$db->Escape($data['gems']).'", `Recruits` = "'.$data['recruits'].'", `Effect` = "'.$db->Escape($data['effect']).'", `Keywords` = "'.$db->Escape($data['keywords']).'", `Note` = "'.$db->Escape($data['note']).'", `LastChange` = NOW() WHERE `CardID` = "'.$concept_id.'"');
-
-			if (!$result) return false;
+			if ($result === false) return false;
 
 			return true;
 		}
@@ -50,8 +48,7 @@
 			$db = $this->db;
 
 			$result = $db->Query('UPDATE `concepts` SET `Name` = "'.$db->Escape($data['name']).'", `Class` = "'.$db->Escape($data['class']).'", `Bricks` = "'.$db->Escape($data['bricks']).'", `Gems` = "'.$db->Escape($data['gems']).'", `Recruits` = "'.$data['recruits'].'", `Effect` = "'.$db->Escape($data['effect']).'", `Keywords` = "'.$db->Escape($data['keywords']).'", `Note` = "'.$db->Escape($data['note']).'", `State` = "'.$db->Escape($data['state']).'" WHERE `CardID` = "'.$concept_id.'"');
-
-			if (!$result) return false;
+			if ($result === false) return false;
 
 			return true;
 		}
@@ -61,8 +58,7 @@
 			$db = $this->db;
 
 			$result = $db->Query('UPDATE `concepts` SET `Picture` = "'.$db->Escape($picture).'", `LastChange` = NOW()  WHERE `CardID` = "'.$db->Escape($concept_id).'"');
-
-			if (!$result) return false;
+			if ($result === false) return false;
 
 			return true;
 		}
@@ -72,8 +68,7 @@
 			$db = $this->db;
 
 			$result = $db->Query('UPDATE `concepts` SET `Picture` = "blank.jpg", `LastChange` = NOW()  WHERE `CardID` = "'.$db->Escape($concept_id).'"');
-
-			if (!$result) return false;
+			if ($result === false) return false;
 
 			return true;
 		}
@@ -83,8 +78,7 @@
 			$db = $this->db;
 
 			$result = $db->Query('DELETE FROM `concepts` WHERE `CardID` = "'.$db->Escape($concept_id).'"');
-
-			if (!$result) return false;
+			if ($result === false) return false;
 
 			return true;
 		}
@@ -99,15 +93,9 @@
 			$state_query = (($state != "none") ? ' AND `State` = "'.$db->Escape($state).'"' : '');
 
 			$result = $db->Query('SELECT `CardID` as `id`, `Name` as `name`, `Class` as `class`, `Bricks` as `bricks`, `Gems` as `gems`, `Recruits` as `recruits`, `Effect` as `effect`, `Keywords` as `keywords`, `Picture` as `picture`, `Note` as `note`, `State` as `state`, `Author` as `author`, `LastChange` as `lastchange` FROM `concepts` WHERE 1'.$name_query.$author_query.$date_query.$state_query.' ORDER BY `'.$db->Escape($condition).'` '.$db->Escape($order).' LIMIT '.(CARDS_PER_PAGE * $db->Escape($page)).' , '.CARDS_PER_PAGE.'');
+			if ($result === false) return false;
 
-			if (!$result) return false;
-
-			$cards = array();
-
-			while ($data = $result->Next())
-				$cards[] = $data;
-
-			return $cards;
+			return $result;
 		}
 
 		public function CountPages($name, $author, $date, $state)
@@ -120,10 +108,9 @@
 			$state_query = (($state != "none") ? ' AND `State` = "'.$db->Escape($state).'"' : '');
 
 			$result = $db->Query('SELECT COUNT(`CardID`) as `Count` FROM `concepts` WHERE 1'.$name_query.$author_query.$date_query.$state_query.'');
+			if ($result === false) return false;
 
-			if (!$result) return false;
-
-			$data = $result->Next();
+			$data = $result[0];
 
 			$pages = ceil($data['Count'] / CARDS_PER_PAGE);
 
@@ -137,12 +124,11 @@
 			$date_query = (($date != "none") ? ' AND `LastChange` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
 
 			$result = $db->Query('SELECT DISTINCT `Author` FROM `concepts` WHERE 1'.$date_query.' ORDER BY `Author` ASC');
-
-			if (!$result) return false;
+			if ($result === false) return false;
 
 			$authors = array();
 
-			while ($data = $result->Next())
+			foreach ($result as $data)
 				$authors[] = $data['Author'];
 
 			return $authors;
@@ -153,9 +139,7 @@
 			$db = $this->db;
 
 			$result = $db->Query('SELECT 1 FROM `concepts` WHERE `CardID` = '.$db->Escape($cardid).'');
-
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 
 			return true;
 		}
@@ -165,9 +149,7 @@
 			$db = $this->db;
 
 			$result = $db->Query('SELECT 1 FROM `concepts` WHERE `LastChange` > "'.$db->Escape($time).'"');
-
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 
 			return true;
 		}
@@ -206,8 +188,7 @@
 			$db = $this->db;
 
 			$result = $db->Query('UPDATE `concepts` SET `ThreadID` = "'.$db->Escape($thread_id).'" WHERE `CardID` = "'.$db->Escape($concept_id).'"');
-
-			if (!$result) return false;
+			if ($result === false) return false;
 
 			return true;
 		}
@@ -217,8 +198,7 @@
 			$db = $this->db;
 
 			$result = $db->Query('UPDATE `concepts` SET `ThreadID` = 0 WHERE `CardID` = "'.$db->Escape($concept_id).'"');
-
-			if (!$result) return false;
+			if ($result === false) return false;
 
 			return true;
 		}
@@ -228,9 +208,9 @@
 			$db = $this->db;
 
 			$result = $db->Query('SELECT `CardID` FROM `concepts` WHERE `ThreadID` = "'.$db->Escape($thread_id).'"');
-			if (!$result OR !$result->Rows()) return 0;
+			if ($result === false or count($result) == 0) return 0;
 
-			$data = $result->Next();
+			$data = $result[0];
 
 			return $data['CardID'];
 		}
@@ -254,11 +234,10 @@
 
 			$db = $this->Concepts->getDB();
 			$result = $db->Query('SELECT `Name`, `Class`, `Bricks`, `Gems`, `Recruits`, `Effect`, `Keywords`, `Picture`, `Note`, `State`, `Author`, `LastChange`, `ThreadID` FROM `concepts` WHERE `CardID` = '.$this->CardID.'');
-
-			if( !$result OR !$result->Rows() ) $arr = array ('Invalid Concept', 'None', 0, 0, 0, '', '', '', '', '', '', '', 0);
+			if ($result === false or count($result) == 0) $arr = array ('Invalid Concept', 'None', 0, 0, 0, '', '', '', '', '', '', '', 0);
 			else
 			{
-				$data = $result->Next();
+				$data = $result[0];
 				$arr = array ($data['Name'], $data['Class'], $data['Bricks'], $data['Gems'], $data['Recruits'], $data['Effect'], $data['Keywords'], $data['Picture'], $data['Note'], $data['State'], $data['Author'], $data['LastChange'], $data['ThreadID']);
 			}
 

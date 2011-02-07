@@ -28,11 +28,10 @@
 			// retrieve corresponding user info from the database and compare
 			
 			$result = $db->Query('SELECT `Password` FROM `logins` WHERE `Username` = "'.$db->Escape($username).'"');
-			if (!$result) { $status = $db->status; return false; };
+			if ($result === false) { $status = $db->status; return false; };
+			if (count($result) == 0) { $status = 'ERROR_NO_SUCH_USER'; return false; };
 			
-			if (!$result->Rows()) { $status = 'ERROR_NO_SUCH_USER'; return false; };
-			
-			$data = $result->Next();
+			$data = $result[0];
 			
 			if (md5($password) != $data['Password']) { $status = 'ERROR_WRONG_PASSWORD'; return false; };
 			
@@ -51,11 +50,10 @@
 			if ($sessionid == 0) { $status = 'ERROR_NO_SUCH_SESSION'; return false; }; // 0 is not a valid session id -_-`
 			
 			$result = $db->Query('SELECT `Last IP`, `Last Query` FROM `logins` WHERE `Username` = "'.$db->Escape($username).'" AND `SessionID` = '.$db->Escape($sessionid));
-			if (!$result) { $status = $db->status; return false; };
+			if ($result === false) { $status = $db->status; return false; };
+			if (count($result) == 0) { $status = 'ERROR_NO_SUCH_SESSION'; return false; };
 			
-			if (!$result->Rows()) { $status = 'ERROR_NO_SUCH_SESSION'; return false; };
-			
-			$data = $result->Next();
+			$data = $result[0];
 			
 			if ($_SERVER['REMOTE_ADDR'] != $data['Last IP']) { $status = 'ERROR_WRONG_IP'; return false; };
 			
@@ -74,9 +72,10 @@
 			
 			// first, retrieve the real, case-sensitive `Username`
 			$result = $db->Query('SELECT `Username` FROM `logins` WHERE `Username` = "'.$db->Escape($username).'"');
-			if (!$result) { $status = $db->status; return false; };
-			if (!$result->Rows()) { $status = 'ERROR_NO_SUCH_USER'; return false; };
-			$data = $result->Next();
+			if ($result === false) { $status = $db->status; return false; };
+			if (count($result) == 0) { $status = 'ERROR_NO_SUCH_USER'; return false; };
+
+			$data = $result[0];
 			$username = $data['Username'];
 			
 			// test if a new session is needed
@@ -85,18 +84,16 @@
 				// generate and store a new unitialized session for the user
 				$sessionid = mt_rand(1, pow(2,31)-1);
 				$result = $db->Query('UPDATE `logins` SET `SessionID` = '.$db->Escape($sessionid).', `Notification` = `Last Query` WHERE `Username` = "'.$db->Escape($username).'"');
-				if (!$result) { $status = $db->status; return false; };
-				
-				//if ($result->Rows() == 0) { $status = 'ERROR_NO_SUCH_USER'; return false; };  // not yet implemented for UPDATE queries :|
+				if ($result === false) { $status = $db->status; return false; };
+				//if (count($result) == 0) { $status = 'ERROR_NO_SUCH_USER'; return false; };  // not yet implemented for UPDATE queries :|
 			}
 			
 			// store current `Last IP` and `Last Query`, refresh cookies
 			$now = time();
 			$addr = $_SERVER["REMOTE_ADDR"];
 			$result = $db->Query('UPDATE `logins` SET `Last IP` = "'.$db->Escape($addr).'", `Last Query` = FROM_UNIXTIME('.$db->Escape($now).') WHERE `Username` = "'.$db->Escape($username).'" AND `SessionID` = '.$db->Escape($sessionid));
-			if (!$result) { $status = $db->status; return false; };
-			
-			//if ($result->Rows() == 0) { $status = 'ERROR_NO_SUCH_SESSION'; }; // still not implemented for UPDATE queries :(
+			if ($result === false) { $status = $db->status; return false; };
+			//if (count($result) == 0) { $status = 'ERROR_NO_SUCH_SESSION'; }; // still not implemented for UPDATE queries :(
 			
 			if ($cookies == 'yes' or $cookies == 'maybe') // try even if not sure
 			{
@@ -119,7 +116,7 @@
 			// remove the database entry and any stored values
 			
 			$result = $db->Query('UPDATE `logins` SET `SessionID` = 0 WHERE `Username` = "'.$db->Escape($session->Username()).'" AND `SessionID` = '.$db->Escape($session->SessionID()));
-			if (!$result) { $status = $db->status; return false; };
+			if ($result === false) { $status = $db->status; return false; };
 			
 			unset($_POST['Username']); unset($_COOKIE['Username']); setcookie('Username', false);
 			unset($_POST['SessionID']); unset($_COOKIE['SessionID']); setcookie('SessionID', false);
@@ -147,7 +144,7 @@
 			// TODO: flood prevention - limits the frequency of account creations per ip 
 			
 			$result = $db->Query('INSERT INTO `logins` (`Username`, `Password`, `Last IP`, `Last Query`) VALUES ("'.$db->Escape($username).'", "'.md5($password).'", "'.$db->Escape($addr).'", '.$db->Escape($now).')');
-			if (!$result) { $status = 'ERROR_ALREADY_REGISTERED'; return false; }; // or db failure, but whatever
+			if ($result === false) { $status = 'ERROR_ALREADY_REGISTERED'; return false; }; // or db failure, but whatever
 			
 			$status = 'SUCCESS';
 			return true;
@@ -161,9 +158,8 @@
 			// deletes the specified user from the database
 			
 			$result = $db->Query('DELETE FROM `logins` WHERE `Username` = "'.$db->Escape($username).'"');
-			if (!$result) { $status = $db->status; return false; };
-			
-//			if (!$result->Rows()) { $status = 'ERROR_NO_SUCH_USER - DB_FAILURE'; return false; }; // NOT good if this happens +_+  // not yet implemented
+			if ($result === false) { $status = $db->status; return false; };
+//			if (count($result) == 0) { $status = 'ERROR_NO_SUCH_USER - DB_FAILURE'; return false; }; // NOT good if this happens +_+  // not yet implemented
 			
 			$status = 'SUCCESS';
 			return true;
@@ -177,7 +173,7 @@
 			//change password
 			if ($username == '' || $password == '') { $status = 'ERROR_INVALID_VALUES'; return false; };
 			$result = $db->Query('UPDATE `logins` SET `Password` = "'.md5($password).'" WHERE `Username` = "'.$db->Escape($username).'"');
-			if (!$result) { $status = 'DB_ERROR'; return false; };
+			if ($result === false) { $status = 'DB_ERROR'; return false; };
 			
 			$status = 'SUCCESS';
 			return true;

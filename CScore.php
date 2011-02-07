@@ -26,7 +26,7 @@
 			
 			$db = $this->db;
 			$result = $db->Query('INSERT INTO `scores` (`Username`) VALUES ("'.$db->Escape($username).'")');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			return $score;
 		}
@@ -35,7 +35,7 @@
 		{
 			$db = $this->db;
 			$result = $db->Query('DELETE FROM `scores` WHERE `Username` = "'.$db->Escape($username).'"');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			return true;
 		}
@@ -44,8 +44,7 @@
 		{
 			$db = $this->db;
 			$result = $db->Query('SELECT 1 FROM `scores` WHERE `Username` = "'.$db->Escape($username).'"');
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 			
 			$score = new CScore($username, $this);
 			$score->LoadScore();
@@ -90,13 +89,14 @@
 		public function LoadScore()
 		{
 			$db = $this->Scores->getDB();
+
 			$awards_q = '';
 			foreach ($this->AwardsList as $award) $awards_q.= ', `'.$award.'`';
 			
 			$result = $db->Query('SELECT `Level`, `Exp`, `Gold`, `Wins`, `Losses`, `Draws`, `GameSlots`'.$awards_q.' FROM `scores` WHERE `Username` = "'.$db->Escape($this->Username).'"');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
-			$data = $result->Next();
+			$data = $result[0];
 			$this->ScoreData->Level = $data['Level'];
 			$this->ScoreData->Exp = $data['Exp'];
 			$this->ScoreData->Gold = $data['Gold'];
@@ -119,7 +119,7 @@
 			foreach ($this->AwardsList as $award) $awards_q.= ', `'.$award.'` = '.$this->ScoreData->Awards[$award];
 			
 			$result = $db->Query('UPDATE `scores` SET `Level` = '.$this->ScoreData->Level.', `Exp` = '.$this->ScoreData->Exp.', `Gold` = '.$this->ScoreData->Gold.', `Wins` = '.$this->ScoreData->Wins.', `Losses` = '.$this->ScoreData->Losses.', `Draws` = '.$this->ScoreData->Draws.', `GameSlots` = '.$this->ScoreData->GameSlots.''.$awards_q.' WHERE `Username` = "'.$db->Escape($this->Username).'"');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			return true;
 		}

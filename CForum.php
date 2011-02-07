@@ -26,10 +26,10 @@
 
 			// get section list with thread count, ordered by custom order (alphabetical order is not suited for our needs)
 			$result = $db->Query('SELECT `forum_sections`.`SectionID`, `SectionName`, `Description`, IFNULL(`count`, 0) as `count` FROM `forum_sections` LEFT OUTER JOIN (SELECT `SectionID`, COUNT(`ThreadID`) as `count` FROM `forum_threads` WHERE `Deleted` = FALSE GROUP BY `SectionID`) as `threads` USING (`SectionID`) ORDER BY `SectionOrder` ASC');
-			if (!$result) return false;
+			if ($result === false) return false;
 
 			$sections = array();
-			while( $data = $result->Next() )
+			foreach( $result as $data )
 				$sections[$data['SectionID']] = $data;
 
 			$query = array();
@@ -40,10 +40,9 @@
 
 			$query = implode(' UNION ', $query);
 			$result = $db->Query($query);
+			if ($result === false) return false;
 
-			if (!$result) return false;
-
-			while( $data = $result->Next() )
+			foreach( $result as $data )
 				$sections[$data['SectionID']]['threadlist'][] = $data;
 
 			return $sections;
@@ -54,10 +53,10 @@
 			$db = $this->db;
 			
 			$result = $db->Query('SELECT `SectionID`, `SectionName` FROM `forum_sections` WHERE `SectionID` != "'.$db->Escape($current_section).'" ORDER BY `SectionOrder`');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			$sections = array();
-			while( $data = $result->Next() )
+			foreach( $result as $data )
 				$sections[$data['SectionID']] = $data;
 						
 			return $sections;
@@ -68,11 +67,9 @@
 			$db = $this->db;
 			
 			$result = $db->Query('SELECT `SectionID`, `SectionName`, `Description` FROM `forum_sections` WHERE `SectionID` = "'.$db->Escape($section_id).'"');
-			
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
-			
-			$section = $result->Next();
+			if ($result === false or count($result) == 0) return false;
+
+			$section = $result[0];
 			
 			return $section;
 		}
@@ -82,9 +79,7 @@
 			$db = $this->db;
 			
 			$result = $db->Query('SELECT 1 FROM `forum_posts` WHERE `Created` > "'.$db->Escape($time).'" AND `Deleted` = FALSE');
-			
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 			
 			return true;
 		}
@@ -104,15 +99,10 @@
 			// merge results
 			$query = $post_q.(($target == 'all') ? ' UNION DISTINCT ' : '').$thread_q.' ORDER BY `LastPost` DESC';
 			
-			$result = $db->Query($query);
+			$result = $db->Query($query);			
+			if ($result === false) return false;
 			
-			if (!$result) return false;
-			
-			$threads = array();
-			while( $data = $result->Next() )
-				$threads[] = $data;
-			
-			return $threads;
+			return $result;
 		}
 	}
 ?>

@@ -25,7 +25,7 @@
 			$deck_data = new CDeckData;
 			
 			$result = $db->Query('INSERT INTO `decks` (`Username`, `Deckname`, `Data`) VALUES ("'.$db->Escape($username).'", "'.$db->Escape($deckname).'", "'.$db->Escape(serialize($deck_data)).'")');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			$deck = new CDeck($db->LastID(), $username, $deckname, $this);
 			
@@ -36,7 +36,7 @@
 		{
 			$db = $this->db;
 			$result = $db->Query('DELETE FROM `decks` WHERE `Username` = "'.$db->Escape($username).'" AND `DeckID` = "'.$db->Escape($deck_id).'"');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			return true;
 		}
@@ -45,15 +45,14 @@
 		{
 			$db = $this->db;
 			$result = $db->Query('SELECT `Deckname` FROM `decks` WHERE `Username` = "'.$db->Escape($username).'" AND `DeckID` = "'.$db->Escape($deck_id).'"');
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 			
-			$data = $result->Next();
+			$data = $result[0];
 			$deckname = $data['Deckname'];
 			
 			$deck = new CDeck($deck_id, $username, $deckname, $this);
 			$result = $deck->LoadDeck();
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			return $deck;
 		}
@@ -62,24 +61,18 @@
 		{
 			$db = $this->db;
 			$result = $db->Query('SELECT `DeckID`, `Deckname`, `Modified`, (CASE WHEN `Ready` = TRUE THEN "yes" ELSE "no" END) as `Ready`, `Wins`, `Losses`, `Draws` FROM `decks` WHERE `Username` = "'.$db->Escape($username).'"');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
-			$decks = array();
-			while( $data = $result->Next() )
-				$decks[] = $data;
-			return $decks;
+			return $result;
 		}
 		
 		public function ListReadyDecks($username)
 		{
 			$db = $this->db;
 			$result = $db->Query('SELECT `DeckID`, `Deckname` FROM `decks` WHERE `Username` = "'.$db->Escape($username).'" AND `Ready` = TRUE');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
-			$decks = array();
-			while( $data = $result->Next() )
-				$decks[] = $data;
-			return $decks;
+			return $result;
 		}
 		
 		public function UpdateStatistics($player1, $player2, $deck_id1, $deck_id2, $winner)
@@ -237,10 +230,9 @@
 		{
 			$db = $this->Decks->getDB();
 			$result = $db->Query('SELECT `Data`, `Wins`, `Losses`, `Draws` FROM `decks` WHERE `Username` = "'.$db->Escape($this->Username).'" AND `DeckID` = "'.$db->Escape($this->DeckID).'"');
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 			
-			$data = $result->Next();
+			$data = $result[0];
 			$this->DeckData = unserialize($data['Data']);
 			$this->Wins = $data['Wins'];
 			$this->Losses = $data['Losses'];
@@ -253,7 +245,7 @@
 		{
 			$db = $this->Decks->getDB();
 			$result = $db->Query('UPDATE `decks` SET `Ready` = '.($this->isReady() ? 'TRUE' : 'FALSE').', `Data` = "'.$db->Escape(serialize($this->DeckData)).'", `Wins` = "'.$db->Escape($this->Wins).'", `Losses` = "'.$db->Escape($this->Losses).'", `Draws` = "'.$db->Escape($this->Draws).'" WHERE `Username` = "'.$db->Escape($this->Username).'" AND `DeckID` = "'.$db->Escape($this->DeckID).'"');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			return true;
 		}
@@ -262,7 +254,7 @@
 		{
 			$db = $this->Decks->getDB();
 			$result = $db->Query('UPDATE `decks` SET `Deckname` = "'.$db->Escape($newdeckname).'" WHERE `Username` = "'.$db->Escape($this->Username).'" AND `DeckID` = "'.$db->Escape($this->DeckID).'"');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			$this->Deckname = $newdeckname;
 			

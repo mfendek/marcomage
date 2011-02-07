@@ -24,12 +24,10 @@
 			
 			// verifiy if thread exists and isn't locked
 			$result = $db->Query('SELECT 1 FROM `forum_threads` WHERE `ThreadID` = "'.$db->Escape($thread_id).'" AND `Locked` = FALSE');
-			
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 			
 			$result = $db->Query('INSERT INTO `forum_posts` (`Author`, `Content`, `ThreadID`, `Created`) VALUES ("'.$db->Escape($author).'", "'.$db->Escape($content).'", "'.$db->Escape($thread_id).'", NOW())');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			return true;
 		}
@@ -39,8 +37,7 @@
 			$db = $this->db;
 			
 			$result = $db->Query('UPDATE `forum_posts` SET `Deleted` = TRUE WHERE `PostID` = "'.$db->Escape($post_id).'"');
-			
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			return true;
 		}
@@ -64,7 +61,7 @@
 			
 			$result = $db->Query('UPDATE `forum_posts` SET `Deleted` = TRUE WHERE '.$post_query.'');
 			
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			return true;
 		}*/
@@ -74,11 +71,9 @@
 			$db = $this->db;
 						
 			$result = $db->Query('SELECT `PostID`, `Author`, `Content`, `ThreadID`, `Created` FROM `forum_posts` WHERE `PostID` = "'.$db->Escape($post_id).'" AND `Deleted` = FALSE');
+			if ($result === false or count($result) == 0) return false;
 			
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
-			
-			$data = $result->Next();
+			$data = $result[0];
 			
 			return $data;
 		}
@@ -88,11 +83,9 @@
 			$db = $this->db;
 			
 			$result = $db->Query('SELECT `PostID`, `Author`, `Content`, `ThreadID`, `Created` FROM `forum_posts` WHERE `Author` = "'.$db->Escape($author).'" AND `Deleted` = FALSE ORDER BY `Created` DESC LIMIT 1');
+			if ($result === false or count($result) == 0) return false;
 			
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
-			
-			$data = $result->Next();
+			$data = $result[0];
 			
 			return $data;
 		}
@@ -102,7 +95,7 @@
 			$db = $this->db;
 									
 			$result = $db->Query('UPDATE `forum_posts` SET `Content` = "'.$db->Escape($content).'" WHERE `PostID` = "'.$db->Escape($post_id).'"');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			return true;
 		}
@@ -112,7 +105,7 @@
 			$db = $this->db;
 					
 			$result = $db->Query('UPDATE `forum_posts` SET `ThreadID` = "'.$db->Escape($new_thread).'" WHERE `PostID` = "'.$db->Escape($post_id).'"');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			return true;
 		}
@@ -135,7 +128,7 @@
 			}
 				
 			$result = $db->Query('UPDATE `forum_posts` SET `ThreadID` = "'.$db->Escape($new_thread).'" WHERE '.$post_query.'');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			return true;
 		}*/
@@ -145,14 +138,9 @@
 			$db = $this->db;
 						
 			$result = $db->Query('SELECT `PostID`, `Author`, `Content`, `Created`, IFNULL(`Avatar`,"noavatar.jpg") as `Avatar` FROM `forum_posts` LEFT OUTER JOIN `settings` ON `forum_posts`.`Author` = `settings`.`Username` WHERE `ThreadID` = "'.$db->Escape($thread_id).'" AND `Deleted` = FALSE ORDER BY `Created` ASC LIMIT '.(POSTS_PER_PAGE * $db->Escape($page)).' , '.POSTS_PER_PAGE.'');
+			if ($result === false) return false;
 			
-			if (!$result) return false;
-			
-			$posts = array();
-			while( $data = $result->Next() )
-				$posts[] = $data;
-			
-			return $posts;
+			return $result;
 		}
 		
 		public function CountPages($thread_id)
@@ -160,10 +148,9 @@
 			$db = $this->db;
 						
 			$result = $db->Query('SELECT COUNT(`PostID`) as `Count` FROM `forum_posts` WHERE `ThreadID` = "'.$db->Escape($thread_id).'" AND `Deleted` = FALSE');
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 			
-			$data = $result->Next();
+			$data = $result[0];
 			
 			$pages = ceil($data['Count'] / POSTS_PER_PAGE);
 			
@@ -175,10 +162,9 @@
 			$db = $this->db;
 			
 			$result = $db->Query('SELECT COUNT(`PostID`) as `Count` FROM `forum_posts` WHERE `Author` = "'.$db->Escape($author).'" AND `Deleted` = FALSE');
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 			
-			$data = $result->Next();
+			$data = $result[0];
 			
 			return $data['Count'];
 		}

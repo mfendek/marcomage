@@ -26,7 +26,7 @@
 			$game_data[$player1]->Deck = $deck1->DeckData;
 			
 			$result = $db->Query('INSERT INTO `games` (`Player1`, `Player2`, `Data`, `DeckID1`) VALUES ("'.$db->Escape($player1).'", "'.$db->Escape($player2).'", "'.$db->Escape(serialize($game_data)).'", "'.$db->Escape($deck1->ID()).'")');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			$game = new CGame($db->LastID(), $player1, $player2, $this);
 			
@@ -37,7 +37,7 @@
 		{
 			$db = $this->db;
 			$result = $db->Query('DELETE FROM `games` WHERE `GameID` = '.$db->Escape($gameid));
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			return true;
 		}
@@ -50,15 +50,15 @@
 			
 			// get list of games that are going to be deleted
 			$result = $db->Query('SELECT `GameID` FROM `games` WHERE (`Player1` = "'.$db->Escape($player).'") OR (`Player2` = "'.$db->Escape($player).'")');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			$games = array();
-			while( $data = $result->Next() )
+			foreach( $result as $data )
 				$games[] = $data['GameID'];
 			
 			// delete games
 			$result = $db->Query('DELETE FROM `games` WHERE (`Player1` = "'.$db->Escape($player).'") OR (`Player2` = "'.$db->Escape($player).'")');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			// delete related data
 			foreach ($games as $gameid)
@@ -76,16 +76,15 @@
 		{
 			$db = $this->db;
 			$result = $db->Query('SELECT `Player1`, `Player2` FROM `games` WHERE `GameID` = '.$db->Escape($gameid));
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 			
-			$players = $result->Next();
+			$players = $result[0];
 			$player1 = $players['Player1'];
 			$player2 = $players['Player2'];
 			
 			$game = new CGame($gameid, $player1, $player2, $this);
 			$result = $game->LoadGame();
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			return $game;
 		}
@@ -94,7 +93,7 @@
 		{
 			$db = $this->db;
 			$result = $db->Query('UPDATE `games` SET `Player2` = "'.$db->Escape($player).'" WHERE `GameID` = "'.$db->Escape($game_id).'"');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			return true;
 		}
@@ -114,10 +113,9 @@
 			$active_games = '`Player1` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P2 over")';
 			
 			$result = $db->Query('SELECT COUNT(`GameID`) as `count` FROM `games` WHERE ('.$outgoing.') OR ('.$challenges_to.') OR ('.$active_games.')');
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 			
-			$data = $result->Next();
+			$data = $result[0];
 			
 			return max(0, MAX_GAMES + $playerdb->GetGameSlots($player) - $data['count']); // make sure the result is not negative
 		}
@@ -134,10 +132,9 @@
 			$active_games = '`Player1` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P2 over")';
 			
 			$result = $db->Query('SELECT COUNT(`GameID`) as `count` FROM `games` WHERE ('.$outgoing.') OR ('.$active_games.')');
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 			
-			$data = $result->Next();
+			$data = $result[0];
 			
 			return max(0, MAX_GAMES + $playerdb->GetGameSlots($player) - $data['count']);
 		}
@@ -147,10 +144,10 @@
 			// $player is on the left side and $Status = "waiting"
 			$db = $this->db;
 			$result = $db->Query('SELECT `Player2` FROM `games` WHERE `Player1` = "'.$db->Escape($player).'" AND `Player2` != "" AND `State` = "waiting"');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			$names = array();
-			while( $data = $result->Next() )
+			foreach( $result as $data )
 				$names[] = $data['Player2'];
 			
 			return $names;
@@ -161,10 +158,10 @@
 			// $player is on the right side and $Status = "waiting"
 			$db = $this->db;
 			$result = $db->Query('SELECT `Player1` FROM `games` WHERE `Player2` = "'.$db->Escape($player).'" AND `State` = "waiting"');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			$names = array();
-			while( $data = $result->Next() )
+			foreach( $result as $data )
 				$names[] = $data['Player1'];
 			
 			return $names;
@@ -179,13 +176,9 @@
 			
 			$db = $this->db;
 			$result = $db->Query('SELECT `GameID`, `Player1`, `Last Action`, `GameModes` FROM `games` WHERE `Player1` != "'.$db->Escape($player).'" AND `Player2` = "" AND `State` = "waiting"'.$hidden_q.$friendly_q.$long_q.' ORDER BY `Last Action` DESC');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
-			$games = array();
-			for ($i = 1; $i <= $result->Rows(); $i++)
-				$games[$i] = $result->Next();
-			
-			return $games;
+			return $result;
 		}
 		
 		public function ListHostedGames($player)
@@ -193,13 +186,9 @@
 			// list hosted games, hosted by specific player
 			$db = $this->db;
 			$result = $db->Query('SELECT `GameID`, `Last Action`, `GameModes` FROM `games` WHERE `Player1` = "'.$db->Escape($player).'" AND `Player2` = "" AND `State` = "waiting" ORDER BY `Last Action` DESC');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
-			$games = array();
-			for ($i = 1; $i <= $result->Rows(); $i++)
-				$games[$i] = $result->Next();
-			
-			return $games;
+			return $result;
 		}
 		
 		public function ListActiveGames($player)
@@ -207,13 +196,9 @@
 			// $player is either on the left or right side and Status != 'waiting' or 'P? over'
 			$db = $this->db;
 			$result = $db->Query('SELECT `GameID` FROM `games` WHERE (`Player1` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P2 over"))');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
-			$games = array();
-			for ($i = 1; $i <= $result->Rows(); $i++)
-				$games[$i] = $result->Next();
-			
-			return $games;
+			return $result;
 		}
 		
 		public function ListGamesData($player)
@@ -221,13 +206,9 @@
 			// $player is either on the left or right side and Status != 'waiting' or 'P? over'
 			$db = $this->db;
 			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2`, `State`, `Current`, `Round`, `Last Action`, `GameModes`, `AI` FROM `games` WHERE (`Player1` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = "'.$db->Escape($player).'" AND (`State` != "waiting" AND `State` != "P2 over"))');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
-			$games = array();
-			for ($i = 1; $i <= $result->Rows(); $i++)
-				$games[$i] = $result->Next();
-			
-			return $games;
+			return $result;
 		}
 		
 		/// return number of games where it's specified player's turn
@@ -235,8 +216,9 @@
 		{
 			$db = $this->db;
 			$result = $db->Query('SELECT COUNT(`GameID`) as `count` FROM `games` WHERE `Current` = "'.$db->Escape($player).'" AND `State` = "in progress"');
-			if (!$result) return false;
-			$data = $result->Next();
+			if ($result === false or count($result) == 0) return false;
+
+			$data = $result[0];
 
 			return $data['count'];
 		}
@@ -246,10 +228,10 @@
 			// provide list of active games with opponent names
 			$db = $this->db;
 			$result = $db->Query('SELECT `GameID`, (CASE WHEN `Player1` = "'.$db->Escape($player).'" THEN `Player2` ELSE `Player1` END) as `Opponent` FROM `games` WHERE ((`Player1` = "'.$db->Escape($player).'") OR (`Player2` = "'.$db->Escape($player).'")) AND (`State` = "in progress") AND (`Current` = "'.$db->Escape($player).'")');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			$game_data = array();
-			while( $data = $result->Next() )
+			foreach( $result as $data )
 				$game_data[$data['GameID']] = $data['Opponent'];
 			
 			return $game_data;
@@ -261,9 +243,7 @@
 			$db = $this->db;
 
 			$result = $db->Query('SELECT 1 FROM `games` WHERE `State` = "in progress" AND ((`Player1` = "'.$db->Escape($player1).'" AND `Player2` = "'.$db->Escape($player2).'") OR (`Player1` = "'.$db->Escape($player2).'" AND `Player2` = "'.$db->Escape($player1).'"))');
-
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 
 			return true;
 		}
@@ -376,7 +356,7 @@
 		{
 			$db = $this->Games->getDB();
 			$result = $db->Query('UPDATE `games` SET `GameModes` = "'.$db->Escape($game_modes).'" WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			return true;
 		}
@@ -385,10 +365,9 @@
 		{
 			$db = $this->Games->getDB();
 			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Surrender`, `EndType`, `Last Action`, `Data`, `DeckID1`, `DeckID2`, `Note1`, `Note2`, `GameModes`, `AI` FROM `games` WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
-			if (!$result) return false;
-			if (!$result->Rows()) return false;
+			if ($result === false or count($result) == 0) return false;
 			
-			$data = $result->Next();
+			$data = $result[0];
 			$this->State = $data['State'];
 			$this->Current = $data['Current'];
 			$this->Round = $data['Round'];
@@ -417,7 +396,7 @@
 		{
 			$db = $this->Games->getDB();
 			$result = $db->Query('UPDATE `games` SET `State` = "'.$db->Escape($this->State).'", `Current` = "'.$db->Escape($this->Current).'", `Round` = "'.$db->Escape($this->Round).'", `Winner` = "'.$db->Escape($this->Winner).'", `Surrender` = "'.$db->Escape($this->Surrender).'", `EndType` = "'.$db->Escape($this->EndType).'", `Last Action` = "'.$db->Escape($this->LastAction).'", `Data` = "'.$db->Escape(serialize($this->GameData)).'", `DeckID1` = "'.$db->Escape($this->DeckID1).'", `DeckID2` = "'.$db->Escape($this->DeckID2).'", `Note1` = "'.$db->Escape($this->Note1).'", `Note2` = "'.$db->Escape($this->Note2).'", `AI` = "'.$db->Escape($this->AI).'" WHERE `GameID` = "'.$db->Escape($this->GameID).'"');
-			if (!$result) return false;
+			if ($result === false) return false;
 			
 			return true;
 		}

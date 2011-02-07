@@ -24,7 +24,7 @@
 		{
 			$db = $this->db;
 			$result = $db->Query('INSERT INTO `settings` (`Username`) VALUES ("'.$db->Escape($username).'")');
-			if (!$result) return false;
+			if ($result === false) return false;
 
 			return true;
 		}
@@ -33,7 +33,7 @@
 		{
 			$db = $this->db;
 			$result = $db->Query('DELETE FROM `settings` WHERE `Username` = "'.$db->Escape($username).'"');
-			if (!$result) return false;
+			if ($result === false) return false;
 
 			return true;
 		}
@@ -80,9 +80,9 @@
 			$db = $this->Settings->getDB();
 
 			$result = $db->Query('SELECT * FROM `settings` WHERE `Username` = "'.$db->Escape($this->Username).'"');
-			if( !$result or !$result->Rows() ) return false;
+			if ($result === false or count($result) == 0) return false;
 
-			$data = $result->Next();
+			$data = $result[0];
 
 			$bool_settings = $this->ListBooleanSettings();
 			$other_settings = $this->ListOtherSettings();
@@ -106,7 +106,7 @@
 			$query = implode(", ", $query);
 
 			$result = $db->Query('UPDATE `settings` SET '.$query.' WHERE `Username` = "'.$db->Escape($this->Username).'"');
-			if (!$result) return false;
+			if ($result === false) return false;
 
 			return true;
 		}
