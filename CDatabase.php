@@ -15,13 +15,13 @@
 		public function __construct($server, $username, $password, $database)
 		{
 			$db = mysqli_connect($server, $username, $password);
-			if (!$db) { $this->status = 'ERROR_MYSQL_CONNECT'; return; };
+			if (!$db) { $this->status = 'ERROR_CONNECT'; return; };
 			
 			$status = $db->select_db($database);
-			if (!$status) { $this->status = 'ERROR_MYSQL_SELECT_DB'; return; };
+			if (!$status) { $this->status = 'ERROR_SELECT_DB'; return; };
 			
 			$status = $db->query("SET NAMES utf8 COLLATE utf8_unicode_ci");
-			if (!$status) { $this->status = 'ERROR_MYSQL_SET_NAMES'; return; };
+			if (!$status) { $this->status = 'ERROR_SET_NAMES'; return; };
 			
 			$this->db = $db;
 			$this->status = 'SUCCESS';
@@ -51,7 +51,7 @@
 			$t_start = microtime(TRUE);
 			$result = $db->query($query);
 			$t_end = microtime(TRUE);
-			if( $result === false ) { $this->status = 'ERROR_MYSQL_QUERY: '.$db->error; return false; };
+			if( $result === false ) { $this->status = 'ERROR_QUERY: '.$db->error; return false; };
 
 			$data = array();
 			if( is_object($result) )
