@@ -165,6 +165,9 @@
 					</td>
 					
 					<td style="text-align: left;">
+						<a href="{php:functionString('makeurl', 'Players_achievements', 'Profile', name)}">
+							<img class="icon achievement_link" height="16px" width="16px" src="img/achievement.png" alt="{name}'s achievements" title="{name}'s achievements" />
+						</a>
 						<xsl:if test="$param/messages = 'yes'">
 							<button class="small_button" type="submit" name="message_create" value="{name}">m</button>
 						</xsl:if>
@@ -198,13 +201,10 @@
 		<h3><xsl:value-of select="$param/PlayerName"/>'s details</h3>
 
 		<div class="details_float_right">
-			<p>Zodiac sign</p>
-			<img height="100px" width="100px" src="img/zodiac/{$param/Sign}.jpg" alt="sign" />
-			<p><xsl:value-of select="$param/Sign"/></p>
+			<img height="100px" width="100px" src="img/zodiac/{$param/Sign}.jpg" alt="{$param/Sign}" title="{$param/Sign}" />
 		</div>
 
 		<div class="details_float_right">
-			<p>Avatar</p>
 			<img height="60px" width="60px" src="img/avatars/{$param/Avatar}" alt="avatar" />
 		</div>
 
@@ -255,8 +255,10 @@
 			</div>
 		</xsl:if>
 
-		<p class="player_achievements">
-			<a href="{php:functionString('makeurl', 'Players_achievements', 'Profile', $param/PlayerName)}"><xsl:value-of select="$param/PlayerName"/>'s achievements</a>
+		<p>
+			<a href="{php:functionString('makeurl', 'Players_achievements', 'Profile', $param/PlayerName)}">
+				<img class="achievement_link" height="29px" width="29px" src="img/achievement_large.png" alt="{$param/PlayerName}'s achievements" title="{$param/PlayerName}'s achievements" />
+			</a>
 		</p>
 
 		<p>Level<span class="detail_value"><xsl:value-of select="$param/Level"/></span></p>
@@ -477,7 +479,7 @@
 	<xsl:variable name="opponent" select="$param/PlayerName" />
 
 	<div id="achievements">
-		<h3><xsl:value-of select="$param/PlayerName"/>'s achievements</h3>
+		<h3><a href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/PlayerName)}"><xsl:value-of select="$param/PlayerName"/></a>'s achievements</h3>
 
 		<table class="centered skin_label" cellpadding="0" cellspacing="0" >
 

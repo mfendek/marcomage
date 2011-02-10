@@ -30,6 +30,11 @@ div#players .filters /* filters */
 	margin: 1ex 0ex 2ex 2ex;
 }
 
+img.achievement_link /* player achievements link */
+{
+	border-style: none;
+}
+
 /* end playerslist */
 
 /* begin user details */
@@ -126,20 +131,6 @@ div.statistics > h4 /* versus statistics heading */
 {
 	margin-top: 1ex;
 	margin-bottom: 1ex;
-}
-
-p.player_achievements /* player achievements link */
-{
-	margin-top: 1ex;
-	margin-bottom: 2ex;
-	font-size: large;
-	font-weight: bold;
-}
-
-p.player_achievements > a /* player achievements link */
-{
-	border: medium ridge white;
-	padding: 0.5ex 1ex 1ex 1ex;
 }
 
 div.progress_bar /* exp progress bar */
