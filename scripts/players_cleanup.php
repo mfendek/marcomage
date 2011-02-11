@@ -44,7 +44,6 @@
 	$deckdb = new CDecks($db);
 	$gamedb = new CGames($db);
 	$replaydb = new CReplays($db);
-	$chatdb = new CChats($db);
 	$settingdb = new CSettings($db);
 	$playerdb = new CPlayers($db);
 	$messagedb = new CMessage($db);

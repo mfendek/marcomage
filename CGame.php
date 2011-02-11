@@ -44,7 +44,6 @@
 		
 		public function DeleteGames($player) // delete all games and related data for specified player
 		{
-			global $chatdb;
 			global $replaydb;
 			$db = $this->db;
 			
@@ -59,6 +58,8 @@
 			// delete games
 			$result = $db->Query('DELETE FROM `games` WHERE (`Player1` = "'.$db->Escape($player).'") OR (`Player2` = "'.$db->Escape($player).'")');
 			if ($result === false) return false;
+			
+			$chatdb = new CChats($db);
 			
 			// delete related data
 			foreach ($games as $gameid)
@@ -265,6 +266,7 @@
 		private $LongMode; // long game mode (yes/no)
 		private $AIMode; // ai game mode (yes/no)
 		private $GameAI = false;
+		private $Chat;
 		public $State; // 'waiting' / 'in progress' / 'finished' / 'P1 over' / 'P2 over'
 		public $Current; // name of the player whose turn it currently is
 		public $Round; // incremented after each play/discard action
@@ -361,6 +363,21 @@
 			return true;
 		}
 		
+		public function SaveChatMessage($message, $name)
+		{
+			return $this->Chat->SaveChatMessage($this->GameID, $message, $name);
+		}
+		
+		public function DeleteChat()
+		{
+			return $this->Chat->DeleteChat($this->GameID);
+		}
+		
+		public function ListChatMessages($order)
+		{
+			return $this->Chat->ListChatMessages($this->GameID, $order);
+		}
+		
 		public function LoadGame()
 		{
 			$db = $this->Games->getDB();
@@ -385,6 +402,7 @@
 			$this->LongMode = (strpos($data['GameModes'], 'LongMode') !== false) ? 'yes' : 'no';
 			$this->AIMode = (strpos($data['GameModes'], 'AIMode') !== false) ? 'yes' : 'no';
 			$this->GameData = unserialize($data['Data']);
+			$this->Chat = new CChats($db);
 			
 			// initialize game AI
 			$this->GameAI = ($this->AI != '') ? new CChallengeAI($this) : new CGameAI($this);

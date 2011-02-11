@@ -57,7 +57,6 @@
 	$gamedb = new CGames($db);
 	$challengesdb = new CChallenges();
 	$replaydb = new CReplays($db);
-	$chatdb = new CChats($db);
 	$settingdb = new CSettings($db);
 	$playerdb = new CPlayers($db);
 	$messagedb = new CMessage($db);
@@ -1355,7 +1354,7 @@
 				// check access rights
 				if (!$access_rights[$player->Type()]["chat"]) { $error = 'Access denied.'; $current = 'Games_details'; break; }
 
-				$chatdb->SaveChatMessage($game->ID(), $msg, $player->Name());
+				$game->SaveChatMessage($msg, $player->Name());
 				$current = 'Games_details';
 				break;
 			}
@@ -1768,13 +1767,13 @@
 					$game->State = ($game->Name1() == $player->Name()) ? 'P1 over' : 'P2 over';
 					$game->SaveGame();
 					// inform other player about leaving the game
-					$chatdb->SaveChatMessage($game->ID(), "has left the game", $player->Name());
+					$game->SaveChatMessage("has left the game", $player->Name());
 				}
 				else // 'P1 over' or 'P2 over'
 				{
 					// the other player has already acknowledged (auto-acknowledge in case of a computer player)
+					$game->DeleteChat();
 					$gamedb->DeleteGame($game->ID());
-					$chatdb->DeleteChat($game->ID());
 				}
 
 				$current = "Games";
@@ -1832,8 +1831,8 @@
 				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Games'; break; }
 
 				// delete game entry
+				$game->DeleteChat();
 				$gamedb->DeleteGame($game->ID());
-				$chatdb->DeleteChat($game->ID());
 
 				$information = 'You have canceled a game.';
 				$current = 'Games';
@@ -2157,8 +2156,8 @@
 				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Messages'; break; }
 
 				// delete t3h challenge/game entry
+				$game->DeleteChat();
 				$gamedb->DeleteGame($game->ID());
-				$chatdb->DeleteChat($game->ID());
 				$messagedb->CancelChallenge($game->ID());
 
 				$information = 'You have rejected a challenge.';
@@ -2247,8 +2246,8 @@
 				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Players'; break; }
 
 				// delete t3h challenge/game entry
+				$game->DeleteChat();
 				$gamedb->DeleteGame($game->ID());
-				$chatdb->DeleteChat($game->ID());
 				$messagedb->CancelChallenge($game->ID());
 
 				$information = 'You have withdrawn a challenge.';
@@ -2273,8 +2272,8 @@
 				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Messages'; break; }
 
 				// delete t3h challenge/game entry
+				$game->DeleteChat();
 				$gamedb->DeleteGame($game->ID());
-				$chatdb->DeleteChat($game->ID());
 				$messagedb->CancelChallenge($game->ID());
 
 				$information = 'You have withdrawn a challenge.';
@@ -3657,7 +3656,7 @@ case 'Games_details':
 
 	$order = ( $settings->GetSetting('Chatorder') == "yes" ) ? "ASC" : "DESC";
 	$params['game']['reverse_chat'] = $settings->GetSetting('Chatorder');
-	$params['game']['messagelist'] = $message_list = $chatdb->ListChatMessages($game->ID(), $order);
+	$params['game']['messagelist'] = $message_list = $game->ListChatMessages($order);
 
 	break;
 
