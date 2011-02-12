@@ -22,7 +22,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('INSERT INTO `chats` (`GameID`, `Name`, `Message`) VALUES ("'.$db->Escape($gameid).'", "'.$db->Escape($name).'", "'.$db->Escape($message).'")');
+			$result = $db->Query('INSERT INTO `chats` (`GameID`, `Name`, `Message`) VALUES (?, ?, ?)', array($gameid, $name, $message));
 			if ($result === false) return false;
 			
 			return true;
@@ -31,19 +31,22 @@
 		public function DeleteChat($gameid)
 		{
 			$db = $this->db;
-			$result = $db->Query('DELETE FROM `chats` WHERE `GameID` = "'.$db->Escape($gameid).'"');
+
+			$result = $db->Query('DELETE FROM `chats` WHERE `GameID` = ?', array($gameid));
 			if ($result === false) return false;
 			
 			return true;
 		}
 		
-		public function ListChatMessages($gameid, $order = "DESC")
+		public function ListChatMessages($gameid, $order)
 		{
 			$db = $this->db;
-			
-			$result = $db->Query('SELECT `Name`, `Message`, `Timestamp` FROM `chats` WHERE `GameID` = "'.$db->Escape($gameid).'" ORDER BY `Timestamp` '.$db->Escape($order).'');
+
+			$order = ($order == 'ASC') ? 'ASC' : 'DESC';
+
+			$result = $db->Query('SELECT `Name`, `Message`, `Timestamp` FROM `chats` WHERE `GameID` = ? ORDER BY `Timestamp` '.$order.'', array($gameid));
 			if ($result === false) return false;
-			
+
 			return $result;
 		}
 	}

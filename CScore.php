@@ -25,7 +25,8 @@
 			$score = new CScore($username, $this);
 			
 			$db = $this->db;
-			$result = $db->Query('INSERT INTO `scores` (`Username`) VALUES ("'.$db->Escape($username).'")');
+
+			$result = $db->Query('INSERT INTO `scores` (`Username`) VALUES (?)', array($username));
 			if ($result === false) return false;
 			
 			return $score;
@@ -34,7 +35,8 @@
 		public function DeleteScore($username)
 		{
 			$db = $this->db;
-			$result = $db->Query('DELETE FROM `scores` WHERE `Username` = "'.$db->Escape($username).'"');
+
+			$result = $db->Query('DELETE FROM `scores` WHERE `Username` = ?', array($username));
 			if ($result === false) return false;
 			
 			return true;
@@ -43,7 +45,8 @@
 		public function GetScore($username)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT 1 FROM `scores` WHERE `Username` = "'.$db->Escape($username).'"');
+
+			$result = $db->Query('SELECT 1 FROM `scores` WHERE `Username` = ?', array($username));
 			if ($result === false or count($result) == 0) return false;
 			
 			$score = new CScore($username, $this);
@@ -93,9 +96,9 @@
 			$awards_q = '';
 			foreach ($this->AwardsList as $award) $awards_q.= ', `'.$award.'`';
 			
-			$result = $db->Query('SELECT `Level`, `Exp`, `Gold`, `Wins`, `Losses`, `Draws`, `GameSlots`'.$awards_q.' FROM `scores` WHERE `Username` = "'.$db->Escape($this->Username).'"');
-			if ($result === false) return false;
-			
+			$result = $db->Query('SELECT `Level`, `Exp`, `Gold`, `Wins`, `Losses`, `Draws`, `GameSlots`'.$awards_q.' FROM `scores` WHERE `Username` = ?', array($this->Username));
+			if ($result === false or count($result) == 0) return false;
+
 			$data = $result[0];
 			$this->ScoreData->Level = $data['Level'];
 			$this->ScoreData->Exp = $data['Exp'];
@@ -115,10 +118,17 @@
 		{
 			$db = $this->Scores->getDB();
 			
+			$params = array($this->ScoreData->Level, $this->ScoreData->Exp, $this->ScoreData->Gold, $this->ScoreData->Wins, $this->ScoreData->Losses, $this->ScoreData->Draws, $this->ScoreData->GameSlots);
+
 			$awards_q = '';
-			foreach ($this->AwardsList as $award) $awards_q.= ', `'.$award.'` = '.$this->ScoreData->Awards[$award];
+			foreach ($this->AwardsList as $award)
+			{
+				$awards_q.= ', `'.$award.'` = ?';
+				$params[] = $this->ScoreData->Awards[$award];
+			}
+			$params[] = $this->Username;
 			
-			$result = $db->Query('UPDATE `scores` SET `Level` = '.$this->ScoreData->Level.', `Exp` = '.$this->ScoreData->Exp.', `Gold` = '.$this->ScoreData->Gold.', `Wins` = '.$this->ScoreData->Wins.', `Losses` = '.$this->ScoreData->Losses.', `Draws` = '.$this->ScoreData->Draws.', `GameSlots` = '.$this->ScoreData->GameSlots.''.$awards_q.' WHERE `Username` = "'.$db->Escape($this->Username).'"');
+			$result = $db->Query('UPDATE `scores` SET `Level` = ?, `Exp` = ?, `Gold` = ?, `Wins` = ?, `Losses` = ?, `Draws` = ?, `GameSlots` = ?'.$awards_q.' WHERE `Username` = ?', $params);
 			if ($result === false) return false;
 			
 			return true;

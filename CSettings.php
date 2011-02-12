@@ -23,7 +23,7 @@
 		public function CreateSettings($username) //creates default settings
 		{
 			$db = $this->db;
-			$result = $db->Query('INSERT INTO `settings` (`Username`) VALUES ("'.$db->Escape($username).'")');
+			$result = $db->Query('INSERT INTO `settings` (`Username`) VALUES (?)', array($username));
 			if ($result === false) return false;
 
 			return true;
@@ -32,7 +32,7 @@
 		public function DeleteSettings($username) //delete user settings
 		{
 			$db = $this->db;
-			$result = $db->Query('DELETE FROM `settings` WHERE `Username` = "'.$db->Escape($username).'"');
+			$result = $db->Query('DELETE FROM `settings` WHERE `Username` = ?', array($username));
 			if ($result === false) return false;
 
 			return true;
@@ -79,7 +79,7 @@
 		{
 			$db = $this->Settings->getDB();
 
-			$result = $db->Query('SELECT * FROM `settings` WHERE `Username` = "'.$db->Escape($this->Username).'"');
+			$result = $db->Query('SELECT * FROM `settings` WHERE `Username` = ?', array($this->Username));
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
@@ -99,13 +99,22 @@
 
 			$bool_settings = $this->ListBooleanSettings();
 			$other_settings = $this->ListOtherSettings();
-			$query = array();
+			$query = $params = array();
 
-			foreach ($bool_settings as $setting) $query[] = '`'.$setting.'` = "'.(($this->Data[$setting] == 'yes') ? '1' : '0').'"';
-			foreach ($other_settings as $setting) $query[] = '`'.$setting.'` = "'.$db->Escape($this->Data[$setting]).'"';
+			foreach ($bool_settings as $setting)
+			{
+				$query[] = '`'.$setting.'` = ?';
+				$params[] = ($this->Data[$setting] == 'yes') ? 1 : 0;
+			}
+			foreach ($other_settings as $setting)
+			{
+				$query[] = '`'.$setting.'` = ?';
+				$params[] = $this->Data[$setting];
+			}
 			$query = implode(", ", $query);
+			$params[] = $this->Username;
 
-			$result = $db->Query('UPDATE `settings` SET '.$query.' WHERE `Username` = "'.$db->Escape($this->Username).'"');
+			$result = $db->Query('UPDATE `settings` SET '.$query.' WHERE `Username` = ?', $params);
 			if ($result === false) return false;
 
 			return true;

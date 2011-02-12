@@ -24,7 +24,7 @@
 			
 			$deck_data = new CDeckData;
 			
-			$result = $db->Query('INSERT INTO `decks` (`Username`, `Deckname`, `Data`) VALUES ("'.$db->Escape($username).'", "'.$db->Escape($deckname).'", "'.$db->Escape(serialize($deck_data)).'")');
+			$result = $db->Query('INSERT INTO `decks` (`Username`, `Deckname`, `Data`) VALUES (?, ?, ?)', array($username, $deckname, serialize($deck_data)));
 			if ($result === false) return false;
 			
 			$deck = new CDeck($db->LastID(), $username, $deckname, $this);
@@ -35,7 +35,8 @@
 		public function DeleteDeck($username, $deck_id)
 		{
 			$db = $this->db;
-			$result = $db->Query('DELETE FROM `decks` WHERE `Username` = "'.$db->Escape($username).'" AND `DeckID` = "'.$db->Escape($deck_id).'"');
+
+			$result = $db->Query('DELETE FROM `decks` WHERE `Username` = ? AND `DeckID` = ?', array($username, $deck_id));
 			if ($result === false) return false;
 			
 			return true;
@@ -44,7 +45,7 @@
 		public function GetDeck($username, $deck_id)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `Deckname` FROM `decks` WHERE `Username` = "'.$db->Escape($username).'" AND `DeckID` = "'.$db->Escape($deck_id).'"');
+			$result = $db->Query('SELECT `Deckname` FROM `decks` WHERE `Username` = ? AND `DeckID` = ?', array($username, $deck_id));
 			if ($result === false or count($result) == 0) return false;
 			
 			$data = $result[0];
@@ -52,7 +53,7 @@
 			
 			$deck = new CDeck($deck_id, $username, $deckname, $this);
 			$result = $deck->LoadDeck();
-			if ($result === false) return false;
+			if (!$result) return false;
 			
 			return $deck;
 		}
@@ -60,18 +61,19 @@
 		public function ListDecks($username)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `DeckID`, `Deckname`, `Modified`, (CASE WHEN `Ready` = TRUE THEN "yes" ELSE "no" END) as `Ready`, `Wins`, `Losses`, `Draws` FROM `decks` WHERE `Username` = "'.$db->Escape($username).'"');
+
+			$result = $db->Query('SELECT `DeckID`, `Deckname`, `Modified`, (CASE WHEN `Ready` = TRUE THEN "yes" ELSE "no" END) as `Ready`, `Wins`, `Losses`, `Draws` FROM `decks` WHERE `Username` = ?', array($username));
 			if ($result === false) return false;
-			
+
 			return $result;
 		}
 		
 		public function ListReadyDecks($username)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `DeckID`, `Deckname` FROM `decks` WHERE `Username` = "'.$db->Escape($username).'" AND `Ready` = TRUE');
+			$result = $db->Query('SELECT `DeckID`, `Deckname` FROM `decks` WHERE `Username` = ? AND `Ready` = TRUE', array($username));
 			if ($result === false) return false;
-			
+
 			return $result;
 		}
 		
@@ -229,7 +231,8 @@
 		public function LoadDeck()
 		{
 			$db = $this->Decks->getDB();
-			$result = $db->Query('SELECT `Data`, `Wins`, `Losses`, `Draws` FROM `decks` WHERE `Username` = "'.$db->Escape($this->Username).'" AND `DeckID` = "'.$db->Escape($this->DeckID).'"');
+
+			$result = $db->Query('SELECT `Data`, `Wins`, `Losses`, `Draws` FROM `decks` WHERE `Username` = ? AND `DeckID` = ?', array($this->Username, $this->DeckID));
 			if ($result === false or count($result) == 0) return false;
 			
 			$data = $result[0];
@@ -244,7 +247,8 @@
 		public function SaveDeck()
 		{
 			$db = $this->Decks->getDB();
-			$result = $db->Query('UPDATE `decks` SET `Ready` = '.($this->isReady() ? 'TRUE' : 'FALSE').', `Data` = "'.$db->Escape(serialize($this->DeckData)).'", `Wins` = "'.$db->Escape($this->Wins).'", `Losses` = "'.$db->Escape($this->Losses).'", `Draws` = "'.$db->Escape($this->Draws).'" WHERE `Username` = "'.$db->Escape($this->Username).'" AND `DeckID` = "'.$db->Escape($this->DeckID).'"');
+
+			$result = $db->Query('UPDATE `decks` SET `Ready` = ?, `Data` = ?, `Wins` = ?, `Losses` = ?, `Draws` = ? WHERE `Username` = ? AND `DeckID` = ?', array((($this->isReady()) ? 1 : 0), serialize($this->DeckData), $this->Wins, $this->Losses, $this->Draws, $this->Username, $this->DeckID));
 			if ($result === false) return false;
 			
 			return true;
@@ -253,7 +257,8 @@
 		public function RenameDeck($newdeckname)
 		{
 			$db = $this->Decks->getDB();
-			$result = $db->Query('UPDATE `decks` SET `Deckname` = "'.$db->Escape($newdeckname).'" WHERE `Username` = "'.$db->Escape($this->Username).'" AND `DeckID` = "'.$db->Escape($this->DeckID).'"');
+
+			$result = $db->Query('UPDATE `decks` SET `Deckname` = ?  WHERE `Username` = ? AND `DeckID` = ?', array($newdeckname, $this->Username, $this->DeckID));
 			if ($result === false) return false;
 			
 			$this->Deckname = $newdeckname;

@@ -22,7 +22,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('INSERT INTO `messages` (`Author`, `Recipient`, `Subject`, `Content`) VALUES ("'.$db->Escape($author).'", "'.$db->Escape($recipient).'", "'.$db->Escape($subject).'", "'.$db->Escape($content).'")');
+			$result = $db->Query('INSERT INTO `messages` (`Author`, `Recipient`, `Subject`, `Content`) VALUES (?, ?, ?, ?)', array($author, $recipient, $subject, $content));
 			if ($result === false) return false;
 			
 			return true;
@@ -67,7 +67,7 @@
 		{	// get message for message details section
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `Author`, `Recipient`, `Subject`, `Content`, `Created` FROM `messages` WHERE `MessageID` = "'.$db->Escape($messageid).'" AND ((`Author` = "'.$db->Escape($player_name).'" AND `AuthorDelete` = FALSE) OR (`Recipient` = "'.$db->Escape($player_name).'" AND `RecipientDelete` = FALSE))');
+			$result = $db->Query('SELECT `Author`, `Recipient`, `Subject`, `Content`, `Created` FROM `messages` WHERE `MessageID` = ? AND ((`Author` = ? AND `AuthorDelete` = FALSE) OR (`Recipient` = ? AND `RecipientDelete` = FALSE))', array($messageid, $player_name, $player_name));
 			if ($result === false or count($result) == 0) return false;
 			
 			$message = $result[0];
@@ -75,7 +75,7 @@
 			// unmark message from unread to read, when player is a recipient
 			if ($message['Recipient'] == $player_name)
 			{
-				$result = $db->Query('UPDATE `messages` SET `Unread`= FALSE WHERE `MessageID` = "'.$db->Escape($messageid).'"');
+				$result = $db->Query('UPDATE `messages` SET `Unread`= FALSE WHERE `MessageID` = ?', array($messageid));
 				if ($result === false) return false;
 			}
 			
@@ -85,12 +85,12 @@
 		public function RetrieveMessage($messageid)
 		{	// used when admin wants to see any message (including deleted one)
 			$db = $this->db;
-												
-			$result = $db->Query('SELECT `Author`, `Recipient`, `Subject`, `Content`, `Created` FROM `messages` WHERE `MessageID` = "'.$db->Escape($messageid).'"');
+
+			$result = $db->Query('SELECT `Author`, `Recipient`, `Subject`, `Content`, `Created` FROM `messages` WHERE `MessageID` = ?', array($messageid));
 			if ($result === false or count($result) == 0) return false;
-				
+
 			$message = $result[0];
-						
+
 			return $message;
 		}
 		
@@ -98,9 +98,9 @@
 		{	
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `Author`, `Recipient` FROM `messages` WHERE `MessageID` = "'.$db->Escape($messageid).'"');
+			$result = $db->Query('SELECT `Author`, `Recipient` FROM `messages` WHERE `MessageID` = ?', array($messageid));
 			if ($result === false or count($result) == 0) return false;
-				
+
 			$message = $result[0];
 			$author = $message['Author'];
 			$recipient = $message['Recipient'];
@@ -109,7 +109,7 @@
 			$recipient_query = ($recipient == $player_name) ? '`RecipientDelete` = TRUE' : '';
 			$sup_query = (($author_query != "") AND ($recipient_query != "")) ? ', ' : '';
 			
-			$result = $db->Query('UPDATE `messages` SET '.$author_query.$sup_query.$recipient_query.' WHERE `MessageID` = "'.$db->Escape($messageid).'"');
+			$result = $db->Query('UPDATE `messages` SET '.$author_query.$sup_query.$recipient_query.' WHERE `MessageID` = ?', array($messageid));
 			if ($result === false) return false;
 			
 			return true;
@@ -118,30 +118,22 @@
 		public function MassDeleteMessage(array $deleted_messages, $player_name)
 		{	
 			$db = $this->db;
-			
-			$first = true;
-			$query = "";
-			
-			foreach($deleted_messages as $message_id)
-			{
-				if ($first)
-				{
-					$query.= '`MessageID` = "'.$db->Escape($message_id).'"';
-					$first = false;
-				}
-				else $query.= ' OR `MessageID` = "'.$db->Escape($message_id).'"';
-			}
-			
-			$result = $db->Query('UPDATE `messages` SET `AuthorDelete` = (CASE WHEN `Author` = "'.$db->Escape($player_name).'" THEN TRUE ELSE `AuthorDelete` END), `RecipientDelete` = (CASE WHEN `Recipient` = "'.$db->Escape($player_name).'" THEN TRUE ELSE `RecipientDelete` END) WHERE '.$query.'');
+
+			$params = array();
+			foreach ($deleted_messages as $message_id)
+				$params[$message_id] = array($player_name, $player_name, $message_id);
+
+			$result = $db->MultiQuery('UPDATE `messages` SET `AuthorDelete` = (CASE WHEN `Author` = ? THEN TRUE ELSE `AuthorDelete` END), `RecipientDelete` = (CASE WHEN `Recipient` = ? THEN TRUE ELSE `RecipientDelete` END) WHERE `MessageID` = ?', $params);
 			if ($result === false) return false;
-			
+
 			return true;
 		}
 		
 		public function DeleteMessages($player)
 		{
 			$db = $this->db;
-			$result = $db->Query('DELETE FROM `messages` WHERE ((`GameID` = 0) AND ((`Author` = "'.SYSTEM_NAME.'" AND `Recipient` = "'.$db->Escape($player).'") OR (`Author` = "'.$db->Escape($player).'" AND `RecipientDelete` = TRUE) OR (`Recipient` = "'.$db->Escape($player).'" AND `AuthorDelete` = TRUE))) OR ((`GameID` > 0) AND (`Author` = "'.$db->Escape($player).'" OR `Recipient` = "'.$db->Escape($player).'"))');
+
+			$result = $db->Query('DELETE FROM `messages` WHERE ((`GameID` = 0) AND ((`Author` = ? AND `Recipient` = ?) OR (`Author` = ? AND `RecipientDelete` = TRUE) OR (`Recipient` = ? AND `AuthorDelete` = TRUE))) OR ((`GameID` > 0) AND (`Author` = ? OR `Recipient` = ?))', array(SYSTEM_NAME, $player, $player, $player, $player, $player));
 			if ($result === false) return false;
 			
 			return true;
@@ -150,26 +142,38 @@
 		public function ListMessagesTo($player, $date, $name, $condition, $order, $page)
 		{	
 			$db = $this->db;
-			
-			$name_query = (($name != "none") ? ' AND `Author` =  "'.$db->Escape($name).'"' : '');
-			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
-			
-			$result = $db->Query('SELECT `MessageID`, `Author`, `Recipient`, `Subject`, `Content`, (CASE WHEN `Unread` = TRUE THEN "yes" ELSE "no" END) as `Unread`, `Created` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = "'.$db->Escape($player).'" AND `RecipientDelete` = FALSE'.$name_query.$date_query.' ORDER BY `'.$db->Escape($condition).'` '.$db->Escape($order).' LIMIT '.(MESSAGES_PER_PAGE * $db->Escape($page)).' , '.MESSAGES_PER_PAGE.'');
+
+			$name_query = (($name != "none") ? ' AND `Author` =  ?' : '');
+			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '');
+
+			$params = array($player);
+			if ($name != "none") $params[] = $name;
+			if ($date != "none") $params[] = $date;
+
+			$condition = (in_array($condition, array('Author', 'Created'))) ? $condition : 'Created';
+			$order = ($order == 'ASC') ? 'ASC' : 'DESC';
+			$page = (is_numeric($page)) ? $page : 0;
+
+			$result = $db->Query('SELECT `MessageID`, `Author`, `Recipient`, `Subject`, `Content`, (CASE WHEN `Unread` = TRUE THEN "yes" ELSE "no" END) as `Unread`, `Created` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = ? AND `RecipientDelete` = FALSE'.$name_query.$date_query.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(MESSAGES_PER_PAGE * $page).' , '.MESSAGES_PER_PAGE.'', $params);
 			if ($result === false) return false;
-			
+
 			return $result;
 		}
 		
 		public function CountPagesTo($player, $date, $name)
 		{	
 			$db = $this->db;
-			
-			$name_query = (($name != "none") ? ' AND `Author` =  "'.$db->Escape($name).'"' : '');
-			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
-			
-			$result = $db->Query('SELECT COUNT(`MessageID`) as `Count` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = "'.$db->Escape($player).'" AND `RecipientDelete` = FALSE'.$name_query.$date_query.'');
-			if ($result === false) return false;
-			
+
+			$name_query = (($name != "none") ? ' AND `Author` =  ?' : '');
+			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '');
+
+			$params = array($player);
+			if ($name != "none") $params[] = $name;
+			if ($date != "none") $params[] = $date;
+
+			$result = $db->Query('SELECT COUNT(`MessageID`) as `Count` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = ? AND `RecipientDelete` = FALSE'.$name_query.$date_query.'', $params);
+			if ($result === false or count($result) == 0) return false;
+
 			$data = $result[0];
 			
 			$pages = ceil($data['Count'] / MESSAGES_PER_PAGE);
@@ -180,26 +184,38 @@
 		public function ListMessagesFrom($player, $date, $name, $condition, $order, $page)
 		{	
 			$db = $this->db;
-			
-			$name_query = (($name != "none") ? ' AND `Recipient` =  "'.$db->Escape($name).'"' : '');
-			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
-			
-			$result = $db->Query('SELECT `MessageID`, `Author`, `Recipient`, `Subject`, `Content`, (CASE WHEN `Unread` = TRUE THEN "yes" ELSE "no" END) as `Unread`, `Created` FROM `messages` WHERE `GameID` = 0 AND `Author` = "'.$db->Escape($player).'" AND `AuthorDelete` = FALSE'.$name_query.$date_query.' ORDER BY `'.$db->Escape($condition).'` '.$db->Escape($order).' LIMIT '.(MESSAGES_PER_PAGE * $db->Escape($page)).' , '.MESSAGES_PER_PAGE.'');
+
+			$name_query = (($name != "none") ? ' AND `Recipient` =  ?' : '');
+			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '');
+
+			$params = array($player);
+			if ($name != "none") $params[] = $name;
+			if ($date != "none") $params[] = $date;
+
+			$condition = (in_array($condition, array('Recipient', 'Created'))) ? $condition : 'Created';
+			$order = ($order == 'ASC') ? 'ASC' : 'DESC';
+			$page = (is_numeric($page)) ? $page : 0;
+
+			$result = $db->Query('SELECT `MessageID`, `Author`, `Recipient`, `Subject`, `Content`, (CASE WHEN `Unread` = TRUE THEN "yes" ELSE "no" END) as `Unread`, `Created` FROM `messages` WHERE `GameID` = 0 AND `Author` = ? AND `AuthorDelete` = FALSE'.$name_query.$date_query.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(MESSAGES_PER_PAGE * $page).' , '.MESSAGES_PER_PAGE.'', $params);
 			if ($result === false) return false;
-			
+
 			return $result;
 		}
 		
 		public function CountPagesFrom($player, $date, $name)
 		{	
 			$db = $this->db;
-			
-			$name_query = (($name != "none") ? ' AND `Recipient` =  "'.$db->Escape($name).'"' : '');
-			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
-			
-			$result = $db->Query('SELECT COUNT(`MessageID`) as `Count` FROM `messages` WHERE `GameID` = 0 AND `Author` = "'.$db->Escape($player).'" AND `AuthorDelete` = FALSE'.$name_query.$date_query.'');
-			if ($result === false) return false;
-			
+
+			$name_query = (($name != "none") ? ' AND `Recipient` =  ?' : '');
+			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '');
+
+			$params = array($player);
+			if ($name != "none") $params[] = $name;
+			if ($date != "none") $params[] = $date;
+
+			$result = $db->Query('SELECT COUNT(`MessageID`) as `Count` FROM `messages` WHERE `GameID` = 0 AND `Author` = ? AND `AuthorDelete` = FALSE'.$name_query.$date_query.'', $params);
+			if ($result === false or count($result) == 0) return false;
+
 			$data = $result[0];
 			
 			$pages = ceil($data['Count'] / MESSAGES_PER_PAGE);
@@ -210,26 +226,38 @@
 		public function ListAllMessages($date, $name, $condition, $order, $page)
 		{	// used when admin want to see list of all messages (including deleted ones)
 			$db = $this->db;
-			
-			$name_query = (($name != "none") ? ' AND `Author` =  "'.$db->Escape($name).'"' : '');
-			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
-			
-			$result = $db->Query('SELECT `MessageID`, `Author`, `Recipient`, `Subject`, `Content`, (CASE WHEN `Unread` = TRUE THEN "yes" ELSE "no" END) as `Unread`, `Created` FROM `messages` WHERE `GameID` = 0 AND `Author` != "'.SYSTEM_NAME.'"'.$name_query.$date_query.' ORDER BY `'.$db->Escape($condition).'` '.$db->Escape($order).' LIMIT '.(MESSAGES_PER_PAGE * $db->Escape($page)).' , '.MESSAGES_PER_PAGE.'');
+
+			$name_query = (($name != "none") ? ' AND `Author` =  ?' : '');
+			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '');
+
+			$params = array(SYSTEM_NAME);
+			if ($name != "none") $params[] = $name;
+			if ($date != "none") $params[] = $date;
+
+			$condition = (in_array($condition, array('Author', 'Created'))) ? $condition : 'Created';
+			$order = ($order == 'ASC') ? 'ASC' : 'DESC';
+			$page = (is_numeric($page)) ? $page : 0;
+
+			$result = $db->Query('SELECT `MessageID`, `Author`, `Recipient`, `Subject`, `Content`, (CASE WHEN `Unread` = TRUE THEN "yes" ELSE "no" END) as `Unread`, `Created` FROM `messages` WHERE `GameID` = 0 AND `Author` != ?'.$name_query.$date_query.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(MESSAGES_PER_PAGE * $page).' , '.MESSAGES_PER_PAGE.'', $params);
 			if ($result === false) return false;
-			
+
 			return $result;
 		}
 		
 		public function CountPagesAll($date, $name)
 		{	
 			$db = $this->db;
-			
-			$name_query = (($name != "none") ? ' AND `Author` =  "'.$db->Escape($name).'"' : '');
-			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
-			
-			$result = $db->Query('SELECT COUNT(`MessageID`) as `Count` FROM `messages` WHERE `GameID` = 0 AND `Author` != "'.SYSTEM_NAME.'"'.$name_query.$date_query.'');
-			if ($result === false) return false;
-			
+
+			$name_query = (($name != "none") ? ' AND `Author` =  ?' : '');
+			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '');
+
+			$params = array(SYSTEM_NAME);
+			if ($name != "none") $params[] = $name;
+			if ($date != "none") $params[] = $date;
+
+			$result = $db->Query('SELECT COUNT(`MessageID`) as `Count` FROM `messages` WHERE `GameID` = 0 AND `Author` != ?'.$name_query.$date_query.'', $params);
+			if ($result === false or count($result) == 0) return false;
+
 			$data = $result[0];
 			
 			$pages = ceil($data['Count'] / MESSAGES_PER_PAGE);
@@ -240,10 +268,10 @@
 		public function CountUnreadMessages($player)
 		{	
 			$db = $this->db;
-												
-			$result = $db->Query('SELECT COUNT(`MessageID`) as `CountUnread` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = "'.$db->Escape($player).'" AND `RecipientDelete` = FALSE AND `Unread` = TRUE');
+
+			$result = $db->Query('SELECT COUNT(`MessageID`) as `CountUnread` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = ? AND `RecipientDelete` = FALSE AND `Unread` = TRUE', array($player));
 			if ($result === false or count($result) == 0) return false;
-			
+
 			$data = $result[0];
 			
 			return $data['CountUnread'];
@@ -252,10 +280,13 @@
 		public function ListNamesTo($player, $date)
 		{	
 			$db = $this->db;
-			
-			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
-			
-			$result = $db->Query('SELECT DISTINCT `Author` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = "'.$db->Escape($player).'" AND `RecipientDelete` = FALSE'.$date_query.' ORDER BY `Author` ASC');
+
+			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '');
+
+			$params = array($player);
+			if ($date != "none") $params[] = $date;
+
+			$result = $db->Query('SELECT DISTINCT `Author` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = ? AND `RecipientDelete` = FALSE'.$date_query.' ORDER BY `Author` ASC', $params);
 			if ($result === false) return false;
 			
 			$names = array();
@@ -267,10 +298,13 @@
 		public function ListNamesFrom($player, $date)
 		{	
 			$db = $this->db;
-			
-			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
-			
-			$result = $db->Query('SELECT DISTINCT `Recipient` FROM `messages` WHERE `GameID` = 0 AND `Author` = "'.$db->Escape($player).'" AND `AuthorDelete` = FALSE'.$date_query.' ORDER BY `Recipient` ASC');
+
+			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '');
+
+			$params = array($player);
+			if ($date != "none") $params[] = $date;
+
+			$result = $db->Query('SELECT DISTINCT `Recipient` FROM `messages` WHERE `GameID` = 0 AND `Author` = ? AND `AuthorDelete` = FALSE'.$date_query.' ORDER BY `Recipient` ASC', $params);
 			if ($result === false) return false;
 			
 			$names = array();
@@ -282,10 +316,13 @@
 		public function ListAllNames($date)
 		{	// get list of authors of all messages
 			$db = $this->db;
-			
-			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL '.$db->Escape($date).' DAY' : '');
-			
-			$result = $db->Query('SELECT DISTINCT `Author` FROM `messages` WHERE `GameID` = 0 AND `Author` != "'.SYSTEM_NAME.'"'.$date_query.' ORDER BY `Author` ASC');
+
+			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '');
+
+			$params = array(SYSTEM_NAME);
+			if ($date != "none") $params[] = $date;
+
+			$result = $db->Query('SELECT DISTINCT `Author` FROM `messages` WHERE `GameID` = 0 AND `Author` != ?'.$date_query.' ORDER BY `Author` ASC', $params);
 			if ($result === false) return false;
 			
 			$names = array();
@@ -298,7 +335,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('INSERT INTO `messages` (`Author`, `Recipient`, `Content`, `GameID`, `Created`) VALUES ("'.$db->Escape($author).'", "'.$db->Escape($recipient).'", "'.$db->Escape($content).'", "'.$game_id.'", NOW())');
+			$result = $db->Query('INSERT INTO `messages` (`Author`, `Recipient`, `Content`, `GameID`, `Created`) VALUES (?, ?, ?, ?, NOW())', array($author, $recipient, $content, $game_id));
 			if ($result === false) return false;
 			
 			return true;
@@ -308,9 +345,9 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `Author`, `Recipient`, `Content`, `GameID`, `Created` FROM `messages` WHERE `GameID` > 0 AND `Author` = "'.$db->Escape($player).'" AND `Recipient` = "'.$db->Escape($opponent).'"');
+			$result = $db->Query('SELECT `Author`, `Recipient`, `Content`, `GameID`, `Created` FROM `messages` WHERE `GameID` > 0 AND `Author` = ? AND `Recipient` = ?', array($player, $opponent));
 			if ($result === false or count($result) == 0) return false;
-			
+
 			$challenge = $result[0];
 			
 			return $challenge;
@@ -319,7 +356,8 @@
 		public function CancelChallenge($game_id)
 		{
 			$db = $this->db;
-			$result = $db->Query('DELETE FROM `messages` WHERE `GameID` = "'.$db->Escape($game_id).'"');
+
+			$result = $db->Query('DELETE FROM `messages` WHERE `GameID` = ?', array($game_id));
 			if ($result === false) return false;
 			
 			return true;
@@ -328,7 +366,8 @@
 		public function ListChallengesFrom($player)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `GameID`, `Recipient`, `Content`, `Created`, (CASE WHEN `Last Query` >= NOW() - INTERVAL 10 MINUTE THEN "yes" ELSE "no" END) as `Online` FROM (SELECT `Recipient`, `Content`, `Created`, `GameID` FROM `messages` WHERE `GameID` > 0 AND `Author` = "'.$db->Escape($player).'") as `messages` INNER JOIN `logins` ON `messages`.`Recipient` = `logins`.`Username` ORDER BY `Created` DESC');
+
+			$result = $db->Query('SELECT `GameID`, `Recipient`, `Content`, `Created`, (CASE WHEN `Last Query` >= NOW() - INTERVAL 10 MINUTE THEN "yes" ELSE "no" END) as `Online` FROM (SELECT `Recipient`, `Content`, `Created`, `GameID` FROM `messages` WHERE `GameID` > 0 AND `Author` = ?) as `messages` INNER JOIN `logins` ON `messages`.`Recipient` = `logins`.`Username` ORDER BY `Created` DESC', array($player));
 			if ($result === false) return false;
 			
 			return $result;
@@ -337,7 +376,8 @@
 		public function ListChallengesTo($player)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `GameID`, `Author`, `Content`, `Created`, (CASE WHEN `Last Query` >= NOW() - INTERVAL 10 MINUTE THEN "yes" ELSE "no" END) as `Online` FROM (SELECT `Author`, `Content`, `Created`, `GameID` FROM `messages` WHERE `GameID` > 0 AND `Recipient` = "'.$db->Escape($player).'") as `messages` INNER JOIN `logins` ON `messages`.`Author` = `logins`.`Username` ORDER BY `Created` DESC');
+
+			$result = $db->Query('SELECT `GameID`, `Author`, `Content`, `Created`, (CASE WHEN `Last Query` >= NOW() - INTERVAL 10 MINUTE THEN "yes" ELSE "no" END) as `Online` FROM (SELECT `Author`, `Content`, `Created`, `GameID` FROM `messages` WHERE `GameID` > 0 AND `Recipient` = ?) as `messages` INNER JOIN `logins` ON `messages`.`Author` = `logins`.`Username` ORDER BY `Created` DESC', array($player));
 			if ($result === false) return false;
 			
 			return $result;

@@ -28,22 +28,20 @@
 			$result = $db->Query('SELECT `forum_sections`.`SectionID`, `SectionName`, `Description`, IFNULL(`count`, 0) as `count` FROM `forum_sections` LEFT OUTER JOIN (SELECT `SectionID`, COUNT(`ThreadID`) as `count` FROM `forum_threads` WHERE `Deleted` = FALSE GROUP BY `SectionID`) as `threads` USING (`SectionID`) ORDER BY `SectionOrder` ASC');
 			if ($result === false) return false;
 
-			$sections = array();
+			$sections = $params = array();
 			foreach( $result as $data )
-				$sections[$data['SectionID']] = $data;
+			{
+				$section_id = $data['SectionID'];
+				$sections[$section_id] = $data;
+				$params[$section_id] = array($section_id);
+			}
 
-			$query = array();
-
-			// get threads list for each section
-			foreach ($sections as $section_id => $section_data)
-				$query[] = '(SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost`, CEIL(`PostCount` / '.POSTS_PER_PAGE.') as `LastPage`, `SectionID` FROM `forum_threads` WHERE `SectionID` = "'.$db->Escape($section_id).'" AND `Deleted` = FALSE ORDER BY `LastPost` DESC, `Created` DESC LIMIT '.NUM_THREADS.')';
-
-			$query = implode(' UNION ', $query);
-			$result = $db->Query($query);
+			// get threads list for current section
+			$result = $db->MultiQuery('SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost`, CEIL(`PostCount` / '.POSTS_PER_PAGE.') as `LastPage`, `SectionID` FROM `forum_threads` WHERE `SectionID` = ? AND `Deleted` = FALSE ORDER BY `LastPost` DESC, `Created` DESC LIMIT '.NUM_THREADS.'', $params);
 			if ($result === false) return false;
 
-			foreach( $result as $data )
-				$sections[$data['SectionID']]['threadlist'][] = $data;
+			foreach ($result as $section_id => $data)
+				$sections[$section_id]['threadlist'] = $data;
 
 			return $sections;
 		}
@@ -52,13 +50,13 @@
 		{	// used to generate list of all section except the current section
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `SectionID`, `SectionName` FROM `forum_sections` WHERE `SectionID` != "'.$db->Escape($current_section).'" ORDER BY `SectionOrder`');
+			$result = $db->Query('SELECT `SectionID`, `SectionName` FROM `forum_sections` WHERE `SectionID` != ? ORDER BY `SectionOrder`', array($current_section));
 			if ($result === false) return false;
-			
+
 			$sections = array();
 			foreach( $result as $data )
 				$sections[$data['SectionID']] = $data;
-						
+
 			return $sections;
 		}
 
@@ -66,9 +64,9 @@
 		{	
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `SectionID`, `SectionName`, `Description` FROM `forum_sections` WHERE `SectionID` = "'.$db->Escape($section_id).'"');
+			$result = $db->Query('SELECT `SectionID`, `SectionName`, `Description` FROM `forum_sections` WHERE `SectionID` = ?', array($section_id));
 			if ($result === false or count($result) == 0) return false;
-
+			
 			$section = $result[0];
 			
 			return $section;
@@ -78,7 +76,7 @@
 		{	
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT 1 FROM `forum_posts` WHERE `Created` > "'.$db->Escape($time).'" AND `Deleted` = FALSE');
+			$result = $db->Query('SELECT 1 FROM `forum_posts` WHERE `Created` > ? AND `Deleted` = FALSE', array($time));
 			if ($result === false or count($result) == 0) return false;
 			
 			return true;
@@ -87,21 +85,32 @@
 		public function Search($phrase, $target = 'all', $section = 'any')
 		{
 			$db = $this->db;
-			
-			$section_q = ($section != 'any') ? ' AND `SectionID` = "'.$db->Escape($section).'"' : '';
-			
-			// search post text content
-			$post_q = (($target == 'posts') OR ($target == 'all')) ? 'SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM (SELECT DISTINCT `ThreadID` FROM `forum_posts` WHERE `Deleted` = FALSE AND `Content` LIKE "%'.$db->Escape($phrase).'%") as `posts` INNER JOIN (SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE `Deleted` = FALSE'.$section_q.') as `threads` USING(`ThreadID`)' : '';
-			
-			// search thread title
-			$thread_q = (($target == 'threads') OR ($target == 'all')) ? 'SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE `Deleted` = FALSE AND `Title` LIKE "%'.$db->Escape($phrase).'%"'.$section_q.'' : '';
+
+			$params = array();
+			$post_section_q = $thread_section_q = $post_q = $thread_q = '';
+			if ($target == 'posts' or $target == 'all')
+			{
+				if ($section != 'any') $post_section_q = ' AND `SectionID` = ?';
+				// search post text content
+				$post_q = 'SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM (SELECT DISTINCT `ThreadID` FROM `forum_posts` WHERE `Deleted` = FALSE AND `Content` LIKE ?) as `posts` INNER JOIN (SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE `Deleted` = FALSE'.$post_section_q.') as `threads` USING(`ThreadID`)';
+				$params[] = '%'.$phrase.'%';
+				if ($section != 'any') $params[] = $section;
+			}
+			if ($target == 'threads' or $target == 'all')
+			{
+				if ($section != 'any') $thread_section_q = ' AND `SectionID` = ?';
+				// search thread title
+				$thread_q = 'SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads` WHERE `Deleted` = FALSE AND `Title` LIKE ?'.$thread_section_q.'';
+				$params[] = '%'.$phrase.'%';
+				if ($section != 'any') $params[] = $section;
+			}
 			
 			// merge results
 			$query = $post_q.(($target == 'all') ? ' UNION DISTINCT ' : '').$thread_q.' ORDER BY `LastPost` DESC';
 			
-			$result = $db->Query($query);			
+			$result = $db->Query($query, $params);
 			if ($result === false) return false;
-			
+
 			return $result;
 		}
 	}

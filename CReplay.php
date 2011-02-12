@@ -43,10 +43,10 @@
 			$game_modes = implode(',', $game_modes);
 			$ai = $game->AI;
 			
-			$result = $db->Query('INSERT INTO `replays_head` (`GameID`, `Player1`, `Player2`, `GameModes`, `AI`) VALUES ("'.$db->Escape($game_id).'", "'.$db->Escape($player1).'", "'.$db->Escape($player2).'", "'.$db->Escape($game_modes).'", "'.$db->Escape($ai).'")');
+			$result = $db->Query('INSERT INTO `replays_head` (`GameID`, `Player1`, `Player2`, `GameModes`, `AI`) VALUES (?, ?, ?, ?, ?)', array($game_id, $player1, $player2, $game_modes, $ai));
 			if ($result === false) return false;
 			
-			$result = $db->Query('INSERT INTO `replays_data` (`GameID`, `Current`, `Data`) VALUES ("'.$db->Escape($game_id).'", "'.$db->Escape($current).'", "'.$db->Escape($data).'")');
+			$result = $db->Query('INSERT INTO `replays_data` (`GameID`, `Current`, `Data`) VALUES (?, ?, ?)', array($game_id, $current, $data));
 			if ($result === false) return false;
 			
 			return true;
@@ -55,10 +55,11 @@
 		public function DeleteReplay($gameid) // delete unfinished replay
 		{
 			$db = $this->db;
-			$result = $db->Query('DELETE FROM `replays_data` WHERE `GameID` = "'.$db->Escape($gameid).'"');
+
+			$result = $db->Query('DELETE FROM `replays_data` WHERE `GameID` = ?', array($gameid));
 			if ($result === false) return false;
 			
-			$result = $db->Query('DELETE FROM `replays_head` WHERE `GameID` = "'.$db->Escape($gameid).'"');
+			$result = $db->Query('DELETE FROM `replays_head` WHERE `GameID` = ?', array($gameid));
 			if ($result === false) return false;
 			
 			return true;
@@ -80,7 +81,7 @@
 			
 			$turn = $this->NumberOfTurns($game_id) + 1;
 			
-			$result = $db->Query('INSERT INTO `replays_data` (`GameID`, `Turn`, `Current`, `Round`, `Data`) VALUES ("'.$db->Escape($game_id).'", "'.$db->Escape($turn).'", "'.$db->Escape($current).'", "'.$db->Escape($round).'", "'.$db->Escape($data).'")');
+			$result = $db->Query('INSERT INTO `replays_data` (`GameID`, `Turn`, `Current`, `Round`, `Data`) VALUES (?, ?, ?, ?, ?)', array($game_id, $turn, $current, $round, $data));
 			if ($result === false) return false;
 			
 			return true;
@@ -92,7 +93,7 @@
 			
 			$turns = $this->NumberOfTurns($game->ID());
 			
-			$result = $db->Query('UPDATE `replays_head` SET `Winner` = "'.$db->Escape($game->Winner).'", `EndType` = "'.$db->Escape($game->EndType).'", `Rounds` = "'.$db->Escape($game->Round).'", `Turns` = "'.$db->Escape($turns).'", `Finished` = CURRENT_TIMESTAMP WHERE `GameID` = "'.$db->Escape($game->ID()).'"');
+			$result = $db->Query('UPDATE `replays_head` SET `Winner` = ?, `EndType` = ?, `Rounds` = ?, `Turns` = ?, `Finished` = CURRENT_TIMESTAMP WHERE `GameID` = ?', array($game->Winner, $game->EndType, $game->Round, $turns, $game->ID()));
 			if ($result === false) return false;
 			
 			return true;
@@ -101,7 +102,8 @@
 		public function GetReplay($game_id, $turn)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `Player1`, `Player2` FROM `replays_head` WHERE `GameID` = "'.$db->Escape($game_id).'"');
+
+			$result = $db->Query('SELECT `Player1`, `Player2` FROM `replays_head` WHERE `GameID` = ?', array($game_id));
 			if ($result === false or count($result) == 0) return false;
 			
 			$players = $result[0];
@@ -119,17 +121,26 @@
 		{
 			$db = $this->db;
 			
-			$victory_q = ($victory != "none") ? '`EndType` = "'.$db->Escape($victory).'"' : '`EndType` != "Pending"';
-			$player_q = ($player != "none") ? 'AND ((`Player1` = "'.$db->Escape($player).'") OR (`Player2` = "'.$db->Escape($player).'"))' : '';
+			$victory_q = ($victory != "none") ? '`EndType` = ?' : '`EndType` != "Pending"';
+			$player_q = ($player != "none") ? 'AND ((`Player1` = ?) OR (`Player2` = ?))' : '';
 			$hidden_q = ($hidden != "none") ? ' AND FIND_IN_SET("HiddenCards", `GameModes`) '.(($hidden == "include") ? '>' : '=').' 0' : '';
 			$friendly_q = ($friendly != "none") ? ' AND FIND_IN_SET("FriendlyPlay", `GameModes`) '.(($friendly == "include") ? '>' : '=').' 0' : '';
 			$long_q = ($long != "none") ? ' AND FIND_IN_SET("LongMode", `GameModes`) '.(($long == "include") ? '>' : '=').' 0' : '';
 			$ai_q = ($ai != "none") ? ' AND FIND_IN_SET("AIMode", `GameModes`) '.(($ai == "include") ? '>' : '=').' 0' : '';
-			$ch_q = ($challenge != "none") ? (($challenge == 'include') ? ' AND `AI` != ""' : (($challenge == 'exclude') ? ' AND `AI` = ""' : ' AND `AI` = "'.$db->Escape($challenge).'"')) : '';
-			
-			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2`, `Started`, `Finished`, `Rounds`, `Turns`, `GameModes`, `AI`, `Winner`, `EndType`, (CASE WHEN `Deleted` = TRUE THEN "yes" ELSE "no" END) as `Deleted`, `Views` FROM `replays_head` WHERE '.$victory_q.$player_q.$hidden_q.$friendly_q.$long_q.$ai_q.$ch_q.' ORDER BY `'.$db->Escape($condition).'` '.$db->Escape($order).' LIMIT '.(REPLAYS_PER_PAGE * $db->Escape($page)).' , '.REPLAYS_PER_PAGE.'');
+			$ch_q = ($challenge != "none") ? (($challenge == 'include') ? ' AND `AI` != ""' : (($challenge == 'exclude') ? ' AND `AI` = ""' : ' AND `AI` = ?')) : '';
+
+			$params = array();
+			if ($victory != "none") $params[] = $victory;
+			if ($player != "none") { $params[] = $player; $params[] = $player; }
+			if (!in_array($challenge, array('none', 'include', 'exclude'))) $params[] = $challenge;
+
+			$condition = (in_array($condition, array('Winner', 'Rounds', 'Turns', 'Started', 'Finished'))) ? $condition : 'Finished';
+			$order = ($order == 'ASC') ? 'ASC' : 'DESC';
+			$page = (is_numeric($page)) ? $page : 0;
+
+			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2`, `Started`, `Finished`, `Rounds`, `Turns`, `GameModes`, `AI`, `Winner`, `EndType`, (CASE WHEN `Deleted` = TRUE THEN "yes" ELSE "no" END) as `Deleted`, `Views` FROM `replays_head` WHERE '.$victory_q.$player_q.$hidden_q.$friendly_q.$long_q.$ai_q.$ch_q.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(REPLAYS_PER_PAGE * $page).' , '.REPLAYS_PER_PAGE.'', $params);
 			if ($result === false) return false;
-			
+
 			return $result;
 		}
 		
@@ -137,17 +148,22 @@
 		{	
 			$db = $this->db;
 			
-			$victory_q = ($victory != "none") ? '`EndType` = "'.$db->Escape($victory).'"' : '`EndType` != "Pending"';
-			$player_q = ($player != "none") ? 'AND ((`Player1` = "'.$db->Escape($player).'") OR (`Player2` = "'.$db->Escape($player).'"))' : '';
+			$victory_q = ($victory != "none") ? '`EndType` = ?' : '`EndType` != "Pending"';
+			$player_q = ($player != "none") ? 'AND ((`Player1` = ?) OR (`Player2` = ?))' : '';
 			$hidden_q = ($hidden != "none") ? ' AND FIND_IN_SET("HiddenCards", `GameModes`) '.(($hidden == "include") ? '>' : '=').' 0' : '';
 			$friendly_q = ($friendly != "none") ? ' AND FIND_IN_SET("FriendlyPlay", `GameModes`) '.(($friendly == "include") ? '>' : '=').' 0' : '';
 			$long_q = ($long != "none") ? ' AND FIND_IN_SET("LongMode", `GameModes`) '.(($long == "include") ? '>' : '=').' 0' : '';
 			$ai_q = ($ai != "none") ? ' AND FIND_IN_SET("AIMode", `GameModes`) '.(($ai == "include") ? '>' : '=').' 0' : '';
-			$ch_q = ($challenge != "none") ? (($challenge == 'include') ? ' AND `AI` != ""' : (($challenge == 'exclude') ? ' AND `AI` = ""' : ' AND `AI` = "'.$db->Escape($challenge).'"')) : '';
+			$ch_q = ($challenge != "none") ? (($challenge == 'include') ? ' AND `AI` != ""' : (($challenge == 'exclude') ? ' AND `AI` = ""' : ' AND `AI` = ?')) : '';
+
+			$params = array();
+			if ($victory != "none") $params[] = $victory;
+			if ($player != "none") { $params[] = $player; $params[] = $player; }
+			if (!in_array($challenge, array('none', 'include', 'exclude'))) $params[] = $challenge;
 			
-			$result = $db->Query('SELECT COUNT(`GameID`) as `Count` FROM `replays_head` WHERE '.$victory_q.$player_q.$hidden_q.$friendly_q.$long_q.$ai_q.$ch_q.'');
+			$result = $db->Query('SELECT COUNT(`GameID`) as `Count` FROM `replays_head` WHERE '.$victory_q.$player_q.$hidden_q.$friendly_q.$long_q.$ai_q.$ch_q.'', $params);
 			if ($result === false or count($result) == 0) return false;
-			
+
 			$data = $result[0];
 			
 			$pages = ceil($data['Count'] / REPLAYS_PER_PAGE);
@@ -183,9 +199,9 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT MAX(`Turn`) as `Turns` FROM `replays_data` WHERE `GameID` = "'.$db->Escape($game_id).'"');
+			$result = $db->Query('SELECT MAX(`Turn`) as `Turns` FROM `replays_data` WHERE `GameID` = ?', array($game_id));
 			if ($result === false or count($result) == 0) return false;
-			
+
 			$data = $result[0];
 			
 			return $data['Turns'];
@@ -195,7 +211,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('UPDATE `replays_head` SET `Views` = `Views` + 1 WHERE `GameID` = "'.$db->Escape($game_id).'"');
+			$result = $db->Query('UPDATE `replays_head` SET `Views` = `Views` + 1 WHERE `GameID` = ?', array($game_id));
 			if ($result === false) return false;
 			
 			return true;
@@ -205,7 +221,7 @@
 		{
 			$db = $this->db;
 
-			$result = $db->Query('UPDATE `replays_head` SET `ThreadID` = "'.$db->Escape($thread_id).'" WHERE `GameID` = "'.$db->Escape($replay_id).'"');
+			$result = $db->Query('UPDATE `replays_head` SET `ThreadID` = ? WHERE `GameID` = ?', array($thread_id, $replay_id));
 			if ($result === false) return false;
 
 			return true;
@@ -215,7 +231,7 @@
 		{
 			$db = $this->db;
 
-			$result = $db->Query('UPDATE `replays_head` SET `ThreadID` = 0 WHERE `GameID` = "'.$db->Escape($replay_id).'"');
+			$result = $db->Query('UPDATE `replays_head` SET `ThreadID` = 0 WHERE `GameID` = ?', array($replay_id));
 			if ($result === false) return false;
 
 			return true;
@@ -225,7 +241,7 @@
 		{
 			$db = $this->db;
 
-			$result = $db->Query('SELECT `GameID` FROM `replays_head` WHERE `ThreadID` = "'.$db->Escape($thread_id).'"');
+			$result = $db->Query('SELECT `GameID` FROM `replays_head` WHERE `ThreadID` = ?', array($thread_id));
 			if ($result === false or count($result) == 0) return 0;
 
 			$data = $result[0];
@@ -297,9 +313,10 @@
 		public function LoadReplay()
 		{
 			$db = $this->Replays->getDB();
-			$result = $db->Query('SELECT `Winner`, `EndType`, `GameModes`, `AI`, `ThreadID` FROM `replays_head` WHERE `GameID` = "'.$db->Escape($this->ID()).'"');
+
+			$result = $db->Query('SELECT `Winner`, `EndType`, `GameModes`, `AI`, `ThreadID` FROM `replays_head` WHERE `GameID` = ?', array($this->ID()));
 			if ($result === false or count($result) == 0) return false;
-			
+
 			$data = $result[0];
 			$this->Winner = $data['Winner'];
 			$this->EndType = $data['EndType'];
@@ -310,9 +327,9 @@
 			$this->ThreadID = $data['ThreadID'];
 			$this->AI = $data['AI'];
 			
-			$result = $db->Query('SELECT `Current`, `Round`, `Data` FROM `replays_data` WHERE `GameID` = "'.$db->Escape($this->ID()).'" AND `Turn` = "'.$db->Escape($this->Turn()).'"');
+			$result = $db->Query('SELECT `Current`, `Round`, `Data` FROM `replays_data` WHERE `GameID` = ? AND `Turn` = ?', array($this->ID(), $this->Turn()));
 			if ($result === false or count($result) == 0) return false;
-			
+
 			$data = $result[0];
 			$this->Current = $data['Current'];
 			$this->Round = $data['Round'];
@@ -324,9 +341,10 @@
 		public function NumberOfTurns()
 		{
 			$db = $this->Replays->getDB();
-			$result = $db->Query('SELECT `Turns` FROM `replays_head` WHERE `EndType` != "Pending" AND `GameID` = "'.$db->Escape($this->ID()).'"');
+
+			$result = $db->Query('SELECT `Turns` FROM `replays_head` WHERE `EndType` != "Pending" AND `GameID` = ?', array($this->ID()));
 			if ($result === false or count($result) == 0) return false;
-			
+
 			$data = $result[0];
 			
 			return $data['Turns'];

@@ -22,13 +22,13 @@
 		{	
 			$db = $this->db;
 			
-			// verifiy if thread exists and isn't locked
-			$result = $db->Query('SELECT 1 FROM `forum_threads` WHERE `ThreadID` = "'.$db->Escape($thread_id).'" AND `Locked` = FALSE');
+			// verify if thread exists and isn't locked
+			$result = $db->Query('SELECT 1 FROM `forum_threads` WHERE `ThreadID` = ? AND `Locked` = FALSE', array($thread_id));
 			if ($result === false or count($result) == 0) return false;
 			
-			$result = $db->Query('INSERT INTO `forum_posts` (`Author`, `Content`, `ThreadID`, `Created`) VALUES ("'.$db->Escape($author).'", "'.$db->Escape($content).'", "'.$db->Escape($thread_id).'", NOW())');
+			$result = $db->Query('INSERT INTO `forum_posts` (`Author`, `Content`, `ThreadID`, `Created`) VALUES (?, ?, ?, NOW())', array($author, $content, $thread_id));
 			if ($result === false) return false;
-			
+
 			return true;
 		}
 		
@@ -36,13 +36,14 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('UPDATE `forum_posts` SET `Deleted` = TRUE WHERE `PostID` = "'.$db->Escape($post_id).'"');
+			$result = $db->Query('UPDATE `forum_posts` SET `Deleted` = TRUE WHERE `PostID` = ?', array($post_id));
 			if ($result === false) return false;
 			
 			return true;
 		}
-				
-		/*public function MassDeletePost(array $deleted_posts)
+		
+		/* TODO - in case of implementation prepare one UPDATE statement and run it multiple times
+		public function MassDeletePost(array $deleted_posts)
 		{
 			$db = $this->db;
 			
@@ -61,16 +62,17 @@
 			
 			$result = $db->Query('UPDATE `forum_posts` SET `Deleted` = TRUE WHERE '.$post_query.'');
 			
-			if ($result === false) return false;
+			if (!$result) return false;
 			
 			return true;
-		}*/
+		}
+		*/
 		
 		public function GetPost($post_id)
-		{	
+		{
 			$db = $this->db;
-						
-			$result = $db->Query('SELECT `PostID`, `Author`, `Content`, `ThreadID`, `Created` FROM `forum_posts` WHERE `PostID` = "'.$db->Escape($post_id).'" AND `Deleted` = FALSE');
+
+			$result = $db->Query('SELECT `PostID`, `Author`, `Content`, `ThreadID`, `Created` FROM `forum_posts` WHERE `PostID` = ? AND `Deleted` = FALSE', array($post_id));
 			if ($result === false or count($result) == 0) return false;
 			
 			$data = $result[0];
@@ -82,7 +84,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `PostID`, `Author`, `Content`, `ThreadID`, `Created` FROM `forum_posts` WHERE `Author` = "'.$db->Escape($author).'" AND `Deleted` = FALSE ORDER BY `Created` DESC LIMIT 1');
+			$result = $db->Query('SELECT `PostID`, `Author`, `Content`, `ThreadID`, `Created` FROM `forum_posts` WHERE `Author` = ? AND `Deleted` = FALSE ORDER BY `Created` DESC LIMIT 1', array($author));
 			if ($result === false or count($result) == 0) return false;
 			
 			$data = $result[0];
@@ -91,26 +93,27 @@
 		}
 		
 		public function EditPost($post_id, $content)
-		{	
+		{
 			$db = $this->db;
-									
-			$result = $db->Query('UPDATE `forum_posts` SET `Content` = "'.$db->Escape($content).'" WHERE `PostID` = "'.$db->Escape($post_id).'"');
+
+			$result = $db->Query('UPDATE `forum_posts` SET `Content` = ? WHERE `PostID` = ?', array($content, $post_id));
 			if ($result === false) return false;
 			
 			return true;
 		}
 		
 		public function MovePost($post_id, $new_thread)
-		{	
+		{
 			$db = $this->db;
-					
-			$result = $db->Query('UPDATE `forum_posts` SET `ThreadID` = "'.$db->Escape($new_thread).'" WHERE `PostID` = "'.$db->Escape($post_id).'"');
+
+			$result = $db->Query('UPDATE `forum_posts` SET `ThreadID` = ? WHERE `PostID` = ?', array($new_thread, $post_id));
 			if ($result === false) return false;
-			
+
 			return true;
 		}
 		
-		/*public function MassMovePost(array $moved_posts, $new_thread)
+		/* TODO - in case of implementation prepare one UPDATE statement and run it multiple times
+		public function MassMovePost(array $moved_posts, $new_thread)
 		{	
 			$db = $this->db;
 			
@@ -128,16 +131,19 @@
 			}
 				
 			$result = $db->Query('UPDATE `forum_posts` SET `ThreadID` = "'.$db->Escape($new_thread).'" WHERE '.$post_query.'');
-			if ($result === false) return false;
+			if (!$result) return false;
 			
 			return true;
-		}*/
+		}
+		*/
 		
 		public function ListPosts($thread_id, $page)
 		{	
 			$db = $this->db;
-						
-			$result = $db->Query('SELECT `PostID`, `Author`, `Content`, `Created`, IFNULL(`Avatar`,"noavatar.jpg") as `Avatar` FROM `forum_posts` LEFT OUTER JOIN `settings` ON `forum_posts`.`Author` = `settings`.`Username` WHERE `ThreadID` = "'.$db->Escape($thread_id).'" AND `Deleted` = FALSE ORDER BY `Created` ASC LIMIT '.(POSTS_PER_PAGE * $db->Escape($page)).' , '.POSTS_PER_PAGE.'');
+
+			$page = (is_numeric($page)) ? $page : 0;
+
+			$result = $db->Query('SELECT `PostID`, `Author`, `Content`, `Created`, IFNULL(`Avatar`,"noavatar.jpg") as `Avatar` FROM `forum_posts` LEFT OUTER JOIN `settings` ON `forum_posts`.`Author` = `settings`.`Username` WHERE `ThreadID` = ? AND `Deleted` = FALSE ORDER BY `Created` ASC LIMIT '.(POSTS_PER_PAGE * $page).' , '.POSTS_PER_PAGE.'', array($thread_id));
 			if ($result === false) return false;
 			
 			return $result;
@@ -146,8 +152,8 @@
 		public function CountPages($thread_id)
 		{	
 			$db = $this->db;
-						
-			$result = $db->Query('SELECT COUNT(`PostID`) as `Count` FROM `forum_posts` WHERE `ThreadID` = "'.$db->Escape($thread_id).'" AND `Deleted` = FALSE');
+
+			$result = $db->Query('SELECT COUNT(`PostID`) as `Count` FROM `forum_posts` WHERE `ThreadID` = ? AND `Deleted` = FALSE', array($thread_id));
 			if ($result === false or count($result) == 0) return false;
 			
 			$data = $result[0];
@@ -161,7 +167,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT COUNT(`PostID`) as `Count` FROM `forum_posts` WHERE `Author` = "'.$db->Escape($author).'" AND `Deleted` = FALSE');
+			$result = $db->Query('SELECT COUNT(`PostID`) as `Count` FROM `forum_posts` WHERE `Author` = ? AND `Deleted` = FALSE', array($author));
 			if ($result === false or count($result) == 0) return false;
 			
 			$data = $result[0];

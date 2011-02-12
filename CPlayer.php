@@ -83,9 +83,9 @@
 		{
 			$db = $this->db;
 			//TODO: instead of this, use a multijoin to check if $playername is in all required tables
-			$result = $db->Query('SELECT `UserType` FROM `logins` WHERE `Username` = "'.$db->Escape($playername).'"');
+			$result = $db->Query('SELECT `UserType` FROM `logins` WHERE `Username` = ?', array($playername));
 			if ($result === false or count($result) == 0) return false;
-			
+
 			$data = $result[0];
 			$type = $data['UserType'];
 			
@@ -102,18 +102,27 @@
 			          : ( $activity == "all"     ? ""
 			          : ""))));
 
-			$name_q = ($name != '') ? ' AND `Username` LIKE "%'.$db->Escape($name).'%"' : '';
-			$status_q = ($status != 'none') ? ' AND `Status` = "'.$db->Escape($status).'"' : '';
+			$name_q = ($name != '') ? ' AND `Username` LIKE ?' : '';
+			$status_q = ($status != 'none') ? ' AND `Status` = ?' : '';
 			$activity_q = ($interval != '') ? ' AND `Last Query` >= NOW() - INTERVAL '.$interval.'' : '';
+
+			$params = array();
+			if ($name != '') $params[] = '%'.$name.'%';
+			if ($status != 'none') $params[] = $status;
+
+			$valid_conditions = array('Level', 'Username', 'Country', 'Quarry', 'Magic', 'Dungeons', 'Rares', 'Challenges', 'Tower', 'Wall', 'TowerDamage', 'WallDamage', 'Assassin', 'Builder', 'Carpenter', 'Collector', 'Desolator', 'Dragon', 'Gentle_touch', 'Saboteur', 'Snob', 'Survivor', 'Titan');
+			$condition = (in_array($condition, $valid_conditions)) ? $condition : 'Level';
+			$order = ($order == 'ASC') ? 'ASC' : 'DESC';
+			$page = (is_numeric($page)) ? $page : 0;
 
 			$query = "
 				SELECT `Username`, `UserType`, `Level`, `Wins`, `Losses`, `Draws`, `Avatar`, `Status`, `FriendlyFlag`, `BlindFlag`, `LongFlag`, `settings`.`Country`, `Last Query`
 				FROM `logins` JOIN `settings` USING (`Username`) JOIN `scores` USING (`Username`)
 				WHERE 1 {$name_q}{$status_q}{$activity_q}
-				ORDER BY `".$db->Escape($condition)."` ".$db->Escape($order).", `Username` ASC
-				LIMIT ".(PLAYERS_PER_PAGE * $db->Escape($page)).", ".PLAYERS_PER_PAGE."";
+				ORDER BY `".$condition."` ".$order.", `Username` ASC
+				LIMIT ".(PLAYERS_PER_PAGE * $page).", ".PLAYERS_PER_PAGE."";
     
-			$result = $db->Query($query);
+			$result = $db->Query($query, $params);
 			if ($result === false) return false;
 
 			return $result;
@@ -129,12 +138,16 @@
 			          : ( $activity == "all"     ? ""
 			          : ""))));
 
-			$name_q = ($name != '') ? ' AND `Username` LIKE "%'.$db->Escape($name).'%"' : '';
-			$status_q = ($status != 'none') ? ' JOIN (SELECT `Username` FROM `settings` WHERE `Status` = "'.$db->Escape($status).'") as `settings` USING (`Username`)' : '';
+			$name_q = ($name != '') ? ' AND `Username` LIKE ?' : '';
+			$status_q = ($status != 'none') ? ' JOIN (SELECT `Username` FROM `settings` WHERE `Status` = ?) as `settings` USING (`Username`)' : '';
 			$activity_q = ($interval != '') ? ' AND `Last Query` >= NOW() - INTERVAL '.$interval.'' : '';
 
-			$result = $db->Query('SELECT COUNT(`Username`) as `Count` FROM `logins`'.$status_q.' WHERE 1'.$activity_q.$name_q.'');
-			if ($result === false) return false;
+			$params = array();
+			if ($status != 'none') $params[] = $status;
+			if ($name != '') $params[] = '%'.$name.'%';
+
+			$result = $db->Query('SELECT COUNT(`Username`) as `Count` FROM `logins`'.$status_q.' WHERE 1'.$activity_q.$name_q.'', $params);
+			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
 			
@@ -147,8 +160,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('UPDATE `logins` SET `UserType` = "'.$db->Escape($access_right).'" WHERE `Username` = "'.$db->Escape($playername).'"');
-			
+			$result = $db->Query('UPDATE `logins` SET `UserType` = ? WHERE `Username` = ?', array($access_right, $playername));
 			if ($result === false) return false;
 			
 			return true;
@@ -158,7 +170,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('UPDATE `logins` SET `Notification` = `Last Query` WHERE `Username` = "'.$db->Escape($playername).'"');
+			$result = $db->Query('UPDATE `logins` SET `Notification` = `Last Query` WHERE `Username` = ?', array($playername));
 			if ($result === false) return false;
 			
 			return true;
@@ -167,70 +179,84 @@
 		public function isOnline($playername)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `Last Query` FROM `logins` WHERE `Username` = "'.$db->Escape($playername).'"');
+
+			$result = $db->Query('SELECT `Last Query` FROM `logins` WHERE `Username` = ?', array($playername));
 			if ($result === false or count($result) == 0) return false;
-			
+
 			$data = $result[0];
+
 			return( time() - strtotime($data['Last Query']) < 60*10 );
 		}
 		
 		public function isDead($playername)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `Last Query` FROM `logins` WHERE `Username` = "'.$db->Escape($playername).'"');
+
+			$result = $db->Query('SELECT `Last Query` FROM `logins` WHERE `Username` = ?', array($playername));
 			if ($result === false or count($result) == 0) return false;
-			
+
 			$data = $result[0];
+
 			return ( time() - strtotime($data['Last Query']) > 60*60*24*7*3 );
 		}
 		
 		public function GetNotification($playername)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `Notification` FROM `logins` WHERE `Username` = "'.$db->Escape($playername).'"');
+
+			$result = $db->Query('SELECT `Notification` FROM `logins` WHERE `Username` = ?', array($playername));
 			if ($result === false or count($result) == 0) return false;
-			
+
 			$data = $result[0];
+
 			return $data['Notification'];
 		}
 		
 		public function LastQuery($playername)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `Last Query` FROM `logins` WHERE `Username` = "'.$db->Escape($playername).'"');
+
+			$result = $db->Query('SELECT `Last Query` FROM `logins` WHERE `Username` = ?', array($playername));
 			if ($result === false or count($result) == 0) return false;
-			
+
 			$data = $result[0];
+
 			return $data['Last Query'];
 		}
 		
 		public function Registered($playername)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `Registered` FROM `logins` WHERE `Username` = "'.$db->Escape($playername).'"');
+
+			$result = $db->Query('SELECT `Registered` FROM `logins` WHERE `Username` = ?', array($playername));
 			if ($result === false or count($result) == 0) return false;
-			
+
 			$data = $result[0];
+
 			return $data['Registered'];
 		}
 		
 		public function GetLevel($playername)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `Level` FROM `scores` WHERE `Username` = "'.$db->Escape($playername).'"');
+
+			$result = $db->Query('SELECT `Level` FROM `scores` WHERE `Username` = ?', array($playername));
 			if ($result === false or count($result) == 0) return false;
-			
+
 			$data = $result[0];
+
 			return $data['Level'];
 		}
 		
 		public function GetGameSlots($playername)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `GameSlots` FROM `scores` WHERE `Username` = "'.$db->Escape($playername).'"');
+
+			$result = $db->Query('SELECT `GameSlots` FROM `scores` WHERE `Username` = ?', array($playername));
 			if ($result === false or count($result) == 0) return false;
-			
+
 			$data = $result[0];
+
 			return $data['GameSlots'];
 		}
 		
