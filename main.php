@@ -2226,34 +2226,9 @@
 				break;
 			}
 
-			if (isset($_POST['withdraw_challenge'])) // Players -> Cancel
+			if (isset($_POST['withdraw_challenge'])) // Challenges -> Cancel
 			{
 				$game_id = $_POST['withdraw_challenge'];
-				$game = $gamedb->GetGame($game_id);
-
-				// check if the challenge exists
-				if (!$game) { $error = 'No such challenge!'; $current = 'Players_details'; break; }
-
-				// check if the game is a a challenge (and not a game in progress)
-				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Players_details'; break; }
-
-				$_POST['Profile'] = $opponent = $game->Name2();
-
-				// check if such opponent exists
-				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Players'; break; }
-
-				// delete t3h challenge/game entry
-				$game->DeleteGame();
-				$messagedb->CancelChallenge($game->ID());
-
-				$information = 'You have withdrawn a challenge.';
-				$current = 'Players_details';
-				break;
-			}
-
-			if (isset($_POST['withdraw_challenge2'])) // Challenges -> Cancel
-			{
-				$game_id = $_POST['withdraw_challenge2'];
 				$game = $gamedb->GetGame($game_id);
 
 				// check if the challenge exists

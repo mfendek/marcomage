@@ -103,7 +103,7 @@
 								<xsl:if test="Content != ''">
 									<div class="challenge_content"><xsl:value-of select="am:BBCode_parse_extended(Content)" disable-output-escaping="yes" /></div>
 								</xsl:if>
-								<p><button type="submit" name="withdraw_challenge2" value="{GameID}">Withdraw challenge</button></p>
+								<p><button type="submit" name="withdraw_challenge" value="{GameID}">Withdraw challenge</button></p>
 							</xsl:when>
 						</xsl:choose>
 					</div>
