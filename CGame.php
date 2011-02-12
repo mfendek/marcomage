@@ -433,6 +433,17 @@
 			return true;
 		}
 		
+		public function DeleteGame()
+		{
+			$result = $this->Games->DeleteGame($this->GameID);
+			if (!$result) return false;
+			
+			// delete chat associated with the game
+			$this->DeleteChat();
+			
+			return true;
+		}
+		
 		public function StartGame($player, CDeck $deck, $challenge_name = '')
 		{
 			global $game_config;

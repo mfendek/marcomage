@@ -1772,8 +1772,7 @@
 				else // 'P1 over' or 'P2 over'
 				{
 					// the other player has already acknowledged (auto-acknowledge in case of a computer player)
-					$game->DeleteChat();
-					$gamedb->DeleteGame($game->ID());
+					$game->DeleteGame();
 				}
 
 				$current = "Games";
@@ -1831,8 +1830,7 @@
 				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Games'; break; }
 
 				// delete game entry
-				$game->DeleteChat();
-				$gamedb->DeleteGame($game->ID());
+				$game->DeleteGame();
 
 				$information = 'You have canceled a game.';
 				$current = 'Games';
@@ -2156,8 +2154,7 @@
 				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Messages'; break; }
 
 				// delete t3h challenge/game entry
-				$game->DeleteChat();
-				$gamedb->DeleteGame($game->ID());
+				$game->DeleteGame();
 				$messagedb->CancelChallenge($game->ID());
 
 				$information = 'You have rejected a challenge.';
@@ -2246,8 +2243,7 @@
 				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Players'; break; }
 
 				// delete t3h challenge/game entry
-				$game->DeleteChat();
-				$gamedb->DeleteGame($game->ID());
+				$game->DeleteGame();
 				$messagedb->CancelChallenge($game->ID());
 
 				$information = 'You have withdrawn a challenge.';
@@ -2272,8 +2268,7 @@
 				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Messages'; break; }
 
 				// delete t3h challenge/game entry
-				$game->DeleteChat();
-				$gamedb->DeleteGame($game->ID());
+				$gamedb->DeleteGame();
 				$messagedb->CancelChallenge($game->ID());
 
 				$information = 'You have withdrawn a challenge.';
