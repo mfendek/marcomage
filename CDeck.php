@@ -158,7 +158,7 @@
 			$deck_data = new CDeckData;
 			$deck_data->Common = array(1=>387,301,79,91,570,559,521,524,149,575,289,501,606,559,606);
 			$deck_data->Uncommon = array(1=>14,3,84,37,29,497,162,175,560,35,523,505,525,525,523);
-			$deck_data->Rare = array(1=>161,229,285,222,530,182,530,161,229,285,222,530,182,530,161);
+			$deck_data->Rare = array(1=>161,229,285,222,530,285,530,161,229,285,222,530,222,530,161);
 			$challenge_data['Demetrios'] = $deck_data;
 
 			// Sophie's deck

@@ -103,7 +103,7 @@
     <initialization>
 			<mine>
 				<quarry>3</quarry>
-				<magic>6</magic>
+				<magic>5</magic>
 				<dungeons>4</dungeons>
 				<bricks>15</bricks>
 				<gems>5</gems>
