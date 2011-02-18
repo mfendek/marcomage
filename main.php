@@ -2243,7 +2243,7 @@
 				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Messages'; break; }
 
 				// delete t3h challenge/game entry
-				$gamedb->DeleteGame();
+				$game->DeleteGame();
 				$messagedb->CancelChallenge($game->ID());
 
 				$information = 'You have withdrawn a challenge.';
