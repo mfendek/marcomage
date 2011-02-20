@@ -27,14 +27,10 @@ function TakeCard(id) // add card to deck via AJAX
 	var deck = $("input[name='CurrentDeck']").val();
 
 	$.post("AJAXhandler.php", { action: 'take', Username: username, SessionID: session_id, deck_id: deck, card_id: id }, function(data){
-		// process result
-		var result = data.split(",");
-		if (result.length == 1) { alert(result[0]); return false; } // AJAX failed, display error message
-		var res_val = result[0];
-		var tokens = result[1];
-		var avg = result[2];
+		var result = $.parseJSON(data);
+		if (result.error) { alert(result.error); return false; } // AJAX failed, display error message
 
-		var slot = str.concat("#slot_", res_val);
+		var slot = str.concat("#slot_", result.slot);
 
 		// move selected card to deck
 		$(card).removeAttr('onclick'); // disallow the card to be removed from the deck (prevent double clicks)
@@ -48,23 +44,21 @@ function TakeCard(id) // add card to deck via AJAX
 		});
 
 		// update tokens when needed
-		if (tokens != "no")
+		if (result.tokens != "no")
 		{
-			var token_vals = tokens.split(";");
 			var token;
 
 			$("#tokens > select").each(function(i) {
 				token = document.getElementsByName(str.concat("Token", i + 1)).item(0);
 				$(this).find("option").each(function(j) {
-					if ($(this).val() == token_vals[i]) { token.selectedIndex = j; };
+					if ($(this).val() == result.tokens[i + 1]) { token.selectedIndex = j; };
 				});
 			});
 		}
 
 		// recalculate avg cost per turn
-		var avg_vals = avg.split(";");
 		$("#cost_per_turn > b").each(function(i) {
-			$(this).html(avg_vals[i]);
+			$(this).html(result.avg[i]);
 		});
  });
 
@@ -80,13 +74,10 @@ function RemoveCard(id) // remove card from deck via AJAX
 	var deck = $("input[name='CurrentDeck']").val();
 
 	$.post("AJAXhandler.php", { action: 'remove', Username: username, SessionID: session_id, deck_id: deck, card_id: id }, function(data){
-		// process result
-		var result = data.split(",");
-		if (result.length == 1) { alert(result[0]); return true; } // AJAX failed, display error message
-		var res_val = result[0];
-		var avg = result[1];
+		var result = $.parseJSON(data);
+		if (result.error) { alert(result.error); return false; } // AJAX failed, display error message
 
-		var slot = str.concat("#slot_", res_val);
+		var slot = str.concat("#slot_", result.slot);
 		var empty = '<div class="karta no_class zero_cost with_bgimage"><div class="null">0</div><h5>Empty</h5><img src="img/cards/card_0.png" width="80px" height="60px" alt="" /><p></p><div></div></div>';
 
 		// move selected card to card pool
@@ -102,9 +93,8 @@ function RemoveCard(id) // remove card from deck via AJAX
 		});
 
 		// recalculate avg cost per turn
-		var avg_vals = avg.split(";");
 		$("#cost_per_turn > b").each(function(i) {
-			$(this).html(avg_vals[i]);
+			$(this).html(result.avg[i]);
 		});
  });
 
@@ -313,7 +303,11 @@ $(document).ready(function() {
 		var game = $("input[name='CurrentGame']").val();
 
 		$.post("AJAXhandler.php", { action: 'preview', Username: username, SessionID: session_id, cardpos: position, mode: card_mode, game_id: game }, function(data){
-			alert(data);
+			var result = $.parseJSON(data);
+			if (result.error) { alert(result.error); return false; } // AJAX failed, display error message
+
+			// output preview information
+			alert(result.info);
 		});
 
 		return true;
@@ -466,20 +460,19 @@ $(document).ready(function() {
 					var game = $("input[name='CurrentGame']").val();
 
 					$.post("AJAXhandler.php", { action: 'save_note', Username: username, SessionID: session_id, game_id: game, note: game_note }, function(data){
-						if (data == "Game note saved")
-						{
-							// update note button highlight
-							// case 1: note is empty (remove highlight)
-							if (game_note == "")
-								$("a#game_note").removeClass('marked_button');
+						var result = $.parseJSON(data);
+						if (result.error) { alert(result.error); return false; } // AJAX failed, display error message
 
-							// case 2: note is not empty (add highlight if not present)
-							else if (!$("a#game_note").hasClass('marked_button'))
-								$("a#game_note").addClass('marked_button');
+						// update note button highlight
+						// case 1: note is empty (remove highlight)
+						if (game_note == "")
+							$("a#game_note").removeClass('marked_button');
 
-							$("#game_note_dialog").dialog("close");
-						}
-						else alert(data); // print error message
+						// case 2: note is not empty (add highlight if not present)
+						else if (!$("a#game_note").hasClass('marked_button'))
+							$("a#game_note").addClass('marked_button');
+
+						$("#game_note_dialog").dialog("close");
 					});
 				}
 			},
@@ -490,15 +483,14 @@ $(document).ready(function() {
 				var game = $("input[name='CurrentGame']").val();
 
 				$.post("AJAXhandler.php", { action: 'clear_note', Username: username, SessionID: session_id, game_id: game }, function(data){
-					if (data == "Game note cleared")
-					{
-						// clear input field
-						$("textarea[name='Content']").val('');
+					var result = $.parseJSON(data);
+					if (result.error) { alert(result.error); return false; } // AJAX failed, display error message
 
-						// update note button highlight (remove highlight)
-						$("a#game_note").removeClass('marked_button');
-					}
-					else alert(data); // print error message
+					// clear input field
+					$("textarea[name='Content']").val('');
+
+					// update note button highlight (remove highlight)
+					$("a#game_note").removeClass('marked_button');
 				});
 			},
 			Back: function()

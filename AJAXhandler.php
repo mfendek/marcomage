@@ -5,10 +5,12 @@
 ?>
 <?php
 
+	do { // dummy scope
+
 	// check required input data
-	if (!isset($_POST['action']) OR $_POST['action'] == "") { echo 'Invalid action.'; exit; }
-	if (!isset($_POST['Username']) OR $_POST['Username'] == "") { echo 'Invalid username.'; exit; }
-	if (!isset($_POST['SessionID']) OR $_POST['SessionID'] == "") { echo 'Invalid session id.'; exit; }
+	if (!isset($_POST['action']) OR $_POST['action'] == "") { $error = 'Invalid action.'; break; }
+	if (!isset($_POST['Username']) OR $_POST['Username'] == "") { $error = 'Invalid username.'; break; }
+	if (!isset($_POST['SessionID']) OR $_POST['SessionID'] == "") { $error = 'Invalid session id.'; break; }
 
 	require_once('config.php');
 	require_once('CDatabase.php');
@@ -48,14 +50,14 @@
 
 	// validate session
 	$session = $logindb->Login();
-	if (!$session) { echo 'Invalid session.'; exit; }
+	if (!$session) { $error = 'Invalid session.'; break; }
 
 	$user_name = $session->Username();
 
 	if ($_POST['action'] == "take")
 	{
-		if (!isset($_POST['deck_id']) OR $_POST['deck_id'] == "") { echo 'Invalid deck ID.'; exit; }
-		if (!isset($_POST['card_id']) OR $_POST['card_id'] == "") { echo 'Invalid card.'; exit; }
+		if (!isset($_POST['deck_id']) OR $_POST['deck_id'] == "") { $error = 'Invalid deck ID.'; break; }
+		if (!isset($_POST['card_id']) OR $_POST['card_id'] == "") { $error = 'Invalid card.'; break; }
 
 		$deck_id = $_POST['deck_id'];
 		$card_id = $_POST['card_id'];
@@ -63,10 +65,10 @@
 
 		// validate deck
 		$deck = $deckdb->GetDeck($user_name, $deck_id);
-		if (!$deck) { echo 'Invalid deck'; exit; }
+		if (!$deck) { $error = 'Invalid deck.'; break; }
 
 		// verify card
-		if (!is_numeric($card_id)) { echo 'Invalid card.'; exit; }
+		if (!is_numeric($card_id)) { $error = 'Invalid card.'; break; }
 
 		// add card, saving the deck on success
 		$slot = $deck->AddCard($card_id);
@@ -76,32 +78,32 @@
 			if ((count(array_diff($deck->DeckData->Tokens, array('none'))) == 0) AND $deck->isReady())
 			{
 				$deck->SetAutoTokens();
-				$tokens = implode(";", $deck->DeckData->Tokens); // pass updated tokens to result
+				$tokens = $deck->DeckData->Tokens; // pass updated tokens to result
 			}
 
 			$deck->SaveDeck();
 
 			// recalculate the average cost per turn label
-			$avg = implode(";", $deck->AvgCostPerTurn());
+			$avg = array_values($deck->AvgCostPerTurn());
 		}
-		else { echo 'Unable to add the chosen card to this deck.'; exit; }
+		else { $error = 'Unable to add the chosen card to this deck.'; break; }
 
-		echo implode(",", array($slot, $tokens, $avg));
+		$result = array('slot' => $slot, 'tokens' => $tokens, 'avg' => $avg);
 	}
 	elseif($_POST['action'] == "remove")
 	{
-		if (!isset($_POST['deck_id']) OR $_POST['deck_id'] == "") { echo 'Invalid deck name.'; exit; }
-		if (!isset($_POST['card_id']) OR $_POST['card_id'] == "") { echo 'Invalid card.'; exit; }
+		if (!isset($_POST['deck_id']) OR $_POST['deck_id'] == "") { $error = 'Invalid deck name.'; break; }
+		if (!isset($_POST['card_id']) OR $_POST['card_id'] == "") { $error = 'Invalid card.'; break; }
 
 		$deck_id = $_POST['deck_id'];
 		$card_id = $_POST['card_id'];
 
 		// download deck
 		$deck = $deckdb->GetDeck($user_name, $deck_id);
-		if (!$deck) { echo 'Invalid deck'; exit; }
+		if (!$deck) { $error = 'Invalid deck.'; break; }
 
 		// verify card
-		if (!is_numeric($card_id)) { echo 'Invalid card.'; exit; }
+		if (!is_numeric($card_id)) { $error = 'Invalid card.'; break; }
 
 		// remove card, saving the deck on success
 		$slot = $deck->ReturnCard($card_id);
@@ -109,16 +111,16 @@
 		{
 			$deck->SaveDeck();
 			// recalculate the average cost per turn label
-			$avg = implode(";", $deck->AvgCostPerTurn());
+			$avg = array_values($deck->AvgCostPerTurn());
 		}
-		else { echo 'Unable to remove the chosen card from this deck.'; exit; }
+		else { $error = 'Unable to remove the chosen card from this deck.'; break; }
 
-		echo implode(",", array($slot, $avg));
+		$result = array('slot' => $slot, 'avg' => $avg);
 	}
 	elseif($_POST['action'] == "preview")
 	{
-		if (!isset($_POST['cardpos']) OR $_POST['cardpos'] == "") { echo 'Invalid card position.'; exit; }
-		if (!isset($_POST['game_id']) OR $_POST['game_id'] == "") { echo 'Invalid game id.'; exit; }
+		if (!isset($_POST['cardpos']) OR $_POST['cardpos'] == "") { $error = 'Invalid card position.'; break; }
+		if (!isset($_POST['game_id']) OR $_POST['game_id'] == "") { $error = 'Invalid game id.'; break; }
 
 		$cardpos = $_POST['cardpos'];
 		$mode = (isset($_POST['mode']) AND $_POST['mode'] != "") ? $_POST['mode'] : 0;
@@ -126,62 +128,72 @@
 
 		// download game
 		$game = $gamedb->GetGame($game_id);
-		if (!$game) { echo 'Invalid game.'; exit; }
+		if (!$game) { $error = 'Invalid game.'; break; }
 
 		// verify inputs
-		if (!is_numeric($cardpos)) { echo 'Invalid card position.'; exit; }
-		if (!is_numeric($mode)) { echo 'Invalid mode.'; exit; }
+		if (!is_numeric($cardpos)) { $error = 'Invalid card position.'; break; }
+		if (!is_numeric($mode)) { $error = 'Invalid mode.'; break; }
 
-		if ($game->GetGameMode('HiddenCards') == 'yes') { echo 'Action not allowed in this game mode.'; exit; }
-		if ($user_name != $game->Name1() AND $user_name != $game->Name2()) { echo 'Action not allowed.'; exit; }
+		if ($game->GetGameMode('HiddenCards') == 'yes') { $error = 'Action not allowed in this game mode.'; break; }
+		if ($user_name != $game->Name1() AND $user_name != $game->Name2()) { $error = 'Action not allowed.'; break; }
 
 		$preview_data = $game->CalculatePreview($user_name, $cardpos, $mode);
 		if (!is_array($preview_data))
-			echo $preview_data;
+			$error = $preview_data;
 		else
-			echo $game->FormatPreview($preview_data);
+			$result = array('info' => $game->FormatPreview($preview_data));
 	}
 	elseif($_POST['action'] == "save_note")
 	{
-		if (!isset($_POST['note'])) { echo 'Invalid game note.'; exit; }
-		if (!isset($_POST['game_id']) OR $_POST['game_id'] == "") { echo 'Invalid game id.'; exit; }
+		if (!isset($_POST['note'])) { $error = 'Invalid game note.'; break; }
+		if (!isset($_POST['game_id']) OR $_POST['game_id'] == "") { $error = 'Invalid game id.'; break; }
 
 		$note = $_POST['note'];
 		$game_id = $_POST['game_id'];
 
 		// download game
 		$game = $gamedb->GetGame($game_id);
-		if (!$game) { echo 'Invalid game.'; exit; }
+		if (!$game) { $error = 'Invalid game.'; break; }
 
 		// check access
-		if ($user_name != $game->Name1() AND $user_name != $game->Name2()) { echo 'Action not allowed.'; exit; }
+		if ($user_name != $game->Name1() AND $user_name != $game->Name2()) { $error = 'Action not allowed.'; break; }
 
 		// verify inputs
-		if (strlen($note) > MESSAGE_LENGTH) { $error = "Game note is too long"; exit; }
+		if (strlen($note) > MESSAGE_LENGTH) { $error = 'Game note is too long.'; break; }
 
 		$game->SetNote($user_name, $note);
 		$result = $game->SaveGame();
 
-		if ($result) echo "Game note saved";
-		else echo "Failed to save game note";
+		if ($result) $result = array('info' => 'Game note saved.');
+		else $error = 'Failed to save game note.';
 	}
 	elseif($_POST['action'] == "clear_note")
 	{
-		if (!isset($_POST['game_id']) OR $_POST['game_id'] == "") { echo 'Invalid game id.'; exit; }
+		if (!isset($_POST['game_id']) OR $_POST['game_id'] == "") { $error = 'Invalid game id.'; break; }
 
 		$game_id = $_POST['game_id'];
 
 		// download game
 		$game = $gamedb->GetGame($game_id);
-		if (!$game) { echo 'Invalid game.'; exit; }
+		if (!$game) { $error = 'Invalid game.'; break; }
 
 		// check access
-		if ($user_name != $game->Name1() AND $user_name != $game->Name2()) { echo 'Action not allowed.'; exit; }
+		if ($user_name != $game->Name1() AND $user_name != $game->Name2()) { $error = 'Action not allowed.'; break; }
 
 		$game->ClearNote($user_name);
 		$result = $game->SaveGame();
 
-		if ($result) echo "Game note cleared";
-		else echo "Failed to clear game note";
+		if ($result) $result = array('info' => 'Game note cleared');
+		else $error = 'Failed to clear game note.';
 	}
+	else
+		$error = 'Invalid request.';
+
+	} while(0); // end dummy scope
+
+	// error handler
+	if (isset($error)) $result = array('error' => $error);
+
+	// output result
+	echo json_encode($result);
 ?>
