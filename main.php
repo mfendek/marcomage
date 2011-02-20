@@ -3250,7 +3250,7 @@ case 'Messages':
 	$params['messages']['current_subsection'] = $current_subsection;
 
 	$params['messages']['date_val'] = $date = (isset($_POST['date_filter'])) ? $_POST['date_filter'] : 'none';
-	$params['messages']['name_val'] = $name = (isset($_POST['name_filter'])) ? postdecode($_POST['name_filter']) : 'none';
+	$params['messages']['name_val'] = $name = (isset($_POST['name_filter'])) ? postdecode($_POST['name_filter']) : '';
 	$params['messages']['current_order'] = $current_order = (isset($_POST['CurrentOrd'])) ? $_POST['CurrentOrd'] : 'DESC';
 	$params['messages']['current_condition'] = $current_condition = (isset($_POST['CurrentCond'])) ? $_POST['CurrentCond'] : 'Created';
 	$params['messages']['current_page'] = $current_page = (isset($_POST['CurrentMesPage'])) ? $_POST['CurrentMesPage'] : 0;
@@ -3259,26 +3259,22 @@ case 'Messages':
 	{
 		$messages = $messagedb->ListAllMessages($date, $name, $current_condition, $current_order, $current_page);
 		$page_count = $messagedb->CountPagesAll($date, $name);
-		$name_list = $messagedb->ListAllNames($date);
 	}
 	elseif ($current_location == "sent_mail")
 	{
 		$messages = $messagedb->ListMessagesFrom($player->Name(), $date, $name, $current_condition, $current_order, $current_page);
 		$page_count = $messagedb->CountPagesFrom($player->Name(), $date, $name);
-		$name_list = $messagedb->ListNamesFrom($player->Name(), $date);
 	}
 	else
 	{
 		$messages = $messagedb->ListMessagesTo($player->Name(), $date, $name, $current_condition, $current_order, $current_page);
 		$page_count = $messagedb->CountPagesTo($player->Name(), $date, $name);
-		$name_list = $messagedb->ListNamesTo($player->Name(), $date);
 	}
 
 	$params['messages']['messages'] = $messages;
 	$params['messages']['page_count'] = $page_count;
 	$params['messages']['messages_count'] = count($messages);
 	$params['messages']['current_location'] = $current_location;
-	$params['messages']['name_filter'] = $name_list;
 	$params['messages']['current_page'] = $current_page;
 
 	$params['messages']['send_messages'] = (($access_rights[$player->Type()]["messages"]) ? 'yes' : 'no');

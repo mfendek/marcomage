@@ -143,11 +143,11 @@
 		{	
 			$db = $this->db;
 
-			$name_query = (($name != "none") ? ' AND `Author` =  ?' : '');
+			$name_query = (($name != "") ? ' AND `Author` LIKE ?' : '');
 			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '');
 
 			$params = array($player);
-			if ($name != "none") $params[] = $name;
+			if ($name != "") $params[] = '%'.$name.'%';
 			if ($date != "none") $params[] = $date;
 
 			$condition = (in_array($condition, array('Author', 'Created'))) ? $condition : 'Created';
@@ -164,11 +164,11 @@
 		{	
 			$db = $this->db;
 
-			$name_query = (($name != "none") ? ' AND `Author` =  ?' : '');
+			$name_query = (($name != "") ? ' AND `Author` LIKE ?' : '');
 			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '');
 
 			$params = array($player);
-			if ($name != "none") $params[] = $name;
+			if ($name != "") $params[] = '%'.$name.'%';
 			if ($date != "none") $params[] = $date;
 
 			$result = $db->Query('SELECT COUNT(`MessageID`) as `Count` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = ? AND `RecipientDelete` = FALSE'.$name_query.$date_query.'', $params);
@@ -185,11 +185,11 @@
 		{	
 			$db = $this->db;
 
-			$name_query = (($name != "none") ? ' AND `Recipient` =  ?' : '');
+			$name_query = (($name != "") ? ' AND `Recipient` LIKE ?' : '');
 			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '');
 
 			$params = array($player);
-			if ($name != "none") $params[] = $name;
+			if ($name != "") $params[] = '%'.$name.'%';
 			if ($date != "none") $params[] = $date;
 
 			$condition = (in_array($condition, array('Recipient', 'Created'))) ? $condition : 'Created';
@@ -206,11 +206,11 @@
 		{	
 			$db = $this->db;
 
-			$name_query = (($name != "none") ? ' AND `Recipient` =  ?' : '');
+			$name_query = (($name != "") ? ' AND `Recipient` LIKE ?' : '');
 			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '');
 
 			$params = array($player);
-			if ($name != "none") $params[] = $name;
+			if ($name != "") $params[] = '%'.$name.'%';
 			if ($date != "none") $params[] = $date;
 
 			$result = $db->Query('SELECT COUNT(`MessageID`) as `Count` FROM `messages` WHERE `GameID` = 0 AND `Author` = ? AND `AuthorDelete` = FALSE'.$name_query.$date_query.'', $params);
@@ -227,11 +227,11 @@
 		{	// used when admin want to see list of all messages (including deleted ones)
 			$db = $this->db;
 
-			$name_query = (($name != "none") ? ' AND `Author` =  ?' : '');
+			$name_query = (($name != "") ? ' AND `Author` LIKE ?' : '');
 			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '');
 
 			$params = array(SYSTEM_NAME);
-			if ($name != "none") $params[] = $name;
+			if ($name != "") $params[] = '%'.$name.'%';
 			if ($date != "none") $params[] = $date;
 
 			$condition = (in_array($condition, array('Author', 'Created'))) ? $condition : 'Created';
@@ -248,11 +248,11 @@
 		{	
 			$db = $this->db;
 
-			$name_query = (($name != "none") ? ' AND `Author` =  ?' : '');
+			$name_query = (($name != "") ? ' AND `Author` LIKE ?' : '');
 			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '');
 
 			$params = array(SYSTEM_NAME);
-			if ($name != "none") $params[] = $name;
+			if ($name != "") $params[] = '%'.$name.'%';
 			if ($date != "none") $params[] = $date;
 
 			$result = $db->Query('SELECT COUNT(`MessageID`) as `Count` FROM `messages` WHERE `GameID` = 0 AND `Author` != ?'.$name_query.$date_query.'', $params);
@@ -275,60 +275,6 @@
 			$data = $result[0];
 			
 			return $data['CountUnread'];
-		}
-			
-		public function ListNamesTo($player, $date)
-		{	
-			$db = $this->db;
-
-			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '');
-
-			$params = array($player);
-			if ($date != "none") $params[] = $date;
-
-			$result = $db->Query('SELECT DISTINCT `Author` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = ? AND `RecipientDelete` = FALSE'.$date_query.' ORDER BY `Author` ASC', $params);
-			if ($result === false) return false;
-			
-			$names = array();
-			foreach( $result as $data )
-				$names[] = $data['Author'];
-			return $names;
-		}
-		
-		public function ListNamesFrom($player, $date)
-		{	
-			$db = $this->db;
-
-			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '');
-
-			$params = array($player);
-			if ($date != "none") $params[] = $date;
-
-			$result = $db->Query('SELECT DISTINCT `Recipient` FROM `messages` WHERE `GameID` = 0 AND `Author` = ? AND `AuthorDelete` = FALSE'.$date_query.' ORDER BY `Recipient` ASC', $params);
-			if ($result === false) return false;
-			
-			$names = array();
-			foreach( $result as $data )
-				$names[] = $data['Recipient'];
-			return $names;
-		}
-		
-		public function ListAllNames($date)
-		{	// get list of authors of all messages
-			$db = $this->db;
-
-			$date_query = (($date != "none") ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '');
-
-			$params = array(SYSTEM_NAME);
-			if ($date != "none") $params[] = $date;
-
-			$result = $db->Query('SELECT DISTINCT `Author` FROM `messages` WHERE `GameID` = 0 AND `Author` != ?'.$date_query.' ORDER BY `Author` ASC', $params);
-			if ($result === false) return false;
-			
-			$names = array();
-			foreach( $result as $data )
-				$names[] = $data['Author'];
-			return $names;
 		}
 		
 		public function SendChallenge($author, $recipient, $content, $game_id)

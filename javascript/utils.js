@@ -133,9 +133,14 @@ $(document).ready(function() {
 		if (event.keyCode == '13') { event.preventDefault(); $("button[name='filter_players']").click(); }
 	});
 
-	// apply player filters (players section)
+	// apply player filters (replays section)
 	$("input[name='PlayerFilter']").keypress(function(event) {
 		if (event.keyCode == '13') { event.preventDefault(); $("button[name='filter_replays']").click(); }
+	});
+
+	// apply player filters (messages section)
+	$("input[name='name_filter']").keypress(function(event) {
+		if (event.keyCode == '13') { event.preventDefault(); $("button[name='message_filter']").click(); }
 	});
 
 	// apply card filters (concepts section)

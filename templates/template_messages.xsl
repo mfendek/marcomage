@@ -146,6 +146,9 @@
 	</p>
 
 	<div class="filters">
+		<!-- name filter -->
+		<input type="text" name="name_filter" maxlength="20" size="20" value="{$param/name_val}" title="search phrase for player name" />
+
 		<!-- date filter -->
 		<xsl:variable name="dates">
 			<value name="No date filter" value="none" />
@@ -161,14 +164,6 @@
 			<value name="1 year"         value="365"  />
 		</xsl:variable>
 		<xsl:copy-of select="am:htmlSelectBox('date_filter', $param/date_val, $dates, '')"/>
-
-		<!-- name filter -->
-		<xsl:if test="$param/messages_count &gt; 0">
-			<xsl:variable name="authors">
-				<value name="No name filter" value="none" />
-			</xsl:variable>
-			<xsl:copy-of select="am:htmlSelectBox('name_filter', $param/name_val, $authors, $param/name_filter)"/>
-		</xsl:if>
 
 		<button type="submit" name="message_filter">Apply filters</button>
 	</div>
