@@ -133,6 +133,11 @@ $(document).ready(function() {
 		if (event.keyCode == '13') { event.preventDefault(); $("button[name='filter_players']").click(); }
 	});
 
+	// apply player filters (players section)
+	$("input[name='PlayerFilter']").keypress(function(event) {
+		if (event.keyCode == '13') { event.preventDefault(); $("button[name='filter_replays']").click(); }
+	});
+
 	// apply card filters (concepts section)
 	$("input[name='card_name']").keypress(function(event) {
 		if (event.keyCode == '13') { event.preventDefault(); $("button[name='concepts_filter']").click(); }

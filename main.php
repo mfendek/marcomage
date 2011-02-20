@@ -3856,7 +3856,7 @@ case 'Forum_post_edit':
 case 'Replays':
 	$current_page = ((isset($_POST['CurrentRepPage'])) ? $_POST['CurrentRepPage'] : 0);
 	$params['replays']['current_page'] = $current_page;
-	$params['replays']['PlayerFilter'] = $player_f = (isset($_POST['PlayerFilter'])) ? $_POST['PlayerFilter'] : "none";
+	$params['replays']['PlayerFilter'] = $player_f = (isset($_POST['PlayerFilter'])) ? $_POST['PlayerFilter'] : "";
 	$params['replays']['HiddenCards'] = $hidden_f = (isset($_POST['HiddenCards'])) ? $_POST['HiddenCards'] : "none";
 	$params['replays']['FriendlyPlay'] = $friendly_f = (isset($_POST['FriendlyPlay'])) ? $_POST['FriendlyPlay'] : "none";
 	$params['replays']['LongMode'] = $long_f = (isset($_POST['LongMode'])) ? $_POST['LongMode'] : "none";
@@ -3872,8 +3872,6 @@ case 'Replays':
 	$params['replays']['list'] = $replaydb->ListReplays($player_f, $hidden_f, $friendly_f, $long_f, $ai_f, $ch_f, $victory_f, $current_page, $cond, $order);
 	$params['replays']['page_count'] = $replaydb->CountPages($player_f, $hidden_f, $friendly_f, $long_f, $ai_f, $ch_f, $victory_f);
 	$params['replays']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
-	$params['replays']['players'] = $replay_players = $replaydb->ListPlayers();
-	$params['replays']['my_replays'] = (in_array($player->Name(), $replay_players) ? 'yes' : 'no');
 	$params['replays']['ai_challenges'] = $challengesdb->ListChallengeNames();
 
 	break;

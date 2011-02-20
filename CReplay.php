@@ -122,7 +122,7 @@
 			$db = $this->db;
 			
 			$victory_q = ($victory != "none") ? '`EndType` = ?' : '`EndType` != "Pending"';
-			$player_q = ($player != "none") ? 'AND ((`Player1` = ?) OR (`Player2` = ?))' : '';
+			$player_q = ($player != "") ? 'AND ((`Player1` LIKE ?) OR (`Player2` LIKE ?))' : '';
 			$hidden_q = ($hidden != "none") ? ' AND FIND_IN_SET("HiddenCards", `GameModes`) '.(($hidden == "include") ? '>' : '=').' 0' : '';
 			$friendly_q = ($friendly != "none") ? ' AND FIND_IN_SET("FriendlyPlay", `GameModes`) '.(($friendly == "include") ? '>' : '=').' 0' : '';
 			$long_q = ($long != "none") ? ' AND FIND_IN_SET("LongMode", `GameModes`) '.(($long == "include") ? '>' : '=').' 0' : '';
@@ -131,7 +131,7 @@
 
 			$params = array();
 			if ($victory != "none") $params[] = $victory;
-			if ($player != "none") { $params[] = $player; $params[] = $player; }
+			if ($player != "") { $params[] = '%'.$player.'%'; $params[] = '%'.$player.'%'; }
 			if (!in_array($challenge, array('none', 'include', 'exclude'))) $params[] = $challenge;
 
 			$condition = (in_array($condition, array('Winner', 'Rounds', 'Turns', 'Started', 'Finished'))) ? $condition : 'Finished';
@@ -149,7 +149,7 @@
 			$db = $this->db;
 			
 			$victory_q = ($victory != "none") ? '`EndType` = ?' : '`EndType` != "Pending"';
-			$player_q = ($player != "none") ? 'AND ((`Player1` = ?) OR (`Player2` = ?))' : '';
+			$player_q = ($player != "") ? 'AND ((`Player1` LIKE ?) OR (`Player2` LIKE ?))' : '';
 			$hidden_q = ($hidden != "none") ? ' AND FIND_IN_SET("HiddenCards", `GameModes`) '.(($hidden == "include") ? '>' : '=').' 0' : '';
 			$friendly_q = ($friendly != "none") ? ' AND FIND_IN_SET("FriendlyPlay", `GameModes`) '.(($friendly == "include") ? '>' : '=').' 0' : '';
 			$long_q = ($long != "none") ? ' AND FIND_IN_SET("LongMode", `GameModes`) '.(($long == "include") ? '>' : '=').' 0' : '';
@@ -158,7 +158,7 @@
 
 			$params = array();
 			if ($victory != "none") $params[] = $victory;
-			if ($player != "none") { $params[] = $player; $params[] = $player; }
+			if ($player != "") { $params[] = '%'.$player.'%'; $params[] = '%'.$player.'%'; }
 			if (!in_array($challenge, array('none', 'include', 'exclude'))) $params[] = $challenge;
 			
 			$result = $db->Query('SELECT COUNT(`GameID`) as `Count` FROM `replays_head` WHERE '.$victory_q.$player_q.$hidden_q.$friendly_q.$long_q.$ai_q.$ch_q.'', $params);
@@ -169,20 +169,6 @@
 			$pages = ceil($data['Count'] / REPLAYS_PER_PAGE);
 			
 			return $pages;
-		}
-		
-		public function ListPlayers() // player filter list
-		{
-			$db = $this->db;
-
-			$result = $db->Query('SELECT DISTINCT `Player1` as `Player` FROM `replays_head` WHERE `EndType` != "Pending" UNION DISTINCT SELECT DISTINCT `Player2` as `Player` FROM `replays_head` WHERE `EndType` != "Pending" ORDER BY `Player` ASC');
-			if ($result === false) return false;
-			
-			$players = array();
-			foreach ($result as $data)
-				$players[] = $data['Player'];
-			
-			return $players;
 		}
 		
 		public function ConvertData(CGamePlayerData $data) // convert GameData to ReplayData (remove unnecessary data)

@@ -20,10 +20,7 @@
 	<!-- begin filters and navigation -->
 	<div class="filters">
 		<!-- player filter -->
-		<xsl:variable name="players">
-			<value name="No player filter" value="none" />
-		</xsl:variable>
-		<xsl:copy-of select="am:htmlSelectBox('PlayerFilter', $param/PlayerFilter, $players, $param/players)"/>
+		<input type="text" name="PlayerFilter" maxlength="20" size="20" value="{$param/PlayerFilter}" title="search phrase for player name" />
 
 		<!-- victory type filter -->
 		<xsl:variable name="victory_types">
@@ -66,9 +63,7 @@
 		<xsl:copy-of select="am:htmlSelectBox('AIChallenge', $param/AIChallenge, $mode_options, $param/ai_challenges)"/>
 
 		<button type="submit" name="filter_replays">Apply filters</button>
-		<xsl:if test="$param/my_replays = 'yes'">
-			<button type="submit" name="my_replays">My replays</button>
-		</xsl:if>
+		<button type="submit" name="my_replays">My replays</button>
 	</div>
 	<div class="filters">
 		<!-- navigation -->
