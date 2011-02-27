@@ -1692,6 +1692,9 @@
 				// and only if the abort criteria are met
 				if( time() - strtotime($game->LastAction) < 60*60*24*7*3 || $game->Current == $player->Name() ) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
 
+				// only allow finishing of non-AI games
+				if ($game->Name2() == SYSTEM_NAME) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
+
 				$result = $game->FinishGame($player->Name());
 
 				if ($result == 'OK')
@@ -3351,7 +3354,7 @@ case 'Games':
 			$params['games']['list'][$i]['isdead'] = ($inactivity  > 60*60*24*7*3) ? 'yes' : 'no';
 			$params['games']['list'][$i]['gameaction'] = $data['Last Action'];
 			$params['games']['list'][$i]['lastseen'] = $last_seen;
-			$params['games']['list'][$i]['finishable'] = (time() - strtotime($data['Last Action']) >= 60*60*24*7*3 and $data['Current'] != $player->Name()) ? 'yes' : 'no';
+			$params['games']['list'][$i]['finishable'] = (time() - strtotime($data['Last Action']) >= 60*60*24*7*3 and $data['Current'] != $player->Name() and $opponent != SYSTEM_NAME) ? 'yes' : 'no';
 			$params['games']['list'][$i]['game_modes'] = $data['GameModes'];
 			$params['games']['list'][$i]['ai'] = $data['AI'];
 		}
@@ -3596,7 +3599,7 @@ case 'Games_details':
 	// - <game state indicator>
 	$params['game']['opp_isOnline'] = (($opponent->isOnline()) ? 'yes' : 'no');
 	$params['game']['opp_isDead'] = (($opponent->isDead()) ? 'yes' : 'no');
-	$params['game']['finish_game'] = ((time() - strtotime($game->LastAction) >= 60*60*24*7*3 and $game->Current != $player->Name()) ? 'yes' : 'no');
+	$params['game']['finish_game'] = ((time() - strtotime($game->LastAction) >= 60*60*24*7*3 and $game->Current != $player->Name() and $opponent_name != SYSTEM_NAME) ? 'yes' : 'no');
 
 	// your resources and tower
 	$changes = array ('Quarry'=> '', 'Magic'=> '', 'Dungeons'=> '', 'Bricks'=> '', 'Gems'=> '', 'Recruits'=> '', 'Tower'=> '', 'Wall'=> '');
