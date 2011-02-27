@@ -1704,6 +1704,7 @@
 					// update deck statistics
 					$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
 				}
+				else $error = $result;
 
 				if (($result == 'OK') AND ($game->GetGameMode('FriendlyPlay') == "no"))
 				{
@@ -1744,7 +1745,6 @@
 
 					$messagedb->SendBattleReport($player1, $player2, $p1_rep, $p2_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
 				}
-				else $error = $result;
 
 				$current = "Games_details";
 				break;
