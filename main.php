@@ -1229,7 +1229,7 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to view this game
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games'; break; }
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				// check if the game is a game in progress (and not a challenge)
 				if ($game->State == 'waiting') { $error = 'Opponent did not accept the challenge yet!'; $current = 'Games'; break; }
@@ -1251,7 +1251,7 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to perform game actions
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games_details'; break; }
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				$new_note = $_POST['Content'];
 
@@ -1274,7 +1274,7 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to view this game
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games'; break; }
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				// disable re-visiting
 				if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { $error = 'Game already over.'; $current = 'Games'; break; }
@@ -1300,7 +1300,7 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to perform game actions
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games_details'; break; }
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				$game->ClearNote($player->Name());
 				$game->SaveGame();
@@ -1319,7 +1319,7 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to perform game actions
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games_details'; break; }
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				// disable re-visiting
 				if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { $error = 'Game already over.'; $current = 'Games'; break; }
@@ -1343,7 +1343,7 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to send messages in this game
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games_details'; break; }
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				// do not post empty messages (prevents accidental send)
 				if (trim($msg) == '') { /*$error = 'You can't send empty chat messages.';*/ $current = 'Games_details'; break; }
@@ -1388,7 +1388,10 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to perform game actions
-				if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or $game->Surrender != '') { $current = 'Games_details'; break; }
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
+
+				// check if game is locked in a surrender request
+				if ($game->Surrender != '') { $error = 'Game is locked in a surrender request.'; $current = 'Games_details'; break; }
 
 				// check card position
 				if (!is_numeric($cardpos)) { $error = 'Invalid card position.'; $current = 'Games_details'; break; }
@@ -1477,7 +1480,7 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to perform game actions
-				if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or $game->Surrender != '') { $current = 'Games_details'; break; }
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				// check if AI move is allowed
 				if ($game->GetGameMode('AIMode') == 'no') { $error = 'AI move not allowed!'; $current = 'Games_details'; break; }
@@ -1520,7 +1523,7 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to surrender in this game
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games_details'; break; }
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				$result = $game->RequestSurrender($player->Name());
 
@@ -1658,7 +1661,7 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to abort this game
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games_details'; break; }
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				// only allow aborting abandoned games
 				if (!$playerdb->isDead($game->Name1()) and !$playerdb->isDead($game->Name2())) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
@@ -1684,7 +1687,7 @@
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to abort this game
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $current = 'Games_details'; break; }
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				// only allow finishing active games
 				if ($playerdb->isDead($game->Name1()) or $playerdb->isDead($game->Name2())) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
