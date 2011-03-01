@@ -1345,8 +1345,9 @@
 				// check if this user is allowed to send messages in this game
 				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
-				// do not post empty messages (prevents accidental send)
+				// verify user input
 				if (trim($msg) == '') { /*$error = 'You can't send empty chat messages.';*/ $current = 'Games_details'; break; }
+				if (strlen($msg) > CHAT_LENGTH) { $error = 'Chat message is too long.'; $current = 'Games_details'; break; }
 
 				// check if chat is allowed (can't chat with a computer player)
 				if ($game->GetGameMode('AIMode') == 'yes') { $error = 'Chat not allowed!'; $current = 'Games_details'; break; }

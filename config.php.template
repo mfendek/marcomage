@@ -17,6 +17,7 @@
 	define("DECK_SLOT_COST", 300); // bonus deck slot cost
 	define("MESSAGE_LENGTH", 1000);
 	define("CHALLENGE_LENGTH", 250);
+	define("CHAT_LENGTH", 300); // chat message length
 	define("SYSTEM_NAME", "MArcomage"); // user name for system notification
 	define("NUM_THREADS", 4); // number of threads per section in the forum main page
 	define("THREADS_PER_PAGE", 30);
