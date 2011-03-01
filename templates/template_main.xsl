@@ -38,9 +38,7 @@
 			<link rel="stylesheet" href="styles/login.css" type="text/css" title="standard style" />
 		</xsl:otherwise>
 	</xsl:choose>
-	<xsl:if test="$current_section != ''">
-		<link rel="stylesheet" href="styles/{$current_section}.css" type="text/css" title="standard style" />
-	</xsl:if>
+	<link rel="stylesheet" href="styles/{$current_section}.css" type="text/css" title="standard style" />
 	<link rel="stylesheet" href="styles/skins/skin{$param/skin}.css" type="text/css" title="standard style" />
 	<link rel="icon" href="img/favicon.png" type="image/png" />
 	<title>
@@ -48,12 +46,9 @@
 			<xsl:value-of select="$param/subsection" />
 			<xsl:text> - </xsl:text>
 		</xsl:if>
-		<xsl:if test="$section_name != ''">
-			<xsl:value-of select="$section_name" />
-			<xsl:if test="$section_name = 'Games' and $param/current_games &gt; 0"> (<xsl:value-of select="$param/current_games" />)</xsl:if>
-			<xsl:text> - </xsl:text>
-		</xsl:if>
-		<xsl:text>MArcomage</xsl:text>
+		<xsl:value-of select="$section_name" />
+		<xsl:if test="$section_name = 'Games' and $param/current_games &gt; 0"> (<xsl:value-of select="$param/current_games" />)</xsl:if>
+		<xsl:text> - MArcomage</xsl:text>
 	</title>
 	<script type="text/javascript" src="javascript/jquery/jquery.js"></script>
 	<script type="text/javascript" src="javascript/jquery/jquery_ui.js"></script>
