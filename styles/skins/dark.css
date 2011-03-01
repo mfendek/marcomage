@@ -137,24 +137,19 @@ p.flag, span.newcard /* new card flag (indicated above a new card) */
 	color: #dddddd; /* very light gray */
 }
 
-div#game .chatbox_player
+.chatbox_player
 {
 	color: #add8e6; /* light blue */
 }
 
-div#game .chatbox_opponent
+.chatbox_opponent
 {
 	color: #90ee90; /* light green */
 }
 
-div#game .chatbox_system
+.chatbox_system
 {
 	color: red;
-}
-
-div#game div.chatbox > p > span:first-child /* date-time info in chatbox */
-{
-	color : rgb(219,142,179); /* light pink */
 }
 
 div#cost_per_turn, p.deck_stats /* avg cost per turn indicator layout */

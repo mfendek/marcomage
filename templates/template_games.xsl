@@ -1094,7 +1094,6 @@
 			<div class="chatbox">
 				<xsl:for-each select="$param/messagelist/*">
 					<p>
-						<span><xsl:value-of select="am:datetime(Timestamp, $param/timezone)"/></span>
 						<span>
 							<xsl:choose>
 								<xsl:when test="Name = $param/PlayerName">
@@ -1108,6 +1107,8 @@
 								</xsl:otherwise>
 							</xsl:choose>
 							<xsl:value-of select="Name"/>
+							<xsl:text> on </xsl:text>
+							<xsl:value-of select="am:datetime(Timestamp, $param/timezone)"/>
 							<xsl:text> : </xsl:text>
 						</span>
 						<span><xsl:copy-of select="am:textencode(Message)"/></span>
