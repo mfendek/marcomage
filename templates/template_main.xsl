@@ -55,6 +55,7 @@
 	<script type="text/javascript" src="javascript/scrollto.js"></script>
 	<script type="text/javascript" src="javascript/cookie.js"></script>
 	<script type="text/javascript" src="javascript/utils.js"></script>
+	<script type="text/javascript" src="javascript/{$current_section}.js"></script>
 	<xsl:comment><![CDATA[[if lt IE 9]><script type="text/javascript" src="javascript/ie9.js"></script><![endif]]]></xsl:comment>
 	</head>
 	<body>
