@@ -136,11 +136,11 @@
 <func:function name="am:BBcodeButtons">
 	<xsl:variable name="buttons">
 		<div class="BBcodeButtons">
-			<button type="button" title="Bold" onclick="addTags('[b]', '[/b]')">B</button>
-			<button type="button" title="Italics" onclick="addTags('[i]', '[/i]')">I</button>
-			<button type="button" title="Internal hyperlink" onclick="addTags('[link]', '[/link]')">Link</button>
-			<button type="button" title="External hyperlink" onclick="addTags('[url]', '[/url]')">Url</button>
-			<button type="button" title="Quote" onclick="addTags('[quote]', '[/quote]')">Quote</button>
+			<button type="button" name="bold" title="Bold">B</button>
+			<button type="button" name="italics" title="Italics">I</button>
+			<button type="button" name="link" title="Internal hyperlink">Link</button>
+			<button type="button" name="url" title="External hyperlink">Url</button>
+			<button type="button" name="quote" title="Quote">Quote</button>
 		</div>
 	</xsl:variable>
 	<func:result select="exsl:node-set($buttons)"/>

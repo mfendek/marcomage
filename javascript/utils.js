@@ -121,6 +121,34 @@ function PauseReplay() // replay slideshow -> pause replay
 	window.clearTimeout(timer);
 }
 
+function AddTags(Tag,fTag)
+{
+	// adds a pair of tags to the highlighted text in the textarea with given name
+	// if no text is highlighted, append the beginning and ending tag to whatever's in the textarea
+
+  var obj = document.getElementsByName("Content").item(0);
+  obj.focus();
+
+  if (document.selection && document.selection.createRange)  // Internet Explorer
+  {
+		sel = document.selection.createRange();
+		if (sel.parentElement() == obj)  sel.text = Tag + sel.text + fTag;
+  }
+  else if (typeof(obj) != "undefined")  // Firefox
+  {
+		var longueur = parseInt(obj.value.length);
+		var selStart = obj.selectionStart;
+		var selEnd = obj.selectionEnd;
+
+		obj.value = obj.value.substring(0,selStart) + Tag + obj.value.substring(selStart,selEnd) + fTag + obj.value.substring(selEnd,longueur);
+  }
+  else
+	{
+		obj.value += Tag + fTag;
+	}
+  obj.focus();
+}
+
 $(document).ready(function() {
 
 	// executes forum search when ENTER key is hit
@@ -165,6 +193,28 @@ $(document).ready(function() {
 
 	// blocks ENTER key to prevent section redirects
 	$("input[name!='ChatMessage'][name!='NameFilter'][name!='phrase'][name!='card_name'][name!='pname_filter'][type!='password'], select").keypress(function(event) { if (event.keyCode == '13') { event.preventDefault(); } });
+
+	// BBcode buttons handling
+	$("div.BBcodeButtons > button").click(function() {
+			switch($(this).attr('name'))
+			{
+				case 'bold':
+					AddTags('[b]', '[/b]');
+					break;
+				case 'italics':
+					AddTags('[i]', '[/i]');
+					break;
+				case 'link':
+					AddTags('[link]', '[/link]');
+					break;
+				case 'url':
+					AddTags('[url]', '[/url]');
+					break;
+				case 'quote':
+					AddTags('[quote]', '[/quote]');
+					break;
+			}
+	});
 
 	// show/hide card pool
 	$("button[name='card_pool_switch']").click(function() {
