@@ -10,7 +10,7 @@ $(document).ready(function() {
 	});
 
 	// card concept delete confirmation
-	$("button[name='delete_concept']").click(function() {
+	$("div#concepts_edit button[name='delete_concept']").click(function() {
 		if (confirm("All of the card concept data will be deleted. Are you sure you want to continue?"))
 		{
 			// skip standard confirmation
