@@ -85,4 +85,9 @@ div.card_preview /* card preview layout */
 	font-weight: normal;
 }
 
+div.code /* card code */
+{
+	overflow: auto;
+}
+
 /* end cards details */
