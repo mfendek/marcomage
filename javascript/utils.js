@@ -18,12 +18,12 @@ function GetSessionData(name) // retrieve session data from cookies (or session 
 	else return $(str.concat("input[name='", name,"'][type='hidden']")).val();
 }
 
-function AddTags(Tag,fTag)
+function AddTags(Tag,fTag,content)
 {
 	// adds a pair of tags to the highlighted text in the textarea with given name
 	// if no text is highlighted, append the beginning and ending tag to whatever's in the textarea
 
-  var obj = document.getElementsByName("Content").item(0);
+  var obj = document.getElementsByName(content).item(0);
   obj.focus();
 
   if (document.selection && document.selection.createRange)  // Internet Explorer
@@ -56,19 +56,19 @@ $(document).ready(function() {
 			switch($(this).attr('name'))
 			{
 				case 'bold':
-					AddTags('[b]', '[/b]');
+					AddTags('[b]', '[/b]', 'Content');
 					break;
 				case 'italics':
-					AddTags('[i]', '[/i]');
+					AddTags('[i]', '[/i]', 'Content');
 					break;
 				case 'link':
-					AddTags('[link]', '[/link]');
+					AddTags('[link]', '[/link]', 'Content');
 					break;
 				case 'url':
-					AddTags('[url]', '[/url]');
+					AddTags('[url]', '[/url]', 'Content');
 					break;
 				case 'quote':
-					AddTags('[quote]', '[/quote]');
+					AddTags('[quote]', '[/quote]', 'Content');
 					break;
 			}
 	});
