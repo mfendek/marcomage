@@ -63,11 +63,9 @@
 	$forum = new CForum($db);
 	$statistics = new CStatistics($db);
 
-	// remove garbage from GET in case of POST request
-	if (count($_POST) > 0) $_GET = array();
-
-	// process GET request
-	foreach ($_GET as $param_name => $param_value) $_POST[$param_name] = $param_value;
+	// process GET request (POST is used as a global data storage)
+	if( $_SERVER['REQUEST_METHOD'] == 'GET' )
+		$_POST = $_GET;
 
 	$current = (isset($_POST['location'])) ? $_POST['location'] : "Webpage"; // set a meaningful default
 
