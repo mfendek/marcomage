@@ -233,8 +233,3 @@ blockquote > div > cite /* author name layout in quote text */
 {
 	cursor: help;
 }
-
-button[type="button"] /* hide simple buttons by default - no functionality without JavaScript */
-{
-	display: none;
-}

@@ -26,7 +26,6 @@ $(document).ready(function() {
 
 	if ($("a#next").length == 1) // apply only in replay section
 	{
-		$("button[name='slideshow']").css('display', 'inline'); // show play/pause button
 		ResumeReplay();
 	}
 

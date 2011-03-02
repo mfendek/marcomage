@@ -47,9 +47,6 @@ $(document).ready(function() {
 		return true;
 	});
 
-	// show preview button
-	$("button[name='preview_card']").css('display', 'inline');
-
 	// hide radio buttons (selection is done via card)
 	$("input[name='selected_card']").hide();
 

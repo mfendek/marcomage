@@ -51,9 +51,6 @@ $(document).ready(function() {
 	// blocks ENTER key to prevent section redirects
 	$("input[type!='password'], select").keypress(function(event) { if (event.keyCode == '13') { event.preventDefault(); } });
 
-	// show BBcode buttons
-	$("div.BBcodeButtons > button").css('display', 'inline');
-
 	// BBcode buttons handling
 	$("div.BBcodeButtons > button").click(function() {
 			switch($(this).attr('name'))
