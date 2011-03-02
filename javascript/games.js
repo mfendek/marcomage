@@ -219,7 +219,86 @@ $(document).ready(function() {
 		}
 	});
 
-	// scroll standard chat
-	$("div.chatsection > div.scroll_max").scrollTo('max');
+	// hide standard chat
+	$("div.chatsection").hide();
+
+	$("#chat_dialog").bind( "dialogclose", function() {
+		// enable autorefresh when user closes the chat
+		timer = StartRefresh();
+	});
+
+	// open chat
+	$("button[name='show_chat']").click(function(event) {
+		event.preventDefault();
+
+		// disable autorefresh when user opens the chat
+		window.clearTimeout(timer);
+
+		// scrolling must be done only after the dialog has been opened
+		$("#chat_dialog").bind( "dialogopen", function() {
+			$("#chat_dialog > div.scroll_max").delay(400).scrollTo('max');
+		});
+		$("#chat_dialog").dialog("open");
+	});
+
+	// chat handler
+	$("#chat_dialog").dialog({
+		autoOpen: false,
+		show: "fade",
+		hide: "fade",
+		minWidth: 500,
+		minHeight: 600,
+		width: 500,
+		height: 600,
+		buttons: {
+			B: function()
+			{
+				AddTags('[b]', '[/b]', 'chat_area');
+			},
+			I: function()
+			{
+				AddTags('[i]', '[/i]', 'chat_area');
+			},
+			L: function()
+			{
+				AddTags('[link]', '[/link]', 'chat_area');
+			},
+			U: function()
+			{
+				AddTags('[url]', '[/url]', 'chat_area');
+			},
+			Q: function()
+			{
+				AddTags('[quote]', '[/quote]', 'chat_area');
+			},
+			Send: function()
+			{
+				var chat_message = $("textarea[name='chat_area']").val();
+
+				// check user input
+				if (chat_message.length > 300) alert('Chat message is too long');
+				else
+				{
+					var username = GetSessionData('Username');
+					var session_id = GetSessionData('SessionID');
+					var game = $("input[name='CurrentGame']").val();
+
+					$.post("AJAXhandler.php", { action: 'send_chat_message', Username: username, SessionID: session_id, game_id: game, message: chat_message }, function(data){
+						var result = $.parseJSON(data);
+						if (result.error) { alert(result.error); return false; } // AJAX failed, display error message
+						else
+						{
+							$(this).dialog("close");
+							GameRefresh();
+						}
+					});
+				}
+			},
+			Back: function()
+			{
+				$(this).dialog("close");
+			}
+		}
+	});
 
 });

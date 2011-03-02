@@ -275,6 +275,11 @@ div.chatbox /* chatbox window */
 	width: 51em;
 }
 
+div.chatbox > div /* chatbox message content */
+{
+	margin-left: 0.5ex;
+}
+
 input.chatboard /* chatbox input elements */
 {
 	font-size: small;
@@ -290,6 +295,20 @@ div#chat_inputs > input[type="text"] /* chat message input */
 {
 	font-size: medium;
 	margin-right: 2ex;
+}
+
+div#chat_dialog > div /* chat message list */
+{
+	overflow: auto;
+	max-height: 20em;
+}
+
+div.chat_message /* chat message */
+{
+	max-width: 50em;
+	padding-top: 0.5ex;
+	padding-bottom: 1ex;
+	margin-left: 0.5ex;
 }
 
 div.towerbody /* body part of the tower */

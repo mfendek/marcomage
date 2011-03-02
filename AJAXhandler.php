@@ -22,7 +22,9 @@
 	require_once('CGameAI.php');
 	require_once('CChat.php');
 	require_once('CStatistics.php');
+	require_once('CPlayer.php');
 	require_once('utils.php');
+	require_once('Access.php');
 
 	$db = new CDatabase($server, $username, $password, $database);
 	if( $db->status != 'SUCCESS' )
@@ -45,6 +47,7 @@
 	$deckdb = new CDecks($db);
 	$gamedb = new CGames($db);
 	$statistics = new CStatistics($db);
+	$playerdb = new CPlayers($db);
 
 	$_POST['Username'] = postdecode($_POST['Username']);
 
@@ -53,6 +56,7 @@
 	if (!$session) { $error = 'Invalid session.'; break; }
 
 	$user_name = $session->Username();
+	$player = $playerdb->GetPlayer($user_name);
 
 	if ($_POST['action'] == "take")
 	{
@@ -185,6 +189,36 @@
 
 		if ($result) $result = array('info' => 'Game note cleared');
 		else $error = 'Failed to clear game note.';
+	}
+	elseif($_POST['action'] == "send_chat_message")
+	{
+		// check access rights
+		if (!$access_rights[$player->Type()]["chat"]) { $error = 'Access denied.'; break; }
+
+		if (!isset($_POST['message'])) { $error = 'Invalid chat message.'; break; }
+		if (!isset($_POST['game_id']) OR $_POST['game_id'] == "") { $error = 'Invalid game id.'; break; }
+
+		$msg = $_POST['message'];
+		$game_id = $_POST['game_id'];
+
+		// download game
+		$game = $gamedb->GetGame($game_id);
+		if (!$game) { $error = 'Invalid game.'; break; }
+
+		// check access
+		if ($user_name != $game->Name1() AND $user_name != $game->Name2()) { $error = 'Action not allowed.'; break; }
+
+		// verify user input
+		if (trim($msg) == '') { $error = 'Unable to send empty chat message.'; break; }
+		if (strlen($msg) > CHAT_LENGTH) { $error = 'Chat message is too long.'; break; }
+
+		// check if chat is allowed (can't chat with a computer player)
+		if ($game->GetGameMode('AIMode') == 'yes') { $error = 'Chat not allowed!'; break; }
+
+		$result = $game->SaveChatMessage($msg, $user_name);
+
+		if ($result) $result = array('info' => 'Chat message sent.');
+		else $error = 'Failed to send chat message.';
 	}
 	else
 		$error = 'Invalid request.';

@@ -526,6 +526,7 @@
 			</xsl:if>
 		</td>
 		<td>
+			<xsl:if test="$param/AIMode = 'no'"><button type="button" name="show_chat">Chat</button></xsl:if>
 			<xsl:if test="$param/GameState = 'in progress'">
 				<a class="button" href="{php:functionString('makeurl', 'Replays_history', 'CurrentReplay', $param/CurrentGame)}">History</a>
 			</xsl:if>
@@ -1086,29 +1087,24 @@
 		<!-- message list -->
 		<xsl:if test="count($param/messagelist/*) &gt; 0">
 			<div class="chatbox">
-				<!-- scrolls chatbox to bottom if reverse chatorder setting is active -->
-				<xsl:if test="$param/reverse_chat = 'yes'"><xsl:attribute name="class">chatbox scroll_max</xsl:attribute></xsl:if>
 				<xsl:for-each select="$param/messagelist/*">
 					<p>
-						<span>
-							<xsl:choose>
-								<xsl:when test="Name = $param/PlayerName">
-									<xsl:attribute name="class">chatbox_player</xsl:attribute>
-								</xsl:when>
-								<xsl:when test="Name = $param/OpponentName">
-									<xsl:attribute name="class">chatbox_opponent</xsl:attribute>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:attribute name="class">chatbox_system</xsl:attribute>
-								</xsl:otherwise>
-							</xsl:choose>
-							<xsl:value-of select="Name"/>
-							<xsl:text> on </xsl:text>
-							<xsl:value-of select="am:datetime(Timestamp, $param/timezone)"/>
-							<xsl:text> : </xsl:text>
-						</span>
-						<span><xsl:copy-of select="am:textencode(Message)"/></span>
+						<xsl:choose>
+							<xsl:when test="Name = $param/PlayerName">
+								<xsl:attribute name="class">chatbox_player</xsl:attribute>
+							</xsl:when>
+							<xsl:when test="Name = $param/OpponentName">
+								<xsl:attribute name="class">chatbox_opponent</xsl:attribute>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:attribute name="class">chatbox_system</xsl:attribute>
+							</xsl:otherwise>
+						</xsl:choose>
+						<xsl:value-of select="Name"/>
+						<xsl:text> on </xsl:text>
+						<xsl:value-of select="am:datetime(Timestamp, $param/timezone)"/>
 					</p>
+					<div><xsl:value-of select="am:BBCode_parse_extended(Message)" disable-output-escaping="yes" /></div>
 				</xsl:for-each>
 			</div>
 		</xsl:if>
@@ -1128,6 +1124,53 @@
 		</xsl:if>
 
 		<div style="clear: both"></div>
+	</div>
+
+	<!-- chat dialog (do not display) -->
+	<div id="chat_dialog" title="Chat" style="display: none">
+
+		<!-- message list -->
+		<xsl:if test="count($param/messagelist/*) &gt; 0">
+			<div>
+				<!-- scrolls chatbox to bottom if reverse chatorder setting is active -->
+				<xsl:if test="$param/reverse_chat = 'yes'"><xsl:attribute name="class">scroll_max</xsl:attribute></xsl:if>
+				<xsl:for-each select="$param/messagelist/*">
+					<p>
+						<xsl:if test="$param/display_avatar = 'yes'">
+							<img class="avatar" height="20px" width="20px" alt="avatar" >
+								<xsl:choose>
+									<xsl:when test="Name = $param/PlayerName">
+										<xsl:attribute name="src">img/avatars/<xsl:value-of select="$param/myavatar"/></xsl:attribute>
+									</xsl:when>
+									<xsl:when test="Name = $param/OpponentName">
+										<xsl:attribute name="src">img/avatars/<xsl:value-of select="$param/hisavatar"/></xsl:attribute>
+									</xsl:when>
+								</xsl:choose>
+							</img>
+						</xsl:if>
+						<span>
+							<xsl:choose>
+								<xsl:when test="Name = $param/PlayerName">
+									<xsl:attribute name="class">chatbox_player</xsl:attribute>
+								</xsl:when>
+								<xsl:when test="Name = $param/OpponentName">
+									<xsl:attribute name="class">chatbox_opponent</xsl:attribute>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:attribute name="class">chatbox_system</xsl:attribute>
+								</xsl:otherwise>
+							</xsl:choose>
+							<xsl:value-of select="Name"/>
+							<xsl:text> on </xsl:text>
+							<xsl:value-of select="am:datetime(Timestamp, $param/timezone)"/>
+						</span>
+					</p>
+					<div class="chat_message"><xsl:value-of select="am:BBCode_parse_extended(Message)" disable-output-escaping="yes" /></div>
+				</xsl:for-each>
+			</div>
+		</xsl:if>
+
+		<textarea name="chat_area" rows="3" cols="50"></textarea>
 	</div>
 
 	</xsl:if>
