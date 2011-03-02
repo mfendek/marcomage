@@ -414,15 +414,17 @@
 	<xsl:variable name="param" select="$params/game" />
 	<xsl:variable name="my_turn" select="$param/GameState = 'in progress' and $param/Current = $param/PlayerName and $param/Surrender = ''" />
 
-	<!-- autorefresh (disable autorefresh when user is using chat) -->
-	<xsl:if test="$param/autorefresh &gt; 0">
-		<xsl:element name="script">
-			<xsl:attribute name="type">text/javascript</xsl:attribute>
-			<xsl:text>$(document).ready(function() { timer = window.setTimeout('GameRefresh()', </xsl:text>
+	<!-- autorefresh -->
+	<xsl:element name="script">
+		<xsl:attribute name="type">text/javascript</xsl:attribute>
+		<xsl:text>function StartRefresh() { var timer = 0; </xsl:text>
+		<xsl:if test="$param/autorefresh &gt; 0">
+			<xsl:text>timer = window.setTimeout('GameRefresh()', </xsl:text>
 			<xsl:value-of select="$param/autorefresh" />
-			<xsl:text>000); $("input[name='ChatMessage']").keypress(function(event) { window.clearTimeout(timer); }); });</xsl:text>
-		</xsl:element>
-	</xsl:if>
+			<xsl:text>000); </xsl:text>
+		</xsl:if>
+		<xsl:text>return timer; }</xsl:text>
+	</xsl:element>
 
 	<div id="game">
 

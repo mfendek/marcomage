@@ -144,9 +144,19 @@ $(document).ready(function() {
 		$(this).animate({ opacity: 0.6 }, 'fast');
 	});
 
+	// init in-game refresh
+	var timer = StartRefresh();
+
+	$("#game_note_dialog").bind( "dialogclose", function() {
+		// enable autorefresh when user closes the game note
+		timer = StartRefresh();
+	});
+
 	// open game note
 	$("a#game_note").click(function(event) {
 		 event.preventDefault();
+		 // disable autorefresh when user opens the game note
+		 window.clearTimeout(timer);
 		 $("#game_note_dialog").dialog("open");
 	});
 
