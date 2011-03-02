@@ -209,4 +209,7 @@ $(document).ready(function() {
 		}
 	});
 
+	// scroll standard chat
+	$("div.chatsection > div.scroll_max").scrollTo('max');
+
 });

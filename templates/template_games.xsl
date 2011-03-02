@@ -424,14 +424,6 @@
 		</xsl:element>
 	</xsl:if>
 
-	<!-- scrolls chatbox to bottom if reverse chatorder setting is active -->
-	<xsl:if test="$param/reverse_chat = 'yes'">
-		<xsl:element name="script">
-			<xsl:attribute name="type">text/javascript</xsl:attribute>
-			<xsl:text>$(document).ready(function() { $(".chatbox").scrollTo('max'); });</xsl:text>
-		</xsl:element>
-	</xsl:if>
-
 	<div id="game">
 
 	<!-- remember the current location across pages -->
@@ -1092,6 +1084,8 @@
 		<!-- message list -->
 		<xsl:if test="count($param/messagelist/*) &gt; 0">
 			<div class="chatbox">
+				<!-- scrolls chatbox to bottom if reverse chatorder setting is active -->
+				<xsl:if test="$param/reverse_chat = 'yes'"><xsl:attribute name="class">chatbox scroll_max</xsl:attribute></xsl:if>
 				<xsl:for-each select="$param/messagelist/*">
 					<p>
 						<span>
