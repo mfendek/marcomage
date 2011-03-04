@@ -444,7 +444,7 @@
 	</part>
 	<part name="Chat">
 		<![CDATA[
-<p>You can chat with other players in the game screen. Simply write the text in the bottom part of the game and then click the "Send message" button or push the Enter button on your keyboard (this works only when you have JavaScript enabled). For more comfort you can use some hot keys. Push Tab (or Alt+a when your browser support keybord shortcuts) to jump into chat window, write the message and then push Tab+Enter (or Alt+s). The message itself contains the date and time when it was written and also name of the player who wrote it.</p>
+<p>You can chat with other players in the game screen. Chat can be opened by pushing the "Chat" button which is located in the upper left part of the screen. Simply write the text and then click the "Send" button. Chat supports BBcode and multi-line messages similar to those on the Forum. The message itself contains the date and time when it was written and also name of the player who wrote it. In case JavaScript is disabled, alternative chat interface is located at the bottom of the game screen.</p>
 		]]>
 	</part>
 	<part name="Forum">
