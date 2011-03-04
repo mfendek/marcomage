@@ -300,7 +300,7 @@ div#chat_inputs > input[type="text"] /* chat message input */
 div#chat_dialog > div /* chat message list */
 {
 	overflow: auto;
-	max-height: 20em;
+	height: 20em;
 }
 
 div.chat_message /* chat message */

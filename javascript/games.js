@@ -244,10 +244,9 @@ $(document).ready(function() {
 	// chat handler
 	$("#chat_dialog").dialog({
 		autoOpen: false,
+		resizable: false,
 		show: "fade",
 		hide: "fade",
-		minWidth: 500,
-		minHeight: 600,
 		width: 500,
 		height: 600,
 		buttons: {
