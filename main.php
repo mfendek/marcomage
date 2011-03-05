@@ -169,7 +169,7 @@
 		}
 
 		// inner-page messages (POST processing), omitted in case of a GET request
-		elseif (count($_POST) > 0)
+		elseif ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
 			// begin cards related messages
 
