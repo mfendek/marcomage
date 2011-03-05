@@ -1130,8 +1130,8 @@
 	<div id="chat_dialog" title="Chat" style="display: none">
 
 		<!-- message list -->
-		<xsl:if test="count($param/messagelist/*) &gt; 0">
-			<div>
+		<div>
+			<xsl:if test="count($param/messagelist/*) &gt; 0">
 				<!-- scrolls chatbox to bottom if reverse chatorder setting is active -->
 				<xsl:if test="$param/reverse_chat = 'yes'"><xsl:attribute name="class">scroll_max</xsl:attribute></xsl:if>
 				<xsl:for-each select="$param/messagelist/*">
@@ -1167,8 +1167,8 @@
 					</p>
 					<div class="chat_message"><xsl:value-of select="am:BBCode_parse_extended(Message)" disable-output-escaping="yes" /></div>
 				</xsl:for-each>
-			</div>
-		</xsl:if>
+			</xsl:if>
+		</div>
 
 		<textarea name="chat_area" rows="3" cols="50"></textarea>
 	</div>
