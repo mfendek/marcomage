@@ -526,7 +526,14 @@
 			</xsl:if>
 		</td>
 		<td>
-			<xsl:if test="$param/AIMode = 'no'"><button type="button" name="show_chat">Chat</button></xsl:if>
+			<xsl:if test="$param/AIMode = 'no'">
+				<button type="button" name="show_chat" >
+					<xsl:if test="$param/new_chat_messages = 'yes'">
+						<xsl:attribute name="class">marked_button</xsl:attribute>
+					</xsl:if>
+					<xsl:text>Chat</xsl:text>
+				</button>
+			</xsl:if>
 			<xsl:if test="$param/GameState = 'in progress'">
 				<a class="button" href="{php:functionString('makeurl', 'Replays_history', 'CurrentReplay', $param/CurrentGame)}">History</a>
 			</xsl:if>
@@ -1152,6 +1159,10 @@
 							<xsl:choose>
 								<xsl:when test="Name = $param/PlayerName">
 									<xsl:attribute name="class">chatbox_player</xsl:attribute>
+								</xsl:when>
+								<!-- highlight new chat messages (never highlight own chat messages) -->
+								<xsl:when test="am:datediff(Timestamp, $param/chat_notification) &lt; 0">
+									<xsl:attribute name="class">new_message</xsl:attribute>
 								</xsl:when>
 								<xsl:when test="Name = $param/OpponentName">
 									<xsl:attribute name="class">chatbox_opponent</xsl:attribute>

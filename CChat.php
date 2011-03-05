@@ -49,5 +49,15 @@
 
 			return $result;
 		}
+
+		public function NewMessages($gameid, $player, $time)
+		{
+			$db = $this->db;
+
+			$result = $db->Query('SELECT 1 FROM `chats` WHERE `GameID` = ? AND `Name` != ? AND `Timestamp` > ?', array($gameid, $player, $time));
+			if ($result === false or count($result) == 0) return false;
+
+			return true;
+		}
 	}
 ?>

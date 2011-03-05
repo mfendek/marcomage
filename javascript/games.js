@@ -234,6 +234,16 @@ $(document).ready(function() {
 		// disable autorefresh when user opens the chat
 		window.clearTimeout(timer);
 
+		// reset chat notification for current player
+		var username = GetSessionData('Username');
+		var session_id = GetSessionData('SessionID');
+		var game = $("input[name='CurrentGame']").val();
+
+		$.post("AJAXhandler.php", { action: 'reset_chat_notification', Username: username, SessionID: session_id, game_id: game }, function(data){
+			var result = $.parseJSON(data);
+			if (result.error) { alert(result.error); return false; } // AJAX failed, display error message
+		});
+
 		// scrolling must be done only after the dialog has been opened
 		$("#chat_dialog").bind( "dialogopen", function() {
 			$("#chat_dialog > div.scroll_max").delay(400).scrollTo('max');

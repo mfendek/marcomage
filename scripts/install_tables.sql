@@ -73,6 +73,8 @@ CREATE TABLE `games` (
   `Surrender` char(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `EndType` enum('Pending','Surrender','Abort','Abandon','Destruction','Draw','Construction','Resource','Timeout') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Pending',
   `Last Action` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ChatNotification1` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `ChatNotification2` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `Data` text COLLATE utf8_unicode_ci NOT NULL,
   `DeckID1` int(10) unsigned NOT NULL DEFAULT '0',
   `DeckID2` int(10) unsigned NOT NULL DEFAULT '0',

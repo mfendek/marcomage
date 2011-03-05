@@ -1,0 +1,1 @@
+ALTER TABLE `games`  ADD `ChatNotification1` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `Last Action`,  ADD `ChatNotification2` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `ChatNotification1`;

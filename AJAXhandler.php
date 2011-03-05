@@ -220,6 +220,27 @@
 		if ($result) $result = array('info' => 'Chat message sent.');
 		else $error = 'Failed to send chat message.';
 	}
+	elseif($_POST['action'] == "reset_chat_notification")
+	{
+		if (!isset($_POST['game_id']) OR $_POST['game_id'] == "") { $error = 'Invalid game id.'; break; }
+
+		$game_id = $_POST['game_id'];
+
+		// download game
+		$game = $gamedb->GetGame($game_id);
+		if (!$game) { $error = 'Invalid game.'; break; }
+
+		// check access
+		if ($user_name != $game->Name1() AND $user_name != $game->Name2()) { $error = 'Action not allowed.'; break; }
+
+		// check if chat is allowed (can't chat with a computer player)
+		if ($game->GetGameMode('AIMode') == 'yes') { $error = 'Chat not allowed!'; break; }
+
+		$result = $game->ResetChatNotification($user_name);
+
+		if ($result) $result = array('info' => 'Chat notification reset.');
+		else $error = 'Failed reset chat notification.';
+	}
 	else
 		$error = 'Invalid request.';
 

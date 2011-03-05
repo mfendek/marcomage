@@ -3482,6 +3482,10 @@ case 'Games_details':
 	$params['game']['max_tower'] = $game_config[$g_mode]['max_tower'];
 	$params['game']['max_wall'] = $game_config[$g_mode]['max_wall'];
 
+	$chat_notification = ($player->Name() == $player1) ? $game->ChatNotification1 : $game->ChatNotification2;
+	$params['game']['chat_notification'] = $chat_notification;
+	$params['game']['new_chat_messages'] = ($game->NewMessages($player->Name(), $chat_notification)) ? 'yes' : 'no';
+
 	// my hand
 	$myhand = $mydata->Hand;
 	$handdata = $carddb->GetData($myhand);

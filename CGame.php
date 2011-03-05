@@ -285,6 +285,8 @@
 		public $Surrender; // if defined, name of the player who requested to surrender
 		public $EndType; // game end type: 'Pending', 'Construction', 'Destruction', 'Resource', 'Timeout', 'Draw', 'Surrender', 'Abort', 'Abandon'
 		public $LastAction; // timestamp of the most recent action
+		public $ChatNotification1; // timestamp of the last chat view for Player1
+		public $ChatNotification2; // timestamp of the last chat view for Player2
 		public $GameData; // array (name => CGamePlayerData)
 		public $AI; // AI challenge name (optional)
 		
@@ -390,11 +392,28 @@
 			return $this->Chat->ListChatMessages($this->GameID, $order);
 		}
 		
+		public function NewMessages($player, $time)
+		{
+			return $this->Chat->NewMessages($this->GameID, $player, $time);
+		}
+		
+		public function ResetChatNotification($player)
+		{
+			$db = $this->Games->getDB();
+
+			$chat_notification = ($player == $this->Player1) ? 'ChatNotification1' : 'ChatNotification2';
+
+			$result = $db->Query('UPDATE `games` SET `'.$chat_notification.'` = NOW() WHERE `GameID` = ?', array($this->GameID));
+			if ($result === false) return false;
+
+			return true;
+		}
+		
 		public function LoadGame()
 		{
 			$db = $this->Games->getDB();
 
-			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Surrender`, `EndType`, `Last Action`, `Data`, `DeckID1`, `DeckID2`, `Note1`, `Note2`, `GameModes`, `AI` FROM `games` WHERE `GameID` = ?', array($this->GameID));
+			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Surrender`, `EndType`, `Last Action`, `ChatNotification1`, `ChatNotification2`, `Data`, `DeckID1`, `DeckID2`, `Note1`, `Note2`, `GameModes`, `AI` FROM `games` WHERE `GameID` = ?', array($this->GameID));
 			if ($result === false or count($result) == 0) return false;
 			
 			$data = $result[0];
@@ -405,6 +424,8 @@
 			$this->Surrender = $data['Surrender'];
 			$this->EndType = $data['EndType'];
 			$this->LastAction = $data['Last Action'];
+			$this->ChatNotification1 = $data['ChatNotification1'];
+			$this->ChatNotification2 = $data['ChatNotification2'];
 			$this->DeckID1 = $data['DeckID1'];
 			$this->DeckID2 = $data['DeckID2'];
 			$this->Note1 = $data['Note1'];
