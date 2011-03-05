@@ -244,7 +244,6 @@ $(document).ready(function() {
 	// chat handler
 	$("#chat_dialog").dialog({
 		autoOpen: false,
-		resizable: false,
 		show: "fade",
 		hide: "fade",
 		width: 500,
