@@ -400,6 +400,16 @@
 			</p>
 
 			<p>
+				<input type="checkbox" name="IntegratedChat">
+					<xsl:if test="$settings/IntegratedChat = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
+				</input>
+				<span>
+					<xsl:attribute name="title">integrate chat into the game screen instead of using chat pop-up tool</xsl:attribute>
+					<xsl:text>Integrated chat</xsl:text>
+				</span>
+			</p>
+
+			<p>
 				<input type="checkbox" name="Avatargame" >
 					<xsl:if test="$settings/Avatargame = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 				</input>

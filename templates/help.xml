@@ -445,6 +445,8 @@
 	<part name="Chat">
 		<![CDATA[
 <p>You can chat with other players in the game screen. Chat can be opened by pushing the "Chat" button which is located in the upper left part of the screen. Simply write the text and then click the "Send" button. If there are new messages the "Chat" button will be highlighted and the new messages as well (once the chat is opened). Chat supports BBcode and multi-line messages similar to those on the Forum. The message itself contains the date and time when it was written and also name of the player who wrote it. Note that when chat is opened the auto-refresh is paused. After the chat is closed, the auto-refresh is resumed. In case JavaScript is disabled, alternative chat interface is located at the bottom of the game screen.</p>
+
+<p>Chat can be configured to be integrated with the game screen in the settings section.</p>
 		]]>
 	</part>
 	<part name="Forum">
@@ -541,6 +543,7 @@
 	<li>Play card buttons - each card in game will have a local play button (if playable) instead of global play button</li>
 	<li>Show nationality in players list - display text description of players' nationality in the players list</li>
 	<li>Reverse chat message order - reverses chat order in the chatbox (game section). By default chat messages are ordered from newest (top) to oldest (bottom)</li>
+	<li>Integrated chat - integrate chat into the game screen instead of using chat pop-up tool</li>
 	<li>Show avatar in game - display avatars of both players in the game</li>
 	<li>Show avatar in players list - display avatar in players list for all players who have an avatar</li>
 	<li>Avatar display correction for chat - used to prevent Firefox 2.x display bug</li>

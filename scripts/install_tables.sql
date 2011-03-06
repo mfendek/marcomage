@@ -232,6 +232,7 @@ CREATE TABLE `settings` (
   `PlayButtons` tinyint(1) NOT NULL DEFAULT '0',
   `Nationality` tinyint(1) NOT NULL DEFAULT '0',
   `Chatorder` tinyint(1) NOT NULL DEFAULT '0',
+  `IntegratedChat` tinyint(1) NOT NULL DEFAULT '0',
   `Avatargame` tinyint(1) NOT NULL DEFAULT '1',
   `Avatarlist` tinyint(1) NOT NULL DEFAULT '1',
   `Correction` tinyint(1) NOT NULL DEFAULT '0',

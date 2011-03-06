@@ -171,7 +171,7 @@
 
 		public function ListBooleanSettings() // returns list of all boolean type setting names
 		{
-			return array('FriendlyFlag', 'BlindFlag', 'LongFlag', 'Images', 'Insignias', 'CardPool', 'PlayButtons', 'Nationality', 'Chatorder', 'Avatargame', 'Avatarlist', 'Correction', 'OldCardLook', 'Miniflags', 'Reports', 'Forum_notification', 'Concepts_notification', 'GamesDetails', 'RandomDeck', 'GameLimit');
+			return array('FriendlyFlag', 'BlindFlag', 'LongFlag', 'Images', 'Insignias', 'CardPool', 'PlayButtons', 'Nationality', 'Chatorder', 'IntegratedChat', 'Avatargame', 'Avatarlist', 'Correction', 'OldCardLook', 'Miniflags', 'Reports', 'Forum_notification', 'Concepts_notification', 'GamesDetails', 'RandomDeck', 'GameLimit');
 		}
 
 		public function ListOtherSettings() // returns list of all non-boolean type setting names

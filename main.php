@@ -3629,6 +3629,7 @@ case 'Games_details':
 	$params['game']['myavatar'] = $settings->GetSetting('Avatar');
 	$params['game']['hisavatar'] = $o_settings->GetSetting('Avatar');
 
+	$params['game']['integrated_chat'] = $settings->GetSetting('IntegratedChat');
 	$params['game']['reverse_chat'] = $reverse_chat = $settings->GetSetting('Chatorder');
 	$order = ($reverse_chat == "yes") ? "ASC" : "DESC";
 	$params['game']['messagelist'] = $message_list = $game->ListChatMessages($order);

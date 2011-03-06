@@ -526,8 +526,10 @@
 			</xsl:if>
 		</td>
 		<td>
-			<xsl:if test="$param/AIMode = 'no'">
+			<!-- show only in case chat pop-up tool can be used -->
+			<xsl:if test="$param/AIMode = 'no' and $param/integrated_chat = 'no'">
 				<button type="button" name="show_chat" >
+					<!-- highlight button in case there are new messages -->
 					<xsl:if test="$param/new_chat_messages = 'yes'">
 						<xsl:attribute name="class">marked_button</xsl:attribute>
 					</xsl:if>
@@ -1085,6 +1087,9 @@
 	<xsl:if test="$param/AIMode = 'no'">
 
 	<div class="chatsection">
+		<!-- disable in case integrated chat setting is disabled -->
+		<xsl:if test="$param/integrated_chat = 'no'"><xsl:attribute name="style">display: none</xsl:attribute></xsl:if>
+
 		<!-- avatars normal version -->
 		<xsl:if test="($param/display_avatar = 'yes') and ($param/correction = 'no')">
 			<img style="float: left;  margin: 0.5ex 0ex 0ex 0ex;" class="avatar" height="60px" width="60px" src="img/avatars/{$param/myavatar}" alt="avatar" />
@@ -1094,6 +1099,8 @@
 		<!-- message list -->
 		<xsl:if test="count($param/messagelist/*) &gt; 0">
 			<div class="chatbox">
+				<!-- scrolls chatbox to bottom if reverse chatorder setting is active -->
+				<xsl:if test="$param/reverse_chat = 'yes'"><xsl:attribute name="class">chatbox scroll_max</xsl:attribute></xsl:if>
 				<xsl:for-each select="$param/messagelist/*">
 					<p>
 						<xsl:choose>
@@ -1134,7 +1141,9 @@
 	</div>
 
 	<!-- chat dialog (do not display) -->
-	<div id="chat_dialog" title="Chat" style="display: none">
+	<div title="Chat" style="display: none">
+		<!-- enable in case integrated chat setting is disabled -->
+		<xsl:if test="$param/integrated_chat = 'no'"><xsl:attribute name="id">chat_dialog</xsl:attribute></xsl:if>
 
 		<!-- message list -->
 		<div>

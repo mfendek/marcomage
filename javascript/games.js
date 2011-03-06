@@ -219,8 +219,8 @@ $(document).ready(function() {
 		}
 	});
 
-	// hide standard chat
-	$("div.chatsection").hide();
+	// scroll standard chat
+	$("div.chatsection > div.scroll_max").scrollTo('max');
 
 	$("#chat_dialog").bind( "dialogclose", function() {
 		// enable autorefresh when user closes the chat
