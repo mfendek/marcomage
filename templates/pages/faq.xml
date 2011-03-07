@@ -6,7 +6,44 @@
 <hr />
 
 <h4>Q1: I have noticed some unexpected behaviour from the system, I think I have found a bug. What should I do now?</h4>
-<p>A: Go trough F.A.Q. and Game manual first and if you can't find your answer there please document the bug (screenshot, page source) and report it on our forum in the support section or send it to either <a href="mailto:illuminati@pobox.sk">Mojko</a> or <a href="mailto:theultramage@gmail.com">theultramage</a>. In the report, try to describe the bug itself, then the circumstances in which the bug appeared. We will do what we can to solve the problem.</p>
+<p>A:</p>
+
+<ol>
+	<li>try to find solution in this FAQ, <a href="?location=Help">Game manual</a> or <a href="?location=Forum_section&amp;CurrentSection=3">Support section</a> of the Forum (you can use a search there)</li>
+	<li>refresh your browser cache either by pressing the F5 button once, while you are within the screen that causes the bug</li>
+	<li>refresh the entire browser cache manually (this differs for each browser)
+		<ul>
+			<li>Firefox
+				<ol>
+					<li>select <b>Tools</b></li>
+					<li>select <b>Clear recent history</b></li>
+					<li>have only the <b>Cache</b> checkbox checked</li>
+					<li>select <b>Clear now</b></li>
+				</ol>
+			</li>
+			<li>Chrome
+				<ol>
+					<li>select <b>Tools</b></li>
+					<li>select <b>Clear browsing data</b></li>
+					<li>have only the <b>Empty the cache</b> checkbox checked</li>
+					<li>select <b>Clear browsing data</b></li>
+				</ol>
+			</li>
+			<li>Opera
+				<ol>
+					<li>select <b>Tools</b></li>
+					<li>select <b>Delete private data</b></li>
+					<li>select <b>Detailed options</b></li>
+					<li>have only the <b>Delete entire cache</b> checkbox checked</li>
+					<li>select <b>Delete</b></li>
+				</ol>
+			</li>
+		</ul>
+	</li>
+	<li>document the bug (describe what you expected it to do and what happened instead, provide a screenshot, describe the situation when it happened, in which location and so on...)</li>
+	<li>report the bug on the <a href="?location=Forum_section&amp;CurrentSection=3">Support section</a> of the Forum or send it to either <a href="mailto:illuminati@pobox.sk">Mojko</a> or <a href="mailto:theultramage@gmail.com">theultramage</a>, we will do what we can to solve the problem</li>
+</ol>
+
 <h4>Q2: I can't log in. How do I fix that?</h4>
 <p>A: If you are sure you have used the right login and password, try to delete cookies for our site in your browser. You should find cookie management in options/preferences/advanced options.</p>
 <h4>Q3: My browser doesn't display your site properly. You have errors in your website. Can you fix it?</h4>
