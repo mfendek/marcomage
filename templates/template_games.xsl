@@ -17,19 +17,12 @@
 	<xsl:variable name="activedecks" select="count($param/decks/*)" />
 	<xsl:variable name="list" select="$param/list" />
 
-	<!-- autorefresh -->
-	<xsl:element name="script">
-		<xsl:attribute name="type">text/javascript</xsl:attribute>
-		<xsl:text>function StartGamesRefresh() { var timer = 0; </xsl:text>
-		<xsl:if test="$param/autorefresh &gt; 0">
-			<xsl:text>timer = window.setTimeout('GamesRefresh()', </xsl:text>
-			<xsl:value-of select="$param/autorefresh" />
-			<xsl:text>000); </xsl:text>
-		</xsl:if>
-		<xsl:text>return timer; }</xsl:text>
-	</xsl:element>
-
 	<div id="games">
+
+	<!-- autorefresh -->
+	<xsl:if test="$param/autorefresh &gt; 0">
+		<input type="hidden" name="Autorefresh" value="{$param/autorefresh}"/>
+	</xsl:if>
 
 	<!-- begin active games list -->
 	<div id="active_games" class="skin_label">
@@ -416,19 +409,12 @@
 	<xsl:variable name="param" select="$params/game" />
 	<xsl:variable name="my_turn" select="$param/GameState = 'in progress' and $param/Current = $param/PlayerName and $param/Surrender = ''" />
 
-	<!-- autorefresh -->
-	<xsl:element name="script">
-		<xsl:attribute name="type">text/javascript</xsl:attribute>
-		<xsl:text>function StartRefresh() { var timer = 0; </xsl:text>
-		<xsl:if test="$param/autorefresh &gt; 0">
-			<xsl:text>timer = window.setTimeout('GameRefresh()', </xsl:text>
-			<xsl:value-of select="$param/autorefresh" />
-			<xsl:text>000); </xsl:text>
-		</xsl:if>
-		<xsl:text>return timer; }</xsl:text>
-	</xsl:element>
-
 	<div id="game">
+
+	<!-- autorefresh -->
+	<xsl:if test="$param/autorefresh &gt; 0">
+		<input type="hidden" name="Autorefresh" value="{$param/autorefresh}"/>
+	</xsl:if>
 
 	<!-- remember the current location across pages -->
 	<div><input type="hidden" name="CurrentGame" value="{$param/CurrentGame}"/></div>

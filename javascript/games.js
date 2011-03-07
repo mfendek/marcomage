@@ -12,12 +12,23 @@ function GameRefresh() // refresh user screen within the game
 	window.location.replace($('a#game_refresh').attr('href'));
 }
 
+function StartGameRefresh()
+{
+	var timer = 0;
+
+	timer = window.setTimeout('GameRefresh()', parseInt($("div#game > input[name='Autorefresh']").val()) * 1000);
+
+	return timer;
+}
+
 $(document).ready(function() {
 
-	// initialize games list refresh
-	if ($("div#games").length == 1)
+	// initialize games list refresh if active
+	var games_timer = 0;
+
+	if ($("div#games > input[name='Autorefresh']").length == 1)
 	{
-		StartGamesRefresh();
+		games_timer = window.setTimeout('GamesRefresh()', parseInt($("div#games > input[name='Autorefresh']").val()) * 1000);
 	}
 
 	// card selector verification (play card)
@@ -145,12 +156,17 @@ $(document).ready(function() {
 		$(this).animate({ opacity: 0.6 }, 'fast');
 	});
 
-	// init in-game refresh
-	var timer = StartRefresh();
+	// initialize in-game refresh if active
+	var game_timer = 0;
+
+	if ($("div#game > input[name='Autorefresh']").length == 1)
+	{
+		game_timer = StartGameRefresh();
+	}
 
 	$("input[name='ChatMessage']").keypress(function(event) {
 		// disable auto-refresh when user is typing chat message
-		window.clearTimeout(timer);
+		window.clearTimeout(game_timer);
 
 		// sends in game chat message by pressing ENTER key
 		if (event.keyCode == '13') { event.preventDefault(); $("button[name='send_message']").click(); }
@@ -158,14 +174,14 @@ $(document).ready(function() {
 
 	$("#game_note_dialog").bind( "dialogclose", function() {
 		// enable autorefresh when user closes the game note
-		timer = StartRefresh();
+		game_timer = StartGameRefresh();
 	});
 
 	// open game note
 	$("a#game_note").click(function(event) {
 		 event.preventDefault();
 		 // disable autorefresh when user opens the game note
-		 window.clearTimeout(timer);
+		 window.clearTimeout(game_timer);
 		 $("#game_note_dialog").dialog("open");
 	});
 
@@ -233,7 +249,7 @@ $(document).ready(function() {
 
 	$("#chat_dialog").bind( "dialogclose", function() {
 		// enable autorefresh when user closes the chat
-		timer = StartRefresh();
+		game_timer = StartGameRefresh();
 	});
 
 	// open chat
@@ -241,7 +257,7 @@ $(document).ready(function() {
 		event.preventDefault();
 
 		// disable autorefresh when user opens the chat
-		window.clearTimeout(timer);
+		window.clearTimeout(game_timer);
 
 		// reset chat notification for current player
 		var username = GetSessionData('Username');
