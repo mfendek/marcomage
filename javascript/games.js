@@ -14,11 +14,6 @@ function GameRefresh() // refresh user screen within the game
 
 $(document).ready(function() {
 
-	// sends in game chat message by pressing ENTER key
-	$("input[name='ChatMessage']").keypress(function(event) {
-		if (event.keyCode == '13') { event.preventDefault(); $("button[name='send_message']").click(); }
-	});
-
 	// initialize games list refresh
 	if ($("div#games").length == 1)
 	{
@@ -152,6 +147,14 @@ $(document).ready(function() {
 
 	// init in-game refresh
 	var timer = StartRefresh();
+
+	$("input[name='ChatMessage']").keypress(function(event) {
+		// disable auto-refresh when user is typing chat message
+		window.clearTimeout(timer);
+
+		// sends in game chat message by pressing ENTER key
+		if (event.keyCode == '13') { event.preventDefault(); $("button[name='send_message']").click(); }
+	});
 
 	$("#game_note_dialog").bind( "dialogclose", function() {
 		// enable autorefresh when user closes the game note
