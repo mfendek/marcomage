@@ -19,6 +19,12 @@ $(document).ready(function() {
 		if (event.keyCode == '13') { event.preventDefault(); $("button[name='send_message']").click(); }
 	});
 
+	// initialize games list refresh
+	if ($("div#games").length == 1)
+	{
+		StartGamesRefresh();
+	}
+
 	// card selector verification (play card)
 	$("button[name='play_card'][value='0']").click(function() {
 		if ($("input[name='selected_card']:checked").length == 0)

@@ -18,14 +18,16 @@
 	<xsl:variable name="list" select="$param/list" />
 
 	<!-- autorefresh -->
-	<xsl:if test="$param/autorefresh &gt; 0">
-		<xsl:element name="script">
-			<xsl:attribute name="type">text/javascript</xsl:attribute>
-			<xsl:text>$(document).ready(function() { window.setTimeout('GamesRefresh()', </xsl:text>
+	<xsl:element name="script">
+		<xsl:attribute name="type">text/javascript</xsl:attribute>
+		<xsl:text>function StartGamesRefresh() { var timer = 0; </xsl:text>
+		<xsl:if test="$param/autorefresh &gt; 0">
+			<xsl:text>timer = window.setTimeout('GamesRefresh()', </xsl:text>
 			<xsl:value-of select="$param/autorefresh" />
-			<xsl:text>000); });</xsl:text>
-		</xsl:element>
-	</xsl:if>
+			<xsl:text>000); </xsl:text>
+		</xsl:if>
+		<xsl:text>return timer; }</xsl:text>
+	</xsl:element>
 
 	<div id="games">
 
