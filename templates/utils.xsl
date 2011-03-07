@@ -149,7 +149,10 @@
 <func:function name="am:datediff">
 	<xsl:param name="datetime1" as="xs:string" />
 	<xsl:param name="datetime2" as="xs:string" />
-	<func:result select="date:seconds(date:difference(str:replace($datetime1, ' ', 'T'), str:replace(str:replace($datetime2, '0000-00-00 00:00:00', '1970-01-01 00:00:00'), ' ', 'T')))" />
+
+	<xsl:variable name="datetime2_fix" select="str:replace($datetime2, '0000-00-00 00:00:00', '1970-01-01 00:00:00')" />
+
+	<func:result select="date:seconds(date:difference(str:replace($datetime1, ' ', 'T'), str:replace($datetime2_fix, ' ', 'T')))" />
 </func:function>
 
 
