@@ -16,7 +16,10 @@ function StartGameRefresh()
 {
 	var timer = 0;
 
-	timer = window.setTimeout('GameRefresh()', parseInt($("div#game > input[name='Autorefresh']").val()) * 1000);
+	if ($("div#game > input[name='Autorefresh']").length == 1)
+	{
+		timer = window.setTimeout('GameRefresh()', parseInt($("div#game > input[name='Autorefresh']").val()) * 1000);
+	}
 
 	return timer;
 }
