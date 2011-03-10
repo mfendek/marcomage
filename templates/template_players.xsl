@@ -426,6 +426,9 @@
 					</option>
 				</xsl:for-each>
 			</select>
+
+			<h4>Reset password</h4>
+			<button type="submit" name="reset_password" value="{am:urlencode($opponent)}">Reset password</button>
 		</xsl:if>
 
 		<xsl:if test="$param/export_deck = 'yes' and count($param/export_decks/*) &gt; 0">

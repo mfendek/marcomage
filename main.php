@@ -2528,6 +2528,26 @@
 				break;
 			}
 
+			if (isset($_POST['reset_password'])) // reset password in case user forgot his current password
+			{
+				$_POST['Profile'] = $opponent = postdecode($_POST['reset_password']);
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
+
+				$current_player = $playerdb->GetPlayer($opponent);
+				if (!$current_player) { $error = 'Invalid player.'; $current = 'Players_details'; break; }
+
+				// new password is player's username
+				if (!$current_player->ChangePassword($current_player->Name()))
+					$error = "Failed to reset password.";
+				else
+					$information = "Password reset.";
+
+				$current = 'Players_details';
+				break;
+			}
+
 			// end profile related messages
 
 			// begin players related messages
@@ -2683,7 +2703,7 @@
 				elseif ($_POST['NewPassword'] != $_POST['NewPassword2'])
 					$error = "The two passwords don't match.";
 
-				elseif (!$logindb->ChangePassword($player->Name(), $_POST['NewPassword']))
+				elseif (!$player->ChangePassword($_POST['NewPassword']))
 					$error = "Failed to change password.";
 
 				else $information = "Password changed";

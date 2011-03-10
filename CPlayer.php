@@ -382,6 +382,12 @@
 		{
 			return $this->Players->ChangeAccessRights($this->Name, $access_right);
 		}
+
+		public function ChangePassword($password)
+		{
+			global $logindb;
+			return $logindb->ChangePassword($this->Name, $password);
+		}
 	}
 	
 	
