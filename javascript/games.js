@@ -337,4 +337,10 @@ $(document).ready(function() {
 		}
 	});
 
+	// open chat automatically if there are new messages
+	if ($("div#game button.marked_button[name='show_chat']").length == 1)
+	{
+		$("div#game button.marked_button[name='show_chat']").click();
+	}
+
 });
