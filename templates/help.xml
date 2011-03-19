@@ -473,6 +473,10 @@
 	<li>Rejected - card will not be implemented in current form</li>
 </ul>
 
+<h4>Card picture</h4>
+
+<p>We prefer card pictures to be in PNG format, although other formats can be submitted as well. When choosing card picture, try to avoid copyrighted pictures. Such pictures will be replaced in case the respective copyright holder will request it.</p>
+
 <h4>Card template</h4>
 
 <p>To create new cards in the Concepts section, that are actually implementable, you need to follow certain restrictions. For example a card effect must be done in a single turn. Continuous effects are not supported. A card can only use/effect data described below:</p>
