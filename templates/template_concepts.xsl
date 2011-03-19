@@ -440,6 +440,7 @@
 			</div>
 			<p>Note</p>
 			<div class="note"><xsl:copy-of select="am:textencode($param/data/note)" /></div>
+			<div class="clear_floats"></div>
 		</div>
 		<input type="hidden" name="CurrentConcept" value="{$param/data/id}" />
 	</div>
