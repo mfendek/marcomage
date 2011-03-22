@@ -14,6 +14,7 @@
 	require_once('../config.php');
 	require_once('../CDatabase.php');
 	require_once('../CLogin.php');
+	require_once('../CAward.php');
 	require_once('../CScore.php');
 	require_once('../CDeck.php');
 	require_once('../CGame.php');
@@ -52,7 +53,7 @@
 
 	$result = $db->Query('SELECT `Username` FROM (SELECT `Username` FROM `logins` WHERE (UNIX_TIMESTAMP(`Last Query`) < UNIX_TIMESTAMP() - 60*60*24*7*12)) as `logins` INNER JOIN (SELECT `Username` FROM `scores` WHERE `Wins` + `Losses` + `Draws` = 0) as `scores` USING (`Username`) LIMIT 50');
 
-	while( $data = $result->Next() )
+	foreach ($result as $data)
 	{
 		$username = $data['Username'];
 		echo 'Deleting player '.htmlencode($username)."...\n<br />";
