@@ -36,6 +36,21 @@
 			return $this->db->lastInsertId();
 		}
 
+		public function BeginTransaction()
+		{
+			return $this->db->beginTransaction();
+		}
+
+		public function RollBack()
+		{
+			return $this->db->rollBack();
+		}
+
+		public function Commit()
+		{
+			return $this->db->commit();
+		}
+
 		///
 		/// Executes database query with provided parameter values
 		/// @param string $query database query
