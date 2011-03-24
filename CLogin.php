@@ -141,7 +141,10 @@
 			$now = time();
 			$addr = $_SERVER["REMOTE_ADDR"];
 			
-			// TODO: flood prevention - limits the frequency of account creations per ip 
+			// flood prevention - limits the frequency of account creations per ip
+			$result = $db->Query('SELECT 1 FROM `logins` WHERE `Last IP` = ? AND `Registered` >= NOW() - INTERVAL 1 MINUTE', array($addr));
+			if ($result === false) { $status = $db->status; return false; }
+			if (count($result) > 0) { $status = 'FLOOD_PREVENTION'; return false; }
 			
 			$result = $db->Query('INSERT INTO `logins` (`Username`, `Password`, `Last IP`, `Last Query`) VALUES (?, ?, ?, ?)', array($username, md5($password), $addr, $now));
 			if ($result === false) { $status = 'ERROR_ALREADY_REGISTERED'; return false; }; // or db failure, but whatever
