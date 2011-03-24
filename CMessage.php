@@ -60,7 +60,7 @@
 			$message.= 'Good luck and have fun,'."\n"."\n";
 			$message.= 'MArcomage development team'."\n";
 			
-			$this->SendMessage(SYSTEM_NAME, $player, 'Welcome to MArcomage', $message);
+			return $this->SendMessage(SYSTEM_NAME, $player, 'Welcome to MArcomage', $message);
 		}
 		
 		public function GetMessage($messageid, $player_name)

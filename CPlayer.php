@@ -21,24 +21,30 @@
 			global $settingdb;
 			global $messagedb;
 			
+			$db = $this->db;
+			$db->BeginTransaction();
+			
 			// add all associated entries (login, score, decks, settings)
-			$logindb->Register($playername, $password);
-			$scoredb->CreateScore($playername);
+			if (!$logindb->Register($playername, $password)) { $db->RollBack(); return false; }
+			if (!$scoredb->CreateScore($playername)) { $db->RollBack(); return false; }
 			$starter_decks = $deckdb->StarterDecks();
 			foreach (array('deck 1', 'deck 2', 'deck 3', 'deck 4', 'deck 5', 'deck 6', 'deck 7', 'deck 8') as $deckname)
 			{
 				$deck = $deckdb->CreateDeck($playername, $deckname);
+				if ($deck === false) { $db->RollBack(); return false; }
 				
 				// create starter deck
 				if (isset($starter_decks[$deck->Deckname()]))
 				{
 					$starter_deck = $starter_decks[$deck->Deckname()];
 					$deck->LoadData($starter_deck->DeckData);
-					$deck->SaveDeck();
+					if (!$deck->SaveDeck()) { $db->RollBack(); return false; }
 				}
 			}
-			$settingdb->CreateSettings($playername);
-			$messagedb->WelcomeMessage($playername);
+			if (!$settingdb->CreateSettings($playername)) { $db->RollBack(); return false; }
+			if (!$messagedb->WelcomeMessage($playername)) { $db->RollBack(); return false; }
+			
+			$db->Commit();
 			
 			// create the object
 			return new CPlayer($playername, "user", $this);
@@ -53,30 +59,23 @@
 			global $gamedb;
 			global $messagedb;
 
-			$result = array();
-			// delete every indication that the player ever existed ^^
-			$res = $logindb->Unregister($playername);
-			$result[] = (($res) ? 'Success' : 'FAILED!!!').' at Unregister';
+			$db = $this->db;
+			$db->BeginTransaction();
 
-			$res = $scoredb->DeleteScore($playername);
-			$result[] = (($res) ? 'Success' : 'FAILED!!!').' at DeleteScore';
+			// delete every indication that the player ever existed ^^
+			if (!$logindb->Unregister($playername)) { $db->RollBack(); return false; }
+			if (!$scoredb->DeleteScore($playername)) { $db->RollBack(); return false; }
 
 			foreach ($deckdb->ListDecks($playername) as $deck_data)
-			{
-				$res = $deckdb->DeleteDeck($playername, $deck_data['DeckID']);
-				$result[] = (($res) ? 'Success' : 'FAILED!!!').' at DeleteDeck '.htmlencode($deck_data['Deckname']);
-			}
+				if (!$deckdb->DeleteDeck($playername, $deck_data['DeckID'])) { $db->RollBack(); return false; }
 
-			$res = $settingdb->DeleteSettings($playername);
-			$result[] = (($res) ? 'Success' : 'FAILED!!!').' at DeleteSettings';
+			if (!$settingdb->DeleteSettings($playername)) { $db->RollBack(); return false; }
+			if (!$gamedb->DeleteGames($playername)) { $db->RollBack(); return false; }
+			if (!$messagedb->DeleteMessages($playername)) { $db->RollBack(); return false; }
 
-			$res = $gamedb->DeleteGames($playername);
-			$result[] = (($res) ? 'Success' : 'FAILED!!!').' at DeleteGames';
+			$db->Commit();
 
-			$res = $messagedb->DeleteMessages($playername);
-			$result[] = (($res) ? 'Success' : 'FAILED!!!').' at DeleteMessages';
-
-			return $result;
+			return true;
 		}
 		
 		public function GetPlayer($playername)

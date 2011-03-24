@@ -58,7 +58,7 @@
 		$username = $data['Username'];
 		echo 'Deleting player '.htmlencode($username)."...\n<br />";
 		$res = $playerdb->DeletePlayer($username);
-		echo implode("\n<br />", $res)."\n<br />\n<hr />";
+		echo (($res) ? 'SUCCESS' : 'FAILURE')."\n<br />\n<hr />";
 	}
 
 	echo "\n<br />\n<hr />Done.";

@@ -22,14 +22,12 @@
 		
 		public function CreateScore($username)
 		{
-			$score = new CScore($username, $this);
-			
 			$db = $this->db;
 
 			$result = $db->Query('INSERT INTO `scores` (`Username`) VALUES (?)', array($username));
 			if ($result === false) return false;
-			
-			return $score;
+
+			return true;
 		}
 		
 		public function DeleteScore($username)
