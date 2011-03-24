@@ -850,12 +850,16 @@
 				$thread_id = $forum->Threads->ThreadExists($_POST['Title']);
 				if ($thread_id) { $error = "Thread already exists"; $current = "Forum_thread"; $_POST['CurrentThread'] = $thread_id; break; }
 
+				$db->BeginTransaction();
+
 				$new_thread = $forum->Threads->CreateThread($_POST['Title'], $player->Name(), $_POST['Priority'], $section_id);
-				if ($new_thread === FALSE) { $error = "Failed to create new thread"; $current = "Forum_section"; break; }
+				if ($new_thread === FALSE) { $db->RollBack(); $error = "Failed to create new thread"; $current = "Forum_section"; break; }
 				// $new_thread contains ID of currently created thread, which can be 0
 
 				$new_post = $forum->Threads->Posts->CreatePost($new_thread, $player->Name(), $_POST['Content']);
-				if (!$new_post) { $error = "Failed to create new post"; $current = "Forum_section"; break; }
+				if (!$new_post) { $db->RollBack(); $error = "Failed to create new post"; $current = "Forum_section"; break; }
+
+				$db->Commit();
 
 				$forum->Threads->RefreshThread($new_thread); // update post count, last author and last post
 

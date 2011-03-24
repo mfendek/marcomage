@@ -33,14 +33,18 @@
 		public function DeleteThread($thread_id)
 		{
 			$db = $this->db;
-			
+
+			$db->BeginTransaction();
+
 			// delete all posts that are inside this thread
 			$result = $db->Query('UPDATE `forum_posts` SET `Deleted` = TRUE WHERE `ThreadID` = ?', array($thread_id));
-			if ($result === false) return false;
+			if ($result === false) { $db->RollBack(); return false; }
 
 			// delete thread
 			$result = $db->Query('UPDATE `forum_threads` SET `Deleted` = TRUE WHERE `ThreadID` = ?', array($thread_id));
-			if ($result === false) return false;
+			if ($result === false) { $db->RollBack(); return false; }
+
+			$db->Commit();
 
 			return true;
 		}
