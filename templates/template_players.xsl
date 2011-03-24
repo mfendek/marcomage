@@ -428,6 +428,7 @@
 					</xsl:for-each>
 				</select>
 				<button type="submit" name="reset_password" value="{am:urlencode($opponent)}">Reset password</button>
+				<button type="submit" name="delete_player" value="{am:urlencode($opponent)}">Delete player</button>
 			</fieldset>
 		</xsl:if>
 

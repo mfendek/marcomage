@@ -2439,6 +2439,20 @@
 				break;
 			}
 
+			if (isset($_POST['delete_player'])) // Players -> User details -> Delete player
+			{
+				$_POST['Profile'] = $opponent = postdecode($_POST['delete_player']);
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
+
+				if (!$playerdb->DeletePlayer($opponent)) { $error = "Failed to delete player."; $current = 'Players_details'; break; }
+
+				$information = 'Player successfully deleted.';
+				$current = 'Players';
+				break;
+			}
+
 			if (isset($_POST['reset_exp'])) // Players -> User details -> Reset exp
 			{
 				$_POST['Profile'] = $opponent = postdecode($_POST['reset_exp']);
