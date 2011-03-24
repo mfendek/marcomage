@@ -1,28 +1,26 @@
 -- --------------------
 -- MArcomage sql script
 -- --------------------
--- deletes replays data that belong to replays with 0 views and are older than 2 days
+-- deletes replays data that belong to finished replays with 0 views and are older than 2 days
 --
 
 SET AUTOCOMMIT=0;
 
 START TRANSACTION;
 
-CREATE TABLE `replays_tmp` (
-  `GameID` int(10) unsigned NOT NULL,
-  `Turn` int(5) unsigned NOT NULL DEFAULT '1',
-  `Current` char(20) COLLATE utf8_unicode_ci NOT NULL,
-  `Round` int(3) unsigned NOT NULL DEFAULT '1',
-  `Data` text COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`GameID`,`Turn`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+-- copy data structure
+CREATE TABLE `replays_tmp` LIKE `replays_data`;
 
-INSERT INTO `replays_tmp` SELECT `GameID`, `Turn`, `Current`, `Round`, `Data`  FROM (SELECT `GameID` FROM `replays_head` WHERE `Views` > 0 OR `EndType` = "Pending" OR (UNIX_TIMESTAMP() - UNIX_TIMESTAMP(`Finished`) < (60 * 60 * 24 * 2))) as `head` INNER JOIN `replays_data` USING (`GameID`);
+-- move replay data that will be preserved to temporary table (replays with positive views, unfinished replays and replays that are younger than 2 days)
+INSERT INTO `replays_tmp` SELECT `GameID`, `Turn`, `Current`, `Round`, `Data` FROM (SELECT `GameID` FROM `replays_head` WHERE `Views` > 0 OR `EndType` = "Pending" OR `Finished` > NOW() - INTERVAL 2 DAY) as `head` INNER JOIN `replays_data` USING (`GameID`);
 
+-- delete old table along with data that doesn't need to be preserved
 DROP TABLE `replays_data`;
 
+-- rename temporary table
 RENAME TABLE `replays_tmp` TO `replays_data`;
 
-UPDATE `replays_head` SET `Deleted` = 1 WHERE `Deleted` = 0 AND NOT (`Views` > 0 OR `EndType` = "Pending" OR (UNIX_TIMESTAMP() - UNIX_TIMESTAMP(`Finished`) < (60 * 60 * 24 * 2)));
+-- update replays_head table about recent data deletion
+UPDATE `replays_head` SET `Deleted` = 1 WHERE `Deleted` = 0 AND NOT (`Views` > 0 OR `EndType` = "Pending" OR `Finished` > NOW() - INTERVAL 2 DAY);
 
 COMMIT;
