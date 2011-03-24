@@ -408,67 +408,71 @@
 		</xsl:if>
 		
 		<xsl:if test="$param/change_rights = 'yes'">
-			<h4>Change access rights</h4>			
-			<button type="submit" name="change_access" value="{am:urlencode($opponent)}">Change access rights</button>
-			<xsl:variable name="user_types">
-				<type name="moderator"  text="Moderator"/>
-				<type name="supervisor" text="Supervisor"/>
-				<type name="user"       text="User"     />
-				<type name="squashed"   text="Squashed" />
-				<type name="limited"    text="Limited"  />
-				<type name="banned"     text="Banned"   />
-			</xsl:variable>
-			<select name="new_access" size="1">
-				<xsl:for-each select="exsl:node-set($user_types)/*">
-					<option value="{@name}">
-						<xsl:if test="$param/PlayerType = @name"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-						<xsl:value-of select="@text"/>
-					</option>
-				</xsl:for-each>
-			</select>
-
-			<h4>Reset password</h4>
-			<button type="submit" name="reset_password" value="{am:urlencode($opponent)}">Reset password</button>
+			<fieldset>
+				<legend>Account options</legend>
+				<button type="submit" name="change_access" value="{am:urlencode($opponent)}">Change access rights</button>
+				<xsl:variable name="user_types">
+					<type name="moderator"  text="Moderator"/>
+					<type name="supervisor" text="Supervisor"/>
+					<type name="user"       text="User"     />
+					<type name="squashed"   text="Squashed" />
+					<type name="limited"    text="Limited"  />
+					<type name="banned"     text="Banned"   />
+				</xsl:variable>
+				<select name="new_access" size="1">
+					<xsl:for-each select="exsl:node-set($user_types)/*">
+						<option value="{@name}">
+							<xsl:if test="$param/PlayerType = @name"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+							<xsl:value-of select="@text"/>
+						</option>
+					</xsl:for-each>
+				</select>
+				<button type="submit" name="reset_password" value="{am:urlencode($opponent)}">Reset password</button>
+			</fieldset>
 		</xsl:if>
 
 		<xsl:if test="$param/export_deck = 'yes' and count($param/export_decks/*) &gt; 0">
-			<h4>Export deck</h4>
-			<select name="ExportDeck" size="1">
-				<xsl:for-each select="$param/export_decks/*">
-					<option value="{am:urlencode(DeckID)}">
-						<xsl:value-of select="Deckname"/>
-						<xsl:text> (</xsl:text>
-						<xsl:value-of select="Wins"/>
-						<xsl:text> / </xsl:text>
-						<xsl:value-of select="Losses"/>
-						<xsl:text> / </xsl:text>
-						<xsl:value-of select="Draws"/>
-						<xsl:text>)</xsl:text>
-					</option>
-				</xsl:for-each>
-			</select>
-			<button type="submit" name="export_deck_remote" value="{am:urlencode($opponent)}">Export</button>
+			<fieldset>
+				<legend>Deck options</legend>
+				<select name="ExportDeck" size="1">
+					<xsl:for-each select="$param/export_decks/*">
+						<option value="{am:urlencode(DeckID)}">
+							<xsl:value-of select="Deckname"/>
+							<xsl:text> (</xsl:text>
+							<xsl:value-of select="Wins"/>
+							<xsl:text> / </xsl:text>
+							<xsl:value-of select="Losses"/>
+							<xsl:text> / </xsl:text>
+							<xsl:value-of select="Draws"/>
+							<xsl:text>)</xsl:text>
+						</option>
+					</xsl:for-each>
+				</select>
+				<button type="submit" name="export_deck_remote" value="{am:urlencode($opponent)}">Export deck</button>
+			</fieldset>
 		</xsl:if>
 
 		<xsl:if test="$param/system_notification = 'yes'">
-			<h4>System notification</h4>
-			<button type="submit" name="system_notification" value="{am:urlencode($opponent)}">Send system notification</button>
+			<fieldset>
+				<legend>System message</legend>
+				<button type="submit" name="system_notification" value="{am:urlencode($opponent)}">Send system notification</button>
+			</fieldset>
 		</xsl:if>
 
 		<xsl:if test="$param/change_all_avatar = 'yes'">
-			<h4>Reset avatar</h4>
-			<button type="submit" name="reset_avatar_remote" value="{am:urlencode($opponent)}">Reset</button>
+			<fieldset>
+				<legend>Avatar options</legend>
+				<button type="submit" name="reset_avatar_remote" value="{am:urlencode($opponent)}">Reset avatar</button>
+			</fieldset>
 		</xsl:if>
 
 		<xsl:if test="$param/reset_exp = 'yes'">
-			<h4>Reset exp</h4>
-			<button type="submit" name="reset_exp" value="{am:urlencode($opponent)}">Reset</button>
-
-			<h4>Add gold (<xsl:value-of select="$opponent"/> has <xsl:value-of select="$param/Gold"/> gold)</h4>
-			<p>
+			<fieldset>
+				<legend>Score options</legend>
+				<button type="submit" name="reset_exp" value="{am:urlencode($opponent)}">Reset exp</button>
 				<input type="text" name="gold_amount" maxlength="4" size="4" />
-				<button type="submit" name="add_gold" value="{am:urlencode($opponent)}">Add</button>
-			</p>
+				<button type="submit" name="add_gold" value="{am:urlencode($opponent)}">Add gold</button>
+			</fieldset>
 		</xsl:if>
 
 		<div class="clear_floats"></div>

@@ -148,6 +148,11 @@ div.progress_bar > div  /* exp progress bar - inner part */
 	background-color: green;
 }
 
+div#details fieldset /* admin panel */
+{
+	margin-top: 1ex;
+}
+
 /* end user details */
 
 /* begin user achievements */
