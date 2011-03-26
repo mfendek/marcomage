@@ -154,7 +154,8 @@
 		// login page messages
 		if (isset($_POST['Login']))
 		{
-			$current = "Webpage"; // new sessions default to here
+			// new sessions default to here (after first login redirect to Messages section)
+			$current = ($player->GetNotification() == '0000-00-00 00:00:00') ? "Messages" : "Webpage";
 		}
 		else
 		
