@@ -252,6 +252,7 @@ div.history /* history of played cards */
 {
 	overflow: auto;
 	width: 98px;
+	height: 95%; /* prevents Chrome display bug (overflow related) */
 }
 
 div.chatsection /* chat section layout */
