@@ -642,6 +642,8 @@
 			$opponent = ($this->Player1 == $playername) ? $this->Player2 : $this->Player1;
 			$mydata = &$this->GameData[$playername];
 			$hisdata = &$this->GameData[$opponent];
+			$my_deck = $mydata->Deck;
+			$his_deck = $hisdata->Deck;
 			
 			// find out what card is at that position
 			$cardid = $mydata->Hand[$cardpos];
@@ -847,7 +849,7 @@
 				elseif ($action == 'play') $drawfunc = 'DrawCard_random';
 				else $drawfunc = 'DrawCard_different';
 				
-				$mydata->Hand[$cardpos] = $this->DrawCard($mydata->Deck, $mydata->Hand, $cardpos, $drawfunc);
+				$mydata->Hand[$cardpos] = $this->DrawCard($my_deck, $mydata->Hand, $cardpos, $drawfunc);
 			}
 			
 			// store info about this current action, updating history as needed
@@ -1006,6 +1008,8 @@
 			$opponent = ($this->Player1 == $playername) ? $this->Player2 : $this->Player1;
 			$mydata = $this->GameData[$playername];
 			$hisdata = $this->GameData[$opponent];
+			$my_deck = $mydata->Deck;
+			$his_deck = $hisdata->Deck;
 			
 			// find out what card is at that position
 			$cardid = $mydata->Hand[$cardpos];

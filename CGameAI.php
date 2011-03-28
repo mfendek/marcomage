@@ -146,6 +146,8 @@
 			$opponent = ($game->Name1() == SYSTEM_NAME) ? $game->Name2() : $game->Name1();
 			$mydata = $game->GameData[SYSTEM_NAME];
 			$hisdata = $game->GameData[$opponent];
+			$my_deck = $mydata->Deck;
+			$his_deck = $hisdata->Deck;
 
 			// backup initial data state
 			$mydata_b = clone $mydata;
@@ -243,11 +245,11 @@
 								}
 
 								// gain extra points in case poison cards were discarded from hand
-								if ($prev_class == 'Common' and !in_array($prev_card['id'], $mydata->Deck->Common) and in_array($cur_card, $mydata->Deck->$card_class))
+								if ($prev_class == 'Common' and !in_array($prev_card['id'], $my_deck->Common) and in_array($cur_card, $my_deck->$card_class))
 									$points+= $misc_config['cleanup'];
 
 								// lose points in case poison cards were added to hand
-								if ($card_class == 'Common' and !in_array($cur_card, $mydata->Deck->Common) and in_array($prev_card['id'], $mydata->Deck->$prev_class))
+								if ($card_class == 'Common' and !in_array($cur_card, $my_deck->Common) and in_array($prev_card['id'], $my_deck->$prev_class))
 									$points-= $misc_config['poison'];
 							}
 
@@ -278,11 +280,11 @@
 								}
 
 								// lose points in case poison cards were discarded from opponent's hand
-								if ($prev_class == 'Common' and !in_array($prev_card['id'], $hisdata->Deck->Common) and in_array($cur_card, $hisdata->Deck->$card_class))
+								if ($prev_class == 'Common' and !in_array($prev_card['id'], $his_deck->Common) and in_array($cur_card, $his_deck->$card_class))
 									$points-= $misc_config['cleanup'];
 
 								// gain extra points in case poison cards were added to opponent's hand
-								if ($card_class == 'Common' and !in_array($cur_card, $hisdata->Deck->Common) and in_array($prev_card['id'], $hisdata->Deck->$prev_class))
+								if ($card_class == 'Common' and !in_array($cur_card, $his_deck->Common) and in_array($prev_card['id'], $his_deck->$prev_class))
 									$points+= $misc_config['poison'];
 							}
 

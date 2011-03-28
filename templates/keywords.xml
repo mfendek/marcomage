@@ -62,7 +62,7 @@
 							$mydata->Gems+= $dis_card->GetResources('Gems');
 							$mydata->Recruits+= $dis_card->GetResources('Recruits');
 						}
-						$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_different');
+						$hisdata->Hand[$discarded_pos] = $this->DrawCard($his_deck, $hisdata->Hand, $discarded_pos, 'DrawCard_different');
 						$hisdata->NewCards[$discarded_pos] = 1;
 					}
 ]]></code>
@@ -393,7 +393,7 @@
 	<keyword>
 		<name>Illusion</name>
 		<description>If an Illusion card is played after playing a different non-common Illusion card, summons a rare card from enemy deck.</description>
-		<code><![CDATA[if ($mylast_card->HasKeyword("Illusion") AND $mylast_action == 'play' AND $mylast_card->GetClass() != 'Common' AND $cardid != $mylast_card->GetID()) $nextcard = $this->DrawCard($hisdata->Deck->Rare, $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
+		<code><![CDATA[if ($mylast_card->HasKeyword("Illusion") AND $mylast_action == 'play' AND $mylast_card->GetClass() != 'Common' AND $cardid != $mylast_card->GetID()) $nextcard = $this->DrawCard($his_deck->Rare, $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
 	</keyword>
 	<keyword>
 		<name>Legend</name>
@@ -518,7 +518,7 @@
 							$hisdata->Gems-= $dis_card->GetResources('Gems');
 							$hisdata->Recruits-= $dis_card->GetResources('Recruits');
 						}
-						$hisdata->Hand[$discarded_pos] = $this->DrawCard($hisdata->Deck, $hisdata->Hand, $discarded_pos, 'DrawCard_different');
+						$hisdata->Hand[$discarded_pos] = $this->DrawCard($his_deck, $hisdata->Hand, $discarded_pos, 'DrawCard_different');
 						$hisdata->NewCards[$discarded_pos] = 1;
 					}
 ]]></code>
