@@ -3478,8 +3478,8 @@ case 'Games_details':
 	// prepare the neccessary data
 	$opponent_name = ($player1 != $player->Name()) ? $player1 : $player2;
 	$opponent = ($game->GetGameMode('AIMode') == 'yes') ? $playerdb->GetGuest() : $playerdb->GetPlayer($opponent_name);
-	$mydata = &$game->GameData[$player->Name()];
-	$hisdata = &$game->GameData[$opponent_name];
+	$mydata = $game->GameData[$player->Name()];
+	$hisdata = $game->GameData[$opponent_name];
 
 	$params['game']['CurrentGame'] = $gameid;
 	$params['game']['chat'] = (($access_rights[$player->Type()]["chat"]) ? 'yes' : 'no');
