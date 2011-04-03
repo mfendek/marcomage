@@ -29,6 +29,7 @@
 			if ($result === false) return false;
 			
 			$game = new CGame($db->LastID(), $player1, $player2, $this);
+			if (!$game->LoadGame()) return false;
 			
 			return $game;
 		}
@@ -451,6 +452,15 @@
 			
 			// delete chat associated with the game
 			$this->DeleteChat();
+			
+			return true;
+		}
+		
+		public function JoinGame($player)
+		{
+			if (!$this->Games->JoinGame($player, $this->GameID)) return false;
+			
+			$this->Player2 = $player;
 			
 			return true;
 		}

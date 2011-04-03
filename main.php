@@ -1889,8 +1889,7 @@
 					{ $error = htmlencode($opponent_name)." doesn't wish to play with you more than one game at the same time."; $current = 'Games'; break; }
 
 				// join the game
-				$gamedb->JoinGame($player->Name(), $game_id);
-				$game = $gamedb->GetGame($game_id); // refresh game data
+				$game->JoinGame($player->Name());
 				$game->StartGame($player->Name(), $deck);
 				$game->SaveGame();
 				$replaydb->CreateReplay($game); // create game replay
@@ -1952,8 +1951,7 @@
 				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
 
 				// join the computer player
-				$gamedb->JoinGame(SYSTEM_NAME, $game->ID());
-				$game = $gamedb->GetGame($game->ID()); // refresh game data
+				$game->JoinGame(SYSTEM_NAME);
 				$game->StartGame(SYSTEM_NAME, $ai_deck);
 				$game->SaveGame();
 				$replaydb->CreateReplay($game); // create game replay
@@ -2008,8 +2006,7 @@
 				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
 
 				// join the computer player
-				$gamedb->JoinGame(SYSTEM_NAME, $game->ID());
-				$game = $gamedb->GetGame($game->ID()); // refresh game data
+				$game->JoinGame(SYSTEM_NAME);
 				$game->StartGame(SYSTEM_NAME, $ai_deck, $challenge_name);
 				$game->SaveGame();
 				$replaydb->CreateReplay($game); // create game replay
@@ -2056,8 +2053,7 @@
 				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
 
 				// join the computer player
-				$gamedb->JoinGame(SYSTEM_NAME, $game->ID());
-				$game = $gamedb->GetGame($game->ID()); // refresh game data
+				$game->JoinGame(SYSTEM_NAME);
 				$game->StartGame(SYSTEM_NAME, $ai_deck);
 				$game->SaveGame();
 				$replaydb->CreateReplay($game); // create game replay
