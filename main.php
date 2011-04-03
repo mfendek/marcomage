@@ -1808,10 +1808,6 @@
 				// check if you are within the MAX_GAMES limit
 				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Games'; break; }
 
-				// create a new challenge
-				$game = $gamedb->CreateGame($player->Name(), '', $deck);
-				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
-
 				// set game modes
 				$hidden_cards = (isset($_POST['HiddenMode']) ? 'yes' : 'no');
 				$friendly_play = (isset($_POST['FriendlyMode']) ? 'yes' : 'no');
@@ -1820,7 +1816,10 @@
 				if ($hidden_cards == "yes") $game_modes[] = 'HiddenCards';
 				if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
 				if ($long_mode == "yes") $game_modes[] = 'LongMode';
-				$game->SetGameModes(implode(',', $game_modes));
+
+				// create a new challenge
+				$game = $gamedb->CreateGame($player->Name(), '', $deck, $game_modes);
+				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
 
 				$information = 'Game created. Waiting for opponent to join.';
 				$current = 'Games';
@@ -1937,10 +1936,6 @@
 				// check if you are within the MAX_GAMES limit
 				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Games'; break; }
 
-				// create a new game
-				$game = $gamedb->CreateGame($player->Name(), '', $deck);
-				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
-
 				// set game modes
 				$hidden_cards = (isset($_POST['HiddenMode']) ? 'yes' : 'no');
 				$friendly_play = 'yes'; // always active in AI game
@@ -1951,7 +1946,10 @@
 				if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
 				if ($long_mode == "yes") $game_modes[] = 'LongMode';
 				if ($ai_mode == "yes") $game_modes[] = 'AIMode';
-				$game->SetGameModes(implode(',', $game_modes));
+
+				// create a new game
+				$game = $gamedb->CreateGame($player->Name(), '', $deck, $game_modes);
+				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
 
 				// join the computer player
 				$gamedb->JoinGame(SYSTEM_NAME, $game->ID());
@@ -1994,10 +1992,6 @@
 				$challenge_decks = $deckdb->ChallengeDecks();
 				$ai_deck = $challenge_decks[$challenge_name];
 
-				// create a new game
-				$game = $gamedb->CreateGame($player->Name(), '', $deck);
-				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
-
 				// set game modes (predefined for AI challenge)
 				$hidden_cards = 'no';
 				$friendly_play = 'yes';
@@ -2008,7 +2002,10 @@
 				if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
 				if ($long_mode == "yes") $game_modes[] = 'LongMode';
 				if ($ai_mode == "yes") $game_modes[] = 'AIMode';
-				$game->SetGameModes(implode(',', $game_modes));
+
+				// create a new game
+				$game = $gamedb->CreateGame($player->Name(), '', $deck, $game_modes);
+				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
 
 				// join the computer player
 				$gamedb->JoinGame(SYSTEM_NAME, $game->ID());
@@ -2043,10 +2040,6 @@
 				$starter_decks = $deckdb->StarterDecks();
 				$ai_deck = $starter_decks[array_rand($starter_decks)];
 
-				// create a new game
-				$game = $gamedb->CreateGame($player->Name(), '', $deck);
-				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
-
 				// set game modes
 				$hidden_cards = 'no';
 				$friendly_play = 'yes'; // always active in AI game
@@ -2057,7 +2050,10 @@
 				if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
 				if ($long_mode == "yes") $game_modes[] = 'LongMode';
 				if ($ai_mode == "yes") $game_modes[] = 'AIMode';
-				$game->SetGameModes(implode(',', $game_modes));
+
+				// create a new game
+				$game = $gamedb->CreateGame($player->Name(), '', $deck, $game_modes);
+				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
 
 				// join the computer player
 				$gamedb->JoinGame(SYSTEM_NAME, $game->ID());
@@ -2209,10 +2205,6 @@
 				// check challenge text length
 				if (strlen($_POST['Content']) > CHALLENGE_LENGTH) { $error = "Message too long"; $current = "Details"; break; }
 
-				// create a new challenge
-				$game = $gamedb->CreateGame($player->Name(), $opponent, $deck);
-				if (!$game) { $error = 'Failed to create new game!'; $current = 'Players_details'; break; }
-
 				// set game modes
 				$hidden_cards = (isset($_POST['HiddenCards']) ? 'yes' : 'no');
 				$friendly_play = (isset($_POST['FriendlyPlay']) ? 'yes' : 'no');
@@ -2221,7 +2213,10 @@
 				if ($hidden_cards == "yes") $game_modes[] = 'HiddenCards';
 				if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
 				if ($long_mode == "yes") $game_modes[] = 'LongMode';
-				$game->SetGameModes(implode(',', $game_modes));
+
+				// create a new challenge
+				$game = $gamedb->CreateGame($player->Name(), $opponent, $deck, $game_modes);
+				if (!$game) { $error = 'Failed to create new game!'; $current = 'Players_details'; break; }
 
 				$challenge_text = 'Hide opponent\'s cards: '.$hidden_cards."\n";
 				$challenge_text.= 'Friendly play: '.$friendly_play."\n";

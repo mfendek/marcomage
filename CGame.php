@@ -18,14 +18,14 @@
 			return $this->db;
 		}
 		
-		public function CreateGame($player1, $player2, CDeck $deck1)
+		public function CreateGame($player1, $player2, CDeck $deck1, $game_modes)
 		{
 			$db = $this->db;
 			
 			$game_data[$player1] = new CGamePlayerData;
 			$game_data[$player1]->Deck = $deck1->DeckData;
 			
-			$result = $db->Query('INSERT INTO `games` (`Player1`, `Player2`, `Data`, `DeckID1`) VALUES (?, ?, ?, ?)', array($player1, $player2, serialize($game_data), $deck1->ID()));
+			$result = $db->Query('INSERT INTO `games` (`Player1`, `Player2`, `Data`, `DeckID1`, `GameModes`) VALUES (?, ?, ?, ?, ?)', array($player1, $player2, serialize($game_data), $deck1->ID(), implode(',', $game_modes)));
 			if ($result === false) return false;
 			
 			$game = new CGame($db->LastID(), $player1, $player2, $this);
@@ -365,16 +365,6 @@
 		public function GetGameMode($game_mode)
 		{
 			return $this->$game_mode;
-		}
-		
-		public function SetGameModes($game_modes)
-		{
-			$db = $this->Games->getDB();
-
-			$result = $db->Query('UPDATE `games` SET `GameModes` = ? WHERE `GameID` = ?', array($game_modes, $this->GameID));
-			if ($result === false) return false;
-			
-			return true;
 		}
 		
 		public function SaveChatMessage($message, $name)
