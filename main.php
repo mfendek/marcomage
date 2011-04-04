@@ -2145,9 +2145,11 @@
 
 				// accept the challenge
 				$game->StartGame($player->Name(), $deck);
-				$game->SaveGame();
-				$replaydb->CreateReplay($game); // create game replay
-				$messagedb->CancelChallenge($game->ID());
+				$db->BeginTransaction();
+				if (!$game->SaveGame()) { $db->RollBack(); $error = "Game start failed."; $current = "Messages"; break; }
+				if (!$replaydb->CreateReplay($game)) { $db->RollBack(); $error = "Failed to create game replay."; $current = "Messages"; break; }
+				if (!$messagedb->CancelChallenge($game->ID())) { $db->RollBack(); $error = "Failed to cancel challenge."; $current = "Messages"; break; }
+				$db->Commit();
 
 				$information = 'You have accepted a challenge from '.htmlencode($opponent).'.';
 				$current = 'Messages';
@@ -2171,8 +2173,7 @@
 				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Messages'; break; }
 
 				// delete t3h challenge/game entry
-				$game->DeleteGame();
-				$messagedb->CancelChallenge($game->ID());
+				if (!$game->DeleteChallenge()) { $db->RollBack(); $error = 'Failed to reject challenge.'; $current = 'Messages'; break; }
 
 				$information = 'You have rejected a challenge.';
 				$current = 'Messages';
@@ -2225,17 +2226,19 @@
 				if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
 				if ($long_mode == "yes") $game_modes[] = 'LongMode';
 
-				// create a new challenge
-				$game = $gamedb->CreateGame($player->Name(), $opponent, $deck, $game_modes);
-				if (!$game) { $error = 'Failed to create new game!'; $current = 'Players_details'; break; }
-
 				$challenge_text = 'Hide opponent\'s cards: '.$hidden_cards."\n";
 				$challenge_text.= 'Friendly play: '.$friendly_play."\n";
 				$challenge_text.= 'Long mode: '.$long_mode."\n";
 				$challenge_text.= $_POST['Content'];
 
+				// create a new challenge
+				$db->BeginTransaction();
+				$game = $gamedb->CreateGame($player->Name(), $opponent, $deck, $game_modes);
+				if (!$game) { $db->RollBack(); $error = 'Failed to create new game!'; $current = 'Players_details'; break; }
+
 				$res = $messagedb->SendChallenge($player->Name(), $opponent, $challenge_text, $game->ID());
-				if (!$res) { $error = 'Failed to create new challenge!'; $current = 'Players_details'; break; }
+				if (!$res) { $db->RollBack(); $error = 'Failed to create new challenge!'; $current = 'Players_details'; break; }
+				$db->Commit();
 
 				$information = 'You have challenged '.htmlencode($opponent).'. Waiting for reply.';
 				$current = 'Players_details';
@@ -2259,8 +2262,7 @@
 				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Messages'; break; }
 
 				// delete t3h challenge/game entry
-				$game->DeleteGame();
-				$messagedb->CancelChallenge($game->ID());
+				if (!$game->DeleteChallenge()) { $db->RollBack(); $error = 'Failed to withdraw challenge.'; $current = 'Messages'; break; }
 
 				$information = 'You have withdrawn a challenge.';
 				$_POST['outgoing'] = "outgoing"; // stay in "Outgoing" subsection

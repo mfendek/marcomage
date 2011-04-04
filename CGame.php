@@ -458,6 +458,20 @@
 			return true;
 		}
 		
+		public function DeleteChallenge()
+		{
+			global $messagedb;
+			
+			$db = $this->Games->getDB();
+			
+			$db->BeginTransaction();
+			if (!$this->Games->DeleteGame($this->GameID)) { $db->RollBack(); return false; }
+			if (!$messagedb->CancelChallenge($this->GameID)) { $db->RollBack(); return false; }
+			$db->Commit();
+			
+			return true;
+		}
+		
 		public function JoinGame($player)
 		{
 			if (!$this->Games->JoinGame($player, $this->GameID)) return false;
