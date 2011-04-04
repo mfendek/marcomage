@@ -447,11 +447,13 @@
 		
 		public function DeleteGame()
 		{
-			$result = $this->Games->DeleteGame($this->GameID);
-			if (!$result) return false;
+			$db = $this->Games->getDB();
 			
+			$db->BeginTransaction();
+			if (!$this->Games->DeleteGame($this->GameID)) { $db->RollBack(); return false; }
 			// delete chat associated with the game
-			$this->DeleteChat();
+			if (!$this->DeleteChat()) { $db->RollBack(); return false; }
+			$db->Commit();
 			
 			return true;
 		}
@@ -554,7 +556,6 @@
 			$this->State = 'finished';
 			$this->Winner = ($this->Player1 == $this->Surrender) ? $this->Player2 : $this->Player1;
 			$this->EndType = 'Surrender';
-			$this->SaveGame();
 			
 			return 'OK';
 		}
@@ -565,7 +566,6 @@
 			if ($this->State != 'in progress' OR $this->Surrender != '') return 'Action not allowed!';
 
 			$this->Surrender = $playername;
-			$this->SaveGame();
 
 			return 'OK';
 		}
@@ -576,7 +576,6 @@
 			if ($this->State != 'in progress' OR $this->Surrender == '') return 'Action not allowed!';
 
 			$this->Surrender = '';
-			$this->SaveGame();
 
 			return 'OK';
 		}
@@ -589,7 +588,6 @@
 			$this->State = 'finished';
 			$this->Winner = '';
 			$this->EndType = 'Abort';
-			$this->SaveGame();
 			
 			return 'OK';
 		}
@@ -603,7 +601,6 @@
 			$this->Winner = ($this->Player1 == $playername) ? $this->Player1 : $this->Player2;
 			$opponent = ($this->Player1 == $playername) ? $this->Player2 : $this->Player1;
 			$this->EndType = 'Abandon';
-			$this->SaveGame();
 			
 			return 'OK';
 		}

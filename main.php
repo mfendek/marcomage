@@ -1261,7 +1261,7 @@
 				if (strlen($new_note) > MESSAGE_LENGTH) { $error = "Game note is too long"; $current = "Games_note"; break; }
 
 				$game->SetNote($player->Name(), $new_note);
-				$game->SaveGame();
+				if (!$game->SaveGame()) { $error = "Failed to save game note."; $current = "Games_note"; break; }
 
 				$information = 'Game note saved.';
 				$current = 'Games_note';
@@ -1287,7 +1287,7 @@
 				if (strlen($new_note) > MESSAGE_LENGTH) { $error = "Game note is too long"; $current = "Games_note"; break; }
 
 				$game->SetNote($player->Name(), $new_note);
-				$game->SaveGame();
+				if (!$game->SaveGame()) { $error = "Failed to save game note."; $current = "Games_note"; break; }
 
 				$information = 'Game note saved.';
 				$current = 'Games_details';
@@ -1306,7 +1306,7 @@
 				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				$game->ClearNote($player->Name());
-				$game->SaveGame();
+				if (!$game->SaveGame()) { $error = "Failed to clear game note."; $current = "Games_note"; break; }
 
 				$information = 'Game note cleared.';
 				$current = 'Games_note';
@@ -1328,7 +1328,7 @@
 				if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { $error = 'Game already over.'; $current = 'Games'; break; }
 
 				$game->ClearNote($player->Name());
-				$game->SaveGame();
+				if (!$game->SaveGame()) { $error = "Failed to clear game note."; $current = "Games_note"; break; }
 
 				$information = 'Game note cleared.';
 				$current = 'Games_details';
@@ -1358,7 +1358,8 @@
 				// check access rights
 				if (!$access_rights[$player->Type()]["chat"]) { $error = 'Access denied.'; $current = 'Games_details'; break; }
 
-				$game->SaveChatMessage($msg, $player->Name());
+				if (!$game->SaveChatMessage($msg, $player->Name())) { $error = 'Failed to send chat message.'; $current = 'Games_details'; break; }
+
 				$current = 'Games_details';
 				break;
 			}
@@ -1408,8 +1409,10 @@
 
 				if ($result == 'OK')
 				{
-					$game->SaveGame();
-					$replaydb->UpdateReplay($game);
+					$db->BeginTransaction();
+					if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+					if (!$replaydb->UpdateReplay($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+					$db->Commit();
 
 					if ($game->State == 'finished')
 					{
@@ -1499,8 +1502,10 @@
 
 				if ($result == 'OK')
 				{
-					$game->SaveGame();
-					$replaydb->UpdateReplay($game);
+					$db->BeginTransaction();
+					if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+					if (!$replaydb->UpdateReplay($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+					$db->Commit();
 
 					if ($game->State == 'finished')
 					{
@@ -1530,23 +1535,24 @@
 				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				$result = $game->RequestSurrender($player->Name());
+				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
+				if (!$game->SaveGame()) { $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
 
-				if ($result == 'OK') $information = 'Surrender request sent.';
+				$information = 'Surrender request sent.';
 
 				// accept surrender request in case of AI game
 				if ($game->GetGameMode('AIMode') == 'yes')
 				{
 					$result = $game->SurrenderGame();
+					if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
-					if ($result == 'OK')
-					{
-						$information = 'Surrender request accepted.';
-						$replaydb->FinishReplay($game);
+					if (!$game->SaveGame()) { $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
 
-						// update deck statistics
-						$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
-					}
-					else $error = $result;
+					$information = 'Surrender request accepted.';
+					$replaydb->FinishReplay($game);
+
+					// update deck statistics
+					$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
 				}
 
 				$current = "Games_details";
@@ -1565,9 +1571,10 @@
 				if ($player->Name() != $game->Surrender) { $current = 'Games_details'; break; }
 
 				$result = $game->CancelSurrender();
+				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
+				if (!$game->SaveGame()) { $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
 
-				if ($result == 'OK') $information = 'Surrender request cancelled.';
-
+				$information = 'Surrender request cancelled.';
 				$current = "Games_details";
 				break;
 			}
@@ -1584,9 +1591,10 @@
 				if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or ($player->Name() == $game->Surrender)) { $current = 'Games_details'; break; }
 
 				$result = $game->CancelSurrender();
+				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
+				if (!$game->SaveGame()) { $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
 
-				if ($result == 'OK') $information = 'Surrender request rejected.';
-
+				$information = 'Surrender request rejected.';
 				$current = "Games_details";
 				break;
 			}
@@ -1603,16 +1611,14 @@
 				if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or ($player->Name() == $game->Surrender)) { $current = 'Games_details'; break; }
 
 				$result = $game->SurrenderGame();
+				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
+				if (!$game->SaveGame()) { $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
 
-				if ($result == 'OK')
-				{
-					$information = 'Surrender request accepted.';
-					$replaydb->FinishReplay($game);
+				$information = 'Surrender request accepted.';
+				$replaydb->FinishReplay($game);
 
-					// update deck statistics
-					$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
-				}
-				else $error = $result;
+				// update deck statistics
+				$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
 
 				if (($result == 'OK') AND ($game->GetGameMode('FriendlyPlay') == "no"))
 				{
@@ -1671,10 +1677,10 @@
 				if (!$playerdb->isDead($game->Name1()) and !$playerdb->isDead($game->Name2())) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
 
 				$result = $game->AbortGame($player->Name());
+				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
+				if (!$game->SaveGame()) { $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
 
-				if ($result == 'OK')
-					$replaydb->FinishReplay($game);
-				else $error = $result;
+				$replaydb->FinishReplay($game);
 
 				$current = "Games_details";
 				break;
@@ -1703,17 +1709,15 @@
 				if ($game->Name2() == SYSTEM_NAME) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
 
 				$result = $game->FinishGame($player->Name());
+				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
+				if (!$game->SaveGame()) { $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
 
-				if ($result == 'OK')
-				{
-					$replaydb->FinishReplay($game);
+				$replaydb->FinishReplay($game);
 
-					// update deck statistics
-					$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
-				}
-				else $error = $result;
+				// update deck statistics
+				$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
 
-				if (($result == 'OK') AND ($game->GetGameMode('FriendlyPlay') == "no"))
+				if ($game->GetGameMode('FriendlyPlay') == "no")
 				{
 					$player1 = $game->Name1();
 					$player2 = $game->Name2();
@@ -1775,14 +1779,16 @@
 				{
 					// we are the first one to acknowledge and opponent isn't a computer player
 					$game->State = ($game->Name1() == $player->Name()) ? 'P1 over' : 'P2 over';
-					$game->SaveGame();
+					$db->BeginTransaction();
+					if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
 					// inform other player about leaving the game
-					$game->SaveChatMessage("has left the game", $player->Name());
+					if (!$game->SaveChatMessage("has left the game", $player->Name())) { $db->RollBack(); $error = 'Failed to send chat message.'; $current = 'Games_details'; break; }
+					$db->Commit();
 				}
 				else // 'P1 over' or 'P2 over'
 				{
 					// the other player has already acknowledged (auto-acknowledge in case of a computer player)
-					$game->DeleteGame();
+					if (!$game->DeleteGame()) { $error = 'Failed to delete game.'; $current = 'Games_details'; break; }
 				}
 
 				$current = "Games";
@@ -1839,7 +1845,7 @@
 				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Games'; break; }
 
 				// delete game entry
-				$game->DeleteGame();
+				if (!$game->DeleteGame()) { $error = 'Failed to delete game.'; $current = 'Games'; break; }
 
 				$information = 'You have canceled a game.';
 				$current = 'Games';
@@ -1889,10 +1895,12 @@
 					{ $error = htmlencode($opponent_name)." doesn't wish to play with you more than one game at the same time."; $current = 'Games'; break; }
 
 				// join the game
-				$game->JoinGame($player->Name());
+				$db->BeginTransaction();
+				if (!$game->JoinGame($player->Name())) { $db->RollBack(); $error = "Player was unable to join the game."; $current = "Games"; break; }
 				$game->StartGame($player->Name(), $deck);
-				$game->SaveGame();
-				$replaydb->CreateReplay($game); // create game replay
+				if (!$game->SaveGame()) { $db->RollBack(); $error = "Game start failed."; $current = "Games"; break; }
+				if (!$replaydb->CreateReplay($game)) { $db->RollBack(); $error = "Failed to create game replay."; $current = "Games"; break; }
+				$db->Commit();
 
 				$information = 'You have joined '.htmlencode($opponent_name).'\'s game.';
 				$current = 'Games';
@@ -1947,14 +1955,16 @@
 				if ($ai_mode == "yes") $game_modes[] = 'AIMode';
 
 				// create a new game
+				$db->BeginTransaction();
 				$game = $gamedb->CreateGame($player->Name(), '', $deck, $game_modes);
-				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
+				if (!$game) { $db->RollBack(); $error = 'Failed to create new game!'; $current = 'Games'; break; }
 
 				// join the computer player
-				$game->JoinGame(SYSTEM_NAME);
+				if (!$game->JoinGame(SYSTEM_NAME)) { $db->RollBack(); $error = "Player was unable to join the game."; $current = "Games"; break; }
 				$game->StartGame(SYSTEM_NAME, $ai_deck);
-				$game->SaveGame();
-				$replaydb->CreateReplay($game); // create game replay
+				if (!$game->SaveGame()) { $db->RollBack(); $error = "Game start failed."; $current = "Games"; break; }
+				if (!$replaydb->CreateReplay($game)) { $db->RollBack(); $error = "Failed to create game replay."; $current = "Games"; break; }
+				$db->Commit();
 
 				$information = 'Game vs AI created.';
 				$current = 'Games';
@@ -2002,14 +2012,16 @@
 				if ($ai_mode == "yes") $game_modes[] = 'AIMode';
 
 				// create a new game
+				$db->BeginTransaction();
 				$game = $gamedb->CreateGame($player->Name(), '', $deck, $game_modes);
-				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
+				if (!$game) { $db->RollBack(); $error = 'Failed to create new game!'; $current = 'Games'; break; }
 
 				// join the computer player
-				$game->JoinGame(SYSTEM_NAME);
+				if (!$game->JoinGame(SYSTEM_NAME)) { $db->RollBack(); $error = "Player was unable to join the game."; $current = "Games"; break; }
 				$game->StartGame(SYSTEM_NAME, $ai_deck, $challenge_name);
-				$game->SaveGame();
-				$replaydb->CreateReplay($game); // create game replay
+				if (!$game->SaveGame()) { $db->RollBack(); $error = "Game start failed."; $current = "Games"; break; }
+				if (!$replaydb->CreateReplay($game)) { $db->RollBack(); $error = "Failed to create game replay."; $current = "Games"; break; }
+				$db->Commit();
 
 				$information = 'AI challenge created.';
 				$current = "Games";
@@ -2049,14 +2061,17 @@
 				if ($ai_mode == "yes") $game_modes[] = 'AIMode';
 
 				// create a new game
+				$db->BeginTransaction();
 				$game = $gamedb->CreateGame($player->Name(), '', $deck, $game_modes);
-				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
+				if (!$game) { $db->RollBack(); $error = 'Failed to create new game!'; $current = 'Games'; break; }
 
 				// join the computer player
-				$game->JoinGame(SYSTEM_NAME);
+				if (!$game->JoinGame(SYSTEM_NAME)) { $db->RollBack(); $error = "Player was unable to join the game."; $current = "Games"; break; }
 				$game->StartGame(SYSTEM_NAME, $ai_deck);
-				$game->SaveGame();
-				$replaydb->CreateReplay($game); // create game replay
+				if (!$game->SaveGame()) { $db->RollBack(); $error = "Game start failed."; $current = "Games"; break; }
+				if (!$replaydb->CreateReplay($game)) { $db->RollBack(); $error = "Failed to create game replay."; $current = "Games"; break; }
+				$db->Commit();
+
 				$_POST['CurrentGame'] = $game->ID();
 
 				$information = 'Game vs AI created.';
