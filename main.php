@@ -1406,74 +1406,70 @@
 
 				// the rest of the checks are done internally
 				$result = $game->PlayCard($player->Name(), $cardpos, $mode, $action);
+				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
-				if ($result == 'OK')
+				$db->BeginTransaction();
+				if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+				if (!$replaydb->UpdateReplay($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				$db->Commit();
+
+				if ($game->State == 'finished')
 				{
-					$db->BeginTransaction();
-					if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-					if (!$replaydb->UpdateReplay($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
-					$db->Commit();
+					$replaydb->FinishReplay($game);
 
-					if ($game->State == 'finished')
+					// update deck statistics
+					$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
+
+					// update AI challenge score in case of AI challenge game
+					if ($game->AI != '' and $game->Winner == $player->Name())
 					{
-						$replaydb->FinishReplay($game);
-
-						// update deck statistics
-						$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
-
-						// update AI challenge score in case of AI challenge game
-						if ($game->AI != '' and $game->Winner == $player->Name())
-						{
-							$score = $player->GetScore();
-							$score->UpdateAward('Challenges');
-							$score->SaveScore();
-						}
+						$score = $player->GetScore();
+						$score->UpdateAward('Challenges');
+						$score->SaveScore();
 					}
-
-					if (($game->State == 'finished') AND ($game->GetGameMode('FriendlyPlay') == "no"))
-					{
-						$player1 = $game->Name1();
-						$player2 = $game->Name2();
-						$exp1 = $game->CalculateExp($player1);
-						$exp2 = $game->CalculateExp($player2);
-						$p1 = $playerdb->GetPlayer($player1);
-						$p2 = $playerdb->GetPlayer($player2);
-						$p1_rep = $p1->GetSettings()->GetSetting('Reports');
-						$p2_rep = $p2->GetSettings()->GetSetting('Reports');
-
-						// update score
-						$score1 = $scoredb->GetScore($player1);
-						$score2 = $scoredb->GetScore($player2);
-
-						if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
-						elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
-						else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
-
-						$levelup1 = $score1->AddExp($exp1['exp']);
-						$levelup2 = $score2->AddExp($exp2['exp']);
-						$score1->AddGold($exp1['gold']);
-						$score2->AddGold($exp2['gold']);
-						$score1->GainAwards($exp1['awards']);
-						$score2->GainAwards($exp2['awards']);
-						$score1->SaveScore();
-						$score2->SaveScore();
-
-						// send level up messages
-						if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
-						if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
-
-						// send battle report message
-						$outcome = $game->Outcome();
-						$winner = $game->Winner;
-						$hidden = $game->GetGameMode('HiddenCards');
-
-						$messagedb->SendBattleReport($player1, $player2, $p1_rep, $p2_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
-					}
-
-					$information = "You have played a card.";
 				}
-				else $error = $result;
 
+				if (($game->State == 'finished') AND ($game->GetGameMode('FriendlyPlay') == "no"))
+				{
+					$player1 = $game->Name1();
+					$player2 = $game->Name2();
+					$exp1 = $game->CalculateExp($player1);
+					$exp2 = $game->CalculateExp($player2);
+					$p1 = $playerdb->GetPlayer($player1);
+					$p2 = $playerdb->GetPlayer($player2);
+					$p1_rep = $p1->GetSettings()->GetSetting('Reports');
+					$p2_rep = $p2->GetSettings()->GetSetting('Reports');
+
+					// update score
+					$score1 = $scoredb->GetScore($player1);
+					$score2 = $scoredb->GetScore($player2);
+
+					if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
+					elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
+					else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
+
+					$levelup1 = $score1->AddExp($exp1['exp']);
+					$levelup2 = $score2->AddExp($exp2['exp']);
+					$score1->AddGold($exp1['gold']);
+					$score2->AddGold($exp2['gold']);
+					$score1->GainAwards($exp1['awards']);
+					$score2->GainAwards($exp2['awards']);
+					$score1->SaveScore();
+					$score2->SaveScore();
+
+					// send level up messages
+					if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
+					if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
+
+					// send battle report message
+					$outcome = $game->Outcome();
+					$winner = $game->Winner;
+					$hidden = $game->GetGameMode('HiddenCards');
+
+					$messagedb->SendBattleReport($player1, $player2, $p1_rep, $p2_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
+				}
+
+				$information = "You have played a card.";
 				$current = "Games_details";
 				break;
 			}
@@ -1499,25 +1495,22 @@
 				$action = $decision['action'];
 
 				$result = $game->PlayCard(SYSTEM_NAME, $cardpos, $mode, $action);
+				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
-				if ($result == 'OK')
+				$db->BeginTransaction();
+				if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+				if (!$replaydb->UpdateReplay($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				$db->Commit();
+
+				if ($game->State == 'finished')
 				{
-					$db->BeginTransaction();
-					if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-					if (!$replaydb->UpdateReplay($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
-					$db->Commit();
+					$replaydb->FinishReplay($game);
 
-					if ($game->State == 'finished')
-					{
-						$replaydb->FinishReplay($game);
-
-						// update deck statistics
-						$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
-					}
-
-					$information = "AI move executed.";
+					// update deck statistics
+					$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
 				}
-				else $error = $result;
+
+				$information = "AI move executed.";
 
 				$current = "Games_details";
 				break;
@@ -1620,7 +1613,7 @@
 				// update deck statistics
 				$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
 
-				if (($result == 'OK') AND ($game->GetGameMode('FriendlyPlay') == "no"))
+				if ($game->GetGameMode('FriendlyPlay') == "no")
 				{
 					$loser = $game->Surrender;
 					$exp1 = $game->CalculateExp($game->Winner);
