@@ -84,10 +84,13 @@
 			$result = $db->Query('INSERT INTO `replays_data` (`GameID`, `Turn`, `Current`, `Round`, `Data`) VALUES (?, ?, ?, ?, ?)', array($game_id, $turn, $current, $round, $data));
 			if ($result === false) return false;
 			
+			// finish replay in case the game is finished
+			if ($game->State == 'finished' and !$this->FinishReplay($game)) return false;
+			
 			return true;
 		}
 		
-		public function FinishReplay($game) // finish recording a game
+		public function FinishReplay(CGame $game) // finish recording a game
 		{
 			$db = $this->db;
 			

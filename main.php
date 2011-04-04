@@ -1415,8 +1415,6 @@
 
 				if ($game->State == 'finished')
 				{
-					$replaydb->FinishReplay($game);
-
 					// update deck statistics
 					$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
 
@@ -1504,8 +1502,6 @@
 
 				if ($game->State == 'finished')
 				{
-					$replaydb->FinishReplay($game);
-
 					// update deck statistics
 					$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
 
@@ -1546,13 +1542,15 @@
 					$result = $game->SurrenderGame();
 					if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
-					if (!$game->SaveGame()) { $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-
-					$information = 'Surrender request accepted.';
-					$replaydb->FinishReplay($game);
+					$db->BeginTransaction();
+					if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+					if (!$replaydb->FinishReplay($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+					$db->Commit();
 
 					// update deck statistics
 					$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
+
+					$information = 'Surrender request accepted.';
 				}
 
 				$current = "Games_details";
@@ -1612,10 +1610,11 @@
 
 				$result = $game->SurrenderGame();
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
-				if (!$game->SaveGame()) { $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
 
-				$information = 'Surrender request accepted.';
-				$replaydb->FinishReplay($game);
+				$db->BeginTransaction();
+				if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+				if (!$replaydb->FinishReplay($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				$db->Commit();
 
 				// update deck statistics
 				$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
@@ -1656,6 +1655,7 @@
 					$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
 				}
 
+				$information = 'Surrender request accepted.';
 				$current = "Games_details";
 				break;
 			}
@@ -1678,9 +1678,11 @@
 
 				$result = $game->AbortGame($player->Name());
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
-				if (!$game->SaveGame()) { $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
 
-				$replaydb->FinishReplay($game);
+				$db->BeginTransaction();
+				if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+				if (!$replaydb->FinishReplay($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				$db->Commit();
 
 				$current = "Games_details";
 				break;
@@ -1710,9 +1712,11 @@
 
 				$result = $game->FinishGame($player->Name());
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
-				if (!$game->SaveGame()) { $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
 
-				$replaydb->FinishReplay($game);
+				$db->BeginTransaction();
+				if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+				if (!$replaydb->FinishReplay($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				$db->Commit();
 
 				// update deck statistics
 				$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
