@@ -305,7 +305,7 @@
 		{
 			if (!is_numeric($turn_number) or $turn_number < 1 or $turn_number > $this->Turns or !isset($this->ReplayData[$turn_number])) return false;
 
-			$turn_data = $this->ReplayData[$turn_number];
+			$turn_data = clone $this->ReplayData[$turn_number];
 
 			// transform symbolic names to real names
 			$data[$this->Player1] = $turn_data->GameData[1];
