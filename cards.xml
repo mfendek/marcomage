@@ -42,7 +42,7 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Tower: +2<br />If Tower was damaged during opponent's last round<br />Tower: +5]]></effect>
-    <code><![CDATA[if (($mychanges['Tower'] < 0) AND !($mylast_card->IsPlayAgainCard() AND $mylast_action == 'play')) $mydata->Tower+= 7; else $mydata->Tower+= 2;]]></code>
+    <code><![CDATA[if ($mychanges['Tower'] < 0) $mydata->Tower+= 7; else $mydata->Tower+= 2;]]></code>
     <created>2006-05-01</created>
     <modified>2010-06-21</modified>
   </card>
@@ -357,7 +357,7 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Stock: +1<br />If opponent lowered your stock last round<br />Stock: +1]]></effect>
-    <code><![CDATA[$tmp = ( ($mychanges['Bricks'] < 0 or $mychanges['Gems'] < 0 or $mychanges['Recruits'] < 0) and !($mylast_card->IsPlayAgainCard() and $mylast_action == 'play') ) ? 2 : 1; $mydata->Bricks+= $tmp; $mydata->Gems+= $tmp; $mydata->Recruits+= $tmp;]]></code>
+    <code><![CDATA[$tmp = ($mychanges['Bricks'] < 0 or $mychanges['Gems'] < 0 or $mychanges['Recruits'] < 0) ? 2 : 1; $mydata->Bricks+= $tmp; $mydata->Gems+= $tmp; $mydata->Recruits+= $tmp;]]></code>
     <created>2006-05-01</created>
     <modified>2008-07-30</modified>
   </card>
@@ -2595,7 +2595,7 @@
     <modes>0</modes>
     <keywords>Mage</keywords>
     <effect><![CDATA[Negates the effect of opponent's last round on your tower, wall, facilities and stock]]></effect>
-    <code><![CDATA[if (!($mylast_card->IsPlayAgainCard() and $mylast_action == 'play')) { $mydata->Tower-= $mychanges['Tower']; $mydata->Wall-= $mychanges['Wall']; $mydata->Quarry-= $mychanges['Quarry']; $mydata->Magic-= $mychanges['Magic']; $mydata->Dungeons-= $mychanges['Dungeons']; $mydata->Bricks-= $mychanges['Bricks']; $mydata->Gems-= $mychanges['Gems']; $mydata->Recruits-= $mychanges['Recruits']; }]]></code>
+    <code><![CDATA[$mydata->Tower-= $mychanges['Tower']; $mydata->Wall-= $mychanges['Wall']; $mydata->Quarry-= $mychanges['Quarry']; $mydata->Magic-= $mychanges['Magic']; $mydata->Dungeons-= $mychanges['Dungeons']; $mydata->Bricks-= $mychanges['Bricks']; $mydata->Gems-= $mychanges['Gems']; $mydata->Recruits-= $mychanges['Recruits'];]]></code>
     <created>2006-05-01</created>
     <modified>2008-07-30</modified>
   </card>
@@ -5118,7 +5118,7 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Recruits production x2<br />If Tower or Wall was damaged during opponent's last round<br />Enemy stock: -2]]></effect>
-    <code><![CDATA[$recruits_production*= 2; if ((($mychanges['Tower'] < 0) OR ($mychanges['Wall'] < 0)) AND !($mylast_card->IsPlayAgainCard() AND $mylast_action == 'play')) { $hisdata->Bricks-= 2; $hisdata->Gems-= 2; $hisdata->Recruits-= 2; }]]></code>
+    <code><![CDATA[$recruits_production*= 2; if (($mychanges['Tower'] < 0) OR ($mychanges['Wall'] < 0)) { $hisdata->Bricks-= 2; $hisdata->Gems-= 2; $hisdata->Recruits-= 2; }]]></code>
     <created>2007-11-25</created>
     <modified>2010-12-24</modified>
   </card>
@@ -5688,7 +5688,7 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[If opponent lowered your stock last round he loses twice the amount of lost stock (max 8)<br />No effect on Judge]]></effect>
-    <code><![CDATA[if ((($mychanges['Bricks'] < 0) OR ($mychanges['Gems'] < 0) OR ($mychanges['Recruits'] < 0)) AND !($mylast_card->IsPlayAgainCard() and $mylast_action == 'play') AND $hislast_card->GetID() != 364) { $hisdata->Bricks+= min(0, max(-8, 2 * $mychanges['Bricks'])); $hisdata->Gems+= min(0, max(-8, 2 * $mychanges['Gems'])); $hisdata->Recruits+= min(0, max(-8, 2 * $mychanges['Recruits'])); }]]></code>
+    <code><![CDATA[if ((($mychanges['Bricks'] < 0) OR ($mychanges['Gems'] < 0) OR ($mychanges['Recruits'] < 0)) AND $hislast_card->GetID() != 364) { $hisdata->Bricks+= min(0, max(-8, 2 * $mychanges['Bricks'])); $hisdata->Gems+= min(0, max(-8, 2 * $mychanges['Gems'])); $hisdata->Recruits+= min(0, max(-8, 2 * $mychanges['Recruits'])); }]]></code>
     <created>2008-07-30</created>
     <modified>2010-11-01</modified>
   </card>
@@ -5739,7 +5739,7 @@
     <modes>0</modes>
     <keywords>Holy</keywords>
     <effect><![CDATA[If opponent lowered your stock last round you gain lost stock back (max 6)]]></effect>
-    <code><![CDATA[if ((($mychanges['Bricks'] < 0) OR ($mychanges['Gems'] < 0) OR ($mychanges['Recruits'] < 0)) AND !($mylast_card->IsPlayAgainCard() AND $mylast_action == 'play')) { $mydata->Bricks-= min(0, max(-6, $mychanges['Bricks'])); $mydata->Gems-= min(0, max(-6, $mychanges['Gems'])); $mydata->Recruits-= min(0, max(-6, $mychanges['Recruits'])); }]]></code>
+    <code><![CDATA[if (($mychanges['Bricks'] < 0) OR ($mychanges['Gems'] < 0) OR ($mychanges['Recruits'] < 0)) { $mydata->Bricks-= min(0, max(-6, $mychanges['Bricks'])); $mydata->Gems-= min(0, max(-6, $mychanges['Gems'])); $mydata->Recruits-= min(0, max(-6, $mychanges['Recruits'])); }]]></code>
     <created>2008-07-30</created>
     <modified>2010-11-01</modified>
   </card>
@@ -5769,7 +5769,7 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Attack: 4<br />If opponent raised his wall by more than 8 last round<br />Enemy wall: -12]]></effect>
-    <code><![CDATA[$this->Attack(4, $hisdata->Tower, $hisdata->Wall); if (!($mylast_card->IsPlayAgainCard() and $mylast_action == 'play') AND ($hischanges['Wall'] > 8)) $hisdata->Wall-= 12;]]></code>
+    <code><![CDATA[$this->Attack(4, $hisdata->Tower, $hisdata->Wall); if ($hischanges['Wall'] > 8) $hisdata->Wall-= 12;]]></code>
     <created>2008-07-30</created>
     <modified>2010-02-27</modified>
   </card>
@@ -6118,7 +6118,7 @@
     <modes>0</modes>
     <keywords/>
     <effect><![CDATA[Negates the positive effect of opponent's last round on his tower, wall, facilities and stock]]></effect>
-    <code><![CDATA[if (!($mylast_card->IsPlayAgainCard() and $mylast_action == 'play')) { $hisdata->Tower-= max(0, $hischanges['Tower']); $hisdata->Wall-= max(0, $hischanges['Wall']); $hisdata->Quarry-= max(0, $hischanges['Quarry']); $hisdata->Magic-= max(0, $hischanges['Magic']); $hisdata->Dungeons-= max(0, $hischanges['Dungeons']); $hisdata->Bricks-= max(0, $hischanges['Bricks']); $hisdata->Gems-= max(0, $hischanges['Gems']); $hisdata->Recruits-= max(0, $hischanges['Recruits']); }]]></code>
+    <code><![CDATA[$hisdata->Tower-= max(0, $hischanges['Tower']); $hisdata->Wall-= max(0, $hischanges['Wall']); $hisdata->Quarry-= max(0, $hischanges['Quarry']); $hisdata->Magic-= max(0, $hischanges['Magic']); $hisdata->Dungeons-= max(0, $hischanges['Dungeons']); $hisdata->Bricks-= max(0, $hischanges['Bricks']); $hisdata->Gems-= max(0, $hischanges['Gems']); $hisdata->Recruits-= max(0, $hischanges['Recruits']);]]></code>
     <created>2008-12-24</created>
     <modified>2010-01-20</modified>
   </card>
@@ -8089,7 +8089,7 @@
     <modes>0</modes>
     <keywords>Nature,Restoration</keywords>
     <effect><![CDATA[Wall: +3<br />If opponent lowered your stock last round<br />Production x2]]></effect>
-    <code><![CDATA[$mydata->Wall+= 3; if (($mychanges['Bricks'] < 0 or $mychanges['Gems'] < 0 or $mychanges['Recruits'] < 0) and !($mylast_card->IsPlayAgainCard() and $mylast_action == 'play')) { $bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2; }]]></code>
+    <code><![CDATA[$mydata->Wall+= 3; if ($mychanges['Bricks'] < 0 or $mychanges['Gems'] < 0 or $mychanges['Recruits'] < 0) { $bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2; }]]></code>
     <created>2010-01-20</created>
     <modified>2010-01-20</modified>
   </card>

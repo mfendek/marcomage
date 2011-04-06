@@ -68,9 +68,7 @@
 <p>A: No. You can make arbitrarily long chains of "Swift"/"Quick" cards.</p>
 <h4>Q9: I used F5 to refresh the game and for some reason a card was played by itself.</h4>
 <p>A: Use OUR refresh button (located on the left part of the screen, above your empire info), not the one on the browser. For quick access use shorcut ALT+w.</p>
-<h4>Q10: I played a card ("Master of past" for example) that reverses or undos some effect of opponents last played card and it didn't work like it should have.</h4>
-<p>A: You probably played such card after "Swift"/"Quick" card(s). So when you played it, the system no longer had the information what effect was caused by opponent's last round. There is an easy rule for these cards - if you want them to work fine, don't play them after any "Swift"/"Quick" cards.</p>
-<h4>Q11: Some cards have "recently discarded cards" in their effect. What does that mean?</h4>
+<h4>Q10: Some cards have "recently discarded cards" in their effect. What does that mean?</h4>
 <p>A: Recently discarded cards are following cards:</p>
 <ul>
 	<li>Card discarded by you with discard button last turn</li>
@@ -78,7 +76,7 @@
 	<li>Cards that were discarded by opponent last round by some card effect</li>
 </ul>
 
-<h4>Q12: Some cards with modes like Militia, Vampire lord or Ranger for example can target their own position in hand. What will happen if I do that?</h4>
+<h4>Q11: Some cards with modes like Militia, Vampire lord or Ranger for example can target their own position in hand. What will happen if I do that?</h4>
 <p>A: It depends on the card, when card is played, card related actions are executed in this order:</p>
 
 <ol>

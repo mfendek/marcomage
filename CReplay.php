@@ -341,6 +341,26 @@
 		{
 			return $this->Replays->AssignThread($this->ID(), $thread_id);
 		}
+
+		public function LastRound() // search for the first turn of the current round
+		{
+			$turn = $this->Turns;
+			$round = $this->Rounds;
+			$result = false;
+
+			while( ($round == $this->Rounds) and ($turn >= 1) )
+			{
+				$turn_data = $this->GetTurn($turn);
+				if (!$turn_data) return false;
+
+				$round = $turn_data->Round;
+				if ($round == $this->Rounds) $result = $turn_data;
+
+				$turn--;
+			}
+
+			return $result;
+		}
 	}
 	
 	class CReplayTurn

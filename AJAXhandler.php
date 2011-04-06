@@ -21,6 +21,7 @@
 	require_once('CGame.php');
 	require_once('CGameAI.php');
 	require_once('CChat.php');
+	require_once('CReplay.php');
 	require_once('CStatistics.php');
 	require_once('CPlayer.php');
 	require_once('utils.php');
@@ -46,6 +47,7 @@
 	$keyworddb = new CKeywords();
 	$deckdb = new CDecks($db);
 	$gamedb = new CGames($db);
+	$replaydb = new CReplays($db);
 	$statistics = new CStatistics($db);
 	$playerdb = new CPlayers($db);
 

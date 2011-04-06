@@ -690,8 +690,6 @@
 			$hidden_cards = ($this->HiddenCards == 'yes');
 			
 			//we need to store this information, because some cards will need it to make their effect, however after effect this information is not stored
-			$mychanges = $mydata->Changes;
-			$hischanges = $hisdata->Changes;
 			$mynewflags = $mydata->NewCards;
 			$hisnewflags = $hisdata->NewCards;
 			$discarded_cards[0] = $mydata->DisCards[0];
@@ -705,6 +703,19 @@
 			{
 				$mydata_temp[$attribute] = $mydata->$attribute;
 				$hisdata_temp[$attribute] = $hisdata->$attribute;
+			}
+			
+			// prepare changes made during previous round
+			if ($mylast_card->IsPlayAgainCard() and $mylast_action == 'play')
+			{ // case 1: changes are no longer available - fetch data from replay
+				$last_round_data = $this->LastRound();
+				$mychanges = $last_round_data[$playername]->Changes;
+				$hischanges = $last_round_data[$opponent]->Changes;
+			}
+			else
+			{ // case 2: changes are still available
+				$mychanges = $mydata->Changes;
+				$hischanges = $hisdata->Changes;
 			}
 			
 			// clear newcards flag, changes indicator and discarded cards here, if required
@@ -1054,8 +1065,6 @@
 			$hidden_cards = ($this->HiddenCards == 'yes');
 			
 			//we need to store this information, because some cards will need it to make their effect, however after effect this information is not stored
-			$mychanges = $mydata->Changes;
-			$hischanges = $hisdata->Changes;
 			$mynewflags = $mydata->NewCards;
 			$hisnewflags = $hisdata->NewCards;
 			$discarded_cards[0] = $mydata->DisCards[0];
@@ -1069,6 +1078,19 @@
 			{
 				$mydata_temp[$attribute] = $mydata->$attribute;
 				$hisdata_temp[$attribute] = $hisdata->$attribute;
+			}
+			
+			// prepare changes made during previous round
+			if ($mylast_card->IsPlayAgainCard() and $mylast_action == 'play')
+			{ // case 1: changes are no longer available - fetch data from replay
+				$last_round_data = $this->LastRound();
+				$mychanges = $last_round_data[$playername]->Changes;
+				$hischanges = $last_round_data[$opponent]->Changes;
+			}
+			else
+			{ // case 2: changes are still available
+				$mychanges = $mydata->Changes;
+				$hischanges = $hisdata->Changes;
 			}
 			
 			// clear newcards flag, changes indicator and discarded cards here, if required
@@ -1706,6 +1728,19 @@
 		public function DetermineAIMove()
 		{
 			return $this->GameAI->DetermineMove();
+		}
+
+		private function LastRound() // fetch data of the first turn of the current round
+		{
+			global $replaydb;
+
+			$replay = $replaydb->GetReplay($this->GameID);
+			if (!$replay) return false;
+
+			$turn_data = $replay->LastRound();
+			if (!$turn_data) return false;
+
+			return $turn_data->GameData;
 		}
 	}
 	
