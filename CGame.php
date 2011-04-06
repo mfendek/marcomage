@@ -973,13 +973,11 @@
 					$this->EndType = 'Draw';
 				}
 			}
-			else
-			{	//game continues
-				$this->Current = $nextplayer;
-				$this->LastAction = date('Y-m-d G:i:s');
-				if( $nextplayer != $playername )
-					$this->Round++;
-			}
+			
+			$this->Current = $nextplayer;
+			$this->LastAction = date('Y-m-d G:i:s');
+			if( $nextplayer != $playername )
+				$this->Round++;
 			
 			// update card statistics (card was played or discarded by standard discard action)
 			$statistics->UpdateCardStats($cardid, $action);
