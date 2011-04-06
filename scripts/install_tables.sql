@@ -91,10 +91,10 @@ CREATE TABLE `games` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `replays_head`
+-- Table structure for table `replays`
 --
 
-CREATE TABLE `replays_head` (
+CREATE TABLE `replays` (
   `GameID` int(10) unsigned NOT NULL,
   `Player1` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `Player2` char(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -109,6 +109,7 @@ CREATE TABLE `replays_head` (
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   `Views` int(10) unsigned NOT NULL DEFAULT '0',
   `ThreadID` int(10) unsigned NOT NULL DEFAULT '0',
+  `Data` blob NOT NULL,
   PRIMARY KEY (`GameID`),
   KEY `Player1` (`Player1`),
   KEY `Player2` (`Player2`),
@@ -116,21 +117,6 @@ CREATE TABLE `replays_head` (
   KEY `GameModes` (`GameModes`),
   KEY `Finished` (`Finished`),
   KEY `AI` (`AI`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `replays_data`
---
-
-CREATE TABLE `replays_data` (
-  `GameID` int(10) unsigned NOT NULL,
-  `Turn` int(5) unsigned NOT NULL DEFAULT '1',
-  `Current` char(20) COLLATE utf8_unicode_ci NOT NULL,
-  `Round` int(3) unsigned NOT NULL DEFAULT '1',
-  `Data` text COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`GameID`,`Turn`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

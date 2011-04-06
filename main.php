@@ -1408,9 +1408,12 @@
 				$result = $game->PlayCard($player->Name(), $cardpos, $mode, $action);
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
+				$replay = $replaydb->GetReplay($gameid);
+				if (!$replay) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
+
 				$db->BeginTransaction();
 				if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if (!$replaydb->UpdateReplay($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				if (!$replay->Update($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
 				$db->Commit();
 
 				if ($game->State == 'finished')
@@ -1495,9 +1498,12 @@
 				$result = $game->PlayCard(SYSTEM_NAME, $cardpos, $mode, $action);
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
+				$replay = $replaydb->GetReplay($gameid);
+				if (!$replay) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
+
 				$db->BeginTransaction();
 				if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if (!$replaydb->UpdateReplay($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				if (!$replay->Update($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
 				$db->Commit();
 
 				if ($game->State == 'finished')
@@ -1542,9 +1548,12 @@
 					$result = $game->SurrenderGame();
 					if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
+					$replay = $replaydb->GetReplay($gameid);
+					if (!$replay) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
+
 					$db->BeginTransaction();
 					if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-					if (!$replaydb->FinishReplay($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+					if (!$replay->Finish($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
 					$db->Commit();
 
 					// update deck statistics
@@ -1611,9 +1620,12 @@
 				$result = $game->SurrenderGame();
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
+				$replay = $replaydb->GetReplay($gameid);
+				if (!$replay) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
+
 				$db->BeginTransaction();
 				if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if (!$replaydb->FinishReplay($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				if (!$replay->Finish($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
 				$db->Commit();
 
 				// update deck statistics
@@ -1679,9 +1691,12 @@
 				$result = $game->AbortGame($player->Name());
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
+				$replay = $replaydb->GetReplay($gameid);
+				if (!$replay) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
+
 				$db->BeginTransaction();
 				if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if (!$replaydb->FinishReplay($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				if (!$replay->Finish($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
 				$db->Commit();
 
 				$current = "Games_details";
@@ -1713,9 +1728,12 @@
 				$result = $game->FinishGame($player->Name());
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
+				$replay = $replaydb->GetReplay($gameid);
+				if (!$replay) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
+
 				$db->BeginTransaction();
 				if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if (!$replaydb->FinishReplay($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				if (!$replay->Finish($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
 				$db->Commit();
 
 				// update deck statistics
@@ -2828,7 +2846,7 @@
 				// check access rights
 				if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Replays'; break; }
 
-				$replay = $replaydb->GetReplay($replay_id, 1);
+				$replay = $replaydb->GetReplay($replay_id);
 				if (!$replay) { $error = 'No such replay.'; $current = 'Replays'; break; }
 				$thread_id = $replay->ThreadID;
 				if ($thread_id > 0) { $error = "Thread already exists"; $current = "Forum_thread"; $_POST['CurrentThread'] = $thread_id; break; }
@@ -3939,10 +3957,13 @@ case 'Replays_details':
 	$params['replay']['CurrentTurn'] = $turn = (isset($_POST['Turn']) ? $_POST['Turn'] : 1);
 
 	// prepare the necessary data
-	$replay = $replaydb->GetReplay($gameid, $turn);
+	$replay = $replaydb->GetReplay($gameid);
 	if (!$replay) { $display_error = "Invalid replay."; break; }
 	if ($replay->EndType == 'Pending') { $display_error = "Replay is not yet available."; break; }
 	if (!($player_view == 1 OR $player_view == 2)) { $display_error = "Invalid player selection."; break; }
+
+	$turn_data = $replay->GetTurn($turn);
+	if (!$turn_data) { $display_error = "Invalid replay turn."; break; }
 
 	$params['replay']['create_thread'] = ($access_rights[$player->Type()]["create_thread"]) ? 'yes' : 'no';
 
@@ -3953,9 +3974,8 @@ case 'Replays_details':
 	$player1 = ($player_view == 1) ? $replay->Name1() : $replay->Name2();
 	$player2 = ($player_view == 1) ? $replay->Name2() : $replay->Name1();
 
-	$replay_data = $replay->ReplayData;
-	$p1data = $replay_data[$player1];
-	$p2data = $replay_data[$player2];
+	$p1data = $turn_data->GameData[$player1];
+	$p2data = $turn_data->GameData[$player2];
 
 	// load needed settings
 	$settings = $player->GetSettings();
@@ -3965,15 +3985,15 @@ case 'Replays_details':
 	$params['replay']['c_miniflags'] = $settings->GetSetting('Miniflags');
 	$params['replay']['Background'] = $settings->GetSetting('Background');
 
-	$params['replay']['turns'] = $replay->NumberOfTurns();
-	$params['replay']['Round'] = $replay->Round;
+	$params['replay']['turns'] = $replay->Turns;
+	$params['replay']['Round'] = $turn_data->Round;
 	$params['replay']['Outcome'] = $replay->Outcome();
 	$params['replay']['EndType'] = $replay->EndType;
 	$params['replay']['Winner'] = $replay->Winner;
 	$params['replay']['ThreadID'] = $replay->ThreadID;
 	$params['replay']['Player1'] = $player1;
 	$params['replay']['Player2'] = $player2;
-	$params['replay']['Current'] = $replay->Current;
+	$params['replay']['Current'] = $turn_data->Current;
 	$params['replay']['AI'] = $replay->AI;
 	$params['replay']['HiddenCards'] = $replay->GetGameMode('HiddenCards');
 	$params['replay']['FriendlyPlay'] = $replay->GetGameMode('FriendlyPlay');
@@ -4113,15 +4133,16 @@ case 'Replays_details':
 case 'Replays_history':
 	$params['replays_history']['CurrentReplay'] = $gameid = (isset($_POST['CurrentReplay'])) ? $_POST['CurrentReplay'] : 0;
 
-	$turns = $replaydb->NumberOfTurns($gameid);
-	if (!$turns) { $display_error = "Invalid replay."; break; }
-
-	$params['replays_history']['CurrentTurn'] = $turn = (isset($_POST['Turn']) ? $_POST['Turn'] : $turns);
-
 	// prepare the necessary data
-	$replay = $replaydb->GetReplay($gameid, $turn);
+	$replay = $replaydb->GetReplay($gameid);
 	if (!$replay) { $display_error = "Invalid replay."; break; }
 	if ($replay->EndType != 'Pending') { $display_error = "Game history is no longer available."; break; }
+
+	$turns = $replay->Turns;
+	$params['replays_history']['CurrentTurn'] = $turn = (isset($_POST['Turn']) ? $_POST['Turn'] : $turns);
+
+	$turn_data = $replay->GetTurn($turn);
+	if (!$turn_data) { $display_error = "Invalid replay turn."; break; }
 
 	// check if this user is allowed to view this replay
 	if ($player->Name() != $replay->Name1() and $player->Name() != $replay->Name2()) { $display_error = 'You are not allowed to access this replay.'; break; }
@@ -4131,9 +4152,8 @@ case 'Replays_history':
 	$player1 = ($player_view == 1) ? $replay->Name1() : $replay->Name2();
 	$player2 = ($player_view == 1) ? $replay->Name2() : $replay->Name1();
 
-	$replay_data = $replay->ReplayData;
-	$p1data = $replay_data[$player1];
-	$p2data = $replay_data[$player2];
+	$p1data = $turn_data->GameData[$player1];
+	$p2data = $turn_data->GameData[$player2];
 
 	// load needed settings
 	$settings = $player->GetSettings();
@@ -4144,13 +4164,13 @@ case 'Replays_history':
 	$params['replays_history']['Background'] = $settings->GetSetting('Background');
 
 	$params['replays_history']['turns'] = $turns;
-	$params['replays_history']['Round'] = $replay->Round;
+	$params['replays_history']['Round'] = $turn_data->Round;
 	$params['replays_history']['Outcome'] = $replay->Outcome();
 	$params['replays_history']['EndType'] = $replay->EndType;
 	$params['replays_history']['Winner'] = $replay->Winner;
 	$params['replays_history']['Player1'] = $player1;
 	$params['replays_history']['Player2'] = $player2;
-	$params['replays_history']['Current'] = $replay->Current;
+	$params['replays_history']['Current'] = $turn_data->Current;
 	$params['replays_history']['AI'] = $replay->AI;
 	$params['replays_history']['HiddenCards'] = $replay->GetGameMode('HiddenCards');
 	$params['replays_history']['FriendlyPlay'] = $replay->GetGameMode('FriendlyPlay');

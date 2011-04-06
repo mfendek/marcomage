@@ -22,8 +22,9 @@
 		{
 			$db = $this->db;
 			
-			$game_data[$player1] = new CGamePlayerData;
-			$game_data[$player1]->Deck = $deck1->DeckData;
+			$game_data[1] = new CGamePlayerData;
+			$game_data[1]->Deck = $deck1->DeckData;
+			$game_data[2] = new CGamePlayerData;
 			
 			$result = $db->Query('INSERT INTO `games` (`Player1`, `Player2`, `Data`, `DeckID1`, `GameModes`) VALUES (?, ?, ?, ?, ?)', array($player1, $player2, serialize($game_data), $deck1->ID(), implode(',', $game_modes)));
 			if ($result === false) return false;
@@ -426,7 +427,11 @@
 			$this->FriendlyPlay = (strpos($data['GameModes'], 'FriendlyPlay') !== false) ? 'yes' : 'no';
 			$this->LongMode = (strpos($data['GameModes'], 'LongMode') !== false) ? 'yes' : 'no';
 			$this->AIMode = (strpos($data['GameModes'], 'AIMode') !== false) ? 'yes' : 'no';
-			$this->GameData = unserialize($data['Data']);
+			$game_data = unserialize($data['Data']);
+			
+			// transform symbolic names to real names
+			$this->GameData[$this->Player1] = $game_data[1];
+			$this->GameData[$this->Player2] = $game_data[2];
 			$this->Chat = new CChats($db);
 			
 			// initialize game AI
@@ -439,7 +444,11 @@
 		{
 			$db = $this->Games->getDB();
 
-			$result = $db->Query('UPDATE `games` SET `State` = ?, `Current` = ?, `Round` = ?, `Winner` = ?, `Surrender` = ?, `EndType` = ?, `Last Action` = ?, `Data` = ?, `DeckID1` = ?, `DeckID2` = ?, `Note1` = ?, `Note2` = ?, `AI` = ? WHERE `GameID` = ?', array($this->State, $this->Current, $this->Round, $this->Winner, $this->Surrender, $this->EndType, $this->LastAction, serialize($this->GameData), $this->DeckID1, $this->DeckID2, $this->Note1, $this->Note2, $this->AI, $this->GameID));
+			// transform real names to symbolic names
+			$game_data[1] = $this->GameData[$this->Player1];
+			$game_data[2] = $this->GameData[$this->Player2];
+
+			$result = $db->Query('UPDATE `games` SET `State` = ?, `Current` = ?, `Round` = ?, `Winner` = ?, `Surrender` = ?, `EndType` = ?, `Last Action` = ?, `Data` = ?, `DeckID1` = ?, `DeckID2` = ?, `Note1` = ?, `Note2` = ?, `AI` = ? WHERE `GameID` = ?', array($this->State, $this->Current, $this->Round, $this->Winner, $this->Surrender, $this->EndType, $this->LastAction, serialize($game_data), $this->DeckID1, $this->DeckID2, $this->Note1, $this->Note2, $this->AI, $this->GameID));
 			if ($result === false) return false;
 
 			return true;
