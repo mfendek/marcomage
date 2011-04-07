@@ -4021,7 +4021,7 @@
     <modified>2010-09-23</modified>
   </card>
   <card id="263">
-    <name>Saints Day</name>
+    <name>Saints day</name>
     <class>Common</class>
     <cost>
       <bricks>0</bricks>
@@ -7607,7 +7607,7 @@
     <modified>2010-07-22</modified>
   </card>
   <card id="470">
-    <name>Dark Templar</name>
+    <name>Dark templar</name>
     <class>Uncommon</class>
     <cost>
       <bricks>0</bricks>
@@ -7687,7 +7687,7 @@
     <modified>2009-10-24</modified>
   </card>
   <card id="473">
-    <name>Knight Templar</name>
+    <name>Knight templar</name>
     <class>Uncommon</class>
     <cost>
       <bricks>0</bricks>
