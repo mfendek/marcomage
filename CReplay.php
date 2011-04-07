@@ -36,7 +36,7 @@
 			
 			// prepare data of the first turn of the replay
 			$turn_data = new CReplayTurn;
-			$turn_data->Current = $game->Current;
+			$turn_data->Current = ($game->Current == $player1) ? 1 : 2;
 			$turn_data->Round = 1; // first round
 			$turn_data->GameData = $game_data;
 			$replay_data[1] = $turn_data;
@@ -280,7 +280,7 @@
 			
 			// prepare data of the current turn of the replay
 			$turn_data = new CReplayTurn;
-			$turn_data->Current = $game->Current;
+			$turn_data->Current = ($game->Current == $player1) ? 1 : 2;
 			$turn_data->Round = $game->Round;
 			$turn_data->GameData = $game_data;
 			$this->ReplayData[$this->Turns] = $turn_data;
@@ -310,8 +310,8 @@
 			// transform symbolic names to real names
 			$data[$this->Player1] = $turn_data->GameData[1];
 			$data[$this->Player2] = $turn_data->GameData[2];
-
 			$turn_data->GameData = $data;
+			$turn_data->Current = ($turn_data->Current == 1) ? $this->Player1 : $this->Player2;
 
 			return $turn_data;
 		}
