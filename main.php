@@ -2470,6 +2470,25 @@
 				break;
 			}
 
+			if (isset($_POST['rename_player'])) // Players -> User details -> Rename player
+			{
+				$_POST['Profile'] = $opponent = postdecode($_POST['rename_player']);
+				$new_name = $_POST['new_username'];
+
+				// check access rights
+				if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
+
+				if (trim($new_name) == "" or trim($new_name) == $opponent) { $error = "Invalid new name"; $current = 'Players_details'; break; }
+				if (strlen($new_name) > 20) { $error = "New name is too long"; $current = 'Players_details'; break; }
+
+				if (!$playerdb->RenamePlayer($opponent, $new_name)) { $error = "Failed to rename player."; $current = 'Players_details'; break; }
+				$_POST['Profile'] = trim($new_name);
+
+				$information = 'Player successfully renamed.';
+				$current = 'Players_details';
+				break;
+			}
+
 			if (isset($_POST['delete_player'])) // Players -> User details -> Delete player
 			{
 				$_POST['Profile'] = $opponent = postdecode($_POST['delete_player']);

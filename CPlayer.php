@@ -78,6 +78,73 @@
 			return true;
 		}
 		
+		public function RenamePlayer($playername, $new_name)
+		{
+			$db = $this->db;
+			$db->BeginTransaction();
+
+			$result = $db->Query('UPDATE `chats` SET `Name` = ? WHERE `Name` = ?', array($new_name, $playername));
+			if ($result === false) { $db->RollBack(); return false; }
+
+			$result = $db->Query('UPDATE `concepts` SET `Author` = ? WHERE `Author` = ?', array($new_name, $playername));
+			if ($result === false) { $db->RollBack(); return false; }
+
+			$result = $db->Query('UPDATE `decks` SET `Username` = ? WHERE `Username` = ?', array($new_name, $playername));
+			if ($result === false) { $db->RollBack(); return false; }
+
+			$result = $db->Query('UPDATE `forum_posts` SET `Author` = ? WHERE `Author` = ?', array($new_name, $playername));
+			if ($result === false) { $db->RollBack(); return false; }
+
+			$result = $db->Query('UPDATE `forum_threads` SET `Author` = ? WHERE `Author` = ?', array($new_name, $playername));
+			if ($result === false) { $db->RollBack(); return false; }
+
+			$result = $db->Query('UPDATE `forum_threads` SET `LastAuthor` = ? WHERE `LastAuthor` = ?', array($new_name, $playername));
+			if ($result === false) { $db->RollBack(); return false; }
+
+			$result = $db->Query('UPDATE `games` SET `Player1` = ? WHERE `Player1` = ?', array($new_name, $playername));
+			if ($result === false) { $db->RollBack(); return false; }
+
+			$result = $db->Query('UPDATE `games` SET `Player2` = ? WHERE `Player2` = ?', array($new_name, $playername));
+			if ($result === false) { $db->RollBack(); return false; }
+
+			$result = $db->Query('UPDATE `games` SET `Current` = ? WHERE `Current` = ?', array($new_name, $playername));
+			if ($result === false) { $db->RollBack(); return false; }
+
+			$result = $db->Query('UPDATE `games` SET `Winner` = ? WHERE `Winner` = ?', array($new_name, $playername));
+			if ($result === false) { $db->RollBack(); return false; }
+
+			$result = $db->Query('UPDATE `games` SET `Surrender` = ? WHERE `Surrender` = ?', array($new_name, $playername));
+			if ($result === false) { $db->RollBack(); return false; }
+
+			$result = $db->Query('UPDATE `logins` SET `Username` = ? WHERE `Username` = ?', array($new_name, $playername));
+			if ($result === false) { $db->RollBack(); return false; }
+
+			$result = $db->Query('UPDATE `messages` SET `Author` = ? WHERE `Author` = ?', array($new_name, $playername));
+			if ($result === false) { $db->RollBack(); return false; }
+
+			$result = $db->Query('UPDATE `messages` SET `Recipient` = ? WHERE `Recipient` = ?', array($new_name, $playername));
+			if ($result === false) { $db->RollBack(); return false; }
+
+			$result = $db->Query('UPDATE `replays` SET `Player1` = ? WHERE `Player1` = ?', array($new_name, $playername));
+			if ($result === false) { $db->RollBack(); return false; }
+
+			$result = $db->Query('UPDATE `replays` SET `Player2` = ? WHERE `Player2` = ?', array($new_name, $playername));
+			if ($result === false) { $db->RollBack(); return false; }
+
+			$result = $db->Query('UPDATE `replays` SET `Winner` = ? WHERE `Winner` = ?', array($new_name, $playername));
+			if ($result === false) { $db->RollBack(); return false; }
+
+			$result = $db->Query('UPDATE `scores` SET `Username` = ? WHERE `Username` = ?', array($new_name, $playername));
+			if ($result === false) { $db->RollBack(); return false; }
+
+			$result = $db->Query('UPDATE `settings` SET `Username` = ? WHERE `Username` = ?', array($new_name, $playername));
+			if ($result === false) { $db->RollBack(); return false; }
+
+			$db->Commit();
+
+			return true;
+		}
+		
 		public function GetPlayer($playername)
 		{
 			$db = $this->db;

@@ -410,25 +410,31 @@
 		<xsl:if test="$param/change_rights = 'yes'">
 			<fieldset>
 				<legend>Account options</legend>
-				<button type="submit" name="change_access" value="{am:urlencode($opponent)}">Change access rights</button>
-				<xsl:variable name="user_types">
-					<type name="moderator"  text="Moderator"/>
-					<type name="supervisor" text="Supervisor"/>
-					<type name="user"       text="User"     />
-					<type name="squashed"   text="Squashed" />
-					<type name="limited"    text="Limited"  />
-					<type name="banned"     text="Banned"   />
-				</xsl:variable>
-				<select name="new_access" size="1">
-					<xsl:for-each select="exsl:node-set($user_types)/*">
-						<option value="{@name}">
-							<xsl:if test="$param/PlayerType = @name"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-							<xsl:value-of select="@text"/>
-						</option>
-					</xsl:for-each>
-				</select>
-				<button type="submit" name="reset_password" value="{am:urlencode($opponent)}">Reset password</button>
-				<button type="submit" name="delete_player" value="{am:urlencode($opponent)}">Delete player</button>
+				<p>
+					<button type="submit" name="reset_password" value="{am:urlencode($opponent)}">Reset password</button>
+					<button type="submit" name="change_access" value="{am:urlencode($opponent)}">Change access rights</button>
+					<xsl:variable name="user_types">
+						<type name="moderator"  text="Moderator"/>
+						<type name="supervisor" text="Supervisor"/>
+						<type name="user"       text="User"     />
+						<type name="squashed"   text="Squashed" />
+						<type name="limited"    text="Limited"  />
+						<type name="banned"     text="Banned"   />
+					</xsl:variable>
+					<select name="new_access" size="1">
+						<xsl:for-each select="exsl:node-set($user_types)/*">
+							<option value="{@name}">
+								<xsl:if test="$param/PlayerType = @name"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+								<xsl:value-of select="@text"/>
+							</option>
+						</xsl:for-each>
+					</select>
+				</p>
+				<p>
+					<button type="submit" name="delete_player" value="{am:urlencode($opponent)}">Delete player</button>
+					<button type="submit" name="rename_player" value="{am:urlencode($opponent)}">Rename player</button>
+					<input type="text" name="new_username" maxlength="20" />
+				</p>
 			</fieldset>
 		</xsl:if>
 

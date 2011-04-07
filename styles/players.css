@@ -153,6 +153,11 @@ div#details fieldset /* admin panel */
 	margin-top: 1ex;
 }
 
+div#details fieldset > p + p /* admin panel - spacing */
+{
+	margin-top: 0.5ex;
+}
+
 /* end user details */
 
 /* begin user achievements */
