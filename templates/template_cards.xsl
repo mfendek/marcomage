@@ -196,7 +196,7 @@
 			<p><xsl:value-of select="am:cardeffect($param/data/effect)" disable-output-escaping="yes"/></p>
 			<hr />
 			<p>Code</p>
-			<div class="code"><pre><xsl:copy-of select="am:textencode($param/data/code)" /></pre></div>
+			<div class="code"><pre><xsl:copy-of select="$param/data/code/text()" /></pre></div>
 		</div>
 	</div>
 
