@@ -17,8 +17,6 @@
 	<xsl:variable name="param" select="$params/concepts" />
 
 	<div id="concepts">
-		<div id="concepts_table">
-
 		<!-- begin buttons and filters -->
 
 		<xsl:choose>
@@ -173,8 +171,6 @@
 			</div>
 		</xsl:if>
 
-		</div>
-
 		<input type="hidden" name="CurrentConPage" value="{$param/current_page}" />
 		<input type="hidden" name="CurrentOrder" value="{$param/current_order}" />
 		<input type="hidden" name="CurrentCon" value="{$param/current_condition}" />
@@ -187,9 +183,7 @@
 
 	<div id="concepts_edit">
 
-		<h3>New card</h3>
-
-		<div id="card_edit" class="skin_text">
+		<div class="skin_text">
 			<a class="button" href="{php:functionString('makeurl', 'Concepts')}">Back</a>
 			<button type="submit" name="create_concept">Create card</button>
 
@@ -296,9 +290,7 @@
 
 	<div id="concepts_edit">
 
-		<h3>Edit card</h3>
-
-		<div id="card_edit" class="skin_text">
+		<div class="skin_text">
 			<a class="button" href="{php:functionString('makeurl', 'Concepts')}">Back</a>
 			<a class="button" href="{php:functionString('makeurl', 'Concepts_details', 'CurrentConcept', $param/data/id)}">Details</a>
 			<xsl:if test="$param/data/author = $param/PlayerName">
@@ -411,9 +403,7 @@
 
 	<div id="concepts_edit">
 
-		<h3>Card details</h3>
-
-		<div id="card_edit" class="skin_text">
+		<div class="skin_text">
 			<a class="button" href="{php:functionString('makeurl', 'Concepts')}">Back</a>
 			<xsl:choose>
 				<xsl:when test="$param/data/threadid = 0 and $param/create_thread = 'yes'">
