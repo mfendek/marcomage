@@ -473,6 +473,7 @@
 						<xsl:for-each select="str:split($card/keywords, ',')">
 							<xsl:variable name="keyword_name" select="." />
 							<xsl:variable name="keyword" select="$descriptions/am:keyword[contains($keyword_name, am:name)]" />
+							<a href="{php:functionString('makeurl', 'Cards_keyword_details', 'keyword', $keyword/am:name)}">
 							<xsl:choose>
 								<xsl:when test="$c_insignias = 'yes'">
 
@@ -489,6 +490,7 @@
 								</b>
 								</xsl:otherwise>
 							</xsl:choose>
+							</a>
 						</xsl:for-each>
 					</p>
 				</xsl:otherwise>

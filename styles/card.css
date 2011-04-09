@@ -119,6 +119,12 @@ div.karta > p, div.karta > p + div
 	padding: 0ex 0.5ex 0ex 0.5ex;
 }
 
+/* card keyword hyperlink */
+div.karta > p > a
+{
+	text-decoration: none;
+	color: inherit;
+}
 
 /* set bottom distance of the card text from the card border */
 div.karta > p + div

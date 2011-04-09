@@ -91,3 +91,70 @@ div.code /* card code */
 }
 
 /* end cards details */
+
+/* begin keywords table */
+
+div#keywords /* keywords list subsection */
+{
+	min-width: 1045px;
+}
+
+div#keywords table /* keywords table */
+{
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 1ex;
+	width: 85%;
+}
+
+div#keywords table th, div#keywords table td /* table cell text */
+{
+	padding: 1ex;
+}
+
+div#keywords table tr.table_row:hover a /* keyword hyperlink */
+{
+	color: inherit;
+}
+
+.description /* keyword description */
+{
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 50em;
+	text-align: justify;
+}
+
+/* end keywords table */
+
+/* begin keyword details */
+
+div#keyword_details /* keyword details subsection */
+{
+	min-width: 1045px;
+}
+
+div#keyword_details > h3 /* keyword heading */
+{
+	margin: 0ex;
+}
+
+div#keyword_details .skin_text /* keyword data */
+{
+	margin: 1ex auto 1ex auto;
+	width: 60%;
+	font-weight: bold;
+	padding: 1ex;
+}
+
+div#keyword_details .skin_text hr /* set distance between elements */
+{
+  margin-top: 1ex;
+}
+
+.description > img.insignia /* keyword insignia */
+{
+	margin-right: 1ex;
+}
+
+/* end keyword details */

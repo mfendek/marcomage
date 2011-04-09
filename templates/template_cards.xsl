@@ -203,4 +203,57 @@
 </xsl:template>
 
 
+<xsl:template match="section[. = 'Cards_keywords']">
+	<xsl:variable name="param" select="$params/cards_keywords" />
+	<xsl:variable name="keywords" select="document('keywords.xml')/am:keywords" />
+
+	<div id="keywords">
+		<table cellspacing="0" class="skin_text">
+			<tr>
+				<th></th>
+				<th><p>Name</p></th>
+				<th><p>Effect</p></th>
+			</tr>
+			<xsl:for-each select="$keywords/*">
+				<tr class="table_row">
+					<td><p><img class="insignia" src="img/insignias/{am:file_name(am:name)}.png" width="12px" height="12px" alt="{am:name}" title="{am:name}" /></p></td>
+					<td><p><a href="{php:functionString('makeurl', 'Cards_keyword_details', 'keyword', am:name)}"><xsl:value-of select="am:name"/></a></p></td>
+					<td><p class="description"><xsl:value-of select="am:description"/></p></td>
+				</tr>
+			</xsl:for-each>
+		</table>
+	</div>
+
+</xsl:template>
+
+
+<xsl:template match="section[. = 'Cards_keyword_details']">
+	<xsl:variable name="param" select="$params/keyword_details" />
+	<xsl:variable name="keyword" select="document('keywords.xml')/am:keywords/am:keyword[am:name = $param/name]" />
+
+	<xsl:choose>
+
+	<xsl:when test="$keyword">
+		<div id="keyword_details">
+			<h3><a href="{php:functionString('makeurl', 'Cards_keywords')}">Keywords</a> &gt; <xsl:value-of select="$keyword/am:name"/></h3>
+			<div class="skin_text">
+				<p class="description">
+					<img class="insignia" src="img/insignias/{am:file_name($keyword/am:name)}.png" width="12px" height="12px" alt="{$keyword/am:name}" title="{$keyword/am:name}" />
+					<xsl:value-of select="$keyword/am:description"/>
+				</p>
+				<hr />
+				<div class="code"><pre><xsl:copy-of select="$keyword/am:code/text()"/></pre></div>
+			</div>
+		</div>
+	</xsl:when>
+
+	<xsl:otherwise>
+		<h3 class="information_line error">Invalid keyword.</h3>
+	</xsl:otherwise>
+
+	</xsl:choose>
+
+</xsl:template>
+
+
 </xsl:stylesheet>

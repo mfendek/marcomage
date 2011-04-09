@@ -4390,6 +4390,18 @@ case 'Cards_details':
 	break;
 
 
+case 'Cards_keywords':
+	$subsection_name = 'Keywords';
+
+	break;
+
+
+case 'Cards_keyword_details':
+	$params['keyword_details']['name'] = $subsection_name = ( isset($_POST['keyword']) ) ? $_POST['keyword'] : "";
+
+	break;
+
+
 case 'Statistics':
 	if (isset($_POST['card_statistics'])) $subsection = "card_statistics";
 	elseif (isset($_POST['other_statistics'])) $subsection = "other_statistics";
