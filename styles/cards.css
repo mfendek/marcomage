@@ -8,12 +8,7 @@ div#cards /* cards section layout */
 	text-align: center;
 }
 
-div#cards_details > h3 /* cards heading layout */
-{
-	margin: 0ex;
-}
-
-div#cards_table /* cards list layout */
+div#cards table /* cards list layout */
 {
 	margin-left: auto;
 	margin-right: auto;
@@ -21,17 +16,12 @@ div#cards_table /* cards list layout */
 	width: 85%;
 }
 
-div#cards_table th > p, div#cards_table td > p /* table cell text */
+div#cards table th > p, div#cards table td > p /* table cell text */
 {
 	margin: 0.5ex 1ex 0.5ex 1ex;
 }
 
-div#cards_table > table /* cards table */
-{
-	width: 100%;
-}
-
-div#cards_table > table div.karta /* card layout within the table */
+div#cards table div.karta /* card layout within the table */
 {
 	margin-left: 2ex;
 }
@@ -53,7 +43,7 @@ div#cards_details /* cards details subsection */
 	min-width: 1045px;
 }
 
-div#card_details /* card data layout */
+div#cards_details > .skin_text /* card data layout */
 {
 	margin-right: auto;
 	margin-left: auto;
@@ -63,7 +53,7 @@ div#card_details /* card data layout */
 	padding: 1ex;
 }
 
-div#card_details > p, div#card_details > div.limit > p, div#card_details hr /* set distance between elements */
+div#cards_details > .skin_text > p, div#cards_details > .skin_text > div.limit > p, div#cards_details > .skin_text hr /* set distance between elements */
 {
 	margin-top: 1ex;
 	margin-bottom: 1ex;

@@ -16,10 +16,7 @@
 	<xsl:variable name="param" select="$params/cards" />
 
 <div id="cards">
-		<div id="cards_table">
-
 		<!-- begin buttons and filters -->
-
 		<xsl:choose>
 			<xsl:when test="$param/is_logged_in = 'yes'">
 			<!-- advanced navigation (for authenticated users only) -->
@@ -152,8 +149,6 @@
 			</div>
 		</xsl:if>
 
-		</div>
-
 		<input type="hidden" name="CurrentCardsPage" value="{$param/current_page}" />
 </div>
 
@@ -165,9 +160,7 @@
 
 	<div id="cards_details">
 
-		<h3>Card details</h3>
-
-		<div id="card_details" class="skin_text">
+		<div class="skin_text">
 			<a class="button" href="{php:functionString('makeurl', 'Cards')}">Back</a>
 			<xsl:choose>
 				<xsl:when test="$param/discussion = 0 and $param/create_thread = 'yes'">
