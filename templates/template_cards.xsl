@@ -230,11 +230,15 @@
 		<div id="keyword_details">
 			<h3><a href="{php:functionString('makeurl', 'Cards_keywords')}">Keywords</a> &gt; <xsl:value-of select="$keyword/am:name"/></h3>
 			<div class="skin_text">
+				<h4>Effect</h4>
 				<p class="description">
 					<img class="insignia" src="img/insignias/{am:file_name($keyword/am:name)}.png" width="12px" height="12px" alt="{$keyword/am:name}" title="{$keyword/am:name}" />
 					<xsl:value-of select="$keyword/am:description"/>
 				</p>
+				<h4>Lore</h4>
+				<div class="lore"><xsl:value-of select="$keyword/am:lore" disable-output-escaping="yes" /></div>
 				<hr />
+				<h4>Code</h4>
 				<div class="code"><pre><xsl:copy-of select="$keyword/am:code/text()"/></pre></div>
 			</div>
 		</div>
