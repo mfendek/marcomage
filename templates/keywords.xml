@@ -553,6 +553,42 @@
 ]]></code>
   </keyword>
   <keyword>
+    <name>Runic</name>
+    <description>If Tower or Wall was damaged during opponent's last round, Tower or Wall is raised based on played card rarity (C-2, U-5, R-10). Tower or Wall increase can't exceed the damage which was inflicted on Tower or Wall.</description>
+    <lore><![CDATA[
+    <p>Dwarves are well known for their technological superiority, mining and weapon forging. Additionally, they have rune magic at their disposal. Dwarven country is called the Runic league which is ruled by the Mountain king. Dwarven society consists of common folk, noble houses and the Runic circle. The Runic circle supervises the usage of rune magic and thus is powerful and influential. The dwraves are a defensive faction. They prefer to stay safely behind their strong fortifications.</p>
+    <p>Technological dominance and rune magic allows the dwarves to construct sturdy fortifications that can be repaired very quickly and efficiently.</p>
+]]></lore>
+    <code><![CDATA[
+    $rarities = array("Common" => 2, "Uncommon" => 5, "Rare" => 10);
+    $factor = $rarities[$card->GetClass()];
+    if ($mychanges['Tower'] < 0)
+    {
+      $tower_damage = $mychanges['Tower'] * (-1);
+      $mydata->Tower+= min($tower_damage, $factor);
+    }
+    if ($mychanges['Wall'] < 0)
+    {
+      $wall_damage = $mychanges['Wall'] * (-1);
+      $mydata->Wall+= min($wall_damage, $factor);
+    }
+]]></code>
+  </keyword>
+  <keyword>
+    <name>Siege</name>
+    <description>If played card damages opponent's Tower or Wall and opponent raised his Tower or Wall last round, he suffers additional damage to Tower or Wall based on played card rarity (C-1, U-2, R-5) for Tower and (C-2, U-4, R-10) for Wall. The additional damage can't exceed the Tower or Wall increase.</description>
+    <lore><![CDATA[<p>Powerful creatures and war machines are often used as a siege weapons during the battle. Their attack is so powerful that fortifications that were built only recently may fail to endure such force and break apart.</p>]]></lore>
+    <code><![CDATA[
+    $rarities = array("Common" => 1, "Uncommon" => 2, "Rare" => 5);
+    $factor = $rarities[$card->GetClass()];
+    if ($hischanges['Tower'] > 0 and $hisdata_temp['Tower'] > $hisdata->Tower)
+      $hisdata->Tower-= min($hischanges['Tower'], $factor);
+    
+    if ($hischanges['Wall'] > 0 and $hisdata_temp['Wall'] > $hisdata->Wall)
+      $hisdata->Wall-= min($hischanges['Wall'], 2 * $factor);
+]]></code>
+  </keyword>
+  <keyword>
     <name>Skirmisher</name>
     <description>Discards one random Charge card from enemy hand (if there is one). Common cards can discard common and uncommon cards, uncommon cards can discard any rarity. Rare cards can also discard any rarity, but they have additional effect (opponent loses stock equal to discarded card cost). Cards with highest discardable rarity are preferred.</description>
     <lore><![CDATA[<p>Skirmishers are troops designed to counter enemy cavalry. Their combat capabilities may be inferior, but their role is crucial in any army. They are trained to protect their allies at all costs and down to the last man.</p>]]></lore>

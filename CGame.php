@@ -774,8 +774,8 @@
 				if ($card->CardData->Keywords != '')
 				{
 					// list all keywords in order they are to be executed
-					$category_keywords = array('Alliance', 'Aqua', 'Barbarian', 'Beast', 'Brigand', 'Burning', 'Destruction', 'Dragon', 'Holy', 'Illusion', 'Legend', 'Mage', 'Nature', 'Restoration', 'Soldier', 'Titan', 'Undead', 'Unliving');
-					$effect_keywords = array('Durable', 'Quick', 'Swift', 'Far sight', 'Banish', 'Skirmisher', 'Rebirth', 'Flare attack', 'Frenzy', 'Enduring', 'Charge');
+					$category_keywords = array('Alliance', 'Aqua', 'Barbarian', 'Beast', 'Brigand', 'Burning', 'Destruction', 'Dragon', 'Holy', 'Illusion', 'Legend', 'Mage', 'Nature', 'Restoration', 'Runic', 'Soldier', 'Titan', 'Undead', 'Unliving');
+					$effect_keywords = array('Durable', 'Quick', 'Swift', 'Far sight', 'Banish', 'Skirmisher', 'Rebirth', 'Flare attack', 'Frenzy', 'Enduring', 'Charge', 'Siege');
 
 					$keywords = array_merge($category_keywords, $effect_keywords);
 					foreach ($keywords as $keyword_name)
@@ -1142,8 +1142,8 @@
 			if ($card->CardData->Keywords != '')
 			{
 				// list all keywords in order they are to be executed
-				$category_keywords = array('Alliance', 'Aqua', 'Barbarian', 'Beast', 'Brigand', 'Burning', 'Destruction', 'Dragon', 'Holy', 'Illusion', 'Legend', 'Mage', 'Nature', 'Restoration', 'Soldier', 'Titan', 'Undead', 'Unliving');
-				$effect_keywords = array('Durable', 'Quick', 'Swift', 'Far sight', 'Banish', 'Skirmisher', 'Rebirth', 'Flare attack', 'Frenzy', 'Enduring', 'Charge');
+				$category_keywords = array('Alliance', 'Aqua', 'Barbarian', 'Beast', 'Brigand', 'Burning', 'Destruction', 'Dragon', 'Holy', 'Illusion', 'Legend', 'Mage', 'Nature', 'Restoration', 'Runic', 'Soldier', 'Titan', 'Undead', 'Unliving');
+				$effect_keywords = array('Durable', 'Quick', 'Swift', 'Far sight', 'Banish', 'Skirmisher', 'Rebirth', 'Flare attack', 'Frenzy', 'Enduring', 'Charge', 'Siege');
 
 				$keywords = array_merge($category_keywords, $effect_keywords);
 				foreach ($keywords as $keyword_name)
