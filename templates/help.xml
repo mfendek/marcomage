@@ -126,7 +126,7 @@
 	</part>
 	<part name="Keywords">
 		<![CDATA[
-<p>Keywords represent information about the card that is too big to fit in the card box, or some property that other cards may look for while performing their effect. Card keywords are displayed either as a keyword insignia or as a bold text. The form depends on the "Show keyword insignias" setting in the settings section (insignia is the default setting). Keyword description is displayed when hovering over a card keyword with mouse cursor or by clicking on it. Check the <a href="?location=Cards_keywords">full keywords list</a> for detailed information.</p>
+<p>Keywords represent information about the card that is too big to fit in the card box, or some property that other cards may look for while performing their effect. Card keywords are displayed either as a keyword insignia or as a bold text. The form depends on the "Show keyword insignias" setting in the settings section (insignia is the default setting). Keyword description is displayed when hovering over a card keyword with mouse cursor. Check the <a href="?location=Cards_keywords">full keywords list</a> for detailed information.</p>
 
 <p>Keywords are divided into two groups - category and effect keywords. Category keywords are executed as first, effect keywords, as second. Here is an order of keyword execution within each group (keywords on cards are listed in such order):</p>
 
