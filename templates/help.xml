@@ -79,6 +79,7 @@
 	<li>If we are talking about Tower, Wall, Stock, Facilites ... etc. we are talking about your Tower Wall ... . Opponent's Tower, Wall ... are addresed as Enemy tower, Enemy wall ...</li>
 	<li>Last card played means last card played by you not the opponent. Opponents last card played is addresed as last card played by opponent</li>
 	<li>Production x0, Production x2, Production x3 - you will get zero production, double production, triple production this turn. Note that with the combination of some keyword effect (<b>Alliance</b>) you may get Production x2 two times (one becuase of card effect and one becuase of keyword effect). In this case the production factor is multiplied, so the result is Production x4.</li>
+	<li>Bricks prod, Gems prod, Recruits prod - represents production of one specific resource (Bricks, Gems, Recruits)</li>
 	<li>Summons <b>Keyword</b> means that next card received will be a card with specified keyword</li>
 	<li>"Last card" means last card played or discarded by you (if more cards were played this round then it is the most recent one)</li>
 	<li>"Last card played" means last card played by you (if more cards were played this round then it is the most recent one)</li>
@@ -93,6 +94,7 @@
 	<li>"matching card" is the card in opponent's hand which is in the same position as played card</li>
 	<li>"Max tower" means maximum possible tower height which is 100 in normal mode and 150 in long mode</li>
 	<li>"Max wall" means maximum possible wall height which is 150 in normal mode and 225 in long mode</li>
+	<li>"in game" means present in the game you are currently playing with your opponent</li>
 </ul>
 		]]>
 	</part>
