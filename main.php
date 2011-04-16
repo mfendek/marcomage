@@ -103,7 +103,7 @@
 				$current = "Registration";
 				$error = "The two passwords don't match.";
 			}
-			elseif (($playerdb->GetPlayer($_POST['NewUsername'])) OR (strtolower($_POST['NewUsername']) == strtolower(SYSTEM_NAME)))
+			elseif (($playerdb->GetPlayer($_POST['NewUsername'])) OR (strtolower(trim($_POST['NewUsername'])) == strtolower(SYSTEM_NAME)))
 			{
 				$current = "Registration";
 				$error = "That name is already taken.";
@@ -2478,7 +2478,7 @@
 				// check access rights
 				if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
 
-				if (trim($new_name) == "" or trim($new_name) == $opponent) { $error = "Invalid new name"; $current = 'Players_details'; break; }
+				if (trim($new_name) == "" or trim($new_name) == $opponent or strtolower(trim($new_name)) == strtolower(SYSTEM_NAME)) { $error = "Invalid new name"; $current = 'Players_details'; break; }
 				if (strlen($new_name) > 20) { $error = "New name is too long"; $current = 'Players_details'; break; }
 
 				if (!$playerdb->RenamePlayer($opponent, $new_name)) { $error = "Failed to rename player."; $current = 'Players_details'; break; }
