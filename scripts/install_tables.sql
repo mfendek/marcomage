@@ -109,7 +109,7 @@ CREATE TABLE `replays` (
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   `Views` int(10) unsigned NOT NULL DEFAULT '0',
   `ThreadID` int(10) unsigned NOT NULL DEFAULT '0',
-  `Data` blob NOT NULL,
+  `Data` blob,
   PRIMARY KEY (`GameID`),
   KEY `Player1` (`Player1`),
   KEY `Player2` (`Player2`),
