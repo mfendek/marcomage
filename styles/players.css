@@ -30,7 +30,12 @@ div#players .filters /* filters */
 	margin: 1ex 0ex 2ex 2ex;
 }
 
-img.achievement_link /* player achievements link */
+a.achievement_link /* player achievement link */
+{
+	text-decoration: none;
+}
+
+a.achievement_link > img /* player achievement bordering */
 {
 	border-style: none;
 }

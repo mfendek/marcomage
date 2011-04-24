@@ -165,8 +165,8 @@
 					</td>
 					
 					<td style="text-align: left;">
-						<a href="{php:functionString('makeurl', 'Players_achievements', 'Profile', name)}">
-							<img class="icon achievement_link" height="16px" width="16px" src="img/achievement.png" alt="{name}'s achievements" title="{name}'s achievements" />
+						<a class="achievement_link" href="{php:functionString('makeurl', 'Players_achievements', 'Profile', name)}">
+							<img class="icon" height="16px" width="16px" src="img/achievement.png" alt="{name}'s achievements" title="{name}'s achievements" />
 						</a>
 						<xsl:if test="$param/messages = 'yes'">
 							<button class="small_button" type="submit" name="message_create" value="{name}">m</button>
@@ -256,8 +256,8 @@
 		</xsl:if>
 
 		<p>
-			<a href="{php:functionString('makeurl', 'Players_achievements', 'Profile', $param/PlayerName)}">
-				<img class="achievement_link" height="29px" width="29px" src="img/achievement_large.png" alt="{$param/PlayerName}'s achievements" title="{$param/PlayerName}'s achievements" />
+			<a class="achievement_link" href="{php:functionString('makeurl', 'Players_achievements', 'Profile', $param/PlayerName)}">
+				<img height="29px" width="29px" src="img/achievement_large.png" alt="{$param/PlayerName}'s achievements" title="{$param/PlayerName}'s achievements" />
 			</a>
 		</p>
 
