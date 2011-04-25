@@ -31,3 +31,7 @@ allow from all
 RewriteEngine On
 RewriteRule .* '/img/favicon-ie.ico' [L]
 </Files>
+
+
+# compression
+AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml application/xhtml+xml text/css text/javascript application/javascript application/x-javascript
