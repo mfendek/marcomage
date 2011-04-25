@@ -670,13 +670,13 @@
 			$card = $carddb->GetCard($cardid);
 			
 			// verify if there are enough resources
-			if ($action == 'play' AND (($mydata->Bricks < $card->CardData->Bricks) || ($mydata->Gems < $card->CardData->Gems) || ($mydata->Recruits < $card->CardData->Recruits))) return 'Insufficient resources!';
+			if ($action == 'play' AND ($mydata->Bricks < $card->Bricks || $mydata->Gems < $card->Gems || $mydata->Recruits < $card->Recruits)) return 'Insufficient resources!';
 			
 			// verify mode (depends on card)
-			if ($action == 'play' AND (($mode < 0) OR ($mode > $card->CardData->Modes) OR ($mode == 0 AND $card->CardData->Modes > 0))) return 'Bad mode!';
+			if ($action == 'play' AND ($mode < 0 OR $mode > $card->Modes OR ($mode == 0 AND $card->Modes > 0))) return 'Bad mode!';
 			
 			// AI challenge check (rare cards are not allowed to be played by player in this game mode)
-			if ($action == 'play' AND $this->AI != '' AND $card->GetClass() == 'Rare' AND $playername != SYSTEM_NAME) return "Rare cards can't be played in this game mode!";
+			if ($action == 'play' AND $this->AI != '' AND $card->Class == 'Rare' AND $playername != SYSTEM_NAME) return "Rare cards can't be played in this game mode!";
 			
 			// process card history
 			$mylastcardindex = count($mydata->LastCard);
@@ -742,12 +742,12 @@
 			if ($action == 'play')
 			{
 				// update player score (award 'Rares' - number of rare cards played)
-				if ($card->GetClass() == 'Rare' and $this->FriendlyPlay == 'no') $score->UpdateAward('Rares');
+				if ($card->Class == 'Rare' and $this->FriendlyPlay == 'no') $score->UpdateAward('Rares');
 				
 				// subtract card cost
-				$mydata->Bricks-= $card->CardData->Bricks;
-				$mydata->Gems-= $card->CardData->Gems;
-				$mydata->Recruits-= $card->CardData->Recruits;
+				$mydata->Bricks-= $card->Bricks;
+				$mydata->Gems-= $card->Gems;
+				$mydata->Recruits-= $card->Recruits;
 				
 				// update copy of game attributes (card cost was substracted)
 				foreach ($mydata_temp as $attribute => $value)
@@ -767,11 +767,11 @@
 				$hisnewcards = $hisdata->NewCards;
 				
 				// execute card action !!!
-				if( eval($card->CardData->Code) === FALSE )
-					error_log("Debug: ".$cardid.": ".$card->CardData->Code);
+				if( eval($card->Code) === FALSE )
+					error_log("Debug: ".$cardid.": ".$card->Code);
 
 				// keyword processing
-				if ($card->CardData->Keywords != '')
+				if ($card->Keywords != '')
 				{
 					// list all keywords in order they are to be executed
 					$category_keywords = array('Alliance', 'Aqua', 'Barbarian', 'Beast', 'Brigand', 'Burning', 'Destruction', 'Dragon', 'Holy', 'Illusion', 'Legend', 'Mage', 'Nature', 'Restoration', 'Runic', 'Soldier', 'Titan', 'Undead', 'Unliving');
@@ -1045,13 +1045,13 @@
 			$card = $carddb->GetCard($cardid);
 			
 			// verify if there are enough resources
-			if (($mydata->Bricks < $card->CardData->Bricks) || ($mydata->Gems < $card->CardData->Gems) || ($mydata->Recruits < $card->CardData->Recruits)) return 'Insufficient resources!';
+			if (($mydata->Bricks < $card->Bricks) || ($mydata->Gems < $card->Gems) || ($mydata->Recruits < $card->Recruits)) return 'Insufficient resources!';
 			
 			// verify mode (depends on card)
-			if (($mode < 0) OR ($mode > $card->CardData->Modes) OR ($mode == 0 AND $card->CardData->Modes > 0)) return 'Bad mode!';
+			if (($mode < 0) OR ($mode > $card->Modes) OR ($mode == 0 AND $card->Modes > 0)) return 'Bad mode!';
 			
 			// AI challenge check (rare cards are not allowed to be played by player in this game mode)
-			if ($this->AI != '' AND $card->GetClass() == 'Rare' AND $playername != SYSTEM_NAME) return "Rare cards can't be played in this game mode!";
+			if ($this->AI != '' AND $card->Class == 'Rare' AND $playername != SYSTEM_NAME) return "Rare cards can't be played in this game mode!";
 			
 			// process card history
 			$mylastcardindex = count($mydata->LastCard);
@@ -1113,9 +1113,9 @@
 			$gems_production = 1;
 			$recruits_production = 1;
 			
-			$mydata->Bricks-= $card->CardData->Bricks;
-			$mydata->Gems-= $card->CardData->Gems;
-			$mydata->Recruits-= $card->CardData->Recruits;
+			$mydata->Bricks-= $card->Bricks;
+			$mydata->Gems-= $card->Gems;
+			$mydata->Recruits-= $card->Recruits;
 			
 			// update copy of game attributes (card cost was substracted)
 			foreach ($mydata_temp as $attribute => $value)
@@ -1135,11 +1135,11 @@
 			$hisnewcards = $hisdata->NewCards;
 			
 			// execute card action !!!
-			if( eval($card->CardData->Code) === FALSE )
-				error_log("Debug: ".$cardid.": ".$card->CardData->Code);
+			if( eval($card->Code) === FALSE )
+				error_log("Debug: ".$cardid.": ".$card->Code);
 
 			// keyword processing
-			if ($card->CardData->Keywords != '')
+			if ($card->Keywords != '')
 			{
 				// list all keywords in order they are to be executed
 				$category_keywords = array('Alliance', 'Aqua', 'Barbarian', 'Beast', 'Brigand', 'Burning', 'Destruction', 'Dragon', 'Holy', 'Illusion', 'Legend', 'Mage', 'Nature', 'Restoration', 'Runic', 'Soldier', 'Titan', 'Undead', 'Unliving');
@@ -1193,7 +1193,7 @@
 			$result = array();
 
 			// card data
-			$result['card']['name'] = $card->CardData->Name;
+			$result['card']['name'] = $card->Name;
 			$result['card']['mode'] = $mode;
 			$result['card']['position'] = $cardpos;
 
@@ -1351,7 +1351,7 @@
 			
 			foreach ($hand as $cardid)
 			{
-				$keyword = $carddb->GetCard($cardid)->GetKeywords();
+				$keyword = $carddb->GetCard($cardid)->Keywords;
 				if ($keyword != "") // ignore cards with no keywords
 					if ($first)
 					{
@@ -1682,7 +1682,7 @@
 				if ($mydata->Wall == $max_wall) $received[] = 'Builder';
 				
 				// Gentle touch
-				if ($mylast_card->GetClass() == 'Common' AND $mylast_action == 'play' AND $standard_victory) $received[] = 'Gentle touch';
+				if ($mylast_card->Class == 'Common' AND $mylast_action == 'play' AND $standard_victory) $received[] = 'Gentle touch';
 				
 				// Snob
 				if ($mylast_action == 'discard' AND $standard_victory) $received[] = 'Snob';
@@ -1692,12 +1692,12 @@
 				for ($i = 1; $i <= 8; $i++)
 				{
 					$cur_card = $carddb->GetCard($mydata->Hand[$i]);
-					if ($cur_card->GetClass() == "Rare") $tmp++;
+					if ($cur_card->Class == "Rare") $tmp++;
 				}
 				if ($tmp >= 4) $received[] = 'Collector';
 				
 				// Titan
-				if ($mylast_card->GetID() == 315 AND $mylast_action == 'play' AND $endtype == 'Destruction') $received[] = 'Titan';
+				if ($mylast_card->ID == 315 AND $mylast_action == 'play' AND $endtype == 'Destruction') $received[] = 'Titan';
 				
 				// Saboteur
 				if ($hisdata->Tower == 0 AND $hisdata->Wall > 0 AND $standard_victory) $received[] = 'Saboteur';

@@ -204,7 +204,7 @@
 				if (!$thread_id)
 				{
 					$card = $carddb->GetCard($card_id);
-					$title = $card->CardData->Name;
+					$title = $card->Name;
 					$section_id = 7; // section for discussing balance changes
 					$new_thread = $forum->Threads->CreateThread($title, $player->Name(), 'normal', $section_id, $card_id);
 					if (!$new_thread) { $error = "Failed to create new thread"; $current = "Cards"; break; }
@@ -3048,7 +3048,6 @@ case 'Decks_edit':
 	$params['deck_edit']['draws'] = $deck->Draws;
 	$params['deck_edit']['Tokens'] = $deck->DeckData->Tokens;
 	$params['deck_edit']['TokenKeywords'] = $carddb->TokenKeywords();
-
 	break;
 
 
@@ -4372,7 +4371,7 @@ case 'Cards_details':
 	if (!is_numeric($card_id) OR $card_id <= 0) { $display_error = 'Invalid card id.'; break; }
 
 	$card = $carddb->GetCard($card_id);
-	if ($card->CardData->Name == "Invalid Card") { $display_error = 'Invalid card.'; break; }
+	if ($card->Name == "Invalid Card") { $display_error = 'Invalid card.'; break; }
 
 	$params['cards_details']['data'] = $data = $card->GetData();
 	$thread_id = $forum->Threads->CardThread($card_id);

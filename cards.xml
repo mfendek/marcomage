@@ -3024,7 +3024,7 @@
     for ($i = 1; $i <= 8; $i++)
     {
       $cur_card = $carddb->GetCard($mydata->Hand[$i]);
-      if ($cur_card->HasKeyword("Undead") and $cur_card->GetClass() == 'Rare') $rares++;
+      if ($cur_card->HasKeyword("Undead") and $cur_card->Class == 'Rare') $rares++;
     }
     $this->Attack($mydata->Recruits * round($rares / 2), $hisdata->Tower, $hisdata->Wall);
     $mydata->Recruits= 0;
@@ -4286,8 +4286,8 @@
     $my_storage = $his_storage = array();
     for ($i = 1; $i <= 8; $i++)
     {
-      if ($carddb->GetCard($mydata->Hand[$i])->GetClass() != "Rare") $my_storage[] = $i;
-      if ($carddb->GetCard($hisdata->Hand[$i])->GetClass() != "Rare") $his_storage[] = $i;
+      if ($carddb->GetCard($mydata->Hand[$i])->Class != "Rare") $my_storage[] = $i;
+      if ($carddb->GetCard($hisdata->Hand[$i])->Class != "Rare") $his_storage[] = $i;
     }
     $count = min(count($my_storage), count($his_storage), 3);
     if ($count > 0)
@@ -4319,7 +4319,7 @@
     <keywords/>
     <effect><![CDATA[Switches selected non-rare card with its matching non-rare card (can't target self)]]></effect>
     <code><![CDATA[
-    if ($mode != $cardpos and $carddb->GetCard($mydata->Hand[$mode])->GetClass() != "Rare" and $carddb->GetCard($hisdata->Hand[$mode])->GetClass() != "Rare")
+    if ($mode != $cardpos and $carddb->GetCard($mydata->Hand[$mode])->Class != "Rare" and $carddb->GetCard($hisdata->Hand[$mode])->Class != "Rare")
     {
       $tmp = $mydata->Hand[$mode];
       $mydata->Hand[$mode] = $hisdata->Hand[$mode];
@@ -4953,7 +4953,7 @@
     <effect><![CDATA[Replace a card from opponent's hand with Cursed amulet<br />Raises opponent's stock based on replaced card rarity (C-1, U-3, R-8)]]></effect>
     <code><![CDATA[
     $rarities = array('Common' => 1, 'Uncommon' => 3, 'Rare' => 8);
-    $rarity = $carddb->GetCard($hisdata->Hand[$mode])->GetClass();
+    $rarity = $carddb->GetCard($hisdata->Hand[$mode])->Class;
     $tmp = $rarities[$rarity];
     $hisdata->Bricks+= $tmp; $hisdata->Gems+= $tmp; $hisdata->Recruits+= $tmp;
     $hisdata->Hand[$mode] = 288; $hisdata->NewCards[$mode] = 1;
@@ -5286,7 +5286,7 @@
     $upgrades = array("Common" => "Uncommon", "Uncommon" => "Rare");
     for ($i = 1; $i <= 8; $i++)
       if ($carddb->GetCard($mydata->Hand[$i])->HasKeyword("Undead"))
-        $rarities[$i] = $carddb->GetCard($mydata->Hand[$i])->GetClass();
+        $rarities[$i] = $carddb->GetCard($mydata->Hand[$i])->Class;
     foreach ($rarities as $index => $val)
       if (($val == "Common") OR (($val == "Uncommon")))
       {
@@ -5456,7 +5456,7 @@
     <keywords>Undead</keywords>
     <effect><![CDATA[Discard a card from opponent's hand<br />Summons <b>Undead</b> of same rarity as discarded card]]></effect>
     <code><![CDATA[
-    $rarity = $carddb->GetCard($hisdata->Hand[$mode])->GetClass();
+    $rarity = $carddb->GetCard($hisdata->Hand[$mode])->Class;
     $hisdata->Hand[$mode] = $this->DrawCard($his_deck, $hisdata->Hand, $mode, 'DrawCard_different');
     $hisdata->NewCards[$mode] = 1;
     $nextcard = $this->DrawCard($carddb->GetList(array('class'=>$rarity, 'keyword'=>"Undead")), $mydata->Hand, $cardpos, 'DrawCard_list');
@@ -5648,7 +5648,7 @@
     for ($i = 1; $i <= 8; $i++)
     {
       $cur_card = $carddb->GetCard($hisdata->Hand[$i]);
-      if ($cur_card->HasKeyword('any') AND !$cur_card->HasKeyword('Holy') AND $cur_card->GetClass() == 'Common')
+      if ($cur_card->HasKeyword('any') AND !$cur_card->HasKeyword('Holy') AND $cur_card->Class == 'Common')
         $storage[] = $i;
     }
     if (count($storage) > 0)
@@ -5752,7 +5752,7 @@
     <keywords>Undead</keywords>
     <effect><![CDATA[If last card played was <b>Undead</b> support, returns your discarded <b>Undead</b> to hand<br />Attack: 10N<br />N = #replaced cards]]></effect>
     <code><![CDATA[
-    if (($mylast_action == 'play') AND in_array($mylast_card->GetID(), $carddb->GetList(array('support'=>"Undead"))))
+    if (($mylast_action == 'play') AND in_array($mylast_card->ID, $carddb->GetList(array('support'=>"Undead"))))
     {
       $dis_cards = array();
       if (count($discarded_cards[0]) > 0) $dis_cards = array_merge($discarded_cards[0], $dis_cards);
@@ -5871,7 +5871,7 @@
       for ($i = 1; $i <= 8; $i++)
       {
         $cur_card = $carddb->GetCard($mydata->Hand[$i]);
-        if (!($cur_card->HasKeyword("Burning")) AND ($cur_card->GetClass() != 'Rare'))
+        if (!($cur_card->HasKeyword("Burning")) AND ($cur_card->Class != 'Rare'))
           $storage[] = $i;
       }
       $count = min(count($storage), 2);
@@ -6028,7 +6028,7 @@
     for ($i = 1; $i <= 8; $i++)
     {
       $cur_card = $carddb->GetCard($mydata->Hand[$i]);
-      if (!$cur_card->HasKeyword("Holy") AND ($cur_card->GetClass() == 'Common')) $temp_array[] = $i;
+      if (!$cur_card->HasKeyword("Holy") AND ($cur_card->Class == 'Common')) $temp_array[] = $i;
     }
     if (count($temp_array) > 0)
     {
@@ -6478,7 +6478,7 @@
     <keywords/>
     <effect><![CDATA[If opponent lowered your stock last round he loses twice the amount of lost stock (max 8)<br />No effect on Judge]]></effect>
     <code><![CDATA[
-    if ((($mychanges['Bricks'] < 0) OR ($mychanges['Gems'] < 0) OR ($mychanges['Recruits'] < 0)) AND $hislast_card->GetID() != 364)
+    if ((($mychanges['Bricks'] < 0) OR ($mychanges['Gems'] < 0) OR ($mychanges['Recruits'] < 0)) AND $hislast_card->ID != 364)
     {
       $hisdata->Bricks+= min(0, max(-8, 2 * $mychanges['Bricks']));
       $hisdata->Gems+= min(0, max(-8, 2 * $mychanges['Gems']));
@@ -6909,7 +6909,7 @@
     for ($i = 1; $i <= 8; $i++)
     {
       $cur_card = $carddb->GetCard($mydata->Hand[$i]);
-      if ($cur_card->HasKeyword("any") AND $cur_card->GetClass() != 'Rare' AND $i != $cardpos)
+      if ($cur_card->HasKeyword("any") AND $cur_card->Class != 'Rare' AND $i != $cardpos)
       {
         $mydata->Hand[$i] = $this->DrawCard(array(23, 273, 297), $mydata->Hand, $i, 'DrawCard_list');
         $mydata->NewCards[$i] = 1;
@@ -6918,7 +6918,7 @@
     for ($i = 1; $i <= 8; $i++)
     {
       $cur_card = $carddb->GetCard($hisdata->Hand[$i]);
-      if ($cur_card->HasKeyword("any") AND $cur_card->GetClass() != 'Rare')
+      if ($cur_card->HasKeyword("any") AND $cur_card->Class != 'Rare')
       {
         $hisdata->Hand[$i] = $this->DrawCard(array(23, 273, 297), $hisdata->Hand, $i, 'DrawCard_list');
         $hisdata->NewCards[$i] = 1;
@@ -7321,7 +7321,7 @@
     <effect><![CDATA[Tower: = 40<br />Wall: +50<br />If last card played was non-common <b>Runic</b><br />Wall: = Max wall]]></effect>
     <code><![CDATA[
     $mydata->Tower = 40;
-    if (($mylast_card->HasKeyword("Runic")) and ($mylast_action == 'play') AND ($mylast_card->GetClass() != 'Common'))
+    if (($mylast_card->HasKeyword("Runic")) and ($mylast_action == 'play') AND ($mylast_card->Class != 'Common'))
       $mydata->Wall = $max_wall;
     else $mydata->Wall+= 50;
 ]]></code>
@@ -7373,7 +7373,7 @@
     for ($i = 1; $i <= 8; $i++)
     {
       $cur_card = $carddb->GetCard($hisdata->Hand[$i]);
-      $rarity = $cur_card->GetClass();
+      $rarity = $cur_card->Class;
       if ($cur_card->HasKeyword("Dragon") OR $cur_card->HasKeyword("Undead") OR $cur_card->HasKeyword("Unliving"))
         $storage[$rarity][] = $i;
     }
@@ -7507,8 +7507,8 @@
     for ($i = 1; $i <= 8; $i++)
     {
       $cur_card = $carddb->GetCard($hisdata->Hand[$i]);
-      $rarity = $cur_card->GetClass();
-      if ($rarity != 'Rare' AND $cur_card->GetID() != 415) $storage[$rarity][] = $i;
+      $rarity = $cur_card->Class;
+      if ($rarity != 'Rare' AND $cur_card->ID != 415) $storage[$rarity][] = $i;
     }
     if ((count($storage['Common']) + count($storage['Uncommon'])) > 0)
     {
@@ -8181,7 +8181,7 @@
     if ($mylast_action == 'discard')
     {
       $damage = array('Common' => 8, 'Uncommon' => 16, 'Rare' => 28);
-      $this->Attack($damage[$mylast_card->GetClass()], $hisdata->Tower, $hisdata->Wall);
+      $this->Attack($damage[$mylast_card->Class], $hisdata->Tower, $hisdata->Wall);
     }
 ]]></code>
     <created>2009-07-22</created>
@@ -8272,13 +8272,13 @@
     <code><![CDATA[
     $this->Attack(35, $hisdata->Tower, $hisdata->Wall);
     for ($i = 1; $i <= 8; $i++)
-      if (($i != $cardpos) AND ($carddb->GetCard($mydata->Hand[$i])->GetClass() == 'Common'))
+      if (($i != $cardpos) AND ($carddb->GetCard($mydata->Hand[$i])->Class == 'Common'))
       {
         $mydata->Hand[$i] = $this->DrawCard($my_deck, $mydata->Hand, $cardpos, 'DrawCard_random');
         $mydata->NewCards[$i] = 1;
       }
     for ($i = 1; $i <= 8; $i++)
-      if ($carddb->GetCard($hisdata->Hand[$i])->GetClass() == 'Common')
+      if ($carddb->GetCard($hisdata->Hand[$i])->Class == 'Common')
       {
         $hisdata->Hand[$i] = $this->DrawCard($his_deck, $hisdata->Hand, $i, 'DrawCard_random');
         $hisdata->NewCards[$i] = 1;
@@ -8458,7 +8458,7 @@
     $this->Attack(5, $hisdata->Tower, $hisdata->Wall);
     $storage = array();
     for ($i = 1; $i <= 8; $i++)
-      if (($i != $cardpos) AND ($carddb->GetCard($mydata->Hand[$i])->GetClass() == 'Common'))
+      if (($i != $cardpos) AND ($carddb->GetCard($mydata->Hand[$i])->Class == 'Common'))
         $storage[] = $i;
     if (count($storage) > 0)
     {
@@ -8501,7 +8501,7 @@
       if ($i != $cardpos)
       {
         $cur_card = $carddb->GetCard($mydata->Hand[$i]);
-        if (($cur_card->GetResources('') == 0) AND ($cur_card->GetClass() == 'Common'))
+        if (($cur_card->GetResources('') == 0) AND ($cur_card->Class == 'Common'))
         {
           $mydata->Hand[$i] = $this->DrawCard($my_deck, $mydata->Hand, $cardpos, 'DrawCard_norare');
           $mydata->NewCards[$i] = 1;
@@ -8510,7 +8510,7 @@
     for ($i = 1; $i <= 8; $i++)
     {
       $cur_card = $carddb->GetCard($hisdata->Hand[$i]);
-      if (($cur_card->GetResources('') == 0) AND ($cur_card->GetClass() == 'Common'))
+      if (($cur_card->GetResources('') == 0) AND ($cur_card->Class == 'Common'))
       {
         $hisdata->Hand[$i] = $this->DrawCard($his_deck, $hisdata->Hand, $i, 'DrawCard_norare');
         $hisdata->NewCards[$i] = 1;
@@ -8774,7 +8774,7 @@
     for ($i = 1; $i <= 8; $i++)
     {
       $cur_card = $carddb->GetCard($mydata->Hand[$i]);
-      if (!$cur_card->HasKeyword("Brigand") AND ($cur_card->GetClass() != 'Rare'))
+      if (!$cur_card->HasKeyword("Brigand") AND ($cur_card->Class != 'Rare'))
         $storage[] = $i;
     }
     if (count($storage) > 0)
@@ -8908,7 +8908,7 @@
     <effect><![CDATA[Attack based on matching card in opponent's hand (C-7, U-14, R-21)]]></effect>
     <code><![CDATA[
     $damage = array('Common' => 7, 'Uncommon' => 14, 'Rare' => 21);
-    $this->Attack($damage[$carddb->GetCard($hisdata->Hand[$cardpos])->GetClass()], $hisdata->Tower, $hisdata->Wall);
+    $this->Attack($damage[$carddb->GetCard($hisdata->Hand[$cardpos])->Class], $hisdata->Tower, $hisdata->Wall);
 ]]></code>
     <created>2009-10-24</created>
     <modified>2009-12-24</modified>
@@ -9575,7 +9575,7 @@
     <keywords>Quick</keywords>
     <effect><![CDATA[Select a card from hand to be replaced with a card of the same rarity (can't summon self)]]></effect>
     <code><![CDATA[
-    $class = $carddb->GetCard($mydata->Hand[$mode])->GetClass();
+    $class = $carddb->GetCard($mydata->Hand[$mode])->Class;
     $mydata->Hand[$mode] = $this->DrawCard(array_diff($my_deck->$class, array(513, $mydata->Hand[$mode])), $mydata->Hand, $cardpos, 'DrawCard_list');
     $mydata->NewCards[$mode] = 1;
 ]]></code>
@@ -9895,8 +9895,8 @@
     $my_storage = $his_storage = array();
     for ($i = 1; $i <= 8; $i++)
     {
-      if ($carddb->GetCard($mydata->Hand[$i])->GetClass() == 'Common') $my_storage[] = $i;
-      if ($carddb->GetCard($hisdata->Hand[$i])->GetClass() == 'Common') $his_storage[] = $i;
+      if ($carddb->GetCard($mydata->Hand[$i])->Class == 'Common') $my_storage[] = $i;
+      if ($carddb->GetCard($hisdata->Hand[$i])->Class == 'Common') $his_storage[] = $i;
     }
     if ((count($my_storage) > 0) AND (count($my_storage) >= count($his_storage)))
     {
@@ -9947,7 +9947,7 @@
     if (($mylast_card->HasKeyword("Aqua")) and ($mylast_action == 'play'))
     {
       $dmg = array('Common' => 10, 'Uncommon' => 25, 'Rare' => 50);
-      $bonus = $dmg[$mylast_card->GetClass()];
+      $bonus = $dmg[$mylast_card->Class];
     }
     else $bonus = 0;
     $this->Attack(40 + $bonus, $hisdata->Tower, $hisdata->Wall);
@@ -9989,9 +9989,9 @@
     $my_gain = $his_gain = 0;
     for ($i = 1; $i <= 8; $i++)
     {
-      if ($carddb->GetCard($mydata->Hand[$i])->GetClass() == 'Common') $my_gain++;
+      if ($carddb->GetCard($mydata->Hand[$i])->Class == 'Common') $my_gain++;
       else $my_gain--;
-      if ($carddb->GetCard($hisdata->Hand[$i])->GetClass() == 'Common') $his_gain++;
+      if ($carddb->GetCard($hisdata->Hand[$i])->Class == 'Common') $his_gain++;
       else $his_gain--;
     }
     $mydata->Bricks+= $my_gain; $mydata->Gems+= $my_gain; $mydata->Recruits+= $my_gain;
@@ -10015,7 +10015,7 @@
     $this->Attack(5, $hisdata->Tower, $hisdata->Wall);
     $storage = array();
     for ($i = 1; $i <= 8; $i++)
-      if (($i != $cardpos) AND ($carddb->GetCard($mydata->Hand[$i])->GetClass() == 'Common'))
+      if (($i != $cardpos) AND ($carddb->GetCard($mydata->Hand[$i])->Class == 'Common'))
         $storage[] = $i;
     if (count($storage) > 0)
     {
@@ -10059,7 +10059,7 @@
     <keywords>Barbarian,Durable,Banish</keywords>
     <effect><![CDATA[If last card played was a non-common <b>Barbarian</b><br />Enemy wall: -20<br />Always:<br />Attack: 35]]></effect>
     <code><![CDATA[
-    if (($mylast_card->HasKeyword("Barbarian")) and ($mylast_action == 'play') AND ($mylast_card->GetClass() != 'Common'))
+    if (($mylast_card->HasKeyword("Barbarian")) and ($mylast_action == 'play') AND ($mylast_card->Class != 'Common'))
       $hisdata->Wall-= 20;
     $this->Attack(35, $hisdata->Tower, $hisdata->Wall);
 ]]></code>
@@ -10235,7 +10235,7 @@
     <code><![CDATA[
     $found = false;
     for ($i = 1; $i <= 8; $i++)
-      if ($carddb->GetCard($mydata->Hand[$i])->GetClass() == "Rare") $found = true;
+      if ($carddb->GetCard($mydata->Hand[$i])->Class == "Rare") $found = true;
     $this->Attack(((!$found) ? 25 : 15), $hisdata->Tower, $hisdata->Wall);
 ]]></code>
     <created>2010-06-21</created>
@@ -10323,7 +10323,7 @@
     <code><![CDATA[
     $this->Attack(30, $hisdata->Tower, $hisdata->Wall); $tmp = 0;
     for ($i = 1; $i <= 8; $i++)
-      if (($i != $cardpos) AND ($carddb->GetCard($mydata->Hand[$i])->GetClass() == 'Common'))
+      if (($i != $cardpos) AND ($carddb->GetCard($mydata->Hand[$i])->Class == 'Common'))
         { $mydata->Hand[$i] = 13; $mydata->NewCards[$i] = 1; $tmp++; }
     $mydata->Recruits+= $tmp * 2;
 ]]></code>
@@ -10461,7 +10461,7 @@
     <effect><![CDATA[Tower: +6<br />Summons <b>Runic</b> of the same rarity as matching card]]></effect>
     <code><![CDATA[
     $mydata->Tower+= 6;
-    $rarity = $carddb->GetCard($hisdata->Hand[$cardpos])->GetClass();
+    $rarity = $carddb->GetCard($hisdata->Hand[$cardpos])->Class;
     $nextcard = $this->DrawCard($carddb->GetList(array('class'=>$rarity, 'keyword'=>"Runic")), $mydata->Hand, $cardpos, 'DrawCard_list');
 ]]></code>
     <created>2010-06-21</created>
@@ -10548,7 +10548,7 @@
     for ($i = 1; $i <= 8; $i++)
     {
       $cur_card = $carddb->GetCard($hisdata->Hand[$i]);
-      $rarity = $cur_card->GetClass();
+      $rarity = $cur_card->Class;
       if ($cur_card->HasKeyword("Aqua")) $storage[$rarity][] = $i;
     }
     if ((count($storage['Common']) + count($storage['Uncommon']) + count($storage['Rare'])) > 0)
@@ -10750,7 +10750,7 @@
     for ($i = 1; $i <= 8; $i++)
       if ($i != $cardpos)
       {
-        $rarity = $carddb->GetCard($mydata->Hand[$i])->GetClass();
+        $rarity = $carddb->GetCard($mydata->Hand[$i])->Class;
         $mydata->Hand[$i] = $this->DrawCard(array_diff($my_deck->$rarity, array(569, $mydata->Hand[$i])), $mydata->Hand, $i, 'DrawCard_list');
       }
     $mydata->NewCards = array(1=> 1, 1, 1, 1, 1, 1, 1, 1);
@@ -11040,7 +11040,7 @@
     <code><![CDATA[
     $storage = array();
     for ($i = 1; $i <= 8; $i++)
-      if (($i != $cardpos) AND ($carddb->GetCard($mydata->Hand[$i])->GetClass() == 'Common'))
+      if (($i != $cardpos) AND ($carddb->GetCard($mydata->Hand[$i])->Class == 'Common'))
         $storage[] = $i;
     if (count($storage) > 0)
     {
@@ -11071,7 +11071,7 @@
     <effect><![CDATA[Attack: 6<br />Summons selected non-rare card in opponent's hand]]></effect>
     <code><![CDATA[
     $this->Attack(6, $hisdata->Tower, $hisdata->Wall);
-    if ($carddb->GetCard($hisdata->Hand[$mode])->GetClass() != 'Rare') $nextcard = $hisdata->Hand[$mode];
+    if ($carddb->GetCard($hisdata->Hand[$mode])->Class != 'Rare') $nextcard = $hisdata->Hand[$mode];
 ]]></code>
     <created>2010-09-10</created>
     <modified>2010-12-24</modified>
@@ -11115,7 +11115,7 @@
     <code><![CDATA[
     $tmp = 0;
     for ($i = 1; $i <= 8; $i++)
-      if ($carddb->GetCard($mydata->Hand[$i])->GetClass() == 'Common') $tmp++;
+      if ($carddb->GetCard($mydata->Hand[$i])->Class == 'Common') $tmp++;
     $mydata->Tower+= $tmp;
 ]]></code>
     <created>2010-09-10</created>
@@ -11211,7 +11211,7 @@
     <keywords>Illusion</keywords>
     <effect><![CDATA[If last card played was a rare<br />Summons a rare card]]></effect>
     <code><![CDATA[
-    if ($mylast_card->GetClass() == "Rare")
+    if ($mylast_card->Class == "Rare")
       $nextcard = $this->DrawCard($carddb->GetList(array('class'=>"Rare")), $mydata->Hand, $cardpos, 'DrawCard_list');
 ]]></code>
     <created>2010-09-10</created>
@@ -11280,7 +11280,7 @@
       elseif ($tmp == 1) $hisdata->Gems--;
       elseif ($tmp == 2) $hisdata->Recruits--;
     }
-    if ($carddb->GetCard($hisdata->Hand[$cardpos])->GetClass() != "Rare")
+    if ($carddb->GetCard($hisdata->Hand[$cardpos])->Class != "Rare")
       { $hisdata->Hand[$cardpos] = 297; $hisdata->NewCards[$cardpos] = 1; }
 ]]></code>
     <created>2010-09-10</created>
@@ -11536,7 +11536,7 @@
     for ($i = 1; $i <= 8; $i++)
     {
       $cur_card = $mydata->Hand[$i];
-      if ($carddb->GetCard($cur_card)->GetClass() != "Rare" AND !in_array($cur_card, $my_cards) AND $i != $cardpos)
+      if ($carddb->GetCard($cur_card)->Class != "Rare" AND !in_array($cur_card, $my_cards) AND $i != $cardpos)
       {
         $mydata->Hand[$i] = $this->DrawCard($my_deck, $mydata->Hand, $i, 'DrawCard_norare');
         $mydata->NewCards[$i] = 1;
@@ -11546,7 +11546,7 @@
     for ($i = 1; $i <= 8; $i++)
     {
       $cur_card = $hisdata->Hand[$i];
-      if ($carddb->GetCard($cur_card)->GetClass() != "Rare" AND !in_array($cur_card, $his_cards))
+      if ($carddb->GetCard($cur_card)->Class != "Rare" AND !in_array($cur_card, $his_cards))
       {
         $hisdata->Hand[$i] = $this->DrawCard($his_deck, $hisdata->Hand, $i, 'DrawCard_norare');
         $hisdata->NewCards[$i] = 1;
@@ -11584,7 +11584,7 @@
     <effect><![CDATA[Attack: 14<br />Transfer selected non-rare card from opponent's hand to your hand]]></effect>
     <code><![CDATA[
     $this->Attack(14, $hisdata->Tower, $hisdata->Wall);
-    if ($carddb->GetCard($hisdata->Hand[$mode])->GetClass() != "Rare")
+    if ($carddb->GetCard($hisdata->Hand[$mode])->Class != "Rare")
     {
       $nextcard = $hisdata->Hand[$mode];
       $hisdata->Hand[$mode] = $this->DrawCard($his_deck, $hisdata->Hand, $mode, 'DrawCard_different');
@@ -11897,7 +11897,7 @@
     $selected = $carddb->GetCard($mydata->Hand[$mode]);
     if (!$selected->HasKeyword("Unliving"))
     {
-      $mydata->Hand[$mode] = $this->DrawCard($carddb->GetList(array('class'=>$selected->GetClass(), 'keyword'=>"Unliving")), $mydata->Hand, $mode, 'DrawCard_list');
+      $mydata->Hand[$mode] = $this->DrawCard($carddb->GetList(array('class'=>$selected->Class, 'keyword'=>"Unliving")), $mydata->Hand, $mode, 'DrawCard_list');
       $mydata->NewCards[$mode] = 1;
     }
 ]]></code>
@@ -11924,7 +11924,7 @@
       if (in_array($hisdata->Hand[$i], $target_cards))
       {
         $dis_card = $carddb->GetCard($hisdata->Hand[$i]);
-        $dis_class = $dis_card->GetClass();
+        $dis_class = $dis_card->Class;
         $storage[$dis_class][] = $i;
       }
     

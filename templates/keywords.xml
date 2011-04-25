@@ -35,7 +35,7 @@
     <p>The power of the deep sea creatures is reflected in the water itself - it has many shapes and forms ranging from destruction and sabotage to protection and healing.</p>
 ]]></lore>
     <code><![CDATA[
-    if ($mylast_card->HasKeyword("Aqua") AND $mylast_action == 'play' AND $mylast_card->GetClass() != 'Common' AND $cardid != $mylast_card->GetID())
+    if ($mylast_card->HasKeyword("Aqua") AND $mylast_action == 'play' AND $mylast_card->Class != 'Common' AND $cardid != $mylast_card->ID)
     {
       $mydata->Tower+= 5; $mydata->Wall+= 5;
       $hisdata->Bricks-= 3; $hisdata->Gems-= 3; $hisdata->Recruits-= 3;
@@ -50,12 +50,12 @@
     // target card is discarded only if it has same or lower rarity than the played card
     $rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
     $storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
-    $played_rank = $rarities[$card->GetClass()];
+    $played_rank = $rarities[$card->Class];
     
     for ($i = 1; $i <= 8; $i++)
     {
       $dis_card = $carddb->GetCard($hisdata->Hand[$i]);
-      $dis_class = $dis_card->GetClass();
+      $dis_class = $dis_card->Class;
       $dis_rank = $rarities[$dis_class];
       
       // pick only cards that can be discarded by played card
@@ -70,7 +70,7 @@
       $discarded_pos = array_pop($storage_temp);
       
       // if played card was rare gain bonus stock based on discarded card cost
-      if ($card->GetClass() == 'Rare')
+      if ($card->Class == 'Rare')
       {
         $dis_card = $carddb->GetCard($hisdata->Hand[$discarded_pos]);
         $mydata->Bricks+= $dis_card->GetResources('Bricks');
@@ -102,12 +102,12 @@
         $damage = array("Common" => 3, "Uncommon" => 8, "Rare" => 15);
         if ($hisdata->Wall <= 0)
         {
-          $penalty = round($damage[$card->GetClass()] / 2);
+          $penalty = round($damage[$card->Class] / 2);
           $hisdata->Bricks-= $penalty;
           $hisdata->Gems-= $penalty;
           $hisdata->Recruits-= $penalty;
         }
-        else $hisdata->Wall-= $damage[$card->GetClass()];
+        else $hisdata->Wall-= $damage[$card->Class];
         
         $mydata->TokenValues[$token_index] = 0;
       }
@@ -132,7 +132,7 @@
       if ($mydata->TokenValues[$token_index] >= 100)
       {
         $stock = array("Common" => 1, "Uncommon" => 2, "Rare" => 3);
-        $gained = $stock[$card->GetClass()];
+        $gained = $stock[$card->Class];
         $mydata->Bricks+= $gained;
         $mydata->Gems+= $gained;
         $mydata->Recruits+= $gained;
@@ -163,7 +163,7 @@
       if ($mydata->TokenValues[$token_index] >= 100)
       {
         $damage = array("Common" => 2, "Uncommon" => 5, "Rare" => 10);
-        $this->Attack($damage[$card->GetClass()], $hisdata->Tower, $hisdata->Wall);
+        $this->Attack($damage[$card->Class], $hisdata->Tower, $hisdata->Wall);
         
         $mydata->TokenValues[$token_index] = 0;
       }
@@ -190,12 +190,12 @@
         // target card is discarded only if it has same or lower rarity than the played card
         $rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
         $storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
-        $played_rank = $rarities[$card->GetClass()];
+        $played_rank = $rarities[$card->Class];
         
         for ($i = 1; $i <= 8; $i++)
         {
           $dis_card = $carddb->GetCard($hisdata->Hand[$i]);
-          $dis_class = $dis_card->GetClass();
+          $dis_class = $dis_card->Class;
           $dis_rank = $rarities[$dis_class];
           
           // pick only cards that can be discarded by played card
@@ -222,7 +222,7 @@
     <description>when card has this keyword, it also has a number next to this keyword. When card is played and the opponent's wall (after the standard attack) is 0, he will receive additional damage equal to number next to charge, otherwise opponent loses random resources equal to number next to charge. If opponent has more resources of certain type compared to his other resources, they are more likely to be reduced.</description>
     <lore><![CDATA[<p>Some creatures are able to attack with such force and speed that they are able to stomp their enemies to the ground without the need to fight them with regular weapons. Heavy fortifications are the only defenses that can hold them at bay, however even they need to be repaired after the battle to hold another attack.</p>]]></lore>
     <code><![CDATA[
-    $charge_damage = $this->KeywordValue($card->GetKeywords(), 'Charge');
+    $charge_damage = $this->KeywordValue($card->Keywords, 'Charge');
     if ($hisdata->Wall <= 0) $hisdata->Tower-= $charge_damage;
     else
     {
@@ -247,7 +247,7 @@
     <description>If a Destruction card is played after playing a different non-common Destruction card, it reduces enemy's highest facility by 1 when it is greater than 3, otherwise it reduces opponent's highest resource by 10.</description>
     <lore><![CDATA[<p><i>Offense is the best defense</i> - the motto of every mage who mastered this dark art. Destruction magic contains spells that directly cripple the enemy which often prevent them to mount a counter-offensive. One warlock who wields the destruction magic at master level is able to annihilate whole armies in matter of seconds.</p>]]></lore>
     <code><![CDATA[
-    if (($mylast_card->HasKeyword("Destruction")) AND ($mylast_action == 'play') AND ($mylast_card->GetClass() != 'Common') AND ($cardid != $mylast_card->GetID()))
+    if (($mylast_card->HasKeyword("Destruction")) AND ($mylast_action == 'play') AND ($mylast_card->Class != 'Common') AND ($cardid != $mylast_card->ID))
     {
       $max = max($hisdata->Quarry, $hisdata->Magic, $hisdata->Dungeons);
       if ($max > 3)
@@ -300,7 +300,7 @@
     <code><![CDATA[
     if ($mydata->LastCard[$mylastcardindex] == $cardid AND $mylast_action == 'play')
     {
-      $bonus_damage = $this->KeywordValue($card->GetKeywords(), 'Enduring');
+      $bonus_damage = $this->KeywordValue($card->Keywords, 'Enduring');
       $this->Attack($bonus_damage, $hisdata->Tower, $hisdata->Wall);
     }
 ]]></code>
@@ -317,7 +317,7 @@
       $gems = $cur_card->GetResources('Gems');
       $recruits = $cur_card->GetResources('Recruits');
       $rarities = array("Common" => 1, "Uncommon" => 3, "Rare" => 9);
-      $factor = $rarities[$card->GetClass()];
+      $factor = $rarities[$card->Class];
       
       if ($bricks > 0 AND $gems == 0 AND $recruits == 0) $mydata->Tower+= 2 * $factor; // raise tower
       elseif ($bricks == 0 AND $gems > 0 AND $recruits == 0)
@@ -340,7 +340,7 @@
     
     // reveal opponent's cards based on played card rarity
     $offsets = array("Common" => 1, "Uncommon" => 2, "Rare" => 8);
-    $offset = $offsets[$card->GetClass()];
+    $offset = $offsets[$card->Class];
     $start = max($cardpos - $offset, 1);
     $finish = min($cardpos + $offset, 8);
     
@@ -362,17 +362,17 @@
       $mytarget = $carddb->GetCard($mydata->Hand[$mine]);
       $histarget = $carddb->GetCard($hisdata->Hand[$his]);
       
-      $my_rarity = $mytarget->GetClass();
-      $his_rarity = $histarget->GetClass();
+      $my_rarity = $mytarget->Class;
+      $his_rarity = $histarget->Class;
       
       // played card position is ignored, does not discard burning cards (rares cards can only be rares)
-      if (($mine != $cardpos) AND (!$mytarget->HasKeyword("Burning")) AND (($my_rarity != 'Rare') OR ($my_rarity == $card->GetClass())))
+      if (($mine != $cardpos) AND (!$mytarget->HasKeyword("Burning")) AND (($my_rarity != 'Rare') OR ($my_rarity == $card->Class)))
       {
         $mydata->Hand[$mine] = 248;
         $mydata->NewCards[$mine] = 1;
       }
       
-      if ((!$histarget->HasKeyword("Burning")) AND (($his_rarity != 'Rare') OR ($his_rarity == $card->GetClass())))
+      if ((!$histarget->HasKeyword("Burning")) AND (($his_rarity != 'Rare') OR ($his_rarity == $card->Class)))
       {
         $hisdata->Hand[$his] = 248;
         $hisdata->NewCards[$his] = 1;
@@ -406,12 +406,12 @@
         // target card is discarded only if it has same or lower rarity than the played card
         $rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
         $storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
-        $played_rank = $rarities[$card->GetClass()];
+        $played_rank = $rarities[$card->Class];
         
         for ($i = 1; $i <= 8; $i++)
         {
           $dis_card = $carddb->GetCard($hisdata->Hand[$i]);
-          $dis_class = $dis_card->GetClass();
+          $dis_class = $dis_card->Class;
           $dis_rank = $rarities[$dis_class];
           
           // pick only cards that can be discarded by played card
@@ -424,7 +424,7 @@
           shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
           $storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
           $discarded_pos = array_pop($storage_temp);
-          $dis_rarity = $carddb->GetCard($hisdata->Hand[$discarded_pos])->GetClass();
+          $dis_rarity = $carddb->GetCard($hisdata->Hand[$discarded_pos])->Class;
           $hisdata->Hand[$discarded_pos] = 381;
           $hisdata->NewCards[$discarded_pos] = 1;
           $stock = array("Common" => 1, "Uncommon" => 2, "Rare" => 3);
@@ -444,7 +444,7 @@
     <description>If an Illusion card is played after playing a different non-common Illusion card, summons a rare card from enemy deck.</description>
     <lore><![CDATA[<p>Illusion magic manipulates the environment rather than the target. Within the changed environment the target becomes confused and often the whole damage done by the spell is done by the target itself. Illusion mages often play important rules in political intrigues.</p>]]></lore>
     <code><![CDATA[
-    if ($mylast_card->HasKeyword("Illusion") AND $mylast_action == 'play' AND $mylast_card->GetClass() != 'Common' AND $cardid != $mylast_card->GetID())
+    if ($mylast_card->HasKeyword("Illusion") AND $mylast_action == 'play' AND $mylast_card->Class != 'Common' AND $cardid != $mylast_card->ID)
       $nextcard = $this->DrawCard($his_deck->Rare, $mydata->Hand, $cardpos, 'DrawCard_list');
 ]]></code>
   </keyword>
@@ -458,7 +458,7 @@
       if (($i != $cardpos) AND !$found) // played card does not count
       {
         $cur_card = $carddb->GetCard($mydata->Hand[$i]);
-        if ($cur_card->GetClass() == "Rare") $found = true;
+        if ($cur_card->Class == "Rare") $found = true;
       }
     
     if ($found)
@@ -503,7 +503,7 @@
     <description>If a Nature card is played after playing a different non-common Nature card, summons a rare Nature card.</description>
     <lore><![CDATA[<p>Nature magic is rarely understood by humans. Being chaotic and unpredictable it's the opposite of the magic commonly used by humans, therefore only few have been able to master it. In addition, nature magic is also about life and death, which often leads to arts that are forbidden by many factions.</p>]]></lore>
     <code><![CDATA[
-    if ($mylast_card->HasKeyword("Nature") AND $mylast_action == 'play' AND $mylast_card->GetClass() != 'Common' AND $cardid != $mylast_card->GetID())
+    if ($mylast_card->HasKeyword("Nature") AND $mylast_action == 'play' AND $mylast_card->Class != 'Common' AND $cardid != $mylast_card->ID)
       $nextcard = $this->DrawCard($carddb->GetList(array('class'=>"Rare", 'keyword'=>"Nature")), $mydata->Hand, $cardpos, 'DrawCard_list');
 ]]></code>
   </keyword>
@@ -527,7 +527,7 @@
     <description>If a Restoration card is played after playing a different non-common Restoration card, it raises your lowest facility by 1 when your facility is below 3, otherwise it gives you 10 of your lowest resource.</description>
     <lore><![CDATA[<p>Restoration magic is one of the most commonly used art of magic. Most factions support schools that teach this art, because its usage is very wide and safe. Restoration mages are the most accepted mages in the society. If their skills are exceptional they can even be promoted to nobility.</p>]]></lore>
     <code><![CDATA[
-    if ($mylast_card->HasKeyword("Restoration") AND $mylast_action == 'play' AND $mylast_card->GetClass() != 'Common' AND $cardid != $mylast_card->GetID())
+    if ($mylast_card->HasKeyword("Restoration") AND $mylast_action == 'play' AND $mylast_card->Class != 'Common' AND $cardid != $mylast_card->ID)
     {
       $min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
       if ($min < 3)
@@ -561,7 +561,7 @@
 ]]></lore>
     <code><![CDATA[
     $rarities = array("Common" => 2, "Uncommon" => 5, "Rare" => 10);
-    $factor = $rarities[$card->GetClass()];
+    $factor = $rarities[$card->Class];
     if ($mychanges['Tower'] < 0)
     {
       $tower_damage = $mychanges['Tower'] * (-1);
@@ -580,7 +580,7 @@
     <lore><![CDATA[<p>Powerful creatures and war machines are often used as a siege weapons during the battle. Their attack is so powerful that fortifications that were built only recently may fail to endure such force and break apart.</p>]]></lore>
     <code><![CDATA[
     $rarities = array("Common" => 1, "Uncommon" => 2, "Rare" => 5);
-    $factor = $rarities[$card->GetClass()];
+    $factor = $rarities[$card->Class];
     if ($hischanges['Tower'] > 0 and $hisdata_temp['Tower'] > $hisdata->Tower)
       $hisdata->Tower-= min($hischanges['Tower'], $factor);
     
@@ -596,12 +596,12 @@
     // target card is discarded only if it has same or lower rarity than the played card
     $rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
     $storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
-    $played_rank = $rarities[$card->GetClass()];
+    $played_rank = $rarities[$card->Class];
     
     for ($i = 1; $i <= 8; $i++)
     {
       $dis_card = $carddb->GetCard($hisdata->Hand[$i]);
-      $dis_class = $dis_card->GetClass();
+      $dis_class = $dis_card->Class;
       $dis_rank = $rarities[$dis_class];
       
       // pick only cards that can be discarded by played card
@@ -616,7 +616,7 @@
       $discarded_pos = array_pop($storage_temp);
       
       // if played card was rare lower opponent stock based on discarded card cost
-      if ($card->GetClass() == 'Rare')
+      if ($card->Class == 'Rare')
       {
         $dis_card = $carddb->GetCard($hisdata->Hand[$discarded_pos]);
         $hisdata->Bricks-= $dis_card->GetResources('Bricks');
@@ -716,7 +716,7 @@
       if ($mydata->TokenValues[$token_index] >= 100)
       {
         $b_prod = array("Common" => 2, "Uncommon" => 3, "Rare" => 4);
-        $bricks_production*= $b_prod[$card->GetClass()];
+        $bricks_production*= $b_prod[$card->Class];
         
         $mydata->TokenValues[$token_index] = 0;
       }

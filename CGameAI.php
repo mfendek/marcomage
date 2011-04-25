@@ -227,7 +227,7 @@
 
 								// new card
 								$card_data = $carddb->GetCard($cur_card);
-								$card_class = $card_data->GetClass();
+								$card_class = $card_data->Class;
 
 								// gain extra points if rare cards were added to player's hand (summoning related cards)
 								if ($card_class == 'Rare')
@@ -262,7 +262,7 @@
 
 								// new card
 								$card_data = $carddb->GetCard($cur_card);
-								$card_class = $card_data->GetClass();
+								$card_class = $card_data->Class;
 
 								// lose points if rare cards were added to opponent's hand
 								if ($card_class == 'Rare')

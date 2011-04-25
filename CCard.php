@@ -276,106 +276,9 @@
 	
 	class CCard
 	{
-		private $CardID;
 		private $Cards;
-		public $CardData;
 		
-		public function __construct($cardid, CCards &$Cards)
-		{
-			$this->CardID = (int)$cardid; 
-			
-			$this->Cards = &$Cards;
-			$this->CardData = new CCardData;
-			
-			$cd = &$this->CardData;
-			
-			$db = $this->Cards->getDB();
-			$result = $db->xpath("/am:cards/am:card[@id={$this->CardID}]");
-			
-			if( $result === false || count($result) == 0 )
-                $arr = array ('Invalid Card', 'None', 0, 0, 0, 0, '', '', '', '', '');
-			else
-			{
-				$data = &$result[0];
-				$arr = array ((string)$data->name, (string)$data->class, (int)$data->cost->bricks, (int)$data->cost->gems, (int)$data->cost->recruits, (int)$data->modes, (string)$data->keywords, (string)$data->effect, (string)$data->code, (string)$data->created, (string)$data->modified);
-			}
-			
-			// initialize self
-			list($cd->Name, $cd->Class, $cd->Bricks, $cd->Gems, $cd->Recruits, $cd->Modes, $cd->Keywords, $cd->Effect, $cd->Code, $cd->Created, $cd->Modified) = $arr;
-		}
-		
-		public function __destruct()
-		{
-			$this->CardID = -1;
-			$this->Cards = false;
-			$this->CardData = false;
-		}
-		
-		public function IsPlayAgainCard()
-		{
-			return ($this->HasKeyWord("Quick") or $this->HasKeyWord("Swift"));
-		}
-		
-		public function HasKeyword($keyword)
-		{
-			if( $keyword != "any" )
-				return (strpos($this->CardData->Keywords, $keyword) !== FALSE);
-			else // search for any keywords
-				return ($this->CardData->Keywords != "");
-		}
-		
-		public function GetResources($type)
-		{
-			if ($type !="")
-				$resource = $this->CardData->$type;
-			else
-			{
-				$resources = array("Bricks" => 0, "Gems" => 0, "Recruits" => 0);
-				$resource = 0;
-				foreach ($resources as $r_name => $r_value)
-					$resource+= $this->CardData->$r_name;
-			}
-		
-			return $resource;
-		}
-		
-		public function GetID()
-		{
-			return $this->CardID;
-		}
-		
-		public function GetClass()
-		{
-			return $this->CardData->Class;
-		}
-		
-		public function GetKeywords()
-		{
-			return $this->CardData->Keywords;
-		}
-
-		public function GetData()
-		{
-			$data['id']       = $this->CardID;
-			$data['name']     = $this->CardData->Name;
-			$data['class']    = $this->CardData->Class;
-			$data['bricks']   = $this->CardData->Bricks;
-			$data['gems']     = $this->CardData->Gems;
-			$data['recruits'] = $this->CardData->Recruits;
-			$data['modes']    = $this->CardData->Modes;
-			$data['keywords'] = $this->CardData->Keywords;
-			$data['effect']   = $this->CardData->Effect;
-			$data['code']     = $this->CardData->Code;
-			$data['created']  = $this->CardData->Created;
-			$data['modified'] = $this->CardData->Modified;
-
-			return $data;
-		}
-	}
-	
-	
-	class CCardData
-	{
+		public $ID;
 		public $Name;
 		public $Class;
 		public $Bricks;
@@ -387,5 +290,79 @@
 		public $Code;
 		public $Created;
 		public $Modified;
+		
+		public function __construct($cardid, CCards &$Cards)
+		{
+			$this->Cards = &$Cards;
+			
+			$data = $Cards->GetData(array($cardid));
+			if( $data === false )
+				$data = array('id'=>$cardid, 'name'=>'Invalid Card', 'class'=>'None', 'bricks'=>0, 'gems'=>0, 'recruits'=>0, 'modes'=>0, 'keywords'=>'', 'effect'=>'', 'code'=>'', 'created'=>'', 'modified'=>'');
+
+			// initialize self
+			$this->SetData($data[0]);
+		}
+		
+		public function IsPlayAgainCard()
+		{
+			return ($this->HasKeyWord("Quick") or $this->HasKeyWord("Swift"));
+		}
+		
+		public function HasKeyword($keyword)
+		{
+			if( $keyword != "any" )
+				return (strpos($this->Keywords, $keyword) !== FALSE);
+			else // search for any keywords
+				return ($this->Keywords != "");
+		}
+		
+		public function GetResources($type)
+		{
+			if ($type !="")
+				$resource = $this->type;
+			else
+			{
+				$resources = array("Bricks" => 0, "Gems" => 0, "Recruits" => 0);
+				$resource = 0;
+				foreach ($resources as $r_name => $r_value)
+					$resource+= $this->r_name;
+			}
+		
+			return $resource;
+		}
+		
+		public function GetData()
+		{
+			$data['id']       = $this->ID;
+			$data['name']     = $this->Name;
+			$data['class']    = $this->Class;
+			$data['bricks']   = $this->Bricks;
+			$data['gems']     = $this->Gems;
+			$data['recruits'] = $this->Recruits;
+			$data['modes']    = $this->Modes;
+			$data['keywords'] = $this->Keywords;
+			$data['effect']   = $this->Effect;
+			$data['code']     = $this->Code;
+			$data['created']  = $this->Created;
+			$data['modified'] = $this->Modified;
+
+			return $data;
+		}
+
+		private function SetData($data)
+		{
+			$this->ID       = $data['id'];
+			$this->Name     = $data['name'];
+			$this->Class    = $data['class'];
+			$this->Bricks   = $data['bricks'];
+			$this->Gems     = $data['gems'];
+			$this->Recruits = $data['recruits'];
+			$this->Modes    = $data['modes'];
+			$this->Keywords = $data['keywords'];
+			$this->Effect   = $data['effect'];
+			$this->Code     = $data['code'];
+			$this->Created  = $data['created'];
+			$this->Modified = $data['modified'];
+		}
 	}
 ?>

@@ -301,7 +301,7 @@
 
 			// retrieve the card's data
 			$card = $carddb->GetCard($cardid);
-			$class = $card->GetClass();
+			$class = $card->Class;
 
 			// verify if the card id is valid
 			if( $cardid == 0 or $class == 'None' )
@@ -343,7 +343,7 @@
 
 			// retrieve the card's data
 			$card = $carddb->GetCard($cardid);
-			$class = $card->GetClass();
+			$class = $card->Class;
 			
 			// check if the card is present in the deck
 			$pos = array_search($cardid, $this->DeckData->$class);
@@ -381,7 +381,7 @@
 				foreach ($this->DeckData->$rarity as $card_id)
 					if ($card_id > 0)
 					{
-						$keywords = $carddb->GetCard($card_id)->GetKeywords();
+						$keywords = $carddb->GetCard($card_id)->Keywords;
 						$words = explode(",", $keywords);
 						
 						foreach($words as $word)
@@ -442,9 +442,9 @@
 					if ($cardid != 0)
 					{
 						$card = $carddb->GetCard($cardid);
-						$sum['Bricks'][$class]+= $card->CardData->Bricks;
-						$sum['Gems'][$class]+= $card->CardData->Gems;
-						$sum['Recruits'][$class]+= $card->CardData->Recruits;
+						$sum['Bricks'][$class]+= $card->Bricks;
+						$sum['Gems'][$class]+= $card->Gems;
+						$sum['Recruits'][$class]+= $card->Recruits;
 						$sum['Count'][$class]+= 1;
 					}
 				}
