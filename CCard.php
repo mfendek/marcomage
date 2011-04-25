@@ -321,13 +321,13 @@
 		public function GetResources($type)
 		{
 			if ($type !="")
-				$resource = $this->type;
+				$resource = $this->$type;
 			else
 			{
 				$resources = array("Bricks" => 0, "Gems" => 0, "Recruits" => 0);
 				$resource = 0;
 				foreach ($resources as $r_name => $r_value)
-					$resource+= $this->r_name;
+					$resource+= $this->$r_name;
 			}
 		
 			return $resource;
