@@ -644,7 +644,7 @@
       
       if ($mydata->TokenValues[$token_index] >= 100)
       {
-        $mydata->Recruits+= round($card->CardData->Recruits / 2);
+        $mydata->Recruits+= round($card->Recruits / 2);
         
         $mydata->TokenValues[$token_index] = 0;
       }
@@ -692,9 +692,9 @@
       
       if ($mydata->TokenValues[$token_index] >= 100)
       {
-        $mydata->Bricks+= round($card->CardData->Bricks / 3);
-        $mydata->Gems+= round($card->CardData->Gems / 3);
-        $mydata->Recruits+= round($card->CardData->Recruits / 3);
+        $mydata->Bricks+= round($card->Bricks / 3);
+        $mydata->Gems+= round($card->Gems / 3);
+        $mydata->Recruits+= round($card->Recruits / 3);
         
         $mydata->TokenValues[$token_index] = 0;
       }
