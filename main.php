@@ -310,7 +310,7 @@
 				$concept = $conceptdb->GetConcept($concept_id);
 
 				// check access rights
-				if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+				if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 
 				$_POST['CurrentConcept'] = $concept_id;
 				$current = "Concepts_edit";
@@ -326,11 +326,11 @@
 				$concept = $conceptdb->GetConcept($concept_id);
 
 				// check access rights
-				if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+				if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 
-				$old_name = $concept->Name();
+				$old_name = $concept->Name;
 				$new_name = $_POST['name'];
-				$thread_id = $concept->ThreadID();
+				$thread_id = $concept->ThreadID;
 
 				// add default cost values
 				if (trim($_POST['bricks']) == "") $_POST['bricks'] = 0;
@@ -372,9 +372,9 @@
 				// check access rights
 				if (!$access_rights[$player->Type()]["edit_all_card"]) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 
-				$old_name = $concept->Name();
+				$old_name = $concept->Name;
 				$new_name = $_POST['name'];
-				$thread_id = $concept->ThreadID();
+				$thread_id = $concept->ThreadID;
 
 				// add default cost values
 				if (trim($_POST['bricks']) == "") $_POST['bricks'] = 0;
@@ -414,9 +414,9 @@
 				$concept = $conceptdb->GetConcept($concept_id);
 
 				// check access rights
-				if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+				if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 
-				$former_name = $concept->ConceptData->Picture;
+				$former_name = $concept->Picture;
 				$former_path = 'img/concepts/'.$former_name;
 
 				$type = $_FILES['uploadedfile']['type'];
@@ -461,9 +461,9 @@
 				$concept = $conceptdb->GetConcept($concept_id);
 
 				// check access rights
-				if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+				if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 
-				$former_name = $concept->ConceptData->Picture;
+				$former_name = $concept->Picture;
 				$former_path = 'img/concepts/'.$former_name;
 
 				if ((file_exists($former_path)) and ($former_name != "blank.jpg")) unlink($former_path);
@@ -483,7 +483,7 @@
 				$concept = $conceptdb->GetConcept($concept_id);
 
 				// check access rights
-				if (!($access_rights[$player->Type()]["delete_all_card"] OR ($access_rights[$player->Type()]["delete_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+				if (!($access_rights[$player->Type()]["delete_all_card"] OR ($access_rights[$player->Type()]["delete_own_card"] AND $player->Name() == $concept->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 
 				$_POST['CurrentConcept'] = $concept_id;
 				$current = "Concepts_edit";
@@ -497,11 +497,11 @@
 
 				if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
 				$concept = $conceptdb->GetConcept($concept_id);
-				$thread_id = $concept->ThreadID();
-				$concept_name = $concept->Name();
+				$thread_id = $concept->ThreadID;
+				$concept_name = $concept->Name;
 
 				// check access rights
-				if (!($access_rights[$player->Type()]["delete_all_card"] OR ($access_rights[$player->Type()]["delete_own_card"] AND $player->Name() == $concept->ConceptData->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+				if (!($access_rights[$player->Type()]["delete_all_card"] OR ($access_rights[$player->Type()]["delete_own_card"] AND $player->Name() == $concept->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 
 				$result = $concept->DeleteConcept();
 				if (!$result) { $error = "Failed to delete card"; $current = "Concepts_edit"; break; }
@@ -525,10 +525,10 @@
 
 				$concept = $conceptdb->GetConcept($concept_id);
 				if (!$concept) { $error = 'No such card.'; $current = 'Concepts'; break; }
-				$thread_id = $concept->ThreadID();
+				$thread_id = $concept->ThreadID;
 				if ($thread_id > 0) { $error = "Thread already exists"; $current = "Forum_thread"; $_POST['CurrentThread'] = $thread_id; break; }
 
-				$concept_name = $concept->Name();
+				$concept_name = $concept->Name;
 
 				$new_thread = $forum->Threads->CreateThread($concept_name, $player->Name(), 'normal', $section_id);
 				if ($new_thread === false) { $error = "Failed to create new thread"; $current = "Concepts_details"; break; }
@@ -3108,14 +3108,9 @@ case 'Concepts_edit':
 	if (!is_numeric($concept_id) OR $concept_id <= 0) { $display_error = 'Invalid concept id.'; break; }
 
 	$concept = $conceptdb->GetConcept($concept_id);
-	if ($concept->ConceptData->Name == "Invalid Concept") { $display_error = 'Invalid concept.'; break; }
+	if ($concept->Name == "Invalid Concept") { $display_error = 'Invalid concept.'; break; }
 
-	$inputs = array('Name', 'Class', 'Bricks', 'Gems', 'Recruits', 'Effect', 'Keywords', 'Picture', 'Note', 'State', 'Author');
-	$data = array();
-	foreach ($inputs as $input) $data[strtolower($input)] = $concept->ConceptData->$input;
-	$data['id'] = $concept_id;
-	$params['concepts_edit']['data'] = $data;
-
+	$params['concepts_edit']['data'] = $concept->GetData();
 	$params['concepts_edit']['edit_all_card'] = (($access_rights[$player->Type()]["edit_all_card"]) ? 'yes' : 'no');
 	$params['concepts_edit']['delete_own_card'] = (($access_rights[$player->Type()]["delete_own_card"]) ? 'yes' : 'no');
 	$params['concepts_edit']['delete_all_card'] = (($access_rights[$player->Type()]["delete_all_card"]) ? 'yes' : 'no');
@@ -3124,7 +3119,7 @@ case 'Concepts_edit':
 	$settings = $player->GetSettings();
 	$params['concepts_edit']['c_img'] = $settings->GetSetting('Images');
 	$params['concepts_edit']['c_oldlook'] = $settings->GetSetting('OldCardLook');
-	$subsection_name = $data['name'];
+	$subsection_name = $concept->Name;
 
 	break;
 
@@ -3134,14 +3129,9 @@ case 'Concepts_details':
 	if (!is_numeric($concept_id) OR $concept_id <= 0) { $display_error = 'Invalid concept id.'; break; }
 
 	$concept = $conceptdb->GetConcept($concept_id);
-	if ($concept->ConceptData->Name == "Invalid Concept") { $display_error = 'Invalid concept.'; break; }
+	if ($concept->Name == "Invalid Concept") { $display_error = 'Invalid concept.'; break; }
 
-	$inputs = array('Name', 'Class', 'Bricks', 'Gems', 'Recruits', 'Effect', 'Keywords', 'Picture', 'Note', 'State', 'Author', 'ThreadID');
-	$data = array();
-	foreach ($inputs as $input) $data[strtolower($input)] = $concept->ConceptData->$input;
-	$data['id'] = $concept_id;
-	$params['concepts_details']['data'] = $data;
-
+	$params['concepts_details']['data'] = $concept->GetData();
 	$params['concepts_details']['create_thread'] = ($access_rights[$player->Type()]["create_thread"]) ? 'yes' : 'no';
 	$params['concepts_details']['edit_all_card'] = ($access_rights[$player->Type()]["edit_all_card"]) ? 'yes' : 'no';
 	$params['concepts_details']['delete_own_card'] = ($access_rights[$player->Type()]["delete_own_card"]) ? 'yes' : 'no';
@@ -3149,7 +3139,7 @@ case 'Concepts_details':
 	$settings = $player->GetSettings();
 	$params['concepts_details']['c_img'] = $settings->GetSetting('Images');
 	$params['concepts_details']['c_oldlook'] = $settings->GetSetting('OldCardLook');
-	$subsection_name = $data['name'];
+	$subsection_name = $concept->Name;
 
 	break;
 

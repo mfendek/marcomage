@@ -238,83 +238,9 @@
 
 	class CConcept
 	{
-		private $CardID;
 		private $Concepts;
-		public $ConceptData;
 
-		public function __construct($cardid, CConcepts &$Concepts)
-		{
-			$this->CardID = (int)$cardid; 
-
-			$this->Concepts = &$Concepts;
-			$this->ConceptData = new CConceptData;
-
-			$cd = &$this->ConceptData;
-
-			$db = $this->Concepts->getDB();
-			$result = $db->Query('SELECT `Name`, `Class`, `Bricks`, `Gems`, `Recruits`, `Effect`, `Keywords`, `Picture`, `Note`, `State`, `Author`, `LastChange`, `ThreadID` FROM `concepts` WHERE `CardID` = ?', array($this->CardID));
-			if ($result === false or count($result) == 0) $arr = array ('Invalid Concept', 'None', 0, 0, 0, '', '', '', '', '', '', '', 0);
-			else
-			{
-				$data = $result[0];
-				$arr = array ($data['Name'], $data['Class'], $data['Bricks'], $data['Gems'], $data['Recruits'], $data['Effect'], $data['Keywords'], $data['Picture'], $data['Note'], $data['State'], $data['Author'], $data['LastChange'], $data['ThreadID']);
-			}
-
-			// initialize self
-			list($cd->Name, $cd->Class, $cd->Bricks, $cd->Gems, $cd->Recruits, $cd->Effect, $cd->Keywords, $cd->Picture, $cd->Note, $cd->State, $cd->Author, $cd->LastChange, $cd->ThreadID) = $arr;
-		}
-
-		public function __destruct()
-		{
-			$this->CardID = -1;
-			$this->Concepts = false;
-			$this->ConceptData = false;
-		}
-
-		public function EditConcept(array $data) // standard edit (normal user)
-		{
-			return $this->Concepts->EditConcept($this->CardID, $data);
-		}
-
-		public function EditConceptSpecial(array $data) // special edit (admin)
-		{
-			return $this->Concepts->EditConceptSpecial($this->CardID, $data);
-		}
-
-		public function EditPicture($picture)
-		{
-			return $this->Concepts->EditPicture($this->CardID, $picture);
-		}
-
-		public function ResetPicture()
-		{
-			return $this->Concepts->ResetPicture($this->CardID);
-		}
-
-		public function DeleteConcept()
-		{
-			return $this->Concepts->DeleteConcept($this->CardID);
-		}
-
-		public function AssignThread($thread_id)
-		{
-			return $this->Concepts->AssignThread($this->CardID, $thread_id);
-		}
-
-		public function Name()
-		{
-			return $this->ConceptData->Name;
-		}
-
-		public function ThreadID()
-		{
-			return $this->ConceptData->ThreadID;
-		}
-	}
-
-
-	class CConceptData
-	{
+		public $ID;
 		public $Name;
 		public $Class;
 		public $Bricks;
@@ -328,5 +254,96 @@
 		public $Author;
 		public $LastChange;
 		public $ThreadID;
+
+		public function __construct($cardid, CConcepts &$Concepts)
+		{
+			$this->Concepts = &$Concepts;
+
+			$db = $this->Concepts->getDB();
+			$result = $db->Query('SELECT `Name`, `Class`, `Bricks`, `Gems`, `Recruits`, `Effect`, `Keywords`, `Picture`, `Note`, `State`, `Author`, `LastChange`, `ThreadID` FROM `concepts` WHERE `CardID` = ?', array($cardid));
+			if ($result === false or count($result) == 0)
+        $concept_data = array('id'=>-1, 'name'=>'Invalid Concept', 'class'=>'None', 'bricks'=>0, 'gems'=>0, 'recruits'=>0, 'keywords'=>'', 'effect'=>'', 'picture'=>'', 'note'=>'', 'state'=>'', 'author'=>'', 'lastchange'=>'', 'threadid'=>0);
+			else
+			{
+				$data = $result[0];
+				$concept_data = array('id'=>$cardid, 'name'=>$data['Name'], 'class'=>$data['Class'], 'bricks'=>$data['Bricks'], 'gems'=>$data['Gems'], 'recruits'=>$data['Recruits'], 'keywords'=>$data['Keywords'], 'effect'=>$data['Effect'], 'picture'=>$data['Picture'], 'note'=>$data['Note'], 'state'=>$data['State'], 'author'=>$data['Author'], 'lastchange'=>$data['LastChange'], 'threadid'=>$data['ThreadID']);
+			}
+
+			// initialize self
+			$this->SetData($concept_data);
+		}
+
+		public function __destruct()
+		{
+			$this->Concepts = false;
+		}
+
+		public function EditConcept(array $data) // standard edit (normal user)
+		{
+			return $this->Concepts->EditConcept($this->ID, $data);
+		}
+
+		public function EditConceptSpecial(array $data) // special edit (admin)
+		{
+			return $this->Concepts->EditConceptSpecial($this->ID, $data);
+		}
+
+		public function EditPicture($picture)
+		{
+			return $this->Concepts->EditPicture($this->ID, $picture);
+		}
+
+		public function ResetPicture()
+		{
+			return $this->Concepts->ResetPicture($this->ID);
+		}
+
+		public function DeleteConcept()
+		{
+			return $this->Concepts->DeleteConcept($this->ID);
+		}
+
+		public function AssignThread($thread_id)
+		{
+			return $this->Concepts->AssignThread($this->ID, $thread_id);
+		}
+
+		public function GetData()
+		{
+			$data['id']         = $this->ID;
+			$data['name']       = $this->Name;
+			$data['class']      = $this->Class;
+			$data['bricks']     = $this->Bricks;
+			$data['gems']       = $this->Gems;
+			$data['recruits']   = $this->Recruits;
+			$data['keywords']   = $this->Keywords;
+			$data['effect']     = $this->Effect;
+			$data['picture']    = $this->Picture;
+			$data['note']       = $this->Note;
+			$data['state']      = $this->State;
+			$data['author']     = $this->Author;
+			$data['lastchange'] = $this->LastChange;
+			$data['threadid']   = $this->ThreadID;
+
+			return $data;
+		}
+
+		private function SetData($data)
+		{
+			$this->ID         = $data['id'];
+			$this->Name       = $data['name'];
+			$this->Class      = $data['class'];
+			$this->Bricks     = $data['bricks'];
+			$this->Gems       = $data['gems'];
+			$this->Recruits   = $data['recruits'];
+			$this->Keywords   = $data['keywords'];
+			$this->Effect     = $data['effect'];
+			$this->Picture    = $data['picture'];
+			$this->Note       = $data['note'];
+			$this->State      = $data['state'];
+			$this->Author     = $data['author'];
+			$this->LastChange = $data['lastchange'];
+			$this->ThreadID   = $data['threadid'];
+		}
 	}
 ?>
