@@ -7,15 +7,12 @@
 	class CCards
 	{
 		private $db;
+		private $cache; // ID -> card data
 		
 		public function __construct()
 		{
 			$this->db = false;
-		}
-		
-		public function __destruct()
-		{
-			$this->db = false;
+			$this->cache = false;
 		}
 
 		public function getDB()
@@ -166,28 +163,33 @@
 		{
 			$db = $this->getDB();
 
-			// since xpath is too slow for this task, just grab everything and process it in php
-			$result = $db->xpath("/am:cards/am:card");
-			if( $result === false ) return false;
-			
-			$cards = array();
-			foreach( $result as $card )
+			// initialize on first use
+			if( $this->cache === false )
 			{
-				$data['id']       = (int)$card->attributes()->id;
-				$data['name']     = (string)$card->name;
-				$data['class']    = (string)$card->class;
-				$data['bricks']   = (int)$card->cost->bricks;
-				$data['gems']     = (int)$card->cost->gems;
-				$data['recruits'] = (int)$card->cost->recruits;
-				$data['modes']    = (int)$card->modes;
-				$data['keywords'] = (string)$card->keywords;
-				$data['effect']   = (string)$card->effect;
-				$data['code']     = (string)$card->code;
-				$data['created']  = (string)$card->created;
-				$data['modified'] = (string)$card->modified;
-				$cards[$data['id']] = $data;
+				// since xpath is too slow for this task, just grab everything and process it in php
+				$cards = $db->xpath("/am:cards/am:card");
+				if( $cards === false ) return false;
+				
+				$this->cache = array();
+				foreach( $cards as $card )
+				{
+					$data['id']       = (int)$card->attributes()->id;
+					$data['name']     = (string)$card->name;
+					$data['class']    = (string)$card->class;
+					$data['bricks']   = (int)$card->cost->bricks;
+					$data['gems']     = (int)$card->cost->gems;
+					$data['recruits'] = (int)$card->cost->recruits;
+					$data['modes']    = (int)$card->modes;
+					$data['keywords'] = (string)$card->keywords;
+					$data['effect']   = (string)$card->effect;
+					$data['code']     = (string)$card->code;
+					$data['created']  = (string)$card->created;
+					$data['modified'] = (string)$card->modified;
+					$this->cache[$data['id']] = $data;
+				}
 			}
 
+			$cards = $this->cache;
 			$out = $names = array();
 			foreach( $ids as $index => $id )
 			{
