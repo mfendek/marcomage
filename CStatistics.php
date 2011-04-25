@@ -54,13 +54,13 @@
 			$statistics = array_combine($statistics, array_fill(0, count($statistics), 0));
 
 			// get number of different victory types
-			$result = $db->Query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays_head` WHERE (`EndType` != "Pending") GROUP BY `EndType`');
+			$result = $db->Query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays` WHERE (`EndType` != "Pending") GROUP BY `EndType`');
 			if ($result === false) return false;
 
 			foreach ($result as $data) $statistics[$data['EndType']] = $data['count'];
 
 			// get number of total games games
-			$result = $db->Query('SELECT COUNT(`GameID`) as `total` FROM `replays_head` WHERE (`EndType` != "Pending")');
+			$result = $db->Query('SELECT COUNT(`GameID`) as `total` FROM `replays` WHERE (`EndType` != "Pending")');
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
@@ -85,7 +85,7 @@
 			$params = array('hidden' => array('HiddenCards'), 'friendly' => array('FriendlyPlay'), 'long' => array('LongMode'));
 
 			// get number of games with various game modes
-			$results = $db->MultiQuery('SELECT COUNT(`GameID`) as `count` FROM `replays_head` WHERE (`EndType` != "Pending") AND (FIND_IN_SET(?, `GameModes`) > 0)', $params);
+			$results = $db->MultiQuery('SELECT COUNT(`GameID`) as `count` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET(?, `GameModes`) > 0)', $params);
 			if ($results === false) return false;
 
 			foreach ($results as $result_name => $result)
@@ -95,14 +95,14 @@
 			}
 
 			// get number of AI mode games (exclude AI challenges)
-			$result = $db->Query('SELECT COUNT(`GameID`) as `ai` FROM `replays_head` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("AIMode", `GameModes`) > 0) AND `AI` = ""');
+			$result = $db->Query('SELECT COUNT(`GameID`) as `ai` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("AIMode", `GameModes`) > 0) AND `AI` = ""');
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
 			$statistics['ai'] = $data['ai'];
 
 			// get number of AI victories (exclude AI challenges)
-			$result = $db->Query('SELECT COUNT(`GameID`) as `ai_wins` FROM `replays_head` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("AIMode", `GameModes`) > 0) AND `AI` = "" AND `Winner` = ?', array(SYSTEM_NAME));
+			$result = $db->Query('SELECT COUNT(`GameID`) as `ai_wins` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("AIMode", `GameModes`) > 0) AND `AI` = "" AND `Winner` = ?', array(SYSTEM_NAME));
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
@@ -111,14 +111,14 @@
 			$ai_win_ratio = ($statistics['ai'] > 0) ? round(($ai_wins / $statistics['ai']) * 100, 2) : 0;
 
 			// get number of AI challenge games
-			$result = $db->Query('SELECT COUNT(`GameID`) as `challenge` FROM `replays_head` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("AIMode", `GameModes`) > 0) AND `AI` != ""');
+			$result = $db->Query('SELECT COUNT(`GameID`) as `challenge` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("AIMode", `GameModes`) > 0) AND `AI` != ""');
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
 			$statistics['challenge'] = $data['challenge'];
 
 			// get number of AI challenge victories
-			$result = $db->Query('SELECT COUNT(`GameID`) as `challenge_wins` FROM `replays_head` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("AIMode", `GameModes`) > 0) AND `AI` != "" AND `Winner` = ?', array(SYSTEM_NAME));
+			$result = $db->Query('SELECT COUNT(`GameID`) as `challenge_wins` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("AIMode", `GameModes`) > 0) AND `AI` != "" AND `Winner` = ?', array(SYSTEM_NAME));
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
@@ -127,7 +127,7 @@
 			$challenge_win_ratio = ($statistics['challenge'] > 0) ? round(($challenge_wins / $statistics['challenge']) * 100, 2) : 0;
 
 			// get number of total games games
-			$result = $db->Query('SELECT COUNT(`GameID`) as `total` FROM `replays_head` WHERE (`EndType` != "Pending")');
+			$result = $db->Query('SELECT COUNT(`GameID`) as `total` FROM `replays` WHERE (`EndType` != "Pending")');
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
@@ -155,7 +155,7 @@
 			);
 
 			// get number of games with various game modes
-			$results = $db->MultiQuery('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays_head` WHERE (`EndType` != "Pending") AND ((`Player1` = ? AND `Player2` = ?) OR (`Player1` = ? AND `Player2` = ?)) AND `Winner` = ? GROUP BY `EndType` ORDER BY `count` DESC', $params);
+			$results = $db->MultiQuery('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays` WHERE (`EndType` != "Pending") AND ((`Player1` = ? AND `Player2` = ?) OR (`Player1` = ? AND `Player2` = ?)) AND `Winner` = ? GROUP BY `EndType` ORDER BY `count` DESC', $params);
 			if ($results === false) return false;
 
 			foreach ($results as $result_name => $result)
@@ -176,7 +176,7 @@
 			}
 
 			// average game duration (normal mode)
-			$result = $db->Query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays_head` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) = 0) AND ((`Player1` = ? AND `Player2` = ?) OR (`Player1` = ? AND `Player2` = ?))', array($player1, $player2, $player2, $player1));
+			$result = $db->Query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) = 0) AND ((`Player1` = ? AND `Player2` = ?) OR (`Player1` = ? AND `Player2` = ?))', array($player1, $player2, $player2, $player1));
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
@@ -184,7 +184,7 @@
 			$statistics['rounds'] = $data['Rounds'];
 
 			// average game duration (long mode)
-			$result = $db->Query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays_head` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) > 0) AND ((`Player1` = ? AND `Player2` = ?) OR (`Player1` = ? AND `Player2` = ?))', array($player1, $player2, $player2, $player1));
+			$result = $db->Query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) > 0) AND ((`Player1` = ? AND `Player2` = ?) OR (`Player1` = ? AND `Player2` = ?))', array($player1, $player2, $player2, $player1));
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
@@ -200,7 +200,7 @@
 			$statistics = array();
 
 			// wins statistics
-			$result = $db->Query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays_head` WHERE (`EndType` != "Pending") AND (`Player1` = ? OR `Player2` = ?) AND `Winner` = ? GROUP BY `EndType` ORDER BY `count` DESC', array($player, $player, $player));
+			$result = $db->Query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays` WHERE (`EndType` != "Pending") AND (`Player1` = ? OR `Player2` = ?) AND `Winner` = ? GROUP BY `EndType` ORDER BY `count` DESC', array($player, $player, $player));
 			if ($result === false) return false;
 
 			$wins_total = 0;
@@ -218,7 +218,7 @@
 			$statistics['wins_total'] = $wins_total;
 
 			// loss statistics
-			$result = $db->Query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays_head` WHERE (`EndType` != "Pending") AND (`Player1` = ? OR `Player2` = ?) AND `Winner` != ? AND `Winner` != "" GROUP BY `EndType` ORDER BY `count` DESC', array($player, $player, $player));
+			$result = $db->Query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays` WHERE (`EndType` != "Pending") AND (`Player1` = ? OR `Player2` = ?) AND `Winner` != ? AND `Winner` != "" GROUP BY `EndType` ORDER BY `count` DESC', array($player, $player, $player));
 			if ($result === false) return false;
 			$losses_total = 0;
 
@@ -236,7 +236,7 @@
 			$statistics['losses_total'] = $losses_total;
 
 			// other statistics (draws, aborts...)
-			$result = $db->Query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays_head` WHERE (`EndType` != "Pending") AND (`Player1` = ? OR `Player2` = ?) AND `Winner` = "" GROUP BY `EndType` ORDER BY `count` DESC', array($player, $player));
+			$result = $db->Query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays` WHERE (`EndType` != "Pending") AND (`Player1` = ? OR `Player2` = ?) AND `Winner` = "" GROUP BY `EndType` ORDER BY `count` DESC', array($player, $player));
 			if ($result === false) return false;
 
 			$other_total = 0;
@@ -254,7 +254,7 @@
 			$statistics['other_total'] = $other_total;
 
 			// average game duration (normal mode)
-			$result = $db->Query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays_head` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) = 0) AND (`Player1` = ? OR `Player2` = ?)', array($player, $player));
+			$result = $db->Query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) = 0) AND (`Player1` = ? OR `Player2` = ?)', array($player, $player));
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
@@ -262,7 +262,7 @@
 			$statistics['rounds'] = $data['Rounds'];
 
 			// average game duration (long mode)
-			$result = $db->Query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays_head` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) > 0) AND (`Player1` = ? OR `Player2` = ?)', array($player, $player));
+			$result = $db->Query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) > 0) AND (`Player1` = ? OR `Player2` = ?)', array($player, $player));
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
