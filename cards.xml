@@ -5040,7 +5040,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Durable</keywords>
-    <effect><![CDATA[Recruits production x0<br />Enemy stock: -1<br />Enemy tower: -12]]></effect>
+    <effect><![CDATA[Recruits prod x0<br />Enemy stock: -1<br />Enemy tower: -12]]></effect>
     <code><![CDATA[
     $recruits_production = 0;
     $hisdata->Bricks-= 1; $hisdata->Gems-= 1; $hisdata->Recruits-= 1;

@@ -61,7 +61,7 @@
 				<value name="Replace"        value="Replace"       />
 				<value name="Reveal"         value="Reveal"        />
 				<value name="Summon"         value="Summons"       />
-				<value name="Production"     value="Production"    />
+				<value name="Production"     value="Prod"          />
 				<value name="Wall +"         value="Wall: +"       />
 				<value name="Wall -"         value="Wall: -"       />
 				<value name="Tower +"        value="Tower: +"      />
