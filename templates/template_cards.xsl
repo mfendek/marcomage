@@ -57,8 +57,8 @@
 			<xsl:variable name="advanced">
 				<value name="No adv. filter" value="none"          />
 				<value name="Attack"         value="Attack:"       />
-				<value name="Discard"        value="Discard"       />
-				<value name="Replace"        value="Replace"       />
+				<value name="Discard"        value="Discard "      />
+				<value name="Replace"        value="Replace "      />
 				<value name="Reveal"         value="Reveal"        />
 				<value name="Summon"         value="Summons"       />
 				<value name="Production"     value="Prod"          />

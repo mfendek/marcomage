@@ -850,7 +850,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Discards highest cost non-<b>Durable</b> keyword card from opponent's hand]]></effect>
+    <effect><![CDATA[Discard highest cost non-<b>Durable</b> keyword card from opponent's hand]]></effect>
     <code><![CDATA[
     $card_costs = $max_cards = array(); $max = 0;
     for ($i = 1; $i <= 8; $i++)
@@ -1276,7 +1276,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Far sight</keywords>
-    <effect><![CDATA[Production x0<br />Enemy tower: -3<br />Select a card from hand to be replaced with Ninja]]></effect>
+    <effect><![CDATA[Production x0<br />Enemy tower: -3<br />Replace a card in hand with Ninja]]></effect>
     <code><![CDATA[
     $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
     $hisdata->Tower-= 3; $mydata->Hand[$mode] = 76;
@@ -2514,7 +2514,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Attack: 12<br />Stock: -5<br />Replaces matching card and its neigbouring cards with Conscript]]></effect>
+    <effect><![CDATA[Attack: 12<br />Stock: -5<br />Replace matching card and its neigbouring cards with Conscript]]></effect>
     <code><![CDATA[
     $this->Attack(12, $hisdata->Tower, $hisdata->Wall);
     $mydata->Bricks-= 5; $mydata->Gems-= 5; $mydata->Recruits-= 5;
@@ -2992,7 +2992,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Gain one random resource for every <b>Holy</b> in hand (max 5)<br />Summons <b>Holy</b>]]></effect>
+    <effect><![CDATA[Gain 1 random resource for every <b>Holy</b> in hand (max 5)<br />Summons <b>Holy</b>]]></effect>
     <code><![CDATA[
     $nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Holy")), $mydata->Hand, $cardpos, 'DrawCard_list');
     $resources = min($this->KeywordCount($mydata->Hand, "Holy"),5);
@@ -3501,7 +3501,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Enemy stock: +10<br />Replaces opponent's hand with random non-rare zero cost cards]]></effect>
+    <effect><![CDATA[Enemy stock: +10<br />Replace opponent's hand with non-rare zero cost cards]]></effect>
     <code><![CDATA[
     $hisdata->Bricks+= 10; $hisdata->Gems+= 10; $hisdata->Recruits+= 10;
     $common = $carddb->GetList(array('class'=>"Common", 'cost'=>"Zero"));
@@ -3700,7 +3700,7 @@
     </cost>
     <modes>8</modes>
     <keywords/>
-    <effect><![CDATA[Wall: +2<br />Production x0<br />Discards your hand except the selected card]]></effect>
+    <effect><![CDATA[Wall: +2<br />Production x0<br />Discard your hand except the selected card]]></effect>
     <code><![CDATA[
     $mydata->Wall+= 2;
     $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
@@ -4279,7 +4279,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Players discard up to 3 random non-rare cards]]></effect>
+    <effect><![CDATA[Players discard up to 3 non-rare cards]]></effect>
     <code><![CDATA[
     $mydata->Hand[$cardpos] = $this->DrawCard($my_deck, $mydata->Hand, $cardpos, 'DrawCard_random');
     $mydata->NewCards[$cardpos] = 1;
@@ -4341,7 +4341,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Replaces your hand with Crypt sentry, Skeleton warriors, Ghoul, Eternal guardian, Banshee, Undead host, Vampire, and Vampire countess]]></effect>
+    <effect><![CDATA[Replace your hand with Crypt sentry, Skeleton warriors, Ghoul, Eternal guardian, Banshee, Undead host, Vampire, and Vampire countess]]></effect>
     <code><![CDATA[
     $hand = array (101, 113, 112, 350, 133, 88, 28, 103); shuffle($hand);
     $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $keys = array_keys($newcards);
@@ -4379,7 +4379,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Swift</keywords>
-    <effect><![CDATA[Both players discard all cards in hand and receive 8 new cards (opponent can't draw rare)]]></effect>
+    <effect><![CDATA[Discard all cards (opponent can't draw rare cards)]]></effect>
     <code><![CDATA[
     $mydata->Hand = $this->DrawHand_random($my_deck);
     $hisdata->Hand = $this->DrawHand_norare($his_deck);
@@ -4527,7 +4527,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Discards your hand and receive eight new cards]]></effect>
+    <effect><![CDATA[Discard all cards in hand]]></effect>
     <code><![CDATA[
     $mydata->Hand = $this->DrawHand_random($my_deck);
     $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;
@@ -4612,7 +4612,7 @@
     </cost>
     <modes>8</modes>
     <keywords/>
-    <effect><![CDATA[Wall: +1<br />Select an extra card to be discarded]]></effect>
+    <effect><![CDATA[Wall: +1<br />Discard a card from hand]]></effect>
     <code><![CDATA[
     $mydata->Wall+= 1;
     if ($mode != $cardpos)
@@ -4836,7 +4836,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Both players lose N% of each resource<br />N is relative tower height]]></effect>
+    <effect><![CDATA[Players lose N% of each resource<br />N is relative tower height]]></effect>
     <code><![CDATA[
     $my_ratio = $mydata->Tower / $max_tower;
     $mydata->Bricks-= round($mydata->Bricks * $my_ratio);
@@ -4860,7 +4860,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower and wall of both players is set to the same height as was at the start of the game]]></effect>
+    <effect><![CDATA[Tower and Wall of both players is set to the same height as was at the start of the game]]></effect>
     <code><![CDATA[
     $mydata->Tower= $init_tower; $mydata->Wall= $init_wall;
     $hisdata->Tower= $init_tower; $hisdata->Wall= $init_wall;
@@ -4929,7 +4929,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Stock: +5<br />Replaces your hand with non-rare no keyword no support keyword attack cards]]></effect>
+    <effect><![CDATA[Stock: +5<br />Replace your hand with non-rare no keyword no support keyword attack cards]]></effect>
     <code><![CDATA[
     $common = $carddb->GetList(array('class'=>"Common", 'keyword'=>"No keywords", 'advanced'=>"Attack:", 'support'=>"No keywords"));
     $uncommon = $carddb->GetList(array('class'=>"Uncommon", 'keyword'=>"No keywords", 'advanced'=>"Attack:", 'support'=>"No keywords"));
@@ -4950,7 +4950,7 @@
     </cost>
     <modes>8</modes>
     <keywords/>
-    <effect><![CDATA[Replace a card from opponent's hand with Cursed amulet<br />Raises opponent's stock based on replaced card rarity (C-1, U-3, R-8)]]></effect>
+    <effect><![CDATA[Replace a card in opponent's hand with Cursed amulet<br />Raises opponent's stock based on replaced card rarity (C-1, U-3, R-8)]]></effect>
     <code><![CDATA[
     $rarities = array('Common' => 1, 'Uncommon' => 3, 'Rare' => 8);
     $rarity = $carddb->GetCard($hisdata->Hand[$mode])->Class;
@@ -5001,7 +5001,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Recruits: +35<br />Replaces your hand with Light and Heavy infantry, Knight, Crusader, Royal pikemen, Light cavalry, Siege breakers, and Royal dragoons]]></effect>
+    <effect><![CDATA[Recruits: +35<br />Replace your hand with Light and Heavy infantry, Knight, Crusader, Royal pikemen, Light cavalry, Siege breakers, and Royal dragoons]]></effect>
     <code><![CDATA[
     $hand = array (367, 279, 7, 305, 193, 36, 322, 166);
     shuffle($hand); $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1);
@@ -5021,7 +5021,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Replaces your hand with Elven fighter, Elven archer, Elven marksman, Elven priestesses, Elven ranger, Elven enchantress, Princess of elves and Elven warlock]]></effect>
+    <effect><![CDATA[Replace your hand with Elven fighter, Elven archer, Elven marksman, Elven priestesses, Elven ranger, Elven enchantress, Princess of elves and Elven warlock]]></effect>
     <code><![CDATA[
     $hand = array (111, 272, 545, 527, 190, 136, 526, 599);
     shuffle($hand); $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1);
@@ -5059,7 +5059,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Bricks: +25<br />Replaces your hand with Bricks only Wall + no support keyword cards]]></effect>
+    <effect><![CDATA[Bricks: +25<br />Replace your hand with Bricks only Wall + no support keyword cards]]></effect>
     <code><![CDATA[
     $mydata->Hand = $this->DrawHand_list($carddb->GetList(array('cost'=>"Red", 'advanced'=>"Wall: +", 'support'=>"No keywords")));
     $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1);
@@ -5078,7 +5078,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Bricks: +40<br />Replaces your hand with no keyword Bricks only Tower + no support keyword cards]]></effect>
+    <effect><![CDATA[Bricks: +40<br />Replace your hand with no keyword Bricks only Tower + no support keyword cards]]></effect>
     <code><![CDATA[
     $mydata->Hand = $this->DrawHand_list($carddb->GetList(array('keyword'=>"No keywords", 'cost'=>"Red", 'advanced'=>"Tower: +", 'support'=>"No keywords")));
     $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1);
@@ -5127,7 +5127,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Undead,Durable,Quick</keywords>
-    <effect><![CDATA[Attack: 25<br />Magic: -1<br />Select a card from hand to be replaced with Vampire]]></effect>
+    <effect><![CDATA[Attack: 25<br />Magic: -1<br />Replace a card in hand with Vampire]]></effect>
     <code><![CDATA[
     $this->Attack(25, $hisdata->Tower, $hisdata->Wall);
     $mydata->Magic-= 1; $mydata->Hand[$mode] = 28;  $mydata->NewCards[$mode] = 1;
@@ -5489,7 +5489,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Undead,Enduring (6),Charge (7)</keywords>
-    <effect><![CDATA[Attack: 10<br />Select a card from hand to be replaced with Fallen knight]]></effect>
+    <effect><![CDATA[Attack: 10<br />Replace a card in hand with Fallen knight]]></effect>
     <code><![CDATA[
     $this->Attack(10, $hisdata->Tower, $hisdata->Wall);
     $mydata->Hand[$mode] = 318;
@@ -5547,7 +5547,7 @@
     </cost>
     <modes>8</modes>
     <keywords/>
-    <effect><![CDATA[Discards up to 5 random <b>Undead</b> from hand except the selected card<br />Wall: +10N<br />N = #discarded cards]]></effect>
+    <effect><![CDATA[Discard up to 5 <b>Undead</b> from hand except the selected card<br />Wall: +10N<br />N = #discarded cards]]></effect>
     <code><![CDATA[
     $storage = array();
     for ($i = 1; $i <= 8; $i++)
@@ -5593,7 +5593,7 @@
     </cost>
     <modes>2</modes>
     <keywords>Beast,Durable</keywords>
-    <effect><![CDATA[Mode1:<br />Replaces opponent's hand with non-rare <b>Beast</b> cards<br />Mode2:<br />Attack: 5N<br />N = #<b>Beast</b> in game]]></effect>
+    <effect><![CDATA[Mode1:<br />Replace opponent's hand with non-rare <b>Beast</b> cards<br />Mode2:<br />Attack: 5N<br />N = #<b>Beast</b> in game]]></effect>
     <code><![CDATA[
     if ($mode == 1)
     {
@@ -5641,7 +5641,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Holy</keywords>
-    <effect><![CDATA[Replaces up to N common non-<b>Holy</b> keyword cards from opponent's hand with common <b>Holy</b><br />N = #<b>Holy</b> in hand (max 4)]]></effect>
+    <effect><![CDATA[Replace up to N common non-<b>Holy</b> keyword cards in opponent's hand with common <b>Holy</b><br />N = #<b>Holy</b> in hand (max 4)]]></effect>
     <code><![CDATA[
     $count = min(4, $this->KeywordCount($mydata->Hand, "Holy"));
     $storage = array();
@@ -5693,7 +5693,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Holy,Far sight</keywords>
-    <effect><![CDATA[Tower: +3<br />Select a card from hand to be replaced with <b>Holy</b>]]></effect>
+    <effect><![CDATA[Tower: +3<br />Replace a card in hand with <b>Holy</b>]]></effect>
     <code><![CDATA[
     $mydata->Tower+= 3;
     $mydata->Hand[$mode] = $this->DrawCard($carddb->GetList(array('keyword'=>"Holy")), $mydata->Hand, $cardpos, 'DrawCard_list');
@@ -5730,7 +5730,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Mage,Nature</keywords>
-    <effect><![CDATA[Gems: +6<br />Wall: +3<br />Production x0<br />Select a card from hand to be replaced with Conjurer]]></effect>
+    <effect><![CDATA[Gems: +6<br />Wall: +3<br />Production x0<br />Replace a card in hand with Conjurer]]></effect>
     <code><![CDATA[
     $mydata->Gems+= 6; $mydata->Wall+= 3;
     $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
@@ -5750,7 +5750,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Undead</keywords>
-    <effect><![CDATA[If last card played was <b>Undead</b> support, returns your discarded <b>Undead</b> to hand<br />Attack: 10N<br />N = #replaced cards]]></effect>
+    <effect><![CDATA[If last card played was <b>Undead</b> support, replace cards in hand with your discarded <b>Undead</b><br />Attack: 10N<br />N = #replaced cards]]></effect>
     <code><![CDATA[
     if (($mylast_action == 'play') AND in_array($mylast_card->ID, $carddb->GetList(array('support'=>"Undead"))))
     {
@@ -5862,7 +5862,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Burning</keywords>
-    <effect><![CDATA[Attack: 21<br />If last card was <b>Burning</b> up to 2 copies of that card will replace random non-rare non-<b>Burning</b> cards in hand]]></effect>
+    <effect><![CDATA[Attack: 21<br />If last card was <b>Burning</b> up to 2 copies of that card will replace non-rare non-<b>Burning</b> cards in hand]]></effect>
     <code><![CDATA[
     $this->Attack(21, $hisdata->Tower, $hisdata->Wall);
     if ($mylast_card->HasKeyword("Burning"))
@@ -6021,7 +6021,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Replaces up to 3 random non-<b>Holy</b> common cards from hand with Fanatics]]></effect>
+    <effect><![CDATA[Replace up to 3 non-<b>Holy</b> common cards in hand with Fanatics]]></effect>
     <code><![CDATA[
     $mydata->Hand[$cardpos] = $this->DrawCard($my_deck, $mydata->Hand, $cardpos, 'DrawCard_random');
     $nextcard = 0; $temp_array = array();
@@ -6053,7 +6053,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Replaces all Zealots in hand with Avenging angels and all Fanatics in hand with Zealots]]></effect>
+    <effect><![CDATA[Replace all Zealots in hand with Avenging angels and all Fanatics in hand with Zealots]]></effect>
     <code><![CDATA[
     for ($i = 1; $i <= 8; $i++)
       if ($mydata->Hand[$i] == 340)
@@ -6130,7 +6130,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Replaces all non-<b>Beast</b> cards in hand with <b>Beast</b> cards]]></effect>
+    <effect><![CDATA[Replace all non-<b>Beast</b> cards in hand with <b>Beast</b> cards]]></effect>
     <code><![CDATA[
     $mydata->Hand[$cardpos] = $this->DrawCard($my_deck, $mydata->Hand, $cardpos, 'DrawCard_random');
     $nextcard = 0;
@@ -6291,7 +6291,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Both players discard all cards with keywords<br />Each player receives 7 damage for each card discarded]]></effect>
+    <effect><![CDATA[Players discard all keyword cards<br />Players suffer 7 damage for each card they discarded]]></effect>
     <code><![CDATA[
     $j = 0;
     for ($i = 1; $i <= 8; $i++)
@@ -6443,7 +6443,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Discards lowest recruits cost <b>Soldier</b> from hand to get<br />Stock: +3]]></effect>
+    <effect><![CDATA[Discard lowest recruits cost <b>Soldier</b> from hand to get<br />Stock: +3]]></effect>
     <code><![CDATA[
     $storage = array(); $min = 1000;
     for ($i = 1; $i <= 8; $i++)
@@ -6635,7 +6635,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Undead</keywords>
-    <effect><![CDATA[Discards all <b>Undead</b> from hand except the selected card<br />Attack: 9N<br />N = #discarded cards]]></effect>
+    <effect><![CDATA[Discard all <b>Undead</b> from hand except the selected card<br />Attack: 9N<br />N = #discarded cards]]></effect>
     <code><![CDATA[
     $tmp = 0;
     for ($i = 1; $i <= 8; $i++)
@@ -6851,7 +6851,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Replaces your hand with Temple guard, Fairy, Heavenly warrior, Paladin, Cathedral, Knight Templar, Seraphim and Angel]]></effect>
+    <effect><![CDATA[Replace your hand with Temple guard, Fairy, Heavenly warrior, Paladin, Cathedral, Knight Templar, Seraphim and Angel]]></effect>
     <code><![CDATA[
     $hand = array (503, 27, 85, 90, 175, 473, 137, 44); shuffle($hand);
     $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $keys = array_keys($newcards);
@@ -6904,7 +6904,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Replaces all non-rare cards with any keyword in game with Merchant, Caravan or Palisade]]></effect>
+    <effect><![CDATA[Replace all non-rare keyword cards with Merchant, Caravan or Palisade]]></effect>
     <code><![CDATA[
     for ($i = 1; $i <= 8; $i++)
     {
@@ -7053,7 +7053,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Alliance,Mage</keywords>
-    <effect><![CDATA[Attack: 5<br />Select a card from hand to be replaced with a <b>Nature</b> or a <b>Restoration</b>]]></effect>
+    <effect><![CDATA[Attack: 5<br />Replace a card in hand with a <b>Nature</b> or a <b>Restoration</b>]]></effect>
     <code><![CDATA[
     $this->Attack(5, $hisdata->Tower, $hisdata->Wall);
     $restoration = $carddb->GetList(array('keyword'=>"Restoration"));
@@ -7074,7 +7074,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Alliance</keywords>
-    <effect><![CDATA[Attack: 7<br />Select a card from hand to be replaced with <b>Alliance</b>]]></effect>
+    <effect><![CDATA[Attack: 7<br />Replace a card in hand with <b>Alliance</b>]]></effect>
     <code><![CDATA[
     $this->Attack(7, $hisdata->Tower, $hisdata->Wall);
     $mydata->Hand[$mode] = $this->DrawCard($carddb->GetList(array('keyword'=>"Alliance")), $mydata->Hand, $cardpos, 'DrawCard_list');
@@ -7145,7 +7145,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Legend</keywords>
-    <effect><![CDATA[Attack: 25<br />Magic: +1<br />Enemy magic: -1<br />Discards a <b>Mage</b> from hand to get<br />Gems: +30]]></effect>
+    <effect><![CDATA[Attack: 25<br />Magic: +1<br />Enemy magic: -1<br />Discard a <b>Mage</b> from hand to get<br />Gems: +30]]></effect>
     <code><![CDATA[
     $this->Attack(25, $hisdata->Tower, $hisdata->Wall); $mydata->Magic+= 1; $hisdata->Magic-= 1;
     $storage = array();
@@ -7193,7 +7193,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Illusion</keywords>
-    <effect><![CDATA[Summons selected card from hand]]></effect>
+    <effect><![CDATA[Summons selected card in hand]]></effect>
     <code><![CDATA[if ($mode != $cardpos) $nextcard = $mydata->Hand[$mode];]]></code>
     <created>2008-12-24</created>
     <modified>2008-12-24</modified>
@@ -7246,7 +7246,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Recruits: +80<br />Replaces your hand with 2 Goblins, 2 Elite orcs, Goblin saboteur, Ogre, Troll and Orc regiment]]></effect>
+    <effect><![CDATA[Recruits: +80<br />Replace your hand with 2 Goblins, 2 Elite orcs, Goblin saboteur, Ogre, Troll and Orc regiment]]></effect>
     <code><![CDATA[
     $hand = array (13, 13, 240, 240, 368, 46, 106, 89); shuffle($hand);
     $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $keys = array_keys($newcards);
@@ -7338,7 +7338,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Barbarian,Banish</keywords>
-    <effect><![CDATA[Attack: 13<br />Discards a random <b>Legend</b> from opponent's hand to get<br />Enemy magic: -1]]></effect>
+    <effect><![CDATA[Attack: 13<br />Discard a <b>Legend</b> from opponent's hand to get<br />Enemy magic: -1]]></effect>
     <code><![CDATA[
     $this->Attack(13, $hisdata->Tower, $hisdata->Wall);
     $storage = array();
@@ -7366,7 +7366,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Soldier,Skirmisher</keywords>
-    <effect><![CDATA[Attack: 16<br />Discards highest rarity <b>Unliving</b>, <b>Undead</b> or <b>Dragon</b> from opponent's hand]]></effect>
+    <effect><![CDATA[Attack: 16<br />Discard highest rarity <b>Unliving</b>, <b>Undead</b> or <b>Dragon</b> from opponent's hand]]></effect>
     <code><![CDATA[
     $this->Attack(16, $hisdata->Tower, $hisdata->Wall);
     $storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
@@ -7500,7 +7500,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Attack: 4<br />Replaces a non-rare highest rarity card in opponent's hand with Goblin intruder]]></effect>
+    <effect><![CDATA[Attack: 4<br />Replace a non-rare highest rarity card in opponent's hand with Goblin intruder]]></effect>
     <code><![CDATA[
     $this->Attack(4, $hisdata->Tower, $hisdata->Wall);
     $storage = array("Common" => array(), "Uncommon" => array());
@@ -7586,7 +7586,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Mage,Swift,Banish</keywords>
-    <effect><![CDATA[Both players discard up to 6 random <b>Unliving</b> cards<br />Each player loses 10 bricks and 1 quarry for each card discarded from his hand above 4]]></effect>
+    <effect><![CDATA[Players discard up to 6 <b>Unliving</b> cards<br />Players lose 10 bricks and 1 quarry for each card they discarded above 4]]></effect>
     <code><![CDATA[
     $my_temp = $his_temp = array();
     for ($i = 1; $i <= 8; $i++)
@@ -7749,7 +7749,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Discards all <b>Mage</b> in game<br />Each player gains 4 gems, 4 tower and 8 wall for each card discarded from his hand ]]></effect>
+    <effect><![CDATA[Discard all <b>Mage</b> cards<br />Players gain 4 gems, 4 tower and 8 wall for each card they discarded]]></effect>
     <code><![CDATA[
     $my_counter = $his_counter = 0;
     for ($i = 1; $i <= 8; $i++)
@@ -7925,7 +7925,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Both players discard highest and lowest cost card]]></effect>
+    <effect><![CDATA[Players discard their highest and lowest cost card]]></effect>
     <code><![CDATA[
     $my_low = $my_high = $his_low = $his_high = $my_costs = $his_costs = array();
     $my_min = $his_min = 1000; $my_max = $his_max = 0;
@@ -8268,7 +8268,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Attack: 35<br />Both players discard all common cards]]></effect>
+    <effect><![CDATA[Attack: 35<br />Discard all common cards]]></effect>
     <code><![CDATA[
     $this->Attack(35, $hisdata->Tower, $hisdata->Wall);
     for ($i = 1; $i <= 8; $i++)
@@ -8361,7 +8361,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Durable,Enduring (4),Siege</keywords>
-    <effect><![CDATA[Enemy wall: -3<br />Select an extra card to be discarded]]></effect>
+    <effect><![CDATA[Enemy wall: -3<br />Discard a card from hand]]></effect>
     <code><![CDATA[
     $hisdata->Wall-= 3;
     $mydata->Hand[$mode] = $this->DrawCard($my_deck, $mydata->Hand, $cardpos, 'DrawCard_random');
@@ -8453,7 +8453,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Mage,Durable</keywords>
-    <effect><![CDATA[Attack: 5<br />Randomly discards one common card from hand]]></effect>
+    <effect><![CDATA[Attack: 5<br />Discard a common card from hand]]></effect>
     <code><![CDATA[
     $this->Attack(5, $hisdata->Tower, $hisdata->Wall);
     $storage = array();
@@ -8560,7 +8560,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[If there is a <b>Titan</b> in hand<br />Discards all non-<b>Titan</b> cards from hand]]></effect>
+    <effect><![CDATA[If there is a <b>Titan</b> in hand<br />Discard all non-<b>Titan</b> cards from hand]]></effect>
     <code><![CDATA[
     if ($this->KeywordCount($mydata->Hand, "Titan") > 0)
       for ($i = 1; $i <= 8; $i++)
@@ -8668,7 +8668,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Mage,Swift</keywords>
-    <effect><![CDATA[Attack: 18<br />Gems prod x3<br />Replace a card from opponent's hand with Wind]]></effect>
+    <effect><![CDATA[Attack: 18<br />Gems prod x3<br />Replace a card in opponent's hand with Wind]]></effect>
     <code><![CDATA[
     $this->Attack(18, $hisdata->Tower, $hisdata->Wall);
     $gems_production*= 3;
@@ -8720,7 +8720,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Attack: 15<br />Discards all cards with total cost below 10]]></effect>
+    <effect><![CDATA[Attack: 15<br />Discard all cards with total cost below 10]]></effect>
     <code><![CDATA[
     $this->Attack(15, $hisdata->Tower, $hisdata->Wall);
     for ($i = 1; $i <= 8; $i++)
@@ -8765,7 +8765,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Wall: +10<br />Enemy stock: -3<br />Replaces up to 3 random non-<b>Brigand</b> non-rare cards from hand with non-common <b>Brigand</b>]]></effect>
+    <effect><![CDATA[Wall: +10<br />Enemy stock: -3<br />Replace up to 3 non-<b>Brigand</b> non-rare cards in hand with non-common <b>Brigand</b>]]></effect>
     <code><![CDATA[
     $mydata->Wall+= 10;
     $hisdata->Bricks-= 3; $hisdata->Gems-= 3; $hisdata->Recruits-= 3;
@@ -8819,7 +8819,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Replaces your hand with Merchant, Caravan, Wealth, Merchant ship, Fair trade, Greed is good, Prosperity and Bank]]></effect>
+    <effect><![CDATA[Replace your hand with Merchant, Caravan, Wealth, Merchant ship, Fair trade, Greed is good, Prosperity and Bank]]></effect>
     <code><![CDATA[
     $hand = array (273, 23, 129, 465, 432, 388, 456, 389); shuffle($hand);
     $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $keys = array_keys($newcards);
@@ -8923,7 +8923,7 @@
     </cost>
     <modes>8</modes>
     <keywords/>
-    <effect><![CDATA[If targeting self and not New, discards the matching card, else replace selected card with Ambush]]></effect>
+    <effect><![CDATA[If targeting self and not New, discard the matching card, else replace selected card with Ambush]]></effect>
     <code><![CDATA[
     if (!isset($mynewflags[$cardpos]) AND $mode == $cardpos)
     {
@@ -8967,7 +8967,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Disacards all <b>Titan</b> cards from hand<br />Attack: 30N<br />N = #unique discarded cards]]></effect>
+    <effect><![CDATA[Discard all <b>Titan</b> cards from hand<br />Attack: 30N<br />N = #unique discarded cards]]></effect>
     <code><![CDATA[
     $storage = array();
     for ($i = 1; $i <= 8; $i++)
@@ -9063,7 +9063,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Both players gain 1 stock for each zero cost card and lose 1 stock for each non zero cost card in their hand]]></effect>
+    <effect><![CDATA[Players gain 1 stock for each zero cost card and lose 1 stock for each non zero cost card in their hand]]></effect>
     <code><![CDATA[
     $my_gain = $his_gain = 0;
     for ($i = 1; $i <= 8; $i++)
@@ -9138,7 +9138,7 @@
     </cost>
     <modes>8</modes>
     <keywords/>
-    <effect><![CDATA[Replace a card from hand with uncommon card from your deck<br />Summons selected card]]></effect>
+    <effect><![CDATA[Replace a card in hand with uncommon card from your deck<br />Summons selected card]]></effect>
     <code><![CDATA[
     if ($mode != $cardpos)
     {
@@ -9235,7 +9235,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Durable</keywords>
-    <effect><![CDATA[Replace a card from hand with <b>Quick</b> or <b>Swift</b>]]></effect>
+    <effect><![CDATA[Replace a card in hand with <b>Quick</b> or <b>Swift</b>]]></effect>
     <code><![CDATA[
     $quick = $carddb->GetList(array('keyword'=>"Quick"));
     $swift = $carddb->GetList(array('keyword'=>"Swift"));
@@ -9274,7 +9274,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Destruction</keywords>
-    <effect><![CDATA[Replaces matching card in opponent's hand and its neigbouring cards with Wind]]></effect>
+    <effect><![CDATA[Replace matching card in opponent's hand and its neigbouring cards with Wind]]></effect>
     <code><![CDATA[
     $hisdata->Hand[$cardpos] = 247; $hisdata->NewCards[$cardpos] = 1;
     if ($cardpos > 1)
@@ -9485,7 +9485,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Gain one random resource for every New card in game]]></effect>
+    <effect><![CDATA[Gain 1 random resource for every New card in game]]></effect>
     <code><![CDATA[
     $count = 0;
     for ($i = 1; $i <= 8; $i++)
@@ -9573,7 +9573,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Quick</keywords>
-    <effect><![CDATA[Select a card from hand to be replaced with a card of the same rarity (can't summon self)]]></effect>
+    <effect><![CDATA[Replace a card in hand with a card of the same rarity (can't summon self)]]></effect>
     <code><![CDATA[
     $class = $carddb->GetCard($mydata->Hand[$mode])->Class;
     $mydata->Hand[$mode] = $this->DrawCard(array_diff($my_deck->$class, array(513, $mydata->Hand[$mode])), $mydata->Hand, $cardpos, 'DrawCard_list');
@@ -9702,7 +9702,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Nature</keywords>
-    <effect><![CDATA[Gems: +N<br />N = #<b>Nature</b> in hand (max 4)<br />Select a card from hand to be replaced with common <b>Nature</b>]]></effect>
+    <effect><![CDATA[Gems: +N<br />N = #<b>Nature</b> in hand (max 4)<br />Replace a card in hand with common <b>Nature</b>]]></effect>
     <code><![CDATA[
     $mydata->Gems+= min($this->KeywordCount($mydata->Hand, "Nature"), 4);
     $mydata->Hand[$mode] = $this->DrawCard($carddb->GetList(array('class'=>"Common", 'keyword'=>"Nature")), $mydata->Hand, $cardpos, 'DrawCard_list');
@@ -9890,7 +9890,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Player(s) with most common cards gets one of his commons replaced by a rare card from his deck]]></effect>
+    <effect><![CDATA[Replace a card in hand of player(s) with most common cards with a rare card from his deck]]></effect>
     <code><![CDATA[
     $my_storage = $his_storage = array();
     for ($i = 1; $i <= 8; $i++)
@@ -9984,7 +9984,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Both players gain 1 stock for each common card and lose 1 stock for each non-common card in their hand]]></effect>
+    <effect><![CDATA[Players gain 1 stock for each common card and lose 1 stock for each non-common card in their hand]]></effect>
     <code><![CDATA[
     $my_gain = $his_gain = 0;
     for ($i = 1; $i <= 8; $i++)
@@ -10010,7 +10010,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Unliving,Durable</keywords>
-    <effect><![CDATA[Attack: 5<br />Randomly discards one common card from hand<br />If discarded card was <b>Unliving</b><br />Wall: +5]]></effect>
+    <effect><![CDATA[Attack: 5<br />Discard a common card from hand<br />If discarded card was <b>Unliving</b><br />Wall: +5]]></effect>
     <code><![CDATA[
     $this->Attack(5, $hisdata->Tower, $hisdata->Wall);
     $storage = array();
@@ -10319,7 +10319,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Attack: 30<br />Replaces all common cards in hand with Goblins<br />Recruits: +2N<br />N = #replaced cards]]></effect>
+    <effect><![CDATA[Attack: 30<br />Replace all common cards in hand with Goblins<br />Recruits: +2N<br />N = #replaced cards]]></effect>
     <code><![CDATA[
     $this->Attack(30, $hisdata->Tower, $hisdata->Wall); $tmp = 0;
     for ($i = 1; $i <= 8; $i++)
@@ -10477,7 +10477,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Illusion</keywords>
-    <effect><![CDATA[Stock: +4<br />Select a card from opponent's hand and replace it with a rare card from your deck]]></effect>
+    <effect><![CDATA[Stock: +4<br />Replace a card in opponent's hand with a rare card from your deck]]></effect>
     <code><![CDATA[
     $mydata->Bricks+= 4; $mydata->Gems+= 4; $mydata->Recruits+= 4;
     $hisdata->Hand[$mode] = $this->DrawCard($my_deck->Rare, $hisdata->Hand, $cardpos, 'DrawCard_list');
@@ -10541,7 +10541,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Aqua,Far sight</keywords>
-    <effect><![CDATA[Wall: +15<br />Discards highest rarity <b>Aqua</b> card from opponent's hand]]></effect>
+    <effect><![CDATA[Wall: +15<br />Discard highest rarity <b>Aqua</b> from opponent's hand]]></effect>
     <code><![CDATA[
     $mydata->Wall+= 15;
     $storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
@@ -10618,7 +10618,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Soldier,Banish,Skirmisher</keywords>
-    <effect><![CDATA[Attack: 10<br />Discards all <b>Quick</b> and <b>Swift</b> from opponent's hand]]></effect>
+    <effect><![CDATA[Attack: 10<br />Discard all <b>Quick</b> and <b>Swift</b> from opponent's hand]]></effect>
     <code><![CDATA[
     $this->Attack(10, $hisdata->Tower, $hisdata->Wall);
     for ($i = 1; $i <= 8; $i++)
@@ -10709,7 +10709,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Aqua,Nature</keywords>
-    <effect><![CDATA[Enemy wall: -3<br />Select a card from hand to be replaced with Piranhas]]></effect>
+    <effect><![CDATA[Enemy wall: -3<br />Replace a card in hand with Piranhas]]></effect>
     <code><![CDATA[
     $hisdata->Wall-= 3; $mydata->Hand[$mode] = 504;
     if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
@@ -10745,7 +10745,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Illusion</keywords>
-    <effect><![CDATA[Replace your hand with cards from your deck of the same rarity as the replaced card]]></effect>
+    <effect><![CDATA[Replace your hand with cards from your deck of the same rarity as the replaced cards]]></effect>
     <code><![CDATA[
     for ($i = 1; $i <= 8; $i++)
       if ($i != $cardpos)
@@ -10786,7 +10786,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +15<br />Replaces neighbouring cards with <b>Burning</b>]]></effect>
+    <effect><![CDATA[Tower: +15<br />Replace neighbouring cards with <b>Burning</b>]]></effect>
     <code><![CDATA[
     $mydata->Tower+= 15;
     if ($cardpos > 1)
@@ -11010,7 +11010,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Both players gain 1 stock for each non-keyword card and lose 1 stock for each different keyword in their hand]]></effect>
+    <effect><![CDATA[Players gain 1 stock for each non-keyword card and lose 1 stock for each different keyword in their hand]]></effect>
     <code><![CDATA[
     $mine = $his = 0;
     for ($i = 1; $i <= 8; $i++)
@@ -11036,7 +11036,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Runic,Durable,Enduring (6)</keywords>
-    <effect><![CDATA[Randomly discards one common card from hand<br />If discarded card was an <b>Alliance</b><br />Production x2]]></effect>
+    <effect><![CDATA[Discard a common card from hand<br />If discarded card was an <b>Alliance</b><br />Production x2]]></effect>
     <code><![CDATA[
     $storage = array();
     for ($i = 1; $i <= 8; $i++)
@@ -11131,7 +11131,7 @@
     </cost>
     <modes>8</modes>
     <keywords/>
-    <effect><![CDATA[Replace a card from hand with Wheat farm<br />Summons Wheat farm]]></effect>
+    <effect><![CDATA[Replace a card in hand with Wheat farm<br />Summons Wheat farm]]></effect>
     <code><![CDATA[
     if ($mode != $cardpos)
     {
@@ -11246,7 +11246,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Attack: 8<br />Opponent loses 14 random resources<br />Replaces matching card with Caravan]]></effect>
+    <effect><![CDATA[Attack: 8<br />Opponent loses 14 random resources<br />Replace matching card with Caravan]]></effect>
     <code><![CDATA[
     $this->Attack(8, $hisdata->Tower, $hisdata->Wall);
     for ($i = 1; $i <= 14; $i++)
@@ -11271,7 +11271,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Opponent loses 5 random resources<br />Replaces non-rare matching card with Palisade wall]]></effect>
+    <effect><![CDATA[Opponent loses 5 random resources<br />Replace non-rare matching card with Palisade wall]]></effect>
     <code><![CDATA[
     for ($i = 1; $i <= 5; $i++)
     {
@@ -11296,7 +11296,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Replaces your hand with Conjurer, Wizard, Chaos wizard, Librarian, Mage, Summon master, Sorceress and Wind witch<br />Gems prod x3]]></effect>
+    <effect><![CDATA[Replace your hand with Conjurer, Wizard, Chaos wizard, Librarian, Mage, Summon master, Sorceress and Wind witch<br />Gems prod x3]]></effect>
     <code><![CDATA[
     $hand = array (329, 82, 457, 589, 109, 564, 53, 467); shuffle($hand);
     $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $keys = array_keys($newcards);
@@ -11471,7 +11471,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Durable</keywords>
-    <effect><![CDATA[Replace a card from hand with no keyword no support keyword attack card]]></effect>
+    <effect><![CDATA[Replace a card in hand with no keyword no support keyword attack card]]></effect>
     <code><![CDATA[
     if ($mode != $cardpos)
     {
@@ -11530,7 +11530,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Burning,Holy</keywords>
-    <effect><![CDATA[Both players discard all non-rare cards not from their deck (can't draw rare cards)]]></effect>
+    <effect><![CDATA[Players discard all non-rare cards not from their deck (can't draw rare cards)]]></effect>
     <code><![CDATA[
     $my_cards = array_merge($my_deck->Common, $my_deck->Uncommon);
     for ($i = 1; $i <= 8; $i++)
@@ -11643,7 +11643,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Replaces your hand with Mermaid, Hidden lagoon, Sea priestess, Sea gate, Sea lord, Kraken, Leviathan and Ocean queen]]></effect>
+    <effect><![CDATA[Replace your hand with Mermaid, Hidden lagoon, Sea priestess, Sea gate, Sea lord, Kraken, Leviathan and Ocean queen]]></effect>
     <code><![CDATA[
     $hand = array (521, 553, 550, 560, 507, 505, 552, 530); shuffle($hand);
     $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $keys = array_keys($newcards);
@@ -11769,7 +11769,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Discards your hand and receive new starting hand]]></effect>
+    <effect><![CDATA[Discard your hand and receive new starting hand]]></effect>
     <code><![CDATA[
     $mydata->Hand = $this->DrawHand_initial($my_deck);
     $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;
@@ -11823,7 +11823,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Recruits x2<br />Enemy wall: +120<br />Replaces your hand with Barbarian, Tarkhan, Berserker, Gladiator, Warchief, Devastator, Warlord and Urk the Conqueror]]></effect>
+    <effect><![CDATA[Recruits x2<br />Enemy wall: +120<br />Replace your hand with Barbarian, Tarkhan, Berserker, Gladiator, Warchief, Devastator, Warlord and Urk the Conqueror]]></effect>
     <code><![CDATA[
     $mydata->Recruits = $mydata->Recruits * 2; $hisdata->Wall+= 120;
     $hand = array (45, 334, 281, 68, 344, 345, 337, 535); shuffle($hand);
@@ -11892,7 +11892,7 @@
     </cost>
     <modes>8</modes>
     <keywords/>
-    <effect><![CDATA[Select non-<b>Unliving</b> card from hand to be replaced with <b>Unliving</b> card of the same rarity]]></effect>
+    <effect><![CDATA[Replace a non-<b>Unliving</b> card in hand with <b>Unliving</b> card of the same rarity]]></effect>
     <code><![CDATA[
     $selected = $carddb->GetCard($mydata->Hand[$mode]);
     if (!$selected->HasKeyword("Unliving"))
@@ -11914,11 +11914,11 @@
     </cost>
     <modes>0</modes>
     <keywords>Beast,Illusion</keywords>
-    <effect><![CDATA[Attack: 4<br />Discards lowest rarity discarding or replacing card from opponent's hand]]></effect>
+    <effect><![CDATA[Attack: 4<br />Discard lowest rarity discarding or replacing card from opponent's hand]]></effect>
     <code><![CDATA[
     $this->Attack(4, $hisdata->Tower, $hisdata->Wall);
     $storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
-    $target_cards = array_merge($carddb->GetList(array('advanced'=>"Discard")), $carddb->GetList(array('advanced'=>"Replace")));
+    $target_cards = array_merge($carddb->GetList(array('advanced'=>"Discard ")), $carddb->GetList(array('advanced'=>"Replace ")));
     
     for ($i = 1; $i <= 8; $i++)
       if (in_array($hisdata->Hand[$i], $target_cards))
@@ -12077,7 +12077,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Dragon</keywords>
-    <effect><![CDATA[Attack: 5N<br />N = #Hydra cards in game<br />Replaces neighbouring cards with Hydra]]></effect>
+    <effect><![CDATA[Attack: 5N<br />N = #Hydra cards in game<br />Replace neighbouring cards with Hydra]]></effect>
     <code><![CDATA[
     $tmp = 0;
     for ($i = 1; $i <= 8; $i++)
@@ -12101,7 +12101,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Illusion,Unliving</keywords>
-    <effect><![CDATA[Wall: +15<br />Select a card from hand to be replaced with Mirror golem]]></effect>
+    <effect><![CDATA[Wall: +15<br />Replace a card in hand with Mirror golem]]></effect>
     <code><![CDATA[$mydata->Wall+= 15; $mydata->Hand[$mode] = 479; if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;]]></code>
     <created>2011-04-24</created>
     <modified>2011-04-24</modified>

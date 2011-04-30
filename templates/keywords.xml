@@ -44,7 +44,7 @@
   </keyword>
   <keyword>
     <name>Banish</name>
-    <description>Discards one random Durable card from enemy hand (if there is one). Common cards can discard common and uncommon cards, uncommon cards can discard any rarity. Rare cards can also discard any rarity, but they have additional effect (player gains stock equal to discarded card cost). Cards with highest discardable rarity are preferred.</description>
+    <description>Discard one random Durable card from enemy hand (if there is one). Common cards can discard common and uncommon cards, uncommon cards can discard any rarity. Rare cards can also discard any rarity, but they have additional effect (player gains stock equal to discarded card cost). Cards with highest discardable rarity are preferred.</description>
     <lore><![CDATA[<p>Banish is a spell that was invented solely for the purpose to counter the durable materials and render them useless. Banish can be cast directly on target or can be used to enchant a weapon to hold the banish property.</p>]]></lore>
     <code><![CDATA[
     // target card is discarded only if it has same or lower rarity than the played card
@@ -172,7 +172,7 @@
   </keyword>
   <keyword>
     <name>Burning</name>
-    <description>Basic gain 3, bonus gain 11, side-effect (Fire blast): replaces one random non-Burning card from enemy hand (if there is one) with Searing fire. Can only replace a card with same or lower rarity as was the played card, but cards with highest replacable rarity are preferred.</description>
+    <description>Basic gain 3, bonus gain 11, side-effect (Fire blast): replace one random non-Burning card from enemy hand (if there is one) with Searing fire. Can only replace a card with same or lower rarity as was the played card, but cards with highest replacable rarity are preferred.</description>
     <lore><![CDATA[
     <p>It is said that burning creatures are those who were blessed by the sun god himself. Others say, that they are devil's pawns destines to serve him for eternity. Element of fire is know to consume everything eventually, but despite that many creatures are attracted by its power regardless of the price they have to pay to wield it.</p>
     <p>Burning creatures are able to accumulate their destructive power and completely destroy its target, leaving only burned ashes behind.</p>
@@ -391,7 +391,7 @@
   </keyword>
   <keyword>
     <name>Holy</name>
-    <description>Basic gain 25, bonus gain 5, side-effect (Purification): replaces one random Undead card from enemy hand (if there is one) with Purified ashes. Can only replace a card with same or lower rarity as was the played card, but cards with highest replaceable rarity are preferred. You will get additional stock based on replaced card rarity (Common - 1 stock, Uncommon - 2 stock, Rare - 3 stock).</description>
+    <description>Basic gain 25, bonus gain 5, side-effect (Purification): replace one random Undead card from enemy hand (if there is one) with Purified ashes. Can only replace a card with same or lower rarity as was the played card, but cards with highest replaceable rarity are preferred. You will get additional stock based on replaced card rarity (Common - 1 stock, Uncommon - 2 stock, Rare - 3 stock).</description>
     <lore><![CDATA[<p>People with spiritual talents who dislike the corrupting nature of magic often decide to become priests instead of mages. Priests use their talents to heal and protect their allies, also at a time of need they are able to call to their deity for intervention. In addition, they are the most effective weapon against the undead. An undead killed by a priest can't be reanimated ever again.</p>]]></lore>
     <code><![CDATA[
     $amount = $this->KeywordCount($mydata->Hand, "Holy") - 1; // we don't count the played card
@@ -590,7 +590,7 @@
   </keyword>
   <keyword>
     <name>Skirmisher</name>
-    <description>Discards one random Charge card from enemy hand (if there is one). Common cards can discard common and uncommon cards, uncommon cards can discard any rarity. Rare cards can also discard any rarity, but they have additional effect (opponent loses stock equal to discarded card cost). Cards with highest discardable rarity are preferred.</description>
+    <description>Discard one random Charge card from enemy hand (if there is one). Common cards can discard common and uncommon cards, uncommon cards can discard any rarity. Rare cards can also discard any rarity, but they have additional effect (opponent loses stock equal to discarded card cost). Cards with highest discardable rarity are preferred.</description>
     <lore><![CDATA[<p>Skirmishers are troops designed to counter enemy cavalry. Their combat capabilities may be inferior, but their role is crucial in any army. They are trained to protect their allies at all costs and down to the last man.</p>]]></lore>
     <code><![CDATA[
     // target card is discarded only if it has same or lower rarity than the played card
