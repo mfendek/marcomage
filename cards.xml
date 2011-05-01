@@ -5576,9 +5576,10 @@
     <keywords>Soldier,Siege</keywords>
     <effect><![CDATA[Attack: 8N<br />If N > 4<br />Wall: +15<br />N = #<b>Soldier</b> in hand (max 4)]]></effect>
     <code><![CDATA[
-    $tmp = min(4, $this->KeywordCount($mydata->Hand, "Soldier"));
+    $soldiers = $this->KeywordCount($mydata->Hand, "Soldier");
+    $tmp = min(4, $soldiers);
     $this->Attack(8*$tmp, $hisdata->Tower, $hisdata->Wall);
-    if ($tmp > 4) $mydata->Wall+= 15;
+    if ($soldiers > 4) $mydata->Wall+= 15;
 ]]></code>
     <created>2007-10-04</created>
     <modified>2011-04-24</modified>
