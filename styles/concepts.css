@@ -53,7 +53,6 @@ div#concepts_edit > .skin_text /* card edit formular */
 	margin-left: auto;
 	margin-top: 1ex;
 	width: 50%;
-	font-weight: bold;
 	padding: 1ex;
 }
 
@@ -61,11 +60,18 @@ div#concepts_edit > .skin_text > p, div#concepts_edit > .skin_text > div.limit >
 {
 	margin-top: 1ex;
 	margin-bottom: 1ex;
+	font-weight: bold;
 }
 
 div#concepts_edit > .skin_text input + input, div#concepts_edit > .skin_text button + button /* set distance between elements */
 {
 	margin-left: 1ex;
+}
+
+div#concepts_edit > .skin_text div.BBcodeButtons > button /* set distance between BBcode buttons */
+{
+	margin-left: 0ex;
+	margin-bottom: 1ex;
 }
 
 div#concepts_edit > .skin_text input[type="file"] /* set distance between elements */
@@ -92,7 +98,6 @@ div.limit > p > span /* float inputs to the right */
 div.card_preview /* card preview layout */
 {
 	float: right;
-	font-weight: normal;
 }
 
 /* end concepts details */

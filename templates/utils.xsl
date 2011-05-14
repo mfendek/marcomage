@@ -121,12 +121,10 @@
 </func:function>
 
 
-<!--
 <func:function name="am:BBCode_parse">
 	<xsl:param name="orig_content" as="xs:string" />
 	<func:result select="php:functionString('parse_post', $orig_content)" />
 </func:function>
--->
 
 <func:function name="am:BBCode_parse_extended">
 	<xsl:param name="orig_content" as="xs:string" />
@@ -499,7 +497,7 @@
 			<div>
 				<xsl:choose>
 					<xsl:when test="$card/picture">
-						<xsl:copy-of select="am:textencode($card/effect)" />
+						<xsl:value-of select="am:BBCode_parse($card/effect)" disable-output-escaping="yes" />
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="am:cardeffect($card/effect)" disable-output-escaping="yes"/>

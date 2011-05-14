@@ -381,8 +381,10 @@
 				</p>
 			</div>
 			<p>Effect</p>
+			<xsl:copy-of select="am:BBcodeButtons('effect')"/>
 			<textarea name="effect" rows="6" cols="50"><xsl:value-of select="$param/data/effect"/></textarea>
 			<p>Note</p>
+			<xsl:copy-of select="am:BBcodeButtons('note')"/>
 			<textarea name="note" rows="6" cols="50"><xsl:value-of select="$param/data/note"/></textarea>
 			<p>
 				<xsl:text>Card picture</xsl:text>
@@ -428,8 +430,10 @@
 				<p><span><xsl:value-of select="$param/data/keywords"/></span>Keywords</p>
 				<p><span><xsl:value-of select="$param/data/state"/></span>State</p>
 			</div>
+			<p>Effect</p>
+			<div><xsl:value-of select="am:BBCode_parse($param/data/effect)" disable-output-escaping="yes" /></div>
 			<p>Note</p>
-			<div class="note"><xsl:copy-of select="am:textencode($param/data/note)" /></div>
+			<div class="note"><xsl:value-of select="am:BBCode_parse($param/data/note)" disable-output-escaping="yes" /></div>
 			<div class="clear_floats"></div>
 		</div>
 		<input type="hidden" name="CurrentConcept" value="{$param/data/id}" />

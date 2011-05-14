@@ -186,7 +186,7 @@
 				<p><span><xsl:value-of select="$param/statistics/Drawn"/> / <xsl:value-of select="$param/statistics/DrawnTotal"/></span>Drawn</p>
 			</div>
 			<p>Effect</p>
-			<p><xsl:value-of select="am:cardeffect($param/data/effect)" disable-output-escaping="yes"/></p>
+			<div><xsl:value-of select="am:cardeffect($param/data/effect)" disable-output-escaping="yes"/></div>
 			<hr />
 			<p>Code</p>
 			<div class="code"><pre><xsl:copy-of select="$param/data/code/text()" /></pre></div>

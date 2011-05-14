@@ -104,11 +104,11 @@ quoting) for just the forums? Just an idea.
     $bbcode->addCode ('i', 'simple_replace', null, 
 				array ('start_tag' => '<i>', 'end_tag' => '</i>'),
         'inline', array ('block', 'inline'), array ());
+    $bbcode->addCode ('link', 'usecontent?', 'do_bbcode_link', array ('usecontent_param' => 'default'),
+                'link', array ('block', 'inline'), array ('link'));
+    $bbcode->addCode ('url', 'usecontent?', 'do_bbcode_url', array ('usecontent_param' => 'default'),
+                'link', array ('block', 'inline'), array ('link'));
     if ($extended) {
-			$bbcode->addCode ('link', 'usecontent?', 'do_bbcode_link', array ('usecontent_param' => 'default'),
-                  'link', array ('block', 'inline'), array ('link'));
-			$bbcode->addCode ('url', 'usecontent?', 'do_bbcode_url', array ('usecontent_param' => 'default'),
-                  'link', array ('block', 'inline'), array ('link'));
       $bbcode->addCode ('quote', 'callback-replace', 'do_bbcode_quote', 
 				array ('usecontent_param' => 'default'), 
 				'inline', array ('block', 'inline'), array ());
