@@ -403,7 +403,7 @@
 		</p>
 		<button type="submit" name="message_send">Send</button>
 		<button type="submit" name="message_cancel">Discard</button>
-		<xsl:copy-of select="am:BBcodeButtons()"/>
+		<xsl:copy-of select="am:BBcodeButtons('Content')"/>
 		<hr/>
 
 		<textarea name="Content" rows="6" cols="50"><xsl:value-of select="$param/Content"/></textarea>

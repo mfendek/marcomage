@@ -385,7 +385,7 @@
 								</input>
 								<xsl:text>Long mode</xsl:text>
 							</p>
-							<xsl:copy-of select="am:BBcodeButtons()"/>
+							<xsl:copy-of select="am:BBcodeButtons('Content')"/>
 							<textarea name="Content" rows="10" cols="50"></textarea>
 						</xsl:otherwise>
 					</xsl:choose>

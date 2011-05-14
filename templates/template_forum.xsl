@@ -512,7 +512,7 @@
 		
 		<button type="submit" name="create_thread">Create thread</button>
 		<a class="button" href="{php:functionString('makeurl', 'Forum_section', 'CurrentSection', $section/SectionID)}">Back</a>
-		<xsl:copy-of select="am:BBcodeButtons()"/>
+		<xsl:copy-of select="am:BBcodeButtons('Content')"/>
 		<hr/>
 		
 		<textarea name="Content" rows="10" cols="50"><xsl:value-of select="$param/Content"/></textarea>
@@ -537,7 +537,7 @@
 	
 	<button type="submit" name="create_post">Create post</button>
 	<a class="button" href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', $thread/ThreadID, 'CurrentPage', 0)}">Back</a>
-	<xsl:copy-of select="am:BBcodeButtons()"/>
+	<xsl:copy-of select="am:BBcodeButtons('Content')"/>
 	<hr/>
 	
 	<textarea name="Content" rows="10" cols="50"><xsl:value-of select="$param/Content"/></textarea>
@@ -631,7 +631,7 @@
 		<div class="skin_text">	
 		<button type="submit" name="modify_post">Save</button>
 		<a class="button" href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', $post/ThreadID, 'CurrentPage', 0)}">Back</a>
-		<xsl:copy-of select="am:BBcodeButtons()"/>
+		<xsl:copy-of select="am:BBcodeButtons('Content')"/>
 		<hr/>
 
 		<textarea name="Content" rows="10" cols="50">

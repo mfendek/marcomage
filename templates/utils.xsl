@@ -134,8 +134,9 @@
 </func:function>
 
 <func:function name="am:BBcodeButtons">
+	<xsl:param name="target" as="xs:string" />
 	<xsl:variable name="buttons">
-		<div class="BBcodeButtons">
+		<div id="{$target}" class="BBcodeButtons">
 			<button type="button" name="bold" title="Bold">B</button>
 			<button type="button" name="italics" title="Italics">I</button>
 			<button type="button" name="link" title="Internal hyperlink">Link</button>

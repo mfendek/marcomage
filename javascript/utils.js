@@ -53,22 +53,24 @@ $(document).ready(function() {
 
 	// BBcode buttons handling
 	$("div.BBcodeButtons > button").click(function() {
+      // get target element name
+      var target = $(this).parent().attr('id');
 			switch($(this).attr('name'))
 			{
 				case 'bold':
-					AddTags('[b]', '[/b]', 'Content');
+					AddTags('[b]', '[/b]', target);
 					break;
 				case 'italics':
-					AddTags('[i]', '[/i]', 'Content');
+					AddTags('[i]', '[/i]', target);
 					break;
 				case 'link':
-					AddTags('[link]', '[/link]', 'Content');
+					AddTags('[link]', '[/link]', target);
 					break;
 				case 'url':
-					AddTags('[url]', '[/url]', 'Content');
+					AddTags('[url]', '[/url]', target);
 					break;
 				case 'quote':
-					AddTags('[quote]', '[/quote]', 'Content');
+					AddTags('[quote]', '[/quote]', target);
 					break;
 			}
 	});
