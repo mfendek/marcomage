@@ -100,4 +100,9 @@ div.card_preview /* card preview layout */
 	float: right;
 }
 
+div.card_preview > div.karta /* card preview spacing */
+{
+	margin-top: 0ex;
+}
+
 /* end concepts details */
