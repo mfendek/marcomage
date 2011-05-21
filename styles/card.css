@@ -125,6 +125,12 @@ div.karta > p + div
 	padding-bottom: 0.5ex;
 }
 
+/* override default link font color within the card */
+div.karta a
+{
+	color: inherit;
+}
+
 /* hidden card layout */
 div.hidden_card
 {
