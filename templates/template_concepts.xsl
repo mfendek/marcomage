@@ -268,12 +268,14 @@
 				</p>
 			</div>
 			<p>Effect</p>
+			<xsl:copy-of select="am:BBcodeButtons('effect')"/>
 			<textarea name="effect" rows="6" cols="50">
 				<xsl:if test="$param/stored = 'yes'">
 					<xsl:value-of select="$param/data/effect"/>
 				</xsl:if>
 			</textarea>
 			<p>Note</p>
+			<xsl:copy-of select="am:BBcodeButtons('note')"/>
 			<textarea name="note" rows="6" cols="50">
 				<xsl:if test="$param/stored = 'yes'">
 					<xsl:value-of select="$param/data/note"/>
