@@ -18,7 +18,7 @@
 .skin_text, .skin_label, img.achievement /* border layout */
 {
 	border: 2px outset #cccccc;
-	-moz-border-radius: 7px;
+	border-radius: 7px;
 }
 
 html /* general background layout */
@@ -36,7 +36,7 @@ div#login_box /* login box layout */
 {
 	background-repeat: repeat;
 	border: 2px outset #cccccc;
-	-moz-border-radius: 7px;
+	border-radius: 7px;
 }
 
 input, button, textarea, a.button, .disabled /* input text fields */

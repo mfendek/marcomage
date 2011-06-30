@@ -23,7 +23,7 @@ input, button
 	font-size: x-small;
 	color: black;
 	border: 2px outset black;
-	-moz-border-radius: 7px;
+	border-radius: 7px;
 	padding: 0.4ex 1.2ex 0.4ex 1.2ex;
 	vertical-align: middle;
 }
@@ -34,7 +34,7 @@ a.button /* hyperlink button */
 	font-weight: bold;
 	color: black;
 	border: 2px outset black;
-	-moz-border-radius: 7px;
+	border-radius: 7px;
 	padding: 0.4ex 1.2ex 0.4ex 1.2ex;
 	vertical-align: middle;
 	text-decoration: none;
@@ -58,7 +58,7 @@ a.profile, a.profile:link, a.profile:visited /* player profile link */
 	font-weight: bold;
 	color: gray;
 	border: 2px outset black;
-	-moz-border-radius: 7px;
+	border-radius: 7px;
 	padding: 0.4ex 1.2ex 0.4ex 1.2ex;
 	vertical-align: middle;
 	font-family: arial, sans-serif;
@@ -113,7 +113,7 @@ textarea /* textarea layout */
 {
 	width: 100%;
 	border: 2px inset black;
-	-moz-border-radius: 7px;
+	border-radius: 7px;
 }
 
 table.centered /* centered table */
@@ -218,7 +218,7 @@ blockquote > div /* quote text layout */
 	background-position: 10px 10px;
 	background-repeat: no-repeat;
 	font-size: small;
-	-moz-border-radius: 7px;
+	border-radius: 7px;
 }
 
 blockquote > div > cite /* author name layout in quote text */

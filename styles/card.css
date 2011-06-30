@@ -20,7 +20,7 @@ div.karta /* card */
 	width: 86px;
 	border-color: white;
 	border-style: ridge;
-	-moz-border-radius: 7px;
+	border-radius: 7px;
 	margin: 1.5ex 0.5ex 0.7ex 0.5ex;
 	font-size: x-small;
 	text-align: left;
@@ -85,7 +85,7 @@ div.karta > div.rek   { background-image: url('../img/card/recruits_cost.png'); 
 
 
 /* border around the card image, based on rarity */
-div.karta                > img { border-style: ridge; -moz-border-radius: 5px; }
+div.karta                > img { border-style: ridge; border-radius: 5px; }
 div.karta.common_class   > img { border-color: Lime; }
 div.karta.uncommon_class > img { border-color: #8b0000; } /* DarkRed */
 div.karta.rare_class     > img { border-color: Yellow; }
@@ -138,7 +138,7 @@ div.hidden_card
 	height: 100px;
 	border-color: white;
 	border-style: ridge;
-	-moz-border-radius: 7px;
+	border-radius: 7px;
 	margin: 1ex 0.5ex 0.7ex 0.5ex;
 	background-color: black;
 	background-image: url('../img/card/hidden_card.png');

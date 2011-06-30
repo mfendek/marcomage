@@ -39,7 +39,7 @@ div#cost_per_turn /* avg cost per turn indicator layout */
 {
 	float: right;
 	margin-right: 5ex;
-	-moz-border-radius: 7px;
+	border-radius: 7px;
 	padding: 0ex 0.5ex 0ex 0.5ex;
 }
 
@@ -52,7 +52,7 @@ p.deck_stats /* deck statistics */
 {
 	float: right;
 	margin-right: 1ex;
-	-moz-border-radius: 7px;
+	border-radius: 7px;
 	padding: 0ex 0.5ex 0ex 0.5ex;
 }
 

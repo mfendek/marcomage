@@ -14,7 +14,7 @@ div#webpg_float_right > div > p > img, div#webpg_float_right > div > p > a > img
 {
 	margin: 1ex;
 	border: medium solid white;
-	-moz-border-radius: 7px;
+	border-radius: 7px;
 }
 
 div#webpg_float_left /* menu part of wepage section */
