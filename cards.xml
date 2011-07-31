@@ -12082,7 +12082,10 @@
     <code><![CDATA[
     $tmp = 0;
     for ($i = 1; $i <= 8; $i++)
+    {
       if ($mydata->Hand[$i] == 635) $tmp++;
+      if ($hisdata->Hand[$i] == 635) $tmp++;
+    }
     $this->Attack(5*$tmp, $hisdata->Tower, $hisdata->Wall);
     if ($cardpos > 1)
       { $mydata->Hand[$cardpos - 1] = 635; $mydata->NewCards[$cardpos - 1] = 1; }

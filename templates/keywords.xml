@@ -556,7 +556,7 @@
     <name>Runic</name>
     <description>If Tower or Wall was damaged during opponent's last round, Tower or Wall is raised based on played card rarity (C-2, U-5, R-10). Tower or Wall increase can't exceed the damage which was inflicted on Tower or Wall.</description>
     <lore><![CDATA[
-    <p>Dwarves are well known for their technological superiority, mining and weapon forging. Additionally, they have rune magic at their disposal. Dwarven country is called the Runic league which is ruled by the Mountain king. Dwarven society consists of common folk, noble houses and the Runic circle. The Runic circle supervises the usage of rune magic and thus is powerful and influential. The dwraves are a defensive faction. They prefer to stay safely behind their strong fortifications.</p>
+    <p>Dwarves are well known for their technological superiority, mining and weapon forging. Additionally, they have rune magic at their disposal. Dwarven country is called the Runic league which is ruled by the Mountain king. Dwarven society consists of common folk, noble houses and the Runic circle. The Runic circle supervises the usage of rune magic and thus is powerful and influential. The dwarves are a defensive faction. They prefer to stay safely behind their strong fortifications.</p>
     <p>Technological dominance and rune magic allows the dwarves to construct sturdy fortifications that can be repaired very quickly and efficiently.</p>
 ]]></lore>
     <code><![CDATA[
