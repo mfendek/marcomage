@@ -774,17 +774,48 @@
 				if ($card->Keywords != '')
 				{
 					// list all keywords in order they are to be executed
-					$category_keywords = array('Alliance', 'Aqua', 'Barbarian', 'Beast', 'Brigand', 'Burning', 'Destruction', 'Dragon', 'Holy', 'Illusion', 'Legend', 'Mage', 'Nature', 'Restoration', 'Runic', 'Soldier', 'Titan', 'Undead', 'Unliving');
-					$effect_keywords = array('Durable', 'Quick', 'Swift', 'Far sight', 'Banish', 'Skirmisher', 'Rebirth', 'Flare attack', 'Frenzy', 'Enduring', 'Charge', 'Siege');
+					$category_keywords = $this->CategoryKeywords();
+					$effect_keywords = $this->EffectKeywords();
 
 					$keywords = array_merge($category_keywords, $effect_keywords);
 					foreach ($keywords as $keyword_name)
-						if ($card->HasKeyWord($keyword_name))
-						{
-							$keyword = $keyworddb->GetKeyword($keyword_name);
-							if( eval($keyword->Code) === FALSE )
-								error_log("Debug: ".$keyword_name.": ".$keyword->Code);
-						}
+            if ($card->HasKeyWord($keyword_name))
+            {
+              $keyword = $keyworddb->GetKeyword($keyword_name);
+  
+              // case 1: token keyword
+              if ($keyword->isTokenKeyword())
+              {
+                // count number of cards with matching keyword (we don't count the played card)
+                $amount = $this->KeywordCount($mydata->Hand, $keyword_name) - 1;
+  
+                // check if player has matching token counter set
+                $token_index = array_search($keyword_name, $mydata->TokenNames);
+  
+                if ($token_index)
+                {
+                  // increase token counter by basic gain + bonus gain
+                  $mydata->TokenValues[$token_index]+= $keyword->Basic_gain + $amount * $keyword->Bonus_gain;
+  
+                  // execute token keyword effect if counter reached 100
+                  if ($mydata->TokenValues[$token_index] >= 100)
+                  {
+                    // reset token counter
+                    $mydata->TokenValues[$token_index] = 0;
+  
+                    // execute token keyword effect
+                    if( eval($keyword->Code) === FALSE )
+                      error_log("Debug: ".$keyword_name.": ".$keyword->Code);
+                  }
+                }
+              }
+              // case 2: standard keyword
+              else
+              {
+                if( eval($keyword->Code) === FALSE )
+                  error_log("Debug: ".$keyword_name.": ".$keyword->Code);
+              }
+            }
 				}
 
 				//process discarded cards
@@ -1142,16 +1173,47 @@
 			if ($card->Keywords != '')
 			{
 				// list all keywords in order they are to be executed
-				$category_keywords = array('Alliance', 'Aqua', 'Barbarian', 'Beast', 'Brigand', 'Burning', 'Destruction', 'Dragon', 'Holy', 'Illusion', 'Legend', 'Mage', 'Nature', 'Restoration', 'Runic', 'Soldier', 'Titan', 'Undead', 'Unliving');
-				$effect_keywords = array('Durable', 'Quick', 'Swift', 'Far sight', 'Banish', 'Skirmisher', 'Rebirth', 'Flare attack', 'Frenzy', 'Enduring', 'Charge', 'Siege');
+				$category_keywords = $this->CategoryKeywords();
+				$effect_keywords = $this->EffectKeywords();
 
 				$keywords = array_merge($category_keywords, $effect_keywords);
 				foreach ($keywords as $keyword_name)
 					if ($card->HasKeyWord($keyword_name))
 					{
 						$keyword = $keyworddb->GetKeyword($keyword_name);
-						if( eval($keyword->Code) === FALSE )
-							error_log("Debug: ".$keyword_name.": ".$keyword->Code);
+
+						// case 1: token keyword
+						if ($keyword->isTokenKeyword())
+						{
+              // count number of cards with matching keyword (we don't count the played card)
+              $amount = $this->KeywordCount($mydata->Hand, $keyword_name) - 1;
+
+              // check if player has matching token counter set
+              $token_index = array_search($keyword_name, $mydata->TokenNames);
+
+              if ($token_index)
+              {
+                // increase token counter by basic gain + bonus gain
+                $mydata->TokenValues[$token_index]+= $keyword->Basic_gain + $amount * $keyword->Bonus_gain;
+
+                // execute token keyword effect if counter reached 100
+                if ($mydata->TokenValues[$token_index] >= 100)
+                {
+                  // reset token counter
+                  $mydata->TokenValues[$token_index] = 0;
+
+                  // execute token keyword effect
+                  if( eval($keyword->Code) === FALSE )
+                    error_log("Debug: ".$keyword_name.": ".$keyword->Code);
+                }
+              }
+						}
+						// case 2: standard keyword
+						else
+						{
+              if( eval($keyword->Code) === FALSE )
+                error_log("Debug: ".$keyword_name.": ".$keyword->Code);
+            }
 					}
 			}
 			
@@ -1728,6 +1790,16 @@
 		public function DetermineAIMove()
 		{
 			return $this->GameAI->DetermineMove();
+		}
+
+		public function CategoryKeywords()
+		{
+      return array('Alliance', 'Aqua', 'Barbarian', 'Beast', 'Brigand', 'Burning', 'Destruction', 'Dragon', 'Holy', 'Illusion', 'Legend', 'Mage', 'Nature', 'Restoration', 'Runic', 'Soldier', 'Titan', 'Undead', 'Unliving');
+		}
+
+		public function EffectKeywords()
+		{
+      return array('Durable', 'Quick', 'Swift', 'Far sight', 'Banish', 'Skirmisher', 'Rebirth', 'Flare attack', 'Frenzy', 'Enduring', 'Charge', 'Siege');
 		}
 
 		private function LastRound() // fetch data of the first turn of the current round

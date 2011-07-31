@@ -471,7 +471,7 @@
 					</xsl:if>
 					<xsl:variable name="revealed" select="$param/c_miniflags = 'yes' and $param/HiddenCards = 'yes' and Revealed = 'yes'" />
 					<xsl:variable name="new_card" select="$param/c_miniflags = 'yes' and NewCard = 'yes'" />
-					<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias, $new_card, $revealed)" />
+					<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias, $new_card, $revealed, $param/keywords_count)" />
 				</div>
 
 				<!-- select button and card modes (buttons are locked when surrender request is active) -->

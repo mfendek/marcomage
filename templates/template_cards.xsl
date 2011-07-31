@@ -211,7 +211,18 @@
 				<tr class="table_row">
 					<td><p><img class="insignia" src="img/insignias/{am:file_name(am:name)}.png" width="12px" height="12px" alt="{am:name}" title="{am:name}" /></p></td>
 					<td><p><a href="{php:functionString('makeurl', 'Cards_keyword_details', 'keyword', am:name)}"><xsl:value-of select="am:name"/></a></p></td>
-					<td><p class="description"><xsl:value-of select="am:description"/></p></td>
+					<td>
+            <p class="description">
+              <xsl:if test="am:basic_gain &gt; 0 or am:bonus_gain &gt; 0">
+                <xsl:text>Basic gain </xsl:text>
+                <xsl:value-of select="am:basic_gain"/>
+                <xsl:text>, bonus gain </xsl:text>
+                <xsl:value-of select="am:bonus_gain"/>
+                <xsl:text>, </xsl:text>
+              </xsl:if>
+              <xsl:value-of select="am:description"/>
+            </p>
+          </td>
 				</tr>
 			</xsl:for-each>
 		</table>
@@ -233,6 +244,13 @@
 				<h4>Effect</h4>
 				<p class="description">
 					<img class="insignia" src="img/insignias/{am:file_name($keyword/am:name)}.png" width="12px" height="12px" alt="{$keyword/am:name}" title="{$keyword/am:name}" />
+          <xsl:if test="$keyword/am:basic_gain &gt; 0 or $keyword/am:bonus_gain &gt; 0">
+            <xsl:text>Basic gain </xsl:text>
+            <xsl:value-of select="$keyword/am:basic_gain"/>
+            <xsl:text>, bonus gain </xsl:text>
+            <xsl:value-of select="$keyword/am:bonus_gain"/>
+            <xsl:text>, </xsl:text>
+          </xsl:if>
 					<xsl:value-of select="$keyword/am:description"/>
 				</p>
 				<h4>Lore</h4>

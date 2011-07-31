@@ -373,6 +373,7 @@
 	<xsl:param name="c_insignias" select="'yes'" />
 	<xsl:param name="c_new" select="false()" />
 	<xsl:param name="c_revealed" select="false()" />
+	<xsl:param name="keywords_count" select="false()" />
 
 	<xsl:variable name="cardstring">
 
@@ -472,17 +473,33 @@
 						<xsl:for-each select="str:split($card/keywords, ',')">
 							<xsl:variable name="keyword_name" select="." />
 							<xsl:variable name="keyword" select="$descriptions/am:keyword[contains($keyword_name, am:name)]" />
+							<xsl:variable name="keyword_description">
+                <xsl:if test="$keyword/am:basic_gain &gt; 0 or $keyword/am:bonus_gain &gt; 0">
+                  <xsl:text>Basic gain </xsl:text>
+                  <xsl:value-of select="$keyword/am:basic_gain"/>
+                  <xsl:text>, bonus gain </xsl:text>
+                  <xsl:value-of select="$keyword/am:bonus_gain"/>
+                  <xsl:if test="$keywords_count">
+                    <xsl:text>, real gain when played </xsl:text>
+                    <xsl:for-each select="$keywords_count/*">
+                      <xsl:if test="name = $keyword_name">
+                        <xsl:value-of select="$keyword/am:basic_gain + (count - 1) * $keyword/am:bonus_gain"/>
+                      </xsl:if>
+                    </xsl:for-each>
+                  </xsl:if>
+                  <xsl:text>, </xsl:text>
+                </xsl:if>
+                <xsl:value-of select="$keyword/am:description"/>
+							</xsl:variable>
 							<xsl:choose>
 								<xsl:when test="$c_insignias = 'yes'">
 
-								<img class="insignia" src="img/insignias/{am:file_name($keyword/am:name)}.png" width="12px" height="12px" alt="{$keyword_name}" title="{concat($keyword_name, ' - ', $keyword/am:description)}" />
+								<img class="insignia" src="img/insignias/{am:file_name($keyword/am:name)}.png" width="12px" height="12px" alt="{$keyword_name}" title="{concat($keyword_name, ' - ', $keyword_description)}" />
 
 								</xsl:when>
 								<xsl:otherwise>
 								<b>
-									<xsl:attribute name="title">
-										<xsl:value-of select="$keyword/am:description"/>
-									</xsl:attribute>
+									<xsl:attribute name="title"><xsl:value-of select="$keyword_description"/></xsl:attribute>
 									<xsl:value-of select="$keyword_name"/>
 									<xsl:text>.</xsl:text>
 								</b>

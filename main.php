@@ -3566,6 +3566,7 @@ case 'Games_details':
 	// my hand
 	$myhand = $mydata->Hand;
 	$handdata = $carddb->GetData($myhand);
+	$keyword_list = array();
 	foreach( $handdata as $i => $card )
 	{
 		$entry = array();
@@ -3576,7 +3577,33 @@ case 'Games_details':
 		$entry['NewCard'] = ( isset($mydata->NewCards[$i]) ) ? 'yes' : 'no';
 		$entry['Revealed'] = ( isset($mydata->Revealed[$i]) ) ? 'yes' : 'no';
 		$params['game']['MyHand'][$i] = $entry;
+
+		// count number of different keywords in hand
+		if ($card['keywords'] != '')
+		{
+      $card_keywords = explode(",", $card['keywords']);
+      foreach( $card_keywords as $keyword_name )
+      {
+        // remove keyword value
+        $keyword_name = preg_replace('/ \((\d+)\)/', '', $keyword_name);
+        $keyword_list[$keyword_name] = (isset($keyword_list[$keyword_name])) ? $keyword_list[$keyword_name] + 1 : 1;
+      }
+    }
 	}
+
+  $keywords_count = array();
+  foreach( $keyword_list as $keyword_name => $keyword_count )
+  {
+    $cur_keyword = $keyworddb->GetKeyword($keyword_name);
+    if ($cur_keyword->isTokenKeyword())
+    {
+      $new_enty = array();
+      $new_enty['name'] = $keyword_name;
+      $new_enty['count'] = $keyword_count;
+      $keywords_count[] = $new_enty;
+    }
+  }
+  $params['game']['keywords_count'] = $keywords_count;
 
 	$params['game']['MyBricks'] = $mydata->Bricks;
 	$params['game']['MyGems'] = $mydata->Gems;
