@@ -154,8 +154,8 @@
 		// login page messages
 		if (isset($_POST['Login']))
 		{
-			// new sessions default to here (after first login redirect to Messages section)
-			$current = ($player->GetNotification() == '0000-00-00 00:00:00') ? "Messages" : "Webpage";
+			// new sessions default to here
+			$current = "Webpage";
 		}
 		else
 		
@@ -2809,6 +2809,15 @@
 				$current = 'Settings';
 			}
 
+			if (isset($_POST['restart_tutorial'])) // restart tutorial
+			{
+				if ($player->RestartTutorial()) $information = 'Tutorial successfully restarted';
+				else $error = 'Failed to restart tutorial';
+
+				$current = 'Webpage';
+				break;
+			}
+
 			// end settings related messages
 
 			// begin replays related messages
@@ -2925,6 +2934,7 @@
 	$settings = $player->GetSettings();
 	$params["main"]["is_logged_in"] = ($session) ? 'yes' : 'no';
 	$params["main"]["skin"] = $settings->GetSetting('Skin');
+	$params["main"]["new_user"] = ($player->GetNotification() == '0000-00-00 00:00:00') ? 'yes' : 'no';
 
 	// navbar params
 	$params["navbar"]["error_msg"] = @$error;

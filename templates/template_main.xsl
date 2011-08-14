@@ -40,6 +40,9 @@
 	</xsl:choose>
 	<link rel="stylesheet" href="styles/{$current_section}.css" type="text/css" title="standard style" />
 	<link rel="stylesheet" href="styles/skins/skin{$param/skin}.css" type="text/css" title="standard style" />
+	<xsl:if test="$param/new_user = 'yes'">
+    <link rel="stylesheet" href="styles/tutorial.css" type="text/css" title="standard style" />
+  </xsl:if>
 	<link rel="icon" href="img/favicon.png" type="image/png" />
 	<title>
 		<xsl:if test="$param/subsection != ''">
@@ -56,6 +59,9 @@
 	<script type="text/javascript" src="javascript/cookie.js"></script>
 	<script type="text/javascript" src="javascript/utils.js"></script>
 	<script type="text/javascript" src="javascript/{$current_section}.js"></script>
+	<xsl:if test="$param/new_user = 'yes'">
+    <script type="text/javascript" src="javascript/tutorial.js"></script>
+  </xsl:if>
 	<xsl:comment><![CDATA[[if lt IE 9]><script type="text/javascript" src="javascript/ie9.js"></script><![endif]]]></xsl:comment>
 	</head>
 	<body>
@@ -83,6 +89,21 @@
 			<input type="hidden" name="SessionID" value="{$param/sessionid}" />
 		</div>
 	</xsl:if>
+
+  <!-- display tutorial for new users -->
+	<xsl:if test="$param/new_user = 'yes'">
+    <xsl:variable name="tutorial_name" select="am:lowercase($param/section)" />
+    <xsl:variable name="tutorial_data" select="document('tutorial.xml')/am:tutorial" />
+    <xsl:variable name="tutorial_content" select="$tutorial_data/am:part[@name = $tutorial_name]" />
+
+    <!-- display the dialog only if there is a tutorial available for current section -->
+    <xsl:if test="$tutorial_content !=''">
+      <div id="tutorial_dialog" title="Tutorial ({$tutorial_content/@order} / {count($tutorial_data/*)})" style="display: none">
+        <xsl:value-of select="$tutorial_content" disable-output-escaping="yes" />
+        <input type="hidden" name="current_tutorial" value="{$tutorial_name}" />
+      </div>
+    </xsl:if>
+  </xsl:if>
 
 	</form>
 	</body>

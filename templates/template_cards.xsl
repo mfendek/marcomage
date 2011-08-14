@@ -15,7 +15,7 @@
 <xsl:template match="section[. = 'Cards']">
 	<xsl:variable name="param" select="$params/cards" />
 
-<div id="cards">
+  <div id="cards">
 		<!-- begin buttons and filters -->
 		<xsl:choose>
 			<xsl:when test="$param/is_logged_in = 'yes'">
@@ -150,7 +150,7 @@
 		</xsl:if>
 
 		<input type="hidden" name="CurrentCardsPage" value="{$param/current_page}" />
-</div>
+  </div>
 
 </xsl:template>
 

@@ -1,0 +1,19 @@
+/***********************************************
+ * MArcomage CSS stylesheet - tutorial section *
+ ***********************************************/
+
+div#tutorial_dialog > h3 /* tutorial heading */
+{
+	text-align: center;
+	margin-top: 0ex;
+	margin-bottom: 0ex;
+	font-size: medium;
+}
+
+div#tutorial_dialog > p /* tutorial text */
+{
+	text-align: justify;
+	margin-top: 1ex;
+	margin-bottom: 1ex;
+	font-size: medium;
+}
