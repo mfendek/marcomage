@@ -2,7 +2,7 @@
  * MArcomage CSS stylesheet - tutorial section *
  ***********************************************/
 
-div#tutorial_dialog > h3 /* tutorial heading */
+div#tutorial_dialog_start > h3, div#tutorial_dialog_finish > h3, div#tutorial_dialog_standard > h3 /* tutorial heading */
 {
 	text-align: center;
 	margin-top: 0ex;
@@ -10,7 +10,7 @@ div#tutorial_dialog > h3 /* tutorial heading */
 	font-size: medium;
 }
 
-div#tutorial_dialog > p /* tutorial text */
+div#tutorial_dialog_start > p, div#tutorial_dialog_finish > p, div#tutorial_dialog_standard > p /* tutorial text */
 {
 	text-align: justify;
 	margin-top: 1ex;

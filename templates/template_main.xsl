@@ -98,7 +98,15 @@
 
     <!-- display the dialog only if there is a tutorial available for current section -->
     <xsl:if test="$tutorial_content !=''">
-      <div id="tutorial_dialog" title="Tutorial ({$tutorial_content/@order} / {count($tutorial_data/*)})" style="display: none">
+      <div title="Tutorial ({$tutorial_content/@order} / {count($tutorial_data/*)})" style="display: none">
+        <xsl:attribute name="id">
+          <xsl:text>tutorial_dialog_</xsl:text>
+          <xsl:choose>
+            <xsl:when test="$tutorial_content/@order = 1">start</xsl:when>
+            <xsl:when test="$tutorial_content/@order = count($tutorial_data/*)">finish</xsl:when>
+            <xsl:otherwise>standard</xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
         <xsl:value-of select="$tutorial_content" disable-output-escaping="yes" />
         <input type="hidden" name="current_tutorial" value="{$tutorial_name}" />
       </div>

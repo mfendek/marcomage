@@ -88,7 +88,7 @@
   <h3>Settings section</h3>
   <p>In this section you can <b>customize</b> MArcomage. <b>Profile settings</b> contain information about your <b>identity</b>, none of them is mandatory. When filled in, all other players are able to see this information. <b>Account settings</b> are used to <b>adjust</b> MArcomage to your best liking. Additionally, MArcomage <b>shop</b> is located here, right below the profile settings. In the shop you can buy additional features such as bonus game and deck slots.</p>
   <p>This concludes our tutorial. Please see the <b>Game manual</b> (<b>Help</b> section) for more detailed information about MArcomage.</p>
-  <p>Once you're ready click on the <b>Next</b> button to end the tutorial. This tutorial can be restarted by pressing the <b>Restart tutorial</b> button in the <b>Settings</b> section.</p>
+  <p>Once you're ready click on the <b>Finish tutorial</b> button to end the tutorial. This tutorial can be restarted by pressing the <b>Restart tutorial</b> button in the <b>Settings</b> section.</p>
   ]]>
   </part>
 </tutorial>
