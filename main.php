@@ -3377,6 +3377,7 @@ case 'Messages':
 
 
 case 'Messages_details':
+	if (!isset($_POST['CurrentMessage'])) { $display_error = "Missing message id."; break; }
 	$messageid = $_POST['CurrentMessage'];
 	$message = $messagedb->RetrieveMessage($messageid, $player->Name());
 	if (!$message) { $display_error = "Invalid message."; break; }
@@ -3505,6 +3506,7 @@ case 'Games':
 
 
 case 'Games_details':
+	if (!isset($_POST['CurrentGame'])) { $display_error = "Missing game id."; break; }
 	$gameid = $_POST['CurrentGame'];
 	$game = $gamedb->GetGame($gameid);
 
@@ -3752,6 +3754,7 @@ case 'Games_details':
 
 
 case 'Decks_view':
+	if (!isset($_POST['CurrentGame'])) { $display_error = "Missing game id."; break; }
 	$gameid = $_POST['CurrentGame'];
 	$game = $gamedb->GetGame($gameid);
 
@@ -3778,6 +3781,7 @@ case 'Decks_view':
 
 
 case 'Games_note':
+	if (!isset($_POST['CurrentGame'])) { $display_error = "Missing game id."; break; }
 	$gameid = $_POST['CurrentGame'];
 	$game = $gamedb->GetGame($gameid);
 
@@ -3858,8 +3862,9 @@ case 'Forum_search':
 
 
 case 'Forum_section':
-	$params['forum_section']['is_logged_in'] = ($session) ? 'yes' : 'no';
+	if (!isset($_POST['CurrentSection'])) { $display_error = "Missing forum section id."; break; }
 	$section_id = $_POST['CurrentSection'];
+	$params['forum_section']['is_logged_in'] = ($session) ? 'yes' : 'no';
 	$current_page = (isset($_POST['CurrentPage'])) ? $_POST['CurrentPage'] : 0;
 
 	$section = $forum->GetSection($section_id);
@@ -3881,6 +3886,7 @@ case 'Forum_section':
 
 
 case 'Forum_thread':
+	if (!isset($_POST['CurrentThread'])) { $display_error = "Missing forum thread id."; break; }
 	$thread_id = $_POST['CurrentThread'];
 	$current_page = (isset($_POST['CurrentPage'])) ? $_POST['CurrentPage'] : 0;
 
@@ -3917,6 +3923,7 @@ case 'Forum_thread':
 
 
 case 'Forum_thread_new':
+	if (!isset($_POST['CurrentSection'])) { $display_error = "Missing forum section id."; break; }
 	$section = $forum->GetSection($_POST['CurrentSection']);
 	if (!$section) { $display_error = "Invalid forum section."; break; }
 
@@ -3930,6 +3937,7 @@ case 'Forum_thread_new':
 
 
 case 'Forum_post_new':
+	if (!isset($_POST['CurrentThread'])) { $display_error = "Missing forum thread id."; break; }
 	$thread = $forum->Threads->GetThread($_POST['CurrentThread']);
 	if (!$thread) { $display_error = "Invalid thread."; break; }
 
@@ -3946,6 +3954,7 @@ case 'Forum_post_new':
 
 
 case 'Forum_thread_edit':
+	if (!isset($_POST['CurrentThread'])) { $display_error = "Missing forum thread id."; break; }
 	$thread_data = $forum->Threads->GetThread($_POST['CurrentThread']);
 	if (!$thread_data) { $display_error = "Invalid thread."; break; }
 
@@ -3960,6 +3969,7 @@ case 'Forum_thread_edit':
 
 
 case 'Forum_post_edit':
+	if (!isset($_POST['CurrentPost'])) { $display_error = "Missing forum post id."; break; }
 	$post_data = $forum->Threads->Posts->GetPost($_POST['CurrentPost']);
 	if (!$post_data) { $display_error = "Invalid post."; break; }
 
