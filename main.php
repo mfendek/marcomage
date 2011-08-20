@@ -2964,6 +2964,8 @@
 		$params["navbar"]['game_notice'] = ($current_games > 0) ? 'yes' : 'no';
 	}
 
+// do not process content in case an error has occured
+if (!isset($display_error))
 // now display current inner-page contents
 switch( $current )
 {
