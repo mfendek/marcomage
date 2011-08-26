@@ -62,6 +62,9 @@
 	<xsl:if test="$param/new_user = 'yes'">
     <script type="text/javascript" src="javascript/tutorial.js"></script>
   </xsl:if>
+	<xsl:if test="$param/is_logged_in = 'no'">
+    <script type="text/javascript" src="javascript/google_plus.js"></script>
+  </xsl:if>
 	<xsl:comment><![CDATA[[if lt IE 9]><script type="text/javascript" src="javascript/ie9.js"></script><![endif]]]></xsl:comment>
 	</head>
 	<body>
@@ -222,8 +225,13 @@
 		</p>
 	</div>
 
-	<div id="facebook_link">
-		<a href="http://www.facebook.com/pages/MArcomage/182322255140456"><img src="img/facebook.png" width="92px" height="50px" alt="facebook page" /></a>
+	<div id="social_links">
+		<div>
+      <a href="http://www.facebook.com/pages/MArcomage/182322255140456"><img src="img/facebook.png" width="92px" height="50px" alt="facebook page" /></a>
+    </div>
+    <div>
+      <div class="g-plusone"></div>
+    </div>
 	</div>
 
 	<h1>MArcomage</h1>
