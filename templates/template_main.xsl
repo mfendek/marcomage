@@ -227,7 +227,7 @@
 
 	<div id="social_links">
 		<div>
-      <a href="http://www.facebook.com/pages/MArcomage/182322255140456"><img src="img/facebook.png" width="92px" height="50px" alt="facebook page" /></a>
+      <a href="http://www.facebook.com/pages/MArcomage/182322255140456"><img src="img/facebook.png" width="64px" height="24px" alt="facebook page" /></a>
     </div>
     <div>
       <div class="g-plusone"></div>
