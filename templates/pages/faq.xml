@@ -87,5 +87,19 @@
 
 <p>When Militia or Ranger are played with mode that targets their own position, the card effect is overridden by normal drawing, because it happens as the last action. When Vampire lord is played with mode that targets his own position, it is different. Card effect adds a Vampire into the postion of the played card, but <b>Durable</b> keyword makes sure, that next card received by normal drawing will be the Vampire lord, so it will undo the card efect. In most cases it doesn't make much sense to play the mode that targets such position, but there can be situations when you may want to play it this way (for example, when you don't want to discard any of the cards from your hand).</p>
 
+<h4>Q12: I want to install my own MArcomage server on my computer. How do I do that?</h4>
+<ol>
+  <li>download and install <a href="http://subversion.apache.org/">Subversion</a> which will allow you to download MArcomage source code</li>
+  <li>download <a href="http://www.wampserver.com/en/">WAMP server</a> (provided you have Windows OS), which will allow you to run local web server</li>
+  <li>install WAMP server (for example in 'C:/wamp')</li>
+  <li>create 'marcomage' directory in the 'wamp/www' directory</li>
+  <li>press 'Start' on bottom left part of windows toolbar, click 'run' and type 'cmd.exe', press 'ok' (in other words start Windows console). Type 'svn checkout https://svn.netvor.sk/arcomage C:\wamp\www\marcomage'. (this will download MArcomage source code to 'marcomage' directory)</li>
+  <li>Click on the small WAMP server icon with left mouse button in the right bottom part of the screen. A WAMP server menu will appear. Move mouse over 'PHP', then 'PHP extensions'. If 'php_xsl' extension is not enabled (doesn't have a check) enable it by clicking on it with left mouse button.</li>
+  <li>Start WAMP server, click on the small WAMP server icon in the right bottom part of the screen. Choose 'phpmyadmin' in the menu. Click on 'import'. Choose MArcomage DB install script (located in 'marcomage/release/scripts/install_tables.sql') and execute it.</li>
+  <li>create a copy of file 'marcomage/release/config.php.template' and rename it to 'config.php'</li>
+  <li>open 'release/config.php' and change username value to 'root'</li>
+  <li>click on the WAMP server icon once again and choose 'localhost'. Click on the 'marcomage', then 'release' and you should now have your own MArcomage server</li>
+</ol>
+
 </am:content>
 </am:entry>
