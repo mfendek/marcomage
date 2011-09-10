@@ -371,6 +371,7 @@
 	<xsl:param name="c_img" select="'yes'" />
 	<xsl:param name="c_oldlook" select="'no'" />
 	<xsl:param name="c_insignias" select="'yes'" />
+	<xsl:param name="c_foils" select="''" />
 	<xsl:param name="c_new" select="false()" />
 	<xsl:param name="c_revealed" select="false()" />
 	<xsl:param name="keywords_count" select="false()" />
@@ -407,8 +408,11 @@
 		<xsl:variable name="bgimage">
 			<xsl:if test="$c_oldlook = 'no'"> with_bgimage</xsl:if>
 		</xsl:variable>
+		<xsl:variable name="foil">
+			<xsl:if test="contains(concat(',', $c_foils, ','), concat(',', $card/id, ','))"> foil</xsl:if>
+		</xsl:variable>
 
-		<div class="karta{$class}{$type}{$bgimage}">
+		<div class="karta{$class}{$type}{$bgimage}{$foil}">
 
 			<!-- display the cost (spheres with numbers in the center) -->
 			<xsl:choose>

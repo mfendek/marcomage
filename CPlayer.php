@@ -507,6 +507,7 @@
 			$settings->ChangeSetting('Insignias', 'yes');
 			$settings->ChangeSetting('Country', 'Unknown');
 			$settings->ChangeSetting('Avatar', 'noavatar.jpg');
+			$settings->ChangeSetting('FoilCards', '');
 
 			return $settings;
 		}

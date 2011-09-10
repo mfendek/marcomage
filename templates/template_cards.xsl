@@ -131,7 +131,7 @@
 			</tr>
 			<xsl:for-each select="$param/CardList/*">
 				<tr>
-					<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
+					<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_foils)" /></td>
 					<td><p><a href="{php:functionString('makeurl', 'Cards_details', 'card', id)}"><xsl:value-of select="name"/></a></p></td>
 					<td><p><xsl:value-of select="class"/></p></td>
 					<td><p><xsl:value-of select="bricks" />/<xsl:value-of select="gems" />/<xsl:value-of select="recruits" /></p></td>
@@ -170,9 +170,12 @@
 					<a class="button" href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', $param/discussion, 'CurrentPage', 0)}">View discussion</a>
 				</xsl:when>
 			</xsl:choose>
+      <xsl:if test="$param/is_logged_in = 'yes' and $param/foil_version = 'no'">
+        <button type="submit" name="buy_foil" value="{$param/data/id}">Purchase foil version for <xsl:value-of select="$param/foil_cost"/> gold</button>
+      </xsl:if>
 			<hr />
 
-			<div class="card_preview"><xsl:copy-of select="am:cardstring($param/data, $param/c_img, $param/c_oldlook, $param/c_insignias)" /></div>
+			<div class="card_preview"><xsl:copy-of select="am:cardstring($param/data, $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_foils)" /></div>
 			<div class="limit">
 				<p><span><xsl:value-of select="$param/data/name"/></span>Name</p>
 				<p><span><xsl:value-of select="$param/data/class"/></span>Rarity</p>

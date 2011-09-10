@@ -15,6 +15,7 @@
 	define("DECK_SLOTS", 8);
 	define("GAME_SLOT_COST", 200); // bonus game slot cost
 	define("DECK_SLOT_COST", 300); // bonus deck slot cost
+	define("FOIL_COST", 500); // foil version card cost
 	define("MESSAGE_LENGTH", 1000);
 	define("CHALLENGE_LENGTH", 250);
 	define("CHAT_LENGTH", 300); // chat message length

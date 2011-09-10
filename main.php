@@ -218,6 +218,42 @@
 				break;
 			}
 
+      if (isset($_POST['buy_foil'])) // buy foil version of a card
+      {
+        $bought_card = $_POST['card'] = $_POST['buy_foil'];
+
+        // validate card
+        $cur_card = $carddb->GetCard($bought_card);
+        if ($cur_card->Name == "Invalid Card") { $error = 'Invalid card'; $current = 'Cards_details'; break; }
+
+        // load foil cards list for current player
+        $settings = $player->GetSettings();
+        $foil_cards = $settings->GetSetting('FoilCards');
+        $foil_cards = ($foil_cards == '') ? array() : explode(",", $foil_cards);
+
+        // check if card can be purchased
+        if (in_array($bought_card, $foil_cards)) { $error = 'Foil version of current card was already purchased'; $current = 'Cards_details'; break; }
+
+        // subtract foil card cost
+        $score = $player->GetScore();
+        if (!$score->BuyItem(FOIL_COST)) { $error = 'Not enough gold'; $current = 'Cards_details'; break; }
+
+        $db->BeginTransaction();
+
+        if (!$score->SaveScore()) { $db->RollBack(); $error = 'Failed to save score'; $current = 'Cards_details'; break; }
+
+        // store bought card
+        array_push($foil_cards, $bought_card);
+        $settings->ChangeSetting('FoilCards', implode(",", $foil_cards));
+
+        if (!$settings->SaveSettings()) { $db->RollBack(); $error = 'Failed to save setting'; $current = 'Cards_details'; break; }
+
+        $db->Commit();
+
+        $information = "Foil version purchased";
+        $current = 'Cards_details';
+      }
+
 			// end cards related messages
 
 			// begin concepts related messages
@@ -3029,6 +3065,7 @@ case 'Decks_edit':
 	$params['deck_edit']['c_img'] = $settings->GetSetting('Images');
 	$params['deck_edit']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 	$params['deck_edit']['c_insignias'] = $settings->GetSetting('Insignias');
+  $params['deck_edit']['c_foils'] = $settings->GetSetting('FoilCards');
 	$params['deck_edit']['cards_per_row'] = $settings->GetSetting('Cards_per_row');
 	$params['deck_edit']['Res'] = $deck->AvgCostPerTurn(); // calculate average cost per turn
 	$params['deck_edit']['card_pool'] = ((isset($_POST['CardPool']) AND $_POST['CardPool'] == 'no') OR (!isset($_POST['CardPool']) AND $settings->GetSetting('CardPool') == 'yes')) ? 'no' : 'yes';
@@ -3542,6 +3579,8 @@ case 'Games_details':
 	$params['game']['c_img'] = $settings->GetSetting('Images');
 	$params['game']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 	$params['game']['c_insignias'] = $settings->GetSetting('Insignias');
+  $params['game']['c_my_foils'] = $settings->GetSetting('FoilCards');
+  $params['game']['c_his_foils'] = $o_settings->GetSetting('FoilCards');
 	$params['game']['c_miniflags'] = $settings->GetSetting('Miniflags');
 
 	$params['game']['mycountry'] = $settings->GetSetting('Country');
@@ -3773,6 +3812,7 @@ case 'Decks_view':
 	$params['deck_view']['c_img'] = $settings->GetSetting('Images');
 	$params['deck_view']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 	$params['deck_view']['c_insignias'] = $settings->GetSetting('Insignias');
+  $params['deck_view']['c_foils'] = $settings->GetSetting('FoilCards');
 
 	$params['deck_view']['CurrentGame'] = $gameid;
 
@@ -4042,6 +4082,12 @@ case 'Replays_details':
 	$params['replay']['c_miniflags'] = $settings->GetSetting('Miniflags');
 	$params['replay']['Background'] = $settings->GetSetting('Background');
 
+  // attempt to load setting of both players
+  $p1 = $playerdb->GetPlayer($player1);
+  $params['replay']['c_p1_foils'] = ($p1) ? $p1->GetSettings()->GetSetting('FoilCards') : '';
+  $p2 = $playerdb->GetPlayer($player2);
+  $params['replay']['c_p2_foils'] = ($p2) ? $p2->GetSettings()->GetSetting('FoilCards') : '';
+
 	$params['replay']['turns'] = $replay->Turns;
 	$params['replay']['Round'] = $turn_data->Round;
 	$params['replay']['Outcome'] = $replay->Outcome();
@@ -4219,6 +4265,12 @@ case 'Replays_history':
 	$params['replays_history']['c_insignias'] = $settings->GetSetting('Insignias');
 	$params['replays_history']['c_miniflags'] = $settings->GetSetting('Miniflags');
 	$params['replays_history']['Background'] = $settings->GetSetting('Background');
+
+  // attempt to load setting of both players
+  $p1 = $playerdb->GetPlayer($player1);
+  $params['replays_history']['c_p1_foils'] = ($p1) ? $p1->GetSettings()->GetSetting('FoilCards') : '';
+  $p2 = $playerdb->GetPlayer($player2);
+  $params['replays_history']['c_p2_foils'] = ($p2) ? $p2->GetSettings()->GetSetting('FoilCards') : '';
 
 	$params['replays_history']['turns'] = $turns;
 	$params['replays_history']['Round'] = $turn_data->Round;
@@ -4401,6 +4453,7 @@ case 'Cards':
 	$params['cards']['c_img'] = $settings->GetSetting('Images');
 	$params['cards']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 	$params['cards']['c_insignias'] = $settings->GetSetting('Insignias');
+  $params['cards']['c_foils'] = $settings->GetSetting('FoilCards');
 
 	break;
 
@@ -4417,12 +4470,20 @@ case 'Cards_details':
 	$params['cards_details']['discussion'] = ($thread_id) ? $thread_id : 0;
 	$params['cards_details']['create_thread'] = ($access_rights[$player->Type()]["create_thread"]) ? 'yes' : 'no';
 	$params['cards_details']['statistics'] = $statistics->CardStatistics($card_id);
+	$params['cards_details']['foil_cost'] = FOIL_COST;
+	$params['cards_details']['is_logged_in'] = ($session) ? 'yes' : 'no';
 
 	// load card display settings
 	$settings = $player->GetSettings();
 	$params['cards_details']['c_img'] = $settings->GetSetting('Images');
 	$params['cards_details']['c_oldlook'] = $settings->GetSetting('OldCardLook');
 	$params['cards_details']['c_insignias'] = $settings->GetSetting('Insignias');
+  $params['cards_details']['c_foils'] = $foil_cards = $settings->GetSetting('FoilCards');
+
+  // determine if current card has a foil version
+  $foil_cards = ($foil_cards == '') ? array() : explode(",", $foil_cards);
+  $params['cards_details']['foil_version'] = (in_array($card_id, $foil_cards)) ? 'yes' : 'no';
+
 	$subsection_name = $data['name'];
 
 	break;

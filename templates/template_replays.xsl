@@ -316,7 +316,7 @@
 				<!-- display card -->
 				<xsl:variable name="revealed" select="$param/c_miniflags = 'yes' and $param/HiddenCards = 'yes' and Revealed = 'yes'" />
 				<xsl:variable name="new_card" select="$param/c_miniflags = 'yes' and NewCard = 'yes'" />
-				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias, $new_card, $revealed)" />
+				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_p1_foils, $new_card, $revealed)" />
 			</td>
 		</xsl:for-each>
 	</tr>
@@ -472,11 +472,11 @@
 						<table cellpadding="0" cellspacing="0">
 							<tr valign="top">
 								<xsl:for-each select="$param/p1DisCards0/*">
-									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_p1_foils)" /></td>
 								</xsl:for-each>
 								<td style="border-right: thin solid yellow"></td>
 								<xsl:for-each select="$param/p1DisCards1/*">
-									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_p1_foils)" /></td>
 								</xsl:for-each>
 							</tr>
 						</table>
@@ -510,7 +510,7 @@
 											</xsl:otherwise>
 										</xsl:choose>
 									</p>
-									<xsl:copy-of select="am:cardstring(CardData, $param/c_img, $param/c_oldlook, $param/c_insignias)" />
+									<xsl:copy-of select="am:cardstring(CardData, $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_p1_foils)" />
 								</td>
 							</xsl:for-each>
 						</xsl:if>
@@ -544,7 +544,7 @@
 											</xsl:otherwise>
 										</xsl:choose>
 									</p>
-									<xsl:copy-of select="am:cardstring(CardData, $param/c_img, $param/c_oldlook, $param/c_insignias)" />
+									<xsl:copy-of select="am:cardstring(CardData, $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_p2_foils)" />
 								</td>
 							</xsl:for-each>
 						</xsl:if>
@@ -566,11 +566,11 @@
 						<table cellpadding="0" cellspacing="0">
 							<tr valign="top">
 								<xsl:for-each select="$param/p2DisCards1/*">
-									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_p2_foils)" /></td>
 								</xsl:for-each>
 								<td style="border-right: thin solid yellow"></td>
 								<xsl:for-each select="$param/p2DisCards0/*">
-									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_p2_foils)" /></td>
 								</xsl:for-each>
 							</tr>
 						</table>
@@ -778,7 +778,7 @@
 				<!-- display card -->
 				<xsl:variable name="revealed" select="$param/c_miniflags = 'yes' and $param/HiddenCards = 'yes' and Revealed = 'yes'" />
 				<xsl:variable name="new_card" select="$param/c_miniflags = 'yes' and NewCard = 'yes'" />
-				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias, $new_card, $revealed)" />
+				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_p2_foils, $new_card, $revealed)" />
 			</td>
 		</xsl:for-each>
 	</tr>
@@ -890,7 +890,7 @@
 				<!-- display card -->
 				<xsl:variable name="revealed" select="$param/c_miniflags = 'yes' and $param/HiddenCards = 'yes' and Revealed = 'yes'" />
 				<xsl:variable name="new_card" select="$param/c_miniflags = 'yes' and NewCard = 'yes'" />
-				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias, $new_card, $revealed)" />
+				<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_p1_foils, $new_card, $revealed)" />
 			</td>
 		</xsl:for-each>
 	</tr>
@@ -1046,11 +1046,11 @@
 						<table cellpadding="0" cellspacing="0">
 							<tr valign="top">
 								<xsl:for-each select="$param/p1DisCards0/*">
-									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_p1_foils)" /></td>
 								</xsl:for-each>
 								<td style="border-right: thin solid yellow"></td>
 								<xsl:for-each select="$param/p1DisCards1/*">
-									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_p1_foils)" /></td>
 								</xsl:for-each>
 							</tr>
 						</table>
@@ -1084,7 +1084,7 @@
 											</xsl:otherwise>
 										</xsl:choose>
 									</p>
-									<xsl:copy-of select="am:cardstring(CardData, $param/c_img, $param/c_oldlook, $param/c_insignias)" />
+									<xsl:copy-of select="am:cardstring(CardData, $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_p1_foils)" />
 								</td>
 							</xsl:for-each>
 						</xsl:if>
@@ -1118,7 +1118,7 @@
 											</xsl:otherwise>
 										</xsl:choose>
 									</p>
-									<xsl:copy-of select="am:cardstring(CardData, $param/c_img, $param/c_oldlook, $param/c_insignias)" />
+									<xsl:copy-of select="am:cardstring(CardData, $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_p2_foils)" />
 								</td>
 							</xsl:for-each>
 						</xsl:if>
@@ -1140,11 +1140,11 @@
 						<table cellpadding="0" cellspacing="0">
 							<tr valign="top">
 								<xsl:for-each select="$param/p2DisCards1/*">
-									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_p2_foils)" /></td>
 								</xsl:for-each>
 								<td style="border-right: thin solid yellow"></td>
 								<xsl:for-each select="$param/p2DisCards0/*">
-									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias)" /></td>
+									<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_p2_foils)" /></td>
 								</xsl:for-each>
 							</tr>
 						</table>
@@ -1356,7 +1356,7 @@
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:variable name="new_card" select="$param/c_miniflags = 'yes' and NewCard = 'yes'" />
-						<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias, $new_card)" />
+						<xsl:copy-of select="am:cardstring(Data, $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_p2_foils, $new_card)" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</td>

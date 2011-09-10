@@ -53,6 +53,12 @@ div.karta.rec_cost.with_bgimage    { background-image: url('../img/card/recruits
 div.karta.mixed_cost.with_bgimage  { background-image: url('../img/card/mixed_bg.png');  }
 div.karta.zero_cost.with_bgimage   { background-image: url('../img/card/zero_bg.png');   }
 
+/* background image, based on cost - foil version */
+div.karta.bricks_cost.with_bgimage.foil { background-image: url('../img/card/foil_bricks_bg.png'); }
+div.karta.gem_cost.with_bgimage.foil    { background-image: url('../img/card/foil_gems_bg.png');    }
+div.karta.rec_cost.with_bgimage.foil    { background-image: url('../img/card/foil_recruits_bg.png');    }
+div.karta.mixed_cost.with_bgimage.foil  { background-image: url('../img/card/foil_mixed_bg.png');  }
+div.karta.zero_cost.with_bgimage.foil   { background-image: url('../img/card/foil_zero_bg.png');   }
 
 /* card title */
 div.karta > h5

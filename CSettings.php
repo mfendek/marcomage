@@ -23,7 +23,7 @@
 		public function CreateSettings($username) //creates default settings
 		{
 			$db = $this->db;
-			$result = $db->Query('INSERT INTO `settings` (`Username`) VALUES (?)', array($username));
+			$result = $db->Query('INSERT INTO `settings` (`Username`, `FoilCards`) VALUES (?, "")', array($username));
 			if ($result === false) return false;
 
 			return true;
@@ -176,7 +176,7 @@
 
 		public function ListOtherSettings() // returns list of all non-boolean type setting names
 		{
-			return array('Firstname', 'Surname', 'Birthdate', 'Gender', 'Email', 'Imnumber', 'Country', 'Hobby', 'Avatar', 'Status', 'Timezone', 'Skin', 'Background', 'DefaultFilter', 'Autorefresh', 'Cards_per_row');
+			return array('Firstname', 'Surname', 'Birthdate', 'Gender', 'Email', 'Imnumber', 'Country', 'Hobby', 'Avatar', 'Status', 'Timezone', 'Skin', 'Background', 'DefaultFilter', 'Autorefresh', 'Cards_per_row', 'FoilCards');
 		}
 	}
 ?>
