@@ -168,6 +168,14 @@
 			$deck_data->Rare = array(1=>295,499,143,517,64,401,67,294,148,21,209,231,143,517,499);
 			$challenge_data['Sophie'] = $deck_data;
 
+			// Myr's deck
+			$deck_data = new CDeckData;
+			$deck_data->Common = array(1=>589,589,589,82,82,82,357,357,153,153,153,597,597,608,586);
+			$deck_data->Uncommon = array(1=>172,172,109,109,53,53,53,425,425,564,338,338,11,174,155);
+			$deck_data->Rare = array(1=>467,467,467,121,121,121,9,9,499,596,577,577,435,435,173);
+			$deck_data->Tokens[1] = "Mage";
+			$challenge_data['Myr'] = $deck_data;
+
 			foreach ($challenge_data as $deck_name => $deck_data)
 			{
 				$curent_deck = new CDeck(0, SYSTEM_NAME, $deck_name, $this);
