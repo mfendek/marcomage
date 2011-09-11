@@ -121,7 +121,7 @@
 		}
 		else
 		{
-			$public_sections = array('Webpage', 'Help', 'Novels', 'Forum', 'Cards', 'Concepts');
+			$public_sections = array('Webpage', 'Help', 'Novels', 'Forum', 'Players', 'Cards', 'Concepts');
 			$section_name = preg_replace("/_.*/i", '', $current);
 			if (!in_array($section_name, $public_sections))
 				$display_error = 'Authentication is required to view this page.';
@@ -3195,6 +3195,7 @@ case 'Concepts_details':
 
 case 'Players':	
 
+	$params['players']['is_logged_in'] = ($session) ? 'yes' : 'no';
 	// defaults for list ordering
 	$params['players']['players_sort'] = $condition = (isset($_POST['players_sort'])) ? $_POST['players_sort'] : 'Level';
 

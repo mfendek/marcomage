@@ -255,6 +255,7 @@
 			<value name="Webpage"  value="Introduction"     />
 			<value name="Help"     value="Game manual"      />
 			<value name="Forum"    value="Discussion forum" />
+			<value name="Players"  value="Players"          />
 			<value name="Cards"    value="MArcomage cards"  />
 			<value name="Concepts" value="Card concepts"    />
 			<value name="Novels"   value="Fantasy novels"   />
