@@ -44,9 +44,9 @@ div#social_links img /* override default border style */
 	border-style: none;
 }
 
-div#social_links > div + div /* social links spacing */
+div#social_links a /* social links links */
 {
-  margin-top: 1ex;
+  text-decoration: none;
 }
 
 div#login_inputs > p > button[type="submit"] /* login box spacing */
