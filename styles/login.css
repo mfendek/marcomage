@@ -44,7 +44,7 @@ div#social_links img /* override default border style */
 	border-style: none;
 }
 
-div#social_links a /* social links links */
+div#social_links a /* social links layout */
 {
   text-decoration: none;
 }
