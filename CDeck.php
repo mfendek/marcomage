@@ -86,7 +86,7 @@
 				if ($winner == $player1) $deck1->Wins++;
 				elseif ($winner == $player2) $deck1->Losses++;
 				else $deck1->Draws++;
-				$deck1->SaveDeck();
+				$deck1->UpdateStats();
 			}
 
 			// update player 2 deck statistics
@@ -96,7 +96,7 @@
 				if ($winner == $player2) $deck2->Wins++;
 				elseif ($winner == $player1) $deck2->Losses++;
 				else $deck2->Draws++;
-				$deck2->SaveDeck();
+				$deck2->UpdateStats();
 			}
 		}
 
@@ -256,7 +256,17 @@
 		{
 			$db = $this->Decks->getDB();
 
-			$result = $db->Query('UPDATE `decks` SET `Ready` = ?, `Data` = ?, `Wins` = ?, `Losses` = ?, `Draws` = ? WHERE `Username` = ? AND `DeckID` = ?', array((($this->isReady()) ? 1 : 0), serialize($this->DeckData), $this->Wins, $this->Losses, $this->Draws, $this->Username, $this->DeckID));
+			$result = $db->Query('UPDATE `decks` SET `Ready` = ?, `Data` = ?, `Wins` = ?, `Losses` = ?, `Draws` = ?, `Modified` = NOW() WHERE `Username` = ? AND `DeckID` = ?', array((($this->isReady()) ? 1 : 0), serialize($this->DeckData), $this->Wins, $this->Losses, $this->Draws, $this->Username, $this->DeckID));
+			if ($result === false) return false;
+			
+			return true;
+		}
+		
+		public function UpdateStats()
+		{
+			$db = $this->Decks->getDB();
+
+			$result = $db->Query('UPDATE `decks` SET `Wins` = ?, `Losses` = ?, `Draws` = ? WHERE `Username` = ? AND `DeckID` = ?', array($this->Wins, $this->Losses, $this->Draws, $this->Username, $this->DeckID));
 			if ($result === false) return false;
 			
 			return true;
@@ -266,7 +276,7 @@
 		{
 			$db = $this->Decks->getDB();
 
-			$result = $db->Query('UPDATE `decks` SET `Deckname` = ?  WHERE `Username` = ? AND `DeckID` = ?', array($newdeckname, $this->Username, $this->DeckID));
+			$result = $db->Query('UPDATE `decks` SET `Deckname` = ?, `Modified` = NOW()  WHERE `Username` = ? AND `DeckID` = ?', array($newdeckname, $this->Username, $this->DeckID));
 			if ($result === false) return false;
 			
 			$this->Deckname = $newdeckname;
