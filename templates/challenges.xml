@@ -194,7 +194,7 @@
     </config>
   </challenge>
   <challenge name="Myr">
-    <fullname>Myr the magelord</fullname>
+    <fullname>Myr the Magelord</fullname>
     <description>Myr the magelord is a powerful wizard able to manipulate time. None knows his real age because he stopped the flow of his own body's time. Many mages and wizards have been his pupils, also Luna the sorceress studied in his academy. Will you be able to stop the neverending attacks of Myr's followers?</description>
     <initialization>
       <mine>
