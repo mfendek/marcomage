@@ -2,18 +2,12 @@
 <am:entry xmlns:am="http://arcomage.netvor.sk">
 <am:content xmlns="http://www.w3.org/1999/xhtml">
 
-<h2>Welcome to MArcomage</h2>
-
-<hr/>
-
-<p style="text-align: center">Authors (in alphabetical order): <a href="http://helppage.3dfx.sk/fendek/">Mojmír Fendek</a> (Mojko) and <a href="mailto:theultramage@gmail.com">Viktor Štujber</a> (theultramage)</p>
-
+<h4>Overview</h4>
 <p>MArcomage (Multiplayer Arcomage) is an online card game inspired by original Arcomage. It's possible to play either against a human player or a computer player. <a href="http://en.wikipedia.org/wiki/Arcomage">Arcomage</a> is a fantasy turn-based card game. This card game simulates an epic battle between two empires including features such as constructing new buildings, training troops and decimating the enemy empire with standard attacks or sneaky tactics such as intrigue or spells. There are similarities in gameplay, but there are differences in cards, game rules and victory conditions.</p>
-
-<p><a href="http://www.w3.org/">W3C</a> standards compatible browser with enabled JavaScript and Cookies is recommended for full experience. We recommend <a href="http://www.mozilla.com/en-US/firefox/?from=getfirefox">Firefox</a> or <a href="http://www.google.com/chrome/">Chrome</a> for basic users and <a href="http://www.opera.com/">Opera</a> for advanced users.</p>
+<p>In order to play, the player must construct his own deck (there are three preconstructed decks available) and challenge other players. The battle begins as soon as the other side accepts. It is possible to chat with your opponent in game.</p>
+<p>Advantage of this game is its turn based play style. It allows players to play as often as they like. For example you can play few turns a day, but if you want, you can play all the time, provided you find an opponent willing to play all day as well.</p>
 
 <h4>Features</h4>
-
 <ul>
 	<li>Deck building - choose 45 unique cards to construct your own deck</li>
 	<li>Over 600 cards to choose from</li>
@@ -34,10 +28,6 @@
 	<li>Design your own cards and submit them for implementation</li>
 </ul>
 
-<p>In order to play, the player must construct his own deck (there are three preconstructed decks available) and challenge other players. The battle begins as soon as the other side accepts. It is possible to chat with your opponent in game.</p>
-
-<p>Advantage of this game is its turn based play style. It allows players to play as often as they like. For example you can play few turns a day, but if you want, you can play all the time, provided you find an opponent willing to play all day as well.</p>
-
 <h4>Links</h4>
 <ul>
 	<li>The project's location: <a href="http://arcomage.netvor.sk/">http://arcomage.netvor.sk/</a>.</li>
@@ -47,27 +37,15 @@
 	<li><a href="http://www.gatewayheaven.com/projects/arcomage/">Arcomage Tribute</a> - a fan-made open source project (single player only)</li>
 </ul>
 
-<h4>Powered by</h4>
-<ul>
-	<li><a href="http://www.mysql.com/">MySQL</a> - the world's most popular open source database</li>
-	<li><a href="http://www.php.net/">PHP</a> - a widely-used general-purpose scripting language</li>
-	<li><a href="http://www.apache.org/">Apache web server</a> - the most popular web server (secure, efficient and extensible)</li>
-	<li><a href="http://www.w3schools.com/xhtml/default.asp">XHTML</a> - a stricter and cleaner version of HTML</li>
-	<li><a href="http://www.w3schools.com/xml/default.asp">XML</a> and <a href="http://www.w3schools.com/xsl/default.asp">XSLT</a> - a structural way to store data and transform them to XHTML</li>
-	<li><a href="http://www.w3schools.com/css/default.asp">CSS 2.1</a> and <a href="http://www.css3.info/">CSS 3</a> - an optimal way to manage web page layout</li>
-	<li><a href="http://subversion.tigris.org/">Subversion</a> - a version control tool for software development projects</li>
-	<li><a href="http://trac.edgewall.org/">Trac</a> - an enhanced wiki and issue tracking system for software development projects</li>
-	<li><a href="http://www.w3schools.com/js/default.asp">JavaScript</a> - is used to enhance user experience with dynamic functionality of web pages</li>
-	<li><a href="http://jquery.com/">JQuery</a> - a fast and concise JavaScript Library that simplifies HTML document traversing, event handling, animating, and Ajax interactions for rapid web development</li>
-	<li><a href="http://jqueryui.com/home">JQuery UI</a> - provides abstractions for low-level interaction and animation, advanced effects and high-level, themeable widgets</li>
-	<li><a href="http://code.google.com/p/ie7-js/">ie7-js</a> - a JavaScript library to make MSIE behave like a standards-compliant browser</li>
-	<li><a href="http://www.exslt.org/">EXSLT</a> - a community initiative to provide extensions to XSLT</li>
-</ul>
-
 <h4>MArcomage preview images</h4>
-
 <p><a href="img/screen_game_section.jpg"><img src="img/screen_game_section_s.jpg" width="328px" height="200px" title="card battle" alt="card battle"/></a></p>
 <p><a href="img/screen_deck_section.jpg"><img src="img/screen_deck_section_s.jpg" width="328px" height="200px" title="deck editor" alt="deck editor"/></a></p>
+
+<h4>Contact</h4>
+<ul>
+	<li>Mojmír Fendek - <a href="?location=Players_details&amp;Profile=Mojko">Mojko</a> - <a href="mailto:mfendek@gmail.com">mfendek@gmail.com</a></li>
+	<li>Viktor Štujber - <a href="?location=Players_details&amp;Profile=theultramage">theultramage</a> - <a href="mailto:theultramage@gmail.com">theultramage@gmail.com</a></li>
+</ul>
 
 </am:content>
 </am:entry>
