@@ -28,6 +28,12 @@
 	<li>Design your own cards and submit them for implementation</li>
 </ul>
 
+<h4>Screenshots</h4>
+<p>
+	<a style="text-decoration:none" href="img/screen_game_section.jpg"><img src="img/screen_game_section_s.jpg" width="328px" height="200px" title="card battle" alt="card battle"/></a>
+	<a style="text-decoration:none" href="img/screen_deck_section.jpg"><img src="img/screen_deck_section_s.jpg" width="328px" height="200px" title="deck editor" alt="deck editor"/></a>
+</p>
+
 <h4>Links</h4>
 <ul>
 	<li>The project's location: <a href="http://arcomage.netvor.sk/">http://arcomage.netvor.sk/</a>.</li>
@@ -36,10 +42,6 @@
 	<li><a href="https://docs.google.com/uc?id=0BydnMBGrM4NWNmY3ZDE1MjItMzMxYS00YzMxLWI5MjQtMTQyM2VkOGU3ODU4&amp;export=download&amp;authkey=CNbY7foB&amp;hl=en">Original Arcomage</a> - standalone version</li>
 	<li><a href="http://www.gatewayheaven.com/projects/arcomage/">Arcomage Tribute</a> - a fan-made open source project (single player only)</li>
 </ul>
-
-<h4>MArcomage preview images</h4>
-<p><a href="img/screen_game_section.jpg"><img src="img/screen_game_section_s.jpg" width="328px" height="200px" title="card battle" alt="card battle"/></a></p>
-<p><a href="img/screen_deck_section.jpg"><img src="img/screen_deck_section_s.jpg" width="328px" height="200px" title="deck editor" alt="deck editor"/></a></p>
 
 <h4>Contact</h4>
 <ul>
