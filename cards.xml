@@ -12338,7 +12338,7 @@
     <modes>0</modes>
     <keywords>Restoration</keywords>
     <effect><![CDATA[Tower: +2<br />If Tower or Wall was damaged during opponent's last round<br />Wall: +8]]></effect>
-    <code><![CDATA[$mydata->Tower+= 2; if ($mychanges['Tower'] < 0 OR (mychanges['Wall'] < 0)) $mydata->Wall+= 8;]]></code>
+    <code><![CDATA[$mydata->Tower+= 2; if ($mychanges['Tower'] < 0 or $mychanges['Wall'] < 0) $mydata->Wall+= 8;]]></code>
     <created>2011-09-24</created>
     <modified>2011-09-24</modified>
   </card>
