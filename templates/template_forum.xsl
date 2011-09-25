@@ -692,10 +692,10 @@
 		<xsl:for-each select="str:split(am:numbers(am:max($current - 2, 0), am:min($current + 2, am:max($page_count - 1, 0))), ',')">
 			<xsl:choose>
 				<xsl:when test="$current != .">
-					<a class="button" href="{php:functionString('makeurl', $location, $section_name, $section_id, 'CurrentPage', text())}"><xsl:value-of select="text()"/></a>
+					<a class="button" href="{php:functionString('makeurl', $location, $section_name, $section_id, 'CurrentPage', text())}"><xsl:value-of select="text() + 1"/></a>
 				</xsl:when>
 				<xsl:otherwise>
-					<span class="disabled"><xsl:value-of select="text()"/></span>
+					<span class="disabled"><xsl:value-of select="text() + 1"/></span>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:for-each>
