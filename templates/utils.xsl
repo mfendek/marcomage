@@ -184,7 +184,7 @@
 					<xsl:if test="$current = .">
 						<xsl:attribute name="disabled">disabled</xsl:attribute>
 					</xsl:if>
-					<xsl:value-of select="text() + 1"/>
+					<xsl:value-of select="text()"/>
 				</button>
 			</xsl:for-each>
 		</xsl:if>
@@ -281,10 +281,10 @@
 		<xsl:for-each select="str:split(am:numbers(am:max($current - 5, 0), am:min($current + 5, am:max($page_count - 1, 0))), ',')">
 			<xsl:choose>
 				<xsl:when test="$current != .">
-					<a class="button" href="{php:functionString('makeurl', $location, $page_type, text())}"><xsl:value-of select="text() + 1"/></a>
+					<a class="button" href="{php:functionString('makeurl', $location, $page_type, text())}"><xsl:value-of select="text()"/></a>
 				</xsl:when>
 				<xsl:otherwise>
-					<span class="disabled"><xsl:value-of select="text() + 1"/></span>
+					<span class="disabled"><xsl:value-of select="text()"/></span>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:for-each>
