@@ -14,7 +14,7 @@ div#login_box /* login box layout */
 div#login_box h1 /* game title */
 {
 	font-size: xx-large;
-	margin: 1ex 0ex 0ex 0ex;
+	margin: 0ex;
 	text-align: center;
 	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white, 0 0 4px white, 0 -5px 4px #ff3, 2px -10px 6px #fd3, -2px -15px 11px #f80, 2px -25px 18px #f20;
 }
@@ -23,61 +23,44 @@ div#login_box h2 /* game subtitle */
 {
 	font-size: large;
 	text-align: center;
-	margin: 1ex 0ex 0ex 0ex;
-}
-
-div#login_inputs /* login inputs layout */
-{
-	float: left;
-	text-align: left;
-	margin-left: 1ex;
-}
-
-div#social_links /* social links */
-{
-	float: right;
-	margin-top: 1ex;
-}
-
-div#social_links img /* override default border style */
-{
-	border-style: none;
-}
-
-div#social_links a /* social links layout */
-{
-  text-decoration: none;
-}
-
-div#login_inputs > p > button[type="submit"] /* login box spacing */
-{
-	margin-top: 1ex;
-}
-
-div#login_inputs > p > button + button /* register button layout */
-{
-	float: right;
-}
-
-div#login_inputs > p > img /* login box image align */
-{
-	vertical-align: middle;
+	margin: 0ex;
 }
 
 div#login_message /* login message layout */
 {
-	text-align: left;
-	margin-left: 1ex;
+  text-align: left;
 	font-weight: bold;
 	min-height: 1em;
 }
 
-div#sections /* login box sections menu */
+span#login_inputs /* login inputs layout */
 {
-	margin: 1ex 0ex 0ex 1ex;
+	float: left;
+	text-align: left;
+	margin-right: 1ex;
 }
 
-div#sections > a.button + a.button /* hyperlink buttons in sections menu */
+span#social_links /* social links */
+{
+	float: right;
+}
+
+span#social_links img /* override default border style */
+{
+	border-style: none;
+}
+
+span#social_links a /* social links layout */
+{
+  text-decoration: none;
+}
+
+div#sections /* login box sections menu */
+{
+	margin-top: 1ex;
+}
+
+div#sections > a.button /* hyperlink buttons in sections menu */
 {
 	margin-left: 1ex;
 }

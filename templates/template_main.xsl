@@ -207,60 +207,51 @@
 
 	<div id="login_box">
 
-	<div id="login_inputs">
-		<p>
-			<img src="img/username.png" width="25px" height="20px" alt="username" title="username" />
-			<input type="text" name="Username" maxlength="20" tabindex="1" />
-		</p>
-		<p>
-			<img src="img/password.png" width="25px" height="20px" alt="password" title="password" />
-			<input type="password" name="Password" maxlength="20" tabindex="2" />
-		</p>
-		<p>
-			<button type="submit" name="Login" tabindex="3">Login</button>
-			<button type="submit" name="Registration" tabindex="4">Register</button>
-		</p>
-	</div>
+	<div id="login_message">
+    <span id="login_inputs">
+      <input type="text" name="Username" title="username" maxlength="20" tabindex="1" />
+      <input type="password" name="Password" title="password" maxlength="20" tabindex="2" />
+      <button type="submit" name="Login" tabindex="3">Login</button>
+    </span>
 
-	<div id="social_links">
-		<span>
+    <xsl:if test="$param/error_msg != ''">
+      <span class="error"><xsl:value-of select="$param/error_msg"/></span>
+    </xsl:if>
+    <xsl:if test="$param/warning_msg != ''">
+      <span class="warning"><xsl:value-of select="$param/warning_msg"/></span>
+    </xsl:if>
+    <xsl:if test="$param/info_msg != ''">
+      <span class="info"><xsl:value-of select="$param/info_msg"/></span>
+    </xsl:if>
+
+    <span id="social_links">
       <!--<a href=""><img src="img/google_plus.png" width="16px" height="16px" alt="google plus page" /></a>-->
       <a href="http://www.facebook.com/pages/MArcomage/182322255140456"><img src="img/facebook.png" width="16px" height="16px" alt="facebook page" /></a>
     </span>
+    <div class="clear_floats"></div>
 	</div>
 
 	<h1>MArcomage</h1>
 	<h2>Free multiplayer on-line fantasy card game</h2>
 
-	<div id="login_message">
-		<xsl:if test="$param/error_msg != ''">
-			<p class="error"><xsl:value-of select="$param/error_msg"/></p>
-		</xsl:if>
-		<xsl:if test="$param/warning_msg != ''">
-			<p class="warning"><xsl:value-of select="$param/warning_msg"/></p>
-		</xsl:if>
-		<xsl:if test="$param/info_msg != ''">
-			<p class="info"><xsl:value-of select="$param/info_msg"/></p>
-		</xsl:if>
-	</div>
-
 	<!-- sections menubar -->
 	<div id="sections">
+    <button type="submit" name="Registration" tabindex="4">Register</button>
 		<xsl:variable name="sections">
-			<value name="Webpage"  value="Introduction"     />
-			<value name="Help"     value="Game manual"      />
-			<value name="Forum"    value="Discussion forum" />
-			<value name="Players"  value="Players"          />
-			<value name="Cards"    value="MArcomage cards"  />
-			<value name="Concepts" value="Card concepts"    />
-			<value name="Novels"   value="Fantasy novels"   />
+			<value name="Webpage"  />
+			<value name="Help"     />
+			<value name="Forum"    />
+			<value name="Players"  />
+			<value name="Cards"    />
+			<value name="Concepts" />
+			<value name="Novels"   />
 		</xsl:variable>
 		<xsl:for-each select="exsl:node-set($sections)/*">
 			<a class="button" href="{php:functionString('makeurl', @name)}" >
 				<xsl:if test="$param/section_name = @name">
 					<xsl:attribute name="class">button pushed</xsl:attribute>
 				</xsl:if>
-				<xsl:value-of select="@value"/>
+				<xsl:value-of select="@name"/>
 			</a>
 		</xsl:for-each>
 	</div>
