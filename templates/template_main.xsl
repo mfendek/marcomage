@@ -207,32 +207,35 @@
 
 	<div id="login_box">
 
-	<div id="login_message">
-    <span id="login_inputs">
+  <span id="social_links">
+    <!--<a href=""><img src="img/google_plus.png" width="16px" height="16px" alt="google plus page" /></a>-->
+    <a href="http://www.facebook.com/pages/MArcomage/182322255140456"><img src="img/facebook.png" width="16px" height="16px" alt="facebook page" /></a>
+  </span>
+
+  <div id="login_area">
+    <div id="login_inputs">
       <input type="text" name="Username" title="username" maxlength="20" tabindex="1" />
       <input type="password" name="Password" title="password" maxlength="20" tabindex="2" />
       <button type="submit" name="Login" tabindex="3">Login</button>
-    </span>
+    </div>
 
-    <xsl:if test="$param/error_msg != ''">
-      <span class="error"><xsl:value-of select="$param/error_msg"/></span>
-    </xsl:if>
-    <xsl:if test="$param/warning_msg != ''">
-      <span class="warning"><xsl:value-of select="$param/warning_msg"/></span>
-    </xsl:if>
-    <xsl:if test="$param/info_msg != ''">
-      <span class="info"><xsl:value-of select="$param/info_msg"/></span>
-    </xsl:if>
+    <p id="login_message">
+      <xsl:if test="$param/error_msg != ''">
+        <span class="error"><xsl:value-of select="$param/error_msg"/></span>
+      </xsl:if>
+      <xsl:if test="$param/warning_msg != ''">
+        <span class="warning"><xsl:value-of select="$param/warning_msg"/></span>
+      </xsl:if>
+      <xsl:if test="$param/info_msg != ''">
+        <span class="info"><xsl:value-of select="$param/info_msg"/></span>
+      </xsl:if>
+    </p>
+  </div>
 
-    <span id="social_links">
-      <!--<a href=""><img src="img/google_plus.png" width="16px" height="16px" alt="google plus page" /></a>-->
-      <a href="http://www.facebook.com/pages/MArcomage/182322255140456"><img src="img/facebook.png" width="16px" height="16px" alt="facebook page" /></a>
-    </span>
-    <div class="clear_floats"></div>
-	</div>
+  <h1>MArcomage</h1>
+  <h2>Free multiplayer on-line fantasy card game</h2>
 
-	<h1>MArcomage</h1>
-	<h2>Free multiplayer on-line fantasy card game</h2>
+  <div class="clear_floats"></div>
 
 	<!-- sections menubar -->
 	<div id="sections">
