@@ -770,6 +770,10 @@
 				if( eval($card->Code) === FALSE )
 					error_log("Debug: ".$cardid.": ".$card->Code);
 
+				// apply limits to game attributes
+				$this->ApplyGameLimits($mydata);
+				$this->ApplyGameLimits($hisdata);
+
 				// keyword processing
 				if ($card->Keywords != '')
 				{
@@ -850,13 +854,6 @@
 				// apply limits to game attributes
 				$this->ApplyGameLimits($mydata);
 				$this->ApplyGameLimits($hisdata);
-				
-				// apply limits to token counters
-				foreach ($mytokens_temp as $index => $token_val)
-				{
-					$mydata->TokenValues[$index] = max(min($mydata->TokenValues[$index], 100), 0);
-					$hisdata->TokenValues[$index] = max(min($hisdata->TokenValues[$index], 100), 0);
-				}
 				
 				// compute changes on token counters
 				foreach ($mytokens_temp as $index => $token_val)
@@ -1169,6 +1166,10 @@
 			if( eval($card->Code) === FALSE )
 				error_log("Debug: ".$cardid.": ".$card->Code);
 
+			// apply limits to game attributes
+			$this->ApplyGameLimits($mydata);
+			$this->ApplyGameLimits($hisdata);
+
 			// keyword processing
 			if ($card->Keywords != '')
 			{
@@ -1220,13 +1221,6 @@
 			// apply limits to game attributes
 			$this->ApplyGameLimits($mydata);
 			$this->ApplyGameLimits($hisdata);
-			
-			// apply limits to token counters
-			foreach ($mytokens_temp as $index => $token_val)
-			{
-				$mydata->TokenValues[$index] = max(min($mydata->TokenValues[$index], 100), 0);
-				$hisdata->TokenValues[$index] = max(min($hisdata->TokenValues[$index], 100), 0);
-			}
 			
 			// compute changes on token counters
 			foreach ($mytokens_temp as $index => $token_val)
@@ -1583,6 +1577,9 @@
 			$data->Recruits = max($data->Recruits, 0);
 			$data->Tower = min(max($data->Tower, 0), $game_config[$g_mode]['max_tower']);
 			$data->Wall = min(max($data->Wall, 0), $game_config[$g_mode]['max_wall']);
+
+			foreach ($data->TokenValues as $index => $token_val)
+				$data->TokenValues[$index] = max(min($data->TokenValues[$index], 100), 0);
 		}
 		
 		public function CalculateExp($player)

@@ -115,15 +115,26 @@
 	</part>
 	<part name="Turn actions">
 		<![CDATA[
-<p>Turn actions are executed in this order:</p>
+<p>Turn actions order of execution</p>
 <ol>
-	<li>Cost of a card is substracted</li>
-	<li>Effect of the card takes place</li>
-	<li>Keywords with side-effects apply</li>
-	<li>Game limits apply (resources cannot be lower than 0, wall below 0, facitlies below 1...)</li>
-	<li>Resource production</li>
-	<li>End game condition is checked</li>
+	<li>card cost is subtracted</li>
+	<li>card effect is executed</li>
+	<li>game limits are applied</li>
+	<li>token counters (if present) are updated based on card keywords</li>
+	<li>keyword(s) effect is executed</li>
+	<li>game limits are applied</li>
+	<li>resource production is added to player's stock based on player's facilities</li>
+	<li>end game condition is checked</li>
 </ol>
+<p>Game limits</p>
+<ul>
+	<li>facilities can't be lower than 1</li>
+	<li>resources can't be lower than 0</li>
+	<li>tower can't be lower than 0 or greater than 100 (150 in long mode)</li>
+	<li>wall can't be lower than 0 or greater than 150 (225 in long mode)</li>
+	<li>token counters can't be lower than 0 or greater than 100</li>
+	<li>attack can't have a negative value</li>
+</ul>
 		]]>
 	</part>
 	<part name="Keywords">
