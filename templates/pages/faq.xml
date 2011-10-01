@@ -96,7 +96,6 @@
   <li>press 'Start' on bottom left part of windows toolbar, click 'run' and type 'cmd.exe', press 'ok' (in other words start Windows console). Type 'svn checkout https://svn.netvor.sk/arcomage C:\wamp\www\marcomage'. (this will download MArcomage source code to 'marcomage' directory)</li>
   <li>Click on the small WAMP server icon with left mouse button in the right bottom part of the screen. A WAMP server menu will appear. Move mouse over 'PHP', then 'PHP extensions'. If 'php_xsl' extension is not enabled (doesn't have a check) enable it by clicking on it with left mouse button.</li>
   <li>Start WAMP server, click on the small WAMP server icon in the right bottom part of the screen. Choose 'phpmyadmin' in the menu. Click on 'import'. Choose MArcomage DB install script (located in 'marcomage/release/scripts/install_tables.sql') and execute it.</li>
-  <li>create a copy of file 'marcomage/release/config.php.template' and rename it to 'config.php'</li>
   <li>open 'release/config.php' and change username value to 'root'</li>
   <li>click on the WAMP server icon once again and choose 'localhost'. Click on the 'marcomage', then 'release' and you should now have your own MArcomage server</li>
 </ol>
