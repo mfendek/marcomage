@@ -214,7 +214,9 @@
 
   <div id="login_area">
     <div id="login_inputs">
+      <img src="img/username.png" width="25px" height="20px" alt="username" />
       <input type="text" name="Username" title="username" maxlength="20" tabindex="1" />
+      <img src="img/password.png" width="25px" height="20px" alt="password" />
       <input type="password" name="Password" title="password" maxlength="20" tabindex="2" />
       <button type="submit" name="Login" tabindex="3">Login</button>
     </div>

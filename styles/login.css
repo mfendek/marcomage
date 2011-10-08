@@ -46,7 +46,12 @@ div#login_area /* login area layout */
   text-align: left;
 }
 
-div#login_inputs > * + * /* login inputs layout */
+div#login_inputs > img /* login inputs align */
+{
+	vertical-align: middle;
+}
+
+div#login_inputs > input + button /* login inputs layout */
 {
 	margin-left: 1ex;
 }
