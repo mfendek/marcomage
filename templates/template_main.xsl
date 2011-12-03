@@ -208,7 +208,7 @@
 	<div id="login_box">
 
   <span id="social_links">
-    <!--<a href=""><img src="img/google_plus.png" width="16px" height="16px" alt="google plus page" /></a>-->
+    <a href="https://plus.google.com/101815655483915729081"><img src="img/google_plus.png" width="16px" height="16px" alt="google plus page" /></a>
     <a href="http://www.facebook.com/pages/MArcomage/182322255140456"><img src="img/facebook.png" width="16px" height="16px" alt="facebook page" /></a>
   </span>
 
