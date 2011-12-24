@@ -95,6 +95,7 @@
 	<li>"Max tower" means maximum possible tower height which is 100 in normal mode and 150 in long mode</li>
 	<li>"Max wall" means maximum possible wall height which is 150 in normal mode and 225 in long mode</li>
 	<li>"in game" means present in the game you are currently playing with your opponent</li>
+	<li>"persistent" card is a card that has "replace a card in hand with self" effect</li>
 </ul>
 		]]>
 	</part>
@@ -176,6 +177,7 @@
 	<li>Far sight</li>
 	<li>Banish</li>
 	<li>Skirmisher</li>
+	<li>Horde</li>
 	<li>Rebirth</li>
 	<li>Flare attack</li>
 	<li>Frenzy</li>

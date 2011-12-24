@@ -37,14 +37,15 @@
     <name>Banish</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>Discard one random Durable card from enemy hand (if there is one). Common cards can discard common and uncommon cards, uncommon cards can discard any rarity. Rare cards can also discard any rarity, but they have additional effect (player gains stock equal to discarded card cost). Cards with highest discardable rarity are preferred.</description>
+    <description>Discard one random Durable or Persistent card from enemy hand (if there is one). Common cards can discard common and uncommon cards, uncommon cards can discard any rarity. Rare cards can also discard any rarity, but they have additional effect (player gains stock equal to discarded card cost). Cards with highest discardable rarity are preferred.</description>
     <lore><![CDATA[<p>Banish is a spell that was invented solely for the purpose to counter the durable materials and render them useless. Banish can be cast directly on target or can be used to enchant a weapon to hold the banish property.</p>]]></lore>
     <code><![CDATA[
     // target card is discarded only if it has same or lower rarity than the played card
     $rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
     $storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
     $played_rank = $rarities[$card->Class];
-    
+    $persistent = $carddb->GetList(array('advanced'=>"Replace a card in hand with self"));
+
     for ($i = 1; $i <= 8; $i++)
     {
       $dis_card = $carddb->GetCard($hisdata->Hand[$i]);
@@ -52,7 +53,7 @@
       $dis_rank = $rarities[$dis_class];
       
       // pick only cards that can be discarded by played card
-      if (($dis_card->HasKeyword("Durable")) AND ($dis_rank <= ($played_rank + 1))) $storage[$dis_class][] = $i;
+      if (($dis_card->HasKeyword("Durable") or in_array($hisdata->Hand[$i], $persistent)) and $dis_rank <= ($played_rank + 1)) $storage[$dis_class][] = $i;
     }
     
     if ((count($storage['Common']) + count($storage['Uncommon']) + count($storage['Rare'])) > 0)
@@ -390,6 +391,27 @@
       $mydata->Bricks+= $gained;
       $mydata->Gems+= $gained;
       $mydata->Recruits+= $gained;
+    }
+]]></code>
+  </keyword>
+  <keyword>
+    <name>Horde</name>
+    <basic_gain>0</basic_gain>
+    <bonus_gain>0</bonus_gain>
+    <description>Fear - if played card is a neighbour of a Horde card and recruits cost of the played card is greater than recruits cost of the matching card replace equal or lower rarity matching card with Palisade wall.</description>
+    <lore><![CDATA[<p>Fear is an effective tool in any war. Enemies of the Horde had many opportunities to witness the effectiveness of such tactic. Broken formations, chaotic retreat and disobedience of orders often lead to loss of the entire army.</p>]]></lore>
+    <code><![CDATA[
+    if (($cardpos > 1 and $carddb->GetCard($mydata->Hand[$cardpos - 1])->HasKeyword("Horde")) or ($cardpos < 8 and $carddb->GetCard($mydata->Hand[$cardpos + 1])->HasKeyword("Horde")))
+    {
+      $rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
+      $recruits = $card->GetResources("Recruits");
+
+      $matching_card = $carddb->GetCard($hisdata->Hand[$cardpos]);
+      if ($rarities[$card->Class] >= $rarities[$matching_card->Class] and $recruits > $matching_card->GetResources("Recruits"))
+      {
+        $hisdata->Hand[$cardpos] = 297;
+        $hisdata->NewCards[$cardpos] = 1;
+      }
     }
 ]]></code>
   </keyword>

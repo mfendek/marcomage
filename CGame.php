@@ -1796,7 +1796,7 @@
 
 		public function EffectKeywords()
 		{
-      return array('Durable', 'Quick', 'Swift', 'Far sight', 'Banish', 'Skirmisher', 'Rebirth', 'Flare attack', 'Frenzy', 'Enduring', 'Charge', 'Siege');
+      return array('Durable', 'Quick', 'Swift', 'Far sight', 'Banish', 'Skirmisher', 'Horde', 'Rebirth', 'Flare attack', 'Frenzy', 'Enduring', 'Charge', 'Siege');
 		}
 
 		private function LastRound() // fetch data of the first turn of the current round
