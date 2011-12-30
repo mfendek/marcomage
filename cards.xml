@@ -352,7 +352,7 @@
     for ($i = 1; $i <= 8; $i++)
     {
       $cur_card = $carddb->GetCard($hisdata->Hand[$i]);
-      if (!$cur_card->Class != "Rare" and $cur_card->GetResources('Bricks') == 0 and $cur_card->GetResources('Gems') == 0 and $cur_card->GetResources('Recruits') > 0)
+      if ($cur_card->Class != "Rare" and $cur_card->GetResources('Bricks') == 0 and $cur_card->GetResources('Gems') == 0 and $cur_card->GetResources('Recruits') > 0)
       {
         $cur_cost = $card_costs[$i] = $cur_card->GetResources('Recruits');
         if ($cur_cost > $max) $max = $cur_cost;
