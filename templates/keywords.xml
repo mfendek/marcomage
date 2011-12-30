@@ -398,7 +398,7 @@
     <name>Horde</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>Fear - if played card is a neighbour of a Horde card and recruits cost of the played card is greater than recruits cost of the matching card replace equal or lower rarity matching card with Palisade wall.</description>
+    <description>Fear - if played card is a neighbour of a Horde card and recruits cost of the played card is greater than recruits cost of the matching card replace equal or lower rarity matching card with Palisade.</description>
     <lore><![CDATA[<p>Fear is an effective tool in any war. Enemies of the Horde had many opportunities to witness the effectiveness of such tactic. Broken formations, chaotic retreat and disobedience of orders often lead to loss of the entire army.</p>]]></lore>
     <code><![CDATA[
     if (($cardpos > 1 and $carddb->GetCard($mydata->Hand[$cardpos - 1])->HasKeyword("Horde")) or ($cardpos < 8 and $carddb->GetCard($mydata->Hand[$cardpos + 1])->HasKeyword("Horde")))
