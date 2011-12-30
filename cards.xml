@@ -297,7 +297,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Nature</keywords>
-    <effect><![CDATA[Opponent's tower and wall is halved (min 10 damage)]]></effect>
+    <effect><![CDATA[Enemy tower and Enemy wall is halved (min 10 damage)]]></effect>
     <code><![CDATA[
     $hisdata->Tower-= max(round($hisdata->Tower/2), 10);
     $hisdata->Wall-= max(round($hisdata->Wall/2), 10);
@@ -2099,7 +2099,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Wall: -70<br />Attack: N<br />N = Wall height lost]]></effect>
+    <effect><![CDATA[Wall: -70<br />Attack: N<br />N = wall lost]]></effect>
     <code><![CDATA[
     $lowered = $mydata->Wall - max($mydata->Wall - 70, 0);
     $mydata->Wall-= $lowered;
@@ -2217,7 +2217,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Summons a <b>Dragon</b><br />If there is a <b>Dragon</b> in hand it will be a rare <b>Dragon</b>]]></effect>
+    <effect><![CDATA[Summons a <b>Dragon</b><br />If #<b>Dragon</b> in hand > 0<br />it will be a rare <b>Dragon</b>]]></effect>
     <code><![CDATA[
     $filters = ($this->KeywordCount($mydata->Hand, "Dragon") > 0) ? array('class'=>"Rare", 'keyword'=>"Dragon") : array('keyword'=>"Dragon");
     $nextcard = $this->DrawCard($carddb->GetList($filters), $mydata->Hand, $cardpos, 'DrawCard_list');
@@ -2890,7 +2890,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Holy</keywords>
-    <effect><![CDATA[Player(s) with most <b>Holy</b> in hand gets<br />Stock: +8<br />His opponent gets<br />Stock: +2]]></effect>
+    <effect><![CDATA[Player(s) with most <b>Holy</b> in hand gains<br />Stock: +8<br />His opponent gains<br />Stock: +2]]></effect>
     <code><![CDATA[
     $my_count = $this->KeywordCount($mydata->Hand, "Holy");
     $his_count = $this->KeywordCount($hisdata->Hand, "Holy");
@@ -2918,7 +2918,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Mage</keywords>
-    <effect><![CDATA[Negates the negative effect of opponent's last round on your Tower, Wall, Facilities and Stock]]></effect>
+    <effect><![CDATA[Negates the negative effect of opponent's last round on your tower, wall, facilities and stock]]></effect>
     <code><![CDATA[
     $mydata->Tower-= min(0, $mychanges['Tower']); $mydata->Wall-= min(0, $mychanges['Wall']);
     $mydata->Quarry-= min(0, $mychanges['Quarry']); $mydata->Magic-= min(0, $mychanges['Magic']); $mydata->Dungeons-= min(0, $mychanges['Dungeons']);
@@ -3022,7 +3022,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Gain 1 random resource for every <b>Holy</b> in hand (max 5)<br />Summons <b>Holy</b>]]></effect>
+    <effect><![CDATA[Gain 1 random resource for each <b>Holy</b> in hand (max 5)<br />Summons <b>Holy</b>]]></effect>
     <code><![CDATA[
     $nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Holy")), $mydata->Hand, $cardpos, 'DrawCard_list');
     $resources = min($this->KeywordCount($mydata->Hand, "Holy"),5);
@@ -3048,7 +3048,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Undead</keywords>
-    <effect><![CDATA[Attack: N * M<br />Recruits: = 0<br />N = #Recruits<br />M = #<b>Undead</b> rares in hand / 2]]></effect>
+    <effect><![CDATA[Attack: N * M<br />Recruits: = 0<br />N = #Recruits<br />M = #<b>Undead</b> rare cards in hand / 2]]></effect>
     <code><![CDATA[
     $rares = 0;
     for ($i = 1; $i <= 8; $i++)
@@ -3072,7 +3072,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower:= +Wall height<br />Wall: = 0]]></effect>
+    <effect><![CDATA[Tower:= +Wall<br />Wall: = 0]]></effect>
     <code><![CDATA[$mydata->Tower+= $mydata->Wall; $mydata->Wall = 0;]]></code>
     <created>2006-05-01</created>
     <modified>2006-05-01</modified>
@@ -3087,7 +3087,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Production x0<br />Attack: 9<br />Deals 9 bonus damage for each facility that was lowered to 1]]></effect>
+    <effect><![CDATA[Production x0<br />Attack: 9 + 9N<br />N = #Facilities that were lowered to 1]]></effect>
     <code><![CDATA[
     $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
     $tmp = 0;
@@ -3457,7 +3457,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Siege</keywords>
-    <effect><![CDATA[Wall: +30<br />If #<b>Siege</b> in hand > 1 in hand<br />Enemy tower: -10]]></effect>
+    <effect><![CDATA[Wall: +30<br />If #<b>Siege</b> in hand > 1<br />Enemy tower: -10]]></effect>
     <code><![CDATA[
     $mydata->Wall+= 30;
     if ($this->KeywordCount($mydata->Hand, "Siege") > 1) $hisdata->Tower-= 10;
@@ -3828,7 +3828,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Aqua,Unliving</keywords>
-    <effect><![CDATA[If #Facilities > #Enemy facilities<br />Enemy wall = 0<br />Always:<br />Attack: #Resources - #Enemy resources]]></effect>
+    <effect><![CDATA[If #Facilities > #Enemy facilities<br />Enemy wall = 0<br />Always:<br />Attack: #Stock - #Enemy stock]]></effect>
     <code><![CDATA[
     $tmp = max(0, $mydata->Quarry + $mydata->Magic + $mydata->Dungeons - $hisdata->Quarry - $hisdata->Magic - $hisdata->Dungeons);
     if ($tmp > 0) { $hisdata->Wall = 0; }
@@ -3866,7 +3866,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Player(s) with lowest wall gets<br />Quarry: -1<br />Dungeon: -1]]></effect>
+    <effect><![CDATA[Player(s) with lowest wall gains<br />Quarry: -1<br />Dungeon: -1]]></effect>
     <code><![CDATA[
     if ($mydata->Wall <= $hisdata->Wall) { $mydata->Quarry-= 1; $mydata->Dungeons-= 1; };
     if ($hisdata->Wall <= $mydata->Wall) { $hisdata->Quarry-= 1; $hisdata->Dungeons-= 1; };
@@ -4283,7 +4283,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Illusion</keywords>
-    <effect><![CDATA[Switches your wall with enemy wall]]></effect>
+    <effect><![CDATA[Switches wall with enemy wall]]></effect>
     <code><![CDATA[$tmp = $mydata->Wall; $mydata->Wall= $hisdata->Wall; $hisdata->Wall= $tmp;]]></code>
     <created>2006-11-14</created>
     <modified>2010-09-23</modified>
@@ -4838,7 +4838,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Durable,Far sight</keywords>
-    <effect><![CDATA[Move selected card from opponent's hand to matching position in your hand]]></effect>
+    <effect><![CDATA[Move selected card from opponent's hand to matching position in hand]]></effect>
     <code><![CDATA[
     $mydata->Hand[$mode] = $hisdata->Hand[$mode];
     $hisdata->Hand[$mode] = $this->DrawCard($his_deck, $hisdata->Hand, $mode, 'DrawCard_different');
@@ -4857,7 +4857,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Barbarian</keywords>
-    <effect><![CDATA[Attack: 13 - 5N<br />N = Tower height / Max tower]]></effect>
+    <effect><![CDATA[Attack: 13 - 5N<br />N = Tower / Max tower]]></effect>
     <code><![CDATA[$this->Attack(13 - round(5*($mydata->Tower/$max_tower)), $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2006-05-01</created>
     <modified>2011-12-24</modified>
@@ -4932,7 +4932,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Destruction,Nature</keywords>
-    <effect><![CDATA[Attack: N<br />N = sum of all resources in stock<br />Stock: = 0]]></effect>
+    <effect><![CDATA[Attack: #Stock<br />Stock: = 0]]></effect>
     <code><![CDATA[
     $this->Attack(($mydata->Bricks + $mydata->Gems + $mydata->Recruits), $hisdata->Tower, $hisdata->Wall);
     $mydata->Bricks= 0; $mydata->Gems= 0; $mydata->Recruits= 0;
@@ -5139,7 +5139,7 @@
     <modified>2010-12-24</modified>
   </card>
   <card id="297">
-    <name>Palisade wall</name>
+    <name>Palisade</name>
     <class>Common</class>
     <cost>
       <bricks>0</bricks>
@@ -5490,7 +5490,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Undead</keywords>
-    <effect><![CDATA[Discard a card from opponent's hand<br />Summons <b>Undead</b> of same rarity as discarded card]]></effect>
+    <effect><![CDATA[Discard a card from opponent's hand<br />Summons <b>Undead</b> of the same rarity as discarded card]]></effect>
     <code><![CDATA[
     $rarity = $carddb->GetCard($hisdata->Hand[$mode])->Class;
     $hisdata->Hand[$mode] = $this->DrawCard($his_deck, $hisdata->Hand, $mode, 'DrawCard_different');
@@ -6001,7 +6001,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Brigand</keywords>
-    <effect><![CDATA[If not New<br />Steals the difference between opponent's stock and your stock (max 15, min 5)]]></effect>
+    <effect><![CDATA[If not New<br />Steals the difference between opponent's stock and stock (max 15, min 5)]]></effect>
     <code><![CDATA[
     if (!isset($mynewflags[$cardpos]))
     {
@@ -6117,7 +6117,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Barbarian</keywords>
-    <effect><![CDATA[Wall: +15<br />If last card played was a <b>Barbarian</b><br />Attack: N<br />N = Recruits cost of last card played]]></effect>
+    <effect><![CDATA[Wall: +15<br />If last card played was a <b>Barbarian</b><br />Attack: N<br />N = recruits cost of last card played]]></effect>
     <code><![CDATA[
     $mydata->Wall+= 15;
     if (($mylast_card->HasKeyword("Barbarian")) and ($mylast_action == 'play'))
@@ -6246,7 +6246,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Undead,Durable</keywords>
-    <effect><![CDATA[If last card played was <b>Undead</b><br />Attack: N / 2<br />Tower: +N / 3<br />Wall: +N / 2<br />N = total cost of last card played]]></effect>
+    <effect><![CDATA[If last card played was <b>Undead</b><br />Attack: N / 2<br />Tower: +N / 3<br />Wall: +N / 2<br />N = cost of last card played]]></effect>
     <code><![CDATA[
     if (($mylast_card->HasKeyword("Undead")) and ($mylast_action == 'play'))
     {
@@ -6320,7 +6320,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +9<br />Wall: +15<br />If there is a <b>Legend</b> in hand<br />Magic: +1]]></effect>
+    <effect><![CDATA[Tower: +9<br />Wall: +15<br />If #<b>Legend</b> in hand > 0<br />Magic: +1]]></effect>
     <code><![CDATA[
     $mydata->Tower+= 9; $mydata->Wall+= 15;
     if ($this->KeywordCount($mydata->Hand, "Legend") > 0) $mydata->Magic+= 1;
@@ -6372,7 +6372,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Beast</keywords>
-    <effect><![CDATA[If targeting self, gain recruits cost of the matching card (max 10), else replace selected card with self]]></effect>
+    <effect><![CDATA[If targeting self, gain recruits cost of the matching card (max 10), else replace a card in hand with self]]></effect>
     <code><![CDATA[
     if ($mode == $cardpos)
       $mydata->Recruits+= min($carddb->GetCard($hisdata->Hand[$cardpos])->GetResources("Recruits"), 10);
@@ -6428,7 +6428,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Wall: +10<br />If there is a <b>Charge</b> in opponent's hand or <b>Enduring</b> in hand<br />Wall: +8]]></effect>
+    <effect><![CDATA[Wall: +10<br />If #<b>Charge</b> in opponent's hand > 0 or #<b>Enduring</b> in hand > 0<br />Wall: +8]]></effect>
     <code><![CDATA[
     $tmp = $this->KeywordCount($mydata->Hand, 'Enduring') + $this->KeywordCount($hisdata->Hand, 'Charge');
     $mydata->Wall+= ($tmp > 0) ? 18 : 10;
@@ -6498,7 +6498,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Discard lowest recruits cost <b>Soldier</b> from hand to get<br />Stock: +3]]></effect>
+    <effect><![CDATA[Discard lowest recruits cost <b>Soldier</b> from hand to gain<br />Stock: +3]]></effect>
     <code><![CDATA[
     $storage = array(); $min = 1000;
     for ($i = 1; $i <= 8; $i++)
@@ -6575,7 +6575,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Holy</keywords>
-    <effect><![CDATA[If opponent lowered your stock last round you gain lost stock back (max 6)]]></effect>
+    <effect><![CDATA[If opponent lowered your stock last round you regain lost stock (max 6)]]></effect>
     <code><![CDATA[
     if (($mychanges['Bricks'] < 0) OR ($mychanges['Gems'] < 0) OR ($mychanges['Recruits'] < 0))
     {
@@ -6597,7 +6597,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Soldier</keywords>
-    <effect><![CDATA[If there is a <b>Charge</b> in opponent's hand<br />Attack: 4<br />else<br />Attack: 10]]></effect>
+    <effect><![CDATA[If #<b>Charge</b> in opponent's hand > 0<br />Attack: 4<br />else<br />Attack: 10]]></effect>
     <code><![CDATA[$this->Attack((($this->KeywordCount($hisdata->Hand, "Charge") > 0) ? 4 : 10), $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2008-07-30</created>
     <modified>2008-12-24</modified>
@@ -6791,7 +6791,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Runic,Durable</keywords>
-    <effect><![CDATA[Attack: 24<br />Negates the negative effect of opponent's last round on Tower and Wall]]></effect>
+    <effect><![CDATA[Attack: 24<br />Negates the negative effect of opponent's last round on tower and wall]]></effect>
     <code><![CDATA[
     $this->Attack(24, $hisdata->Tower, $hisdata->Wall);
     $mydata->Tower-= min(0, $mychanges['Tower']); $mydata->Wall-= min(0, $mychanges['Wall']);
@@ -7011,7 +7011,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Player(s) with highest stock (total sum) receives 25% of his current stock]]></effect>
+    <effect><![CDATA[Player(s) with highest stock (total sum) gains 25% of his current stock]]></effect>
     <code><![CDATA[
     $my_res = $mydata->Bricks + $mydata->Gems + $mydata->Recruits;
     $his_res = $hisdata->Bricks + $hisdata->Gems + $hisdata->Recruits;
@@ -7041,7 +7041,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Durable</keywords>
-    <effect><![CDATA[Player gets 25% of his current stock (max 25 of each)]]></effect>
+    <effect><![CDATA[Gain 25% of your stock (max 25 of each)]]></effect>
     <code><![CDATA[
     $mydata->Bricks+= min(round($mydata->Bricks * 0.25), 25);
     $mydata->Gems+= min(round($mydata->Gems * 0.25), 25);
@@ -7201,7 +7201,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Legend</keywords>
-    <effect><![CDATA[Attack: 25<br />Magic: +1<br />Enemy magic: -1<br />Discard a <b>Mage</b> from hand to get<br />Gems: +30]]></effect>
+    <effect><![CDATA[Attack: 25<br />Magic: +1<br />Enemy magic: -1<br />Discard a <b>Mage</b> from hand to gain<br />Gems: +30]]></effect>
     <code><![CDATA[
     $this->Attack(25, $hisdata->Tower, $hisdata->Wall); $mydata->Magic+= 1; $hisdata->Magic-= 1;
     $storage = array();
@@ -7282,7 +7282,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Far sight</keywords>
-    <effect><![CDATA[Returns 1/3 of total cost of opponent's last card (max 4)]]></effect>
+    <effect><![CDATA[Returns 1/3 of cost of opponent's last card (max 4)]]></effect>
     <code><![CDATA[
     $tmp_card = $hislast_card;
     $mydata->Bricks+= min(round($tmp_card->GetResources("Bricks") / 3), 4);
@@ -7337,7 +7337,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Runic,Durable,Skirmisher</keywords>
-    <effect><![CDATA[Production x0<br />Negates the negative effect of opponent's last round on Wall (max 20)]]></effect>
+    <effect><![CDATA[Production x0<br />Negates the negative effect of opponent's last round on wall (max 20)]]></effect>
     <code><![CDATA[
     $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
     $mydata->Wall-= min(0, max(-20, $mychanges['Wall']));
@@ -7394,7 +7394,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Barbarian,Banish</keywords>
-    <effect><![CDATA[Attack: 13<br />Discard a <b>Legend</b> from opponent's hand to get<br />Enemy magic: -1]]></effect>
+    <effect><![CDATA[Attack: 13<br />Discard a <b>Legend</b> from opponent's hand to gain<br />Enemy magic: -1]]></effect>
     <code><![CDATA[
     $this->Attack(13, $hisdata->Tower, $hisdata->Wall);
     $storage = array();
@@ -7455,7 +7455,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Holy,Far sight</keywords>
-    <effect><![CDATA[If there is <b>Holy</b> in opponent's hand<br />Enemy tower: -1<br />else<br />Stock: +1<br />Enemy stock: -1]]></effect>
+    <effect><![CDATA[If #<b>Holy</b> in opponent's hand > 0<br />Enemy tower: -1<br />else<br />Stock: +1<br />Enemy stock: -1]]></effect>
     <code><![CDATA[
     if ($this->KeywordCount($hisdata->Hand, "Holy") > 0) $hisdata->Tower-= 1;
     else
@@ -7531,7 +7531,7 @@
     </cost>
     <modes>8</modes>
     <keywords/>
-    <effect><![CDATA[Discard one card from opponent's hand and pay half its cost<br />If not enough stock<br />Matching facility: -1]]></effect>
+    <effect><![CDATA[Discard a card from opponent's hand and pay half its cost<br />If not enough stock<br />Matching facility: -1]]></effect>
     <code><![CDATA[
     $dis_card = $carddb->GetCard($hisdata->Hand[$mode]);
     $hisdata->Hand[$mode] = $this->DrawCard($his_deck, $hisdata->Hand, $mode, 'DrawCard_different');
@@ -7700,7 +7700,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Gain resources equal to opponent's lowest and highest facility production]]></effect>
+    <effect><![CDATA[Gain resources equal to opponent's lowest and highest facility prod]]></effect>
     <code><![CDATA[
     $maximum = max($hisdata->Quarry, $hisdata->Magic, $hisdata->Dungeons);
     $minimum = min($hisdata->Quarry, $hisdata->Magic, $hisdata->Dungeons);
@@ -7880,7 +7880,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Player(s) with most <b>Alliance</b>, <b>Legend</b> and <b>Mage</b> gets<br />Lowest facility: +1]]></effect>
+    <effect><![CDATA[Player(s) with most <b>Alliance</b>, <b>Legend</b> and <b>Mage</b> gains<br />Lowest facility: +1]]></effect>
     <code><![CDATA[
     $my_count = $this->KeywordCount($mydata->Hand, "Alliance") + $this->KeywordCount($mydata->Hand, "Legend") + $this->KeywordCount($mydata->Hand, "Mage");
     $his_count = $this->KeywordCount($hisdata->Hand, "Alliance") + $this->KeywordCount($hisdata->Hand, "Legend") + $this->KeywordCount($hisdata->Hand, "Mage");
@@ -7914,7 +7914,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Far sight</keywords>
-    <effect><![CDATA[Summons an uncommon card not from player's deck]]></effect>
+    <effect><![CDATA[Summons an uncommon card not from your deck]]></effect>
     <code><![CDATA[$nextcard = $this->DrawCard(array_diff($carddb->GetList(array('class'=>"Uncommon")), $my_deck->Uncommon), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
     <created>2009-04-11</created>
     <modified>2010-06-21</modified>
@@ -7929,7 +7929,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Player(s) with most <b>Holy</b> in hand gets<br />Tower: +9<br />Wall: +17]]></effect>
+    <effect><![CDATA[Player(s) with most <b>Holy</b> in hand gains<br />Tower: +9<br />Wall: +17]]></effect>
     <code><![CDATA[
     $my_count = $this->KeywordCount($mydata->Hand, "Holy");
     $his_count = $this->KeywordCount($hisdata->Hand, "Holy");
@@ -7949,7 +7949,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Player(s) with lowest stock gets<br />Stock: +15<br />His opponent gets<br />Facilities: +1]]></effect>
+    <effect><![CDATA[Player(s) with lowest stock gains<br />Stock: +15<br />His opponent gains<br />Facilities: +1]]></effect>
     <code><![CDATA[
     $my_count = $mydata->Bricks + $mydata->Gems + $mydata->Recruits;
     $his_count = $hisdata->Bricks + $hisdata->Gems + $hisdata->Recruits;
@@ -8084,7 +8084,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +16<br />Enemy tower: -6<br />If there is a <b>Far sight</b> and a <b>Siege</b> in hand<br />Enemy tower: -10]]></effect>
+    <effect><![CDATA[Tower: +16<br />Enemy tower: -6<br />If #<b>Far sight</b> and #<b>Siege</b> in hand > 0<br />Enemy tower: -10]]></effect>
     <code><![CDATA[
     $mydata->Tower+= 16;
     if ($this->KeywordCount($mydata->Hand, "Far sight") > 0 AND $this->KeywordCount($mydata->Hand, "Siege") > 0)
@@ -8104,7 +8104,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +7<br />If there is a <b>Siege</b> in hand<br />Enemy tower: -4]]></effect>
+    <effect><![CDATA[Tower: +7<br />If #<b>Siege</b> in hand > 0<br />Enemy tower: -4]]></effect>
     <code><![CDATA[
     $mydata->Tower+= 7;
     if ($this->KeywordCount($mydata->Hand, "Siege") > 0) $hisdata->Tower-= 4;
@@ -8140,7 +8140,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Player(s) with fewest <b>Undead</b> in hand gets<br />Highest facility: -1]]></effect>
+    <effect><![CDATA[Player(s) with fewest <b>Undead</b> in hand gains<br />Highest facility: -1]]></effect>
     <code><![CDATA[
     $my_count = $this->KeywordCount($mydata->Hand, "Undead");
     $his_count = $this->KeywordCount($hisdata->Hand, "Undead");
@@ -8189,7 +8189,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Horde</keywords>
-    <effect><![CDATA[Wall: +15<br />Dungeon: +1<br />If there is a Troll in hand<br />Attack: 15]]></effect>
+    <effect><![CDATA[Wall: +15<br />Dungeon: +1<br />If #Troll in hand > 0<br />Attack: 15]]></effect>
     <code><![CDATA[
     $mydata->Wall+= 15; $mydata->Dungeons+= 1; $found = false;
     for ($i = 1; $i <= 8; $i++)
@@ -8227,7 +8227,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Beast</keywords>
-    <effect><![CDATA[Attack: 10<br />If last card was discarded bonus damage based on discarded card rarity (C-8, U-16, R-28)]]></effect>
+    <effect><![CDATA[Attack: 10<br />If last card was discarded bonus attack based on discarded card rarity (C-8, U-16, R-28)]]></effect>
     <code><![CDATA[
     $this->Attack(10, $hisdata->Tower, $hisdata->Wall);
     if ($mylast_action == 'discard')
@@ -8267,7 +8267,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Illusion,Undead</keywords>
-    <effect><![CDATA[Enemy lowest resource: -8]]></effect>
+    <effect><![CDATA[Opponent's lowest resource: -8]]></effect>
     <code><![CDATA[
     $min = min($hisdata->Bricks, $hisdata->Gems, $hisdata->Recruits);
     $res = array("Bricks" => $hisdata->Bricks, "Gems" => $hisdata->Gems, "Recruits" => $hisdata->Recruits);
@@ -8531,7 +8531,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Attack: Enemy lowest resource (max 12, min 6)]]></effect>
+    <effect><![CDATA[Attack: Opponent's lowest resource (max 12, min 6)]]></effect>
     <code><![CDATA[$this->Attack(max(min($hisdata->Bricks, $hisdata->Gems, $hisdata->Recruits, 12), 6), $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2009-07-22</created>
     <modified>2009-07-22</modified>
@@ -8596,7 +8596,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Holy,Banish</keywords>
-    <effect><![CDATA[Attack: Max tower - Tower height]]></effect>
+    <effect><![CDATA[Attack: Max tower - Tower]]></effect>
     <code><![CDATA[$this->Attack($max_tower - $mydata->Tower, $hisdata->Tower, $hisdata->Wall);]]></code>
     <created>2009-07-22</created>
     <modified>2010-12-24</modified>
@@ -8611,7 +8611,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[If there is a <b>Titan</b> in hand<br />Discard all non-<b>Titan</b> cards from hand]]></effect>
+    <effect><![CDATA[If #<b>Titan</b> in hand > 0<br />Discard all non-<b>Titan</b> cards from hand]]></effect>
     <code><![CDATA[
     if ($this->KeywordCount($mydata->Hand, "Titan") > 0)
       for ($i = 1; $i <= 8; $i++)
@@ -8667,7 +8667,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Lowest facility: +1<br />Lowest resource production x3]]></effect>
+    <effect><![CDATA[Lowest facility: +1<br />Lowest resource prod x3]]></effect>
     <code><![CDATA[
     $min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
     $fac = array("Quarry" => $mydata->Quarry, "Magic" => $mydata->Magic, "Dungeons" => $mydata->Dungeons);
@@ -8699,7 +8699,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Restoration</keywords>
-    <effect><![CDATA[Player(s) with lowest wall gets<br />Stock: +6]]></effect>
+    <effect><![CDATA[Player(s) with lowest wall gains<br />Stock: +6]]></effect>
     <code><![CDATA[
     if ($mydata->Wall <= $hisdata->Wall)
       { $mydata->Bricks+= 6; $mydata->Gems+= 6; $mydata->Recruits+= 6; }
@@ -8771,7 +8771,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Attack: 15<br />Discard all cards with total cost below 10]]></effect>
+    <effect><![CDATA[Attack: 15<br />Discard all cards with cost below 10]]></effect>
     <code><![CDATA[
     $this->Attack(15, $hisdata->Tower, $hisdata->Wall);
     for ($i = 1; $i <= 8; $i++)
@@ -8908,7 +8908,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Illusion</keywords>
-    <effect><![CDATA[If targeting self and not New, summons matching card, else replace selected card with self]]></effect>
+    <effect><![CDATA[If targeting self and not New, summons matching card, else replace a card in hand with self]]></effect>
     <code><![CDATA[
     if (!isset($mynewflags[$cardpos]) AND $mode == $cardpos)
       $nextcard = $hisdata->Hand[$cardpos];
@@ -8931,7 +8931,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Enemy tower: -3<br />If not New and matching card is New<br />Enemy tower: -5]]></effect>
+    <effect><![CDATA[Enemy tower: -3<br />If matching card is New and not New<br />Enemy tower: -5]]></effect>
     <code><![CDATA[
     if (!isset($mynewflags[$cardpos]) AND isset($hisnewflags[$cardpos])) $hisdata->Tower-=8;
     else $hisdata->Tower-=3;
@@ -8949,7 +8949,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Restoration</keywords>
-    <effect><![CDATA[Adds a newcard flag to a selected card in hand<br />Gems: +2]]></effect>
+    <effect><![CDATA[Adds New flag to the selected card in hand<br />Gems: +2]]></effect>
     <code><![CDATA[$mydata->NewCards[$mode] = 1; $mydata->Gems+= 2;]]></code>
     <created>2009-10-24</created>
     <modified>2010-09-23</modified>
@@ -8982,7 +8982,7 @@
     </cost>
     <modes>8</modes>
     <keywords/>
-    <effect><![CDATA[If targeting self and not New, discard the matching card, else replace selected card with self]]></effect>
+    <effect><![CDATA[If targeting self and not New, discard the matching card, else replace a card in hand with self]]></effect>
     <code><![CDATA[
     if (!isset($mynewflags[$cardpos]) AND $mode == $cardpos)
     {
@@ -9103,7 +9103,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Player(s) with lowest gems gets<br />Gems: +6<br />His opponent gets<br />Gems: +2]]></effect>
+    <effect><![CDATA[Player(s) with lowest gems gains<br />Gems: +6<br />His opponent gains<br />Gems: +2]]></effect>
     <code><![CDATA[
     if ($mydata->Gems < $hisdata->Gems) { $mydata->Gems+= 6; $hisdata->Gems+= 2; }
     elseif ($hisdata->Gems < $mydata->Gems) { $hisdata->Gems+= 6; $mydata->Gems+= 2; }
@@ -9543,7 +9543,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Gain 1 random resource for every New card in game]]></effect>
+    <effect><![CDATA[Gain 1 random resource for each New card in game]]></effect>
     <code><![CDATA[
     $count = 0;
     for ($i = 1; $i <= 8; $i++)
@@ -9650,7 +9650,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Burning,Destruction</keywords>
-    <effect><![CDATA[Player(s) with fewest <b>Burning</b> cards gets<br />Stock: -10<br />Respective player suffers 1 damage for each resource he lost]]></effect>
+    <effect><![CDATA[Player(s) with fewest <b>Burning</b> cards gains<br />Stock: -10<br />Respective player suffers 1 damage for each resource lost]]></effect>
     <code><![CDATA[
     $my_count = $this->KeywordCount($mydata->Hand, "Burning");
     $his_count = $this->KeywordCount($hisdata->Hand, "Burning");
@@ -9701,7 +9701,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Burning</keywords>
-    <effect><![CDATA[If last card played was <b>Burning</b><br />Return half of its cost (max 5)]]></effect>
+    <effect><![CDATA[If last card played was <b>Burning</b><br />Returns half of its cost (max 5)]]></effect>
     <code><![CDATA[
     if (($mylast_card->HasKeyword("Burning")) and ($mylast_action == 'play'))
     {
@@ -9871,7 +9871,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Destruction</keywords>
-    <effect><![CDATA[Player(s) with fewest <b>Aqua</b> in hand gets<br />Tower: -15<br />Wall: -15<br />Stock: -10]]></effect>
+    <effect><![CDATA[Player(s) with fewest <b>Aqua</b> in hand gains<br />Tower: -15<br />Wall: -15<br />Stock: -10]]></effect>
     <code><![CDATA[
     $my_count = $this->KeywordCount($mydata->Hand, "Aqua");
     $his_count = $this->KeywordCount($hisdata->Hand, "Aqua");
@@ -9923,7 +9923,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Alliance,Holy</keywords>
-    <effect><![CDATA[Lowest facility production x2]]></effect>
+    <effect><![CDATA[Lowest facility prod x2]]></effect>
     <code><![CDATA[
     $min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
     $fac = array("Quarry" => $mydata->Quarry, "Magic" => $mydata->Magic, "Dungeons" => $mydata->Dungeons);
@@ -10023,7 +10023,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Aqua,Brigand</keywords>
-    <effect><![CDATA[Attack: 7<br />If there is an <b>Aqua</b> in opponent's hand<br />Enemy stock: -3]]></effect>
+    <effect><![CDATA[Attack: 7<br />If #<b>Aqua</b> in opponent's hand > 0<br />Enemy stock: -3]]></effect>
     <code><![CDATA[
     $this->Attack(7, $hisdata->Tower, $hisdata->Wall);
     $tmp = $this->KeywordCount($hisdata->Hand, "Aqua");
@@ -10096,7 +10096,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Soldier,Far sight</keywords>
-    <effect><![CDATA[Attack: 6<br />If there is <b>Quick</b> or <b>Swift</b> in opponent's hand<br />Enemy tower: -6]]></effect>
+    <effect><![CDATA[Attack: 6<br />If #<b>Quick</b> + #<b>Swift</b> in opponent's hand > 0<br />Enemy tower: -6]]></effect>
     <code><![CDATA[
     $this->Attack(6, $hisdata->Tower, $hisdata->Wall);
     if (($this->KeywordCount($hisdata->Hand, "Quick") > 0) OR ($this->KeywordCount($hisdata->Hand, "Swift") > 0))
@@ -10152,7 +10152,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Player(s) with fewest different keywords in hand gets +10 tower]]></effect>
+    <effect><![CDATA[Player(s) with fewest different keywords in hand gains +10 tower]]></effect>
     <code><![CDATA[
     $mine = $this->CountDistinctKeywords($mydata->Hand);
     $his = $this->CountDistinctKeywords($hisdata->Hand);
@@ -10212,7 +10212,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Player(s) with highest tower gets +2 stock]]></effect>
+    <effect><![CDATA[Player(s) with highest tower gains +2 stock]]></effect>
     <code><![CDATA[
     if ($mydata->Tower >= $hisdata->Tower)
       { $mydata->Bricks+= 2; $mydata->Gems+= 2; $mydata->Recruits+= 2; }
@@ -10289,7 +10289,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Legend,Banish</keywords>
-    <effect><![CDATA[If there is a rare card in hand<br />Attack: 15<br />else<br />Attack: 25]]></effect>
+    <effect><![CDATA[If #rare cards in hand > 0<br />Attack: 15<br />else<br />Attack: 25]]></effect>
     <code><![CDATA[
     $found = false;
     for ($i = 1; $i <= 8; $i++)
@@ -10471,7 +10471,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Wall: +40<br />If New or matching card is New<br />Tower: +20]]></effect>
+    <effect><![CDATA[Wall: +40<br />If matching card is New or New<br />Tower: +20]]></effect>
     <code><![CDATA[
     $mydata->Wall+= 40;
     if (isset($mynewflags[$cardpos]) OR isset($hisnewflags[$cardpos])) $mydata->Tower+= 20;
@@ -10489,7 +10489,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Brigand</keywords>
-    <effect><![CDATA[All opponent's tokens are destroyed<br />Gain 1 random resource for each 10 destroyed tokens of the same kind]]></effect>
+    <effect><![CDATA[Opponent's tokens are destroyed<br />Gain 1 random resource for each 10 destroyed tokens of the same kind]]></effect>
     <code><![CDATA[
     $tmp = 0;
     foreach ($hisdata->TokenValues as $i => $value)
@@ -10738,7 +10738,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Stock: +2N<br />N = #Wheat farms in hand]]></effect>
+    <effect><![CDATA[Stock: +2N<br />N = #Wheat farm in hand]]></effect>
     <code><![CDATA[
     $tmp = 0;
     for ($i = 1; $i <= 8; $i++)
@@ -10796,7 +10796,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Illusion</keywords>
-    <effect><![CDATA[Replace your hand with cards from your deck of the same rarity as the replaced cards]]></effect>
+    <effect><![CDATA[Replace your hand with cards from your deck of the same rarity as replaced cards]]></effect>
     <code><![CDATA[
     for ($i = 1; $i <= 8; $i++)
       if ($i != $cardpos)
@@ -10887,7 +10887,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower = Max tower - Tower height<br />If Wall > 35<br />Wall = Max wall - Wall height]]></effect>
+    <effect><![CDATA[Tower = Max tower - Tower<br />If Wall > 35<br />Wall = Max wall - Wall]]></effect>
     <code><![CDATA[
     $mydata->Tower = $max_tower - $mydata->Tower;
     if ($mydata->Wall > 35) $mydata->Wall = $max_wall - $mydata->Wall;
@@ -11124,7 +11124,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Runic</keywords>
-    <effect><![CDATA[Highest facility production x2]]></effect>
+    <effect><![CDATA[Highest facility prod x2]]></effect>
     <code><![CDATA[
     $max = max($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
     $fac = array("Quarry" => $mydata->Quarry, "Magic" => $mydata->Magic, "Dungeons" => $mydata->Dungeons);
@@ -11261,7 +11261,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Gems: +8<br />If there is a <b>Far sight</b> in hand<br />Enemy Tower: -18<br />else<br />Attack: 20]]></effect>
+    <effect><![CDATA[Gems: +8<br />If #<b>Far sight</b> in hand > 0<br />Enemy tower: -18<br />else<br />Attack: 20]]></effect>
     <code><![CDATA[
     $mydata->Gems+= 8;
     if ($this->KeywordCount($mydata->Hand, "Far sight") > 0) $hisdata->Tower-= 18;
@@ -11305,7 +11305,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Opponent loses 5 random resources<br />Replace non-rare matching card with Palisade wall]]></effect>
+    <effect><![CDATA[Opponent loses 5 random resources<br />Replace non-rare matching card with Palisade]]></effect>
     <code><![CDATA[
     for ($i = 1; $i <= 5; $i++)
     {
@@ -11610,7 +11610,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Burning</keywords>
-    <effect><![CDATA[Attack: 14<br />Transfer selected non-rare card from opponent's hand to your hand]]></effect>
+    <effect><![CDATA[Attack: 14<br />Discard a non-rare card from opponent's hand<br />Summons the discarded card]]></effect>
     <code><![CDATA[
     $this->Attack(14, $hisdata->Tower, $hisdata->Wall);
     if ($carddb->GetCard($hisdata->Hand[$mode])->Class != "Rare")
@@ -11798,7 +11798,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Discard your hand and receive new starting hand]]></effect>
+    <effect><![CDATA[Discard your hand and draw new starting hand]]></effect>
     <code><![CDATA[
     $mydata->Hand = $this->DrawHand_initial($my_deck);
     $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;
