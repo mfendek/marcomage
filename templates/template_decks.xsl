@@ -205,33 +205,34 @@
 
 	<!-- advanced filter select menu - filters based upon appearance in card text -->
 	<xsl:variable name="advanced">
-		<value name="No adv. filter" value="none"          />
-		<value name="Attack"         value="Attack:"       />
-		<value name="Discard"        value="Discard "      />
-		<value name="Replace"        value="Replace "      />
-		<value name="Reveal"         value="Reveal"        />
-		<value name="Summon"         value="Summons"       />
-		<value name="Production"     value="Prod"          />
-		<value name="Wall +"         value="Wall: +"       />
-		<value name="Wall -"         value="Wall: -"       />
-		<value name="Tower +"        value="Tower: +"      />
-		<value name="Tower -"        value="Tower: -"      />
-		<value name="Facilities +"   value="Facilities: +" />
-		<value name="Facilities -"   value="Facilities: -" />
-		<value name="Magic +"        value="Magic: +"      />
-		<value name="Magic -"        value="Magic: -"      />
-		<value name="Quarry +"       value="Quarry: +"     />
-		<value name="Quarry -"       value="Quarry: -"     />
-		<value name="Dungeon +"      value="Dungeon: +"    />
-		<value name="Dungeon -"      value="Dungeon: -"    />
-		<value name="Stock +"        value="Stock: +"      />
-		<value name="Stock -"        value="Stock: -"      />
-		<value name="Gems +"         value="Gems: +"       />
-		<value name="Gems -"         value="Gems: -"       />
-		<value name="Bricks +"       value="Bricks: +"     />
-		<value name="Bricks -"       value="Bricks: -"     />
-		<value name="Recruits +"     value="Recruits: +"   />
-		<value name="Recruits -"     value="Recruits: -"   />
+		<value name="No adv. filter" value="none"                             />
+		<value name="Attack"         value="Attack:"                          />
+		<value name="Discard"        value="Discard "                         />
+		<value name="Replace"        value="Replace "                         />
+		<value name="Reveal"         value="Reveal"                           />
+		<value name="Summon"         value="Summons"                          />
+		<value name="Production"     value="Prod"                             />
+		<value name="Persistent"     value="Replace a card in hand with self" />
+		<value name="Wall +"         value="Wall: +"                          />
+		<value name="Wall -"         value="Wall: -"                          />
+		<value name="Tower +"        value="Tower: +"                         />
+		<value name="Tower -"        value="Tower: -"                         />
+		<value name="Facilities +"   value="Facilities: +"                    />
+		<value name="Facilities -"   value="Facilities: -"                    />
+		<value name="Magic +"        value="Magic: +"                         />
+		<value name="Magic -"        value="Magic: -"                         />
+		<value name="Quarry +"       value="Quarry: +"                        />
+		<value name="Quarry -"       value="Quarry: -"                        />
+		<value name="Dungeon +"      value="Dungeon: +"                       />
+		<value name="Dungeon -"      value="Dungeon: -"                       />
+		<value name="Stock +"        value="Stock: +"                         />
+		<value name="Stock -"        value="Stock: -"                         />
+		<value name="Gems +"         value="Gems: +"                          />
+		<value name="Gems -"         value="Gems: -"                          />
+		<value name="Bricks +"       value="Bricks: +"                        />
+		<value name="Bricks -"       value="Bricks: -"                        />
+		<value name="Recruits +"     value="Recruits: +"                      />
+		<value name="Recruits -"     value="Recruits: -"                      />
 	</xsl:variable>
 	<xsl:copy-of select="am:htmlSelectBox('AdvancedFilter', $param/AdvancedFilter, $advanced, '')"/>
 
