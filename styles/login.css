@@ -13,7 +13,7 @@ div#login_box /* login box layout */
 div#login_box h1 /* game title */
 {
 	font-size: xx-large;
-	margin: 0.5ex 0ex 0ex 0ex;
+	margin: 0.5ex 15% 0ex 0ex;
 	text-align: center;
 	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white, 0 0 4px white, 0 -5px 4px #ff3, 2px -10px 6px #fd3, -2px -15px 11px #f80, 2px -25px 18px #f20;
 }
@@ -22,7 +22,7 @@ div#login_box h2 /* game subtitle */
 {
 	font-size: large;
 	text-align: center;
-	margin: 0ex;
+	margin: 0ex 15% 0ex 0ex;
 }
 
 span#social_links /* social links */
