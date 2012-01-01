@@ -5563,7 +5563,7 @@
     </cost>
     <modes>0</modes>
     <keywords>Quick</keywords>
-    <effect><![CDATA[If Tower < 10 and Wall = 0<br />Tower = 25<br />Wall = 15<br />else<br />Stock: +1]]></effect>
+    <effect><![CDATA[If Tower < 10 and Wall = 0<br />Tower:= 25<br />Wall:= 15<br />else<br />Stock: +1]]></effect>
     <code><![CDATA[
     if (($mydata->Tower < 10) && ($mydata->Wall == 0))
       { $mydata->Tower= 25; $mydata->Wall= 15; }
@@ -10887,7 +10887,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower = Max tower - Tower<br />If Wall > 35<br />Wall = Max wall - Wall]]></effect>
+    <effect><![CDATA[Tower:= Max tower - Tower<br />If Wall > 35<br />Wall:= Max wall - Wall]]></effect>
     <code><![CDATA[
     $mydata->Tower = $max_tower - $mydata->Tower;
     if ($mydata->Wall > 35) $mydata->Wall = $max_wall - $mydata->Wall;
@@ -12359,7 +12359,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Enemy tower = 10<br />Enemy wall = 10]]></effect>
+    <effect><![CDATA[Enemy tower:= 10<br />Enemy wall:= 10]]></effect>
     <code><![CDATA[$hisdata->Tower = 10; $hisdata->Wall = 10;]]></code>
     <created>2011-09-24</created>
     <modified>2011-09-24</modified>
