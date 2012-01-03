@@ -8931,7 +8931,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Enemy tower: -3<br />If matching card is New and not New<br />Enemy tower: -5]]></effect>
+    <effect><![CDATA[Enemy tower: -3<br />If not New and matching card is New<br />Enemy tower: -5]]></effect>
     <code><![CDATA[
     if (!isset($mynewflags[$cardpos]) AND isset($hisnewflags[$cardpos])) $hisdata->Tower-=8;
     else $hisdata->Tower-=3;
@@ -10471,7 +10471,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Wall: +40<br />If matching card is New or New<br />Tower: +20]]></effect>
+    <effect><![CDATA[Wall: +40<br />If New or matching card is New<br />Tower: +20]]></effect>
     <code><![CDATA[
     $mydata->Wall+= 40;
     if (isset($mynewflags[$cardpos]) OR isset($hisnewflags[$cardpos])) $mydata->Tower+= 20;
