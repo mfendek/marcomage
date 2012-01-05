@@ -148,7 +148,7 @@
 		<br />
 		<p>Please select a book, chapter and part you wish to read.</p>
 		<br />
-		<p>Copyright 2008-2010 Lukáš Čajági</p>
+		<p>Copyright 2008-2012 Lukáš Čajági</p>
 
 		</xsl:otherwise>
 		</xsl:choose>
