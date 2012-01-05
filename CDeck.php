@@ -140,7 +140,7 @@
 
 			// Grofgul's deck
 			$deck_data = new CDeckData;
-			$deck_data->Common = array(1=>71,619,71,586,586,60,258,619,608,237,188,60,624,556,119);
+			$deck_data->Common = array(1=>71,619,71,586,584,60,258,619,608,237,188,60,624,556,119);
 			$deck_data->Uncommon = array(1=>617,405,375,123,154,388,618,146,432,388,118,617,174,617,388);
 			$deck_data->Rare = array(1=>407,377,407,377,546,546,377,389,389,199,389,407,199,199,546);
 			$deck_data->Tokens[1] = "Alliance";
@@ -156,7 +156,7 @@
 
 			// Demetrios' deck
 			$deck_data = new CDeckData;
-			$deck_data->Common = array(1=>387,301,79,91,570,559,521,524,149,575,289,501,606,559,606);
+			$deck_data->Common = array(1=>387,301,79,91,570,559,521,524,149,575,289,501,606,559,454);
 			$deck_data->Uncommon = array(1=>14,3,84,37,29,497,162,175,560,35,523,505,525,525,523);
 			$deck_data->Rare = array(1=>161,229,285,222,530,285,530,161,229,285,222,530,222,530,161);
 			$challenge_data['Demetrios'] = $deck_data;
