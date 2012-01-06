@@ -8912,7 +8912,7 @@
     </cost>
     <modes>8</modes>
     <keywords>Illusion</keywords>
-    <effect><![CDATA[If targeting self and not New, summons matching card, else replace a card in hand with self]]></effect>
+    <effect><![CDATA[If targeting self and not New, summons the matching card, else replace a card in hand with self]]></effect>
     <code><![CDATA[
     if (!isset($mynewflags[$cardpos]) AND $mode == $cardpos)
       $nextcard = $hisdata->Hand[$cardpos];
