@@ -241,4 +241,52 @@
       </his>
     </config>
   </challenge>
+  <challenge name="Gilgamesh">
+    <fullname>Gilgamesh the King of Heroes</fullname>
+    <description>Legends say that Gilgamesh was a hero that fulfilled every quest and defeated every enemy. Unmatched in combat he gained immortality by defeating the death itself. He now travels the world collecting rare treasures for his vast collection. To overcome boredom, he sometimes challenges mortals for a duel. Can you beat the King of Heroes and his legendary collection?</description>
+    <initialization>
+      <mine>
+        <quarry>3</quarry>
+        <magic>3</magic>
+        <dungeons>3</dungeons>
+        <bricks>15</bricks>
+        <gems>5</gems>
+        <recruits>10</recruits>
+        <tower>38</tower>
+        <wall>45</wall>
+      </mine>
+      <his>
+        <quarry>3</quarry>
+        <magic>3</magic>
+        <dungeons>3</dungeons>
+        <bricks>15</bricks>
+        <gems>5</gems>
+        <recruits>10</recruits>
+        <tower>38</tower>
+        <wall>45</wall>
+      </his>
+    </initialization>
+    <config>
+      <mine>
+        <quarry>80</quarry>
+        <magic>120</magic>
+        <dungeons>100</dungeons>
+        <bricks>4</bricks>
+        <gems>6</gems>
+        <recruits>5</recruits>
+        <tower>7.5</tower>
+        <wall>5</wall>
+      </mine>
+      <his>
+        <quarry>96</quarry>
+        <magic>144</magic>
+        <dungeons>120</dungeons>
+        <bricks>4.8</bricks>
+        <gems>7.2</gems>
+        <recruits>6</recruits>
+        <tower>9</tower>
+        <wall>6</wall>
+      </his>
+    </config>
+  </challenge>
 </challenges>
