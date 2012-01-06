@@ -7830,15 +7830,19 @@
     <class>Rare</class>
     <cost>
       <bricks>0</bricks>
-      <gems>24</gems>
-      <recruits>24</recruits>
+      <gems>20</gems>
+      <recruits>20</recruits>
     </cost>
-    <modes>0</modes>
-    <keywords>Legend,Durable,Swift,Far sight,Enduring (25)</keywords>
-    <effect><![CDATA[Attack: 15]]></effect>
-    <code><![CDATA[$this->Attack(15, $hisdata->Tower, $hisdata->Wall);]]></code>
+    <modes>8</modes>
+    <keywords>Legend,Swift,Enduring (10)</keywords>
+    <effect><![CDATA[Attack: 30<br />Replace a card in hand with self]]></effect>
+    <code><![CDATA[
+    $this->Attack(30, $hisdata->Tower, $hisdata->Wall);
+    $mydata->Hand[$mode] = $card->ID;
+    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+]]></code>
     <created>2009-04-11</created>
-    <modified>2010-10-11</modified>
+    <modified>2012-01-06</modified>
   </card>
   <card id="427">
     <name>Darkforge</name>
