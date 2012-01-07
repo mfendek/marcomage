@@ -81,25 +81,25 @@
 			<xsl:for-each select="$param/card_statistics/*">
 				<div class="skin_text">
 					<h4><xsl:value-of select="name()"/> cards</h4>
-					<h5>Best</h5>
+					<xsl:if test="count(bottom/*) &gt; 0"><h5>Top</h5></xsl:if>
+					<ol>
 					<xsl:for-each select="top/*">
-						<p>
+						<li>
 							<span><xsl:value-of select="factor"/></span>
-							<xsl:value-of select="position()"/>
-							<xsl:text>. </xsl:text>
 							<a href="{php:functionString('makeurl', 'Cards_details', 'card', id)}"><xsl:value-of select="name"/></a>
-						</p>
+						</li>
 					</xsl:for-each>
+					</ol>
 					<xsl:if test="count(bottom/*) &gt; 0">
-						<h5>Worst</h5>
+						<h5>Bottom</h5>
+						<ol>
 						<xsl:for-each select="bottom/*">
-							<p>
+							<li>
 								<span><xsl:value-of select="factor"/></span>
-								<xsl:value-of select="position()"/>
-								<xsl:text>. </xsl:text>
 								<a href="{php:functionString('makeurl', 'Cards_details', 'card', id)}"><xsl:value-of select="name"/></a>
-							</p>
+							</li>
 						</xsl:for-each>
+						</ol>
 					</xsl:if>
 				</div>
 			</xsl:for-each>
@@ -150,24 +150,24 @@
 
 			<div class="skin_text">
 				<h4>Suggested concepts</h4>
+				<ol>
 				<xsl:for-each select="$param/suggested/*">
-					<p>
+					<li>
 						<span><xsl:value-of select="count"/></span>
-						<xsl:value-of select="position()"/>
-						<xsl:text>. </xsl:text>
 						<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', Author)}"><xsl:value-of select="Author"/></a>
-					</p>
+					</li>
 				</xsl:for-each>
+				</ol>
 
 				<h4>Implemented concepts</h4>
+				<ol>
 				<xsl:for-each select="$param/implemented/*">
-					<p>
+					<li>
 						<span><xsl:value-of select="count"/></span>
-						<xsl:value-of select="position()"/>
-						<xsl:text>. </xsl:text>
 						<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', Author)}"><xsl:value-of select="Author"/></a>
-					</p>
+					</li>
 				</xsl:for-each>
+				</ol>
 			</div>
 		</xsl:when>
 		<!-- end subsection other statistics -->

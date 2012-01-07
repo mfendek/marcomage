@@ -22,12 +22,14 @@ div#statistics h4 /* column heading */
 {
 	margin-top: 1ex;
 	margin-bottom: 1ex;
+	text-align: center;
 }
 
 div#statistics h5 /* statistics info heading */
 {
 	margin-top: 1ex;
 	margin-bottom: 1ex;
+	text-align: center;
 	font-size: medium;
 }
 
@@ -38,7 +40,18 @@ div#statistics div.skin_text /* statistic group (subsection) layout */
 	padding: 0ex 1ex 1ex 1ex;
 }
 
-div#statistics div.skin_text > p > span /* float values to the right */
+div#statistics div.skin_text > ol /* data list layout */
+{
+	padding-left: 5ex;
+	margin: 0ex;
+}
+
+div#statistics div.skin_text > ol > li + li /* data list spacing */
+{
+	margin-top: 0.5ex;
+}
+
+div#statistics div.skin_text > ol > li > span, div#statistics div.skin_text > p > span /* data list values */
 {
 	float: right;
 	font-weight: bold;
