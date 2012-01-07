@@ -62,6 +62,7 @@
 				<value name="Reveal"         value="Reveal"        />
 				<value name="Summon"         value="Summons"       />
 				<value name="Production"     value="Prod"          />
+				<value name="Persistent"     value="Replace a card in hand with self" />
 				<value name="Wall +"         value="Wall: +"       />
 				<value name="Wall -"         value="Wall: -"       />
 				<value name="Tower +"        value="Tower: +"      />
