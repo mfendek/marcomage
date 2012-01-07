@@ -5057,7 +5057,7 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Replace your hand with Elven: market, ranger, apprentice, warlock, sorcereer, priestesses, enchantress and Princess of elves]]></effect>
+    <effect><![CDATA[Replace your hand with Elven: market, ranger, apprentice, warlock, sorceress, priestesses, enchantress and Princess of elves]]></effect>
     <code><![CDATA[
     $hand = array (629, 653, 655, 527, 190, 136, 526, 599);
     shuffle($hand); $newcards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1);
@@ -12414,7 +12414,7 @@
     <modified>2011-09-24</modified>
   </card>
   <card id="653">
-    <name>Elven sorcereer</name>
+    <name>Elven sorceress</name>
     <class>Common</class>
     <cost>
       <bricks>0</bricks>
