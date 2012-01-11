@@ -32,21 +32,33 @@
 	require_once('utils.php');
 	require_once('Access.php');
 	require_once('parser/parse.php');
+
+	function fail($message)
+	{
+	    error_log("MArcomage Fatal error: ".$message);
+	    header("Location: fail.php?error=".urlencode($message));
+	    die();
+	}
 	
+	if( !extension_loaded("XSL") )
+	    fail("PHP XSLT extension not loaded.");
+	    
+	if( !extension_loaded("PDO") )
+	    fail("PHP PDO extension not loaded.");
+
 	$db = new CDatabase($server, $username, $password, $database);
 	if( $db->status != 'SUCCESS' )
-	{
-			header("Content-type: text/html");
-			die("Unable to connect to database, aborting.");
-	}
+	    fail("Unable to connect to database.");
 
-	if( false === date_default_timezone_set("Etc/UTC")
-	||  false === $db->Query("SET time_zone='Etc/UTC'")
+	if( false === $db->Query("SELECT 1 FROM logins") )
+	    fail("Unable to query login table.");
+	
+	if( false === date_default_timezone_set("Etc/UTC") )
+	    fail("Unable to configure PHP time zone.");
+	
+	if( false === $db->Query("SET time_zone='Etc/UTC'")
 	&&  false === $db->Query("SET time_zone='+0:00'") )
-	{
-		header("Content-type: text/html");
-		die("Unable to configure time zone, aborting.");
-	}
+	    fail("Unable to configure SQL time zone.");
 	
 	$logindb = new CLogin($db);
 	$scoredb = new CScores($db);

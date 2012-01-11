@@ -6,22 +6,17 @@ order allow,deny
 allow from all
 </Files>
 
-# also need to allow index file
-<Files "index.php">
+# all the permitted entry points
+<Files ~ "^(index\.php|AJAXhandler\.php|fail\.php)$">
 allow from all
 </Files>
 
-# allow ajax handler
-<Files "AJAXhandler.php">
-allow from all
-</Files>
-
-# allow files for the browser
+# various browser-related file extensions
 <Files ~ "\.(html|css|js||jpg|jpeg|gif|png|ico)$">
 allow from all
 </Files>
 
-# allow robots.txt
+# crawler access restrictions
 <Files "robots.txt">
 allow from all
 </Files>
@@ -32,6 +27,7 @@ RewriteEngine On
 RewriteRule .* '/img/favicon-ie.ico' [L]
 </Files>
 
-
-# compression
+# compression of text
+<ifmodule mod_deflate.c>
 AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml application/xhtml+xml text/css text/javascript application/javascript application/x-javascript
+</ifmodule>
