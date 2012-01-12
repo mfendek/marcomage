@@ -49,13 +49,11 @@
 			$sessionid = (int)$sessionid; // makes sure that the input is a number
 			if ($sessionid == 0) { $status = 'ERROR_NO_SUCH_SESSION'; return false; }; // 0 is not a valid session id -_-`
 			
-			$result = $db->Query('SELECT `Last IP`, `Last Query` FROM `logins` WHERE `Username` = ? AND `SessionID` = ?', array($username, $sessionid));
+			$result = $db->Query('SELECT `Last Query` FROM `logins` WHERE `Username` = ? AND `SessionID` = ?', array($username, $sessionid));
 			if ($result === false) { $status = $db->status; return false; };
 			if (count($result) == 0) { $status = 'ERROR_NO_SUCH_SESSION'; return false; };
 			
 			$data = $result[0];
-			
-			if ($_SERVER['REMOTE_ADDR'] != $data['Last IP']) { $status = 'ERROR_WRONG_IP'; return false; };
 			
 			if ($_SERVER['REQUEST_TIME'] - strtotime($data['Last Query']) > $this->sessiontimeout) { $status = 'ERROR_SESSION_EXPIRED'; return false; };
 			
