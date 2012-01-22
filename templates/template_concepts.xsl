@@ -108,8 +108,8 @@
 						</xsl:if>
 					</p>
 				</th>
-				<th><p>Author</p></th>
 				<th><p>Rarity</p></th>
+				<th><p>Author</p></th>
 				<th>
 					<p>
 						<xsl:text>Last change</xsl:text>
@@ -139,8 +139,8 @@
 				<tr>
 					<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook)" /></td>
 					<td><p><a href="{php:functionString('makeurl', 'Concepts_details', 'CurrentConcept', id)}"><xsl:value-of select="name"/></a></p></td>
-					<td><p><a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', author)}"><xsl:value-of select="author"/></a></p></td>
 					<td><p><xsl:value-of select="class"/></p></td>
+					<td><p><a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', author)}"><xsl:value-of select="author"/></a></p></td>
 					<td>
 						<p>
 							<xsl:if test="am:datediff(lastchange, $param/notification) &lt; 0">
