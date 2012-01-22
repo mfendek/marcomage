@@ -1456,12 +1456,13 @@
 				$result = $game->PlayCard($player->Name(), $cardpos, $mode, $action);
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
+        // attempt to load replay (replay is optional)
 				$replay = $replaydb->GetReplay($gameid);
-				if (!$replay) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
+				if ($replay === false) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
 
 				$db->BeginTransaction();
 				if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if (!$replay->Update($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				if ($replay and !$replay->Update($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
 				$db->Commit();
 
 				if ($game->State == 'finished')
@@ -1546,12 +1547,13 @@
 				$result = $game->PlayCard(SYSTEM_NAME, $cardpos, $mode, $action);
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
+        // attempt to load replay (replay is optional)
 				$replay = $replaydb->GetReplay($gameid);
-				if (!$replay) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
+				if ($replay === false) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
 
 				$db->BeginTransaction();
 				if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if (!$replay->Update($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				if ($replay and !$replay->Update($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
 				$db->Commit();
 
 				if ($game->State == 'finished')
@@ -1596,12 +1598,13 @@
 					$result = $game->SurrenderGame();
 					if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
+          // attempt to load replay (replay is optional)
 					$replay = $replaydb->GetReplay($gameid);
-					if (!$replay) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
+					if ($replay === false) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
 
 					$db->BeginTransaction();
 					if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-					if (!$replay->Finish($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+					if ($replay and !$replay->Finish($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
 					$db->Commit();
 
 					// update deck statistics
@@ -1668,12 +1671,13 @@
 				$result = $game->SurrenderGame();
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
+        // attempt to load replay (replay is optional)
 				$replay = $replaydb->GetReplay($gameid);
-				if (!$replay) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
+				if ($replay === false) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
 
 				$db->BeginTransaction();
 				if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if (!$replay->Finish($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				if ($replay and !$replay->Finish($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
 				$db->Commit();
 
 				// update deck statistics
@@ -1739,12 +1743,13 @@
 				$result = $game->AbortGame($player->Name());
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
+        // attempt to load replay (replay is optional)
 				$replay = $replaydb->GetReplay($gameid);
-				if (!$replay) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
+				if ($replay === false) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
 
 				$db->BeginTransaction();
 				if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if (!$replay->Finish($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				if ($replay and !$replay->Finish($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
 				$db->Commit();
 
 				$current = "Games_details";
@@ -1776,12 +1781,13 @@
 				$result = $game->FinishGame($player->Name());
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
+        // attempt to load replay (replay is optional)
 				$replay = $replaydb->GetReplay($gameid);
-				if (!$replay) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
+				if ($replay === false) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
 
 				$db->BeginTransaction();
 				if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if (!$replay->Finish($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				if ($replay and !$replay->Finish($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
 				$db->Commit();
 
 				// update deck statistics

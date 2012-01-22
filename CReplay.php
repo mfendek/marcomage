@@ -73,7 +73,8 @@
 			$db = $this->db;
 
 			$result = $db->Query('SELECT `Player1`, `Player2` FROM `replays` WHERE `GameID` = ?', array($game_id));
-			if ($result === false or count($result) == 0) return false;
+			if ($result === false) return false;
+			if (count($result) == 0) return 0;
 			
 			$players = $result[0];
 			$player1 = $players['Player1'];
@@ -81,7 +82,7 @@
 			
 			$replay = new CReplay($game_id, $player1, $player2, $this);
 			$result = $replay->Load();
-			if (!$result) return false;
+			if (!$result) return $result;
 			
 			return $replay;
 		}
@@ -235,7 +236,8 @@
 			$db = $this->Replays->getDB();
 
 			$result = $db->Query('SELECT `Rounds`, `Turns`, `Data`, `Winner`, `EndType`, `GameModes`, `AI`, `ThreadID` FROM `replays` WHERE `Deleted` = FALSE AND `GameID` = ?', array($this->ID()));
-			if ($result === false or count($result) == 0) return false;
+			if ($result === false) return false;
+			if (count($result) == 0) return 0;
 
 			$data = $result[0];
 			$this->Rounds = $data['Rounds'];
