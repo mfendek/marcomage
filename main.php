@@ -2392,9 +2392,21 @@
 			if (isset($_POST['message_delete_confirm'])) // delete message confirmation
 			{
 				$messageid = $_POST['message_delete_confirm'];
-				$message = $messagedb->DeleteMessage($messageid, $player->Name());
+				$message = $messagedb->GetMessage($messageid, $player->Name());
 
 				if (!$message) { $error = "No such message!"; $current = "Messages"; break; }
+
+				// case 1: system message - delete completely
+				if ($message['Author'] == SYSTEM_NAME)
+				{
+					if (!$messagedb->DeleteSystemMessage($messageid)) { $error = "Failed to delete system message!"; $current = "Messages"; break; }
+				}
+				// case 2: standard message - hide
+				else
+				{
+					$message = $messagedb->DeleteMessage($messageid, $player->Name());
+					if (!$message) { $error = "Failed to delete message!"; $current = "Messages"; break; }
+				}
 
 				$information = "Message deleted";
 				$current = 'Messages';

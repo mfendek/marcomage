@@ -115,6 +115,16 @@
 			return true;
 		}
 		
+		public function DeleteSystemMessage($messageid)
+		{	
+			$db = $this->db;
+			
+			$result = $db->Query('DELETE FROM `messages` WHERE `MessageID` = ?', array($messageid));
+			if ($result === false) return false;
+			
+			return true;
+		}
+		
 		public function MassDeleteMessage(array $deleted_messages, $player_name)
 		{	
 			$db = $this->db;
