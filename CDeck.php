@@ -178,7 +178,7 @@
 
 			// Gilgamesh's deck
 			$deck_data = new CDeckData;
-			$deck_data->Common = array(1=>664,642,69,32,75,66,644,74,401,456,192,643,21,663,526);
+			$deck_data->Common = array(1=>664,642,69,32,75,66,644,74,401,456,192,643,21,663,148);
 			$deck_data->Uncommon = array(1=>435,277,70,616,156,450,614,181,427,622,61,110,181,232,464);
 			$deck_data->Rare = array(1=>654,125,235,426,615,138,637,239,4,611,234,233,428,9,141);
 			$challenge_data['Gilgamesh'] = $deck_data;
