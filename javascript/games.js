@@ -9,7 +9,16 @@ function GamesRefresh() // refresh user screen within the games list section
 
 function GameRefresh() // refresh user screen within the game
 {
-	window.location.replace($('a#game_refresh').attr('href'));
+	// case 1: it is not player's turn in current game and the next game button is available - go to next game
+	if ($("div#game button[name='discard_card']").length == 0 && $("div#game button[name='active_game']").length > 0)
+	{
+		$("div#game button[name='active_game']").click();
+	}
+	// case 2: stay in current game and refresh screen
+	else
+	{
+		window.location.replace($('a#game_refresh').attr('href'));
+	}
 }
 
 function StartGameRefresh()
