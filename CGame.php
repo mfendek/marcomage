@@ -709,8 +709,19 @@
 			if ($mylast_card->IsPlayAgainCard() and $mylast_action == 'play')
 			{ // case 1: changes are no longer available - fetch data from replay
 				$last_round_data = $this->LastRound();
-				$mychanges = $last_round_data[$playername]->Changes;
-				$hischanges = $last_round_data[$opponent]->Changes;
+
+				// case 1: failed to load replay data - log warning and proceed with default changes data
+				if (!$last_round_data)
+				{
+					error_log("Failed to load replay data game ID = ".$this->GameID." p1 = ".$this->Player1." p2 = ".$this->Player2);
+					$mychanges = $hischanges = array ('Quarry'=> 0, 'Magic'=> 0, 'Dungeons'=> 0, 'Bricks'=> 0, 'Gems'=> 0, 'Recruits'=> 0, 'Tower'=> 0, 'Wall'=> 0);
+				}
+				// case 2: success
+				else
+				{
+					$mychanges = $last_round_data[$playername]->Changes;
+					$hischanges = $last_round_data[$opponent]->Changes;
+				}
 			}
 			else
 			{ // case 2: changes are still available
@@ -1112,8 +1123,19 @@
 			if ($mylast_card->IsPlayAgainCard() and $mylast_action == 'play')
 			{ // case 1: changes are no longer available - fetch data from replay
 				$last_round_data = $this->LastRound();
-				$mychanges = $last_round_data[$playername]->Changes;
-				$hischanges = $last_round_data[$opponent]->Changes;
+
+				// case 1: failed to load replay data - log warning and proceed with default changes data
+				if (!$last_round_data)
+				{
+					error_log("Failed to load replay data game ID = ".$this->GameID." p1 = ".$this->Player1." p2 = ".$this->Player2);
+					$mychanges = $hischanges = array ('Quarry'=> 0, 'Magic'=> 0, 'Dungeons'=> 0, 'Bricks'=> 0, 'Gems'=> 0, 'Recruits'=> 0, 'Tower'=> 0, 'Wall'=> 0);
+				}
+				// case 2: success
+				else
+				{
+					$mychanges = $last_round_data[$playername]->Changes;
+					$hischanges = $last_round_data[$opponent]->Changes;
+				}
 			}
 			else
 			{ // case 2: changes are still available
