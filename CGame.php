@@ -1524,7 +1524,7 @@
 		private function DrawCard_list(array $list)
 		{
 			if (count($list) == 0) return 0; // "empty slot" card
-			return $list[array_rand($list)];
+			return $list[array_mt_rand($list)];
 		}
 		
 		// returns a new hand consisting of type-random cards chosen from the specified deck

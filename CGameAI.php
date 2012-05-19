@@ -327,7 +327,7 @@
 							$cur_choice['mode'] = $choice['mode'];
 							$best_choices[] = $cur_choice;
 						}
-					$best_choice = $best_choices[array_rand($best_choices)];
+					$best_choice = $best_choices[array_mt_rand($best_choices)];
 
 					$action = 'play';
 					$cardpos = $best_choice['pos'];

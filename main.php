@@ -1999,7 +1999,7 @@
 				{
 					// pick random starter deck
 					$starter_decks = $deckdb->StarterDecks();
-					$ai_deck = $starter_decks[array_rand($starter_decks)];
+					$ai_deck = $starter_decks[array_mt_rand($starter_decks)];
 				}
 				else // use deck provided by player
 					$ai_deck = $player->GetDeck($ai_deck_id);
@@ -2123,7 +2123,7 @@
 
 				// pick random starter deck
 				$starter_decks = $deckdb->StarterDecks();
-				$ai_deck = $starter_decks[array_rand($starter_decks)];
+				$ai_deck = $starter_decks[array_mt_rand($starter_decks)];
 
 				// set game modes
 				$hidden_cards = 'no';
@@ -3359,7 +3359,7 @@ case 'Players_details':
 	$params['profile']['export_deck'] = ($access_rights[$player->Type()]["export_deck"]) ? 'yes' : 'no';
 	$params['profile']['free_slots'] = $gamedb->CountFreeSlots1($player->Name());
 	$params['profile']['decks'] = $decks = $player->ListReadyDecks();
-	$params['profile']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)]['DeckID'] : '';
+	$params['profile']['random_deck'] = (count($decks) > 0) ? $decks[array_mt_rand($decks)]['DeckID'] : '';
 
 	$params['profile']['challenging'] = (isset($_POST['prepare_challenge'])) ? 'yes' : 'no';
 
@@ -3402,7 +3402,7 @@ case 'Messages':
 	$params['messages']['system_name'] = SYSTEM_NAME;
 
 	$decks = $params['messages']['decks'] = $player->ListReadyDecks();
-	$params['messages']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)]['DeckID'] : '';
+	$params['messages']['random_deck'] = (count($decks) > 0) ? $decks[array_mt_rand($decks)]['DeckID'] : '';
 	$params['messages']['deck_count'] = count($decks);
 	$params['messages']['free_slots'] = $gamedb->CountFreeSlots2($player->Name());
 
@@ -3529,8 +3529,8 @@ case 'Games':
 	$free_games = $gamedb->ListFreeGames($player->Name(), $hidden_f, $friendly_f, $long_f);
 	$params['games']['free_slots'] = $gamedb->CountFreeSlots1($player->Name());
 	$params['games']['decks'] = $decks = $player->ListReadyDecks();
-	$params['games']['random_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)]['DeckID'] : '';
-	$params['games']['random_ai_deck'] = (count($decks) > 0) ? $decks[array_rand($decks)]['DeckID'] : '';
+	$params['games']['random_deck'] = (count($decks) > 0) ? $decks[array_mt_rand($decks)]['DeckID'] : '';
+	$params['games']['random_ai_deck'] = (count($decks) > 0) ? $decks[array_mt_rand($decks)]['DeckID'] : '';
 	$params['games']['ai_challenges'] = $challengesdb->ListChallenges();
 
 	if (count($free_games) > 0)
