@@ -50,31 +50,31 @@
 	/// @return mixed one or multiple picked entries (returns corresponding keys)
 	function array_mt_rand(array $input, $num_req = 1)
 	{
-    // validate inputs
-    if (count($input) == 0 or count($input) < $num_req) return false;
+		// validate inputs
+		if (count($input) == 0 or count($input) < $num_req) return false;
 
 		// case 1: single entry
 		if ($num_req == 1)
 		{
-      $keys = array_keys($input);
-      return $keys[mt_rand(0, count($keys) - 1)];
+			$keys = array_keys($input);
+			return $keys[mt_rand(0, count($keys) - 1)];
 		}
 		// case 2: multiple entries
 		else
 		{
-      $picked_keys = array();
-      $available_keys = array_keys($input);
-      for ($i = 0; $i < $num_req; $i++)
-      {
-        $picked_key = mt_rand(0, count($available_keys) - 1);
-        $picked_keys[] = $available_keys[$picked_key];
-        unset($available_keys[$picked_key]);
+			$picked_keys = array();
+			$available_keys = array_keys($input);
+			for ($i = 0; $i < $num_req; $i++)
+			{
+				$picked_key = mt_rand(0, count($available_keys) - 1);
+				$picked_keys[] = $available_keys[$picked_key];
+				unset($available_keys[$picked_key]);
 
-        // contract array
-        $available_keys = array_values($available_keys);
-      }
+				// contract array
+				$available_keys = array_values($available_keys);
+			}
 
-      return $picked_keys;
+			return $picked_keys;
 		}
 	}
 
