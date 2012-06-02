@@ -361,7 +361,7 @@
     if (count($card_costs) > 0)
     {
       foreach ($card_costs as $i => $cost) if ($cost == $max) $max_cards[] = $i;
-      $dis_pos = $max_cards[array_rand($max_cards)];
+      $dis_pos = $max_cards[array_mt_rand($max_cards)];
       $hisdata->Hand[$dis_pos] = $this->DrawCard($his_deck, $hisdata->Hand, $dis_pos, 'DrawCard_different');
       $hisdata->NewCards[$dis_pos] = 1;
     }
@@ -894,7 +894,7 @@
     if (count($card_costs) > 0)
     {
       foreach ($card_costs as $i => $cost) if ($cost == $max) $max_cards[] = $i;
-      $dis_pos = $max_cards[array_rand($max_cards)];
+      $dis_pos = $max_cards[array_mt_rand($max_cards)];
       $hisdata->Hand[$dis_pos] = $this->DrawCard($his_deck, $hisdata->Hand, $dis_pos, 'DrawCard_different');
       $hisdata->NewCards[$dis_pos] = 1;
     }
@@ -6534,7 +6534,7 @@
       $min_array = array();
       foreach ($storage as $c_pos => $c_cost)
         if ($c_cost == $min) $min_array[$c_pos] = $min;
-      $discarded_pos = array_rand($min_array);
+      $discarded_pos = array_mt_rand($min_array);
       $mydata->Hand[$discarded_pos] = $this->DrawCard($my_deck, $mydata->Hand, $discarded_pos, 'DrawCard_random');
       $mydata->NewCards[$discarded_pos] = 1;
       $mydata->Bricks+= 3; $mydata->Gems+= 3; $mydata->Recruits+= 3;
@@ -7239,7 +7239,7 @@
         $storage[] = $i;
     if (count($storage) > 0)
     {
-      $discarded_pos = $storage[array_rand($storage)];
+      $discarded_pos = $storage[array_mt_rand($storage)];
       $mydata->Hand[$discarded_pos] = $this->DrawCard($my_deck, $mydata->Hand, $discarded_pos, 'DrawCard_random');
       $mydata->NewCards[$discarded_pos] = 1;
       $mydata->Gems+= 30;
@@ -7428,7 +7428,7 @@
         $storage[] = $i;
     if (count($storage) > 0)
     {
-      $discarded_pos = $storage[array_rand($storage)];
+      $discarded_pos = $storage[array_mt_rand($storage)];
       $hisdata->Hand[$discarded_pos] = $this->DrawCard($his_deck, $hisdata->Hand, $discarded_pos, 'DrawCard_different');
       $hisdata->NewCards[$discarded_pos] = 1;
       $hisdata->Magic-= 1;
@@ -7744,8 +7744,8 @@
     }
     else
     {
-      $chosen_facility_max = $top[array_rand($top)];
-      $chosen_facility_min = $bottom[array_rand($bottom)];
+      $chosen_facility_max = $top[array_mt_rand($top)];
+      $chosen_facility_min = $bottom[array_mt_rand($bottom)];
     }
     $mydata->$facilities[$chosen_facility_max]+= $hisdata->$chosen_facility_max;
     $mydata->$facilities[$chosen_facility_min]+= $hisdata->$chosen_facility_min;
@@ -7918,7 +7918,7 @@
       $min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
       $facilities = array('Quarry', 'Magic', 'Dungeons'); $temp = array();
       foreach ($facilities as $facility) if ($mydata->$facility == $min) $temp[] = $facility;
-      $chosen_facility = $temp[array_rand($temp)];
+      $chosen_facility = $temp[array_mt_rand($temp)];
       $mydata->$chosen_facility+= 1;
     }
     if ($my_count <= $his_count)
@@ -7926,7 +7926,7 @@
       $min = min($hisdata->Quarry, $hisdata->Magic, $hisdata->Dungeons);
       $facilities = array('Quarry', 'Magic', 'Dungeons'); $temp = array();
       foreach ($facilities as $facility) if ($hisdata->$facility == $min) $temp[] = $facility;
-      $chosen_facility = $temp[array_rand($temp)];
+      $chosen_facility = $temp[array_mt_rand($temp)];
       $hisdata->$chosen_facility+= 1;
     }
 ]]></code>
@@ -8043,8 +8043,8 @@
     }
     else
     {
-      $my_low_dis = $my_low[array_rand($my_low)];
-      $my_high_dis = $my_high[array_rand($my_high)];
+      $my_low_dis = $my_low[array_mt_rand($my_low)];
+      $my_high_dis = $my_high[array_mt_rand($my_high)];
     }
     $mydata->Hand[$my_low_dis] = $this->DrawCard($my_deck, $mydata->Hand, $my_low_dis, 'DrawCard_different');
     $mydata->Hand[$my_high_dis] = $this->DrawCard($my_deck, $mydata->Hand, $my_high_dis, 'DrawCard_different');
@@ -8059,8 +8059,8 @@
     }
     else
     {
-      $his_low_dis = $his_low[array_rand($his_low)];
-      $his_high_dis = $his_high[array_rand($his_high)];
+      $his_low_dis = $his_low[array_mt_rand($his_low)];
+      $his_high_dis = $his_high[array_mt_rand($his_high)];
     }
     $hisdata->Hand[$his_low_dis] = $this->DrawCard($his_deck, $hisdata->Hand, $his_low_dis, 'DrawCard_different');
     $hisdata->Hand[$his_high_dis] = $this->DrawCard($his_deck, $hisdata->Hand, $his_high_dis, 'DrawCard_different');
@@ -8178,7 +8178,7 @@
       $max = max($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
       $facilities = array('Quarry', 'Magic', 'Dungeons'); $temp = array();
       foreach ($facilities as $facility) if ($mydata->$facility == $max) $temp[] = $facility;
-      $chosen_facility = $temp[array_rand($temp)];
+      $chosen_facility = $temp[array_mt_rand($temp)];
       $mydata->$chosen_facility-= 1;
     }
     if ($my_count >= $his_count)
@@ -8186,7 +8186,7 @@
       $max = max($hisdata->Quarry, $hisdata->Magic, $hisdata->Dungeons);
       $facilities = array('Quarry', 'Magic', 'Dungeons'); $temp = array();
       foreach ($facilities as $facility) if ($hisdata->$facility == $max) $temp[] = $facility;
-      $chosen_facility = $temp[array_rand($temp)];
+      $chosen_facility = $temp[array_mt_rand($temp)];
       $hisdata->$chosen_facility-= 1;
     }
 ]]></code>
@@ -8303,7 +8303,7 @@
     $temp = array();
     foreach ($res as $resource => $r_value)
       if ($r_value == $min) $temp[$resource] = $r_value;
-    $chosen = array_rand($temp);
+    $chosen = array_mt_rand($temp);
     $hisdata->$chosen-= 8;
 ]]></code>
     <created>2009-07-22</created>
@@ -8404,14 +8404,14 @@
     $temp_max = array();
     foreach ($fac as $facility => $f_value)
       if ($f_value == $max) $temp_max[$facility] = $f_value;
-    $chosen_max = array_rand($temp_max);
+    $chosen_max = array_mt_rand($temp_max);
     $mydata->$chosen_max+= 1;
     $min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
     $fac = array("Quarry" => $mydata->Quarry, "Magic" => $mydata->Magic, "Dungeons" => $mydata->Dungeons);
     $temp_min = array();
     foreach ($fac as $facility => $f_value)
       if ($f_value == $min) $temp_min[$facility] = $f_value;
-    $chosen_min = array_rand($temp_min);
+    $chosen_min = array_mt_rand($temp_min);
     $mydata->$chosen_min+= 2;
 ]]></code>
     <created>2009-07-22</created>
@@ -8542,7 +8542,7 @@
         $storage[] = $i;
     if (count($storage) > 0)
     {
-      $dis_index = $storage[array_rand($storage)];
+      $dis_index = $storage[array_mt_rand($storage)];
       $mydata->Hand[$dis_index] = $this->DrawCard($my_deck, $mydata->Hand, $dis_index, 'DrawCard_random');
       $mydata->NewCards[$dis_index] = 1;
     }
@@ -8703,14 +8703,14 @@
     $temp = array();
     foreach ($fac as $facility => $f_value)
       if ($f_value == $min) $temp[$facility] = $f_value;
-    $chosen = array_rand($temp);
+    $chosen = array_mt_rand($temp);
     $mydata->$chosen+= 1;
     $min = min($mydata->Bricks, $mydata->Gems, $mydata->Recruits);
     $res = array("Bricks" => $mydata->Bricks, "Gems" => $mydata->Gems, "Recruits" => $mydata->Recruits);
     $temp = array();
     foreach ($res as $resource => $r_value)
       if ($r_value == $min) $temp[$resource] = $r_value;
-    $chosen = array_rand($temp);
+    $chosen = array_mt_rand($temp);
     if ($chosen == 'Bricks') $bricks_production*= 3;
     elseif ($chosen == 'Gems') $gems_production*= 3;
     elseif ($chosen == 'Recruits') $recruits_production*= 3;
@@ -9206,14 +9206,14 @@
     $temp_max = array();
     foreach ($res as $resource => $r_value)
       if ($r_value == $max) $temp_max[$resource] = $r_value;
-    $chosen_max = array_rand($temp_max);
+    $chosen_max = array_mt_rand($temp_max);
     $mydata->$chosen_max-= 3;
     $min = min($mydata->Bricks, $mydata->Gems, $mydata->Recruits);
     $res = array("Bricks" => $mydata->Bricks, "Gems" => $mydata->Gems, "Recruits" => $mydata->Recruits);
     $temp_min = array();
     foreach ($res as $resource => $r_value)
       if ($r_value == $min) $temp_min[$resource] = $r_value;
-    $chosen_min = array_rand($temp_min);
+    $chosen_min = array_mt_rand($temp_min);
     $mydata->$chosen_min+= 4;
 ]]></code>
     <created>2009-10-24</created>
@@ -9508,7 +9508,7 @@
     $temp_max = array();
     foreach ($fac as $facility => $f_value)
       if ($f_value == $max) $temp_max[$facility] = $f_value;
-    $chosen_max = array_rand($temp_max);
+    $chosen_max = array_mt_rand($temp_max);
     $hisdata->$chosen_max-= 1;
 ]]></code>
     <created>2010-01-20</created>
@@ -9619,7 +9619,7 @@
     if (count($card_costs) > 0)
     {
       foreach ($card_costs as $i => $cost) if ($cost == $max) $max_cards[] = $i;
-      $dis_pos = $max_cards[array_rand($max_cards)];
+      $dis_pos = $max_cards[array_mt_rand($max_cards)];
       $hisdata->Hand[$dis_pos] = $this->DrawCard($his_deck, $hisdata->Hand, $dis_pos, 'DrawCard_different');
       $hisdata->NewCards[$dis_pos] = 1;
     }
@@ -9970,7 +9970,7 @@
     $temp = array();
     foreach ($fac as $facility => $f_value)
       if ($f_value == $min) $temp[$facility] = $f_value;
-    $chosen = array_rand($temp);
+    $chosen = array_mt_rand($temp);
     if ($chosen == 'Quarry') $bricks_production*= 2;
     elseif ($chosen == 'Magic') $gems_production*= 2;
     elseif ($chosen == 'Dungeons') $recruits_production*= 2;
@@ -9998,13 +9998,13 @@
     }
     if ((count($my_storage) > 0) AND (count($my_storage) >= count($his_storage)))
     {
-      $pos = $my_storage[array_rand($my_storage)];
+      $pos = $my_storage[array_mt_rand($my_storage)];
       $mydata->Hand[$pos] = $this->DrawCard($my_deck->Rare, $mydata->Hand, $pos, 'DrawCard_list');
       $mydata->NewCards[$pos] = 1;
     }
     if ((count($his_storage) > 0) AND (count($my_storage) <= count($his_storage)))
     {
-      $pos = $his_storage[array_rand($his_storage)];
+      $pos = $his_storage[array_mt_rand($his_storage)];
       $hisdata->Hand[$pos] = $this->DrawCard($his_deck->Rare, $hisdata->Hand, $pos, 'DrawCard_list');
       $hisdata->NewCards[$pos] = 1;
     }
@@ -10112,7 +10112,7 @@
         $storage[] = $i;
     if (count($storage) > 0)
     {
-      $dis_index = $storage[array_rand($storage)];
+      $dis_index = $storage[array_mt_rand($storage)];
       if (!$carddb->GetCard($mydata->Hand[$dis_index])->HasKeyword("Unliving")) $mydata->Wall+= 5;
       $mydata->Hand[$dis_index] = $this->DrawCard($my_deck, $mydata->Hand, $dis_index, 'DrawCard_random');
       $mydata->NewCards[$dis_index] = 1;
@@ -11165,7 +11165,7 @@
     $temp = array();
     foreach ($fac as $facility => $f_value)
       if ($f_value == $max) $temp[$facility] = $f_value;
-    $chosen = array_rand($temp);
+    $chosen = array_mt_rand($temp);
     if ($chosen == 'Quarry') $bricks_production*= 2;
     elseif ($chosen == 'Magic') $gems_production*= 2;
     elseif ($chosen == 'Dungeons') $recruits_production*= 2;
@@ -11782,7 +11782,7 @@
     $temp = array();
     foreach ($fac as $facility => $f_value)
       if ($f_value == $min) $temp[$facility] = $f_value;
-    $chosen = array_rand($temp);
+    $chosen = array_mt_rand($temp);
     $mydata->$chosen+= 2;
 ]]></code>
     <created>2011-01-01</created>
@@ -11939,7 +11939,7 @@
       if ($i != $cardpos and $costs[$i] == $max) $high[] = $mydata->Hand[$i];
       if ($costs[$i + 8] == $max) $high[] = $hisdata->Hand[$i];
     }
-    $nextcard = $high[array_rand($high)];
+    $nextcard = $high[array_mt_rand($high)];
 ]]></code>
     <created>2011-04-24</created>
     <modified>2011-04-24</modified>
@@ -12473,7 +12473,7 @@
     $min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
     $facilities = array('Quarry', 'Magic', 'Dungeons'); $temp = array();
     foreach ($facilities as $facility) if ($mydata->$facility == $min) $temp[] = $facility;
-    $chosen_facility = $temp[array_rand($temp)];
+    $chosen_facility = $temp[array_mt_rand($temp)];
     $mydata->$chosen_facility+= 1;
     $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
     ]]></code>
