@@ -660,6 +660,7 @@
 			// prepare basic information
 			$score = $scoredb->GetScore($playername);
 			$opponent = ($this->Player1 == $playername) ? $this->Player2 : $this->Player1;
+			$round = $this->Round;
 			$mydata = &$this->GameData[$playername];
 			$hisdata = &$this->GameData[$opponent];
 			$my_deck = $mydata->Deck;
@@ -1074,6 +1075,7 @@
 			
 			// prepare basic information
 			$opponent = ($this->Player1 == $playername) ? $this->Player2 : $this->Player1;
+			$round = $this->Round;
 			$mydata = $this->GameData[$playername];
 			$hisdata = $this->GameData[$opponent];
 			$my_deck = $mydata->Deck;
@@ -1818,7 +1820,7 @@
 
 		public function EffectKeywords()
 		{
-      return array('Durable', 'Quick', 'Swift', 'Far sight', 'Banish', 'Skirmisher', 'Horde', 'Rebirth', 'Flare attack', 'Frenzy', 'Enduring', 'Charge', 'Siege');
+      return array('Durable', 'Quick', 'Swift', 'Far sight', 'Banish', 'Skirmisher', 'Horde', 'Rebirth', 'Flare attack', 'Frenzy', 'Aria', 'Enduring', 'Charge', 'Siege');
 		}
 
 		private function LastRound() // fetch data of the first turn of the current round

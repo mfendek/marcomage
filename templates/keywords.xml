@@ -34,10 +34,46 @@
 ]]></code>
   </keyword>
   <keyword>
+    <name>Aria</name>
+    <basic_gain>0</basic_gain>
+    <bonus_gain>0</bonus_gain>
+    <description>If Round is divisible by 8 or Round + 1 is divisible by 8, discards N lowest cost common cards from hand, N based on played card rarity (C-1, U-2, R-4).</description>
+    <lore><![CDATA[
+    <p>Element of Air is often underestimated by novice mages, because other elements such as Fire produces much more immediate effects. Moreover, mastering it requires much effort and patience and even then it takes perfect timing to put it to good use. Successful execution however, is rewarded with the ability to dramatically change the conditions on the battlefield, thus producing unexpected turn of events and hampering opponent's strategy.</p>
+]]></lore>
+    <code><![CDATA[
+    if (($round % 8) == 0 or (($round + 1) % 8) == 0)
+    {
+      $storage = array();
+      for ($i = 1; $i <= 8; $i++)
+        if ($i != $cardpos)
+        {
+          $cur_card = $carddb->GetCard($mydata->Hand[$i]);
+          if ($cur_card->Class == 'Common') $storage[$i] = $cur_card->GetResources("");
+        }
+      if (count($storage) > 0)
+      {
+        asort($storage);
+        $amounts = array('Common' => 1, 'Uncommon' => 2, 'Rare' => 4);
+        $amount = $amounts[$card->Class]; $i = 0;
+
+        foreach( $storage as $discarded_pos => $cost )
+        {
+          if ($i == $amount) break;
+
+          $mydata->Hand[$discarded_pos] = $this->DrawCard($my_deck, $mydata->Hand, $discarded_pos, 'DrawCard_random');
+          $mydata->NewCards[$discarded_pos] = 1;
+          $i++;
+        }
+      }
+    }
+]]></code>
+  </keyword>
+  <keyword>
     <name>Banish</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>Discard one random Durable or Persistent card from enemy hand (if there is one). Common cards can discard common and uncommon cards, uncommon cards can discard any rarity. Rare cards can also discard any rarity, but they have additional effect (player gains stock equal to discarded card cost). Cards with highest discardable rarity are preferred.</description>
+    <description>Discard one random Durable, Persistent or Rebirth card from opponent's hand (if there is one). Common cards can discard common and uncommon cards, uncommon cards can discard any rarity. Rare cards can also discard any rarity, but they have additional effect (player gains stock equal to discarded card cost). Cards with highest discardable rarity are preferred.</description>
     <lore><![CDATA[<p>Banish is a spell that was invented solely for the purpose to counter the durable materials and render them useless. Banish can be cast directly on target or can be used to enchant a weapon to hold the banish property.</p>]]></lore>
     <code><![CDATA[
     // target card is discarded only if it has same or lower rarity than the played card
@@ -53,7 +89,7 @@
       $dis_rank = $rarities[$dis_class];
       
       // pick only cards that can be discarded by played card
-      if (($dis_card->HasKeyword("Durable") or in_array($hisdata->Hand[$i], $persistent)) and $dis_rank <= ($played_rank + 1)) $storage[$dis_class][] = $i;
+      if (($dis_card->HasKeyword("Durable") or $dis_card->HasKeyword("Rebirth") or in_array($hisdata->Hand[$i], $persistent)) and $dis_rank <= ($played_rank + 1)) $storage[$dis_class][] = $i;
     }
     
     if ((count($storage['Common']) + count($storage['Uncommon']) + count($storage['Rare'])) > 0)
@@ -238,7 +274,7 @@
       $tmp = 0;
       for ($i = 1; $i <= 8; $i++) if ($mydata->Hand[$i] == 131) $tmp++;
       
-      if ($tmp > 0) $gems_production*= 2; // when there already is a dragon egg on hand add gems production
+      if ($tmp > 0) $gems_production*= 2; // when there already is a dragon egg in hand add gems production
       else $nextcard = 131; // add dragon egg otherwise
     }
 ]]></code>
@@ -247,7 +283,7 @@
     <name>Durable</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>Card stays on hand.</description>
+    <description>Card stays in hand.</description>
     <lore><![CDATA[<p>The dwarves invented the durable materials so they could reuse them many times, which would save much resources. They usage of such materials quickly spread to other factions as well. With everyone relying on such materials it was only a matter of time before someone would found its weakness and exploit it. Thus the Banish spell which would render the durable materials useless was invented.</p>]]></lore>
     <code><![CDATA[$nextcard = $cardid;]]></code>
   </keyword>
@@ -419,11 +455,27 @@
     <name>Illusion</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>If an Illusion card is played after playing a different non-common Illusion card, summons a rare card from enemy deck.</description>
+    <description>If an Illusion card is played after playing a different non-common Illusion card, lowest rarity card in hand is replaced with a rare card from opponent's deck.</description>
     <lore><![CDATA[<p>Illusion magic manipulates the environment rather than the target. Within the changed environment the target becomes confused and often the whole damage done by the spell is done by the target itself. Illusion mages often play important rules in political intrigues.</p>]]></lore>
     <code><![CDATA[
     if ($mylast_card->HasKeyword("Illusion") AND $mylast_action == 'play' AND $mylast_card->Class != 'Common' AND $cardid != $mylast_card->ID)
-      $nextcard = $this->DrawCard($his_deck->Rare, $mydata->Hand, $cardpos, 'DrawCard_list');
+    {
+      $storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
+      for ($i = 1; $i <= 8; $i++)
+      {
+        $cur_card = $carddb->GetCard($mydata->Hand[$i]);
+        $rarity = $cur_card->Class;
+        if ($i != $cardpos) $storage[$rarity][] = $i;
+      }
+      if ((count($storage['Common']) + count($storage['Uncommon']) + count($storage['Rare'])) > 0)
+      {
+        shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
+        $storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
+        $discarded_pos = array_shift($storage_temp);
+        $mydata->Hand[$discarded_pos] = $this->DrawCard($his_deck->Rare, $mydata->Hand, $discarded_pos, 'DrawCard_list');
+        $mydata->NewCards[$discarded_pos] = 1;
+      }
+    }
 ]]></code>
   </keyword>
   <keyword>
@@ -490,11 +542,12 @@
     <name>Rebirth</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>when played and number of Burning cards in game is greater than 3, the card stays on hand and you will get 16 additional gems.</description>
+    <description>If #Burning + #Legend + #Mage cards in hand is greater than 3, the card stays in hand and half of the gems cost of the played card will be returned.</description>
     <lore><![CDATA[<p>Ancient creatures are often very difficult to defeat, but most feared are those who will not die on defeat, they will just be reborn and will continue the fight once again. However, they are not immortal. To be successfully reborn they need to draw power from their environment. Once they have depleted all the reserves they will meet their final death.</p>]]></lore>
     <code><![CDATA[
-    if (($this->KeywordCount($mydata->Hand, "Burning") + $this->KeywordCount($hisdata->Hand, "Burning")) > 3)
-      { $nextcard = $cardid; $mydata->Gems+= 16; }
+    $count = $this->KeywordCount($mydata->Hand, "Burning") + $this->KeywordCount($mydata->Hand, "Legend") + $this->KeywordCount($mydata->Hand, "Mage");
+    if ($count > 3)
+      { $nextcard = $cardid; $mydata->Gems+= round($card->Gems / 2); }
 ]]></code>
   </keyword>
   <keyword>
