@@ -12832,7 +12832,7 @@
     <effect><![CDATA[Attack: 30<br />If not in your deck<br />Attack: 60<br />else<br />Recruits: +20]]></effect>
     <code><![CDATA[
     $this->Attack(30, $hisdata->Tower, $hisdata->Wall);
-    if (in_array($card->ID, $my_deck->Rare)) $this->Attack(60, $hisdata->Tower, $hisdata->Wall);
+    if (!in_array($card->ID, $my_deck->Rare)) $this->Attack(60, $hisdata->Tower, $hisdata->Wall);
     else $mydata->Recruits+= 20;
 ]]></code>
     <created>2012-06-24</created>
