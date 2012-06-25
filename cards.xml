@@ -6546,7 +6546,7 @@
     {
       foreach ($storage as $rarity => $rarity_cards)
         foreach ($rarity_cards as $c_pos => $c_cost)
-          if ($c_cost == $min) $min_array[$rarity][$c_pos] = $min;
+          if ($c_cost == $min) $min_array[$rarity][] = $c_pos;
 
       shuffle($min_array['Common']); shuffle($min_array['Uncommon']); shuffle($min_array['Rare']);
       $min_array = array_merge($min_array['Common'], $min_array['Uncommon'], $min_array['Rare']);
