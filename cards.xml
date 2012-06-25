@@ -12870,7 +12870,7 @@
     <code><![CDATA[
     $this->Attack(10, $hisdata->Tower, $hisdata->Wall);
     if ($mylast_action == "discard")
-      { $nextcard = $this->DrawCard($my_deck->Rare, $mydata->Hand, $cardpos, 'DrawCard_list'); }
+      { $nextcard = $this->DrawCard($carddb->GetList(array('class'=>"Rare")), $mydata->Hand, $cardpos, 'DrawCard_list'); }
 ]]></code>
     <created>2012-06-24</created>
     <modified>2012-06-24</modified>
