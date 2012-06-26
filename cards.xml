@@ -13040,12 +13040,12 @@
     </cost>
     <modes>0</modes>
     <keywords/>
-    <effect><![CDATA[Tower: +N<br />Wall: +N<br />Enemy tower: -#Enemy facilities<br />N = #Facilities]]></effect>
+    <effect><![CDATA[Tower: +N<br />Wall: +N<br />N = #Facilities<br />Enemy tower: -#Enemy facilities]]></effect>
     <code><![CDATA[
     $my_faciltities = $mydata->Quarry + $mydata->Magic + $mydata->Dungeons;
     $his_faciltities = $hisdata->Quarry + $hisdata->Magic + $hisdata->Dungeons;
     $mydata->Tower+= $my_faciltities; $mydata->Wall+= $my_faciltities;
-    $this->Attack($his_faciltities, $hisdata->Tower, $hisdata->Wall);
+    $hisdata->Tower-= $his_faciltities;
 ]]></code>
     <created>2012-06-24</created>
     <modified>2012-06-24</modified>
