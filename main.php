@@ -1538,6 +1538,12 @@
 				// check if AI move is allowed
 				if ($game->GetGameMode('AIMode') == 'no') { $error = 'AI move not allowed!'; $current = 'Games_details'; break; }
 
+				// only allow AI move if the game is still on
+				if ($game->State != 'in progress') { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
+
+				// only allow action when it's the AI's turn
+				if ($game->Current != SYSTEM_NAME) { $error = 'Action only allowed on your turn!'; $current = 'Games_details'; break; }
+
 				// the rest of the checks are done internally
 				$decision = $game->DetermineAIMove();
 				$cardpos = $decision['cardpos'];
