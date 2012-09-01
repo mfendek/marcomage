@@ -1997,7 +1997,20 @@
 				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				$deck_id = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
-				$deck = $player->GetDeck($deck_id);
+
+				// case 1: AI challenge deck was selected
+				if (in_array($deck_id, $challengesdb->ListChallengeNames()))
+				{
+					if (!$access_rights[$player->Type()]["edit_all_card"]) { $error = 'Access denied.'; $current = 'Games'; break; }
+
+					$challenge_decks = $deckdb->ChallengeDecks();
+					$deck = $challenge_decks[$deck_id];
+				}
+				// case 2: standard deck was selected
+				else
+				{
+					$deck = $player->GetDeck($deck_id);
+				}
 
 				// process AI deck
 				$ai_deck_id = isset($_POST['SelectedAIDeck']) ? $_POST['SelectedAIDeck'] : 'starter_deck';
@@ -3577,6 +3590,8 @@ case 'Games':
 			$params['games']['hosted_games'][$i]['game_modes'] = $data['GameModes'];
 		}
 	}
+
+	$params['games']['edit_all_card'] = (($access_rights[$player->Type()]["edit_all_card"]) ? 'yes' : 'no');
 
 	break;
 

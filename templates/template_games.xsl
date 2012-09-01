@@ -354,6 +354,12 @@
 					<xsl:for-each select="$param/decks/*">
 						<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
 					</xsl:for-each>
+					<xsl:if test="$param/edit_all_card = 'yes'">
+						<xsl:for-each select="$param/ai_challenges/*">
+							<xsl:sort select="fullname" order="ascending" />
+							<option value="{name}"><xsl:value-of select="name"/></option>
+						</xsl:for-each>
+					</xsl:if>
 				</select>
 				<span>Select AI deck</span>
 				<select name="SelectedAIDeck" size="1" title="AI deck (used only when playing against AI)">
