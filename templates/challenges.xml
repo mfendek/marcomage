@@ -289,4 +289,52 @@
       </his>
     </config>
   </challenge>
+  <challenge name="Duroth">
+    <fullname>Duroth the Eternal</fullname>
+    <description>Few dragons live to become as old as Duroth. Disgusted with the society built by the younger generation at his homeland, he left to travel the world. No one knows what is it that he is seeking, but one thing is certain - he is a force to be reckon with.</description>
+    <initialization>
+      <mine>
+        <quarry>3</quarry>
+        <magic>5</magic>
+        <dungeons>4</dungeons>
+        <bricks>15</bricks>
+        <gems>5</gems>
+        <recruits>10</recruits>
+        <tower>50</tower>
+        <wall>60</wall>
+      </mine>
+      <his>
+        <quarry>3</quarry>
+        <magic>3</magic>
+        <dungeons>3</dungeons>
+        <bricks>15</bricks>
+        <gems>5</gems>
+        <recruits>10</recruits>
+        <tower>38</tower>
+        <wall>45</wall>
+      </his>
+    </initialization>
+    <config>
+      <mine>
+        <quarry>40</quarry>
+        <magic>100</magic>
+        <dungeons>100</dungeons>
+        <bricks>2</bricks>
+        <gems>5</gems>
+        <recruits>5</recruits>
+        <tower>7.5</tower>
+        <wall>5</wall>
+      </mine>
+      <his>
+        <quarry>96</quarry>
+        <magic>144</magic>
+        <dungeons>120</dungeons>
+        <bricks>4.8</bricks>
+        <gems>7.2</gems>
+        <recruits>6</recruits>
+        <tower>9</tower>
+        <wall>6</wall>
+      </his>
+    </config>
+  </challenge>
 </challenges>

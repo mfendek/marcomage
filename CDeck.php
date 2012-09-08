@@ -183,6 +183,14 @@
 			$deck_data->Rare = array(1=>654,125,235,426,615,138,637,239,4,611,234,233,428,9,141);
 			$challenge_data['Gilgamesh'] = $deck_data;
 
+			// Duroth's deck
+			$deck_data = new CDeckData;
+			$deck_data->Common = array(1=>250,250,250,250,440,440,645,645,645,645,628,628,628,628,628);
+			$deck_data->Uncommon = array(1=>195,195,195,195,195,195,679,679,679,622,622,622,670,670,131);
+			$deck_data->Rare = array(1=>615,637,127,86,167,61,239,126,665,128,506,428,577,6,92);
+			$deck_data->Tokens[1] = "Alliance";
+			$challenge_data['Duroth'] = $deck_data;
+
 			foreach ($challenge_data as $deck_name => $deck_data)
 			{
 				$curent_deck = new CDeck(0, SYSTEM_NAME, $deck_name, $this);
