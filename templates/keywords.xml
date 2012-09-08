@@ -20,7 +20,7 @@
     <name>Aqua</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>If an Aqua card is played after playing a different, non-common Aqua card, it raises your tower and wall by 5, opponent's stock is reduced by 3.</description>
+    <description>High tide - if an Aqua card is played after playing a different, non-common Aqua card, it raises your tower and wall by 3, opponent's stock is reduced by 3.</description>
     <lore><![CDATA[
     <p>Little is known about the deep sea creatures. They occasionally ambush a merchant ship or a lightly defended port, but few men came back to tell the tale. They are unmatched when they are in their element, often turning the tide of the battle - literally.</p>
     <p>The power of the deep sea creatures is reflected in the water itself - it has many shapes and forms ranging from destruction and sabotage to protection and healing.</p>
@@ -28,7 +28,7 @@
     <code><![CDATA[
     if ($mylast_card->HasKeyword("Aqua") AND $mylast_action == 'play' AND $mylast_card->Class != 'Common' AND $cardid != $mylast_card->ID)
     {
-      $mydata->Tower+= 5; $mydata->Wall+= 5;
+      $mydata->Tower+= 3; $mydata->Wall+= 3;
       $hisdata->Bricks-= 3; $hisdata->Gems-= 3; $hisdata->Recruits-= 3;
     }
 ]]></code>
@@ -37,12 +37,12 @@
     <name>Aria</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>If Round is divisible by 8 or Round + 1 is divisible by 8, discards N lowest cost common cards from hand, N based on played card rarity (C-1, U-2, R-4).</description>
+    <description>Wind of change - if Round is divisible by 5, discards N lowest cost common cards from hand, N based on played card rarity (C-1, U-2, R-4).</description>
     <lore><![CDATA[
     <p>Element of Air is often underestimated by novice mages, because other elements such as Fire produces much more immediate effects. Moreover, mastering it requires much effort and patience and even then it takes perfect timing to put it to good use. Successful execution however, is rewarded with the ability to dramatically change the conditions on the battlefield, thus producing unexpected turn of events and hampering opponent's strategy.</p>
 ]]></lore>
     <code><![CDATA[
-    if (($round % 8) == 0 or (($round + 1) % 8) == 0)
+    if (($round % 5) == 0)
     {
       $storage = array();
       for ($i = 1; $i <= 8; $i++)
@@ -73,7 +73,7 @@
     <name>Banish</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>Discard one random Durable, Persistent or Rebirth card from opponent's hand (if there is one). Common cards can discard common and uncommon cards, uncommon cards can discard any rarity. Rare cards can also discard any rarity, but they have additional effect (player gains stock equal to discarded card cost). Cards with highest discardable rarity are preferred.</description>
+    <description>Discard highest rarity Durable, Persistent or Rebirth card from opponent's hand. Common cards can target common and uncommon cards, uncommon cards can target any rarity. Rare cards replace target card with a common zero cost card instead of discarding it.</description>
     <lore><![CDATA[<p>Banish is a spell that was invented solely for the purpose to counter the durable materials and render them useless. Banish can be cast directly on target or can be used to enchant a weapon to hold the banish property.</p>]]></lore>
     <code><![CDATA[
     // target card is discarded only if it has same or lower rarity than the played card
@@ -99,15 +99,15 @@
       $storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
       $discarded_pos = array_pop($storage_temp);
       
-      // if played card was rare gain bonus stock based on discarded card cost
       if ($card->Class == 'Rare')
       {
-        $dis_card = $carddb->GetCard($hisdata->Hand[$discarded_pos]);
-        $mydata->Bricks+= $dis_card->GetResources('Bricks');
-        $mydata->Gems+= $dis_card->GetResources('Gems');
-        $mydata->Recruits+= $dis_card->GetResources('Recruits');
+        $new_card = $this->DrawCard($carddb->GetList(array('class'=>"Common", 'cost'=>"Zero")), $hisdata->Hand, $discarded_pos, 'DrawCard_list');
       }
-      $hisdata->Hand[$discarded_pos] = $this->DrawCard($his_deck, $hisdata->Hand, $discarded_pos, 'DrawCard_different');
+      else
+      {
+        $new_card = $this->DrawCard($his_deck, $hisdata->Hand, $discarded_pos, 'DrawCard_different');
+      }
+      $hisdata->Hand[$discarded_pos] = $new_card;
       $hisdata->NewCards[$discarded_pos] = 1;
     }
 ]]></code>
@@ -171,7 +171,7 @@
     <name>Burning</name>
     <basic_gain>3</basic_gain>
     <bonus_gain>11</bonus_gain>
-    <description>Fire blast - replace one random non-Burning card from enemy hand (if there is one) with Searing fire. Can only replace a card with same or lower rarity as was the played card, but cards with highest replacable rarity are preferred.</description>
+    <description>Fire blast - replace highest rarity non-Burning card from opponent's hand of the same or lower rarity as the played card with Searing fire.</description>
     <lore><![CDATA[
     <p>It is said that burning creatures are those who were blessed by the sun god himself. Others say, that they are devil's pawns destines to serve him for eternity. Element of fire is know to consume everything eventually, but despite that many creatures are attracted by its power regardless of the price they have to pay to wield it.</p>
     <p>Burning creatures are able to accumulate their destructive power and completely destroy its target, leaving only burned ashes behind.</p>
@@ -207,7 +207,7 @@
     <name>Charge</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>when card has this keyword, it also has a number next to this keyword. When card is played and the opponent's wall (after the standard attack) is 0, he will receive additional damage equal to number next to charge, otherwise opponent loses random resources equal to number next to charge. If opponent has more resources of certain type compared to his other resources, they are more likely to be reduced.</description>
+    <description>When card has this keyword, it also has a number next to this keyword. When card is played and the opponent's wall (after the standard attack) is 0, he will receive additional damage equal to number next to charge, otherwise opponent loses random resources equal to number next to charge. If opponent has more resources of certain type compared to his other resources, they are more likely to be reduced.</description>
     <lore><![CDATA[<p>Some creatures are able to attack with such force and speed that they are able to stomp their enemies to the ground without the need to fight them with regular weapons. Heavy fortifications are the only defenses that can hold them at bay, however even they need to be repaired after the battle to hold another attack.</p>]]></lore>
     <code><![CDATA[
     $charge_damage = $this->KeywordValue($card->Keywords, 'Charge');
@@ -234,7 +234,7 @@
     <name>Destruction</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>If a Destruction card is played after playing a different non-common Destruction card, it reduces enemy's highest facility by 1 when it is greater than 3, otherwise it reduces opponent's highest resource by 10.</description>
+    <description>Dark fury - if a Destruction card is played after playing a different non-common Destruction card, it reduces enemy's highest facility by 1 when it is greater than 3, otherwise it reduces opponent's highest resource by 10.</description>
     <lore><![CDATA[<p><i>Offense is the best defense</i> - the motto of every mage who mastered this dark art. Destruction magic contains spells that directly cripple the enemy which often prevent them to mount a counter-offensive. One warlock who wields the destruction magic at master level is able to annihilate whole armies in matter of seconds.</p>]]></lore>
     <code><![CDATA[
     if (($mylast_card->HasKeyword("Destruction")) AND ($mylast_action == 'play') AND ($mylast_card->Class != 'Common') AND ($cardid != $mylast_card->ID))
@@ -266,7 +266,7 @@
     <name>Dragon</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>If there is another Dragon in hand, summons Dragon egg (if there is no Dragon egg card in hand) or Gems production x2 (if there already is a Dragon egg card in hand).</description>
+    <description>Ancient legacy - if there is another Dragon in hand, summons Dragon egg (if there is no Dragon egg card in hand) or Gems production x2 (if there already is a Dragon egg card in hand).</description>
     <lore><![CDATA[<p>Dragons are one of the oldest known races. Rare and powerful, they are often hunted down by individuals who seek fame and glory. Most of such adventurers find something else entirely and are never heard of ever again.</p>]]></lore>
     <code><![CDATA[
     if ($this->KeywordCount($mydata->Hand, "Dragon") > 1)
@@ -291,7 +291,7 @@
     <name>Enduring</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>when card has this keyword, it also has a number next to this keyword. When card is played and the last card played was same as this one, opponent will suffer additional damage equal to number next to Enduring.</description>
+    <description>When card has this keyword, it also has a number next to this keyword. When card is played and the last card played was same as this one, opponent will suffer additional damage equal to number next to Enduring.</description>
     <lore><![CDATA[<p>The battle often increases the capabilities of soldiers, but only for a short period of time mostly due to fatigue. However, there are creatures which have high endurance and are able to maintain battle trance without losing their strength. Such creatures tend to do more damage if they keep fighting for longer period of time.</p>]]></lore>
     <code><![CDATA[
     if ($mydata->LastCard[$mylastcardindex] == $cardid AND $mylast_action == 'play')
@@ -305,7 +305,7 @@
     <name>Far sight</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>if matching card in opponent's hand is revealed, effect based on matching card cost and played card rarity (bricks only cost - raise tower (C - 2, U - 6, R - 18), gems only cost - raise lowest token counter (C - 10, U - 30, R - 90), recruits only cost - raise wall (C - 3, U - 9, R - 27), mixed cost - raise stock (C - 1, U - 3, R - 9), zero cost - no effect). After optional effect opponent's cards are revealed based on played card rarity (C - matching card and its neighbours, U - matching card and its neighbours and their neighbours, R - whole hand). Optional effect will always trigger in a game with disabled Hidden cards mode.</description>
+    <description>If matching card in opponent's hand is revealed, effect based on matching card cost and played card rarity (bricks only cost - raise tower (C - 2, U - 6, R - 18), gems only cost - raise lowest token counter (C - 10, U - 30, R - 90), recruits only cost - raise wall (C - 3, U - 9, R - 27), mixed cost - raise stock (C - 1, U - 3, R - 9), zero cost - no effect). After optional effect opponent's cards are revealed based on played card rarity (C - matching card and its neighbours, U - matching card and its neighbours and their neighbours, R - whole hand). Optional effect will always trigger in a game with disabled Hidden cards mode.</description>
     <lore><![CDATA[<p>Scouting is extremely important in any battle. Creatures blessed with much better sight than others are highly valued even if their combat capabilities are poor. Acting as veteran scouts in army ranks, they are used to spot incoming threat and even exploit opponent's weaknesses.</p>]]></lore>
     <code><![CDATA[
     if (!$hidden_cards OR isset($hisdata->Revealed[$cardpos])) // bonus effect
@@ -349,7 +349,7 @@
     <name>Flare attack</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>when played, both players randomly receive Searing fire cards, one player at odd card positions and the other player at even card positions. The position of the played card is ignored. Burning cards are not replaced by Searing fires. Rare cards aren't replaced, unless the played card is a rare.</description>
+    <description>Annihilation - when played, both players randomly receive Searing fire cards, one player at odd card positions and the other player at even card positions. The position of the played card is ignored. Burning cards are not replaced by Searing fires. Rare cards aren't replaced, unless the played card is a rare.</description>
     <lore><![CDATA[<p>Many believe that flare attack is only a legend, because thus far no one has ever seen one cast and survived. Only the most powerful legendary creatures are able to perform such a feat - often razing entire cities to the ground.</p>]]></lore>
     <code><![CDATA[
     $selector = mt_rand(0,1);
@@ -384,7 +384,7 @@
     <name>Frenzy</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>If there is another Frenzy card in hand, opponent receives bonus damage (recruits cost of the played card).</description>
+    <description>Rage blast - if there is another Frenzy card in hand, opponent receives bonus damage (recruits cost of the played card).</description>
     <lore><![CDATA[<p>Good generals are aware of the effect of army's high morale on its combat performance. Frenzy goes one step further. A frenzied creature is partially insane and can be dangerous to use, however when unleashed in the right time and right place it can break the enemy ranks and cause severe damage to the enemy.</p>]]></lore>
     <code><![CDATA[
     if ($this->KeywordCount($mydata->Hand, "Frenzy") > 1)
@@ -395,13 +395,23 @@
     <name>Holy</name>
     <basic_gain>25</basic_gain>
     <bonus_gain>5</bonus_gain>
-    <description>Purification - replace one random Undead card from enemy hand (if there is one) with Purified ashes. Can only replace a card with same or lower rarity as was the played card, but cards with highest replaceable rarity are preferred. You will get additional stock based on replaced card rarity (Common - 1 stock, Uncommon - 2 stock, Rare - 3 stock).</description>
+    <description>Holy song - gain random resources based on played card rarity (Common - 1, Uncommon - 2, Rare - 5). Replace highest rarity Undead card from opponent's hand of the same or lower rarity as the played card with Purified ashes.</description>
     <lore><![CDATA[<p>People with spiritual talents who dislike the corrupting nature of magic often decide to become priests instead of mages. Priests use their talents to heal and protect their allies, also at a time of need they are able to call to their deity for intervention. In addition, they are the most effective weapon against the undead. An undead killed by a priest can't be reanimated ever again.</p>]]></lore>
     <code><![CDATA[
     // target card is discarded only if it has same or lower rarity than the played card
     $rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
     $storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
+    $resources = array("Common" => 1, "Uncommon" => 2, "Rare" => 5);
     $played_rank = $rarities[$card->Class];
+    $resource_gain = $resources[$card->Class];
+    
+    for ($i = 1; $i <= $resource_gain; $i++)
+    {
+      $tmp = mt_rand(0,2);
+      if ($tmp == 0) $mydata->Bricks++;
+      elseif ($tmp == 1) $mydata->Gems++;
+      elseif ($tmp == 2) $mydata->Recruits++;
+    }
     
     for ($i = 1; $i <= 8; $i++)
     {
@@ -419,14 +429,8 @@
       shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
       $storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
       $discarded_pos = array_pop($storage_temp);
-      $dis_rarity = $carddb->GetCard($hisdata->Hand[$discarded_pos])->Class;
       $hisdata->Hand[$discarded_pos] = 381;
       $hisdata->NewCards[$discarded_pos] = 1;
-      $stock = array("Common" => 1, "Uncommon" => 2, "Rare" => 3);
-      $gained = $stock[$dis_rarity];
-      $mydata->Bricks+= $gained;
-      $mydata->Gems+= $gained;
-      $mydata->Recruits+= $gained;
     }
 ]]></code>
   </keyword>
@@ -455,7 +459,7 @@
     <name>Illusion</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>If an Illusion card is played after playing a different non-common Illusion card, lowest rarity card in hand is replaced with a rare card from opponent's deck.</description>
+    <description>Suggestion - if an Illusion card is played after playing a different non-common Illusion card, lowest rarity card in hand is replaced with a rare card from opponent's deck.</description>
     <lore><![CDATA[<p>Illusion magic manipulates the environment rather than the target. Within the changed environment the target becomes confused and often the whole damage done by the spell is done by the target itself. Illusion mages often play important rules in political intrigues.</p>]]></lore>
     <code><![CDATA[
     if ($mylast_card->HasKeyword("Illusion") AND $mylast_action == 'play' AND $mylast_card->Class != 'Common' AND $cardid != $mylast_card->ID)
@@ -482,7 +486,7 @@
     <name>Legend</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>If there is a rare card in hand (other than played card), raises lowest facility by one.</description>
+    <description>Forgotten power - if there is a rare card in hand (other than played card), raises lowest facility by one.</description>
     <lore><![CDATA[<p>Legendary creatures are often present in fairy tales. Rumors say that those who are able to spot these creatures will receive their blessing. Although it's difficult to verify if the rumors are true, some legendary creatures were sighted as they were fighting battles as an ally of one of the factions for unknown reasons. Some say they are attracted to higher magic, others say that they just came to help to even the balance.</p>]]></lore>
     <code><![CDATA[
     $found = false;
@@ -509,7 +513,7 @@
     <name>Mage</name>
     <basic_gain>10</basic_gain>
     <bonus_gain>3</bonus_gain>
-    <description>Willpower - If (Magic - Enemy magic &lt; 2) Magic: +1 else Gems: +10</description>
+    <description>Willpower - if (Magic - Enemy magic &lt; 2) Magic: +1 else Gems: +10</description>
     <lore><![CDATA[
     <p>Creatures with magical talents often become mages. Mages are irreplaceable in some tasks therefore they are valued in both times of war and times of peace. Mages form groups which are usually dedicated to some special art of magic. Most of the magic schools are official, but there are also those who practice forbidden arts.</p>
     <p>Mages have the ability to focus their spiritual energy thus improving their magical abilities.</p>
@@ -523,11 +527,13 @@
     <name>Nature</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>If a Nature card is played after playing a different non-common Nature card, summons a rare Nature card.</description>
+    <description>Overgrowth - if a Nature card is played after playing a different non-common Nature card, summons a rare Nature card.</description>
     <lore><![CDATA[<p>Nature magic is rarely understood by humans. Being chaotic and unpredictable it's the opposite of the magic commonly used by humans, therefore only few have been able to master it. In addition, nature magic is also about life and death, which often leads to arts that are forbidden by many factions.</p>]]></lore>
     <code><![CDATA[
     if ($mylast_card->HasKeyword("Nature") AND $mylast_action == 'play' AND $mylast_card->Class != 'Common' AND $cardid != $mylast_card->ID)
+    {
       $nextcard = $this->DrawCard($carddb->GetList(array('class'=>"Rare", 'keyword'=>"Nature")), $mydata->Hand, $cardpos, 'DrawCard_list');
+    }
 ]]></code>
   </keyword>
   <keyword>
@@ -554,30 +560,29 @@
     <name>Restoration</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>If a Restoration card is played after playing a different non-common Restoration card, it raises your lowest facility by 1 when your facility is below 3, otherwise it gives you 10 of your lowest resource.</description>
+    <description>Countermeasures - if a Restoration card is played after playing a different non-common Restoration card, you gain 6 of your lowest resource and 5 additional resources of your lowest facility if it's less than 3.</description>
     <lore><![CDATA[<p>Restoration magic is one of the most commonly used art of magic. Most factions support schools that teach this art, because its usage is very wide and safe. Restoration mages are the most accepted mages in the society. If their skills are exceptional they can even be promoted to nobility.</p>]]></lore>
     <code><![CDATA[
     if ($mylast_card->HasKeyword("Restoration") AND $mylast_action == 'play' AND $mylast_card->Class != 'Common' AND $cardid != $mylast_card->ID)
     {
+      $min = min($mydata->Bricks, $mydata->Gems, $mydata->Recruits);
+      $resources = array("Bricks" => $mydata->Bricks, "Gems" => $mydata->Gems, "Recruits" => $mydata->Recruits);
+      $temp = array();
+      foreach ($resources as $resource => $r_value)
+        if ($r_value == $min) $temp[$resource] = $r_value;
+      $chosen = array_rand($temp);
+      $mydata->$chosen+= 6;
       $min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
-      if ($min < 3)
+      $fac = array("Quarry" => $mydata->Quarry, "Magic" => $mydata->Magic, "Dungeons" => $mydata->Dungeons);
+      $temp = array();
+      foreach ($fac as $facility => $f_value)
+        if ($f_value == $min) $temp[$facility] = $f_value;
+      $chosen = array_mt_rand($temp);
+      if ($mydata->$chosen < 3)
       {
-        $facilities = array("Quarry" => $mydata->Quarry, "Magic" => $mydata->Magic, "Dungeons" => $mydata->Dungeons);
-        $temp = array();
-        foreach ($facilities as $facility => $f_value)
-          if ($f_value == $min) $temp[$facility] = $f_value;
-        $chosen = array_rand($temp);
-        $mydata->$chosen++;
-      }
-      else
-      {
-        $min = min($mydata->Bricks, $mydata->Gems, $mydata->Recruits);
-        $resources = array("Bricks" => $mydata->Bricks, "Gems" => $mydata->Gems, "Recruits" => $mydata->Recruits);
-        $temp = array();
-        foreach ($resources as $resource => $r_value)
-          if ($r_value == $min) $temp[$resource] = $r_value;
-        $chosen = array_rand($temp);
-        $mydata->$chosen+= 10;
+        if ($chosen == 'Quarry') $mydata->Bricks+= 5;
+        elseif ($chosen == 'Magic') $mydata->Gems+= 5;
+        elseif ($chosen == 'Dungeons') $mydata->Recruits+= 5;
       }
     }
 ]]></code>
@@ -586,7 +591,7 @@
     <name>Runic</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>If Tower or Wall was damaged during opponent's last round, Tower or Wall is raised based on played card rarity (C-2, U-5, R-10). Tower or Wall increase can't exceed the damage which was inflicted on Tower or Wall.</description>
+    <description>Reconstruction - if Tower or Wall was damaged during opponent's last round, Tower or Wall is raised based on played card rarity (C-2, U-5, R-10). Tower or Wall increase can't exceed the damage which was inflicted on Tower or Wall.</description>
     <lore><![CDATA[
     <p>Dwarves are well known for their technological superiority, mining and weapon forging. Additionally, they have rune magic at their disposal. Dwarven country is called the Runic league which is ruled by the Mountain king. Dwarven society consists of common folk, noble houses and the Runic circle. The Runic circle supervises the usage of rune magic and thus is powerful and influential. The dwarves are a defensive faction. They prefer to stay safely behind their strong fortifications.</p>
     <p>Technological dominance and rune magic allows the dwarves to construct sturdy fortifications that can be repaired very quickly and efficiently.</p>
@@ -610,7 +615,7 @@
     <name>Siege</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>If played card damages opponent's Tower or Wall and opponent raised his Tower or Wall last round, he suffers additional damage to Tower or Wall based on played card rarity (C-1, U-2, R-5) for Tower and (C-2, U-4, R-10) for Wall. The additional damage can't exceed the Tower or Wall increase.</description>
+    <description>Demolition - if played card damages opponent's Tower or Wall and opponent raised his Tower or Wall last round, he suffers additional damage to Tower or Wall based on played card rarity (C-1, U-2, R-5) for Tower and (C-2, U-4, R-10) for Wall. The additional damage can't exceed the Tower or Wall increase.</description>
     <lore><![CDATA[<p>Powerful creatures and war machines are often used as a siege weapons during the battle. Their attack is so powerful that fortifications that were built only recently may fail to endure such force and break apart.</p>]]></lore>
     <code><![CDATA[
     $rarities = array("Common" => 1, "Uncommon" => 2, "Rare" => 5);
@@ -626,12 +631,12 @@
     <name>Skirmisher</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>Discard one random Charge card from enemy hand (if there is one). Common cards can discard common and uncommon cards, uncommon cards can discard any rarity. Rare cards can also discard any rarity, but they have additional effect (opponent loses stock equal to discarded card cost). Cards with highest discardable rarity are preferred.</description>
+    <description>Harass - discard highest rarity Charge from opponent's hand. Common cards can target common and uncommon cards, uncommon and rare cards can target any rarity. Rare cards replace target card with a common zero cost card instead of discarding it. If there are no Charge cards in opponent's hand, highest rarity Recruits only card of the same or lower rarity as the played card is chosen instead.</description>
     <lore><![CDATA[<p>Skirmishers are troops designed to counter enemy cavalry. Their combat capabilities may be inferior, but their role is crucial in any army. They are trained to protect their allies at all costs and down to the last man.</p>]]></lore>
     <code><![CDATA[
     // target card is discarded only if it has same or lower rarity than the played card
     $rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
-    $storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
+    $storage = $r_storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
     $played_rank = $rarities[$card->Class];
     
     for ($i = 1; $i <= 8; $i++)
@@ -641,7 +646,20 @@
       $dis_rank = $rarities[$dis_class];
       
       // pick only cards that can be discarded by played card
-      if (($dis_card->HasKeyword("Charge")) AND ($dis_rank <= ($played_rank + 1))) $storage[$dis_class][] = $i;
+      if ($dis_card->HasKeyword("Charge") and ($dis_rank <= ($played_rank + 1)))
+      {
+        $storage[$dis_class][] = $i;
+      }
+      elseif ($dis_card->GetResources('Bricks') == 0 and $dis_card->GetResources('Gems') == 0 and $dis_card->GetResources('Recruits') > 0 and $dis_rank <= $played_rank)
+      {
+        $r_storage[$dis_class][] = $i;
+      }
+    }
+    
+    // use secondary storage if primary storage is empty
+    if ((count($storage['Common']) + count($storage['Uncommon']) + count($storage['Rare'])) == 0)
+    {
+      $storage = $r_storage;
     }
     
     if ((count($storage['Common']) + count($storage['Uncommon']) + count($storage['Rare'])) > 0)
@@ -651,15 +669,15 @@
       $storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
       $discarded_pos = array_pop($storage_temp);
       
-      // if played card was rare lower opponent stock based on discarded card cost
       if ($card->Class == 'Rare')
       {
-        $dis_card = $carddb->GetCard($hisdata->Hand[$discarded_pos]);
-        $hisdata->Bricks-= $dis_card->GetResources('Bricks');
-        $hisdata->Gems-= $dis_card->GetResources('Gems');
-        $hisdata->Recruits-= $dis_card->GetResources('Recruits');
+        $new_card = $this->DrawCard($carddb->GetList(array('class'=>"Common", 'cost'=>"Zero")), $hisdata->Hand, $discarded_pos, 'DrawCard_list');
       }
-      $hisdata->Hand[$discarded_pos] = $this->DrawCard($his_deck, $hisdata->Hand, $discarded_pos, 'DrawCard_different');
+      else
+      {
+        $new_card = $this->DrawCard($his_deck, $hisdata->Hand, $discarded_pos, 'DrawCard_different');
+      }
+      $hisdata->Hand[$discarded_pos] = $new_card;
       $hisdata->NewCards[$discarded_pos] = 1;
     }
 ]]></code>
