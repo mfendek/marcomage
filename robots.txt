@@ -1,2 +1,7 @@
 User-agent: *
+Disallow: /?location=Players_details
+Disallow: /?location=Cards
+Disallow: /?location=Cards_details
+Disallow: /?location=Concepts
+Disallow: /?location=Concepts_details
 Allow: /
