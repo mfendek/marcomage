@@ -16,8 +16,13 @@
 		{
 			$dsn = 'mysql:dbname='.$database.';host='.$server.'';
 
+			$options = array(
+				PDO::ATTR_PERSISTENT => true,
+				PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
+			);
+
 			try
-				{ $db = new PDO($dsn, $username, $password, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8")); }
+				{ $db = new PDO($dsn, $username, $password, $options); }
 			catch (PDOException $e)
 				{ $this->status = $e->getMessage(); return; }
 
