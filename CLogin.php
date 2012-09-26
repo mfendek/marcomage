@@ -140,7 +140,7 @@
 			$addr = $_SERVER["REMOTE_ADDR"];
 			
 			// flood prevention - limits the frequency of account creations per ip
-			$result = $db->Query('SELECT 1 FROM `logins` WHERE `Last IP` = ? AND `Registered` >= NOW() - INTERVAL 1 MINUTE', array($addr));
+			$result = $db->Query('SELECT 1 FROM `logins` WHERE `Last IP` = ? AND `Registered` >= NOW() - INTERVAL 1 MINUTE LIMIT 1', array($addr));
 			if ($result === false) { $status = $db->status; return false; }
 			if (count($result) > 0) { $status = 'FLOOD_PREVENTION'; return false; }
 			

@@ -50,7 +50,7 @@
 	if( $db->status != 'SUCCESS' )
 	    fail("Unable to connect to database.");
 
-	if( false === $db->Query("SELECT 1 FROM logins") )
+	if( false === $db->Query("SELECT 1 FROM logins LIMIT 1") )
 	    fail("Unable to query login table.");
 	
 	if( false === date_default_timezone_set("Etc/UTC") )

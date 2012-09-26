@@ -54,7 +54,7 @@
 		{
 			$db = $this->db;
 
-			$result = $db->Query('SELECT 1 FROM `chats` WHERE `GameID` = ? AND `Name` != ? AND `Timestamp` > ?', array($gameid, $player, $time));
+			$result = $db->Query('SELECT 1 FROM `chats` WHERE `GameID` = ? AND `Name` != ? AND `Timestamp` > ? LIMIT 1', array($gameid, $player, $time));
 			if ($result === false or count($result) == 0) return false;
 
 			return true;

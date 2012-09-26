@@ -76,7 +76,7 @@
 		{	
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT 1 FROM `forum_posts` WHERE `Created` > ? AND `Deleted` = FALSE', array($time));
+			$result = $db->Query('SELECT 1 FROM `forum_posts` WHERE `Created` > ? AND `Deleted` = FALSE LIMIT 1', array($time));
 			if ($result === false or count($result) == 0) return false;
 			
 			return true;

@@ -167,7 +167,7 @@
 		{
 			$db = $this->db;
 
-			$result = $db->Query('SELECT 1 FROM `concepts` WHERE `LastChange` > ?', array($time));
+			$result = $db->Query('SELECT 1 FROM `concepts` WHERE `LastChange` > ? LIMIT 1', array($time));
 			if ($result === false or count($result) == 0) return false;
 
 			return true;

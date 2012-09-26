@@ -256,7 +256,7 @@
 		{
 			$db = $this->db;
 
-			$result = $db->Query('SELECT 1 FROM `games` WHERE `State` = "in progress" AND ((`Player1` = ? AND `Player2` = ?) OR (`Player1` = ? AND `Player2` = ?))', array($player1, $player2, $player2, $player1));
+			$result = $db->Query('SELECT 1 FROM `games` WHERE `State` = "in progress" AND ((`Player1` = ? AND `Player2` = ?) OR (`Player1` = ? AND `Player2` = ?)) LIMIT 1', array($player1, $player2, $player2, $player1));
 			if ($result === false or count($result) == 0) return false;
 
 			return true;
