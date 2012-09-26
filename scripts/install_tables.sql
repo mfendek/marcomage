@@ -291,7 +291,8 @@ CREATE TABLE `forum_posts` (
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   `Created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`PostID`),
-  KEY `ThreadID` (`ThreadID`)
+  KEY `ThreadID` (`ThreadID`),
+  KEY `Created` (`Created`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
