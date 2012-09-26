@@ -31,17 +31,17 @@ class CDatabase // encapsulated MySQL database access (PDO)
 		return $this->db->lastInsertId();
 	}
 
-	public function BeginTransaction()
+	public function txnBegin()
 	{
 		return $this->db->beginTransaction();
 	}
 
-	public function RollBack()
+	public function txnRollBack()
 	{
 		return $this->db->rollBack();
 	}
 
-	public function Commit()
+	public function txnCommit()
 	{
 		return $this->db->commit();
 	}
@@ -98,7 +98,7 @@ class CDatabase // encapsulated MySQL database access (PDO)
 		catch (PDOException $e)
 		{ $this->status = 'ERROR_QUERY: '.$e->getMessage(); return false; }
 
-		$this->BeginTransaction();
+		$this->txnBegin();
 
 		$data = array();
 		foreach ($params as $key => $param_set)
@@ -107,7 +107,7 @@ class CDatabase // encapsulated MySQL database access (PDO)
 			if( !$result )
 			{
 				$this->status = 'ERROR_QUERY: '.implode(" ", $statement->errorInfo());
-				$this->RollBack();
+				$this->txnRollBack();
 
 				return false;
 			}
@@ -116,7 +116,7 @@ class CDatabase // encapsulated MySQL database access (PDO)
 			$data[$key] = $statement->fetchAll(PDO::FETCH_ASSOC);
 		}
 
-		$this->Commit();
+		$this->txnCommit();
 
 		$t_end = microtime(TRUE);
 

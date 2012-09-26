@@ -34,17 +34,17 @@
 		{
 			$db = $this->db;
 
-			$db->BeginTransaction();
+			$db->txnBegin();
 
 			// delete all posts that are inside this thread
 			$result = $db->Query('UPDATE `forum_posts` SET `Deleted` = TRUE WHERE `ThreadID` = ?', array($thread_id));
-			if ($result === false) { $db->RollBack(); return false; }
+			if ($result === false) { $db->txnRollBack(); return false; }
 
 			// delete thread
 			$result = $db->Query('UPDATE `forum_threads` SET `Deleted` = TRUE WHERE `ThreadID` = ?', array($thread_id));
-			if ($result === false) { $db->RollBack(); return false; }
+			if ($result === false) { $db->txnRollBack(); return false; }
 
-			$db->Commit();
+			$db->txnCommit();
 
 			return true;
 		}

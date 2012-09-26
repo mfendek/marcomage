@@ -250,17 +250,17 @@
 				$score = $player->GetScore();
 				if (!$score->BuyItem(FOIL_COST)) { $error = 'Not enough gold'; $current = 'Cards_details'; break; }
 
-				$db->BeginTransaction();
+				$db->txnBegin();
 
-				if (!$score->SaveScore()) { $db->RollBack(); $error = 'Failed to save score'; $current = 'Cards_details'; break; }
+				if (!$score->SaveScore()) { $db->txnRollBack(); $error = 'Failed to save score'; $current = 'Cards_details'; break; }
 
 				// store bought card
 				array_push($foil_cards, $bought_card);
 				$settings->ChangeSetting('FoilCards', implode(",", $foil_cards));
 
-				if (!$settings->SaveSettings()) { $db->RollBack(); $error = 'Failed to save setting'; $current = 'Cards_details'; break; }
+				if (!$settings->SaveSettings()) { $db->txnRollBack(); $error = 'Failed to save setting'; $current = 'Cards_details'; break; }
 
-				$db->Commit();
+				$db->txnCommit();
 
 				$information = "Foil version purchased";
 				$current = 'Cards_details';
@@ -899,16 +899,16 @@
 				$thread_id = $forum->Threads->ThreadExists($_POST['Title']);
 				if ($thread_id) { $error = "Thread already exists"; $current = "Forum_thread"; $_POST['CurrentThread'] = $thread_id; break; }
 
-				$db->BeginTransaction();
+				$db->txnBegin();
 
 				$new_thread = $forum->Threads->CreateThread($_POST['Title'], $player->Name(), $_POST['Priority'], $section_id);
-				if ($new_thread === FALSE) { $db->RollBack(); $error = "Failed to create new thread"; $current = "Forum_section"; break; }
+				if ($new_thread === FALSE) { $db->txnRollBack(); $error = "Failed to create new thread"; $current = "Forum_section"; break; }
 				// $new_thread contains ID of currently created thread, which can be 0
 
 				$new_post = $forum->Threads->Posts->CreatePost($new_thread, $player->Name(), $_POST['Content']);
-				if (!$new_post) { $db->RollBack(); $error = "Failed to create new post"; $current = "Forum_section"; break; }
+				if (!$new_post) { $db->txnRollBack(); $error = "Failed to create new post"; $current = "Forum_section"; break; }
 
-				$db->Commit();
+				$db->txnCommit();
 
 				$forum->Threads->RefreshThread($new_thread); // update post count, last author and last post
 
@@ -1460,10 +1460,10 @@
 				$replay = $replaydb->GetReplay($gameid);
 				if ($replay === false) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
 
-				$db->BeginTransaction();
-				if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if ($replay and !$replay->Update($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
-				$db->Commit();
+				$db->txnBegin();
+				if (!$game->SaveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+				if ($replay and !$replay->Update($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				$db->txnCommit();
 
 				if ($game->State == 'finished')
 				{
@@ -1557,10 +1557,10 @@
 				$replay = $replaydb->GetReplay($gameid);
 				if ($replay === false) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
 
-				$db->BeginTransaction();
-				if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if ($replay and !$replay->Update($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
-				$db->Commit();
+				$db->txnBegin();
+				if (!$game->SaveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+				if ($replay and !$replay->Update($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				$db->txnCommit();
 
 				if ($game->State == 'finished')
 				{
@@ -1608,10 +1608,10 @@
 					$replay = $replaydb->GetReplay($gameid);
 					if ($replay === false) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
 
-					$db->BeginTransaction();
-					if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-					if ($replay and !$replay->Finish($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
-					$db->Commit();
+					$db->txnBegin();
+					if (!$game->SaveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+					if ($replay and !$replay->Finish($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+					$db->txnCommit();
 
 					// update deck statistics
 					$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
@@ -1681,10 +1681,10 @@
 				$replay = $replaydb->GetReplay($gameid);
 				if ($replay === false) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
 
-				$db->BeginTransaction();
-				if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if ($replay and !$replay->Finish($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
-				$db->Commit();
+				$db->txnBegin();
+				if (!$game->SaveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+				if ($replay and !$replay->Finish($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				$db->txnCommit();
 
 				// update deck statistics
 				$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
@@ -1753,10 +1753,10 @@
 				$replay = $replaydb->GetReplay($gameid);
 				if ($replay === false) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
 
-				$db->BeginTransaction();
-				if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if ($replay and !$replay->Finish($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
-				$db->Commit();
+				$db->txnBegin();
+				if (!$game->SaveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+				if ($replay and !$replay->Finish($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				$db->txnCommit();
 
 				$current = "Games_details";
 				break;
@@ -1791,10 +1791,10 @@
 				$replay = $replaydb->GetReplay($gameid);
 				if ($replay === false) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
 
-				$db->BeginTransaction();
-				if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if ($replay and !$replay->Finish($game)) { $db->RollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
-				$db->Commit();
+				$db->txnBegin();
+				if (!$game->SaveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+				if ($replay and !$replay->Finish($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				$db->txnCommit();
 
 				// update deck statistics
 				$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
@@ -1861,11 +1861,11 @@
 				{
 					// we are the first one to acknowledge and opponent isn't a computer player
 					$game->State = ($game->Name1() == $player->Name()) ? 'P1 over' : 'P2 over';
-					$db->BeginTransaction();
-					if (!$game->SaveGame()) { $db->RollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+					$db->txnBegin();
+					if (!$game->SaveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
 					// inform other player about leaving the game
-					if (!$game->SaveChatMessage("has left the game", $player->Name())) { $db->RollBack(); $error = 'Failed to send chat message.'; $current = 'Games_details'; break; }
-					$db->Commit();
+					if (!$game->SaveChatMessage("has left the game", $player->Name())) { $db->txnRollBack(); $error = 'Failed to send chat message.'; $current = 'Games_details'; break; }
+					$db->txnCommit();
 				}
 				else // 'P1 over' or 'P2 over'
 				{
@@ -1977,12 +1977,12 @@
 					{ $error = htmlencode($opponent_name)." doesn't wish to play with you more than one game at the same time."; $current = 'Games'; break; }
 
 				// join the game
-				$db->BeginTransaction();
-				if (!$game->JoinGame($player->Name())) { $db->RollBack(); $error = "Player was unable to join the game."; $current = "Games"; break; }
+				$db->txnBegin();
+				if (!$game->JoinGame($player->Name())) { $db->txnRollBack(); $error = "Player was unable to join the game."; $current = "Games"; break; }
 				$game->StartGame($player->Name(), $deck);
-				if (!$game->SaveGame()) { $db->RollBack(); $error = "Game start failed."; $current = "Games"; break; }
-				if (!$replaydb->CreateReplay($game)) { $db->RollBack(); $error = "Failed to create game replay."; $current = "Games"; break; }
-				$db->Commit();
+				if (!$game->SaveGame()) { $db->txnRollBack(); $error = "Game start failed."; $current = "Games"; break; }
+				if (!$replaydb->CreateReplay($game)) { $db->txnRollBack(); $error = "Failed to create game replay."; $current = "Games"; break; }
+				$db->txnCommit();
 
 				$information = 'You have joined '.htmlencode($opponent_name).'\'s game.';
 				$current = 'Games';
@@ -2050,16 +2050,16 @@
 				if ($ai_mode == "yes") $game_modes[] = 'AIMode';
 
 				// create a new game
-				$db->BeginTransaction();
+				$db->txnBegin();
 				$game = $gamedb->CreateGame($player->Name(), '', $deck, $game_modes);
-				if (!$game) { $db->RollBack(); $error = 'Failed to create new game!'; $current = 'Games'; break; }
+				if (!$game) { $db->txnRollBack(); $error = 'Failed to create new game!'; $current = 'Games'; break; }
 
 				// join the computer player
-				if (!$game->JoinGame(SYSTEM_NAME)) { $db->RollBack(); $error = "Player was unable to join the game."; $current = "Games"; break; }
+				if (!$game->JoinGame(SYSTEM_NAME)) { $db->txnRollBack(); $error = "Player was unable to join the game."; $current = "Games"; break; }
 				$game->StartGame(SYSTEM_NAME, $ai_deck);
-				if (!$game->SaveGame()) { $db->RollBack(); $error = "Game start failed."; $current = "Games"; break; }
-				if (!$replaydb->CreateReplay($game)) { $db->RollBack(); $error = "Failed to create game replay."; $current = "Games"; break; }
-				$db->Commit();
+				if (!$game->SaveGame()) { $db->txnRollBack(); $error = "Game start failed."; $current = "Games"; break; }
+				if (!$replaydb->CreateReplay($game)) { $db->txnRollBack(); $error = "Failed to create game replay."; $current = "Games"; break; }
+				$db->txnCommit();
 
 				$information = 'Game vs AI created.';
 				$current = 'Games';
@@ -2107,16 +2107,16 @@
 				if ($ai_mode == "yes") $game_modes[] = 'AIMode';
 
 				// create a new game
-				$db->BeginTransaction();
+				$db->txnBegin();
 				$game = $gamedb->CreateGame($player->Name(), '', $deck, $game_modes);
-				if (!$game) { $db->RollBack(); $error = 'Failed to create new game!'; $current = 'Games'; break; }
+				if (!$game) { $db->txnRollBack(); $error = 'Failed to create new game!'; $current = 'Games'; break; }
 
 				// join the computer player
-				if (!$game->JoinGame(SYSTEM_NAME)) { $db->RollBack(); $error = "Player was unable to join the game."; $current = "Games"; break; }
+				if (!$game->JoinGame(SYSTEM_NAME)) { $db->txnRollBack(); $error = "Player was unable to join the game."; $current = "Games"; break; }
 				$game->StartGame(SYSTEM_NAME, $ai_deck, $challenge_name);
-				if (!$game->SaveGame()) { $db->RollBack(); $error = "Game start failed."; $current = "Games"; break; }
-				if (!$replaydb->CreateReplay($game)) { $db->RollBack(); $error = "Failed to create game replay."; $current = "Games"; break; }
-				$db->Commit();
+				if (!$game->SaveGame()) { $db->txnRollBack(); $error = "Game start failed."; $current = "Games"; break; }
+				if (!$replaydb->CreateReplay($game)) { $db->txnRollBack(); $error = "Failed to create game replay."; $current = "Games"; break; }
+				$db->txnCommit();
 
 				$information = 'AI challenge created.';
 				$current = "Games";
@@ -2156,16 +2156,16 @@
 				if ($ai_mode == "yes") $game_modes[] = 'AIMode';
 
 				// create a new game
-				$db->BeginTransaction();
+				$db->txnBegin();
 				$game = $gamedb->CreateGame($player->Name(), '', $deck, $game_modes);
-				if (!$game) { $db->RollBack(); $error = 'Failed to create new game!'; $current = 'Games'; break; }
+				if (!$game) { $db->txnRollBack(); $error = 'Failed to create new game!'; $current = 'Games'; break; }
 
 				// join the computer player
-				if (!$game->JoinGame(SYSTEM_NAME)) { $db->RollBack(); $error = "Player was unable to join the game."; $current = "Games"; break; }
+				if (!$game->JoinGame(SYSTEM_NAME)) { $db->txnRollBack(); $error = "Player was unable to join the game."; $current = "Games"; break; }
 				$game->StartGame(SYSTEM_NAME, $ai_deck);
-				if (!$game->SaveGame()) { $db->RollBack(); $error = "Game start failed."; $current = "Games"; break; }
-				if (!$replaydb->CreateReplay($game)) { $db->RollBack(); $error = "Failed to create game replay."; $current = "Games"; break; }
-				$db->Commit();
+				if (!$game->SaveGame()) { $db->txnRollBack(); $error = "Game start failed."; $current = "Games"; break; }
+				if (!$replaydb->CreateReplay($game)) { $db->txnRollBack(); $error = "Failed to create game replay."; $current = "Games"; break; }
+				$db->txnCommit();
 
 				$_POST['CurrentGame'] = $game->ID();
 
@@ -2240,11 +2240,11 @@
 
 				// accept the challenge
 				$game->StartGame($player->Name(), $deck);
-				$db->BeginTransaction();
-				if (!$game->SaveGame()) { $db->RollBack(); $error = "Game start failed."; $current = "Messages"; break; }
-				if (!$replaydb->CreateReplay($game)) { $db->RollBack(); $error = "Failed to create game replay."; $current = "Messages"; break; }
-				if (!$messagedb->CancelChallenge($game->ID())) { $db->RollBack(); $error = "Failed to cancel challenge."; $current = "Messages"; break; }
-				$db->Commit();
+				$db->txnBegin();
+				if (!$game->SaveGame()) { $db->txnRollBack(); $error = "Game start failed."; $current = "Messages"; break; }
+				if (!$replaydb->CreateReplay($game)) { $db->txnRollBack(); $error = "Failed to create game replay."; $current = "Messages"; break; }
+				if (!$messagedb->CancelChallenge($game->ID())) { $db->txnRollBack(); $error = "Failed to cancel challenge."; $current = "Messages"; break; }
+				$db->txnCommit();
 
 				$information = 'You have accepted a challenge from '.htmlencode($opponent).'.';
 				$current = 'Messages';
@@ -2268,7 +2268,7 @@
 				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Messages'; break; }
 
 				// delete t3h challenge/game entry
-				if (!$game->DeleteChallenge()) { $db->RollBack(); $error = 'Failed to reject challenge.'; $current = 'Messages'; break; }
+				if (!$game->DeleteChallenge()) { $db->txnRollBack(); $error = 'Failed to reject challenge.'; $current = 'Messages'; break; }
 
 				$information = 'You have rejected a challenge.';
 				$current = 'Messages';
@@ -2327,13 +2327,13 @@
 				$challenge_text.= $_POST['Content'];
 
 				// create a new challenge
-				$db->BeginTransaction();
+				$db->txnBegin();
 				$game = $gamedb->CreateGame($player->Name(), $opponent, $deck, $game_modes);
-				if (!$game) { $db->RollBack(); $error = 'Failed to create new game!'; $current = 'Players_details'; break; }
+				if (!$game) { $db->txnRollBack(); $error = 'Failed to create new game!'; $current = 'Players_details'; break; }
 
 				$res = $messagedb->SendChallenge($player->Name(), $opponent, $challenge_text, $game->ID());
-				if (!$res) { $db->RollBack(); $error = 'Failed to create new challenge!'; $current = 'Players_details'; break; }
-				$db->Commit();
+				if (!$res) { $db->txnRollBack(); $error = 'Failed to create new challenge!'; $current = 'Players_details'; break; }
+				$db->txnCommit();
 
 				$information = 'You have challenged '.htmlencode($opponent).'. Waiting for reply.';
 				$current = 'Players_details';
@@ -2357,7 +2357,7 @@
 				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Messages'; break; }
 
 				// delete t3h challenge/game entry
-				if (!$game->DeleteChallenge()) { $db->RollBack(); $error = 'Failed to withdraw challenge.'; $current = 'Messages'; break; }
+				if (!$game->DeleteChallenge()) { $db->txnRollBack(); $error = 'Failed to withdraw challenge.'; $current = 'Messages'; break; }
 
 				$information = 'You have withdrawn a challenge.';
 				$_POST['outgoing'] = "outgoing"; // stay in "Outgoing" subsection

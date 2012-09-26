@@ -458,11 +458,11 @@
 		{
 			$db = $this->Games->getDB();
 			
-			$db->BeginTransaction();
-			if (!$this->Games->DeleteGame($this->GameID)) { $db->RollBack(); return false; }
+			$db->txnBegin();
+			if (!$this->Games->DeleteGame($this->GameID)) { $db->txnRollback(); return false; }
 			// delete chat associated with the game
-			if (!$this->DeleteChat()) { $db->RollBack(); return false; }
-			$db->Commit();
+			if (!$this->DeleteChat()) { $db->txnRollback(); return false; }
+			$db->txnCommit();
 			
 			return true;
 		}
@@ -473,10 +473,10 @@
 			
 			$db = $this->Games->getDB();
 			
-			$db->BeginTransaction();
-			if (!$this->Games->DeleteGame($this->GameID)) { $db->RollBack(); return false; }
-			if (!$messagedb->CancelChallenge($this->GameID)) { $db->RollBack(); return false; }
-			$db->Commit();
+			$db->txnBegin();
+			if (!$this->Games->DeleteGame($this->GameID)) { $db->txnRollback(); return false; }
+			if (!$messagedb->CancelChallenge($this->GameID)) { $db->txnRollback(); return false; }
+			$db->txnCommit();
 			
 			return true;
 		}
