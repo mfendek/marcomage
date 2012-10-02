@@ -818,42 +818,39 @@
 				//$supported_types = array("text/csv", "text/comma-separated-values");
 				$supported_types = array("csv");
 
-				if (($_FILES['uploadedfile']['tmp_name'] == ""))
-					$error = "Invalid input file";
-				else
-				/* MIME file type checking cannot be used, there are browser specific issues (Firefox, Chrome), instead use file extension check
-				if (!in_array($_FILES['uploadedfile']['type'], $supported_types))
-					$error = "Unsupported input file";
-				else
-				*/
-				if (!in_array(end(explode(".", $_FILES['uploadedfile']['name'])), $supported_types))
-					$error = "Unsupported input file";
-				else
-				if (($_FILES['uploadedfile']['size'] > 1*1000 ))
-					$error = "File is too big";
-				else
+				if (($_FILES['uploadedfile']['tmp_name'] == "")) { $error = 'Invalid input file'; break; }
+
+				// MIME file type checking cannot be used, there are browser specific issues (Firefox, Chrome), instead use file extension check
+				//if (!in_array($_FILES['uploadedfile']['type'], $supported_types)) { $error = 'Unsupported input file'; break; }
+
+				// validate file extension
+				$file_name = explode(".", $_FILES['uploadedfile']['name']);
+				$extension = end($file_name);
+				if (!in_array($extension, $supported_types)) { $error = 'Unsupported input file'; break; }
+
+				// validate file size
+				if (($_FILES['uploadedfile']['size'] > 1*1000 )) { $error = 'File is too big'; break; }
+
+				// load file
+				$file = file_get_contents($_FILES['uploadedfile']['tmp_name']);
+
+				// import data
+				$deck = $player->GetDeck($deck_id);
+
+				if ($deck != false)
 				{
-					// load file
-					$file = file_get_contents($_FILES['uploadedfile']['tmp_name']);
-
-					// import data
-					$deck = $player->GetDeck($deck_id);
-
-					if ($deck != false)
-					{
-						$result = $deck->FromCSV($file);
-						if ($result != "Success")	$error = $result;
-						else
-						{
-							$deck->SaveDeck();
-							$information = "Deck successfully imported.";
-						}
-					}
+					$result = $deck->FromCSV($file);
+					if ($result != "Success")	$error = $result;
 					else
 					{
-						$error = 'Cannot view deck, name no longer exists.';
-						$current = 'Decks';
+						$deck->SaveDeck();
+						$information = "Deck successfully imported.";
 					}
+				}
+				else
+				{
+					$error = 'Cannot view deck, name no longer exists.';
+					$current = 'Decks';
 				}
 
 				break;
