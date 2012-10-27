@@ -459,10 +459,17 @@
 
 	<div id="game">
 
-	<!-- autorefresh -->
-	<xsl:if test="$param/autorefresh &gt; 0">
-		<input type="hidden" name="Autorefresh" value="{$param/autorefresh}"/>
-	</xsl:if>
+	<!-- automatic actions -->
+	<xsl:choose>
+		<!-- auto ai move -->
+		<xsl:when test="$param/autoai &gt; 0">
+			<input type="hidden" name="AutoAi" value="{$param/autoai}"/>
+		</xsl:when>
+		<!-- auto refresh -->
+		<xsl:when test="$param/autorefresh &gt; 0">
+			<input type="hidden" name="Autorefresh" value="{$param/autorefresh}"/>
+		</xsl:when>
+	</xsl:choose>
 
 	<!-- remember the current location across pages -->
 	<div><input type="hidden" name="CurrentGame" value="{$param/CurrentGame}"/></div>

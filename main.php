@@ -3747,6 +3747,9 @@ case 'Games_details':
 	// disable autorefresh if it's player's turn
 	$params['game']['autorefresh'] = ($player->Name() == $game->Current) ? 0 : $settings->GetSetting('Autorefresh');
 
+	// disable auto ai move if it's player's turn or if this is PvP game
+	$params['game']['autoai'] = ($player->Name() == $game->Current or $opponent_name != SYSTEM_NAME) ? 0 : $settings->GetSetting('AutoAi');
+
 	$params['game']['GameState'] = $game->State;
 	$params['game']['Round'] = $game->Round;
 	$params['game']['Outcome'] = $game->Outcome();

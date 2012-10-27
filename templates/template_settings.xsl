@@ -27,6 +27,13 @@
 		<value name="300" text="5 minutes"  />
 		<value name="600" text="10 minutes" />
 	</xsl:variable>
+	<xsl:variable name="autoai_values">
+		<value name="0"   text="disabled"   />
+		<value name="5"   text="5 seconds"  />
+		<value name="10"  text="10 seconds" />
+		<value name="30"  text="30 seconds" />
+		<value name="60"  text="1 minute"   />
+	</xsl:variable>
 	<xsl:variable name="timeout_values">
 		<value name="0"     text="unlimited"  />
 		<value name="86400" text="1 day"      />
@@ -311,6 +318,23 @@
 				<span>
 					<xsl:attribute name="title">activate automatic refresh in the Games section, which is based on the selected value</xsl:attribute>
 					<xsl:text>Auto refresh</xsl:text>
+				</span>
+			</p>
+
+			<p>
+				<select name="AutoAi">
+					<xsl:for-each select="exsl:node-set($autoai_values)/*">
+						<option value="{@name}">
+							<xsl:if test="$settings/AutoAi = @name">
+								<xsl:attribute name="selected">selected</xsl:attribute>
+							</xsl:if>
+							<xsl:value-of select="@text"/>
+						</option>
+					</xsl:for-each>
+				</select>
+				<span>
+					<xsl:attribute name="title">opponent in AI games will make his move automatically with specified time delay</xsl:attribute>
+					<xsl:text>Auto AI move</xsl:text>
 				</span>
 			</p>
 
