@@ -18,7 +18,7 @@
 			return $this->db;
 		}
 		
-		public function CreateGame($player1, $player2, CDeck $deck1, $game_modes)
+		public function CreateGame($player1, $player2, CDeck $deck1, $game_modes, $timeout = 0)
 		{
 			$db = $this->db;
 			
@@ -26,7 +26,7 @@
 			$game_data[1]->Deck = $deck1->DeckData;
 			$game_data[2] = new CGamePlayerData;
 			
-			$result = $db->Query('INSERT INTO `games` (`Player1`, `Player2`, `Data`, `DeckID1`, `GameModes`) VALUES (?, ?, ?, ?, ?)', array($player1, $player2, serialize($game_data), $deck1->ID(), implode(',', $game_modes)));
+			$result = $db->Query('INSERT INTO `games` (`Player1`, `Player2`, `Data`, `DeckID1`, `GameModes`, `Timeout`) VALUES (?, ?, ?, ?, ?, ?)', array($player1, $player2, serialize($game_data), $deck1->ID(), implode(',', $game_modes), $timeout));
 			if ($result === false) return false;
 			
 			$game = new CGame($db->LastID(), $player1, $player2, $this);
@@ -184,7 +184,7 @@
 			$friendly_q = ($friendly != "none") ? ' AND FIND_IN_SET("FriendlyPlay", `GameModes`) '.(($friendly == "include") ? '>' : '=').' 0' : '';
 			$long_q = ($long != "none") ? ' AND FIND_IN_SET("LongMode", `GameModes`) '.(($long == "include") ? '>' : '=').' 0' : '';
 
-			$result = $db->Query('SELECT `GameID`, `Player1`, `Last Action`, `GameModes` FROM `games` WHERE `Player1` != ? AND `Player2` = "" AND `State` = "waiting"'.$hidden_q.$friendly_q.$long_q.' ORDER BY `Last Action` DESC', array($player));
+			$result = $db->Query('SELECT `GameID`, `Player1`, `Last Action`, `GameModes`, `Timeout` FROM `games` WHERE `Player1` != ? AND `Player2` = "" AND `State` = "waiting"'.$hidden_q.$friendly_q.$long_q.' ORDER BY `Last Action` DESC', array($player));
 			if ($result === false) return false;
 
 			return $result;
@@ -195,7 +195,7 @@
 			// list hosted games, hosted by specific player
 			$db = $this->db;
 
-			$result = $db->Query('SELECT `GameID`, `Last Action`, `GameModes` FROM `games` WHERE `Player1` = ? AND `Player2` = "" AND `State` = "waiting" ORDER BY `Last Action` DESC', array($player));
+			$result = $db->Query('SELECT `GameID`, `Last Action`, `GameModes`, `Timeout` FROM `games` WHERE `Player1` = ? AND `Player2` = "" AND `State` = "waiting" ORDER BY `Last Action` DESC', array($player));
 			if ($result === false) return false;
 
 			return $result;
@@ -217,7 +217,7 @@
 			// $player is either on the left or right side and Status != 'waiting' or 'P? over'
 			$db = $this->db;
 
-			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2`, `State`, `Current`, `Round`, `Last Action`, `GameModes`, `AI` FROM `games` WHERE (`Player1` = ? AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = ? AND (`State` != "waiting" AND `State` != "P2 over"))', array($player, $player));
+			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2`, `State`, `Current`, `Round`, `Last Action`, `GameModes`, `Timeout`, `AI` FROM `games` WHERE (`Player1` = ? AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = ? AND (`State` != "waiting" AND `State` != "P2 over"))', array($player, $player));
 			if ($result === false) return false;
 
 			return $result;
@@ -261,6 +261,11 @@
 
 			return true;
 		}
+
+		public function listTimeoutValues()
+		{
+			return array(0 => 'unlimited', 86400 => '1 day', 43200 => '12 hours', 21600 => '6 hours', 10800 => '3 hours', 3600 => '1 hour', 1800 => '30 minutes', 300 => '5 minutes');
+		}
 	}
 	
 	
@@ -290,6 +295,7 @@
 		public $ChatNotification1; // timestamp of the last chat view for Player1
 		public $ChatNotification2; // timestamp of the last chat view for Player2
 		public $GameData; // array (name => CGamePlayerData)
+		public $Timeout; // turn timeout (0 = unlimited)
 		public $AI; // AI challenge name (optional)
 		
 		public function __construct($gameid, $player1, $player2, CGames $Games)
@@ -405,7 +411,7 @@
 		{
 			$db = $this->Games->getDB();
 
-			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Surrender`, `EndType`, `Last Action`, `ChatNotification1`, `ChatNotification2`, `Data`, `DeckID1`, `DeckID2`, `Note1`, `Note2`, `GameModes`, `AI` FROM `games` WHERE `GameID` = ?', array($this->GameID));
+			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Surrender`, `EndType`, `Last Action`, `ChatNotification1`, `ChatNotification2`, `Data`, `DeckID1`, `DeckID2`, `Note1`, `Note2`, `GameModes`, `Timeout`, `AI` FROM `games` WHERE `GameID` = ?', array($this->GameID));
 			if ($result === false or count($result) == 0) return false;
 			
 			$data = $result[0];
@@ -422,6 +428,7 @@
 			$this->DeckID2 = $data['DeckID2'];
 			$this->Note1 = $data['Note1'];
 			$this->Note2 = $data['Note2'];
+			$this->Timeout = $data['Timeout'];
 			$this->AI = $data['AI'];
 			$this->HiddenCards = (strpos($data['GameModes'], 'HiddenCards') !== false) ? 'yes' : 'no';
 			$this->FriendlyPlay = (strpos($data['GameModes'], 'FriendlyPlay') !== false) ? 'yes' : 'no';
@@ -448,7 +455,7 @@
 			$game_data[1] = $this->GameData[$this->Player1];
 			$game_data[2] = $this->GameData[$this->Player2];
 
-			$result = $db->Query('UPDATE `games` SET `State` = ?, `Current` = ?, `Round` = ?, `Winner` = ?, `Surrender` = ?, `EndType` = ?, `Last Action` = ?, `Data` = ?, `DeckID1` = ?, `DeckID2` = ?, `Note1` = ?, `Note2` = ?, `AI` = ? WHERE `GameID` = ?', array($this->State, $this->Current, $this->Round, $this->Winner, $this->Surrender, $this->EndType, $this->LastAction, serialize($game_data), $this->DeckID1, $this->DeckID2, $this->Note1, $this->Note2, $this->AI, $this->GameID));
+			$result = $db->Query('UPDATE `games` SET `State` = ?, `Current` = ?, `Round` = ?, `Winner` = ?, `Surrender` = ?, `EndType` = ?, `Last Action` = ?, `Data` = ?, `DeckID1` = ?, `DeckID2` = ?, `Note1` = ?, `Note2` = ?, `Timeout` = ?, `AI` = ? WHERE `GameID` = ?', array($this->State, $this->Current, $this->Round, $this->Winner, $this->Surrender, $this->EndType, $this->LastAction, serialize($game_data), $this->DeckID1, $this->DeckID2, $this->Note1, $this->Note2, $this->Timeout, $this->AI, $this->GameID));
 			if ($result === false) return false;
 
 			return true;
@@ -1808,9 +1815,9 @@
 			return array('exp' => $exp, 'gold' => $gold, 'message' => $message, 'awards' => $received);
 		}
 
-		public function DetermineAIMove()
+		public function DetermineAIMove($ai_player = SYSTEM_NAME)
 		{
-			return $this->GameAI->DetermineMove();
+			return $this->GameAI->DetermineMove($ai_player);
 		}
 
 		public function CategoryKeywords()

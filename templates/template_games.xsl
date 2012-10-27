@@ -3,9 +3,10 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:am="http://arcomage.netvor.sk"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:exsl="http://exslt.org/common"
                 xmlns:php="http://php.net/xsl"
                 xmlns:str="http://exslt.org/strings"
-                extension-element-prefixes="php str">
+                extension-element-prefixes="exsl php str">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 <!-- includes -->
@@ -16,6 +17,16 @@
 	<xsl:variable name="param" select="$params/games" />
 	<xsl:variable name="activedecks" select="count($param/decks/*)" />
 	<xsl:variable name="list" select="$param/list" />
+	<xsl:variable name="timeout_values">
+		<value name="0"     text="unlimited"  />
+		<value name="86400" text="1 day"      />
+		<value name="43200" text="12 hours"   />
+		<value name="21600" text="6 hours"    />
+		<value name="10800" text="3 hours"    />
+		<value name="3600"  text="1 hour"     />
+		<value name="1800"  text="30 minutes" />
+		<value name="300"   text="5 minutes"  />
+	</xsl:variable>
 
 	<div id="games">
 
@@ -40,6 +51,7 @@
 						<th><p>Last game action</p></th>
 					</xsl:if>
 					<th><p>Modes</p></th>
+					<th><p>Timeout</p></th>
 					<th><p>Info</p></th>
 					<th></th>
 				</tr>
@@ -83,6 +95,12 @@
 								<xsl:if test="ai != ''">
 									<img class="icon" width="20px" height="14px" src="img/ai_challenge.png" alt="AI challenge - {ai}" title="AI challenge - {ai}" />
 								</xsl:if>
+							</p>
+						</td>
+						<td>
+							<p>
+								<xsl:variable name="timeout" select="timeout" />
+								<xsl:value-of select="exsl:node-set($timeout_values)/*[@name = $timeout]/@text"/>
 							</p>
 						</td>
 						<td>
@@ -208,6 +226,7 @@
 						<th><p>Opponent</p></th>
 						<th><p>Created</p></th>
 						<th><p>Modes</p></th>
+						<th><p>Timeout</p></th>
 						<th></th>
 					</tr>
 					<xsl:for-each select="$param/free_games/*">
@@ -239,6 +258,12 @@
 									<xsl:if test="contains(game_modes, 'LongMode')">
 										<img class="icon" width="20px" height="14px" src="img/long_mode.png" alt="Long mode" title="Long mode" />
 									</xsl:if>
+								</p>
+							</td>
+							<td>
+								<p>
+									<xsl:variable name="timeout" select="timeout" />
+									<xsl:value-of select="exsl:node-set($timeout_values)/*[@name = $timeout]/@text"/>
 								</p>
 							</td>
 							<td>
@@ -276,6 +301,16 @@
 				<input type="checkbox" name="LongMode">
 					<xsl:if test="$param/LongFlag = 'yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 				</input>
+				<select name="Timeout" title="Turn timeout">
+					<xsl:for-each select="exsl:node-set($timeout_values)/*">
+						<option value="{@name}">
+							<xsl:if test="$param/timeout = @name">
+								<xsl:attribute name="selected">selected</xsl:attribute>
+							</xsl:if>
+							<xsl:value-of select="@text"/>
+						</option>
+					</xsl:for-each>
+				</select>
 				<button type="submit" name="host_game">Host game</button>
 			</p>
 			<p class="misc">
@@ -298,6 +333,7 @@
 					<tr>
 						<th><p>Created</p></th>
 						<th><p>Modes</p></th>
+						<th><p>Timeout</p></th>
 						<th></th>
 					</tr>
 					<xsl:for-each select="$param/hosted_games/*">
@@ -314,6 +350,12 @@
 									<xsl:if test="contains(game_modes, 'LongMode')">
 										<img class="icon" width="20px" height="14px" src="img/long_mode.png" alt="Long mode" title="Long mode" />
 									</xsl:if>
+								</p>
+							</td>
+							<td>
+								<p>
+									<xsl:variable name="timeout" select="timeout" />
+									<xsl:value-of select="exsl:node-set($timeout_values)/*[@name = $timeout]/@text"/>
 								</p>
 							</td>
 							<td><p><button type="submit" name="unhost_game" value="{gameid}">Cancel</button></p></td>
@@ -544,6 +586,9 @@
 		<xsl:choose>
 			<xsl:when test="$param/AIMode = 'yes' and not($my_turn) and $param/GameState = 'in progress'">
 				<td colspan="2"><button type="submit" name="ai_move">Execute AI move</button></td>
+			</xsl:when>
+			<xsl:when test="$param/AIMode = 'no' and not($my_turn) and $param/finish_move = 'yes'">
+				<td colspan="2"><button type="submit" name="finish_move">Execute opponent's move</button></td>
 			</xsl:when>
 			<xsl:otherwise>
 				<td>

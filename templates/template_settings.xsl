@@ -27,6 +27,16 @@
 		<value name="300" text="5 minutes"  />
 		<value name="600" text="10 minutes" />
 	</xsl:variable>
+	<xsl:variable name="timeout_values">
+		<value name="0"     text="unlimited"  />
+		<value name="86400" text="1 day"      />
+		<value name="43200" text="12 hours"   />
+		<value name="21600" text="6 hours"    />
+		<value name="10800" text="3 hours"    />
+		<value name="3600"  text="1 hour"     />
+		<value name="1800"  text="30 minutes" />
+		<value name="300"   text="5 minutes"  />
+	</xsl:variable>
 
 	<div id="settings">
 
@@ -301,6 +311,23 @@
 				<span>
 					<xsl:attribute name="title">activate automatic refresh in the Games section, which is based on the selected value</xsl:attribute>
 					<xsl:text>Auto refresh</xsl:text>
+				</span>
+			</p>
+
+			<p>
+				<select name="Timeout">
+					<xsl:for-each select="exsl:node-set($timeout_values)/*">
+						<option value="{@name}">
+							<xsl:if test="$settings/Timeout = @name">
+								<xsl:attribute name="selected">selected</xsl:attribute>
+							</xsl:if>
+							<xsl:value-of select="@text"/>
+						</option>
+					</xsl:for-each>
+				</select>
+				<span>
+					<xsl:attribute name="title">set default value for turn timeout when creating new games in the Games section</xsl:attribute>
+					<xsl:text>Turn timeout</xsl:text>
 				</span>
 			</p>
 

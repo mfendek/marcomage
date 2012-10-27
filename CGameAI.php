@@ -57,7 +57,7 @@
 			return $misc;
 		}
 
-		protected function DynamicConfig()
+		protected function DynamicConfig($ai_player)
 		{
 			global $game_config;
 
@@ -71,8 +71,8 @@
 			$max_wall = $game_config[$g_mode]['max_wall'];
 
 			// prepare basic information
-			$opponent = ($game->Name1() == SYSTEM_NAME) ? $game->Name2() : $game->Name1();
-			$mydata = $game->GameData[SYSTEM_NAME];
+			$opponent = ($game->Name1() == $ai_player) ? $game->Name2() : $game->Name1();
+			$mydata = $game->GameData[$ai_player];
 			$hisdata = $game->GameData[$opponent];
 
 			// AI behavior configuration (more points, more likely to choose such action)
@@ -113,12 +113,12 @@
 			return min(1.5, (5 / ($ratio + 5)) + 0.85);
 		}
 
-		protected function Config()
+		protected function Config($ai_player)
 		{
 			// compute adjusted points (base value * adjustment factor)
 			$ai_config = array();
 			$static = $this->StaticConfig();
-			$dynamic = $this->DynamicConfig();
+			$dynamic = $this->DynamicConfig($ai_player);
 
 			foreach (array('mine', 'his') as $side)
 				foreach ($static[$side] as $name => $value)
@@ -127,7 +127,7 @@
 			return $ai_config;
 		}
 
-		public function DetermineMove() // determine card action ('play'/'discard'), card position (1-8) and card mode (0/1-8)
+		public function DetermineMove($ai_player) // determine card action ('play'/'discard'), card position (1-8) and card mode (0/1-8)
 		{
 			global $carddb;
 			global $game_config;
@@ -143,8 +143,8 @@
 			$res_vic = $game_config[$g_mode]['res_victory'];
 
 			// prepare basic information
-			$opponent = ($game->Name1() == SYSTEM_NAME) ? $game->Name2() : $game->Name1();
-			$mydata = $game->GameData[SYSTEM_NAME];
+			$opponent = ($game->Name1() == $ai_player) ? $game->Name2() : $game->Name1();
+			$mydata = $game->GameData[$ai_player];
 			$hisdata = $game->GameData[$opponent];
 			$my_deck = $mydata->Deck;
 			$his_deck = $hisdata->Deck;
@@ -180,7 +180,7 @@
 				// determine all possible actions is this turn
 				$max_points = 0;
 				$choices = array();
-				$ai_config = $this->Config();
+				$ai_config = $this->Config($ai_player);
 				$misc_config = $this->MiscConfig();
 
 				foreach ($playable_positions as $pos)
@@ -195,7 +195,7 @@
 					foreach ($modes as $i)
 					{
 						$points = 0;
-						$preview = $game->CalculatePreview(SYSTEM_NAME, $pos, $i);
+						$preview = $game->CalculatePreview($ai_player, $pos, $i);
 
 						$player_data = $preview['player'];
 						$opponent_data = $preview['opponent'];
@@ -312,7 +312,7 @@
 						$choices[] = $data;
 
 						// restore initial data state
-						$game->GameData[SYSTEM_NAME] = clone $mydata_b;
+						$game->GameData[$ai_player] = clone $mydata_b;
 						$game->GameData[$opponent] = clone $hisdata_b;
 					}
 				}

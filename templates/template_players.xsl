@@ -29,62 +29,62 @@
 		<xsl:choose>
 			<xsl:when test="$param/is_logged_in = 'yes'">
 			<!-- advanced navigation (for authenticated users only) -->
-      <div class="filters">
-        <!-- begin name filter -->
-        <input type="text" name="pname_filter" maxlength="20" size="20" value="{$param/pname_filter}" title="search phrase for player names" />
-  
-        <!-- activity filter -->
-        <xsl:variable name="activity_types">
-          <value name="No activity filter"         value="none"    />
-          <value name="Active players"             value="active"  />
-          <value name="Active and offline players" value="offline" />
-          <value name="Show all players"           value="all"     />
-        </xsl:variable>
-        <xsl:copy-of select="am:htmlSelectBox('activity_filter', $param/activity_filter, $activity_types, '')"/>
-  
-        <!-- status filter -->
-        <xsl:variable name="status_types">
-          <value name="No status filter"       value="none"   />
-          <value name="Looking for game"       value="ready"  />
-          <value name="Looking for quick game" value="quick"  />
-          <value name="Do not disturb"         value="dnd"    />
-          <value name="Newbie"                 value="newbie" />
-        </xsl:variable>
-        <xsl:copy-of select="am:htmlSelectBox('status_filter', $param/status_filter, $status_types, '')"/>
-  
-        <!-- players list sort -->
-        <xsl:variable name="sort_types">
-          <value name="Level"           value="Level"        />
-          <value name="Username"        value="Username"     />
-          <value name="Country"         value="Country"      />
-          <value name="Quarry gained"   value="Quarry"       />
-          <value name="Magic gained"    value="Magic"        />
-          <value name="Dungeons gained" value="Dungeons"     />
-          <value name="Rares played"    value="Rares"        />
-          <value name="AI challenges"   value="Challenges"   />
-          <value name="Tower built"     value="Tower"        />
-          <value name="Wall built"      value="Wall"         />
-          <value name="Tower destroyed" value="TowerDamage"  />
-          <value name="Wall destroyed"  value="WallDamage"   />
-          <value name="Assassin"        value="Assassin"     />
-          <value name="Builder"         value="Builder"      />
-          <value name="Carpenter"       value="Carpenter"    />
-          <value name="Collector"       value="Collector"    />
-          <value name="Desolator"       value="Desolator"    />
-          <value name="Dragon"          value="Dragon"       />
-          <value name="Gentle touch"    value="Gentle_touch" />
-          <value name="Saboteur"        value="Saboteur"     />
-          <value name="Snob"            value="Snob"         />
-          <value name="Survivor"        value="Survivor"     />
-          <value name="Titan"           value="Titan"        />
-        </xsl:variable>
-        <xsl:copy-of select="am:htmlSelectBox('players_sort', $param/players_sort, $sort_types, '')"/>
-  
-        <button type="submit" name="filter_players">Apply filters</button>
-  
-        <!-- upper navigation -->
-        <xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'players')"/>
-      </div>
+			<div class="filters">
+				<!-- begin name filter -->
+				<input type="text" name="pname_filter" maxlength="20" size="20" value="{$param/pname_filter}" title="search phrase for player names" />
+	
+				<!-- activity filter -->
+				<xsl:variable name="activity_types">
+					<value name="No activity filter"         value="none"    />
+					<value name="Active players"             value="active"  />
+					<value name="Active and offline players" value="offline" />
+					<value name="Show all players"           value="all"     />
+				</xsl:variable>
+				<xsl:copy-of select="am:htmlSelectBox('activity_filter', $param/activity_filter, $activity_types, '')"/>
+	
+				<!-- status filter -->
+				<xsl:variable name="status_types">
+					<value name="No status filter"       value="none"   />
+					<value name="Looking for game"       value="ready"  />
+					<value name="Looking for quick game" value="quick"  />
+					<value name="Do not disturb"         value="dnd"    />
+					<value name="Newbie"                 value="newbie" />
+				</xsl:variable>
+				<xsl:copy-of select="am:htmlSelectBox('status_filter', $param/status_filter, $status_types, '')"/>
+	
+				<!-- players list sort -->
+				<xsl:variable name="sort_types">
+					<value name="Level"           value="Level"        />
+					<value name="Username"        value="Username"     />
+					<value name="Country"         value="Country"      />
+					<value name="Quarry gained"   value="Quarry"       />
+					<value name="Magic gained"    value="Magic"        />
+					<value name="Dungeons gained" value="Dungeons"     />
+					<value name="Rares played"    value="Rares"        />
+					<value name="AI challenges"   value="Challenges"   />
+					<value name="Tower built"     value="Tower"        />
+					<value name="Wall built"      value="Wall"         />
+					<value name="Tower destroyed" value="TowerDamage"  />
+					<value name="Wall destroyed"  value="WallDamage"   />
+					<value name="Assassin"        value="Assassin"     />
+					<value name="Builder"         value="Builder"      />
+					<value name="Carpenter"       value="Carpenter"    />
+					<value name="Collector"       value="Collector"    />
+					<value name="Desolator"       value="Desolator"    />
+					<value name="Dragon"          value="Dragon"       />
+					<value name="Gentle touch"    value="Gentle_touch" />
+					<value name="Saboteur"        value="Saboteur"     />
+					<value name="Snob"            value="Snob"         />
+					<value name="Survivor"        value="Survivor"     />
+					<value name="Titan"           value="Titan"        />
+				</xsl:variable>
+				<xsl:copy-of select="am:htmlSelectBox('players_sort', $param/players_sort, $sort_types, '')"/>
+	
+				<button type="submit" name="filter_players">Apply filters</button>
+	
+				<!-- upper navigation -->
+				<xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'players')"/>
+			</div>
 
 			</xsl:when>
 			<xsl:otherwise>
@@ -184,11 +184,11 @@
 			</xsl:for-each>
 		</table>
 
-    <xsl:if test="$param/is_logged_in = 'yes'">
-      <div class="filters">
-        <!-- lower navigation -->
-        <xsl:copy-of select="am:lower_navigation($param/page_count, $param/current_page, 'players', 'Players')"/>
-      </div>
+		<xsl:if test="$param/is_logged_in = 'yes'">
+			<div class="filters">
+				<!-- lower navigation -->
+				<xsl:copy-of select="am:lower_navigation($param/page_count, $param/current_page, 'players', 'Players')"/>
+			</div>
 		</xsl:if>
 
 		<input type ="hidden" name="CurrentPlayersPage" value="{$param/current_page}" />
@@ -370,6 +370,26 @@
 									</xsl:if>
 									<xsl:for-each select="$param/decks/*">
 										<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
+									</xsl:for-each>
+								</select>
+								<xsl:variable name="timeout_values">
+									<value name="0"     text="unlimited"  />
+									<value name="86400" text="1 day"      />
+									<value name="43200" text="12 hours"   />
+									<value name="21600" text="6 hours"    />
+									<value name="10800" text="3 hours"    />
+									<value name="3600"  text="1 hour"     />
+									<value name="1800"  text="30 minutes" />
+									<value name="300"   text="5 minutes"  />
+								</xsl:variable>
+								<select name="Timeout" title="Turn timeout">
+									<xsl:for-each select="exsl:node-set($timeout_values)/*">
+										<option value="{@name}">
+											<xsl:if test="$param/timeout = @name">
+												<xsl:attribute name="selected">selected</xsl:attribute>
+											</xsl:if>
+											<xsl:value-of select="@text"/>
+										</option>
 									</xsl:for-each>
 								</select>
 							</p>

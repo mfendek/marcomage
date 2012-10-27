@@ -1578,6 +1578,99 @@
 				break;
 			}
 
+			if (isset($_POST['finish_move'])) // Games -> vs. %s -> Finish move
+			{
+				// an option to play turn instead of opponent when opponent refuses to play
+				// applies only to games where opponent didn't take action for more then timout if timout was set for specified game
+				$gameid = $_POST['CurrentGame'];
+				$game = $gamedb->GetGame($gameid);
+
+				// check if the game exists
+				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
+
+				// check if this user can interact with this game
+				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
+
+				// check if game is locked in a surrender request
+				if ($game->Surrender != '') { $error = 'Game is locked in a surrender request.'; $current = 'Games_details'; break; }
+
+				// only allow finishing of non-AI games
+				if ($game->Name2() == SYSTEM_NAME) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
+
+				// and only if the finish move criteria are met
+				if ($game->Timeout == 0 or time() - strtotime($game->LastAction) < $game->Timeout or $game->Current == $player->Name()) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
+
+				$opponent_name = ($game->Name1() == $player->Name()) ? $game->Name2() : $game->Name1();
+
+				// the rest of the checks are done internally
+				$decision = $game->DetermineAIMove($opponent_name);
+				$cardpos = $decision['cardpos'];
+				$mode = $decision['mode'];
+				$action = $decision['action'];
+
+				$result = $game->PlayCard($opponent_name, $cardpos, $mode, $action);
+				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
+
+				// attempt to load replay (replay is optional)
+				$replay = $replaydb->GetReplay($gameid);
+				if ($replay === false) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
+
+				$db->txnBegin();
+				if (!$game->SaveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+				if ($replay and !$replay->Update($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				$db->txnCommit();
+
+				if ($game->State == 'finished')
+				{
+					// update deck statistics
+					$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
+				}
+
+				if (($game->State == 'finished') AND ($game->GetGameMode('FriendlyPlay') == "no"))
+				{
+					$player1 = $game->Name1();
+					$player2 = $game->Name2();
+					$exp1 = $game->CalculateExp($player1);
+					$exp2 = $game->CalculateExp($player2);
+					$p1 = $playerdb->GetPlayer($player1);
+					$p2 = $playerdb->GetPlayer($player2);
+					$p1_rep = $p1->GetSettings()->GetSetting('Reports');
+					$p2_rep = $p2->GetSettings()->GetSetting('Reports');
+
+					// update score
+					$score1 = $scoredb->GetScore($player1);
+					$score2 = $scoredb->GetScore($player2);
+
+					if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
+					elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
+					else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
+
+					$levelup1 = $score1->AddExp($exp1['exp']);
+					$levelup2 = $score2->AddExp($exp2['exp']);
+					$score1->AddGold($exp1['gold']);
+					$score2->AddGold($exp2['gold']);
+					$score1->GainAwards($exp1['awards']);
+					$score2->GainAwards($exp2['awards']);
+					$score1->SaveScore();
+					$score2->SaveScore();
+
+					// send level up messages
+					if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
+					if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
+
+					// send battle report message
+					$outcome = $game->Outcome();
+					$winner = $game->Winner;
+					$hidden = $game->GetGameMode('HiddenCards');
+
+					$messagedb->SendBattleReport($player1, $player2, $p1_rep, $p2_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
+				}
+
+				$information = "Opponent's move executed.";
+				$current = "Games_details";
+				break;
+			}
+
 			if (isset($_POST['surrender'])) // Games -> vs. %s -> Surrender -> send surrender request to opponent
 			{
 				$gameid = $_POST['CurrentGame'];
@@ -1902,8 +1995,12 @@
 				if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
 				if ($long_mode == "yes") $game_modes[] = 'LongMode';
 
+				$timeout_values = $gamedb->listTimeoutValues();
+				$timeout_keys = array_keys($timeout_values);
+				$turn_timeout = (isset($_POST['Timeout']) and in_array($_POST['Timeout'], $timeout_keys)) ? $_POST['Timeout'] : 0;
+
 				// create a new challenge
-				$game = $gamedb->CreateGame($player->Name(), '', $deck, $game_modes);
+				$game = $gamedb->CreateGame($player->Name(), '', $deck, $game_modes, $turn_timeout);
 				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
 
 				$information = 'Game created. Waiting for opponent to join.';
@@ -2318,14 +2415,19 @@
 				if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
 				if ($long_mode == "yes") $game_modes[] = 'LongMode';
 
+				$timeout_values = $gamedb->listTimeoutValues();
+				$timeout_keys = array_keys($timeout_values);
+				$turn_timeout = (isset($_POST['Timeout']) and in_array($_POST['Timeout'], $timeout_keys)) ? $_POST['Timeout'] : 0;
+
 				$challenge_text = 'Hide opponent\'s cards: '.$hidden_cards."\n";
 				$challenge_text.= 'Friendly play: '.$friendly_play."\n";
 				$challenge_text.= 'Long mode: '.$long_mode."\n";
+				$challenge_text.= 'Timeout: '.$timeout_values[$turn_timeout]."\n";
 				$challenge_text.= $_POST['Content'];
 
 				// create a new challenge
 				$db->txnBegin();
-				$game = $gamedb->CreateGame($player->Name(), $opponent, $deck, $game_modes);
+				$game = $gamedb->CreateGame($player->Name(), $opponent, $deck, $game_modes, $turn_timeout);
 				if (!$game) { $db->txnRollBack(); $error = 'Failed to create new game!'; $current = 'Players_details'; break; }
 
 				$res = $messagedb->SendChallenge($player->Name(), $opponent, $challenge_text, $game->ID());
@@ -3366,6 +3468,7 @@ case 'Players_details':
 	$params['profile']['LongMode'] = $settings->GetSetting('LongFlag');
 	$params['profile']['RandomDeck'] = $settings->GetSetting('RandomDeck');
 	$params['profile']['timezone'] = $settings->GetSetting('Timezone');
+	$params['profile']['timeout'] = $settings->GetSetting('Timeout');
 	$params['profile']['send_challenges'] = ($access_rights[$player->Type()]["send_challenges"]) ? 'yes' : 'no';
 	$params['profile']['messages'] = ($access_rights[$player->Type()]["messages"]) ? 'yes' : 'no';
 	$params['profile']['change_rights'] = (($access_rights[$player->Type()]["change_rights"]) AND $p->Type() != "admin") ? 'yes' : 'no';
@@ -3509,6 +3612,7 @@ case 'Games':
 	$params['games']['LongFlag'] = $settings->GetSetting('LongFlag');
 	$params['games']['RandomDeck'] = $settings->GetSetting('RandomDeck');
 	$params['games']['autorefresh'] = $settings->GetSetting('Autorefresh');
+	$params['games']['timeout'] = $settings->GetSetting('Timeout');
 
 	$list = $gamedb->ListGamesData($player->Name());
 	if (count($list) > 0)
@@ -3532,6 +3636,7 @@ case 'Games':
 			$params['games']['list'][$i]['lastseen'] = $last_seen;
 			$params['games']['list'][$i]['finishable'] = (time() - strtotime($data['Last Action']) >= 60*60*24*7*3 and $data['Current'] != $player->Name() and $opponent != SYSTEM_NAME) ? 'yes' : 'no';
 			$params['games']['list'][$i]['game_modes'] = $data['GameModes'];
+			$params['games']['list'][$i]['timeout'] = $data['Timeout'];
 			$params['games']['list'][$i]['ai'] = $data['AI'];
 		}
 	}
@@ -3575,6 +3680,7 @@ case 'Games':
 			$params['games']['free_games'][$i]['status'] = $status;
 			$params['games']['free_games'][$i]['gameaction'] = $data['Last Action'];
 			$params['games']['free_games'][$i]['game_modes'] = $data['GameModes'];
+			$params['games']['free_games'][$i]['timeout'] = $data['Timeout'];
 		}
 	}
 
@@ -3585,6 +3691,7 @@ case 'Games':
 			$params['games']['hosted_games'][$i]['gameid'] = $data['GameID'];
 			$params['games']['hosted_games'][$i]['gameaction'] = $data['Last Action'];
 			$params['games']['hosted_games'][$i]['game_modes'] = $data['GameModes'];
+			$params['games']['hosted_games'][$i]['timeout'] = $data['Timeout'];
 		}
 	}
 
@@ -3812,6 +3919,7 @@ case 'Games_details':
 	$params['game']['opp_isOnline'] = (($opponent->isOnline()) ? 'yes' : 'no');
 	$params['game']['opp_isDead'] = (($opponent->isDead()) ? 'yes' : 'no');
 	$params['game']['finish_game'] = ((time() - strtotime($game->LastAction) >= 60*60*24*7*3 and $game->Current != $player->Name() and $opponent_name != SYSTEM_NAME) ? 'yes' : 'no');
+	$params['game']['finish_move'] = (($game->Timeout > 0 and time() - strtotime($game->LastAction) >= $game->Timeout and $game->Current != $player->Name() and $opponent_name != SYSTEM_NAME) ? 'yes' : 'no');
 
 	// your resources and tower
 	$changes = array ('Quarry'=> '', 'Magic'=> '', 'Dungeons'=> '', 'Bricks'=> '', 'Gems'=> '', 'Recruits'=> '', 'Tower'=> '', 'Wall'=> '');
