@@ -12975,7 +12975,7 @@
     <name>Stymphalian birds</name>
     <class>Common</class>
     <cost>
-      <bricks></bricks>
+      <bricks>0</bricks>
       <recruits>2</recruits>
       <gems>0</gems>
     </cost>
@@ -12990,7 +12990,7 @@
     <name>Goblin emperor</name>
     <class>Rare</class>
     <cost>
-      <bricks></bricks>
+      <bricks>0</bricks>
       <recruits>30</recruits>
       <gems>0</gems>
     </cost>
@@ -13019,7 +13019,7 @@
     <name>Wind dragon</name>
     <class>Rare</class>
     <cost>
-      <bricks></bricks>
+      <bricks>0</bricks>
       <recruits>0</recruits>
       <gems>9</gems>
     </cost>
