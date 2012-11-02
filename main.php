@@ -3625,6 +3625,35 @@ case 'Games':
 			$last_seen = (strpos($data['GameModes'], 'AIMode') !== false) ? date('Y-m-d H:i:s') : $playerdb->LastQuery($opponent);
 			$inactivity = time() - strtotime($last_seen);
 
+			$timeout = '';
+			if ($data['Timeout'] > 0 and $data['Current'] == $player->Name() and $opponent != SYSTEM_NAME)
+			{
+				// case 1: time is up
+				if (time() - strtotime($data['Last Action']) >= $data['Timeout'])
+				{
+					$timeout = 'time is up';
+				}
+				// case 2: there is still some time left
+				else
+				{
+					$t_diff = $data['Timeout'] - time() + strtotime($data['Last Action']);
+					$t_info = array();
+
+					// calculate time components
+					$hours = floor($t_diff / 3600);
+					$t_diff-= $hours * 3600;
+					$minutes = floor($t_diff / 60);
+					$t_diff-= $minutes * 60;
+					$seconds = $t_diff;
+
+					if ($hours > 0) $t_info[] = $hours.'h';
+					if ($minutes > 0) $t_info[] = $minutes.'m';
+					if ($seconds > 0) $t_info[] = $seconds.'s';
+
+					$timeout = implode(" ", $t_info);
+				}
+			}
+
 			$params['games']['list'][$i]['opponent'] = $opponent;
 			$params['games']['list'][$i]['ready'] = ($data['Current'] == $player->Name()) ? 'yes' : 'no';
 			$params['games']['list'][$i]['gameid'] = $data['GameID'];
@@ -3635,8 +3664,9 @@ case 'Games':
 			$params['games']['list'][$i]['gameaction'] = $data['Last Action'];
 			$params['games']['list'][$i]['lastseen'] = $last_seen;
 			$params['games']['list'][$i]['finishable'] = (time() - strtotime($data['Last Action']) >= 60*60*24*7*3 and $data['Current'] != $player->Name() and $opponent != SYSTEM_NAME) ? 'yes' : 'no';
+			$params['games']['list'][$i]['finish_move'] = ($data['Timeout'] > 0 and time() - strtotime($data['Last Action']) >= $data['Timeout'] and $data['Current'] != $player->Name() and $opponent != SYSTEM_NAME) ? 'yes' : 'no';
 			$params['games']['list'][$i]['game_modes'] = $data['GameModes'];
-			$params['games']['list'][$i]['timeout'] = $data['Timeout'];
+			$params['games']['list'][$i]['timeout'] = $timeout;
 			$params['games']['list'][$i]['ai'] = $data['AI'];
 		}
 	}

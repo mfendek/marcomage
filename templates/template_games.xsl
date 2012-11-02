@@ -99,8 +99,7 @@
 						</td>
 						<td>
 							<p>
-								<xsl:variable name="timeout" select="timeout" />
-								<xsl:value-of select="exsl:node-set($timeout_values)/*[@name = $timeout]/@text"/>
+								<xsl:value-of select="timeout"/>
 							</p>
 						</td>
 						<td>
@@ -110,6 +109,9 @@
 								</xsl:when>
 								<xsl:when test="gamestate = 'in progress' and finishable = 'yes'">
 									<p class="ended_game" >Can be finished</p>
+								</xsl:when>
+								<xsl:when test="gamestate = 'in progress' and finish_move = 'yes'">
+									<p class="ended_game" >AI move can be done</p>
 								</xsl:when>
 								<xsl:when test="gamestate != 'in progress'">
 									<p class="ended_game">Game has ended</p>
