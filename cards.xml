@@ -10,6 +10,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect/>
     <code/>
@@ -25,6 +26,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[If Wall = 0<br />Wall: +10<br />else<br />Wall: +3]]></effect>
     <code><![CDATA[if ($mydata->Wall == 0) $mydata->Wall+= 10; else $mydata->Wall+= 3;]]></code>
@@ -40,6 +42,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>1</level>
     <keywords/>
     <effect><![CDATA[Tower: +2<br />If Tower was damaged during opponent's last round<br />Tower: +5]]></effect>
     <code><![CDATA[if ($mychanges['Tower'] < 0) $mydata->Tower+= 7; else $mydata->Tower+= 2;]]></code>
@@ -55,6 +58,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Destruction</keywords>
     <effect><![CDATA[Enemy quarry: -1]]></effect>
     <code><![CDATA[$hisdata->Quarry-= 1;]]></code>
@@ -70,6 +74,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Far sight</keywords>
     <effect><![CDATA[Wall: +N<br />N = Max wall / 2]]></effect>
     <code><![CDATA[$mydata->Wall+= round($max_wall / 2);]]></code>
@@ -85,6 +90,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Illusion</keywords>
     <effect><![CDATA[Facilities: +1<br />Enemy facilities: -1]]></effect>
     <code><![CDATA[
@@ -103,6 +109,7 @@
       <recruits>30</recruits>
     </cost>
     <modes>0</modes>
+    <level>4</level>
     <keywords>Dragon,Charge (25)</keywords>
     <effect><![CDATA[Enemy wall: -20<br />Attack: 30]]></effect>
     <code><![CDATA[$hisdata->Wall-= 20; $this->Attack(30, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -118,6 +125,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Soldier,Charge (3)</keywords>
     <effect><![CDATA[Attack: 7]]></effect>
     <code><![CDATA[$this->Attack(7, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -133,6 +141,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Far sight</keywords>
     <effect><![CDATA[Gems: +7<br />Enemy gems: -7]]></effect>
     <code><![CDATA[$mydata->Gems+= 7; $hisdata->Gems-= 7;]]></code>
@@ -148,6 +157,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>4</level>
     <keywords/>
     <effect><![CDATA[Magic: +2<br />Summons a rare <b>Mage</b>]]></effect>
     <code><![CDATA[
@@ -166,6 +176,7 @@
       <recruits>12</recruits>
     </cost>
     <modes>2</modes>
+    <level>0</level>
     <keywords>Unliving,Skirmisher</keywords>
     <effect><![CDATA[Attack: 21<br />Mode1:<br />Bricks: +8<br />Mode2:<br />Recruits: +6]]></effect>
     <code><![CDATA[
@@ -185,6 +196,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>8</level>
     <keywords>Restoration</keywords>
     <effect><![CDATA[Gems: +25<br />If last card played was a <b>Mage</b><br />Gems: +8]]></effect>
     <code><![CDATA[
@@ -204,6 +216,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>7</level>
     <keywords/>
     <effect><![CDATA[Dungeon: +1]]></effect>
     <code><![CDATA[$mydata->Dungeons+= 1;]]></code>
@@ -219,6 +232,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Horde</keywords>
     <effect><![CDATA[Attack: 3<br />If matching card doesn't cost recruits<br />Steals 3 random resources]]></effect>
     <code><![CDATA[
@@ -244,6 +258,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>3</level>
     <keywords>Destruction</keywords>
     <effect><![CDATA[Enemy magic: -1]]></effect>
     <code><![CDATA[$hisdata->Magic-= 1;]]></code>
@@ -259,6 +274,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords/>
     <effect><![CDATA[Highest facility: -1<br />Enemy highest facility: -1]]></effect>
     <code><![CDATA[
@@ -289,6 +305,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords/>
     <effect><![CDATA[Tower: +3<br />Stock: +1<br />Summons a <b>Mage</b>]]></effect>
     <code><![CDATA[
@@ -308,6 +325,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords>Nature</keywords>
     <effect><![CDATA[Enemy tower and Enemy wall is halved (min 10 damage)]]></effect>
     <code><![CDATA[
@@ -326,6 +344,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Tower: +5]]></effect>
     <code><![CDATA[$mydata->Tower+= 5;]]></code>
@@ -341,6 +360,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Wall: +25]]></effect>
     <code><![CDATA[$mydata->Wall+= 25;]]></code>
@@ -356,6 +376,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords>Soldier</keywords>
     <effect><![CDATA[Recruits: +10<br />Discard highest cost non-rare Recruits only card from opponent's hand]]></effect>
     <code><![CDATA[
@@ -390,6 +411,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Far sight</keywords>
     <effect><![CDATA[Tower: +30]]></effect>
     <code><![CDATA[$mydata->Tower+= 30;]]></code>
@@ -405,6 +427,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>5</level>
     <keywords/>
     <effect><![CDATA[Quarry: +1]]></effect>
     <code><![CDATA[$mydata->Quarry+= 1;]]></code>
@@ -420,6 +443,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Stock: +1<br />If opponent lowered your stock last round<br />Stock: +1]]></effect>
     <code><![CDATA[
@@ -438,6 +462,7 @@
       <recruits>3</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords>Beast,Skirmisher</keywords>
     <effect><![CDATA[Attack: 5<br />If Tower < 20<br />Tower: +4]]></effect>
     <code><![CDATA[$this->Attack(5, $hisdata->Tower, $hisdata->Wall); if ($mydata->Tower < 20) $mydata->Tower+= 4;]]></code>
@@ -453,6 +478,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords>Beast,Runic,Far sight</keywords>
     <effect><![CDATA[Attack: 14]]></effect>
     <code><![CDATA[$this->Attack(14, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -468,6 +494,7 @@
       <recruits>2</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Brigand</keywords>
     <effect><![CDATA[Attack: 1<br />Stock: +1<br />Enemy stock: -1]]></effect>
     <code><![CDATA[
@@ -487,6 +514,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Holy,Quick</keywords>
     <effect><![CDATA[Stock: +#<b>Holy</b> in hand]]></effect>
     <code><![CDATA[
@@ -505,6 +533,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Undead</keywords>
     <effect><![CDATA[Attack: 29<br />Gems: -7<br />If #<b>Undead</b> in hand < 4<br />Magic: -1]]></effect>
     <code><![CDATA[
@@ -523,6 +552,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Destruction</keywords>
     <effect><![CDATA[Enemy dungeon: -1]]></effect>
     <code><![CDATA[$hisdata->Dungeons-= 1;]]></code>
@@ -538,6 +568,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>2</modes>
+    <level>10</level>
     <keywords/>
     <effect><![CDATA[Magic: +2<br />Gems: +30<br />Mode1:<br />Quarry: -1<br />Mode2:<br />Dungeon: -1]]></effect>
     <code><![CDATA[
@@ -557,6 +588,7 @@
       <recruits>11</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords>Undead</keywords>
     <effect><![CDATA[Attack: 22 + N<br />Gems: +N<br />N = #<b>Holy</b> in opponent's hand]]></effect>
     <code><![CDATA[
@@ -576,6 +608,7 @@
       <recruits>8</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Beast,Far sight</keywords>
     <effect><![CDATA[Attack: 16]]></effect>
     <code><![CDATA[$this->Attack(16, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -591,6 +624,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>6</level>
     <keywords/>
     <effect><![CDATA[Wall: +5<br />Summons a rare <b>Beast</b>]]></effect>
     <code><![CDATA[
@@ -609,6 +643,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>8</level>
     <keywords/>
     <effect><![CDATA[Magic: +1]]></effect>
     <code><![CDATA[$mydata->Magic+= 1;]]></code>
@@ -624,6 +659,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Tower: +15<br />If matching card in opponent's hand costs gems<br />Gems: +10]]></effect>
     <code><![CDATA[
@@ -643,6 +679,7 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Soldier,Charge (9)</keywords>
     <effect><![CDATA[Attack: 16]]></effect>
     <code><![CDATA[$this->Attack(16, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -658,6 +695,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>7</level>
     <keywords>Destruction,Banish</keywords>
     <effect><![CDATA[Enemy gems: -12]]></effect>
     <code><![CDATA[$hisdata->Gems-= 12;]]></code>
@@ -673,6 +711,7 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Brigand</keywords>
     <effect><![CDATA[Stock: +N<br />Enemy stock: -N<br />N = #<b>Brigand</b> in hand]]></effect>
     <code><![CDATA[
@@ -692,6 +731,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>3</level>
     <keywords>Skirmisher</keywords>
     <effect><![CDATA[Tower: +2<br />Wall: +3]]></effect>
     <code><![CDATA[$mydata->Tower+= 2; $mydata->Wall+= 3;]]></code>
@@ -707,6 +747,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>5</level>
     <keywords>Illusion</keywords>
     <effect><![CDATA[Enemy recruits: -20]]></effect>
     <code><![CDATA[$hisdata->Recruits-= 20;]]></code>
@@ -722,6 +763,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>2</modes>
+    <level>15</level>
     <keywords>Unliving,Skirmisher</keywords>
     <effect><![CDATA[Mode1:<br />Wall: +8<br />Mode2:<br />Enemy wall: -9]]></effect>
     <code><![CDATA[if ($mode == 1) $mydata->Wall+=8; elseif ($mode == 2) $hisdata->Wall-= 9;]]></code>
@@ -737,6 +779,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>5</level>
     <keywords>Far sight</keywords>
     <effect><![CDATA[Attack: 2<br />Summons a <b>Far sight</b>]]></effect>
     <code><![CDATA[
@@ -755,6 +798,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>7</level>
     <keywords/>
     <effect><![CDATA[Magic: -1<br />Gems: +25]]></effect>
     <code><![CDATA[$mydata->Magic-= 1; $mydata->Gems+= 25;]]></code>
@@ -770,6 +814,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords>Holy,Swift</keywords>
     <effect><![CDATA[Stock: +3N<br />N = #<b>Holy</b> in hand]]></effect>
     <code><![CDATA[
@@ -788,6 +833,7 @@
       <recruits>3</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Barbarian,Siege</keywords>
     <effect><![CDATA[Attack: 4<br />Enemy tower: -1]]></effect>
     <code><![CDATA[$this->Attack(4, $hisdata->Tower, $hisdata->Wall); $hisdata->Tower-= 1;]]></code>
@@ -803,6 +849,7 @@
       <recruits>8</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Horde,Charge (7),Siege</keywords>
     <effect><![CDATA[Enemy wall: -8]]></effect>
     <code><![CDATA[$hisdata->Wall-= 8;]]></code>
@@ -818,6 +865,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Wall: +35<br />Bricks: +5]]></effect>
     <code><![CDATA[$mydata->Wall+= 35; $mydata->Bricks+= 5;]]></code>
@@ -833,6 +881,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords/>
     <effect><![CDATA[Tower: +4<br />Stock: +1<br />Summons a <b>Restoration</b>]]></effect>
     <code><![CDATA[
@@ -852,6 +901,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Restoration</keywords>
     <effect><![CDATA[Bricks: +10<br />If last card played was a <b>Mage</b><br />Bricks: +5]]></effect>
     <code><![CDATA[
@@ -871,6 +921,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Restoration</keywords>
     <effect><![CDATA[Recruits: +10<br />If last card played was a <b>Mage</b><br />Recruits: +5]]></effect>
     <code><![CDATA[
@@ -890,6 +941,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords/>
     <effect><![CDATA[Discard highest cost non-<b>Durable</b> keyword card from opponent's hand]]></effect>
     <code><![CDATA[
@@ -923,6 +975,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Brigand</keywords>
     <effect><![CDATA[Attack: 9<br />Enemy stock: -3]]></effect>
     <code><![CDATA[
@@ -941,6 +994,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Mage,Swift</keywords>
     <effect><![CDATA[Attack: 6 + #Magic]]></effect>
     <code><![CDATA[$this->Attack((6 + $mydata->Magic), $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -956,6 +1010,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Siege</keywords>
     <effect><![CDATA[Enemy wall: -10]]></effect>
     <code><![CDATA[$hisdata->Wall-= 10;]]></code>
@@ -971,6 +1026,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords/>
     <effect><![CDATA[Tower: +5<br />Stock: +1<br />Summons a <b>Nature</b>]]></effect>
     <code><![CDATA[
@@ -990,6 +1046,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>4</level>
     <keywords/>
     <effect><![CDATA[Tower: +12]]></effect>
     <code><![CDATA[$mydata->Tower+= 12;]]></code>
@@ -1005,6 +1062,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Wall: +7]]></effect>
     <code><![CDATA[$mydata->Wall+= 7;]]></code>
@@ -1020,6 +1078,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Tower: +6<br />Stock: +2<br />Summons non-common <b>Destruction</b>]]></effect>
     <code><![CDATA[
@@ -1041,6 +1100,7 @@
       <recruits>8</recruits>
     </cost>
     <modes>0</modes>
+    <level>6</level>
     <keywords/>
     <effect><![CDATA[Enemy tower: -9]]></effect>
     <code><![CDATA[$hisdata->Tower-= 9;]]></code>
@@ -1056,6 +1116,7 @@
       <recruits>3</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Runic</keywords>
     <effect><![CDATA[Attack: 4<br />Bricks: +3]]></effect>
     <code><![CDATA[$this->Attack(4, $hisdata->Tower, $hisdata->Wall); $mydata->Bricks+= 3;]]></code>
@@ -1071,6 +1132,7 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Dragon,Banish</keywords>
     <effect><![CDATA[Attack: 50]]></effect>
     <code><![CDATA[$this->Attack(50, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -1086,6 +1148,7 @@
       <recruits>16</recruits>
     </cost>
     <modes>0</modes>
+    <level>2</level>
     <keywords>Siege</keywords>
     <effect><![CDATA[Enemy tower: -14]]></effect>
     <code><![CDATA[$hisdata->Tower-= 14;]]></code>
@@ -1101,6 +1164,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>8</level>
     <keywords/>
     <effect><![CDATA[Facilities: -1<br />Enemy tower: -24]]></effect>
     <code><![CDATA[
@@ -1119,6 +1183,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords/>
     <effect><![CDATA[Tower: +25<br />Facilities: +1<br />Enemy tower: +25<br />Enemy facilities: +1]]></effect>
     <code><![CDATA[
@@ -1139,6 +1204,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords/>
     <effect><![CDATA[Tower: +7<br />Stock: +2<br />Summons non-common <b>Illusion</b>]]></effect>
     <code><![CDATA[
@@ -1160,6 +1226,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Beast,Frenzy</keywords>
     <effect><![CDATA[Attack: 18]]></effect>
     <code><![CDATA[$this->Attack(18, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -1175,6 +1242,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Tower: +40]]></effect>
     <code><![CDATA[$mydata->Tower+= 40;]]></code>
@@ -1190,6 +1258,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords>Barbarian</keywords>
     <effect><![CDATA[Attack: 3<br />Recruits: +2<br />Summons a non-common <b>Barbarian</b>]]></effect>
     <code><![CDATA[
@@ -1211,6 +1280,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Beast,Frenzy</keywords>
     <effect><![CDATA[Attack: 12]]></effect>
     <code><![CDATA[$this->Attack(12, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -1226,6 +1296,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>2</level>
     <keywords/>
     <effect><![CDATA[Tower: +20<br />Magic: +2]]></effect>
     <code><![CDATA[$mydata->Tower+= 20; $mydata->Magic+= 2;]]></code>
@@ -1241,6 +1312,7 @@
       <recruits>2</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Runic</keywords>
     <effect><![CDATA[Attack: 3<br />Wall: +5]]></effect>
     <code><![CDATA[$this->Attack(3, $hisdata->Tower, $hisdata->Wall); $mydata->Wall+= 5;]]></code>
@@ -1256,6 +1328,7 @@
       <recruits>9</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords>Soldier,Far sight</keywords>
     <effect><![CDATA[Tower: +10]]></effect>
     <code><![CDATA[$mydata->Tower+= 10;]]></code>
@@ -1271,6 +1344,7 @@
       <recruits>7</recruits>
     </cost>
     <modes>0</modes>
+    <level>4</level>
     <keywords>Beast,Frenzy</keywords>
     <effect><![CDATA[Attack: 10<br />Enemy bricks: -5]]></effect>
     <code><![CDATA[$this->Attack(10, $hisdata->Tower, $hisdata->Wall); $hisdata->Bricks-= 5;]]></code>
@@ -1286,6 +1360,7 @@
       <recruits>14</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Barbarian,Skirmisher</keywords>
     <effect><![CDATA[Attack: 25]]></effect>
     <code><![CDATA[$this->Attack(25, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -1301,6 +1376,7 @@
       <recruits>7</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Beast,Frenzy</keywords>
     <effect><![CDATA[Attack: 15]]></effect>
     <code><![CDATA[$this->Attack(15, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -1316,6 +1392,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>14</level>
     <keywords>Far sight</keywords>
     <effect><![CDATA[Production x0<br />Enemy tower: -3<br />Replace a card in hand with self]]></effect>
     <code><![CDATA[
@@ -1335,6 +1412,7 @@
       <recruits>2</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Barbarian,Skirmisher</keywords>
     <effect><![CDATA[Attack: 6<br />Recruits: +N<br />N = #<b>Barbarian</b> in hand (max 4)]]></effect>
     <code><![CDATA[
@@ -1353,6 +1431,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords>Banish,Charge (2)</keywords>
     <effect><![CDATA[Attack: 5<br />Gems: +3]]></effect>
     <code><![CDATA[$this->Attack(5, $hisdata->Tower, $hisdata->Wall); $mydata->Gems+= 3;]]></code>
@@ -1368,6 +1447,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Destruction</keywords>
     <effect><![CDATA[Enemy bricks: -10]]></effect>
     <code><![CDATA[$hisdata->Bricks-= 10;]]></code>
@@ -1383,6 +1463,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Destruction,Nature</keywords>
     <effect><![CDATA[Each player suffers 4 damage for each facility and 10 resources he has]]></effect>
     <code><![CDATA[
@@ -1405,6 +1486,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords/>
     <effect><![CDATA[Facilities: +2<br />Stock: = 0<br />Enemy facilities: +2<br />Enemy stock: = 0]]></effect>
     <code><![CDATA[
@@ -1425,6 +1507,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>3</level>
     <keywords>Mage,Far sight</keywords>
     <effect><![CDATA[Attack: #Magic]]></effect>
     <code><![CDATA[$this->Attack($mydata->Magic, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -1440,6 +1523,7 @@
       <recruits>14</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Banish,Charge (7)</keywords>
     <effect><![CDATA[Attack: 15<br />Dungeon: +1<br />Enemy dungeon: +1]]></effect>
     <code><![CDATA[
@@ -1458,6 +1542,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords>Destruction,Banish</keywords>
     <effect><![CDATA[Attack: 8<br />Enemy gems: -8]]></effect>
     <code><![CDATA[$this->Attack(8, $hisdata->Tower, $hisdata->Wall); $hisdata->Gems-= 8;]]></code>
@@ -1473,6 +1558,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords>Holy,Far sight</keywords>
     <effect><![CDATA[Attack: 10<br />Enemy gems: -8]]></effect>
     <code><![CDATA[$this->Attack(10, $hisdata->Tower, $hisdata->Wall); $hisdata->Gems-= 8;]]></code>
@@ -1488,6 +1574,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Dragon,Undead</keywords>
     <effect><![CDATA[Attack: 40<br />Enemy gems: -20]]></effect>
     <code><![CDATA[$this->Attack(40, $hisdata->Tower, $hisdata->Wall); $hisdata->Gems-= 20;]]></code>
@@ -1503,6 +1590,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords/>
     <effect><![CDATA[Tower: +60<br />If Wall < 40<br />Wall:= 40]]></effect>
     <code><![CDATA[$mydata->Tower+= 60; if ($mydata->Wall < 40) $mydata->Wall = 40;]]></code>
@@ -1518,6 +1606,7 @@
       <recruits>35</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Undead</keywords>
     <effect><![CDATA[Attack: 35 + 7N<br />N = #<b>Undead</b> in hand]]></effect>
     <code><![CDATA[
@@ -1536,6 +1625,7 @@
       <recruits>60</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Horde</keywords>
     <effect><![CDATA[Attack: 80<br />If matching card or its neighbours are zero cost<br />Attack: 20]]></effect>
     <code><![CDATA[
@@ -1559,6 +1649,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>8</level>
     <keywords>Holy,Soldier,Banish</keywords>
     <effect><![CDATA[Attack: 10<br />Gems: +6]]></effect>
     <code><![CDATA[$this->Attack(10, $hisdata->Tower, $hisdata->Wall); $mydata->Gems+= 6;]]></code>
@@ -1574,6 +1665,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Destruction</keywords>
     <effect><![CDATA[Enemy recruits: -6]]></effect>
     <code><![CDATA[$hisdata->Recruits-= 6;]]></code>
@@ -1589,6 +1681,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>2</modes>
+    <level>11</level>
     <keywords>Dragon,Unliving,Charge (16)</keywords>
     <effect><![CDATA[Mode1:<br />Attack: 55<br />Mode2:<br />Wall: +65]]></effect>
     <code><![CDATA[
@@ -1607,6 +1700,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>3</modes>
+    <level>17</level>
     <keywords>Unliving,Siege</keywords>
     <effect><![CDATA[Mode1:<br />Attack: 25<br />Mode2:<br />Wall: +32<br />Mode3:<br />Enemy wall: -35]]></effect>
     <code><![CDATA[
@@ -1626,6 +1720,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>2</modes>
+    <level>19</level>
     <keywords>Unliving,Far sight</keywords>
     <effect><![CDATA[Mode1:<br />Attack: 12<br />Mode2:<br />Enemy tower: -7]]></effect>
     <code><![CDATA[
@@ -1644,6 +1739,7 @@
       <recruits>2</recruits>
     </cost>
     <modes>0</modes>
+    <level>2</level>
     <keywords>Soldier</keywords>
     <effect><![CDATA[Enemy tower: -3]]></effect>
     <code><![CDATA[$hisdata->Tower-= 3;]]></code>
@@ -1659,6 +1755,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Quick,Aria</keywords>
     <effect><![CDATA[Gems: +3]]></effect>
     <code><![CDATA[$mydata->Gems+= 3;]]></code>
@@ -1674,6 +1771,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>3</level>
     <keywords/>
     <effect><![CDATA[Attack: 1<br />If last card played was a zero cost card<br />Summons a non-common zero cost card]]></effect>
     <code><![CDATA[
@@ -1697,6 +1795,7 @@
       <recruits>18</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Horde</keywords>
     <effect><![CDATA[Attack: 10<br />Enemy magic: -1]]></effect>
     <code><![CDATA[$this->Attack(10, $hisdata->Tower, $hisdata->Wall); $hisdata->Magic-= 1;]]></code>
@@ -1712,6 +1811,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords/>
     <effect><![CDATA[Dungeon: +1<br />Magic: +1<br />Gems: +25<br />Enemy dungeon: +1<br />Enemy magic: +1<br />Enemy gems: -25]]></effect>
     <code><![CDATA[
@@ -1730,6 +1830,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords/>
     <effect><![CDATA[Quarry: +5<br />Enemy quarry: +5]]></effect>
     <code><![CDATA[$mydata->Quarry+= 5; $hisdata->Quarry+= 5;]]></code>
@@ -1745,6 +1846,7 @@
       <recruits>4</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Undead</keywords>
     <effect><![CDATA[Stock: +#<b>Undead</b> in hand (max 6)]]></effect>
     <code><![CDATA[
@@ -1763,6 +1865,7 @@
       <recruits>20</recruits>
     </cost>
     <modes>0</modes>
+    <level>3</level>
     <keywords>Soldier</keywords>
     <effect><![CDATA[Tower: +10<br />Recruits: +20]]></effect>
     <code><![CDATA[$mydata->Tower+= 10; $mydata->Recruits+= 20;]]></code>
@@ -1778,6 +1881,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Undead</keywords>
     <effect><![CDATA[Stock: +N<br />If N > 6<br />Magic: +1<br />N = #<b>Undead</b> in hand]]></effect>
     <code><![CDATA[
@@ -1797,6 +1901,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Durable</keywords>
     <effect><![CDATA[Wall: +15<br />If not New<br />Wall: +5]]></effect>
     <code><![CDATA[$mydata->Wall+= (isset($mynewflags[$cardpos])) ? 15 : 20;]]></code>
@@ -1812,6 +1917,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Restoration</keywords>
     <effect><![CDATA[Summons the last card]]></effect>
     <code><![CDATA[if ($mylast_card->ID > 0) $nextcard = $mylast_card->ID;]]></code>
@@ -1827,6 +1933,7 @@
       <recruits>6</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Durable,Horde,Enduring (9)</keywords>
     <effect><![CDATA[Attack: 5]]></effect>
     <code><![CDATA[$this->Attack(5, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -1842,6 +1949,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords>Restoration,Durable</keywords>
     <effect><![CDATA[Bricks: +2<br />Recruits: +2]]></effect>
     <code><![CDATA[$mydata->Bricks+= 2; $mydata->Recruits+= 2;]]></code>
@@ -1857,6 +1965,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Mage</keywords>
     <effect><![CDATA[Attack: 20<br />Enemy stock: -7<br />Summons the last card]]></effect>
     <code><![CDATA[
@@ -1876,6 +1985,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Mage,Swift</keywords>
     <effect><![CDATA[Attack: 8<br />Enemy stock: -3]]></effect>
     <code><![CDATA[
@@ -1894,6 +2004,7 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Undead,Skirmisher</keywords>
     <effect><![CDATA[Attack: 35<br />Enemy recruits: -10]]></effect>
     <code><![CDATA[$this->Attack(35, $hisdata->Tower, $hisdata->Wall); $hisdata->Recruits-= 10;]]></code>
@@ -1909,6 +2020,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>1</level>
     <keywords>Alliance</keywords>
     <effect><![CDATA[Attack: 7<br />Gems: +2]]></effect>
     <code><![CDATA[$this->Attack(7, $hisdata->Tower, $hisdata->Wall); $mydata->Gems+= 2;]]></code>
@@ -1924,6 +2036,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>6</level>
     <keywords>Undead,Charge (3)</keywords>
     <effect><![CDATA[Attack: 10]]></effect>
     <code><![CDATA[$this->Attack(10, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -1939,6 +2052,7 @@
       <recruits>3</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Undead</keywords>
     <effect><![CDATA[Attack: 7<br />If Wall < 12<br />Wall: +4]]></effect>
     <code><![CDATA[$this->Attack(7, $hisdata->Tower, $hisdata->Wall); if ($mydata->Wall < 12) $mydata->Wall+= 4;]]></code>
@@ -1954,6 +2068,7 @@
       <recruits>2</recruits>
     </cost>
     <modes>0</modes>
+    <level>7</level>
     <keywords>Aqua,Undead</keywords>
     <effect><![CDATA[Attack: 5<br />Wall: +2]]></effect>
     <code><![CDATA[$this->Attack(5, $hisdata->Tower, $hisdata->Wall); $mydata->Wall+= 2;]]></code>
@@ -1969,6 +2084,7 @@
       <recruits>20</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Destruction</keywords>
     <effect><![CDATA[Attack: 30<br />Stock: = 0<br />Enemy stock: = 0]]></effect>
     <code><![CDATA[
@@ -1988,6 +2104,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>2</level>
     <keywords>Destruction</keywords>
     <effect><![CDATA[Tower: +5<br />Enemy tower: -5]]></effect>
     <code><![CDATA[$mydata->Tower+= 5; $hisdata->Tower-= 5;]]></code>
@@ -2003,6 +2120,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Undead,Banish</keywords>
     <effect><![CDATA[Tower: +4<br />If #<b>Undead</b> in hand < 4<br />Gems: -3]]></effect>
     <code><![CDATA[
@@ -2021,6 +2139,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>4</level>
     <keywords/>
     <effect><![CDATA[Facilities: +5]]></effect>
     <code><![CDATA[$mydata->Quarry+= 5; $mydata->Magic+= 5; $mydata->Dungeons+= 5;]]></code>
@@ -2036,6 +2155,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Restoration</keywords>
     <effect><![CDATA[Production x2]]></effect>
     <code><![CDATA[$bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2;]]></code>
@@ -2051,6 +2171,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords>Undead,Far sight</keywords>
     <effect><![CDATA[Attack: 11<br />Gems: +5<br />Enemy gems: -5]]></effect>
     <code><![CDATA[
@@ -2069,6 +2190,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>5</level>
     <keywords>Mage,Far sight</keywords>
     <effect><![CDATA[Attack: 30<br />Magic: +1]]></effect>
     <code><![CDATA[$this->Attack(30, $hisdata->Tower, $hisdata->Wall); $mydata->Magic+= 1;]]></code>
@@ -2084,6 +2206,7 @@
       <recruits>2</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Alliance,Banish</keywords>
     <effect><![CDATA[Attack: 3<br />Gems: +1]]></effect>
     <code><![CDATA[$this->Attack(3, $hisdata->Tower, $hisdata->Wall); $mydata->Gems+= 1;]]></code>
@@ -2099,6 +2222,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Alliance</keywords>
     <effect><![CDATA[Tower: +7<br />Production x2]]></effect>
     <code><![CDATA[
@@ -2117,6 +2241,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords/>
     <effect><![CDATA[Wall: -70<br />Attack: N<br />N = wall lost]]></effect>
     <code><![CDATA[
@@ -2136,6 +2261,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords>Restoration,Far sight</keywords>
     <effect><![CDATA[Tower: +15<br />Wall: +15<br />Stock: +15]]></effect>
     <code><![CDATA[
@@ -2154,6 +2280,7 @@
       <recruits>25</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Dragon,Far sight</keywords>
     <effect><![CDATA[Attack: 40]]></effect>
     <code><![CDATA[$this->Attack(40, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -2169,6 +2296,7 @@
       <recruits>43</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Dragon</keywords>
     <effect><![CDATA[Attack: 60<br />Enemy recruits: -15]]></effect>
     <code><![CDATA[$this->Attack(60, $hisdata->Tower, $hisdata->Wall); $hisdata->Recruits-= 15;]]></code>
@@ -2184,6 +2312,7 @@
       <recruits>25</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Dragon,Skirmisher</keywords>
     <effect><![CDATA[Attack: 45<br />Enemy gems: -10]]></effect>
     <code><![CDATA[$this->Attack(45, $hisdata->Tower, $hisdata->Wall); $hisdata->Gems-= 10;]]></code>
@@ -2199,6 +2328,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords/>
     <effect><![CDATA[Stock: +8<br />Enemy stock: +8]]></effect>
     <code><![CDATA[
@@ -2217,6 +2347,7 @@
       <recruits>30</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords>Aqua,Charge (8)</keywords>
     <effect><![CDATA[Attack: 30<br />If Enemy wall = 0<br />Recruits: +20]]></effect>
     <code><![CDATA[
@@ -2235,6 +2366,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords/>
     <effect><![CDATA[Summons a <b>Dragon</b><br />If #<b>Dragon</b> in hand > 0<br />it will be a rare <b>Dragon</b>]]></effect>
     <code><![CDATA[
@@ -2253,6 +2385,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords/>
     <effect><![CDATA[If #Facilities >= #Enemy facilities<br />Stock: -15<br />Always:<br />Facilities: +1]]></effect>
     <code><![CDATA[
@@ -2272,6 +2405,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Undead</keywords>
     <effect><![CDATA[Attack: 4N + 4<br />N = #<b>Undead</b> in hand]]></effect>
     <code><![CDATA[
@@ -2290,6 +2424,7 @@
       <recruits>17</recruits>
     </cost>
     <modes>0</modes>
+    <level>7</level>
     <keywords>Beast,Horde</keywords>
     <effect><![CDATA[Dungeon: +2<br />Summons a rare <b>Beast</b>]]></effect>
     <code><![CDATA[
@@ -2308,6 +2443,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords>Unliving</keywords>
     <effect><![CDATA[If Bricks > Enemy bricks<br />Attack: 10<br />else<br/>Bricks: +8]]></effect>
     <code><![CDATA[
@@ -2325,6 +2461,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Alliance,Mage</keywords>
     <effect><![CDATA[Attack: 9<br />Production x2]]></effect>
     <code><![CDATA[
@@ -2343,6 +2480,7 @@
       <recruits>17</recruits>
     </cost>
     <modes>0</modes>
+    <level>4</level>
     <keywords>Holy,Far sight</keywords>
     <effect><![CDATA[Attack: 10<br />Tower: +10]]></effect>
     <code><![CDATA[$this->Attack(10, $hisdata->Tower, $hisdata->Wall); $mydata->Tower+= 10;]]></code>
@@ -2358,6 +2496,7 @@
       <recruits>30</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Attack: 50<br />Enemy stock: -50]]></effect>
     <code><![CDATA[
@@ -2376,6 +2515,7 @@
       <recruits>2</recruits>
     </cost>
     <modes>0</modes>
+    <level>6</level>
     <keywords>Holy</keywords>
     <effect><![CDATA[If Recruits > Enemy recruits<br />Attack: 10<br />else<br/>Recruits: +7]]></effect>
     <code><![CDATA[
@@ -2394,6 +2534,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Brigand</keywords>
     <effect><![CDATA[Attack: 3<br />Enemy stock: -2]]></effect>
     <code><![CDATA[
@@ -2412,6 +2553,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Durable</keywords>
     <effect><![CDATA[Tower: +10]]></effect>
     <code><![CDATA[$mydata->Tower+= 10;]]></code>
@@ -2427,6 +2569,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Beast</keywords>
     <effect><![CDATA[Attack: 20<br />Wall: +10<br />Quarry: +1<br />Enemy wall: +10<br />Enemy quarry: +1]]></effect>
     <code><![CDATA[
@@ -2446,6 +2589,7 @@
       <recruits>11</recruits>
     </cost>
     <modes>0</modes>
+    <level>4</level>
     <keywords/>
     <effect><![CDATA[Bricks: +60]]></effect>
     <code><![CDATA[$mydata->Bricks+= 60;]]></code>
@@ -2461,6 +2605,7 @@
       <recruits>13</recruits>
     </cost>
     <modes>0</modes>
+    <level>5</level>
     <keywords>Undead</keywords>
     <effect><![CDATA[Attack: 20<br />Summons rare <b>Undead</b><br />Gain cost of the summoned card (max 13)]]></effect>
     <code><![CDATA[
@@ -2483,6 +2628,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords/>
     <effect><![CDATA[Summons <b>Undead</b> of a rarity based on #<b>Undead</b> in hand (C - 0 to 3, U - 4 to 6, R - 7)]]></effect>
     <code><![CDATA[
@@ -2502,6 +2648,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Runic</keywords>
     <effect><![CDATA[Bricks: +5<br />Gems: +2<br />Recruits: +1]]></effect>
     <code><![CDATA[$mydata->Bricks+= 5; $mydata->Gems+= 2; $mydata->Recruits+= 1;]]></code>
@@ -2517,6 +2664,7 @@
       <recruits>8</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Beast,Far sight</keywords>
     <effect><![CDATA[If matching card is Revealed<br />Wall: +12<br />else<br />Attack: 12]]></effect>
     <code><![CDATA[if (!$hidden_cards or isset($hisdata->Revealed[$cardpos])) $mydata->Wall+= 12; else $this->Attack(12, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -2532,6 +2680,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Wall: +50<br />Enemy wall: +50]]></effect>
     <code><![CDATA[$mydata->Wall+= 50; $hisdata->Wall+= 50;]]></code>
@@ -2547,6 +2696,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Wall: +10]]></effect>
     <code><![CDATA[$mydata->Wall+= 10;]]></code>
@@ -2562,6 +2712,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Attack: 12<br />Stock: -5<br />Replace matching card and its neigbouring cards with Conscript]]></effect>
     <code><![CDATA[
@@ -2583,6 +2734,7 @@
       <recruits>9</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Durable,Siege</keywords>
     <effect><![CDATA[Enemy tower: -6]]></effect>
     <code><![CDATA[$hisdata->Tower-= 6;]]></code>
@@ -2598,6 +2750,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Illusion</keywords>
     <effect><![CDATA[Switches your hand with opponent's hand]]></effect>
     <code><![CDATA[
@@ -2619,6 +2772,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>2</level>
     <keywords>Mage</keywords>
     <effect><![CDATA[If Gems > Enemy gems<br />Attack: 10<br />else<br/>Gems: +7]]></effect>
     <code><![CDATA[
@@ -2637,6 +2791,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Runic</keywords>
     <effect><![CDATA[Wall: +40<br />Summons non-common <b>Runic</b>]]></effect>
     <code><![CDATA[
@@ -2657,6 +2812,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Far sight</keywords>
     <effect><![CDATA[Tower: +18<br />Wall: +6]]></effect>
     <code><![CDATA[$mydata->Tower+= 18; $mydata->Wall+= 6;]]></code>
@@ -2672,6 +2828,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Illusion</keywords>
     <effect><![CDATA[Tower: +#Bricks<br />Wall: +#Gems<br />Bricks: = 0<br />Gems: = 0]]></effect>
     <code><![CDATA[
@@ -2690,6 +2847,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords>Nature</keywords>
     <effect><![CDATA[Enemy tower: -15<br />Enemy wall: -15<br />Enemy stock: -15]]></effect>
     <code><![CDATA[
@@ -2708,6 +2866,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Nature</keywords>
     <effect><![CDATA[Enemy wall: -N<br />N = 45 - #Enemy bricks<br />Enemy bricks: -45]]></effect>
     <code><![CDATA[
@@ -2726,6 +2885,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>6</level>
     <keywords/>
     <effect><![CDATA[Summons a rare card from your deck]]></effect>
     <code><![CDATA[$nextcard = $this->DrawCard($my_deck->Rare, $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
@@ -2741,6 +2901,7 @@
       <recruits>3</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Brigand</keywords>
     <effect><![CDATA[Attack: 1<br />Recruits: +1<br />Gems: +2<br />Enemy recruits: -1<br />Enemy gems: -2]]></effect>
     <code><![CDATA[
@@ -2760,6 +2921,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Destruction</keywords>
     <effect><![CDATA[Enemy tower: -20<br />Enemy wall: -20<br />Enemy facilities: -2<br />Enemy stock: -20]]></effect>
     <code><![CDATA[
@@ -2779,6 +2941,7 @@
       <recruits>6</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Magic: +1]]></effect>
     <code><![CDATA[$mydata->Magic+= 1;]]></code>
@@ -2794,6 +2957,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Quarry: +1]]></effect>
     <code><![CDATA[$mydata->Quarry+= 1;]]></code>
@@ -2809,6 +2973,7 @@
       <recruits>6</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Dungeon: +1]]></effect>
     <code><![CDATA[$mydata->Dungeons+= 1;]]></code>
@@ -2824,6 +2989,7 @@
       <recruits>7</recruits>
     </cost>
     <modes>0</modes>
+    <level>4</level>
     <keywords/>
     <effect><![CDATA[If Dungeon < Enemy dungeon<br />Dungeon: +1<br />else<br />Recruits: +11]]></effect>
     <code><![CDATA[
@@ -2842,6 +3008,7 @@
       <recruits>40</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Soldier,Charge (15)</keywords>
     <effect><![CDATA[Attack: 25 + 8N<br />N = #<b>Charge</b> in hand]]></effect>
     <code><![CDATA[
@@ -2860,6 +3027,7 @@
       <recruits>70</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Dragon</keywords>
     <effect><![CDATA[Attack: 200]]></effect>
     <code><![CDATA[$this->Attack(200, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -2875,6 +3043,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords>Illusion</keywords>
     <effect><![CDATA[Summons opponent's last card]]></effect>
     <code><![CDATA[if ($hislast_card->ID > 0) $nextcard = $hislast_card->ID;]]></code>
@@ -2890,6 +3059,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Tower: -20<br />Wall: +70<br/>Won't lower tower below 1]]></effect>
     <code><![CDATA[
@@ -2908,6 +3078,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Holy</keywords>
     <effect><![CDATA[Player(s) with most <b>Holy</b> in hand gains<br />Stock: +8<br />His opponent gains<br />Stock: +2]]></effect>
     <code><![CDATA[
@@ -2936,6 +3107,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Mage</keywords>
     <effect><![CDATA[Negates the negative effect of opponent's last round on your tower, wall, facilities and stock]]></effect>
     <code><![CDATA[
@@ -2955,6 +3127,7 @@
       <recruits>11</recruits>
     </cost>
     <modes>0</modes>
+    <level>3</level>
     <keywords>Mage,Swift</keywords>
     <effect><![CDATA[Attack: 14]]></effect>
     <code><![CDATA[$this->Attack(14, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -2970,6 +3143,7 @@
       <recruits>16</recruits>
     </cost>
     <modes>0</modes>
+    <level>7</level>
     <keywords>Mage,Swift,Rebirth</keywords>
     <effect><![CDATA[Attack: 20<br /><b>Mage</b> tokens = 0]]></effect>
     <code><![CDATA[
@@ -2989,6 +3163,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Swift</keywords>
     <effect><![CDATA[Production x2]]></effect>
     <code><![CDATA[$bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2;]]></code>
@@ -3004,6 +3179,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Holy</keywords>
     <effect><![CDATA[Tower: +13<br />Stock: +7]]></effect>
     <code><![CDATA[
@@ -3022,6 +3198,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Holy</keywords>
     <effect><![CDATA[Tower: +3<br />Stock: +1]]></effect>
     <code><![CDATA[
@@ -3040,6 +3217,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords/>
     <effect><![CDATA[Gain 1 random resource for each <b>Holy</b> in hand (max 5)<br />Summons <b>Holy</b>]]></effect>
     <code><![CDATA[
@@ -3066,6 +3244,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Undead</keywords>
     <effect><![CDATA[Attack: N * M<br />Recruits: = 0<br />N = #Recruits<br />M = #<b>Undead</b> rare cards in hand / 2]]></effect>
     <code><![CDATA[
@@ -3090,6 +3269,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords/>
     <effect><![CDATA[Tower: +Wall / 2<br />Enemy tower: +Enemy wall / 2<br />Both walls are halved]]></effect>
     <code><![CDATA[$mydata->Tower+= round($mydata->Wall / 2); $mydata->Wall-= round($mydata->Wall / 2); $hisdata->Tower+= round($hisdata->Wall / 2); $hisdata->Wall-= round($hisdata->Wall / 2);]]></code>
@@ -3105,6 +3285,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Production x0<br />Attack: 9 + 9N<br />N = #Facilities that were lowered to 1]]></effect>
     <code><![CDATA[
@@ -3127,6 +3308,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Attack: 35<br />Stock: +5<br />Enemy stock: -5]]></effect>
     <code><![CDATA[
@@ -3146,6 +3328,7 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Burning</keywords>
     <effect><![CDATA[Enemy stock: -20<br />Opponent suffers 1 damage for each resource lost]]></effect>
     <code><![CDATA[
@@ -3169,6 +3352,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords/>
     <effect><![CDATA[Summons<br />If New<br />Genie or Efreet<br />else<br />Magic lamp]]></effect>
     <code><![CDATA[$nextcard = (isset($mynewflags[$cardpos])) ? $this->DrawCard(array(181, 182), $mydata->Hand, $cardpos, 'DrawCard_list') : 183;]]></code>
@@ -3184,6 +3368,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>7</level>
     <keywords/>
     <effect><![CDATA[Tower: +5<br />Stock: +4<br />Summons Genie, Efreet or Scepter of summoning]]></effect>
     <code><![CDATA[
@@ -3203,6 +3388,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>7</level>
     <keywords/>
     <effect><![CDATA[If Magic < Enemy magic<br />Magic: +1<br />else<br />Gems: +11]]></effect>
     <code><![CDATA[
@@ -3221,6 +3407,7 @@
       <recruits>7</recruits>
     </cost>
     <modes>0</modes>
+    <level>3</level>
     <keywords>Alliance,Nature</keywords>
     <effect><![CDATA[Enemy wall: -40]]></effect>
     <code><![CDATA[$hisdata->Wall-= 40;]]></code>
@@ -3236,6 +3423,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords/>
     <effect><![CDATA[If Quarry < Enemy quarry<br />Quarry: +1<br />else<br />Bricks: +12]]></effect>
     <code><![CDATA[
@@ -3254,6 +3442,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>5</level>
     <keywords>Runic</keywords>
     <effect><![CDATA[Wall: +5<br />Enemy tower: -1]]></effect>
     <code><![CDATA[$mydata->Wall+= 5; $hisdata->Tower-= 1;]]></code>
@@ -3269,6 +3458,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Alliance</keywords>
     <effect><![CDATA[Tower: +5<br />Recruits prod x3]]></effect>
     <code><![CDATA[$mydata->Tower+= 5; $recruits_production*= 3;]]></code>
@@ -3284,6 +3474,7 @@
       <recruits>11</recruits>
     </cost>
     <modes>0</modes>
+    <level>7</level>
     <keywords>Alliance,Far sight,Skirmisher</keywords>
     <effect><![CDATA[Attack: 11<br />Gems prod x2]]></effect>
     <code><![CDATA[$this->Attack(11, $hisdata->Tower, $hisdata->Wall); $gems_production*= 2;]]></code>
@@ -3299,6 +3490,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Tower: +20]]></effect>
     <code><![CDATA[$mydata->Tower+= 20;]]></code>
@@ -3314,6 +3506,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Tower: +45<br />Wall: +25]]></effect>
     <code><![CDATA[$mydata->Tower+= 45; $mydata->Wall+= 25;]]></code>
@@ -3329,6 +3522,7 @@
       <recruits>18</recruits>
     </cost>
     <modes>0</modes>
+    <level>5</level>
     <keywords>Soldier,Skirmisher</keywords>
     <effect><![CDATA[Attack: 10<br />Wall: +10<br />Recruits: +4]]></effect>
     <code><![CDATA[$this->Attack(10, $hisdata->Tower, $hisdata->Wall); $mydata->Wall+= 10; $mydata->Recruits+= 4;]]></code>
@@ -3344,6 +3538,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords/>
     <effect><![CDATA[Summons a <b>Soldier</b><br />If <b>Soldier</b> tokens are set gain recruits cost of the summoned card (max 6)]]></effect>
     <code><![CDATA[
@@ -3363,6 +3558,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Dragon,Quick</keywords>
     <effect><![CDATA[Moves all <b>Dragon</b> cards from opponent's hand to your hand (to matching positions)<br />If there are none<br />Stock: +6]]></effect>
     <code><![CDATA[
@@ -3391,6 +3587,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Holy</keywords>
     <effect><![CDATA[Tower: +12<br />Summons non-common <b>Holy</b>]]></effect>
     <code><![CDATA[
@@ -3411,6 +3608,7 @@
       <recruits>13</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Far sight,Charge (10)</keywords>
     <effect><![CDATA[Attack: 20<br />Enemy quarry: -1]]></effect>
     <code><![CDATA[$this->Attack(20, $hisdata->Tower, $hisdata->Wall); $hisdata->Quarry-= 1;]]></code>
@@ -3426,6 +3624,7 @@
       <recruits>19</recruits>
     </cost>
     <modes>0</modes>
+    <level>8</level>
     <keywords/>
     <effect><![CDATA[Enemy wall: -60<br />If Enemy wall = 0<br />Enemy facilities: -1]]></effect>
     <code><![CDATA[
@@ -3445,6 +3644,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Illusion,Swift</keywords>
     <effect><![CDATA[Stock x2]]></effect>
     <code><![CDATA[$mydata->Bricks= ($mydata->Bricks * 2); $mydata->Gems= ($mydata->Gems * 2); $mydata->Recruits= ($mydata->Recruits * 2);]]></code>
@@ -3460,6 +3660,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>2</level>
     <keywords/>
     <effect><![CDATA[Tower: +20<br />Enemy tower: +30]]></effect>
     <code><![CDATA[$mydata->Tower+= 20; $hisdata->Tower+= 30;]]></code>
@@ -3475,6 +3676,7 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Siege</keywords>
     <effect><![CDATA[Wall: +30<br />If #<b>Siege</b> in hand > 1<br />Enemy tower: -10]]></effect>
     <code><![CDATA[
@@ -3493,6 +3695,7 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords>Beast,Horde</keywords>
     <effect><![CDATA[Attack: 17<br />Bricks: +5<br />Enemy bricks: -5]]></effect>
     <code><![CDATA[
@@ -3511,6 +3714,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords/>
     <effect><![CDATA[Summons non-common <b>Undead</b><br />If <b>Undead</b> tokens > 50<br />Gain cost of the summoned card (max 10)]]></effect>
     <code><![CDATA[
@@ -3538,6 +3742,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Unliving,Aria</keywords>
     <effect><![CDATA[Enemy tower: -9]]></effect>
     <code><![CDATA[$hisdata->Tower-= 9;]]></code>
@@ -3553,6 +3758,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords/>
     <effect><![CDATA[Enemy stock: +10<br />Replace opponent's hand with non-rare zero cost cards]]></effect>
     <code><![CDATA[
@@ -3574,6 +3780,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>7</level>
     <keywords/>
     <effect><![CDATA[Stock: -8<br />Enemy stock: -8]]></effect>
     <code><![CDATA[
@@ -3592,6 +3799,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>13</level>
     <keywords/>
     <effect><![CDATA[Summons selected card in opponent's hand]]></effect>
     <code><![CDATA[$nextcard = $hisdata->Hand[$mode];]]></code>
@@ -3607,6 +3815,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Horde</keywords>
     <effect><![CDATA[Wall: +30<br />Quarry: -1]]></effect>
     <code><![CDATA[$mydata->Wall+= 30; $mydata->Quarry-= 1;]]></code>
@@ -3622,6 +3831,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>2</modes>
+    <level>7</level>
     <keywords>Horde</keywords>
     <effect><![CDATA[Wall: +70<br />Mode1:<br />Quarry: -1<br />Mode2:<br />Dungeon: -1]]></effect>
     <code><![CDATA[
@@ -3641,6 +3851,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords/>
     <effect><![CDATA[If Enemy tower < Tower<br />Tower: -10 <br />Enemy tower: -10<br />else<br />Tower: +10<br />Enemy tower: +10]]></effect>
     <code><![CDATA[
@@ -3659,6 +3870,7 @@
       <recruits>13</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[If Enemy wall - Wall > 10<br />Attack: 25<br />else<br />Attack: 15]]></effect>
     <code><![CDATA[
@@ -3677,6 +3889,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>8</modes>
+    <level>8</level>
     <keywords>Brigand,Far sight</keywords>
     <effect><![CDATA[Attack: 2<br />Enemy recruits: -1<br />Replace a card in hand with self]]></effect>
     <code><![CDATA[
@@ -3696,6 +3909,7 @@
       <recruits>8</recruits>
     </cost>
     <modes>0</modes>
+    <level>6</level>
     <keywords/>
     <effect><![CDATA[Quarry: +1 <br />Enemy quarry: -1]]></effect>
     <code><![CDATA[$mydata->Quarry+= 1; $hisdata->Quarry-= 1;]]></code>
@@ -3711,6 +3925,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>5</level>
     <keywords>Illusion</keywords>
     <effect><![CDATA[Magic: +1<br />Enemy magic: -1]]></effect>
     <code><![CDATA[$mydata->Magic+= 1; $hisdata->Magic-= 1;]]></code>
@@ -3726,6 +3941,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>2</level>
     <keywords/>
     <effect><![CDATA[Dungeon: +1<br />Enemy dungeon: -1]]></effect>
     <code><![CDATA[$mydata->Dungeons+= 1; $hisdata->Dungeons-= 1;]]></code>
@@ -3741,6 +3957,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>3</level>
     <keywords>Quick</keywords>
     <effect><![CDATA[If Tower < 15<br />Tower: +15<br />else<br />Tower: +3]]></effect>
     <code><![CDATA[if ($mydata->Tower < 15) $mydata->Tower+= 15; else $mydata->Tower+= 3;]]></code>
@@ -3756,6 +3973,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>8</modes>
+    <level>16</level>
     <keywords/>
     <effect><![CDATA[Wall: +2<br />Production x0<br />Discard your hand except the selected card]]></effect>
     <code><![CDATA[
@@ -3780,6 +3998,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Destruction</keywords>
     <effect><![CDATA[Enemy tower: -N/2<br />Enemy wall: -N<br />Enemy gems: -N<br />N = #Enemy gems (max 30)]]></effect>
     <code><![CDATA[$tmp = min($hisdata->Gems, 30); $hisdata->Tower-= round($tmp / 2); $hisdata->Wall-= $tmp; $hisdata->Gems-= $tmp;]]></code>
@@ -3795,6 +4014,7 @@
       <recruits>8</recruits>
     </cost>
     <modes>2</modes>
+    <level>8</level>
     <keywords>Unliving</keywords>
     <effect><![CDATA[Mode1:<br />Attack: 16<br />Mode2:<br />Wall: +13<br />Enemy wall: -13]]></effect>
     <code><![CDATA[
@@ -3813,6 +4033,7 @@
       <recruits>15</recruits>
     </cost>
     <modes>2</modes>
+    <level>6</level>
     <keywords/>
     <effect><![CDATA[Attack: 26<br />Mode1:<br />Stock: -2<br />Mode2:<br />Tower: -5<br />Wall: -5]]></effect>
     <code><![CDATA[
@@ -3832,6 +4053,7 @@
       <recruits>25</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Destruction</keywords>
     <effect><![CDATA[Enemy tower: -N<br />Enemy wall: -N<br />N = 7#Enemy quarry + #Enemy bricks]]></effect>
     <code><![CDATA[
@@ -3850,6 +4072,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Aqua,Unliving</keywords>
     <effect><![CDATA[If #Facilities > #Enemy facilities<br />Enemy wall = 0<br />Always:<br />Attack: #Stock - #Enemy stock]]></effect>
     <code><![CDATA[
@@ -3870,6 +4093,7 @@
       <recruits>22</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Burning,Rebirth,Flare attack</keywords>
     <effect><![CDATA[Attack: 10N<br />N = #<b>Burning</b> in game]]></effect>
     <code><![CDATA[
@@ -3888,6 +4112,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords/>
     <effect><![CDATA[Player(s) with lowest wall gains<br />Quarry: -1<br />Dungeon: -1]]></effect>
     <code><![CDATA[
@@ -3906,6 +4131,7 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords/>
     <effect><![CDATA[If Dungeon < Enemy dungeon<br />Enemy dungeon: -2<br />else<br />Dungeon: = 4]]></effect>
     <code><![CDATA[
@@ -3924,6 +4150,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords/>
     <effect><![CDATA[If Magic < Enemy magic<br />Enemy magic: -2<br />else<br />Magic: = 4]]></effect>
     <code><![CDATA[
@@ -3942,6 +4169,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Unliving</keywords>
     <effect><![CDATA[If Quarry < Enemy quarry<br />Enemy quarry: -2<br />else<br />Quarry: = 4]]></effect>
     <code><![CDATA[
@@ -3960,6 +4188,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords/>
     <effect><![CDATA[Tower: +35<br/>Stock: +10]]></effect>
     <code><![CDATA[
@@ -3978,6 +4207,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Destruction,Nature</keywords>
     <effect><![CDATA[Attack: N * M / 3<br />N = #Bricks<br />M = #Magic<br />Bricks: = 0]]></effect>
     <code><![CDATA[
@@ -3996,6 +4226,7 @@
       <recruits>16</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[If Enemy wall < 5<br />Attack: 35<br />else<br />Attack: 11]]></effect>
     <code><![CDATA[
@@ -4014,6 +4245,7 @@
       <recruits>4</recruits>
     </cost>
     <modes>0</modes>
+    <level>6</level>
     <keywords/>
     <effect><![CDATA[Tower: +12]]></effect>
     <code><![CDATA[$mydata->Tower+= 12;]]></code>
@@ -4029,6 +4261,7 @@
       <recruits>20</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Attack: 20<br />Tower: +10<br />Wall: +10<br />Production x2]]></effect>
     <code><![CDATA[
@@ -4048,6 +4281,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Durable</keywords>
     <effect><![CDATA[Tower: +15<br />Magic: +1]]></effect>
     <code><![CDATA[$mydata->Tower+= 15; $mydata->Magic+= 1;]]></code>
@@ -4063,6 +4297,7 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
+    <level>6</level>
     <keywords>Durable</keywords>
     <effect><![CDATA[Tower: +15<br />Dungeon: +1]]></effect>
     <code><![CDATA[$mydata->Tower+= 15; $mydata->Dungeons+= 1;]]></code>
@@ -4078,6 +4313,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Durable</keywords>
     <effect><![CDATA[Tower: +15<br />Quarry: +1]]></effect>
     <code><![CDATA[$mydata->Tower+= 15; $mydata->Quarry+= 1;]]></code>
@@ -4093,6 +4329,7 @@
       <recruits>6</recruits>
     </cost>
     <modes>2</modes>
+    <level>0</level>
     <keywords>Beast,Horde</keywords>
     <effect><![CDATA[Attack: 12<br />Mode1:<br />Tower: -2<br />Mode2:<br />Wall: -4]]></effect>
     <code><![CDATA[
@@ -4111,6 +4348,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>4</level>
     <keywords>Runic</keywords>
     <effect><![CDATA[Tower: +3<br />Recruits: +1]]></effect>
     <code><![CDATA[$mydata->Tower+= 3; $mydata->Recruits+= 1;]]></code>
@@ -4126,6 +4364,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Wall: +8]]></effect>
     <code><![CDATA[$mydata->Wall+= 8;]]></code>
@@ -4141,6 +4380,7 @@
       <recruits>35</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords>Dragon</keywords>
     <effect><![CDATA[Attack: 110]]></effect>
     <code><![CDATA[$this->Attack(110, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -4156,6 +4396,7 @@
       <recruits>6</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Horde</keywords>
     <effect><![CDATA[Attack: 9]]></effect>
     <code><![CDATA[$this->Attack(9, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -4171,6 +4412,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>6</level>
     <keywords>Nature,Aria</keywords>
     <effect><![CDATA[Enemy stock: -20]]></effect>
     <code><![CDATA[$hisdata->Bricks-= 20; $hisdata->Gems-= 20; $hisdata->Recruits-= 20;]]></code>
@@ -4186,6 +4428,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Nature</keywords>
     <effect><![CDATA[Enemy stock: = 0]]></effect>
     <code><![CDATA[$hisdata->Bricks= 0; $hisdata->Gems= 0; $hisdata->Recruits= 0;]]></code>
@@ -4201,6 +4444,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Brigand</keywords>
     <effect><![CDATA[Enemy tower: -6<br />Enemy stock: +2]]></effect>
     <code><![CDATA[
@@ -4219,6 +4463,7 @@
       <recruits>7</recruits>
     </cost>
     <modes>0</modes>
+    <level>5</level>
     <keywords>Brigand</keywords>
     <effect><![CDATA[Enemy tower: -5<br />Enemy stock: -2]]></effect>
     <code><![CDATA[
@@ -4237,6 +4482,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords/>
     <effect><![CDATA[Enemy tower: -20<br />Enemy bricks: -10<br />Enemy recruits: -10]]></effect>
     <code><![CDATA[$hisdata->Tower-= 20; $hisdata->Bricks-= 10; $hisdata->Recruits-= 10;]]></code>
@@ -4252,6 +4498,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Unliving,Durable,Siege</keywords>
     <effect><![CDATA[Enemy tower: -10<br />Enemy wall: -10]]></effect>
     <code><![CDATA[$hisdata->Tower-= 10; $hisdata->Wall-= 10;]]></code>
@@ -4267,6 +4514,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Aria</keywords>
     <effect><![CDATA[Enemy wall: -1<br />Enemy stock: -1]]></effect>
     <code><![CDATA[
@@ -4285,6 +4533,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Burning</keywords>
     <effect><![CDATA[Tower: -2<br />Wall: -5<br />Stock: -2<br />Enemy tower: -2<br />Enemy wall: -5<br />Enemy stock: -2]]></effect>
     <code><![CDATA[
@@ -4305,6 +4554,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Illusion</keywords>
     <effect><![CDATA[Switches wall with enemy wall]]></effect>
     <code><![CDATA[$tmp = $mydata->Wall; $mydata->Wall= $hisdata->Wall; $hisdata->Wall= $tmp;]]></code>
@@ -4320,6 +4570,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Burning,Dragon</keywords>
     <effect><![CDATA[Attack: 5]]></effect>
     <code><![CDATA[$this->Attack(5, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -4335,6 +4586,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords/>
     <effect><![CDATA[Players discard up to 3 non-rare cards (can't draw rare cards)]]></effect>
     <code><![CDATA[
@@ -4379,6 +4631,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>16</level>
     <keywords/>
     <effect><![CDATA[Production x0<br />Switches selected non-rare card with its matching non-rare card (can't target self)]]></effect>
     <code><![CDATA[
@@ -4404,6 +4657,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords/>
     <effect><![CDATA[Tower: +10<br />Gems: +10<br />Replace your hand with 4 common, 3 uncommon and 1 rare <b>Undead</b> cards]]></effect>
     <code><![CDATA[
@@ -4426,6 +4680,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Burning</keywords>
     <effect><![CDATA[Attack: 10<br />If #<b>Burning</b> in hand > 3<br />Magic: +1]]></effect>
     <code><![CDATA[
@@ -4444,6 +4699,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Quick</keywords>
     <effect><![CDATA[Discard all cards (opponent can't draw rare cards)]]></effect>
     <code><![CDATA[
@@ -4465,6 +4721,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Unliving,Banish</keywords>
     <effect><![CDATA[Enemy wall: -6]]></effect>
     <code><![CDATA[$hisdata->Wall-= 6;]]></code>
@@ -4480,6 +4737,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Illusion,Skirmisher</keywords>
     <effect><![CDATA[Attack: 4<br />If matching card doesn't cost gems<br />Enemy wall: -5]]></effect>
     <code><![CDATA[
@@ -4498,6 +4756,7 @@
       <recruits>4</recruits>
     </cost>
     <modes>0</modes>
+    <level>7</level>
     <keywords>Beast,Runic</keywords>
     <effect><![CDATA[Attack: 4<br />Recruits: +3]]></effect>
     <code><![CDATA[$this->Attack(4, $hisdata->Tower, $hisdata->Wall); $mydata->Recruits+= 3;]]></code>
@@ -4513,6 +4772,7 @@
       <recruits>9</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Beast,Horde</keywords>
     <effect><![CDATA[Attack: 9<br />Recruits prod x2]]></effect>
     <code><![CDATA[$this->Attack(9, $hisdata->Tower, $hisdata->Wall); $recruits_production*= 2;]]></code>
@@ -4528,6 +4788,7 @@
       <recruits>8</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Brigand</keywords>
     <effect><![CDATA[Attack: 2<br />Stock: +2<br />Enemy stock: -2]]></effect>
     <code><![CDATA[
@@ -4547,6 +4808,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Destruction</keywords>
     <effect><![CDATA[Recruits: +4<br />Enemy recruits: -4]]></effect>
     <code><![CDATA[$mydata->Recruits+= 4; $hisdata->Recruits-= 4;]]></code>
@@ -4562,6 +4824,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>7</level>
     <keywords/>
     <effect><![CDATA[Wall: +7]]></effect>
     <code><![CDATA[$mydata->Wall+= 7;]]></code>
@@ -4577,6 +4840,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>8</level>
     <keywords/>
     <effect><![CDATA[Stock: +4<br />Production x0]]></effect>
     <code><![CDATA[
@@ -4595,6 +4859,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>2</level>
     <keywords/>
     <effect><![CDATA[Discard all cards in hand]]></effect>
     <code><![CDATA[
@@ -4613,6 +4878,7 @@
       <recruits>50</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords/>
     <effect><![CDATA[Instant resource accumulation victory]]></effect>
     <code><![CDATA[$mydata->Bricks = ceil($res_vic / 3); $mydata->Gems = ceil($res_vic / 3); $mydata->Recruits = ceil($res_vic / 3);]]></code>
@@ -4628,6 +4894,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>2</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Mode1:<br />Wall: +20<br />Mode2:<br />Tower: +10]]></effect>
     <code><![CDATA[if ($mode == 1) $mydata->Wall+= 20; elseif ($mode == 2) $mydata->Tower+= 10;]]></code>
@@ -4643,6 +4910,7 @@
       <recruits>6</recruits>
     </cost>
     <modes>3</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Mode1:<br />Quarry: +1<br />Mode2:<br />Magic: +1<br />Mode3:<br />Dungeon: +1]]></effect>
     <code><![CDATA[
@@ -4662,6 +4930,7 @@
       <recruits>17</recruits>
     </cost>
     <modes>2</modes>
+    <level>10</level>
     <keywords/>
     <effect><![CDATA[Mode1:<br />Attack: 34<br />Mode2:<br />Wall: +38]]></effect>
     <code><![CDATA[
@@ -4680,6 +4949,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Wall: +1<br />Discard a card from hand]]></effect>
     <code><![CDATA[
@@ -4702,6 +4972,7 @@
       <recruits>6</recruits>
     </cost>
     <modes>8</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Replace a card in opponent's hand with a common card from your deck]]></effect>
     <code><![CDATA[
@@ -4720,6 +4991,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Unliving</keywords>
     <effect><![CDATA[Enemy tower: -2<br />Stock: +1]]></effect>
     <code><![CDATA[$hisdata->Tower-= 2; $mydata->Bricks+= 1; $mydata->Gems+= 1; $mydata->Recruits+= 1;]]></code>
@@ -4735,6 +5007,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Alliance,Far sight</keywords>
     <effect><![CDATA[If Wall > Enemy wall<br />Enemy tower: -7<br />else<br />Attack: 6]]></effect>
     <code><![CDATA[
@@ -4753,6 +5026,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>3</modes>
+    <level>6</level>
     <keywords/>
     <effect><![CDATA[Mode1:<br />Bricks: +6<br />Mode2:<br />Gems: +4<br />Mode3:<br />Recruits: +5]]></effect>
     <code><![CDATA[
@@ -4772,6 +5046,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Gems: +2<br />Recruits: +1<br />If last card played was a zero cost card<br />Gems: +1<br />Recruits: +1]]></effect>
     <code><![CDATA[
@@ -4792,6 +5067,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Bricks prod x2]]></effect>
     <code><![CDATA[$bricks_production*= 2;]]></code>
@@ -4807,6 +5083,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords/>
     <effect><![CDATA[Tower: +25<br />Wall: +50]]></effect>
     <code><![CDATA[$mydata->Tower+= 25; $mydata->Wall+= 50;]]></code>
@@ -4822,6 +5099,7 @@
       <recruits>30</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Soldier</keywords>
     <effect><![CDATA[Tower: +35]]></effect>
     <code><![CDATA[$mydata->Tower+= 35;]]></code>
@@ -4837,6 +5115,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>2</modes>
+    <level>1</level>
     <keywords/>
     <effect><![CDATA[Mode1:<br />Wall: +8<br />Mode2:<br />Tower: +5]]></effect>
     <code><![CDATA[if ($mode == 1) $mydata->Wall+= 8; elseif ($mode == 2) $mydata->Tower+= 5;]]></code>
@@ -4852,6 +5131,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>2</modes>
+    <level>5</level>
     <keywords>Soldier,Skirmisher</keywords>
     <effect><![CDATA[Mode1:<br />Attack: 7<br />Mode2:<br />Wall: +7]]></effect>
     <code><![CDATA[
@@ -4870,6 +5150,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>18</level>
     <keywords>Rebirth</keywords>
     <effect><![CDATA[Move selected card from opponent's hand to matching position in hand]]></effect>
     <code><![CDATA[
@@ -4889,6 +5170,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>8</level>
     <keywords>Barbarian</keywords>
     <effect><![CDATA[Attack: 13 - 5N<br />N = Tower / Max tower]]></effect>
     <code><![CDATA[$this->Attack(13 - round(5*($mydata->Tower/$max_tower)), $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -4904,6 +5186,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords/>
     <effect><![CDATA[Players lose N% of each resource<br />N is relative tower height]]></effect>
     <code><![CDATA[
@@ -4928,6 +5211,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>1</level>
     <keywords/>
     <effect><![CDATA[Tower and Wall of both players are set to the same height as was at the start of the game]]></effect>
     <code><![CDATA[
@@ -4946,6 +5230,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>8</level>
     <keywords/>
     <effect><![CDATA[If Tower < 50 and Enemy tower > 60<br />Enemy tower: -25<br />else<br />Enemy tower: -10]]></effect>
     <code><![CDATA[
@@ -4964,6 +5249,7 @@
       <recruits>18</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Destruction,Nature</keywords>
     <effect><![CDATA[Attack: #Stock<br />Stock: = 0]]></effect>
     <code><![CDATA[
@@ -4982,6 +5268,7 @@
       <recruits>25</recruits>
     </cost>
     <modes>0</modes>
+    <level>1</level>
     <keywords/>
     <effect><![CDATA[Enemy tower is halved]]></effect>
     <code><![CDATA[$hisdata->Tower-= round($hisdata->Tower / 2);]]></code>
@@ -4997,6 +5284,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords/>
     <effect><![CDATA[Recruits: +15<br />Replace your hand with non-rare Recruits only no support keyword attack cards]]></effect>
     <code><![CDATA[
@@ -5018,6 +5306,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>17</level>
     <keywords/>
     <effect><![CDATA[Replace a card in opponent's hand with self<br />Raises opponent's stock based on replaced card rarity (C-1, U-3, R-8)]]></effect>
     <code><![CDATA[
@@ -5039,6 +5328,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Far sight</keywords>
     <effect><![CDATA[Tower: +3<br />Wall: +7]]></effect>
     <code><![CDATA[$mydata->Tower+= 3; $mydata->Wall+= 7;]]></code>
@@ -5054,6 +5344,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords>Far sight</keywords>
     <effect><![CDATA[Tower: +15<br />Wall: +30]]></effect>
     <code><![CDATA[$mydata->Tower+= 15; $mydata->Wall+= 30;]]></code>
@@ -5069,6 +5360,7 @@
       <recruits>20</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Recruits: +35<br />Replace your hand with 3 common and 5 uncommon <b>Soldier</b> cards]]></effect>
     <code><![CDATA[
@@ -5091,6 +5383,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords/>
     <effect><![CDATA[Replace your hand with Elven: market, ranger, apprentice, warlock, sorceress, priestesses, enchantress and Princess of elves]]></effect>
     <code><![CDATA[
@@ -5110,6 +5403,7 @@
       <recruits>13</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Durable</keywords>
     <effect><![CDATA[Recruits prod x0<br />Enemy stock: -1<br />Enemy tower: -12]]></effect>
     <code><![CDATA[
@@ -5129,6 +5423,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords/>
     <effect><![CDATA[Bricks: +25<br />Replace your hand with Bricks only Wall + no support keyword cards]]></effect>
     <code><![CDATA[
@@ -5148,6 +5443,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Bricks: +40<br />Replace your hand with no keyword Bricks only Tower + no support keyword cards]]></effect>
     <code><![CDATA[
@@ -5167,6 +5463,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords>Skirmisher</keywords>
     <effect><![CDATA[Wall: +14]]></effect>
     <code><![CDATA[$mydata->Wall+= 14;]]></code>
@@ -5182,6 +5479,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>2</level>
     <keywords/>
     <effect><![CDATA[Wall: +3]]></effect>
     <code><![CDATA[$mydata->Wall+= 3;]]></code>
@@ -5197,6 +5495,7 @@
       <recruits>20</recruits>
     </cost>
     <modes>8</modes>
+    <level>10</level>
     <keywords>Undead,Durable,Quick</keywords>
     <effect><![CDATA[Attack: 25<br />Magic: -1<br />Replace a card in hand with Vampire]]></effect>
     <code><![CDATA[
@@ -5215,6 +5514,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords/>
     <effect><![CDATA[Attack: #Facilities<br />Stock: -2]]></effect>
     <code><![CDATA[$this->Attack($mydata->Quarry + $mydata->Magic + $mydata->Dungeons, $hisdata->Tower, $hisdata->Wall); $mydata->Bricks-= 2; $mydata->Gems-= 2; $mydata->Recruits-= 2;]]></code>
@@ -5230,6 +5530,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Destruction</keywords>
     <effect><![CDATA[Enemy tower: -1<br />Enemy wall: -2<br />Enemy bricks: -4]]></effect>
     <code><![CDATA[$hisdata->Tower-= 1; $hisdata->Wall-= 2; $hisdata->Bricks-= 4;]]></code>
@@ -5245,6 +5546,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>2</level>
     <keywords>Far sight</keywords>
     <effect><![CDATA[If Tower < Wall and Tower < 45<br />Tower: +12<br />else<br />Tower: +6]]></effect>
     <code><![CDATA[
@@ -5263,6 +5565,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords>Titan,Unliving</keywords>
     <effect><![CDATA[Stock: +#<b>Unliving</b> in hand]]></effect>
     <code><![CDATA[
@@ -5281,6 +5584,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords>Titan,Unliving</keywords>
     <effect><![CDATA[Tower: +N<br />Wall: +N<br />N = #<b>Unliving</b> in hand]]></effect>
     <code><![CDATA[
@@ -5299,6 +5603,7 @@
       <recruits>13</recruits>
     </cost>
     <modes>0</modes>
+    <level>4</level>
     <keywords>Burning,Charge (10)</keywords>
     <effect><![CDATA[Attack: 20]]></effect>
     <code><![CDATA[$this->Attack(20, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -5314,6 +5619,7 @@
       <recruits>13</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Holy,Soldier</keywords>
     <effect><![CDATA[Attack: 12<br />If #<b>Soldier</b> in hand > 3<br />Dungeon: +1]]></effect>
     <code><![CDATA[
@@ -5332,6 +5638,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Unliving</keywords>
     <effect><![CDATA[Attack: 13<br />If #<b>Unliving</b> in hand > 4<br />Quarry: +1]]></effect>
     <code><![CDATA[
@@ -5350,6 +5657,7 @@
       <recruits>9</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords/>
     <effect><![CDATA[Stock: +2<br />Upgrades rarities of all <b>Undead</b> in hand]]></effect>
     <code><![CDATA[
@@ -5381,6 +5689,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Unliving</keywords>
     <effect><![CDATA[Wall: +9N<br />N = #<b>Unliving</b> in hand (max 5)]]></effect>
     <code><![CDATA[$tmp = min(5, $this->KeywordCount($mydata->Hand, "Unliving")); $mydata->Wall+= 9*$tmp;]]></code>
@@ -5396,6 +5705,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Unliving</keywords>
     <effect><![CDATA[Tower: +5N<br />N = #<b>Unliving</b> in hand (max 6)]]></effect>
     <code><![CDATA[$tmp = min(6, $this->KeywordCount($mydata->Hand, "Unliving")); $mydata->Tower+= 5*$tmp;]]></code>
@@ -5411,6 +5721,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords>Titan,Unliving,Far sight</keywords>
     <effect><![CDATA[Tower:+ 8<br />If #<b>Unliving</b> in hand > 4<br />Magic: +1]]></effect>
     <code><![CDATA[
@@ -5430,6 +5741,7 @@
       <recruits>12</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords>Titan,Unliving</keywords>
     <effect><![CDATA[Tower: +11<br />Wall: +16<br />Stock: +2]]></effect>
     <code><![CDATA[
@@ -5448,6 +5760,7 @@
       <recruits>7</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords>Titan,Unliving</keywords>
     <effect><![CDATA[Tower: +6<br />Wall: +9<br />If #<b>Unliving</b> in hand > 4<br />Quarry: +1]]></effect>
     <code><![CDATA[
@@ -5467,6 +5780,7 @@
       <recruits>4</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords/>
     <effect><![CDATA[Summons a non-common <b>Titan</b>]]></effect>
     <code><![CDATA[
@@ -5486,6 +5800,7 @@
       <recruits>26</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Barbarian,Siege</keywords>
     <effect><![CDATA[Enemy tower: -6N<br />Enemy wall: -9N<br />N = #<b>Barbarian</b> in hand]]></effect>
     <code><![CDATA[
@@ -5504,6 +5819,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords>Titan</keywords>
     <effect><![CDATA[If all <b>Titan</b> cards are present in hand<br />Instant destruction victory<br />else<br />Summons a <b>Titan</b> not present in hand]]></effect>
     <code><![CDATA[
@@ -5528,6 +5844,7 @@
       <recruits>9</recruits>
     </cost>
     <modes>8</modes>
+    <level>17</level>
     <keywords>Undead</keywords>
     <effect><![CDATA[Discard a card from opponent's hand<br />Summons <b>Undead</b> of the same rarity as discarded card]]></effect>
     <code><![CDATA[
@@ -5548,6 +5865,7 @@
       <recruits>25</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords>Soldier,Charge (18)</keywords>
     <effect><![CDATA[Attack: 22]]></effect>
     <code><![CDATA[$this->Attack(22, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -5563,6 +5881,7 @@
       <recruits>14</recruits>
     </cost>
     <modes>8</modes>
+    <level>16</level>
     <keywords>Undead,Enduring (6),Charge (7)</keywords>
     <effect><![CDATA[Attack: 10<br />Replace a card in hand with self]]></effect>
     <code><![CDATA[
@@ -5582,6 +5901,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords>Burning,Mage</keywords>
     <effect><![CDATA[Wall: +10<br />If last card played wasn't <b>Burning</b><br />Gems: -4]]></effect>
     <code><![CDATA[
@@ -5601,6 +5921,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Quick</keywords>
     <effect><![CDATA[If Tower < 10 and Wall = 0<br />Tower:= 25<br />Wall:= 15<br />else<br />Stock: +1]]></effect>
     <code><![CDATA[
@@ -5621,6 +5942,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>20</level>
     <keywords>Undead</keywords>
     <effect><![CDATA[Discard up to 5 <b>Undead</b> from hand except the selected card<br />Wall: +10N<br />N = #discarded cards]]></effect>
     <code><![CDATA[
@@ -5648,6 +5970,7 @@
       <recruits>20</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Soldier,Siege</keywords>
     <effect><![CDATA[Attack: 8N<br />If N > 4<br />Wall: +15<br />N = #<b>Soldier</b> in hand (max 4)]]></effect>
     <code><![CDATA[
@@ -5668,6 +5991,7 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Beast,Durable</keywords>
     <effect><![CDATA[Replace a non-<b>Beast</b> highest rarity card in opponent's hand with common <b>Beast</b><br />Attack: 5N<br />N = #<b>Beast</b> in game]]></effect>
     <code><![CDATA[
@@ -5701,6 +6025,7 @@
       <recruits>9</recruits>
     </cost>
     <modes>2</modes>
+    <level>16</level>
     <keywords>Beast,Frenzy</keywords>
     <effect><![CDATA[Mode1:<br />Stock: +N<br />Mode2:<br />Attack: 3N<br />N = #<b>Beast</b> in hand]]></effect>
     <code><![CDATA[
@@ -5720,6 +6045,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Holy</keywords>
     <effect><![CDATA[Replace up to N common non-<b>Holy</b> keyword cards in opponent's hand with common <b>Holy</b><br />N = #<b>Holy</b> in hand (max 4)]]></effect>
     <code><![CDATA[
@@ -5754,6 +6080,7 @@
       <recruits>12</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Holy</keywords>
     <effect><![CDATA[Attack: 2N<br />Wall: +4N<br />N = #<b>Soldier</b> + #<b>Holy</b> in hand (max 8)]]></effect>
     <code><![CDATA[
@@ -5773,6 +6100,7 @@
       <recruits>3</recruits>
     </cost>
     <modes>8</modes>
+    <level>8</level>
     <keywords>Holy,Far sight</keywords>
     <effect><![CDATA[Tower: +3<br />Replace a card in hand with <b>Holy</b>]]></effect>
     <code><![CDATA[
@@ -5792,6 +6120,7 @@
       <recruits>2</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords/>
     <effect><![CDATA[Summons a <b>Barbarian</b><br />If <b>Barbarian</b> tokens are set<br />Stock: +3]]></effect>
     <code><![CDATA[
@@ -5810,6 +6139,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>10</level>
     <keywords>Mage,Nature</keywords>
     <effect><![CDATA[Gems: +6<br />Wall: +3<br />Production x0<br />Replace a card in hand with self]]></effect>
     <code><![CDATA[
@@ -5830,6 +6160,7 @@
       <recruits>12</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Undead</keywords>
     <effect><![CDATA[If last card played was <b>Undead</b> support, replace cards in hand with your discarded <b>Undead</b><br />Attack: 10N<br />N = #replaced cards]]></effect>
     <code><![CDATA[
@@ -5870,6 +6201,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Holy,Restoration</keywords>
     <effect><![CDATA[Each player's stock raised by #<b>Holy</b> in his hand (max 4)]]></effect>
     <code><![CDATA[
@@ -5890,6 +6222,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords/>
     <effect><![CDATA[Recruits prod x2<br />If Tower or Wall was damaged during opponent's last round<br />Enemy stock: -2]]></effect>
     <code><![CDATA[
@@ -5909,6 +6242,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords/>
     <effect><![CDATA[Enemy wall: -4N<br />N = #<b>Undead</b> in hand (max 6) - #<b>Holy</b> in opponent's hand]]></effect>
     <code><![CDATA[
@@ -5928,6 +6262,7 @@
       <recruits>7</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Barbarian,Siege</keywords>
     <effect><![CDATA[If last card played was a <b>Barbarian</b><br />Enemy wall: -7<br />Always:<br />Attack: 7]]></effect>
     <code><![CDATA[
@@ -5946,6 +6281,7 @@
       <recruits>11</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Burning</keywords>
     <effect><![CDATA[Attack: 21<br />If last card was <b>Burning</b> up to 2 copies of that card will replace non-rare non-<b>Burning</b> cards in hand]]></effect>
     <code><![CDATA[
@@ -5984,6 +6320,7 @@
       <recruits>2</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords>Burning</keywords>
     <effect><![CDATA[Summons <b>Burning</b><br />If last card played was <b>Burning</b> it will be that card]]></effect>
     <code><![CDATA[
@@ -6004,6 +6341,7 @@
       <recruits>19</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Barbarian</keywords>
     <effect><![CDATA[If last card played was a <b>Barbarian</b><br />Enemy wall: -17<br />Always:<br />Attack: 20]]></effect>
     <code><![CDATA[
@@ -6023,6 +6361,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Legend,Swift</keywords>
     <effect><![CDATA[Attack: 26<br />If last card played was a <b>Mage</b><br />Gems prod x4]]></effect>
     <code><![CDATA[
@@ -6042,6 +6381,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Brigand</keywords>
     <effect><![CDATA[If not New<br />Steals the difference between opponent's stock and stock (max 15, min 5)]]></effect>
     <code><![CDATA[
@@ -6067,6 +6407,7 @@
       <recruits>6</recruits>
     </cost>
     <modes>0</modes>
+    <level>5</level>
     <keywords>Holy,Soldier</keywords>
     <effect><![CDATA[If Tower < Enemy tower<br />Attack: 12<br />else<br />Attack: 6]]></effect>
     <code><![CDATA[
@@ -6087,6 +6428,7 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Holy,Soldier</keywords>
     <effect><![CDATA[Attack: 10 + 3N<br />N = #<b>Soldier</b> + #<b>Holy</b> in hand (max 7)]]></effect>
     <code><![CDATA[
@@ -6105,6 +6447,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords/>
     <effect><![CDATA[Replace up to 3 non-<b>Holy</b> common cards in hand with Fanatics]]></effect>
     <code><![CDATA[
@@ -6136,6 +6479,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords/>
     <effect><![CDATA[Discard all non-rare <b>Barbarian</b> or <b>Soldier</b> from hand<br />Wall: +8N<br />N = #discarded cards (max 5)]]></effect>
     <code><![CDATA[
@@ -6164,6 +6508,7 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Barbarian</keywords>
     <effect><![CDATA[Wall: +20<br />If last card played was a <b>Barbarian</b><br />Attack: N<br />N = recruits cost of last card played]]></effect>
     <code><![CDATA[
@@ -6183,6 +6528,7 @@
       <recruits>46</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Barbarian</keywords>
     <effect><![CDATA[Enemy wall: -10N<br />N = #<b>Barbarian</b> in hand<br />Attack: 40]]></effect>
     <code><![CDATA[
@@ -6202,6 +6548,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords/>
     <effect><![CDATA[Summons a <b>Frenzy</b><br />Gain recruits cost of the summoned card (max 10)]]></effect>
     <code><![CDATA[
@@ -6220,6 +6567,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords/>
     <effect><![CDATA[Upgrades rarities of all <b>Beast</b> in hand<br />Production x0<br />Recruits: -#Dungeon]]></effect>
     <code><![CDATA[
@@ -6249,6 +6597,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Illusion</keywords>
     <effect><![CDATA[Enemy stock: -5<br />If opponent played <b>Swift</b> last round<br />Enemy stock: -7]]></effect>
     <code><![CDATA[
@@ -6273,6 +6622,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords/>
     <effect><![CDATA[If last card was <b>Unliving</b><br />Tower: +N / 3<br />Wall: +N / 2<br />N = bricks cost of last card]]></effect>
     <code><![CDATA[
@@ -6294,6 +6644,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Undead,Durable</keywords>
     <effect><![CDATA[If last card played was <b>Undead</b><br />Tower: +N / 3<br />Wall: +N / 2<br />N = cost of last card played]]></effect>
     <code><![CDATA[
@@ -6315,6 +6666,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords/>
     <effect><![CDATA[Summons<br />If New<br />Scepter of summoning<br />else<br />Golden scepter]]></effect>
     <code><![CDATA[$nextcard = (isset($mynewflags[$cardpos])) ? 159 : 351;]]></code>
@@ -6330,6 +6682,7 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords>Legend</keywords>
     <effect><![CDATA[Attack: 15<br />If Magic > Enemy magic<br />Attack: 19]]></effect>
     <code><![CDATA[
@@ -6348,6 +6701,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>2</modes>
+    <level>6</level>
     <keywords/>
     <effect><![CDATA[Magic: -1<br />Mode1:<br />Quarry: +1<br />Mode2:<br />Dungeon: +1]]></effect>
     <code><![CDATA[
@@ -6367,6 +6721,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords/>
     <effect><![CDATA[Tower: +9<br />Wall: +15<br />If #<b>Legend</b> in hand > 0<br />Magic: +1]]></effect>
     <code><![CDATA[
@@ -6385,6 +6740,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords/>
     <effect><![CDATA[Players discard all keyword cards<br />Players suffer 7 damage for each card they discarded]]></effect>
     <code><![CDATA[
@@ -6419,6 +6775,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>8</modes>
+    <level>0</level>
     <keywords>Beast</keywords>
     <effect><![CDATA[If targeting self, gain recruits cost of the matching card (max 10), else replace a card in hand with self]]></effect>
     <code><![CDATA[
@@ -6442,6 +6799,7 @@
       <recruits>2</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Mage,Undead</keywords>
     <effect><![CDATA[Attack: 3<br />Enemy gems: -1<br />Enemy recruits: -3]]></effect>
     <code><![CDATA[
@@ -6460,6 +6818,7 @@
       <recruits>18</recruits>
     </cost>
     <modes>0</modes>
+    <level>4</level>
     <keywords>Siege</keywords>
     <effect><![CDATA[Enemy tower: -16<br />Enemy wall: -20]]></effect>
     <code><![CDATA[$hisdata->Tower-= 16; $hisdata->Wall-= 20;]]></code>
@@ -6475,6 +6834,7 @@
       <recruits>2</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Wall: +10<br />If #<b>Charge</b> in opponent's hand > 0 or #<b>Enduring</b> in hand > 0<br />Wall: +8]]></effect>
     <code><![CDATA[
@@ -6493,6 +6853,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>6</level>
     <keywords>Flare attack</keywords>
     <effect><![CDATA[Stock: -3]]></effect>
     <code><![CDATA[$mydata->Bricks-= 3; $mydata->Gems-= 3; $mydata->Recruits-= 3;]]></code>
@@ -6508,6 +6869,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords>Burning,Aria</keywords>
     <effect><![CDATA[Attack: 5<br />If last card played was <b>Burning</b> or a <b>Mage</b><br />Enemy stock: -3]]></effect>
     <code><![CDATA[
@@ -6527,6 +6889,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Beast,Unliving</keywords>
     <effect><![CDATA[Wall: +5<br />Enemy wall: -5<br />Attack: 5]]></effect>
     <code><![CDATA[
@@ -6545,6 +6908,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords/>
     <effect><![CDATA[Discard lowest recruits cost lowest rarity <b>Barbarian</b> or <b>Soldier</b> from hand to gain<br />Stock: +3]]></effect>
     <code><![CDATA[
@@ -6587,6 +6951,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords/>
     <effect><![CDATA[If opponent lowered your stock last round he loses twice the amount of lost stock (max 8)<br />No effect on Judge]]></effect>
     <code><![CDATA[
@@ -6609,6 +6974,7 @@
       <recruits>6</recruits>
     </cost>
     <modes>2</modes>
+    <level>7</level>
     <keywords>Brigand</keywords>
     <effect><![CDATA[Mode1:<br />Enemy tower: -5<br />Mode2:<br />Recruits: +4<br />Enemy recruits: -6]]></effect>
     <code><![CDATA[
@@ -6631,6 +6997,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Holy</keywords>
     <effect><![CDATA[If opponent lowered your stock last round you regain lost stock (max 6)]]></effect>
     <code><![CDATA[
@@ -6653,6 +7020,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords>Soldier</keywords>
     <effect><![CDATA[If #<b>Charge</b> in opponent's hand > 0<br />Attack: 4<br />else<br />Attack: 10]]></effect>
     <code><![CDATA[$this->Attack((($this->KeywordCount($hisdata->Hand, "Charge") > 0) ? 4 : 10), $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -6668,6 +7036,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords>Horde</keywords>
     <effect><![CDATA[Attack: 4<br />If opponent raised his wall by more than 8 last round<br />Enemy wall: -12]]></effect>
     <code><![CDATA[
@@ -6686,6 +7055,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Beast,Burning</keywords>
     <effect><![CDATA[Attack: 13 + 2N<br />Recruits: + N<br />N = #<b>Burning</b> + #<b>Beast</b> in game]]></effect>
     <code><![CDATA[
@@ -6705,6 +7075,7 @@
       <recruits>16</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Dragon,Soldier</keywords>
     <effect><![CDATA[Attack: 35<br />If #<b>Dragon</b> in hand > 1<br />Gems prod x2]]></effect>
     <code><![CDATA[
@@ -6723,6 +7094,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Legend</keywords>
     <effect><![CDATA[Attack: 35<br />If #<b>Legend</b> in hand > 1 and #<b>Mage</b> in hand > 0<br />Gems: +20<br />Magic: +1]]></effect>
     <code><![CDATA[
@@ -6742,6 +7114,7 @@
       <recruits>22</recruits>
     </cost>
     <modes>8</modes>
+    <level>19</level>
     <keywords>Undead</keywords>
     <effect><![CDATA[Discard all <b>Undead</b> from hand except the selected card<br />Attack: 9N<br />N = #discarded cards]]></effect>
     <code><![CDATA[
@@ -6766,6 +7139,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>17</level>
     <keywords>Unliving</keywords>
     <effect><![CDATA[Discard a card from opponent's hand<br />If #<b>Unliving</b> in hand > 3<br />Gain half cost of the discarded card (max 20)]]></effect>
     <code><![CDATA[
@@ -6791,6 +7165,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Destruction,Nature</keywords>
     <effect><![CDATA[Enemy tower: -11<br />If last card played was a <b>Mage</b><br />Enemy stock: -5]]></effect>
     <code><![CDATA[
@@ -6810,6 +7185,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>8</level>
     <keywords>Alliance</keywords>
     <effect><![CDATA[Tower: +7<br />Wall: +11<br />Production x3]]></effect>
     <code><![CDATA[
@@ -6828,6 +7204,7 @@
       <recruits>30</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Beast,Soldier</keywords>
     <effect><![CDATA[Attack: 30<br />If #<b>Beast</b> in hand > 1<br />Recruits: +12]]></effect>
     <code><![CDATA[
@@ -6846,6 +7223,7 @@
       <recruits>16</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords>Runic,Durable</keywords>
     <effect><![CDATA[Attack: 24<br />Negates the negative effect of opponent's last round on tower and wall]]></effect>
     <code><![CDATA[
@@ -6864,6 +7242,7 @@
       <recruits>28</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Undead</keywords>
     <effect><![CDATA[Attack: 60<br />If last card played was summoning or replacing <b>Undead</b> support card<br />Attack: 45]]></effect>
     <code><![CDATA[
@@ -6885,6 +7264,7 @@
       <recruits>20</recruits>
     </cost>
     <modes>0</modes>
+    <level>0</level>
     <keywords/>
     <effect><![CDATA[Tower: = Max tower / 2<br />Wall: = Max wall / 2<br />Stock: +5]]></effect>
     <code><![CDATA[
@@ -6903,6 +7283,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords/>
     <effect><![CDATA[If not New<br />Balances (average) both players' tower, wall, facilities and stock]]></effect>
     <code><![CDATA[
@@ -6925,6 +7306,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>6</level>
     <keywords/>
     <effect><![CDATA[Gain 1 random resource]]></effect>
     <code><![CDATA[
@@ -6945,6 +7327,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Holy,Banish</keywords>
     <effect><![CDATA[If #<b>Holy</b> in hand > 1<br />Gems: +3<br />If #<b>Soldier</b> in hand > 1<br />Recruits: +3]]></effect>
     <code><![CDATA[
@@ -6963,6 +7346,7 @@
       <recruits>12</recruits>
     </cost>
     <modes>0</modes>
+    <level>8</level>
     <keywords/>
     <effect><![CDATA[Replace your hand with Temple guard, Fairy, Heavenly warrior, Paladin, Cathedral, Knight Templar, Seraphim and Angel]]></effect>
     <code><![CDATA[
@@ -6982,6 +7366,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>3</modes>
+    <level>16</level>
     <keywords/>
     <effect><![CDATA[Summons<br />Mode1:<br />Earth elemental<br />Mode2:<br />Soul cleaver<br />Mode3:<br />Cultists]]></effect>
     <code><![CDATA[
@@ -7001,6 +7386,7 @@
       <recruits>13</recruits>
     </cost>
     <modes>2</modes>
+    <level>17</level>
     <keywords>Soldier,Far sight</keywords>
     <effect><![CDATA[Mode1:<br />Enemy recruits: -15<br />Mode2:<br />Enemy tower: -10]]></effect>
     <code><![CDATA[if ($mode == 1) $hisdata->Recruits-= 15; elseif ($mode == 2) $hisdata->Tower-= 10;]]></code>
@@ -7016,6 +7402,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords/>
     <effect><![CDATA[Replace all non-rare recruits or mixed cost attack cards with Merchant, Caravan or Palisade]]></effect>
     <code><![CDATA[
@@ -7049,6 +7436,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>5</level>
     <keywords>Destruction,Aria</keywords>
     <effect><![CDATA[If Enemy wall = 0<br />Enemy stock: -4<br />else<br />Enemy wall: -9]]></effect>
     <code><![CDATA[
@@ -7067,6 +7455,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords/>
     <effect><![CDATA[Player(s) with highest stock (total sum) gains 25% of his current stock]]></effect>
     <code><![CDATA[
@@ -7097,6 +7486,7 @@
       <recruits>4</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Durable</keywords>
     <effect><![CDATA[Gain 25% of your stock (max 25 of each)]]></effect>
     <code><![CDATA[
@@ -7116,6 +7506,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords/>
     <effect><![CDATA[Negates the positive effect of opponent's last round on his tower, wall, facilities and stock]]></effect>
     <code><![CDATA[
@@ -7134,6 +7525,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>4</level>
     <keywords/>
     <effect><![CDATA[Tower: -10<br />Wall: +20]]></effect>
     <code><![CDATA[$mydata->Tower-= 10; $mydata->Wall+= 20;]]></code>
@@ -7149,6 +7541,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>8</modes>
+    <level>19</level>
     <keywords/>
     <effect><![CDATA[Replace a card in hand with Tartarus gate]]></effect>
     <code><![CDATA[$mydata->Hand[$mode] = 313; if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;]]></code>
@@ -7164,6 +7557,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>15</level>
     <keywords>Alliance,Mage</keywords>
     <effect><![CDATA[Attack: 5<br />Replace a card in hand with a <b>Nature</b> or a <b>Restoration</b>]]></effect>
     <code><![CDATA[
@@ -7185,6 +7579,7 @@
       <recruits>4</recruits>
     </cost>
     <modes>8</modes>
+    <level>11</level>
     <keywords>Alliance</keywords>
     <effect><![CDATA[Attack: 7<br />Recruits prod x2<br />Replace a card in hand with <b>Alliance</b>]]></effect>
     <code><![CDATA[
@@ -7205,6 +7600,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords/>
     <effect><![CDATA[If Wall > 7<br />Tower: +10<br />Wall: -7<br />else<br />Wall: +7]]></effect>
     <code><![CDATA[if ($mydata->Wall > 7) { $mydata->Wall-= 7; $mydata->Tower+= 10; } else $mydata->Wall+= 7;]]></code>
@@ -7220,6 +7616,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Holy,Unliving</keywords>
     <effect><![CDATA[Gain N random resources<br />Wall: +2N<br />N = #<b>Holy</b> + #<b>Unliving</b> in hand]]></effect>
     <code><![CDATA[
@@ -7245,6 +7642,7 @@
       <recruits>26</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Dragon,Legend</keywords>
     <effect><![CDATA[Attack: 8N<br />Stock: +2N<br />N = #different keywords in hand]]></effect>
     <code><![CDATA[
@@ -7264,6 +7662,7 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
+    <level>8</level>
     <keywords>Legend</keywords>
     <effect><![CDATA[Attack: 25<br />Magic: +1<br />Enemy magic: -1<br />Discard a <b>Mage</b> from hand to gain<br />Gems: +30]]></effect>
     <code><![CDATA[
@@ -7292,6 +7691,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords/>
     <effect><![CDATA[Tower: +2<br />Wall: +3<br />Summons a non-rare <b>Mage</b>]]></effect>
     <code><![CDATA[
@@ -7312,6 +7712,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>14</level>
     <keywords>Illusion</keywords>
     <effect><![CDATA[Summons selected card in hand]]></effect>
     <code><![CDATA[if ($mode != $cardpos) $nextcard = $mydata->Hand[$mode];]]></code>
@@ -7327,6 +7728,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords/>
     <effect><![CDATA[Tower: +N<br />Wall: +N<br />N = #Bricks / 5<br />Enemy stock: -M<br />M = #Gems / 5]]></effect>
     <code><![CDATA[
@@ -7345,6 +7747,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Far sight</keywords>
     <effect><![CDATA[Returns 1/3 of cost of opponent's last card (max 4)]]></effect>
     <code><![CDATA[
@@ -7365,6 +7768,7 @@
       <recruits>40</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Horde</keywords>
     <effect><![CDATA[Recruits: +80<br />Replace your hand with <b>Horde</b> cards (can't summon self)]]></effect>
     <code><![CDATA[
@@ -7386,6 +7790,7 @@
       <recruits>21</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords>Barbarian,Mage,Swift</keywords>
     <effect><![CDATA[Attack: 20<br />Enemy tower: -15<br />Summons Chain lightning]]></effect>
     <code><![CDATA[$this->Attack(20, $hisdata->Tower, $hisdata->Wall); $hisdata->Tower-= 15; $nextcard = 374;]]></code>
@@ -7401,6 +7806,7 @@
       <recruits>4</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Runic,Durable,Skirmisher</keywords>
     <effect><![CDATA[Production x0<br />Negates the negative effect of opponent's last round on wall (max 20)]]></effect>
     <code><![CDATA[
@@ -7419,6 +7825,7 @@
       <recruits>38</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Barbarian,Beast,Frenzy</keywords>
     <effect><![CDATA[Attack: 35]]></effect>
     <code><![CDATA[$this->Attack(35, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -7434,6 +7841,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Runic</keywords>
     <effect><![CDATA[Tower: = 40<br />Wall: +50<br />If last card played was non-common <b>Runic</b><br />Wall: = Max wall]]></effect>
     <code><![CDATA[
@@ -7454,6 +7862,7 @@
       <recruits>14</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Barbarian,Banish</keywords>
     <effect><![CDATA[Attack: 13<br />Discard a <b>Legend</b> from opponent's hand to gain<br />Enemy magic: -1]]></effect>
     <code><![CDATA[
@@ -7482,6 +7891,7 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Far sight</keywords>
     <effect><![CDATA[Attack: 16<br />Discard highest rarity <b>Unliving</b>, <b>Undead</b> or <b>Dragon</b> from opponent's hand]]></effect>
     <code><![CDATA[
@@ -7515,6 +7925,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Holy,Far sight</keywords>
     <effect><![CDATA[If #<b>Holy</b> in opponent's hand > 0<br />Enemy tower: -1<br />else<br />Stock: +1<br />Enemy stock: -1]]></effect>
     <code><![CDATA[
@@ -7537,6 +7948,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Beast,Illusion</keywords>
     <effect><![CDATA[Attack: 5<br />If last card played was a <b>Beast</b><br />Recruits: +3]]></effect>
     <code><![CDATA[
@@ -7555,6 +7967,7 @@
       <recruits>8</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords>Brigand,Undead,Durable,Enduring (12)</keywords>
     <effect><![CDATA[If New<br />Enemy wall: -5<br />else<br />Enemy stock: -4]]></effect>
     <code><![CDATA[
@@ -7573,6 +7986,7 @@
       <recruits>2</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords/>
     <effect><![CDATA[If Recruits < 11<br /> Recruits x2<br />else<br />Recruits: +6]]></effect>
     <code><![CDATA[
@@ -7591,6 +8005,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>19</level>
     <keywords/>
     <effect><![CDATA[Discard a card from opponent's hand and pay half its cost<br />If not enough stock<br />Matching facility: -1]]></effect>
     <code><![CDATA[
@@ -7616,6 +8031,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords>Horde</keywords>
     <effect><![CDATA[Replace a non-rare highest rarity card in opponent's hand with Goblin intruder]]></effect>
     <code><![CDATA[
@@ -7647,6 +8063,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords>Destruction,Siege</keywords>
     <effect><![CDATA[If New<br />Enemy tower: -6<br />else<br />Attack: 6]]></effect>
     <code><![CDATA[
@@ -7665,6 +8082,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords/>
     <effect><![CDATA[Tower: +7<br />If New<br />Tower: +3<br />Bricks: +3]]></effect>
     <code><![CDATA[
@@ -7683,6 +8101,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>7</level>
     <keywords/>
     <effect><![CDATA[Tower: -8<br />If New<br />Magic: +1<br />else<br />Gems: +12]]></effect>
     <code><![CDATA[
@@ -7701,6 +8120,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Mage,Swift,Banish</keywords>
     <effect><![CDATA[Players discard up to 6 <b>Unliving</b> cards<br />Players lose 10 bricks and 1 quarry for each card they discarded above 4]]></effect>
     <code><![CDATA[
@@ -7742,6 +8162,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords/>
     <effect><![CDATA[If Wall is divisible by 10<br />Wall: +9<br />Gems: +4<br />else<br />Wall: +4]]></effect>
     <code><![CDATA[
@@ -7760,6 +8181,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords/>
     <effect><![CDATA[Gain resources equal to opponent's lowest and highest facility prod]]></effect>
     <code><![CDATA[
@@ -7798,6 +8220,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords/>
     <effect><![CDATA[Production x0<br />Summons Plague, Catastrophe or Death prophet]]></effect>
     <code><![CDATA[
@@ -7816,6 +8239,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Brigand,Undead</keywords>
     <effect><![CDATA[Enemy stock: -2<br />If #<b>Brigand</b> in hand + #<b>Undead</b> in hand > 3<br />Stock: +2]]></effect>
     <code><![CDATA[
@@ -7835,6 +8259,7 @@
       <recruits>13</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Brigand</keywords>
     <effect><![CDATA[Attack: 11<br />Steals resources equal to opponent's normal production<br />Summons a <b>Brigand</b>]]></effect>
     <code><![CDATA[
@@ -7859,6 +8284,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords/>
     <effect><![CDATA[Discard all <b>Mage</b> cards<br />Players gain 4 gems, 4 tower and 8 wall for each card they discarded]]></effect>
     <code><![CDATA[
@@ -7893,6 +8319,7 @@
       <recruits>20</recruits>
     </cost>
     <modes>8</modes>
+    <level>19</level>
     <keywords>Legend,Swift,Enduring (10)</keywords>
     <effect><![CDATA[Attack: 30<br />Replace a card in hand with self]]></effect>
     <code><![CDATA[
@@ -7912,6 +8339,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>7</level>
     <keywords>Alliance</keywords>
     <effect><![CDATA[Recruits prod x10]]></effect>
     <code><![CDATA[$recruits_production*= 10;]]></code>
@@ -7927,6 +8355,7 @@
       <recruits>50</recruits>
     </cost>
     <modes>0</modes>
+    <level>5</level>
     <keywords>Dragon,Undead</keywords>
     <effect><![CDATA[Attack: 150<br />Gems: +20]]></effect>
     <code><![CDATA[$this->Attack(150, $hisdata->Tower, $hisdata->Wall); $mydata->Gems+= 20;]]></code>
@@ -7942,6 +8371,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords/>
     <effect><![CDATA[Player(s) with most <b>Alliance</b>, <b>Legend</b> and <b>Mage</b> gains<br />Lowest facility: +1]]></effect>
     <code><![CDATA[
@@ -7976,6 +8406,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Far sight</keywords>
     <effect><![CDATA[Summons an uncommon card not from your deck]]></effect>
     <code><![CDATA[$nextcard = $this->DrawCard(array_diff($carddb->GetList(array('class'=>"Uncommon")), $my_deck->Uncommon), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
@@ -7991,6 +8422,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords/>
     <effect><![CDATA[Player(s) with most <b>Holy</b> in hand gains<br />Tower: +9<br />Wall: +17]]></effect>
     <code><![CDATA[
@@ -8011,6 +8443,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords/>
     <effect><![CDATA[Player(s) with lowest stock gains<br />Stock: +15<br />His opponent gains<br />Facilities: +1]]></effect>
     <code><![CDATA[
@@ -8039,6 +8472,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords/>
     <effect><![CDATA[Players discard their highest and lowest cost card]]></effect>
     <code><![CDATA[
@@ -8113,6 +8547,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords/>
     <effect><![CDATA[If Recruits - Enemy recruits > 35<br />Recruits: -35<br />Enemy tower: = 1<br />Enemy wall: = 0]]></effect>
     <code><![CDATA[
@@ -8131,6 +8566,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Burning,Holy,Banish</keywords>
     <effect><![CDATA[Gems: +50<br />Magic: +1]]></effect>
     <code><![CDATA[$mydata->Gems+= 50; $mydata->Magic+= 1;]]></code>
@@ -8146,6 +8582,7 @@
       <recruits>13</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords/>
     <effect><![CDATA[Tower: +16<br />Enemy tower: -6<br />If #<b>Far sight</b> and #<b>Siege</b> in hand > 0<br />Enemy tower: -10]]></effect>
     <code><![CDATA[
@@ -8166,6 +8603,7 @@
       <recruits>2</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords/>
     <effect><![CDATA[Tower: +7<br />If #<b>Siege</b> in hand > 0<br />Enemy tower: -4]]></effect>
     <code><![CDATA[
@@ -8184,6 +8622,7 @@
       <recruits>6</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Burning</keywords>
     <effect><![CDATA[If #<b>Burning</b> in hand = 2<br />Summons Phoenix<br />else<br />Gems: +14]]></effect>
     <code><![CDATA[
@@ -8202,6 +8641,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords/>
     <effect><![CDATA[Player(s) with fewest <b>Brigand</b> or <b>Undead</b> in hand suffers<br />Highest facility: -1]]></effect>
     <code><![CDATA[
@@ -8236,6 +8676,7 @@
       <recruits>2</recruits>
     </cost>
     <modes>0</modes>
+    <level>4</level>
     <keywords>Dragon</keywords>
     <effect><![CDATA[Gems prod x2]]></effect>
     <code><![CDATA[$gems_production*= 2;]]></code>
@@ -8251,6 +8692,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Horde</keywords>
     <effect><![CDATA[Wall: +15<br />Dungeon: +1<br />If #Troll in hand > 0<br />Attack: 15]]></effect>
     <code><![CDATA[
@@ -8271,6 +8713,7 @@
       <recruits>17</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Nature</keywords>
     <effect><![CDATA[Wall: +24<br />Recruits: +N<br />N = #<b>Beast</b> + #<b>Nature</b> in hand]]></effect>
     <code><![CDATA[
@@ -8289,6 +8732,7 @@
       <recruits>11</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Beast,Aria</keywords>
     <effect><![CDATA[Attack: 10<br />If last card was discarded bonus attack based on discarded card rarity (C-8, U-16, R-28)]]></effect>
     <code><![CDATA[
@@ -8311,6 +8755,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Burning</keywords>
     <effect><![CDATA[Wall: +35<br />Attack: 5N<br />N = #<b>Burning</b> in hand]]></effect>
     <code><![CDATA[
@@ -8329,6 +8774,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Illusion,Undead</keywords>
     <effect><![CDATA[Opponent's lowest resource: -7]]></effect>
     <code><![CDATA[
@@ -8352,6 +8798,7 @@
       <recruits>25</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords>Nature,Siege</keywords>
     <effect><![CDATA[Enemy wall: -22<br />Attack: 18]]></effect>
     <code><![CDATA[$hisdata->Wall-= 22; $this->Attack(18, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -8367,6 +8814,7 @@
       <recruits>45</recruits>
     </cost>
     <modes>0</modes>
+    <level>7</level>
     <keywords>Soldier,Charge (45),Siege</keywords>
     <effect><![CDATA[Attack: 45]]></effect>
     <code><![CDATA[$this->Attack(45, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -8382,6 +8830,7 @@
       <recruits>25</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords/>
     <effect><![CDATA[Attack: 35<br />Discard all common cards (opponent can't draw rare cards)]]></effect>
     <code><![CDATA[
@@ -8411,6 +8860,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>20</level>
     <keywords/>
     <effect><![CDATA[Summons selected zero cost card in hand (can't summon self)]]></effect>
     <code><![CDATA[
@@ -8429,6 +8879,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords>Holy,Restoration</keywords>
     <effect><![CDATA[Tower: +10<br />Highest facility: +1<br />Lowest facility: +2]]></effect>
     <code><![CDATA[
@@ -8460,6 +8911,7 @@
       <recruits>2</recruits>
     </cost>
     <modes>0</modes>
+    <level>8</level>
     <keywords/>
     <effect><![CDATA[Recruits: +9<br />Enemy wall: +8]]></effect>
     <code><![CDATA[$mydata->Recruits+= 9; $hisdata->Wall+= 8;]]></code>
@@ -8475,6 +8927,7 @@
       <recruits>2</recruits>
     </cost>
     <modes>8</modes>
+    <level>9</level>
     <keywords>Horde</keywords>
     <effect><![CDATA[Enemy wall: -3<br />Replace a card in hand with self]]></effect>
     <code><![CDATA[
@@ -8493,6 +8946,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Legend,Nature</keywords>
     <effect><![CDATA[Production xN<br />N = #<b>Alliance</b> + #<b>Nature</b> in hand (max 5)]]></effect>
     <code><![CDATA[
@@ -8511,6 +8965,7 @@
       <recruits>2</recruits>
     </cost>
     <modes>0</modes>
+    <level>6</level>
     <keywords>Nature,Banish</keywords>
     <effect><![CDATA[Enemy wall: -6]]></effect>
     <code><![CDATA[$hisdata->Wall-= 6;]]></code>
@@ -8526,6 +8981,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Burning,Banish</keywords>
     <effect><![CDATA[Gems: +N<br />Enemy gems: -N<br />N = #Enemy magic]]></effect>
     <code><![CDATA[$mydata->Gems+= $hisdata->Magic; $hisdata->Gems-= $hisdata->Magic;]]></code>
@@ -8541,6 +8997,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Restoration</keywords>
     <effect><![CDATA[If Stock < Enemy stock<br />Stock: +12<br />else<br />Stock: +6<br />Enemy stock: +6]]></effect>
     <code><![CDATA[
@@ -8566,6 +9023,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>8</level>
     <keywords>Mage,Durable</keywords>
     <effect><![CDATA[Attack: 5<br />Discard a common card from hand]]></effect>
     <code><![CDATA[
@@ -8593,6 +9051,7 @@
       <recruits>6</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords/>
     <effect><![CDATA[Attack: Opponent's lowest resource (max 12, min 6)]]></effect>
     <code><![CDATA[$this->Attack(max(min($hisdata->Bricks, $hisdata->Gems, $hisdata->Recruits, 12), 6), $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -8608,6 +9067,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Burning</keywords>
     <effect><![CDATA[Discard all common zero cost cards (can't draw rare cards)]]></effect>
     <code><![CDATA[
@@ -8643,6 +9103,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords>Runic,Durable,Far sight</keywords>
     <effect><![CDATA[Tower: +3]]></effect>
     <code><![CDATA[$mydata->Tower+= 3;]]></code>
@@ -8658,6 +9119,7 @@
       <recruits>30</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Holy,Banish</keywords>
     <effect><![CDATA[Attack: Max tower - Tower]]></effect>
     <code><![CDATA[$this->Attack($max_tower - $mydata->Tower, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -8673,6 +9135,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords/>
     <effect><![CDATA[If #<b>Titan</b> in hand > 0<br />Discard all non-<b>Titan</b> cards from hand]]></effect>
     <code><![CDATA[
@@ -8696,6 +9159,7 @@
       <recruits>8</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Burning,Rebirth,Enduring (8)</keywords>
     <effect><![CDATA[Attack: 17<br />Gems prod x2]]></effect>
     <code><![CDATA[$this->Attack(17, $hisdata->Tower, $hisdata->Wall); $gems_production*= 2;]]></code>
@@ -8711,6 +9175,7 @@
       <recruits>20</recruits>
     </cost>
     <modes>0</modes>
+    <level>6</level>
     <keywords>Beast,Frenzy</keywords>
     <effect><![CDATA[Enemy tower: -20<br />Enemy wall: -20<br />Attack: 20]]></effect>
     <code><![CDATA[
@@ -8729,6 +9194,7 @@
       <recruits>7</recruits>
     </cost>
     <modes>0</modes>
+    <level>5</level>
     <keywords/>
     <effect><![CDATA[Lowest facility: +1<br />Lowest resource prod x3]]></effect>
     <code><![CDATA[
@@ -8761,6 +9227,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>1</level>
     <keywords>Restoration</keywords>
     <effect><![CDATA[Player(s) with lowest wall gains<br />Stock: +6]]></effect>
     <code><![CDATA[
@@ -8781,6 +9248,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>13</level>
     <keywords>Mage,Swift,Aria</keywords>
     <effect><![CDATA[Attack: 18<br />Gems prod x3<br />Replace a card in opponent's hand with Wind]]></effect>
     <code><![CDATA[
@@ -8800,6 +9268,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords/>
     <effect><![CDATA[If Wall is not divisible by 15<br />Wall is raised up to the next height that is divisible by 15]]></effect>
     <code><![CDATA[$mydata->Wall = ceil($mydata->Wall/15) * 15;]]></code>
@@ -8815,6 +9284,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>2</modes>
+    <level>7</level>
     <keywords/>
     <effect><![CDATA[Mode1:<br />Tower: -5<br />Stock: +4<br />Mode2:<br />Tower: -10<br />Stock: +8]]></effect>
     <code><![CDATA[
@@ -8833,6 +9303,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords/>
     <effect><![CDATA[Discard all cards with cost below 10 (can't draw rare cards)<br />Stock: +N/2<br />N = #discarded cards]]></effect>
     <code><![CDATA[
@@ -8867,6 +9338,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords/>
     <effect><![CDATA[Summons Griffin, Roc or Rainbow Dragon]]></effect>
     <code><![CDATA[$nextcard = $this->DrawCard(array(25, 202, 397), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
@@ -8882,6 +9354,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords/>
     <effect><![CDATA[Wall: +10<br />Enemy stock: -3<br />Replace up to 3 non-<b>Brigand</b> non-rare cards in hand with non-common <b>Brigand</b>]]></effect>
     <code><![CDATA[
@@ -8917,6 +9390,7 @@
       <recruits>27</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Holy,Soldier</keywords>
     <effect><![CDATA[Attack: 48<br />Won't lower enemy tower below 15]]></effect>
     <code><![CDATA[
@@ -8935,6 +9409,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>8</level>
     <keywords/>
     <effect><![CDATA[Replace your hand with Merchant, Caravan, Wealth, Merchant ship, Fair trade, Greed is good, Prosperity and Bank]]></effect>
     <code><![CDATA[
@@ -8954,6 +9429,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>3</modes>
+    <level>17</level>
     <keywords/>
     <effect><![CDATA[Summons<br />Mode1:<br />Pyramids<br />Mode2:<br />Gateway<br />Mode3:<br />Orc Regiment]]></effect>
     <code><![CDATA[
@@ -8973,6 +9449,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>18</level>
     <keywords>Illusion</keywords>
     <effect><![CDATA[If targeting self and not New, summons the matching card, else replace a card in hand with self]]></effect>
     <code><![CDATA[
@@ -8996,6 +9473,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords/>
     <effect><![CDATA[Enemy tower: -3<br />If not New and matching card is New<br />Enemy tower: -5]]></effect>
     <code><![CDATA[
@@ -9014,6 +9492,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>19</level>
     <keywords>Restoration,Aria</keywords>
     <effect><![CDATA[Adds New flag to the selected card in hand<br />Gems: +2]]></effect>
     <code><![CDATA[$mydata->NewCards[$mode] = 1; $mydata->Gems+= 2;]]></code>
@@ -9029,6 +9508,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Illusion,Unliving</keywords>
     <effect><![CDATA[Attack: 5 + N<br />N based on matching card rarity (C-2, U-9, R-16)]]></effect>
     <code><![CDATA[
@@ -9047,6 +9527,7 @@
       <recruits>4</recruits>
     </cost>
     <modes>8</modes>
+    <level>19</level>
     <keywords/>
     <effect><![CDATA[If targeting self and not New, discard the matching card, else replace a card in hand with self]]></effect>
     <code><![CDATA[
@@ -9073,6 +9554,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords>Illusion,Undead,Charge (1)</keywords>
     <effect><![CDATA[If Enemy wall > 20<br />Gems: +3<br />Always:<br />Attack: 7]]></effect>
     <code><![CDATA[
@@ -9091,6 +9573,7 @@
       <recruits>14</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords/>
     <effect><![CDATA[Discard all <b>Titan</b> cards from hand<br />Attack: 30N<br />N = #unique discarded cards]]></effect>
     <code><![CDATA[
@@ -9123,6 +9606,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords>Alliance</keywords>
     <effect><![CDATA[Magic: +1<br />Enemy magic: +1]]></effect>
     <code><![CDATA[$mydata->Magic+= 1; $hisdata->Magic+= 1;]]></code>
@@ -9138,6 +9622,7 @@
       <recruits>6</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Nature</keywords>
     <effect><![CDATA[Enemy wall: -6<br />Attack: 5]]></effect>
     <code><![CDATA[$hisdata->Wall-= 6; $this->Attack(5, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -9153,6 +9638,7 @@
       <recruits>18</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords>Undead,Charge (16)</keywords>
     <effect><![CDATA[Attack: 29]]></effect>
     <code><![CDATA[$this->Attack(29, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -9168,6 +9654,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords/>
     <effect><![CDATA[Player(s) with lowest gems gains<br />Gems: +6<br />His opponent gains<br />Gems: +2]]></effect>
     <code><![CDATA[
@@ -9187,6 +9674,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords/>
     <effect><![CDATA[Players gain 1 stock for each zero cost card and lose 1 stock for each non zero cost card in their hand]]></effect>
     <code><![CDATA[
@@ -9216,6 +9704,7 @@
       <recruits>16</recruits>
     </cost>
     <modes>0</modes>
+    <level>1</level>
     <keywords>Horde</keywords>
     <effect><![CDATA[Attack: 24<br />Wall: +16]]></effect>
     <code><![CDATA[$this->Attack(24, $hisdata->Tower, $hisdata->Wall); $mydata->Wall+= 16;]]></code>
@@ -9231,6 +9720,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>6</level>
     <keywords/>
     <effect><![CDATA[Wall: +4<br />Highest resource: -3<br />Lowest resource: +4]]></effect>
     <code><![CDATA[
@@ -9262,6 +9752,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>16</level>
     <keywords/>
     <effect><![CDATA[Replace a card in hand with uncommon card from your deck<br />Summons selected card]]></effect>
     <code><![CDATA[
@@ -9285,6 +9776,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Swift,Aria</keywords>
     <effect><![CDATA[If Wall > Enemy wall<br />Enemy tower: -8<br />else<br />Gems prod x2]]></effect>
     <code><![CDATA[
@@ -9303,6 +9795,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Far sight</keywords>
     <effect><![CDATA[Tower: +6<br />If matching card is Revealed<br />Tower: +6<br />else<br />Reveal matching card]]></effect>
     <code><![CDATA[$mydata->Tower+= 6; if (!$hidden_cards or isset($hisdata->Revealed[$cardpos])) $mydata->Tower+= 6; else $hisdata->Revealed[$cardpos] = 1;]]></code>
@@ -9318,6 +9811,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>7</level>
     <keywords>Far sight</keywords>
     <effect><![CDATA[Gems: +#revealed cards in opponent's hand (max 4)]]></effect>
     <code><![CDATA[
@@ -9338,6 +9832,7 @@
       <recruits>8</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords/>
     <effect><![CDATA[Replace your hand with 4 commons, 3 uncommons and 1 rare from your deck]]></effect>
     <code><![CDATA[
@@ -9359,6 +9854,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>16</level>
     <keywords>Rebirth</keywords>
     <effect><![CDATA[Replace a card in hand with <b>Swift</b>]]></effect>
     <code><![CDATA[
@@ -9377,6 +9873,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Nature,Restoration</keywords>
     <effect><![CDATA[Wall: +3<br />If opponent lowered your stock last round<br />Production x2]]></effect>
     <code><![CDATA[
@@ -9396,6 +9893,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Destruction</keywords>
     <effect><![CDATA[Replace matching card in opponent's hand and its neigbouring cards with Wind]]></effect>
     <code><![CDATA[
@@ -9417,6 +9915,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>3</level>
     <keywords/>
     <effect><![CDATA[Tower: +10<br />Wall: +15<br />Enemy stock: -3]]></effect>
     <code><![CDATA[
@@ -9435,6 +9934,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>4</level>
     <keywords/>
     <effect><![CDATA[Tower x2]]></effect>
     <code><![CDATA[$mydata->Tower*= 2;]]></code>
@@ -9450,6 +9950,7 @@
       <recruits>30</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Dragon,Nature</keywords>
     <effect><![CDATA[Attack: 15 + 7N<br />N = #<b>Nature</b> in game]]></effect>
     <code><![CDATA[$this->Attack(15 + 7 * ($this->KeywordCount($mydata->Hand, "Nature") + $this->KeywordCount($hisdata->Hand, "Nature")), $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -9465,6 +9966,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>3</modes>
+    <level>7</level>
     <keywords/>
     <effect><![CDATA[Mode1:<br />Wall: +6<br />Mode2:<br />Gems: +4<br />Mode3:<br />Enemy recruits: -3]]></effect>
     <code><![CDATA[
@@ -9484,6 +9986,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords>Horde,Siege</keywords>
     <effect><![CDATA[Enemy tower: -3<br />Enemy wall: -4]]></effect>
     <code><![CDATA[$hisdata->Tower-= 3; $hisdata->Wall-= 4;]]></code>
@@ -9499,6 +10002,7 @@
       <recruits>6</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Holy,Soldier</keywords>
     <effect><![CDATA[Wall: +5<br />If #<b>Holy</b> in hand > 1<br />Tower: +3<br />If #<b>Soldier</b> in hand > 1<br />Attack: 5]]></effect>
     <code><![CDATA[
@@ -9518,6 +10022,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Aqua,Skirmisher</keywords>
     <effect><![CDATA[Attack: 1<br />If New<br />Attack: 4]]></effect>
     <code><![CDATA[$this->Attack(((isset($mynewflags[$cardpos])) ? 5 : 1), $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -9533,6 +10038,7 @@
       <recruits>25</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords>Aqua</keywords>
     <effect><![CDATA[Attack: 25<br />Enemy highest facility: -1]]></effect>
     <code><![CDATA[$this->Attack(25, $hisdata->Tower, $hisdata->Wall);
@@ -9556,6 +10062,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>6</level>
     <keywords>Aqua,Dragon</keywords>
     <effect><![CDATA[Attack: 40<br />Stock: +10]]></effect>
     <code><![CDATA[
@@ -9574,6 +10081,7 @@
       <recruits>20</recruits>
     </cost>
     <modes>0</modes>
+    <level>5</level>
     <keywords>Aqua,Far sight</keywords>
     <effect><![CDATA[Attack: 20<br />Gems: +15<br />Recruits: +15]]></effect>
     <code><![CDATA[
@@ -9592,6 +10100,7 @@
       <recruits>7</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords/>
     <effect><![CDATA[If Enemy tower is not divisible by 10<br />Enemy tower is lowered to the next height that is divisible by 10]]></effect>
     <code><![CDATA[$hisdata->Tower = floor($hisdata->Tower/10) * 10;]]></code>
@@ -9607,6 +10116,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords>Aria</keywords>
     <effect><![CDATA[Gain 1 random resource for each New card in game]]></effect>
     <code><![CDATA[
@@ -9636,6 +10146,7 @@
       <recruits>13</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Far sight,Banish</keywords>
     <effect><![CDATA[Attack: 13<br />Discard highest cost Recruits only card from opponent's hand]]></effect>
     <code><![CDATA[$this->Attack(13, $hisdata->Tower, $hisdata->Wall);
@@ -9669,6 +10180,7 @@
       <recruits>2</recruits>
     </cost>
     <modes>0</modes>
+    <level>8</level>
     <keywords/>
     <effect><![CDATA[Tower: +2<br />Wall: +2<br />If last card was discarded<br />Stock: +4]]></effect>
     <code><![CDATA[
@@ -9688,6 +10200,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords/>
     <effect><![CDATA[If Wall < Tower<br />Wall: +12<br />else<br />Wall: +6]]></effect>
     <code><![CDATA[if ($mydata->Wall < $mydata->Tower) $mydata->Wall+= 12; else $mydata->Wall+= 6;]]></code>
@@ -9703,6 +10216,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>8</modes>
+    <level>8</level>
     <keywords>Quick</keywords>
     <effect><![CDATA[Replace a card in hand with a card of the same rarity (can't summon self)]]></effect>
     <code><![CDATA[
@@ -9722,6 +10236,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Burning,Destruction</keywords>
     <effect><![CDATA[Player(s) with fewest <b>Burning</b> cards gains<br />Stock: -7<br />Respective player suffers 1 damage for each resource lost]]></effect>
     <code><![CDATA[
@@ -9758,6 +10273,7 @@
       <recruits>17</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords>Legend,Undead,Durable</keywords>
     <effect><![CDATA[Attack: 20]]></effect>
     <code><![CDATA[$this->Attack(20, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -9773,6 +10289,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Burning</keywords>
     <effect><![CDATA[If last card played was <b>Burning</b><br />Returns half of its cost (max 5)]]></effect>
     <code><![CDATA[
@@ -9795,6 +10312,7 @@
       <recruits>25</recruits>
     </cost>
     <modes>0</modes>
+    <level>5</level>
     <keywords>Beast</keywords>
     <effect><![CDATA[Attack: 20<br />Bricks: +N<br />N = #Enemy recruits / 2<br />Enemy recruits: = 0]]></effect>
     <code><![CDATA[
@@ -9813,6 +10331,7 @@
       <recruits>2</recruits>
     </cost>
     <modes>0</modes>
+    <level>4</level>
     <keywords/>
     <effect><![CDATA[Tower: +3<br />Enemy stock: -1<br />Summons a <b>Brigand</b>]]></effect>
     <code><![CDATA[
@@ -9832,6 +10351,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>17</level>
     <keywords>Nature</keywords>
     <effect><![CDATA[Gems: +N<br />N = #<b>Nature</b> in hand (max 4)<br />Replace a card in hand with common <b>Nature</b>]]></effect>
     <code><![CDATA[
@@ -9851,6 +10371,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>1</level>
     <keywords/>
     <effect><![CDATA[Tower: +5<br />Wall: +10<br />Gems: +5<br />Recruits: +5]]></effect>
     <code><![CDATA[
@@ -9869,6 +10390,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords>Aqua</keywords>
     <effect><![CDATA[Enemy tower: -2<br />Enemy wall: -2<br />Enemy stock: -2]]></effect>
     <code><![CDATA[
@@ -9887,6 +10409,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords>Aqua</keywords>
     <effect><![CDATA[Tower: +N / 2<br />Wall: +N<br />N = #<b>Aqua</b> in hand]]></effect>
     <code><![CDATA[
@@ -9905,6 +10428,7 @@
       <recruits>30</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Aqua</keywords>
     <effect><![CDATA[Enemy tower: -10<br />Enemy wall: -10<br />Enemy stock: -10]]></effect>
     <code><![CDATA[
@@ -9923,6 +10447,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Aqua,Siege</keywords>
     <effect><![CDATA[If Enemy wall = 0<br />Enemy stock: -7<br />else<br />Enemy tower: -3<br />Enemy wall: -7]]></effect>
     <code><![CDATA[
@@ -9943,6 +10468,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Destruction</keywords>
     <effect><![CDATA[Player(s) with fewest <b>Aqua</b> in hand suffers<br />Tower: -15<br />Wall: -15<br />Stock: -10]]></effect>
     <code><![CDATA[
@@ -9977,6 +10503,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Alliance</keywords>
     <effect><![CDATA[Stock: +5<br />Summons a rare card from opponent's deck]]></effect>
     <code><![CDATA[
@@ -9995,6 +10522,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords>Alliance,Holy</keywords>
     <effect><![CDATA[Lowest facility prod x2]]></effect>
     <code><![CDATA[
@@ -10020,6 +10548,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords/>
     <effect><![CDATA[Replace a common card in hand of player(s) with most common cards with a rare card from his deck]]></effect>
     <code><![CDATA[
@@ -10054,6 +10583,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>2</level>
     <keywords>Aqua</keywords>
     <effect><![CDATA[Wall: -5<br />Stock: +3]]></effect>
     <code><![CDATA[
@@ -10072,6 +10602,7 @@
       <recruits>20</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Aqua</keywords>
     <effect><![CDATA[Attack: 40<br />If last card played was an <b>Aqua</b><br />Bonus attack based on card rarity (C-10, U-25, R-50)]]></effect>
     <code><![CDATA[
@@ -10095,6 +10626,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Aqua,Brigand</keywords>
     <effect><![CDATA[Attack: 7<br />If #<b>Aqua</b> in opponent's hand > 0<br />Enemy stock: -3]]></effect>
     <code><![CDATA[
@@ -10114,6 +10646,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords/>
     <effect><![CDATA[Stock: +N/2 - 1<br />N = #common cards in hand]]></effect>
     <code><![CDATA[
@@ -10135,6 +10668,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Runic,Unliving,Durable</keywords>
     <effect><![CDATA[Attack: 5<br />Discard a common card from hand<br />If discarded card wasn't <b>Unliving</b><br />Wall: +5]]></effect>
     <code><![CDATA[
@@ -10163,6 +10697,7 @@
       <recruits>6</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Soldier,Far sight</keywords>
     <effect><![CDATA[Attack: 6<br />If #<b>Quick</b> + #<b>Swift</b> in opponent's hand > 0<br />Enemy tower: -6]]></effect>
     <code><![CDATA[
@@ -10182,6 +10717,7 @@
       <recruits>30</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Barbarian,Durable,Banish</keywords>
     <effect><![CDATA[If last card played was a non-common <b>Barbarian</b><br />Enemy wall: -20<br />Always:<br />Attack: 35]]></effect>
     <code><![CDATA[
@@ -10201,6 +10737,7 @@
       <recruits>18</recruits>
     </cost>
     <modes>0</modes>
+    <level>8</level>
     <keywords>Barbarian,Frenzy</keywords>
     <effect><![CDATA[If New<br />Enemy wall: -13<br />Always:<br />Attack: 22]]></effect>
     <code><![CDATA[
@@ -10219,6 +10756,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords/>
     <effect><![CDATA[Player(s) with fewest different keywords in hand gains +10 tower]]></effect>
     <code><![CDATA[
@@ -10239,6 +10777,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Beast,Nature</keywords>
     <effect><![CDATA[Attack: #<b>Beast</b> + #<b>Nature</b> in hand]]></effect>
     <code><![CDATA[
@@ -10257,6 +10796,7 @@
       <recruits>4</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Nature</keywords>
     <effect><![CDATA[Summons a <b>Beast</b> or a <b>Nature</b><br />If New<br />non-common<br />else<br />non-rare]]></effect>
     <code><![CDATA[
@@ -10279,6 +10819,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords/>
     <effect><![CDATA[Player(s) with highest tower gains +2 stock]]></effect>
     <code><![CDATA[
@@ -10299,6 +10840,7 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Beast,Nature</keywords>
     <effect><![CDATA[Attack: 12 + N<br />Wall: +2N<br />N = #<b>Beast</b> + #<b>Nature</b> in hand]]></effect>
     <code><![CDATA[
@@ -10317,6 +10859,7 @@
       <recruits>15</recruits>
     </cost>
     <modes>3</modes>
+    <level>11</level>
     <keywords>Destruction</keywords>
     <effect><![CDATA[Mode1:<br />Enemy tower: -20<br />Mode2:<br />Enemy wall: -50<br />Mode3:<br />Enemy stock: -15]]></effect>
     <code><![CDATA[
@@ -10336,6 +10879,7 @@
       <recruits>13</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Nature,Undead</keywords>
     <effect><![CDATA[Stock: +2N<br />Enemy wall: -5M<br />N = #<b>Nature</b> in hand<br />M = #<b>Undead</b> in hand]]></effect>
     <code><![CDATA[
@@ -10356,6 +10900,7 @@
       <recruits>16</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Legend,Banish</keywords>
     <effect><![CDATA[If #rare cards in hand > 0<br />Attack: 15<br />else<br />Attack: 25]]></effect>
     <code><![CDATA[
@@ -10376,6 +10921,7 @@
       <recruits>6</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Alliance</keywords>
     <effect><![CDATA[Gems prod x2<br />Enemy tower: -N<br />Attack: 8 - N<br />N = #<b>Alliance</b> in hand]]></effect>
     <code><![CDATA[
@@ -10396,6 +10942,7 @@
       <recruits>12</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Runic</keywords>
     <effect><![CDATA[Attack: N<br />Wall: +3N<br />N = sum of all facilities in game]]></effect>
     <code><![CDATA[
@@ -10415,6 +10962,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>7</level>
     <keywords>Burning,Far sight</keywords>
     <effect><![CDATA[Attack: 25<br />Summons Eternal flame]]></effect>
     <code><![CDATA[$this->Attack(25, $hisdata->Tower, $hisdata->Wall); $nextcard = 336;]]></code>
@@ -10430,6 +10978,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Beast,Horde</keywords>
     <effect><![CDATA[Attack: 8<br />Recruits: +6]]></effect>
     <code><![CDATA[$this->Attack(8, $hisdata->Tower, $hisdata->Wall); $mydata->Recruits+= 6;]]></code>
@@ -10445,6 +10994,7 @@
       <recruits>23</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Horde</keywords>
     <effect><![CDATA[Attack: 30<br />Replace all common cards in hand with Goblin flankers<br />Recruits: +2N<br />N = #replaced cards]]></effect>
     <code><![CDATA[
@@ -10466,6 +11016,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Aqua,Restoration</keywords>
     <effect><![CDATA[Summons an <b>Aqua</b><br />If last card played was an <b>Aqua</b><br />Stock: +1]]></effect>
     <code><![CDATA[
@@ -10485,6 +11036,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords>Aqua,Undead</keywords>
     <effect><![CDATA[Attack: 12<br />Enemy recruits: -2N<br />N = #<b>Aqua</b> in hand]]></effect>
     <code><![CDATA[
@@ -10504,6 +11056,7 @@
       <recruits>50</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Aqua</keywords>
     <effect><![CDATA[Enemy tower: -80<br />Enemy wall: -100]]></effect>
     <code><![CDATA[$hisdata->Tower-= 80; $hisdata->Wall-= 100;]]></code>
@@ -10519,6 +11072,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Aqua</keywords>
     <effect><![CDATA[Wall: +N / 2<br />Stock: +N / 3<br />N = #<b>Aqua</b> in hand]]></effect>
     <code><![CDATA[
@@ -10538,6 +11092,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords/>
     <effect><![CDATA[Wall: +40<br />If New or matching card is New<br />Tower: +20]]></effect>
     <code><![CDATA[
@@ -10556,6 +11111,7 @@
       <recruits>3</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Brigand</keywords>
     <effect><![CDATA[Opponent's tokens are destroyed<br />Gain 1 random resource for each 10 destroyed tokens of the same kind]]></effect>
     <code><![CDATA[
@@ -10584,6 +11140,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Runic</keywords>
     <effect><![CDATA[Tower: +6<br />Summons <b>Runic</b> of the same rarity as matching card]]></effect>
     <code><![CDATA[
@@ -10603,6 +11160,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>15</level>
     <keywords>Illusion</keywords>
     <effect><![CDATA[Stock: +4<br />Replace a card in opponent's hand with a rare card from your deck]]></effect>
     <code><![CDATA[
@@ -10622,6 +11180,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords/>
     <effect><![CDATA[Gain 1 random resource for each different keyword in hand]]></effect>
     <code><![CDATA[
@@ -10647,6 +11206,7 @@
       <recruits>4</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Aqua,Brigand</keywords>
     <effect><![CDATA[Attack: 4<br />Enemy stock: -2<br />If #<b>Aqua</b> in hand > 2<br />Stock: +2]]></effect>
     <code><![CDATA[
@@ -10667,6 +11227,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Aqua,Far sight</keywords>
     <effect><![CDATA[Wall: +15<br />Discard highest rarity <b>Aqua</b> from opponent's hand]]></effect>
     <code><![CDATA[
@@ -10699,6 +11260,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords>Destruction</keywords>
     <effect><![CDATA[Enemy stock: -2<br />If <b>Mage</b> tokens > 60<br />Enemy stock: -3]]></effect>
     <code><![CDATA[
@@ -10718,6 +11280,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>2</modes>
+    <level>1</level>
     <keywords>Restoration</keywords>
     <effect><![CDATA[Mode1:<br />Wall: +10<br />Mode2:<br />Recruits: +7]]></effect>
     <code><![CDATA[
@@ -10735,6 +11298,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Barbarian,Frenzy</keywords>
     <effect><![CDATA[Attack: 10<br />Discard all <b>Quick</b> and <b>Swift</b> from opponent's hand]]></effect>
     <code><![CDATA[
@@ -10761,6 +11325,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords>Mage</keywords>
     <effect><![CDATA[If <b>Mage</b> tokens > 50<br />Summons a <b>Legend</b><br /><b>Mage</b> tokens: = 0<br />else<br /><b>Mage</b> tokens: +40]]></effect>
     <code><![CDATA[
@@ -10787,6 +11352,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords/>
     <effect><![CDATA[Summons a <b>Titan</b> not present in hand]]></effect>
     <code><![CDATA[
@@ -10805,6 +11371,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords/>
     <effect><![CDATA[Stock: +2N<br />N = #Wheat farm in hand]]></effect>
     <code><![CDATA[
@@ -10826,6 +11393,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>8</modes>
+    <level>15</level>
     <keywords>Aqua,Nature</keywords>
     <effect><![CDATA[Recruits: +3<br />Enemy wall: -3<br />Replace a card in hand with Piranhas]]></effect>
     <code><![CDATA[
@@ -10845,6 +11413,7 @@
       <recruits>6</recruits>
     </cost>
     <modes>2</modes>
+    <level>8</level>
     <keywords>Undead,Unliving</keywords>
     <effect><![CDATA[Attack: 6<br />Wall: +4<br />Mode1:<br />Bricks: +8<br />Mode2:<br />Recruits: +6]]></effect>
     <code><![CDATA[
@@ -10863,6 +11432,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Illusion</keywords>
     <effect><![CDATA[Replace your hand with cards from your deck of the same rarity as replaced cards]]></effect>
     <code><![CDATA[
@@ -10886,6 +11456,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords>Aqua,Skirmisher</keywords>
     <effect><![CDATA[Wall: +8<br />Enemy stock: -1]]></effect>
     <code><![CDATA[
@@ -10904,6 +11475,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords/>
     <effect><![CDATA[Tower: +15<br />Replace neighbouring cards with <b>Burning</b>]]></effect>
     <code><![CDATA[
@@ -10931,6 +11503,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords/>
     <effect><![CDATA[Tower: +2<br />Wall: +4<br />If <b>Soldier</b> tokens are set<br />Summons a <b>Soldier</b> with <b>Charge</b>]]></effect>
     <code><![CDATA[
@@ -10954,6 +11527,7 @@
       <recruits>18</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Aria</keywords>
     <effect><![CDATA[Tower:= Max tower - Tower<br />If Wall > 35<br />Wall:= Max wall - Wall]]></effect>
     <code><![CDATA[
@@ -10972,6 +11546,7 @@
       <recruits>20</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Far sight,Banish,Skirmisher</keywords>
     <effect><![CDATA[Attack: 35<br />If #different keywords in hand > #different keywords in opponent's hand<br />Attack: 30]]></effect>
     <code><![CDATA[
@@ -10990,6 +11565,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords/>
     <effect><![CDATA[If Tower < 15 or Wall < 15<br />Tower: +5<br />Wall: +12<br />else<br />Tower: +3<br />Wall: +8]]></effect>
     <code><![CDATA[
@@ -11010,6 +11586,7 @@
       <recruits>20</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Nature,Undead</keywords>
     <effect><![CDATA[Enemy wall: -23<br />Attack: 15<br />If #<b>Nature</b> in hand > 4<br />Recruits: +20<br />If #<b>Undead</b> in hand > 4<br />Gems: +20]]></effect>
     <code><![CDATA[
@@ -11029,6 +11606,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Dragon</keywords>
     <effect><![CDATA[Attack: 10N<br />N = #Magic + #Enemy magic]]></effect>
     <code><![CDATA[
@@ -11047,6 +11625,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Nature,Undead</keywords>
     <effect><![CDATA[Gems: +#<b>Undead</b> in hand (max 4)<br />Recruits: +#<b>Nature</b> in hand (max 4)]]></effect>
     <code><![CDATA[
@@ -11065,6 +11644,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Far sight</keywords>
     <effect><![CDATA[If Tower < Wall<br />Tower: +25<br />else<br />Tower: +12]]></effect>
     <code><![CDATA[if ($mydata->Tower < $mydata->Wall) $mydata->Tower+= 25; else $mydata->Tower+= 12;]]></code>
@@ -11080,6 +11660,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>5</level>
     <keywords/>
     <effect><![CDATA[Tower: +N<br />N = 3 + #Magic]]></effect>
     <code><![CDATA[$mydata->Tower+= 3 + $mydata->Magic;]]></code>
@@ -11095,6 +11676,7 @@
       <recruits>8</recruits>
     </cost>
     <modes>0</modes>
+    <level>3</level>
     <keywords>Barbarian</keywords>
     <effect><![CDATA[Attack: 7<br />Stock: +2]]></effect>
     <code><![CDATA[
@@ -11113,6 +11695,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>4</level>
     <keywords>Illusion</keywords>
     <effect><![CDATA[Wall: +7<br />Bricks: +5]]></effect>
     <code><![CDATA[$mydata->Wall+= 7; $mydata->Bricks+= 5;]]></code>
@@ -11128,6 +11711,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords/>
     <effect><![CDATA[Players gain 1 stock for each non-keyword card and lose 1 stock for each different keyword in their hand]]></effect>
     <code><![CDATA[
@@ -11154,6 +11738,7 @@
       <recruits>3</recruits>
     </cost>
     <modes>8</modes>
+    <level>18</level>
     <keywords>Runic</keywords>
     <effect><![CDATA[Replace a card in hand with self<br />Raises wall based on replaced card rarity (C-2, U-6, R-14)]]></effect>
     <code><![CDATA[
@@ -11175,6 +11760,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>17</level>
     <keywords>Brigand</keywords>
     <effect><![CDATA[Summons selected non-rare card in opponent's hand]]></effect>
     <code><![CDATA[if ($carddb->GetCard($hisdata->Hand[$mode])->Class != 'Rare') $nextcard = $hisdata->Hand[$mode];]]></code>
@@ -11190,6 +11776,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>3</level>
     <keywords>Runic</keywords>
     <effect><![CDATA[Highest facility prod x2]]></effect>
     <code><![CDATA[
@@ -11215,6 +11802,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords/>
     <effect><![CDATA[Tower: +#common cards in hand]]></effect>
     <code><![CDATA[
@@ -11235,6 +11823,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>8</modes>
+    <level>19</level>
     <keywords/>
     <effect><![CDATA[Replace a card in hand with Wheat farm]]></effect>
     <code><![CDATA[
@@ -11253,6 +11842,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords>Mage</keywords>
     <effect><![CDATA[Attack: 3<br /><b>Mage</b> tokens: +30]]></effect>
     <code><![CDATA[
@@ -11272,6 +11862,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords>Unliving</keywords>
     <effect><![CDATA[Tower: +4<br />Wall: +6<br />Summons <b>Unliving</b>]]></effect>
     <code><![CDATA[
@@ -11290,6 +11881,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Unliving,Siege</keywords>
     <effect><![CDATA[Attack: 30 + 4N<br />Quarry: +N / 2<br />N = #<b>Unliving</b> in hand]]></effect>
     <code><![CDATA[
@@ -11309,6 +11901,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Illusion</keywords>
     <effect><![CDATA[If last card played was a rare<br />Summons a rare card]]></effect>
     <code><![CDATA[
@@ -11327,6 +11920,7 @@
       <recruits>12</recruits>
     </cost>
     <modes>0</modes>
+    <level>8</level>
     <keywords/>
     <effect><![CDATA[Gems: +8<br />If #<b>Far sight</b> in hand > 0<br />Enemy tower: -18<br />else<br />Attack: 20]]></effect>
     <code><![CDATA[
@@ -11346,6 +11940,7 @@
       <recruits>8</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords/>
     <effect><![CDATA[Attack: 8<br />Opponent loses 14 random resources<br />Replace matching card with Caravan]]></effect>
     <code><![CDATA[
@@ -11371,6 +11966,7 @@
       <recruits>4</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords/>
     <effect><![CDATA[Opponent loses 5 random resources<br />Replace non-rare matching card with Palisade]]></effect>
     <code><![CDATA[
@@ -11396,6 +11992,7 @@
       <recruits>7</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords/>
     <effect><![CDATA[Replace your hand with Red mage, Conjurer, Wizard, Chaos wizard, Librarian, Summon master, Sorceress and Wind witch<br />Gems prod x3]]></effect>
     <code><![CDATA[
@@ -11416,6 +12013,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords>Burning,Siege</keywords>
     <effect><![CDATA[Attack: 3 + N / 10<br />N = <b>Mage</b> tokens<br />If Enemy tower > 45<br />Enemy tower: -5]]></effect>
     <code><![CDATA[
@@ -11436,6 +12034,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Barbarian,Charge (2)</keywords>
     <effect><![CDATA[Attack: 8 <br />You lose 6 random resources]]></effect>
     <code><![CDATA[
@@ -11460,6 +12059,7 @@
       <recruits>18</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Alliance,Mage</keywords>
     <effect><![CDATA[Attack: 8N<br />N = #Magic<br />Gems prod x6<br />]]></effect>
     <code><![CDATA[
@@ -11478,6 +12078,7 @@
       <recruits>16</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Barbarian,Skirmisher,Frenzy</keywords>
     <effect><![CDATA[If #<b>Frenzy</b> in hand > 1<br />Attack: 10<br />else<br />Attack: 21]]></effect>
     <code><![CDATA[
@@ -11496,6 +12097,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Quick</keywords>
     <effect><![CDATA[Enemy wall: -3<br />Enemy stock: -1<br />Shuffles your hand]]></effect>
     <code><![CDATA[
@@ -11518,6 +12120,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords/>
     <effect><![CDATA[Wall: +15<br />Enemy wall: +15<br />Summons a <b>Barbarian</b>]]></effect>
     <code><![CDATA[
@@ -11536,6 +12139,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Barbarian,Beast,Frenzy</keywords>
     <effect><![CDATA[Attack: 6<br />Summons <b>Frenzy</b>]]></effect>
     <code><![CDATA[
@@ -11554,6 +12158,7 @@
       <recruits>20</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Beast,Durable</keywords>
     <effect><![CDATA[Dungeon: +1<br />Attack: 10N<br />N = #Dungeon - #Enemy dungeon<br />Recruits prod x0]]></effect>
     <code><![CDATA[
@@ -11572,6 +12177,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>19</level>
     <keywords/>
     <effect><![CDATA[Replace a card in hand with Recruits only no support keyword attack card]]></effect>
     <code><![CDATA[
@@ -11591,6 +12197,7 @@
       <recruits>3</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords>Aqua,Quick</keywords>
     <effect><![CDATA[Attack: 2<br />Enemy recruits: -1]]></effect>
     <code><![CDATA[$this->Attack(2, $hisdata->Tower, $hisdata->Wall); $hisdata->Recruits-= 1;]]></code>
@@ -11606,6 +12213,7 @@
       <recruits>3</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Beast,Burning</keywords>
     <effect><![CDATA[Gems: +#<b>Burning</b> in game (max 7)<br />Recruits: +#<b>Beast</b> in hand (max 7)]]></effect>
     <code><![CDATA[
@@ -11624,6 +12232,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Burning,Holy</keywords>
     <effect><![CDATA[Players discard all non-rare cards not from their deck (can't draw rare cards)]]></effect>
     <code><![CDATA[
@@ -11660,6 +12269,7 @@
       <recruits>4</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Beast,Soldier,Charge (2)</keywords>
     <effect><![CDATA[Wall: +6]]></effect>
     <code><![CDATA[$mydata->Wall+= 6;]]></code>
@@ -11675,6 +12285,7 @@
       <recruits>8</recruits>
     </cost>
     <modes>8</modes>
+    <level>13</level>
     <keywords>Burning</keywords>
     <effect><![CDATA[Attack: 14<br />Discard a non-rare card from opponent's hand<br />Summons the discarded card]]></effect>
     <code><![CDATA[
@@ -11698,6 +12309,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Durable</keywords>
     <effect><![CDATA[Production x0<br />Recruits: +20]]></effect>
     <code><![CDATA[
@@ -11716,6 +12328,7 @@
       <recruits>8</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Nature,Undead</keywords>
     <effect><![CDATA[Wall: +5N<br />Enemy wall: -5M<br />Stock: +(N + M)<br />N = #<b>Nature</b> in hand<br />M = #<b>Undead</b> in hand]]></effect>
     <code><![CDATA[
@@ -11737,6 +12350,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords/>
     <effect><![CDATA[Replace your hand with Mermaid, Hidden lagoon, Sea priestess, Sea gate, Sea lord, Kraken, Ocean queen and Water dragon]]></effect>
     <code><![CDATA[
@@ -11756,6 +12370,7 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
+    <level>2</level>
     <keywords/>
     <effect><![CDATA[Facilities: +2]]></effect>
     <code><![CDATA[$mydata->Quarry+= 2; $mydata->Magic+= 2; $mydata->Dungeons+= 2;]]></code>
@@ -11771,6 +12386,7 @@
       <recruits>18</recruits>
     </cost>
     <modes>2</modes>
+    <level>3</level>
     <keywords>Dragon</keywords>
     <effect><![CDATA[Attack: 45<br />Mode1:<br />Magic: +1<br />Mode2:<br />Dungeon: +1]]></effect>
     <code><![CDATA[
@@ -11789,6 +12405,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Unliving</keywords>
     <effect><![CDATA[Attack: 10N<br />Tower: +10M<br />N = #Quarry<br />M = #Enemy quarry]]></effect>
     <code><![CDATA[
@@ -11807,6 +12424,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>7</level>
     <keywords>Runic</keywords>
     <effect><![CDATA[Lowest facility: +2]]></effect>
     <code><![CDATA[
@@ -11830,6 +12448,7 @@
       <recruits>16</recruits>
     </cost>
     <modes>0</modes>
+    <level>8</level>
     <keywords>Runic</keywords>
     <effect><![CDATA[Attack: 13<br />If matching card and its neighbours are not New<br />Attack: 12]]></effect>
     <code><![CDATA[
@@ -11848,6 +12467,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Runic</keywords>
     <effect><![CDATA[Wall: +N<br />N = #Facilities]]></effect>
     <code><![CDATA[$mydata->Wall+= $mydata->Quarry + $mydata->Magic + $mydata->Dungeons;]]></code>
@@ -11863,6 +12483,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords/>
     <effect><![CDATA[Discard your hand and draw new starting hand]]></effect>
     <code><![CDATA[
@@ -11881,6 +12502,7 @@
       <recruits>9</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords>Holy,Mage</keywords>
     <effect><![CDATA[Attack: 6 + 2N<br />N = #Magic + #Dungeon]]></effect>
     <code><![CDATA[
@@ -11899,6 +12521,7 @@
       <recruits>11</recruits>
     </cost>
     <modes>0</modes>
+    <level>1</level>
     <keywords/>
     <effect><![CDATA[Magic: +1<br />Dungeon: +1<br />Summons a rare <b>Dragon</b>]]></effect>
     <code><![CDATA[
@@ -11917,6 +12540,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords/>
     <effect><![CDATA[Recruits x2<br />Enemy wall: +120<br />Replace your hand with Marauder, Tarkhan, Berserker, Gladiator, Warchief, Devastator, Warlord and Urk the Conqueror]]></effect>
     <code><![CDATA[
@@ -11937,6 +12561,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Runic</keywords>
     <effect><![CDATA[If Tower < 65<br />Tower: +7<br />else<br />Wall: +9]]></effect>
     <code><![CDATA[if ($mydata->Tower < 65) $mydata->Tower+= 7; else $mydata->Wall+= 9;]]></code>
@@ -11952,6 +12577,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords/>
     <effect><![CDATA[Summons highest cost card in game]]></effect>
     <code><![CDATA[
@@ -11986,6 +12612,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>20</level>
     <keywords/>
     <effect><![CDATA[Tower: +3<br />Replace a non-<b>Unliving</b> card in hand with <b>Unliving</b> card of the same rarity]]></effect>
     <code><![CDATA[
@@ -12009,6 +12636,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Beast,Illusion</keywords>
     <effect><![CDATA[Attack: 4<br />Discard highest rarity discarding or replacing non-rare card from opponent's hand]]></effect>
     <code><![CDATA[
@@ -12045,6 +12673,7 @@
       <recruits>5</recruits>
     </cost>
     <modes>2</modes>
+    <level>10</level>
     <keywords>Alliance,Dragon</keywords>
     <effect><![CDATA[Attack: 5<br />Mode1:<br />Gems prod x2<br />Mode2:<br />Recruits prod x2]]></effect>
     <code><![CDATA[
@@ -12064,6 +12693,7 @@
       <recruits>4</recruits>
     </cost>
     <modes>3</modes>
+    <level>17</level>
     <keywords>Alliance</keywords>
     <effect><![CDATA[Summons<br />Mode1:<br />Master bricklayer<br />Mode2:<br />Book of magic<br />Mode3:<br />Blacksmith]]></effect>
     <code><![CDATA[
@@ -12083,6 +12713,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Horde</keywords>
     <effect><![CDATA[Tower: +7<br />Production x0]]></effect>
     <code><![CDATA[$mydata->Tower+= 7; $bricks_production = 0; $gems_production = 0; $recruits_production = 0;]]></code>
@@ -12098,6 +12729,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>2</modes>
+    <level>17</level>
     <keywords>Runic</keywords>
     <effect><![CDATA[Mode1:<br />Tower: = 18<br />Mode2:<br />Wall: = 21]]></effect>
     <code><![CDATA[if ($mode == 1) $mydata->Tower = 18; elseif ($mode == 2) $mydata->Wall = 21;]]></code>
@@ -12113,6 +12745,7 @@
       <recruits>2</recruits>
     </cost>
     <modes>3</modes>
+    <level>12</level>
     <keywords>Alliance,Holy</keywords>
     <effect><![CDATA[Mode1:<br />Bricks prod x3<br />Mode2:<br />Gems prod x3<br />Mode3:<br />Recruits prod x3]]></effect>
     <code><![CDATA[
@@ -12132,6 +12765,7 @@
       <recruits>15</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Aqua,Skirmisher</keywords>
     <effect><![CDATA[Enemy wall: -9<br />Attack: N<br />N = #Enemy tower (max 30)]]></effect>
     <code><![CDATA[$hisdata->Wall-= 9; $this->Attack(min(30, $hisdata->Tower), $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -12147,6 +12781,7 @@
       <recruits>42</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Burning</keywords>
     <effect><![CDATA[Attack: 10N<br />N = sum of three highest facilities in game]]></effect>
     <code><![CDATA[
@@ -12172,6 +12807,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Dragon</keywords>
     <effect><![CDATA[Replace neighbouring cards with Hydra<br />Attack: 5N<br />N = #Hydra cards in game]]></effect>
     <code><![CDATA[
@@ -12199,6 +12835,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>13</level>
     <keywords>Illusion,Unliving</keywords>
     <effect><![CDATA[Wall: +15<br />Replace a card in hand with Mirror golem]]></effect>
     <code><![CDATA[$mydata->Wall+= 15; $mydata->Hand[$mode] = 479; if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;]]></code>
@@ -12214,6 +12851,7 @@
       <recruits>75</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Dragon,Legend</keywords>
     <effect><![CDATA[Enemy wall: -80<br />Attack: 150]]></effect>
     <code><![CDATA[$hisdata->Wall-= 80; $this->Attack(150, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -12229,6 +12867,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>5</level>
     <keywords/>
     <effect><![CDATA[Tower: +4<br />Wall: +8<br />Enemy tower: +4<br />Enemy wall: +8]]></effect>
     <code><![CDATA[$mydata->Tower+= 4; $mydata->Wall+= 8; $hisdata->Tower+= 4; $hisdata->Wall+= 8;]]></code>
@@ -12244,6 +12883,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Horde</keywords>
     <effect><![CDATA[Wall: +10<br />Bricks prod x0<br />Recruits prod x0]]></effect>
     <code><![CDATA[$mydata->Wall+= 10; $bricks_production = 0; $recruits_production = 0;]]></code>
@@ -12259,6 +12899,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords/>
     <effect><![CDATA[Bricks: +5<br />Recruits: -5<br />Enemy bricks: +5<br />Enemy recruits: -5]]></effect>
     <code><![CDATA[$mydata->Bricks+= 5; $mydata->Recruits-= 5; $hisdata->Bricks+= 5; $hisdata->Recruits-= 5;]]></code>
@@ -12274,6 +12915,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords/>
     <effect><![CDATA[Discard all rare cards from opponent's hand (opponent can't draw rare cards)]]></effect>
     <code><![CDATA[
@@ -12296,6 +12938,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>9</level>
     <keywords/>
     <effect><![CDATA[Magic: +1<br />Replace a card in hand with Book of magic]]></effect>
     <code><![CDATA[
@@ -12314,6 +12957,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
+    <level>3</level>
     <keywords/>
     <effect><![CDATA[Quarry: +1<br />Replace a card in hand with Master bricklayer]]></effect>
     <code><![CDATA[
@@ -12332,6 +12976,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>8</modes>
+    <level>6</level>
     <keywords/>
     <effect><![CDATA[Dungeon: +1<br />Replace a card in hand with Blacksmith]]></effect>
     <code><![CDATA[
@@ -12350,6 +12995,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords/>
     <effect><![CDATA[Players gain 1 stock for each rare card and each <b>Dragon</b> in their hand]]></effect>
     <code><![CDATA[
@@ -12376,6 +13022,7 @@
       <recruits>1</recruits>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Barbarian,Far sight</keywords>
     <effect><![CDATA[Enemy tower: -N<br />Enemy wall: +N<br />N = #<b>Barbarian</b> in hand]]></effect>
     <code><![CDATA[
@@ -12394,6 +13041,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords>Restoration</keywords>
     <effect><![CDATA[Tower: +2<br />If Tower or Wall was damaged during opponent's last round<br />Wall: +8]]></effect>
     <code><![CDATA[$mydata->Tower+= 2; if ($mychanges['Tower'] < 0 or $mychanges['Wall'] < 0) $mydata->Wall+= 8;]]></code>
@@ -12409,6 +13057,7 @@
       <recruits>8</recruits>
     </cost>
     <modes>0</modes>
+    <level>6</level>
     <keywords>Aqua</keywords>
     <effect><![CDATA[Summons Ocean queen]]></effect>
     <code><![CDATA[$nextcard = 530;]]></code>
@@ -12424,6 +13073,7 @@
       <recruits>30</recruits>
     </cost>
     <modes>0</modes>
+    <level>9</level>
     <keywords/>
     <effect><![CDATA[Enemy tower:= 10<br />Enemy wall:= 10]]></effect>
     <code><![CDATA[$hisdata->Tower = 10; $hisdata->Wall = 10;]]></code>
@@ -12439,6 +13089,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Beast,Illusion</keywords>
     <effect><![CDATA[Attack: 6<br />Summons a card from opponent's deck]]></effect>
     <code><![CDATA[$this->Attack(6, $hisdata->Tower, $hisdata->Wall); $nextcard = $this->DrawCard($his_deck, $mydata->Hand, $cardpos, 'DrawCard_random');]]></code>
@@ -12454,6 +13105,7 @@
       <recruits>6</recruits>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords>Barbarian</keywords>
     <effect><![CDATA[If Enemy wall > 30<br />Enemy wall: -10<br />Always:<br />Attack: 7]]></effect>
     <code><![CDATA[if ($hisdata->Wall > 30) $hisdata->Wall-= 10; $this->Attack(7, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -12469,6 +13121,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Aqua,Durable</keywords>
     <effect><![CDATA[Discard opponent's hand (opponent can't draw rare cards)]]></effect>
     <code><![CDATA[$hisdata->Hand = $this->DrawHand_norare($his_deck); $hisdata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1);]]></code>
@@ -12484,6 +13137,7 @@
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
+    <level>8</level>
     <keywords>Alliance,Mage</keywords>
     <effect><![CDATA[Attack: 3<br />If Gems < Enemy gems<br />Gems prod x2]]></effect>
     <code><![CDATA[$this->Attack(3, $hisdata->Tower, $hisdata->Wall); if ($mydata->Gems < $hisdata->Gems) $gems_production*= 2;]]></code>
@@ -12499,6 +13153,7 @@
       <recruits>10</recruits>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Durable</keywords>
     <effect><![CDATA[Tower: +15<br />Lowest facility: +1<br />Production x0]]></effect>
     <code><![CDATA[
@@ -12522,6 +13177,7 @@
       <gems>0</gems>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Alliance</keywords>
     <effect><![CDATA[Production x2<br />You lose 1 random resource for each non-<b>Alliance</b> card in hand]]></effect>
     <code><![CDATA[
@@ -12547,6 +13203,7 @@
       <gems>0</gems>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Horde</keywords>
     <effect><![CDATA[Tower: +17<br />Quarry: -1<br />Won't raise tower above 65]]></effect>
     <code><![CDATA[$mydata->Tower+= 17; $mydata->Quarry-= 1; $mydata->Tower = min(65, $mydata->Tower);]]></code>
@@ -12562,6 +13219,7 @@
       <gems>6</gems>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Beast,Destruction</keywords>
     <effect><![CDATA[If last card played cost gems<br />Enemy stock: -3<br />else<br />Gems: +9]]></effect>
     <code><![CDATA[
@@ -12582,6 +13240,7 @@
       <gems>0</gems>
     </cost>
     <modes>8</modes>
+    <level>15</level>
     <keywords/>
     <effect><![CDATA[Tower: +2<br />Recruits prod x2<br />Replace a card in hand with non-rare <b>Horde</b>]]></effect>
     <code><![CDATA[
@@ -12603,6 +13262,7 @@
       <gems>0</gems>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Alliance,Brigand</keywords>
     <effect><![CDATA[Attack: 8 - N<br />Steals N random resources<br />N = #<b>Alliance</b> in opponent's hand]]></effect>
     <code><![CDATA[
@@ -12629,6 +13289,7 @@
       <gems>0</gems>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords/>
     <effect><![CDATA[Gain 1 stock for each card in hand not from your deck (max 4)]]></effect>
     <code><![CDATA[
@@ -12653,6 +13314,7 @@
       <gems>4</gems>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Aqua,Skirmisher</keywords>
     <effect><![CDATA[Attack: 5 + N<br />N = #<b>Aqua</b> in hand]]></effect>
     <code><![CDATA[$tmp = $this->KeywordCount($mydata->Hand, "Aqua"); $this->Attack(5 + $tmp, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -12668,6 +13330,7 @@
       <gems>1</gems>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords/>
     <effect><![CDATA[Replace your hand with Moon shrine, Moon priestess, Samurai, Ninja, Shogun, Standstill, Moon castle and Samurai princess]]></effect>
     <code><![CDATA[
@@ -12688,6 +13351,7 @@
       <gems>12</gems>
     </cost>
     <modes>0</modes>
+    <level>3</level>
     <keywords>Legend,Runic</keywords>
     <effect><![CDATA[Attack: 30<br />Wall: +20<br />Quarry: +1]]></effect>
     <code><![CDATA[$this->Attack(30, $hisdata->Tower, $hisdata->Wall); $mydata->Wall+= 20; $mydata->Quarry+= 1;]]></code>
@@ -12703,6 +13367,7 @@
       <gems>0</gems>
     </cost>
     <modes>0</modes>
+    <level>15</level>
     <keywords>Restoration</keywords>
     <effect><![CDATA[Bricks:= N<br />Gems:= N<br />Recruits:= N<br />N = #Stock / 3]]></effect>
     <code><![CDATA[$mydata->Bricks = $mydata->Gems = $mydata->Recruits = round(($mydata->Bricks + $mydata->Gems + $mydata->Recruits) / 3);]]></code>
@@ -12718,6 +13383,7 @@
       <gems>20</gems>
     </cost>
     <modes>0</modes>
+    <level>11</level>
     <keywords>Burning,Dragon</keywords>
     <effect><![CDATA[Attack: 30 + 10N<br />N = #<b>Dragon</b> in game]]></effect>
     <code><![CDATA[
@@ -12736,6 +13402,7 @@
       <gems>0</gems>
     </cost>
     <modes>0</modes>
+    <level>20</level>
     <keywords>Runic</keywords>
     <effect><![CDATA[Wall: +8 - N<br />Recruits: +N<br />N = #<b>Barbarian</b> + #<b>Runic</b> + #<b>Soldier</b> in hand]]></effect>
     <code><![CDATA[$tmp = $this->KeywordCount($mydata->Hand, "Barbarian") + $this->KeywordCount($mydata->Hand, "Runic") + $this->KeywordCount($mydata->Hand, "Soldier"); $mydata->Wall+= (8 - $tmp); $mydata->Recruits+= $tmp;]]></code>
@@ -12751,6 +13418,7 @@
       <gems>0</gems>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords/>
     <effect><![CDATA[Gain 1 random resource for each non-attack card in hand]]></effect>
     <code><![CDATA[
@@ -12778,6 +13446,7 @@
       <gems>1</gems>
     </cost>
     <modes>0</modes>
+    <level>18</level>
     <keywords>Restoration,Durable</keywords>
     <effect><![CDATA[If Round is divisible by 3<br />Gems: +15]]></effect>
     <code><![CDATA[if (($round % 3) == 0) $mydata->Gems+= 15;]]></code>
@@ -12793,6 +13462,7 @@
       <gems>0</gems>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Brigand,Durable</keywords>
     <effect><![CDATA[If not New<br />Production x0<br />Replace highest rarity card in opponent's hand with Hidden treasure]]></effect>
     <code><![CDATA[
@@ -12828,6 +13498,7 @@
       <gems>0</gems>
     </cost>
     <modes>8</modes>
+    <level>16</level>
     <keywords>Dragon,Legend</keywords>
     <effect><![CDATA[Replace a card in hand with a rare <b>Dragon</b>]]></effect>
     <code><![CDATA[
@@ -12847,6 +13518,7 @@
       <gems>0</gems>
     </cost>
     <modes>0</modes>
+    <level>10</level>
     <keywords>Soldier,Horde</keywords>
     <effect><![CDATA[Attack: 30<br />If not in your deck<br />Attack: 60<br />else<br />Recruits: +20]]></effect>
     <code><![CDATA[
@@ -12866,6 +13538,7 @@
       <gems>11</gems>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Illusion</keywords>
     <effect><![CDATA[Attack: 22<br />Summons Wish or Eternal dream]]></effect>
     <code><![CDATA[
@@ -12884,6 +13557,7 @@
       <gems>10</gems>
     </cost>
     <modes>0</modes>
+    <level>13</level>
     <keywords>Beast,Illusion,Aria</keywords>
     <effect><![CDATA[Attack: 10<br />If last card was discarded<br />Summons a rare card]]></effect>
     <code><![CDATA[
@@ -12903,6 +13577,7 @@
       <gems>0</gems>
     </cost>
     <modes>0</modes>
+    <level>17</level>
     <keywords>Quick,Aria</keywords>
     <effect><![CDATA[Replace neighbouring cards with non-common <b>Aria</b> (can't summon self)]]></effect>
     <code><![CDATA[
@@ -12933,6 +13608,7 @@
       <gems>0</gems>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Alliance,Unliving</keywords>
     <effect><![CDATA[Wall: +7<br />If matching card is an attack card<br />Attack: 7]]></effect>
     <code><![CDATA[
@@ -12952,6 +13628,7 @@
       <gems>0</gems>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Unliving,Charge (18)</keywords>
     <effect><![CDATA[Enemy wall: -38<br />Bricks: +21<br />Replace neighbouring cards with Wind<br />Summons Reuse the rubble]]></effect>
     <code><![CDATA[
@@ -12980,6 +13657,7 @@
       <gems>0</gems>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Banish,Aria</keywords>
     <effect><![CDATA[Attack: N<br />Enemy recruits: -N<br />N = #Enemy dungeon]]></effect>
     <code><![CDATA[$this->Attack($hisdata->Dungeons, $hisdata->Tower, $hisdata->Wall); $hisdata->Recruits-= $hisdata->Dungeons;]]></code>
@@ -12995,6 +13673,7 @@
       <gems>0</gems>
     </cost>
     <modes>8</modes>
+    <level>14</level>
     <keywords>Horde</keywords>
     <effect><![CDATA[Attack: 25<br />Replace neighbouring cards with <b>Horde</b><br />Replace a card in hand with self]]></effect>
     <code><![CDATA[
@@ -13024,6 +13703,7 @@
       <gems>9</gems>
     </cost>
     <modes>0</modes>
+    <level>12</level>
     <keywords>Dragon,Swift,Aria</keywords>
     <effect><![CDATA[Attack: 10<br />If matching card is a zero cost card<br />Attack: 10]]></effect>
     <code><![CDATA[
@@ -13043,6 +13723,7 @@
       <gems>0</gems>
     </cost>
     <modes>0</modes>
+    <level>19</level>
     <keywords>Legend,Charge (40),Siege</keywords>
     <effect><![CDATA[Attack: 90]]></effect>
     <code><![CDATA[$this->Attack(90, $hisdata->Tower, $hisdata->Wall);]]></code>
@@ -13058,6 +13739,7 @@
       <gems>0</gems>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords/>
     <effect><![CDATA[Tower: +N<br />Wall: +N<br />N = #Facilities<br />Enemy tower: -#Enemy facilities]]></effect>
     <code><![CDATA[
@@ -13078,6 +13760,7 @@
       <gems>0</gems>
     </cost>
     <modes>0</modes>
+    <level>14</level>
     <keywords>Aria</keywords>
     <effect><![CDATA[Tower: +2<br />Gain N random resources<br />N = #<b>Aria</b> in hand]]></effect>
     <code><![CDATA[
@@ -13104,6 +13787,7 @@
       <gems>0</gems>
     </cost>
     <modes>0</modes>
+    <level>16</level>
     <keywords>Aria,Siege</keywords>
     <effect><![CDATA[Attack: 10<br />If #<b>Aria</b> in opponent's hand = 0<br />Recruits: +5]]></effect>
     <code><![CDATA[$this->Attack(10, $hisdata->Tower, $hisdata->Wall); if ($this->KeywordCount($hisdata->Hand, "Aria") == 0) $mydata->Recruits+= 5;]]></code>
@@ -13119,6 +13803,7 @@
       <gems>13</gems>
     </cost>
     <modes>8</modes>
+    <level>19</level>
     <keywords>Mage,Horde</keywords>
     <effect><![CDATA[Replace a card in hand with a <b>Horde</b> of the same rarity<br />Recruits prod x3]]></effect>
     <code><![CDATA[
@@ -13139,6 +13824,7 @@
       <gems>0</gems>
     </cost>
     <modes>8</modes>
+    <level>20</level>
     <keywords>Illusion</keywords>
     <effect><![CDATA[Discard a common card from opponent's hand<br />Attack: N<br />N = cost of the discarded card]]></effect>
     <code><![CDATA[

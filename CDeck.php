@@ -500,7 +500,7 @@
 			return $res;
 		}
 
-		public function FromCSV($file)
+		public function FromCSV($file, $level)
 		{
 			global $carddb;
 			
@@ -534,8 +534,8 @@
 				if (count($cards) != count(array_unique($cards))) return $rarity." cards data contains duplicates.";
 				
 				// check ids
-				$all_cards = $carddb->GetList(array('class' => $rarity));
-				if (count(array_diff($cards, $all_cards)) > 0) return $rarity." cards data contians non ".$rarity." cards.";
+				$all_cards = $carddb->GetList(array('class' => $rarity, 'level' => $level, 'level_op' => '<='));
+				if (count(array_diff($cards, $all_cards)) > 0) return $rarity." cards data contains forbidden cards.";
 			}
 			
 			// check tokens

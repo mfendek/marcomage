@@ -106,6 +106,12 @@
 			</xsl:variable>
 			<xsl:copy-of select="am:htmlSelectBox('ModifiedFilter', $param/ModifiedFilter, $modified, $param/modified_dates)"/>
 
+			<!-- card level filter -->
+			<xsl:variable name="level">
+				<value name="No level filter" value="none" />
+			</xsl:variable>
+			<xsl:copy-of select="am:htmlSelectBox('LevelFilter', $param/LevelFilter, $level, $param/levels)"/>
+
 			<button type="submit" name="cards_filter" >Apply filters</button>
 			</div>
 
@@ -126,6 +132,7 @@
 				<th><p>Card name</p></th>
 				<th><p>Rarity</p></th>
 				<th><p>Cost</p></th>
+				<th><p>Level</p></th>
 				<th><p>Effect</p></th>
 				<th><p>Created</p></th>
 				<th><p>Modified</p></th>
@@ -136,6 +143,7 @@
 					<td><p><a href="{php:functionString('makeurl', 'Cards_details', 'card', id)}"><xsl:value-of select="name"/></a></p></td>
 					<td><p><xsl:value-of select="class"/></p></td>
 					<td><p><xsl:value-of select="bricks" />/<xsl:value-of select="gems" />/<xsl:value-of select="recruits" /></p></td>
+					<td><p><xsl:value-of select="level"/></p></td>
 					<td><p class="effect"><xsl:value-of select="am:cardeffect(effect)" disable-output-escaping="yes"/></p></td>
 					<td><p><xsl:value-of select="am:format-date(created)"/></p></td>
 					<td><p><xsl:value-of select="am:format-date(modified)"/></p></td>
@@ -183,6 +191,7 @@
 				<p><span><xsl:value-of select="$param/data/keywords"/></span>Keywords</p>
 				<p><span><xsl:value-of select="$param/data/bricks"/>/<xsl:value-of select="$param/data/gems"/>/<xsl:value-of select="$param/data/recruits"/></span>Cost (B/G/R)</p>
 				<p><span><xsl:value-of select="$param/data/modes"/></span>Modes</p>
+				<p><span><xsl:value-of select="$param/data/level"/></span>Level</p>
 				<p><span><xsl:value-of select="am:format-date($param/data/created)"/></span>Created</p>
 				<p><span><xsl:value-of select="am:format-date($param/data/modified)"/></span>Modified</p>
 				<p><span><xsl:value-of select="$param/statistics/Played"/> / <xsl:value-of select="$param/statistics/PlayedTotal"/></span>Played</p>

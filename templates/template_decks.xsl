@@ -256,6 +256,12 @@
 	</xsl:variable>
 	<xsl:copy-of select="am:htmlSelectBox('ModifiedFilter', $param/ModifiedFilter, $modified, $param/modified_dates)"/>
 
+	<!-- card level filter -->
+	<xsl:variable name="level">
+		<value name="No level filter" value="none" />
+	</xsl:variable>
+	<xsl:copy-of select="am:htmlSelectBox('LevelFilter', $param/LevelFilter, $level, $param/levels)"/>
+
 	<button type="submit" name="filter">Apply filters</button>
 	<button type="submit" name="card_pool_switch">
 		<xsl:if test="count($param/CardList/*) &gt; 0">

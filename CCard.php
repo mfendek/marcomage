@@ -42,6 +42,8 @@
 		 * <li> 'cost'     => { Red | Blue | Green | Zero | Mixed }, queries `Bricks`, `Gems` and `Recruits` </li>
 		 * <li> 'advanced' => { <a specific substring> }, queries `Effect` </li>
 		 * <li> 'support'  => { Any keyword | No keywords | <a specific keyword> }, queries `Effect` </li>
+		 * <li> 'level'    => { <specific_level> }, queries `level` </li>
+		 * <li> 'level_op' => { = | <= }, additional parameter for `level` defaults to '=' </li>
 		 * </ul>
 		 * @param array $filters an array of chosen filters and their parameters
 		 * @return string a boolean expression to be used in a card retrieval query
@@ -114,7 +116,13 @@
 			{
 				$query .= " and am:modified = '".$filters['modified']."'";
 			}
-			
+
+			if( isset($filters['level']) )
+			{
+				$operator = (isset($filters['level_op']) and in_array($filters['level_op'], array('=', '<='))) ? $filters['level_op'] : '<=';
+				$query .= " and ";
+				$query .= "am:level ".$operator." ".$filters['level']; //FIXME: no escaping
+			}
 			return $query;
 		}
 
@@ -180,6 +188,7 @@
 					$data['gems']     = (int)$card->cost->gems;
 					$data['recruits'] = (int)$card->cost->recruits;
 					$data['modes']    = (int)$card->modes;
+					$data['level']    = (int)$card->level;
 					$data['keywords'] = (string)$card->keywords;
 					$data['effect']   = (string)$card->effect;
 					$data['code']     = (string)$card->code;
@@ -209,6 +218,28 @@
 			}
 
 			return $out;
+		}
+		
+		// returns distinct levels that are less or equal to specified level
+		public function Levels($level = -1)
+		{
+			$levels = array();
+			
+			$cond = ($level >= 0) ? "[am:level <= ".$level."]" : '';
+			
+			$db = $this->getDB();
+			$result = $db->xpath("/am:cards/am:card".$cond."/am:level");
+			if( $result === false ) return $levels;
+
+			foreach($result as $entry)
+			{
+				$card_level = (int)$entry;
+				$levels[$card_level] = $card_level;
+			}
+			
+			sort($levels);
+
+			return $levels;
 		}
 		
 		// returns all distinct keywords
@@ -287,6 +318,7 @@
 		public $Gems;
 		public $Recruits;
 		public $Modes;
+		public $Level;
 		public $Keywords;
 		public $Effect;
 		public $Code;
@@ -299,7 +331,7 @@
 			
 			$data = $Cards->GetData(array($cardid));
 			if( $data === false )
-				$data = array('id'=>$cardid, 'name'=>'Invalid Card', 'class'=>'None', 'bricks'=>0, 'gems'=>0, 'recruits'=>0, 'modes'=>0, 'keywords'=>'', 'effect'=>'', 'code'=>'', 'created'=>'', 'modified'=>'');
+				$data = array('id'=>$cardid, 'name'=>'Invalid Card', 'class'=>'None', 'bricks'=>0, 'gems'=>0, 'recruits'=>0, 'modes'=>0, 'level'=>0, 'keywords'=>'', 'effect'=>'', 'code'=>'', 'created'=>'', 'modified'=>'');
 
 			// initialize self
 			$this->SetData($data[0]);
@@ -342,6 +374,7 @@
 			$data['gems']     = $this->Gems;
 			$data['recruits'] = $this->Recruits;
 			$data['modes']    = $this->Modes;
+			$data['level']    = $this->Level;
 			$data['keywords'] = $this->Keywords;
 			$data['effect']   = $this->Effect;
 			$data['code']     = $this->Code;
@@ -360,6 +393,7 @@
 			$this->Gems     = $data['gems'];
 			$this->Recruits = $data['recruits'];
 			$this->Modes    = $data['modes'];
+			$this->Level    = $data['level'];
 			$this->Keywords = $data['keywords'];
 			$this->Effect   = $data['effect'];
 			$this->Code     = $data['code'];

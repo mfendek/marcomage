@@ -839,7 +839,11 @@
 
 				if ($deck != false)
 				{
-					$result = $deck->FromCSV($file);
+					// fetch player's level
+					$score = $scoredb->GetScore($player->Name());
+					$player_level = $score->ScoreData->Level;
+
+					$result = $deck->FromCSV($file, $player_level);
 					if ($result != "Success")	$error = $result;
 					else
 					{
@@ -1476,44 +1480,70 @@
 					}
 				}
 
-				if (($game->State == 'finished') AND ($game->GetGameMode('FriendlyPlay') == "no"))
+				if ($game->State == 'finished')
 				{
-					$player1 = $game->Name1();
-					$player2 = $game->Name2();
-					$exp1 = $game->CalculateExp($player1);
-					$exp2 = $game->CalculateExp($player2);
-					$p1 = $playerdb->GetPlayer($player1);
-					$p2 = $playerdb->GetPlayer($player2);
-					$p1_rep = $p1->GetSettings()->GetSetting('Reports');
-					$p2_rep = $p2->GetSettings()->GetSetting('Reports');
+					// case 1: standard AI mode
+					if ($game->GetGameMode('AIMode') == 'yes' and $game->AI == '')
+					{
+						// fetch player's level
+						$score = $scoredb->GetScore($player->Name());
+						$player_level = $score->ScoreData->Level;
 
-					// update score
-					$score1 = $scoredb->GetScore($player1);
-					$score2 = $scoredb->GetScore($player2);
+						// add experience in case player is still in tutorial
+						if ($player_level < 20)
+						{
+							$exp = $game->CalculateExp($player->Name());
+							$p_rep = $player->GetSettings()->GetSetting('Reports');
 
-					if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
-					elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
-					else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
+							$levelup = $score->AddExp($exp['exp']);
+							$score->AddGold($exp['gold']);
+							$score->GainAwards($exp['awards']);
+							$score->SaveScore();
 
-					$levelup1 = $score1->AddExp($exp1['exp']);
-					$levelup2 = $score2->AddExp($exp2['exp']);
-					$score1->AddGold($exp1['gold']);
-					$score2->AddGold($exp2['gold']);
-					$score1->GainAwards($exp1['awards']);
-					$score2->GainAwards($exp2['awards']);
-					$score1->SaveScore();
-					$score2->SaveScore();
+							// send level up message
+							if ($levelup and $p_rep == "yes") $messagedb->LevelUp($player->Name(), $score->ScoreData->Level);
+						}
+					}
+					// case 2: standard game
+					elseif ($game->GetGameMode('FriendlyPlay') == "no")
+					{
+						$player1 = $game->Name1();
+						$player2 = $game->Name2();
+						$exp1 = $game->CalculateExp($player1);
+						$exp2 = $game->CalculateExp($player2);
+						$p1 = $playerdb->GetPlayer($player1);
+						$p2 = $playerdb->GetPlayer($player2);
+						$p1_rep = $p1->GetSettings()->GetSetting('Reports');
+						$p2_rep = $p2->GetSettings()->GetSetting('Reports');
 
-					// send level up messages
-					if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
-					if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
+						// update score
+						$score1 = $scoredb->GetScore($player1);
+						$score2 = $scoredb->GetScore($player2);
 
-					// send battle report message
-					$outcome = $game->Outcome();
-					$winner = $game->Winner;
-					$hidden = $game->GetGameMode('HiddenCards');
+						if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
+						elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
+						else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
 
-					$messagedb->SendBattleReport($player1, $player2, $p1_rep, $p2_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
+						$levelup1 = $score1->AddExp($exp1['exp']);
+						$levelup2 = $score2->AddExp($exp2['exp']);
+						$score1->AddGold($exp1['gold']);
+						$score2->AddGold($exp2['gold']);
+						$score1->GainAwards($exp1['awards']);
+						$score2->GainAwards($exp2['awards']);
+						$score1->SaveScore();
+						$score2->SaveScore();
+
+						// send level up messages
+						if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
+						if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
+
+						// send battle report message
+						$outcome = $game->Outcome();
+						$winner = $game->Winner;
+						$hidden = $game->GetGameMode('HiddenCards');
+
+						$messagedb->SendBattleReport($player1, $player2, $p1_rep, $p2_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
+					}
 				}
 
 				$information = "You have played a card.";
@@ -1546,6 +1576,24 @@
 				$cardpos = $decision['cardpos'];
 				$mode = $decision['mode'];
 				$action = $decision['action'];
+
+				// fetch player's level
+				$score = $scoredb->GetScore($player->Name());
+				$player_level = $score->ScoreData->Level;
+
+				// sabotage standard AI to relax the diffculty
+				if ($game->AI == '' and $action == 'play' and $player_level < 20)
+				{
+					$chance = max(1/2 - $player_level / 38, 0);
+					$chance = round($chance * 100);
+					$gamble = mt_rand(1, 100);
+
+					if ($gamble <= $chance)
+					{
+						$action = 'discard';
+						$mode = 0;
+					}
+				}
 
 				$result = $game->PlayCard(SYSTEM_NAME, $cardpos, $mode, $action);
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
@@ -3196,7 +3244,12 @@ case 'Decks_edit':
 	$supportfilter = $params['deck_edit']['SupportFilter'] = isset($_POST['SupportFilter']) ? $_POST['SupportFilter'] : 'none';
 	$createdfilter = $params['deck_edit']['CreatedFilter'] = isset($_POST['CreatedFilter']) ? $_POST['CreatedFilter'] : 'none';
 	$modifiedfilter = $params['deck_edit']['ModifiedFilter'] = isset($_POST['ModifiedFilter']) ? $_POST['ModifiedFilter'] : 'none';
+	$levelfilter = $params['deck_edit']['LevelFilter'] = isset($_POST['LevelFilter']) ? $_POST['LevelFilter'] : 'none';
 
+	$score = $scoredb->GetScore($player->Name());
+	$player_level = $score->ScoreData->Level;
+
+	$params['deck_edit']['levels'] = $carddb->Levels($player_level);
 	$params['deck_edit']['keywords'] = $carddb->Keywords();
 	$params['deck_edit']['created_dates'] = $carddb->ListCreationDates();
 	$params['deck_edit']['modified_dates'] = $carddb->ListModifyDates();
@@ -3227,6 +3280,15 @@ case 'Decks_edit':
 	if( $supportfilter != 'none' ) $filter['support'] = $supportfilter;
 	if( $createdfilter != 'none' ) $filter['created'] = $createdfilter;
 	if( $modifiedfilter != 'none' ) $filter['modified'] = $modifiedfilter;
+	if( $levelfilter != 'none' )
+	{
+		$filter['level'] = $levelfilter;
+		$filter['level_op'] = '=';
+	}
+	else
+	{
+		$filter['level'] = $player_level;
+	}
 
 	// cards not present in the card pool
 	$excluded = array_merge($deck->DeckData->Common, $deck->DeckData->Uncommon, $deck->DeckData->Rare);
@@ -4620,7 +4682,9 @@ case 'Cards':
 	$supportfilter = $params['cards']['SupportFilter'] = isset($_POST['SupportFilter']) ? $_POST['SupportFilter'] : 'none';
 	$createdfilter = $params['cards']['CreatedFilter'] = isset($_POST['CreatedFilter']) ? $_POST['CreatedFilter'] : 'none';
 	$modifiedfilter = $params['cards']['ModifiedFilter'] = isset($_POST['ModifiedFilter']) ? $_POST['ModifiedFilter'] : 'none';
+	$levelfilter = $params['cards']['LevelFilter'] = isset($_POST['LevelFilter']) ? $_POST['LevelFilter'] : 'none';
 
+	$params['cards']['levels'] = $carddb->Levels();
 	$params['cards']['keywords'] = $carddb->Keywords();
 	$params['cards']['created_dates'] = $carddb->ListCreationDates();
 	$params['cards']['modified_dates'] = $carddb->ListModifyDates();
@@ -4634,6 +4698,12 @@ case 'Cards':
 	if( $supportfilter != 'none' ) $filter['support'] = $supportfilter;
 	if( $createdfilter != 'none' ) $filter['created'] = $createdfilter;
 	if( $modifiedfilter != 'none' ) $filter['modified'] = $modifiedfilter;
+	if( $levelfilter != 'none' )
+	{
+		$filter['level'] = $levelfilter;
+		$filter['level_op'] = '=';
+	}
+
 	$ids = $carddb->GetList($filter);
 	$params['cards']['CardList'] = $carddb->GetData($ids, $current_page);
 	$params['cards']['page_count'] = $carddb->CountPages($filter);
