@@ -1634,7 +1634,7 @@
 			$winner = $this->Winner;
 			$endtype = $this->EndType;
 			$mylevel = $playerdb->GetLevel($player);
-			$hislevel = $playerdb->GetLevel($opponent);
+			$hislevel = ($opponent == SYSTEM_NAME) ? $mylevel : $playerdb->GetLevel($opponent);
 			
 			$win = ($player == $winner);
 			$exp = 100; // base exp
