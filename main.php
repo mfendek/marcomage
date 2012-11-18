@@ -1508,12 +1508,11 @@
 							$score->GainAwards($exp['awards']);
 							$score->SaveScore();
 
+							// display levelup dialog
+							if ($levelup) $new_level_gained = $score->ScoreData->Level;
+
 							// send level up message
-							if ($levelup and $p_rep == "yes")
-							{
-								$messagedb->LevelUp($player->Name(), $score->ScoreData->Level);
-								$new_level_gained = $score->ScoreData->Level;
-							}
+							if ($levelup and $p_rep == "yes") $messagedb->LevelUp($player->Name(), $score->ScoreData->Level);
 						}
 					}
 					// case 2: standard game
@@ -1545,17 +1544,13 @@
 						$score1->SaveScore();
 						$score2->SaveScore();
 
+						// display levelup dialog
+						if ($levelup1 and $player1 == $player->Name()) $new_level_gained = $score1->ScoreData->Level;
+						if ($levelup2 and $player2 == $player->Name()) $new_level_gained = $score2->ScoreData->Level;
+
 						// send level up messages
-						if ($levelup1 AND ($p1_rep == "yes"))
-						{
-							$messagedb->LevelUp($player1, $score1->ScoreData->Level);
-							if ($player1 == $player->Name()) $new_level_gained = $score1->ScoreData->Level;
-						}
-						if ($levelup2 AND ($p2_rep == "yes"))
-						{
-							$messagedb->LevelUp($player2, $score2->ScoreData->Level);
-							if ($player2 == $player->Name()) $new_level_gained = $score2->ScoreData->Level;
-						}
+						if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
+						if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
 
 						// send battle report message
 						$outcome = $game->Outcome();
@@ -1722,17 +1717,13 @@
 					$score1->SaveScore();
 					$score2->SaveScore();
 
+					// display levelup dialog
+					if ($levelup1 and $player1 == $player->Name()) $new_level_gained = $score1->ScoreData->Level;
+					if ($levelup2 and $player2 == $player->Name()) $new_level_gained = $score2->ScoreData->Level;
+
 					// send level up messages
-					if ($levelup1 AND ($p1_rep == "yes"))
-					{
-						$messagedb->LevelUp($player1, $score1->ScoreData->Level);
-						if ($player1 == $player->Name()) $new_level_gained = $score1->ScoreData->Level;
-					}
-					if ($levelup2 AND ($p2_rep == "yes"))
-					{
-						$messagedb->LevelUp($player2, $score2->ScoreData->Level);
-						if ($player2 == $player->Name()) $new_level_gained = $score2->ScoreData->Level;
-					}
+					if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
+					if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
 
 					// send battle report message
 					$outcome = $game->Outcome();
@@ -1879,12 +1870,11 @@
 					$score2->GainAwards($exp2['awards']);
 					$score2->SaveScore();
 
+					// display levelup dialog
+					if ($levelup1) $new_level_gained = $score1->ScoreData->Level;
+
 					// send level up messages
-					if ($levelup1 AND ($player_rep == "yes"))
-					{
-						$messagedb->LevelUp($player->Name(), $score1->ScoreData->Level);
-						$new_level_gained = $score1->ScoreData->Level;
-					}
+					if ($levelup1 AND ($player_rep == "yes")) $messagedb->LevelUp($player->Name(), $score1->ScoreData->Level);
 					if ($levelup2 AND ($opponent_rep == "yes")) $messagedb->LevelUp($opponent->Name(), $score2->ScoreData->Level);
 
 					// send battle report message
@@ -1997,17 +1987,13 @@
 					$score1->SaveScore();
 					$score2->SaveScore();
 
+					// display levelup dialog
+					if ($levelup1 and $player1 == $player->Name()) $new_level_gained = $score1->ScoreData->Level;
+					if ($levelup2 and $player2 == $player->Name()) $new_level_gained = $score2->ScoreData->Level;
+
 					// send level up messages
-					if ($levelup1 AND ($p1_rep == "yes"))
-					{
-						$messagedb->LevelUp($player1, $score1->ScoreData->Level);
-						if ($player1 == $player->Name()) $new_level_gained = $score1->ScoreData->Level;
-					}
-					if ($levelup2 AND ($p2_rep == "yes"))
-					{
-						$messagedb->LevelUp($player2, $score2->ScoreData->Level);
-						if ($player2 == $player->Name()) $new_level_gained = $score2->ScoreData->Level;
-					}
+					if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
+					if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
 
 					// send battle report message
 					$outcome = $game->Outcome();
