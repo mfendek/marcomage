@@ -185,7 +185,7 @@
 				<xsl:text> / </xsl:text>
 				<xsl:value-of select="$param/nextlevel"/>
 				</xsl:attribute>
-			<div><xsl:attribute name="style">width: <xsl:value-of select="round($param/expbar * 100)"/>px</xsl:attribute></div>
+			<div><xsl:attribute name="style">width: <xsl:value-of select="round($param/expbar * 50)"/>px</xsl:attribute></div>
 		</div>
 	</div>
 	</div>
