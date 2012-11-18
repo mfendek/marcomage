@@ -229,7 +229,7 @@
       <input type="text" name="Username" title="username" maxlength="20" tabindex="1" />
       <img src="img/password.png" width="25px" height="20px" alt="password" />
       <input type="password" name="Password" title="password" maxlength="20" tabindex="2" />
-      <button type="submit" name="Login" tabindex="3">Login</button>
+      <button class="marked_button" type="submit" name="Login" tabindex="3">Login</button>
     </div>
 
     <p id="login_message">
@@ -252,7 +252,7 @@
 
 	<!-- sections menubar -->
 	<div id="sections">
-    <button type="submit" name="Registration" tabindex="4">Register</button>
+    <button class="marked_button" type="submit" name="Registration" tabindex="4">Register</button>
 		<xsl:variable name="sections">
 			<value name="Webpage"  />
 			<value name="Help"     />

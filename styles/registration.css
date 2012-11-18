@@ -21,5 +21,18 @@ div#registration > * + * /* set distance between any two neighbouring elements i
 
 div#registration > h3 /* registration title */
 {
+	font-size: x-large;
+}
+
+div#registration > p /* registration text */
+{
+	color: black;
 	font-size: large;
+	font-weight: bold;
+	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
+}
+
+div#registration > div > input, div#registration > div > button /* registration inputs */
+{
+	font-size: medium;
 }

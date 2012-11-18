@@ -49,7 +49,7 @@ function AddTags(Tag,fTag,content)
 $(document).ready(function() {
 
 	// blocks ENTER key to prevent section redirects
-	$("input[type!='password'], select").keypress(function(event) { if (event.keyCode == '13') { event.preventDefault(); } });
+	$("input[type!='password'], input[name!='Username'], input[name!='NewUsername'], select").keypress(function(event) { if (event.keyCode == '13') { event.preventDefault(); } });
 
 	// BBcode buttons handling
 	$("div.BBcodeButtons > button").click(function() {
