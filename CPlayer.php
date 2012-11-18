@@ -205,16 +205,6 @@
 			return true;
 		}
 		
-		public function RestartTutorial($playername)
-		{
-			$db = $this->db;
-			
-			$result = $db->Query('UPDATE `logins` SET `Notification` = "0000-00-00 00:00:00" WHERE `Username` = ?', array($playername));
-			if ($result === false) return false;
-			
-			return true;
-		}
-		
 		public function isOnline($playername)
 		{
 			$db = $this->db;
@@ -338,11 +328,6 @@
 		public function ResetNotification()
 		{
 			return $this->Players->ResetNotification($this->Name);
-		}
-		
-		public function RestartTutorial()
-		{
-			return $this->Players->RestartTutorial($this->Name);
 		}
 		
 		public function isOnline()

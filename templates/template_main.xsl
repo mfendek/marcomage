@@ -41,8 +41,11 @@
 	<link rel="stylesheet" href="styles/{$current_section}.css" type="text/css" title="standard style" />
 	<link rel="stylesheet" href="styles/skins/skin{$param/skin}.css" type="text/css" title="standard style" />
 	<xsl:if test="$param/new_user = 'yes'">
-    <link rel="stylesheet" href="styles/tutorial.css" type="text/css" title="standard style" />
-  </xsl:if>
+		<link rel="stylesheet" href="styles/intro.css" type="text/css" title="standard style" />
+	</xsl:if>
+	<xsl:if test="$param/new_level_gained &gt; 0">
+		<link rel="stylesheet" href="styles/levelup.css" type="text/css" title="standard style" />
+	</xsl:if>
 	<link rel="icon" href="img/favicon.png" type="image/png" />
 	<title>
 		<xsl:if test="$param/subsection != ''">
@@ -60,8 +63,11 @@
 	<script type="text/javascript" src="javascript/utils.js"></script>
 	<script type="text/javascript" src="javascript/{$current_section}.js"></script>
 	<xsl:if test="$param/new_user = 'yes'">
-    <script type="text/javascript" src="javascript/tutorial.js"></script>
-  </xsl:if>
+		<script type="text/javascript" src="javascript/intro.js"></script>
+	</xsl:if>
+	<xsl:if test="$param/new_level_gained &gt; 0">
+		<script type="text/javascript" src="javascript/levelup.js"></script>
+	</xsl:if>
 	<xsl:comment><![CDATA[[if lt IE 9]><script type="text/javascript" src="javascript/ie9.js"></script><![endif]]]></xsl:comment>
 	</head>
 	<body>
@@ -90,28 +96,68 @@
 		</div>
 	</xsl:if>
 
-  <!-- display tutorial for new users -->
+	<!-- display welcome message for new users -->
 	<xsl:if test="$param/new_user = 'yes'">
-    <xsl:variable name="tutorial_name" select="am:lowercase($param/section)" />
-    <xsl:variable name="tutorial_data" select="document('tutorial.xml')/am:tutorial" />
-    <xsl:variable name="tutorial_content" select="$tutorial_data/am:part[@name = $tutorial_name]" />
+		<div id="intro_dialog" title="Introduction" style="display: none">
+			<h3>Welcome to MArcomage</h3>
+			<p>Greetings <b><xsl:value-of select="$param/player_name" /></b>. By playing games you earn <b>experience</b> points and once you have sufficient amount, you will gain a new <b>level</b>. This will unlock new <b>cards</b> and even entire new <b>sections</b> to explore. Now, without further delay, let's play the game.</p>
+		</div>
+	</xsl:if>
 
-    <!-- display the dialog only if there is a tutorial available for current section -->
-    <xsl:if test="$tutorial_content !=''">
-      <div title="Tutorial ({$tutorial_content/@order} / {count($tutorial_data/*)})" style="display: none">
-        <xsl:attribute name="id">
-          <xsl:text>tutorial_dialog_</xsl:text>
-          <xsl:choose>
-            <xsl:when test="$tutorial_content/@order = 1">start</xsl:when>
-            <xsl:when test="$tutorial_content/@order = count($tutorial_data/*)">finish</xsl:when>
-            <xsl:otherwise>standard</xsl:otherwise>
-          </xsl:choose>
-        </xsl:attribute>
-        <xsl:value-of select="$tutorial_content" disable-output-escaping="yes" />
-        <input type="hidden" name="current_tutorial" value="{$tutorial_name}" />
-      </div>
-    </xsl:if>
-  </xsl:if>
+	<!-- display levelup message -->
+	<xsl:if test="$param/new_level_gained &gt; 0">
+		<xsl:variable name="levels">
+			<value id="1"  section="Decks"      desc="You are now able to improve your decks."            />
+			<value id="2"  section="Settings"   desc="You are now able to configure your profile."        />
+			<value id="3"  section="Forum"      desc="You may now join community conversations."          />
+			<value id="4"  section="Cards"      desc="You are now able to access complete card database." />
+			<value id="5"  section="Replays"    desc="You may now re-watch every finished game."          />
+			<value id="6"  section="Novels"     desc="You may now access fantasy novels."                 />
+			<value id="7"  section="Concepts"   desc="You may now publish card concepts."                 />
+			<value id="8"  section="Statistics" desc="You may now access game statistics."                />
+			<value id="9"  section=""           desc="" />
+			<value id="10" section=""           desc="" />
+			<value id="11" section=""           desc="" />
+			<value id="12" section=""           desc="" />
+			<value id="13" section=""           desc="" />
+			<value id="14" section=""           desc="" />
+			<value id="15" section=""           desc="" />
+			<value id="16" section=""           desc="" />
+			<value id="17" section=""           desc="" />
+			<value id="18" section=""           desc="" />
+			<value id="19" section=""           desc="" />
+			<value id="20" section=""           desc="" />
+		</xsl:variable>
+
+		<xsl:variable name="levelup_data" select="exsl:node-set($levels)/*[@id = $param/new_level_gained]" />
+		<xsl:if test="$levelup_data">
+			<div id="levelup_dialog" title="Level up!" style="display: none">
+				<h3>Congratulations, you have reached level <xsl:value-of select="$levelup_data/@id" /> !</h3>
+				<xsl:if test="$levelup_data/@section != ''">
+					<p><b><xsl:value-of select="$levelup_data/@section" /></b> section unlocked.</p>
+					<p><xsl:value-of select="$levelup_data/@desc" /></p>
+					<input type="hidden" name="unlock_section" value="{$levelup_data/@section}" />
+				</xsl:if>
+				<xsl:if test="count($param/new_cards/*) &gt; 0">
+					<p>New cards available.</p>
+					<table class="centered" cellpadding="0" cellspacing="0" >
+						<!-- number of columns (configurable) -->
+						<xsl:variable name="columns" select="10"/>
+						<xsl:for-each select="$param/new_cards/*[position() &lt;= floor(((count($param/new_cards/*) - 1) div $columns)) + 1]">
+							<tr valign="top">
+									<xsl:variable name="i" select="position()"/>
+									<xsl:for-each select="$param/new_cards/*[position() &gt;= (($i - 1)*$columns + 1) and position() &lt;= $i*$columns]">
+										<td>
+											<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_foils)" />
+										</td>
+									</xsl:for-each>
+							</tr>
+						</xsl:for-each>
+					</table>
+				</xsl:if>
+			</div>
+		</xsl:if>
+	</xsl:if>
 
 	</form>
 	</body>
@@ -152,42 +198,45 @@
 	<div id="menu_center">
 
 	<xsl:variable name="sections">
-		<value name="Webpage"    />
-		<value name="Help"       />
-		<value name="Forum"      />
-		<value name="Messages"   />
-		<value name="Players"    />
-		<value name="Games"      />
-		<value name="Decks"      />
-		<value name="Concepts"   />
-		<value name="Cards"      />
-		<value name="Replays"    />
-		<value name="Novels"     />
-		<value name="Statistics" />
-		<value name="Settings"   />
+		<!-- section name, level requirement -->
+		<value name="Webpage"    level="0" />
+		<value name="Help"       level="0" />
+		<value name="Forum"      level="3" />
+		<value name="Messages"   level="0" />
+		<value name="Players"    level="0" />
+		<value name="Games"      level="0" />
+		<value name="Decks"      level="1" />
+		<value name="Concepts"   level="7" />
+		<value name="Cards"      level="4" />
+		<value name="Replays"    level="5" />
+		<value name="Novels"     level="6" />
+		<value name="Statistics" level="8" />
+		<value name="Settings"   level="2" />
 	</xsl:variable>
 
 	<xsl:for-each select="exsl:node-set($sections)/*">
-		<a class="button" href="{php:functionString('makeurl', @name)}" >
-			<xsl:if test="$current_section = @name">
-				<xsl:attribute name="class">button pushed</xsl:attribute>
-			</xsl:if>
-			<xsl:value-of select="@name"/>
-		</a>
-		<xsl:choose>
-			<xsl:when test="'Forum' = @name and $param/forum_notice = 'yes'">
-				<img src="img/book.gif" alt="" width="18px" height="14px" title="New post" />
-			</xsl:when>
-			<xsl:when test="'Messages' = @name and $param/message_notice = 'yes'">
-				<img src="img/new_post.gif" alt="" width="15px" height="10px" title="New message" />
-			</xsl:when>
-			<xsl:when test="'Games' = @name and $param/game_notice = 'yes'">
-				<img src="img/battle.gif" alt="" width="20px" height="13px" title="Your turn" />
-			</xsl:when>
-			<xsl:when test="'Concepts' = @name and $param/concept_notice = 'yes'">
-				<img src="img/new_card.gif" alt="" width="10px" height="14px" title="New card" />
-			</xsl:when>
-		</xsl:choose>
+		<xsl:if test="$param/level &gt;= @level">
+			<a class="button" href="{php:functionString('makeurl', @name)}" >
+				<xsl:if test="$current_section = @name">
+					<xsl:attribute name="class">button pushed</xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="@name"/>
+			</a>
+			<xsl:choose>
+				<xsl:when test="'Forum' = @name and $param/forum_notice = 'yes'">
+					<img src="img/book.gif" alt="" width="18px" height="14px" title="New post" />
+				</xsl:when>
+				<xsl:when test="'Messages' = @name and $param/message_notice = 'yes'">
+					<img src="img/new_post.gif" alt="" width="15px" height="10px" title="New message" />
+				</xsl:when>
+				<xsl:when test="'Games' = @name and $param/game_notice = 'yes'">
+					<img src="img/battle.gif" alt="" width="20px" height="13px" title="Your turn" />
+				</xsl:when>
+				<xsl:when test="'Concepts' = @name and $param/concept_notice = 'yes'">
+					<img src="img/new_card.gif" alt="" width="10px" height="14px" title="New card" />
+				</xsl:when>
+			</xsl:choose>
+		</xsl:if>
 	</xsl:for-each>
 
 	</div>

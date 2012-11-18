@@ -127,6 +127,13 @@
 			}
 			else
 			{
+				// log user automatically right after registration
+				$_POST['Username'] = $_POST['NewUsername'];
+				$_POST['Password'] = $_POST['NewPassword'];
+				$_POST['Login'] = 1;
+				$session = $logindb->Login();
+
+				$new_user = true; // store first session flag for further use
 				$current = "Webpage";
 				$information = "User registered. You may now log in.";
 			}
@@ -141,7 +148,8 @@
 				$information = "Please log in.";
 		}
 	}
-	else
+
+	if ($session)
 	{
 		// at this point we're logged in
 		$player = $playerdb->GetPlayer($session->Username());
@@ -166,8 +174,8 @@
 		// login page messages
 		if (isset($_POST['Login']))
 		{
-			// new sessions default to here
-			$current = "Webpage";
+			// default section is 'Games' for new users, 'Webpage' for everyone else
+			$current = (isset($new_user) and $new_user) ? 'Games' : 'Webpage';
 		}
 		else
 		
@@ -1501,7 +1509,11 @@
 							$score->SaveScore();
 
 							// send level up message
-							if ($levelup and $p_rep == "yes") $messagedb->LevelUp($player->Name(), $score->ScoreData->Level);
+							if ($levelup and $p_rep == "yes")
+							{
+								$messagedb->LevelUp($player->Name(), $score->ScoreData->Level);
+								$new_level_gained = $score->ScoreData->Level;
+							}
 						}
 					}
 					// case 2: standard game
@@ -1534,8 +1546,16 @@
 						$score2->SaveScore();
 
 						// send level up messages
-						if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
-						if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
+						if ($levelup1 AND ($p1_rep == "yes"))
+						{
+							$messagedb->LevelUp($player1, $score1->ScoreData->Level);
+							if ($player1 == $player->Name()) $new_level_gained = $score1->ScoreData->Level;
+						}
+						if ($levelup2 AND ($p2_rep == "yes"))
+						{
+							$messagedb->LevelUp($player2, $score2->ScoreData->Level);
+							if ($player2 == $player->Name()) $new_level_gained = $score2->ScoreData->Level;
+						}
 
 						// send battle report message
 						$outcome = $game->Outcome();
@@ -1703,8 +1723,16 @@
 					$score2->SaveScore();
 
 					// send level up messages
-					if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
-					if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
+					if ($levelup1 AND ($p1_rep == "yes"))
+					{
+						$messagedb->LevelUp($player1, $score1->ScoreData->Level);
+						if ($player1 == $player->Name()) $new_level_gained = $score1->ScoreData->Level;
+					}
+					if ($levelup2 AND ($p2_rep == "yes"))
+					{
+						$messagedb->LevelUp($player2, $score2->ScoreData->Level);
+						if ($player2 == $player->Name()) $new_level_gained = $score2->ScoreData->Level;
+					}
 
 					// send battle report message
 					$outcome = $game->Outcome();
@@ -1852,7 +1880,11 @@
 					$score2->SaveScore();
 
 					// send level up messages
-					if ($levelup1 AND ($player_rep == "yes")) $messagedb->LevelUp($player->Name(), $score1->ScoreData->Level);
+					if ($levelup1 AND ($player_rep == "yes"))
+					{
+						$messagedb->LevelUp($player->Name(), $score1->ScoreData->Level);
+						$new_level_gained = $score1->ScoreData->Level;
+					}
 					if ($levelup2 AND ($opponent_rep == "yes")) $messagedb->LevelUp($opponent->Name(), $score2->ScoreData->Level);
 
 					// send battle report message
@@ -1966,8 +1998,16 @@
 					$score2->SaveScore();
 
 					// send level up messages
-					if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
-					if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
+					if ($levelup1 AND ($p1_rep == "yes"))
+					{
+						$messagedb->LevelUp($player1, $score1->ScoreData->Level);
+						if ($player1 == $player->Name()) $new_level_gained = $score1->ScoreData->Level;
+					}
+					if ($levelup2 AND ($p2_rep == "yes"))
+					{
+						$messagedb->LevelUp($player2, $score2->ScoreData->Level);
+						if ($player2 == $player->Name()) $new_level_gained = $score2->ScoreData->Level;
+					}
 
 					// send battle report message
 					$outcome = $game->Outcome();
@@ -3041,15 +3081,6 @@
 				$current = 'Settings';
 			}
 
-			if (isset($_POST['restart_tutorial'])) // restart tutorial
-			{
-				if ($player->RestartTutorial()) $information = 'Tutorial successfully restarted';
-				else $error = 'Failed to restart tutorial';
-
-				$current = 'Webpage';
-				break;
-			}
-
 			// end settings related messages
 
 			// begin replays related messages
@@ -3166,7 +3197,7 @@
 	$settings = $player->GetSettings();
 	$params["main"]["is_logged_in"] = ($session) ? 'yes' : 'no';
 	$params["main"]["skin"] = $settings->GetSetting('Skin');
-	$params["main"]["new_user"] = ($player->GetNotification() == '0000-00-00 00:00:00') ? 'yes' : 'no';
+	$params["main"]["new_user"] = (isset($new_user) and $new_user) ? 'yes' : 'no';
 
 	// navbar params
 	$params["navbar"]["error_msg"] = @$error;
@@ -3184,7 +3215,23 @@
 	if( $session )
 	{
 		// inner navbar params
-		$params["navbar"]["player_name"] = $player->Name();
+		$params["main"]["player_name"] = $params["navbar"]["player_name"] = $player->Name();
+		$params["main"]["new_level_gained"] = $new_level_gained = (isset($new_level_gained)) ? $new_level_gained : 0;
+
+		// list cards associated with newly gained level
+		if ($new_level_gained > 0)
+		{
+			$filter = array();
+			$filter['level'] = $new_level_gained;
+			$filter['level_op'] = '=';
+
+			$ids = $carddb->GetList($filter);
+			$params['main']['new_cards'] = $carddb->GetData($ids);
+			$params['main']['c_img'] = $settings->GetSetting('Images');
+			$params['main']['c_oldlook'] = $settings->GetSetting('OldCardLook');
+			$params['main']['c_insignias'] = $settings->GetSetting('Insignias');
+			$params['main']['c_foils'] = $settings->GetSetting('FoilCards');
+		}
 
 		// fetch player's score data
 		$score = $scoredb->GetScore($player->Name());
@@ -3682,6 +3729,10 @@ case 'Games':
 	$params['games']['RandomDeck'] = $settings->GetSetting('RandomDeck');
 	$params['games']['autorefresh'] = $settings->GetSetting('Autorefresh');
 	$params['games']['timeout'] = $settings->GetSetting('Timeout');
+
+	// determine if AI challenges should be shown
+	$score = $scoredb->GetScore($player->Name());
+	$params['games']['show_challenges'] = ($score->ScoreData->Level >= 20) ? 'yes' : 'no';
 
 	$list = $gamedb->ListGamesData($player->Name());
 	if (count($list) > 0)

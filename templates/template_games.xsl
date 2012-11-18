@@ -418,29 +418,31 @@
 			</p>
 		</xsl:if>
 
-		<!-- AI challenge interface -->
-		<xsl:if test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
-			<p class="misc">
-				<span>Select AI challenge</span>
-				<select name="selected_challenge" size="1">
-					<xsl:for-each select="$param/ai_challenges/*">
-						<xsl:sort select="fullname" order="ascending" />
-						<option value="{name}"><xsl:value-of select="fullname"/></option>
-					</xsl:for-each>
-				</select>
-				<button type="submit" name="ai_challenge">Play challenge</button>
-			</p>
-		</xsl:if>
+		<!-- AI challenge interface (show only to players that finished tutorial) -->
+		<xsl:if test="$param/show_challenges = 'yes'">
+			<xsl:if test="$activedecks &gt; 0 and $param/free_slots &gt; 0">
+				<p class="misc">
+					<span>Select AI challenge</span>
+					<select name="selected_challenge" size="1">
+						<xsl:for-each select="$param/ai_challenges/*">
+							<xsl:sort select="fullname" order="ascending" />
+							<option value="{name}"><xsl:value-of select="fullname"/></option>
+						</xsl:for-each>
+					</select>
+					<button type="submit" name="ai_challenge">Play challenge</button>
+				</p>
+			</xsl:if>
 
-		<div id="ai_challenges">
-			<xsl:for-each select="$param/ai_challenges/*">
-				<xsl:sort select="fullname" order="ascending" />
-				<div class="skin_text">
-					<h4><xsl:value-of select="fullname"/></h4>
-					<p><xsl:value-of select="description"/></p>
-				</div>
-			</xsl:for-each>
-		</div>
+			<div id="ai_challenges">
+				<xsl:for-each select="$param/ai_challenges/*">
+					<xsl:sort select="fullname" order="ascending" />
+					<div class="skin_text">
+						<h4><xsl:value-of select="fullname"/></h4>
+						<p><xsl:value-of select="description"/></p>
+					</div>
+				</xsl:for-each>
+			</div>
+		</xsl:if>
 
 		</xsl:when>
 		<!-- end AI games subsection -->

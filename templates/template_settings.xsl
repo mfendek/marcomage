@@ -219,10 +219,7 @@
 			<p><button type="submit" name="user_settings">Save settings</button></p>
 			<p><input type="password" name="NewPassword" maxlength="20" />New password</p>
 			<p><input type="password" name="NewPassword2" maxlength="20" />Confirm password</p>
-			<p>
-        <button type="submit" name="changepasswd">Change password</button>
-        <button type="submit" name="restart_tutorial">Restart tutorial</button>
-      </p>
+			<p><button type="submit" name="changepasswd">Change password</button></p>
 
 			<p>
 				<select name="Timezone">

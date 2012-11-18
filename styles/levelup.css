@@ -1,0 +1,16 @@
+/**********************************************
+ * MArcomage CSS stylesheet - levelup section *
+ **********************************************/
+
+div#levelup_dialog > h3 /* tutorial heading */
+{
+	text-align: center;
+	margin-top: 0ex;
+	font-size: large;
+}
+
+div#levelup_dialog > p /* tutorial text */
+{
+	text-align: justify;
+	font-size: large;
+}
