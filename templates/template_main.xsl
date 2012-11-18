@@ -128,9 +128,20 @@
 	<div id="menubar">
 
 	<div id="menu_float_left">
-	<p class="skin_text">
-		<a href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/player_name)}"><xsl:value-of select="$param/player_name"/></a>
-	</p>
+	<div class="skin_text">
+		<a href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/player_name)}"><xsl:value-of select="$param/player_name"/> [<xsl:value-of select="$param/level" />]</a>
+		<a class="achievement_link" href="{php:functionString('makeurl', 'Players_achievements', 'Profile', $param/player_name)}">
+			<img class="icon" height="16px" width="16px" src="img/achievement.png" alt="{$param/player_name}'s achievements" title="{$param/player_name}'s achievements" />
+		</a>
+		<div class="progress_bar">
+			<xsl:attribute name="title">
+				<xsl:value-of select="$param/exp"/>
+				<xsl:text> / </xsl:text>
+				<xsl:value-of select="$param/nextlevel"/>
+				</xsl:attribute>
+			<div><xsl:attribute name="style">width: <xsl:value-of select="round($param/expbar * 100)"/>px</xsl:attribute></div>
+		</div>
+	</div>
 	</div>
 
 	<div id="menu_float_right">

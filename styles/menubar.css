@@ -10,6 +10,11 @@ div#menubar /* upper navigation bar containing section access buttons */
 	padding: 1ex 0ex 1.5ex 0ex;
 }
 
+div#menubar a.button, div#menubar button /* upper navigation bar buttons */
+{
+	font-size: small;
+}
+
 div#menu_float_right /* one part is floated to the right */
 {
 	float: right;
@@ -29,7 +34,7 @@ div#menu_center > a.button + a.button /* set distance between buttons in center 
 div#menu_center > img /* set distance for images that appear in the menubar */
 {
 	margin-right: 1.7ex;
-	vertical-align: middle;
+	margin-top: 0.5ex;
 }
 
 div#menubar + hr /* horizontal line that is separating the menubar from the rest of the content */
@@ -44,15 +49,31 @@ div#menu_float_left /* one part is floated to the left */
 	text-align: left;
 }
 
-div#menu_float_left > p /* set the distance from the left border of the screen for player name */
+div#menu_float_left > div /* set the distance from the left border of the screen for player name */
 {
 	margin-left: 1ex;
-	padding-left: 0.5ex;
-	padding-right: 0.5ex;
+	padding: 0.5ex;
 	font-weight: bold;
 }
 
-div#menu_float_left > p > a /* profile link */
+div#menu_float_left > div > a /* profile link */
 {
 	text-decoration: none;
+}
+
+div#menu_float_left div.progress_bar /* exp progress bar */
+{
+	display: inline-block;
+	margin-left: 0.5ex;
+	margin-bottom: 0.2ex;
+	border: thin solid black;
+	text-align: left;
+	width: 100px;
+	vertical-align: middle;
+}
+
+div#menu_float_left div.progress_bar > div  /* exp progress bar - inner part */
+{
+	height: 2ex;
+	background-color: green;
 }

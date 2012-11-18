@@ -3186,6 +3186,13 @@
 		// inner navbar params
 		$params["navbar"]["player_name"] = $player->Name();
 
+		// fetch player's score data
+		$score = $scoredb->GetScore($player->Name());
+		$params["navbar"]["level"] = $score->ScoreData->Level;
+		$params['navbar']['exp'] = $score->ScoreData->Exp;
+		$params['navbar']['nextlevel'] = $scoredb->NextLevel($score->ScoreData->Level);
+		$params['navbar']['expbar'] = $score->ScoreData->Exp / $scoredb->NextLevel($score->ScoreData->Level);
+
 		// menubar notification (depends on current user's game settings)
 		$forum_not = ($settings->GetSetting('Forum_notification') == 'yes');
 		$concepts_not = ($settings->GetSetting('Concepts_notification') == 'yes');
