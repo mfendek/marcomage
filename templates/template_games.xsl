@@ -481,7 +481,15 @@
 	<xsl:choose>
 		<!-- display supportive information -->
 		<xsl:when test="$param/GameState = 'in progress'">
-			<p class="information_line info">Round <xsl:value-of select="$param/Round"/></p>
+			<p class="information_line info">
+				<xsl:text>Round </xsl:text>
+				<xsl:value-of select="$param/Round"/>
+				<xsl:if test="$param/timeout != ''">
+					<xsl:text> (</xsl:text>
+					<xsl:value-of select="$param/timeout"/>
+					<xsl:text>)</xsl:text>
+				</xsl:if>
+			</p>
 		</xsl:when>
 		<!-- finished -->
 		<xsl:otherwise>

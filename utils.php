@@ -103,6 +103,28 @@
 		else return "";
 	}
 
+	///
+	/// Format time difference into hours, minutes and seconds
+	/// @param int $t_diff time difference in seconds
+	/// @return string formatted difference
+	function format_time_diff($t_diff)
+	{
+		$t_info = array();
+
+		// calculate time components
+		$hours = floor($t_diff / 3600);
+		$t_diff-= $hours * 3600;
+		$minutes = floor($t_diff / 60);
+		$t_diff-= $minutes * 60;
+		$seconds = $t_diff;
+
+		if ($hours > 0) $t_info[] = $hours.'h';
+		if ($minutes > 0) $t_info[] = $minutes.'m';
+		if ($seconds > 0) $t_info[] = $seconds.'s';
+
+		return implode(" ", $t_info);
+	}
+
 	////////////////////////
 	/// XSL Transformations
 

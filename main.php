@@ -1644,7 +1644,7 @@
 			if (isset($_POST['finish_move'])) // Games -> vs. %s -> Finish move
 			{
 				// an option to play turn instead of opponent when opponent refuses to play
-				// applies only to games where opponent didn't take action for more then timout if timout was set for specified game
+				// applies only to games where opponent didn't take action for more then timeout if timeout was set for specified game
 				$gameid = $_POST['CurrentGame'];
 				$game = $gamedb->GetGame($gameid);
 
@@ -3742,21 +3742,7 @@ case 'Games':
 				// case 2: there is still some time left
 				else
 				{
-					$t_diff = $data['Timeout'] - time() + strtotime($data['Last Action']);
-					$t_info = array();
-
-					// calculate time components
-					$hours = floor($t_diff / 3600);
-					$t_diff-= $hours * 3600;
-					$minutes = floor($t_diff / 60);
-					$t_diff-= $minutes * 60;
-					$seconds = $t_diff;
-
-					if ($hours > 0) $t_info[] = $hours.'h';
-					if ($minutes > 0) $t_info[] = $minutes.'m';
-					if ($seconds > 0) $t_info[] = $seconds.'s';
-
-					$timeout = implode(" ", $t_info);
+					$timeout = format_time_diff($data['Timeout'] - time() + strtotime($data['Last Action']));
 				}
 			}
 
@@ -4059,6 +4045,22 @@ case 'Games_details':
 	$params['game']['opp_isDead'] = (($opponent->isDead()) ? 'yes' : 'no');
 	$params['game']['finish_game'] = ((time() - strtotime($game->LastAction) >= 60*60*24*7*3 and $game->Current != $player->Name() and $opponent_name != SYSTEM_NAME) ? 'yes' : 'no');
 	$params['game']['finish_move'] = (($game->Timeout > 0 and time() - strtotime($game->LastAction) >= $game->Timeout and $game->Current != $player->Name() and $opponent_name != SYSTEM_NAME) ? 'yes' : 'no');
+
+	$timeout = '';
+	if ($game->Timeout > 0 and $game->Current == $player->Name() and $opponent != SYSTEM_NAME)
+	{
+		// case 1: time is up
+		if (time() - strtotime($game->LastAction) >= $game->Timeout)
+		{
+			$timeout = 'time is up';
+		}
+		// case 2: there is still some time left
+		else
+		{
+			$timeout = format_time_diff($game->Timeout - time() + strtotime($game->LastAction)).' remaining';
+		}
+	}
+	$params['game']['timeout'] = $timeout;
 
 	// your resources and tower
 	$changes = array ('Quarry'=> '', 'Magic'=> '', 'Dungeons'=> '', 'Bricks'=> '', 'Gems'=> '', 'Recruits'=> '', 'Tower'=> '', 'Wall'=> '');
