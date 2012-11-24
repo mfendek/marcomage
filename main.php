@@ -3221,7 +3221,7 @@
 
 		// fetch player's score data
 		$score = $scoredb->GetScore($player->Name());
-		$params["navbar"]["level"] = $score->ScoreData->Level;
+		$params["navbar"]["level"] = $params["main"]["level"] = $score->ScoreData->Level;
 		$params['navbar']['exp'] = $score->ScoreData->Exp;
 		$params['navbar']['nextlevel'] = $scoredb->NextLevel($score->ScoreData->Level);
 		$params['navbar']['expbar'] = $score->ScoreData->Exp / $scoredb->NextLevel($score->ScoreData->Level);
