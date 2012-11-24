@@ -1498,7 +1498,7 @@
 						$player_level = $score->ScoreData->Level;
 
 						// add experience in case player is still in tutorial
-						if ($player_level < 20)
+						if ($player_level < 10)
 						{
 							$exp = $game->CalculateExp($player->Name());
 							$p_rep = $player->GetSettings()->GetSetting('Reports');
@@ -1597,9 +1597,9 @@
 				$player_level = $score->ScoreData->Level;
 
 				// sabotage standard AI to relax the diffculty
-				if ($game->AI == '' and $action == 'play' and $player_level < 20)
+				if ($game->AI == '' and $action == 'play' and $player_level < 10)
 				{
-					$chance = max(1/2 - $player_level / 38, 0);
+					$chance = max(1/2 - $player_level / 20, 0);
 					$chance = round($chance * 100);
 					$gamble = mt_rand(1, 100);
 
@@ -3718,7 +3718,7 @@ case 'Games':
 
 	// determine if AI challenges should be shown
 	$score = $scoredb->GetScore($player->Name());
-	$params['games']['show_challenges'] = ($score->ScoreData->Level >= 20) ? 'yes' : 'no';
+	$params['games']['show_challenges'] = ($score->ScoreData->Level >= 10) ? 'yes' : 'no';
 
 	$list = $gamedb->ListGamesData($player->Name());
 	if (count($list) > 0)

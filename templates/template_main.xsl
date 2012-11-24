@@ -111,25 +111,15 @@
 	<xsl:if test="$param/new_level_gained &gt; 0">
 		<xsl:variable name="levels">
 			<value id="1"  section="Decks"      desc="You are now able to improve your decks."            />
-			<value id="2"  section="Settings"   desc="You are now able to configure your profile."        />
-			<value id="3"  section="Forum"      desc="You may now join community conversations."          />
-			<value id="4"  section="Cards"      desc="You are now able to access complete card database." />
-			<value id="5"  section="Replays"    desc="You may now re-watch every finished game."          />
-			<value id="6"  section="Novels"     desc="You may now access fantasy novels."                 />
-			<value id="7"  section="Concepts"   desc="You may now publish card concepts."                 />
-			<value id="8"  section="Statistics" desc="You may now access game statistics."                />
+			<value id="2"  section="Forum"      desc="You may now join community conversations."          />
+			<value id="3"  section="Cards"      desc="You are now able to access complete card database." />
+			<value id="4"  section="Replays"    desc="You may now re-watch every finished game."          />
+			<value id="5"  section="Novels"     desc="You may now access fantasy novels."                 />
+			<value id="6"  section="Concepts"   desc="You may now publish card concepts."                 />
+			<value id="7"  section="Statistics" desc="You may now access game statistics."                />
+			<value id="8"  section=""           desc="" />
 			<value id="9"  section=""           desc="" />
 			<value id="10" section=""           desc="" />
-			<value id="11" section=""           desc="" />
-			<value id="12" section=""           desc="" />
-			<value id="13" section=""           desc="" />
-			<value id="14" section=""           desc="" />
-			<value id="15" section=""           desc="" />
-			<value id="16" section=""           desc="" />
-			<value id="17" section=""           desc="" />
-			<value id="18" section=""           desc="" />
-			<value id="19" section=""           desc="" />
-			<value id="20" section=""           desc="" />
 		</xsl:variable>
 
 		<xsl:variable name="levelup_data" select="exsl:node-set($levels)/*[@id = $param/new_level_gained]" />
@@ -214,7 +204,7 @@
 		<value name="Replays"    level="5" />
 		<value name="Novels"     level="6" />
 		<value name="Statistics" level="8" />
-		<value name="Settings"   level="2" />
+		<value name="Settings"   level="0" />
 	</xsl:variable>
 
 	<xsl:for-each select="exsl:node-set($sections)/*">
