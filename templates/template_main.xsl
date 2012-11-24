@@ -194,16 +194,16 @@
 		<!-- section name, level requirement -->
 		<value name="Webpage"    level="0" />
 		<value name="Help"       level="0" />
-		<value name="Forum"      level="3" />
+		<value name="Forum"      level="2" />
 		<value name="Messages"   level="0" />
 		<value name="Players"    level="0" />
 		<value name="Games"      level="0" />
 		<value name="Decks"      level="1" />
-		<value name="Concepts"   level="7" />
-		<value name="Cards"      level="4" />
-		<value name="Replays"    level="5" />
-		<value name="Novels"     level="6" />
-		<value name="Statistics" level="8" />
+		<value name="Concepts"   level="6" />
+		<value name="Cards"      level="3" />
+		<value name="Replays"    level="4" />
+		<value name="Novels"     level="5" />
+		<value name="Statistics" level="7" />
 		<value name="Settings"   level="0" />
 	</xsl:variable>
 
