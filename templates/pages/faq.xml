@@ -38,6 +38,15 @@
 					<li>select <b>Delete</b></li>
 				</ol>
 			</li>
+			<li>Safari
+				<ol>
+					<li>click on the gear icon located in the upper right part of the screen</li>
+					<li>select <b>Show menu bar</b></li>
+					<li>select <b>Edit</b> in the upper left part of the screen</li>
+					<li>select <b>Empty cache</b></li>
+					<li>select <b>Empty</b></li>
+				</ol>
+			</li>
 		</ul>
 	</li>
 	<li>document the bug (describe what you expected it to do and what happened instead, provide a screenshot, describe the situation when it happened, in which location and so on...)</li>
