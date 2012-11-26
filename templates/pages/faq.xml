@@ -100,5 +100,7 @@
   <li>click on the WAMP server icon once again and choose 'localhost'. Click on the 'marcomage', then 'release' and you should now have your own MArcomage server</li>
 </ol>
 
+<p>Windows 8 users may have encounter "403 forbidden error". In this case click on the small WAMP server icon in the right bottom part of the screen, then click on 'Apache' item in the menu list and finally 'httpd.cond'. Find 'listen 80' and change it to 'listen 0.0.0.0:80'. Save and restart WAMP.</p>
+
 </am:content>
 </am:entry>
