@@ -104,7 +104,7 @@ $(document).ready(function() {
 				// select specified card
 				$(this).parent().nextAll("input[name='selected_card']").attr('checked', 'checked');
 				$(this).addClass("selected_card");
-				$(this).effect('highlight');
+				$(this).css('border-color', '#000000');
 
 				if (!$(this).parent().hasClass('unplayable'))
 				{
@@ -124,6 +124,7 @@ $(document).ready(function() {
 			{
 				// unselect selected card
 				$("input[name='selected_card']:checked").removeAttr("checked");
+				$("div.selected_card").css('border-color', '#ffffff');
 				$("div.selected_card").removeClass("selected_card");
 
 				// return action buttons to initial state

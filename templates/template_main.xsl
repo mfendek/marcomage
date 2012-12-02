@@ -68,7 +68,7 @@
 	<xsl:if test="$param/new_level_gained &gt; 0">
 		<script type="text/javascript" src="javascript/levelup.js"></script>
 	</xsl:if>
-	<xsl:if test="$param/level &lt; 5">
+	<xsl:if test="$param/level = 0">
 		<script type="text/javascript" src="javascript/highlight.js"></script>
 	</xsl:if>
 	<xsl:comment><![CDATA[[if lt IE 9]><script type="text/javascript" src="javascript/ie9.js"></script><![endif]]]></xsl:comment>

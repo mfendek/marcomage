@@ -22,7 +22,7 @@ function highlightCards() // highlight playable cards in hand
 		// case 1: highlight playable cards
 		if ($("div#game tr.hand:first-child div.selected_card").length == 0)
 		{
-			$("div#game tr.hand:first-child div[class!='unplayable'] > div.karta").effect('highlight');
+			$("div#game tr.hand:first-child div[class!='unplayable'] > div.karta").animate({ borderColor: "#000000" }, 500, function() {$(this).animate({ borderColor: "#ffffff" }, 500);});
 			window.setTimeout('highlightCards()', 5000);
 		}
 		// case 2: highlight play button
