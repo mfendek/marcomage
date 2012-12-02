@@ -26,6 +26,11 @@ div#menu_float_right > button /* floated section contains refresh button */
 	margin-right: 2ex;
 }
 
+div#menu_center /* menu spacing */
+{
+	margin-top: 0.5ex;
+}
+
 div#menu_center > a.button + a.button /* set distance between buttons in center part of menubar */
 {
 	margin-left: 2ex;
@@ -34,7 +39,6 @@ div#menu_center > a.button + a.button /* set distance between buttons in center 
 div#menu_center > img /* set distance for images that appear in the menubar */
 {
 	margin-right: 1.7ex;
-	margin-top: 0.5ex;
 }
 
 div#menubar + hr /* horizontal line that is separating the menubar from the rest of the content */
