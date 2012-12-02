@@ -10858,7 +10858,7 @@
       <gems>15</gems>
       <recruits>15</recruits>
     </cost>
-    <modes>0</modes>
+    <modes>3</modes>
     <level>0</level>
     <keywords>Destruction</keywords>
     <effect><![CDATA[Mode1:<br />Enemy tower: -20<br />Mode2:<br />Enemy wall: -50<br />Mode3:<br />Enemy stock: -15]]></effect>
