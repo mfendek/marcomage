@@ -81,7 +81,7 @@ CREATE TABLE `games` (
   `Note1` text COLLATE utf8_unicode_ci NOT NULL,
   `Note2` text COLLATE utf8_unicode_ci NOT NULL,
   `GameModes` set('HiddenCards','FriendlyPlay','LongMode','AIMode') COLLATE utf8_unicode_ci NOT NULL,
-  `Timeout` int(5) unsigned NOT NULL DEFAULT '0',
+  `Timeout` mediumint(5) unsigned NOT NULL DEFAULT '0',
   `AI` char(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`GameID`),
   KEY `Player1` (`Player1`),
@@ -238,7 +238,7 @@ CREATE TABLE `settings` (
   `Cards_per_row` int(2) unsigned NOT NULL DEFAULT '10',
   `RandomDeck` tinyint(1) NOT NULL DEFAULT '1',
   `GameLimit` tinyint(1) NOT NULL DEFAULT '0',
-  `Timeout` int(5) unsigned NOT NULL DEFAULT '0',
+  `Timeout` mediumint(5) unsigned NOT NULL DEFAULT '0',
   `FoilCards` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`Username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
