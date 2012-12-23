@@ -5,7 +5,7 @@
 <h2>Frequently Asked Questions</h2>
 <hr />
 
-<h4>Q1: I have noticed some unexpected behaviour from the system, I think I have found a bug. What should I do now?</h4>
+<h4><a id="faq_q1" href="#faq_q1">Q1</a>: I have noticed some unexpected behaviour from the system, I think I have found a bug. What should I do now?</h4>
 <p>A:</p>
 
 <ol>
@@ -53,13 +53,13 @@
 	<li>report the bug on the <a href="?location=Forum_section&amp;CurrentSection=3">Support section</a> of the Forum or send it to either <a href="mailto:illuminati@pobox.sk">Mojko</a> or <a href="mailto:theultramage@gmail.com">theultramage</a>, we will do what we can to solve the problem</li>
 </ol>
 
-<h4>Q2: I can't log in. How do I fix that?</h4>
+<h4><a id="faq_q2" href="#faq_q2">Q2</a>: I can't log in. How do I fix that?</h4>
 <p>A: If you are sure you have used the right login and password, try to delete cookies for our site in your browser. You should find cookie management in options/preferences/advanced options.</p>
-<h4>Q3: My browser doesn't display your site properly. You have errors in your website. Can you fix it?</h4>
+<h4><a id="faq_q3" href="#faq_q3">Q3</a>: My browser doesn't display your site properly. You have errors in your website. Can you fix it?</h4>
 <p>A: We made this website according to <a href="http://www.w3.org/">W3C</a> standards, so the cause is most likely the browser you're using. We know that <a href="http://www.mozilla.com/en-US/firefox/?from=getfirefox">Firefox</a>, <a href="http://www.opera.com/">Opera</a> or <a href="http://www.google.com/chrome/">Chrome</a> have no problems displaying it, perhaps you could try using one. Writing a report might not be a bad idea, too - it would help us make future plans.</p>
-<h4>Q4: When I play a card, its cost should be subtracted from my stock, but it isn't. I ended up with more resources than I should have. Why is that?</h4>
+<h4><a id="faq_q4" href="#faq_q4">Q4</a>: When I play a card, its cost should be subtracted from my stock, but it isn't. I ended up with more resources than I should have. Why is that?</h4>
 <p>A: The card cost is always the same as it is displayed on the card. There is no way these two values would differ. So you probably didn't realize that after the card is played (at the end of your turn), you get resources from your facilities. This is probably the reason why you ended up with more resources than you expected.</p>
-<h4>Q5: What is a turn anyway? How it works?</h4>
+<h4><a id="faq_q5" href="#faq_q5">Q5</a>: What is a turn anyway? How it works?</h4>
 <p>A: Turn is one elementary step in a game you are playing. A turn consits of these steps:</p>
 <ol>
 	<li>Cost of a card is substracted</li>
@@ -69,15 +69,15 @@
 	<li>Resource production</li>
 	<li>End game condition is checked</li>
 </ol>
-<h4>Q6: I played an if-then-else card, fulfilling the condition, but instead the secondary effect took place. Why?</h4>
+<h4><a id="faq_q6" href="#faq_q6">Q6</a>: I played an if-then-else card, fulfilling the condition, but instead the secondary effect took place. Why?</h4>
 <p>A: Remember that this condition is evaluated AFTER the card cost is subtracted from your stock. This may be the reason why the secondary effect was chosen.</p>
-<h4>Q7: I played a "Swift" card and I got an unexpected increase of resources. How does a "Swift" card work?</h4>
+<h4><a id="faq_q7" href="#faq_q7">Q7</a>: I played a "Swift" card and I got an unexpected increase of resources. How does a "Swift" card work?</h4>
 <p>A: Simple - by playing a "Swift" card you get a full extra turn, including resource production.</p>
-<h4>Q8: Is the number of "Swift"/"Quick" cards played in a row limited?</h4>
+<h4><a id="faq_q8" href="#faq_q8">Q8</a>: Is the number of "Swift"/"Quick" cards played in a row limited?</h4>
 <p>A: No. You can make arbitrarily long chains of "Swift"/"Quick" cards.</p>
-<h4>Q9: I used F5 to refresh the game and for some reason a card was played by itself.</h4>
+<h4><a id="faq_q9" href="#faq_q9">Q9</a>: I used F5 to refresh the game and for some reason a card was played by itself.</h4>
 <p>A: Use OUR refresh button (located on the left part of the screen, above your empire info), not the one on the browser. For quick access use shorcut ALT+w.</p>
-<h4>Q10: Some cards have "recently discarded cards" in their effect. What does that mean?</h4>
+<h4><a id="faq_q10" href="#faq_q10">Q10</a>: Some cards have "recently discarded cards" in their effect. What does that mean?</h4>
 <p>A: Recently discarded cards are following cards:</p>
 <ul>
 	<li>Card discarded by you with discard button last turn</li>
@@ -85,7 +85,7 @@
 	<li>Cards that were discarded by opponent last round by some card effect</li>
 </ul>
 
-<h4>Q11: Some cards with modes like Militia, Vampire lord or Ranger for example can target their own position in hand. What will happen if I do that?</h4>
+<h4><a id="faq_q11" href="#faq_q11">Q11</a>: Some cards with modes like Militia, Vampire lord or Ranger for example can target their own position in hand. What will happen if I do that?</h4>
 <p>A: It depends on the card, when card is played, card related actions are executed in this order:</p>
 
 <ol>
@@ -96,7 +96,7 @@
 
 <p>When Militia or Ranger are played with mode that targets their own position, the card effect is overridden by normal drawing, because it happens as the last action. When Vampire lord is played with mode that targets his own position, it is different. Card effect adds a Vampire into the postion of the played card, but <b>Durable</b> keyword makes sure, that next card received by normal drawing will be the Vampire lord, so it will undo the card efect. In most cases it doesn't make much sense to play the mode that targets such position, but there can be situations when you may want to play it this way (for example, when you don't want to discard any of the cards from your hand).</p>
 
-<h4>Q12: I want to install my own MArcomage server on my computer. How do I do that?</h4>
+<h4><a id="faq_q12" href="#faq_q12">Q12</a>: I want to install my own MArcomage server on my computer. How do I do that?</h4>
 <ol>
   <li>download and install <a href="http://subversion.apache.org/">Subversion</a> which will allow you to download MArcomage source code</li>
   <li>download <a href="http://www.wampserver.com/en/">WAMP server</a> (provided you have Windows OS), which will allow you to run local web server</li>
