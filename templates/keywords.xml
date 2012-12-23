@@ -214,19 +214,18 @@
     if ($hisdata->Wall <= 0) $hisdata->Tower-= $charge_damage;
     else
     {
-      $bricks = max(0, $hisdata->Bricks);
-      $gems = max(0, $hisdata->Gems);
-      $recruits = max(0, $hisdata->Recruits);
-      $total = $bricks + $gems + $recruits;
+      for ($i = 1; $i <= $charge_damage; $i++)
+      {
+        $bricks = max(0, $hisdata->Bricks);
+        $gems = max(0, $hisdata->Gems);
+        $recruits = max(0, $hisdata->Recruits);
+        $total = $bricks + $gems + $recruits;
 
-      if ($total > 0)
-        for ($i = 1; $i <= $charge_damage; $i++)
-        {
-          $tmp = mt_rand(1,$total);
-          if ($tmp <= $bricks) $hisdata->Bricks--;
-          elseif ($tmp <= ($bricks + $gems)) $hisdata->Gems--;
-          elseif ($tmp <= ($bricks + $gems + $recruits)) $hisdata->Recruits--;
-        }
+        $tmp = mt_rand(1,$total);
+        if ($tmp <= $bricks and $bricks > 0) $hisdata->Bricks--;
+        elseif ($tmp <= ($bricks + $gems) and $gems > 0) $hisdata->Gems--;
+        elseif ($tmp <= ($bricks + $gems + $recruits) and $recruits > 0) $hisdata->Recruits--;
+      }
     }
 ]]></code>
   </keyword>
@@ -384,11 +383,15 @@
     <name>Frenzy</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>Rage blast - if there is another Frenzy card in hand, opponent receives bonus damage (recruits cost of the played card).</description>
+    <description>Rage blast - if there is another Frenzy card in hand, opponent receives bonus damage (recruits cost of the played card * N/3, N based on played card rarity (Common - 1, Uncommon - 2, Rare - 3)).</description>
     <lore><![CDATA[<p>Good generals are aware of the effect of army's high morale on its combat performance. Frenzy goes one step further. A frenzied creature is partially insane and can be dangerous to use, however when unleashed in the right time and right place it can break the enemy ranks and cause severe damage to the enemy.</p>]]></lore>
     <code><![CDATA[
     if ($this->KeywordCount($mydata->Hand, "Frenzy") > 1)
-      $this->Attack($card->GetResources('Recruits'), $hisdata->Tower, $hisdata->Wall);
+    {
+      $rarities = array('Common' => 1, 'Uncommon' => 2, 'Rare' => 3);
+      $coef = $rarities[$card->Class];
+      $this->Attack(round(($coef * $card->GetResources('Recruits')) / 3), $hisdata->Tower, $hisdata->Wall);
+    }
 ]]></code>
   </keyword>
   <keyword>
@@ -702,11 +705,17 @@
   </keyword>
   <keyword>
     <name>Titan</name>
-    <basic_gain>24</basic_gain>
+    <basic_gain>19</basic_gain>
     <bonus_gain>5</bonus_gain>
-    <description>Titan's will - summons a Titan.</description>
+    <description>Titan's will - summons a Titan not present in hand.</description>
     <lore><![CDATA[<p>One of the titans who didn't get eradicated by the gods was smashed to pieces. Although each piece is alive and can be used as a separate, anyone who is able to find all the pieces and complete them into the greater whole will possess an unstoppable war machine which is feared even by gods.</p>]]></lore>
-    <code><![CDATA[$nextcard = $this->DrawCard($carddb->GetList(array('keyword'=>"Titan")), $mydata->Hand, $cardpos, 'DrawCard_list');]]></code>
+    <code><![CDATA[
+    $titans = array_diff($carddb->GetList(array('keyword'=>"Titan")), $mydata->Hand);
+    if (count($titans) > 0)
+    {
+      $nextcard = $this->DrawCard($titans, $mydata->Hand, $cardpos, 'DrawCard_list');
+    }
+    ]]></code>
   </keyword>
   <keyword>
     <name>Undead</name>
