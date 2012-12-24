@@ -4864,5 +4864,5 @@ default:
 	$transform = (int)(1000*($xslttime_end - $xslttime_start));
 	$total = (int)(1000*($xslttime_end - $querytime_start));
 	echo "<!-- Page generated in {$total} (php:{$logic} + sql:{$query} + xslt:{$transform}) ms. {$db->queries} queries used. -->\n";
-	echo "<!--"; print_r($db->log); echo "-->";
+//	echo "<!--"; print_r($db->log); echo "-->";
 ?>
