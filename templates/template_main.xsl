@@ -198,12 +198,12 @@
 		<value name="Messages"   level="0" />
 		<value name="Players"    level="0" />
 		<value name="Games"      level="0" />
-		<value name="Decks"      level="0" />
-		<value name="Concepts"   level="0" />
-		<value name="Cards"      level="0" />
-		<value name="Replays"    level="0" />
-		<value name="Novels"     level="0" />
-		<value name="Statistics" level="0" />
+		<value name="Decks"      level="1" />
+		<value name="Concepts"   level="5" />
+		<value name="Cards"      level="2" />
+		<value name="Replays"    level="3" />
+		<value name="Novels"     level="4" />
+		<value name="Statistics" level="6" />
 		<value name="Settings"   level="0" />
 	</xsl:variable>
 
