@@ -300,8 +300,8 @@
         <bricks>15</bricks>
         <gems>5</gems>
         <recruits>10</recruits>
-        <tower>90</tower>
-        <wall>100</wall>
+        <tower>50</tower>
+        <wall>60</wall>
       </mine>
       <his>
         <quarry>3</quarry>

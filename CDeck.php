@@ -186,7 +186,7 @@
 			// Duroth's deck
 			$deck_data = new CDeckData;
 			$deck_data->Common = array(1=>250,250,250,250,440,440,645,645,645,645,628,628,628,628,628);
-			$deck_data->Uncommon = array(1=>195,195,195,195,195,195,679,679,679,622,622,622,670,670,131);
+			$deck_data->Uncommon = array(1=>195,195,195,701,701,701,679,679,679,622,622,622,670,670,131);
 			$deck_data->Rare = array(1=>615,637,127,86,167,61,239,126,665,128,506,428,577,6,92);
 			$deck_data->Tokens[1] = "Alliance";
 			$challenge_data['Duroth'] = $deck_data;
