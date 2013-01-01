@@ -5304,16 +5304,16 @@
     <modes>0</modes>
     <level>9</level>
     <keywords/>
-    <effect><![CDATA[Recruits: +15<br />Replace your hand with non-rare Recruits only no support keyword attack cards]]></effect>
+    <effect><![CDATA[Recruits: +12<br />Replace your hand with non-rare Recruits only no support keyword attack cards]]></effect>
     <code><![CDATA[
     $common = $carddb->GetList(array('class'=>"Common", 'cost'=>"Green", 'advanced'=>"Attack:", 'support'=>"No keywords"));
     $uncommon = $carddb->GetList(array('class'=>"Uncommon", 'cost'=>"Green", 'advanced'=>"Attack:", 'support'=>"No keywords"));
     $mydata->Hand = $this->DrawHand_list(array_merge($common, $uncommon));
     $mydata->NewCards = array (1=> 1, 1, 1, 1, 1, 1, 1, 1);
-    $mydata->Recruits+= 15; $nextcard = 0;
+    $mydata->Recruits+= 12; $nextcard = 0;
 ]]></code>
     <created>2006-05-01</created>
-    <modified>2012-04-07</modified>
+    <modified>2013-01-01</modified>
   </card>
   <card id="288">
     <name>Cursed amulet</name>
