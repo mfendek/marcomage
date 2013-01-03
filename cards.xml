@@ -13960,7 +13960,7 @@
     <level>10</level>
     <keywords>Alliance,Nature</keywords>
     <effect><![CDATA[Enemy wall: -3<br />If Enemy wall is divisible by 2<br />Recruits prod x2]]></effect>
-    <code><![CDATA[$hisdata->Wall-= 3; if (($hisdata->Wall % 2) == 0) $recruits_production*= 2;]]></code>
+    <code><![CDATA[$hisdata->Wall-= 3; if ((max(0, $hisdata->Wall) % 2) == 0) $recruits_production*= 2;]]></code>
     <created>2013-01-01</created>
     <modified>2013-01-01</modified>
   </card>
