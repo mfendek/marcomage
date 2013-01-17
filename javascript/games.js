@@ -99,6 +99,7 @@ $(document).ready(function() {
 			{
 				// unselect previously selected card
 				$("input[name='selected_card']:checked").removeAttr("checked");
+				$("div.selected_card").css('border-color', '#ffffff');
 				$("div.selected_card").removeClass("selected_card");
 
 				// select specified card
