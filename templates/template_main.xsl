@@ -4,8 +4,7 @@
                 xmlns:am="http://arcomage.netvor.sk"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exsl="http://exslt.org/common"
-                xmlns:php="http://php.net/xsl"
-                extension-element-prefixes="exsl php">
+                extension-element-prefixes="exsl">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 <!-- includes -->
@@ -168,8 +167,8 @@
 
 	<div id="menu_float_left">
 	<div class="skin_text">
-		<a href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/player_name)}"><xsl:value-of select="$param/player_name"/> [<xsl:value-of select="$param/level" />]</a>
-		<a class="achievement_link" href="{php:functionString('makeurl', 'Players_achievements', 'Profile', $param/player_name)}">
+		<a href="{am:makeurl('Players_details', 'Profile', $param/player_name)}"><xsl:value-of select="$param/player_name"/> [<xsl:value-of select="$param/level" />]</a>
+		<a class="achievement_link" href="{am:makeurl('Players_achievements', 'Profile', $param/player_name)}">
 			<img class="icon" height="16px" width="16px" src="img/achievement.png" alt="{$param/player_name}'s achievements" title="{$param/player_name}'s achievements" />
 		</a>
 		<div class="progress_bar">
@@ -209,7 +208,7 @@
 
 	<xsl:for-each select="exsl:node-set($sections)/*">
 		<xsl:if test="$param/level &gt;= @level">
-			<a class="button" href="{php:functionString('makeurl', @name)}" >
+			<a class="button" href="{am:makeurl(@name)}" >
 				<xsl:if test="$current_section = @name">
 					<xsl:attribute name="class">button pushed</xsl:attribute>
 				</xsl:if>
@@ -305,7 +304,7 @@
 			<value name="Novels"   />
 		</xsl:variable>
 		<xsl:for-each select="exsl:node-set($sections)/*">
-			<a class="button" href="{php:functionString('makeurl', @name)}" >
+			<a class="button" href="{am:makeurl(@name)}" >
 				<xsl:if test="$param/section_name = @name">
 					<xsl:attribute name="class">button pushed</xsl:attribute>
 				</xsl:if>

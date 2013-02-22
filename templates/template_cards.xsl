@@ -4,8 +4,7 @@
                 xmlns:am="http://arcomage.netvor.sk"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:date="http://exslt.org/dates-and-times"
-                xmlns:php="http://php.net/xsl"
-                extension-element-prefixes="date php">
+                extension-element-prefixes="date">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 <!-- includes -->
@@ -140,7 +139,7 @@
 			<xsl:for-each select="$param/CardList/*">
 				<tr>
 					<td align="center"><xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_foils)" /></td>
-					<td><p><a href="{php:functionString('makeurl', 'Cards_details', 'card', id)}"><xsl:value-of select="name"/></a></p></td>
+					<td><p><a href="{am:makeurl('Cards_details', 'card', id)}"><xsl:value-of select="name"/></a></p></td>
 					<td><p><xsl:value-of select="class"/></p></td>
 					<td><p><xsl:value-of select="bricks" />/<xsl:value-of select="gems" />/<xsl:value-of select="recruits" /></p></td>
 					<td><p><xsl:value-of select="level"/></p></td>
@@ -170,13 +169,13 @@
 	<div id="cards_details">
 
 		<div class="skin_text">
-			<a class="button" href="{php:functionString('makeurl', 'Cards')}">Back</a>
+			<a class="button" href="{am:makeurl('Cards')}">Back</a>
 			<xsl:choose>
 				<xsl:when test="$param/discussion = 0 and $param/create_thread = 'yes'">
 					<button type="submit" name="card_thread" value="{$param/data/id}" >Start discussion</button>
 				</xsl:when>
 				<xsl:when test="$param/discussion &gt; 0">
-					<a class="button" href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', $param/discussion, 'CurrentPage', 0)}">View discussion</a>
+					<a class="button" href="{am:makeurl('Forum_thread', 'CurrentThread', $param/discussion, 'CurrentPage', 0)}">View discussion</a>
 				</xsl:when>
 			</xsl:choose>
       <xsl:if test="$param/is_logged_in = 'yes' and $param/foil_version = 'no'">
@@ -223,7 +222,7 @@
 			<xsl:for-each select="$keywords/*">
 				<tr class="table_row">
 					<td><p><img class="insignia" src="img/insignias/{am:file_name(am:name)}.png" width="12px" height="12px" alt="{am:name}" title="{am:name}" /></p></td>
-					<td><p><a href="{php:functionString('makeurl', 'Cards_keyword_details', 'keyword', am:name)}"><xsl:value-of select="am:name"/></a></p></td>
+					<td><p><a href="{am:makeurl('Cards_keyword_details', 'keyword', am:name)}"><xsl:value-of select="am:name"/></a></p></td>
 					<td>
             <p class="description">
               <xsl:if test="am:basic_gain &gt; 0 or am:bonus_gain &gt; 0">
@@ -252,7 +251,7 @@
 
 	<xsl:when test="$keyword">
 		<div id="keyword_details">
-			<h3><a href="{php:functionString('makeurl', 'Cards_keywords')}">Keywords</a> &gt; <xsl:value-of select="$keyword/am:name"/></h3>
+			<h3><a href="{am:makeurl('Cards_keywords')}">Keywords</a> &gt; <xsl:value-of select="$keyword/am:name"/></h3>
 			<div class="skin_text">
 				<h4>Effect</h4>
 				<p class="description">

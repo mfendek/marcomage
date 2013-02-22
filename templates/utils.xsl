@@ -22,6 +22,20 @@
 </func:function>
 
 
+<func:function name="am:makeurl">
+	<xsl:param name="location"/>
+	<xsl:param name="key1" select="''"/>
+	<xsl:param name="val1" select="''"/>
+	<xsl:param name="key2" select="''"/>
+	<xsl:param name="val2" select="''"/>
+	<xsl:param name="key3" select="''"/>
+	<xsl:param name="val3" select="''"/>
+	<xsl:param name="key4" select="''"/>
+	<xsl:param name="val4" select="''"/>
+	<func:result select="php:functionString('makeurl', $location, $key1, $val1, $key2, $val2, $key3, $val3, $key4, $val4)"/>
+</func:function>
+
+
 <func:function name="am:textencode">
 	<xsl:param name="text" as="xs:string" />
 

@@ -4,8 +4,7 @@
                 xmlns:am="http://arcomage.netvor.sk"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exsl="http://exslt.org/common"
-                xmlns:php="http://php.net/xsl"
-                extension-element-prefixes="exsl php">
+                extension-element-prefixes="exsl">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 <!-- includes -->
@@ -86,7 +85,7 @@
 					<xsl:for-each select="top/*">
 						<li>
 							<span><xsl:value-of select="factor"/></span>
-							<a href="{php:functionString('makeurl', 'Cards_details', 'card', id)}"><xsl:value-of select="name"/></a>
+							<a href="{am:makeurl('Cards_details', 'card', id)}"><xsl:value-of select="name"/></a>
 						</li>
 					</xsl:for-each>
 					</ol>
@@ -96,7 +95,7 @@
 						<xsl:for-each select="bottom/*">
 							<li>
 								<span><xsl:value-of select="factor"/></span>
-								<a href="{php:functionString('makeurl', 'Cards_details', 'card', id)}"><xsl:value-of select="name"/></a>
+								<a href="{am:makeurl('Cards_details', 'card', id)}"><xsl:value-of select="name"/></a>
 							</li>
 						</xsl:for-each>
 						</ol>
@@ -154,7 +153,7 @@
 				<xsl:for-each select="$param/suggested/*">
 					<li>
 						<span><xsl:value-of select="count"/></span>
-						<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', Author)}"><xsl:value-of select="Author"/></a>
+						<a class="profile" href="{am:makeurl('Players_details', 'Profile', Author)}"><xsl:value-of select="Author"/></a>
 					</li>
 				</xsl:for-each>
 				</ol>
@@ -164,7 +163,7 @@
 				<xsl:for-each select="$param/implemented/*">
 					<li>
 						<span><xsl:value-of select="count"/></span>
-						<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', Author)}"><xsl:value-of select="Author"/></a>
+						<a class="profile" href="{am:makeurl('Players_details', 'Profile', Author)}"><xsl:value-of select="Author"/></a>
 					</li>
 				</xsl:for-each>
 				</ol>

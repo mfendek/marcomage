@@ -4,8 +4,7 @@
                 xmlns:am="http://arcomage.netvor.sk"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exsl="http://exslt.org/common"
-                xmlns:php="http://php.net/xsl"
-                extension-element-prefixes="exsl php">
+                extension-element-prefixes="exsl">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 <!-- includes -->
@@ -27,7 +26,7 @@
 
 		<ul>
 		<xsl:for-each select="exsl:node-set($game_manual)/*">
-			<li><a href="{php:functionString('makeurl', 'Help', 'help_part', @name)}"><xsl:value-of select="@name"/></a></li>
+			<li><a href="{am:makeurl('Help', 'help_part', @name)}"><xsl:value-of select="@name"/></a></li>
 		</xsl:for-each>
 		</ul>
 

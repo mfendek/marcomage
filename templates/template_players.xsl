@@ -4,8 +4,7 @@
                 xmlns:am="http://arcomage.netvor.sk"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exsl="http://exslt.org/common"
-                xmlns:php="http://php.net/xsl"
-                extension-element-prefixes="exsl php">
+                extension-element-prefixes="exsl">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 <!-- includes -->
@@ -121,7 +120,7 @@
 				<tr class="table_row" align="center">
 				
 					<xsl:if test="$param/show_avatars = 'yes'">
-						<td><a href="{php:functionString('makeurl', 'Players_details', 'Profile', name)}"><img class="avatar" height="60px" width="60px" src="img/avatars/{avatar}" alt="avatar" /></a></td>
+						<td><a href="{am:makeurl('Players_details', 'Profile', name)}"><img class="avatar" height="60px" width="60px" src="img/avatars/{avatar}" alt="avatar" /></a></td>
 					</xsl:if>
 					
 					<xsl:if test="$param/show_nationality = 'yes'">
@@ -140,7 +139,7 @@
 					</xsl:variable>
 					<td>
 						<p class="{$player_class}">
-							<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', name)}"><xsl:value-of select="name"/></a>
+							<a class="profile" href="{am:makeurl('Players_details', 'Profile', name)}"><xsl:value-of select="name"/></a>
 							<xsl:if test="rank != 'user'"> <!-- player rank -->
 								<img class="icon" width="9px" height="12px" src="img/{rank}.png" alt="rank flag" title="{rank}" />
 							</xsl:if>
@@ -169,7 +168,7 @@
 					</td>
 					
 					<td style="text-align: left;">
-						<a class="achievement_link" href="{php:functionString('makeurl', 'Players_achievements', 'Profile', name)}">
+						<a class="achievement_link" href="{am:makeurl('Players_achievements', 'Profile', name)}">
 							<img class="icon" height="16px" width="16px" src="img/achievement.png" alt="{name}'s achievements" title="{name}'s achievements" />
 						</a>
 						<xsl:if test="$param/messages = 'yes'">
@@ -262,7 +261,7 @@
 		</xsl:if>
 
 		<p>
-			<a class="achievement_link" href="{php:functionString('makeurl', 'Players_achievements', 'Profile', $param/PlayerName)}">
+			<a class="achievement_link" href="{am:makeurl('Players_achievements', 'Profile', $param/PlayerName)}">
 				<img height="29px" width="29px" src="img/achievement_large.png" alt="{$param/PlayerName}'s achievements" title="{$param/PlayerName}'s achievements" />
 			</a>
 		</p>
@@ -519,7 +518,7 @@
 	<xsl:variable name="opponent" select="$param/PlayerName" />
 
 	<div id="achievements">
-		<h3><a href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/PlayerName)}"><xsl:value-of select="$param/PlayerName"/></a>'s achievements</h3>
+		<h3><a href="{am:makeurl('Players_details', 'Profile', $param/PlayerName)}"><xsl:value-of select="$param/PlayerName"/></a>'s achievements</h3>
 
 		<table class="centered skin_label" cellpadding="0" cellspacing="0" >
 

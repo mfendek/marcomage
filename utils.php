@@ -11,36 +11,43 @@
 	function htmldecode($string) { return htmlspecialchars_decode($string, ENT_COMPAT); }
 	function postencode($string) { return rawurlencode($string); }
 	function postdecode($string) { return rawurldecode($string); }
-
-	///
-	/// Creates a query part of URL from parameter names, values and fragment, which is used to generate internal hyperlinks.
-	/// Parameter names and values are sanitized, fragment is not.
-	/// First parameter (location) is mandatory and only value is provided.
-	/// Optional parameters are always provided as pairs of parameter name and value (there can be arbitrary number of such pairs).
-	/// Fragment is optional and expected to be in form '#fragment_name', which should be urlencoded (shoudn't contain any url-special characters).
-	/// @param string $location current location value
-	/// @return string query part of URL
+	
+	/// Construct the query part of an URL from the given parameters.
+	/// Includes username/sessionid information if cookies are disabled.
+	/// @param string location current section name (required)
+	/// @param string key[i] GET parameter name (optional)
+	/// @param string val[i] GET parameter value (optional)
+	/// @return string
 	function makeurl($location)
 	{
 		global $session;
-
-		$params = '?location='.urlencode($location); // get location (only mandatory parameter)
-		$args = array_slice(func_get_args(), 1); // get other optional parameters
-
-		$fragment = (count($args) % 2 == 1) ? array_pop($args) : ''; // extract fragment, if present
-
-		if ($session AND !$session->hasCookies()) // add session data, if necessary
+		
+		// get optional parameters
+		$args = array_slice(func_get_args(), 1);
+		
+		// add session data, if necessary
+		if ($session AND !$session->hasCookies())
 		{
 			$args[] = 'Username';
 			$args[] = $session->Username();
 			$args[] = 'SessionID';
 			$args[] = $session->SessionID();
 		}
+		
+		// write location
+		$params = '?location='.urlencode($location);
+		
+		// write optional key/value pairs
+		for( $i = 0; $i < count($args); $i += 2 )
+		{
+			$key = $args[$i];
+			$val = $args[$i+1];
+			if( $key === '' && $val === '' )
+				continue; // skip blank fields
+			$params .= '&'.urlencode($key).'='.urlencode($val);
+		}
 
-		// create url from optional parameters (sanitize parameters)
-		foreach ($args as $pos => $param) $params.= (($pos % 2 == 0) ? '&' : '=').urlencode($param);
-
-		return $params.$fragment;
+		return $params;
 	}
 
 	///

@@ -4,8 +4,7 @@
                 xmlns:am="http://arcomage.netvor.sk"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exsl="http://exslt.org/common"
-                xmlns:php="http://php.net/xsl"
-                extension-element-prefixes="exsl php">
+                extension-element-prefixes="exsl">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 <!-- includes -->
@@ -37,7 +36,7 @@
 			<value name="outgoing" value="Outgoing" />
 		</xsl:variable>
 		<xsl:for-each select="exsl:node-set($challenge_sections)/*">
-			<a class="button" href="{php:functionString('makeurl', 'Messages', 'challengebox', @name, 'CurrentLocation', $param/current_location)}">
+			<a class="button" href="{am:makeurl('Messages', 'challengebox', @name, 'CurrentLocation', $param/current_location)}">
 				<xsl:if test="$param/current_subsection = @name">
 					<xsl:attribute name="class">button pushed</xsl:attribute>
 				</xsl:if>
@@ -73,7 +72,7 @@
 										<xsl:if test="Online = 'yes'">
 											<xsl:attribute name="class">p_online</xsl:attribute>
 										</xsl:if>
-										<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', Author)}"><xsl:value-of select="Author"/></a>
+										<a class="profile" href="{am:makeurl('Players_details', 'Profile', Author)}"><xsl:value-of select="Author"/></a>
 									</span>
 									<xsl:text> has challenged you on </xsl:text>
 									<span><xsl:value-of select="am:datetime(Created, $param/timezone)"/></span>
@@ -95,7 +94,7 @@
 										<xsl:if test="Online = 'yes'">
 											<xsl:attribute name="class">p_online</xsl:attribute>
 										</xsl:if>
-										<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', Recipient)}"><xsl:value-of select="Recipient"/></a>
+										<a class="profile" href="{am:makeurl('Players_details', 'Profile', Recipient)}"><xsl:value-of select="Recipient"/></a>
 									</span>
 									<xsl:text> on </xsl:text>
 									<span><xsl:value-of select="am:datetime(Created, $param/timezone)"/></span>
@@ -135,7 +134,7 @@
 		</xsl:variable>
 		<xsl:for-each select="exsl:node-set($message_sections)/*">
 			<xsl:if test="@name != 'all_mail' or $param/see_all_messages = 'yes'" >
-				<a class="button" href="{php:functionString('makeurl', 'Messages', 'challengebox', $param/current_subsection, 'CurrentLocation', @name)}">
+				<a class="button" href="{am:makeurl('Messages', 'challengebox', $param/current_subsection, 'CurrentLocation', @name)}">
 					<xsl:if test="$param/current_location = @name">
 						<xsl:attribute name="class">button pushed</xsl:attribute>
 					</xsl:if>

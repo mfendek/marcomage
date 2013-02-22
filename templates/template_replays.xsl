@@ -4,9 +4,8 @@
                 xmlns:am="http://arcomage.netvor.sk"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exsl="http://exslt.org/common"
-                xmlns:php="http://php.net/xsl"
                 xmlns:str="http://exslt.org/strings"
-                extension-element-prefixes="exsl php str">
+                extension-element-prefixes="exsl str">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 <!-- includes -->
@@ -158,7 +157,7 @@
 						<td><p><xsl:value-of select="Views"/></p></td>
 						<td>
 							<xsl:if test="Deleted = 'no'">
-								<p><a class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', GameID, 'PlayerView', 1, 'Turn', 1)}">&gt;</a></p>
+								<p><a class="button" href="{am:makeurl('Replays_details', 'CurrentReplay', GameID, 'PlayerView', 1, 'Turn', 1)}">&gt;</a></p>
 							</xsl:if>
 						</td>
 					</tr>
@@ -197,7 +196,7 @@
 		<!-- previous -->
 		<xsl:choose>
 			<xsl:when test="$current &gt; 1">
-				<a class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', am:max($current - 1, 1))}">&lt;</a>
+				<a class="button" href="{am:makeurl('Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', am:max($current - 1, 1))}">&lt;</a>
 			</xsl:when>
 			<xsl:otherwise>
 				<span class="disabled">&lt;</span>
@@ -207,7 +206,7 @@
 		<!-- first -->
 		<xsl:choose>
 			<xsl:when test="$current &gt; 1">
-				<a class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', 1)}">First</a>
+				<a class="button" href="{am:makeurl('Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', 1)}">First</a>
 			</xsl:when>
 			<xsl:otherwise>
 				<span class="disabled">First</span>
@@ -218,7 +217,7 @@
 		<xsl:for-each select="str:split(am:numbers(am:max($current - 5, 1), am:min($current + 5, $turns)), ',')">
 			<xsl:choose>
 				<xsl:when test="$current != .">
-					<a class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', text())}"><xsl:value-of select="text()"/></a>
+					<a class="button" href="{am:makeurl('Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', text())}"><xsl:value-of select="text()"/></a>
 				</xsl:when>
 				<xsl:otherwise>
 					<span class="disabled"><xsl:value-of select="text()"/></span>
@@ -229,7 +228,7 @@
 		<!-- last -->
 		<xsl:choose>
 			<xsl:when test="$current &lt; $turns">
-				<a class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', $turns)}">Last</a>
+				<a class="button" href="{am:makeurl('Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', $turns)}">Last</a>
 			</xsl:when>
 			<xsl:otherwise>
 				<span class="disabled">Last</span>
@@ -239,7 +238,7 @@
 		<!-- next -->
 		<xsl:choose>
 			<xsl:when test="$current &lt; $turns">
-				<a id="next" class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', am:min($current + 1, $turns))}">&gt;</a>
+				<a id="next" class="button" href="{am:makeurl('Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $param/PlayerView, 'Turn', am:min($current + 1, $turns))}">&gt;</a>
 			</xsl:when>
 			<xsl:otherwise>
 				<span class="disabled">&gt;</span>
@@ -253,7 +252,7 @@
 				<xsl:otherwise>1</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<a class="button" href="{php:functionString('makeurl', 'Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $view, 'Turn', $current)}">Switch players</a>
+		<a class="button" href="{am:makeurl('Replays_details', 'CurrentReplay', $param/CurrentReplay, 'PlayerView', $view, 'Turn', $current)}">Switch players</a>
 
 		<!-- discussion -->
 		<xsl:choose>
@@ -261,7 +260,7 @@
 				<button type="submit" name="replay_thread" value="{$param/CurrentReplay}" >Start discussion</button>
 			</xsl:when>
 			<xsl:when test="$param/ThreadID &gt; 0">
-				<a class="button" href="{php:functionString('makeurl', 'Forum_thread', 'CurrentThread', $param/ThreadID, 'CurrentPage', 0)}">View discussion</a>
+				<a class="button" href="{am:makeurl('Forum_thread', 'CurrentThread', $param/ThreadID, 'CurrentPage', 0)}">View discussion</a>
 			</xsl:when>
 		</xsl:choose>
 
@@ -405,7 +404,7 @@
 				</p>
 			</div>
 			<h5>
-				<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player1)}"><xsl:value-of select="$param/Player1"/></a>
+				<a class="profile" href="{am:makeurl('Players_details', 'Profile', $param/Player1)}"><xsl:value-of select="$param/Player1"/></a>
 			</h5>
 			<p class="info_label">
 				<xsl:attribute name="title">Tower: <xsl:value-of select="$param/p1Tower"/> / <xsl:value-of select="$param/max_tower"/>  (Castle total: <xsl:value-of select="$param/p1Tower + $param/p1Wall"/> / <xsl:value-of select="$param/max_tower + $param/max_wall"/>)</xsl:attribute>
@@ -665,7 +664,7 @@
 				</p>
 			</div>
 			<h5>
-				<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player2)}"><xsl:value-of select="$param/Player2"/></a>
+				<a class="profile" href="{am:makeurl('Players_details', 'Profile', $param/Player2)}"><xsl:value-of select="$param/Player2"/></a>
 			</h5>
 			<p class="info_label">
 				<xsl:attribute name="title">Tower: <xsl:value-of select="$param/p2Tower"/> / <xsl:value-of select="$param/max_tower"/>  (Castle total: <xsl:value-of select="$param/p2Tower + $param/p2Wall"/> / <xsl:value-of select="$param/max_tower + $param/max_wall"/>)</xsl:attribute>
@@ -804,7 +803,7 @@
 		<!-- previous -->
 		<xsl:choose>
 			<xsl:when test="$current &gt; 1">
-				<a class="button" href="{php:functionString('makeurl', 'Replays_history', 'CurrentReplay', $param/CurrentReplay, 'Turn', am:max($current - 1, 1))}">&lt;</a>
+				<a class="button" href="{am:makeurl('Replays_history', 'CurrentReplay', $param/CurrentReplay, 'Turn', am:max($current - 1, 1))}">&lt;</a>
 			</xsl:when>
 			<xsl:otherwise>
 				<span class="disabled">&lt;</span>
@@ -814,7 +813,7 @@
 		<!-- first -->
 		<xsl:choose>
 			<xsl:when test="$current &gt; 1">
-				<a class="button" href="{php:functionString('makeurl', 'Replays_history', 'CurrentReplay', $param/CurrentReplay, 'Turn', 1)}">First</a>
+				<a class="button" href="{am:makeurl('Replays_history', 'CurrentReplay', $param/CurrentReplay, 'Turn', 1)}">First</a>
 			</xsl:when>
 			<xsl:otherwise>
 				<span class="disabled">First</span>
@@ -825,7 +824,7 @@
 		<xsl:for-each select="str:split(am:numbers(am:max($current - 5, 1), am:min($current + 5, $turns)), ',')">
 			<xsl:choose>
 				<xsl:when test="$current != .">
-					<a class="button" href="{php:functionString('makeurl', 'Replays_history', 'CurrentReplay', $param/CurrentReplay, 'Turn', text())}"><xsl:value-of select="text()"/></a>
+					<a class="button" href="{am:makeurl('Replays_history', 'CurrentReplay', $param/CurrentReplay, 'Turn', text())}"><xsl:value-of select="text()"/></a>
 				</xsl:when>
 				<xsl:otherwise>
 					<span class="disabled"><xsl:value-of select="text()"/></span>
@@ -836,7 +835,7 @@
 		<!-- last -->
 		<xsl:choose>
 			<xsl:when test="$current &lt; $turns">
-				<a class="button" href="{php:functionString('makeurl', 'Replays_history', 'CurrentReplay', $param/CurrentReplay, 'Turn', $turns)}">Last</a>
+				<a class="button" href="{am:makeurl('Replays_history', 'CurrentReplay', $param/CurrentReplay, 'Turn', $turns)}">Last</a>
 			</xsl:when>
 			<xsl:otherwise>
 				<span class="disabled">Last</span>
@@ -846,14 +845,14 @@
 		<!-- next -->
 		<xsl:choose>
 			<xsl:when test="$current &lt; $turns">
-				<a class="button" href="{php:functionString('makeurl', 'Replays_history', 'CurrentReplay', $param/CurrentReplay, 'Turn', am:min($current + 1, $turns))}">&gt;</a>
+				<a class="button" href="{am:makeurl('Replays_history', 'CurrentReplay', $param/CurrentReplay, 'Turn', am:min($current + 1, $turns))}">&gt;</a>
 			</xsl:when>
 			<xsl:otherwise>
 				<span class="disabled">&gt;</span>
 			</xsl:otherwise>
 		</xsl:choose>
 
-		<a class="button" href="{php:functionString('makeurl', 'Games_details', 'CurrentGame', $param/CurrentReplay)}">Back to game</a>
+		<a class="button" href="{am:makeurl('Games_details', 'CurrentGame', $param/CurrentReplay)}">Back to game</a>
 		<!-- end navigation -->
 	</p>
 
@@ -979,7 +978,7 @@
 				</p>
 			</div>
 			<h5>
-				<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player1)}"><xsl:value-of select="$param/Player1"/></a>
+				<a class="profile" href="{am:makeurl('Players_details', 'Profile', $param/Player1)}"><xsl:value-of select="$param/Player1"/></a>
 			</h5>
 			<p class="info_label">
 				<xsl:attribute name="title">Tower: <xsl:value-of select="$param/p1Tower"/> / <xsl:value-of select="$param/max_tower"/>  (Castle total: <xsl:value-of select="$param/p1Tower + $param/p1Wall"/> / <xsl:value-of select="$param/max_tower + $param/max_wall"/>)</xsl:attribute>
@@ -1239,7 +1238,7 @@
 				</p>
 			</div>
 			<h5>
-				<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/Player2)}">
+				<a class="profile" href="{am:makeurl('Players_details', 'Profile', $param/Player2)}">
 					<!-- rename opponent to actual AI name in case of AI challenge -->
 					<xsl:choose>
 						<xsl:when test="$param/AI != ''"><xsl:value-of select="$param/AI"/></xsl:when>

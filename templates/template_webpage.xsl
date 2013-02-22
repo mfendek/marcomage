@@ -4,8 +4,7 @@
                 xmlns:am="http://arcomage.netvor.sk"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exsl="http://exslt.org/common"
-                xmlns:php="http://php.net/xsl"
-                extension-element-prefixes="exsl php">
+                extension-element-prefixes="exsl">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 <xsl:strip-space elements="*" />
 
@@ -32,7 +31,7 @@
 
 	<xsl:for-each select="exsl:node-set($websections)/*">
 		<p>
-			<a class="button" href="{php:functionString('makeurl', 'Webpage', 'WebSection', @name)}">
+			<a class="button" href="{am:makeurl('Webpage', 'WebSection', @name)}">
 				<xsl:if test="$param/selected = @name">
 					<xsl:attribute name="class">button pushed</xsl:attribute>
 				</xsl:if>

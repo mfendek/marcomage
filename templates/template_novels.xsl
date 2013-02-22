@@ -4,8 +4,7 @@
                 xmlns:am="http://arcomage.netvor.sk"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exsl="http://exslt.org/common"
-                xmlns:php="http://php.net/xsl"
-                extension-element-prefixes="exsl php">
+                extension-element-prefixes="exsl">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 <!-- includes -->
@@ -35,7 +34,7 @@
 			<xsl:choose>
 			<!-- display expanded novel -->
 			<xsl:when test="$param/novel = @name">
-				<a class="button pushed" href="{php:functionString('makeurl', 'Novels')}">-</a>
+				<a class="button pushed" href="{am:makeurl('Novels')}">-</a>
 				<xsl:text>Book </xsl:text><xsl:value-of select="position()"/><xsl:text>: </xsl:text>
 				<xsl:value-of select="@name"/>
 				<ul>
@@ -44,13 +43,13 @@
 							<xsl:choose>
 							<!-- display expanded chapter -->
 							<xsl:when test="$param/chapter = @name">
-								<a class="button pushed" href="{php:functionString('makeurl', 'Novels', 'novel', $param/novel)}">-</a>
+								<a class="button pushed" href="{am:makeurl('Novels', 'novel', $param/novel)}">-</a>
 								<xsl:text>Chapter </xsl:text><xsl:value-of select="position()"/><xsl:text>: </xsl:text>
 								<xsl:value-of select="@name"/>
 								<ul>
 									<xsl:for-each select="exsl:node-set($parts)/*">
 										<li>
-											<a class="button" href="{php:functionString('makeurl', 'Novels', 'novel', $param/novel, 'chapter', $param/chapter, 'part', @name, 'page', 1)}">
+											<a class="button" href="{am:makeurl('Novels', 'novel', $param/novel, 'chapter', $param/chapter, 'part', @name, 'page', 1)}">
 												<xsl:if test="$param/part = @name"><xsl:attribute name="class">button pushed</xsl:attribute></xsl:if>
 												<xsl:text>></xsl:text>
 											</a>
@@ -61,7 +60,7 @@
 							</xsl:when>
 							<!-- display collapsed chapter -->
 							<xsl:otherwise>
-								<a class="button" href="{php:functionString('makeurl', 'Novels', 'novel', $param/novel, 'chapter', @name)}">+</a>
+								<a class="button" href="{am:makeurl('Novels', 'novel', $param/novel, 'chapter', @name)}">+</a>
 								<xsl:text>Chapter </xsl:text><xsl:value-of select="position()"/><xsl:text>: </xsl:text>
 								<xsl:value-of select="@name"/>
 							</xsl:otherwise>
@@ -72,7 +71,7 @@
 			</xsl:when>
 			<!-- display collapsed novel -->
 			<xsl:otherwise>
-				<a class="button" href="{php:functionString('makeurl', 'Novels', 'novel', @name)}">+</a>
+				<a class="button" href="{am:makeurl('Novels', 'novel', @name)}">+</a>
 				<xsl:text>Book </xsl:text><xsl:value-of select="position()"/><xsl:text>: </xsl:text>
 				<xsl:value-of select="@name"/>
 			</xsl:otherwise>
@@ -95,7 +94,7 @@
 			<div class="previous">
 			<xsl:choose>
 				<xsl:when test="$page &gt; 1">
-					<a class="button" href="{php:functionString('makeurl', 'Novels', 'novel', $param/novel, 'chapter', $param/chapter, 'part', $param/part, 'page', am:max($page - 1, 1))}">Previous</a>
+					<a class="button" href="{am:makeurl('Novels', 'novel', $param/novel, 'chapter', $param/chapter, 'part', $param/part, 'page', am:max($page - 1, 1))}">Previous</a>
 				</xsl:when>
 				<xsl:otherwise>
 					<span class="disabled">Previous</span>
@@ -106,7 +105,7 @@
 			<div class="next">
 			<xsl:choose>
 				<xsl:when test="$page &lt; $pages">
-					<a class="button" href="{php:functionString('makeurl', 'Novels', 'novel', $param/novel, 'chapter', $param/chapter, 'part', $param/part, 'page', am:min($page + 1, $pages))}">Next</a>
+					<a class="button" href="{am:makeurl('Novels', 'novel', $param/novel, 'chapter', $param/chapter, 'part', $param/part, 'page', am:min($page + 1, $pages))}">Next</a>
 				</xsl:when>
 				<xsl:otherwise>
 					<span class="disabled">Next</span>
@@ -129,7 +128,7 @@
 		<!-- lower navigation -->
 		<div class="navigation">
 			<xsl:copy-of select="$nav_bar"/>
-			<a class="button" href="{php:functionString('makeurl', 'Novels', 'novel', $param/novel, 'chapter', $param/chapter, 'part', $param/part, 'page', $page)}">Back to top</a>
+			<a class="button" href="{am:makeurl('Novels', 'novel', $param/novel, 'chapter', $param/chapter, 'part', $param/part, 'page', $page)}">Back to top</a>
 		</div>
 
 		</xsl:when>

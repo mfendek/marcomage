@@ -4,9 +4,8 @@
                 xmlns:am="http://arcomage.netvor.sk"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exsl="http://exslt.org/common"
-                xmlns:php="http://php.net/xsl"
                 xmlns:str="http://exslt.org/strings"
-                extension-element-prefixes="exsl php str">
+                extension-element-prefixes="exsl str">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 
 <!-- includes -->
@@ -62,7 +61,7 @@
 								<xsl:if test="active = 'yes'">
 									<xsl:attribute name="class">p_online</xsl:attribute>
 								</xsl:if>
-								<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', opponent)}">
+								<a class="profile" href="{am:makeurl('Players_details', 'Profile', opponent)}">
 									<!-- rename opponent to actual AI name in case of AI challenge -->
 									<xsl:choose>
 										<xsl:when test="ai != ''"><xsl:value-of select="ai"/></xsl:when>
@@ -120,7 +119,7 @@
 						</td>
 						<td>
 							<p>
-								<a class="button" href="{php:functionString('makeurl', 'Games_details', 'CurrentGame', gameid)}">
+								<a class="button" href="{am:makeurl('Games_details', 'CurrentGame', gameid)}">
 									<xsl:if test="ready = 'yes'">
 										<xsl:attribute name="class">button marked_button</xsl:attribute>
 									</xsl:if>
@@ -153,21 +152,21 @@
 
 	<!-- subsection navigation -->
 	<p>
-		<a class="button" href="{php:functionString('makeurl', 'Games', 'subsection', 'free_games')}">
+		<a class="button" href="{am:makeurl('Games', 'subsection', 'free_games')}">
 			<xsl:if test="$param/current_subsection = 'free_games'">
 				<xsl:attribute name="class">button pushed</xsl:attribute>
 			</xsl:if>
 			<xsl:text>Available games</xsl:text>
 		</a>
 
-		<a class="button" href="{php:functionString('makeurl', 'Games', 'subsection', 'hosted_games')}">
+		<a class="button" href="{am:makeurl('Games', 'subsection', 'hosted_games')}">
 			<xsl:if test="$param/current_subsection = 'hosted_games'">
 				<xsl:attribute name="class">button pushed</xsl:attribute>
 			</xsl:if>
 			<xsl:text>My games</xsl:text>
 		</a>
 
-		<a class="button" href="{php:functionString('makeurl', 'Games', 'subsection', 'ai_games')}">
+		<a class="button" href="{am:makeurl('Games', 'subsection', 'ai_games')}">
 			<xsl:if test="$param/current_subsection = 'ai_games'">
 				<xsl:attribute name="class">button pushed</xsl:attribute>
 			</xsl:if>
@@ -245,7 +244,7 @@
 									<xsl:if test="active = 'yes'">
 										<xsl:attribute name="class">p_online</xsl:attribute>
 									</xsl:if>
-									<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', opponent)}"><xsl:value-of select="opponent"/></a>
+									<a class="profile" href="{am:makeurl('Players_details', 'Profile', opponent)}"><xsl:value-of select="opponent"/></a>
 								</p>
 							</td>
 							<td><p><xsl:value-of select="am:datetime(gameaction, $param/timezone)"/></p></td>
@@ -592,12 +591,12 @@
 				</button>
 			</xsl:if>
 			<xsl:if test="$param/GameState = 'in progress'">
-				<a class="button" href="{php:functionString('makeurl', 'Replays_history', 'CurrentReplay', $param/CurrentGame)}">History</a>
+				<a class="button" href="{am:makeurl('Replays_history', 'CurrentReplay', $param/CurrentGame)}">History</a>
 			</xsl:if>
 		</td>
 		<td>
 			<!-- 'refresh' button -->
-			<a class="button" id="game_refresh" href="{php:functionString('makeurl', 'Games_details', 'CurrentGame', $param/CurrentGame)}" accesskey="w" >Refresh</a>
+			<a class="button" id="game_refresh" href="{am:makeurl('Games_details', 'CurrentGame', $param/CurrentGame)}" accesskey="w" >Refresh</a>
 			<xsl:if test="$param/nextgame_button = 'yes'">
 				<button type="submit" name="active_game">Next</button>
 			</xsl:if> 
@@ -628,8 +627,8 @@
 			</xsl:if>
 		</td>
 		<td>
-			<a class="button" href="{php:functionString('makeurl', 'Decks_view', 'CurrentGame', $param/CurrentGame)}">Deck</a>
-			<a class="button" id="game_note" href="{php:functionString('makeurl', 'Games_note', 'CurrentGame', $param/CurrentGame)}" >
+			<a class="button" href="{am:makeurl('Decks_view', 'CurrentGame', $param/CurrentGame)}">Deck</a>
+			<a class="button" id="game_note" href="{am:makeurl('Games_note', 'CurrentGame', $param/CurrentGame)}" >
 				<xsl:if test="$param/has_note = 'yes'">
 					<xsl:attribute name="class">button marked_button</xsl:attribute>
 				</xsl:if>
@@ -983,7 +982,7 @@
 					<xsl:attribute name="class">player</xsl:attribute>
 				</xsl:if>
 				<img class="icon" width="18px" height="12px" src="img/flags/{$param/hiscountry}.gif" alt="country flag" title="{$param/hiscountry}" />
-				<a class="profile" href="{php:functionString('makeurl', 'Players_details', 'Profile', $param/OpponentName)}">
+				<a class="profile" href="{am:makeurl('Players_details', 'Profile', $param/OpponentName)}">
 					<!-- rename opponent to actual AI name in case of AI challenge -->
 					<xsl:choose>
 						<xsl:when test="$param/AI != ''"><xsl:value-of select="$param/AI"/></xsl:when>
@@ -1278,7 +1277,7 @@
 	<h3>Game note</h3>
 
 	<div class="skin_text">
-		<a class="button" href="{php:functionString('makeurl', 'Games_details', 'CurrentGame', $param/CurrentGame)}">Back to game</a>
+		<a class="button" href="{am:makeurl('Games_details', 'CurrentGame', $param/CurrentGame)}">Back to game</a>
 		<button type="submit" name="save_note_return">Save &amp; return</button>
 		<button type="submit" name="save_note">Save</button>
 		<button type="submit" name="clear_note">Clear</button>
