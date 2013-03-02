@@ -27,20 +27,26 @@
 			// add all associated entries (login, score, decks, settings)
 			if (!$logindb->Register($playername, $password)) { $db->txnRollBack(); return false; }
 			if (!$scoredb->CreateScore($playername)) { $db->txnRollBack(); return false; }
+
+			// create starter decks
 			$starter_decks = $deckdb->StarterDecks();
-			foreach (array('deck 1', 'deck 2', 'deck 3', 'deck 4', 'deck 5', 'deck 6', 'deck 7', 'deck 8') as $deckname)
+			foreach ($starter_decks as $deckname => $starter_deck)
 			{
 				$deck = $deckdb->CreateDeck($playername, $deckname);
 				if ($deck === false) { $db->txnRollBack(); return false; }
-				
-				// create starter deck
-				if (isset($starter_decks[$deck->Deckname()]))
-				{
-					$starter_deck = $starter_decks[$deck->Deckname()];
-					$deck->LoadData($starter_deck->DeckData);
-					if (!$deck->SaveDeck()) { $db->txnRollBack(); return false; }
-				}
+
+				$deck->LoadData($starter_deck->DeckData);
+				if (!$deck->SaveDeck()) { $db->txnRollBack(); return false; }
 			}
+
+			// fill remaining decks slots with empty decks
+			$remaining_decks_slots = DECK_SLOTS - count($starter_decks);
+			for ($i = 1; $i <= $remaining_decks_slots; $i++)
+			{
+				$deck = $deckdb->CreateDeck($playername, 'deck '.$i);
+				if ($deck === false) { $db->txnRollBack(); return false; }
+			}
+
 			if (!$settingdb->CreateSettings($playername)) { $db->txnRollBack(); return false; }
 			if (!$messagedb->WelcomeMessage($playername)) { $db->txnRollBack(); return false; }
 			
