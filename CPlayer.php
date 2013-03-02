@@ -67,7 +67,7 @@
 			if (!$scoredb->DeleteScore($playername)) { $db->txnRollBack(); return false; }
 
 			foreach ($deckdb->ListDecks($playername) as $deck_data)
-				if (!$deckdb->DeleteDeck($playername, $deck_data['DeckID'])) { $db->txnRollBack(); return false; }
+				if (!$deckdb->DeleteDeck($deck_data['DeckID'])) { $db->txnRollBack(); return false; }
 
 			if (!$settingdb->DeleteSettings($playername)) { $db->txnRollBack(); return false; }
 			if (!$gamedb->DeleteGames($playername)) { $db->txnRollBack(); return false; }
@@ -374,7 +374,11 @@
 		public function GetDeck($deck_id)
 		{
 			global $deckdb;
-			return $deckdb->GetDeck($this->Name, $deck_id);
+
+			$deck = $deckdb->GetDeck($deck_id);
+			if (!$deck or $deck->Username() != $this->Name) return false;
+
+			return $deck;
 		}
 		
 		public function ListDecks()

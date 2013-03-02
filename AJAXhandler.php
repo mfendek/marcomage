@@ -74,8 +74,8 @@
 		$tokens = 'no'; // default results
 
 		// validate deck
-		$deck = $deckdb->GetDeck($user_name, $deck_id);
-		if (!$deck) { $error = 'Invalid deck.'; break; }
+		$deck = $deckdb->GetDeck($deck_id);
+		if (!$deck or $deck->Username() != $user_name) { $error = 'Invalid deck.'; break; }
 
 		// verify card
 		if (!is_numeric($card_id)) { $error = 'Invalid card.'; break; }
@@ -109,8 +109,8 @@
 		$card_id = $_POST['card_id'];
 
 		// download deck
-		$deck = $deckdb->GetDeck($user_name, $deck_id);
-		if (!$deck) { $error = 'Invalid deck.'; break; }
+		$deck = $deckdb->GetDeck($deck_id);
+		if (!$deck or $deck->Username() != $user_name) { $error = 'Invalid deck.'; break; }
 
 		// verify card
 		if (!is_numeric($card_id)) { $error = 'Invalid card.'; break; }
