@@ -213,6 +213,12 @@
 					<xsl:for-each select="$param/decks/*">
 						<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
 					</xsl:for-each>
+					<xsl:if test="$param/edit_all_card = 'yes'">
+						<xsl:for-each select="$param/ai_challenges/*">
+							<xsl:sort select="fullname" order="ascending" />
+							<option value="{name}"><xsl:value-of select="name"/></option>
+						</xsl:for-each>
+					</xsl:if>
 				</select>
 				<button type="submit" name="quick_game">Quick game vs AI</button>
 			</p>
@@ -323,6 +329,12 @@
 					<xsl:for-each select="$param/decks/*">
 						<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
 					</xsl:for-each>
+					<xsl:if test="$param/edit_all_card = 'yes'">
+						<xsl:for-each select="$param/ai_challenges/*">
+							<xsl:sort select="fullname" order="ascending" />
+							<option value="{name}"><xsl:value-of select="name"/></option>
+						</xsl:for-each>
+					</xsl:if>
 				</select>
 			</p>
 		</xsl:if>
