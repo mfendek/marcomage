@@ -76,7 +76,7 @@
 				<tr>
 					<xsl:variable name="columns">
 						<column name="Winner"    text="Winner"   sortable="yes" />
-						<column name="Loser"     text="Loser"    sortable="no"  />
+						<column name="Loser"     text="Defeated" sortable="no"  />
 						<column name="EndType"   text="Outcome"  sortable="no"  />
 						<column name="Rounds"    text="Rounds"   sortable="yes" />
 						<column name="Turns"     text="Turns"    sortable="yes" />
