@@ -26,9 +26,9 @@
 			$player1 = $game->Name1();
 			$player2 = $game->Name2();
 			
-			// transform real names to symbolic names
-			$game_data[1] = $game->GameData[$player1];
-			$game_data[2] = $game->GameData[$player2];
+			// transform real names to symbolic names (clone prevents original game object from being damaged)
+			$game_data[1] = clone $game->GameData[$player1];
+			$game_data[2] = clone $game->GameData[$player2];
 			
 			// remove decks (replays don't need them)
 			unset($game_data[1]->Deck);
@@ -272,9 +272,9 @@
 			$player1 = $game->Name1();
 			$player2 = $game->Name2();
 			
-			// transform real names to symbolic names
-			$game_data[1] = $game->GameData[$player1];
-			$game_data[2] = $game->GameData[$player2];
+			// transform real names to symbolic names (clone prevents original game object from being damaged)
+			$game_data[1] = clone $game->GameData[$player1];
+			$game_data[2] = clone $game->GameData[$player2];
 			
 			// remove decks (replays don't need them)
 			unset($game_data[1]->Deck);
