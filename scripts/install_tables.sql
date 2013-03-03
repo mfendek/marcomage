@@ -48,6 +48,7 @@ CREATE TABLE `decks` (
   `Deckname` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `Ready` tinyint(1) NOT NULL DEFAULT '0',
   `Data` text COLLATE utf8_unicode_ci NOT NULL,
+  `Note` text COLLATE utf8_unicode_ci NOT NULL,
   `Wins` int(10) unsigned NOT NULL DEFAULT '0',
   `Losses` int(10) unsigned NOT NULL DEFAULT '0',
   `Draws` int(10) unsigned NOT NULL DEFAULT '0',

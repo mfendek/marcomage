@@ -129,3 +129,27 @@ table.deck th:first-child + th + th > p /* rare cards heading */
 }
 
 /* end deck */
+
+/* begin deck note */
+
+div#deck_note /* deck note subsection */
+{
+	min-width: 1045px;
+}
+
+div#deck_note > div /* deck note layout */
+{
+	margin-right: auto;
+	margin-left: auto;
+	width: 50%;
+	font-weight: bold;
+	padding: 1ex;
+}
+
+div#deck_note > div > * /* set distance between elements */
+{
+	margin-bottom: 1ex;
+	margin-top: 1ex;
+}
+
+/* end deck note */

@@ -156,4 +156,69 @@ $(document).ready(function() {
 		else return false;
 	});
 
+	// open deck note
+	$("a#deck_note").click(function(event) {
+		 event.preventDefault();
+		 $("#deck_note_dialog").dialog("open");
+	});
+
+	// deck note handler
+	$("#deck_note_dialog").dialog({
+		autoOpen: false,
+		show: "fade",
+		hide: "fade",
+		buttons: {
+			Save: function()
+			{
+				var deck_note = $("textarea[name='Content']").val();
+
+				// check user input
+				if (deck_note.length > 1000) alert('Deck note is too long');
+				else
+				{
+					var username = GetSessionData('Username');
+					var session_id = GetSessionData('SessionID');
+					var deck = $("input[name='CurrentDeck']").val();
+
+					$.post("AJAXhandler.php", { action: 'save_dnote', Username: username, SessionID: session_id, deck_id: deck, note: deck_note }, function(data){
+						var result = $.parseJSON(data);
+						if (result.error) { alert(result.error); return false; } // AJAX failed, display error message
+
+						// update note button highlight
+						// case 1: note is empty (remove highlight)
+						if (deck_note == "")
+							$("a#deck_note").removeClass('marked_button');
+
+						// case 2: note is not empty (add highlight if not present)
+						else if (!$("a#deck_note").hasClass('marked_button'))
+							$("a#deck_note").addClass('marked_button');
+
+						$("#deck_note_dialog").dialog("close");
+					});
+				}
+			},
+			Clear: function()
+			{
+				var username = GetSessionData('Username');
+				var session_id = GetSessionData('SessionID');
+				var deck = $("input[name='CurrentDeck']").val();
+
+				$.post("AJAXhandler.php", { action: 'clear_dnote', Username: username, SessionID: session_id, deck_id: deck }, function(data){
+					var result = $.parseJSON(data);
+					if (result.error) { alert(result.error); return false; } // AJAX failed, display error message
+
+					// clear input field
+					$("textarea[name='Content']").val('');
+
+					// update note button highlight (remove highlight)
+					$("a#deck_note").removeClass('marked_button');
+				});
+			},
+			Back: function()
+			{
+				$(this).dialog("close");
+			}
+		}
+	});
+
 });

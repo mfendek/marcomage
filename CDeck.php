@@ -208,6 +208,7 @@
 		private $Username;
 		private $Deckname;
 		private $Decks;
+		private $Note;
 		public $DeckData;
 		public $Wins;
 		public $Losses;
@@ -220,6 +221,7 @@
 			$this->Deckname = $deckname;
 			$this->Decks = &$Decks;
 			$this->DeckData = new CDeckData;
+			$this->Note = '';
 			$this->Wins = 0;
 			$this->Losses = 0;
 			$this->Draws = 0;
@@ -249,17 +251,23 @@
 			return $this->Deckname;
 		}
 		
+		public function GetNote()
+		{
+			return $this->Note;
+		}
+		
 		public function LoadDeck()
 		{
 			$db = $this->Decks->getDB();
 
-			$result = $db->Query('SELECT `Username`, `Deckname`, `Data`, `Wins`, `Losses`, `Draws` FROM `decks` WHERE `DeckID` = ?', array($this->DeckID));
+			$result = $db->Query('SELECT `Username`, `Deckname`, `Data`, `Note`, `Wins`, `Losses`, `Draws` FROM `decks` WHERE `DeckID` = ?', array($this->DeckID));
 			if ($result === false or count($result) == 0) return false;
 			
 			$data = $result[0];
 			$this->Username = $data['Username'];
 			$this->Deckname = $data['Deckname'];
 			$this->DeckData = unserialize($data['Data']);
+			$this->Note = $data['Note'];
 			$this->Wins = $data['Wins'];
 			$this->Losses = $data['Losses'];
 			$this->Draws = $data['Draws'];
@@ -296,6 +304,18 @@
 			
 			$this->Deckname = $newdeckname;
 			
+			return true;
+		}
+		
+		public function UpdateNote($note)
+		{
+			$db = $this->Decks->getDB();
+
+			$result = $db->Query('UPDATE `decks` SET `Note` = ?, `Modified` = NOW()  WHERE `DeckID` = ?', array($note, $this->DeckID));
+			if ($result === false) return false;
+
+			$this->Note = $note;
+
 			return true;
 		}
 		

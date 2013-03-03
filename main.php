@@ -702,6 +702,66 @@
 				break;
 			}
 
+			if (isset($_POST['save_dnote']))	// Decks -> save note
+			{
+				$deck_id = $_POST['CurrentDeck'];
+				$deck = $player->GetDeck($deck_id);
+				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
+
+				$new_note = $_POST['Content'];
+
+				if (strlen($new_note) > MESSAGE_LENGTH) { $error = "Deck note is too long"; $current = "Decks_note"; break; }
+
+				if (!$deck->UpdateNote($new_note)) { $error = "Failed to save deck note."; $current = "Decks_note"; break; }
+
+				$information = 'Deck note saved.';
+				$current = 'Decks_note';
+				break;
+			}
+
+			if (isset($_POST['save_dnote_return'])) // Decks -> save note and return to deck screen
+			{
+				$deck_id = $_POST['CurrentDeck'];
+				$deck = $player->GetDeck($deck_id);
+				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
+
+				$new_note = $_POST['Content'];
+
+				if (strlen($new_note) > MESSAGE_LENGTH) { $error = "Deck note is too long"; $current = "Decks_note"; break; }
+
+				if (!$deck->UpdateNote($new_note)) { $error = "Failed to save deck note."; $current = "Decks_note"; break; }
+
+				$information = 'Deck note saved.';
+				$current = 'Decks_edit';
+				break;
+			}
+
+			if (isset($_POST['clear_dnote'])) //  Decks -> clear current's player deck note
+			{
+				$deck_id = $_POST['CurrentDeck'];
+				$deck = $player->GetDeck($deck_id);
+				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
+
+				if (!$deck->UpdateNote('')) { $error = "Failed to save deck note."; $current = "Decks_note"; break; }
+
+				$information = 'Deck note saved.';
+				$current = 'Decks_note';
+				break;
+			}
+
+			if (isset($_POST['clear_dnote_return']))	// Decks -> clear current's player deck note and return to deck screen
+			{
+				$deck_id = $_POST['CurrentDeck'];
+				$deck = $player->GetDeck($deck_id);
+				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
+
+				if (!$deck->UpdateNote('')) { $error = "Failed to save deck note."; $current = "Decks_note"; break; }
+
+				$information = 'Deck note saved.';
+				$current = 'Decks_edit';
+				break;
+			}
+
 			if (isset($_POST['filter'])) // Decks -> Modify this deck -> Apply filters
 			{
 				$_POST['CardPool'] = 'yes'; // show card pool after applying filters
@@ -3381,6 +3441,20 @@ case 'Decks_edit':
 	$params['deck_edit']['draws'] = $deck->Draws;
 	$params['deck_edit']['Tokens'] = $deck->DeckData->Tokens;
 	$params['deck_edit']['TokenKeywords'] = $carddb->TokenKeywords();
+	$params['deck_edit']['note'] = $deck->GetNote();
+	break;
+
+
+case 'Decks_note':
+	if (!isset($_POST['CurrentDeck'])) { $display_error = "Missing deck id."; break; }
+	$currentdeck = $_POST['CurrentDeck'];
+
+	$deck = $player->GetDeck($currentdeck);
+	if (!$deck) { $display_error = "Invalid deck."; break; }
+
+	$params['deck_note']['CurrentDeck'] = $currentdeck;
+	$params['deck_note']['text'] = (isset($new_note)) ? $new_note : $deck->GetNote();
+
 	break;
 
 

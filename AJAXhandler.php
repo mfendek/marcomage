@@ -196,6 +196,41 @@
 		if ($result) $result = array('info' => 'Game note cleared');
 		else $error = 'Failed to clear game note.';
 	}
+	elseif($_POST['action'] == "save_dnote")
+	{
+		if (!isset($_POST['note'])) { $error = 'Invalid deck note.'; break; }
+		if (!isset($_POST['deck_id']) OR $_POST['deck_id'] == "") { $error = 'Invalid deck id.'; break; }
+
+		$note = $_POST['note'];
+		$deck_id = $_POST['deck_id'];
+
+		// validate deck
+		$deck = $deckdb->GetDeck($deck_id);
+		if (!$deck or $deck->Username() != $user_name) { $error = 'Invalid deck.'; break; }
+
+		// verify inputs
+		if (strlen($note) > MESSAGE_LENGTH) { $error = 'Deck note is too long.'; break; }
+
+		$result = $deck->UpdateNote($note);
+
+		if ($result) $result = array('info' => 'Deck note saved.');
+		else $error = 'Failed to save deck note.';
+	}
+	elseif($_POST['action'] == "clear_dnote")
+	{
+		if (!isset($_POST['deck_id']) OR $_POST['deck_id'] == "") { $error = 'Invalid deck id.'; break; }
+
+		$deck_id = $_POST['deck_id'];
+
+		// validate deck
+		$deck = $deckdb->GetDeck($deck_id);
+		if (!$deck or $deck->Username() != $user_name) { $error = 'Invalid deck.'; break; }
+
+		$result = $deck->UpdateNote('');
+
+		if ($result) $result = array('info' => 'Deck note cleared');
+		else $error = 'Failed to clear deck note.';
+	}
 	elseif($_POST['action'] == "send_chat_message")
 	{
 		// check access rights

@@ -130,6 +130,12 @@
 
 	<input type="text" name="NewDeckName" value="{$param/deckname}" maxlength="20" />
 	<button type="submit" name="rename_deck">Rename</button>
+	<a class="button" id="deck_note" href="{am:makeurl('Decks_note', 'CurrentDeck', $param/CurrentDeck)}" >
+		<xsl:if test="$param/note != ''">
+			<xsl:attribute name="class">button marked_button</xsl:attribute>
+		</xsl:if>
+		<xsl:text>Note</xsl:text>
+	</a>
 
 	<xsl:choose>
 		<xsl:when test="$param/reset = 'no'">
@@ -357,6 +363,36 @@
 		</tr>
 
 	</table>
+
+	<!-- deck note dialog (do not display) -->
+	<div id="deck_note_dialog" title="Deck note" style="display: none">
+		<textarea name="Content" rows="10" cols="50"><xsl:value-of select="$param/note"/></textarea>
+	</div>
+	
+</xsl:template>
+
+
+<xsl:template match="section[. = 'Decks_note']">
+	<xsl:variable name="param" select="$params/deck_note" />
+
+	<div id="deck_note">
+
+	<h3>Deck note</h3>
+
+	<div class="skin_text">
+		<a class="button" href="{am:makeurl('Decks_edit', 'CurrentDeck', $param/CurrentDeck)}">Back</a>
+		<button type="submit" name="save_dnote_return">Save &amp; return</button>
+		<button type="submit" name="save_dnote">Save</button>
+		<button type="submit" name="clear_dnote">Clear</button>
+		<button type="submit" name="clear_dnote_return">Clear &amp; return</button>
+		<hr/>
+
+		<textarea name="Content" rows="10" cols="50"><xsl:value-of select="$param/text"/></textarea>
+	</div>
+
+		<input type="hidden" name="CurrentDeck" value="{$param/CurrentDeck}"/>
+	</div>
+
 </xsl:template>
 
 
