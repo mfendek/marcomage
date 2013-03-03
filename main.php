@@ -2050,13 +2050,15 @@
 
 				$deck_id = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
 
+				$challenge_decks = $deckdb->ChallengeDecks();
+				$challenge_names = array_keys($challenge_decks);
+
 				// case 1: AI challenge deck was selected
-				if (in_array($deck_id, $challengesdb->ListChallengeNames()))
+				if (in_array($deck_id, $challenge_names))
 				{
 					if (!$access_rights[$player->Type()]["edit_all_card"]) { $error = 'Access denied.'; $current = 'Games'; break; }
 					if (!isset($_POST['FriendlyMode'])) { $error = 'Usage of AI decks is only permitted in friendly play game mode.'; $current = 'Games'; break; }
 
-					$challenge_decks = $deckdb->ChallengeDecks();
 					$deck = $challenge_decks[$deck_id];
 				}
 				// case 2: standard deck was selected
@@ -2140,13 +2142,15 @@
 
 				$deck_id = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
 
+				$challenge_decks = $deckdb->ChallengeDecks();
+				$challenge_names = array_keys($challenge_decks);
+
 				// case 1: AI challenge deck was selected
-				if (in_array($deck_id, $challengesdb->ListChallengeNames()))
+				if (in_array($deck_id, $challenge_names))
 				{
 					if (!$access_rights[$player->Type()]["edit_all_card"]) { $error = 'Access denied.'; $current = 'Games'; break; }
 					if ($game->GetGameMode('FriendlyPlay') == 'no') { $error = 'Usage of AI decks is only permitted in friendly play game mode.'; $current = 'Games'; break; }
 
-					$challenge_decks = $deckdb->ChallengeDecks();
 					$deck = $challenge_decks[$deck_id];
 				}
 				// case 2: standard deck was selected
@@ -2194,12 +2198,14 @@
 
 				$deck_id = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
 
+				$challenge_decks = $deckdb->ChallengeDecks();
+				$challenge_names = array_keys($challenge_decks);
+
 				// case 1: AI challenge deck was selected
-				if (in_array($deck_id, $challengesdb->ListChallengeNames()))
+				if (in_array($deck_id, $challenge_names))
 				{
 					if (!$access_rights[$player->Type()]["edit_all_card"]) { $error = 'Access denied.'; $current = 'Games'; break; }
 
-					$challenge_decks = $deckdb->ChallengeDecks();
 					$deck = $challenge_decks[$deck_id];
 				}
 				// case 2: standard deck was selected
