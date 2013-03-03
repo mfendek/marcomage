@@ -15,12 +15,18 @@
 	<xsl:variable name="param" select="$params/decks" />
 
 	<div id="decks">
+
+	<!-- upper navigation -->
+	<div class="decks_navbar">
+		<a class="button" href="{am:makeurl('Decks_shared')}">Shared decks</a>
+	</div>
 	<table cellspacing="0" class="skin_text">
 		<tr>
 			<th><p>Deck name</p></th>
 			<th><p>Wins</p></th>
 			<th><p>Losses</p></th>
 			<th><p>Draws</p></th>
+			<th><p>Shared</p></th>
 			<th><p>Last change</p></th>
 		</tr>
 		<xsl:for-each select="$param/list/*">
@@ -39,6 +45,14 @@
 				<td>
 					<p>
 						<xsl:choose>
+							<xsl:when test="Shared = 1">yes</xsl:when>
+							<xsl:otherwise>no</xsl:otherwise>
+						</xsl:choose>
+					</p>
+				</td>
+				<td>
+					<p>
+						<xsl:choose>
 							<xsl:when test="Modified != '0000-00-00 00:00:00'"><xsl:value-of select="am:datetime(Modified, $param/timezone)"/></xsl:when>
 							<xsl:otherwise>n/a</xsl:otherwise>
 						</xsl:choose>
@@ -49,6 +63,147 @@
 		</xsl:for-each>
 	</table>
 	</div>
+</xsl:template>
+
+
+<xsl:template match="section[. = 'Decks_shared']">
+	<xsl:variable name="param" select="$params/decks_shared" />
+
+	<div id="decks">
+
+	<!-- upper navigation -->
+	<div class="decks_navbar">
+
+		<!-- selected deck -->
+		<span>Target deck</span>
+		<select name="SelectedDeck" size="1">
+			<xsl:for-each select="$param/decks/*">
+				<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
+			</xsl:for-each>
+		</select>
+
+		<xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'decks')"/>
+	</div>
+
+	<table cellspacing="0" class="skin_text">
+		<tr>
+			<xsl:variable name="columns">
+				<column name="Deckname" text="Deck name"   sortable="yes" />
+				<column name="Username" text="Author"      sortable="yes" />
+				<column name="Modified" text="Last change" sortable="yes" />
+			</xsl:variable>
+			
+			<xsl:for-each select="exsl:node-set($columns)/*">
+				<th>
+					<p>
+						<xsl:value-of select="@text"/>
+						<xsl:if test="@sortable = 'yes'">
+							<button class="small_button" type="submit" value="{@name}" >
+								<xsl:if test="$param/current_condition = @name">
+									<xsl:attribute name="class">small_button pushed</xsl:attribute>
+								</xsl:if>
+								<xsl:choose>
+									<xsl:when test="(($param/current_condition = @name) and ($param/current_order = 'DESC'))">
+										<xsl:attribute name="name">decks_ord_asc</xsl:attribute>
+										<xsl:text>\/</xsl:text>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:attribute name="name">decks_ord_desc</xsl:attribute>
+										<xsl:text>/\</xsl:text>
+									</xsl:otherwise>
+								</xsl:choose>
+							</button>
+						</xsl:if>
+					</p>
+				</th>
+			</xsl:for-each>
+			<th></th>
+		</tr>
+		<xsl:for-each select="$param/shared_list/*">
+			<tr class="table_row">
+				<td><p><a class="deck" href="{am:makeurl('Decks_details', 'CurrentDeck', DeckID)}"><xsl:value-of select="Deckname"/></a></p></td>
+				<td><p><a class="profile" href="{am:makeurl('Players_details', 'Profile', Username)}"><xsl:value-of select="Username"/></a></p></td>
+				<td>
+					<p>
+						<xsl:choose>
+							<xsl:when test="Modified != '0000-00-00 00:00:00'"><xsl:value-of select="am:datetime(Modified, $param/timezone)"/></xsl:when>
+							<xsl:otherwise>n/a</xsl:otherwise>
+						</xsl:choose>
+					</p>
+				</td>
+				<td><button type="submit" name="import_shared_deck" value="{DeckID}">Import</button></td>
+			</tr>
+		</xsl:for-each>
+	</table>
+
+	<div class="decks_navbar">
+		<!-- lower navigation -->
+		<xsl:copy-of select="am:lower_navigation($param/page_count, $param/current_page, 'decks', 'Decks_shared')"/>
+	</div>
+
+	<input type="hidden" name="CurrentDeckPage" value="{$param/current_page}" />
+	<input type="hidden" name="CurrentDeckOrder" value="{$param/current_order}" />
+	<input type="hidden" name="CurrentDeckCon" value="{$param/current_condition}" />
+
+	</div>
+</xsl:template>
+
+
+<xsl:template match="section[. = 'Decks_details']">
+	<xsl:variable name="param" select="$params/decks_details" />
+
+	<div id="deck_shared">
+
+	<div class="decks_navbar">
+		<a class="button" href="{am:makeurl('Decks_shared')}">Shared decks</a>
+		<span><xsl:value-of select="$param/deckname" /></span>
+		<span id="cost_per_turn" title="average cost per turn (bricks, gems, recruits)">
+			<b><xsl:value-of select="$param/res/Bricks"/></b>
+			<b><xsl:value-of select="$param/res/Gems"/></b>
+			<b><xsl:value-of select="$param/res/Recruits"/></b>
+		</span>
+			<xsl:if test="$param/tokens != ''">
+				<span><xsl:value-of select="$param/tokens" /></span>
+			</xsl:if>
+	</div>
+		<xsl:if test="$param/note != ''">
+			<div class="skin_text">
+				<p><xsl:value-of select="$param/note" /></p>
+			</div>
+		</xsl:if>
+
+	<table class="deck skin_label" cellpadding="0" cellspacing="0" >
+
+		<tr>
+			<th><p>Common</p></th>
+			<th><p>Uncommon</p></th>
+			<th><p>Rare</p></th>
+		</tr>
+
+		<tr valign="top">
+		<xsl:for-each select="$param/DeckCards/*"> <!-- Common, Uncommon, Rare sections -->
+			<td>
+				<table class="centered" cellpadding="0" cellspacing="0">
+				<xsl:variable name="cards" select="."/>
+				<xsl:for-each select="$cards/*[position() &lt;= 5]"> <!-- row counting hack -->
+				<tr>
+					<xsl:variable name="i" select="position()"/>
+					<xsl:for-each select="$cards/*[position() &gt;= $i*3-2 and position() &lt;= $i*3]">
+						<td>
+							<xsl:copy-of select="am:cardstring(current(), $param/c_img, $param/c_oldlook, $param/c_insignias, $param/c_foils)" />
+						</td>
+					</xsl:for-each>
+				</tr>
+				</xsl:for-each>
+				</table>
+			</td>
+		</xsl:for-each>
+		</tr>
+
+	</table>
+
+	</div>
+	
 </xsl:template>
 
 
@@ -155,6 +310,16 @@
 		</xsl:when>
 		<xsl:otherwise>
 			<button type="submit" name="reset_stats_confirm" class="marked_button">Confirm reset</button>
+		</xsl:otherwise>
+	</xsl:choose>
+
+	<!-- share/unshare button -->
+	<xsl:choose>
+		<xsl:when test="$param/shared = 'yes'">
+			<button type="submit" name="unshare_deck">Unshare deck</button>
+		</xsl:when>
+		<xsl:otherwise>
+			<button type="submit" name="share_deck">Share deck</button>
 		</xsl:otherwise>
 	</xsl:choose>
 

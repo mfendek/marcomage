@@ -158,17 +158,17 @@ div#cost_per_turn, p.deck_stats /* avg cost per turn indicator layout */
 	color: #cccccc; /* light gray */
 }
 
-div#cost_per_turn > b:first-child /* bricks */
+#cost_per_turn > b:first-child /* bricks */
 {
 	color: #bc8f8f; /* RosyBrown */
 }
 
-div#cost_per_turn > b:first-child + b /* gems */
+#cost_per_turn > b:first-child + b /* gems */
 {
 	color: #00bfff; /* DeepSkyBlue */
 }
 
-div#cost_per_turn > b:first-child + b + b /* recruits */
+#cost_per_turn > b:first-child + b + b /* recruits */
 {
 	color: #8fbc8f; /* DarkSeaGreen */
 }

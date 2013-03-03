@@ -55,10 +55,39 @@
 		{
 			$db = $this->db;
 
-			$result = $db->Query('SELECT `DeckID`, `Deckname`, `Modified`, (CASE WHEN `Ready` = TRUE THEN "yes" ELSE "no" END) as `Ready`, `Wins`, `Losses`, `Draws` FROM `decks` WHERE `Username` = ?', array($username));
+			$result = $db->Query('SELECT `DeckID`, `Deckname`, `Modified`, (CASE WHEN `Ready` = TRUE THEN "yes" ELSE "no" END) as `Ready`, `Wins`, `Losses`, `Draws`, `Shared` FROM `decks` WHERE `Username` = ?', array($username));
 			if ($result === false) return false;
 
 			return $result;
+		}
+		
+		public function ListSharedDecks($condition, $order, $page)
+		{
+			$db = $this->db;
+
+			$valid_conditions = array('Username', 'Deckname', 'Modified');
+			$condition = (in_array($condition, $valid_conditions)) ? $condition : 'Modified';
+			$order = ($order == 'ASC') ? 'ASC' : 'DESC';
+			$page = (is_numeric($page)) ? $page : 0;
+
+			$result = $db->Query('SELECT `DeckID`, `Username`, `Deckname`, `Modified` FROM `decks` WHERE `Shared` = TRUE AND `Ready` = TRUE ORDER BY `'.$condition.'` '.$order.' LIMIT '.(DECKS_PER_PAGE * $page).', '.DECKS_PER_PAGE.'');
+			if ($result === false) return false;
+
+			return $result;
+		}
+
+		public function CountPages()
+		{
+			$db = $this->db;
+
+			$result = $db->Query('SELECT COUNT(`DeckID`) as `Count` FROM `decks` WHERE `Shared` = TRUE AND `Ready` = TRUE');
+			if ($result === false or count($result) == 0) return false;
+
+			$data = $result[0];
+			
+			$pages = ceil($data['Count'] / DECKS_PER_PAGE);
+			
+			return $pages;
 		}
 		
 		public function ListReadyDecks($username)
@@ -213,6 +242,7 @@
 		public $Wins;
 		public $Losses;
 		public $Draws;
+		public $Shared;
 		
 		public function __construct($deck_id, CDecks &$Decks, $username = '', $deckname = '')
 		{
@@ -225,6 +255,7 @@
 			$this->Wins = 0;
 			$this->Losses = 0;
 			$this->Draws = 0;
+			$this->Shared = 0;
 		}
 		
 		public function __destruct()
@@ -260,7 +291,7 @@
 		{
 			$db = $this->Decks->getDB();
 
-			$result = $db->Query('SELECT `Username`, `Deckname`, `Data`, `Note`, `Wins`, `Losses`, `Draws` FROM `decks` WHERE `DeckID` = ?', array($this->DeckID));
+			$result = $db->Query('SELECT `Username`, `Deckname`, `Data`, `Note`, `Wins`, `Losses`, `Draws`, `Shared` FROM `decks` WHERE `DeckID` = ?', array($this->DeckID));
 			if ($result === false or count($result) == 0) return false;
 			
 			$data = $result[0];
@@ -271,6 +302,7 @@
 			$this->Wins = $data['Wins'];
 			$this->Losses = $data['Losses'];
 			$this->Draws = $data['Draws'];
+			$this->Shared = $data['Shared'];
 			
 			return true;
 		}
@@ -279,7 +311,7 @@
 		{
 			$db = $this->Decks->getDB();
 
-			$result = $db->Query('UPDATE `decks` SET `Ready` = ?, `Data` = ?, `Wins` = ?, `Losses` = ?, `Draws` = ?, `Modified` = NOW() WHERE `DeckID` = ?', array((($this->isReady()) ? 1 : 0), serialize($this->DeckData), $this->Wins, $this->Losses, $this->Draws, $this->DeckID));
+			$result = $db->Query('UPDATE `decks` SET `Ready` = ?, `Data` = ?, `Wins` = ?, `Losses` = ?, `Draws` = ?, `Shared` = ?, `Modified` = NOW() WHERE `DeckID` = ?', array((($this->isReady()) ? 1 : 0), serialize($this->DeckData), $this->Wins, $this->Losses, $this->Draws, $this->Shared, $this->DeckID));
 			if ($result === false) return false;
 			
 			return true;

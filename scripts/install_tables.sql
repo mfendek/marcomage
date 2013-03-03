@@ -52,9 +52,11 @@ CREATE TABLE `decks` (
   `Wins` int(10) unsigned NOT NULL DEFAULT '0',
   `Losses` int(10) unsigned NOT NULL DEFAULT '0',
   `Draws` int(10) unsigned NOT NULL DEFAULT '0',
+  `Shared` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `Modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`DeckID`),
-  KEY `Username` (`Username`)
+  KEY `Username` (`Username`),
+  KEY `Shared` (`Shared`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------

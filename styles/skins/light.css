@@ -134,17 +134,17 @@ div#cost_per_turn, p.deck_stats /* avg cost per turn indicator layout */
 	color: black;
 }
 
-div#cost_per_turn > b:first-child /* bricks */
+#cost_per_turn > b:first-child /* bricks */
 {
 	color: red;
 }
 
-div#cost_per_turn > b:first-child + b /* gems */
+#cost_per_turn > b:first-child + b /* gems */
 {
 	color: blue;
 }
 
-div#cost_per_turn > b:first-child + b + b /* recruits */
+#cost_per_turn > b:first-child + b + b /* recruits */
 {
 	color: green;
 }

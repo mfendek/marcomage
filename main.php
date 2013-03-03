@@ -928,6 +928,86 @@
 				break;
 			}
 
+			$temp = array("asc" => "ASC", "desc" => "DESC");
+			foreach($temp as $type => $order_val)
+			{
+				if (isset($_POST['decks_ord_'.$type])) // select ascending or descending order in shared decks list
+				{
+					$_POST['CurrentDeckCon'] = $_POST['decks_ord_'.$type];
+					$_POST['CurrentDeckOrder'] = $order_val;
+
+					$current = "Decks_shared";
+
+					break;
+				}
+			}
+
+			if (isset($_POST['select_page_decks'])) // Decks -> select page (previous and next button)
+			{
+				$_POST['CurrentDeckPage'] = $_POST['select_page_decks'];
+				$current = 'Decks_shared';
+
+				break;
+			}
+
+			if (isset($_POST['import_shared_deck'])) // Decks -> Import shared deck
+			{
+				$source_deck_id = $_POST['import_shared_deck'];
+				$target_deck_id = $_POST['SelectedDeck'];
+
+				if ($source_deck_id == $target_deck_id) { $error = 'Unable to import self.'; $current = 'Decks_shared'; break; }
+
+				$source_deck = $deckdb->GetDeck($source_deck_id);
+				if (!$source_deck) { $error = 'Failed to load shared deck.'; $current = 'Decks_shared'; break; }
+				if ($source_deck->Shared == 0) { $error = 'Selected deck is not shared.'; $current = 'Decks_shared'; break; }
+				if (!$source_deck->isReady()) { $error = 'Selected deck is incomplete.'; $current = 'Decks_shared'; break; }
+
+				$deck = $player->GetDeck($target_deck_id );
+				if (!$deck) { $error = 'No such deck.'; $current = 'Decks_shared'; break; }
+
+				// import shared deck
+				$deck->RenameDeck($source_deck->Deckname());
+				$deck->LoadData($source_deck->DeckData);
+				$deck->SaveDeck();
+
+				$_POST['CurrentDeck'] = $target_deck_id;
+				$information = 'Deck successfully imported from shared deck.';
+				$current = 'Decks_edit';
+				break;
+			}
+
+			if (isset($_POST['share_deck'])) // Decks -> Modify this deck -> Share
+			{
+				$deck_id = $_POST['CurrentDeck'];
+				$deck = $player->GetDeck($deck_id);
+				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
+
+				if ($deck->Shared == 1) { $error = 'Deck is aready shared.'; $current = 'Decks_edit'; break; }
+
+				$deck->Shared = 1;
+				$deck->SaveDeck();
+
+				$information = 'Deck successfully shared.';
+				$current = 'Decks_edit';
+				break;
+			}
+
+			if (isset($_POST['unshare_deck'])) // Decks -> Modify this deck -> Unshare
+			{
+				$deck_id = $_POST['CurrentDeck'];
+				$deck = $player->GetDeck($deck_id);
+				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
+
+				if ($deck->Shared == 0) { $error = 'Deck is aready unshared.'; $current = 'Decks_edit'; break; }
+
+				$deck->Shared = 0;
+				$deck->SaveDeck();
+
+				$information = 'Deck successfully unshared.';
+				$current = 'Decks_edit';
+				break;
+			}
+
 			if (isset($_POST['card_pool_switch'])) // Decks -> Show/Hide card pool (used only when JavaScript is disabled)
 			{
 				$_POST['CardPool'] = (isset($_POST['CardPool']) AND $_POST['CardPool'] == 'yes') ? 'no' : 'yes';
@@ -3442,6 +3522,7 @@ case 'Decks_edit':
 	$params['deck_edit']['Tokens'] = $deck->DeckData->Tokens;
 	$params['deck_edit']['TokenKeywords'] = $carddb->TokenKeywords();
 	$params['deck_edit']['note'] = $deck->GetNote();
+	$params['deck_edit']['shared'] = ($deck->Shared == 1) ? 'yes' : 'no';
 	break;
 
 
@@ -3461,6 +3542,59 @@ case 'Decks_note':
 case 'Decks':
 	$params['decks']['list'] = $player->ListDecks();
 	$params['decks']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
+
+	break;
+
+
+case 'Decks_shared':
+	if (!isset($_POST['CurrentDeckOrder'])) $_POST['CurrentDeckOrder'] = "DESC"; // default ordering
+	if (!isset($_POST['CurrentDeckCon'])) $_POST['CurrentDeckCon'] =  "Modified"; // default order condition
+
+	$params['decks_shared']['current_order'] = $order = $_POST['CurrentDeckOrder'];
+	$params['decks_shared']['current_condition'] = $condition = $_POST['CurrentDeckCon'];
+
+	$current_page = ((isset($_POST['CurrentDeckPage'])) ? $_POST['CurrentDeckPage'] : 0);
+	if (!is_numeric($current_page) OR $current_page < 0) { $display_error = 'Invalid deck page.'; break; }
+	$params['decks_shared']['current_page'] = $current_page;
+
+	$params['decks_shared']['shared_list'] = $deckdb->ListSharedDecks($condition, $order, $current_page);
+	$params['decks_shared']['page_count'] = $deckdb->CountPages();
+	$params['decks_shared']['decks'] = $player->ListDecks($player->Name());
+	$params['decks_shared']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
+
+	break;
+
+
+case 'Decks_details':
+	if (!isset($_POST['CurrentDeck'])) { $display_error = 'Deck id is missing.'; break; }
+	$deck_id = $_POST['CurrentDeck'];
+
+	// load shared deck
+	$deck = $deckdb->GetDeck($deck_id);
+	if (!$deck) { $display_error = 'Failed to load shared deck.'; break; }
+	if ($deck->Shared == 0) { $error = 'Selected deck is not shared.'; break; }
+	if (!$deck->isReady()) { $error = 'Selected deck is incomplete.'; break; }
+
+	// process tokens
+	$tokens = array();
+	foreach ($deck->DeckData->Tokens as $token_name)
+	{
+		if ($token_name != 'none') $tokens[] = $token_name;
+	}
+
+	// load needed settings
+	$settings = $player->GetSettings();
+	$params['decks_details']['deckname'] = $subsection_name = $deck->Deckname();
+	$params['decks_details']['c_img'] = $settings->GetSetting('Images');
+	$params['decks_details']['c_oldlook'] = $settings->GetSetting('OldCardLook');
+	$params['decks_details']['c_insignias'] = $settings->GetSetting('Insignias');
+	$params['decks_details']['c_foils'] = $settings->GetSetting('FoilCards');
+	$params['decks_details']['tokens'] = (count($tokens) > 0) ? implode(", ", $tokens) : '';
+	$params['decks_details']['res'] = $deck->AvgCostPerTurn(); // calculate average cost per turn
+	$params['decks_details']['note'] = $deck->GetNote();
+
+	foreach (array('Common', 'Uncommon', 'Rare') as $class)
+		$params['decks_details']['DeckCards'][$class] = $carddb->GetData($deck->DeckData->$class);
 
 	break;
 

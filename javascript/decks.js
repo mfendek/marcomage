@@ -156,6 +156,24 @@ $(document).ready(function() {
 		else return false;
 	});
 
+	// deck share confirmation
+	$("button[name='share_deck']").click(function() {
+		return confirm("Are you sure you want to share this deck to other players?");
+	});
+
+	// import shared deck confirmation
+	$("button[name='import_shared_deck']").click(function() {
+
+		// extract target deck name
+		var target_deck_id = $("select[name='SelectedDeck']").val();
+		var target_deck = $("select[name='SelectedDeck'] >  option[value='" + target_deck_id + "']").text();
+
+		// extract source deck name
+		var source_deck = $(this).parent().parent().find("a.deck").text();
+
+		return confirm("Are you sure you want to import " + source_deck + " into " + target_deck + "?");
+	});
+
 	// open deck note
 	$("a#deck_note").click(function(event) {
 		 event.preventDefault();
