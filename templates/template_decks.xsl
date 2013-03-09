@@ -96,6 +96,9 @@
 			<xsl:variable name="columns">
 				<column name="Deckname" text="Deck name"   sortable="yes" />
 				<column name="Username" text="Author"      sortable="yes" />
+				<column name="Wins"     text="Wins"        sortable="no"  />
+				<column name="Losses"   text="Losses"      sortable="no"  />
+				<column name="Draws"    text="Draws"       sortable="no"  />
 				<column name="Modified" text="Last change" sortable="yes" />
 			</xsl:variable>
 			
@@ -129,6 +132,9 @@
 			<tr class="table_row">
 				<td><p><a class="deck" href="{am:makeurl('Decks_details', 'CurrentDeck', DeckID)}"><xsl:value-of select="Deckname"/></a></p></td>
 				<td><p><a class="profile" href="{am:makeurl('Players_details', 'Profile', Username)}"><xsl:value-of select="Username"/></a></p></td>
+				<td><p><xsl:value-of select="Wins"/></p></td>
+				<td><p><xsl:value-of select="Losses"/></p></td>
+				<td><p><xsl:value-of select="Draws"/></p></td>
 				<td>
 					<p>
 						<xsl:choose>

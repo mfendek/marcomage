@@ -35,7 +35,6 @@ table + div.decks_navbar /* decks navigation (bottom) */
 
 div#decks a.deck, div#decks a.deck:link, div#decks a.deck:visited /* deck link */
 {
-	text-decoration: none;
 	color: inherit;
 }
 

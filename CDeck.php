@@ -70,7 +70,7 @@
 			$order = ($order == 'ASC') ? 'ASC' : 'DESC';
 			$page = (is_numeric($page)) ? $page : 0;
 
-			$result = $db->Query('SELECT `DeckID`, `Username`, `Deckname`, `Modified` FROM `decks` WHERE `Shared` = TRUE AND `Ready` = TRUE ORDER BY `'.$condition.'` '.$order.' LIMIT '.(DECKS_PER_PAGE * $page).', '.DECKS_PER_PAGE.'');
+			$result = $db->Query('SELECT `DeckID`, `Username`, `Deckname`, `Modified`, `Wins`, `Losses`, `Draws` FROM `decks` WHERE `Shared` = TRUE AND `Ready` = TRUE ORDER BY `'.$condition.'` '.$order.' LIMIT '.(DECKS_PER_PAGE * $page).', '.DECKS_PER_PAGE.'');
 			if ($result === false) return false;
 
 			return $result;
