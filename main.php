@@ -957,6 +957,11 @@
 
 				if ($source_deck_id == $target_deck_id) { $error = 'Unable to import self.'; $current = 'Decks_shared'; break; }
 
+				// validate player's level
+				$score = $scoredb->GetScore($player->Name());
+				$player_level = $score->ScoreData->Level;
+				if ($player_level < 10) { $error = 'Access denied (level requirement).'; $current = 'Decks'; break; }
+
 				$source_deck = $deckdb->GetDeck($source_deck_id);
 				if (!$source_deck) { $error = 'Failed to load shared deck.'; $current = 'Decks_shared'; break; }
 				if ($source_deck->Shared == 0) { $error = 'Selected deck is not shared.'; $current = 'Decks_shared'; break; }
@@ -3463,6 +3468,7 @@ case 'Decks_edit':
 	$score = $scoredb->GetScore($player->Name());
 	$player_level = $score->ScoreData->Level;
 
+	$params['deck_edit']['player_level'] = $player_level;
 	$params['deck_edit']['levels'] = $carddb->Levels($player_level);
 	$params['deck_edit']['keywords'] = $carddb->Keywords();
 	$params['deck_edit']['created_dates'] = $carddb->ListCreationDates();
@@ -3540,6 +3546,10 @@ case 'Decks_note':
 
 
 case 'Decks':
+	$score = $scoredb->GetScore($player->Name());
+	$player_level = $score->ScoreData->Level;
+
+	$params['decks']['player_level'] = $player_level;
 	$params['decks']['list'] = $player->ListDecks();
 	$params['decks']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 

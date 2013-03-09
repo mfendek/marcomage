@@ -17,16 +17,20 @@
 	<div id="decks">
 
 	<!-- upper navigation -->
-	<div class="decks_navbar">
-		<a class="button" href="{am:makeurl('Decks_shared')}">Shared decks</a>
-	</div>
+	<xsl:if test="$param/player_level &gt;= 10">
+		<div class="decks_navbar">
+			<a class="button" href="{am:makeurl('Decks_shared')}">Shared decks</a>
+		</div>
+	</xsl:if>
 	<table cellspacing="0" class="skin_text">
 		<tr>
 			<th><p>Deck name</p></th>
 			<th><p>Wins</p></th>
 			<th><p>Losses</p></th>
 			<th><p>Draws</p></th>
-			<th><p>Shared</p></th>
+			<xsl:if test="$param/player_level &gt;= 10">
+				<th><p>Shared</p></th>
+			</xsl:if>
 			<th><p>Last change</p></th>
 		</tr>
 		<xsl:for-each select="$param/list/*">
@@ -42,14 +46,16 @@
 				<td><p><xsl:value-of select="Wins"/></p></td>
 				<td><p><xsl:value-of select="Losses"/></p></td>
 				<td><p><xsl:value-of select="Draws"/></p></td>
-				<td>
-					<p>
-						<xsl:choose>
-							<xsl:when test="Shared = 1">yes</xsl:when>
-							<xsl:otherwise>no</xsl:otherwise>
-						</xsl:choose>
-					</p>
-				</td>
+				<xsl:if test="$param/player_level &gt;= 10">
+					<td>
+						<p>
+							<xsl:choose>
+								<xsl:when test="Shared = 1">yes</xsl:when>
+								<xsl:otherwise>no</xsl:otherwise>
+							</xsl:choose>
+						</p>
+					</td>
+				</xsl:if>
 				<td>
 					<p>
 						<xsl:choose>
@@ -314,14 +320,16 @@
 	</xsl:choose>
 
 	<!-- share/unshare button -->
-	<xsl:choose>
-		<xsl:when test="$param/shared = 'yes'">
-			<button type="submit" name="unshare_deck">Unshare deck</button>
-		</xsl:when>
-		<xsl:otherwise>
-			<button type="submit" name="share_deck">Share deck</button>
-		</xsl:otherwise>
-	</xsl:choose>
+	<xsl:if test="$param/player_level &gt;= 10">
+		<xsl:choose>
+			<xsl:when test="$param/shared = 'yes'">
+				<button type="submit" name="unshare_deck">Unshare deck</button>
+			</xsl:when>
+			<xsl:otherwise>
+				<button type="submit" name="share_deck">Share deck</button>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:if>
 
 	</div>
 
