@@ -80,6 +80,17 @@
 	<!-- upper navigation -->
 	<div class="decks_navbar">
 
+		<!-- author filter -->
+		<xsl:if test="count($param/authors/*) &gt; 0">
+			<xsl:variable name="authors">
+				<value name="No author filter" value="none" />
+			</xsl:variable>
+			<xsl:copy-of select="am:htmlSelectBox('author_filter', $param/author_val, $authors, $param/authors)"/>
+		</xsl:if>
+
+		<button type="submit" name="decks_shared_filter">Apply filters</button>
+		<xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'decks')"/>
+
 		<!-- selected deck -->
 		<span>Target deck</span>
 		<select name="SelectedDeck" size="1">
@@ -87,8 +98,6 @@
 				<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
 			</xsl:for-each>
 		</select>
-
-		<xsl:copy-of select="am:upper_navigation($param/page_count, $param/current_page, 'decks')"/>
 	</div>
 
 	<table cellspacing="0" class="skin_text">

@@ -190,7 +190,7 @@ input.table_checkbox /* checkbox layout */
 	font-weight: bold;
 }
 
-.filters > .filter_active /* highlight filter when active */
+.filter_active /* highlight filter when active */
 {
 	background-color: green;
 }

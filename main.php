@@ -928,6 +928,14 @@
 				break;
 			}
 
+			if (isset($_POST['decks_shared_filter'])) // use filter
+			{
+				$_POST['CurrentDeckPage'] = 0;
+
+				$current = 'Decks_shared';
+				break;
+			}
+
 			$temp = array("asc" => "ASC", "desc" => "DESC");
 			foreach($temp as $type => $order_val)
 			{
@@ -3557,6 +3565,8 @@ case 'Decks':
 
 
 case 'Decks_shared':
+	$params['decks_shared']['author_val'] = $author = (isset($_POST['author_filter'])) ? $_POST['author_filter'] : 'none';
+
 	if (!isset($_POST['CurrentDeckOrder'])) $_POST['CurrentDeckOrder'] = "DESC"; // default ordering
 	if (!isset($_POST['CurrentDeckCon'])) $_POST['CurrentDeckCon'] =  "Modified"; // default order condition
 
@@ -3567,8 +3577,9 @@ case 'Decks_shared':
 	if (!is_numeric($current_page) OR $current_page < 0) { $display_error = 'Invalid deck page.'; break; }
 	$params['decks_shared']['current_page'] = $current_page;
 
-	$params['decks_shared']['shared_list'] = $deckdb->ListSharedDecks($condition, $order, $current_page);
-	$params['decks_shared']['page_count'] = $deckdb->CountPages();
+	$params['decks_shared']['shared_list'] = $deckdb->ListSharedDecks($author, $condition, $order, $current_page);
+	$params['decks_shared']['page_count'] = $deckdb->CountPages($author);
+	$params['decks_shared']['authors'] = $deckdb->ListAuthors();
 	$params['decks_shared']['decks'] = $player->ListDecks($player->Name());
 	$params['decks_shared']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 

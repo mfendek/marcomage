@@ -61,26 +61,36 @@
 			return $result;
 		}
 		
-		public function ListSharedDecks($condition, $order, $page)
+		public function ListSharedDecks($author, $condition, $order, $page)
 		{
 			$db = $this->db;
+
+			$author_query = (($author != "none") ? ' AND `Username` = ?' : '');
+
+			$params = array();
+			if ($author != "none") $params[] = $author;
 
 			$valid_conditions = array('Username', 'Deckname', 'Modified');
 			$condition = (in_array($condition, $valid_conditions)) ? $condition : 'Modified';
 			$order = ($order == 'ASC') ? 'ASC' : 'DESC';
 			$page = (is_numeric($page)) ? $page : 0;
 
-			$result = $db->Query('SELECT `DeckID`, `Username`, `Deckname`, `Modified`, `Wins`, `Losses`, `Draws` FROM `decks` WHERE `Shared` = TRUE AND `Ready` = TRUE ORDER BY `'.$condition.'` '.$order.' LIMIT '.(DECKS_PER_PAGE * $page).', '.DECKS_PER_PAGE.'');
+			$result = $db->Query('SELECT `DeckID`, `Username`, `Deckname`, `Modified`, `Wins`, `Losses`, `Draws` FROM `decks` WHERE `Shared` = TRUE AND `Ready` = TRUE'.$author_query.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(DECKS_PER_PAGE * $page).', '.DECKS_PER_PAGE.'', $params);
 			if ($result === false) return false;
 
 			return $result;
 		}
 
-		public function CountPages()
+		public function CountPages($author)
 		{
 			$db = $this->db;
 
-			$result = $db->Query('SELECT COUNT(`DeckID`) as `Count` FROM `decks` WHERE `Shared` = TRUE AND `Ready` = TRUE');
+			$author_query = (($author != "none") ? ' AND `Username` = ?' : '');
+
+			$params = array();
+			if ($author != "none") $params[] = $author;
+
+			$result = $db->Query('SELECT COUNT(`DeckID`) as `Count` FROM `decks` WHERE `Shared` = TRUE AND `Ready` = TRUE'.$author_query.'', $params);
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
@@ -88,6 +98,21 @@
 			$pages = ceil($data['Count'] / DECKS_PER_PAGE);
 			
 			return $pages;
+		}
+
+		public function ListAuthors()
+		{
+			$db = $this->db;
+
+			$result = $db->Query('SELECT DISTINCT `Username` FROM `decks` WHERE `Shared` = TRUE AND `Ready` = TRUE ORDER BY `Username` ASC');
+			if ($result === false) return false;
+
+			$authors = array();
+
+			foreach ($result as $data)
+				$authors[] = $data['Username'];
+
+			return $authors;
 		}
 		
 		public function ListReadyDecks($username)
