@@ -118,7 +118,7 @@
 			<value id="7"  section=""           desc="" />
 			<value id="8"  section=""           desc="" />
 			<value id="9"  section=""           desc="" />
-			<value id="10" section=""           desc="" />
+			<value id="10" section=""           desc="You may now play AI challenges (games section) and import shared decks of other players (decks section)." />
 		</xsl:variable>
 
 		<xsl:variable name="levelup_data" select="exsl:node-set($levels)/*[@id = $param/new_level_gained]" />
@@ -127,8 +127,10 @@
 				<h3>Congratulations, you have reached level <xsl:value-of select="$levelup_data/@id" /> !</h3>
 				<xsl:if test="$levelup_data/@section != ''">
 					<p><b><xsl:value-of select="$levelup_data/@section" /></b> section unlocked.</p>
-					<p><xsl:value-of select="$levelup_data/@desc" /></p>
 					<input type="hidden" name="unlock_section" value="{$levelup_data/@section}" />
+				</xsl:if>
+				<xsl:if test="$levelup_data/@desc != ''">
+					<p><xsl:value-of select="$levelup_data/@desc" /></p>
 				</xsl:if>
 				<xsl:if test="count($param/new_cards/*) &gt; 0">
 					<p>New cards available.</p>
