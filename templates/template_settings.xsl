@@ -13,37 +13,7 @@
 
 <xsl:template match="section[. = 'Settings']">
 	<xsl:variable name="param" select="$params/settings" />
-	
 	<xsl:variable name="settings" select="$param/current_settings" />
-	<xsl:variable name="countries" select="document('countries.xml')/am:countries" />
-	<xsl:variable name="timezones" select="document('timezones.xml')/am:timezones" />
-	<xsl:variable name="skins" select="document('skins.xml')/am:skins" />
-	<xsl:variable name="backgrounds" select="document('backgrounds.xml')/am:backgrounds" />
-	<xsl:variable name="refresh_values">
-		<value name="0"   text="off"        />
-		<value name="10"  text="10 seconds" />
-		<value name="30"  text="30 seconds" />
-		<value name="60"  text="1 minute"   />
-		<value name="300" text="5 minutes"  />
-		<value name="600" text="10 minutes" />
-	</xsl:variable>
-	<xsl:variable name="autoai_values">
-		<value name="0"   text="disabled"   />
-		<value name="5"   text="5 seconds"  />
-		<value name="10"  text="10 seconds" />
-		<value name="30"  text="30 seconds" />
-		<value name="60"  text="1 minute"   />
-	</xsl:variable>
-	<xsl:variable name="timeout_values">
-		<value name="0"     text="unlimited"  />
-		<value name="86400" text="1 day"      />
-		<value name="43200" text="12 hours"   />
-		<value name="21600" text="6 hours"    />
-		<value name="10800" text="3 hours"    />
-		<value name="3600"  text="1 hour"     />
-		<value name="1800"  text="30 minutes" />
-		<value name="300"   text="5 minutes"  />
-	</xsl:variable>
 
 	<div id="settings">
 
@@ -55,21 +25,22 @@
 			<div><h4>Zodiac sign</h4><img height="100px" width="100px" src="img/zodiac/{$settings/Sign}.jpg" alt="sign" /><h4><xsl:value-of select="$settings/Sign"/></h4></div>
 
 			<div><h4>Avatar</h4><img height="60px" width="60px" src="img/avatars/{$settings/Avatar}" alt="avatar" /></div>
-			<p><input type="text" name="Firstname" maxlength="20" value="{$settings/Firstname}" />First name</p>
-			<p><input type="text" name="Surname" maxlength="20" value="{$settings/Surname}" />Surname</p>
-		
-			<p><input type="text" name="Email" maxlength="30" value="{$settings/Email}" />E-mail</p>
-		
-			<p><input type="text" name="Imnumber" maxlength="20" value="{$settings/Imnumber}" />ICQ / IM number</p>
 
-			<xsl:variable name="gender_types">
-				<type name="none"   text="select" />
-				<type name="male"   text="male"   />
-				<type name="female" text="female" />
-			</xsl:variable>
+			<p><input type="text" name="Firstname" maxlength="20" value="{$settings/Firstname}" />First name</p>
+
+			<p><input type="text" name="Surname" maxlength="20" value="{$settings/Surname}" />Surname</p>
+
+			<p><input type="text" name="Email" maxlength="30" value="{$settings/Email}" />E-mail</p>
+
+			<p><input type="text" name="Imnumber" maxlength="20" value="{$settings/Imnumber}" />ICQ / IM number</p>
 
 			<p>
 				<select name="Gender">
+					<xsl:variable name="gender_types">
+						<type name="none"   text="select" />
+						<type name="male"   text="male"   />
+						<type name="female" text="female" />
+					</xsl:variable>
 					<xsl:for-each select="exsl:node-set($gender_types)/*">
 						<option value="{@name}">
 							<xsl:if test="$settings/Gender = @name">
@@ -94,10 +65,119 @@
 			<p>
 				<select name="Country">
 					<option value="Unknown">I'm a pirate - no country</option>
-					<xsl:for-each select="$countries/am:country">
-						<option value="{text()}">
-							<xsl:if test="$settings/Country = text()"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-							<xsl:value-of select="text()"/>
+					<xsl:variable name="countries">
+						<country name="Albania" />
+						<country name="Algeria" />
+						<country name="Argentina" />
+						<country name="Armenia" />
+						<country name="Australia" />
+						<country name="Austria" />
+						<country name="Azerbaijan" />
+						<country name="Bahamas" />
+						<country name="Barbados" />
+						<country name="Belarus" />
+						<country name="Belgium" />
+						<country name="Bolivia" />
+						<country name="Bosnia and Herzegovina" />
+						<country name="Brazil" />
+						<country name="Bulgaria" />
+						<country name="Cambodia" />
+						<country name="Canada" />
+						<country name="Chile" />
+						<country name="China" />
+						<country name="Chinese Taipei" />
+						<country name="Colombia" />
+						<country name="Costa Rica" />
+						<country name="Croatia" />
+						<country name="Cuba" />
+						<country name="Cyprus" />
+						<country name="Czech Republic" />
+						<country name="Denmark" />
+						<country name="Dominican Republic" />
+						<country name="Ecuador" />
+						<country name="United Kingdom" />
+						<country name="Eritrea" />
+						<country name="Estonia" />
+						<country name="Ethiopia" />
+						<country name="Europe" />
+						<country name="Fiji Islands" />
+						<country name="Finland" />
+						<country name="France" />
+						<country name="Germany" />
+						<country name="Ghana" />
+						<country name="Greece" />
+						<country name="Greenland" />
+						<country name="Guatemala" />
+						<country name="Hungary" />
+						<country name="Iceland" />
+						<country name="India" />
+						<country name="Indonesia" />
+						<country name="Iran" />
+						<country name="Iraq" />
+						<country name="Ireland" />
+						<country name="Israel" />
+						<country name="Italy" />
+						<country name="Ivory Coast" />
+						<country name="Japan" />
+						<country name="Jamaica" />
+						<country name="Kazakstan" />
+						<country name="Kenya" />
+						<country name="Laos" />
+						<country name="Latvia" />
+						<country name="Liechtenstein" />
+						<country name="Lithuania" />
+						<country name="Macedonia" />
+						<country name="Malaysia" />
+						<country name="Mexico" />
+						<country name="Moldova" />
+						<country name="Morocco" />
+						<country name="Netherlands" />
+						<country name="New Zealand" />
+						<country name="North Korea" />
+						<country name="Norway" />
+						<country name="Pakistan" />
+						<country name="Panama" />
+						<country name="Paraguay" />
+						<country name="Peru" />
+						<country name="Philippines" />
+						<country name="Poland" />
+						<country name="Portugal" />
+						<country name="Puerto Rico" />
+						<country name="Russia" />
+						<country name="Romania" />
+						<country name="Salvador" />
+						<country name="San Marino" />
+						<country name="Saudi Arabia" />
+						<country name="Serbia" />
+						<country name="Singapore" />
+						<country name="Slovakia" />
+						<country name="Slovenia" />
+						<country name="Somalia" />
+						<country name="South Africa" />
+						<country name="South Korea" />
+						<country name="Spain" />
+						<country name="Sri Lanka" />
+						<country name="Sudan" />
+						<country name="Sweden" />
+						<country name="Switzerland" />
+						<country name="Taiwan" />
+						<country name="Thailand" />
+						<country name="Togo" />
+						<country name="Trinidad" />
+						<country name="Turkey" />
+						<country name="Ukraine" />
+						<country name="United Arab Emirates" />
+						<country name="United Kingdom" />
+						<country name="United States" />
+						<country name="Uzbekistan" />
+						<country name="Venezuela" />
+						<country name="Vietnam" />
+						<country name="Zimbabwe" />
+					</xsl:variable>
+					<xsl:for-each select="exsl:node-set($countries)/*">
+						<option value="{@name}">
+							<xsl:if test="$settings/Country = @name"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+							<xsl:value-of select="@name"/>
 						</option>
 					</xsl:for-each>
 				</select>
@@ -105,16 +185,15 @@
 				<img class="icon" width="18px" height="12px" src="img/flags/{$settings/Country}.gif" alt="country flag" title="{$settings/Country}" />
 			</p>
 
-			<xsl:variable name="status_types">
-				<status name="none"   text="none"                   />
-				<status name="ready"  text="looking for game"       />
-				<status name="quick"  text="looking for quick game" />
-				<status name="dnd"    text="do not disturb"         />
-				<status name="newbie" text="newbie"                 />
-			</xsl:variable>
-
 			<p>
 				<select name="Status">
+					<xsl:variable name="status_types">
+						<status name="none"   text="none"                   />
+						<status name="ready"  text="looking for game"       />
+						<status name="quick"  text="looking for quick game" />
+						<status name="dnd"    text="do not disturb"         />
+						<status name="newbie" text="newbie"                 />
+					</xsl:variable>
 					<xsl:for-each select="exsl:node-set($status_types)/*">
 						<option value="{@name}">
 							<xsl:if test="$settings/Status = @name">
@@ -217,16 +296,44 @@
 		<div>
 			<h3>Account settings</h3>
 			<p><button type="submit" name="user_settings">Save settings</button></p>
+
 			<p><input type="password" name="NewPassword" maxlength="20" />New password</p>
 			<p><input type="password" name="NewPassword2" maxlength="20" />Confirm password</p>
 			<p><button type="submit" name="changepasswd">Change password</button></p>
 
 			<p>
 				<select name="Timezone">
-					<xsl:for-each select="$timezones/am:timezone">
-						<option value="{am:offset}">
-							<xsl:if test="$settings/Timezone = am:offset"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
-							<xsl:text>GMT </xsl:text><xsl:value-of select="am:offset"/> (<xsl:value-of select="am:name"/>)
+					<xsl:variable name="timezones">
+						<timezone offset="-12" name="Eniwetok, Kwajalein"                                     />
+						<timezone offset="-11" name="Midway Island, Samoa"                                    />
+						<timezone offset="-10" name="Hawaii"                                                  />
+						<timezone offset="-9"  name="Alaska"                                                  />
+						<timezone offset="-8"  name="Pacific Time (US &amp; Canada), Tijuana"                 />
+						<timezone offset="-7"  name="Mountain Time (US &amp; Canada), Arizona"                />
+						<timezone offset="-6"  name="Central Time (US &amp; Canada), Mexico City"             />
+						<timezone offset="-5"  name="Eastern Time (US &amp; Canada), Bogota, Lima, Quito"     />
+						<timezone offset="-4"  name="Atlantic Time (Canada), Caracas, La Paz"                 />
+						<timezone offset="-3"  name="Brassila, Buenos Aires, Georgetown, Falkland Is"         />
+						<timezone offset="-2"  name="Mid-Atlantic, Ascension Is., St. Helena"                 />
+						<timezone offset="-1"  name="Azores, Cape Verde Islands"                              />
+						<timezone offset="+0"  name="Casablanca, Dublin, Edinburgh, London, Lisbon, Monrovia" />
+						<timezone offset="+1"  name="Prague, Amsterdam, Berlin, Brussels, Madrid, Paris"      />
+						<timezone offset="+2"  name="Cairo, Helsinki, Kaliningrad, South Africa"              />
+						<timezone offset="+3"  name="Baghdad, Riyadh, Moscow, Nairobi"                        />
+						<timezone offset="+4"  name="Abu Dhabi, Baku, Muscat, Tbilisi"                        />
+						<timezone offset="+5"  name="Ekaterinburg, Islamabad, Karachi, Tashkent"              />
+						<timezone offset="+6"  name="Almaty, Colombo, Dhaka, Novosibirsk"                     />
+						<timezone offset="+7"  name="Bangkok, Hanoi, Jakarta"                                 />
+						<timezone offset="+8"  name="Beijing, Hong Kong, Perth, Singapore, Taipei"            />
+						<timezone offset="+9"  name="Osaka, Sapporo, Seoul, Tokyo, Yakutsk"                   />
+						<timezone offset="+10" name="Canberra, Guam, Melbourne, Sydney, Vladivostok"          />
+						<timezone offset="+11" name="Magadan, New Caledonia, Solomon Islands"                 />
+						<timezone offset="+12" name="Auckland, Wellington, Fiji, Marshall Island"             />
+					</xsl:variable>
+					<xsl:for-each select="exsl:node-set($timezones)/*">
+						<option value="{@offset}">
+							<xsl:if test="$settings/Timezone = @offset"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if>
+							<xsl:text>GMT </xsl:text><xsl:value-of select="@offset"/> (<xsl:value-of select="@name"/>)
 					</option>
 					</xsl:for-each>
 				</select>
@@ -241,15 +348,14 @@
 				</div>
 			</xsl:if>
 
-			<xsl:variable name="filter_types">
-				<filter name="none"    text="No players filters"         />
-				<filter name="active"  text="Active players"             />
-				<filter name="offline" text="Active and offline players" />
-				<filter name="all"     text="Show all players"           />
-			</xsl:variable>
-
 			<p>
 				<select name="DefaultFilter">
+					<xsl:variable name="filter_types">
+						<filter name="none"    text="No players filters"         />
+						<filter name="active"  text="Active players"             />
+						<filter name="offline" text="Active and offline players" />
+						<filter name="all"     text="Show all players"           />
+					</xsl:variable>
 					<xsl:for-each select="exsl:node-set($filter_types)/*">
 						<option value="{@name}">
 							<xsl:if test="$settings/DefaultFilter = @name">
@@ -267,13 +373,24 @@
 
 			<p>
 				<select name="Skin">
-					<xsl:for-each select="$skins/am:skin">
-						<xsl:sort select="am:name" order="ascending"/>
-						<option value="{am:value}">
-							<xsl:if test="$settings/Skin = am:value">
+					<xsl:variable name="skins">
+						<skin value="0" name="blue (dark)"      />
+						<skin value="1" name="rain (light)"     />
+						<skin value="2" name="purple (light)"   />
+						<skin value="3" name="green (dark)"     />
+						<skin value="4" name="stars (dark)"     />
+						<skin value="5" name="clouds (light)"   />
+						<skin value="6" name="old theme (dark)" />
+						<skin value="7" name="fire (dark)"      />
+						<skin value="8" name="halloween (dark)" />
+					</xsl:variable>
+					<xsl:for-each select="exsl:node-set($skins)/*">
+						<xsl:sort select="@name" order="ascending"/>
+						<option value="{@value}">
+							<xsl:if test="$settings/Skin = @value">
 								<xsl:attribute name="selected">selected</xsl:attribute>
 							</xsl:if>
-							<xsl:value-of select="am:name"/>
+							<xsl:value-of select="@name"/>
 						</option>
 					</xsl:for-each>
 				</select>
@@ -285,13 +402,48 @@
 
 			<p>
 				<select name="Background">
-					<xsl:for-each select="$backgrounds/am:background">
-						<xsl:sort select="am:name" order="ascending"/>
-						<option value="{am:value}">
-							<xsl:if test="$settings/Background = am:value">
+					<xsl:variable name="backgrounds">
+						<background value= "0" name="- transparent -"  />
+						<background value= "1" name="hill castle"      />
+						<background value= "2" name="cloud castle"     />
+						<background value= "3" name="dark forest"      />
+						<background value= "4" name="daemon"           />
+						<background value= "5" name="thief"            />
+						<background value= "6" name="black dragon"     />
+						<background value= "7" name="elven city"       />
+						<background value= "8" name="wolf"             />
+						<background value= "9" name="forest castle"    />
+						<background value="10" name="rider"            />
+						<background value="11" name="azure shore"      />
+						<background value="12" name="lost city"        />
+						<background value="13" name="flowers"          />
+						<background value="14" name="night sky"        />
+						<background value="15" name="snow bunny"       />
+						<background value="16" name="still water"      />
+						<background value="17" name="moon lake"        />
+						<background value="18" name="ghostship"        />
+						<background value="19" name="fortress"         />
+						<background value="20" name="lost castle"      />
+						<background value="21" name="castle silhouette"/>
+						<background value="22" name="fairy castle"     />
+						<background value="23" name="fairy forest"     />
+						<background value="24" name="dragon lady"      />
+						<background value="25" name="azure unicorn"    />
+						<background value="26" name="phoenix nebula"   />
+						<background value="27" name="shadow priestess" />
+						<background value="28" name="marcomage"        />
+						<background value="29" name="troll bridge"     />
+						<background value="30" name="arcomage"         />
+						<background value="31" name="halloween"        />
+						<background value="32" name="valkyrie"         />
+					</xsl:variable>
+					<xsl:for-each select="exsl:node-set($backgrounds)/*">
+						<xsl:sort select="@name" order="ascending"/>
+						<option value="{@value}">
+							<xsl:if test="$settings/Background = @value">
 								<xsl:attribute name="selected">selected</xsl:attribute>
 							</xsl:if>
-							<xsl:value-of select="am:name"/>
+							<xsl:value-of select="@name"/>
 						</option>
 					</xsl:for-each>
 				</select>
@@ -303,6 +455,14 @@
 
 			<p>
 				<select name="Autorefresh">
+					<xsl:variable name="refresh_values">
+						<value name="0"   text="off"        />
+						<value name="10"  text="10 seconds" />
+						<value name="30"  text="30 seconds" />
+						<value name="60"  text="1 minute"   />
+						<value name="300" text="5 minutes"  />
+						<value name="600" text="10 minutes" />
+					</xsl:variable>
 					<xsl:for-each select="exsl:node-set($refresh_values)/*">
 						<option value="{@name}">
 							<xsl:if test="$settings/Autorefresh = @name">
@@ -320,6 +480,13 @@
 
 			<p>
 				<select name="AutoAi">
+					<xsl:variable name="autoai_values">
+						<value name="0"   text="disabled"   />
+						<value name="5"   text="5 seconds"  />
+						<value name="10"  text="10 seconds" />
+						<value name="30"  text="30 seconds" />
+						<value name="60"  text="1 minute"   />
+					</xsl:variable>
 					<xsl:for-each select="exsl:node-set($autoai_values)/*">
 						<option value="{@name}">
 							<xsl:if test="$settings/AutoAi = @name">
@@ -337,6 +504,16 @@
 
 			<p>
 				<select name="Timeout">
+					<xsl:variable name="timeout_values">
+						<value name="0"     text="unlimited"  />
+						<value name="86400" text="1 day"      />
+						<value name="43200" text="12 hours"   />
+						<value name="21600" text="6 hours"    />
+						<value name="10800" text="3 hours"    />
+						<value name="3600"  text="1 hour"     />
+						<value name="1800"  text="30 minutes" />
+						<value name="300"   text="5 minutes"  />
+					</xsl:variable>
 					<xsl:for-each select="exsl:node-set($timeout_values)/*">
 						<option value="{@name}">
 							<xsl:if test="$settings/Timeout = @name">
@@ -352,19 +529,18 @@
 				</span>
 			</p>
 
-			<xsl:variable name="cards_per_row">
-				<value name="5"  text="5"  />
-				<value name="8"  text="8"  />
-				<value name="10" text="10" />
-				<value name="12" text="12" />
-				<value name="15" text="15" />
-				<value name="20" text="20" />
-				<value name="25" text="25" />
-				<value name="30" text="30" />
-			</xsl:variable>
-
 			<p>
 				<select name="Cards_per_row">
+					<xsl:variable name="cards_per_row">
+						<value name="5"  text="5"  />
+						<value name="8"  text="8"  />
+						<value name="10" text="10" />
+						<value name="12" text="12" />
+						<value name="15" text="15" />
+						<value name="20" text="20" />
+						<value name="25" text="25" />
+						<value name="30" text="30" />
+					</xsl:variable>
 					<xsl:for-each select="exsl:node-set($cards_per_row)/*">
 						<option value="{@name}">
 							<xsl:if test="$settings/Cards_per_row = @name">
