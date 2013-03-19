@@ -5087,8 +5087,6 @@ case 'Statistics':
 	{
 		$params['statistics']['victory_types'] = $statistics->VictoryTypes();
 		$params['statistics']['game_modes'] = $statistics->GameModes();
-		$params['statistics']['skins'] = $statistics->Skins();
-		$params['statistics']['backgrounds'] = $statistics->Backgrounds();
 		$params['statistics']['suggested'] = $statistics->SuggestedConcepts();
 		$params['statistics']['implemented'] = $statistics->ImplementedConcepts();
 	}

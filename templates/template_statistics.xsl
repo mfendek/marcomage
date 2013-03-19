@@ -108,26 +108,6 @@
 		<!-- begin subsection other statistics -->
 		<xsl:when test="$param/current_subsection = 'other_statistics'">
 			<div class="skin_text">
-				<h4>Backgrounds</h4>
-				<xsl:for-each select="$param/backgrounds/*">
-					<xsl:sort select="count" order="descending" data-type="number" />
-					<p>
-						<span><xsl:value-of select="count"/>%</span>
-						<xsl:value-of select="name"/>
-					</p>
-				</xsl:for-each>
-			</div>
-
-			<div class="skin_text">
-				<h4>Skins</h4>
-				<xsl:for-each select="$param/skins/*">
-					<xsl:sort select="count" order="descending" data-type="number" />
-					<p>
-						<span><xsl:value-of select="count"/>%</span>
-						<xsl:value-of select="name"/>
-					</p>
-				</xsl:for-each>
-
 				<h4>Game modes</h4>
 				<p><span><xsl:value-of select="$param/game_modes/hidden"/>%</span>Hidden cards</p>
 				<p><span><xsl:value-of select="$param/game_modes/friendly"/>%</span>Friendly play</p>
