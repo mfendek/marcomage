@@ -80,7 +80,7 @@
 			<xsl:for-each select="$param/card_statistics/*">
 				<div class="skin_text">
 					<h4><xsl:value-of select="name()"/> cards</h4>
-					<xsl:if test="count(bottom/*) &gt; 0"><h5>Top</h5></xsl:if>
+					<xsl:if test="count(top/*) &gt; 0"><h5>Top</h5></xsl:if>
 					<ol>
 					<xsl:for-each select="top/*">
 						<li>
