@@ -218,7 +218,7 @@
         $recruits = max(0, $hisdata->Recruits);
         $total = $bricks + $gems + $recruits;
 
-        $tmp = mt_rand(1,$total);
+        $tmp = ($total > 0) ? mt_rand(1,$total) : 0;
         if ($tmp <= $bricks and $bricks > 0) $hisdata->Bricks--;
         elseif ($tmp <= ($bricks + $gems) and $gems > 0) $hisdata->Gems--;
         elseif ($tmp <= ($bricks + $gems + $recruits) and $recruits > 0) $hisdata->Recruits--;
