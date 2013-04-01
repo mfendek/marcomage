@@ -1813,6 +1813,9 @@
 				// only allow finishing of non-AI games
 				if ($game->Name2() == SYSTEM_NAME) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
 
+				// only allow finish move if the game is still on
+				if ($game->State != 'in progress') { $error = 'Game has to be in progress!'; $current = 'Games_details'; break; }
+
 				// and only if the finish move criteria are met
 				if ($game->Timeout == 0 or time() - strtotime($game->LastAction) < $game->Timeout or $game->Current == $player->Name()) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
 
