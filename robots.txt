@@ -1,5 +1,6 @@
 User-agent: *
 Disallow: /?location=Players_details
+Disallow: /?location=Players_achievements
 Disallow: /?location=Cards
 Disallow: /?location=Cards_details
 Disallow: /?location=Concepts
