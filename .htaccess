@@ -21,13 +21,14 @@ allow from all
 allow from all
 </Files>
 
-# redirect blind favicon requests to the right location
-<Files "favicon.ico">
+# url rewriting
+<IfModule mod_rewrite.c>
 RewriteEngine On
-RewriteRule .* '/img/favicon-ie.ico' [L]
-</Files>
+# redirect blind favicon requests to the right location
+RewriteRule favicon.ico /img/favicon-ie.ico [L]
+</IfModule>
 
 # compression of text
-<ifmodule mod_deflate.c>
+<IfModule mod_deflate.c>
 AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml application/xhtml+xml text/css text/javascript application/javascript application/x-javascript
-</ifmodule>
+</IfModule>
