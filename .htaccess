@@ -26,6 +26,8 @@ allow from all
 RewriteEngine On
 # redirect blind favicon requests to the right location
 RewriteRule favicon.ico /img/favicon-ie.ico [L]
+# shorten pointless urls containing explicit entry point
+RewriteRule index.php / [QSA,L,R=301]
 </IfModule>
 
 # compression of text
