@@ -719,7 +719,7 @@
 				$last_round_data = $this->LastRound();
 
 				// case 1: failed to load replay data - log warning and proceed with default changes data
-				if (!$last_round_data)
+				if (!$last_round_data or !isset($last_round_data[$playername]) or !isset($last_round_data[$opponent]))
 				{
 					error_log("Failed to load replay data game ID = ".$this->GameID." p1 = ".$this->Player1." p2 = ".$this->Player2);
 					$mychanges = $hischanges = array ('Quarry'=> 0, 'Magic'=> 0, 'Dungeons'=> 0, 'Bricks'=> 0, 'Gems'=> 0, 'Recruits'=> 0, 'Tower'=> 0, 'Wall'=> 0);
@@ -1134,7 +1134,7 @@
 				$last_round_data = $this->LastRound();
 
 				// case 1: failed to load replay data - log warning and proceed with default changes data
-				if (!$last_round_data)
+				if (!$last_round_data or !isset($last_round_data[$playername]) or !isset($last_round_data[$opponent]))
 				{
 					error_log("Failed to load replay data game ID = ".$this->GameID." p1 = ".$this->Player1." p2 = ".$this->Player2);
 					$mychanges = $hischanges = array ('Quarry'=> 0, 'Magic'=> 0, 'Dungeons'=> 0, 'Bricks'=> 0, 'Gems'=> 0, 'Recruits'=> 0, 'Tower'=> 0, 'Wall'=> 0);
