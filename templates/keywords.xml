@@ -157,12 +157,12 @@
     <name>Beast</name>
     <basic_gain>5</basic_gain>
     <bonus_gain>4</bonus_gain>
-    <description>Agility - grants additional turn with no production.</description>
+    <description>Agility - grants additional turn with no bricks and gems production.</description>
     <lore><![CDATA[
     <p>Wild beasts usually operate in pacts and are known for their ferocity. Several factions were able to tame some beast and incorporated them into their armies. Beasts are able to perform many different roles such as mounts, unmounted cavalry or frontline soldiers.</p>
     <p>Agility and nimbleness of a beast greatly surpasses human limitations. Armed with claws, teeth and killer instinct, bred in great numbers, the beasts are cheaper and more expendable than regular soldiers.</p>
 ]]></lore>
-    <code><![CDATA[$nextplayer = $playername; $bricks_production = 0; $gems_production = 0; $recruits_production = 0;]]></code>
+    <code><![CDATA[$nextplayer = $playername; $bricks_production = 0; $gems_production = 0;]]></code>
   </keyword>
   <keyword>
     <name>Burning</name>
@@ -380,10 +380,10 @@
     <name>Frenzy</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>Rage blast - if played card is a neighbour of a Frenzy card, opponent receives bonus damage (recruits cost of the played card * N/3, N based on played card rarity (Common - 1, Uncommon - 2, Rare - 3)).</description>
+    <description>Rage blast - if played card is a rare card or is a neighbour of a Frenzy card, opponent receives bonus damage (recruits cost of the played card * N/3, N based on played card rarity (Common - 1, Uncommon - 2, Rare - 3)).</description>
     <lore><![CDATA[<p>Good generals are aware of the effect of army's high morale on its combat performance. Frenzy goes one step further. A frenzied creature is partially insane and can be dangerous to use, however when unleashed in the right time and right place it can break the enemy ranks and cause severe damage to the enemy.</p>]]></lore>
     <code><![CDATA[
-    if (($cardpos > 1 and $carddb->GetCard($mydata->Hand[$cardpos - 1])->HasKeyword("Frenzy")) or ($cardpos < 8 and $carddb->GetCard($mydata->Hand[$cardpos + 1])->HasKeyword("Frenzy")))
+    if ($card->Class == 'Rare' or ($cardpos > 1 and $carddb->GetCard($mydata->Hand[$cardpos - 1])->HasKeyword("Frenzy")) or ($cardpos < 8 and $carddb->GetCard($mydata->Hand[$cardpos + 1])->HasKeyword("Frenzy")))
     {
       $rarities = array('Common' => 1, 'Uncommon' => 2, 'Rare' => 3);
       $coef = $rarities[$card->Class];
@@ -631,13 +631,14 @@
     <name>Skirmisher</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>Harass - discard highest rarity Charge from opponent's hand. Common cards can target common and uncommon cards, uncommon and rare cards can target any rarity. Rare cards replace target card with a common zero cost card instead of discarding it. If there are no Charge cards in opponent's hand, highest rarity Recruits only card of the same or lower rarity as the played card is chosen instead.</description>
+    <description>Harass - discard highest rarity Charge from opponent's hand. Common cards can target common and uncommon cards, uncommon and rare cards can target any rarity. Rare cards replace target card with a common zero cost card instead of discarding it. If there are no Charge cards in opponent's hand, highest rarity Recruits only attack card of the same or lower rarity as the played card is chosen instead.</description>
     <lore><![CDATA[<p>Skirmishers are troops designed to counter enemy cavalry. Their combat capabilities may be inferior, but their role is crucial in any army. They are trained to protect their allies at all costs and down to the last man.</p>]]></lore>
     <code><![CDATA[
     // target card is discarded only if it has same or lower rarity than the played card
     $rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
     $storage = $r_storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
     $played_rank = $rarities[$card->Class];
+    $secondary_cards = $carddb->GetList(array('cost'=>"Green", 'advanced'=>"Attack:"));
     
     for ($i = 1; $i <= 8; $i++)
     {
@@ -650,7 +651,7 @@
       {
         $storage[$dis_class][] = $i;
       }
-      elseif ($dis_card->GetResources('Bricks') == 0 and $dis_card->GetResources('Gems') == 0 and $dis_card->GetResources('Recruits') > 0 and $dis_rank <= $played_rank)
+      elseif ($dis_rank <= $played_rank and in_array($hisdata->Hand[$i], $secondary_cards))
       {
         $r_storage[$dis_class][] = $i;
       }
@@ -718,12 +719,15 @@
     <name>Undead</name>
     <basic_gain>5</basic_gain>
     <bonus_gain>5</bonus_gain>
-    <description>Eternal servitude - a third of the total cost of the played card will be returned.</description>
+    <description>Eternal servitude - a part of the total cost of the played card will be returned. Returned amount is based on number of different resources present in the card cost (3 - third, 2 - half, 1 - two thirds).</description>
     <lore><![CDATA[<p>Mages that were corrupted by the promise of eternal life are transformed to liches. These powerful creatures are able to conjure vast armies of undead to fight for their cause. An undead can't die, therefore much of the corpses can be reanimated after the battle to plague the living once again.</p>]]></lore>
     <code><![CDATA[
-    $mydata->Bricks+= round($card->Bricks / 3);
-    $mydata->Gems+= round($card->Gems / 3);
-    $mydata->Recruits+= round($card->Recruits / 3);
+    $coef = (($card->Bricks > 0) ? 1 : 0) + (($card->Gems > 0) ? 1 : 0) + (($card->Recruits > 0) ? 1 : 0);
+    $bonuses = array(0 => 0, 1 => 2/3, 2 => 1/2, 3 => 1/3);
+    $bonus = $bonuses[$coef];
+    $mydata->Bricks+= round($card->Bricks * $bonus);
+    $mydata->Gems+= round($card->Gems * $bonus);
+    $mydata->Recruits+= round($card->Recruits * $bonus);
 ]]></code>
   </keyword>
   <keyword>
