@@ -2966,7 +2966,7 @@
 				// delete bonus deck slots
 				$decks = $deckdb->ListDecks($opponent);
 				foreach ($decks as $i => $deck_data)
-					if ($i >= DECK_SLOTS) $deckdb->DeleteDeck($opponent, $deck_data['DeckID']);
+					if ($i >= DECK_SLOTS) $deckdb->DeleteDeck($deck_data['DeckID']);
 
 				$information = 'Exp reset.';
 				$current = 'Players_details';
