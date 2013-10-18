@@ -3000,9 +3000,9 @@
     <name>Preparations</name>
     <class>Common</class>
     <cost>
-      <bricks>7</bricks>
+      <bricks>6</bricks>
       <gems>0</gems>
-      <recruits>7</recruits>
+      <recruits>6</recruits>
     </cost>
     <modes>0</modes>
     <level>2</level>
@@ -3013,7 +3013,7 @@
     else $mydata->Recruits+= 11;
 ]]></code>
     <created>2007-03-26</created>
-    <modified>2007-11-25</modified>
+    <modified>2013-10-19</modified>
   </card>
   <card id="166">
     <name>Royal dragoons</name>
@@ -3399,9 +3399,9 @@
     <name>Magic well</name>
     <class>Common</class>
     <cost>
-      <bricks>7</bricks>
-      <gems>7</gems>
-      <recruits>0</recruits>
+      <bricks>0</bricks>
+      <gems>6</gems>
+      <recruits>6</recruits>
     </cost>
     <modes>0</modes>
     <level>4</level>
@@ -3412,7 +3412,7 @@
     else $mydata->Gems+= 11;
 ]]></code>
     <created>2007-03-26</created>
-    <modified>2007-11-25</modified>
+    <modified>2013-10-19</modified>
   </card>
   <card id="186">
     <name>Ent</name>
@@ -3434,20 +3434,20 @@
     <name>Mithril mine</name>
     <class>Common</class>
     <cost>
-      <bricks>7</bricks>
-      <gems>7</gems>
+      <bricks>5</bricks>
+      <gems>5</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
     <level>5</level>
     <keywords/>
-    <effect><![CDATA[If Quarry < Enemy quarry<br />Quarry: +1<br />else<br />Bricks: +12]]></effect>
+    <effect><![CDATA[If Quarry < Enemy quarry<br />Quarry: +1<br />else<br />Bricks: +11]]></effect>
     <code><![CDATA[
     if ($mydata->Quarry < $hisdata->Quarry) $mydata->Quarry+= 1;
-    else $mydata->Bricks+= 12;
+    else $mydata->Bricks+= 11;
 ]]></code>
     <created>2007-03-26</created>
-    <modified>2009-10-26</modified>
+    <modified>2013-10-19</modified>
   </card>
   <card id="188">
     <name>Crenellation</name>
@@ -3917,52 +3917,52 @@
     <modified>2011-12-24</modified>
   </card>
   <card id="213">
-    <name>Kidnap</name>
+    <name>Kidnapping</name>
     <class>Uncommon</class>
     <cost>
       <bricks>0</bricks>
-      <gems>15</gems>
-      <recruits>8</recruits>
+      <gems>6</gems>
+      <recruits>7</recruits>
     </cost>
     <modes>0</modes>
     <level>4</level>
     <keywords/>
-    <effect><![CDATA[Quarry: +1 <br />Enemy quarry: -1]]></effect>
-    <code><![CDATA[$mydata->Quarry+= 1; $hisdata->Quarry-= 1;]]></code>
+    <effect><![CDATA[Quarry: +1 <br />If Enemy quarry > 3<br />Enemy quarry: -1]]></effect>
+    <code><![CDATA[$mydata->Quarry+= 1; if ($hisdata->Quarry > 3) $hisdata->Quarry-= 1;]]></code>
     <created>2006-05-01</created>
-    <modified>2011-12-24</modified>
+    <modified>2013-10-19</modified>
   </card>
   <card id="214">
-    <name>Mind control</name>
+    <name>Elder shrine</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>0</bricks>
-      <gems>24</gems>
-      <recruits>0</recruits>
-    </cost>
-    <modes>0</modes>
-    <level>3</level>
-    <keywords>Illusion</keywords>
-    <effect><![CDATA[Magic: +1<br />Enemy magic: -1]]></effect>
-    <code><![CDATA[$mydata->Magic+= 1; $hisdata->Magic-= 1;]]></code>
-    <created>2006-05-01</created>
-    <modified>2011-12-24</modified>
-  </card>
-  <card id="215">
-    <name>Treacherous artifact</name>
-    <class>Uncommon</class>
-    <cost>
-      <bricks>10</bricks>
-      <gems>10</gems>
-      <recruits>10</recruits>
+      <bricks>9</bricks>
+      <gems>0</gems>
+      <recruits>8</recruits>
     </cost>
     <modes>0</modes>
     <level>3</level>
     <keywords/>
-    <effect><![CDATA[Dungeon: +1<br />Enemy dungeon: -1]]></effect>
-    <code><![CDATA[$mydata->Dungeons+= 1; $hisdata->Dungeons-= 1;]]></code>
+    <effect><![CDATA[Magic: +1<br />If Enemy magic > 3<br />Enemy magic: -1]]></effect>
+    <code><![CDATA[$mydata->Magic+= 1; if ($hisdata->Magic > 3) $hisdata->Magic-= 1;]]></code>
     <created>2006-05-01</created>
-    <modified>2012-09-08</modified>
+    <modified>2013-10-19</modified>
+  </card>
+  <card id="215">
+    <name>Harpist</name>
+    <class>Uncommon</class>
+    <cost>
+      <bricks>9</bricks>
+      <gems>8</gems>
+      <recruits>0</recruits>
+    </cost>
+    <modes>0</modes>
+    <level>3</level>
+    <keywords/>
+    <effect><![CDATA[Dungeon: +1<br />If Enemy dungeon > 3<br />Enemy dungeon: -1]]></effect>
+    <code><![CDATA[$mydata->Dungeons+= 1; if ($hisdata->Dungeons > 3) $hisdata->Dungeons-= 1;]]></code>
+    <created>2006-05-01</created>
+    <modified>2013-10-19</modified>
   </card>
   <card id="216">
     <name>Salvation</name>
@@ -4144,7 +4144,7 @@
     <cost>
       <bricks>0</bricks>
       <gems>0</gems>
-      <recruits>15</recruits>
+      <recruits>10</recruits>
     </cost>
     <modes>0</modes>
     <level>9</level>
@@ -4155,14 +4155,14 @@
     else $mydata->Dungeons = 4;
 ]]></code>
     <created>2007-05-08</created>
-    <modified>2011-12-24</modified>
+    <modified>2013-10-19</modified>
   </card>
   <card id="226">
     <name>Soul cleaver</name>
     <class>Uncommon</class>
     <cost>
       <bricks>0</bricks>
-      <gems>15</gems>
+      <gems>10</gems>
       <recruits>0</recruits>
     </cost>
     <modes>0</modes>
@@ -4174,13 +4174,13 @@
     else $mydata->Magic = 4;
 ]]></code>
     <created>2007-05-08</created>
-    <modified>2011-12-24</modified>
+    <modified>2013-10-19</modified>
   </card>
   <card id="227">
     <name>Earth elemental</name>
     <class>Uncommon</class>
     <cost>
-      <bricks>20</bricks>
+      <bricks>15</bricks>
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
@@ -4193,7 +4193,7 @@
     else $mydata->Quarry = 4;
 ]]></code>
     <created>2007-05-08</created>
-    <modified>2011-12-24</modified>
+    <modified>2013-10-19</modified>
   </card>
   <card id="228">
     <name>Forgotten castle</name>
@@ -5745,14 +5745,14 @@
     <modes>0</modes>
     <level>10</level>
     <keywords>Titan,Unliving,Far sight</keywords>
-    <effect><![CDATA[Tower:+ 8<br />If #<b>Unliving</b> in hand > 4<br />Magic: +1]]></effect>
+    <effect><![CDATA[Tower: +8<br />If #<b>Unliving</b> in hand > 4<br />Magic: +1]]></effect>
     <code><![CDATA[
     $mydata->Tower+= 8;
     $tmp = $this->KeywordCount($mydata->Hand, "Unliving");
     if ($tmp > 4) $mydata->Magic+= 1;
 ]]></code>
     <created>2007-08-19</created>
-    <modified>2010-06-21</modified>
+    <modified>2013-10-19</modified>
   </card>
   <card id="311">
     <name>Titan's legs</name>
@@ -10224,10 +10224,10 @@
     <modes>0</modes>
     <level>7</level>
     <keywords/>
-    <effect><![CDATA[If Wall < Tower<br />Wall: +12<br />else<br />Wall: +6]]></effect>
-    <code><![CDATA[if ($mydata->Wall < $mydata->Tower) $mydata->Wall+= 12; else $mydata->Wall+= 6;]]></code>
+    <effect><![CDATA[Wall: +12<br />If Wall > 30<br />Tower: -2]]></effect>
+    <code><![CDATA[$mydata->Wall+= 12; if ($mydata->Wall > 30) $mydata->Tower-= 2;]]></code>
     <created>2010-03-14</created>
-    <modified>2010-07-22</modified>
+    <modified>2013-10-19</modified>
   </card>
   <card id="513">
     <name>Veteran militia</name>
@@ -10780,7 +10780,7 @@
     <modes>0</modes>
     <level>9</level>
     <keywords/>
-    <effect><![CDATA[Player(s) with fewest different keywords in hand gains +10 tower]]></effect>
+    <effect><![CDATA[Player(s) with fewest different keywords in hand gains<br />Tower: +10]]></effect>
     <code><![CDATA[
     $mine = $this->CountDistinctKeywords($mydata->Hand);
     $his = $this->CountDistinctKeywords($hisdata->Hand);
@@ -10788,7 +10788,7 @@
     if ($mine >= $his) $hisdata->Tower+= 10;
 ]]></code>
     <created>2010-06-21</created>
-    <modified>2010-06-21</modified>
+    <modified>2013-10-19</modified>
   </card>
   <card id="538">
     <name>Forest guardian</name>
@@ -10843,7 +10843,7 @@
     <modes>0</modes>
     <level>7</level>
     <keywords/>
-    <effect><![CDATA[Player(s) with highest tower gains +2 stock]]></effect>
+    <effect><![CDATA[Player(s) with highest tower gains<br />Stock: +2]]></effect>
     <code><![CDATA[
     if ($mydata->Tower >= $hisdata->Tower)
       { $mydata->Bricks+= 2; $mydata->Gems+= 2; $mydata->Recruits+= 2; }
@@ -10851,7 +10851,7 @@
       { $hisdata->Bricks+= 2; $hisdata->Gems+= 2; $hisdata->Recruits+= 2; }
 ]]></code>
     <created>2010-06-21</created>
-    <modified>2010-06-21</modified>
+    <modified>2013-10-19</modified>
   </card>
   <card id="541">
     <name>Forest spirit</name>
@@ -12487,7 +12487,7 @@
     <name>Dwarven wall</name>
     <class>Common</class>
     <cost>
-      <bricks>6</bricks>
+      <bricks>7</bricks>
       <gems>0</gems>
       <recruits>0</recruits>
     </cost>
@@ -12497,7 +12497,7 @@
     <effect><![CDATA[Wall: +N<br />N = #Facilities]]></effect>
     <code><![CDATA[$mydata->Wall+= $mydata->Quarry + $mydata->Magic + $mydata->Dungeons;]]></code>
     <created>2011-01-01</created>
-    <modified>2011-04-24</modified>
+    <modified>2013-10-19</modified>
   </card>
   <card id="620">
     <name>Wish</name>
@@ -14141,11 +14141,11 @@
       if (in_array($hisdata->Hand[$i], $target_cards))
       {
         $hisdata->Hand[$i] = 247;
-        $hisdata->NewCards[$mode] = 1;
+        $hisdata->NewCards[$i] = 1;
       }
 ]]></code>
     <created>2013-01-01</created>
-    <modified>2013-01-01</modified>
+    <modified>2013-10-19</modified>
   </card>
   <card id="698">
     <name>Justice</name>
@@ -14238,10 +14238,10 @@
     <modes>0</modes>
     <level>10</level>
     <keywords>Beast,Horde,Charge (30)</keywords>
-    <effect><![CDATA[Attack: 30<br />Recruits prod x5]]></effect>
-    <code><![CDATA[$this->Attack(30, $hisdata->Tower, $hisdata->Wall); $recruits_production*= 5;]]></code>
+    <effect><![CDATA[Attack: 30<br />Recruits prod x4]]></effect>
+    <code><![CDATA[$this->Attack(30, $hisdata->Tower, $hisdata->Wall); $recruits_production*= 4;]]></code>
     <created>2013-01-01</created>
-    <modified>2013-07-27</modified>
+    <modified>2013-10-19</modified>
   </card>
   <card id="703">
     <name>Northern scout</name>
