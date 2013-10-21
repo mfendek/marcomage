@@ -163,7 +163,7 @@
     <p>Agility and nimbleness of a beast greatly surpasses human limitations. Armed with claws, teeth and killer instinct, bred in great numbers, the beasts are cheaper and more expendable than regular soldiers.</p>
 ]]></lore>
     <code><![CDATA[
-    $caps = array("Common" => 1, "Uncommon" => 2, "Rare" => 10);
+    $caps = array("Common" => 2, "Uncommon" => 5, "Rare" => 10);
     $cap = $caps[$card->Class];
     $recruits_production*= 2; $this->Attack(min($mydata->Dungeons * $recruits_production, $cap), $hisdata->Tower, $hisdata->Wall);
     ]]></code>
