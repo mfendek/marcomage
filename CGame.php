@@ -856,7 +856,7 @@
 						$mydata->DisCards[0][$mydiscards_index] = $myhand[$i];
 						$statistics->UpdateCardStats($myhand[$i], 'discard'); // update card statistics (card discarded by card effect)
 						// hide revealed card if it was revealed before and discarded now
-						if (isset($mydata->Revealed[$i])); unset($mydata->Revealed[$i]);
+						if (isset($mydata->Revealed[$i])) unset($mydata->Revealed[$i]);
 					}
 					
 					if (((!(isset($hisnewcards[$i]))) and (isset($hisdata->NewCards[$i]))) or ($hishand[$i] != $hisdata->Hand[$i]))
@@ -865,7 +865,7 @@
 						$mydata->DisCards[1][$hisdiscards_index] = $hishand[$i];
 						$statistics->UpdateCardStats($hishand[$i], 'discard'); // update card statistics (card discarded by card effect)
 						// hide revealed card if it was revealed before and discarded now
-						if (isset($hisdata->Revealed[$i])); unset($hisdata->Revealed[$i]);
+						if (isset($hisdata->Revealed[$i])) unset($hisdata->Revealed[$i]);
 					}
 					
 				}
@@ -950,7 +950,7 @@
 			$mydata->LastMode[$mylastcardindex] = $mode;
 			$mydata->LastAction[$mylastcardindex] = $action;
 			$mydata->NewCards[$cardpos] = 1; //TODO: this shouldn't apply everytime
-			if (isset($mydata->Revealed[$cardpos])); unset($mydata->Revealed[$cardpos]);
+			if (isset($mydata->Revealed[$cardpos])) unset($mydata->Revealed[$cardpos]);
 			
 			// check victory conditions (in this predetermined order)
 			if(     $mydata->Tower > 0 and $hisdata->Tower <= 0 )
