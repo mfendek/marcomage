@@ -2720,7 +2720,7 @@
 				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Messages'; break; }
 
 				// delete t3h challenge/game entry
-				if (!$game->DeleteChallenge()) { $db->txnRollBack(); $error = 'Failed to withdraw challenge.'; $current = 'Messages'; break; }
+				if (!$game->DeleteChallenge()) { $error = 'Failed to withdraw challenge.'; $current = 'Messages'; break; }
 
 				$information = 'You have withdrawn a challenge.';
 				$_POST['outgoing'] = "outgoing"; // stay in "Outgoing" subsection
