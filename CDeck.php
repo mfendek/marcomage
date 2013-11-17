@@ -596,7 +596,9 @@
 			
 			// check if the deckname can be used (will not violate deck name uniqueness)
 			$list = $this->Decks->ListDecks($this->Username);
-			$pos = array_search($newname, $list);
+			$deck_names = array();
+			foreach ($list as $deck) $deck_names[] = $deck['Deckname'];
+			$pos = array_search($newname, $deck_names);
 			if (($this->Deckname != $newname) AND ($pos !== false)) return 'Cannot change deck name, it is already used by another deck.';
 			if (trim($newname) == '') return 'Cannot change deck name, invalid input.';
 			

@@ -2291,7 +2291,7 @@
 				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Games'; break; }
 
 				// check if you are within the MAX_GAMES limit
-				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'You may only have '.MAX_GAMES.' simultaneous games at once (this also includes your challenges).'; $current = 'Games'; break; }
+				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'Maxmimum number of games reached (this also includes your challenges).'; $current = 'Games'; break; }
 
 				// check if the game can be joined (can't join game against a computer player)
 				if ($game->GetGameMode('AIMode') == 'yes') { $error = 'Failed to join the game!'; $current = 'Games'; break; }
@@ -2577,7 +2577,7 @@
 				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Messages'; break; }
 
 				// the player may never have more than MAX_GAMES games at once, even potential ones (challenges)
-				if ($gamedb->CountFreeSlots2($player->Name()) == 0) { $error = 'You may only have '.MAX_GAMES.' simultaneous games at once (this also includes your challenges).'; $current = 'Messages'; break; }
+				if ($gamedb->CountFreeSlots2($player->Name()) == 0) { $error = 'Maxmimum number of games reached (this also includes your challenges).'; $current = 'Messages'; break; }
 
 				$opponent = $game->Name1();
 
