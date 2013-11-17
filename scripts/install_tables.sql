@@ -121,7 +121,8 @@ CREATE TABLE `replays` (
   KEY `GameModes` (`GameModes`),
   KEY `Finished` (`Finished`),
   KEY `AI` (`AI`),
-  KEY `ThreadID` (`ThreadID`)
+  KEY `ThreadID` (`ThreadID`),
+  KEY `Winner` (`Winner`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

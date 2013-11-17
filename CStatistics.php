@@ -54,17 +54,15 @@
 			$statistics = array_combine($statistics, array_fill(0, count($statistics), 0));
 
 			// get number of different victory types
-			$result = $db->Query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays` WHERE (`EndType` != "Pending") GROUP BY `EndType`');
+			$result = $db->Query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays` WHERE `EndType` != "Pending" GROUP BY `EndType`');
 			if ($result === false) return false;
 
-			foreach ($result as $data) $statistics[$data['EndType']] = $data['count'];
-
-			// get number of total games games
-			$result = $db->Query('SELECT COUNT(`GameID`) as `total` FROM `replays` WHERE (`EndType` != "Pending")');
-			if ($result === false or count($result) == 0) return false;
-
-			$data = $result[0];
-			$total_games = $data['total'];
+			$total_games = 0;
+			foreach ($result as $data)
+			{
+				$total_games+= $data['count'];
+				$statistics[$data['EndType']] = $data['count'];
+			}
 			$rounded = array();
 
 			// calculate percentage, restructure data
@@ -82,27 +80,43 @@
 		{
 			$db = $this->db;
 
-			$params = array('hidden' => array('HiddenCards'), 'friendly' => array('FriendlyPlay'), 'long' => array('LongMode'));
-
 			// get number of games with various game modes
-			$results = $db->MultiQuery('SELECT COUNT(`GameID`) as `count` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET(?, `GameModes`) > 0)', $params);
+			$results = $db->Query('SELECT `GameModes`, COUNT(`GameModes`) as `count` FROM `replays` WHERE `EndType` != "Pending" GROUP BY `GameModes`');
 			if ($results === false) return false;
 
-			foreach ($results as $result_name => $result)
+			$total_games = 0;
+			$game_modes = array();
+			foreach ($results as $res_data)
 			{
-				$data = $result[0];
-				$statistics[$result_name] = $data['count'];
+				$total_games+= $res_data['count'];
+
+				$modes = explode(",", $res_data['GameModes']);
+				foreach ($modes as $mode)
+				{
+					if (isset($game_modes[$mode]))
+					{
+						$game_modes[$mode]+= $res_data['count'];
+					}
+					else
+					{
+						$game_modes[$mode] = $res_data['count'];
+					}
+				}
 			}
 
+			$statistics['hidden'] = (isset($game_modes['HiddenCards'])) ? $game_modes['HiddenCards'] : 0;
+			$statistics['friendly'] = (isset($game_modes['FriendlyPlay'])) ? $game_modes['FriendlyPlay'] : 0;
+			$statistics['long'] = (isset($game_modes['LongMode'])) ? $game_modes['LongMode'] : 0;
+
 			// get number of AI mode games (exclude AI challenges)
-			$result = $db->Query('SELECT COUNT(`GameID`) as `ai` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("AIMode", `GameModes`) > 0) AND `AI` = ""');
+			$result = $db->Query('SELECT COUNT(`GameID`) as `ai` FROM `replays` WHERE `EndType` != "Pending" AND FIND_IN_SET("AIMode", `GameModes`) > 0 AND `AI` = ""');
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
 			$statistics['ai'] = $data['ai'];
 
 			// get number of AI victories (exclude AI challenges)
-			$result = $db->Query('SELECT COUNT(`GameID`) as `ai_wins` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("AIMode", `GameModes`) > 0) AND `AI` = "" AND `Winner` = ?', array(SYSTEM_NAME));
+			$result = $db->Query('SELECT COUNT(`GameID`) as `ai_wins` FROM `replays` WHERE `EndType` != "Pending" AND FIND_IN_SET("AIMode", `GameModes`) > 0 AND `AI` = "" AND `Winner` = ?', array(SYSTEM_NAME));
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
@@ -111,27 +125,20 @@
 			$ai_win_ratio = ($statistics['ai'] > 0) ? round(($ai_wins / $statistics['ai']) * 100, 2) : 0;
 
 			// get number of AI challenge games
-			$result = $db->Query('SELECT COUNT(`GameID`) as `challenge` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("AIMode", `GameModes`) > 0) AND `AI` != ""');
+			$result = $db->Query('SELECT COUNT(`GameID`) as `challenge` FROM `replays` WHERE `EndType` != "Pending" AND `AI` != ""');
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
 			$statistics['challenge'] = $data['challenge'];
 
 			// get number of AI challenge victories
-			$result = $db->Query('SELECT COUNT(`GameID`) as `challenge_wins` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("AIMode", `GameModes`) > 0) AND `AI` != "" AND `Winner` = ?', array(SYSTEM_NAME));
+			$result = $db->Query('SELECT COUNT(`GameID`) as `challenge_wins` FROM `replays` WHERE `EndType` != "Pending" AND `AI` != "" AND `Winner` = ?', array(SYSTEM_NAME));
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
 			$challenge_wins = $data['challenge_wins'];
 
 			$challenge_win_ratio = ($statistics['challenge'] > 0) ? round(($challenge_wins / $statistics['challenge']) * 100, 2) : 0;
-
-			// get number of total games games
-			$result = $db->Query('SELECT COUNT(`GameID`) as `total` FROM `replays` WHERE (`EndType` != "Pending")');
-			if ($result === false or count($result) == 0) return false;
-
-			$data = $result[0];
-			$total_games = $data['total'];
 
 			// calculate percentage
 			foreach ($statistics as $statistic => $value) $statistics[$statistic] = ($total_games > 0) ? round(($value / $total_games) * 100, 2) : 0;
