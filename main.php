@@ -3583,7 +3583,7 @@ case 'Decks_shared':
 	$params['decks_shared']['shared_list'] = $deckdb->ListSharedDecks($author, $condition, $order, $current_page);
 	$params['decks_shared']['page_count'] = $deckdb->CountPages($author);
 	$params['decks_shared']['authors'] = $deckdb->ListAuthors();
-	$params['decks_shared']['decks'] = $player->ListDecks($player->Name());
+	$params['decks_shared']['decks'] = $player->ListDecks();
 	$params['decks_shared']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
 
 	break;
