@@ -2385,7 +2385,7 @@
 				if (!$ai_deck) { $error = 'Deck does not exist!'; $current = 'Games'; break; }
 
 				// check if the deck is ready (all 45 cards)
-				if (!$ai_deck->isReady()) { $error = 'Deck '.$deck->Deckname().' is not yet ready for gameplay!'; $current = 'Games'; break; }
+				if (!$ai_deck->isReady()) { $error = 'AI deck is not yet ready for gameplay!'; $current = 'Games'; break; }
 
 				// check if such deck exists
 				if (!$deck ) { $error = 'Deck does not exist!'; $current = 'Games'; break; }
