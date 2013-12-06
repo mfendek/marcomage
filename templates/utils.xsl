@@ -460,7 +460,7 @@
 							<xsl:attribute name="src">img/concepts/<xsl:value-of select="$card/picture"/></xsl:attribute>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:attribute name="src">img/cards/card_<xsl:value-of select="$card/id"/>.png</xsl:attribute>
+							<xsl:attribute name="src">img/cards/card_<xsl:value-of select="$card/id"/>.png?v=<xsl:value-of select="$card/modified"/></xsl:attribute>
 							<xsl:if test="$c_revealed or $c_new">
 								<xsl:attribute name="style">float: left</xsl:attribute>
 							</xsl:if>
