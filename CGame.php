@@ -797,10 +797,7 @@
 				if ($card->Keywords != '')
 				{
 					// list all keywords in order they are to be executed
-					$category_keywords = $this->CategoryKeywords();
-					$effect_keywords = $this->EffectKeywords();
-
-					$keywords = array_merge($category_keywords, $effect_keywords);
+					$keywords = $this->KeywordsOrder();
 					foreach ($keywords as $keyword_name)
             if ($card->HasKeyWord($keyword_name))
             {
@@ -1205,10 +1202,7 @@
 			if ($card->Keywords != '')
 			{
 				// list all keywords in order they are to be executed
-				$category_keywords = $this->CategoryKeywords();
-				$effect_keywords = $this->EffectKeywords();
-
-				$keywords = array_merge($category_keywords, $effect_keywords);
+				$keywords = $this->KeywordsOrder();
 				foreach ($keywords as $keyword_name)
 					if ($card->HasKeyWord($keyword_name))
 					{
@@ -1820,14 +1814,9 @@
 			return $this->GameAI->DetermineMove($ai_player);
 		}
 
-		public function CategoryKeywords()
+		public function KeywordsOrder()
 		{
-      return array('Alliance', 'Aqua', 'Barbarian', 'Beast', 'Brigand', 'Burning', 'Destruction', 'Dragon', 'Holy', 'Illusion', 'Legend', 'Mage', 'Nature', 'Restoration', 'Runic', 'Soldier', 'Titan', 'Undead', 'Unliving');
-		}
-
-		public function EffectKeywords()
-		{
-      return array('Durable', 'Quick', 'Swift', 'Far sight', 'Banish', 'Skirmisher', 'Horde', 'Rebirth', 'Flare attack', 'Frenzy', 'Aria', 'Enduring', 'Charge', 'Siege');
+      return array('Alliance', 'Aqua', 'Barbarian', 'Beast', 'Brigand', 'Burning', 'Destruction', 'Dragon', 'Holy', 'Illusion', 'Legend', 'Mage', 'Nature', 'Restoration', 'Runic', 'Soldier', 'Titan', 'Undead', 'Unliving', 'Durable', 'Quick', 'Swift', 'Far sight', 'Banish', 'Skirmisher', 'Horde', 'Rebirth', 'Flare attack', 'Frenzy', 'Aria', 'Enduring', 'Charge', 'Siege');
 		}
 
 		private function LastRound() // fetch data of the first turn of the current round
