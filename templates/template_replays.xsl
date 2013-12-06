@@ -265,7 +265,9 @@
 		</xsl:choose>
 
 		<!-- slideshow button -->
-		<button type="button" name="slideshow">Play</button>
+		<xsl:if test="$current &lt; $turns">
+			<button type="button" name="slideshow">Play</button>
+		</xsl:if>
 		<!-- end navigation -->
 	</p>
 
