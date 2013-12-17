@@ -5,7 +5,7 @@
 function highlightSection(section) // highlight specified section
 {
 	$("div#menu_center > a:contains('" + section + "')").effect('highlight', {}, 1000);
-	window.setTimeout('highlightSection("' + section + '")', 1500);
+	window.setTimeout(highlightSection, 1500, section);
 }
 
 $(document).ready(function() {

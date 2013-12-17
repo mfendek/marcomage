@@ -27,7 +27,7 @@ function StartGameRefresh()
 
 	if ($("div#game > input[name='Autorefresh']").length == 1)
 	{
-		timer = window.setTimeout('GameRefresh()', parseInt($("div#game > input[name='Autorefresh']").val()) * 1000);
+		timer = window.setTimeout(GameRefresh, parseInt($("div#game > input[name='Autorefresh']").val()) * 1000);
 	}
 
 	return timer;
@@ -48,13 +48,13 @@ $(document).ready(function() {
 
 	if ($("div#games > input[name='Autorefresh']").length == 1)
 	{
-		games_timer = window.setTimeout('GamesRefresh()', parseInt($("div#games > input[name='Autorefresh']").val()) * 1000);
+		games_timer = window.setTimeout(GamesRefresh, parseInt($("div#games > input[name='Autorefresh']").val()) * 1000);
 	}
 
 	// activate auto AI move
 	if ($("div#game > input[name='AutoAi']").length == 1)
 	{
-		window.setTimeout('autoAiMove()', parseInt($("div#game > input[name='AutoAi']").val()) * 1000);
+		window.setTimeout(autoAiMove, parseInt($("div#game > input[name='AutoAi']").val()) * 1000);
 	}
 
 	// card selector verification (play card)

@@ -5,13 +5,13 @@
 function highlightQuickButton() // highlight quick game vs AI button
 {
 	$("div#games button[name='quick_game']").effect('highlight', {}, 1000);
-	window.setTimeout('highlightQuickButton()', 1500);
+	window.setTimeout(highlightQuickButton, 1500);
 }
 
 function highlightLeaveButton() // highlight leave game button
 {
 	$("div#game button[name='Confirm']").effect('highlight', {}, 1000);
-	window.setTimeout('highlightLeaveButton()', 1500);
+	window.setTimeout(highlightLeaveButton, 1500);
 }
 
 function highlightCards() // highlight playable cards in hand
@@ -23,20 +23,20 @@ function highlightCards() // highlight playable cards in hand
 		if ($("div#game tr.hand:first-child div.selected_card").length == 0)
 		{
 			$("div#game tr.hand:first-child div[class!='unplayable'] > div.karta").animate({ borderColor: "#000000" }, 500, function() {$(this).animate({ borderColor: "#ffffff" }, 500);});
-			window.setTimeout('highlightCards()', 5000);
+			window.setTimeout(highlightCards, 5000);
 		}
 		// case 2: highlight play button
 		else if ($("div#game button[name='play_card']").length == 1)
 		{
 			$("div#game button[name='play_card']").effect('highlight', {}, 1000);
-			window.setTimeout('highlightCards()', 1500);
+			window.setTimeout(highlightCards, 1500);
 		}
 	}
 	// case 2: multiple play card button mode is active
 	else
 	{
 		$("div#game button[name='play_card']").effect('highlight', {}, 1000);
-		window.setTimeout('highlightCards()', 1500);
+		window.setTimeout(highlightCards, 1500);
 	}
 }
 
