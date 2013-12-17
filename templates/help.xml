@@ -15,6 +15,22 @@
 <p>To play or discard a card, you need to select the card first by clicking on the desired card (or clicking on the radio button below the card when JavaScript is disabled). Selected card is visualised by double black border. Then push either "Play" or "Discard" button, depending on the choice of action. Cards that can't be played because of insufficient resources are only partially visible. It's also possible to calculate changes that would be caused by playing the selected card, although these changes will be hypothetical in case of cards with random-based effect. This can be done with "Preview" button, which is operated the exact same way as "Play" button. However, "Preview" button works only if JavaScript is enabled and if hidden cards mode isn't used.</p>
 		]]>
 	</part>
+	<part name="Tutorial">
+		<![CDATA[
+<p>Newly registered player starts in tutorial mode. While in tutorial, player is directed by visual guidance which helps him navigate the website. Some game sections are not available from the start. These sections are unlocked one at a time when player gains a new level. Game sections are unlocked on these levels:</p>
+
+<ol>
+	<li>Decks section - deck customization</li>
+	<li>Cards section - card database viewer</li>
+	<li>Replays section - game recordings database</li>
+	<li>Novels section - fantasy novels</li>
+	<li>Concepts section - new card suggestions by players</li>
+	<li>Statistics section - card statistics and other game information</li>
+</ol>
+
+<p>In addition to unlocking new sections, player also unlocks cards in the process. The more cards are available to player, the more varied decks can he use. When player gains a new level, he receives level up message which informs him about the new features he just unlocked. Player gains experience points when playing against computer opponent while in tutorial, which is not the case for other players that already finished tutorial. Tutorial ends when player reaches level 10, all game sections and all cards are unlocked at this point.</p>
+		]]>
+	</part>
 	<part name="Game attributes">
 		<![CDATA[
 <h4>Game attributes: Resources, facilities, resource production, tower and wall</h4>
