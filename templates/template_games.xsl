@@ -617,7 +617,7 @@
 			<xsl:when test="$param/AIMode = 'yes' and not($my_turn) and $param/GameState = 'in progress'">
 				<td colspan="2"><button type="submit" name="ai_move">Execute AI move</button></td>
 			</xsl:when>
-			<xsl:when test="$param/AIMode = 'no' and not($my_turn) and $param/finish_move = 'yes'">
+			<xsl:when test="$param/AIMode = 'no' and not($my_turn) and $param/GameState = 'in progress' and $param/finish_move = 'yes'">
 				<td colspan="2"><button type="submit" name="finish_move">Execute opponent's move</button></td>
 			</xsl:when>
 			<xsl:otherwise>
