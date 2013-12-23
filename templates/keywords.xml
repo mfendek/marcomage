@@ -437,8 +437,8 @@
     <name>Holy</name>
     <basic_gain>25</basic_gain>
     <bonus_gain>5</bonus_gain>
-    <description>Holy song - gain random resources based on played card rarity (Common - 1, Uncommon - 2, Rare - 5). Replace highest rarity Undead card from opponent's hand of the same or lower rarity as the played card with Purified ashes.</description>
-    <lore><![CDATA[<p>People with spiritual talents who dislike the corrupting nature of magic often decide to become priests instead of mages. Priests use their talents to heal and protect their allies, also at a time of need they are able to call to their deity for intervention. In addition, they are the most effective weapon against the undead. An undead killed by a priest can't be reanimated ever again.</p>]]></lore>
+    <description>Holy song - gain random resources based on played card rarity (Common - 1, Uncommon - 2, Rare - 5). Replace highest rarity Demonic or Undead card from opponent's hand of the same or lower rarity as the played card with Purified ashes.</description>
+    <lore><![CDATA[<p>People with spiritual talents who dislike the corrupting nature of magic often decide to become priests instead of mages. Priests use their talents to heal and protect their allies, also at a time of need they are able to call to their deity for intervention. In addition, they are the most effective weapon against both demons and the undead. An undead killed by a priest can't be reanimated ever again.</p>]]></lore>
     <code><![CDATA[
     // target card is discarded only if it has same or lower rarity than the played card
     $rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
@@ -462,7 +462,7 @@
       $dis_rank = $rarities[$dis_class];
       
       // pick only cards that can be discarded by played card
-      if (($dis_card->HasKeyword("Undead")) AND ($dis_rank <= $played_rank)) $storage[$dis_class][] = $i;
+      if (($dis_card->HasKeyword("Demonic") or $dis_card->HasKeyword("Undead")) AND ($dis_rank <= $played_rank)) $storage[$dis_class][] = $i;
     }
     
     if ((count($storage['Common']) + count($storage['Uncommon']) + count($storage['Rare'])) > 0)
