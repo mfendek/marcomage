@@ -1816,7 +1816,7 @@
 
 		public function KeywordsOrder()
 		{
-      return array('Alliance', 'Aqua', 'Barbarian', 'Beast', 'Brigand', 'Burning', 'Destruction', 'Dragon', 'Holy', 'Illusion', 'Legend', 'Mage', 'Nature', 'Restoration', 'Runic', 'Soldier', 'Titan', 'Undead', 'Unliving', 'Durable', 'Quick', 'Swift', 'Far sight', 'Banish', 'Skirmisher', 'Horde', 'Rebirth', 'Flare attack', 'Frenzy', 'Aria', 'Enduring', 'Charge', 'Siege');
+      return array('Alliance', 'Aqua', 'Barbarian', 'Beast', 'Brigand', 'Burning', 'Demonic', 'Destruction', 'Dragon', 'Holy', 'Illusion', 'Legend', 'Mage', 'Nature', 'Restoration', 'Runic', 'Soldier', 'Titan', 'Undead', 'Unliving', 'Durable', 'Quick', 'Swift', 'Far sight', 'Banish', 'Skirmisher', 'Horde', 'Rebirth', 'Flare attack', 'Frenzy', 'Aria', 'Enduring', 'Charge', 'Siege');
 		}
 
 		private function LastRound() // fetch data of the first turn of the current round

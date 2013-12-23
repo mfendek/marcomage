@@ -231,6 +231,44 @@
 ]]></code>
   </keyword>
   <keyword>
+    <name>Demonic</name>
+    <basic_gain>0</basic_gain>
+    <bonus_gain>0</bonus_gain>
+    <description>Wicked soul - player suffers one random penalty chosen from played card cost (Bricks - lose N random resources, Gems - N tower damage, Recruits - N wall damage), N based on played card's rarity (Common - 2 , Uncommon - 3, Rare - 4).</description>
+    <lore><![CDATA[
+    <p>Long ago Demons were the rulers of the world; some of them, the Darklords, were so powerful that even the Gods were afraid of them. For this reason the Gods sealed the Darklords and their armies in an empty dimension: the Void. But now, after many centuries, the seal has weakened and some Demons were able to return in this world to unleash an unspeakable evil.</p>
+    <p>Demons are dangerous creatures with an incredible destructive power that it's impossible to control: not even Myr the Magelord could use them without great sacrificies.</p>
+]]></lore>
+    <code><![CDATA[
+    $penalties = array();
+    foreach (array('Bricks', 'Gems', 'Recruits') as $resource) {
+      if ($card->GetResources($resource) > 0) {
+        $penalties[] = $resource;
+      }
+    }
+    if (count($penalties) > 0) {
+      $rarities = array('Common' => 2, 'Uncommon' => 3, 'Rare' => 4);
+      $amount = $rarities[$card->Class];
+      $penalty = $penalties[array_mt_rand($penalties)];
+
+      if ($penalty == 'Bricks') {
+        for ($i = 1; $i <= $amount; $i++) {
+          $tmp = mt_rand(0,2);
+          if ($tmp == 0) $mydata->Bricks--;
+          elseif ($tmp == 1) $mydata->Gems--;
+          elseif ($tmp == 2) $mydata->Recruits--;
+        }
+      }
+      elseif ($penalty == 'Gems') {
+        $mydata->Tower-= $amount; 
+      }
+      elseif ($penalty == 'Recruits') {
+        $mydata->Wall-= $amount; 
+      }
+    }
+]]></code>
+  </keyword>
+  <keyword>
     <name>Destruction</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
