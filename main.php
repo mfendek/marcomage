@@ -3475,6 +3475,7 @@ case 'Decks_edit':
 	$createdfilter = $params['deck_edit']['CreatedFilter'] = isset($_POST['CreatedFilter']) ? $_POST['CreatedFilter'] : 'none';
 	$modifiedfilter = $params['deck_edit']['ModifiedFilter'] = isset($_POST['ModifiedFilter']) ? $_POST['ModifiedFilter'] : 'none';
 	$levelfilter = $params['deck_edit']['LevelFilter'] = isset($_POST['LevelFilter']) ? $_POST['LevelFilter'] : 'none';
+	$params['deck_edit']['card_sort'] = isset($_POST['card_sort']) ? $_POST['card_sort'] : 'name';
 
 	$score = $scoredb->GetScore($player->Name());
 	$player_level = $score->ScoreData->Level;

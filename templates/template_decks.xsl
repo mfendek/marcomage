@@ -455,6 +455,13 @@
 	</xsl:variable>
 	<xsl:copy-of select="am:htmlSelectBox('LevelFilter', $param/LevelFilter, $level, $param/levels)"/>
 
+	<!-- sorting options -->
+	<xsl:variable name="card_sort">
+		<value name="Sort by name" value="name" />
+		<value name="Sort by cost" value="cost" />
+	</xsl:variable>
+	<xsl:copy-of select="am:htmlSelectBox('card_sort', $param/card_sort, $card_sort, '')"/>
+
 	<button type="submit" name="filter">Apply filters</button>
 	<button type="submit" name="card_pool_switch">
 		<xsl:if test="count($param/CardList/*) &gt; 0">
@@ -473,12 +480,24 @@
 	<xsl:if test="$param/card_pool = 'no'">
 		<xsl:attribute name="class">hidden</xsl:attribute>		
 	</xsl:if>
-	<!-- sort cards in card pool by card name -->
+	<!-- sort cards in card pool -->
 	<xsl:variable name="card_list">
-		<xsl:for-each select="$param/CardList/*">
-			<xsl:sort select="name" order="ascending"/>
-			<xsl:copy-of select="." />
-		</xsl:for-each>
+		<xsl:choose>
+			<!-- sort by total card cost -->
+			<xsl:when test="$param/card_sort = 'cost'">
+				<xsl:for-each select="$param/CardList/*">
+					<xsl:sort select="bricks + gems + recruits" order="ascending" data-type="number"/>
+					<xsl:copy-of select="." />
+				</xsl:for-each>
+			</xsl:when>
+			<!-- sort by card name (default sorting) -->
+			<xsl:otherwise>
+				<xsl:for-each select="$param/CardList/*">
+					<xsl:sort select="name" order="ascending"/>
+					<xsl:copy-of select="." />
+				</xsl:for-each>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:variable>
 	<xsl:variable name="columns" select="$param/cards_per_row"/>
 
