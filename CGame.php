@@ -1401,6 +1401,28 @@
 
 			return implode("\n", $message);
 		}
+
+		///
+		/// Proxy function to $carddb->getCard()
+		/// @param int $card_id card id
+		/// @return Card if operation was successful, false otherwise
+		private function GetCard($card_id)
+		{
+			global $carddb;
+
+			return $carddb->GetCard($card_id);
+		}
+
+		///
+		/// Proxy function to $carddb->getList()
+		/// @param array $filters an array of chosen filters and their parameters
+		/// @return array ids for cards that match the filters
+		private function GetList(array $filters)
+		{
+			global $carddb;
+
+			return $carddb->GetList($filters);
+		}
 		
 		private function KeywordCount(array $hand, $keyword)
 		{

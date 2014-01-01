@@ -48,7 +48,7 @@
       for ($i = 1; $i <= 8; $i++)
         if ($i != $cardpos)
         {
-          $cur_card = $carddb->GetCard($mydata->Hand[$i]);
+          $cur_card = $this->GetCard($mydata->Hand[$i]);
           if ($cur_card->Class == 'Common') $storage[$i] = $cur_card->GetResources("");
         }
       if (count($storage) > 0)
@@ -80,11 +80,11 @@
     $rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
     $storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
     $played_rank = $rarities[$card->Class];
-    $persistent = $carddb->GetList(array('advanced'=>"Replace a card in hand with self"));
+    $persistent = $this->GetList(array('advanced'=>"Replace a card in hand with self"));
 
     for ($i = 1; $i <= 8; $i++)
     {
-      $dis_card = $carddb->GetCard($hisdata->Hand[$i]);
+      $dis_card = $this->GetCard($hisdata->Hand[$i]);
       $dis_class = $dis_card->Class;
       $dis_rank = $rarities[$dis_class];
       
@@ -101,7 +101,7 @@
       
       if ($card->Class == 'Rare')
       {
-        $new_card = $this->DrawCard($carddb->GetList(array('class'=>"Common", 'cost'=>"Zero")), $hisdata->Hand, $discarded_pos, 'DrawCard_list');
+        $new_card = $this->DrawCard($this->GetList(array('class'=>"Common", 'cost'=>"Zero")), $hisdata->Hand, $discarded_pos, 'DrawCard_list');
       }
       else
       {
@@ -185,7 +185,7 @@
     
     for ($i = 1; $i <= 8; $i++)
     {
-      $dis_card = $carddb->GetCard($hisdata->Hand[$i]);
+      $dis_card = $this->GetCard($hisdata->Hand[$i]);
       $dis_class = $dis_card->Class;
       $dis_rank = $rarities[$dis_class];
       
@@ -348,7 +348,7 @@
     <code><![CDATA[
     if (!$hidden_cards OR isset($hisdata->Revealed[$cardpos])) // bonus effect
     {
-      $cur_card = $carddb->GetCard($hisdata->Hand[$cardpos]);
+      $cur_card = $this->GetCard($hisdata->Hand[$cardpos]);
       $bricks = $cur_card->GetResources('Bricks');
       $gems = $cur_card->GetResources('Gems');
       $recruits = $cur_card->GetResources('Recruits');
@@ -397,8 +397,8 @@
       $mine = 2*$i - $selector;
       $his = 2*$i - (1 - $selector);
       
-      $mytarget = $carddb->GetCard($mydata->Hand[$mine]);
-      $histarget = $carddb->GetCard($hisdata->Hand[$his]);
+      $mytarget = $this->GetCard($mydata->Hand[$mine]);
+      $histarget = $this->GetCard($hisdata->Hand[$his]);
       
       $my_rarity = $mytarget->Class;
       $his_rarity = $histarget->Class;
@@ -425,7 +425,7 @@
     <description>Rage blast - if played card is a neighbour of a Frenzy card, opponent receives bonus damage (recruits cost of the played card * N/3, N based on played card rarity (Common - 1, Uncommon - 2, Rare - 3)).</description>
     <lore><![CDATA[<p>Good generals are aware of the effect of army's high morale on its combat performance. Frenzy goes one step further. A frenzied creature is partially insane and can be dangerous to use, however when unleashed in the right time and right place it can break the enemy ranks and cause severe damage to the enemy.</p>]]></lore>
     <code><![CDATA[
-    if (($cardpos > 1 and $carddb->GetCard($mydata->Hand[$cardpos - 1])->HasKeyword("Frenzy")) or ($cardpos < 8 and $carddb->GetCard($mydata->Hand[$cardpos + 1])->HasKeyword("Frenzy")))
+    if (($cardpos > 1 and $this->GetCard($mydata->Hand[$cardpos - 1])->HasKeyword("Frenzy")) or ($cardpos < 8 and $this->GetCard($mydata->Hand[$cardpos + 1])->HasKeyword("Frenzy")))
     {
       $rarities = array('Common' => 1, 'Uncommon' => 2, 'Rare' => 3);
       $coef = $rarities[$card->Class];
@@ -457,7 +457,7 @@
     
     for ($i = 1; $i <= 8; $i++)
     {
-      $dis_card = $carddb->GetCard($hisdata->Hand[$i]);
+      $dis_card = $this->GetCard($hisdata->Hand[$i]);
       $dis_class = $dis_card->Class;
       $dis_rank = $rarities[$dis_class];
       
@@ -483,12 +483,12 @@
     <description>Fear - if played card is a neighbour of a Horde card and recruits cost of the played card is greater than recruits cost of the matching card replace equal or lower rarity matching card with Palisade.</description>
     <lore><![CDATA[<p>Fear is an effective tool in any war. Enemies of the Horde had many opportunities to witness the effectiveness of such tactic. Broken formations, chaotic retreat and disobedience of orders often lead to loss of the entire army.</p>]]></lore>
     <code><![CDATA[
-    if (($cardpos > 1 and $carddb->GetCard($mydata->Hand[$cardpos - 1])->HasKeyword("Horde")) or ($cardpos < 8 and $carddb->GetCard($mydata->Hand[$cardpos + 1])->HasKeyword("Horde")))
+    if (($cardpos > 1 and $this->GetCard($mydata->Hand[$cardpos - 1])->HasKeyword("Horde")) or ($cardpos < 8 and $this->GetCard($mydata->Hand[$cardpos + 1])->HasKeyword("Horde")))
     {
       $rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
       $recruits = $card->GetResources("Recruits");
 
-      $matching_card = $carddb->GetCard($hisdata->Hand[$cardpos]);
+      $matching_card = $this->GetCard($hisdata->Hand[$cardpos]);
       if ($rarities[$card->Class] >= $rarities[$matching_card->Class] and $recruits > $matching_card->GetResources("Recruits"))
       {
         $hisdata->Hand[$cardpos] = 297;
@@ -509,7 +509,7 @@
       $storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
       for ($i = 1; $i <= 8; $i++)
       {
-        $cur_card = $carddb->GetCard($mydata->Hand[$i]);
+        $cur_card = $this->GetCard($mydata->Hand[$i]);
         $rarity = $cur_card->Class;
         if ($i != $cardpos) $storage[$rarity][] = $i;
       }
@@ -535,7 +535,7 @@
     for ($i = 1; $i <= 8; $i++)
       if (($i != $cardpos) AND !$found) // played card does not count
       {
-        $cur_card = $carddb->GetCard($mydata->Hand[$i]);
+        $cur_card = $this->GetCard($mydata->Hand[$i]);
         if ($cur_card->Class == "Rare") $found = true;
       }
     
@@ -574,7 +574,7 @@
     <code><![CDATA[
     if ($mylast_card->HasKeyword("Nature") AND $mylast_action == 'play' AND $mylast_card->Class != 'Common' AND $cardid != $mylast_card->ID)
     {
-      $nextcard = $this->DrawCard($carddb->GetList(array('class'=>"Rare", 'keyword'=>"Nature")), $mydata->Hand, $cardpos, 'DrawCard_list');
+      $nextcard = $this->DrawCard($this->GetList(array('class'=>"Rare", 'keyword'=>"Nature")), $mydata->Hand, $cardpos, 'DrawCard_list');
     }
 ]]></code>
   </keyword>
@@ -680,11 +680,11 @@
     $rarities = array("Common" => 0, "Uncommon" => 1, "Rare" => 2);
     $storage = $r_storage = array("Common" => array(), "Uncommon" => array(), "Rare" => array());
     $played_rank = $rarities[$card->Class];
-    $secondary_cards = $carddb->GetList(array('cost'=>"Green", 'advanced'=>"Attack:"));
+    $secondary_cards = $this->GetList(array('cost'=>"Green", 'advanced'=>"Attack:"));
     
     for ($i = 1; $i <= 8; $i++)
     {
-      $dis_card = $carddb->GetCard($hisdata->Hand[$i]);
+      $dis_card = $this->GetCard($hisdata->Hand[$i]);
       $dis_class = $dis_card->Class;
       $dis_rank = $rarities[$dis_class];
       
@@ -714,7 +714,7 @@
       
       if ($card->Class == 'Rare')
       {
-        $new_card = $this->DrawCard($carddb->GetList(array('class'=>"Common", 'cost'=>"Zero")), $hisdata->Hand, $discarded_pos, 'DrawCard_list');
+        $new_card = $this->DrawCard($this->GetList(array('class'=>"Common", 'cost'=>"Zero")), $hisdata->Hand, $discarded_pos, 'DrawCard_list');
       }
       else
       {
@@ -750,7 +750,7 @@
     <description>Titan's will - summons a Titan not present in hand.</description>
     <lore><![CDATA[<p>One of the titans who didn't get eradicated by the gods was smashed to pieces. Although each piece is alive and can be used as a separate, anyone who is able to find all the pieces and complete them into the greater whole will possess an unstoppable war machine which is feared even by gods.</p>]]></lore>
     <code><![CDATA[
-    $titans = array_diff($carddb->GetList(array('keyword'=>"Titan")), $mydata->Hand);
+    $titans = array_diff($this->GetList(array('keyword'=>"Titan")), $mydata->Hand);
     if (count($titans) > 0)
     {
       $nextcard = $this->DrawCard($titans, $mydata->Hand, $cardpos, 'DrawCard_list');
