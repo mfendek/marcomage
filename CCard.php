@@ -350,13 +350,13 @@
 				return ($this->Keywords != "");
 		}
 		
-		public function GetResources($type)
+		public function GetResources($type = '')
 		{
-			if ($type !="")
+			if ($type != '')
 				$resource = $this->$type;
 			else
 			{
-				$resources = array("Bricks" => 0, "Gems" => 0, "Recruits" => 0);
+				$resources = array('Bricks' => 0, 'Gems' => 0, 'Recruits' => 0);
 				$resource = 0;
 				foreach ($resources as $r_name => $r_value)
 					$resource+= $this->$r_name;

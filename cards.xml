@@ -952,7 +952,7 @@
       $cur_card = $carddb->GetCard($hisdata->Hand[$i]);
       if (!$cur_card->HasKeyword("Durable") AND $cur_card->HasKeyword("any"))
       {
-        $cur_cost = $card_costs[$i] = $cur_card->GetResources("");
+        $cur_cost = $card_costs[$i] = $cur_card->GetResources();
         if ($cur_cost > $max) $max = $cur_cost;
       }
     }
@@ -1631,9 +1631,9 @@
     <effect><![CDATA[Attack: 80<br />If matching card or its neighbours are zero cost<br />Attack: 20]]></effect>
     <code><![CDATA[
     $this->Attack(80, $hisdata->Tower, $hisdata->Wall);
-    if ($carddb->GetCard($hisdata->Hand[$cardpos])->GetResources('') == 0 or
-      (isset($hisdata->Hand[$cardpos + 1]) and $carddb->GetCard($hisdata->Hand[$cardpos + 1])->GetResources('') == 0) or 
-      (isset($hisdata->Hand[$cardpos - 1]) and $carddb->GetCard($hisdata->Hand[$cardpos - 1])->GetResources('') == 0))
+    if ($carddb->GetCard($hisdata->Hand[$cardpos])->GetResources() == 0 or
+      (isset($hisdata->Hand[$cardpos + 1]) and $carddb->GetCard($hisdata->Hand[$cardpos + 1])->GetResources() == 0) or 
+      (isset($hisdata->Hand[$cardpos - 1]) and $carddb->GetCard($hisdata->Hand[$cardpos - 1])->GetResources() == 0))
     {
       $this->Attack(20, $hisdata->Tower, $hisdata->Wall);
     }
@@ -1777,7 +1777,7 @@
     <effect><![CDATA[Attack: 1<br />If last card played was a zero cost card<br />Summons a non-common zero cost card]]></effect>
     <code><![CDATA[
     $this->Attack(1, $hisdata->Tower, $hisdata->Wall);
-    if ($mylast_card->GetResources("") == 0 and $mylast_action == 'play' and $mylast_card->ID > 0)
+    if ($mylast_card->GetResources() == 0 and $mylast_action == 'play' and $mylast_card->ID > 0)
     {
       $uncommon = $carddb->GetList(array('class'=>"Uncommon", 'cost'=>"Zero"));
       $rare = $carddb->GetList(array('class'=>"Rare", 'cost'=>"Zero"));
@@ -5071,7 +5071,7 @@
     <keywords/>
     <effect><![CDATA[Gems: +2<br />Recruits: +1<br />If last card played was a zero cost card<br />Gems: +1<br />Recruits: +1]]></effect>
     <code><![CDATA[
-    if ($mylast_card->GetResources("") == 0 and $mylast_action == 'play' and $mylast_card->ID > 0)
+    if ($mylast_card->GetResources() == 0 and $mylast_action == 'play' and $mylast_card->ID > 0)
       { $mydata->Gems+= 3; $mydata->Recruits+= 2; }
     else
       { $mydata->Gems+= 2; $mydata->Recruits+= 1; }
@@ -6665,7 +6665,7 @@
     <code><![CDATA[
     if (($mylast_card->HasKeyword("Undead")) and ($mylast_action == 'play'))
     {
-      $tmp = $mylast_card->GetResources("");
+      $tmp = $mylast_card->GetResources();
       $mydata->Tower+= round($tmp / 3); $mydata->Wall+= round($tmp / 2);
     }
 ]]></code>
@@ -8498,11 +8498,11 @@
     {
       if ($i != $cardpos)
       {
-        $cur_cost = $my_costs[$i] = $carddb->GetCard($mydata->Hand[$i])->GetResources("");
+        $cur_cost = $my_costs[$i] = $carddb->GetCard($mydata->Hand[$i])->GetResources();
         if ($cur_cost < $my_min) $my_min = $cur_cost;
         if ($cur_cost > $my_max) $my_max = $cur_cost;
       }
-      $cur_cost = $his_costs[$i] = $carddb->GetCard($hisdata->Hand[$i])->GetResources("");
+      $cur_cost = $his_costs[$i] = $carddb->GetCard($hisdata->Hand[$i])->GetResources();
       if ($cur_cost < $his_min) $his_min = $cur_cost;
       if ($cur_cost > $his_max) $his_max = $cur_cost;
     }
@@ -8881,7 +8881,7 @@
     <keywords/>
     <effect><![CDATA[Summons selected zero cost card in hand (can't summon self)]]></effect>
     <code><![CDATA[
-    if ($cardpos != $mode and $carddb->GetCard($mydata->Hand[$mode])->GetResources('') == 0)
+    if ($cardpos != $mode and $carddb->GetCard($mydata->Hand[$mode])->GetResources() == 0)
       $nextcard = $mydata->Hand[$mode];
 ]]></code>
     <created>2009-07-22</created>
@@ -9092,7 +9092,7 @@
       if ($i != $cardpos)
       {
         $cur_card = $carddb->GetCard($mydata->Hand[$i]);
-        if (($cur_card->GetResources('') == 0) AND ($cur_card->Class == 'Common'))
+        if (($cur_card->GetResources() == 0) AND ($cur_card->Class == 'Common'))
         {
           $mydata->Hand[$i] = $this->DrawCard($my_deck, $mydata->Hand, $i, 'DrawCard_norare');
           $mydata->NewCards[$i] = 1;
@@ -9101,7 +9101,7 @@
     for ($i = 1; $i <= 8; $i++)
     {
       $cur_card = $carddb->GetCard($hisdata->Hand[$i]);
-      if (($cur_card->GetResources('') == 0) AND ($cur_card->Class == 'Common'))
+      if (($cur_card->GetResources() == 0) AND ($cur_card->Class == 'Common'))
       {
         $hisdata->Hand[$i] = $this->DrawCard($his_deck, $hisdata->Hand, $i, 'DrawCard_norare');
         $hisdata->NewCards[$i] = 1;
@@ -9331,13 +9331,13 @@
     $discarded = 0;
     for ($i = 1; $i <= 8; $i++)
     {
-      if ($i != $cardpos and $carddb->GetCard($mydata->Hand[$i])->GetResources('') < 10)
+      if ($i != $cardpos and $carddb->GetCard($mydata->Hand[$i])->GetResources() < 10)
       {
         $mydata->Hand[$i] = $this->DrawCard($my_deck, $mydata->Hand, $i, 'DrawCard_norare');
         $mydata->NewCards[$i] = 1;
         $discarded++;
       }
-      if ($carddb->GetCard($hisdata->Hand[$i])->GetResources('') < 10)
+      if ($carddb->GetCard($hisdata->Hand[$i])->GetResources() < 10)
       {
         $hisdata->Hand[$i] = $this->DrawCard($his_deck, $hisdata->Hand, $i, 'DrawCard_norare');
         $hisdata->NewCards[$i] = 1;
@@ -9704,10 +9704,10 @@
     {
       if ($i != $cardpos)
       {
-        if ($carddb->GetCard($mydata->Hand[$i])->GetResources('') == 0) $my_gain++;
+        if ($carddb->GetCard($mydata->Hand[$i])->GetResources() == 0) $my_gain++;
         else $my_gain--;
       }
-      if ($carddb->GetCard($hisdata->Hand[$i])->GetResources('') == 0) $his_gain++;
+      if ($carddb->GetCard($hisdata->Hand[$i])->GetResources() == 0) $his_gain++;
       else $his_gain--;
     }
     $mydata->Bricks+= $my_gain; $mydata->Gems+= $my_gain; $mydata->Recruits+= $my_gain;
@@ -12612,10 +12612,10 @@
     {
       if ($i != $cardpos)
       {
-        $cur_cost = $costs[$i] = $carddb->GetCard($mydata->Hand[$i])->GetResources("");
+        $cur_cost = $costs[$i] = $carddb->GetCard($mydata->Hand[$i])->GetResources();
         if ($cur_cost > $max) $max = $cur_cost;
       }
-      $cur_cost = $costs[$i + 8] = $carddb->GetCard($hisdata->Hand[$i])->GetResources("");
+      $cur_cost = $costs[$i + 8] = $carddb->GetCard($hisdata->Hand[$i])->GetResources();
       if ($cur_cost > $max) $max = $cur_cost;
     }
     for ($i = 1; $i <= 8; $i++)
@@ -13742,7 +13742,7 @@
     <effect><![CDATA[Attack: 10<br />If matching card is a zero cost card<br />Attack: 10]]></effect>
     <code><![CDATA[
     $this->Attack(10, $hisdata->Tower, $hisdata->Wall);
-    if ($carddb->GetCard($hisdata->Hand[$cardpos])->GetResources('') == 0)
+    if ($carddb->GetCard($hisdata->Hand[$cardpos])->GetResources() == 0)
       $this->Attack(10, $hisdata->Tower, $hisdata->Wall);
 ]]></code>
     <created>2012-06-24</created>
@@ -13867,7 +13867,7 @@
     {
       $hisdata->Hand[$mode] = $this->DrawCard($his_deck, $hisdata->Hand, $mode, 'DrawCard_different');
       $hisdata->NewCards[$mode] = 1;
-      $attack = $target_card->GetResources('');
+      $attack = $target_card->GetResources();
       $this->Attack($attack, $hisdata->Tower, $hisdata->Wall);
     }
 ]]></code>
@@ -14371,7 +14371,7 @@
     <code><![CDATA[
     $count = 0;
     for ($i = 1; $i <= 8; $i++)
-      if ($carddb->GetCard($hisdata->Hand[$i])->GetResources('') == 0) $count++;
+      if ($carddb->GetCard($hisdata->Hand[$i])->GetResources() == 0) $count++;
     $mydata->Wall+= 5 - $count;
     if ($count > 0)
       for ($i = 1; $i <= $count; $i++)
