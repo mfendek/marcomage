@@ -1568,25 +1568,6 @@
 			return $this->DrawHand($list, 'DrawCard_list');
 		}
 		
-		// performs an attack - first reducing wall, then tower
-		// may lower both values below 0
-		private function Attack($atk, &$tower, &$wall)
-		{
-			$damage = $atk;
-			
-			// first, try to stop the attack with the wall
-			if( $wall > 0 )
-			{
-				$damage-= $wall;
-				$wall-= $atk;
-				if( $wall < 0 ) $wall = 0;
-			}
-			
-			// rest of the damage hits the tower
-			if( $damage > 0 )
-				$tower-= $damage;
-		}
-		
 		private function ApplyGameLimits(CGamePlayerData &$data)
 		{
 			global $game_config;
@@ -1856,5 +1837,27 @@
 		public $Bricks;
 		public $Gems;
 		public $Recruits;
+
+		///
+		/// Performs an attack - first reducing wall, then tower (may lower both values below 0)
+		/// @param int $power attack power
+		public function Attack($power)
+		{
+			$damage = $power;
+
+			// first, try to stop the attack with the wall
+			if ($this->Wall > 0) {
+				$damage-= $this->Wall;
+				$this->Wall-= $power;
+				if ($this->Wall < 0) {
+					$this->Wall = 0;
+				}
+			}
+
+			// rest of the damage hits the tower
+			if ($damage > 0) {
+				$this->Tower-= $damage;
+			}
+		}
 	}
 ?>

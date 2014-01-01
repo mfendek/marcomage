@@ -165,7 +165,7 @@
     <code><![CDATA[
     $caps = array("Common" => 2, "Uncommon" => 5, "Rare" => 10);
     $cap = $caps[$card->Class];
-    $recruits_production*= 2; $this->Attack(min($mydata->Dungeons * $recruits_production, $cap), $hisdata->Tower, $hisdata->Wall);
+    $recruits_production*= 2; $hisdata->Attack(min($mydata->Dungeons * $recruits_production, $cap));
     ]]></code>
   </keyword>
   <keyword>
@@ -335,7 +335,7 @@
     if ($mydata->LastCard[$mylastcardindex] == $cardid AND $mylast_action == 'play')
     {
       $bonus_damage = $this->KeywordValue($card->Keywords, 'Enduring');
-      $this->Attack($bonus_damage, $hisdata->Tower, $hisdata->Wall);
+      $hisdata->Attack($bonus_damage);
     }
 ]]></code>
   </keyword>
@@ -429,7 +429,7 @@
     {
       $rarities = array('Common' => 1, 'Uncommon' => 2, 'Rare' => 3);
       $coef = $rarities[$card->Class];
-      $this->Attack(round(($coef * $card->GetResources('Recruits')) / 3), $hisdata->Tower, $hisdata->Wall);
+      $hisdata->Attack(round(($coef * $card->GetResources('Recruits')) / 3));
     }
 ]]></code>
   </keyword>
