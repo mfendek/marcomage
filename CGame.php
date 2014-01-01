@@ -1403,6 +1403,16 @@
 		}
 
 		///
+		/// Proxy function to array_mt_rand()
+		/// @param array $input input array
+		/// @param int $num_req (optional) number of picked entries
+		/// @return mixed one or multiple picked entries (returns corresponding keys)
+		private function ArrayRand(array $input, $num_req = 1)
+		{
+			return array_mt_rand($input, $num_req);
+		}
+
+		///
 		/// Proxy function to $carddb->getCard()
 		/// @param int $card_id card id
 		/// @return Card if operation was successful, false otherwise

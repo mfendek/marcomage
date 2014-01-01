@@ -249,7 +249,7 @@
     if (count($penalties) > 0) {
       $rarities = array('Common' => 2, 'Uncommon' => 3, 'Rare' => 4);
       $amount = $rarities[$card->Class];
-      $penalty = $penalties[array_mt_rand($penalties)];
+      $penalty = $penalties[$this->ArrayRand($penalties)];
 
       if ($penalty == 'Bricks') {
         for ($i = 1; $i <= $amount; $i++) {
@@ -619,7 +619,7 @@
       $temp = array();
       foreach ($fac as $facility => $f_value)
         if ($f_value == $min) $temp[$facility] = $f_value;
-      $chosen = array_mt_rand($temp);
+      $chosen = $this->ArrayRand($temp);
       if ($mydata->$chosen < 3)
       {
         if ($chosen == 'Quarry') $mydata->Bricks+= 5;
