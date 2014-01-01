@@ -400,5 +400,21 @@
 			$this->Created  = $data['created'];
 			$this->Modified = $data['modified'];
 		}
+
+		///
+		/// Returns 'id' data field
+		/// @return int card id
+		public function Id()
+		{
+			return $this->ID;
+		}
+
+		///
+		/// Returns 'class' data field
+		/// @return string card class
+		public function GetClass()
+		{
+			return $this->Class;
+		}
 	}
 ?>
