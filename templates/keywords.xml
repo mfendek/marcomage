@@ -61,7 +61,7 @@
         {
           if ($i == $amount) break;
 
-          $mydata->Hand[$discarded_pos] = $this->DrawCard($my_deck, $mydata->Hand, $discarded_pos, 'DrawCard_random');
+          $mydata->Hand[$discarded_pos] = $this->DrawCard($my_deck, $mydata->Hand, $discarded_pos, 'DrawCardRandom');
           $mydata->NewCards[$discarded_pos] = 1;
           $i++;
         }
@@ -101,11 +101,11 @@
       
       if ($card->GetClass() == 'Rare')
       {
-        $new_card = $this->DrawCard($this->GetList(array('class'=>"Common", 'cost'=>"Zero")), $hisdata->Hand, $discarded_pos, 'DrawCard_list');
+        $new_card = $this->DrawCard($this->GetList(array('class'=>"Common", 'cost'=>"Zero")), $hisdata->Hand, $discarded_pos, 'DrawCardList');
       }
       else
       {
-        $new_card = $this->DrawCard($his_deck, $hisdata->Hand, $discarded_pos, 'DrawCard_different');
+        $new_card = $this->DrawCard($his_deck, $hisdata->Hand, $discarded_pos, 'DrawCardDifferent');
       }
       $hisdata->Hand[$discarded_pos] = $new_card;
       $hisdata->NewCards[$discarded_pos] = 1;
@@ -518,7 +518,7 @@
         shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
         $storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
         $discarded_pos = array_shift($storage_temp);
-        $mydata->Hand[$discarded_pos] = $this->DrawCard($his_deck->Rare, $mydata->Hand, $discarded_pos, 'DrawCard_list');
+        $mydata->Hand[$discarded_pos] = $this->DrawCard($his_deck->Rare, $mydata->Hand, $discarded_pos, 'DrawCardList');
         $mydata->NewCards[$discarded_pos] = 1;
       }
     }
@@ -574,7 +574,7 @@
     <code><![CDATA[
     if ($mylast_card->HasKeyword("Nature") AND $mylast_action == 'play' AND $mylast_card->GetClass() != 'Common' AND $cardid != $mylast_card->Id())
     {
-      $nextcard = $this->DrawCard($this->GetList(array('class'=>"Rare", 'keyword'=>"Nature")), $mydata->Hand, $cardpos, 'DrawCard_list');
+      $nextcard = $this->DrawCard($this->GetList(array('class'=>"Rare", 'keyword'=>"Nature")), $mydata->Hand, $cardpos, 'DrawCardList');
     }
 ]]></code>
   </keyword>
@@ -714,11 +714,11 @@
       
       if ($card->GetClass() == 'Rare')
       {
-        $new_card = $this->DrawCard($this->GetList(array('class'=>"Common", 'cost'=>"Zero")), $hisdata->Hand, $discarded_pos, 'DrawCard_list');
+        $new_card = $this->DrawCard($this->GetList(array('class'=>"Common", 'cost'=>"Zero")), $hisdata->Hand, $discarded_pos, 'DrawCardList');
       }
       else
       {
-        $new_card = $this->DrawCard($his_deck, $hisdata->Hand, $discarded_pos, 'DrawCard_different');
+        $new_card = $this->DrawCard($his_deck, $hisdata->Hand, $discarded_pos, 'DrawCardDifferent');
       }
       $hisdata->Hand[$discarded_pos] = $new_card;
       $hisdata->NewCards[$discarded_pos] = 1;
@@ -753,7 +753,7 @@
     $titans = array_diff($this->GetList(array('keyword'=>"Titan")), $mydata->Hand);
     if (count($titans) > 0)
     {
-      $nextcard = $this->DrawCard($titans, $mydata->Hand, $cardpos, 'DrawCard_list');
+      $nextcard = $this->DrawCard($titans, $mydata->Hand, $cardpos, 'DrawCardList');
     }
     ]]></code>
   </keyword>

@@ -554,8 +554,8 @@
 			$p1->TokenValues = $p1->TokenChanges = array_fill_keys(array_keys($p1->TokenNames), 0);
 			$p2->TokenValues = $p2->TokenChanges = array_fill_keys(array_keys($p2->TokenNames), 0);
 			
-			$p1->Hand = $this->DrawHand_initial($p1->Deck);
-			$p2->Hand = $this->DrawHand_initial($p2->Deck);
+			$p1->Hand = $this->DrawHandInitial($p1->Deck);
+			$p2->Hand = $this->DrawHandInitial($p2->Deck);
 			
 			// process AI challenge (done only if the game is an AI challenge)
 			if ($challenge_name != '')
@@ -920,9 +920,9 @@
 			}
 			elseif( $nextcard == -1 )
 			{// normal drawing
-				if (($action == 'play') AND ($card->IsPlayAgainCard())) $drawfunc = 'DrawCard_norare';
-				elseif ($action == 'play') $drawfunc = 'DrawCard_random';
-				else $drawfunc = 'DrawCard_different';
+				if (($action == 'play') AND ($card->IsPlayAgainCard())) $drawfunc = 'DrawCardNorare';
+				elseif ($action == 'play') $drawfunc = 'DrawCardRandom';
+				else $drawfunc = 'DrawCardDifferent';
 				
 				$mydata->Hand[$cardpos] = $this->DrawCard($my_deck, $mydata->Hand, $cardpos, $drawfunc);
 			}
@@ -1529,7 +1529,7 @@
  		}
 		
 		// returns one card at type-random from the specified deck
-		private function DrawCard_random(CDeckData $deck)
+		private function DrawCardRandom(CDeckData $deck)
 		{
 			$i = mt_rand(1, 100);
 			if     ($i <= 65) return $deck->Common[mt_rand(1, 15)]; // common
@@ -1538,17 +1538,17 @@
 		}
 		
 		// returns one card at type-random from the specified deck, different from those on your hand
-		private function DrawCard_different(CDeckData $deck, $cardid)
+		private function DrawCardDifferent(CDeckData $deck, $cardid)
 		{
 			do
-				$nextcard = $this->DrawCard_random($deck);
+				$nextcard = $this->DrawCardRandom($deck);
 			while( $nextcard == $cardid );
 
 			return $nextcard;
 		}
 		
 		// returns one card at type-random from the specified deck - no rare
-		private function DrawCard_norare(CDeckData $deck)
+		private function DrawCardNorare(CDeckData $deck)
 		{
 			$i = mt_rand(1, 94);
 			if ($i <= 65) return $deck->Common[mt_rand(1, 15)]; // common
@@ -1556,35 +1556,35 @@
 		}
 		
 		// returns one card at random from the specified list of card ids
-		private function DrawCard_list(array $list)
+		private function DrawCardList(array $list)
 		{
 			if (count($list) == 0) return 0; // "empty slot" card
 			return $list[array_mt_rand($list)];
 		}
 		
 		// returns a new hand consisting of type-random cards chosen from the specified deck
-		private function DrawHand_random(CDeckData $deck)
+		private function DrawHandRandom(CDeckData $deck)
 		{
-			return $this->DrawHand($deck, 'DrawCard_random');
+			return $this->DrawHand($deck, 'DrawCardRandom');
 		}
 		
 		// returns a new hand consisting of type-random cards chosen from the specified deck (excluding rare cards)
-		private function DrawHand_norare(CDeckData $deck)
+		private function DrawHandNorare(CDeckData $deck)
 		{
-			return $this->DrawHand($deck, 'DrawCard_norare');
+			return $this->DrawHand($deck, 'DrawCardNorare');
 		}
 		
 		// returns initial hand which always consist of 6 common and 2 uncommon cards
-		private function DrawHand_initial(CDeckData $deck)
+		private function DrawHandInitial(CDeckData $deck)
 		{
 			// initialize empty hand
 			$hand = array(1=> 0, 0, 0, 0, 0, 0, 0, 0);
 
 			// draw 6 common cards
-			for ($i = 1; $i <= 6; $i++) $hand[$i] = $this->DrawCard($deck->Common, $hand, $i, 'DrawCard_list');
+			for ($i = 1; $i <= 6; $i++) $hand[$i] = $this->DrawCard($deck->Common, $hand, $i, 'DrawCardList');
 
 			// draw 2 uncommon cards
-			for ($i = 7; $i <= 8; $i++) $hand[$i] = $this->DrawCard($deck->Uncommon, $hand, $i, 'DrawCard_list');
+			for ($i = 7; $i <= 8; $i++) $hand[$i] = $this->DrawCard($deck->Uncommon, $hand, $i, 'DrawCardList');
 
 			// shuffle card positions
 			$keys = array_keys($hand);
@@ -1595,9 +1595,9 @@
 		}
 
 		// returns a new hand consisting of random cards from the specified list of card ids
-		private function DrawHand_list(array $list)
+		private function DrawHandList(array $list)
 		{
-			return $this->DrawHand($list, 'DrawCard_list');
+			return $this->DrawHand($list, 'DrawCardList');
 		}
 		
 		private function ApplyGameLimits(CGamePlayerData &$data)
