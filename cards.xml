@@ -3869,7 +3869,7 @@
     <modes>0</modes>
     <level>6</level>
     <keywords/>
-    <effect><![CDATA[If Enemy tower < Tower<br />Tower: -10 <br />Enemy tower: -10<br />else<br />Tower: +10<br />Enemy tower: +10]]></effect>
+    <effect><![CDATA[If Enemy tower < Tower<br />Tower: -10<br />Enemy tower: -10<br />else<br />Tower: +10<br />Enemy tower: +10]]></effect>
     <code><![CDATA[
     if ($hisdata->Tower < $mydata->Tower) { $mydata->Tower-= 10; $hisdata->Tower-= 10; }
     else { $mydata->Tower+= 10; $hisdata->Tower+= 10; }
@@ -3927,7 +3927,7 @@
     <modes>0</modes>
     <level>4</level>
     <keywords/>
-    <effect><![CDATA[Quarry: +1 <br />If Enemy quarry > 3<br />Enemy quarry: -1]]></effect>
+    <effect><![CDATA[Quarry: +1<br />If Enemy quarry > 3<br />Enemy quarry: -1]]></effect>
     <code><![CDATA[$mydata->Quarry+= 1; if ($hisdata->Quarry > 3) $hisdata->Quarry-= 1;]]></code>
     <created>2006-05-01</created>
     <modified>2013-10-19</modified>
@@ -8004,7 +8004,7 @@
     <modes>0</modes>
     <level>7</level>
     <keywords/>
-    <effect><![CDATA[If Recruits < 11<br /> Recruits x2<br />else<br />Recruits: +6]]></effect>
+    <effect><![CDATA[If Recruits < 11<br />Recruits x2<br />else<br />Recruits: +6]]></effect>
     <code><![CDATA[
     if ($mydata->Recruits < 11) $mydata->Recruits = ($mydata->Recruits * 2);
     else $mydata->Recruits+= 6;
@@ -12058,7 +12058,7 @@
     <modes>0</modes>
     <level>9</level>
     <keywords>Barbarian,Charge (2)</keywords>
-    <effect><![CDATA[Attack: 8 <br />You lose 6 random resources]]></effect>
+    <effect><![CDATA[Attack: 8<br />You lose 6 random resources]]></effect>
     <code><![CDATA[
     $hisdata->Attack(8);
     for ($i = 1; $i <= 6; $i++)
