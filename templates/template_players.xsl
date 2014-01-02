@@ -365,10 +365,10 @@
 								<button type="submit" name="send_challenge" value="{am:urlencode($opponent)}">Send challenge</button>
 								<select name="ChallengeDeck" size="1">
 									<xsl:if test="$param/RandomDeck = 'yes'">
-										<option value="{am:urlencode($param/random_deck)}">select random</option>
+										<option value="{$param/random_deck}">select random</option>
 									</xsl:if>
 									<xsl:for-each select="$param/decks/*">
-										<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
+										<option value="{DeckID}"><xsl:value-of select="Deckname"/></option>
 									</xsl:for-each>
 								</select>
 								<xsl:variable name="timeout_values">
@@ -468,7 +468,7 @@
 				<legend>Deck options</legend>
 				<select name="ExportDeck" size="1">
 					<xsl:for-each select="$param/export_decks/*">
-						<option value="{am:urlencode(DeckID)}">
+						<option value="{DeckID}">
 							<xsl:value-of select="Deckname"/>
 							<xsl:text> (</xsl:text>
 							<xsl:value-of select="Wins"/>

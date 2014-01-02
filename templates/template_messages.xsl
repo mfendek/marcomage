@@ -51,10 +51,10 @@
 			<xsl:text>Select deck </xsl:text>
 			<select name="AcceptDeck" size="1">
 				<xsl:if test="$param/RandomDeck = 'yes'">
-					<option value="{am:urlencode($param/random_deck)}">select random</option>
+					<option value="{$param/random_deck}">select random</option>
 				</xsl:if>
 				<xsl:for-each select="$param/decks/*">
-					<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
+					<option value="{DeckID}"><xsl:value-of select="Deckname"/></option>
 				</xsl:for-each>
 			</select>
 		</p>

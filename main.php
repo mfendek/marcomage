@@ -2204,7 +2204,7 @@
 				// check access rights
 				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
 
-				$deck_id = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
+				$deck_id = isset($_POST['SelectedDeck']) ? $_POST['SelectedDeck'] : '(null)';
 
 				$challenge_decks = $deckdb->ChallengeDecks();
 				$challenge_names = array_keys($challenge_decks);
@@ -2296,7 +2296,7 @@
 				// check if the game can be joined (can't join game against a computer player)
 				if ($game->GetGameMode('AIMode') == 'yes') { $error = 'Failed to join the game!'; $current = 'Games'; break; }
 
-				$deck_id = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
+				$deck_id = isset($_POST['SelectedDeck']) ? $_POST['SelectedDeck'] : '(null)';
 
 				$challenge_decks = $deckdb->ChallengeDecks();
 				$challenge_names = array_keys($challenge_decks);
@@ -2352,7 +2352,7 @@
 				// check access rights
 				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
 
-				$deck_id = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
+				$deck_id = isset($_POST['SelectedDeck']) ? $_POST['SelectedDeck'] : '(null)';
 
 				$challenge_decks = $deckdb->ChallengeDecks();
 				$challenge_names = array_keys($challenge_decks);
@@ -2431,7 +2431,7 @@
 				// check access rights
 				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
 
-				$deck_id = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
+				$deck_id = isset($_POST['SelectedDeck']) ? $_POST['SelectedDeck'] : '(null)';
 				$deck = $player->GetDeck($deck_id);
 
 				// check if such deck exists
@@ -2486,7 +2486,7 @@
 				// check access rights
 				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
 
-				$deck_id = isset($_POST['SelectedDeck']) ? postdecode($_POST['SelectedDeck']) : '(null)';
+				$deck_id = isset($_POST['SelectedDeck']) ? $_POST['SelectedDeck'] : '(null)';
 				$deck = $player->GetDeck($deck_id);
 
 				// check if such deck exists
@@ -2581,7 +2581,7 @@
 
 				$opponent = $game->Name1();
 
-				$deck_id = isset($_POST['AcceptDeck']) ? postdecode($_POST['AcceptDeck']) : '(null)';
+				$deck_id = isset($_POST['AcceptDeck']) ? $_POST['AcceptDeck'] : '(null)';
 				$deck = $player->GetDeck($deck_id);
 
 				// check if such deck exists
@@ -2651,7 +2651,7 @@
 				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Players'; break; }
 
 				$_POST['Profile'] = $opponent = postdecode($_POST['send_challenge']);
-				$deck_id = isset($_POST['ChallengeDeck']) ? postdecode($_POST['ChallengeDeck']) : '(null)';
+				$deck_id = isset($_POST['ChallengeDeck']) ? $_POST['ChallengeDeck'] : '(null)';
 
 				$deck = $player->GetDeck($deck_id);
 
@@ -3007,7 +3007,7 @@
 				// check access rights
 				if (!$access_rights[$player->Type()]["export_deck"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
 
-				$deck_id = postdecode($_POST['ExportDeck']);
+				$deck_id = $_POST['ExportDeck'];
 				$deck = $opponent->GetDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Players_details'; break; }
 				$file = $deck->ToCSV();

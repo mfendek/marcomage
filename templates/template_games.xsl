@@ -208,10 +208,10 @@
 				<span>Select deck</span>
 				<select name="SelectedDeck" size="1">
 					<xsl:if test="$param/RandomDeck = 'yes'">
-						<option value="{am:urlencode($param/random_deck)}">select random</option>
+						<option value="{$param/random_deck}">select random</option>
 					</xsl:if>
 					<xsl:for-each select="$param/decks/*">
-						<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
+						<option value="{DeckID}"><xsl:value-of select="Deckname"/></option>
 					</xsl:for-each>
 					<xsl:if test="$param/edit_all_card = 'yes'">
 						<xsl:for-each select="$param/ai_challenges/*">
@@ -324,10 +324,10 @@
 				<span>Select deck</span>
 				<select name="SelectedDeck" size="1">
 					<xsl:if test="$param/RandomDeck = 'yes'">
-						<option value="{am:urlencode($param/random_deck)}">select random</option>
+						<option value="{$param/random_deck}">select random</option>
 					</xsl:if>
 					<xsl:for-each select="$param/decks/*">
-						<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
+						<option value="{DeckID}"><xsl:value-of select="Deckname"/></option>
 					</xsl:for-each>
 					<xsl:if test="$param/edit_all_card = 'yes'">
 						<xsl:for-each select="$param/ai_challenges/*">
@@ -404,10 +404,10 @@
 				<span>Select deck</span>
 				<select name="SelectedDeck" size="1" title="your deck">
 					<xsl:if test="$param/RandomDeck = 'yes'">
-						<option value="{am:urlencode($param/random_deck)}">select random</option>
+						<option value="{$param/random_deck}">select random</option>
 					</xsl:if>
 					<xsl:for-each select="$param/decks/*">
-						<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
+						<option value="{DeckID}"><xsl:value-of select="Deckname"/></option>
 					</xsl:for-each>
 					<xsl:if test="$param/edit_all_card = 'yes'">
 						<xsl:for-each select="$param/ai_challenges/*">
@@ -420,10 +420,10 @@
 				<select name="SelectedAIDeck" size="1" title="AI deck (used only when playing against AI)">
 					<option value="starter_deck">starter deck</option>
 					<xsl:if test="$param/RandomDeck = 'yes'">
-						<option value="{am:urlencode($param/random_ai_deck)}">select random</option>
+						<option value="{$param/random_ai_deck}">select random</option>
 					</xsl:if>
 					<xsl:for-each select="$param/decks/*">
-						<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
+						<option value="{DeckID}"><xsl:value-of select="Deckname"/></option>
 					</xsl:for-each>
 				</select>
 			</p>

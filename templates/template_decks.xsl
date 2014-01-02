@@ -95,7 +95,7 @@
 		<span>Target deck</span>
 		<select name="SelectedDeck" size="1">
 			<xsl:for-each select="$param/decks/*">
-				<option value="{am:urlencode(DeckID)}"><xsl:value-of select="Deckname"/></option>
+				<option value="{DeckID}"><xsl:value-of select="Deckname"/></option>
 			</xsl:for-each>
 		</select>
 	</div>
