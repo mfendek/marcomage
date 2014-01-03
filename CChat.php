@@ -13,48 +13,48 @@
 			$this->db = &$database;
 		}
 		
-		public function GetDB()
+		public function getDB()
 		{
 			return $this->db;
 		}
 		
-		public function SaveChatMessage($gameid, $message, $name)
+		public function saveChatMessage($gameid, $message, $name)
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('INSERT INTO `chats` (`GameID`, `Name`, `Message`) VALUES (?, ?, ?)', array($gameid, $name, $message));
+			$result = $db->query('INSERT INTO `chats` (`GameID`, `Name`, `Message`) VALUES (?, ?, ?)', array($gameid, $name, $message));
 			if ($result === false) return false;
 			
 			return true;
 		}
 		
-		public function DeleteChat($gameid)
+		public function deleteChat($gameid)
 		{
 			$db = $this->db;
 
-			$result = $db->Query('DELETE FROM `chats` WHERE `GameID` = ?', array($gameid));
+			$result = $db->query('DELETE FROM `chats` WHERE `GameID` = ?', array($gameid));
 			if ($result === false) return false;
 			
 			return true;
 		}
 		
-		public function ListChatMessages($gameid, $order)
+		public function listChatMessages($gameid, $order)
 		{
 			$db = $this->db;
 
 			$order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-			$result = $db->Query('SELECT `Name`, `Message`, `Timestamp` FROM `chats` WHERE `GameID` = ? ORDER BY `Timestamp` '.$order.'', array($gameid));
+			$result = $db->query('SELECT `Name`, `Message`, `Timestamp` FROM `chats` WHERE `GameID` = ? ORDER BY `Timestamp` '.$order.'', array($gameid));
 			if ($result === false) return false;
 
 			return $result;
 		}
 
-		public function NewMessages($gameid, $player, $time)
+		public function newMessages($gameid, $player, $time)
 		{
 			$db = $this->db;
 
-			$result = $db->Query('SELECT 1 FROM `chats` WHERE `GameID` = ? AND `Name` != ? AND `Timestamp` > ? LIMIT 1', array($gameid, $player, $time));
+			$result = $db->query('SELECT 1 FROM `chats` WHERE `GameID` = ? AND `Name` != ? AND `Timestamp` > ? LIMIT 1', array($gameid, $player, $time));
 			if ($result === false or count($result) == 0) return false;
 
 			return true;

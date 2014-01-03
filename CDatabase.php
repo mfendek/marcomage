@@ -26,9 +26,9 @@ class CDatabase // encapsulated MySQL database access (PDO)
 		return;
 	}
 
-	public function LastID()
+	public function lastId()
 	{
-		return $this->db->lastInsertId();
+		return $this->db->lastInsertid();
 	}
 
 	public function txnBegin()
@@ -50,7 +50,7 @@ class CDatabase // encapsulated MySQL database access (PDO)
 	/// @param string $query database query
 	/// @param array $params parameter values in the order they appear in the query
 	/// @return array result data if the operation succeeds (empty array in case of non-SELECT statements), false if it fails
-	public function Query($query, array $params = array())
+	public function query($query, array $params = array())
 	{
 		if( !$this->db ) { $this->status = 'ERROR_DB_OFFLINE'; return false; };
 
@@ -86,7 +86,7 @@ class CDatabase // encapsulated MySQL database access (PDO)
 	/// @param string $query database query
 	/// @param array $params sequence of sets of parameter values in the order they appear in the query
 	/// @return array result data for each query if the operation succeeds, false if it fails
-	public function MultiQuery($query, array $params)
+	public function multiquery($query, array $params)
 	{
 		if( !$this->db ) { $this->status = 'ERROR_DB_OFFLINE'; return false; }
 		if( count($params) == 0 ) { $this->status = 'ERROR_PARAMS_EMPTY'; return false; }

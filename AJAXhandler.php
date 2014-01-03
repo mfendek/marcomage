@@ -39,8 +39,8 @@
 	}
 
 	if( false === date_default_timezone_set("Etc/UTC")
-	||  false === $db->Query("SET time_zone='Etc/UTC'")
-	&&  false === $db->Query("SET time_zone='+0:00'") )
+	||  false === $db->query("SET time_zone='Etc/UTC'")
+	&&  false === $db->query("SET time_zone='+0:00'") )
 	{
 		header("Content-type: text/html");
 		die("Unable to configure time zone, aborting.");
@@ -58,11 +58,11 @@
 	$_POST['Username'] = postdecode($_POST['Username']);
 
 	// validate session
-	$session = $logindb->Login();
+	$session = $logindb->login();
 	if (!$session) { $error = 'Invalid session.'; break; }
 
-	$user_name = $session->Username();
-	$player = $playerdb->GetPlayer($user_name);
+	$user_name = $session->username();
+	$player = $playerdb->getPlayer($user_name);
 
 	if ($_POST['action'] == "take")
 	{
@@ -74,27 +74,27 @@
 		$tokens = 'no'; // default results
 
 		// validate deck
-		$deck = $deckdb->GetDeck($deck_id);
-		if (!$deck or $deck->Username() != $user_name) { $error = 'Invalid deck.'; break; }
+		$deck = $deckdb->getDeck($deck_id);
+		if (!$deck or $deck->username() != $user_name) { $error = 'Invalid deck.'; break; }
 
 		// verify card
 		if (!is_numeric($card_id)) { $error = 'Invalid card.'; break; }
 
 		// add card, saving the deck on success
-		$slot = $deck->AddCard($card_id);
+		$slot = $deck->addCard($card_id);
 		if ($slot)
 		{
 			// set tokens when deck is finished and player forgot to set them
 			if ((count(array_diff($deck->DeckData->Tokens, array('none'))) == 0) AND $deck->isReady())
 			{
-				$deck->SetAutoTokens();
+				$deck->setAutoTokens();
 				$tokens = $deck->DeckData->Tokens; // pass updated tokens to result
 			}
 
-			$deck->SaveDeck();
+			$deck->saveDeck();
 
 			// recalculate the average cost per turn label
-			$avg = array_values($deck->AvgCostPerTurn());
+			$avg = array_values($deck->avgCostPerTurn());
 		}
 		else { $error = 'Unable to add the chosen card to this deck.'; break; }
 
@@ -109,19 +109,19 @@
 		$card_id = $_POST['card_id'];
 
 		// download deck
-		$deck = $deckdb->GetDeck($deck_id);
-		if (!$deck or $deck->Username() != $user_name) { $error = 'Invalid deck.'; break; }
+		$deck = $deckdb->getDeck($deck_id);
+		if (!$deck or $deck->username() != $user_name) { $error = 'Invalid deck.'; break; }
 
 		// verify card
 		if (!is_numeric($card_id)) { $error = 'Invalid card.'; break; }
 
 		// remove card, saving the deck on success
-		$slot = $deck->ReturnCard($card_id);
+		$slot = $deck->returnCard($card_id);
 		if ($slot)
 		{
-			$deck->SaveDeck();
+			$deck->saveDeck();
 			// recalculate the average cost per turn label
-			$avg = array_values($deck->AvgCostPerTurn());
+			$avg = array_values($deck->avgCostPerTurn());
 		}
 		else { $error = 'Unable to remove the chosen card from this deck.'; break; }
 
@@ -137,21 +137,21 @@
 		$game_id = $_POST['game_id'];
 
 		// download game
-		$game = $gamedb->GetGame($game_id);
+		$game = $gamedb->getGame($game_id);
 		if (!$game) { $error = 'Invalid game.'; break; }
 
 		// verify inputs
 		if (!is_numeric($cardpos)) { $error = 'Invalid card position.'; break; }
 		if (!is_numeric($mode)) { $error = 'Invalid mode.'; break; }
 
-		if ($game->GetGameMode('HiddenCards') == 'yes') { $error = 'Action not allowed in this game mode.'; break; }
-		if ($user_name != $game->Name1() AND $user_name != $game->Name2()) { $error = 'Action not allowed.'; break; }
+		if ($game->getGameMode('HiddenCards') == 'yes') { $error = 'Action not allowed in this game mode.'; break; }
+		if ($user_name != $game->name1() AND $user_name != $game->name2()) { $error = 'Action not allowed.'; break; }
 
-		$preview_data = $game->CalculatePreview($user_name, $cardpos, $mode);
+		$preview_data = $game->calculatePreview($user_name, $cardpos, $mode);
 		if (!is_array($preview_data))
 			$error = $preview_data;
 		else
-			$result = array('info' => $game->FormatPreview($preview_data));
+			$result = array('info' => $game->formatPreview($preview_data));
 	}
 	elseif($_POST['action'] == "save_note")
 	{
@@ -162,17 +162,17 @@
 		$game_id = $_POST['game_id'];
 
 		// download game
-		$game = $gamedb->GetGame($game_id);
+		$game = $gamedb->getGame($game_id);
 		if (!$game) { $error = 'Invalid game.'; break; }
 
 		// check access
-		if ($user_name != $game->Name1() AND $user_name != $game->Name2()) { $error = 'Action not allowed.'; break; }
+		if ($user_name != $game->name1() AND $user_name != $game->name2()) { $error = 'Action not allowed.'; break; }
 
 		// verify inputs
 		if (strlen($note) > MESSAGE_LENGTH) { $error = 'Game note is too long.'; break; }
 
-		$game->SetNote($user_name, $note);
-		$result = $game->SaveGame();
+		$game->setNote($user_name, $note);
+		$result = $game->saveGame();
 
 		if ($result) $result = array('info' => 'Game note saved.');
 		else $error = 'Failed to save game note.';
@@ -184,14 +184,14 @@
 		$game_id = $_POST['game_id'];
 
 		// download game
-		$game = $gamedb->GetGame($game_id);
+		$game = $gamedb->getGame($game_id);
 		if (!$game) { $error = 'Invalid game.'; break; }
 
 		// check access
-		if ($user_name != $game->Name1() AND $user_name != $game->Name2()) { $error = 'Action not allowed.'; break; }
+		if ($user_name != $game->name1() AND $user_name != $game->name2()) { $error = 'Action not allowed.'; break; }
 
-		$game->ClearNote($user_name);
-		$result = $game->SaveGame();
+		$game->clearNote($user_name);
+		$result = $game->saveGame();
 
 		if ($result) $result = array('info' => 'Game note cleared');
 		else $error = 'Failed to clear game note.';
@@ -205,13 +205,13 @@
 		$deck_id = $_POST['deck_id'];
 
 		// validate deck
-		$deck = $deckdb->GetDeck($deck_id);
-		if (!$deck or $deck->Username() != $user_name) { $error = 'Invalid deck.'; break; }
+		$deck = $deckdb->getDeck($deck_id);
+		if (!$deck or $deck->username() != $user_name) { $error = 'Invalid deck.'; break; }
 
 		// verify inputs
 		if (strlen($note) > MESSAGE_LENGTH) { $error = 'Deck note is too long.'; break; }
 
-		$result = $deck->UpdateNote($note);
+		$result = $deck->updateNote($note);
 
 		if ($result) $result = array('info' => 'Deck note saved.');
 		else $error = 'Failed to save deck note.';
@@ -223,10 +223,10 @@
 		$deck_id = $_POST['deck_id'];
 
 		// validate deck
-		$deck = $deckdb->GetDeck($deck_id);
-		if (!$deck or $deck->Username() != $user_name) { $error = 'Invalid deck.'; break; }
+		$deck = $deckdb->getDeck($deck_id);
+		if (!$deck or $deck->username() != $user_name) { $error = 'Invalid deck.'; break; }
 
-		$result = $deck->UpdateNote('');
+		$result = $deck->updateNote('');
 
 		if ($result) $result = array('info' => 'Deck note cleared');
 		else $error = 'Failed to clear deck note.';
@@ -234,7 +234,7 @@
 	elseif($_POST['action'] == "send_chat_message")
 	{
 		// check access rights
-		if (!$access_rights[$player->Type()]["chat"]) { $error = 'Access denied.'; break; }
+		if (!$access_rights[$player->type()]["chat"]) { $error = 'Access denied.'; break; }
 
 		if (!isset($_POST['message'])) { $error = 'Invalid chat message.'; break; }
 		if (!isset($_POST['game_id']) OR $_POST['game_id'] == "") { $error = 'Invalid game id.'; break; }
@@ -243,20 +243,20 @@
 		$game_id = $_POST['game_id'];
 
 		// download game
-		$game = $gamedb->GetGame($game_id);
+		$game = $gamedb->getGame($game_id);
 		if (!$game) { $error = 'Invalid game.'; break; }
 
 		// check access
-		if ($user_name != $game->Name1() AND $user_name != $game->Name2()) { $error = 'Action not allowed.'; break; }
+		if ($user_name != $game->name1() AND $user_name != $game->name2()) { $error = 'Action not allowed.'; break; }
 
 		// verify user input
 		if (trim($msg) == '') { $error = 'Unable to send empty chat message.'; break; }
 		if (strlen($msg) > CHAT_LENGTH) { $error = 'Chat message is too long.'; break; }
 
 		// check if chat is allowed (can't chat with a computer player)
-		if ($game->GetGameMode('AIMode') == 'yes') { $error = 'Chat not allowed!'; break; }
+		if ($game->getGameMode('AIMode') == 'yes') { $error = 'Chat not allowed!'; break; }
 
-		$result = $game->SaveChatMessage($msg, $user_name);
+		$result = $game->saveChatMessage($msg, $user_name);
 
 		if ($result) $result = array('info' => 'Chat message sent.');
 		else $error = 'Failed to send chat message.';
@@ -268,16 +268,16 @@
 		$game_id = $_POST['game_id'];
 
 		// download game
-		$game = $gamedb->GetGame($game_id);
+		$game = $gamedb->getGame($game_id);
 		if (!$game) { $error = 'Invalid game.'; break; }
 
 		// check access
-		if ($user_name != $game->Name1() AND $user_name != $game->Name2()) { $error = 'Action not allowed.'; break; }
+		if ($user_name != $game->name1() AND $user_name != $game->name2()) { $error = 'Action not allowed.'; break; }
 
 		// check if chat is allowed (can't chat with a computer player)
-		if ($game->GetGameMode('AIMode') == 'yes') { $error = 'Chat not allowed!'; break; }
+		if ($game->getGameMode('AIMode') == 'yes') { $error = 'Chat not allowed!'; break; }
 
-		$result = $game->ResetChatNotification($user_name);
+		$result = $game->resetChatNotification($user_name);
 
 		if ($result) $result = array('info' => 'Chat notification reset.');
 		else $error = 'Failed reset chat notification.';

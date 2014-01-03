@@ -29,9 +29,9 @@
 		if ($session AND !$session->hasCookies())
 		{
 			$args[] = 'Username';
-			$args[] = $session->Username();
+			$args[] = $session->username();
 			$args[] = 'SessionID';
-			$args[] = $session->SessionID();
+			$args[] = $session->sessionId();
 		}
 		
 		// write location
@@ -55,7 +55,7 @@
 	/// @param array $input input array
 	/// @param int $num_req (optional) number of picked entries
 	/// @return mixed one or multiple picked entries (returns corresponding keys)
-	function array_mt_rand(array $input, $num_req = 1)
+	function arrayMtRand(array $input, $num_req = 1)
 	{
 		// validate inputs
 		if (count($input) == 0 or count($input) < $num_req) return false;
@@ -95,14 +95,14 @@
 	 * @param string $zone the time zone string (Etc/UTC and such)
 	 * @param string $format the format string for date()
 	*/
-	function ZoneTime($time, $zone, $format)
+	function zoneTime($time, $zone, $format)
 	{
 		$date = new DateTime($time, new DateTimeZone('UTC'));
 		$date->setTimeZone(new DateTimeZone($zone));
 		return $date->format($format);
 	}
 	
-	function CheckDateInput($year, $month, $day) // check date input
+	function checkDateInput($year, $month, $day) // check date input
 	{
 		if( $year == '0000' and $month == '00' and $day == '00' ) return "";
 		elseif (!(is_numeric($year) AND is_numeric($month) AND is_numeric($day))) return "Invalid numeric input";
@@ -114,7 +114,7 @@
 	/// Format time difference into hours, minutes and seconds
 	/// @param int $t_diff time difference in seconds
 	/// @return string formatted difference
-	function format_time_diff($t_diff)
+	function formatTimeDiff($t_diff)
 	{
 		$t_info = array();
 
@@ -135,7 +135,7 @@
 	////////////////////////
 	/// XSL Transformations
 
-	function Numbers($from, $to) // creates comma-separated list of all integer values from interval <$from, $to>
+	function numbers($from, $to) // creates comma-separated list of all integer values from interval <$from, $to>
 	{
 		if ($from <= $to) return implode(",", array_keys(array_fill($from, $to - $from + 1, 0)));
 		else return "";

@@ -30,7 +30,7 @@
 			return $this->db;
 		}
 
-		public function GetKeyword($name)
+		public function getKeyword($name)
 		{
 			return new CKeyword($name, $this);
 		}

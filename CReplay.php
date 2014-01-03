@@ -13,18 +13,18 @@
 			$this->db = &$database;
 		}
 		
-		public function GetDB()
+		public function getDB()
 		{
 			return $this->db;
 		}
 		
-		public function CreateReplay(CGame $game) // start recording a game
+		public function createReplay(CGame $game) // start recording a game
 		{
 			$db = $this->db;
 			
-			$game_id = $game->ID();
-			$player1 = $game->Name1();
-			$player2 = $game->Name2();
+			$game_id = $game->id();
+			$player1 = $game->name1();
+			$player2 = $game->name2();
 			
 			// transform real names to symbolic names (clone prevents original game object from being damaged)
 			$game_data[1] = clone $game->GameData[$player1];
@@ -41,10 +41,10 @@
 			$turn_data->GameData = $game_data;
 			$replay_data[1] = $turn_data;
 			
-			$hidden_cards = $game->GetGameMode('HiddenCards');
-			$friendly_play = $game->GetGameMode('FriendlyPlay');
-			$long_mode = $game->GetGameMode('LongMode');
-			$ai_mode = $game->GetGameMode('AIMode');
+			$hidden_cards = $game->getGameMode('HiddenCards');
+			$friendly_play = $game->getGameMode('FriendlyPlay');
+			$long_mode = $game->getGameMode('LongMode');
+			$ai_mode = $game->getGameMode('AIMode');
 			$game_modes = array();
 			if ($hidden_cards == "yes") $game_modes[] = 'HiddenCards';
 			if ($friendly_play == "yes") $game_modes[] = 'FriendlyPlay';
@@ -53,26 +53,26 @@
 			$game_modes = implode(',', $game_modes);
 			$ai = $game->AI;
 			
-			$result = $db->Query('INSERT INTO `replays` (`GameID`, `Player1`, `Player2`, `Data`, `GameModes`, `AI`) VALUES (?, ?, ?, ?, ?, ?)', array($game_id, $player1, $player2, gzcompress(serialize($replay_data)), $game_modes, $ai));
+			$result = $db->query('INSERT INTO `replays` (`GameID`, `Player1`, `Player2`, `Data`, `GameModes`, `AI`) VALUES (?, ?, ?, ?, ?, ?)', array($game_id, $player1, $player2, gzcompress(serialize($replay_data)), $game_modes, $ai));
 			
 			return true;
 		}
 		
-		public function DeleteReplay($gameid) // delete unfinished replay
+		public function deleteReplay($gameid) // delete unfinished replay
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('DELETE FROM `replays` WHERE `GameID` = ?', array($gameid));
+			$result = $db->query('DELETE FROM `replays` WHERE `GameID` = ?', array($gameid));
 			if ($result === false) return false;
 			
 			return true;
 		}
 		
-		public function GetReplay($game_id)
+		public function getReplay($game_id)
 		{
 			$db = $this->db;
 
-			$result = $db->Query('SELECT `Player1`, `Player2` FROM `replays` WHERE `GameID` = ?', array($game_id));
+			$result = $db->query('SELECT `Player1`, `Player2` FROM `replays` WHERE `GameID` = ?', array($game_id));
 			if ($result === false) return false;
 			if (count($result) == 0) return 0;
 			
@@ -81,13 +81,13 @@
 			$player2 = $players['Player2'];
 			
 			$replay = new CReplay($game_id, $player1, $player2, $this);
-			$result = $replay->Load();
+			$result = $replay->load();
 			if (!$result) return $result;
 			
 			return $replay;
 		}
 		
-		public function ListReplays($player, $hidden, $friendly, $long, $ai, $challenge, $victory, $page, $condition, $order)
+		public function listReplays($player, $hidden, $friendly, $long, $ai, $challenge, $victory, $page, $condition, $order)
 		{
 			$db = $this->db;
 			
@@ -108,13 +108,13 @@
 			$order = ($order == 'ASC') ? 'ASC' : 'DESC';
 			$page = (is_numeric($page)) ? $page : 0;
 
-			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2`, `Started`, `Finished`, `Rounds`, `Turns`, `GameModes`, `AI`, `Winner`, `EndType`, (CASE WHEN `Deleted` = TRUE THEN "yes" ELSE "no" END) as `Deleted`, `Views` FROM `replays` WHERE '.$victory_q.$player_q.$hidden_q.$friendly_q.$long_q.$ai_q.$ch_q.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(REPLAYS_PER_PAGE * $page).' , '.REPLAYS_PER_PAGE.'', $params);
+			$result = $db->query('SELECT `GameID`, `Player1`, `Player2`, `Started`, `Finished`, `Rounds`, `Turns`, `GameModes`, `AI`, `Winner`, `EndType`, (CASE WHEN `Deleted` = TRUE THEN "yes" ELSE "no" END) as `Deleted`, `Views` FROM `replays` WHERE '.$victory_q.$player_q.$hidden_q.$friendly_q.$long_q.$ai_q.$ch_q.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(REPLAYS_PER_PAGE * $page).' , '.REPLAYS_PER_PAGE.'', $params);
 			if ($result === false) return false;
 
 			return $result;
 		}
 		
-		public function CountPages($player, $hidden, $friendly, $long, $ai, $challenge, $victory)
+		public function countPages($player, $hidden, $friendly, $long, $ai, $challenge, $victory)
 		{	
 			$db = $this->db;
 			
@@ -131,7 +131,7 @@
 			if ($player != "") { $params[] = '%'.$player.'%'; $params[] = '%'.$player.'%'; }
 			if (!in_array($challenge, array('none', 'include', 'exclude'))) $params[] = $challenge;
 			
-			$result = $db->Query('SELECT COUNT(`GameID`) as `Count` FROM `replays` WHERE '.$victory_q.$player_q.$hidden_q.$friendly_q.$long_q.$ai_q.$ch_q.'', $params);
+			$result = $db->query('SELECT COUNT(`GameID`) as `Count` FROM `replays` WHERE '.$victory_q.$player_q.$hidden_q.$friendly_q.$long_q.$ai_q.$ch_q.'', $params);
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
@@ -141,41 +141,41 @@
 			return $pages;
 		}
 		
-		public function IncrementViews($game_id) // increment number of views for the specified replay
+		public function incrementViews($game_id) // increment number of views for the specified replay
 		{
 			$db = $this->db;
 			
-			$result = $db->Query('UPDATE `replays` SET `Views` = `Views` + 1 WHERE `GameID` = ?', array($game_id));
+			$result = $db->query('UPDATE `replays` SET `Views` = `Views` + 1 WHERE `GameID` = ?', array($game_id));
 			if ($result === false) return false;
 			
 			return true;
 		}
 
-		public function AssignThread($replay_id, $thread_id)
+		public function assignThread($replay_id, $thread_id)
 		{
 			$db = $this->db;
 
-			$result = $db->Query('UPDATE `replays` SET `ThreadID` = ? WHERE `GameID` = ?', array($thread_id, $replay_id));
+			$result = $db->query('UPDATE `replays` SET `ThreadID` = ? WHERE `GameID` = ?', array($thread_id, $replay_id));
 			if ($result === false) return false;
 
 			return true;
 		}
 
-		public function RemoveThread($replay_id)
+		public function removeThread($replay_id)
 		{
 			$db = $this->db;
 
-			$result = $db->Query('UPDATE `replays` SET `ThreadID` = 0 WHERE `GameID` = ?', array($replay_id));
+			$result = $db->query('UPDATE `replays` SET `ThreadID` = 0 WHERE `GameID` = ?', array($replay_id));
 			if ($result === false) return false;
 
 			return true;
 		}
 
-		public function FindReplay($thread_id)
+		public function findReplay($thread_id)
 		{
 			$db = $this->db;
 
-			$result = $db->Query('SELECT `GameID` FROM `replays` WHERE `ThreadID` = ?', array($thread_id));
+			$result = $db->query('SELECT `GameID` FROM `replays` WHERE `ThreadID` = ?', array($thread_id));
 			if ($result === false or count($result) == 0) return 0;
 
 			$data = $result[0];
@@ -211,31 +211,31 @@
 			$this->Replays = &$Replays;
 		}
 		
-		public function ID()
+		public function id()
 		{
 			return $this->GameID;
 		}
 		
-		public function Name1()
+		public function name1()
 		{
 			return $this->Player1;
 		}
 		
-		public function Name2()
+		public function name2()
 		{
 			return $this->Player2;
 		}
 		
-		public function GetGameMode($game_mode)
+		public function getGameMode($game_mode)
 		{
 			return $this->$game_mode;
 		}
 		
-		public function Load()
+		public function load()
 		{
 			$db = $this->Replays->getDB();
 
-			$result = $db->Query('SELECT `Rounds`, `Turns`, `Data`, `Winner`, `EndType`, `GameModes`, `AI`, `ThreadID` FROM `replays` WHERE `Deleted` = FALSE AND `GameID` = ?', array($this->ID()));
+			$result = $db->query('SELECT `Rounds`, `Turns`, `Data`, `Winner`, `EndType`, `GameModes`, `AI`, `ThreadID` FROM `replays` WHERE `Deleted` = FALSE AND `GameID` = ?', array($this->id()));
 			if ($result === false) return false;
 			if (count($result) == 0) return 0;
 
@@ -255,22 +255,22 @@
 			return true;
 		}
 		
-		public function Save()
+		public function save()
 		{
 			$db = $this->Replays->getDB();
 			
-			$result = $db->Query('UPDATE `replays` SET `Rounds` = ?, `Turns` = ?, `Data` = ? WHERE `GameID` = ?', array($this->Rounds, $this->Turns, gzcompress(serialize($this->ReplayData)), $this->GameID));
+			$result = $db->query('UPDATE `replays` SET `Rounds` = ?, `Turns` = ?, `Data` = ? WHERE `GameID` = ?', array($this->Rounds, $this->Turns, gzcompress(serialize($this->ReplayData)), $this->GameID));
 			if ($result === false) return false;
 			
 			return true;
 		}
 		
-		public function Update(CGame $game) // update replay data
+		public function update(CGame $game) // update replay data
 		{
 			$this->Turns++;
 			$this->Rounds = $game->Round;
-			$player1 = $game->Name1();
-			$player2 = $game->Name2();
+			$player1 = $game->name1();
+			$player2 = $game->name2();
 			
 			// transform real names to symbolic names (clone prevents original game object from being damaged)
 			$game_data[1] = clone $game->GameData[$player1];
@@ -288,22 +288,22 @@
 			$this->ReplayData[$this->Turns] = $turn_data;
 			
 			// finish replay in case the game is finished
-			if ($game->State == 'finished' and !$this->Finish($game)) return false;
+			if ($game->State == 'finished' and !$this->finish($game)) return false;
 			
-			return $this->Save();
+			return $this->save();
 		}
 		
-		public function Finish(CGame $game) // finish recording a game
+		public function finish(CGame $game) // finish recording a game
 		{
 			$db = $this->Replays->getDB();
 			
-			$result = $db->Query('UPDATE `replays` SET `Winner` = ?, `EndType` = ?, `Finished` = CURRENT_TIMESTAMP WHERE `GameID` = ?', array($game->Winner, $game->EndType, $game->ID()));
+			$result = $db->query('UPDATE `replays` SET `Winner` = ?, `EndType` = ?, `Finished` = CURRENT_TIMESTAMP WHERE `GameID` = ?', array($game->Winner, $game->EndType, $game->id()));
 			if ($result === false) return false;
 			
 			return true;
 		}
 		
-		public function GetTurn($turn_number)
+		public function getTurn($turn_number)
 		{
 			if (!is_numeric($turn_number) or $turn_number < 1 or $turn_number > $this->Turns or !isset($this->ReplayData[$turn_number])) return false;
 
@@ -318,12 +318,12 @@
 			return $turn_data;
 		}
 		
-		public function IncrementViews() // increment number of views for the specified replay
+		public function incrementViews() // increment number of views for the specified replay
 		{
-			return $this->Replays->IncrementViews($this->ID());
+			return $this->Replays->incrementViews($this->id());
 		}
 		
-		public function Outcome()
+		public function outcome()
 		{
 			$outcomes = array(
 				'Surrender' => 'Opponent has surrendered',
@@ -339,12 +339,12 @@
 			return $outcomes[$this->EndType];
 		}
 
-		public function AssignThread($thread_id)
+		public function assignThread($thread_id)
 		{
-			return $this->Replays->AssignThread($this->ID(), $thread_id);
+			return $this->Replays->assignThread($this->id(), $thread_id);
 		}
 
-		public function LastRound() // search for the first turn of the current round
+		public function lastRound() // search for the first turn of the current round
 		{
 			$turn = $this->Turns;
 			$round = $this->Rounds;
@@ -352,7 +352,7 @@
 
 			while( ($round == $this->Rounds) and ($turn >= 1) )
 			{
-				$turn_data = $this->GetTurn($turn);
+				$turn_data = $this->getTurn($turn);
 				if (!$turn_data) return false;
 
 				$round = $turn_data->Round;

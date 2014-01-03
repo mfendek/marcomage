@@ -50,14 +50,14 @@
 	if( $db->status != 'SUCCESS' )
 	    fail("Unable to connect to database.");
 
-	if( false === $db->Query("SELECT 1 FROM logins LIMIT 1") )
+	if( false === $db->query("SELECT 1 FROM logins LIMIT 1") )
 	    fail("Unable to query login table.");
 	
 	if( false === date_default_timezone_set("Etc/UTC") )
 	    fail("Unable to configure PHP time zone.");
 	
-	if( false === $db->Query("SET time_zone='Etc/UTC'")
-	&&  false === $db->Query("SET time_zone='+0:00'") )
+	if( false === $db->query("SET time_zone='Etc/UTC'")
+	&&  false === $db->query("SET time_zone='+0:00'") )
 	    fail("Unable to configure SQL time zone.");
 	
 	$logindb = new CLogin($db);
@@ -81,13 +81,13 @@
 
 	$current = (isset($_POST['location'])) ? $_POST['location'] : "Webpage"; // set a meaningful default
 
-	$session = $logindb->Login();
+	$session = $logindb->login();
 
 	do { // dummy scope
 	
 	if( !$session )
 	{
-		$player = $playerdb->GetGuest();
+		$player = $playerdb->getGuest();
 
 		if (isset($_POST['Login']))
 		{
@@ -115,12 +115,12 @@
 				$current = "Registration";
 				$error = "The two passwords don't match.";
 			}
-			elseif (($playerdb->GetPlayer($_POST['NewUsername'])) OR (strtolower(trim($_POST['NewUsername'])) == strtolower(SYSTEM_NAME)))
+			elseif (($playerdb->getPlayer($_POST['NewUsername'])) OR (strtolower(trim($_POST['NewUsername'])) == strtolower(SYSTEM_NAME)))
 			{
 				$current = "Registration";
 				$error = "That name is already taken.";
 			}
-			elseif (!$playerdb->CreatePlayer($_POST['NewUsername'], $_POST['NewPassword']))
+			elseif (!$playerdb->createPlayer($_POST['NewUsername'], $_POST['NewPassword']))
 			{
 				$current = "Registration";
 				$error = "Failed to register new user.";
@@ -131,7 +131,7 @@
 				$_POST['Username'] = $_POST['NewUsername'];
 				$_POST['Password'] = $_POST['NewPassword'];
 				$_POST['Login'] = 1;
-				$session = $logindb->Login();
+				$session = $logindb->login();
 
 				$new_user = true; // store first session flag for further use
 				$current = "Webpage";
@@ -152,7 +152,7 @@
 	if ($session)
 	{
 		// at this point we're logged in
-		$player = $playerdb->GetPlayer($session->Username());
+		$player = $playerdb->getPlayer($session->username());
 
 		if( !$player )
 		{
@@ -163,7 +163,7 @@
 		}
 
 		// verify login privilege
-		if( !$access_rights[$player->Type()]["login"] )
+		if( !$access_rights[$player->type()]["login"] )
 		{
 			$session = false;
 			$current = "Webpage";
@@ -182,8 +182,8 @@
 		// navigation bar messages
 		if (isset($_POST['Logout']))
 		{
-			$logindb->Logout($session);
-			$player = $playerdb->GetGuest(); // demote player to guest after logout
+			$logindb->logout($session);
+			$player = $playerdb->getGuest(); // demote player to guest after logout
 			
 			$information = "You have successfully logged out.";
 			$current = "Webpage";
@@ -215,18 +215,18 @@
 				$card_id = $_POST['card_thread'];
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Cards'; break; }
+				if (!$access_rights[$player->type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Cards'; break; }
 
 				// check value
 				if (!is_numeric($card_id)) { $error = "Invalid card id"; $current = "Cards"; break; }
 
-				$thread_id = $forum->Threads->CardThread($card_id);
+				$thread_id = $forum->Threads->cardThread($card_id);
 				if (!$thread_id)
 				{
-					$card = $carddb->GetCard($card_id);
+					$card = $carddb->getCard($card_id);
 					$title = $card->Name;
 					$section_id = 7; // section for discussing balance changes
-					$new_thread = $forum->Threads->CreateThread($title, $player->Name(), 'normal', $section_id, $card_id);
+					$new_thread = $forum->Threads->createThread($title, $player->name(), 'normal', $section_id, $card_id);
 					if (!$new_thread) { $error = "Failed to create new thread"; $current = "Cards"; break; }
 
 					$thread_id = $new_thread;
@@ -243,28 +243,28 @@
 				$bought_card = $_POST['card'] = $_POST['buy_foil'];
 
 				// validate card
-				$cur_card = $carddb->GetCard($bought_card);
+				$cur_card = $carddb->getCard($bought_card);
 				if ($cur_card->Name == "Invalid Card") { $error = 'Invalid card'; $current = 'Cards_details'; break; }
 
 				// load foil cards list for current player
-				$settings = $player->GetSettings();
-				$foil_cards = $settings->GetSetting('FoilCards');
+				$settings = $player->getSettings();
+				$foil_cards = $settings->getSetting('FoilCards');
 				$foil_cards = ($foil_cards == '') ? array() : explode(",", $foil_cards);
 
 				// check if card can be purchased
 				if (in_array($bought_card, $foil_cards)) { $error = 'Foil version of current card was already purchased'; $current = 'Cards_details'; break; }
 
 				// subtract foil card cost
-				$score = $player->GetScore();
-				if (!$score->BuyItem(FOIL_COST)) { $error = 'Not enough gold'; $current = 'Cards_details'; break; }
+				$score = $player->getScore();
+				if (!$score->buyItem(FOIL_COST)) { $error = 'Not enough gold'; $current = 'Cards_details'; break; }
 
 				$db->txnBegin();
 
-				if (!$score->SaveScore()) { $db->txnRollBack(); $error = 'Failed to save score'; $current = 'Cards_details'; break; }
+				if (!$score->saveScore()) { $db->txnRollBack(); $error = 'Failed to save score'; $current = 'Cards_details'; break; }
 
 				// store bought card
 				array_push($foil_cards, $bought_card);
-				$settings->ChangeSetting('FoilCards', implode(",", $foil_cards));
+				$settings->changeSetting('FoilCards', implode(",", $foil_cards));
 
 				if (!$settings->SaveSettings()) { $db->txnRollBack(); $error = 'Failed to save setting'; $current = 'Cards_details'; break; }
 
@@ -303,7 +303,7 @@
 			if (isset($_POST['my_concepts'])) // use "my cards" quick button
 			{
 				$_POST['date_filter_concepts'] = "none";
-				$_POST['author_filter'] = $player->Name();
+				$_POST['author_filter'] = $player->name();
 				$_POST['state_filter'] = "none";
 				$_POST['CurrentConPage'] = 0;
 
@@ -322,7 +322,7 @@
 			if (isset($_POST['new_concept'])) // go to new card formular
 			{
 				// check access rights
-				if (!$access_rights[$player->Type()]["create_card"]) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+				if (!$access_rights[$player->type()]["create_card"]) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 				$current = "Concepts_new";
 
 				break;
@@ -331,7 +331,7 @@
 			if (isset($_POST['create_concept'])) // create new card concept
 			{
 				// check access rights
-				if (!$access_rights[$player->Type()]["create_card"]) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+				if (!$access_rights[$player->type()]["create_card"]) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 
 				// add default cost values
 				if (trim($_POST['bricks']) == "") $_POST['bricks'] = 0;
@@ -341,14 +341,14 @@
 				$data = array();
 				$inputs = array('name', 'class', 'bricks', 'gems', 'recruits', 'effect', 'keywords', 'note');
 				foreach ($inputs as $input) $data[$input] = $_POST[$input];
-				$data['author'] = $player->Name();
+				$data['author'] = $player->name();
 
 				// input checks
-				$check = $conceptdb->CheckInputs($data);
+				$check = $conceptdb->checkInputs($data);
 
 				if ($check != "") { $error = $check; $current = "Concepts_new"; break; }
 
-				$concept_id = $conceptdb->CreateConcept($data);
+				$concept_id = $conceptdb->createConcept($data);
 				if (!$concept_id) { $error = "Failed to create new card"; $current = "Concepts_new"; break; }
 
 				$_POST['CurrentConcept'] = $concept_id;
@@ -362,11 +362,11 @@
 			{
 				$concept_id = $_POST['edit_concept'];
 
-				if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
-				$concept = $conceptdb->GetConcept($concept_id);
+				if (!$conceptdb->exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
+				$concept = $conceptdb->getConcept($concept_id);
 
 				// check access rights
-				if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+				if (!($access_rights[$player->type()]["edit_all_card"] OR ($access_rights[$player->type()]["edit_own_card"] AND $player->name() == $concept->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 
 				$_POST['CurrentConcept'] = $concept_id;
 				$current = "Concepts_edit";
@@ -378,11 +378,11 @@
 			{
 				$concept_id = $_POST['CurrentConcept'];
 
-				if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
-				$concept = $conceptdb->GetConcept($concept_id);
+				if (!$conceptdb->exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
+				$concept = $conceptdb->getConcept($concept_id);
 
 				// check access rights
-				if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+				if (!($access_rights[$player->type()]["edit_all_card"] OR ($access_rights[$player->type()]["edit_own_card"] AND $player->name() == $concept->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 
 				$old_name = $concept->Name;
 				$new_name = $_POST['name'];
@@ -398,17 +398,17 @@
 				foreach ($inputs as $input) $data[$input] = $_POST[$input];
 
 				// input checks
-				$check = $conceptdb->CheckInputs($data);
+				$check = $conceptdb->checkInputs($data);
 
 				if ($check != "") { $error = $check; $current = "Concepts_edit"; break; }
 
-				$result = $concept->EditConcept($data);
+				$result = $concept->editConcept($data);
 				if (!$result) { $error = "Failed to save changes"; $current = "Concepts_edit"; break; }
 
 				// update corresponding thread name if necessary
 				if ((trim($old_name) != trim($new_name)) AND ($thread_id > 0))
 				{
-					$result = $forum->Threads->EditThread($thread_id, $new_name, 'normal');					
+					$result = $forum->Threads->editThread($thread_id, $new_name, 'normal');					
 					if (!$result) { $error = "Failed to rename thread"; $current = "Concepts_edit"; break; }
 				}
 
@@ -422,11 +422,11 @@
 			{
 				$concept_id = $_POST['CurrentConcept'];
 
-				if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
-				$concept = $conceptdb->GetConcept($concept_id);
+				if (!$conceptdb->exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
+				$concept = $conceptdb->getConcept($concept_id);
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["edit_all_card"]) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+				if (!$access_rights[$player->type()]["edit_all_card"]) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 
 				$old_name = $concept->Name;
 				$new_name = $_POST['name'];
@@ -442,17 +442,17 @@
 				foreach ($inputs as $input) $data[$input] = $_POST[$input];
 
 				// input checks
-				$check = $conceptdb->CheckInputs($data);
+				$check = $conceptdb->checkInputs($data);
 
 				if ($check != "") { $error = $check; $current = "Concepts_edit"; break; }
 
-				$result = $concept->EditConceptSpecial($data);
+				$result = $concept->editConceptSpecial($data);
 				if (!$result) { $error = "Failed to save changes"; $current = "Concepts_edit"; break; }
 
 				// update corresponding thread name if necessary
 				if ((trim($old_name) != trim($new_name)) AND ($thread_id > 0))
 				{
-					$result = $forum->Threads->EditThread($thread_id, $new_name, 'normal');					
+					$result = $forum->Threads->editThread($thread_id, $new_name, 'normal');					
 					if (!$result) { $error = "Failed to rename thread"; $current = "Concepts_edit"; break; }
 				}
 
@@ -466,11 +466,11 @@
 			{
 				$concept_id = $_POST['CurrentConcept'];
 
-				if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
-				$concept = $conceptdb->GetConcept($concept_id);
+				if (!$conceptdb->exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
+				$concept = $conceptdb->getConcept($concept_id);
 
 				// check access rights
-				if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+				if (!($access_rights[$player->type()]["edit_all_card"] OR ($access_rights[$player->type()]["edit_own_card"] AND $player->name() == $concept->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 
 				$former_name = $concept->Picture;
 				$former_path = 'img/concepts/'.$former_name;
@@ -479,7 +479,7 @@
 				$pos = strrpos($type, "/") + 1;
 
 				$code_type = substr($type, $pos, strlen($type) - $pos);
-				$filtered_name = preg_replace("/[^a-zA-Z0-9_-]/i", "_", $player->Name());
+				$filtered_name = preg_replace("/[^a-zA-Z0-9_-]/i", "_", $player->name());
 
 				$code_name = time().$filtered_name.'.'.$code_type;
 				$target_path = 'img/concepts/'.$code_name;
@@ -500,7 +500,7 @@
 				else
 				{
 					if ((file_exists($former_path)) and ($former_name != "blank.jpg")) unlink($former_path);
-					$concept->EditPicture($code_name);
+					$concept->editPicture($code_name);
 					$information = "Picture uploaded";
 				}
 
@@ -513,17 +513,17 @@
 			{
 				$concept_id = $_POST['CurrentConcept'];
 
-				if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
-				$concept = $conceptdb->GetConcept($concept_id);
+				if (!$conceptdb->exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
+				$concept = $conceptdb->getConcept($concept_id);
 
 				// check access rights
-				if (!($access_rights[$player->Type()]["edit_all_card"] OR ($access_rights[$player->Type()]["edit_own_card"] AND $player->Name() == $concept->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+				if (!($access_rights[$player->type()]["edit_all_card"] OR ($access_rights[$player->type()]["edit_own_card"] AND $player->name() == $concept->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 
 				$former_name = $concept->Picture;
 				$former_path = 'img/concepts/'.$former_name;
 
 				if ((file_exists($former_path)) and ($former_name != "blank.jpg")) unlink($former_path);
-				$concept->ResetPicture();
+				$concept->resetPicture();
 
 				$information = "Card picture cleared";
 				$current = 'Concepts_edit';
@@ -535,11 +535,11 @@
 			{
 				$concept_id = $_POST['delete_concept'];
 
-				if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
-				$concept = $conceptdb->GetConcept($concept_id);
+				if (!$conceptdb->exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
+				$concept = $conceptdb->getConcept($concept_id);
 
 				// check access rights
-				if (!($access_rights[$player->Type()]["delete_all_card"] OR ($access_rights[$player->Type()]["delete_own_card"] AND $player->Name() == $concept->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+				if (!($access_rights[$player->type()]["delete_all_card"] OR ($access_rights[$player->type()]["delete_own_card"] AND $player->name() == $concept->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 
 				$_POST['CurrentConcept'] = $concept_id;
 				$current = "Concepts_edit";
@@ -551,18 +551,18 @@
 			{
 				$concept_id = $_POST['CurrentConcept'];
 
-				if (!$conceptdb->Exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
-				$concept = $conceptdb->GetConcept($concept_id);
+				if (!$conceptdb->exists($concept_id)) { $error = 'No such card.'; $current = 'Concepts'; break; }
+				$concept = $conceptdb->getConcept($concept_id);
 				$thread_id = $concept->ThreadID;
 				$concept_name = $concept->Name;
 
 				// check access rights
-				if (!($access_rights[$player->Type()]["delete_all_card"] OR ($access_rights[$player->Type()]["delete_own_card"] AND $player->Name() == $concept->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
+				if (!($access_rights[$player->type()]["delete_all_card"] OR ($access_rights[$player->type()]["delete_own_card"] AND $player->name() == $concept->Author))) { $error = 'Access denied.'; $current = 'Concepts'; break; }
 
-				$result = $concept->DeleteConcept();
+				$result = $concept->deleteConcept();
 				if (!$result) { $error = "Failed to delete card"; $current = "Concepts_edit"; break; }
 
-				$result = $forum->Threads->EditThread($thread_id, $concept_name.' [Deleted]', 'normal');					
+				$result = $forum->Threads->editThread($thread_id, $concept_name.' [Deleted]', 'normal');					
 				if (!$result) { $error = "Failed to rename thread"; $current = "Concepts"; break; }
 
 				$information = "Card deleted";
@@ -577,20 +577,20 @@
 				$section_id = 6; // section for discussing concepts
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Concepts_details'; break; }
+				if (!$access_rights[$player->type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Concepts_details'; break; }
 
-				$concept = $conceptdb->GetConcept($concept_id);
+				$concept = $conceptdb->getConcept($concept_id);
 				if (!$concept) { $error = 'No such card.'; $current = 'Concepts'; break; }
 				$thread_id = $concept->ThreadID;
 				if ($thread_id > 0) { $error = "Thread already exists"; $current = "Forum_thread"; $_POST['CurrentThread'] = $thread_id; break; }
 
 				$concept_name = $concept->Name;
 
-				$new_thread = $forum->Threads->CreateThread($concept_name, $player->Name(), 'normal', $section_id);
+				$new_thread = $forum->Threads->createThread($concept_name, $player->name(), 'normal', $section_id);
 				if ($new_thread === false) { $error = "Failed to create new thread"; $current = "Concepts_details"; break; }
 				// $new_thread contains ID of currently created thread, which can be 0
 
-				$result = $concept->AssignThread($new_thread);
+				$result = $concept->assignThread($new_thread);
 				if (!$result) { $error = "Failed to assign new thread"; $current = "Concepts_details"; break; }
 
 				$_POST['CurrentThread'] = $new_thread;
@@ -610,17 +610,17 @@
 				$deck_id = $_POST['CurrentDeck'];
 
 				//download deck
-				$deck = $player->GetDeck($deck_id);
+				$deck = $player->getDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
 
 				// add card, saving the deck on success
-				if( $deck->AddCard($cardid) )
+				if( $deck->addCard($cardid) )
 				{
 					// set tokens when deck is finished and player forgot to set them
 					if ((count(array_diff($deck->DeckData->Tokens, array('none'))) == 0) AND $deck->isReady())
-						$deck->SetAutoTokens();
+						$deck->setAutoTokens();
 					
-					$deck->SaveDeck();
+					$deck->saveDeck();
 				}
 				else
 					$error = 'Unable to add the chosen card to this deck.';
@@ -635,12 +635,12 @@
 				$deck_id = $_POST['CurrentDeck'];
 
 				// download deck
-				$deck = $player->GetDeck($deck_id);
+				$deck = $player->getDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
 
 				// remove card, saving the deck on success
-				if( $deck->ReturnCard($cardid) )
-					$deck->SaveDeck();
+				if( $deck->returnCard($cardid) )
+					$deck->saveDeck();
 				else
 					$error = 'Unable to remove the chosen card from this deck.';
 
@@ -651,7 +651,7 @@
 			if (isset($_POST['set_tokens'])) // Decks -> Set tokens
 			{
 				$deck_id = $_POST['CurrentDeck'];
-				$deck = $player->GetDeck($deck_id);
+				$deck = $player->getDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
 
 				// read tokens from inputs
@@ -679,7 +679,7 @@
 
 				// save token data
 				$deck->DeckData->Tokens = $sorted_tokens;
-				$deck->SaveDeck();
+				$deck->saveDeck();
 
 				$information = 'Tokens set.';
 				$current = 'Decks_edit';
@@ -690,11 +690,11 @@
 			if (isset($_POST['auto_tokens'])) // Decks -> Assign tokens automatically
 			{
 				$deck_id = $_POST['CurrentDeck'];
-				$deck = $player->GetDeck($deck_id);
+				$deck = $player->getDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
 
-				$deck->SetAutoTokens();					
-				$deck->SaveDeck();
+				$deck->setAutoTokens();					
+				$deck->saveDeck();
 
 				$information = 'Tokens set.';
 				$current = 'Decks_edit';
@@ -705,14 +705,14 @@
 			if (isset($_POST['save_dnote']))	// Decks -> save note
 			{
 				$deck_id = $_POST['CurrentDeck'];
-				$deck = $player->GetDeck($deck_id);
+				$deck = $player->getDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
 
 				$new_note = $_POST['Content'];
 
 				if (strlen($new_note) > MESSAGE_LENGTH) { $error = "Deck note is too long"; $current = "Decks_note"; break; }
 
-				if (!$deck->UpdateNote($new_note)) { $error = "Failed to save deck note."; $current = "Decks_note"; break; }
+				if (!$deck->updateNote($new_note)) { $error = "Failed to save deck note."; $current = "Decks_note"; break; }
 
 				$information = 'Deck note saved.';
 				$current = 'Decks_note';
@@ -722,14 +722,14 @@
 			if (isset($_POST['save_dnote_return'])) // Decks -> save note and return to deck screen
 			{
 				$deck_id = $_POST['CurrentDeck'];
-				$deck = $player->GetDeck($deck_id);
+				$deck = $player->getDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
 
 				$new_note = $_POST['Content'];
 
 				if (strlen($new_note) > MESSAGE_LENGTH) { $error = "Deck note is too long"; $current = "Decks_note"; break; }
 
-				if (!$deck->UpdateNote($new_note)) { $error = "Failed to save deck note."; $current = "Decks_note"; break; }
+				if (!$deck->updateNote($new_note)) { $error = "Failed to save deck note."; $current = "Decks_note"; break; }
 
 				$information = 'Deck note saved.';
 				$current = 'Decks_edit';
@@ -739,10 +739,10 @@
 			if (isset($_POST['clear_dnote'])) //  Decks -> clear current's player deck note
 			{
 				$deck_id = $_POST['CurrentDeck'];
-				$deck = $player->GetDeck($deck_id);
+				$deck = $player->getDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
 
-				if (!$deck->UpdateNote('')) { $error = "Failed to save deck note."; $current = "Decks_note"; break; }
+				if (!$deck->updateNote('')) { $error = "Failed to save deck note."; $current = "Decks_note"; break; }
 
 				$information = 'Deck note saved.';
 				$current = 'Decks_note';
@@ -752,10 +752,10 @@
 			if (isset($_POST['clear_dnote_return']))	// Decks -> clear current's player deck note and return to deck screen
 			{
 				$deck_id = $_POST['CurrentDeck'];
-				$deck = $player->GetDeck($deck_id);
+				$deck = $player->getDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
 
-				if (!$deck->UpdateNote('')) { $error = "Failed to save deck note."; $current = "Decks_note"; break; }
+				if (!$deck->updateNote('')) { $error = "Failed to save deck note."; $current = "Decks_note"; break; }
 
 				$information = 'Deck note saved.';
 				$current = 'Decks_edit';
@@ -781,14 +781,14 @@
 			if (isset($_POST['reset_deck_confirm'])) // Decks -> Modify this deck -> Confirm reset
 			{
 				$deck_id = $_POST['CurrentDeck'];
-				$deck = $player->GetDeck($deck_id);
+				$deck = $player->getDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
 
 				// reset deck, saving it on success
-				if( $deck->ResetDeck() )
+				if( $deck->resetDeck() )
 				{
-					$deck->ResetStatistics();
-					$deck->SaveDeck();
+					$deck->resetStatistics();
+					$deck->saveDeck();
 					$information = 'Deck successfully reset.';
 				}
 				else
@@ -809,12 +809,12 @@
 			if (isset($_POST['reset_stats_confirm'])) // Decks -> Reset statistics -> Confirm reset
 			{
 				$deck_id = $_POST['CurrentDeck'];
-				$deck = $player->GetDeck($deck_id);
+				$deck = $player->getDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
 
 				// reset deck statistics
-				$deck->ResetStatistics();
-				$deck->SaveDeck();
+				$deck->resetStatistics();
+				$deck->saveDeck();
 				$information = 'Deck statistics successfully reset.';
 
 				$current = 'Decks_edit';
@@ -825,7 +825,7 @@
 			{
 				$deck_id = $_POST['CurrentDeck'];
 				$newname = $_POST['NewDeckName'];
-				$list = $player->ListDecks();
+				$list = $player->listDecks();
 				$deck_names = array();
 				foreach ($list as $deck) $deck_names[] = $deck['Deckname'];
 				$pos = array_search($newname, $deck_names);
@@ -841,11 +841,11 @@
 				}
 				else
 				{
-					$deck = $player->GetDeck($deck_id);
+					$deck = $player->getDeck($deck_id);
 
 					if ($deck != false)
 					{
-						$deck->RenameDeck($newname);
+						$deck->renameDeck($newname);
 						
 						$information = "Deck saved.";
 						$current = 'Decks_edit';
@@ -862,12 +862,12 @@
 			if (isset($_POST['export_deck'])) // Decks -> Modify this deck -> Export
 			{
 				$deck_id = $_POST['CurrentDeck'];
-				$deck = $player->GetDeck($deck_id);
+				$deck = $player->getDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
-				$file = $deck->ToCSV();
+				$file = $deck->toCSV();
 
 				$content_type = 'text/csv';
-				$file_name = preg_replace("/[^a-zA-Z0-9_-]/i", "_", $deck->Deckname()).'.csv';
+				$file_name = preg_replace("/[^a-zA-Z0-9_-]/i", "_", $deck->deckname()).'.csv';
 				$file_length = strlen($file);
 
 				header('Content-Type: '.$content_type.'');
@@ -903,19 +903,19 @@
 				$file = file_get_contents($_FILES['uploadedfile']['tmp_name']);
 
 				// import data
-				$deck = $player->GetDeck($deck_id);
+				$deck = $player->getDeck($deck_id);
 
 				if ($deck != false)
 				{
 					// fetch player's level
-					$score = $scoredb->GetScore($player->Name());
+					$score = $scoredb->getScore($player->name());
 					$player_level = $score->ScoreData->Level;
 
-					$result = $deck->FromCSV($file, $player_level);
+					$result = $deck->fromCSV($file, $player_level);
 					if ($result != "Success")	$error = $result;
 					else
 					{
-						$deck->SaveDeck();
+						$deck->saveDeck();
 						$information = "Deck successfully imported.";
 					}
 				}
@@ -966,22 +966,22 @@
 				if ($source_deck_id == $target_deck_id) { $error = 'Unable to import self.'; $current = 'Decks_shared'; break; }
 
 				// validate player's level
-				$score = $scoredb->GetScore($player->Name());
+				$score = $scoredb->getScore($player->name());
 				$player_level = $score->ScoreData->Level;
 				if ($player_level < 10) { $error = 'Access denied (level requirement).'; $current = 'Decks'; break; }
 
-				$source_deck = $deckdb->GetDeck($source_deck_id);
+				$source_deck = $deckdb->getDeck($source_deck_id);
 				if (!$source_deck) { $error = 'Failed to load shared deck.'; $current = 'Decks_shared'; break; }
 				if ($source_deck->Shared == 0) { $error = 'Selected deck is not shared.'; $current = 'Decks_shared'; break; }
 				if (!$source_deck->isReady()) { $error = 'Selected deck is incomplete.'; $current = 'Decks_shared'; break; }
 
-				$deck = $player->GetDeck($target_deck_id );
+				$deck = $player->getDeck($target_deck_id );
 				if (!$deck) { $error = 'No such deck.'; $current = 'Decks_shared'; break; }
 
 				// import shared deck
-				$deck->RenameDeck($source_deck->Deckname());
-				$deck->LoadData($source_deck->DeckData);
-				$deck->SaveDeck();
+				$deck->renameDeck($source_deck->deckname());
+				$deck->loadData($source_deck->DeckData);
+				$deck->saveDeck();
 
 				$_POST['CurrentDeck'] = $target_deck_id;
 				$information = 'Deck successfully imported from shared deck.';
@@ -992,13 +992,13 @@
 			if (isset($_POST['share_deck'])) // Decks -> Modify this deck -> Share
 			{
 				$deck_id = $_POST['CurrentDeck'];
-				$deck = $player->GetDeck($deck_id);
+				$deck = $player->getDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
 
 				if ($deck->Shared == 1) { $error = 'Deck is aready shared.'; $current = 'Decks_edit'; break; }
 
 				$deck->Shared = 1;
-				$deck->SaveDeck();
+				$deck->saveDeck();
 
 				$information = 'Deck successfully shared.';
 				$current = 'Decks_edit';
@@ -1008,13 +1008,13 @@
 			if (isset($_POST['unshare_deck'])) // Decks -> Modify this deck -> Unshare
 			{
 				$deck_id = $_POST['CurrentDeck'];
-				$deck = $player->GetDeck($deck_id);
+				$deck = $player->getDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Decks'; break; }
 
 				if ($deck->Shared == 0) { $error = 'Deck is aready unshared.'; $current = 'Decks_edit'; break; }
 
 				$deck->Shared = 0;
-				$deck->SaveDeck();
+				$deck->saveDeck();
 
 				$information = 'Deck successfully unshared.';
 				$current = 'Decks_edit';
@@ -1038,7 +1038,7 @@
 			if (isset($_POST['new_thread'])) // forum -> section -> new thread
 			{
 				// check access rights
-				if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Forum_section'; break; }
+				if (!$access_rights[$player->type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Forum_section'; break; }
 
 				$current = 'Forum_thread_new';
 
@@ -1050,29 +1050,29 @@
 				$section_id = $_POST['CurrentSection'];
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Forum_section'; break; }
+				if (!$access_rights[$player->type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Forum_section'; break; }
 				// check access rights
-				if ((!$access_rights[$player->Type()]["chng_priority"]) AND ($_POST['Priority'] != "normal")) { $error = 'Access denied.'; $current = 'Forum_section'; break; }
+				if ((!$access_rights[$player->type()]["chng_priority"]) AND ($_POST['Priority'] != "normal")) { $error = 'Access denied.'; $current = 'Forum_section'; break; }
 
 				if ((trim($_POST['Title']) == "") OR (trim($_POST['Content']) == "")) { $error = "Invalid input"; $current = "Forum_thread_new"; break; }
 
 				if (strlen($_POST['Content']) > POST_LENGTH) { $error = "Thread text is too long"; $current = "Forum_thread_new"; break; }
 
-				$thread_id = $forum->Threads->ThreadExists($_POST['Title']);
+				$thread_id = $forum->Threads->threadExists($_POST['Title']);
 				if ($thread_id) { $error = "Thread already exists"; $current = "Forum_thread"; $_POST['CurrentThread'] = $thread_id; break; }
 
 				$db->txnBegin();
 
-				$new_thread = $forum->Threads->CreateThread($_POST['Title'], $player->Name(), $_POST['Priority'], $section_id);
+				$new_thread = $forum->Threads->createThread($_POST['Title'], $player->name(), $_POST['Priority'], $section_id);
 				if ($new_thread === FALSE) { $db->txnRollBack(); $error = "Failed to create new thread"; $current = "Forum_section"; break; }
 				// $new_thread contains ID of currently created thread, which can be 0
 
-				$new_post = $forum->Threads->Posts->CreatePost($new_thread, $player->Name(), $_POST['Content']);
+				$new_post = $forum->Threads->Posts->createPost($new_thread, $player->name(), $_POST['Content']);
 				if (!$new_post) { $db->txnRollBack(); $error = "Failed to create new post"; $current = "Forum_section"; break; }
 
 				$db->txnCommit();
 
-				$forum->Threads->RefreshThread($new_thread); // update post count, last author and last post
+				$forum->Threads->refreshThread($new_thread); // update post count, last author and last post
 
 				$information = "Thread created";
 				$current = 'Forum_section';
@@ -1096,9 +1096,9 @@
 				$thread_id = $_POST['CurrentThread'];
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["lock_thread"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
+				if (!$access_rights[$player->type()]["lock_thread"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
-				$lock = $forum->Threads->LockThread($thread_id);
+				$lock = $forum->Threads->lockThread($thread_id);
 				if (!$lock) { $error = "Failed to lock thread"; $current = "Forum_thread"; break; }
 
 				$information = "Thread locked";
@@ -1112,9 +1112,9 @@
 				$thread_id = $_POST['CurrentThread'];
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["lock_thread"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
+				if (!$access_rights[$player->type()]["lock_thread"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
-				$lock = $forum->Threads->UnlockThread($thread_id);
+				$lock = $forum->Threads->unlockThread($thread_id);
 				if (!$lock) { $error = "Failed to unlock thread"; $current = "Forum_thread"; break; }
 
 				$information = "Thread unlocked";
@@ -1128,7 +1128,7 @@
 				// only symbolic functionality... rest is handled below
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["del_all_thread"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
+				if (!$access_rights[$player->type()]["del_all_thread"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
 				$current = 'Forum_thread';
 				break;
@@ -1139,26 +1139,26 @@
 				$thread_id = $_POST['CurrentThread'];
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["del_all_thread"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
+				if (!$access_rights[$player->type()]["del_all_thread"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
-				$delete = $forum->Threads->DeleteThread($thread_id);
+				$delete = $forum->Threads->deleteThread($thread_id);
 				if (!$delete) { $error = "Failed to delete thread"; $current = "Forum_thread"; break; }
 
 				// check for linked card concepts, update when necessary
-				$concept_id = $conceptdb->FindConcept($thread_id);
+				$concept_id = $conceptdb->findConcept($thread_id);
 
 				if ($concept_id > 0)
 				{
-					$delete = $conceptdb->RemoveThread($concept_id);
+					$delete = $conceptdb->removeThread($concept_id);
 					if (!$delete) { $error = "Failed to unlink matching concept"; $current = "Forum_thread"; break; }
 				}
 
 				// check for linked replays, update when necessary
-				$replay_id = $replaydb->FindReplay($thread_id);
+				$replay_id = $replaydb->findReplay($thread_id);
 
 				if ($replay_id > 0)
 				{
-					$delete = $replaydb->RemoveThread($replay_id);
+					$delete = $replaydb->removeThread($replay_id);
 					if (!$delete) { $error = "Failed to unlink matching replay"; $current = "Forum_thread"; break; }
 				}
 
@@ -1173,10 +1173,10 @@
 				$thread_id = $_POST['CurrentThread'];
 
 				// check if thread is locked
-				if ($forum->Threads->IsLocked($thread_id)) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
+				if ($forum->Threads->isLocked($thread_id)) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["create_post"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
+				if (!$access_rights[$player->type()]["create_post"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
 				$current = 'Forum_post_new';
 
@@ -1188,26 +1188,26 @@
 				$thread_id = $_POST['CurrentThread'];
 
 				// check if thread is locked
-				if ($forum->Threads->IsLocked($thread_id)) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
+				if ($forum->Threads->isLocked($thread_id)) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["create_post"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
+				if (!$access_rights[$player->type()]["create_post"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
 				if (trim($_POST['Content']) == "") { $error = "Invalid input"; $current = "Forum_post_new"; break; }
 				if (strlen($_POST['Content']) > POST_LENGTH) { $error = "Post text is too long"; $current = "Forum_post_new"; break; }
 
-				$latest_post = $forum->Threads->Posts->GetLatestPost($player->Name());
+				$latest_post = $forum->Threads->Posts->getLatestPost($player->name());
 
 				// anti-spam protection (user is allowed to create posts at most every 5 seconds)
 				if (!$latest_post OR ((time() - strtotime($latest_post['Created'])) > 5))
 				{
-					$new_post = $forum->Threads->Posts->CreatePost($thread_id, $player->Name(), $_POST['Content']);
+					$new_post = $forum->Threads->Posts->createPost($thread_id, $player->name(), $_POST['Content']);
 					if (!$new_post) { $error = "Failed to create new post"; $current = "Forum_thread"; break; }
 	
-					$forum->Threads->RefreshThread($thread_id); // update post count, last author and last post
+					$forum->Threads->refreshThread($thread_id); // update post count, last author and last post
 				}
 
-				$_POST['CurrentPage'] = max(($forum->Threads->Posts->CountPages($thread_id)) - 1, 0);
+				$_POST['CurrentPage'] = max(($forum->Threads->Posts->countPages($thread_id)) - 1, 0);
 				$information = "Post created";
 				$current = 'Forum_thread';
 
@@ -1219,10 +1219,10 @@
 				$thread_id = $_POST['CurrentThread'];
 
 				// check if thread is locked and if you have access to unlock it
-				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
+				if (($forum->Threads->isLocked($thread_id)) AND (!$access_rights[$player->type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["create_post"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
+				if (!$access_rights[$player->type()]["create_post"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
 				$current = 'Forum_post_new';
 
@@ -1232,13 +1232,13 @@
 			if (isset($_POST['edit_thread']))  // forum -> section -> thread -> edit thread
 			{
 				$thread_id = $_POST['CurrentThread'];
-				$thread_data = $forum->Threads->GetThread($thread_id);
+				$thread_data = $forum->Threads->getThread($thread_id);
 
 				// check if thread is locked and if you have access to unlock it
-				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
+				if (($forum->Threads->isLocked($thread_id)) AND (!$access_rights[$player->type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
 
 				// check access rights
-				if (!(($access_rights[$player->Type()]["edit_all_thread"]) OR ($access_rights[$player->Type()]["edit_own_thread"] AND $thread_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
+				if (!(($access_rights[$player->type()]["edit_all_thread"]) OR ($access_rights[$player->type()]["edit_own_thread"] AND $thread_data['Author'] == $player->name()))) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
 				$current = 'Forum_thread_edit';
 
@@ -1248,16 +1248,16 @@
 			if (isset($_POST['modify_thread'])) // forum -> section -> thread -> modify thread
 			{
 				$thread_id = $_POST['CurrentThread'];
-				$thread_data = $forum->Threads->GetThread($thread_id);
+				$thread_data = $forum->Threads->getThread($thread_id);
 
 				// check if thread is locked and if you have access to unlock it
-				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
+				if (($forum->Threads->isLocked($thread_id)) AND (!$access_rights[$player->type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
 
 				// check access rights
-				if (!(($access_rights[$player->Type()]["edit_all_thread"]) OR ($access_rights[$player->Type()]["edit_own_thread"] AND $thread_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
+				if (!(($access_rights[$player->type()]["edit_all_thread"]) OR ($access_rights[$player->type()]["edit_own_thread"] AND $thread_data['Author'] == $player->name()))) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
 				// check access rights
-				if ((!$access_rights[$player->Type()]["chng_priority"]) AND (isset($_POST['Priority'])) AND ($_POST['Priority'] != $thread_data['Priority'])) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
+				if ((!$access_rights[$player->type()]["chng_priority"]) AND (isset($_POST['Priority'])) AND ($_POST['Priority'] != $thread_data['Priority'])) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
 				if (trim($_POST['Title']) == "") { $error = "Invalid input"; $current = "Forum_thread"; break; }
 
@@ -1266,7 +1266,7 @@
 				// validate priority
 				if (isset($_POST['Priority']) and !in_array($_POST['Priority'], array('normal','important','sticky'))) { $error = "Invalid thread priority."; $current = 'Forum_thread_edit'; break; }
 
-				$edited_thread = $forum->Threads->EditThread($thread_id, $_POST['Title'], $new_priority);
+				$edited_thread = $forum->Threads->editThread($thread_id, $_POST['Title'], $new_priority);
 				if (!$edited_thread) { $error = "Failed to edit thread"; $current = "Forum_thread"; break; }
 
 				$information = "Changes saved";
@@ -1281,9 +1281,9 @@
 				$new_section = $_POST['section_select'];
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["move_thread"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
+				if (!$access_rights[$player->type()]["move_thread"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
-				$move = $forum->Threads->MoveThread($thread_id, $new_section);
+				$move = $forum->Threads->moveThread($thread_id, $new_section);
 				if (!$move) { $error = "Failed to change sections"; $current = "Forum_thread_edit"; break; }
 
 				$information = "Section changed";
@@ -1302,11 +1302,11 @@
 				$_POST['CurrentPost'] = $post_id = $_POST['edit_post'];
 
 				// check if thread is locked and if you have access to unlock it
-				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
+				if (($forum->Threads->isLocked($thread_id)) AND (!$access_rights[$player->type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
 
-				$post_data = $forum->Threads->Posts->GetPost($post_id);
+				$post_data = $forum->Threads->Posts->getPost($post_id);
 
-				if (!(($access_rights[$player->Type()]["edit_all_post"]) OR ($access_rights[$player->Type()]["edit_own_post"] AND $post_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
+				if (!(($access_rights[$player->type()]["edit_all_post"]) OR ($access_rights[$player->type()]["edit_own_post"] AND $post_data['Author'] == $player->name()))) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
 				$current = 'Forum_post_edit';
 
@@ -1319,16 +1319,16 @@
 				$post_id = $_POST['CurrentPost'];
 
 				// check if thread is locked and if you have access to unlock it
-				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
+				if (($forum->Threads->isLocked($thread_id)) AND (!$access_rights[$player->type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
 
-				$post_data = $forum->Threads->Posts->GetPost($post_id);
+				$post_data = $forum->Threads->Posts->getPost($post_id);
 
-				if (!(($access_rights[$player->Type()]["edit_all_post"]) OR ($access_rights[$player->Type()]["edit_own_post"] AND $post_data['Author'] == $player->Name()))) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
+				if (!(($access_rights[$player->type()]["edit_all_post"]) OR ($access_rights[$player->type()]["edit_own_post"] AND $post_data['Author'] == $player->name()))) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
 				if (trim($_POST['Content']) == "") { $error = "Invalid input"; $current = "Forum_post_edit"; break; }
 				if (strlen($_POST['Content']) > POST_LENGTH) { $error = "Post text is too long"; $current = "Forum_post_edit"; break; }
 
-				$edited_post = $forum->Threads->Posts->EditPost($post_id, $_POST['Content']);
+				$edited_post = $forum->Threads->Posts->editPost($post_id, $_POST['Content']);
 				if (!$edited_post) { $error = "Failed to edit post"; $current = "Forum_thread"; break; }
 
 				$information = "Changes saved";
@@ -1343,10 +1343,10 @@
 				$thread_id = $_POST['CurrentThread'];
 
 				// check if thread is locked and if you have access to unlock it
-				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
+				if (($forum->Threads->isLocked($thread_id)) AND (!$access_rights[$player->type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["del_all_post"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
+				if (!$access_rights[$player->type()]["del_all_post"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
 				$information = "Please confirm post deletion";
 				$current = 'Forum_thread';
@@ -1359,17 +1359,17 @@
 				$post_id = $_POST['delete_post_confirm'];
 
 				// check if thread is locked and if you have access to unlock it
-				if (($forum->Threads->IsLocked($thread_id)) AND (!$access_rights[$player->Type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
+				if (($forum->Threads->isLocked($thread_id)) AND (!$access_rights[$player->type()]["lock_thread"])) { $error = 'Thread is locked.'; $current = 'Forum_thread'; break; }
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["del_all_post"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
+				if (!$access_rights[$player->type()]["del_all_post"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
-				$deleted_post = $forum->Threads->Posts->DeletePost($post_id);
+				$deleted_post = $forum->Threads->Posts->deletePost($post_id);
 				if (!$deleted_post) { $error = "Failed to delete post"; $current = "Forum_thread"; break; }
 
-				$forum->Threads->RefreshThread($thread_id); // update post count, last author and last post
+				$forum->Threads->refreshThread($thread_id); // update post count, last author and last post
 
-				$max_page = max($forum->Threads->Posts->CountPages($thread_id) - 1, 0);
+				$max_page = max($forum->Threads->Posts->countPages($thread_id) - 1, 0);
 				$_POST['CurrentPage'] = (($_POST['CurrentPage'] <= $max_page) ? $_POST['CurrentPage'] : $max_page);
 
 				$information = "Post deleted";
@@ -1385,14 +1385,14 @@
 				$new_thread = $_POST['thread_select'];
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["move_post"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
+				if (!$access_rights[$player->type()]["move_post"]) { $error = 'Access denied.'; $current = 'Forum_thread'; break; }
 
-				$move = $forum->Threads->Posts->MovePost($post_id, $new_thread);
+				$move = $forum->Threads->Posts->movePost($post_id, $new_thread);
 				if (!$move) { $error = "Failed to change threads"; $current = "Forum_thread"; break; }
 
 				 // update post count, last author and last post of both former and target threads
-				$forum->Threads->RefreshThread($thread_id);
-				$forum->Threads->RefreshThread($new_thread);
+				$forum->Threads->refreshThread($thread_id);
+				$forum->Threads->refreshThread($new_thread);
 
 				$_POST['CurrentPage'] = 0; // go to first page of target thread on success
 				$information = "Thread changed";
@@ -1409,7 +1409,7 @@
 
 			if (isset($_POST['active_game'])) // Games -> next game button
 			{
-				$list = $gamedb->NextGameList($player->Name());
+				$list = $gamedb->nextGameList($player->name());
 
 				//check if there is an active game
 				if (count($list) == 0) { $error = 'No games your turn!'; $current = 'Games'; break; }
@@ -1419,7 +1419,7 @@
 				foreach ($list as $game_id => $opponent_name)
 				{
 					// separate games into two groups based on opponent activity
-					$inactivity = time() - strtotime($playerdb->LastQuery($opponent_name));
+					$inactivity = time() - strtotime($playerdb->lastquery($opponent_name));
 					if ($inactivity < 60*10) $active[] = $game_id;
 					else $inactive[] = $game_id;
 				}
@@ -1436,21 +1436,21 @@
 					}	
 				}
 
-				$game = $gamedb->GetGame($game_id);
+				$game = $gamedb->getGame($game_id);
 
 				// check if the game exists
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to view this game
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
+				if ($player->name() != $game->name1() and $player->name() != $game->name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				// check if the game is a game in progress (and not a challenge)
 				if ($game->State == 'waiting') { $error = 'Opponent did not accept the challenge yet!'; $current = 'Games'; break; }
 
 				// disable re-visiting
-				if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { $error = 'Game already over.'; $current = 'Games'; break; }
+				if ( (($player->name() == $game->name1()) && ($game->State == 'P1 over')) || (($player->name() == $game->name2()) && ($game->State == 'P2 over')) ) { $error = 'Game already over.'; $current = 'Games'; break; }
 
-				$_POST['CurrentGame'] = $game->ID();
+				$_POST['CurrentGame'] = $game->id();
 				$current = "Games_details";
 				break;
 			}
@@ -1458,20 +1458,20 @@
 			if (isset($_POST['save_note']))	// save current's player game note
 			{
 				$gameid = $_POST['CurrentGame'];
-				$game = $gamedb->GetGame($gameid);
+				$game = $gamedb->getGame($gameid);
 
 				// check if the game exists
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to perform game actions
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
+				if ($player->name() != $game->name1() and $player->name() != $game->name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				$new_note = $_POST['Content'];
 
 				if (strlen($new_note) > MESSAGE_LENGTH) { $error = "Game note is too long"; $current = "Games_note"; break; }
 
-				$game->SetNote($player->Name(), $new_note);
-				if (!$game->SaveGame()) { $error = "Failed to save game note."; $current = "Games_note"; break; }
+				$game->setNote($player->name(), $new_note);
+				if (!$game->saveGame()) { $error = "Failed to save game note."; $current = "Games_note"; break; }
 
 				$information = 'Game note saved.';
 				$current = 'Games_note';
@@ -1481,23 +1481,23 @@
 			if (isset($_POST['save_note_return'])) // save current's player game note and return to game screen
 			{
 				$gameid = $_POST['CurrentGame'];
-				$game = $gamedb->GetGame($gameid);
+				$game = $gamedb->getGame($gameid);
 
 				// check if the game exists
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to view this game
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
+				if ($player->name() != $game->name1() and $player->name() != $game->name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				// disable re-visiting
-				if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { $error = 'Game already over.'; $current = 'Games'; break; }
+				if ( (($player->name() == $game->name1()) && ($game->State == 'P1 over')) || (($player->name() == $game->name2()) && ($game->State == 'P2 over')) ) { $error = 'Game already over.'; $current = 'Games'; break; }
 
 				$new_note = $_POST['Content'];
 
 				if (strlen($new_note) > MESSAGE_LENGTH) { $error = "Game note is too long"; $current = "Games_note"; break; }
 
-				$game->SetNote($player->Name(), $new_note);
-				if (!$game->SaveGame()) { $error = "Failed to save game note."; $current = "Games_note"; break; }
+				$game->setNote($player->name(), $new_note);
+				if (!$game->saveGame()) { $error = "Failed to save game note."; $current = "Games_note"; break; }
 
 				$information = 'Game note saved.';
 				$current = 'Games_details';
@@ -1507,16 +1507,16 @@
 			if (isset($_POST['clear_note'])) // clear current's player game note
 			{
 				$gameid = $_POST['CurrentGame'];
-				$game = $gamedb->GetGame($gameid);
+				$game = $gamedb->getGame($gameid);
 
 				// check if the game exists
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to perform game actions
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
+				if ($player->name() != $game->name1() and $player->name() != $game->name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
-				$game->ClearNote($player->Name());
-				if (!$game->SaveGame()) { $error = "Failed to clear game note."; $current = "Games_note"; break; }
+				$game->clearNote($player->name());
+				if (!$game->saveGame()) { $error = "Failed to clear game note."; $current = "Games_note"; break; }
 
 				$information = 'Game note cleared.';
 				$current = 'Games_note';
@@ -1526,19 +1526,19 @@
 			if (isset($_POST['clear_note_return']))	// clear current's player game note and return to game screen
 			{
 				$gameid = $_POST['CurrentGame'];
-				$game = $gamedb->GetGame($gameid);
+				$game = $gamedb->getGame($gameid);
 
 				// check if the game exists
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to perform game actions
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
+				if ($player->name() != $game->name1() and $player->name() != $game->name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				// disable re-visiting
-				if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { $error = 'Game already over.'; $current = 'Games'; break; }
+				if ( (($player->name() == $game->name1()) && ($game->State == 'P1 over')) || (($player->name() == $game->name2()) && ($game->State == 'P2 over')) ) { $error = 'Game already over.'; $current = 'Games'; break; }
 
-				$game->ClearNote($player->Name());
-				if (!$game->SaveGame()) { $error = "Failed to clear game note."; $current = "Games_note"; break; }
+				$game->clearNote($player->name());
+				if (!$game->saveGame()) { $error = "Failed to clear game note."; $current = "Games_note"; break; }
 
 				$information = 'Game note cleared.';
 				$current = 'Games_details';
@@ -1550,25 +1550,25 @@
 				$msg = $_POST['ChatMessage'];
 
 				$gameid = $_POST['CurrentGame'];
-				$game = $gamedb->GetGame($gameid);
+				$game = $gamedb->getGame($gameid);
 
 				// check if the game exists
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to send messages in this game
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
+				if ($player->name() != $game->name1() and $player->name() != $game->name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				// verify user input
 				if (trim($msg) == '') { /*$error = 'You can't send empty chat messages.';*/ $current = 'Games_details'; break; }
 				if (strlen($msg) > CHAT_LENGTH) { $error = 'Chat message is too long.'; $current = 'Games_details'; break; }
 
 				// check if chat is allowed (can't chat with a computer player)
-				if ($game->GetGameMode('AIMode') == 'yes') { $error = 'Chat not allowed!'; $current = 'Games_details'; break; }
+				if ($game->getGameMode('AIMode') == 'yes') { $error = 'Chat not allowed!'; $current = 'Games_details'; break; }
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["chat"]) { $error = 'Access denied.'; $current = 'Games_details'; break; }
+				if (!$access_rights[$player->type()]["chat"]) { $error = 'Access denied.'; $current = 'Games_details'; break; }
 
-				if (!$game->SaveChatMessage($msg, $player->Name())) { $error = 'Failed to send chat message.'; $current = 'Games_details'; break; }
+				if (!$game->saveChatMessage($msg, $player->name())) { $error = 'Failed to send chat message.'; $current = 'Games_details'; break; }
 
 				$current = 'Games_details';
 				break;
@@ -1597,13 +1597,13 @@
 				if ($action == 'discard') $mode = 0; // card mode doesn't apply for discard action
 
 				$gameid = $_POST['CurrentGame'];
-				$game = $gamedb->GetGame($gameid);
+				$game = $gamedb->getGame($gameid);
 
 				// check if the game exists
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to perform game actions
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
+				if ($player->name() != $game->name1() and $player->name() != $game->name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				// check if game is locked in a surrender request
 				if ($game->Surrender != '') { $error = 'Game is locked in a surrender request.'; $current = 'Games_details'; break; }
@@ -1615,102 +1615,102 @@
 				if (!is_numeric($mode)) { $error = 'Invalid mode.'; $current = 'Games_details'; break; }
 
 				// the rest of the checks are done internally
-				$result = $game->PlayCard($player->Name(), $cardpos, $mode, $action);
+				$result = $game->playCard($player->name(), $cardpos, $mode, $action);
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
 				// attempt to load replay (replay is optional)
-				$replay = $replaydb->GetReplay($gameid);
+				$replay = $replaydb->getReplay($gameid);
 				if ($replay === false) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
 
 				$db->txnBegin();
-				if (!$game->SaveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if ($replay and !$replay->Update($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				if (!$game->saveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+				if ($replay and !$replay->update($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
 				$db->txnCommit();
 
 				if ($game->State == 'finished')
 				{
 					// update deck statistics
-					$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
+					$deckdb->updateStatistics($game->name1(), $game->name2(), $game->deckId1(), $game->deckId2(), $game->Winner);
 
 					// update AI challenge score in case of AI challenge game
-					if ($game->AI != '' and $game->Winner == $player->Name())
+					if ($game->AI != '' and $game->Winner == $player->name())
 					{
-						$score = $player->GetScore();
-						$score->UpdateAward('Challenges');
-						$score->SaveScore();
+						$score = $player->getScore();
+						$score->updateAward('Challenges');
+						$score->saveScore();
 					}
 				}
 
 				if ($game->State == 'finished')
 				{
 					// case 1: standard AI mode
-					if ($game->GetGameMode('AIMode') == 'yes' and $game->AI == '')
+					if ($game->getGameMode('AIMode') == 'yes' and $game->AI == '')
 					{
 						// fetch player's level
-						$score = $scoredb->GetScore($player->Name());
+						$score = $scoredb->getScore($player->name());
 						$player_level = $score->ScoreData->Level;
 
 						// add experience in case player is still in tutorial
 						if ($player_level < 10)
 						{
-							$exp = $game->CalculateExp($player->Name());
-							$p_rep = $player->GetSettings()->GetSetting('Reports');
+							$exp = $game->calculateExp($player->name());
+							$p_rep = $player->getSettings()->getSetting('Reports');
 
-							$levelup = $score->AddExp($exp['exp']);
-							$score->AddGold($exp['gold']);
-							$score->GainAwards($exp['awards']);
-							$score->SaveScore();
+							$levelup = $score->addExp($exp['exp']);
+							$score->addGold($exp['gold']);
+							$score->gainAwards($exp['awards']);
+							$score->saveScore();
 
 							// display levelup dialog
 							if ($levelup) $new_level_gained = $score->ScoreData->Level;
 
 							// send level up message
-							if ($levelup and $p_rep == "yes") $messagedb->LevelUp($player->Name(), $score->ScoreData->Level);
+							if ($levelup and $p_rep == "yes") $messagedb->levelUp($player->name(), $score->ScoreData->Level);
 						}
 					}
 					// case 2: standard game
-					elseif ($game->GetGameMode('FriendlyPlay') == "no")
+					elseif ($game->getGameMode('FriendlyPlay') == "no")
 					{
-						$player1 = $game->Name1();
-						$player2 = $game->Name2();
-						$exp1 = $game->CalculateExp($player1);
-						$exp2 = $game->CalculateExp($player2);
-						$p1 = $playerdb->GetPlayer($player1);
-						$p2 = $playerdb->GetPlayer($player2);
-						$p1_rep = $p1->GetSettings()->GetSetting('Reports');
-						$p2_rep = $p2->GetSettings()->GetSetting('Reports');
+						$player1 = $game->name1();
+						$player2 = $game->name2();
+						$exp1 = $game->calculateExp($player1);
+						$exp2 = $game->calculateExp($player2);
+						$p1 = $playerdb->getPlayer($player1);
+						$p2 = $playerdb->getPlayer($player2);
+						$p1_rep = $p1->getSettings()->getSetting('Reports');
+						$p2_rep = $p2->getSettings()->getSetting('Reports');
 
 						// update score
-						$score1 = $scoredb->GetScore($player1);
-						$score2 = $scoredb->GetScore($player2);
+						$score1 = $scoredb->getScore($player1);
+						$score2 = $scoredb->getScore($player2);
 
 						if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
 						elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
 						else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
 
-						$levelup1 = $score1->AddExp($exp1['exp']);
-						$levelup2 = $score2->AddExp($exp2['exp']);
-						$score1->AddGold($exp1['gold']);
-						$score2->AddGold($exp2['gold']);
-						$score1->GainAwards($exp1['awards']);
-						$score2->GainAwards($exp2['awards']);
-						$score1->SaveScore();
-						$score2->SaveScore();
+						$levelup1 = $score1->addExp($exp1['exp']);
+						$levelup2 = $score2->addExp($exp2['exp']);
+						$score1->addGold($exp1['gold']);
+						$score2->addGold($exp2['gold']);
+						$score1->gainAwards($exp1['awards']);
+						$score2->gainAwards($exp2['awards']);
+						$score1->saveScore();
+						$score2->saveScore();
 
 						// display levelup dialog
-						if ($levelup1 and $player1 == $player->Name()) $new_level_gained = $score1->ScoreData->Level;
-						if ($levelup2 and $player2 == $player->Name()) $new_level_gained = $score2->ScoreData->Level;
+						if ($levelup1 and $player1 == $player->name()) $new_level_gained = $score1->ScoreData->Level;
+						if ($levelup2 and $player2 == $player->name()) $new_level_gained = $score2->ScoreData->Level;
 
 						// send level up messages
-						if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
-						if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
+						if ($levelup1 AND ($p1_rep == "yes")) $messagedb->levelUp($player1, $score1->ScoreData->Level);
+						if ($levelup2 AND ($p2_rep == "yes")) $messagedb->levelUp($player2, $score2->ScoreData->Level);
 
 						// send battle report message
-						$outcome = $game->Outcome();
+						$outcome = $game->outcome();
 						$winner = $game->Winner;
-						$hidden = $game->GetGameMode('HiddenCards');
+						$hidden = $game->getGameMode('HiddenCards');
 
-						$messagedb->SendBattleReport($player1, $player2, $p1_rep, $p2_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
+						$messagedb->sendBattleReport($player1, $player2, $p1_rep, $p2_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
 					}
 				}
 
@@ -1722,16 +1722,16 @@
 			if (isset($_POST['ai_move'])) // Games -> vs. %s -> Execute AI move
 			{
 				$gameid = $_POST['CurrentGame'];
-				$game = $gamedb->GetGame($gameid);
+				$game = $gamedb->getGame($gameid);
 
 				// check if the game exists
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to perform game actions
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
+				if ($player->name() != $game->name1() and $player->name() != $game->name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				// check if AI move is allowed
-				if ($game->GetGameMode('AIMode') == 'no') { $error = 'AI move not allowed!'; $current = 'Games_details'; break; }
+				if ($game->getGameMode('AIMode') == 'no') { $error = 'AI move not allowed!'; $current = 'Games_details'; break; }
 
 				// only allow AI move if the game is still on
 				if ($game->State != 'in progress') { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
@@ -1740,13 +1740,13 @@
 				if ($game->Current != SYSTEM_NAME) { $error = 'Action only allowed on your turn!'; $current = 'Games_details'; break; }
 
 				// the rest of the checks are done internally
-				$decision = $game->DetermineAIMove();
+				$decision = $game->determineAIMove();
 				$cardpos = $decision['cardpos'];
 				$mode = $decision['mode'];
 				$action = $decision['action'];
 
 				// fetch player's level
-				$score = $scoredb->GetScore($player->Name());
+				$score = $scoredb->getScore($player->name());
 				$player_level = $score->ScoreData->Level;
 
 				// sabotage standard AI to relax the diffculty
@@ -1763,29 +1763,29 @@
 					}
 				}
 
-				$result = $game->PlayCard(SYSTEM_NAME, $cardpos, $mode, $action);
+				$result = $game->playCard(SYSTEM_NAME, $cardpos, $mode, $action);
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
 				// attempt to load replay (replay is optional)
-				$replay = $replaydb->GetReplay($gameid);
+				$replay = $replaydb->getReplay($gameid);
 				if ($replay === false) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
 
 				$db->txnBegin();
-				if (!$game->SaveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if ($replay and !$replay->Update($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				if (!$game->saveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+				if ($replay and !$replay->update($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
 				$db->txnCommit();
 
 				if ($game->State == 'finished')
 				{
 					// update deck statistics
-					$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
+					$deckdb->updateStatistics($game->name1(), $game->name2(), $game->deckId1(), $game->deckId2(), $game->Winner);
 
 					// update AI challenge score in case of AI challenge game
-					if ($game->AI != '' and $game->Winner == $player->Name())
+					if ($game->AI != '' and $game->Winner == $player->name())
 					{
-						$score = $player->GetScore();
-						$score->UpdateAward('Challenges');
-						$score->SaveScore();
+						$score = $player->getScore();
+						$score->updateAward('Challenges');
+						$score->saveScore();
 					}
 				}
 
@@ -1799,94 +1799,94 @@
 				// an option to play turn instead of opponent when opponent refuses to play
 				// applies only to games where opponent didn't take action for more then timeout if timeout was set for specified game
 				$gameid = $_POST['CurrentGame'];
-				$game = $gamedb->GetGame($gameid);
+				$game = $gamedb->getGame($gameid);
 
 				// check if the game exists
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user can interact with this game
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
+				if ($player->name() != $game->name1() and $player->name() != $game->name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				// check if game is locked in a surrender request
 				if ($game->Surrender != '') { $error = 'Game is locked in a surrender request.'; $current = 'Games_details'; break; }
 
 				// only allow finishing of non-AI games
-				if ($game->Name2() == SYSTEM_NAME) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
+				if ($game->name2() == SYSTEM_NAME) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
 
 				// only allow finish move if the game is still on
 				if ($game->State != 'in progress') { $error = 'Game has to be in progress!'; $current = 'Games_details'; break; }
 
 				// and only if the finish move criteria are met
-				if ($game->Timeout == 0 or time() - strtotime($game->LastAction) < $game->Timeout or $game->Current == $player->Name()) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
+				if ($game->Timeout == 0 or time() - strtotime($game->LastAction) < $game->Timeout or $game->Current == $player->name()) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
 
-				$opponent_name = ($game->Name1() == $player->Name()) ? $game->Name2() : $game->Name1();
+				$opponent_name = ($game->name1() == $player->name()) ? $game->name2() : $game->name1();
 
 				// the rest of the checks are done internally
-				$decision = $game->DetermineAIMove($opponent_name);
+				$decision = $game->determineAIMove($opponent_name);
 				$cardpos = $decision['cardpos'];
 				$mode = $decision['mode'];
 				$action = $decision['action'];
 
-				$result = $game->PlayCard($opponent_name, $cardpos, $mode, $action);
+				$result = $game->playCard($opponent_name, $cardpos, $mode, $action);
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
 				// attempt to load replay (replay is optional)
-				$replay = $replaydb->GetReplay($gameid);
+				$replay = $replaydb->getReplay($gameid);
 				if ($replay === false) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
 
 				$db->txnBegin();
-				if (!$game->SaveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if ($replay and !$replay->Update($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				if (!$game->saveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+				if ($replay and !$replay->update($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
 				$db->txnCommit();
 
 				if ($game->State == 'finished')
 				{
 					// update deck statistics
-					$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
+					$deckdb->updateStatistics($game->name1(), $game->name2(), $game->deckId1(), $game->deckId2(), $game->Winner);
 				}
 
-				if (($game->State == 'finished') AND ($game->GetGameMode('FriendlyPlay') == "no"))
+				if (($game->State == 'finished') AND ($game->getGameMode('FriendlyPlay') == "no"))
 				{
-					$player1 = $game->Name1();
-					$player2 = $game->Name2();
-					$exp1 = $game->CalculateExp($player1);
-					$exp2 = $game->CalculateExp($player2);
-					$p1 = $playerdb->GetPlayer($player1);
-					$p2 = $playerdb->GetPlayer($player2);
-					$p1_rep = $p1->GetSettings()->GetSetting('Reports');
-					$p2_rep = $p2->GetSettings()->GetSetting('Reports');
+					$player1 = $game->name1();
+					$player2 = $game->name2();
+					$exp1 = $game->calculateExp($player1);
+					$exp2 = $game->calculateExp($player2);
+					$p1 = $playerdb->getPlayer($player1);
+					$p2 = $playerdb->getPlayer($player2);
+					$p1_rep = $p1->getSettings()->getSetting('Reports');
+					$p2_rep = $p2->getSettings()->getSetting('Reports');
 
 					// update score
-					$score1 = $scoredb->GetScore($player1);
-					$score2 = $scoredb->GetScore($player2);
+					$score1 = $scoredb->getScore($player1);
+					$score2 = $scoredb->getScore($player2);
 
 					if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
 					elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
 					else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
 
-					$levelup1 = $score1->AddExp($exp1['exp']);
-					$levelup2 = $score2->AddExp($exp2['exp']);
-					$score1->AddGold($exp1['gold']);
-					$score2->AddGold($exp2['gold']);
-					$score1->GainAwards($exp1['awards']);
-					$score2->GainAwards($exp2['awards']);
-					$score1->SaveScore();
-					$score2->SaveScore();
+					$levelup1 = $score1->addExp($exp1['exp']);
+					$levelup2 = $score2->addExp($exp2['exp']);
+					$score1->addGold($exp1['gold']);
+					$score2->addGold($exp2['gold']);
+					$score1->gainAwards($exp1['awards']);
+					$score2->gainAwards($exp2['awards']);
+					$score1->saveScore();
+					$score2->saveScore();
 
 					// display levelup dialog
-					if ($levelup1 and $player1 == $player->Name()) $new_level_gained = $score1->ScoreData->Level;
-					if ($levelup2 and $player2 == $player->Name()) $new_level_gained = $score2->ScoreData->Level;
+					if ($levelup1 and $player1 == $player->name()) $new_level_gained = $score1->ScoreData->Level;
+					if ($levelup2 and $player2 == $player->name()) $new_level_gained = $score2->ScoreData->Level;
 
 					// send level up messages
-					if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
-					if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
+					if ($levelup1 AND ($p1_rep == "yes")) $messagedb->levelUp($player1, $score1->ScoreData->Level);
+					if ($levelup2 AND ($p2_rep == "yes")) $messagedb->levelUp($player2, $score2->ScoreData->Level);
 
 					// send battle report message
-					$outcome = $game->Outcome();
+					$outcome = $game->outcome();
 					$winner = $game->Winner;
-					$hidden = $game->GetGameMode('HiddenCards');
+					$hidden = $game->getGameMode('HiddenCards');
 
-					$messagedb->SendBattleReport($player1, $player2, $p1_rep, $p2_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
+					$messagedb->sendBattleReport($player1, $player2, $p1_rep, $p2_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
 				}
 
 				$information = "Opponent's move executed.";
@@ -1897,37 +1897,37 @@
 			if (isset($_POST['surrender'])) // Games -> vs. %s -> Surrender -> send surrender request to opponent
 			{
 				$gameid = $_POST['CurrentGame'];
-				$game = $gamedb->GetGame($gameid);
+				$game = $gamedb->getGame($gameid);
 
 				// check if the game exists
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to surrender in this game
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
+				if ($player->name() != $game->name1() and $player->name() != $game->name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
-				$result = $game->RequestSurrender($player->Name());
+				$result = $game->requestSurrender($player->name());
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
-				if (!$game->SaveGame()) { $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+				if (!$game->saveGame()) { $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
 
 				$information = 'Surrender request sent.';
 
 				// accept surrender request in case of AI game
-				if ($game->GetGameMode('AIMode') == 'yes')
+				if ($game->getGameMode('AIMode') == 'yes')
 				{
-					$result = $game->SurrenderGame();
+					$result = $game->surrenderGame();
 					if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
 					// attempt to load replay (replay is optional)
-					$replay = $replaydb->GetReplay($gameid);
+					$replay = $replaydb->getReplay($gameid);
 					if ($replay === false) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
 
 					$db->txnBegin();
-					if (!$game->SaveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-					if ($replay and !$replay->Finish($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+					if (!$game->saveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+					if ($replay and !$replay->finish($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
 					$db->txnCommit();
 
 					// update deck statistics
-					$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
+					$deckdb->updateStatistics($game->name1(), $game->name2(), $game->deckId1(), $game->deckId2(), $game->Winner);
 
 					$information = 'Surrender request accepted.';
 				}
@@ -1939,17 +1939,17 @@
 			if (isset($_POST['cancel_surrender'])) // Games -> vs. %s -> Surrender -> cancel surrender request to opponent
 			{
 				$gameid = $_POST['CurrentGame'];
-				$game = $gamedb->GetGame($gameid);
+				$game = $gamedb->getGame($gameid);
 
 				// check if the game exists
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to cancel surrender in this game
-				if ($player->Name() != $game->Surrender) { $current = 'Games_details'; break; }
+				if ($player->name() != $game->Surrender) { $current = 'Games_details'; break; }
 
-				$result = $game->CancelSurrender();
+				$result = $game->cancelSurrender();
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
-				if (!$game->SaveGame()) { $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+				if (!$game->saveGame()) { $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
 
 				$information = 'Surrender request cancelled.';
 				$current = "Games_details";
@@ -1959,17 +1959,17 @@
 			if (isset($_POST['reject_surrender'])) // Games -> vs. %s -> Surrender -> reject surrender request from opponent
 			{
 				$gameid = $_POST['CurrentGame'];
-				$game = $gamedb->GetGame($gameid);
+				$game = $gamedb->getGame($gameid);
 
 				// check if the game exists
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to reject surrender in this game
-				if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or ($player->Name() == $game->Surrender)) { $current = 'Games_details'; break; }
+				if (($player->name() != $game->name1() and $player->name() != $game->name2()) or ($player->name() == $game->Surrender)) { $current = 'Games_details'; break; }
 
-				$result = $game->CancelSurrender();
+				$result = $game->cancelSurrender();
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
-				if (!$game->SaveGame()) { $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+				if (!$game->saveGame()) { $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
 
 				$information = 'Surrender request rejected.';
 				$current = "Games_details";
@@ -1979,66 +1979,66 @@
 			if (isset($_POST['accept_surrender'])) // Games -> vs. %s -> Surrender -> accept surrender from opponent
 			{
 				$gameid = $_POST['CurrentGame'];
-				$game = $gamedb->GetGame($gameid);
+				$game = $gamedb->getGame($gameid);
 
 				// check if the game exists
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to accept surrender in this game
-				if (($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) or ($player->Name() == $game->Surrender)) { $current = 'Games_details'; break; }
+				if (($player->name() != $game->name1() and $player->name() != $game->name2()) or ($player->name() == $game->Surrender)) { $current = 'Games_details'; break; }
 
-				$result = $game->SurrenderGame();
+				$result = $game->surrenderGame();
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
 				// attempt to load replay (replay is optional)
-				$replay = $replaydb->GetReplay($gameid);
+				$replay = $replaydb->getReplay($gameid);
 				if ($replay === false) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
 
 				$db->txnBegin();
-				if (!$game->SaveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if ($replay and !$replay->Finish($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				if (!$game->saveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+				if ($replay and !$replay->finish($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
 				$db->txnCommit();
 
 				// update deck statistics
-				$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
+				$deckdb->updateStatistics($game->name1(), $game->name2(), $game->deckId1(), $game->deckId2(), $game->Winner);
 
-				if ($game->GetGameMode('FriendlyPlay') == "no")
+				if ($game->getGameMode('FriendlyPlay') == "no")
 				{
 					$loser = $game->Surrender;
-					$exp1 = $game->CalculateExp($game->Winner);
-					$exp2 = $game->CalculateExp($loser);
-					$opponent = $playerdb->GetPlayer($loser);
-					$opponent_rep = $opponent->GetSettings()->GetSetting('Reports');
-					$player_rep = $player->GetSettings()->GetSetting('Reports');
+					$exp1 = $game->calculateExp($game->Winner);
+					$exp2 = $game->calculateExp($loser);
+					$opponent = $playerdb->getPlayer($loser);
+					$opponent_rep = $opponent->getSettings()->getSetting('Reports');
+					$player_rep = $player->getSettings()->getSetting('Reports');
 
 					// update score
-					$score1 = $scoredb->GetScore($game->Winner);
+					$score1 = $scoredb->getScore($game->Winner);
 					$score1->ScoreData->Wins++;
-					$levelup1 = $score1->AddExp($exp1['exp']);
-					$score1->AddGold($exp1['gold']);
-					$score1->GainAwards($exp1['awards']);
-					$score1->SaveScore();
+					$levelup1 = $score1->addExp($exp1['exp']);
+					$score1->addGold($exp1['gold']);
+					$score1->gainAwards($exp1['awards']);
+					$score1->saveScore();
 
-					$score2 = $scoredb->GetScore($loser);
+					$score2 = $scoredb->getScore($loser);
 					$score2->ScoreData->Losses++;
-					$levelup2 = $score2->AddExp($exp2['exp']);
-					$score2->AddGold($exp2['gold']);
-					$score2->GainAwards($exp2['awards']);
-					$score2->SaveScore();
+					$levelup2 = $score2->addExp($exp2['exp']);
+					$score2->addGold($exp2['gold']);
+					$score2->gainAwards($exp2['awards']);
+					$score2->saveScore();
 
 					// display levelup dialog
 					if ($levelup1) $new_level_gained = $score1->ScoreData->Level;
 
 					// send level up messages
-					if ($levelup1 AND ($player_rep == "yes")) $messagedb->LevelUp($player->Name(), $score1->ScoreData->Level);
-					if ($levelup2 AND ($opponent_rep == "yes")) $messagedb->LevelUp($opponent->Name(), $score2->ScoreData->Level);
+					if ($levelup1 AND ($player_rep == "yes")) $messagedb->levelUp($player->name(), $score1->ScoreData->Level);
+					if ($levelup2 AND ($opponent_rep == "yes")) $messagedb->levelUp($opponent->name(), $score2->ScoreData->Level);
 
 					// send battle report message
-					$outcome = $game->Outcome();
+					$outcome = $game->outcome();
 					$winner = $game->Winner;
-					$hidden = $game->GetGameMode('HiddenCards');
+					$hidden = $game->getGameMode('HiddenCards');
 
-					$messagedb->SendBattleReport($player->Name(), $opponent->Name(), $player_rep, $opponent_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
+					$messagedb->sendBattleReport($player->name(), $opponent->name(), $player_rep, $opponent_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
 				}
 
 				$information = 'Surrender request accepted.';
@@ -2051,27 +2051,27 @@
 				// an option to end the game without hurting your score
 				// applies only to games against 'dead' players (abandoned games)
 				$gameid = $_POST['CurrentGame'];
-				$game = $gamedb->GetGame($gameid);
+				$game = $gamedb->getGame($gameid);
 
 				// check if the game exists
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to abort this game
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
+				if ($player->name() != $game->name1() and $player->name() != $game->name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				// only allow aborting abandoned games
-				if (!$playerdb->isDead($game->Name1()) and !$playerdb->isDead($game->Name2())) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
+				if (!$playerdb->isDead($game->name1()) and !$playerdb->isDead($game->name2())) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
 
-				$result = $game->AbortGame($player->Name());
+				$result = $game->abortGame($player->name());
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
 				// attempt to load replay (replay is optional)
-				$replay = $replaydb->GetReplay($gameid);
+				$replay = $replaydb->getReplay($gameid);
 				if ($replay === false) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
 
 				$db->txnBegin();
-				if (!$game->SaveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if ($replay and !$replay->Finish($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				if (!$game->saveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+				if ($replay and !$replay->finish($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
 				$db->txnCommit();
 
 				$current = "Games_details";
@@ -2083,80 +2083,80 @@
 				// an option to end the game when opponent refuses to play
 				// applies only to games against non-'dead' players, when opponet didn't take action for more then 3 weeks
 				$gameid = $_POST['CurrentGame'];
-				$game = $gamedb->GetGame($gameid);
+				$game = $gamedb->getGame($gameid);
 
 				// check if the game exists
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// check if this user is allowed to abort this game
-				if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
+				if ($player->name() != $game->name1() and $player->name() != $game->name2()) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				// only allow finishing active games
-				if ($playerdb->isDead($game->Name1()) or $playerdb->isDead($game->Name2())) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
+				if ($playerdb->isDead($game->name1()) or $playerdb->isDead($game->name2())) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
 
 				// and only if the abort criteria are met
-				if( time() - strtotime($game->LastAction) < 60*60*24*7*3 || $game->Current == $player->Name() ) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
+				if( time() - strtotime($game->LastAction) < 60*60*24*7*3 || $game->Current == $player->name() ) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
 
 				// only allow finishing of non-AI games
-				if ($game->Name2() == SYSTEM_NAME) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
+				if ($game->name2() == SYSTEM_NAME) { $error = 'Action not allowed!'; $current = 'Games_details'; break; }
 
-				$result = $game->FinishGame($player->Name());
+				$result = $game->finishGame($player->name());
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }
 
 				// attempt to load replay (replay is optional)
-				$replay = $replaydb->GetReplay($gameid);
+				$replay = $replaydb->getReplay($gameid);
 				if ($replay === false) { $error = 'Failed to load replay data.'; $current = 'Games_details'; break; }
 
 				$db->txnBegin();
-				if (!$game->SaveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
-				if ($replay and !$replay->Finish($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
+				if (!$game->saveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+				if ($replay and !$replay->finish($game)) { $db->txnRollBack(); $error = 'Failed to save replay data.'; $current = 'Games_details'; break; }
 				$db->txnCommit();
 
 				// update deck statistics
-				$deckdb->UpdateStatistics($game->Name1(), $game->Name2(), $game->DeckID1(), $game->DeckID2(), $game->Winner);
+				$deckdb->updateStatistics($game->name1(), $game->name2(), $game->deckId1(), $game->deckId2(), $game->Winner);
 
-				if ($game->GetGameMode('FriendlyPlay') == "no")
+				if ($game->getGameMode('FriendlyPlay') == "no")
 				{
-					$player1 = $game->Name1();
-					$player2 = $game->Name2();
-					$exp1 = $game->CalculateExp($player1);
-					$exp2 = $game->CalculateExp($player2);
-					$p1 = $playerdb->GetPlayer($player1);
-					$p2 = $playerdb->GetPlayer($player2);
-					$p1_rep = $p1->GetSettings()->GetSetting('Reports');
-					$p2_rep = $p2->GetSettings()->GetSetting('Reports');
+					$player1 = $game->name1();
+					$player2 = $game->name2();
+					$exp1 = $game->calculateExp($player1);
+					$exp2 = $game->calculateExp($player2);
+					$p1 = $playerdb->getPlayer($player1);
+					$p2 = $playerdb->getPlayer($player2);
+					$p1_rep = $p1->getSettings()->getSetting('Reports');
+					$p2_rep = $p2->getSettings()->getSetting('Reports');
 
 					// update score
-					$score1 = $scoredb->GetScore($player1);
-					$score2 = $scoredb->GetScore($player2);
+					$score1 = $scoredb->getScore($player1);
+					$score2 = $scoredb->getScore($player2);
 
 					if ($game->Winner == $player1) { $score1->ScoreData->Wins++; $score2->ScoreData->Losses++; }
 					elseif ($game->Winner == $player2) { $score2->ScoreData->Wins++; $score1->ScoreData->Losses++; }
 					else {$score1->ScoreData->Draws++; $score2->ScoreData->Draws++; }
 
-					$levelup1 = $score1->AddExp($exp1['exp']);
-					$levelup2 = $score2->AddExp($exp2['exp']);
-					$score1->AddGold($exp1['gold']);
-					$score2->AddGold($exp2['gold']);
-					$score1->GainAwards($exp1['awards']);
-					$score2->GainAwards($exp2['awards']);
-					$score1->SaveScore();
-					$score2->SaveScore();
+					$levelup1 = $score1->addExp($exp1['exp']);
+					$levelup2 = $score2->addExp($exp2['exp']);
+					$score1->addGold($exp1['gold']);
+					$score2->addGold($exp2['gold']);
+					$score1->gainAwards($exp1['awards']);
+					$score2->gainAwards($exp2['awards']);
+					$score1->saveScore();
+					$score2->saveScore();
 
 					// display levelup dialog
-					if ($levelup1 and $player1 == $player->Name()) $new_level_gained = $score1->ScoreData->Level;
-					if ($levelup2 and $player2 == $player->Name()) $new_level_gained = $score2->ScoreData->Level;
+					if ($levelup1 and $player1 == $player->name()) $new_level_gained = $score1->ScoreData->Level;
+					if ($levelup2 and $player2 == $player->name()) $new_level_gained = $score2->ScoreData->Level;
 
 					// send level up messages
-					if ($levelup1 AND ($p1_rep == "yes")) $messagedb->LevelUp($player1, $score1->ScoreData->Level);
-					if ($levelup2 AND ($p2_rep == "yes")) $messagedb->LevelUp($player2, $score2->ScoreData->Level);
+					if ($levelup1 AND ($p1_rep == "yes")) $messagedb->levelUp($player1, $score1->ScoreData->Level);
+					if ($levelup2 AND ($p2_rep == "yes")) $messagedb->levelUp($player2, $score2->ScoreData->Level);
 
 					// send battle report message
-					$outcome = $game->Outcome();
+					$outcome = $game->outcome();
 					$winner = $game->Winner;
-					$hidden = $game->GetGameMode('HiddenCards');
+					$hidden = $game->getGameMode('HiddenCards');
 
-					$messagedb->SendBattleReport($player1, $player2, $p1_rep, $p2_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
+					$messagedb->sendBattleReport($player1, $player2, $p1_rep, $p2_rep, $outcome, $hidden, $exp1['message'], $exp2['message'], $winner);
 				}
 
 				$current = "Games_details";
@@ -2166,31 +2166,31 @@
 			if (isset($_POST['Confirm'])) // Games -> vs. %s -> Leave the game
 			{
 				$gameid = $_POST['CurrentGame'];
-				$game = $gamedb->GetGame($gameid);
+				$game = $gamedb->getGame($gameid);
 
 				// check if the game exists
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
 
 				// disable re-visiting (or the player would set this twice >_>)
-				if ( (($player->Name() == $game->Name1()) && ($game->State == 'P1 over')) || (($player->Name() == $game->Name2()) && ($game->State == 'P2 over')) ) { $current = 'Games'; break; }
+				if ( (($player->name() == $game->name1()) && ($game->State == 'P1 over')) || (($player->name() == $game->name2()) && ($game->State == 'P2 over')) ) { $current = 'Games'; break; }
 
 				// only allow if the game is over (stay if not)
 				if ($game->State == 'in progress') { $current = "Games_details"; break; }
 
-				if ($game->State == 'finished' and $game->GetGameMode('AIMode') == 'no')
+				if ($game->State == 'finished' and $game->getGameMode('AIMode') == 'no')
 				{
 					// we are the first one to acknowledge and opponent isn't a computer player
-					$game->State = ($game->Name1() == $player->Name()) ? 'P1 over' : 'P2 over';
+					$game->State = ($game->name1() == $player->name()) ? 'P1 over' : 'P2 over';
 					$db->txnBegin();
-					if (!$game->SaveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
+					if (!$game->saveGame()) { $db->txnRollBack(); $error = 'Failed to save game data.'; $current = 'Games_details'; break; }
 					// inform other player about leaving the game
-					if (!$game->SaveChatMessage("has left the game", $player->Name())) { $db->txnRollBack(); $error = 'Failed to send chat message.'; $current = 'Games_details'; break; }
+					if (!$game->saveChatMessage("has left the game", $player->name())) { $db->txnRollBack(); $error = 'Failed to send chat message.'; $current = 'Games_details'; break; }
 					$db->txnCommit();
 				}
 				else // 'P1 over' or 'P2 over'
 				{
 					// the other player has already acknowledged (auto-acknowledge in case of a computer player)
-					if (!$game->DeleteGame()) { $error = 'Failed to delete game.'; $current = 'Games_details'; break; }
+					if (!$game->deleteGame()) { $error = 'Failed to delete game.'; $current = 'Games_details'; break; }
 				}
 
 				$current = "Games";
@@ -2202,17 +2202,17 @@
 				$_POST['subsection'] = 'hosted_games';
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
+				if (!$access_rights[$player->type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				$deck_id = isset($_POST['SelectedDeck']) ? $_POST['SelectedDeck'] : '(null)';
 
-				$challenge_decks = $deckdb->ChallengeDecks();
+				$challenge_decks = $deckdb->challengeDecks();
 				$challenge_names = array_keys($challenge_decks);
 
 				// case 1: AI challenge deck was selected
 				if (in_array($deck_id, $challenge_names))
 				{
-					if (!$access_rights[$player->Type()]["edit_all_card"]) { $error = 'Access denied.'; $current = 'Games'; break; }
+					if (!$access_rights[$player->type()]["edit_all_card"]) { $error = 'Access denied.'; $current = 'Games'; break; }
 					if (!isset($_POST['FriendlyMode'])) { $error = 'Usage of AI decks is only permitted in friendly play game mode.'; $current = 'Games'; break; }
 
 					$deck = $challenge_decks[$deck_id];
@@ -2220,17 +2220,17 @@
 				// case 2: standard deck was selected
 				else
 				{
-					$deck = $player->GetDeck($deck_id);
+					$deck = $player->getDeck($deck_id);
 				}
 
 				// check if such deck exists
 				if (!$deck) { $error = 'Deck does not exist!'; $current = 'Games'; break; }
 
 				// check if the deck is ready (all 45 cards)
-				if (!$deck->isReady()) { $error = 'Deck '.$deck->Deckname().' is not yet ready for gameplay!'; $current = 'Games'; break; }
+				if (!$deck->isReady()) { $error = 'Deck '.$deck->deckname().' is not yet ready for gameplay!'; $current = 'Games'; break; }
 
 				// check if you are within the MAX_GAMES limit
-				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Games'; break; }
+				if ($gamedb->countFreeSlots1($player->name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Games'; break; }
 
 				// set game modes
 				$hidden_cards = (isset($_POST['HiddenMode']) ? 'yes' : 'no');
@@ -2246,7 +2246,7 @@
 				$turn_timeout = (isset($_POST['Timeout']) and in_array($_POST['Timeout'], $timeout_keys)) ? $_POST['Timeout'] : 0;
 
 				// create a new challenge
-				$game = $gamedb->CreateGame($player->Name(), '', $deck, $game_modes, $turn_timeout);
+				$game = $gamedb->createGame($player->name(), '', $deck, $game_modes, $turn_timeout);
 				if (!$game) { $error = 'Failed to create new game!'; $current = 'Games'; break; }
 
 				$information = 'Game created. Waiting for opponent to join.';
@@ -2257,7 +2257,7 @@
 			if (isset($_POST['unhost_game'])) // Games -> Unhost game
 			{
 				$game_id = $_POST['unhost_game'];
-				$game = $gamedb->GetGame($game_id);
+				$game = $gamedb->getGame($game_id);
 				$_POST['subsection'] = 'hosted_games';
 
 				// check if the game exists
@@ -2267,7 +2267,7 @@
 				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Games'; break; }
 
 				// delete game entry
-				if (!$game->DeleteGame()) { $error = 'Failed to delete game.'; $current = 'Games'; break; }
+				if (!$game->deleteGame()) { $error = 'Failed to delete game.'; $current = 'Games'; break; }
 
 				$information = 'You have canceled a game.';
 				$current = 'Games';
@@ -2279,10 +2279,10 @@
 				$_POST['subsection'] = 'free_games';
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["accept_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
+				if (!$access_rights[$player->type()]["accept_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				$game_id = $_POST['join_game'];
-				$game = $gamedb->GetGame($game_id);
+				$game = $gamedb->getGame($game_id);
 
 				// check if the game exists
 				if (!$game) { $error = 'No such game!'; $current = 'Games'; break; }
@@ -2291,28 +2291,28 @@
 				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Games'; break; }
 
 				// check if you are within the MAX_GAMES limit
-				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'Maxmimum number of games reached (this also includes your challenges).'; $current = 'Games'; break; }
+				if ($gamedb->countFreeSlots1($player->name()) == 0) { $error = 'Maxmimum number of games reached (this also includes your challenges).'; $current = 'Games'; break; }
 
 				// check if the game can be joined (can't join game against a computer player)
-				if ($game->GetGameMode('AIMode') == 'yes') { $error = 'Failed to join the game!'; $current = 'Games'; break; }
+				if ($game->getGameMode('AIMode') == 'yes') { $error = 'Failed to join the game!'; $current = 'Games'; break; }
 
 				$deck_id = isset($_POST['SelectedDeck']) ? $_POST['SelectedDeck'] : '(null)';
 
-				$challenge_decks = $deckdb->ChallengeDecks();
+				$challenge_decks = $deckdb->challengeDecks();
 				$challenge_names = array_keys($challenge_decks);
 
 				// case 1: AI challenge deck was selected
 				if (in_array($deck_id, $challenge_names))
 				{
-					if (!$access_rights[$player->Type()]["edit_all_card"]) { $error = 'Access denied.'; $current = 'Games'; break; }
-					if ($game->GetGameMode('FriendlyPlay') == 'no') { $error = 'Usage of AI decks is only permitted in friendly play game mode.'; $current = 'Games'; break; }
+					if (!$access_rights[$player->type()]["edit_all_card"]) { $error = 'Access denied.'; $current = 'Games'; break; }
+					if ($game->getGameMode('FriendlyPlay') == 'no') { $error = 'Usage of AI decks is only permitted in friendly play game mode.'; $current = 'Games'; break; }
 
 					$deck = $challenge_decks[$deck_id];
 				}
 				// case 2: standard deck was selected
 				else
 				{
-					$deck = $player->GetDeck($deck_id);
+					$deck = $player->getDeck($deck_id);
 				}
 
 				// check if such deck exists
@@ -2322,22 +2322,22 @@
 				if (!$deck->isReady()) { $error = 'This deck is not yet ready for gameplay!'; $current = 'Decks'; break; }
 
 				// check if such opponent exists
-				$opponent_name = $game->Name1();
-				$opponent = $playerdb->GetPlayer($opponent_name);
+				$opponent_name = $game->name1();
+				$opponent = $playerdb->getPlayer($opponent_name);
 				if (!$opponent) { $error = 'No such player!'; $current = 'Games'; break; }
 
 				// check if simultaneous games are allowed (depends on host settings)
-				$game_limit = $opponent->GetSettings()->GetSetting('GameLimit');
+				$game_limit = $opponent->getSettings()->getSetting('GameLimit');
 
-				if ($game_limit == 'yes' and $gamedb->CheckGame($player->Name(), $opponent_name))
+				if ($game_limit == 'yes' and $gamedb->checkGame($player->name(), $opponent_name))
 					{ $error = htmlencode($opponent_name)." doesn't wish to play with you more than one game at the same time."; $current = 'Games'; break; }
 
 				// join the game
 				$db->txnBegin();
-				if (!$game->JoinGame($player->Name())) { $db->txnRollBack(); $error = "Player was unable to join the game."; $current = "Games"; break; }
-				$game->StartGame($player->Name(), $deck);
-				if (!$game->SaveGame()) { $db->txnRollBack(); $error = "Game start failed."; $current = "Games"; break; }
-				if (!$replaydb->CreateReplay($game)) { $db->txnRollBack(); $error = "Failed to create game replay."; $current = "Games"; break; }
+				if (!$game->joinGame($player->name())) { $db->txnRollBack(); $error = "Player was unable to join the game."; $current = "Games"; break; }
+				$game->startGame($player->name(), $deck);
+				if (!$game->saveGame()) { $db->txnRollBack(); $error = "Game start failed."; $current = "Games"; break; }
+				if (!$replaydb->createReplay($game)) { $db->txnRollBack(); $error = "Failed to create game replay."; $current = "Games"; break; }
 				$db->txnCommit();
 
 				$information = 'You have joined '.htmlencode($opponent_name).'\'s game.';
@@ -2350,24 +2350,24 @@
 				$_POST['subsection'] = 'ai_games';
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
+				if (!$access_rights[$player->type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				$deck_id = isset($_POST['SelectedDeck']) ? $_POST['SelectedDeck'] : '(null)';
 
-				$challenge_decks = $deckdb->ChallengeDecks();
+				$challenge_decks = $deckdb->challengeDecks();
 				$challenge_names = array_keys($challenge_decks);
 
 				// case 1: AI challenge deck was selected
 				if (in_array($deck_id, $challenge_names))
 				{
-					if (!$access_rights[$player->Type()]["edit_all_card"]) { $error = 'Access denied.'; $current = 'Games'; break; }
+					if (!$access_rights[$player->type()]["edit_all_card"]) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 					$deck = $challenge_decks[$deck_id];
 				}
 				// case 2: standard deck was selected
 				else
 				{
-					$deck = $player->GetDeck($deck_id);
+					$deck = $player->getDeck($deck_id);
 				}
 
 				// process AI deck
@@ -2375,11 +2375,11 @@
 				if ($ai_deck_id == 'starter_deck')
 				{
 					// pick random starter deck
-					$starter_decks = $deckdb->StarterDecks();
-					$ai_deck = $starter_decks[array_mt_rand($starter_decks)];
+					$starter_decks = $deckdb->starterDecks();
+					$ai_deck = $starter_decks[arrayMtRand($starter_decks)];
 				}
 				else // use deck provided by player
-					$ai_deck = $player->GetDeck($ai_deck_id);
+					$ai_deck = $player->getDeck($ai_deck_id);
 
 				// check if such deck exists
 				if (!$ai_deck) { $error = 'Deck does not exist!'; $current = 'Games'; break; }
@@ -2391,10 +2391,10 @@
 				if (!$deck ) { $error = 'Deck does not exist!'; $current = 'Games'; break; }
 
 				// check if the deck is ready (all 45 cards)
-				if (!$deck->isReady()) { $error = 'Deck '.$deck->Deckname().' is not yet ready for gameplay!'; $current = 'Games'; break; }
+				if (!$deck->isReady()) { $error = 'Deck '.$deck->deckname().' is not yet ready for gameplay!'; $current = 'Games'; break; }
 
 				// check if you are within the MAX_GAMES limit
-				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Games'; break; }
+				if ($gamedb->countFreeSlots1($player->name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Games'; break; }
 
 				// set game modes
 				$hidden_cards = (isset($_POST['HiddenMode']) ? 'yes' : 'no');
@@ -2409,14 +2409,14 @@
 
 				// create a new game
 				$db->txnBegin();
-				$game = $gamedb->CreateGame($player->Name(), '', $deck, $game_modes);
+				$game = $gamedb->createGame($player->name(), '', $deck, $game_modes);
 				if (!$game) { $db->txnRollBack(); $error = 'Failed to create new game!'; $current = 'Games'; break; }
 
 				// join the computer player
-				if (!$game->JoinGame(SYSTEM_NAME)) { $db->txnRollBack(); $error = "Player was unable to join the game."; $current = "Games"; break; }
-				$game->StartGame(SYSTEM_NAME, $ai_deck);
-				if (!$game->SaveGame()) { $db->txnRollBack(); $error = "Game start failed."; $current = "Games"; break; }
-				if (!$replaydb->CreateReplay($game)) { $db->txnRollBack(); $error = "Failed to create game replay."; $current = "Games"; break; }
+				if (!$game->joinGame(SYSTEM_NAME)) { $db->txnRollBack(); $error = "Player was unable to join the game."; $current = "Games"; break; }
+				$game->startGame(SYSTEM_NAME, $ai_deck);
+				if (!$game->saveGame()) { $db->txnRollBack(); $error = "Game start failed."; $current = "Games"; break; }
+				if (!$replaydb->createReplay($game)) { $db->txnRollBack(); $error = "Failed to create game replay."; $current = "Games"; break; }
 				$db->txnCommit();
 
 				$information = 'Game vs AI created.';
@@ -2429,28 +2429,28 @@
 				$_POST['subsection'] = 'ai_games';
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
+				if (!$access_rights[$player->type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				$deck_id = isset($_POST['SelectedDeck']) ? $_POST['SelectedDeck'] : '(null)';
-				$deck = $player->GetDeck($deck_id);
+				$deck = $player->getDeck($deck_id);
 
 				// check if such deck exists
 				if (!$deck ) { $error = 'Deck does not exist!'; $current = 'Games'; break; }
 
 				// check if the deck is ready (all 45 cards)
-				if (!$deck->isReady()) { $error = 'Deck '.$deck->Deckname().' is not yet ready for gameplay!'; $current = 'Games'; break; }
+				if (!$deck->isReady()) { $error = 'Deck '.$deck->deckname().' is not yet ready for gameplay!'; $current = 'Games'; break; }
 
 				// check if you are within the MAX_GAMES limit
-				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Games'; break; }
+				if ($gamedb->countFreeSlots1($player->name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Games'; break; }
 
 				// check AI challenge
 				$challenge_name = isset($_POST['selected_challenge']) ? $_POST['selected_challenge'] : '';
-				$challenge = $challengesdb->GetChallenge($challenge_name);
+				$challenge = $challengesdb->getChallenge($challenge_name);
 
 				if (!$challenge) { $error = 'Invalid AI challenge.'; $current = 'Games'; break; }
 
 				// prepare AI deck
-				$challenge_decks = $deckdb->ChallengeDecks();
+				$challenge_decks = $deckdb->challengeDecks();
 				$ai_deck = $challenge_decks[$challenge_name];
 
 				// set game modes (predefined for AI challenge)
@@ -2466,14 +2466,14 @@
 
 				// create a new game
 				$db->txnBegin();
-				$game = $gamedb->CreateGame($player->Name(), '', $deck, $game_modes);
+				$game = $gamedb->createGame($player->name(), '', $deck, $game_modes);
 				if (!$game) { $db->txnRollBack(); $error = 'Failed to create new game!'; $current = 'Games'; break; }
 
 				// join the computer player
-				if (!$game->JoinGame(SYSTEM_NAME)) { $db->txnRollBack(); $error = "Player was unable to join the game."; $current = "Games"; break; }
-				$game->StartGame(SYSTEM_NAME, $ai_deck, $challenge_name);
-				if (!$game->SaveGame()) { $db->txnRollBack(); $error = "Game start failed."; $current = "Games"; break; }
-				if (!$replaydb->CreateReplay($game)) { $db->txnRollBack(); $error = "Failed to create game replay."; $current = "Games"; break; }
+				if (!$game->joinGame(SYSTEM_NAME)) { $db->txnRollBack(); $error = "Player was unable to join the game."; $current = "Games"; break; }
+				$game->startGame(SYSTEM_NAME, $ai_deck, $challenge_name);
+				if (!$game->saveGame()) { $db->txnRollBack(); $error = "Game start failed."; $current = "Games"; break; }
+				if (!$replaydb->createReplay($game)) { $db->txnRollBack(); $error = "Failed to create game replay."; $current = "Games"; break; }
 				$db->txnCommit();
 
 				$information = 'AI challenge created.';
@@ -2484,23 +2484,23 @@
 			if (isset($_POST['quick_game'])) // Games -> create quick AI game
 			{
 				// check access rights
-				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
+				if (!$access_rights[$player->type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Games'; break; }
 
 				$deck_id = isset($_POST['SelectedDeck']) ? $_POST['SelectedDeck'] : '(null)';
-				$deck = $player->GetDeck($deck_id);
+				$deck = $player->getDeck($deck_id);
 
 				// check if such deck exists
 				if (!$deck ) { $error = 'Deck does not exist!'; $current = 'Games'; break; }
 
 				// check if the deck is ready (all 45 cards)
-				if (!$deck->isReady()) { $error = 'Deck '.$deck->Deckname().' is not yet ready for gameplay!'; $current = 'Games'; break; }
+				if (!$deck->isReady()) { $error = 'Deck '.$deck->deckname().' is not yet ready for gameplay!'; $current = 'Games'; break; }
 
 				// check if you are within the MAX_GAMES limit
-				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Games'; break; }
+				if ($gamedb->countFreeSlots1($player->name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Games'; break; }
 
 				// pick random starter deck
-				$starter_decks = $deckdb->StarterDecks();
-				$ai_deck = $starter_decks[array_mt_rand($starter_decks)];
+				$starter_decks = $deckdb->starterDecks();
+				$ai_deck = $starter_decks[arrayMtRand($starter_decks)];
 
 				// set game modes
 				$hidden_cards = 'no';
@@ -2515,17 +2515,17 @@
 
 				// create a new game
 				$db->txnBegin();
-				$game = $gamedb->CreateGame($player->Name(), '', $deck, $game_modes);
+				$game = $gamedb->createGame($player->name(), '', $deck, $game_modes);
 				if (!$game) { $db->txnRollBack(); $error = 'Failed to create new game!'; $current = 'Games'; break; }
 
 				// join the computer player
-				if (!$game->JoinGame(SYSTEM_NAME)) { $db->txnRollBack(); $error = "Player was unable to join the game."; $current = "Games"; break; }
-				$game->StartGame(SYSTEM_NAME, $ai_deck);
-				if (!$game->SaveGame()) { $db->txnRollBack(); $error = "Game start failed."; $current = "Games"; break; }
-				if (!$replaydb->CreateReplay($game)) { $db->txnRollBack(); $error = "Failed to create game replay."; $current = "Games"; break; }
+				if (!$game->joinGame(SYSTEM_NAME)) { $db->txnRollBack(); $error = "Player was unable to join the game."; $current = "Games"; break; }
+				$game->startGame(SYSTEM_NAME, $ai_deck);
+				if (!$game->saveGame()) { $db->txnRollBack(); $error = "Game start failed."; $current = "Games"; break; }
+				if (!$replaydb->createReplay($game)) { $db->txnRollBack(); $error = "Failed to create game replay."; $current = "Games"; break; }
 				$db->txnCommit();
 
-				$_POST['CurrentGame'] = $game->ID();
+				$_POST['CurrentGame'] = $game->id();
 
 				$information = 'Game vs AI created.';
 				$current = "Games_details";
@@ -2551,7 +2551,7 @@
 
 			if (isset($_POST['reset_notification'])) // reset notification
 			{
-				if ($player->ResetNotification()) $information = 'Notification successfully reset';
+				if ($player->resetNotification()) $information = 'Notification successfully reset';
 				else $error = 'Failed to reset notification';
 
 				$current = $_POST['reset_notification'];
@@ -2565,10 +2565,10 @@
 			if (isset($_POST['accept_challenge'])) // Challenges -> Accept
 			{
 				// check access rights
-				if (!$access_rights[$player->Type()]["accept_challenges"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
+				if (!$access_rights[$player->type()]["accept_challenges"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
 
 				$game_id = $_POST['accept_challenge'];
-				$game = $gamedb->GetGame($game_id);
+				$game = $gamedb->getGame($game_id);
 
 				// check if the challenge exists
 				if (!$game) { $error = 'No such challenge!'; $current = 'Messages'; break; }
@@ -2577,12 +2577,12 @@
 				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Messages'; break; }
 
 				// the player may never have more than MAX_GAMES games at once, even potential ones (challenges)
-				if ($gamedb->CountFreeSlots2($player->Name()) == 0) { $error = 'Maxmimum number of games reached (this also includes your challenges).'; $current = 'Messages'; break; }
+				if ($gamedb->countFreeSlots2($player->name()) == 0) { $error = 'Maxmimum number of games reached (this also includes your challenges).'; $current = 'Messages'; break; }
 
-				$opponent = $game->Name1();
+				$opponent = $game->name1();
 
 				$deck_id = isset($_POST['AcceptDeck']) ? $_POST['AcceptDeck'] : '(null)';
-				$deck = $player->GetDeck($deck_id);
+				$deck = $player->getDeck($deck_id);
 
 				// check if such deck exists
 				if (!$deck) { $error = 'No such deck!'; $current = 'Messages'; break; }
@@ -2591,17 +2591,17 @@
 				if (!$deck->isReady()) { $error = 'This deck is not yet ready for gameplay!'; $current = 'Decks'; break; }
 
 				// check if such opponent exists
-				if (!$playerdb->GetPlayer($opponent)) { $error = 'No such player!'; $current = 'Messages'; break; }
+				if (!$playerdb->getPlayer($opponent)) { $error = 'No such player!'; $current = 'Messages'; break; }
 
 				// check if player can enter the game
-				if ($game->Name2() != $player->Name()) { $error = 'Invalid player'; $current = 'Messages'; break; }
+				if ($game->name2() != $player->name()) { $error = 'Invalid player'; $current = 'Messages'; break; }
 
 				// accept the challenge
-				$game->StartGame($player->Name(), $deck);
+				$game->startGame($player->name(), $deck);
 				$db->txnBegin();
-				if (!$game->SaveGame()) { $db->txnRollBack(); $error = "Game start failed."; $current = "Messages"; break; }
-				if (!$replaydb->CreateReplay($game)) { $db->txnRollBack(); $error = "Failed to create game replay."; $current = "Messages"; break; }
-				if (!$messagedb->CancelChallenge($game->ID())) { $db->txnRollBack(); $error = "Failed to cancel challenge."; $current = "Messages"; break; }
+				if (!$game->saveGame()) { $db->txnRollBack(); $error = "Game start failed."; $current = "Messages"; break; }
+				if (!$replaydb->createReplay($game)) { $db->txnRollBack(); $error = "Failed to create game replay."; $current = "Messages"; break; }
+				if (!$messagedb->cancelChallenge($game->id())) { $db->txnRollBack(); $error = "Failed to cancel challenge."; $current = "Messages"; break; }
 				$db->txnCommit();
 
 				$information = 'You have accepted a challenge from '.htmlencode($opponent).'.';
@@ -2612,7 +2612,7 @@
 			if (isset($_POST['reject_challenge'])) // Challenges -> Reject
 			{
 				$game_id = $_POST['reject_challenge'];
-				$game = $gamedb->GetGame($game_id);
+				$game = $gamedb->getGame($game_id);
 
 				// check if the challenge exists
 				if (!$game) { $error = 'No such challenge!'; $current = 'Messages'; break; }
@@ -2620,13 +2620,13 @@
 				// check if the game is a challenge (and not a game in progress)
 				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Messages'; break; }
 
-				$opponent = $game->Name1();
+				$opponent = $game->name1();
 
 				// check if such opponent exists
-				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Messages'; break; }
+				if (!$playerdb->getPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Messages'; break; }
 
 				// delete t3h challenge/game entry
-				if (!$game->DeleteChallenge()) { $db->txnRollBack(); $error = 'Failed to reject challenge.'; $current = 'Messages'; break; }
+				if (!$game->deleteChallenge()) { $db->txnRollBack(); $error = 'Failed to reject challenge.'; $current = 'Messages'; break; }
 
 				$information = 'You have rejected a challenge.';
 				$current = 'Messages';
@@ -2636,7 +2636,7 @@
 			if (isset($_POST['prepare_challenge'])) // Players -> Challenge this user
 			{
 				// check access rights
-				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Players'; break; }
+				if (!$access_rights[$player->type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Players'; break; }
 
 				$_POST['Profile'] = postdecode($_POST['prepare_challenge']);
 
@@ -2648,24 +2648,24 @@
 			if (isset($_POST['send_challenge'])) // Players -> Send challenge
 			{
 				// check access rights
-				if (!$access_rights[$player->Type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Players'; break; }
+				if (!$access_rights[$player->type()]["send_challenges"]) { $error = 'Access denied.'; $current = 'Players'; break; }
 
 				$_POST['Profile'] = $opponent = postdecode($_POST['send_challenge']);
 				$deck_id = isset($_POST['ChallengeDeck']) ? $_POST['ChallengeDeck'] : '(null)';
 
-				$deck = $player->GetDeck($deck_id);
+				$deck = $player->getDeck($deck_id);
 
 				// check if such deck exists
 				if (!$deck) { $error = 'Deck does not exist!'; $current = 'Players_details'; break; }
 
 				// check if the deck is ready (all 45 cards)
-				if (!$deck->isReady()) { $error = 'Deck '.$deck->Deckname().' is not yet ready for gameplay!'; $current = 'Players_details'; break; }
+				if (!$deck->isReady()) { $error = 'Deck '.$deck->deckname().' is not yet ready for gameplay!'; $current = 'Players_details'; break; }
 
 				// check if such opponent exists
-				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Players_details'; break; }
+				if (!$playerdb->getPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Players_details'; break; }
 
 				// check if you are within the MAX_GAMES limit
-				if ($gamedb->CountFreeSlots1($player->Name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Messages'; break; }
+				if ($gamedb->countFreeSlots1($player->name()) == 0) { $error = 'Too many games / challenges! Please resolve some.'; $current = 'Messages'; break; }
 
 				// check challenge text length
 				if (strlen($_POST['Content']) > CHALLENGE_LENGTH) { $error = "Message too long"; $current = "Details"; break; }
@@ -2691,10 +2691,10 @@
 
 				// create a new challenge
 				$db->txnBegin();
-				$game = $gamedb->CreateGame($player->Name(), $opponent, $deck, $game_modes, $turn_timeout);
+				$game = $gamedb->createGame($player->name(), $opponent, $deck, $game_modes, $turn_timeout);
 				if (!$game) { $db->txnRollBack(); $error = 'Failed to create new game!'; $current = 'Players_details'; break; }
 
-				$res = $messagedb->SendChallenge($player->Name(), $opponent, $challenge_text, $game->ID());
+				$res = $messagedb->sendChallenge($player->name(), $opponent, $challenge_text, $game->id());
 				if (!$res) { $db->txnRollBack(); $error = 'Failed to create new challenge!'; $current = 'Players_details'; break; }
 				$db->txnCommit();
 
@@ -2706,7 +2706,7 @@
 			if (isset($_POST['withdraw_challenge'])) // Challenges -> Cancel
 			{
 				$game_id = $_POST['withdraw_challenge'];
-				$game = $gamedb->GetGame($game_id);
+				$game = $gamedb->getGame($game_id);
 
 				// check if the challenge exists
 				if (!$game) { $error = 'No such challenge!'; $current = 'Messages'; break; }
@@ -2714,13 +2714,13 @@
 				// check if the game is a a challenge (and not a game in progress)
 				if ($game->State != 'waiting') { $error = 'Game already in progress!'; $current = 'Messages'; break; }
 
-				$_POST['Profile'] = $opponent = $game->Name2();
+				$_POST['Profile'] = $opponent = $game->name2();
 
 				// check if such opponent exists
-				if (!$playerdb->GetPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Messages'; break; }
+				if (!$playerdb->getPlayer($opponent)) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Messages'; break; }
 
 				// delete t3h challenge/game entry
-				if (!$game->DeleteChallenge()) { $error = 'Failed to withdraw challenge.'; $current = 'Messages'; break; }
+				if (!$game->deleteChallenge()) { $error = 'Failed to withdraw challenge.'; $current = 'Messages'; break; }
 
 				$information = 'You have withdrawn a challenge.';
 				$_POST['outgoing'] = "outgoing"; // stay in "Outgoing" subsection
@@ -2735,7 +2735,7 @@
 			if (isset($_POST['message_details'])) // view message
 			{
 				$messageid = $_POST['message_details'];
-				$message = $messagedb->GetMessage($messageid, $player->Name());
+				$message = $messagedb->getMessage($messageid, $player->name());
 
 				if (!$message) { $error = "No such message!"; $current = "Messages"; break; }
 
@@ -2749,9 +2749,9 @@
 				$messageid = $_POST['message_retrieve'];
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["see_all_messages"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
+				if (!$access_rights[$player->type()]["see_all_messages"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
 
-				$message = $messagedb->RetrieveMessage($messageid);
+				$message = $messagedb->retrieveMessage($messageid);
 				if (!$message) { $error = "No such message!"; $current = "Messages"; break; }
 
 				$_POST['CurrentMessage'] = $messageid;
@@ -2762,7 +2762,7 @@
 			if (isset($_POST['message_delete'])) // delete message
 			{
 				$messageid = $_POST['message_delete'];
-				$message = $messagedb->GetMessage($messageid, $player->Name());
+				$message = $messagedb->getMessage($messageid, $player->name());
 
 				if (!$message) { $error = "No such message!"; $current = "Messages"; break; }
 
@@ -2774,19 +2774,19 @@
 			if (isset($_POST['message_delete_confirm'])) // delete message confirmation
 			{
 				$messageid = $_POST['message_delete_confirm'];
-				$message = $messagedb->GetMessage($messageid, $player->Name());
+				$message = $messagedb->getMessage($messageid, $player->name());
 
 				if (!$message) { $error = "No such message!"; $current = "Messages"; break; }
 
 				// case 1: system message - delete completely
 				if ($message['Author'] == SYSTEM_NAME)
 				{
-					if (!$messagedb->DeleteSystemMessage($messageid)) { $error = "Failed to delete system message!"; $current = "Messages"; break; }
+					if (!$messagedb->deleteSystemMessage($messageid)) { $error = "Failed to delete system message!"; $current = "Messages"; break; }
 				}
 				// case 2: standard message - hide
 				else
 				{
-					$message = $messagedb->DeleteMessage($messageid, $player->Name());
+					$message = $messagedb->deleteMessage($messageid, $player->name());
 					if (!$message) { $error = "Failed to delete message!"; $current = "Messages"; break; }
 				}
 
@@ -2807,12 +2807,12 @@
 				$author = $_POST['Author'];
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["messages"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
+				if (!$access_rights[$player->type()]["messages"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
 				if ((trim($_POST['Subject']) == "") AND (trim($_POST['Content']) == "")) { $error = "No message input specified"; $current = "Messages_new"; break; }
 				if (strlen($_POST['Content']) > MESSAGE_LENGTH) { $error = "Message too long"; $current = "Messages_new"; break; }
-				if (!$playerdb->GetPlayer($_POST['Recipient'])) { $error = "Recipient doesn't exist"; $current = "Messages_new"; break; }
+				if (!$playerdb->getPlayer($_POST['Recipient'])) { $error = "Recipient doesn't exist"; $current = "Messages_new"; break; }
 
-				$message = $messagedb->SendMessage($_POST['Author'], $_POST['Recipient'], $_POST['Subject'], $_POST['Content']);
+				$message = $messagedb->sendMessage($_POST['Author'], $_POST['Recipient'], $_POST['Subject'], $_POST['Content']);
 
 				if (!$message) { $error = "Failed to send message"; $current = "Messages"; break; }
 
@@ -2825,10 +2825,10 @@
 			if (isset($_POST['message_create'])) // go to new message screen
 			{
 				// check access rights
-				if (!$access_rights[$player->Type()]["messages"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
+				if (!$access_rights[$player->type()]["messages"]) { $error = 'Access denied.'; $current = 'Messages'; break; }
 
 				$_POST['Recipient'] = postdecode($_POST['message_create']);
-				$_POST['Author'] = $player->Name();
+				$_POST['Author'] = $player->name();
 
 				$current = 'Messages_new';
 				break;
@@ -2837,7 +2837,7 @@
 			if (isset($_POST['system_notification'])) // go to new message screen to write system notification
 			{
 				// check access rights
-				if (!$access_rights[$player->Type()]["system_notification"]) { $error = 'Access denied.'; $current = 'Players'; break; }
+				if (!$access_rights[$player->type()]["system_notification"]) { $error = 'Access denied.'; $current = 'Players'; break; }
 
 				$_POST['Recipient'] = postdecode($_POST['system_notification']);
 				$_POST['Author'] = SYSTEM_NAME;
@@ -2885,7 +2885,7 @@
 
 				if (count($deleted_messages) > 0)
 				{
-					$result = $messagedb->MassDeleteMessage($deleted_messages, $player->Name());
+					$result = $messagedb->massdeleteMessage($deleted_messages, $player->name());
 					if (!$result) { $error = "Failed to delete messages"; $current = "Messages"; break; }
 					
 					$information = "Messages deleted";
@@ -2905,13 +2905,13 @@
 				$_POST['Profile'] = $opponent = postdecode($_POST['change_access']);
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
+				if (!$access_rights[$player->type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
 
 				// validate player type
 				if (isset($_POST['new_access']) and !in_array($_POST['new_access'], array('user','moderator','supervisor','admin','squashed','limited','banned'))) { $error = "Invalid user type."; $current = 'Players_details'; break; }
 
-				$target = $playerdb->GetPlayer($opponent);
-				$target->ChangeAccessRights($_POST['new_access']);
+				$target = $playerdb->getPlayer($opponent);
+				$target->changeAccessRights($_POST['new_access']);
 
 				$information = 'Access rights changed.';
 				$current = 'Players_details';
@@ -2924,12 +2924,12 @@
 				$new_name = $_POST['new_username'];
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
+				if (!$access_rights[$player->type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
 
 				if (trim($new_name) == "" or trim($new_name) == $opponent or strtolower(trim($new_name)) == strtolower(SYSTEM_NAME)) { $error = "Invalid new name"; $current = 'Players_details'; break; }
 				if (strlen($new_name) > 20) { $error = "New name is too long"; $current = 'Players_details'; break; }
 
-				if (!$playerdb->RenamePlayer($opponent, $new_name)) { $error = "Failed to rename player."; $current = 'Players_details'; break; }
+				if (!$playerdb->renamePlayer($opponent, $new_name)) { $error = "Failed to rename player."; $current = 'Players_details'; break; }
 				$_POST['Profile'] = trim($new_name);
 
 				$information = 'Player successfully renamed.';
@@ -2942,9 +2942,9 @@
 				$_POST['Profile'] = $opponent = postdecode($_POST['delete_player']);
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
+				if (!$access_rights[$player->type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
 
-				if (!$playerdb->DeletePlayer($opponent)) { $error = "Failed to delete player."; $current = 'Players_details'; break; }
+				if (!$playerdb->deletePlayer($opponent)) { $error = "Failed to delete player."; $current = 'Players_details'; break; }
 
 				$information = 'Player successfully deleted.';
 				$current = 'Players';
@@ -2956,17 +2956,17 @@
 				$_POST['Profile'] = $opponent = postdecode($_POST['reset_exp']);
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["reset_exp"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
+				if (!$access_rights[$player->type()]["reset_exp"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
 
 				// reset level end exp
-				$score = $scoredb->GetScore($opponent);
-				$score->ResetExp();
-				$score->SaveScore();
+				$score = $scoredb->getScore($opponent);
+				$score->resetExp();
+				$score->saveScore();
 
 				// delete bonus deck slots
-				$decks = $deckdb->ListDecks($opponent);
+				$decks = $deckdb->listDecks($opponent);
 				foreach ($decks as $i => $deck_data)
-					if ($i >= DECK_SLOTS) $deckdb->DeleteDeck($deck_data['DeckID']);
+					if ($i >= DECK_SLOTS) $deckdb->deleteDeck($deck_data['DeckID']);
 
 				$information = 'Exp reset.';
 				$current = 'Players_details';
@@ -2977,18 +2977,18 @@
 			{
 				$_POST['Profile'] = postdecode($_POST['reset_avatar_remote']);
 
-				$opponent = $playerdb->GetPlayer($_POST['Profile']);
+				$opponent = $playerdb->getPlayer($_POST['Profile']);
 				if (!$opponent) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Players'; break; }
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["change_all_avatar"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
+				if (!$access_rights[$player->type()]["change_all_avatar"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
 
-				$settings = $opponent->GetSettings();
-				$former_name = $settings->GetSetting('Avatar');
+				$settings = $opponent->getSettings();
+				$former_name = $settings->getSetting('Avatar');
 				$former_path = 'img/avatars/'.$former_name;
 
 				if ((file_exists($former_path)) and ($former_name != "noavatar.jpg")) unlink($former_path);
-				$settings->ChangeSetting('Avatar', "noavatar.jpg");
+				$settings->changeSetting('Avatar', "noavatar.jpg");
 				$settings->SaveSettings();
 
 				$information = "Avatar cleared";
@@ -3001,19 +3001,19 @@
 			{
 				$_POST['Profile'] = postdecode($_POST['export_deck_remote']);
 
-				$opponent = $playerdb->GetPlayer($_POST['Profile']);
+				$opponent = $playerdb->getPlayer($_POST['Profile']);
 				if (!$opponent) { $error = 'Player '.htmlencode($opponent).' does not exist!'; $current = 'Players'; break; }
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["export_deck"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
+				if (!$access_rights[$player->type()]["export_deck"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
 
 				$deck_id = $_POST['ExportDeck'];
-				$deck = $opponent->GetDeck($deck_id);
+				$deck = $opponent->getDeck($deck_id);
 				if (!$deck) { $error = 'No such deck.'; $current = 'Players_details'; break; }
-				$file = $deck->ToCSV();
+				$file = $deck->toCSV();
 
 				$content_type = 'text/csv';
-				$file_name = preg_replace("/[^a-zA-Z0-9_-]/i", "_", $deck->Deckname()).'.csv';
+				$file_name = preg_replace("/[^a-zA-Z0-9_-]/i", "_", $deck->deckname()).'.csv';
 				$file_length = strlen($file);
 
 				header('Content-Type: '.$content_type.'');
@@ -3029,15 +3029,15 @@
 				$_POST['Profile'] = $opponent = postdecode($_POST['add_gold']);
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["reset_exp"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
+				if (!$access_rights[$player->type()]["reset_exp"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
 
 				// check user input
 				if (!isset($_POST['gold_amount']) OR trim($_POST['gold_amount']) == '' OR !is_numeric($_POST['gold_amount'])) { $error = 'Invalid gold amount.'; $current = 'Players_details'; break; }
 
 				// add gold
-				$score = $scoredb->GetScore($opponent);
-				$score->AddGold($_POST['gold_amount']);
-				$score->SaveScore();
+				$score = $scoredb->getScore($opponent);
+				$score->addGold($_POST['gold_amount']);
+				$score->saveScore();
 
 				$information = 'Gold successfully added.';
 				$current = 'Players_details';
@@ -3049,13 +3049,13 @@
 				$_POST['Profile'] = $opponent = postdecode($_POST['reset_password']);
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
+				if (!$access_rights[$player->type()]["change_rights"]) { $error = 'Access denied.'; $current = 'Players_details'; break; }
 
-				$current_player = $playerdb->GetPlayer($opponent);
+				$current_player = $playerdb->getPlayer($opponent);
 				if (!$current_player) { $error = 'Invalid player.'; $current = 'Players_details'; break; }
 
 				// new password is player's username
-				if (!$current_player->ChangePassword($current_player->Name()))
+				if (!$current_player->changePassword($current_player->name()))
 					$error = "Failed to reset password.";
 				else
 					$information = "Password reset.";
@@ -3101,15 +3101,15 @@
 				// validate gender setting
 				if (isset($_POST['Gender']) and !in_array($_POST['Gender'], array('none','male','female'))) { $_POST['Gender'] = 'none'; $warning = "Invalid gender setting."; }
 
-				$settings = $player->GetSettings();
-				$bool_settings = $settings->ListBooleanSettings();
-				$other_settings = $settings->ListOtherSettings();
+				$settings = $player->getSettings();
+				$bool_settings = $settings->listBooleanSettings();
+				$other_settings = $settings->listOtherSettings();
 
 				// process yes/no settings
-				foreach($bool_settings as $setting) $settings->ChangeSetting($setting, ((isset($_POST[$setting])) ? 'yes' : 'no'));
+				foreach($bool_settings as $setting) $settings->changeSetting($setting, ((isset($_POST[$setting])) ? 'yes' : 'no'));
 				// process other settings
 				foreach($other_settings as $setting)
-					if (isset($_POST[$setting]) and $setting != 'Birthdate'and $setting != 'Avatar') $settings->ChangeSetting($setting, $_POST[$setting]);
+					if (isset($_POST[$setting]) and $setting != 'Birthdate'and $setting != 'Avatar') $settings->changeSetting($setting, $_POST[$setting]);
 
 				// birthdate is handled separately
 				if (!isset($_POST['Birthdate'])) $warning = "Invalid birthdate";
@@ -3125,7 +3125,7 @@
 					{
 						list($day, $month, $year) = explode("-", $_POST['Birthdate']);
 
-						$result = CheckDateInput($year, $month, $day);
+						$result = checkDateInput($year, $month, $day);
 						if( $result != "" )
 							$warning = $result;
 						elseif( time() <= strtotime(implode("-", array($year, $month, $day))) ) // disallow future dates
@@ -3136,7 +3136,7 @@
 				}
 				else $new_birthdate = "0000-00-00";
 
-				if (!isset($warning)) $settings->ChangeSetting('Birthdate', $new_birthdate);
+				if (!isset($warning)) $settings->changeSetting('Birthdate', $new_birthdate);
 
 				$settings->SaveSettings();
 
@@ -3149,18 +3149,18 @@
 			if (isset($_POST['Avatar'])) //upload avatar
 			{
 				// check access rights
-				if (!$access_rights[$player->Type()]["change_own_avatar"]) { $error = 'Access denied.'; $current = 'Settings'; break; }
+				if (!$access_rights[$player->type()]["change_own_avatar"]) { $error = 'Access denied.'; $current = 'Settings'; break; }
 
-				$settings = $player->GetSettings();
+				$settings = $player->getSettings();
 				
-				$former_name = $settings->GetSetting('Avatar');
+				$former_name = $settings->getSetting('Avatar');
 				$former_path = 'img/avatars/'.$former_name;
 
 				$type = $_FILES['uploadedfile']['type'];
 				$pos = strrpos($type, "/") + 1;
 
 				$code_type = substr($type, $pos, strlen($type) - $pos);
-				$filtered_name = preg_replace("/[^a-zA-Z0-9_-]/i", "_", $player->Name());
+				$filtered_name = preg_replace("/[^a-zA-Z0-9_-]/i", "_", $player->name());
 
 				$code_name = time().$filtered_name.'.'.$code_type;
 				$target_path = 'img/avatars/'.$code_name;
@@ -3181,7 +3181,7 @@
 				else
 				{
 					if ((file_exists($former_path)) and ($former_name != "noavatar.jpg")) unlink($former_path);
-					$settings->ChangeSetting('Avatar', $code_name);
+					$settings->changeSetting('Avatar', $code_name);
 					$settings->SaveSettings();
 					$information = "Avatar uploaded";
 				}
@@ -3194,15 +3194,15 @@
 			if (isset($_POST['reset_avatar'])) // reset own avatar
 			{
 				// check access rights
-				if (!$access_rights[$player->Type()]["change_own_avatar"]) { $error = 'Access denied.'; $current = 'Settings'; break; }
+				if (!$access_rights[$player->type()]["change_own_avatar"]) { $error = 'Access denied.'; $current = 'Settings'; break; }
 
-				$settings = $player->GetSettings();
+				$settings = $player->getSettings();
 
-				$former_name = $settings->GetSetting('Avatar');
+				$former_name = $settings->getSetting('Avatar');
 				$former_path = 'img/avatars/'.$former_name;
 
 				if ((file_exists($former_path)) and ($former_name != "noavatar.jpg")) unlink($former_path);
-				$settings->ChangeSetting('Avatar', "noavatar.jpg");
+				$settings->changeSetting('Avatar', "noavatar.jpg");
 				$settings->SaveSettings();
 				$information = "Avatar cleared";
 
@@ -3219,7 +3219,7 @@
 				elseif ($_POST['NewPassword'] != $_POST['NewPassword2'])
 					$error = "The two passwords don't match.";
 
-				elseif (!$player->ChangePassword($_POST['NewPassword']))
+				elseif (!$player->changePassword($_POST['NewPassword']))
 					$error = "Failed to change password.";
 
 				else $information = "Password changed";
@@ -3231,26 +3231,26 @@
 
 			if (isset($_POST['buy_item'])) // buy item at MArcomage shop (currently in settings section)
 			{
-				$score = $player->GetScore();
+				$score = $player->getScore();
 
 				if (!isset($_POST['selected_item'])) { $error = 'Invalid item selection.'; $current = 'Settings'; break; }
 
 				if ($_POST['selected_item'] == 'game_slot') // buy game slot
 				{
-					$res = $score->BuyItem(GAME_SLOT_COST);
+					$res = $score->buyItem(GAME_SLOT_COST);
 					if (!$res) { $error = 'Not enough gold.'; $current = 'Settings'; break; }
 					$score->ScoreData->GameSlots++;
-					$score->SaveScore();
+					$score->saveScore();
 					$information = 'Game slot has been successfully purchased.';
 				}
 				elseif ($_POST['selected_item'] == 'deck_slot') // buy deck slot
 				{
-					$res = $score->BuyItem(DECK_SLOT_COST);
+					$res = $score->buyItem(DECK_SLOT_COST);
 					if (!$res) { $error = 'Not enough gold.'; $current = 'Settings'; break; }
 
-					$deck = $deckdb->CreateDeck($player->Name(), time());
+					$deck = $deckdb->createDeck($player->name(), time());
 					if (!$deck) { $error = 'Transaction failed.'; $current = 'Settings'; break; }
-					$score->SaveScore();
+					$score->saveScore();
 					$information = 'Deck slot has been successfully purchased.';
 				}
 
@@ -3284,7 +3284,7 @@
 
 			if (isset($_POST['my_replays'])) // show only current player's replays
 			{
-				$_POST['PlayerFilter'] = $player->Name();
+				$_POST['PlayerFilter'] = $player->name();
 				$_POST['HiddenCards'] = "none";
 				$_POST['FriendlyPlay'] = "none";
 				$_POST['LongMode'] = "none";
@@ -3311,20 +3311,20 @@
 				$section_id = 9; // section for discussing replays
 
 				// check access rights
-				if (!$access_rights[$player->Type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Replays'; break; }
+				if (!$access_rights[$player->type()]["create_thread"]) { $error = 'Access denied.'; $current = 'Replays'; break; }
 
-				$replay = $replaydb->GetReplay($replay_id);
+				$replay = $replaydb->getReplay($replay_id);
 				if (!$replay) { $error = 'No such replay.'; $current = 'Replays'; break; }
 				$thread_id = $replay->ThreadID;
 				if ($thread_id > 0) { $error = "Thread already exists"; $current = "Forum_thread"; $_POST['CurrentThread'] = $thread_id; break; }
 
-				$thread_name = $replay->Name1()." vs ".$replay->Name2()." (".$replay_id.")";
+				$thread_name = $replay->name1()." vs ".$replay->name2()." (".$replay_id.")";
 
-				$new_thread = $forum->Threads->CreateThread($thread_name, $player->Name(), 'normal', $section_id);
+				$new_thread = $forum->Threads->createThread($thread_name, $player->name(), 'normal', $section_id);
 				if ($new_thread === false) { $error = "Failed to create new thread"; $current = "Replays"; break; }
 				// $new_thread contains ID of currently created thread, which can be 0
 
-				$result = $replay->AssignThread($new_thread);
+				$result = $replay->assignThread($new_thread);
 				if (!$result) { $error = "Failed to assign new thread"; $current = "Replays"; break; }
 
 				$_POST['CurrentThread'] = $new_thread;
@@ -3370,9 +3370,9 @@
 	/*	<section: PRESENTATION>	*/
 
 	// main template data
-	$settings = $player->GetSettings();
+	$settings = $player->getSettings();
 	$params["main"]["is_logged_in"] = ($session) ? 'yes' : 'no';
-	$params["main"]["skin"] = $settings->GetSetting('Skin');
+	$params["main"]["skin"] = $settings->getSetting('Skin');
 	$params["main"]["new_user"] = (isset($new_user) and $new_user) ? 'yes' : 'no';
 
 	// navbar params
@@ -3384,14 +3384,14 @@
 	// session information, if necessary
 	if( $session and !$session->hasCookies() )
 	{
-		$params["main"]["username"] = $session->Username();
-		$params["main"]["sessionid"] = $session->SessionID();
+		$params["main"]["username"] = $session->username();
+		$params["main"]["sessionid"] = $session->sessionId();
 	}
 
 	if( $session )
 	{
 		// inner navbar params
-		$params["main"]["player_name"] = $params["navbar"]["player_name"] = $player->Name();
+		$params["main"]["player_name"] = $params["navbar"]["player_name"] = $player->name();
 		$params["main"]["new_level_gained"] = $new_level_gained = (isset($new_level_gained)) ? $new_level_gained : 0;
 
 		// list cards associated with newly gained level
@@ -3401,28 +3401,28 @@
 			$filter['level'] = $new_level_gained;
 			$filter['level_op'] = '=';
 
-			$ids = $carddb->GetList($filter);
-			$params['main']['new_cards'] = $carddb->GetData($ids);
-			$params['main']['c_img'] = $settings->GetSetting('Images');
-			$params['main']['c_oldlook'] = $settings->GetSetting('OldCardLook');
-			$params['main']['c_insignias'] = $settings->GetSetting('Insignias');
-			$params['main']['c_foils'] = $settings->GetSetting('FoilCards');
+			$ids = $carddb->getList($filter);
+			$params['main']['new_cards'] = $carddb->getData($ids);
+			$params['main']['c_img'] = $settings->getSetting('Images');
+			$params['main']['c_oldlook'] = $settings->getSetting('OldCardLook');
+			$params['main']['c_insignias'] = $settings->getSetting('Insignias');
+			$params['main']['c_foils'] = $settings->getSetting('FoilCards');
 		}
 
 		// fetch player's score data
-		$score = $scoredb->GetScore($player->Name());
+		$score = $scoredb->getScore($player->name());
 		$params["navbar"]["level"] = $params["main"]["level"] = $score->ScoreData->Level;
 		$params['navbar']['exp'] = $score->ScoreData->Exp;
-		$params['navbar']['nextlevel'] = $scoredb->NextLevel($score->ScoreData->Level);
-		$params['navbar']['expbar'] = $score->ScoreData->Exp / $scoredb->NextLevel($score->ScoreData->Level);
+		$params['navbar']['nextlevel'] = $scoredb->nextLevel($score->ScoreData->Level);
+		$params['navbar']['expbar'] = $score->ScoreData->Exp / $scoredb->nextLevel($score->ScoreData->Level);
 
 		// menubar notification (depends on current user's game settings)
-		$forum_not = ($settings->GetSetting('Forum_notification') == 'yes');
-		$concepts_not = ($settings->GetSetting('Concepts_notification') == 'yes');
-		$params["navbar"]['forum_notice'] = ($forum_not AND $forum->NewPosts($player->GetNotification())) ? 'yes' : 'no';
-		$params["navbar"]['message_notice'] = (count($gamedb->ListChallengesTo($player->Name())) + $messagedb->CountUnreadMessages($player->Name()) > 0) ? 'yes' : 'no';
-		$params["navbar"]['concept_notice'] = ($concepts_not AND $conceptdb->NewConcepts($player->GetNotification())) ? 'yes' : 'no';
-		$params["main"]['current_games'] = $current_games = $gamedb->CountCurrentGames($player->Name());
+		$forum_not = ($settings->getSetting('Forum_notification') == 'yes');
+		$concepts_not = ($settings->getSetting('Concepts_notification') == 'yes');
+		$params["navbar"]['forum_notice'] = ($forum_not AND $forum->newPosts($player->getNotification())) ? 'yes' : 'no';
+		$params["navbar"]['message_notice'] = (count($gamedb->listChallengesTo($player->name())) + $messagedb->countUnreadMessages($player->name()) > 0) ? 'yes' : 'no';
+		$params["navbar"]['concept_notice'] = ($concepts_not AND $conceptdb->newConcepts($player->getNotification())) ? 'yes' : 'no';
+		$params["main"]['current_games'] = $current_games = $gamedb->countCurrentGames($player->name());
 		$params["navbar"]['game_notice'] = ($current_games > 0) ? 'yes' : 'no';
 	}
 
@@ -3449,7 +3449,7 @@ case 'Webpage':
 
 	$params['webpage']['websections'] = $websections;
 	$params['webpage']['files'] = $files;
-	$params['webpage']['timezone'] = ( isset($player) ) ? $player->GetSettings()->GetSetting('Timezone') : '+0';
+	$params['webpage']['timezone'] = ( isset($player) ) ? $player->getSettings()->getSetting('Timezone') : '+0';
 	break;
 
 
@@ -3477,31 +3477,31 @@ case 'Decks_edit':
 	$levelfilter = $params['deck_edit']['LevelFilter'] = isset($_POST['LevelFilter']) ? $_POST['LevelFilter'] : 'none';
 	$params['deck_edit']['card_sort'] = isset($_POST['card_sort']) ? $_POST['card_sort'] : 'name';
 
-	$score = $scoredb->GetScore($player->Name());
+	$score = $scoredb->getScore($player->name());
 	$player_level = $score->ScoreData->Level;
 
 	$params['deck_edit']['player_level'] = $player_level;
-	$params['deck_edit']['levels'] = $carddb->Levels($player_level);
-	$params['deck_edit']['keywords'] = $carddb->Keywords();
-	$params['deck_edit']['created_dates'] = $carddb->ListCreationDates();
-	$params['deck_edit']['modified_dates'] = $carddb->ListModifyDates();
+	$params['deck_edit']['levels'] = $carddb->levels($player_level);
+	$params['deck_edit']['keywords'] = $carddb->keywords();
+	$params['deck_edit']['created_dates'] = $carddb->listCreationDates();
+	$params['deck_edit']['modified_dates'] = $carddb->listModifyDates();
 
 	// download the neccessary data
-	$deck = $player->GetDeck($currentdeck);
+	$deck = $player->getDeck($currentdeck);
 	if (!$deck) { $display_error = "Invalid deck."; break; }
 
 	$params['deck_edit']['reset'] = ( (isset($_POST["reset_deck_prepare"] )) ? 'yes' : 'no');
 	$params['deck_edit']['reset_stats'] = (isset($_POST["reset_stats_prepare"] )) ? 'yes' : 'no';
 
 	// load card display settings
-	$settings = $player->GetSettings();
-	$params['deck_edit']['c_img'] = $settings->GetSetting('Images');
-	$params['deck_edit']['c_oldlook'] = $settings->GetSetting('OldCardLook');
-	$params['deck_edit']['c_insignias'] = $settings->GetSetting('Insignias');
-	$params['deck_edit']['c_foils'] = $settings->GetSetting('FoilCards');
-	$params['deck_edit']['cards_per_row'] = $settings->GetSetting('Cards_per_row');
-	$params['deck_edit']['Res'] = $deck->AvgCostPerTurn(); // calculate average cost per turn
-	$params['deck_edit']['card_pool'] = ((isset($_POST['CardPool']) AND $_POST['CardPool'] == 'no') OR (!isset($_POST['CardPool']) AND $settings->GetSetting('CardPool') == 'yes')) ? 'no' : 'yes';
+	$settings = $player->getSettings();
+	$params['deck_edit']['c_img'] = $settings->getSetting('Images');
+	$params['deck_edit']['c_oldlook'] = $settings->getSetting('OldCardLook');
+	$params['deck_edit']['c_insignias'] = $settings->getSetting('Insignias');
+	$params['deck_edit']['c_foils'] = $settings->getSetting('FoilCards');
+	$params['deck_edit']['cards_per_row'] = $settings->getSetting('Cards_per_row');
+	$params['deck_edit']['Res'] = $deck->avgCostPerTurn(); // calculate average cost per turn
+	$params['deck_edit']['card_pool'] = ((isset($_POST['CardPool']) AND $_POST['CardPool'] == 'no') OR (!isset($_POST['CardPool']) AND $settings->getSetting('CardPool') == 'yes')) ? 'no' : 'yes';
 
 	$filter = array();
 	if( $namefilter != '' ) $filter['name'] = $namefilter;
@@ -3525,21 +3525,21 @@ case 'Decks_edit':
 	// cards not present in the card pool
 	$excluded = array_merge($deck->DeckData->Common, $deck->DeckData->Uncommon, $deck->DeckData->Rare);
 
-	$card_list = $carddb->GetData($carddb->GetList($filter));
+	$card_list = $carddb->getData($carddb->getList($filter));
 	foreach ($card_list as $i => $data) $card_list[$i]['excluded'] = (in_array($data['id'], $excluded)) ? 'yes' : 'no';
 
 	$params['deck_edit']['CardList'] = $card_list;
 
 	foreach (array('Common', 'Uncommon', 'Rare') as $class)
-		$params['deck_edit']['DeckCards'][$class] = $carddb->GetData($deck->DeckData->$class);
+		$params['deck_edit']['DeckCards'][$class] = $carddb->getData($deck->DeckData->$class);
 
-	$params['deck_edit']['deckname'] = $subsection_name = $deck->Deckname();
+	$params['deck_edit']['deckname'] = $subsection_name = $deck->deckname();
 	$params['deck_edit']['wins'] = $deck->Wins;
 	$params['deck_edit']['losses'] = $deck->Losses;
 	$params['deck_edit']['draws'] = $deck->Draws;
 	$params['deck_edit']['Tokens'] = $deck->DeckData->Tokens;
-	$params['deck_edit']['TokenKeywords'] = $carddb->TokenKeywords();
-	$params['deck_edit']['note'] = $deck->GetNote();
+	$params['deck_edit']['TokenKeywords'] = $carddb->tokenKeywords();
+	$params['deck_edit']['note'] = $deck->getNote();
 	$params['deck_edit']['shared'] = ($deck->Shared == 1) ? 'yes' : 'no';
 	break;
 
@@ -3548,22 +3548,22 @@ case 'Decks_note':
 	if (!isset($_POST['CurrentDeck'])) { $display_error = "Missing deck id."; break; }
 	$currentdeck = $_POST['CurrentDeck'];
 
-	$deck = $player->GetDeck($currentdeck);
+	$deck = $player->getDeck($currentdeck);
 	if (!$deck) { $display_error = "Invalid deck."; break; }
 
 	$params['deck_note']['CurrentDeck'] = $currentdeck;
-	$params['deck_note']['text'] = (isset($new_note)) ? $new_note : $deck->GetNote();
+	$params['deck_note']['text'] = (isset($new_note)) ? $new_note : $deck->getNote();
 
 	break;
 
 
 case 'Decks':
-	$score = $scoredb->GetScore($player->Name());
+	$score = $scoredb->getScore($player->name());
 	$player_level = $score->ScoreData->Level;
 
 	$params['decks']['player_level'] = $player_level;
-	$params['decks']['list'] = $player->ListDecks();
-	$params['decks']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
+	$params['decks']['list'] = $player->listDecks();
+	$params['decks']['timezone'] = $player->getSettings()->getSetting('Timezone');
 
 	break;
 
@@ -3581,11 +3581,11 @@ case 'Decks_shared':
 	if (!is_numeric($current_page) OR $current_page < 0) { $display_error = 'Invalid deck page.'; break; }
 	$params['decks_shared']['current_page'] = $current_page;
 
-	$params['decks_shared']['shared_list'] = $deckdb->ListSharedDecks($author, $condition, $order, $current_page);
-	$params['decks_shared']['page_count'] = $deckdb->CountPages($author);
-	$params['decks_shared']['authors'] = $deckdb->ListAuthors();
-	$params['decks_shared']['decks'] = $player->ListDecks();
-	$params['decks_shared']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
+	$params['decks_shared']['shared_list'] = $deckdb->listSharedDecks($author, $condition, $order, $current_page);
+	$params['decks_shared']['page_count'] = $deckdb->countPages($author);
+	$params['decks_shared']['authors'] = $deckdb->listAuthors();
+	$params['decks_shared']['decks'] = $player->listDecks();
+	$params['decks_shared']['timezone'] = $player->getSettings()->getSetting('Timezone');
 
 	break;
 
@@ -3595,7 +3595,7 @@ case 'Decks_details':
 	$deck_id = $_POST['CurrentDeck'];
 
 	// load shared deck
-	$deck = $deckdb->GetDeck($deck_id);
+	$deck = $deckdb->getDeck($deck_id);
 	if (!$deck) { $display_error = 'Failed to load shared deck.'; break; }
 	if ($deck->Shared == 0) { $error = 'Selected deck is not shared.'; break; }
 	if (!$deck->isReady()) { $error = 'Selected deck is incomplete.'; break; }
@@ -3608,18 +3608,18 @@ case 'Decks_details':
 	}
 
 	// load needed settings
-	$settings = $player->GetSettings();
-	$params['decks_details']['deckname'] = $subsection_name = $deck->Deckname();
-	$params['decks_details']['c_img'] = $settings->GetSetting('Images');
-	$params['decks_details']['c_oldlook'] = $settings->GetSetting('OldCardLook');
-	$params['decks_details']['c_insignias'] = $settings->GetSetting('Insignias');
-	$params['decks_details']['c_foils'] = $settings->GetSetting('FoilCards');
+	$settings = $player->getSettings();
+	$params['decks_details']['deckname'] = $subsection_name = $deck->deckname();
+	$params['decks_details']['c_img'] = $settings->getSetting('Images');
+	$params['decks_details']['c_oldlook'] = $settings->getSetting('OldCardLook');
+	$params['decks_details']['c_insignias'] = $settings->getSetting('Insignias');
+	$params['decks_details']['c_foils'] = $settings->getSetting('FoilCards');
 	$params['decks_details']['tokens'] = (count($tokens) > 0) ? implode(", ", $tokens) : '';
-	$params['decks_details']['res'] = $deck->AvgCostPerTurn(); // calculate average cost per turn
-	$params['decks_details']['note'] = $deck->GetNote();
+	$params['decks_details']['res'] = $deck->avgCostPerTurn(); // calculate average cost per turn
+	$params['decks_details']['note'] = $deck->getNote();
 
 	foreach (array('Common', 'Uncommon', 'Rare') as $class)
-		$params['decks_details']['DeckCards'][$class] = $carddb->GetData($deck->DeckData->$class);
+		$params['decks_details']['DeckCards'][$class] = $carddb->getData($deck->DeckData->$class);
 
 	break;
 
@@ -3641,22 +3641,22 @@ case 'Concepts':
 	if (!is_numeric($current_page) OR $current_page < 0) { $display_error = 'Invalid concepts page.'; break; }
 	$params['concepts']['current_page'] = $current_page;
 
-	$params['concepts']['list'] = $conceptdb->GetList($name, $author, $date, $state, $condition, $order, $current_page);
-	$params['concepts']['page_count'] = $conceptdb->CountPages($name, $author, $date, $state);
+	$params['concepts']['list'] = $conceptdb->getList($name, $author, $date, $state, $condition, $order, $current_page);
+	$params['concepts']['page_count'] = $conceptdb->countPages($name, $author, $date, $state);
 
-	$settings = $player->GetSettings();
-	$params['concepts']['notification'] = $player->GetNotification();
-	$params['concepts']['authors'] = $authors = $conceptdb->ListAuthors($date);
-	$params['concepts']['mycards'] = (in_array($player->Name(), $authors) ? 'yes' : 'no');
-	$params['concepts']['timezone'] = $settings->GetSetting('Timezone');
-	$params['concepts']['PlayerName'] = $player->Name();
-	$params['concepts']['create_card'] = (($access_rights[$player->Type()]["create_card"]) ? 'yes' : 'no');
-	$params['concepts']['edit_own_card'] = (($access_rights[$player->Type()]["edit_own_card"]) ? 'yes' : 'no');
-	$params['concepts']['edit_all_card'] = (($access_rights[$player->Type()]["edit_all_card"]) ? 'yes' : 'no');
-	$params['concepts']['delete_own_card'] = (($access_rights[$player->Type()]["delete_own_card"]) ? 'yes' : 'no');
-	$params['concepts']['delete_all_card'] = (($access_rights[$player->Type()]["delete_all_card"]) ? 'yes' : 'no');
-	$params['concepts']['c_img'] = $settings->GetSetting('Images');
-	$params['concepts']['c_oldlook'] = $settings->GetSetting('OldCardLook');
+	$settings = $player->getSettings();
+	$params['concepts']['notification'] = $player->getNotification();
+	$params['concepts']['authors'] = $authors = $conceptdb->listAuthors($date);
+	$params['concepts']['mycards'] = (in_array($player->name(), $authors) ? 'yes' : 'no');
+	$params['concepts']['timezone'] = $settings->getSetting('Timezone');
+	$params['concepts']['PlayerName'] = $player->name();
+	$params['concepts']['create_card'] = (($access_rights[$player->type()]["create_card"]) ? 'yes' : 'no');
+	$params['concepts']['edit_own_card'] = (($access_rights[$player->type()]["edit_own_card"]) ? 'yes' : 'no');
+	$params['concepts']['edit_all_card'] = (($access_rights[$player->type()]["edit_all_card"]) ? 'yes' : 'no');
+	$params['concepts']['delete_own_card'] = (($access_rights[$player->type()]["delete_own_card"]) ? 'yes' : 'no');
+	$params['concepts']['delete_all_card'] = (($access_rights[$player->type()]["delete_all_card"]) ? 'yes' : 'no');
+	$params['concepts']['c_img'] = $settings->getSetting('Images');
+	$params['concepts']['c_oldlook'] = $settings->getSetting('OldCardLook');
 
 	break;
 
@@ -3673,18 +3673,18 @@ case 'Concepts_edit':
 	$concept_id = (isset($_POST['CurrentConcept'])) ? $_POST['CurrentConcept'] : 0;
 	if (!is_numeric($concept_id) OR $concept_id <= 0) { $display_error = 'Invalid concept id.'; break; }
 
-	$concept = $conceptdb->GetConcept($concept_id);
+	$concept = $conceptdb->getConcept($concept_id);
 	if ($concept->Name == "Invalid Concept") { $display_error = 'Invalid concept.'; break; }
 
-	$params['concepts_edit']['data'] = $concept->GetData();
-	$params['concepts_edit']['edit_all_card'] = (($access_rights[$player->Type()]["edit_all_card"]) ? 'yes' : 'no');
-	$params['concepts_edit']['delete_own_card'] = (($access_rights[$player->Type()]["delete_own_card"]) ? 'yes' : 'no');
-	$params['concepts_edit']['delete_all_card'] = (($access_rights[$player->Type()]["delete_all_card"]) ? 'yes' : 'no');
-	$params['concepts_edit']['PlayerName'] = $player->Name();
+	$params['concepts_edit']['data'] = $concept->getData();
+	$params['concepts_edit']['edit_all_card'] = (($access_rights[$player->type()]["edit_all_card"]) ? 'yes' : 'no');
+	$params['concepts_edit']['delete_own_card'] = (($access_rights[$player->type()]["delete_own_card"]) ? 'yes' : 'no');
+	$params['concepts_edit']['delete_all_card'] = (($access_rights[$player->type()]["delete_all_card"]) ? 'yes' : 'no');
+	$params['concepts_edit']['PlayerName'] = $player->name();
 	$params['concepts_edit']['delete'] = ((isset($_POST["delete_concept"])) ? 'yes' : 'no');
-	$settings = $player->GetSettings();
-	$params['concepts_edit']['c_img'] = $settings->GetSetting('Images');
-	$params['concepts_edit']['c_oldlook'] = $settings->GetSetting('OldCardLook');
+	$settings = $player->getSettings();
+	$params['concepts_edit']['c_img'] = $settings->getSetting('Images');
+	$params['concepts_edit']['c_oldlook'] = $settings->getSetting('OldCardLook');
 	$subsection_name = $concept->Name;
 
 	break;
@@ -3694,17 +3694,17 @@ case 'Concepts_details':
 	$concept_id = (isset($_POST['CurrentConcept'])) ? $_POST['CurrentConcept'] : 0;
 	if (!is_numeric($concept_id) OR $concept_id <= 0) { $display_error = 'Invalid concept id.'; break; }
 
-	$concept = $conceptdb->GetConcept($concept_id);
+	$concept = $conceptdb->getConcept($concept_id);
 	if ($concept->Name == "Invalid Concept") { $display_error = 'Invalid concept.'; break; }
 
-	$params['concepts_details']['data'] = $concept->GetData();
-	$params['concepts_details']['create_thread'] = ($access_rights[$player->Type()]["create_thread"]) ? 'yes' : 'no';
-	$params['concepts_details']['edit_all_card'] = ($access_rights[$player->Type()]["edit_all_card"]) ? 'yes' : 'no';
-	$params['concepts_details']['delete_own_card'] = ($access_rights[$player->Type()]["delete_own_card"]) ? 'yes' : 'no';
-	$params['concepts_details']['delete_all_card'] = ($access_rights[$player->Type()]["delete_all_card"]) ? 'yes' : 'no';
-	$settings = $player->GetSettings();
-	$params['concepts_details']['c_img'] = $settings->GetSetting('Images');
-	$params['concepts_details']['c_oldlook'] = $settings->GetSetting('OldCardLook');
+	$params['concepts_details']['data'] = $concept->getData();
+	$params['concepts_details']['create_thread'] = ($access_rights[$player->type()]["create_thread"]) ? 'yes' : 'no';
+	$params['concepts_details']['edit_all_card'] = ($access_rights[$player->type()]["edit_all_card"]) ? 'yes' : 'no';
+	$params['concepts_details']['delete_own_card'] = ($access_rights[$player->type()]["delete_own_card"]) ? 'yes' : 'no';
+	$params['concepts_details']['delete_all_card'] = ($access_rights[$player->type()]["delete_all_card"]) ? 'yes' : 'no';
+	$settings = $player->getSettings();
+	$params['concepts_details']['c_img'] = $settings->getSetting('Images');
+	$params['concepts_details']['c_oldlook'] = $settings->getSetting('OldCardLook');
 	$subsection_name = $concept->Name;
 
 	break;
@@ -3720,34 +3720,34 @@ case 'Players':
 	$asc_order = array('Country', 'Username');
 	$order = (in_array($condition, $asc_order)) ? 'ASC' : 'DESC';
 
-	$settings = $player->GetSettings();
+	$settings = $player->getSettings();
 
 	// filter initialization
-	$params['players']['activity_filter'] = $activity_filter = ((isset($_POST['activity_filter'])) ? $_POST['activity_filter'] : $settings->GetSetting('DefaultFilter'));
+	$params['players']['activity_filter'] = $activity_filter = ((isset($_POST['activity_filter'])) ? $_POST['activity_filter'] : $settings->getSetting('DefaultFilter'));
 	$params['players']['status_filter'] = $status_filter = (isset($_POST['status_filter'])) ? $_POST['status_filter'] : 'none';
 	$params['players']['pname_filter'] = $pname_filter = (isset($_POST['pname_filter'])) ? trim($_POST['pname_filter']) : '';
 
-	$params['players']['PlayerName'] = $player->Name();
+	$params['players']['PlayerName'] = $player->name();
 
 	// check for active decks
-	$params['players']['active_decks'] = count($player->ListReadyDecks());
+	$params['players']['active_decks'] = count($player->listReadyDecks());
 
 	//retrieve layout setting
-	$params['players']['show_nationality'] = $settings->GetSetting('Nationality');
-	$params['players']['show_avatars'] = $settings->GetSetting('Avatarlist');
+	$params['players']['show_nationality'] = $settings->getSetting('Nationality');
+	$params['players']['show_avatars'] = $settings->getSetting('Avatarlist');
 
-	$params['players']['free_slots'] = $gamedb->CountFreeSlots1($player->Name());
+	$params['players']['free_slots'] = $gamedb->countFreeSlots1($player->name());
 
-	$params['players']['messages'] = ($access_rights[$player->Type()]["messages"]) ? 'yes' : 'no';
-	$params['players']['send_challenges'] = ($access_rights[$player->Type()]["send_challenges"]) ? 'yes' : 'no';
+	$params['players']['messages'] = ($access_rights[$player->type()]["messages"]) ? 'yes' : 'no';
+	$params['players']['send_challenges'] = ($access_rights[$player->type()]["send_challenges"]) ? 'yes' : 'no';
 
 	$current_page = ((isset($_POST['CurrentPlayersPage'])) ? $_POST['CurrentPlayersPage'] : 0);
 	$params['players']['current_page'] = $current_page;
 
-	$params['players']['page_count'] = $playerdb->CountPages($activity_filter, $status_filter, $pname_filter);
+	$params['players']['page_count'] = $playerdb->countPages($activity_filter, $status_filter, $pname_filter);
 
 	// get the list of all existing players; (Username, Wins, Losses, Draws, Last Query, Free slots, Avatar, Country)
-	$list = $playerdb->ListPlayers($activity_filter, $status_filter, $pname_filter, $condition, $order, $current_page);
+	$list = $playerdb->listPlayers($activity_filter, $status_filter, $pname_filter, $condition, $order, $current_page);
 
 	// for each player, display their name, score, and if conditions are met, also display the challenge button
 	foreach ($list as $i => $data)
@@ -3781,47 +3781,47 @@ case 'Players_details':
 	// retrieve name of a player we are currently viewing
 	$cur_player = (isset($_POST['Profile'])) ? $_POST['Profile'] : '';
 
-	$p = $playerdb->GetPlayer($cur_player);
+	$p = $playerdb->getPlayer($cur_player);
 	if (!$p) { $display_error = 'Invalid player.'; break; }
 
-	$p_settings = $p->GetSettings();
-	$score = $scoredb->GetScore($cur_player);
-	$player_decks = $p->ListDecks();
+	$p_settings = $p->getSettings();
+	$score = $scoredb->getScore($cur_player);
+	$player_decks = $p->listDecks();
 
-	$params['profile']['PlayerName'] = $subsection_name = $p->Name();
-	$params['profile']['PlayerType'] = $p->Type();
-	$params['profile']['LastQuery'] = $p->LastQuery();
-	$params['profile']['Registered'] = $p->Registered();
-	$params['profile']['Firstname'] = $p_settings->GetSetting('Firstname');
-	$params['profile']['Surname'] = $p_settings->GetSetting('Surname');
-	$params['profile']['Gender'] = $p_settings->GetSetting('Gender');
-	$params['profile']['Country'] = $p_settings->GetSetting('Country');
-	$params['profile']['Status'] = $p_settings->GetSetting('Status');
-	$params['profile']['FriendlyFlag'] = $p_settings->GetSetting('FriendlyFlag');
-	$params['profile']['BlindFlag'] = $p_settings->GetSetting('BlindFlag');
-	$params['profile']['LongFlag'] = $p_settings->GetSetting('LongFlag');
-	$params['profile']['Avatar'] = $p_settings->GetSetting('Avatar');
-	$params['profile']['Email'] = $p_settings->GetSetting('Email');
-	$params['profile']['Imnumber'] = $p_settings->GetSetting('Imnumber');
-	$params['profile']['Hobby'] = $p_settings->GetSetting('Hobby');
+	$params['profile']['PlayerName'] = $subsection_name = $p->name();
+	$params['profile']['PlayerType'] = $p->type();
+	$params['profile']['LastQuery'] = $p->lastquery();
+	$params['profile']['Registered'] = $p->registered();
+	$params['profile']['Firstname'] = $p_settings->getSetting('Firstname');
+	$params['profile']['Surname'] = $p_settings->getSetting('Surname');
+	$params['profile']['Gender'] = $p_settings->getSetting('Gender');
+	$params['profile']['Country'] = $p_settings->getSetting('Country');
+	$params['profile']['Status'] = $p_settings->getSetting('Status');
+	$params['profile']['FriendlyFlag'] = $p_settings->getSetting('FriendlyFlag');
+	$params['profile']['BlindFlag'] = $p_settings->getSetting('BlindFlag');
+	$params['profile']['LongFlag'] = $p_settings->getSetting('LongFlag');
+	$params['profile']['Avatar'] = $p_settings->getSetting('Avatar');
+	$params['profile']['Email'] = $p_settings->getSetting('Email');
+	$params['profile']['Imnumber'] = $p_settings->getSetting('Imnumber');
+	$params['profile']['Hobby'] = $p_settings->getSetting('Hobby');
 	$params['profile']['Level'] = $score->ScoreData->Level;
-	$params['profile']['FreeSlots'] = $p->FreeSlots();
+	$params['profile']['FreeSlots'] = $p->freeSlots();
 	$params['profile']['Exp'] = $score->ScoreData->Exp;
-	$params['profile']['NextLevel'] = $scoredb->NextLevel($score->ScoreData->Level);
-	$params['profile']['ExpBar'] = $score->ScoreData->Exp / $scoredb->NextLevel($score->ScoreData->Level);
+	$params['profile']['NextLevel'] = $scoredb->nextLevel($score->ScoreData->Level);
+	$params['profile']['ExpBar'] = $score->ScoreData->Exp / $scoredb->nextLevel($score->ScoreData->Level);
 	$params['profile']['Wins'] = $score->ScoreData->Wins;
 	$params['profile']['Losses'] = $score->ScoreData->Losses;
 	$params['profile']['Draws'] = $score->ScoreData->Draws;
 	$params['profile']['Gold'] = $score->ScoreData->Gold;
 	$params['profile']['game_slots'] = $score->ScoreData->GameSlots;
 	$params['profile']['deck_slots'] = max(0,count($player_decks) - DECK_SLOTS);
-	$params['profile']['Posts'] = $forum->Threads->Posts->CountPosts($cur_player);
+	$params['profile']['Posts'] = $forum->Threads->Posts->countPosts($cur_player);
 
-	if( $p_settings->GetSetting('Birthdate') != "0000-00-00" )
+	if( $p_settings->getSetting('Birthdate') != "0000-00-00" )
 	{
-		$params['profile']['Age'] = $p_settings->Age();
-		$params['profile']['Sign'] = $p_settings->Sign();
-		$params['profile']['Birthdate'] = date("d-m-Y", strtotime($p_settings->GetSetting('Birthdate')));
+		$params['profile']['Age'] = $p_settings->age();
+		$params['profile']['Sign'] = $p_settings->sign();
+		$params['profile']['Birthdate'] = date("d-m-Y", strtotime($p_settings->getSetting('Birthdate')));
 	}
 	else
 	{
@@ -3830,29 +3830,29 @@ case 'Players_details':
 		$params['profile']['Birthdate'] = 'Unknown';
 	}
 
-	$settings = $player->GetSettings();
-	$params['profile']['CurPlayerName'] = $player->Name();
-	$params['profile']['HiddenCards'] = $settings->GetSetting('BlindFlag');
-	$params['profile']['FriendlyPlay'] = $settings->GetSetting('FriendlyFlag');
-	$params['profile']['LongMode'] = $settings->GetSetting('LongFlag');
-	$params['profile']['RandomDeck'] = $settings->GetSetting('RandomDeck');
-	$params['profile']['timezone'] = $settings->GetSetting('Timezone');
-	$params['profile']['timeout'] = $settings->GetSetting('Timeout');
-	$params['profile']['send_challenges'] = ($access_rights[$player->Type()]["send_challenges"]) ? 'yes' : 'no';
-	$params['profile']['messages'] = ($access_rights[$player->Type()]["messages"]) ? 'yes' : 'no';
-	$params['profile']['change_rights'] = (($access_rights[$player->Type()]["change_rights"]) AND $p->Type() != "admin") ? 'yes' : 'no';
-	$params['profile']['system_notification'] = ($access_rights[$player->Type()]["system_notification"]) ? 'yes' : 'no';
-	$params['profile']['change_all_avatar'] = ($access_rights[$player->Type()]["change_all_avatar"]) ? 'yes' : 'no';
-	$params['profile']['reset_exp'] = ($access_rights[$player->Type()]["reset_exp"]) ? 'yes' : 'no';
-	$params['profile']['export_deck'] = ($access_rights[$player->Type()]["export_deck"]) ? 'yes' : 'no';
-	$params['profile']['free_slots'] = $gamedb->CountFreeSlots1($player->Name());
-	$params['profile']['decks'] = $decks = $player->ListReadyDecks();
-	$params['profile']['random_deck'] = (count($decks) > 0) ? $decks[array_mt_rand($decks)]['DeckID'] : '';
+	$settings = $player->getSettings();
+	$params['profile']['CurPlayerName'] = $player->name();
+	$params['profile']['HiddenCards'] = $settings->getSetting('BlindFlag');
+	$params['profile']['FriendlyPlay'] = $settings->getSetting('FriendlyFlag');
+	$params['profile']['LongMode'] = $settings->getSetting('LongFlag');
+	$params['profile']['RandomDeck'] = $settings->getSetting('RandomDeck');
+	$params['profile']['timezone'] = $settings->getSetting('Timezone');
+	$params['profile']['timeout'] = $settings->getSetting('Timeout');
+	$params['profile']['send_challenges'] = ($access_rights[$player->type()]["send_challenges"]) ? 'yes' : 'no';
+	$params['profile']['messages'] = ($access_rights[$player->type()]["messages"]) ? 'yes' : 'no';
+	$params['profile']['change_rights'] = (($access_rights[$player->type()]["change_rights"]) AND $p->type() != "admin") ? 'yes' : 'no';
+	$params['profile']['system_notification'] = ($access_rights[$player->type()]["system_notification"]) ? 'yes' : 'no';
+	$params['profile']['change_all_avatar'] = ($access_rights[$player->type()]["change_all_avatar"]) ? 'yes' : 'no';
+	$params['profile']['reset_exp'] = ($access_rights[$player->type()]["reset_exp"]) ? 'yes' : 'no';
+	$params['profile']['export_deck'] = ($access_rights[$player->type()]["export_deck"]) ? 'yes' : 'no';
+	$params['profile']['free_slots'] = $gamedb->countFreeSlots1($player->name());
+	$params['profile']['decks'] = $decks = $player->listReadyDecks();
+	$params['profile']['random_deck'] = (count($decks) > 0) ? $decks[arrayMtRand($decks)]['DeckID'] : '';
 
 	$params['profile']['challenging'] = (isset($_POST['prepare_challenge'])) ? 'yes' : 'no';
 
-	$params['profile']['statistics'] = $player->GetVersusStats($p->Name());
-	$params['profile']['export_decks'] = ($access_rights[$player->Type()]["export_deck"]) ? $player_decks : array();
+	$params['profile']['statistics'] = $player->getversusStats($p->name());
+	$params['profile']['export_decks'] = ($access_rights[$player->type()]["export_deck"]) ? $player_decks : array();
 
 	break;
 
@@ -3862,13 +3862,13 @@ case 'Players_achievements':
 	// retrieve name of a player we are currently viewing
 	$cur_player = $subsection_name = (isset($_POST['Profile'])) ? $_POST['Profile'] : '';
 
-	$p = $playerdb->GetPlayer($cur_player);
+	$p = $playerdb->getPlayer($cur_player);
 	if (!$p) { $display_error = 'Invalid player.'; break; }
 
-	$score = $p->GetScore();
+	$score = $p->getScore();
 
-	$params['achievements']['PlayerName'] = $p->Name();
-	$params['achievements']['data'] = $score->AchievementsData();
+	$params['achievements']['PlayerName'] = $p->name();
+	$params['achievements']['data'] = $score->achievementsData();
 
 
 	break;
@@ -3880,22 +3880,22 @@ case 'Messages':
 
 	if ($current_subsection != 'incoming' AND $current_subsection != 'outgoing') { $display_error = "Invalid challenges subsection."; break; }
 	if (!in_array($current_location, array('inbox', 'sent_mail', 'all_mail'))) { $display_error = "Invalid messages subsection."; break; }
-	if ($current_location == 'all_mail' AND !$access_rights[$player->Type()]["see_all_messages"]) { $display_error = 'Access denied.'; break; }
+	if ($current_location == 'all_mail' AND !$access_rights[$player->type()]["see_all_messages"]) { $display_error = 'Access denied.'; break; }
 
-	$settings = $player->GetSettings();
-	$params['messages']['PlayerName'] = $player->Name();
-	$params['messages']['notification'] = $player->GetNotification();
-	$params['messages']['timezone'] = $settings->GetSetting('Timezone');
-	$params['messages']['RandomDeck'] = $settings->GetSetting('RandomDeck');
+	$settings = $player->getSettings();
+	$params['messages']['PlayerName'] = $player->name();
+	$params['messages']['notification'] = $player->getNotification();
+	$params['messages']['timezone'] = $settings->getSetting('Timezone');
+	$params['messages']['RandomDeck'] = $settings->getSetting('RandomDeck');
 	$params['messages']['system_name'] = SYSTEM_NAME;
 
-	$decks = $params['messages']['decks'] = $player->ListReadyDecks();
-	$params['messages']['random_deck'] = (count($decks) > 0) ? $decks[array_mt_rand($decks)]['DeckID'] : '';
+	$decks = $params['messages']['decks'] = $player->listReadyDecks();
+	$params['messages']['random_deck'] = (count($decks) > 0) ? $decks[arrayMtRand($decks)]['DeckID'] : '';
 	$params['messages']['deck_count'] = count($decks);
-	$params['messages']['free_slots'] = $gamedb->CountFreeSlots2($player->Name());
+	$params['messages']['free_slots'] = $gamedb->countFreeSlots2($player->name());
 
 	$function_type = (($current_subsection == "incoming") ? "ListChallengesTo" : "ListChallengesFrom");
-	$params['messages']['challenges'] = $messagedb->$function_type($player->Name());
+	$params['messages']['challenges'] = $messagedb->$function_type($player->name());
 	$params['messages']['challenges_count'] = count($params['messages']['challenges']);
 	$params['messages']['current_subsection'] = $current_subsection;
 
@@ -3907,18 +3907,18 @@ case 'Messages':
 
 	if ($current_location == "all_mail")
 	{
-		$messages = $messagedb->ListAllMessages($date, $name, $current_condition, $current_order, $current_page);
-		$page_count = $messagedb->CountPagesAll($date, $name);
+		$messages = $messagedb->listAllMessages($date, $name, $current_condition, $current_order, $current_page);
+		$page_count = $messagedb->countPagesAll($date, $name);
 	}
 	elseif ($current_location == "sent_mail")
 	{
-		$messages = $messagedb->ListMessagesFrom($player->Name(), $date, $name, $current_condition, $current_order, $current_page);
-		$page_count = $messagedb->CountPagesFrom($player->Name(), $date, $name);
+		$messages = $messagedb->listMessagesFrom($player->name(), $date, $name, $current_condition, $current_order, $current_page);
+		$page_count = $messagedb->countPagesFrom($player->name(), $date, $name);
 	}
 	else
 	{
-		$messages = $messagedb->ListMessagesTo($player->Name(), $date, $name, $current_condition, $current_order, $current_page);
-		$page_count = $messagedb->CountPagesTo($player->Name(), $date, $name);
+		$messages = $messagedb->listMessagesTo($player->name(), $date, $name, $current_condition, $current_order, $current_page);
+		$page_count = $messagedb->countPagesTo($player->name(), $date, $name);
 	}
 
 	$params['messages']['messages'] = $messages;
@@ -3927,9 +3927,9 @@ case 'Messages':
 	$params['messages']['current_location'] = $current_location;
 	$params['messages']['current_page'] = $current_page;
 
-	$params['messages']['send_messages'] = (($access_rights[$player->Type()]["messages"]) ? 'yes' : 'no');
-	$params['messages']['accept_challenges'] = (($access_rights[$player->Type()]["accept_challenges"]) ? 'yes' : 'no');
-	$params['messages']['see_all_messages'] = (($access_rights[$player->Type()]["see_all_messages"]) ? 'yes' : 'no');
+	$params['messages']['send_messages'] = (($access_rights[$player->type()]["messages"]) ? 'yes' : 'no');
+	$params['messages']['accept_challenges'] = (($access_rights[$player->type()]["accept_challenges"]) ? 'yes' : 'no');
+	$params['messages']['see_all_messages'] = (($access_rights[$player->type()]["see_all_messages"]) ? 'yes' : 'no');
 
 	break;
 
@@ -3937,12 +3937,12 @@ case 'Messages':
 case 'Messages_details':
 	if (!isset($_POST['CurrentMessage'])) { $display_error = "Missing message id."; break; }
 	$messageid = $_POST['CurrentMessage'];
-	$message = $messagedb->RetrieveMessage($messageid, $player->Name());
+	$message = $messagedb->retrieveMessage($messageid, $player->name());
 	if (!$message) { $display_error = "Invalid message."; break; }
 
-	$params['message_details']['PlayerName'] = $player->Name();
+	$params['message_details']['PlayerName'] = $player->name();
 	$params['message_details']['system_name'] = SYSTEM_NAME;
-	$params['message_details']['timezone'] = $player->GetSettings()->GetSetting('Timezone'); 
+	$params['message_details']['timezone'] = $player->getSettings()->getSetting('Timezone'); 
 
 	$params['message_details']['Author'] = $message['Author'];
 	$params['message_details']['Recipient'] = $message['Recipient'];
@@ -3950,7 +3950,7 @@ case 'Messages_details':
 	$params['message_details']['Content'] = $message['Content'];
 	$params['message_details']['MessageID'] = $messageid;
 	$params['message_details']['delete'] = ((isset($_POST["message_delete"])) ? 'yes' : 'no');
-	$params['message_details']['messages'] = (($access_rights[$player->Type()]["messages"]) ? 'yes' : 'no');
+	$params['message_details']['messages'] = (($access_rights[$player->type()]["messages"]) ? 'yes' : 'no');
 
 	$current_location = ((isset($_POST['CurrentLocation'])) ? $_POST['CurrentLocation'] : "inbox");
 
@@ -3972,34 +3972,34 @@ case 'Messages_new':
 
 
 case 'Games':
-	$settings = $player->GetSettings();
-	$params['games']['PlayerName'] = $player->Name();
-	$params['games']['timezone'] = $settings->GetSetting('Timezone');
-	$params['games']['games_details'] = $settings->GetSetting('GamesDetails');
-	$params['games']['BlindFlag'] = $settings->GetSetting('BlindFlag');
-	$params['games']['FriendlyFlag'] = $settings->GetSetting('FriendlyFlag');
-	$params['games']['LongFlag'] = $settings->GetSetting('LongFlag');
-	$params['games']['RandomDeck'] = $settings->GetSetting('RandomDeck');
-	$params['games']['autorefresh'] = $settings->GetSetting('Autorefresh');
-	$params['games']['timeout'] = $settings->GetSetting('Timeout');
+	$settings = $player->getSettings();
+	$params['games']['PlayerName'] = $player->name();
+	$params['games']['timezone'] = $settings->getSetting('Timezone');
+	$params['games']['games_details'] = $settings->getSetting('GamesDetails');
+	$params['games']['BlindFlag'] = $settings->getSetting('BlindFlag');
+	$params['games']['FriendlyFlag'] = $settings->getSetting('FriendlyFlag');
+	$params['games']['LongFlag'] = $settings->getSetting('LongFlag');
+	$params['games']['RandomDeck'] = $settings->getSetting('RandomDeck');
+	$params['games']['autorefresh'] = $settings->getSetting('Autorefresh');
+	$params['games']['timeout'] = $settings->getSetting('Timeout');
 
 	// determine if AI challenges should be shown
-	$score = $scoredb->GetScore($player->Name());
+	$score = $scoredb->getScore($player->name());
 	$params['games']['show_challenges'] = ($score->ScoreData->Level >= 10) ? 'yes' : 'no';
 
-	$list = $gamedb->ListGamesData($player->Name());
+	$list = $gamedb->listGamesData($player->name());
 	if (count($list) > 0)
 	{
 		foreach ($list as $i => $data)
 		{
-			$opponent = ($data['Player1'] != $player->Name()) ? $data['Player1'] : $data['Player2'];
+			$opponent = ($data['Player1'] != $player->name()) ? $data['Player1'] : $data['Player2'];
 
 			// use default value in case of computer opponent
-			$last_seen = (strpos($data['GameModes'], 'AIMode') !== false) ? date('Y-m-d H:i:s') : $playerdb->LastQuery($opponent);
+			$last_seen = (strpos($data['GameModes'], 'AIMode') !== false) ? date('Y-m-d H:i:s') : $playerdb->lastquery($opponent);
 			$inactivity = time() - strtotime($last_seen);
 
 			$timeout = '';
-			if ($data['Timeout'] > 0 and $data['Current'] == $player->Name() and $opponent != SYSTEM_NAME)
+			if ($data['Timeout'] > 0 and $data['Current'] == $player->name() and $opponent != SYSTEM_NAME)
 			{
 				// case 1: time is up
 				if (time() - strtotime($data['Last Action']) >= $data['Timeout'])
@@ -4009,12 +4009,12 @@ case 'Games':
 				// case 2: there is still some time left
 				else
 				{
-					$timeout = format_time_diff($data['Timeout'] - time() + strtotime($data['Last Action']));
+					$timeout = formatTimeDiff($data['Timeout'] - time() + strtotime($data['Last Action']));
 				}
 			}
 
 			$params['games']['list'][$i]['opponent'] = $opponent;
-			$params['games']['list'][$i]['ready'] = ($data['Current'] == $player->Name()) ? 'yes' : 'no';
+			$params['games']['list'][$i]['ready'] = ($data['Current'] == $player->name()) ? 'yes' : 'no';
 			$params['games']['list'][$i]['gameid'] = $data['GameID'];
 			$params['games']['list'][$i]['gamestate'] = $data['State'];
 			$params['games']['list'][$i]['round'] = $data['Round'];
@@ -4022,8 +4022,8 @@ case 'Games':
 			$params['games']['list'][$i]['isdead'] = ($inactivity  > 60*60*24*7*3) ? 'yes' : 'no';
 			$params['games']['list'][$i]['gameaction'] = $data['Last Action'];
 			$params['games']['list'][$i]['lastseen'] = $last_seen;
-			$params['games']['list'][$i]['finishable'] = (time() - strtotime($data['Last Action']) >= 60*60*24*7*3 and $data['Current'] != $player->Name() and $opponent != SYSTEM_NAME) ? 'yes' : 'no';
-			$params['games']['list'][$i]['finish_move'] = ($data['Timeout'] > 0 and time() - strtotime($data['Last Action']) >= $data['Timeout'] and $data['Current'] != $player->Name() and $opponent != SYSTEM_NAME) ? 'yes' : 'no';
+			$params['games']['list'][$i]['finishable'] = (time() - strtotime($data['Last Action']) >= 60*60*24*7*3 and $data['Current'] != $player->name() and $opponent != SYSTEM_NAME) ? 'yes' : 'no';
+			$params['games']['list'][$i]['finish_move'] = ($data['Timeout'] > 0 and time() - strtotime($data['Last Action']) >= $data['Timeout'] and $data['Current'] != $player->name() and $opponent != SYSTEM_NAME) ? 'yes' : 'no';
 			$params['games']['list'][$i]['game_modes'] = $data['GameModes'];
 			$params['games']['list'][$i]['timeout'] = $timeout;
 			$params['games']['list'][$i]['ai'] = $data['AI'];
@@ -4035,13 +4035,13 @@ case 'Games':
 	$params['games']['FriendlyPlay'] = $friendly_f = (isset($_POST['FriendlyPlay'])) ? $_POST['FriendlyPlay'] : 'none';
 	$params['games']['LongMode'] = $long_f = (isset($_POST['LongMode'])) ? $_POST['LongMode'] : 'none';
 
-	$hostedgames = $gamedb->ListHostedGames($player->Name());
-	$free_games = $gamedb->ListFreeGames($player->Name(), $hidden_f, $friendly_f, $long_f);
-	$params['games']['free_slots'] = $gamedb->CountFreeSlots1($player->Name());
-	$params['games']['decks'] = $decks = $player->ListReadyDecks();
-	$params['games']['random_deck'] = (count($decks) > 0) ? $decks[array_mt_rand($decks)]['DeckID'] : '';
-	$params['games']['random_ai_deck'] = (count($decks) > 0) ? $decks[array_mt_rand($decks)]['DeckID'] : '';
-	$params['games']['ai_challenges'] = $challengesdb->ListChallenges();
+	$hostedgames = $gamedb->listHostedGames($player->name());
+	$free_games = $gamedb->listFreeGames($player->name(), $hidden_f, $friendly_f, $long_f);
+	$params['games']['free_slots'] = $gamedb->countFreeSlots1($player->name());
+	$params['games']['decks'] = $decks = $player->listReadyDecks();
+	$params['games']['random_deck'] = (count($decks) > 0) ? $decks[arrayMtRand($decks)]['DeckID'] : '';
+	$params['games']['random_ai_deck'] = (count($decks) > 0) ? $decks[arrayMtRand($decks)]['DeckID'] : '';
+	$params['games']['ai_challenges'] = $challengesdb->listChallenges();
 
 	if (count($free_games) > 0)
 	{
@@ -4058,9 +4058,9 @@ case 'Games':
 			}
 			else
 			{
-				$cur_player = $playerdb->GetPlayer($opponent_name);
-				$buffer[$opponent_name]['status'] = $status = $cur_player->GetSettings()->GetSetting('Status');
-				$buffer[$opponent_name]['inactivity'] = $inactivity = time() - strtotime($cur_player->LastQuery());
+				$cur_player = $playerdb->getPlayer($opponent_name);
+				$buffer[$opponent_name]['status'] = $status = $cur_player->getSettings()->getSetting('Status');
+				$buffer[$opponent_name]['inactivity'] = $inactivity = time() - strtotime($cur_player->lastquery());
 			}
 
 			$params['games']['free_games'][$i]['opponent'] = $opponent_name;
@@ -4084,7 +4084,7 @@ case 'Games':
 		}
 	}
 
-	$params['games']['edit_all_card'] = (($access_rights[$player->Type()]["edit_all_card"]) ? 'yes' : 'no');
+	$params['games']['edit_all_card'] = (($access_rights[$player->type()]["edit_all_card"]) ? 'yes' : 'no');
 
 	break;
 
@@ -4092,81 +4092,81 @@ case 'Games':
 case 'Games_details':
 	if (!isset($_POST['CurrentGame'])) { $display_error = "Missing game id."; break; }
 	$gameid = $_POST['CurrentGame'];
-	$game = $gamedb->GetGame($gameid);
+	$game = $gamedb->getGame($gameid);
 
 	// check if the game exists
 	if (!$game) { $display_error = 'No such game!'; break; }
 
-	$player1 = $game->Name1();
-	$player2 = $game->Name2();
+	$player1 = $game->name1();
+	$player2 = $game->name2();
 
 	// check if this user is allowed to view this game
-	if ($player->Name() != $player1 and $player->Name() != $player2) { $display_error = 'You are not allowed to access this game.'; break; }
+	if ($player->name() != $player1 and $player->name() != $player2) { $display_error = 'You are not allowed to access this game.'; break; }
 
 	// check if the game is a game in progress (and not a challenge)
 	if ($game->State == 'waiting') { $display_error = 'Opponent did not accept the challenge yet!'; break; }
 
 	// disable re-visiting
-	if ( (($player->Name() == $player1) && ($game->State == 'P1 over')) || (($player->Name() == $player2) && ($game->State == 'P2 over')) ) { $display_error = 'Game is already over.'; break; }
+	if ( (($player->name() == $player1) && ($game->State == 'P1 over')) || (($player->name() == $player2) && ($game->State == 'P2 over')) ) { $display_error = 'Game is already over.'; break; }
 
 	// prepare the neccessary data
-	$opponent_name = ($player1 != $player->Name()) ? $player1 : $player2;
-	$opponent = ($game->GetGameMode('AIMode') == 'yes') ? $playerdb->GetGuest() : $playerdb->GetPlayer($opponent_name);
-	$mydata = $game->GameData[$player->Name()];
+	$opponent_name = ($player1 != $player->name()) ? $player1 : $player2;
+	$opponent = ($game->getGameMode('AIMode') == 'yes') ? $playerdb->getGuest() : $playerdb->getPlayer($opponent_name);
+	$mydata = $game->GameData[$player->name()];
 	$hisdata = $game->GameData[$opponent_name];
 
 	$params['game']['CurrentGame'] = $gameid;
-	$params['game']['chat'] = (($access_rights[$player->Type()]["chat"]) ? 'yes' : 'no');
+	$params['game']['chat'] = (($access_rights[$player->type()]["chat"]) ? 'yes' : 'no');
 
 	// load needed settings
-	$settings = $player->GetSettings();
-	$o_settings = $opponent->GetSettings();
-	$params['game']['c_img'] = $settings->GetSetting('Images');
-	$params['game']['c_oldlook'] = $settings->GetSetting('OldCardLook');
-	$params['game']['c_insignias'] = $settings->GetSetting('Insignias');
-	$params['game']['c_my_foils'] = $settings->GetSetting('FoilCards');
-	$params['game']['c_his_foils'] = $o_settings->GetSetting('FoilCards');
-	$params['game']['c_miniflags'] = $settings->GetSetting('Miniflags');
+	$settings = $player->getSettings();
+	$o_settings = $opponent->getSettings();
+	$params['game']['c_img'] = $settings->getSetting('Images');
+	$params['game']['c_oldlook'] = $settings->getSetting('OldCardLook');
+	$params['game']['c_insignias'] = $settings->getSetting('Insignias');
+	$params['game']['c_my_foils'] = $settings->getSetting('FoilCards');
+	$params['game']['c_his_foils'] = $o_settings->getSetting('FoilCards');
+	$params['game']['c_miniflags'] = $settings->getSetting('Miniflags');
 
-	$params['game']['mycountry'] = $settings->GetSetting('Country');
-	$params['game']['hiscountry'] = $o_settings->GetSetting('Country');
-	$params['game']['timezone'] = $settings->GetSetting('Timezone');
-	$params['game']['Background'] = $settings->GetSetting('Background');
-	$params['game']['PlayButtons'] = $settings->GetSetting('PlayButtons');
+	$params['game']['mycountry'] = $settings->getSetting('Country');
+	$params['game']['hiscountry'] = $o_settings->getSetting('Country');
+	$params['game']['timezone'] = $settings->getSetting('Timezone');
+	$params['game']['Background'] = $settings->getSetting('Background');
+	$params['game']['PlayButtons'] = $settings->getSetting('PlayButtons');
 	// disable autorefresh if it's player's turn
-	$params['game']['autorefresh'] = ($player->Name() == $game->Current) ? 0 : $settings->GetSetting('Autorefresh');
+	$params['game']['autorefresh'] = ($player->name() == $game->Current) ? 0 : $settings->getSetting('Autorefresh');
 
 	// disable auto ai move if it's player's turn or if this is PvP game
-	$params['game']['autoai'] = ($player->Name() == $game->Current or $opponent_name != SYSTEM_NAME) ? 0 : $settings->GetSetting('AutoAi');
+	$params['game']['autoai'] = ($player->name() == $game->Current or $opponent_name != SYSTEM_NAME) ? 0 : $settings->getSetting('AutoAi');
 
 	$params['game']['GameState'] = $game->State;
 	$params['game']['Round'] = $game->Round;
-	$params['game']['Outcome'] = $game->Outcome();
+	$params['game']['Outcome'] = $game->outcome();
 	$params['game']['EndType'] = $game->EndType;
 	$params['game']['Winner'] = $game->Winner;
 	$params['game']['Surrender'] = $game->Surrender;
-	$params['game']['PlayerName'] = $player->Name();
+	$params['game']['PlayerName'] = $player->name();
 	$params['game']['OpponentName'] = $opponent_name;
 	$params['game']['AI'] = $game->AI;
 	$params['game']['Current'] = $game->Current;
 	$params['game']['Timestamp'] = $game->LastAction;
-	$params['game']['has_note'] = ($game->GetNote($player->Name()) != "") ? 'yes' : 'no';
-	$params['game']['HiddenCards'] = $game->GetGameMode('HiddenCards');
-	$params['game']['FriendlyPlay'] = $game->GetGameMode('FriendlyPlay');
-	$params['game']['GameNote'] = $game->GetNote($player->Name());
-	$params['game']['LongMode'] = $long_mode = $game->GetGameMode('LongMode');
+	$params['game']['has_note'] = ($game->getNote($player->name()) != "") ? 'yes' : 'no';
+	$params['game']['HiddenCards'] = $game->getGameMode('HiddenCards');
+	$params['game']['FriendlyPlay'] = $game->getGameMode('FriendlyPlay');
+	$params['game']['GameNote'] = $game->getNote($player->name());
+	$params['game']['LongMode'] = $long_mode = $game->getGameMode('LongMode');
 	$g_mode = ($long_mode == 'yes') ? 'long' : 'normal';
-	$params['game']['AIMode'] = $game->GetGameMode('AIMode');
+	$params['game']['AIMode'] = $game->getGameMode('AIMode');
 	$params['game']['max_tower'] = $game_config[$g_mode]['max_tower'];
 	$params['game']['max_wall'] = $game_config[$g_mode]['max_wall'];
 
-	$chat_notification = ($player->Name() == $player1) ? $game->ChatNotification1 : $game->ChatNotification2;
+	$chat_notification = ($player->name() == $player1) ? $game->ChatNotification1 : $game->ChatNotification2;
 	$params['game']['chat_notification'] = $chat_notification;
-	$params['game']['new_chat_messages'] = ($game->NewMessages($player->Name(), $chat_notification)) ? 'yes' : 'no';
+	$params['game']['new_chat_messages'] = ($game->newMessages($player->name(), $chat_notification)) ? 'yes' : 'no';
 
 	// my hand
 	$myhand = $mydata->Hand;
-	$handdata = $carddb->GetData($myhand);
+	$handdata = $carddb->getData($myhand);
 	$keyword_list = array();
 	foreach( $handdata as $i => $card )
 	{
@@ -4195,7 +4195,7 @@ case 'Games_details':
 	$keywords_count = array();
 	foreach( $keyword_list as $keyword_name => $keyword_count )
 	{
-		$cur_keyword = $keyworddb->GetKeyword($keyword_name);
+		$cur_keyword = $keyworddb->getKeyword($keyword_name);
 		if ($cur_keyword->isTokenKeyword())
 		{
 			$new_enty = array();
@@ -4217,13 +4217,13 @@ case 'Games_details':
 	
 	// my discarded cards
 	if( count($mydata->DisCards[0]) > 0 )
-		$params['game']['MyDisCards0'] = $carddb->GetData($mydata->DisCards[0]); // cards discarded from my hand
+		$params['game']['MyDisCards0'] = $carddb->getData($mydata->DisCards[0]); // cards discarded from my hand
 	if( count($mydata->DisCards[1]) > 0 )
-		$params['game']['MyDisCards1'] = $carddb->GetData($mydata->DisCards[1]); // cards discarded from his hand
+		$params['game']['MyDisCards1'] = $carddb->getData($mydata->DisCards[1]); // cards discarded from his hand
 
 	// my last played cards
 	$mylastcard = array();
-	$tmp = $carddb->GetData($mydata->LastCard);
+	$tmp = $carddb->getData($mydata->LastCard);
 	foreach( $tmp as $i => $card )
 	{
 		$mylastcard[$i]['CardData'] = $card;
@@ -4250,7 +4250,7 @@ case 'Games_details':
 
 	// his hand
 	$hishand = $hisdata->Hand;
-	$handdata = $carddb->GetData($hishand);
+	$handdata = $carddb->getData($hishand);
 	foreach( $handdata as $i => $card )
 	{
 		$entry = array();
@@ -4272,13 +4272,13 @@ case 'Games_details':
 
 	// his discarded cards
 	if( count($hisdata->DisCards[0]) > 0 )
-		$params['game']['HisDisCards0'] = $carddb->GetData($hisdata->DisCards[0]); // cards discarded from my hand
+		$params['game']['HisDisCards0'] = $carddb->getData($hisdata->DisCards[0]); // cards discarded from my hand
 	if( count($hisdata->DisCards[1]) > 0 )
-		$params['game']['HisDisCards1'] = $carddb->GetData($hisdata->DisCards[1]); // cards discarded from his hand
+		$params['game']['HisDisCards1'] = $carddb->getData($hisdata->DisCards[1]); // cards discarded from his hand
 	
 	// his last played cards
 	$hislastcard = array();
-	$tmp = $carddb->GetData($hisdata->LastCard);
+	$tmp = $carddb->getData($hisdata->LastCard);
 	foreach( $tmp as $i => $card )
 	{
 		$hislastcard[$i]['CardData'] = $card;
@@ -4304,17 +4304,17 @@ case 'Games_details':
 	$params['game']['HisTokens'] = array_reverse($his_tokens);
 
 	// - <'jump to next game' button>
-	$next_games = $gamedb->NextGameList($player->Name());
+	$next_games = $gamedb->nextGameList($player->name());
 	$params['game']['nextgame_button'] = (count($next_games) > 0) ? 'yes' : 'no';
 
 	// - <game state indicator>
 	$params['game']['opp_isOnline'] = (($opponent->isOnline()) ? 'yes' : 'no');
 	$params['game']['opp_isDead'] = (($opponent->isDead()) ? 'yes' : 'no');
-	$params['game']['finish_game'] = ((time() - strtotime($game->LastAction) >= 60*60*24*7*3 and $game->Current != $player->Name() and $opponent_name != SYSTEM_NAME) ? 'yes' : 'no');
-	$params['game']['finish_move'] = (($game->Timeout > 0 and time() - strtotime($game->LastAction) >= $game->Timeout and $game->Current != $player->Name() and $opponent_name != SYSTEM_NAME) ? 'yes' : 'no');
+	$params['game']['finish_game'] = ((time() - strtotime($game->LastAction) >= 60*60*24*7*3 and $game->Current != $player->name() and $opponent_name != SYSTEM_NAME) ? 'yes' : 'no');
+	$params['game']['finish_move'] = (($game->Timeout > 0 and time() - strtotime($game->LastAction) >= $game->Timeout and $game->Current != $player->name() and $opponent_name != SYSTEM_NAME) ? 'yes' : 'no');
 
 	$timeout = '';
-	if ($game->Timeout > 0 and $game->Current == $player->Name() and $opponent != SYSTEM_NAME)
+	if ($game->Timeout > 0 and $game->Current == $player->name() and $opponent != SYSTEM_NAME)
 	{
 		// case 1: time is up
 		if (time() - strtotime($game->LastAction) >= $game->Timeout)
@@ -4324,7 +4324,7 @@ case 'Games_details':
 		// case 2: there is still some time left
 		else
 		{
-			$timeout = format_time_diff($game->Timeout - time() + strtotime($game->LastAction)).' remaining';
+			$timeout = formatTimeDiff($game->Timeout - time() + strtotime($game->LastAction)).' remaining';
 		}
 	}
 	$params['game']['timeout'] = $timeout;
@@ -4345,16 +4345,16 @@ case 'Games_details':
 
 	// chatboard
 
-	$params['game']['display_avatar'] = $settings->GetSetting('Avatargame');
-	$params['game']['correction'] = $settings->GetSetting('Correction');
+	$params['game']['display_avatar'] = $settings->getSetting('Avatargame');
+	$params['game']['correction'] = $settings->getSetting('Correction');
 
-	$params['game']['myavatar'] = $settings->GetSetting('Avatar');
-	$params['game']['hisavatar'] = $o_settings->GetSetting('Avatar');
+	$params['game']['myavatar'] = $settings->getSetting('Avatar');
+	$params['game']['hisavatar'] = $o_settings->getSetting('Avatar');
 
-	$params['game']['integrated_chat'] = $settings->GetSetting('IntegratedChat');
-	$params['game']['reverse_chat'] = $reverse_chat = $settings->GetSetting('Chatorder');
+	$params['game']['integrated_chat'] = $settings->getSetting('IntegratedChat');
+	$params['game']['reverse_chat'] = $reverse_chat = $settings->getSetting('Chatorder');
 	$order = ($reverse_chat == "yes") ? "ASC" : "DESC";
-	$params['game']['messagelist'] = $message_list = $game->ListChatMessages($order);
+	$params['game']['messagelist'] = $message_list = $game->listChatMessages($order);
 
 	break;
 
@@ -4362,27 +4362,27 @@ case 'Games_details':
 case 'Decks_view':
 	if (!isset($_POST['CurrentGame'])) { $display_error = "Missing game id."; break; }
 	$gameid = $_POST['CurrentGame'];
-	$game = $gamedb->GetGame($gameid);
+	$game = $gamedb->getGame($gameid);
 
 	// check if the game exists
 	if (!$game) { $display_error = 'No such game!'; break; }
 
 	// check if this user is allowed to view this game
-	if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $display_error = 'You are not allowed to access this game.'; break; }
+	if ($player->name() != $game->name1() and $player->name() != $game->name2()) { $display_error = 'You are not allowed to access this game.'; break; }
 
-	$deck = $game->GameData[$player->Name()]->Deck;
+	$deck = $game->GameData[$player->name()]->Deck;
 
 	//load needed settings
-	$settings = $player->GetSettings();
-	$params['deck_view']['c_img'] = $settings->GetSetting('Images');
-	$params['deck_view']['c_oldlook'] = $settings->GetSetting('OldCardLook');
-	$params['deck_view']['c_insignias'] = $settings->GetSetting('Insignias');
-	$params['deck_view']['c_foils'] = $settings->GetSetting('FoilCards');
+	$settings = $player->getSettings();
+	$params['deck_view']['c_img'] = $settings->getSetting('Images');
+	$params['deck_view']['c_oldlook'] = $settings->getSetting('OldCardLook');
+	$params['deck_view']['c_insignias'] = $settings->getSetting('Insignias');
+	$params['deck_view']['c_foils'] = $settings->getSetting('FoilCards');
 
 	$params['deck_view']['CurrentGame'] = $gameid;
 
 	foreach (array('Common', 'Uncommon', 'Rare') as $class)
-		$params['deck_view']['DeckCards'][$class] = $carddb->GetData($deck->$class);
+		$params['deck_view']['DeckCards'][$class] = $carddb->getData($deck->$class);
 
 	break;
 
@@ -4390,16 +4390,16 @@ case 'Decks_view':
 case 'Games_note':
 	if (!isset($_POST['CurrentGame'])) { $display_error = "Missing game id."; break; }
 	$gameid = $_POST['CurrentGame'];
-	$game = $gamedb->GetGame($gameid);
+	$game = $gamedb->getGame($gameid);
 
 	// check if the game exists
 	if (!$game) { $display_error = 'No such game!'; break; }
 
 	// check if this user is allowed to view this game
-	if ($player->Name() != $game->Name1() and $player->Name() != $game->Name2()) { $display_error = 'You are not allowed to access this game.'; break; }
+	if ($player->name() != $game->name1() and $player->name() != $game->name2()) { $display_error = 'You are not allowed to access this game.'; break; }
 
 	$params['game_note']['CurrentGame'] = $gameid;
-	$params['game_note']['text'] = (isset($new_note)) ? $new_note : $game->GetNote($player->Name());
+	$params['game_note']['text'] = (isset($new_note)) ? $new_note : $game->getNote($player->name());
 
 	break;
 
@@ -4415,25 +4415,25 @@ case 'Novels':
 
 
 case 'Settings':
-	$settings = $player->GetSettings();
-	$params['settings']['current_settings'] = $settings->GetAll();
-	$params['settings']['PlayerType'] = $player->Type();
-	$params['settings']['change_own_avatar'] = (($access_rights[$player->Type()]["change_own_avatar"]) ? 'yes' : 'no');
+	$settings = $player->getSettings();
+	$params['settings']['current_settings'] = $settings->getAll();
+	$params['settings']['PlayerType'] = $player->type();
+	$params['settings']['change_own_avatar'] = (($access_rights[$player->type()]["change_own_avatar"]) ? 'yes' : 'no');
 
-	$score = $player->GetScore();
+	$score = $player->getScore();
 	$params['settings']['gold'] = $score->ScoreData->Gold;
 	$params['settings']['game_slots'] = $score->ScoreData->GameSlots;
-	$params['settings']['deck_slots'] = max(0,count($player->ListDecks()) - DECK_SLOTS);
+	$params['settings']['deck_slots'] = max(0,count($player->listDecks()) - DECK_SLOTS);
 	$params['settings']['game_slot_cost'] = GAME_SLOT_COST;
 	$params['settings']['deck_slot_cost'] = DECK_SLOT_COST;
 
 	//date is handled separately
-	$birthdate = $settings->GetSetting('Birthdate');
+	$birthdate = $settings->getSetting('Birthdate');
 
 	if( $birthdate AND $birthdate != "0000-00-00" )
 	{
-		$params['settings']['current_settings']["Age"] = $settings->Age();
-		$params['settings']['current_settings']["Sign"] = $settings->Sign();
+		$params['settings']['current_settings']["Age"] = $settings->age();
+		$params['settings']['current_settings']["Sign"] = $settings->sign();
 		$params['settings']['current_settings']["Birthdate"] = date("d-m-Y", strtotime($birthdate));
 	}
 	else
@@ -4448,9 +4448,9 @@ case 'Settings':
 
 case 'Forum':
 	$params['forum_overview']['is_logged_in'] = ($session) ? 'yes' : 'no';
-	$params['forum_overview']['sections'] = $forum->ListSections();	
-	$params['forum_overview']['notification'] = $player->GetNotification();
-	$params['forum_overview']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
+	$params['forum_overview']['sections'] = $forum->listSections();	
+	$params['forum_overview']['notification'] = $player->getNotification();
+	$params['forum_overview']['timezone'] = $player->getSettings()->getSetting('Timezone');
 
 	break;
 
@@ -4459,10 +4459,10 @@ case 'Forum_search':
 	$params['forum_search']['phrase'] = $phrase = (isset($_POST['phrase'])) ? $_POST['phrase'] : '';
 	$params['forum_search']['target'] = $target = (isset($_POST['target'])) ? $_POST['target'] : 'all';
 	$params['forum_search']['section'] = $section = (isset($_POST['section'])) ? $_POST['section'] : 'any';
-	$params['forum_search']['threads'] = (trim($phrase) != "") ? $forum->Search($phrase, $target, $section) : array();
-	$params['forum_search']['sections'] = $forum->ListTargetSections();
-	$params['forum_search']['notification'] = $player->GetNotification();
-	$params['forum_search']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
+	$params['forum_search']['threads'] = (trim($phrase) != "") ? $forum->search($phrase, $target, $section) : array();
+	$params['forum_search']['sections'] = $forum->listTargetSections();
+	$params['forum_search']['notification'] = $player->getNotification();
+	$params['forum_search']['timezone'] = $player->getSettings()->getSetting('Timezone');
 	$subsection_name = "Search";
 
 	break;
@@ -4474,19 +4474,19 @@ case 'Forum_section':
 	$params['forum_section']['is_logged_in'] = ($session) ? 'yes' : 'no';
 	$current_page = (isset($_POST['CurrentPage'])) ? $_POST['CurrentPage'] : 0;
 
-	$section = $forum->GetSection($section_id);
+	$section = $forum->getSection($section_id);
 	if (!$section) { $display_error = "Invalid forum section."; break; }
 
-	$thread_list = $forum->Threads->ListThreads($section_id, $current_page);
+	$thread_list = $forum->Threads->listThreads($section_id, $current_page);
 	if ($thread_list === false) { $display_error = "Invalid section page."; break; }
 
 	$params['forum_section']['section'] = $section;
 	$params['forum_section']['threads'] = $thread_list;
-	$params['forum_section']['pages'] = $forum->Threads->CountPages($section_id);
+	$params['forum_section']['pages'] = $forum->Threads->countPages($section_id);
 	$params['forum_section']['current_page'] = $current_page;
-	$params['forum_section']['create_thread'] = (($access_rights[$player->Type()]["create_thread"]) ? 'yes' : 'no');
-	$params['forum_section']['notification'] = $player->GetNotification();
-	$params['forum_section']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
+	$params['forum_section']['create_thread'] = (($access_rights[$player->type()]["create_thread"]) ? 'yes' : 'no');
+	$params['forum_section']['notification'] = $player->getNotification();
+	$params['forum_section']['timezone'] = $player->getSettings()->getSetting('Timezone');
 	$subsection_name = $section['SectionName'];
 
 	break;
@@ -4497,33 +4497,33 @@ case 'Forum_thread':
 	$thread_id = $_POST['CurrentThread'];
 	$current_page = (isset($_POST['CurrentPage'])) ? $_POST['CurrentPage'] : 0;
 
-	$thread_data = $forum->Threads->GetThread($thread_id);
+	$thread_data = $forum->Threads->getThread($thread_id);
 	if (!$thread_data) { $display_error = "Invalid forum thread."; break; }
 
-	$post_list = $forum->Threads->Posts->ListPosts($thread_id, $current_page);
+	$post_list = $forum->Threads->Posts->listPosts($thread_id, $current_page);
 	if ($post_list === FALSE) { $display_error = "Invalid thread page."; break; }
 
 	$params['forum_thread']['Thread'] = $thread_data;
-	$params['forum_thread']['Section'] = $forum->GetSection($thread_data['SectionID']);
-	$params['forum_thread']['Pages'] = $forum->Threads->Posts->CountPages($thread_id);
+	$params['forum_thread']['Section'] = $forum->getSection($thread_data['SectionID']);
+	$params['forum_thread']['Pages'] = $forum->Threads->Posts->countPages($thread_id);
 	$params['forum_thread']['CurrentPage'] = $current_page;
 	$params['forum_thread']['PostList'] = $post_list;
 	$params['forum_thread']['Delete'] = ((isset($_POST['thread_delete'])) ? 'yes' : 'no');
 	$params['forum_thread']['DeletePost'] = ((isset($_POST['delete_post'])) ? $_POST['delete_post'] : 0);
-	$params['forum_thread']['PlayerName'] = $player->Name();
-	$params['forum_thread']['notification'] = $player->GetNotification();
-	$params['forum_thread']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
-	$params['forum_thread']['concept'] = $conceptdb->FindConcept($thread_id);
-	$params['forum_thread']['replay'] = $replaydb->FindReplay($thread_id);
+	$params['forum_thread']['PlayerName'] = $player->name();
+	$params['forum_thread']['notification'] = $player->getNotification();
+	$params['forum_thread']['timezone'] = $player->getSettings()->getSetting('Timezone');
+	$params['forum_thread']['concept'] = $conceptdb->findConcept($thread_id);
+	$params['forum_thread']['replay'] = $replaydb->findReplay($thread_id);
 	$params['forum_thread']['posts_per_page'] = POSTS_PER_PAGE;
 
-	$params['forum_thread']['lock_thread'] = (($access_rights[$player->Type()]["lock_thread"]) ? 'yes' : 'no');
-	$params['forum_thread']['del_all_thread'] = (($access_rights[$player->Type()]["del_all_thread"]) ? 'yes' : 'no');
-	$params['forum_thread']['edit_thread'] = ((($access_rights[$player->Type()]["edit_all_thread"]) OR ($access_rights[$player->Type()]["edit_own_thread"] AND $thread_data['Author'] == $player->Name())) ? 'yes' : 'no');
-	$params['forum_thread']['create_post'] = (($access_rights[$player->Type()]["create_post"]) ? 'yes' : 'no');
-	$params['forum_thread']['del_all_post'] = (($access_rights[$player->Type()]["del_all_post"]) ? 'yes' : 'no');
-	$params['forum_thread']['edit_all_post'] = (($access_rights[$player->Type()]["edit_all_post"]) ? 'yes' : 'no');
-	$params['forum_thread']['edit_own_post'] = (($access_rights[$player->Type()]["edit_own_post"]) ? 'yes' : 'no');
+	$params['forum_thread']['lock_thread'] = (($access_rights[$player->type()]["lock_thread"]) ? 'yes' : 'no');
+	$params['forum_thread']['del_all_thread'] = (($access_rights[$player->type()]["del_all_thread"]) ? 'yes' : 'no');
+	$params['forum_thread']['edit_thread'] = ((($access_rights[$player->type()]["edit_all_thread"]) OR ($access_rights[$player->type()]["edit_own_thread"] AND $thread_data['Author'] == $player->name())) ? 'yes' : 'no');
+	$params['forum_thread']['create_post'] = (($access_rights[$player->type()]["create_post"]) ? 'yes' : 'no');
+	$params['forum_thread']['del_all_post'] = (($access_rights[$player->type()]["del_all_post"]) ? 'yes' : 'no');
+	$params['forum_thread']['edit_all_post'] = (($access_rights[$player->type()]["edit_all_post"]) ? 'yes' : 'no');
+	$params['forum_thread']['edit_own_post'] = (($access_rights[$player->type()]["edit_own_post"]) ? 'yes' : 'no');
 	$subsection_name = $thread_data['Title'];
 
 	break;
@@ -4531,13 +4531,13 @@ case 'Forum_thread':
 
 case 'Forum_thread_new':
 	if (!isset($_POST['CurrentSection'])) { $display_error = "Missing forum section id."; break; }
-	$section = $forum->GetSection($_POST['CurrentSection']);
+	$section = $forum->getSection($_POST['CurrentSection']);
 	if (!$section) { $display_error = "Invalid forum section."; break; }
 
 	$params['forum_thread_new']['Section'] = $section;
 	$params['forum_thread_new']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : "");
 	$params['forum_thread_new']['Title'] = ((isset($_POST['Title'])) ? $_POST['Title'] : "");
-	$params['forum_thread_new']['chng_priority'] = (($access_rights[$player->Type()]["chng_priority"]) ? 'yes' : 'no');
+	$params['forum_thread_new']['chng_priority'] = (($access_rights[$player->type()]["chng_priority"]) ? 'yes' : 'no');
 	$subsection_name = "New thread";
 
 	break;
@@ -4545,13 +4545,13 @@ case 'Forum_thread_new':
 
 case 'Forum_post_new':
 	if (!isset($_POST['CurrentThread'])) { $display_error = "Missing forum thread id."; break; }
-	$thread = $forum->Threads->GetThread($_POST['CurrentThread']);
+	$thread = $forum->Threads->getThread($_POST['CurrentThread']);
 	if (!$thread) { $display_error = "Invalid thread."; break; }
 
 	$params['forum_post_new']['Thread'] = $thread;
 	if (isset($_POST['quote_post']))
 	{
-		$post_data = $forum->Threads->Posts->GetPost($_POST['quote_post']);
+		$post_data = $forum->Threads->Posts->getPost($_POST['quote_post']);
 		$quoted_content = '[quote='.$post_data['Author'].']'.$post_data['Content'].'[/quote]';
 	}
 	$params['forum_post_new']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : ((isset($quoted_content)) ? $quoted_content : ''));
@@ -4562,14 +4562,14 @@ case 'Forum_post_new':
 
 case 'Forum_thread_edit':
 	if (!isset($_POST['CurrentThread'])) { $display_error = "Missing forum thread id."; break; }
-	$thread_data = $forum->Threads->GetThread($_POST['CurrentThread']);
+	$thread_data = $forum->Threads->getThread($_POST['CurrentThread']);
 	if (!$thread_data) { $display_error = "Invalid thread."; break; }
 
 	$params['forum_thread_edit']['Thread'] = $thread_data;
-	$params['forum_thread_edit']['Section'] = $forum->GetSection($thread_data['SectionID']);
-	$params['forum_thread_edit']['SectionList'] = $forum->ListTargetSections($thread_data['SectionID']);
-	$params['forum_thread_edit']['chng_priority'] = (($access_rights[$player->Type()]["chng_priority"]) ? 'yes' : 'no');
-	$params['forum_thread_edit']['move_thread'] = (($access_rights[$player->Type()]["move_thread"]) ? 'yes' : 'no');
+	$params['forum_thread_edit']['Section'] = $forum->getSection($thread_data['SectionID']);
+	$params['forum_thread_edit']['SectionList'] = $forum->listTargetSections($thread_data['SectionID']);
+	$params['forum_thread_edit']['chng_priority'] = (($access_rights[$player->type()]["chng_priority"]) ? 'yes' : 'no');
+	$params['forum_thread_edit']['move_thread'] = (($access_rights[$player->type()]["move_thread"]) ? 'yes' : 'no');
 	$subsection_name = $thread_data['Title'];
 
 	break;
@@ -4577,15 +4577,15 @@ case 'Forum_thread_edit':
 
 case 'Forum_post_edit':
 	if (!isset($_POST['CurrentPost'])) { $display_error = "Missing forum post id."; break; }
-	$post_data = $forum->Threads->Posts->GetPost($_POST['CurrentPost']);
+	$post_data = $forum->Threads->Posts->getPost($_POST['CurrentPost']);
 	if (!$post_data) { $display_error = "Invalid post."; break; }
 
 	$params['forum_post_edit']['Post'] = $post_data;
 	$params['forum_post_edit']['CurrentPage'] = $_POST['CurrentPage'];
-	$params['forum_post_edit']['ThreadList'] = $forum->Threads->ListTargetThreads($post_data['ThreadID']);
-	$params['forum_post_edit']['Thread'] = $thread = $forum->Threads->GetThread($post_data['ThreadID']);
+	$params['forum_post_edit']['ThreadList'] = $forum->Threads->listTargetThreads($post_data['ThreadID']);
+	$params['forum_post_edit']['Thread'] = $thread = $forum->Threads->getThread($post_data['ThreadID']);
 	$params['forum_post_edit']['Content'] = ((isset($_POST['Content'])) ? $_POST['Content'] : $post_data['Content']);
-	$params['forum_post_edit']['move_post'] = (($access_rights[$player->Type()]["move_post"]) ? 'yes' : 'no');
+	$params['forum_post_edit']['move_post'] = (($access_rights[$player->type()]["move_post"]) ? 'yes' : 'no');
 	$subsection_name = $thread['Title'];
 
 	break;
@@ -4606,10 +4606,10 @@ case 'Replays':
 	$params['replays']['order'] = $order = $_POST['ReplaysOrder'];
 	$params['replays']['cond'] = $cond = $_POST['ReplaysCond'];
 
-	$params['replays']['list'] = $replaydb->ListReplays($player_f, $hidden_f, $friendly_f, $long_f, $ai_f, $ch_f, $victory_f, $current_page, $cond, $order);
-	$params['replays']['page_count'] = $replaydb->CountPages($player_f, $hidden_f, $friendly_f, $long_f, $ai_f, $ch_f, $victory_f);
-	$params['replays']['timezone'] = $player->GetSettings()->GetSetting('Timezone');
-	$params['replays']['ai_challenges'] = $challengesdb->ListChallengeNames();
+	$params['replays']['list'] = $replaydb->listReplays($player_f, $hidden_f, $friendly_f, $long_f, $ai_f, $ch_f, $victory_f, $current_page, $cond, $order);
+	$params['replays']['page_count'] = $replaydb->countPages($player_f, $hidden_f, $friendly_f, $long_f, $ai_f, $ch_f, $victory_f);
+	$params['replays']['timezone'] = $player->getSettings()->getSetting('Timezone');
+	$params['replays']['ai_challenges'] = $challengesdb->listChallengeNames();
 
 	break;
 
@@ -4619,43 +4619,43 @@ case 'Replays_details':
 	$params['replay']['CurrentTurn'] = $turn = (isset($_POST['Turn']) ? $_POST['Turn'] : 1);
 
 	// prepare the necessary data
-	$replay = $replaydb->GetReplay($gameid);
+	$replay = $replaydb->getReplay($gameid);
 	if (!$replay) { $display_error = "Invalid replay."; break; }
 	if ($replay->EndType == 'Pending') { $display_error = "Replay is not yet available."; break; }
 	if (!($player_view == 1 OR $player_view == 2)) { $display_error = "Invalid player selection."; break; }
 
-	$turn_data = $replay->GetTurn($turn);
+	$turn_data = $replay->getTurn($turn);
 	if (!$turn_data) { $display_error = "Invalid replay turn."; break; }
 
-	$params['replay']['create_thread'] = ($access_rights[$player->Type()]["create_thread"]) ? 'yes' : 'no';
+	$params['replay']['create_thread'] = ($access_rights[$player->type()]["create_thread"]) ? 'yes' : 'no';
 
 	// increment number of views each time player enters a replay
-	if ($turn == 1 AND $player_view == 1) $replay->IncrementViews();
+	if ($turn == 1 AND $player_view == 1) $replay->incrementViews();
 
 	// determine player view
-	$player1 = ($player_view == 1) ? $replay->Name1() : $replay->Name2();
-	$player2 = ($player_view == 1) ? $replay->Name2() : $replay->Name1();
+	$player1 = ($player_view == 1) ? $replay->name1() : $replay->name2();
+	$player2 = ($player_view == 1) ? $replay->name2() : $replay->name1();
 
 	$p1data = $turn_data->GameData[$player1];
 	$p2data = $turn_data->GameData[$player2];
 
 	// load needed settings
-	$settings = $player->GetSettings();
-	$params['replay']['c_img'] = $settings->GetSetting('Images');
-	$params['replay']['c_oldlook'] = $settings->GetSetting('OldCardLook');
-	$params['replay']['c_insignias'] = $settings->GetSetting('Insignias');
-	$params['replay']['c_miniflags'] = $settings->GetSetting('Miniflags');
-	$params['replay']['Background'] = $settings->GetSetting('Background');
+	$settings = $player->getSettings();
+	$params['replay']['c_img'] = $settings->getSetting('Images');
+	$params['replay']['c_oldlook'] = $settings->getSetting('OldCardLook');
+	$params['replay']['c_insignias'] = $settings->getSetting('Insignias');
+	$params['replay']['c_miniflags'] = $settings->getSetting('Miniflags');
+	$params['replay']['Background'] = $settings->getSetting('Background');
 
 	// attempt to load setting of both players
-	$p1 = $playerdb->GetPlayer($player1);
-	$params['replay']['c_p1_foils'] = ($p1) ? $p1->GetSettings()->GetSetting('FoilCards') : '';
-	$p2 = $playerdb->GetPlayer($player2);
-	$params['replay']['c_p2_foils'] = ($p2) ? $p2->GetSettings()->GetSetting('FoilCards') : '';
+	$p1 = $playerdb->getPlayer($player1);
+	$params['replay']['c_p1_foils'] = ($p1) ? $p1->getSettings()->getSetting('FoilCards') : '';
+	$p2 = $playerdb->getPlayer($player2);
+	$params['replay']['c_p2_foils'] = ($p2) ? $p2->getSettings()->getSetting('FoilCards') : '';
 
 	$params['replay']['turns'] = $replay->Turns;
 	$params['replay']['Round'] = $turn_data->Round;
-	$params['replay']['Outcome'] = $replay->Outcome();
+	$params['replay']['Outcome'] = $replay->outcome();
 	$params['replay']['EndType'] = $replay->EndType;
 	$params['replay']['Winner'] = $replay->Winner;
 	$params['replay']['ThreadID'] = $replay->ThreadID;
@@ -4663,17 +4663,17 @@ case 'Replays_details':
 	$params['replay']['Player2'] = $player2;
 	$params['replay']['Current'] = $turn_data->Current;
 	$params['replay']['AI'] = $replay->AI;
-	$params['replay']['HiddenCards'] = $replay->GetGameMode('HiddenCards');
-	$params['replay']['FriendlyPlay'] = $replay->GetGameMode('FriendlyPlay');
-	$params['replay']['LongMode'] = $long_mode = $replay->GetGameMode('LongMode');
+	$params['replay']['HiddenCards'] = $replay->getGameMode('HiddenCards');
+	$params['replay']['FriendlyPlay'] = $replay->getGameMode('FriendlyPlay');
+	$params['replay']['LongMode'] = $long_mode = $replay->getGameMode('LongMode');
 	$g_mode = ($long_mode == 'yes') ? 'long' : 'normal';
-	$params['replay']['AIMode'] = $replay->GetGameMode('AIMode');
+	$params['replay']['AIMode'] = $replay->getGameMode('AIMode');
 	$params['replay']['max_tower'] = $game_config[$g_mode]['max_tower'];
 	$params['replay']['max_wall'] = $game_config[$g_mode]['max_wall'];
 
 	// player1 hand
 	$p1hand = $p1data->Hand;
-	$handdata = $carddb->GetData($p1hand);
+	$handdata = $carddb->getData($p1hand);
 	foreach( $handdata as $i => $card )
 	{
 		$entry = array();
@@ -4694,13 +4694,13 @@ case 'Replays_details':
 
 	// player1 discarded cards
 	if( count($p1data->DisCards[0]) > 0 )
-		$params['replay']['p1DisCards0'] = $carddb->GetData($p1data->DisCards[0]); // cards discarded from player1 hand
+		$params['replay']['p1DisCards0'] = $carddb->getData($p1data->DisCards[0]); // cards discarded from player1 hand
 	if( count($p1data->DisCards[1]) > 0 )
-		$params['replay']['p1DisCards1'] = $carddb->GetData($p1data->DisCards[1]); // cards discarded from player2 hand
+		$params['replay']['p1DisCards1'] = $carddb->getData($p1data->DisCards[1]); // cards discarded from player2 hand
 
 	// player1 last played cards
 	$p1lastcard = array();
-	$tmp = $carddb->GetData($p1data->LastCard);
+	$tmp = $carddb->getData($p1data->LastCard);
 	foreach( $tmp as $i => $card )
 	{
 		$p1lastcard[$i]['CardData'] = $card;
@@ -4727,7 +4727,7 @@ case 'Replays_details':
 
 	// player2 hand
 	$p2hand = $p2data->Hand;
-	$handdata = $carddb->GetData($p2hand);
+	$handdata = $carddb->getData($p2hand);
 	foreach( $handdata as $i => $card )
 	{
 		$entry = array();
@@ -4748,13 +4748,13 @@ case 'Replays_details':
 
 	// player2 discarded cards
 	if( count($p2data->DisCards[0]) > 0 )
-		$params['replay']['p2DisCards0'] = $carddb->GetData($p2data->DisCards[0]); // cards discarded from player1 hand
+		$params['replay']['p2DisCards0'] = $carddb->getData($p2data->DisCards[0]); // cards discarded from player1 hand
 	if( count($p2data->DisCards[1]) > 0 )
-		$params['replay']['p2DisCards1'] = $carddb->GetData($p2data->DisCards[1]); // cards discarded from player2 hand
+		$params['replay']['p2DisCards1'] = $carddb->getData($p2data->DisCards[1]); // cards discarded from player2 hand
 
 	// player2 last played cards
 	$p2lastcard = array();
-	$tmp = $carddb->GetData($p2data->LastCard);
+	$tmp = $carddb->getData($p2data->LastCard);
 	foreach( $tmp as $i => $card )
 	{
 		$p2lastcard[$i]['CardData'] = $card;
@@ -4802,61 +4802,61 @@ case 'Replays_history':
 	$params['replays_history']['CurrentReplay'] = $gameid = (isset($_POST['CurrentReplay'])) ? $_POST['CurrentReplay'] : 0;
 
 	// prepare the necessary data
-	$replay = $replaydb->GetReplay($gameid);
+	$replay = $replaydb->getReplay($gameid);
 	if (!$replay) { $display_error = "Invalid replay."; break; }
 	if ($replay->EndType != 'Pending') { $display_error = "Game history is no longer available."; break; }
 
 	$turns = $replay->Turns;
 	$params['replays_history']['CurrentTurn'] = $turn = (isset($_POST['Turn']) ? $_POST['Turn'] : $turns);
 
-	$turn_data = $replay->GetTurn($turn);
+	$turn_data = $replay->getTurn($turn);
 	if (!$turn_data) { $display_error = "Invalid replay turn."; break; }
 
 	// check if this user is allowed to view this replay
-	if ($player->Name() != $replay->Name1() and $player->Name() != $replay->Name2()) { $display_error = 'You are not allowed to access this replay.'; break; }
+	if ($player->name() != $replay->name1() and $player->name() != $replay->name2()) { $display_error = 'You are not allowed to access this replay.'; break; }
 
 	// determine player view
-	$player_view = ($player->Name() == $replay->Name1()) ? 1 : 2;
-	$player1 = ($player_view == 1) ? $replay->Name1() : $replay->Name2();
-	$player2 = ($player_view == 1) ? $replay->Name2() : $replay->Name1();
+	$player_view = ($player->name() == $replay->name1()) ? 1 : 2;
+	$player1 = ($player_view == 1) ? $replay->name1() : $replay->name2();
+	$player2 = ($player_view == 1) ? $replay->name2() : $replay->name1();
 
 	$p1data = $turn_data->GameData[$player1];
 	$p2data = $turn_data->GameData[$player2];
 
 	// load needed settings
-	$settings = $player->GetSettings();
-	$params['replays_history']['c_img'] = $settings->GetSetting('Images');
-	$params['replays_history']['c_oldlook'] = $settings->GetSetting('OldCardLook');
-	$params['replays_history']['c_insignias'] = $settings->GetSetting('Insignias');
-	$params['replays_history']['c_miniflags'] = $settings->GetSetting('Miniflags');
-	$params['replays_history']['Background'] = $settings->GetSetting('Background');
+	$settings = $player->getSettings();
+	$params['replays_history']['c_img'] = $settings->getSetting('Images');
+	$params['replays_history']['c_oldlook'] = $settings->getSetting('OldCardLook');
+	$params['replays_history']['c_insignias'] = $settings->getSetting('Insignias');
+	$params['replays_history']['c_miniflags'] = $settings->getSetting('Miniflags');
+	$params['replays_history']['Background'] = $settings->getSetting('Background');
 
 	// attempt to load setting of both players
-	$p1 = $playerdb->GetPlayer($player1);
-	$params['replays_history']['c_p1_foils'] = ($p1) ? $p1->GetSettings()->GetSetting('FoilCards') : '';
-	$p2 = $playerdb->GetPlayer($player2);
-	$params['replays_history']['c_p2_foils'] = ($p2) ? $p2->GetSettings()->GetSetting('FoilCards') : '';
+	$p1 = $playerdb->getPlayer($player1);
+	$params['replays_history']['c_p1_foils'] = ($p1) ? $p1->getSettings()->getSetting('FoilCards') : '';
+	$p2 = $playerdb->getPlayer($player2);
+	$params['replays_history']['c_p2_foils'] = ($p2) ? $p2->getSettings()->getSetting('FoilCards') : '';
 
 	$params['replays_history']['turns'] = $turns;
 	$params['replays_history']['Round'] = $turn_data->Round;
-	$params['replays_history']['Outcome'] = $replay->Outcome();
+	$params['replays_history']['Outcome'] = $replay->outcome();
 	$params['replays_history']['EndType'] = $replay->EndType;
 	$params['replays_history']['Winner'] = $replay->Winner;
 	$params['replays_history']['Player1'] = $player1;
 	$params['replays_history']['Player2'] = $player2;
 	$params['replays_history']['Current'] = $turn_data->Current;
 	$params['replays_history']['AI'] = $replay->AI;
-	$params['replays_history']['HiddenCards'] = $replay->GetGameMode('HiddenCards');
-	$params['replays_history']['FriendlyPlay'] = $replay->GetGameMode('FriendlyPlay');
-	$params['replays_history']['LongMode'] = $long_mode = $replay->GetGameMode('LongMode');
+	$params['replays_history']['HiddenCards'] = $replay->getGameMode('HiddenCards');
+	$params['replays_history']['FriendlyPlay'] = $replay->getGameMode('FriendlyPlay');
+	$params['replays_history']['LongMode'] = $long_mode = $replay->getGameMode('LongMode');
 	$g_mode = ($long_mode == 'yes') ? 'long' : 'normal';
-	$params['replays_history']['AIMode'] = $replay->GetGameMode('AIMode');
+	$params['replays_history']['AIMode'] = $replay->getGameMode('AIMode');
 	$params['replays_history']['max_tower'] = $game_config[$g_mode]['max_tower'];
 	$params['replays_history']['max_wall'] = $game_config[$g_mode]['max_wall'];
 
 	// player1 hand
 	$p1hand = $p1data->Hand;
-	$handdata = $carddb->GetData($p1hand);
+	$handdata = $carddb->getData($p1hand);
 	foreach( $handdata as $i => $card )
 	{
 		$entry = array();
@@ -4877,13 +4877,13 @@ case 'Replays_history':
 
 	// player1 discarded cards
 	if( count($p1data->DisCards[0]) > 0 )
-		$params['replays_history']['p1DisCards0'] = $carddb->GetData($p1data->DisCards[0]); // cards discarded from player1 hand
+		$params['replays_history']['p1DisCards0'] = $carddb->getData($p1data->DisCards[0]); // cards discarded from player1 hand
 	if( count($p1data->DisCards[1]) > 0 )
-		$params['replays_history']['p1DisCards1'] = $carddb->GetData($p1data->DisCards[1]); // cards discarded from player2 hand
+		$params['replays_history']['p1DisCards1'] = $carddb->getData($p1data->DisCards[1]); // cards discarded from player2 hand
 
 	// player1 last played cards
 	$p1lastcard = array();
-	$tmp = $carddb->GetData($p1data->LastCard);
+	$tmp = $carddb->getData($p1data->LastCard);
 	foreach( $tmp as $i => $card )
 	{
 		$p1lastcard[$i]['CardData'] = $card;
@@ -4910,7 +4910,7 @@ case 'Replays_history':
 
 	// player2 hand
 	$p2hand = $p2data->Hand;
-	$handdata = $carddb->GetData($p2hand);
+	$handdata = $carddb->getData($p2hand);
 	foreach( $handdata as $i => $card )
 	{
 		$entry = array();
@@ -4931,13 +4931,13 @@ case 'Replays_history':
 
 	// player2 discarded cards
 	if( count($p2data->DisCards[0]) > 0 )
-		$params['replays_history']['p2DisCards0'] = $carddb->GetData($p2data->DisCards[0]); // cards discarded from player1 hand
+		$params['replays_history']['p2DisCards0'] = $carddb->getData($p2data->DisCards[0]); // cards discarded from player1 hand
 	if( count($p2data->DisCards[1]) > 0 )
-		$params['replays_history']['p2DisCards1'] = $carddb->GetData($p2data->DisCards[1]); // cards discarded from player2 hand
+		$params['replays_history']['p2DisCards1'] = $carddb->getData($p2data->DisCards[1]); // cards discarded from player2 hand
 
 	// player2 last played cards
 	$p2lastcard = array();
-	$tmp = $carddb->GetData($p2data->LastCard);
+	$tmp = $carddb->getData($p2data->LastCard);
 	foreach( $tmp as $i => $card )
 	{
 		$p2lastcard[$i]['CardData'] = $card;
@@ -4997,10 +4997,10 @@ case 'Cards':
 	$modifiedfilter = $params['cards']['ModifiedFilter'] = isset($_POST['ModifiedFilter']) ? $_POST['ModifiedFilter'] : 'none';
 	$levelfilter = $params['cards']['LevelFilter'] = isset($_POST['LevelFilter']) ? $_POST['LevelFilter'] : 'none';
 
-	$params['cards']['levels'] = $carddb->Levels();
-	$params['cards']['keywords'] = $carddb->Keywords();
-	$params['cards']['created_dates'] = $carddb->ListCreationDates();
-	$params['cards']['modified_dates'] = $carddb->ListModifyDates();
+	$params['cards']['levels'] = $carddb->levels();
+	$params['cards']['keywords'] = $carddb->keywords();
+	$params['cards']['created_dates'] = $carddb->listCreationDates();
+	$params['cards']['modified_dates'] = $carddb->listModifyDates();
 
 	$filter = array();
 	if( $namefilter != '' ) $filter['name'] = $namefilter;
@@ -5017,16 +5017,16 @@ case 'Cards':
 		$filter['level_op'] = '=';
 	}
 
-	$ids = $carddb->GetList($filter);
-	$params['cards']['CardList'] = $carddb->GetData($ids, $current_page);
-	$params['cards']['page_count'] = $carddb->CountPages($filter);
+	$ids = $carddb->getList($filter);
+	$params['cards']['CardList'] = $carddb->getData($ids, $current_page);
+	$params['cards']['page_count'] = $carddb->countPages($filter);
 
 	// load card display settings
-	$settings = $player->GetSettings();
-	$params['cards']['c_img'] = $settings->GetSetting('Images');
-	$params['cards']['c_oldlook'] = $settings->GetSetting('OldCardLook');
-	$params['cards']['c_insignias'] = $settings->GetSetting('Insignias');
-	$params['cards']['c_foils'] = $settings->GetSetting('FoilCards');
+	$settings = $player->getSettings();
+	$params['cards']['c_img'] = $settings->getSetting('Images');
+	$params['cards']['c_oldlook'] = $settings->getSetting('OldCardLook');
+	$params['cards']['c_insignias'] = $settings->getSetting('Insignias');
+	$params['cards']['c_foils'] = $settings->getSetting('FoilCards');
 
 	break;
 
@@ -5035,23 +5035,23 @@ case 'Cards_details':
 	$card_id = isset($_POST['card']) ? $_POST['card'] : 0;
 	if (!is_numeric($card_id) OR $card_id <= 0) { $display_error = 'Invalid card id.'; break; }
 
-	$card = $carddb->GetCard($card_id);
+	$card = $carddb->getCard($card_id);
 	if ($card->Name == "Invalid Card") { $display_error = 'Invalid card.'; break; }
 
-	$params['cards_details']['data'] = $data = $card->GetData();
-	$thread_id = $forum->Threads->CardThread($card_id);
+	$params['cards_details']['data'] = $data = $card->getData();
+	$thread_id = $forum->Threads->cardThread($card_id);
 	$params['cards_details']['discussion'] = ($thread_id) ? $thread_id : 0;
-	$params['cards_details']['create_thread'] = ($access_rights[$player->Type()]["create_thread"]) ? 'yes' : 'no';
-	$params['cards_details']['statistics'] = $statistics->CardStatistics($card_id);
+	$params['cards_details']['create_thread'] = ($access_rights[$player->type()]["create_thread"]) ? 'yes' : 'no';
+	$params['cards_details']['statistics'] = $statistics->cardStatistics($card_id);
 	$params['cards_details']['foil_cost'] = FOIL_COST;
 	$params['cards_details']['is_logged_in'] = ($session) ? 'yes' : 'no';
 
 	// load card display settings
-	$settings = $player->GetSettings();
-	$params['cards_details']['c_img'] = $settings->GetSetting('Images');
-	$params['cards_details']['c_oldlook'] = $settings->GetSetting('OldCardLook');
-	$params['cards_details']['c_insignias'] = $settings->GetSetting('Insignias');
-	$params['cards_details']['c_foils'] = $foil_cards = $settings->GetSetting('FoilCards');
+	$settings = $player->getSettings();
+	$params['cards_details']['c_img'] = $settings->getSetting('Images');
+	$params['cards_details']['c_oldlook'] = $settings->getSetting('OldCardLook');
+	$params['cards_details']['c_insignias'] = $settings->getSetting('Insignias');
+	$params['cards_details']['c_foils'] = $foil_cards = $settings->getSetting('FoilCards');
 
 	// determine if current card has a foil version
 	$foil_cards = ($foil_cards == '') ? array() : explode(",", $foil_cards);
@@ -5085,14 +5085,14 @@ case 'Statistics':
 
 	if ($subsection == "card_statistics")
 	{
-		$params['statistics']['card_statistics'] = $statistics->Cards($current_statistic, $current_size);
+		$params['statistics']['card_statistics'] = $statistics->cards($current_statistic, $current_size);
 	}
 	elseif ($subsection == "other_statistics")
 	{
-		$params['statistics']['victory_types'] = $statistics->VictoryTypes();
-		$params['statistics']['game_modes'] = $statistics->GameModes();
-		$params['statistics']['suggested'] = $statistics->SuggestedConcepts();
-		$params['statistics']['implemented'] = $statistics->ImplementedConcepts();
+		$params['statistics']['victory_types'] = $statistics->victoryTypes();
+		$params['statistics']['game_modes'] = $statistics->gameModes();
+		$params['statistics']['suggested'] = $statistics->suggestedConcepts();
+		$params['statistics']['implemented'] = $statistics->implementedConcepts();
 	}
 
 	break;

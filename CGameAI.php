@@ -2,7 +2,7 @@
 	// MArcomage AI
 
 	// 1 - determine playable cards
-	// 2 - simulate each card with every one of its card modes via CalculatePreview()
+	// 2 - simulate each card with every one of its card modes via calculatePreview()
 	// 3 - analyse impact of each case on game
 	// 4 - sort choices by accumulated points
 	// 5 - cards with zero or less points are not qualified for playing
@@ -19,7 +19,7 @@
 			$this->Game = $game;
 		}
 
-		protected function StaticConfig()
+		protected function staticconfig()
 		{
 			// AI behavior configuration (more points, more likely to choose such action)
 
@@ -45,7 +45,7 @@
 			return $static;
 		}
 
-		protected function MiscConfig()
+		protected function miscconfig()
 		{
 			// misc configuration (special actions)
 			$misc['play_again'] = 300; // play again cards (Quick and Swift)
@@ -57,21 +57,21 @@
 			return $misc;
 		}
 
-		protected function DynamicConfig($ai_player)
+		protected function dynamicconfig($ai_player)
 		{
 			global $game_config;
 
 			$game = $this->Game;
 
 			// determine game mode (normal or long)
-			$g_mode = ($game->GetGameMode('LongMode') == 'yes') ? 'long' : 'normal';
+			$g_mode = ($game->getGameMode('LongMode') == 'yes') ? 'long' : 'normal';
 
 			// game configuration
 			$max_tower = $game_config[$g_mode]['max_tower'];
 			$max_wall = $game_config[$g_mode]['max_wall'];
 
 			// prepare basic information
-			$opponent = ($game->Name1() == $ai_player) ? $game->Name2() : $game->Name1();
+			$opponent = ($game->name1() == $ai_player) ? $game->name2() : $game->name1();
 			$mydata = $game->GameData[$ai_player];
 			$hisdata = $game->GameData[$opponent];
 
@@ -80,45 +80,45 @@
 			// dynamic configuration (adjustment factor based on current game situation)
 			foreach (array('Quarry', 'Magic', 'Dungeons') as $facility)
 			{
-				$dynamic['mine'][$facility] = $this->FacilityEval($mydata->$facility);
-				$dynamic['his'][$facility] = $this->FacilityEval($hisdata->$facility);
+				$dynamic['mine'][$facility] = $this->facilityEval($mydata->$facility);
+				$dynamic['his'][$facility] = $this->facilityEval($hisdata->$facility);
 			}
 
 			foreach (array('Bricks', 'Gems', 'Recruits') as $resource)
 			{
-				$dynamic['mine'][$resource] = $this->ResourceEval($mydata->$resource);
-				$dynamic['his'][$resource] = $this->ResourceEval($hisdata->$resource);
+				$dynamic['mine'][$resource] = $this->resourceEval($mydata->$resource);
+				$dynamic['his'][$resource] = $this->resourceEval($hisdata->$resource);
 			}
 
-			$dynamic['mine']['Tower'] = $this->TowerEval($mydata->Tower, $max_tower);
-			$dynamic['mine']['Wall'] = $this->WallEval($mydata->Wall, $max_wall);
-			$dynamic['his']['Tower'] = $this->TowerEval($hisdata->Tower, $max_tower);
-			$dynamic['his']['Wall'] = $this->WallEval($hisdata->Wall, $max_wall);
+			$dynamic['mine']['Tower'] = $this->towerEval($mydata->Tower, $max_tower);
+			$dynamic['mine']['Wall'] = $this->wallEval($mydata->Wall, $max_wall);
+			$dynamic['his']['Tower'] = $this->towerEval($hisdata->Tower, $max_tower);
+			$dynamic['his']['Wall'] = $this->wallEval($hisdata->Wall, $max_wall);
 
 			return $dynamic;
 		}
 
-		protected function FacilityEval($facility) { return min(2.5, (6 / (pow($facility, 2))) + 0.6); }
-		protected function ResourceEval($resource) { return ((20 / ($resource + 40)) + 0.8); }
+		protected function facilityEval($facility) { return min(2.5, (6 / (pow($facility, 2))) + 0.6); }
+		protected function resourceEval($resource) { return ((20 / ($resource + 40)) + 0.8); }
 
-		protected function TowerEval($tower, $max_tower)
+		protected function towerEval($tower, $max_tower)
 		{
 			$ratio = ($tower / $max_tower) * 100;
 			return ((pow(($ratio - 50), 2) / 3000) + 0.9);
 		}
 
-		protected function WallEval($wall, $max_wall)
+		protected function wallEval($wall, $max_wall)
 		{
 			$ratio = ($wall / $max_wall) * 100;
 			return min(1.5, (5 / ($ratio + 5)) + 0.85);
 		}
 
-		protected function Config($ai_player)
+		protected function config($ai_player)
 		{
 			// compute adjusted points (base value * adjustment factor)
 			$ai_config = array();
-			$static = $this->StaticConfig();
-			$dynamic = $this->DynamicConfig($ai_player);
+			$static = $this->staticconfig();
+			$dynamic = $this->dynamicconfig($ai_player);
 
 			foreach (array('mine', 'his') as $side)
 				foreach ($static[$side] as $name => $value)
@@ -127,7 +127,7 @@
 			return $ai_config;
 		}
 
-		public function DetermineMove($ai_player) // determine card action ('play'/'discard'), card position (1-8) and card mode (0/1-8)
+		public function determineMove($ai_player) // determine card action ('play'/'discard'), card position (1-8) and card mode (0/1-8)
 		{
 			global $carddb;
 			global $game_config;
@@ -135,7 +135,7 @@
 			$game = $this->Game;
 
 			// determine game mode (normal or long)
-			$g_mode = ($game->GetGameMode('LongMode') == 'yes') ? 'long' : 'normal';
+			$g_mode = ($game->getGameMode('LongMode') == 'yes') ? 'long' : 'normal';
 
 			// game configuration
 			$max_tower = $game_config[$g_mode]['max_tower'];
@@ -143,7 +143,7 @@
 			$res_vic = $game_config[$g_mode]['res_victory'];
 
 			// prepare basic information
-			$opponent = ($game->Name1() == $ai_player) ? $game->Name2() : $game->Name1();
+			$opponent = ($game->name1() == $ai_player) ? $game->name2() : $game->name1();
 			$mydata = $game->GameData[$ai_player];
 			$hisdata = $game->GameData[$opponent];
 			$my_deck = $mydata->Deck;
@@ -167,8 +167,8 @@
 			// determine playable cards
 			$playable_positions = array(); // 'card_position' => 'card modes'
 			$myhand = $mydata->Hand;
-			$my_handdata = $carddb->GetData($myhand);
-			$his_handdata = $carddb->GetData($hisdata->Hand);
+			$my_handdata = $carddb->getData($myhand);
+			$his_handdata = $carddb->getData($hisdata->Hand);
 
 			foreach( $my_handdata as $i => $card )
 				if ($mydata->Bricks >= $card['bricks'] and $mydata->Gems >= $card['gems'] and $mydata->Recruits >= $card['recruits'])
@@ -180,8 +180,8 @@
 				// determine all possible actions is this turn
 				$max_points = 0;
 				$choices = array();
-				$ai_config = $this->Config($ai_player);
-				$misc_config = $this->MiscConfig();
+				$ai_config = $this->config($ai_player);
+				$misc_config = $this->miscconfig();
 
 				foreach ($playable_positions as $pos)
 				{
@@ -195,7 +195,7 @@
 					foreach ($modes as $i)
 					{
 						$points = 0;
-						$preview = $game->CalculatePreview($ai_player, $pos, $i);
+						$preview = $game->calculatePreview($ai_player, $pos, $i);
 
 						$player_data = $preview['player'];
 						$opponent_data = $preview['opponent'];
@@ -226,7 +226,7 @@
 								$prev_class = $prev_card['class'];
 
 								// new card
-								$card_data = $carddb->GetCard($cur_card);
+								$card_data = $carddb->getCard($cur_card);
 								$card_class = $card_data->Class;
 
 								// gain extra points if rare cards were added to player's hand (summoning related cards)
@@ -261,7 +261,7 @@
 								$prev_class = $prev_card['class'];
 
 								// new card
-								$card_data = $carddb->GetCard($cur_card);
+								$card_data = $carddb->getCard($cur_card);
 								$card_class = $card_data->Class;
 
 								// lose points if rare cards were added to opponent's hand
@@ -327,7 +327,7 @@
 							$cur_choice['mode'] = $choice['mode'];
 							$best_choices[] = $cur_choice;
 						}
-					$best_choice = $best_choices[array_mt_rand($best_choices)];
+					$best_choice = $best_choices[arrayMtRand($best_choices)];
 
 					$action = 'play';
 					$cardpos = $best_choice['pos'];
@@ -389,13 +389,13 @@
 			$this->Name = $game->AI;
 		}
 
-		protected function StaticConfig()
+		protected function staticconfig()
 		{
 			global $challengesdb;
 
 			// load configuration data from challenges database
-			$challenge = $challengesdb->GetChallenge($this->Name);
-			if (!$challenge) return parent:: StaticConfig();
+			$challenge = $challengesdb->getChallenge($this->Name);
+			if (!$challenge) return parent:: staticconfig();
 
 			return $challenge->Config;
 		}

@@ -33,8 +33,8 @@
 	}
 
 	if( false === date_default_timezone_set("Etc/UTC")
-	||  false === $db->Query("SET time_zone='Etc/UTC'")
-	&&  false === $db->Query("SET time_zone='+0:00'") )
+	||  false === $db->query("SET time_zone='Etc/UTC'")
+	&&  false === $db->query("SET time_zone='+0:00'") )
 	{
 		header("Content-type: text/html");
 		die("Unable to configure time zone, aborting.");
@@ -51,13 +51,13 @@
 
 	echo "Deleting player data..."."\n<br />\n<br />";
 
-	$result = $db->Query('SELECT `Username` FROM (SELECT `Username` FROM `logins` WHERE `Last Query` < NOW() - INTERVAL 12 WEEK) as `logins` INNER JOIN (SELECT `Username` FROM `scores` WHERE `Wins` + `Losses` + `Draws` = 0) as `scores` USING (`Username`) LIMIT 50');
+	$result = $db->query('SELECT `Username` FROM (SELECT `Username` FROM `logins` WHERE `Last Query` < NOW() - INTERVAL 12 WEEK) as `logins` INNER JOIN (SELECT `Username` FROM `scores` WHERE `Wins` + `Losses` + `Draws` = 0) as `scores` USING (`Username`) LIMIT 50');
 
 	foreach ($result as $data)
 	{
 		$username = $data['Username'];
 		echo 'Deleting player '.htmlencode($username)."...\n<br />";
-		$res = $playerdb->DeletePlayer($username);
+		$res = $playerdb->deletePlayer($username);
 		echo (($res) ? 'SUCCESS' : 'FAILURE')."\n<br />\n<hr />";
 	}
 

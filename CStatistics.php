@@ -15,37 +15,37 @@
 			$this->Active = true;
 		}
 
-		public function GetDB()
+		public function getDB()
 		{
 			return $this->db;
 		}
 
-		public function Deactivate()
+		public function deactivate()
 		{
 			return $this->Active = false;
 		}
 
-		public function SuggestedConcepts() // calculate top 10 concept authors for suggested concepts
+		public function suggestedConcepts() // calculate top 10 concept authors for suggested concepts
 		{
 			$db = $this->db;
 
-			$result = $db->Query('SELECT `Author`, COUNT(`Author`) as `count` FROM `concepts` WHERE (`State` = "waiting") OR (`State` = "interesting") GROUP BY `Author` ORDER BY `count` DESC, `Author` ASC LIMIT 10');
+			$result = $db->query('SELECT `Author`, COUNT(`Author`) as `count` FROM `concepts` WHERE (`State` = "waiting") OR (`State` = "interesting") GROUP BY `Author` ORDER BY `count` DESC, `Author` ASC LIMIT 10');
 			if ($result === false) return false;
 
 			return $result;
 		}
 
-		public function ImplementedConcepts() // calculate top 10 concept authors for implemented concepts
+		public function implementedConcepts() // calculate top 10 concept authors for implemented concepts
 		{
 			$db = $this->db;
 
-			$result = $db->Query('SELECT `Author`, COUNT(`Author`) as `count` FROM `concepts` WHERE `State` = "implemented" GROUP BY `Author` ORDER BY `count` DESC, `Author` ASC LIMIT 10');
+			$result = $db->query('SELECT `Author`, COUNT(`Author`) as `count` FROM `concepts` WHERE `State` = "implemented" GROUP BY `Author` ORDER BY `count` DESC, `Author` ASC LIMIT 10');
 			if ($result === false) return false;
 
 			return $result;
 		}
 
-		public function VictoryTypes() // calculate game victory types statistics
+		public function victoryTypes() // calculate game victory types statistics
 		{
 			$db = $this->db;
 
@@ -54,7 +54,7 @@
 			$statistics = array_combine($statistics, array_fill(0, count($statistics), 0));
 
 			// get number of different victory types
-			$result = $db->Query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays` WHERE `EndType` != "Pending" GROUP BY `EndType`');
+			$result = $db->query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays` WHERE `EndType` != "Pending" GROUP BY `EndType`');
 			if ($result === false) return false;
 
 			$total_games = 0;
@@ -76,12 +76,12 @@
 			return $rounded;
 		}
 
-		public function GameModes() // calculate game modes statistics
+		public function gameModes() // calculate game modes statistics
 		{
 			$db = $this->db;
 
 			// get number of games with various game modes
-			$results = $db->Query('SELECT `GameModes`, COUNT(`GameModes`) as `count` FROM `replays` WHERE `EndType` != "Pending" GROUP BY `GameModes`');
+			$results = $db->query('SELECT `GameModes`, COUNT(`GameModes`) as `count` FROM `replays` WHERE `EndType` != "Pending" GROUP BY `GameModes`');
 			if ($results === false) return false;
 
 			$total_games = 0;
@@ -109,14 +109,14 @@
 			$statistics['long'] = (isset($game_modes['LongMode'])) ? $game_modes['LongMode'] : 0;
 
 			// get number of AI mode games (exclude AI challenges)
-			$result = $db->Query('SELECT COUNT(`GameID`) as `ai` FROM `replays` WHERE `EndType` != "Pending" AND FIND_IN_SET("AIMode", `GameModes`) > 0 AND `AI` = ""');
+			$result = $db->query('SELECT COUNT(`GameID`) as `ai` FROM `replays` WHERE `EndType` != "Pending" AND FIND_IN_SET("AIMode", `GameModes`) > 0 AND `AI` = ""');
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
 			$statistics['ai'] = $data['ai'];
 
 			// get number of AI victories (exclude AI challenges)
-			$result = $db->Query('SELECT COUNT(`GameID`) as `ai_wins` FROM `replays` WHERE `EndType` != "Pending" AND FIND_IN_SET("AIMode", `GameModes`) > 0 AND `AI` = "" AND `Winner` = ?', array(SYSTEM_NAME));
+			$result = $db->query('SELECT COUNT(`GameID`) as `ai_wins` FROM `replays` WHERE `EndType` != "Pending" AND FIND_IN_SET("AIMode", `GameModes`) > 0 AND `AI` = "" AND `Winner` = ?', array(SYSTEM_NAME));
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
@@ -125,14 +125,14 @@
 			$ai_win_ratio = ($statistics['ai'] > 0) ? round(($ai_wins / $statistics['ai']) * 100, 2) : 0;
 
 			// get number of AI challenge games
-			$result = $db->Query('SELECT COUNT(`GameID`) as `challenge` FROM `replays` WHERE `EndType` != "Pending" AND `AI` != ""');
+			$result = $db->query('SELECT COUNT(`GameID`) as `challenge` FROM `replays` WHERE `EndType` != "Pending" AND `AI` != ""');
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
 			$statistics['challenge'] = $data['challenge'];
 
 			// get number of AI challenge victories
-			$result = $db->Query('SELECT COUNT(`GameID`) as `challenge_wins` FROM `replays` WHERE `EndType` != "Pending" AND `AI` != "" AND `Winner` = ?', array(SYSTEM_NAME));
+			$result = $db->query('SELECT COUNT(`GameID`) as `challenge_wins` FROM `replays` WHERE `EndType` != "Pending" AND `AI` != "" AND `Winner` = ?', array(SYSTEM_NAME));
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
@@ -150,7 +150,7 @@
 			return $statistics;
 		}
 
-		public function VersusStats($player1, $player2) // calculate versus statistics for the two specified players from player1 perspecive
+		public function versusStats($player1, $player2) // calculate versus statistics for the two specified players from player1 perspecive
 		{
 			$db = $this->db;
 			$statistics = array();
@@ -162,7 +162,7 @@
 			);
 
 			// get number of games with various game modes
-			$results = $db->MultiQuery('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays` WHERE (`EndType` != "Pending") AND ((`Player1` = ? AND `Player2` = ?) OR (`Player1` = ? AND `Player2` = ?)) AND `Winner` = ? GROUP BY `EndType` ORDER BY `count` DESC', $params);
+			$results = $db->multiquery('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays` WHERE (`EndType` != "Pending") AND ((`Player1` = ? AND `Player2` = ?) OR (`Player1` = ? AND `Player2` = ?)) AND `Winner` = ? GROUP BY `EndType` ORDER BY `count` DESC', $params);
 			if ($results === false) return false;
 
 			foreach ($results as $result_name => $result)
@@ -183,7 +183,7 @@
 			}
 
 			// average game duration (normal mode)
-			$result = $db->Query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) = 0) AND ((`Player1` = ? AND `Player2` = ?) OR (`Player1` = ? AND `Player2` = ?))', array($player1, $player2, $player2, $player1));
+			$result = $db->query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) = 0) AND ((`Player1` = ? AND `Player2` = ?) OR (`Player1` = ? AND `Player2` = ?))', array($player1, $player2, $player2, $player1));
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
@@ -191,7 +191,7 @@
 			$statistics['rounds'] = $data['Rounds'];
 
 			// average game duration (long mode)
-			$result = $db->Query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) > 0) AND ((`Player1` = ? AND `Player2` = ?) OR (`Player1` = ? AND `Player2` = ?))', array($player1, $player2, $player2, $player1));
+			$result = $db->query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) > 0) AND ((`Player1` = ? AND `Player2` = ?) OR (`Player1` = ? AND `Player2` = ?))', array($player1, $player2, $player2, $player1));
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
@@ -201,13 +201,13 @@
 			return $statistics;
 		}
 
-		public function GameStats($player) // calculate overall game statistics for the specified player
+		public function gameStats($player) // calculate overall game statistics for the specified player
 		{
 			$db = $this->db;
 			$statistics = array();
 
 			// wins statistics
-			$result = $db->Query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays` WHERE (`EndType` != "Pending") AND (`Player1` = ? OR `Player2` = ?) AND `Winner` = ? GROUP BY `EndType` ORDER BY `count` DESC', array($player, $player, $player));
+			$result = $db->query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays` WHERE (`EndType` != "Pending") AND (`Player1` = ? OR `Player2` = ?) AND `Winner` = ? GROUP BY `EndType` ORDER BY `count` DESC', array($player, $player, $player));
 			if ($result === false) return false;
 
 			$wins_total = 0;
@@ -225,7 +225,7 @@
 			$statistics['wins_total'] = $wins_total;
 
 			// loss statistics
-			$result = $db->Query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays` WHERE (`EndType` != "Pending") AND (`Player1` = ? OR `Player2` = ?) AND `Winner` != ? AND `Winner` != "" GROUP BY `EndType` ORDER BY `count` DESC', array($player, $player, $player));
+			$result = $db->query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays` WHERE (`EndType` != "Pending") AND (`Player1` = ? OR `Player2` = ?) AND `Winner` != ? AND `Winner` != "" GROUP BY `EndType` ORDER BY `count` DESC', array($player, $player, $player));
 			if ($result === false) return false;
 			$losses_total = 0;
 
@@ -243,7 +243,7 @@
 			$statistics['losses_total'] = $losses_total;
 
 			// other statistics (draws, aborts...)
-			$result = $db->Query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays` WHERE (`EndType` != "Pending") AND (`Player1` = ? OR `Player2` = ?) AND `Winner` = "" GROUP BY `EndType` ORDER BY `count` DESC', array($player, $player));
+			$result = $db->query('SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays` WHERE (`EndType` != "Pending") AND (`Player1` = ? OR `Player2` = ?) AND `Winner` = "" GROUP BY `EndType` ORDER BY `count` DESC', array($player, $player));
 			if ($result === false) return false;
 
 			$other_total = 0;
@@ -261,7 +261,7 @@
 			$statistics['other_total'] = $other_total;
 
 			// average game duration (normal mode)
-			$result = $db->Query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) = 0) AND (`Player1` = ? OR `Player2` = ?)', array($player, $player));
+			$result = $db->query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) = 0) AND (`Player1` = ? OR `Player2` = ?)', array($player, $player));
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
@@ -269,7 +269,7 @@
 			$statistics['rounds'] = $data['Rounds'];
 
 			// average game duration (long mode)
-			$result = $db->Query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) > 0) AND (`Player1` = ? OR `Player2` = ?)', array($player, $player));
+			$result = $db->query('SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays` WHERE (`EndType` != "Pending") AND (FIND_IN_SET("LongMode", `GameModes`) > 0) AND (`Player1` = ? OR `Player2` = ?)', array($player, $player));
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
@@ -279,7 +279,7 @@
 			return $statistics;
 		}
 
-		public function Cards($condition, $list_size) // calculate card statistics according to specified paramaters
+		public function cards($condition, $list_size) // calculate card statistics according to specified paramaters
 		{
 			global $carddb;
 
@@ -287,7 +287,7 @@
 
 			$condition = (in_array($condition, array('Played', 'PlayedTotal', 'Discarded', 'DiscardedTotal', 'Drawn', 'DrawnTotal'))) ? $condition : 'Played';
 
-			$result = $db->Query('SELECT `CardID`, `'.$condition.'` as `value` FROM `statistics` WHERE `CardID` > 0 ORDER BY `'.$condition.'` DESC, `CardID` ASC');
+			$result = $db->query('SELECT `CardID`, `'.$condition.'` as `value` FROM `statistics` WHERE `CardID` > 0 ORDER BY `'.$condition.'` DESC, `CardID` ASC');
 			if ($result === false) return false;
 
 			$cards = $values = array();
@@ -297,7 +297,7 @@
 				$values[$data['CardID']] = $data['value']; // assign a statistic value to each card id
 			}
 
-			$cards_data = $carddb->GetData($cards);
+			$cards_data = $carddb->getData($cards);
 			$separated = array('Common' => array(), 'Uncommon' => array(), 'Rare' => array());
 			$statistics = array(
 			'Common' => array('top' => array(), 'bottom' => array()), 
@@ -328,11 +328,11 @@
 			return $statistics;
 		}
 
-		public function CardStatistics($card_id) // return statistics for specified card
+		public function cardStatistics($card_id) // return statistics for specified card
 		{
 			$db = $this->db;
 
-			$result = $db->Query('SELECT `Played`, `Discarded`, `Drawn`, `PlayedTotal`, `DiscardedTotal`, `DrawnTotal` FROM `statistics` WHERE `CardID` = ?', array($card_id));
+			$result = $db->query('SELECT `Played`, `Discarded`, `Drawn`, `PlayedTotal`, `DiscardedTotal`, `DrawnTotal` FROM `statistics` WHERE `CardID` = ?', array($card_id));
 			if ($result === false) return false;
 			if (count($result) == 0)
 				$data = array('Played' => 0, 'Discarded' => 0, 'Drawn' => 0, 'PlayedTotal' => 0, 'DiscardedTotal' => 0, 'DrawnTotal' => 0);
@@ -342,7 +342,7 @@
 			return $data;
 		}
 
-		public function UpdateCardStats($card_id, $action) // update card statistics (used when card is played, drawn or discarded)
+		public function updateCardStats($card_id, $action) // update card statistics (used when card is played, drawn or discarded)
 		{
 			if (!$this->Active) return true; // do not update card statistics when disabled
 
@@ -354,16 +354,16 @@
 			else return false; // invalid action
 
 			// check if the card is already present in the database
-			$result = $db->Query('SELECT 1 FROM `statistics` WHERE `CardID` = ?', array($card_id));
+			$result = $db->query('SELECT 1 FROM `statistics` WHERE `CardID` = ?', array($card_id));
 			if ($result === false) return false;
 			if (count($result) == 0) // add new record when necessary
 			{
-				$result = $db->Query('INSERT INTO `statistics` (`CardID`) VALUES (?)', array($card_id));
+				$result = $db->query('INSERT INTO `statistics` (`CardID`) VALUES (?)', array($card_id));
 				if ($result === false) return false;
 			}
 
 			// update card statistics
-			$result = $db->Query('UPDATE `statistics` SET `'.$action_q.'` = `'.$action_q.'` + 1, `'.$action_q.'Total` = `'.$action_q.'Total` + 1 WHERE `CardID` = ?', array($card_id));
+			$result = $db->query('UPDATE `statistics` SET `'.$action_q.'` = `'.$action_q.'` + 1, `'.$action_q.'Total` = `'.$action_q.'Total` + 1 WHERE `CardID` = ?', array($card_id));
 			if ($result === false) return false;
 
 			return true;

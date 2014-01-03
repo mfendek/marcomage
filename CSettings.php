@@ -15,43 +15,43 @@
 			$this->cache = array();
 		}
 
-		public function GetDB()
+		public function getDB()
 		{
 			return $this->db;
 		}
 
-		public function CreateSettings($username) //creates default settings
+		public function createSettings($username) //creates default settings
 		{
 			$db = $this->db;
-			$result = $db->Query('INSERT INTO `settings` (`Username`, `FoilCards`) VALUES (?, "")', array($username));
+			$result = $db->query('INSERT INTO `settings` (`Username`, `FoilCards`) VALUES (?, "")', array($username));
 			if ($result === false) return false;
 
 			return true;
 		}
 
-		public function DeleteSettings($username) //delete user settings
+		public function deleteSettings($username) //delete user settings
 		{
 			$db = $this->db;
-			$result = $db->Query('DELETE FROM `settings` WHERE `Username` = ?', array($username));
+			$result = $db->query('DELETE FROM `settings` WHERE `Username` = ?', array($username));
 			if ($result === false) return false;
 
 			return true;
 		}
 
-		public function GetSettings($username)
+		public function getSettings($username)
 		{
 			if( isset($this->cache[$username]) )
 				return $this->cache[$username]; // load from cache
 
 			$settings = new CSetting($username, $this);
-			if( !$settings->LoadSettings() ) // load from db
+			if( !$settings->loadSettings() ) // load from db
 				return false;
 
 			$this->cache[$username] = $settings; // cache it
 			return $settings;
 		}
 
-		public function GetGuestSettings()
+		public function getGuestSettings()
 		{
 			return new CSetting('', $this);
 		}
@@ -68,24 +68,24 @@
 			$this->Settings = &$Settings;
 			$this->Username = $username;
 
-			$bool_settings = $this->ListBooleanSettings();
-			$other_settings = $this->ListOtherSettings();
+			$bool_settings = $this->listBooleanSettings();
+			$other_settings = $this->listOtherSettings();
 			$all_settings = array_merge($bool_settings, $other_settings);
 
 			$this->Data = array_combine($all_settings, array_fill(0, count($all_settings), ''));
 		}
 
-		public function LoadSettings()
+		public function loadSettings()
 		{
 			$db = $this->Settings->getDB();
 
-			$result = $db->Query('SELECT * FROM `settings` WHERE `Username` = ?', array($this->Username));
+			$result = $db->query('SELECT * FROM `settings` WHERE `Username` = ?', array($this->Username));
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
 
-			$bool_settings = $this->ListBooleanSettings();
-			$other_settings = $this->ListOtherSettings();
+			$bool_settings = $this->listBooleanSettings();
+			$other_settings = $this->listOtherSettings();
 
 			foreach ($bool_settings as $setting) $this->Data[$setting] = ($data[$setting] == 1) ? 'yes' : 'no';
 			foreach ($other_settings as $setting) $this->Data[$setting] = $data[$setting];
@@ -97,8 +97,8 @@
 		{
 			$db = $this->Settings->getDB();
 
-			$bool_settings = $this->ListBooleanSettings();
-			$other_settings = $this->ListOtherSettings();
+			$bool_settings = $this->listBooleanSettings();
+			$other_settings = $this->listOtherSettings();
 			$query = $params = array();
 
 			foreach ($bool_settings as $setting)
@@ -114,28 +114,28 @@
 			$query = implode(", ", $query);
 			$params[] = $this->Username;
 
-			$result = $db->Query('UPDATE `settings` SET '.$query.' WHERE `Username` = ?', $params);
+			$result = $db->query('UPDATE `settings` SET '.$query.' WHERE `Username` = ?', $params);
 			if ($result === false) return false;
 
 			return true;
 		}
 
-		public function GetAll() // return all settings
+		public function getAll() // return all settings
 		{
 			return $this->Data;
 		}
 
-		public function GetSetting($setting) // get specific setting
+		public function getSetting($setting) // get specific setting
 		{
 			return $this->Data[$setting];
 		}
 
-		public function ChangeSetting($setting, $value) // change specific setting
+		public function changeSetting($setting, $value) // change specific setting
 		{
 			$this->Data[$setting] = $value;
 		}
 
-		public function Age() // Calculates age from birthdate (standard date string)
+		public function age() // Calculates age from birthdate (standard date string)
 		{
 			list($year, $month, $day) = explode("-", $this->Data['Birthdate']);
 
@@ -146,7 +146,7 @@
 			return $age;
 		}
 
-		public function Sign() // Calculates sign from birthdate (date string)
+		public function sign() // Calculates sign from birthdate (date string)
 		{
 			$birthdate = strtotime($this->Data['Birthdate']);
 			$month = intval(date("m", $birthdate));
@@ -169,12 +169,12 @@
 			return $sign;
 		}
 
-		public function ListBooleanSettings() // returns list of all boolean type setting names
+		public function listBooleanSettings() // returns list of all boolean type setting names
 		{
 			return array('FriendlyFlag', 'BlindFlag', 'LongFlag', 'Images', 'Insignias', 'CardPool', 'PlayButtons', 'Nationality', 'Chatorder', 'IntegratedChat', 'Avatargame', 'Avatarlist', 'Correction', 'OldCardLook', 'Miniflags', 'Reports', 'Forum_notification', 'Concepts_notification', 'GamesDetails', 'RandomDeck', 'GameLimit');
 		}
 
-		public function ListOtherSettings() // returns list of all non-boolean type setting names
+		public function listOtherSettings() // returns list of all non-boolean type setting names
 		{
 			return array('Firstname', 'Surname', 'Birthdate', 'Gender', 'Email', 'Imnumber', 'Country', 'Hobby', 'Avatar', 'Status', 'Timezone', 'Skin', 'Background', 'DefaultFilter', 'Autorefresh', 'AutoAi', 'Cards_per_row', 'Timeout', 'FoilCards');
 		}

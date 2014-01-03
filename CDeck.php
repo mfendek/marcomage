@@ -13,55 +13,55 @@
 			$this->db = &$database;
 		}
 		
-		public function GetDB()
+		public function getDB()
 		{
 			return $this->db;
 		}
 		
-		public function CreateDeck($username, $deckname)
+		public function createDeck($username, $deckname)
 		{
 			$db = $this->db;
 			
 			$deck_data = new CDeckData;
 			
-			$result = $db->Query('INSERT INTO `decks` (`Username`, `Deckname`, `Data`) VALUES (?, ?, ?)', array($username, $deckname, serialize($deck_data)));
+			$result = $db->query('INSERT INTO `decks` (`Username`, `Deckname`, `Data`) VALUES (?, ?, ?)', array($username, $deckname, serialize($deck_data)));
 			if ($result === false) return false;
 			
-			$deck = new CDeck($db->LastID(), $this, $username, $deckname);
+			$deck = new CDeck($db->lastId(), $this, $username, $deckname);
 			
 			return $deck;
 		}
 		
-		public function DeleteDeck($deck_id)
+		public function deleteDeck($deck_id)
 		{
 			$db = $this->db;
 
-			$result = $db->Query('DELETE FROM `decks` WHERE `DeckID` = ?', array($deck_id));
+			$result = $db->query('DELETE FROM `decks` WHERE `DeckID` = ?', array($deck_id));
 			if ($result === false) return false;
 			
 			return true;
 		}
 		
-		public function GetDeck($deck_id)
+		public function getDeck($deck_id)
 		{
 			$deck = new CDeck($deck_id, $this);
-			$result = $deck->LoadDeck();
+			$result = $deck->loadDeck();
 			if (!$result) return false;
 			
 			return $deck;
 		}
 		
-		public function ListDecks($username)
+		public function listDecks($username)
 		{
 			$db = $this->db;
 
-			$result = $db->Query('SELECT `DeckID`, `Deckname`, `Modified`, (CASE WHEN `Ready` = TRUE THEN "yes" ELSE "no" END) as `Ready`, `Wins`, `Losses`, `Draws`, `Shared` FROM `decks` WHERE `Username` = ?', array($username));
+			$result = $db->query('SELECT `DeckID`, `Deckname`, `Modified`, (CASE WHEN `Ready` = TRUE THEN "yes" ELSE "no" END) as `Ready`, `Wins`, `Losses`, `Draws`, `Shared` FROM `decks` WHERE `Username` = ?', array($username));
 			if ($result === false) return false;
 
 			return $result;
 		}
 		
-		public function ListSharedDecks($author, $condition, $order, $page)
+		public function listSharedDecks($author, $condition, $order, $page)
 		{
 			$db = $this->db;
 
@@ -75,13 +75,13 @@
 			$order = ($order == 'ASC') ? 'ASC' : 'DESC';
 			$page = (is_numeric($page)) ? $page : 0;
 
-			$result = $db->Query('SELECT `DeckID`, `Username`, `Deckname`, `Modified`, `Wins`, `Losses`, `Draws` FROM `decks` WHERE `Shared` = TRUE AND `Ready` = TRUE'.$author_query.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(DECKS_PER_PAGE * $page).', '.DECKS_PER_PAGE.'', $params);
+			$result = $db->query('SELECT `DeckID`, `Username`, `Deckname`, `Modified`, `Wins`, `Losses`, `Draws` FROM `decks` WHERE `Shared` = TRUE AND `Ready` = TRUE'.$author_query.' ORDER BY `'.$condition.'` '.$order.' LIMIT '.(DECKS_PER_PAGE * $page).', '.DECKS_PER_PAGE.'', $params);
 			if ($result === false) return false;
 
 			return $result;
 		}
 
-		public function CountPages($author)
+		public function countPages($author)
 		{
 			$db = $this->db;
 
@@ -90,7 +90,7 @@
 			$params = array();
 			if ($author != "none") $params[] = $author;
 
-			$result = $db->Query('SELECT COUNT(`DeckID`) as `Count` FROM `decks` WHERE `Shared` = TRUE AND `Ready` = TRUE'.$author_query.'', $params);
+			$result = $db->query('SELECT COUNT(`DeckID`) as `Count` FROM `decks` WHERE `Shared` = TRUE AND `Ready` = TRUE'.$author_query.'', $params);
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
@@ -100,11 +100,11 @@
 			return $pages;
 		}
 
-		public function ListAuthors()
+		public function listAuthors()
 		{
 			$db = $this->db;
 
-			$result = $db->Query('SELECT DISTINCT `Username` FROM `decks` WHERE `Shared` = TRUE AND `Ready` = TRUE ORDER BY `Username` ASC');
+			$result = $db->query('SELECT DISTINCT `Username` FROM `decks` WHERE `Shared` = TRUE AND `Ready` = TRUE ORDER BY `Username` ASC');
 			if ($result === false) return false;
 
 			$authors = array();
@@ -115,45 +115,45 @@
 			return $authors;
 		}
 		
-		public function ListReadyDecks($username)
+		public function listReadyDecks($username)
 		{
 			$db = $this->db;
-			$result = $db->Query('SELECT `DeckID`, `Deckname` FROM `decks` WHERE `Username` = ? AND `Ready` = TRUE', array($username));
+			$result = $db->query('SELECT `DeckID`, `Deckname` FROM `decks` WHERE `Username` = ? AND `Ready` = TRUE', array($username));
 			if ($result === false) return false;
 
 			return $result;
 		}
 		
-		public function UpdateStatistics($player1, $player2, $deck_id1, $deck_id2, $winner)
+		public function updateStatistics($player1, $player2, $deck_id1, $deck_id2, $winner)
 		{
 			// update player 1 deck statistics
 			if ($deck_id1 > 0)
 			{
-				$deck1 = $this->GetDeck($deck_id1);
-				if ($deck1 and $deck1->Username() == $player1)
+				$deck1 = $this->getDeck($deck_id1);
+				if ($deck1 and $deck1->username() == $player1)
 				{
 					if ($winner == $player1) $deck1->Wins++;
 					elseif ($winner == $player2) $deck1->Losses++;
 					else $deck1->Draws++;
-					$deck1->UpdateStats();
+					$deck1->updateStats();
 				}
 			}
 
 			// update player 2 deck statistics
 			if ($deck_id2 > 0)
 			{
-				$deck2 = $this->GetDeck($deck_id2);
-				if ($deck2 and $deck2->Username() == $player2)
+				$deck2 = $this->getDeck($deck_id2);
+				if ($deck2 and $deck2->username() == $player2)
 				{
 					if ($winner == $player2) $deck2->Wins++;
 					elseif ($winner == $player1) $deck2->Losses++;
 					else $deck2->Draws++;
-					$deck2->UpdateStats();
+					$deck2->updateStats();
 				}
 			}
 		}
 
-		public function StarterDecks()
+		public function starterDecks()
 		{
 			$starter_decks = $starter_data = array();
 
@@ -178,7 +178,7 @@
 			foreach ($starter_data as $deck_name => $deck_data)
 			{
 				$curent_deck = new CDeck(0, $this, SYSTEM_NAME, $deck_name);
-				$curent_deck->LoadData($deck_data);
+				$curent_deck->loadData($deck_data);
 
 				$starter_decks[$deck_name] = $curent_deck;
 			}
@@ -186,7 +186,7 @@
 			return $starter_decks;
 		}
 
-		public function ChallengeDecks()
+		public function challengeDecks()
 		{
 			$challenge_decks = $challenge_data = array();
 
@@ -246,7 +246,7 @@
 			foreach ($challenge_data as $deck_name => $deck_data)
 			{
 				$curent_deck = new CDeck(0, $this, SYSTEM_NAME, $deck_name);
-				$curent_deck->LoadData($deck_data);
+				$curent_deck->loadData($deck_data);
 
 				$challenge_decks[$deck_name] = $curent_deck;
 			}
@@ -292,31 +292,31 @@
 			$this->DeckData = false;
 		}
 		
-		public function ID()
+		public function id()
 		{
 			return $this->DeckID;
 		}
 		
-		public function Username()
+		public function username()
 		{
 			return $this->Username;
 		}
 		
-		public function Deckname()
+		public function deckname()
 		{
 			return $this->Deckname;
 		}
 		
-		public function GetNote()
+		public function getNote()
 		{
 			return $this->Note;
 		}
 		
-		public function LoadDeck()
+		public function loadDeck()
 		{
 			$db = $this->Decks->getDB();
 
-			$result = $db->Query('SELECT `Username`, `Deckname`, `Data`, `Note`, `Wins`, `Losses`, `Draws`, `Shared` FROM `decks` WHERE `DeckID` = ?', array($this->DeckID));
+			$result = $db->query('SELECT `Username`, `Deckname`, `Data`, `Note`, `Wins`, `Losses`, `Draws`, `Shared` FROM `decks` WHERE `DeckID` = ?', array($this->DeckID));
 			if ($result === false or count($result) == 0) return false;
 			
 			$data = $result[0];
@@ -332,31 +332,31 @@
 			return true;
 		}
 		
-		public function SaveDeck()
+		public function saveDeck()
 		{
 			$db = $this->Decks->getDB();
 
-			$result = $db->Query('UPDATE `decks` SET `Ready` = ?, `Data` = ?, `Wins` = ?, `Losses` = ?, `Draws` = ?, `Shared` = ?, `Modified` = NOW() WHERE `DeckID` = ?', array((($this->isReady()) ? 1 : 0), serialize($this->DeckData), $this->Wins, $this->Losses, $this->Draws, $this->Shared, $this->DeckID));
+			$result = $db->query('UPDATE `decks` SET `Ready` = ?, `Data` = ?, `Wins` = ?, `Losses` = ?, `Draws` = ?, `Shared` = ?, `Modified` = NOW() WHERE `DeckID` = ?', array((($this->isReady()) ? 1 : 0), serialize($this->DeckData), $this->Wins, $this->Losses, $this->Draws, $this->Shared, $this->DeckID));
 			if ($result === false) return false;
 			
 			return true;
 		}
 		
-		public function UpdateStats()
+		public function updateStats()
 		{
 			$db = $this->Decks->getDB();
 
-			$result = $db->Query('UPDATE `decks` SET `Wins` = ?, `Losses` = ?, `Draws` = ? WHERE `DeckID` = ?', array($this->Wins, $this->Losses, $this->Draws, $this->DeckID));
+			$result = $db->query('UPDATE `decks` SET `Wins` = ?, `Losses` = ?, `Draws` = ? WHERE `DeckID` = ?', array($this->Wins, $this->Losses, $this->Draws, $this->DeckID));
 			if ($result === false) return false;
 			
 			return true;
 		}
 		
-		public function RenameDeck($newdeckname)
+		public function renameDeck($newdeckname)
 		{
 			$db = $this->Decks->getDB();
 
-			$result = $db->Query('UPDATE `decks` SET `Deckname` = ?, `Modified` = NOW()  WHERE `DeckID` = ?', array($newdeckname, $this->DeckID));
+			$result = $db->query('UPDATE `decks` SET `Deckname` = ?, `Modified` = NOW()  WHERE `DeckID` = ?', array($newdeckname, $this->DeckID));
 			if ($result === false) return false;
 			
 			$this->Deckname = $newdeckname;
@@ -364,11 +364,11 @@
 			return true;
 		}
 		
-		public function UpdateNote($note)
+		public function updateNote($note)
 		{
 			$db = $this->Decks->getDB();
 
-			$result = $db->Query('UPDATE `decks` SET `Note` = ?, `Modified` = NOW()  WHERE `DeckID` = ?', array($note, $this->DeckID));
+			$result = $db->query('UPDATE `decks` SET `Note` = ?, `Modified` = NOW()  WHERE `DeckID` = ?', array($note, $this->DeckID));
 			if ($result === false) return false;
 
 			$this->Note = $note;
@@ -376,7 +376,7 @@
 			return true;
 		}
 		
-		public function ResetStatistics()
+		public function resetStatistics()
 		{
 			$this->Wins = 0;
 			$this->Losses = 0;
@@ -388,7 +388,7 @@
 		 * Zeroes out all three class arrays and sets the token options to 'none'.
 		 * @return bool true if the operation succeeds, false if it fails
 		*/
-		public function ResetDeck()
+		public function resetDeck()
 		{
 			$this->DeckData->Common   = array(1=> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 			$this->DeckData->Uncommon = array(1=> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -405,12 +405,12 @@
 		 * @param int $cardid the id of the card to insert
 		 * @return bool true if the operation succeeds, false if it fails
 		*/
-		public function AddCard($cardid)
+		public function addCard($cardid)
 		{
 			global $carddb;
 
 			// retrieve the card's data
-			$card = $carddb->GetCard($cardid);
+			$card = $carddb->getCard($cardid);
 			$class = $card->Class;
 
 			// verify if the card id is valid
@@ -423,7 +423,7 @@
 				return false;
 
 			// check if the deck's corresponding section isn't already full
-			if( $this->DeckData->Count($class) == 15 )
+			if( $this->DeckData->count($class) == 15 )
 				return false;
 
 			// success
@@ -447,12 +447,12 @@
 		 * @param int $cardid the id of the card to remove
 		 * @return bool true if the operation succeeds, false if it fails
 		*/
-		public function ReturnCard($cardid)
+		public function returnCard($cardid)
 		{
 			global $carddb;
 
 			// retrieve the card's data
-			$card = $carddb->GetCard($cardid);
+			$card = $carddb->getCard($cardid);
 			$class = $card->Class;
 			
 			// check if the card is present in the deck
@@ -471,17 +471,17 @@
 		
 		public function isReady()
 		{
-			return (($this->DeckData->Count('Common') == 15) && ($this->DeckData->Count('Uncommon') == 15) && ($this->DeckData->Count('Rare') == 15));
+			return (($this->DeckData->count('Common') == 15) && ($this->DeckData->count('Uncommon') == 15) && ($this->DeckData->count('Rare') == 15));
 		}
 		
-		public function SetAutoTokens() // find and set token keywords most present in the deck
+		public function setAutoTokens() // find and set token keywords most present in the deck
 		{
 			global $carddb;
 			
 			$tokens = count($this->DeckData->Tokens);
 			
 			// initialize token keyword counter array
-			$token_keywords = $carddb->TokenKeywords();
+			$token_keywords = $carddb->tokenKeywords();
 			$token_values = array_fill(0, count($token_keywords), 0);
 			
 			$distict_keywords = array_combine($token_keywords, $token_values);
@@ -491,7 +491,7 @@
 				foreach ($this->DeckData->$rarity as $card_id)
 					if ($card_id > 0)
 					{
-						$keywords = $carddb->GetCard($card_id)->Keywords;
+						$keywords = $carddb->getCard($card_id)->Keywords;
 						$words = explode(",", $keywords);
 						
 						foreach($words as $word)
@@ -521,7 +521,7 @@
 			return "Success";
 		}
 		
-		public function ToCSV()
+		public function toCSV()
 		{
 			$data = '';
 			
@@ -534,7 +534,7 @@
 			return $data;
 		}
 
-		public function AvgCostPerTurn() // calculate average cost per turn
+		public function avgCostPerTurn() // calculate average cost per turn
 		{
 			global $carddb;
 
@@ -551,7 +551,7 @@
 				{
 					if ($cardid != 0)
 					{
-						$card = $carddb->GetCard($cardid);
+						$card = $carddb->getCard($cardid);
 						$sum['Bricks'][$class]+= $card->Bricks;
 						$sum['Gems'][$class]+= $card->Gems;
 						$sum['Recruits'][$class]+= $card->Recruits;
@@ -577,7 +577,7 @@
 			return $res;
 		}
 
-		public function FromCSV($file, $level)
+		public function fromCSV($file, $level)
 		{
 			global $carddb;
 			
@@ -595,7 +595,7 @@
 			if (strlen($newname) > 20) return "Deck name is too long.";
 			
 			// check if the deckname can be used (will not violate deck name uniqueness)
-			$list = $this->Decks->ListDecks($this->Username);
+			$list = $this->Decks->listDecks($this->Username);
 			$deck_names = array();
 			foreach ($list as $deck) $deck_names[] = $deck['Deckname'];
 			$pos = array_search($newname, $deck_names);
@@ -613,7 +613,7 @@
 				if (count($cards) != count(array_unique($cards))) return $rarity." cards data contains duplicates.";
 				
 				// check ids
-				$all_cards = $carddb->GetList(array('class' => $rarity, 'level' => $level, 'level_op' => '<='));
+				$all_cards = $carddb->getList(array('class' => $rarity, 'level' => $level, 'level_op' => '<='));
 				if (count(array_diff($cards, $all_cards)) > 0) return $rarity." cards data contains forbidden cards.";
 			}
 			
@@ -626,13 +626,13 @@
 			if (count($non_empty) != count(array_unique($non_empty))) return " Token data contains duplicates.";
 			
 			// check token names
-			$all_tokens = array_merge($carddb->TokenKeywords(), array("none"));
+			$all_tokens = array_merge($carddb->tokenKeywords(), array("none"));
 			
 			if (count(array_diff($tokens, $all_tokens)) > 0) return "Token data contains non token keywords.";
 			
 			// import verfied data
 			
-			$this->RenameDeck($newname);
+			$this->renameDeck($newname);
 			
 			// adjust key numbering
 			$card_keys = array_keys(array_fill(1, 15, 0));
@@ -645,7 +645,7 @@
 			return "Success";
 		}
 		
-		public function LoadData(CDeckData $deck_data)
+		public function loadData(CDeckData $deck_data)
 		{
 			$this->DeckData = $deck_data;
 		}
@@ -668,7 +668,7 @@
 			$this->Tokens = array(1 => 'none', 'none', 'none');
 		}
 		
-		public function Count($class)
+		public function count($class)
 		{
 			if (($class != 'Common') && ($class != 'Uncommon') && ($class != 'Rare')) return -1;
 			

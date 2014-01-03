@@ -27,7 +27,7 @@
 			return $this->db;
 		}
 		
-		public function GetCard($cardid)
+		public function getCard($cardid)
 		{
 			return new CCard($cardid, $this);
 		}
@@ -48,7 +48,7 @@
 		 * @param array $filters an array of chosen filters and their parameters
 		 * @return string a boolean expression to be used in a card retrieval query
 		*/
-		private function makeFilterQuery(array $filters)
+		private function makeFilterquery(array $filters)
 		{
 			$query = "@id > 0"; // sentinel
 
@@ -128,15 +128,15 @@
 
 		/**
 		 * Filters cards according to the provided filtering instructions.
-		 * @see CCards::makeFilterQuery()
+		 * @see CCards::makeFilterquery()
 		 * @param array $filters an array of chosen filters and their parameters
 		 * @return array an array of ids for cards that match the filters
 		*/
-		public function GetList(array $filters)
+		public function getList(array $filters)
 		{
 			$db = $this->getDB();
 
-			$result = $db->xpath("/am:cards/am:card[".$this->makeFilterQuery($filters)."]/@id");
+			$result = $db->xpath("/am:cards/am:card[".$this->makeFilterquery($filters)."]/@id");
 			
 			if( $result === false ) return array(); // workaround for http://bugs.php.net/bug.php?id=48601
 			
@@ -147,11 +147,11 @@
 			return $cards;
 		}
 
-		public function CountPages(array $filters) // calculate number of pages for current card list (specified by filters)
+		public function countPages(array $filters) // calculate number of pages for current card list (specified by filters)
 		{
 			$db = $this->getDB();
 
-			$result = $db->xpath("/am:cards/am:card[".$this->makeFilterQuery($filters)."]/@id");
+			$result = $db->xpath("/am:cards/am:card[".$this->makeFilterquery($filters)."]/@id");
 
 			if( $result === false ) return array(); // workaround for http://bugs.php.net/bug.php?id=48601
 
@@ -160,14 +160,14 @@
 
 		/**
 		 * Retrieves data for the specified card ids.
-		 * Can be used in combination with CCards::GetList().
+		 * Can be used in combination with CCards::getList().
 		 * The same card id may be specified multiple times.
 		 * The result will use the same keys and key order as the input.
 		 * @param array $ids an array of card ids to retrieve
 		 * @param int $page current page number (optional parameter)
 		 * @return array an array of the requested cards' data
 		*/
-		public function GetData(array $ids, $page = -1)
+		public function getData(array $ids, $page = -1)
 		{
 			$db = $this->getDB();
 
@@ -221,7 +221,7 @@
 		}
 		
 		// returns distinct levels that are less or equal to specified level
-		public function Levels($level = -1)
+		public function levels($level = -1)
 		{
 			$levels = array();
 			
@@ -243,7 +243,7 @@
 		}
 		
 		// returns all distinct keywords
-		public function Keywords()
+		public function keywords()
 		{
 			$keywords = array();
 			
@@ -267,7 +267,7 @@
 			return $keywords;
 		}
 		
-		public function ListCreationDates() // returns list of distinct creation dates
+		public function listCreationDates() // returns list of distinct creation dates
 		{
 			$db = $this->getDB();
 			
@@ -283,7 +283,7 @@
 			return $dates;
 		}
 		
-		public function ListModifyDates() // returns list of distinct modification dates
+		public function listModifyDates() // returns list of distinct modification dates
 		{
 			$db = $this->getDB();
 			
@@ -300,7 +300,7 @@
 		}
 		
 		// returns token keywords
-		public function TokenKeywords()
+		public function tokenKeywords()
 		{
 			return array('Alliance', 'Barbarian', 'Brigand', 'Beast', 'Burning', 'Holy', 'Mage', 'Soldier', 'Titan', 'Undead', 'Unliving');
 		}
@@ -329,20 +329,20 @@
 		{
 			$this->Cards = &$Cards;
 			
-			$data = $Cards->GetData(array($cardid));
+			$data = $Cards->getData(array($cardid));
 			if( $data === false )
 				$data = array('id'=>$cardid, 'name'=>'Invalid Card', 'class'=>'None', 'bricks'=>0, 'gems'=>0, 'recruits'=>0, 'modes'=>0, 'level'=>0, 'keywords'=>'', 'effect'=>'', 'code'=>'', 'created'=>'', 'modified'=>'');
 
 			// initialize self
-			$this->SetData($data[0]);
+			$this->setData($data[0]);
 		}
 		
-		public function IsPlayAgainCard()
+		public function isPlayAgainCard()
 		{
-			return ($this->HasKeyWord("Quick") or $this->HasKeyWord("Swift"));
+			return ($this->hasKeyword("Quick") or $this->hasKeyword("Swift"));
 		}
 		
-		public function HasKeyword($keyword)
+		public function hasKeyword($keyword)
 		{
 			if( $keyword != "any" )
 				return (strpos($this->Keywords, $keyword) !== FALSE);
@@ -350,7 +350,7 @@
 				return ($this->Keywords != "");
 		}
 		
-		public function GetResources($type = '')
+		public function getResources($type = '')
 		{
 			if ($type != '')
 				$resource = $this->$type;
@@ -365,7 +365,7 @@
 			return $resource;
 		}
 		
-		public function GetData()
+		public function getData()
 		{
 			$data['id']       = $this->ID;
 			$data['name']     = $this->Name;
@@ -384,7 +384,7 @@
 			return $data;
 		}
 
-		private function SetData($data)
+		private function setData($data)
 		{
 			$this->ID       = $data['id'];
 			$this->Name     = $data['name'];
@@ -404,7 +404,7 @@
 		///
 		/// Returns 'id' data field
 		/// @return int card id
-		public function Id()
+		public function id()
 		{
 			return $this->ID;
 		}
@@ -412,7 +412,7 @@
 		///
 		/// Returns 'class' data field
 		/// @return string card class
-		public function GetClass()
+		public function getClass()
 		{
 			return $this->Class;
 		}

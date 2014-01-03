@@ -28,7 +28,7 @@
 			return $this->db;
 		}
 
-		public function ListChallenges() // get list of available AI challenges
+		public function listChallenges() // get list of available AI challenges
 		{
 			$db = $this->getDB();
 			$result = $db->xpath('/am:challenges/am:challenge');
@@ -47,7 +47,7 @@
 			return $challenges;
 		}
 
-		public function ListChallengeNames() // get list of AI challenges names
+		public function listChallengeNames() // get list of AI challenges names
 		{
 			$db = $this->getDB();
 			$result = $db->xpath('/am:challenges/am:challenge');
@@ -61,7 +61,7 @@
 			return $challenges;
 		}
 
-		public function GetChallenge($challenge_name)
+		public function getChallenge($challenge_name)
 		{
 			$db = $this->getDB();
 			$result = $db->xpath('/am:challenges/am:challenge[@name="'.$challenge_name.'"]');

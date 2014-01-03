@@ -13,12 +13,12 @@
 			$this->db = &$database;
 		}
 		
-		public function GetDB()
+		public function getDB()
 		{
 			return $this->db;
 		}
 		
-		public function CreateGame($player1, $player2, CDeck $deck1, $game_modes, $timeout = 0)
+		public function createGame($player1, $player2, CDeck $deck1, $game_modes, $timeout = 0)
 		{
 			$db = $this->db;
 			
@@ -26,32 +26,32 @@
 			$game_data[1]->Deck = $deck1->DeckData;
 			$game_data[2] = new CGamePlayerData;
 			
-			$result = $db->Query('INSERT INTO `games` (`Player1`, `Player2`, `Data`, `DeckID1`, `GameModes`, `Timeout`) VALUES (?, ?, ?, ?, ?, ?)', array($player1, $player2, serialize($game_data), $deck1->ID(), implode(',', $game_modes), $timeout));
+			$result = $db->query('INSERT INTO `games` (`Player1`, `Player2`, `Data`, `DeckID1`, `GameModes`, `Timeout`) VALUES (?, ?, ?, ?, ?, ?)', array($player1, $player2, serialize($game_data), $deck1->id(), implode(',', $game_modes), $timeout));
 			if ($result === false) return false;
 			
-			$game = new CGame($db->LastID(), $player1, $player2, $this);
-			if (!$game->LoadGame()) return false;
+			$game = new CGame($db->lastId(), $player1, $player2, $this);
+			if (!$game->loadGame()) return false;
 			
 			return $game;
 		}
 		
-		public function DeleteGame($gameid)
+		public function deleteGame($gameid)
 		{
 			$db = $this->db;
 
-			$result = $db->Query('DELETE FROM `games` WHERE `GameID` = ?', array($gameid));
+			$result = $db->query('DELETE FROM `games` WHERE `GameID` = ?', array($gameid));
 			if ($result === false) return false;
 			
 			return true;
 		}
 		
-		public function DeleteGames($player) // delete all games and related data for specified player
+		public function deleteGames($player) // delete all games and related data for specified player
 		{
 			global $replaydb;
 			$db = $this->db;
 			
 			// get list of games that are going to be deleted
-			$result = $db->Query('SELECT `GameID` FROM `games` WHERE (`Player1` = ?) OR (`Player2` = ?)', array($player, $player));
+			$result = $db->query('SELECT `GameID` FROM `games` WHERE (`Player1` = ?) OR (`Player2` = ?)', array($player, $player));
 			if ($result === false) return false;
 			
 			$games = array();
@@ -59,7 +59,7 @@
 				$games[] = $data['GameID'];
 			
 			// delete games
-			$result = $db->Query('DELETE FROM `games` WHERE (`Player1` = ?) OR (`Player2` = ?)', array($player, $player));
+			$result = $db->query('DELETE FROM `games` WHERE (`Player1` = ?) OR (`Player2` = ?)', array($player, $player));
 			if ($result === false) return false;
 			
 			$chatdb = new CChats($db);
@@ -67,20 +67,20 @@
 			// delete related data
 			foreach ($games as $gameid)
 			{
-				$res = $chatdb->DeleteChat($gameid);
+				$res = $chatdb->deleteChat($gameid);
 				if (!$res) return false;
-				$res = $replaydb->DeleteReplay($gameid);
+				$res = $replaydb->deleteReplay($gameid);
 				if (!$res) return false;
 			}
 			
 			return true;
 		}
 		
-		public function GetGame($gameid)
+		public function getGame($gameid)
 		{
 			$db = $this->db;
 
-			$result = $db->Query('SELECT `Player1`, `Player2` FROM `games` WHERE `GameID` = ?', array($gameid));
+			$result = $db->query('SELECT `Player1`, `Player2` FROM `games` WHERE `GameID` = ?', array($gameid));
 			if ($result === false or count($result) == 0) return false;
 			
 			$players = $result[0];
@@ -88,23 +88,23 @@
 			$player2 = $players['Player2'];
 			
 			$game = new CGame($gameid, $player1, $player2, $this);
-			$result = $game->LoadGame();
+			$result = $game->loadGame();
 			if (!$result) return false;
 			
 			return $game;
 		}
 		
-		public function JoinGame($player, $game_id)
+		public function joinGame($player, $game_id)
 		{
 			$db = $this->db;
 
-			$result = $db->Query('UPDATE `games` SET `Player2` = ? WHERE `GameID` = ?', array($player, $game_id));
+			$result = $db->query('UPDATE `games` SET `Player2` = ? WHERE `GameID` = ?', array($player, $game_id));
 			if ($result === false) return false;
 			
 			return true;
 		}
 		
-		public function CountFreeSlots1($player) // used in all cases except when accepting a challenge
+		public function countFreeSlots1($player) // used in all cases except when accepting a challenge
 		{
 			global $playerdb;
 			$db = $this->db;
@@ -118,15 +118,15 @@
 			// active games
 			$active_games = '`Player1` = ? AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = ? AND (`State` != "waiting" AND `State` != "P2 over")';
 
-			$result = $db->Query('SELECT COUNT(`GameID`) as `count` FROM `games` WHERE ('.$outgoing.') OR ('.$challenges_to.') OR ('.$active_games.')', array($player, $player, $player, $player));
+			$result = $db->query('SELECT COUNT(`GameID`) as `count` FROM `games` WHERE ('.$outgoing.') OR ('.$challenges_to.') OR ('.$active_games.')', array($player, $player, $player, $player));
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
 
-			return max(0, MAX_GAMES + $playerdb->GetGameSlots($player) - $data['count']); // make sure the result is not negative
+			return max(0, MAX_GAMES + $playerdb->getGameSlots($player) - $data['count']); // make sure the result is not negative
 		}
 		
-		public function CountFreeSlots2($player) // used only when accepting a challenge
+		public function countFreeSlots2($player) // used only when accepting a challenge
 		{
 			global $playerdb;
 			$db = $this->db;
@@ -137,20 +137,20 @@
 			// active games
 			$active_games = '`Player1` = ? AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = ? AND (`State` != "waiting" AND `State` != "P2 over")';
 
-			$result = $db->Query('SELECT COUNT(`GameID`) as `count` FROM `games` WHERE ('.$outgoing.') OR ('.$active_games.')', array($player, $player, $player));
+			$result = $db->query('SELECT COUNT(`GameID`) as `count` FROM `games` WHERE ('.$outgoing.') OR ('.$active_games.')', array($player, $player, $player));
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
 
-			return max(0, MAX_GAMES + $playerdb->GetGameSlots($player) - $data['count']);
+			return max(0, MAX_GAMES + $playerdb->getGameSlots($player) - $data['count']);
 		}
 		
-		public function ListChallengesFrom($player)
+		public function listChallengesFrom($player)
 		{
 			// $player is on the left side and $Status = "waiting"
 			$db = $this->db;
 
-			$result = $db->Query('SELECT `Player2` FROM `games` WHERE `Player1` = ? AND `Player2` != "" AND `State` = "waiting"', array($player));
+			$result = $db->query('SELECT `Player2` FROM `games` WHERE `Player1` = ? AND `Player2` != "" AND `State` = "waiting"', array($player));
 			if ($result === false) return false;
 			
 			$names = array();
@@ -160,12 +160,12 @@
 			return $names;
 		}
 		
-		public function ListChallengesTo($player)
+		public function listChallengesTo($player)
 		{
 			// $player is on the right side and $Status = "waiting"
 			$db = $this->db;
 
-			$result = $db->Query('SELECT `Player1` FROM `games` WHERE `Player2` = ? AND `State` = "waiting"', array($player));
+			$result = $db->query('SELECT `Player1` FROM `games` WHERE `Player2` = ? AND `State` = "waiting"', array($player));
 			if ($result === false) return false;
 			
 			$names = array();
@@ -175,7 +175,7 @@
 			return $names;
 		}
 		
-		public function ListFreeGames($player, $hidden = "none", $friendly = "none", $long = "ignore")
+		public function listFreeGames($player, $hidden = "none", $friendly = "none", $long = "ignore")
 		{
 			// list hosted games, where player can join
 			$db = $this->db;
@@ -184,51 +184,51 @@
 			$friendly_q = ($friendly != "none") ? ' AND FIND_IN_SET("FriendlyPlay", `GameModes`) '.(($friendly == "include") ? '>' : '=').' 0' : '';
 			$long_q = ($long != "none") ? ' AND FIND_IN_SET("LongMode", `GameModes`) '.(($long == "include") ? '>' : '=').' 0' : '';
 
-			$result = $db->Query('SELECT `GameID`, `Player1`, `Last Action`, `GameModes`, `Timeout` FROM `games` WHERE `Player1` != ? AND `Player2` = "" AND `State` = "waiting"'.$hidden_q.$friendly_q.$long_q.' ORDER BY `Last Action` DESC', array($player));
+			$result = $db->query('SELECT `GameID`, `Player1`, `Last Action`, `GameModes`, `Timeout` FROM `games` WHERE `Player1` != ? AND `Player2` = "" AND `State` = "waiting"'.$hidden_q.$friendly_q.$long_q.' ORDER BY `Last Action` DESC', array($player));
 			if ($result === false) return false;
 
 			return $result;
 		}
 		
-		public function ListHostedGames($player)
+		public function listHostedGames($player)
 		{
 			// list hosted games, hosted by specific player
 			$db = $this->db;
 
-			$result = $db->Query('SELECT `GameID`, `Last Action`, `GameModes`, `Timeout` FROM `games` WHERE `Player1` = ? AND `Player2` = "" AND `State` = "waiting" ORDER BY `Last Action` DESC', array($player));
+			$result = $db->query('SELECT `GameID`, `Last Action`, `GameModes`, `Timeout` FROM `games` WHERE `Player1` = ? AND `Player2` = "" AND `State` = "waiting" ORDER BY `Last Action` DESC', array($player));
 			if ($result === false) return false;
 
 			return $result;
 		}
 		
-		public function ListActiveGames($player)
+		public function listActiveGames($player)
 		{
 			// $player is either on the left or right side and Status != 'waiting' or 'P? over'
 			$db = $this->db;
 
-			$result = $db->Query('SELECT `GameID` FROM `games` WHERE (`Player1` = ? AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = ? AND (`State` != "waiting" AND `State` != "P2 over"))', array($player, $player));
+			$result = $db->query('SELECT `GameID` FROM `games` WHERE (`Player1` = ? AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = ? AND (`State` != "waiting" AND `State` != "P2 over"))', array($player, $player));
 			if ($result === false) return false;
 
 			return $result;
 		}
 		
-		public function ListGamesData($player)
+		public function listGamesData($player)
 		{
 			// $player is either on the left or right side and Status != 'waiting' or 'P? over'
 			$db = $this->db;
 
-			$result = $db->Query('SELECT `GameID`, `Player1`, `Player2`, `State`, `Current`, `Round`, `Last Action`, `GameModes`, `Timeout`, `AI` FROM `games` WHERE (`Player1` = ? AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = ? AND (`State` != "waiting" AND `State` != "P2 over"))', array($player, $player));
+			$result = $db->query('SELECT `GameID`, `Player1`, `Player2`, `State`, `Current`, `Round`, `Last Action`, `GameModes`, `Timeout`, `AI` FROM `games` WHERE (`Player1` = ? AND (`State` != "waiting" AND `State` != "P1 over")) OR (`Player2` = ? AND (`State` != "waiting" AND `State` != "P2 over"))', array($player, $player));
 			if ($result === false) return false;
 
 			return $result;
 		}
 		
 		/// return number of games where it's specified player's turn
-		public function CountCurrentGames($player)
+		public function countCurrentGames($player)
 		{
 			$db = $this->db;
 
-			$result = $db->Query('SELECT COUNT(`GameID`) as `count` FROM `games` WHERE `Current` = ? AND `State` = "in progress"', array($player));
+			$result = $db->query('SELECT COUNT(`GameID`) as `count` FROM `games` WHERE `Current` = ? AND `State` = "in progress"', array($player));
 			if ($result === false or count($result) == 0) return false;
 
 			$data = $result[0];
@@ -236,12 +236,12 @@
 			return $data['count'];
 		}
 		
-		public function NextGameList($player)
+		public function nextGameList($player)
 		{
 			// provide list of active games with opponent names
 			$db = $this->db;
 
-			$result = $db->Query('SELECT `GameID`, (CASE WHEN `Player1` = ? THEN `Player2` ELSE `Player1` END) as `Opponent` FROM `games` WHERE (`Player1` = ? OR `Player2` = ?) AND ((`State` = "in progress" AND (`Current` = ? OR (`Surrender` != ? AND `Surrender` != "") OR (`Timeout` > 0 AND `Last Action` <= NOW() - INTERVAL `Timeout` SECOND AND `Current` != ? AND `Player2` != ?))) OR `State` = "finished" OR (`State` = "P1 over" AND `Player2` = ?) OR (`State` = "P2 over" AND `Player1` = ?))', array($player, $player, $player, $player, $player, $player, SYSTEM_NAME, $player, $player));
+			$result = $db->query('SELECT `GameID`, (CASE WHEN `Player1` = ? THEN `Player2` ELSE `Player1` END) as `Opponent` FROM `games` WHERE (`Player1` = ? OR `Player2` = ?) AND ((`State` = "in progress" AND (`Current` = ? OR (`Surrender` != ? AND `Surrender` != "") OR (`Timeout` > 0 AND `Last Action` <= NOW() - INTERVAL `Timeout` SECOND AND `Current` != ? AND `Player2` != ?))) OR `State` = "finished" OR (`State` = "P1 over" AND `Player2` = ?) OR (`State` = "P2 over" AND `Player1` = ?))', array($player, $player, $player, $player, $player, $player, SYSTEM_NAME, $player, $player));
 			if ($result === false) return false;
 			
 			$game_data = array();
@@ -252,11 +252,11 @@
 		}
 
 		// check if there is already a game between two specified players
-		public function CheckGame($player1, $player2)
+		public function checkGame($player1, $player2)
 		{
 			$db = $this->db;
 
-			$result = $db->Query('SELECT 1 FROM `games` WHERE `State` = "in progress" AND ((`Player1` = ? AND `Player2` = ?) OR (`Player1` = ? AND `Player2` = ?)) LIMIT 1', array($player1, $player2, $player2, $player1));
+			$result = $db->query('SELECT 1 FROM `games` WHERE `State` = "in progress" AND ((`Player1` = ? AND `Player2` = ?) OR (`Player1` = ? AND `Player2` = ?)) LIMIT 1', array($player1, $player2, $player2, $player1));
 			if ($result === false or count($result) == 0) return false;
 
 			return true;
@@ -312,32 +312,32 @@
 		{
 		}
 		
-		public function ID()
+		public function id()
 		{
 			return $this->GameID;
 		}
 		
-		public function Name1()
+		public function name1()
 		{
 			return $this->Player1;
 		}
 		
-		public function Name2()
+		public function name2()
 		{
 			return $this->Player2;
 		}
 		
-		public function DeckID1()
+		public function deckId1()
 		{
 			return $this->DeckID1;
 		}
 		
-		public function DeckID2()
+		public function deckId2()
 		{
 			return $this->DeckID2;
 		}
 		
-		public function Outcome()
+		public function outcome()
 		{
 			$outcomes = array(
 				'Surrender' => 'Opponent has surrendered',
@@ -353,65 +353,65 @@
 			return $outcomes[$this->EndType];
 		}
 		
-		public function GetNote($player)
+		public function getNote($player)
 		{
 			return (($this->Player1 == $player) ? $this->Note1 : $this->Note2);
 		}
 		
-		public function SetNote($player, $new_content)
+		public function setNote($player, $new_content)
 		{
 			if ($this->Player1 == $player) $this->Note1 = $new_content;
 			else $this->Note2 = $new_content;
 		}
 		
-		public function ClearNote($player)
+		public function clearNote($player)
 		{
 			if ($this->Player1 == $player) $this->Note1 = '';
 			else $this->Note2 = '';
 		}
 		
-		public function GetGameMode($game_mode)
+		public function getGameMode($game_mode)
 		{
 			return $this->$game_mode;
 		}
 		
-		public function SaveChatMessage($message, $name)
+		public function saveChatMessage($message, $name)
 		{
-			return $this->Chat->SaveChatMessage($this->GameID, $message, $name);
+			return $this->Chat->saveChatMessage($this->GameID, $message, $name);
 		}
 		
-		public function DeleteChat()
+		public function deleteChat()
 		{
-			return $this->Chat->DeleteChat($this->GameID);
+			return $this->Chat->deleteChat($this->GameID);
 		}
 		
-		public function ListChatMessages($order)
+		public function listChatMessages($order)
 		{
-			return $this->Chat->ListChatMessages($this->GameID, $order);
+			return $this->Chat->listChatMessages($this->GameID, $order);
 		}
 		
-		public function NewMessages($player, $time)
+		public function newMessages($player, $time)
 		{
-			return $this->Chat->NewMessages($this->GameID, $player, $time);
+			return $this->Chat->newMessages($this->GameID, $player, $time);
 		}
 		
-		public function ResetChatNotification($player)
+		public function resetChatNotification($player)
 		{
 			$db = $this->Games->getDB();
 
 			$chat_notification = ($player == $this->Player1) ? 'ChatNotification1' : 'ChatNotification2';
 
-			$result = $db->Query('UPDATE `games` SET `'.$chat_notification.'` = NOW() WHERE `GameID` = ?', array($this->GameID));
+			$result = $db->query('UPDATE `games` SET `'.$chat_notification.'` = NOW() WHERE `GameID` = ?', array($this->GameID));
 			if ($result === false) return false;
 
 			return true;
 		}
 		
-		public function LoadGame()
+		public function loadGame()
 		{
 			$db = $this->Games->getDB();
 
-			$result = $db->Query('SELECT `State`, `Current`, `Round`, `Winner`, `Surrender`, `EndType`, `Last Action`, `ChatNotification1`, `ChatNotification2`, `Data`, `DeckID1`, `DeckID2`, `Note1`, `Note2`, `GameModes`, `Timeout`, `AI` FROM `games` WHERE `GameID` = ?', array($this->GameID));
+			$result = $db->query('SELECT `State`, `Current`, `Round`, `Winner`, `Surrender`, `EndType`, `Last Action`, `ChatNotification1`, `ChatNotification2`, `Data`, `DeckID1`, `DeckID2`, `Note1`, `Note2`, `GameModes`, `Timeout`, `AI` FROM `games` WHERE `GameID` = ?', array($this->GameID));
 			if ($result === false or count($result) == 0) return false;
 			
 			$data = $result[0];
@@ -447,7 +447,7 @@
 			return true;
 		}
 		
-		public function SaveGame()
+		public function saveGame()
 		{
 			$db = $this->Games->getDB();
 
@@ -455,49 +455,49 @@
 			$game_data[1] = $this->GameData[$this->Player1];
 			$game_data[2] = $this->GameData[$this->Player2];
 
-			$result = $db->Query('UPDATE `games` SET `State` = ?, `Current` = ?, `Round` = ?, `Winner` = ?, `Surrender` = ?, `EndType` = ?, `Last Action` = ?, `Data` = ?, `DeckID1` = ?, `DeckID2` = ?, `Note1` = ?, `Note2` = ?, `Timeout` = ?, `AI` = ? WHERE `GameID` = ?', array($this->State, $this->Current, $this->Round, $this->Winner, $this->Surrender, $this->EndType, $this->LastAction, serialize($game_data), $this->DeckID1, $this->DeckID2, $this->Note1, $this->Note2, $this->Timeout, $this->AI, $this->GameID));
+			$result = $db->query('UPDATE `games` SET `State` = ?, `Current` = ?, `Round` = ?, `Winner` = ?, `Surrender` = ?, `EndType` = ?, `Last Action` = ?, `Data` = ?, `DeckID1` = ?, `DeckID2` = ?, `Note1` = ?, `Note2` = ?, `Timeout` = ?, `AI` = ? WHERE `GameID` = ?', array($this->State, $this->Current, $this->Round, $this->Winner, $this->Surrender, $this->EndType, $this->LastAction, serialize($game_data), $this->DeckID1, $this->DeckID2, $this->Note1, $this->Note2, $this->Timeout, $this->AI, $this->GameID));
 			if ($result === false) return false;
 
 			return true;
 		}
 		
-		public function DeleteGame()
+		public function deleteGame()
 		{
 			$db = $this->Games->getDB();
 			
 			$db->txnBegin();
-			if (!$this->Games->DeleteGame($this->GameID)) { $db->txnRollBack(); return false; }
+			if (!$this->Games->deleteGame($this->GameID)) { $db->txnRollBack(); return false; }
 			// delete chat associated with the game
-			if (!$this->DeleteChat()) { $db->txnRollBack(); return false; }
+			if (!$this->deleteChat()) { $db->txnRollBack(); return false; }
 			$db->txnCommit();
 			
 			return true;
 		}
 		
-		public function DeleteChallenge()
+		public function deleteChallenge()
 		{
 			global $messagedb;
 			
 			$db = $this->Games->getDB();
 			
 			$db->txnBegin();
-			if (!$this->Games->DeleteGame($this->GameID)) { $db->txnRollBack(); return false; }
-			if (!$messagedb->CancelChallenge($this->GameID)) { $db->txnRollBack(); return false; }
+			if (!$this->Games->deleteGame($this->GameID)) { $db->txnRollBack(); return false; }
+			if (!$messagedb->cancelChallenge($this->GameID)) { $db->txnRollBack(); return false; }
 			$db->txnCommit();
 			
 			return true;
 		}
 		
-		public function JoinGame($player)
+		public function joinGame($player)
 		{
-			if (!$this->Games->JoinGame($player, $this->GameID)) return false;
+			if (!$this->Games->joinGame($player, $this->GameID)) return false;
 			
 			$this->Player2 = $player;
 			
 			return true;
 		}
 		
-		public function StartGame($player, CDeck $deck, $challenge_name = '')
+		public function startGame($player, CDeck $deck, $challenge_name = '')
 		{
 			global $game_config;
 			global $challengesdb;
@@ -506,7 +506,7 @@
 			$this->GameData[$player]->Deck = $deck->DeckData;
 			
 			// update deck slot reference
-			$this->DeckID2 = $deck->ID();
+			$this->DeckID2 = $deck->id();
 			
 			// determine game mode (normal or long)
 			$g_mode = ($this->LongMode == 'yes') ? 'long' : 'normal';
@@ -554,8 +554,8 @@
 			$p1->TokenValues = $p1->TokenChanges = array_fill_keys(array_keys($p1->TokenNames), 0);
 			$p2->TokenValues = $p2->TokenChanges = array_fill_keys(array_keys($p2->TokenNames), 0);
 			
-			$p1->Hand = $this->DrawHandInitial($p1->Deck);
-			$p2->Hand = $this->DrawHandInitial($p2->Deck);
+			$p1->Hand = $this->drawHandInitial($p1->Deck);
+			$p2->Hand = $this->drawHandInitial($p2->Deck);
 			
 			// process AI challenge (done only if the game is an AI challenge)
 			if ($challenge_name != '')
@@ -563,7 +563,7 @@
 				$this->AI = $challenge_name;
 				
 				// load AI challenge data
-				$challenge = $challengesdb->GetChallenge($challenge_name);
+				$challenge = $challengesdb->getChallenge($challenge_name);
 				if ($challenge)
 				{
 					$p1_init = $challenge->Init['his'];
@@ -578,7 +578,7 @@
 			}
 		}
 		
-		public function SurrenderGame()
+		public function surrenderGame()
 		{
 			// only allow surrender if the game is still on
 			if ($this->State != 'in progress' OR $this->Surrender == '') return 'Action not allowed!';
@@ -590,7 +590,7 @@
 			return 'OK';
 		}
 
-		public function RequestSurrender($playername)
+		public function requestSurrender($playername)
 		{
 			// only allow to request for surrender if the game is still on
 			if ($this->State != 'in progress' OR $this->Surrender != '') return 'Action not allowed!';
@@ -600,7 +600,7 @@
 			return 'OK';
 		}
 
-		public function CancelSurrender()
+		public function cancelSurrender()
 		{
 			// only allow to cancel surrender request if the game is still on
 			if ($this->State != 'in progress' OR $this->Surrender == '') return 'Action not allowed!';
@@ -610,7 +610,7 @@
 			return 'OK';
 		}
 
-		public function AbortGame($playername)
+		public function abortGame($playername)
 		{
 			// only allow surrender if the game is still on
 			if ($this->State != 'in progress') return 'Action not allowed!';
@@ -622,7 +622,7 @@
 			return 'OK';
 		}
 		
-		public function FinishGame($playername)
+		public function finishGame($playername)
 		{
 			// only allow surrender if the game is still on
 			if ($this->State != 'in progress') return 'Action not allowed!';
@@ -635,7 +635,7 @@
 			return 'OK';
 		}
 		
-		public function PlayCard($playername, $cardpos, $mode, $action)
+		public function playCard($playername, $cardpos, $mode, $action)
 		{
 			global $carddb;
 			global $keyworddb;
@@ -665,7 +665,7 @@
 			$time_vic = $game_config[$g_mode]['time_victory'];
 			
 			// prepare basic information
-			$score = $scoredb->GetScore($playername);
+			$score = $scoredb->getScore($playername);
 			$opponent = ($this->Player1 == $playername) ? $this->Player2 : $this->Player1;
 			$round = $this->Round;
 			$mydata = &$this->GameData[$playername];
@@ -675,7 +675,7 @@
 			
 			// find out what card is at that position
 			$cardid = $mydata->Hand[$cardpos];
-			$card = $carddb->GetCard($cardid);
+			$card = $carddb->getCard($cardid);
 			
 			// verify if there are enough resources
 			if ($action == 'play' AND ($mydata->Bricks < $card->Bricks || $mydata->Gems < $card->Gems || $mydata->Recruits < $card->Recruits)) return 'Insufficient resources!';
@@ -691,9 +691,9 @@
 			$hislastcardindex = count($hisdata->LastCard);
 			
 			// prepare supplementary information
-			$mylast_card = $carddb->GetCard($mydata->LastCard[$mylastcardindex]);
+			$mylast_card = $carddb->getCard($mydata->LastCard[$mylastcardindex]);
 			$mylast_action = $mydata->LastAction[$mylastcardindex];
-			$hislast_card = $carddb->GetCard($hisdata->LastCard[$hislastcardindex]);
+			$hislast_card = $carddb->getCard($hisdata->LastCard[$hislastcardindex]);
 			$hislast_action = $hisdata->LastAction[$hislastcardindex];
 			$hidden_cards = ($this->HiddenCards == 'yes');
 			
@@ -714,9 +714,9 @@
 			}
 			
 			// prepare changes made during previous round
-			if ($mylast_card->IsPlayAgainCard() and $mylast_action == 'play')
+			if ($mylast_card->isPlayAgainCard() and $mylast_action == 'play')
 			{ // case 1: changes are no longer available - fetch data from replay
-				$last_round_data = $this->LastRound();
+				$last_round_data = $this->lastRound();
 
 				// case 1: failed to load replay data - log warning and proceed with default changes data
 				if (!$last_round_data or !isset($last_round_data[$playername]) or !isset($last_round_data[$opponent]))
@@ -738,7 +738,7 @@
 			}
 			
 			// clear newcards flag, changes indicator and discarded cards here, if required
-			if (!($mylast_card->IsPlayAgainCard() and $mylast_action == 'play'))
+			if (!($mylast_card->isPlayAgainCard() and $mylast_action == 'play'))
 			{
 				$mydata->NewCards = null;
 				$mydata->Changes = $hisdata->Changes = array ('Quarry'=> 0, 'Magic'=> 0, 'Dungeons'=> 0, 'Bricks'=> 0, 'Gems'=> 0, 'Recruits'=> 0, 'Tower'=> 0, 'Wall'=> 0);
@@ -761,7 +761,7 @@
 			if ($action == 'play')
 			{
 				// update player score (award 'Rares' - number of rare cards played)
-				if ($card->Class == 'Rare' and $this->FriendlyPlay == 'no') $score->UpdateAward('Rares');
+				if ($card->Class == 'Rare' and $this->FriendlyPlay == 'no') $score->updateAward('Rares');
 				
 				// subtract card cost
 				$mydata->Bricks-= $card->Bricks;
@@ -790,24 +790,24 @@
 					error_log("Debug: ".$cardid.": ".$card->Code);
 
 				// apply limits to game attributes
-				$this->ApplyGameLimits($mydata);
-				$this->ApplyGameLimits($hisdata);
+				$this->applyGameLimits($mydata);
+				$this->applyGameLimits($hisdata);
 
 				// keyword processing
 				if ($card->Keywords != '')
 				{
 					// list all keywords in order they are to be executed
-					$keywords = $this->KeywordsOrder();
+					$keywords = $this->keywordsOrder();
 					foreach ($keywords as $keyword_name)
-            if ($card->HasKeyWord($keyword_name))
+            if ($card->hasKeyword($keyword_name))
             {
-              $keyword = $keyworddb->GetKeyword($keyword_name);
+              $keyword = $keyworddb->getKeyword($keyword_name);
   
               // case 1: token keyword
               if ($keyword->isTokenKeyword())
               {
                 // count number of cards with matching keyword (we don't count the played card)
-                $amount = $this->KeywordCount($mydata->Hand, $keyword_name) - 1;
+                $amount = $this->keywordCount($mydata->Hand, $keyword_name) - 1;
   
                 // check if player has matching token counter set
                 $token_index = array_search($keyword_name, $mydata->TokenNames);
@@ -851,7 +851,7 @@
 					{
 						$mydiscards_index++;
 						$mydata->DisCards[0][$mydiscards_index] = $myhand[$i];
-						$statistics->UpdateCardStats($myhand[$i], 'discard'); // update card statistics (card discarded by card effect)
+						$statistics->updateCardStats($myhand[$i], 'discard'); // update card statistics (card discarded by card effect)
 						// hide revealed card if it was revealed before and discarded now
 						if (isset($mydata->Revealed[$i])) unset($mydata->Revealed[$i]);
 					}
@@ -860,7 +860,7 @@
 					{
 						$hisdiscards_index++;
 						$mydata->DisCards[1][$hisdiscards_index] = $hishand[$i];
-						$statistics->UpdateCardStats($hishand[$i], 'discard'); // update card statistics (card discarded by card effect)
+						$statistics->updateCardStats($hishand[$i], 'discard'); // update card statistics (card discarded by card effect)
 						// hide revealed card if it was revealed before and discarded now
 						if (isset($hisdata->Revealed[$i])) unset($hisdata->Revealed[$i]);
 					}
@@ -868,8 +868,8 @@
 				}
 				
 				// apply limits to game attributes
-				$this->ApplyGameLimits($mydata);
-				$this->ApplyGameLimits($hisdata);
+				$this->applyGameLimits($mydata);
+				$this->applyGameLimits($hisdata);
 				
 				// compute changes on token counters
 				foreach ($mytokens_temp as $index => $token_val)
@@ -900,14 +900,14 @@
 			{
 				// update player score (awards 'Quarry', 'Magic', 'Dungeons', 'Tower', 'Wall')
 				foreach (array('Quarry', 'Magic', 'Dungeons', 'Tower', 'Wall') as $attribute)
-					if ($my_diffs[$attribute] > 0) $score->UpdateAward($attribute, $my_diffs[$attribute]);
+					if ($my_diffs[$attribute] > 0) $score->updateAward($attribute, $my_diffs[$attribute]);
 				
 				// update player score (award 'TowerDamage' and 'WallDamage')
 				foreach (array('Tower', 'Wall') as $attribute)
-					if ($his_diffs[$attribute] < 0) $score->UpdateAward($attribute.'Damage', ($his_diffs[$attribute] * (-1)));
+					if ($his_diffs[$attribute] < 0) $score->updateAward($attribute.'Damage', ($his_diffs[$attribute] * (-1)));
 				
 				// save player score
-				$score->SaveScore();
+				$score->saveScore();
 			}
 			
 			// draw card at the end of turn
@@ -920,15 +920,15 @@
 			}
 			elseif( $nextcard == -1 )
 			{// normal drawing
-				if (($action == 'play') AND ($card->IsPlayAgainCard())) $drawfunc = 'DrawCardNorare';
-				elseif ($action == 'play') $drawfunc = 'DrawCardRandom';
-				else $drawfunc = 'DrawCardDifferent';
+				if (($action == 'play') AND ($card->isPlayAgainCard())) $drawfunc = 'drawCardNorare';
+				elseif ($action == 'play') $drawfunc = 'drawCardRandom';
+				else $drawfunc = 'drawCardDifferent';
 				
-				$mydata->Hand[$cardpos] = $this->DrawCard($my_deck, $mydata->Hand, $cardpos, $drawfunc);
+				$mydata->Hand[$cardpos] = $this->drawCard($my_deck, $mydata->Hand, $cardpos, $drawfunc);
 			}
 			
 			// store info about this current action, updating history as needed
-			if ($mylast_card->IsPlayAgainCard() and $mylast_action == 'play') 
+			if ($mylast_card->isPlayAgainCard() and $mylast_action == 'play') 
 			{
 				// preserve history when the previously played card was a "play again" card
 				$mylastcardindex++;
@@ -1035,7 +1035,7 @@
 				$this->Round++;
 			
 			// update card statistics (card was played or discarded by standard discard action)
-			$statistics->UpdateCardStats($cardid, $action);
+			$statistics->updateCardStats($cardid, $action);
 			
 			return 'OK';
 		}
@@ -1047,7 +1047,7 @@
 		/// @param int $cardpos position of the played card
 		/// @param int $mode mode of the played card
 		/// @return array game attributes and their changes
-		public function CalculatePreview($playername, $cardpos, $mode)
+		public function calculatePreview($playername, $cardpos, $mode)
 		{
 			global $carddb;
 			global $keyworddb;
@@ -1064,7 +1064,7 @@
 			if (($cardpos < 1) || ($cardpos > 8)) return 'Wrong card position!';
 			
 			// disable statistics
-			$statistics->Deactivate();
+			$statistics->deactivate();
 			
 			// determine game mode (normal or long)
 			$g_mode = ($this->LongMode == 'yes') ? 'long' : 'normal';
@@ -1087,7 +1087,7 @@
 			
 			// find out what card is at that position
 			$cardid = $mydata->Hand[$cardpos];
-			$card = $carddb->GetCard($cardid);
+			$card = $carddb->getCard($cardid);
 			
 			// verify if there are enough resources
 			if (($mydata->Bricks < $card->Bricks) || ($mydata->Gems < $card->Gems) || ($mydata->Recruits < $card->Recruits)) return 'Insufficient resources!';
@@ -1103,9 +1103,9 @@
 			$hislastcardindex = count($hisdata->LastCard);
 			
 			// prepare supplementary information
-			$mylast_card = $carddb->GetCard($mydata->LastCard[$mylastcardindex]);
+			$mylast_card = $carddb->getCard($mydata->LastCard[$mylastcardindex]);
 			$mylast_action = $mydata->LastAction[$mylastcardindex];
-			$hislast_card = $carddb->GetCard($hisdata->LastCard[$hislastcardindex]);
+			$hislast_card = $carddb->getCard($hisdata->LastCard[$hislastcardindex]);
 			$hislast_action = $hisdata->LastAction[$hislastcardindex];
 			$hidden_cards = ($this->HiddenCards == 'yes');
 			
@@ -1126,9 +1126,9 @@
 			}
 			
 			// prepare changes made during previous round
-			if ($mylast_card->IsPlayAgainCard() and $mylast_action == 'play')
+			if ($mylast_card->isPlayAgainCard() and $mylast_action == 'play')
 			{ // case 1: changes are no longer available - fetch data from replay
-				$last_round_data = $this->LastRound();
+				$last_round_data = $this->lastRound();
 
 				// case 1: failed to load replay data - log warning and proceed with default changes data
 				if (!$last_round_data or !isset($last_round_data[$playername]) or !isset($last_round_data[$opponent]))
@@ -1150,7 +1150,7 @@
 			}
 			
 			// clear newcards flag, changes indicator and discarded cards here, if required
-			if (!($mylast_card->IsPlayAgainCard() and $mylast_action == 'play'))
+			if (!($mylast_card->isPlayAgainCard() and $mylast_action == 'play'))
 			{
 				$mydata->NewCards = null;
 				$mydata->Changes = $hisdata->Changes = array ('Quarry'=> 0, 'Magic'=> 0, 'Dungeons'=> 0, 'Bricks'=> 0, 'Gems'=> 0, 'Recruits'=> 0, 'Tower'=> 0, 'Wall'=> 0);
@@ -1195,24 +1195,24 @@
 				error_log("Debug: ".$cardid.": ".$card->Code);
 
 			// apply limits to game attributes
-			$this->ApplyGameLimits($mydata);
-			$this->ApplyGameLimits($hisdata);
+			$this->applyGameLimits($mydata);
+			$this->applyGameLimits($hisdata);
 
 			// keyword processing
 			if ($card->Keywords != '')
 			{
 				// list all keywords in order they are to be executed
-				$keywords = $this->KeywordsOrder();
+				$keywords = $this->keywordsOrder();
 				foreach ($keywords as $keyword_name)
-					if ($card->HasKeyWord($keyword_name))
+					if ($card->hasKeyword($keyword_name))
 					{
-						$keyword = $keyworddb->GetKeyword($keyword_name);
+						$keyword = $keyworddb->getKeyword($keyword_name);
 
 						// case 1: token keyword
 						if ($keyword->isTokenKeyword())
 						{
               // count number of cards with matching keyword (we don't count the played card)
-              $amount = $this->KeywordCount($mydata->Hand, $keyword_name) - 1;
+              $amount = $this->keywordCount($mydata->Hand, $keyword_name) - 1;
 
               // check if player has matching token counter set
               $token_index = array_search($keyword_name, $mydata->TokenNames);
@@ -1244,8 +1244,8 @@
 			}
 			
 			// apply limits to game attributes
-			$this->ApplyGameLimits($mydata);
-			$this->ApplyGameLimits($hisdata);
+			$this->applyGameLimits($mydata);
+			$this->applyGameLimits($hisdata);
 			
 			// compute changes on token counters
 			foreach ($mytokens_temp as $index => $token_val)
@@ -1343,7 +1343,7 @@
 		/// Format game attributes and their changes into a text message
 		/// @param array $game_attributes game attributes and their changes
 		/// @return string information message
-		public function FormatPreview(array $game_attributes)
+		public function formatPreview(array $game_attributes)
 		{
 			$card_name = $game_attributes['card']['name'];
 			$card_mode = $game_attributes['card']['mode'];
@@ -1403,51 +1403,51 @@
 		}
 
 		///
-		/// Proxy function to array_mt_rand()
+		/// Proxy function to arrayMtRand()
 		/// @param array $input input array
 		/// @param int $num_req (optional) number of picked entries
 		/// @return mixed one or multiple picked entries (returns corresponding keys)
-		private function ArrayRand(array $input, $num_req = 1)
+		private function arrayRand(array $input, $num_req = 1)
 		{
-			return array_mt_rand($input, $num_req);
+			return arrayMtRand($input, $num_req);
 		}
 
 		///
 		/// Proxy function to $carddb->getCard()
 		/// @param int $card_id card id
 		/// @return Card if operation was successful, false otherwise
-		private function GetCard($card_id)
+		private function getCard($card_id)
 		{
 			global $carddb;
 
-			return $carddb->GetCard($card_id);
+			return $carddb->getCard($card_id);
 		}
 
 		///
 		/// Proxy function to $carddb->getList()
 		/// @param array $filters an array of chosen filters and their parameters
 		/// @return array ids for cards that match the filters
-		private function GetList(array $filters)
+		private function getList(array $filters)
 		{
 			global $carddb;
 
-			return $carddb->GetList($filters);
+			return $carddb->getList($filters);
 		}
 		
-		private function KeywordCount(array $hand, $keyword)
+		private function keywordCount(array $hand, $keyword)
 		{
 			global $carddb;
 			
 			$count = 0;
 			
 			foreach ($hand as $cardid)
-				if ($carddb->GetCard($cardid)->HasKeyword($keyword))
+				if ($carddb->getCard($cardid)->hasKeyword($keyword))
 					$count++;
 			
 			return $count;
 		}
 		
-		private function KeywordValue($keywords, $target_keyword)
+		private function keywordValue($keywords, $target_keyword)
 		{
 			$result = preg_match('/'.$target_keyword.' \((\d+)\)/', $keywords, $matches);
 			if ($result == 0) return 0;
@@ -1455,7 +1455,7 @@
 			return (int)$matches[1];
 		}
 		
-		private function CountDistinctKeywords(array $hand)
+		private function countDistinctkeywords(array $hand)
 		{
 			global $carddb;
 			
@@ -1464,7 +1464,7 @@
 			
 			foreach ($hand as $cardid)
 			{
-				$keyword = $carddb->GetCard($cardid)->Keywords;
+				$keyword = $carddb->getCard($cardid)->Keywords;
 				if ($keyword != "") // ignore cards with no keywords
 					if ($first)
 					{
@@ -1488,7 +1488,7 @@
 		}
 		
 		// returns one card at type-random from the specified source with the specified draw function
-		private function DrawCard($source, array $hand, $card_pos, $draw_function)
+		private function drawCard($source, array $hand, $card_pos, $draw_function)
 		{
 			global $statistics;
 
@@ -1512,7 +1512,7 @@
 				
 				if (mt_rand(1, pow(2, $match)) == 1)
 				{
-					$statistics->UpdateCardStats($nextcard, 'draw');
+					$statistics->updateCardStats($nextcard, 'draw');
 					return $nextcard; // chance to retain the card decreases exponentially as the number of matches increases
 				}
 			}
@@ -1520,16 +1520,16 @@
 		}
 		
 		// returns new hand from the specified source with the specified draw function
-		private function DrawHand($source, $draw_function)
+		private function drawHand($source, $draw_function)
 		{
 			$hand = array(1=> 0, 0, 0, 0, 0, 0, 0, 0);
 			//card position is in this case irrelevant - send current position (it contains empty slot anyway)
-			for ($i = 1; $i <= 8; $i++) $hand[$i] = $this->DrawCard($source, $hand, $i, $draw_function);
+			for ($i = 1; $i <= 8; $i++) $hand[$i] = $this->drawCard($source, $hand, $i, $draw_function);
  			return $hand;
  		}
 		
 		// returns one card at type-random from the specified deck
-		private function DrawCardRandom(CDeckData $deck)
+		private function drawCardRandom(CDeckData $deck)
 		{
 			$i = mt_rand(1, 100);
 			if     ($i <= 65) return $deck->Common[mt_rand(1, 15)]; // common
@@ -1538,17 +1538,17 @@
 		}
 		
 		// returns one card at type-random from the specified deck, different from those on your hand
-		private function DrawCardDifferent(CDeckData $deck, $cardid)
+		private function drawCardDifferent(CDeckData $deck, $cardid)
 		{
 			do
-				$nextcard = $this->DrawCardRandom($deck);
+				$nextcard = $this->drawCardRandom($deck);
 			while( $nextcard == $cardid );
 
 			return $nextcard;
 		}
 		
 		// returns one card at type-random from the specified deck - no rare
-		private function DrawCardNorare(CDeckData $deck)
+		private function drawCardNorare(CDeckData $deck)
 		{
 			$i = mt_rand(1, 94);
 			if ($i <= 65) return $deck->Common[mt_rand(1, 15)]; // common
@@ -1556,35 +1556,35 @@
 		}
 		
 		// returns one card at random from the specified list of card ids
-		private function DrawCardList(array $list)
+		private function drawCardList(array $list)
 		{
 			if (count($list) == 0) return 0; // "empty slot" card
-			return $list[array_mt_rand($list)];
+			return $list[arrayMtRand($list)];
 		}
 		
 		// returns a new hand consisting of type-random cards chosen from the specified deck
-		private function DrawHandRandom(CDeckData $deck)
+		private function drawHandRandom(CDeckData $deck)
 		{
-			return $this->DrawHand($deck, 'DrawCardRandom');
+			return $this->drawHand($deck, 'drawCardRandom');
 		}
 		
 		// returns a new hand consisting of type-random cards chosen from the specified deck (excluding rare cards)
-		private function DrawHandNorare(CDeckData $deck)
+		private function drawHandNorare(CDeckData $deck)
 		{
-			return $this->DrawHand($deck, 'DrawCardNorare');
+			return $this->drawHand($deck, 'drawCardNorare');
 		}
 		
 		// returns initial hand which always consist of 6 common and 2 uncommon cards
-		private function DrawHandInitial(CDeckData $deck)
+		private function drawHandInitial(CDeckData $deck)
 		{
 			// initialize empty hand
 			$hand = array(1=> 0, 0, 0, 0, 0, 0, 0, 0);
 
 			// draw 6 common cards
-			for ($i = 1; $i <= 6; $i++) $hand[$i] = $this->DrawCard($deck->Common, $hand, $i, 'DrawCardList');
+			for ($i = 1; $i <= 6; $i++) $hand[$i] = $this->drawCard($deck->Common, $hand, $i, 'drawCardList');
 
 			// draw 2 uncommon cards
-			for ($i = 7; $i <= 8; $i++) $hand[$i] = $this->DrawCard($deck->Uncommon, $hand, $i, 'DrawCardList');
+			for ($i = 7; $i <= 8; $i++) $hand[$i] = $this->drawCard($deck->Uncommon, $hand, $i, 'drawCardList');
 
 			// shuffle card positions
 			$keys = array_keys($hand);
@@ -1595,12 +1595,12 @@
 		}
 
 		// returns a new hand consisting of random cards from the specified list of card ids
-		private function DrawHandList(array $list)
+		private function drawHandList(array $list)
 		{
-			return $this->DrawHand($list, 'DrawCardList');
+			return $this->drawHand($list, 'drawCardList');
 		}
 		
-		private function ApplyGameLimits(CGamePlayerData &$data)
+		private function applyGameLimits(CGamePlayerData &$data)
 		{
 			global $game_config;
 			
@@ -1620,7 +1620,7 @@
 				$data->TokenValues[$index] = max(min($data->TokenValues[$index], 100), 0);
 		}
 		
-		public function CalculateExp($player)
+		public function calculateExp($player)
 		{
 			global $carddb;
 			global $playerdb;
@@ -1640,8 +1640,8 @@
 			$round = $this->Round;
 			$winner = $this->Winner;
 			$endtype = $this->EndType;
-			$mylevel = $playerdb->GetLevel($player);
-			$hislevel = ($opponent == SYSTEM_NAME) ? $mylevel : $playerdb->GetLevel($opponent);
+			$mylevel = $playerdb->getLevel($player);
+			$hislevel = ($opponent == SYSTEM_NAME) ? $mylevel : $playerdb->getLevel($opponent);
 			
 			$win = ($player == $winner);
 			$exp = 100; // base exp
@@ -1741,7 +1741,7 @@
 			if ($win)
 			{
 				$mylastcardindex = count($mydata->LastCard);
-				$mylast_card = $carddb->GetCard($mydata->LastCard[$mylastcardindex]);
+				$mylast_card = $carddb->getCard($mydata->LastCard[$mylastcardindex]);
 				$mylast_action = $mydata->LastAction[$mylastcardindex];
 				$standard_victory = ($endtype == 'Resource' OR $endtype == 'Construction' OR $endtype == 'Destruction');
 				
@@ -1770,7 +1770,7 @@
 				if ($hisdata->Quarry == 1 AND $hisdata->Magic == 1 AND $hisdata->Dungeons == 1) $received[] = 'Desolator';
 				
 				// Dragon
-				if ($mylast_card->HasKeyword("Dragon") AND $mylast_action == 'play' AND $standard_victory) $received[] = 'Dragon';
+				if ($mylast_card->hasKeyword("Dragon") AND $mylast_action == 'play' AND $standard_victory) $received[] = 'Dragon';
 				
 				// Carpenter
 				if ($mydata->Quarry >= 6 AND $mydata->Magic >= 6 AND $mydata->Dungeons >= 6) $received[] = 'Carpenter';
@@ -1788,7 +1788,7 @@
 				$tmp = 0;
 				for ($i = 1; $i <= 8; $i++)
 				{
-					$cur_card = $carddb->GetCard($mydata->Hand[$i]);
+					$cur_card = $carddb->getCard($mydata->Hand[$i]);
 					if ($cur_card->Class == "Rare") $tmp++;
 				}
 				if ($tmp >= 4) $received[] = 'Collector';
@@ -1822,24 +1822,24 @@
 			return array('exp' => $exp, 'gold' => $gold, 'message' => $message, 'awards' => $received);
 		}
 
-		public function DetermineAIMove($ai_player = SYSTEM_NAME)
+		public function determineAIMove($ai_player = SYSTEM_NAME)
 		{
-			return $this->GameAI->DetermineMove($ai_player);
+			return $this->GameAI->determineMove($ai_player);
 		}
 
-		public function KeywordsOrder()
+		public function keywordsOrder()
 		{
       return array('Alliance', 'Aqua', 'Barbarian', 'Beast', 'Brigand', 'Burning', 'Demonic', 'Destruction', 'Dragon', 'Holy', 'Illusion', 'Legend', 'Mage', 'Nature', 'Restoration', 'Runic', 'Soldier', 'Titan', 'Undead', 'Unliving', 'Durable', 'Quick', 'Swift', 'Far sight', 'Banish', 'Skirmisher', 'Horde', 'Rebirth', 'Flare attack', 'Frenzy', 'Aria', 'Enduring', 'Charge', 'Siege');
 		}
 
-		private function LastRound() // fetch data of the first turn of the current round
+		private function lastRound() // fetch data of the first turn of the current round
 		{
 			global $replaydb;
 
-			$replay = $replaydb->GetReplay($this->GameID);
+			$replay = $replaydb->getReplay($this->GameID);
 			if (!$replay) return false;
 
-			$turn_data = $replay->LastRound();
+			$turn_data = $replay->lastRound();
 			if (!$turn_data) return false;
 
 			return $turn_data->GameData;
@@ -1873,7 +1873,7 @@
 		///
 		/// Performs an attack - first reducing wall, then tower (may lower both values below 0)
 		/// @param int $power attack power
-		public function Attack($power)
+		public function attack($power)
 		{
 			$damage = $power;
 

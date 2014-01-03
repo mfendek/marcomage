@@ -15,17 +15,17 @@
 			$this->Threads = new CThread($database);
 		}
 		
-		public function GetDB()
+		public function getDB()
 		{
 			return $this->db;
 		}
 		
-		public function ListSections()
+		public function listSections()
 		{
 			$db = $this->db;
 
 			// get section list with thread count, ordered by custom order (alphabetical order is not suited for our needs)
-			$result = $db->Query('SELECT `forum_sections`.`SectionID`, `SectionName`, `Description`, IFNULL(`count`, 0) as `count` FROM `forum_sections` LEFT OUTER JOIN (SELECT `SectionID`, COUNT(`ThreadID`) as `count` FROM `forum_threads` WHERE `Deleted` = FALSE GROUP BY `SectionID`) as `threads` USING (`SectionID`) ORDER BY `SectionOrder` ASC');
+			$result = $db->query('SELECT `forum_sections`.`SectionID`, `SectionName`, `Description`, IFNULL(`count`, 0) as `count` FROM `forum_sections` LEFT OUTER JOIN (SELECT `SectionID`, COUNT(`ThreadID`) as `count` FROM `forum_threads` WHERE `Deleted` = FALSE GROUP BY `SectionID`) as `threads` USING (`SectionID`) ORDER BY `SectionOrder` ASC');
 			if ($result === false) return false;
 
 			$sections = $params = array();
@@ -37,7 +37,7 @@
 			}
 
 			// get threads list for current section
-			$result = $db->MultiQuery('SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost`, CEIL(`PostCount` / '.POSTS_PER_PAGE.') as `LastPage`, `SectionID` FROM `forum_threads` WHERE `SectionID` = ? AND `Deleted` = FALSE ORDER BY `LastPost` DESC, `Created` DESC LIMIT '.NUM_THREADS.'', $params);
+			$result = $db->multiquery('SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost`, CEIL(`PostCount` / '.POSTS_PER_PAGE.') as `LastPage`, `SectionID` FROM `forum_threads` WHERE `SectionID` = ? AND `Deleted` = FALSE ORDER BY `LastPost` DESC, `Created` DESC LIMIT '.NUM_THREADS.'', $params);
 			if ($result === false) return false;
 
 			foreach ($result as $section_id => $data)
@@ -46,11 +46,11 @@
 			return $sections;
 		}
 
-		public function ListTargetSections($current_section = 0)
+		public function listTargetSections($current_section = 0)
 		{	// used to generate list of all section except the current section
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `SectionID`, `SectionName` FROM `forum_sections` WHERE `SectionID` != ? ORDER BY `SectionOrder`', array($current_section));
+			$result = $db->query('SELECT `SectionID`, `SectionName` FROM `forum_sections` WHERE `SectionID` != ? ORDER BY `SectionOrder`', array($current_section));
 			if ($result === false) return false;
 
 			$sections = array();
@@ -60,11 +60,11 @@
 			return $sections;
 		}
 
-		public function GetSection($section_id)
+		public function getSection($section_id)
 		{	
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT `SectionID`, `SectionName`, `Description` FROM `forum_sections` WHERE `SectionID` = ?', array($section_id));
+			$result = $db->query('SELECT `SectionID`, `SectionName`, `Description` FROM `forum_sections` WHERE `SectionID` = ?', array($section_id));
 			if ($result === false or count($result) == 0) return false;
 			
 			$section = $result[0];
@@ -72,17 +72,17 @@
 			return $section;
 		}
 		
-		public function NewPosts($time)
+		public function newPosts($time)
 		{	
 			$db = $this->db;
 			
-			$result = $db->Query('SELECT 1 FROM `forum_posts` WHERE `Created` > ? AND `Deleted` = FALSE LIMIT 1', array($time));
+			$result = $db->query('SELECT 1 FROM `forum_posts` WHERE `Created` > ? AND `Deleted` = FALSE LIMIT 1', array($time));
 			if ($result === false or count($result) == 0) return false;
 			
 			return true;
 		}
 		
-		public function Search($phrase, $target = 'all', $section = 'any')
+		public function search($phrase, $target = 'all', $section = 'any')
 		{
 			$db = $this->db;
 
@@ -108,7 +108,7 @@
 			// merge results
 			$query = $post_q.(($target == 'all') ? ' UNION DISTINCT ' : '').$thread_q.' ORDER BY `LastPost` DESC';
 			
-			$result = $db->Query($query, $params);
+			$result = $db->query($query, $params);
 			if ($result === false) return false;
 
 			return $result;

@@ -30,7 +30,7 @@
 			return $this->db;
 		}
 
-		public function GetAchievements($award_name) // get achievement list of specified award
+		public function getAchievements($award_name) // get achievement list of specified award
 		{
 			$db = $this->getDB();
 			$result = $db->xpath('/am:awards/am:award[@name="'.$award_name.'"]');
@@ -56,7 +56,7 @@
 			return $achievements;
 		}
 
-		public function GetAchievement($award_name, $tier) // get single achievement of specified award with specific tier
+		public function getAchievement($award_name, $tier) // get single achievement of specified award with specific tier
 		{
 			$db = $this->getDB();
 			$result = $db->xpath('/am:awards/am:award[@name="'.$award_name.'"]/am:achievement[position() = '.$tier.']');
@@ -72,7 +72,7 @@
 			return $achievement;
 		}
 
-		public function AwardsNames() // list names of all awards
+		public function awardsNames() // list names of all awards
 		{
 			$db = $this->getDB();
 			$result = $db->xpath('/am:awards/am:award');
