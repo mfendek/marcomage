@@ -3811,7 +3811,7 @@
     <class>Uncommon</class>
     <cost>
       <bricks>0</bricks>
-      <gems>8</gems>
+      <gems>7</gems>
       <recruits>0</recruits>
     </cost>
     <modes>8</modes>
@@ -3820,7 +3820,7 @@
     <effect><![CDATA[Summons selected card in opponent's hand]]></effect>
     <code><![CDATA[$nextcard = $hisdata->Hand[$mode];]]></code>
     <created>2007-03-26</created>
-    <modified>2011-01-24</modified>
+    <modified>2014-04-21</modified>
   </card>
   <card id="208">
     <name>Overseer</name>
@@ -4022,7 +4022,7 @@
     <modified>2012-04-07</modified>
   </card>
   <card id="219">
-    <name>Earth eater</name>
+    <name>Rock biter</name>
     <class>Uncommon</class>
     <cost>
       <bricks>12</bricks>
@@ -4038,7 +4038,7 @@
     elseif ($mode == 2) { $mydata->Wall+= 13; $hisdata->Wall-= 13; }
 ]]></code>
     <created>2007-03-26</created>
-    <modified>2010-12-24</modified>
+    <modified>2014-04-21</modified>
   </card>
   <card id="220">
     <name>Enforcer</name>
@@ -6463,26 +6463,25 @@
     <modes>0</modes>
     <level>10</level>
     <keywords/>
-    <effect><![CDATA[Replace up to 3 non-<b>Holy</b> common cards in hand with Fanatics]]></effect>
+    <effect><![CDATA[Replace up to 3 non-<b>Frenzy</b> common cards in hand with Fanatics]]></effect>
     <code><![CDATA[
     $temp_array = array();
-    for ($i = 1; $i <= 8; $i++)
-    {
+    for ($i = 1; $i <= 8; $i++) {
       $cur_card = $this->getCard($mydata->Hand[$i]);
-      if (!$cur_card->hasKeyword("Holy") and $cur_card->getClass() == 'Common' and $i != $cardpos) $temp_array[] = $i;
+      if (!$cur_card->hasKeyword('Frenzy') and $cur_card->getClass() == 'Common' and $i != $cardpos) {
+        $temp_array[] = $i;
+      }
     }
-    if (count($temp_array) > 0)
-    {
+    if (count($temp_array) > 0) {
       shuffle($temp_array);
-      for ($i = 0; ($i < count($temp_array)) AND ($i < 3); $i++)
-      {
+      for ($i = 0; $i < count($temp_array) and $i < 3; $i++) {
         $mydata->Hand[$temp_array[$i]] = 340;
         $mydata->NewCards[$temp_array[$i]] = 1;
       }
     }
 ]]></code>
     <created>2008-02-12</created>
-    <modified>2011-01-24</modified>
+    <modified>2014-04-21</modified>
   </card>
   <card id="343">
     <name>Death before dishonor</name>
@@ -11842,18 +11841,22 @@
     <cost>
       <bricks>0</bricks>
       <gems>0</gems>
-      <recruits>1</recruits>
+      <recruits>2</recruits>
     </cost>
-    <modes>8</modes>
+    <modes>0</modes>
     <level>10</level>
     <keywords/>
-    <effect><![CDATA[Replace a card in hand with Wheat farm]]></effect>
+    <effect><![CDATA[Replace neighbouring cards with Wheat farm]]></effect>
     <code><![CDATA[
-    $mydata->Hand[$mode] = 566;
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    if ($cardpos > 1) {
+      $mydata->Hand[$cardpos - 1] = 566; $mydata->NewCards[$cardpos - 1] = 1;
+    }
+    if ($cardpos < 8) {
+      $mydata->Hand[$cardpos + 1] = 566; $mydata->NewCards[$cardpos + 1] = 1;
+    }
 ]]></code>
     <created>2010-09-10</created>
-    <modified>2011-09-24</modified>
+    <modified>2014-04-21</modified>
   </card>
   <card id="589">
     <name>Librarian</name>
@@ -12144,13 +12147,13 @@
     <modes>0</modes>
     <level>10</level>
     <keywords/>
-    <effect><![CDATA[Wall: +15<br />Enemy wall: +15<br />Summons a <b>Barbarian</b>]]></effect>
+    <effect><![CDATA[Wall: +10<br />Enemy wall: +10<br />Summons a <b>Barbarian</b>]]></effect>
     <code><![CDATA[
-    $mydata->Wall+= 15; $hisdata->Wall+= 15;
-    $nextcard = $this->drawCard($this->getList(array('keyword'=>"Barbarian")), $mydata->Hand, $cardpos, 'drawCardList');
+    $mydata->Wall+= 10; $hisdata->Wall+= 10;
+    $nextcard = $this->drawCard($this->getList(array('keyword'=>'Barbarian')), $mydata->Hand, $cardpos, 'drawCardList');
 ]]></code>
     <created>2010-10-03</created>
-    <modified>2010-10-03</modified>
+    <modified>2014-04-21</modified>
   </card>
   <card id="603">
     <name>Wolf mistress</name>
@@ -13117,9 +13120,9 @@
     <level>8</level>
     <keywords>Beast,Illusion</keywords>
     <effect><![CDATA[Attack: 6<br />Summons a card from opponent's deck]]></effect>
-    <code><![CDATA[$hisdata->attack(6); $nextcard = $this->drawCard($his_deck, $mydata->Hand, $cardpos, 'drawCardRandom');]]></code>
+    <code><![CDATA[$hisdata->attack(6); $nextcard = $this->drawCard(array_merge($his_deck->Common, $his_deck->Uncommon, $his_deck->Rare), $mydata->Hand, $cardpos, 'drawCardList');]]></code>
     <created>2011-09-24</created>
-    <modified>2011-09-24</modified>
+    <modified>2014-04-21</modified>
   </card>
   <card id="651">
     <name>Amazon warrior</name>
@@ -13386,10 +13389,10 @@
     <modes>0</modes>
     <level>0</level>
     <keywords>Legend,Runic</keywords>
-    <effect><![CDATA[Attack: 30<br />Wall: +20<br />Quarry: +1]]></effect>
-    <code><![CDATA[$hisdata->attack(30); $mydata->Wall+= 20; $mydata->Quarry+= 1;]]></code>
+    <effect><![CDATA[Attack: 20<br />Wall: +20<br />Quarry: +1]]></effect>
+    <code><![CDATA[$hisdata->attack(20); $mydata->Wall+= 20; $mydata->Quarry+= 1;]]></code>
     <created>2012-01-06</created>
-    <modified>2012-01-06</modified>
+    <modified>2014-04-21</modified>
   </card>
   <card id="664">
     <name>Alchemist</name>
