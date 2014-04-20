@@ -241,7 +241,7 @@
 			// provide list of active games with opponent names
 			$db = $this->db;
 
-			$result = $db->query('SELECT `GameID`, (CASE WHEN `Player1` = ? THEN `Player2` ELSE `Player1` END) as `Opponent` FROM `games` WHERE (`Player1` = ? OR `Player2` = ?) AND ((`State` = "in progress" AND (`Current` = ? OR (`Surrender` != ? AND `Surrender` != "") OR (`Timeout` > 0 AND `Last Action` <= NOW() - INTERVAL `Timeout` SECOND AND `Current` != ? AND `Player2` != ?))) OR `State` = "finished" OR (`State` = "P1 over" AND `Player2` = ?) OR (`State` = "P2 over" AND `Player1` = ?))', array($player, $player, $player, $player, $player, $player, SYSTEM_NAME, $player, $player));
+			$result = $db->query('SELECT `GameID`, (CASE WHEN `Player1` = ? THEN `Player2` ELSE `Player1` END) as `Opponent` FROM `games` WHERE (`Player1` = ? OR `Player2` = ?) AND ((`State` = "in progress" AND ((`Current` = ? AND `Surrender` = "") OR (`Surrender` != ? AND `Surrender` != "") OR (`Timeout` > 0 AND `Last Action` <= NOW() - INTERVAL `Timeout` SECOND AND `Current` != ? AND `Player2` != ?))) OR `Player2` = ? OR `State` = "finished" OR (`State` = "P1 over" AND `Player2` = ?) OR (`State` = "P2 over" AND `Player1` = ?))', array($player, $player, $player, $player, $player, $player, SYSTEM_NAME, SYSTEM_NAME, $player, $player));
 			if ($result === false) return false;
 			
 			$game_data = array();
