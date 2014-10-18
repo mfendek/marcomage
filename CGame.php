@@ -2017,14 +2017,14 @@
 		/// Determine highest resource
 		public function detectHighestResource()
 		{
-			$this->detectResource('highest');
+			return $this->detectResource('highest');
 		}
 
 		///
 		/// Determine lowest resource
 		public function detectLowestResource()
 		{
-			$this->detectResource('lowest');
+			return $this->detectResource('lowest');
 		}
 
 		///
@@ -2061,14 +2061,14 @@
 		/// Determine highest facility
 		public function detectHighestFacility()
 		{
-			$this->detectFacility('highest');
+			return $this->detectFacility('highest');
 		}
 
 		///
 		/// Determine lowest facility
 		public function detectLowestFacility()
 		{
-			$this->detectFacility('lowest');
+			return $this->detectFacility('lowest');
 		}
 
 		///
