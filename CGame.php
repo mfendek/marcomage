@@ -799,43 +799,43 @@
 					// list all keywords in order they are to be executed
 					$keywords = $this->keywordsOrder();
 					foreach ($keywords as $keyword_name)
-            if ($card->hasKeyword($keyword_name))
-            {
-              $keyword = $keyworddb->getKeyword($keyword_name);
-  
-              // case 1: token keyword
-              if ($keyword->isTokenKeyword())
-              {
-                // count number of cards with matching keyword (we don't count the played card)
-                $amount = $this->keywordCount($mydata->Hand, $keyword_name) - 1;
-  
-                // check if player has matching token counter set
-                $token_index = array_search($keyword_name, $mydata->TokenNames);
-  
-                if ($token_index)
-                {
-                  // increase token counter by basic gain + bonus gain
-                  $mydata->TokenValues[$token_index]+= $keyword->Basic_gain + $amount * $keyword->Bonus_gain;
-  
-                  // execute token keyword effect if counter reached 100
-                  if ($mydata->TokenValues[$token_index] >= 100)
-                  {
-                    // reset token counter
-                    $mydata->TokenValues[$token_index] = 0;
-  
-                    // execute token keyword effect
-                    if( eval($keyword->Code) === FALSE )
-                      error_log("Debug: ".$keyword_name.": ".$keyword->Code);
-                  }
-                }
-              }
-              // case 2: standard keyword
-              else
-              {
-                if( eval($keyword->Code) === FALSE )
-                  error_log("Debug: ".$keyword_name.": ".$keyword->Code);
-              }
-            }
+						if ($card->hasKeyword($keyword_name))
+						{
+							$keyword = $keyworddb->getKeyword($keyword_name);
+	
+							// case 1: token keyword
+							if ($keyword->isTokenKeyword())
+							{
+								// count number of cards with matching keyword (we don't count the played card)
+								$amount = $this->keywordCount($mydata->Hand, $keyword_name) - 1;
+	
+								// check if player has matching token counter set
+								$token_index = array_search($keyword_name, $mydata->TokenNames);
+	
+								if ($token_index)
+								{
+									// increase token counter by basic gain + bonus gain
+									$mydata->TokenValues[$token_index]+= $keyword->Basic_gain + $amount * $keyword->Bonus_gain;
+	
+									// execute token keyword effect if counter reached 100
+									if ($mydata->TokenValues[$token_index] >= 100)
+									{
+										// reset token counter
+										$mydata->TokenValues[$token_index] = 0;
+	
+										// execute token keyword effect
+										if( eval($keyword->Code) === FALSE )
+											error_log("Debug: ".$keyword_name.": ".$keyword->Code);
+									}
+								}
+							}
+							// case 2: standard keyword
+							else
+							{
+								if( eval($keyword->Code) === FALSE )
+									error_log("Debug: ".$keyword_name.": ".$keyword->Code);
+							}
+						}
 				}
 
 				//process discarded cards
@@ -920,7 +920,7 @@
 			}
 			elseif( $nextcard == -1 )
 			{// normal drawing
-				if (($action == 'play') AND ($card->isPlayAgainCard())) $drawfunc = 'drawCardNorare';
+				if (($action == 'play') AND ($card->isPlayAgainCard())) $drawfunc = 'drawCardNoRare';
 				elseif ($action == 'play') $drawfunc = 'drawCardRandom';
 				else $drawfunc = 'drawCardDifferent';
 				
@@ -1211,35 +1211,35 @@
 						// case 1: token keyword
 						if ($keyword->isTokenKeyword())
 						{
-              // count number of cards with matching keyword (we don't count the played card)
-              $amount = $this->keywordCount($mydata->Hand, $keyword_name) - 1;
+							// count number of cards with matching keyword (we don't count the played card)
+							$amount = $this->keywordCount($mydata->Hand, $keyword_name) - 1;
 
-              // check if player has matching token counter set
-              $token_index = array_search($keyword_name, $mydata->TokenNames);
+							// check if player has matching token counter set
+							$token_index = array_search($keyword_name, $mydata->TokenNames);
 
-              if ($token_index)
-              {
-                // increase token counter by basic gain + bonus gain
-                $mydata->TokenValues[$token_index]+= $keyword->Basic_gain + $amount * $keyword->Bonus_gain;
+							if ($token_index)
+							{
+								// increase token counter by basic gain + bonus gain
+								$mydata->TokenValues[$token_index]+= $keyword->Basic_gain + $amount * $keyword->Bonus_gain;
 
-                // execute token keyword effect if counter reached 100
-                if ($mydata->TokenValues[$token_index] >= 100)
-                {
-                  // reset token counter
-                  $mydata->TokenValues[$token_index] = 0;
+								// execute token keyword effect if counter reached 100
+								if ($mydata->TokenValues[$token_index] >= 100)
+								{
+									// reset token counter
+									$mydata->TokenValues[$token_index] = 0;
 
-                  // execute token keyword effect
-                  if( eval($keyword->Code) === FALSE )
-                    error_log("Debug: ".$keyword_name.": ".$keyword->Code);
-                }
-              }
+									// execute token keyword effect
+									if( eval($keyword->Code) === FALSE )
+										error_log("Debug: ".$keyword_name.": ".$keyword->Code);
+								}
+							}
 						}
 						// case 2: standard keyword
 						else
 						{
-              if( eval($keyword->Code) === FALSE )
-                error_log("Debug: ".$keyword_name.": ".$keyword->Code);
-            }
+							if( eval($keyword->Code) === FALSE )
+								error_log("Debug: ".$keyword_name.": ".$keyword->Code);
+						}
 					}
 			}
 			
@@ -1455,7 +1455,7 @@
 			return (int)$matches[1];
 		}
 		
-		private function countDistinctkeywords(array $hand)
+		private function countDistinctKeywords(array $hand)
 		{
 			global $carddb;
 			
@@ -1525,8 +1525,8 @@
 			$hand = array(1=> 0, 0, 0, 0, 0, 0, 0, 0);
 			//card position is in this case irrelevant - send current position (it contains empty slot anyway)
 			for ($i = 1; $i <= 8; $i++) $hand[$i] = $this->drawCard($source, $hand, $i, $draw_function);
- 			return $hand;
- 		}
+			return $hand;
+		}
 		
 		// returns one card at type-random from the specified deck
 		private function drawCardRandom(CDeckData $deck)
@@ -1548,7 +1548,7 @@
 		}
 		
 		// returns one card at type-random from the specified deck - no rare
-		private function drawCardNorare(CDeckData $deck)
+		private function drawCardNoRare(CDeckData $deck)
 		{
 			$i = mt_rand(1, 94);
 			if ($i <= 65) return $deck->Common[mt_rand(1, 15)]; // common
@@ -1569,9 +1569,9 @@
 		}
 		
 		// returns a new hand consisting of type-random cards chosen from the specified deck (excluding rare cards)
-		private function drawHandNorare(CDeckData $deck)
+		private function drawHandNoRare(CDeckData $deck)
 		{
-			return $this->drawHand($deck, 'drawCardNorare');
+			return $this->drawHand($deck, 'drawCardNoRare');
 		}
 		
 		// returns initial hand which always consist of 6 common and 2 uncommon cards
@@ -1829,7 +1829,7 @@
 
 		public function keywordsOrder()
 		{
-      return array('Alliance', 'Aqua', 'Barbarian', 'Beast', 'Brigand', 'Burning', 'Demonic', 'Destruction', 'Dragon', 'Holy', 'Illusion', 'Legend', 'Mage', 'Nature', 'Restoration', 'Runic', 'Soldier', 'Titan', 'Undead', 'Unliving', 'Durable', 'Quick', 'Swift', 'Far sight', 'Banish', 'Skirmisher', 'Horde', 'Rebirth', 'Flare attack', 'Frenzy', 'Aria', 'Enduring', 'Charge', 'Siege');
+			return array('Alliance', 'Aqua', 'Barbarian', 'Beast', 'Brigand', 'Burning', 'Demonic', 'Destruction', 'Dragon', 'Holy', 'Illusion', 'Legend', 'Mage', 'Nature', 'Restoration', 'Runic', 'Soldier', 'Titan', 'Undead', 'Unliving', 'Durable', 'Quick', 'Swift', 'Far sight', 'Banish', 'Skirmisher', 'Horde', 'Rebirth', 'Flare attack', 'Frenzy', 'Aria', 'Enduring', 'Charge', 'Siege');
 		}
 
 		private function lastRound() // fetch data of the first turn of the current round
