@@ -28,7 +28,7 @@
     <code><![CDATA[
     if ($mylast_card->hasKeyword('Aqua') and $mylast_action == 'play' and $mylast_card->getClass() != 'Common' and $card->id() != $mylast_card->id()) {
       $mydata->Tower+= 3; $mydata->Wall+= 3;
-      $hisdata->Bricks-= 3; $hisdata->Gems-= 3; $hisdata->Recruits-= 3;
+      $hisdata->addStock(-3);
     }
 ]]></code>
   </keyword>
@@ -123,9 +123,7 @@
     $damage = array('Common' => 3, 'Uncommon' => 8, 'Rare' => 15);
     if ($hisdata->Wall <= 0) {
       $penalty = round($damage[$card->getClass()] / 2);
-      $hisdata->Bricks-= $penalty;
-      $hisdata->Gems-= $penalty;
-      $hisdata->Recruits-= $penalty;
+      $hisdata->addStock(-$penalty);
     }
     else {
       $hisdata->Wall-= $damage[$card->getClass()];
@@ -144,12 +142,8 @@
     <code><![CDATA[
     $stock = array('Common' => 1, 'Uncommon' => 2, 'Rare' => 3);
     $gained = $stock[$card->getClass()];
-    $mydata->Bricks+= $gained;
-    $mydata->Gems+= $gained;
-    $mydata->Recruits+= $gained;
-    $hisdata->Bricks-= $gained;
-    $hisdata->Gems-= $gained;
-    $hisdata->Recruits-= $gained;
+    $mydata->addStock($gained);
+    $hisdata->addStock(-$gained);
 ]]></code>
   </keyword>
   <keyword>
@@ -257,12 +251,7 @@
       $penalty = $penalties[$this->arrayRand($penalties)];
 
       if ($penalty == 'Bricks') {
-        for ($i = 1; $i <= $amount; $i++) {
-          $tmp = mt_rand(0,2);
-          if ($tmp == 0) $mydata->Bricks--;
-          elseif ($tmp == 1) $mydata->Gems--;
-          elseif ($tmp == 2) $mydata->Recruits--;
-        }
+        $mydata->addRandomResources(-$amount);
       }
       elseif ($penalty == 'Gems') {
         $mydata->Tower-= $amount; 
@@ -283,27 +272,10 @@
     if ($mylast_card->hasKeyword('Destruction') and $mylast_action == 'play' and $mylast_card->getClass() != 'Common' and $card->id() != $mylast_card->id()) {
       $max = max($hisdata->Quarry, $hisdata->Magic, $hisdata->Dungeons);
       if ($max > 3) {
-        $facilities = array('Quarry' => $hisdata->Quarry, 'Magic' => $hisdata->Magic, 'Dungeons' => $hisdata->Dungeons);
-        $temp = array();
-        foreach ($facilities as $facility => $f_value) {
-          if ($f_value == $max) {
-            $temp[$facility] = $f_value;
-          }
-        }
-        $chosen = array_rand($temp);
-        $hisdata->$chosen--;
+        $hisdata->addHighestFacility(-1);
       }
       else {
-        $max = max($hisdata->Bricks, $hisdata->Gems, $hisdata->Recruits);
-        $resources = array('Bricks' => $hisdata->Bricks, 'Gems' => $hisdata->Gems, 'Recruits' => $hisdata->Recruits);
-        $temp = array();
-        foreach ($resources as $resource => $r_value) {
-          if ($r_value == $max) {
-            $temp[$resource] = $r_value;
-          }
-        }
-        $chosen = array_rand($temp);
-        $hisdata->$chosen-= 10;
+        $hisdata->addHighestResource(-10);
       }
     }
 ]]></code>
@@ -395,7 +367,7 @@
         // no effect
       }
       else {
-        $mydata->Bricks+= $factor; $mydata->Gems+= $factor; $mydata->Recruits+= $factor; // raise stock
+        $mydata->addStock($factor);// raise stock
       }
     }
     
@@ -449,8 +421,7 @@
     <description>Rage blast - if played card is a neighbour of a Frenzy card, opponent receives bonus damage (recruits cost of the played card * N/3, N based on played card rarity (Common - 1, Uncommon - 2, Rare - 3)).</description>
     <lore><![CDATA[<p>Good generals are aware of the effect of army's high morale on its combat performance. Frenzy goes one step further. A frenzied creature is partially insane and can be dangerous to use, however when unleashed in the right time and right place it can break the enemy ranks and cause severe damage to the enemy.</p>]]></lore>
     <code><![CDATA[
-    if (($cardpos > 1 and $this->getCard($mydata->Hand[$cardpos - 1])->hasKeyword('Frenzy')) or ($cardpos < 8 and $this->getCard($mydata->Hand[$cardpos + 1])->hasKeyword('Frenzy')))
-    {
+    if (($cardpos > 1 and $this->getCard($mydata->Hand[$cardpos - 1])->hasKeyword('Frenzy')) or ($cardpos < 8 and $this->getCard($mydata->Hand[$cardpos + 1])->hasKeyword('Frenzy'))) {
       $rarities = array('Common' => 1, 'Uncommon' => 2, 'Rare' => 3);
       $coef = $rarities[$card->getClass()];
       $hisdata->attack(round(($coef * $card->getResources('Recruits')) / 3));
@@ -469,20 +440,7 @@
     $storage = array('Common' => array(), 'Uncommon' => array(), 'Rare' => array());
     $resources = array('Common' => 1, 'Uncommon' => 2, 'Rare' => 5);
     $played_rank = $rarities[$card->getClass()];
-    $resource_gain = $resources[$card->getClass()];
-    
-    for ($i = 1; $i <= $resource_gain; $i++) {
-      $tmp = mt_rand(0,2);
-      if ($tmp == 0) {
-        $mydata->Bricks++;
-      }
-      elseif ($tmp == 1) {
-        $mydata->Gems++;
-      }
-      elseif ($tmp == 2) {
-        $mydata->Recruits++;
-      }
-    }
+    $mydata->addRandomResources($resources[$card->getClass()]);
 
     for ($i = 1; $i <= 8; $i++) {
       $dis_card = $this->getCard($hisdata->Hand[$i]);
@@ -494,7 +452,7 @@
         $storage[$dis_class][] = $i;
       }
     }
-    
+
     if ((count($storage['Common']) + count($storage['Uncommon']) + count($storage['Rare'])) > 0) {
       // pick preferably cards with higher rarity, but choose random card within the rarity group
       shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
@@ -557,26 +515,14 @@
     <description>Forgotten power - if there is a rare card in hand (other than played card), raises lowest facility by one.</description>
     <lore><![CDATA[<p>Legendary creatures are often present in fairy tales. Rumors say that those who are able to spot these creatures will receive their blessing. Although it's difficult to verify if the rumors are true, some legendary creatures were sighted as they were fighting battles as an ally of one of the factions for unknown reasons. Some say they are attracted to higher magic, others say that they just came to help to even the balance.</p>]]></lore>
     <code><![CDATA[
-    $found = false;
     for ($i = 1; $i <= 8; $i++) {
       // played card does not count
-      if ($i != $cardpos and !$found) {
+      if ($i != $cardpos) {
         $cur_card = $this->getCard($mydata->Hand[$i]);
         if ($cur_card->getClass() == 'Rare') {
-          $found = true;
+          $mydata->addLowestFacility(1); break;
         }
       }
-    }
-    
-    if ($found) {
-      $min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
-      $facilities = array('Quarry' => $mydata->Quarry, 'Magic' => $mydata->Magic, 'Dungeons' => $mydata->Dungeons);
-      $temp = array();
-      foreach ($facilities as $facility => $f_value) {
-        if ($f_value == $min) $temp[$facility] = $f_value;
-      }
-      $chosen = array_rand($temp);
-      $mydata->$chosen++;
     }
 ]]></code>
   </keyword>
@@ -640,25 +586,8 @@
     <lore><![CDATA[<p>Restoration magic is one of the most commonly used art of magic. Most factions support schools that teach this art, because its usage is very wide and safe. Restoration mages are the most accepted mages in the society. If their skills are exceptional they can even be promoted to nobility.</p>]]></lore>
     <code><![CDATA[
     if ($mylast_card->hasKeyword('Restoration') and $mylast_action == 'play' and $mylast_card->getClass() != 'Common' and $card->id() != $mylast_card->id()) {
-      $min = min($mydata->Bricks, $mydata->Gems, $mydata->Recruits);
-      $resources = array('Bricks' => $mydata->Bricks, 'Gems' => $mydata->Gems, 'Recruits' => $mydata->Recruits);
-      $temp = array();
-      foreach ($resources as $resource => $r_value) {
-        if ($r_value == $min) {
-          $temp[$resource] = $r_value;
-        }
-      }
-      $chosen = array_rand($temp);
-      $mydata->$chosen+= 6;
-      $min = min($mydata->Quarry, $mydata->Magic, $mydata->Dungeons);
-      $fac = array('Quarry' => $mydata->Quarry, 'Magic' => $mydata->Magic, 'Dungeons' => $mydata->Dungeons);
-      $temp = array();
-      foreach ($fac as $facility => $f_value) {
-        if ($f_value == $min) {
-          $temp[$facility] = $f_value;
-        }
-      }
-      $chosen = $this->arrayRand($temp);
+      $mydata->addLowestResource(6);
+      $chosen = $mydata->detectLowestFacility();
       if ($mydata->$chosen < 3) {
         if ($chosen == 'Quarry') {
           $mydata->Bricks+= 5;

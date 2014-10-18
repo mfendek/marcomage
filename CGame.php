@@ -1871,6 +1871,71 @@
 		public $Recruits;
 
 		///
+		/// Determine resource of specified type
+		/// @param string $type resource type ('lowest'|'highest')
+		/// @return string resource name
+		private function detectResource($type)
+		{
+			$current = ($type == 'highest') ? max($this->Bricks, $this->Gems, $this->Recruits) : min($this->Bricks, $this->Gems, $this->Recruits);
+			$res = array('Bricks' => $this->Bricks, 'Gems' => $this->Gems, 'Recruits' => $this->Recruits);
+			$temp = array();
+			foreach ($res as $resource => $r_value) {
+				if ($r_value == $current) {
+					$temp[$resource] = $r_value;
+				}
+			}
+
+			return \Utils::arrayMtRand($temp);
+		}
+
+		///
+		/// Adds specified amount of resource
+		/// @param string $type resource type ('lowest'|'highest')
+		/// @param int $amount amount of resource to be added (can be negative)
+		private function addOneResource($type, $amount)
+		{
+			if ($amount == 0) {
+				return;
+			}
+
+			$chosen = $this->detectResource($type);
+			$this->$chosen+= $amount;
+		}
+
+		///
+		/// Determine facility of specified type
+		/// @param string $type facility type ('lowest'|'highest')
+		/// @return string facility name
+		private function detectFacility($type)
+		{
+			$current = ($type == 'highest') ? max($this->Quarry, $this->Magic, $this->Dungeons) : min($this->Quarry, $this->Magic, $this->Dungeons);
+
+			$fac = array('Quarry' => $this->Quarry, 'Magic' => $this->Magic, 'Dungeons' => $this->Dungeons);
+			$temp = array();
+			foreach ($fac as $facility => $f_value) {
+				if ($f_value == $current) {
+					$temp[$facility] = $f_value;
+				}
+			}
+
+			return \Utils::arrayMtRand($temp);
+		}
+
+		///
+		/// Adds specified amount of facility
+		/// @param string $type facility type ('lowest'|'highest')
+		/// @param int $amount amount of facility to be added (can be negative)
+		private function addOneFacility($type, $amount)
+		{
+			if ($amount == 0) {
+				return;
+			}
+
+			$chosen = $this->detectFacility($type);
+			$this->$chosen+= $amount;
+		}
+
+		///
 		/// Performs an attack - first reducing wall, then tower (may lower both values below 0)
 		/// @param int $power attack power
 		public function attack($power)
@@ -1889,6 +1954,155 @@
 			// rest of the damage hits the tower
 			if ($damage > 0) {
 				$this->Tower-= $damage;
+			}
+		}
+
+		///
+		/// Adds specified amount of resources to all resources types
+		/// @param int $amount amount of resources to be added (can be negative)
+		public function addStock($amount)
+		{
+			if ($amount == 0) {
+				return;
+			}
+
+			$this->Bricks+= $amount;
+			$this->Gems+= $amount;
+			$this->Recruits+= $amount;
+		}
+
+		///
+		/// Sets all resources to specified value
+		/// @param int $amount resource amount
+		public function setStock($amount)
+		{
+			// negative values are not valid
+			$amount = max(0, $amount);
+
+			$this->Bricks = $amount;
+			$this->Gems = $amount;
+			$this->Recruits = $amount;
+		}
+
+		///
+		/// Adds specified amount of random resources
+		/// @param int $amount amount of resources to be added (can be negative)
+		public function addRandomResources($amount)
+		{
+			if ($amount == 0) {
+				return;
+			}
+
+			$diff = ($amount > 0) ? 1 : -1;
+			$amount = abs($amount);
+
+			for ($i = 1; $i <= $amount; $i++) {
+				$choice = mt_rand(0,2);
+				// case 1: Bricks
+				if ($choice == 0) {
+					$this->Bricks+= $diff;
+				}
+				// case 2: Gems
+				elseif ($choice == 1) {
+					$this->Gems+= $diff;
+				}
+				// case 3: Recruits
+				elseif ($choice == 2) {
+					$this->Recruits+= $diff;
+				}
+			}
+		}
+
+		///
+		/// Determine highest resource
+		public function detectHighestResource()
+		{
+			$this->detectResource('highest');
+		}
+
+		///
+		/// Determine lowest resource
+		public function detectLowestResource()
+		{
+			$this->detectResource('lowest');
+		}
+
+		///
+		/// Adds specified amount of highest resource
+		/// @param int $amount amount of resource to be added (can be negative)
+		public function addHighestResource($amount)
+		{
+			$this->addOneResource('highest', $amount);
+		}
+
+		///
+		/// Adds specified amount of highest resource
+		/// @param int $amount amount of resource to be added (can be negative)
+		public function addLowestResource($amount)
+		{
+			$this->addOneResource('lowest', $amount);
+		}
+
+		///
+		/// Adds specified amount of facilities to all facility types
+		/// @param int $amount amount of facilities to be added (can be negative)
+		public function addFacilities($amount)
+		{
+			if ($amount == 0) {
+				return;
+			}
+
+			$this->Quarry+= $amount;
+			$this->Magic+= $amount;
+			$this->Dungeons+= $amount;
+		}
+
+		///
+		/// Determine highest facility
+		public function detectHighestFacility()
+		{
+			$this->detectFacility('highest');
+		}
+
+		///
+		/// Determine lowest facility
+		public function detectLowestFacility()
+		{
+			$this->detectFacility('lowest');
+		}
+
+		///
+		/// Adds specified amount of highest facility
+		/// @param int $amount amount of facility to be added (can be negative)
+		public function addHighestFacility($amount)
+		{
+			$this->addOneFacility('highest', $amount);
+		}
+
+		///
+		/// Adds specified amount of highest facility
+		/// @param int $amount amount of facility to be added (can be negative)
+		public function addLowestFacility($amount)
+		{
+			$this->addOneFacility('lowest', $amount);
+		}
+
+		///
+		/// Sets hand data to specified values
+		/// @param array $hand new hand data (doesn't need to be indexed correctly)
+		public function setHand(array $hand)
+		{
+			// incorrect data
+			if (count($hand) != 8) {
+				return;
+			}
+
+			// reindex input data
+			$i = 1;
+			foreach ($hand as $cardId) {
+				$this->Hand[$i] = $cardId;
+				$this->NewCards[$i] = 1;
+				$i++;
 			}
 		}
 	}
