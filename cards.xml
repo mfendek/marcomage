@@ -2721,16 +2721,13 @@
     $mydata->Bricks-= 5; $mydata->Gems-= 5; $mydata->Recruits-= 5;
     $hisdata->Hand[$cardpos] = 97; $hisdata->NewCards[$cardpos] = 1;
     $storage = array();
-    for ($i = 1; $i <= 8; $i++)
-    {
+    for ($i = 1; $i <= 8; $i++) {
       if ($i != $cardpos and $this->getCard($hisdata->Hand[$i])->getClass() == "Common") $storage[] = $i;
     }
     $count = min(count($storage), 2);
-    if ($count > 0)
-    {
+    if ($count > 0) {
       shuffle($storage);
-      for ($k = 0; $k < $count; $k++)
-      {
+      for ($k = 0; $k < $count; $k++) {
         $i = $storage[$k];
         $hisdata->Hand[$i] = 97;
         $hisdata->NewCards[$i] = 1;
@@ -3100,13 +3097,11 @@
     <code><![CDATA[
     $my_count = $this->keywordCount($mydata->Hand, "Holy");
     $his_count = $this->keywordCount($hisdata->Hand, "Holy");
-    if ($my_count >= $his_count)
-    {
+    if ($my_count >= $his_count) {
       $mydata->Bricks+= 8; $mydata->Gems+= 8; $mydata->Recruits+= 8;
       $hisdata->Bricks+= 2; $hisdata->Gems+= 2; $hisdata->Recruits+= 2;
     }
-    if ($my_count <= $his_count)
-    {
+    if ($my_count <= $his_count) {
       $mydata->Bricks+= 2; $mydata->Gems+= 2; $mydata->Recruits+= 2;
       $hisdata->Bricks+= 8; $hisdata->Gems+= 8; $hisdata->Recruits+= 8;
     }
@@ -3265,8 +3260,7 @@
     <effect><![CDATA[Attack: N * M<br />Recruits: = 0<br />N = #Recruits<br />M = #<b>Undead</b> rare cards in hand / 2]]></effect>
     <code><![CDATA[
     $rares = 0;
-    for ($i = 1; $i <= 8; $i++)
-    {
+    for ($i = 1; $i <= 8; $i++) {
       $cur_card = $this->getCard($mydata->Hand[$i]);
       if ($cur_card->hasKeyword("Undead") and $cur_card->getClass() == 'Rare') $rares++;
     }
@@ -3349,8 +3343,7 @@
     <effect><![CDATA[Enemy stock: -20<br />Opponent suffers 1 damage for each resource lost]]></effect>
     <code><![CDATA[
     $res = array('Bricks', 'Gems', 'Recruits'); $dmg = 0;
-    foreach ($res as $resource)
-    {
+    foreach ($res as $resource) {
       $lowered = $hisdata->$resource - max($hisdata->$resource - 20, 0);
       $hisdata->$resource-= $lowered; $dmg+= $lowered;
     }
@@ -3582,8 +3575,7 @@
       { $mydata->Bricks+= 6; $mydata->Gems+= 6; $mydata->Recruits+= 6; }
     else
       for ($i = 1; $i <= 8; $i++)
-        if ($this->getCard($hisdata->Hand[$i])->hasKeyword("Dragon"))
-        {
+        if ($this->getCard($hisdata->Hand[$i])->hasKeyword("Dragon")) {
           $mydata->Hand[$i] = $hisdata->Hand[$i];
           $mydata->NewCards[$i] = 1;
           $hisdata->Hand[$i] = $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardDifferent');
@@ -3738,8 +3730,7 @@
     $rare = $this->getList(array('class'=>"Rare", 'keyword'=>"Undead"));
     $nextcard = $this->drawCard(array_merge($uncommon, $rare), $mydata->Hand, $cardpos, 'drawCardList');
     $tmp = array_search("Undead", $mydata->TokenNames);
-    if ($tmp and $mydata->TokenValues[$tmp] > 50)
-    {
+    if ($tmp and $mydata->TokenValues[$tmp] > 50) {
       $cur_card = $this->getCard($nextcard);
       $mydata->Bricks+= min($cur_card->getResources("Bricks"), 10);
       $mydata->Gems+= min($cur_card->getResources("Gems"), 10);

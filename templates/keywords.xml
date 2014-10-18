@@ -425,8 +425,7 @@
     <description>Rage blast - if played card is a neighbour of a Frenzy card, opponent receives bonus damage (recruits cost of the played card * N/3, N based on played card rarity (Common - 1, Uncommon - 2, Rare - 3)).</description>
     <lore><![CDATA[<p>Good generals are aware of the effect of army's high morale on its combat performance. Frenzy goes one step further. A frenzied creature is partially insane and can be dangerous to use, however when unleashed in the right time and right place it can break the enemy ranks and cause severe damage to the enemy.</p>]]></lore>
     <code><![CDATA[
-    if (($cardpos > 1 and $this->getCard($mydata->Hand[$cardpos - 1])->hasKeyword("Frenzy")) or ($cardpos < 8 and $this->getCard($mydata->Hand[$cardpos + 1])->hasKeyword("Frenzy")))
-    {
+    if (($cardpos > 1 and $this->getCard($mydata->Hand[$cardpos - 1])->hasKeyword("Frenzy")) or ($cardpos < 8 and $this->getCard($mydata->Hand[$cardpos + 1])->hasKeyword("Frenzy"))) {
       $rarities = array('Common' => 1, 'Uncommon' => 2, 'Rare' => 3);
       $coef = $rarities[$card->getClass()];
       $hisdata->attack(round(($coef * $card->getResources('Recruits')) / 3));
