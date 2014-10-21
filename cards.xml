@@ -5347,7 +5347,7 @@
     <level>6</level>
     <keywords/>
     <effect><![CDATA[Replace your hand with Princess of elves, Miriam and Elven: enchantress, ranger, priestesses, sorceress, warlock, market]]></effect>
-    <code><![CDATA[$hand = array(687, 653, 655, 527, 190, 136, 526, 599); shuffle($hand); $mydata->setHand($hand); $nextcard = 0;]]></code>
+    <code><![CDATA[$mydata->setHandShuffled(array(687, 653, 655, 527, 190, 136, 526, 599)); $nextcard = 0;]]></code>
     <created>2006-05-01</created>
     <modified>2013-03-31</modified>
   </card>
@@ -7292,7 +7292,7 @@
     <level>5</level>
     <keywords/>
     <effect><![CDATA[Replace your hand with Temple guard, Fairy, Heavenly warrior, Paladin, Cathedral, Knight Templar, Seraphim and Angel]]></effect>
-    <code><![CDATA[$hand = array(503, 27, 85, 90, 175, 473, 137, 44); shuffle($hand); $mydata->setHand($hand); $nextcard = 0;]]></code>
+    <code><![CDATA[$mydata->setHandShuffled(array(503, 27, 85, 90, 175, 473, 137, 44)); $nextcard = 0;]]></code>
     <created>2008-12-24</created>
     <modified>2010-07-22</modified>
   </card>
@@ -9294,7 +9294,7 @@
     <level>5</level>
     <keywords/>
     <effect><![CDATA[Replace your hand with Merchant, Caravan, Wealth, Merchant ship, Fair trade, Greed is good, Prosperity and Bank]]></effect>
-    <code><![CDATA[$hand = array(273, 23, 129, 465, 432, 388, 456, 389); shuffle($hand); $mydata->setHand($hand); $nextcard = 0;]]></code>
+    <code><![CDATA[$mydata->setHandShuffled(array(273, 23, 129, 465, 432, 388, 456, 389)); $nextcard = 0;]]></code>
     <created>2009-10-24</created>
     <modified>2012-12-24</modified>
   </card>
@@ -11815,7 +11815,7 @@
     <level>7</level>
     <keywords/>
     <effect><![CDATA[Replace your hand with Red mage, Conjurer, Wizard, Chaos wizard, Librarian, Summon master, Sorceress and Wind witch<br />Gems prod x3]]></effect>
-    <code><![CDATA[$hand = array(329, 82, 457, 589, 109, 564, 53, 467); shuffle($hand); $mydata->setHand($hand); $nextcard = 0; $gems_production*= 3;]]></code>
+    <code><![CDATA[$mydata->setHandShuffled(array(329, 82, 457, 589, 109, 564, 53, 467)); $nextcard = 0; $gems_production*= 3;]]></code>
     <created>2010-09-10</created>
     <modified>2012-09-08</modified>
   </card>
@@ -11910,7 +11910,7 @@
     $hisdata->Wall-= 3;
     $hisdata->addStock(-1);
     $mydata->Hand[$cardpos] = $this->drawCard($my_deck, $mydata->Hand, $cardpos, 'drawCardNoRare');
-    $hand = $mydata->Hand; shuffle($hand); $mydata->setHand($hand); $nextcard = 0; 
+    $mydata->setHandShuffled($mydata->Hand); $nextcard = 0; 
 ]]></code>
     <created>2010-10-03</created>
     <modified>2010-10-03</modified>
@@ -12153,7 +12153,7 @@
     <level>9</level>
     <keywords/>
     <effect><![CDATA[Replace your hand with Mermaid, Hidden lagoon, Sea priestess, Sea gate, Sea lord, Kraken, Ocean queen and Water dragon]]></effect>
-    <code><![CDATA[$hand = array(521, 553, 550, 560, 507, 505, 530, 506); shuffle($hand); $mydata->setHand($hand); $nextcard = 0;]]></code>
+    <code><![CDATA[$mydata->setHandShuffled(array(521, 553, 550, 560, 507, 505, 530, 506)); $nextcard = 0;]]></code>
     <created>2011-01-01</created>
     <modified>2011-09-24</modified>
   </card>
@@ -12334,8 +12334,7 @@
     <effect><![CDATA[Recruits x2<br />Enemy wall: +120<br />Replace your hand with Marauder, Tarkhan, Berserker, Gladiator, Warchief, Devastator, Warlord and Urk the Conqueror]]></effect>
     <code><![CDATA[
     $mydata->Recruits = $mydata->Recruits * 2; $hisdata->Wall+= 120;
-    $hand = array(45, 334, 281, 68, 344, 345, 337, 535); shuffle($hand);
-    $mydata->setHand($hand); $nextcard = 0;
+    $mydata->setHandShuffled(array(45, 334, 281, 68, 344, 345, 337, 535)); $nextcard = 0;
 ]]></code>
     <created>2011-01-01</created>
     <modified>2011-04-24</modified>
@@ -13107,7 +13106,7 @@
     <level>8</level>
     <keywords/>
     <effect><![CDATA[Replace your hand with Moon shrine, Moon priestess, Samurai, Ninja, Shogun, Standstill, Moon castle and Samurai princess]]></effect>
-    <code><![CDATA[$hand = array(487, 433, 51, 76, 681, 638, 583, 641); shuffle($hand); $mydata->setHand($hand); $nextcard = 0;]]></code>
+    <code><![CDATA[$mydata->setHandShuffled(array(487, 433, 51, 76, 681, 638, 583, 641)); $nextcard = 0;]]></code>
     <created>2012-01-06</created>
     <modified>2012-06-24</modified>
   </card>

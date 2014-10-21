@@ -2105,5 +2105,14 @@
 				$i++;
 			}
 		}
+
+		///
+		/// Sets hand data to specified values and shuffles values
+		/// @param array $hand new hand data (doesn't need to be indexed correctly)
+		public function setHandShuffled(array $hand)
+		{
+			shuffle($hand);
+			$this->setHand($hand);
+		}
 	}
 ?>
