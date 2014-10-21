@@ -113,19 +113,27 @@
 					</xsl:for-each>
 				</tr>
 				<xsl:for-each select="$param/list/*">
+					<!-- AI challenge name transformation -->
+					<xsl:variable name="player2">
+						<xsl:choose>
+							<xsl:when test="AI != ''"><xsl:value-of select="AI"/></xsl:when>
+							<xsl:otherwise><xsl:value-of select="Player2"/></xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
 					<tr class="table_row">
 						<td>
 							<p>
 								<xsl:choose>
-									<xsl:when test="Winner != ''"><xsl:value-of select="Winner"/></xsl:when>
-									<xsl:otherwise><xsl:value-of select="Player1"/>/<xsl:value-of select="Player2"/></xsl:otherwise>
+									<xsl:when test="Winner != '' and Winner = Player1"><xsl:value-of select="Player1"/></xsl:when>
+									<xsl:when test="Winner != '' and Winner = Player2"><xsl:value-of select="$player2"/></xsl:when>
+									<xsl:otherwise><xsl:value-of select="Player1"/>/<xsl:value-of select="$player2"/></xsl:otherwise>
 								</xsl:choose>
 							</p>
 						</td>
 						<td>
 							<p>
 								<xsl:choose>
-									<xsl:when test="Winner = Player1"><xsl:value-of select="Player2"/></xsl:when>
+									<xsl:when test="Winner = Player1"><xsl:value-of select="$player2"/></xsl:when>
 									<xsl:when test="Winner = Player2"><xsl:value-of select="Player1"/></xsl:when>
 								</xsl:choose>
 							</p>
