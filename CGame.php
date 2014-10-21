@@ -2088,6 +2088,21 @@
 		}
 
 		///
+		/// Sets card to specified position in hand
+		/// @param int $cardPos card position in hand
+		/// @param int $cardId card id
+		public function setCard($cardPos, $cardId)
+		{
+			// incorrect card position
+			if (!in_array($cardPos, array(1,2,3,4,5,6,7,8))) {
+				return;
+			}
+
+			$this->Hand[$cardPos] = $cardId;
+			$this->NewCards[$cardPos] = 1;
+		}
+
+		///
 		/// Sets hand data to specified values
 		/// @param array $hand new hand data (doesn't need to be indexed correctly)
 		public function setHand(array $hand)

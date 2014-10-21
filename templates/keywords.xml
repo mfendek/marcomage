@@ -61,8 +61,7 @@
             break;
           }
 
-          $mydata->Hand[$discarded_pos] = $this->drawCard($my_deck, $mydata->Hand, $discarded_pos, 'drawCardRandom');
-          $mydata->NewCards[$discarded_pos] = 1;
+          $mydata->setCard($discarded_pos, $this->drawCard($my_deck, $mydata->Hand, $discarded_pos, 'drawCardRandom'));
           $i++;
         }
       }
@@ -105,8 +104,7 @@
       else {
         $new_card = $this->drawCard($his_deck, $hisdata->Hand, $discarded_pos, 'drawCardDifferent');
       }
-      $hisdata->Hand[$discarded_pos] = $new_card;
-      $hisdata->NewCards[$discarded_pos] = 1;
+      $hisdata->setCard($discarded_pos, $new_card);
     }
 ]]></code>
   </keyword>
@@ -192,8 +190,7 @@
       shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
       $storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
       $discarded_pos = array_pop($storage_temp);
-      $hisdata->Hand[$discarded_pos] = 248;
-      $hisdata->NewCards[$discarded_pos] = 1;
+      $hisdata->setCard($discarded_pos, 248);
     }
 ]]></code>
   </keyword>
@@ -403,13 +400,11 @@
 
       // played card position is ignored, does not discard burning cards (rares cards can only be discarded by rares)
       if ($mine != $cardpos and !$mytarget->hasKeyword('Burning') and ($my_rarity != 'Rare' or $my_rarity == $card->getClass())) {
-        $mydata->Hand[$mine] = 248;
-        $mydata->NewCards[$mine] = 1;
+        $mydata->setCard($mine, 248);
       }
 
       if (!$histarget->hasKeyword('Burning') and ($his_rarity != 'Rare' or $his_rarity == $card->getClass())) {
-        $hisdata->Hand[$his] = 248;
-        $hisdata->NewCards[$his] = 1;
+        $hisdata->setCard($his, 248);
       }
     }
 ]]></code>
@@ -458,8 +453,7 @@
       shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
       $storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
       $discarded_pos = array_pop($storage_temp);
-      $hisdata->Hand[$discarded_pos] = 381;
-      $hisdata->NewCards[$discarded_pos] = 1;
+      $hisdata->setCard($discarded_pos, 381);
     }
 ]]></code>
   </keyword>
@@ -476,8 +470,7 @@
 
       $matching_card = $this->getCard($hisdata->Hand[$cardpos]);
       if ($rarities[$card->getClass()] >= $rarities[$matching_card->getClass()] and $recruits > $matching_card->getResources('Recruits')) {
-        $hisdata->Hand[$cardpos] = 297;
-        $hisdata->NewCards[$cardpos] = 1;
+        $hisdata->setCard($cardpos, 297);
       }
     }
 ]]></code>
@@ -502,8 +495,7 @@
         shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
         $storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
         $discarded_pos = array_shift($storage_temp);
-        $mydata->Hand[$discarded_pos] = $this->drawCard($his_deck->Rare, $mydata->Hand, $discarded_pos, 'drawCardList');
-        $mydata->NewCards[$discarded_pos] = 1;
+        $mydata->setCard($discarded_pos, $this->drawCard($his_deck->Rare, $mydata->Hand, $discarded_pos, 'drawCardList'));
       }
     }
 ]]></code>
@@ -686,8 +678,7 @@
       else {
         $new_card = $this->drawCard($his_deck, $hisdata->Hand, $discarded_pos, 'drawCardDifferent');
       }
-      $hisdata->Hand[$discarded_pos] = $new_card;
-      $hisdata->NewCards[$discarded_pos] = 1;
+      $hisdata->setCard($discarded_pos, $new_card);
     }
 ]]></code>
   </keyword>

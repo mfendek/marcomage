@@ -378,8 +378,7 @@
         }
       }
       $dis_pos = $max_cards[$this->arrayRand($max_cards)];
-      $hisdata->Hand[$dis_pos] = $this->drawCard($his_deck, $hisdata->Hand, $dis_pos, 'drawCardDifferent');
-      $hisdata->NewCards[$dis_pos] = 1;
+      $hisdata->setCard($dis_pos, $this->drawCard($his_deck, $hisdata->Hand, $dis_pos, 'drawCardDifferent'));
     }
 ]]></code>
     <created>2006-05-01</created>
@@ -937,8 +936,7 @@
         }
       }
       $dis_pos = $max_cards[$this->arrayRand($max_cards)];
-      $hisdata->Hand[$dis_pos] = $this->drawCard($his_deck, $hisdata->Hand, $dis_pos, 'drawCardDifferent');
-      $hisdata->NewCards[$dis_pos] = 1;
+      $hisdata->setCard($dis_pos, $this->drawCard($his_deck, $hisdata->Hand, $dis_pos, 'drawCardDifferent'));
     }
 ]]></code>
     <created>2006-05-01</created>
@@ -1369,8 +1367,8 @@
     <effect><![CDATA[Production x0<br />Enemy tower: -3<br />Replace a card in hand with self]]></effect>
     <code><![CDATA[
     $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
-    $hisdata->Tower-= 3; $mydata->Hand[$mode] = $card->id();
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $hisdata->Tower-= 3; $mydata->setCard($mode, $card->id());
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2006-05-01</created>
     <modified>2011-12-24</modified>
@@ -2688,7 +2686,7 @@
     <code><![CDATA[
     $hisdata->attack(12);
     $mydata->addStock(-5);
-    $hisdata->Hand[$cardpos] = 97; $hisdata->NewCards[$cardpos] = 1;
+    $hisdata->setCard($cardpos, 97);
     $storage = array();
     for ($i = 1; $i <= 8; $i++) {
       if ($i != $cardpos and $this->getCard($hisdata->Hand[$i])->getClass() == 'Common') $storage[] = $i;
@@ -2698,8 +2696,7 @@
       shuffle($storage);
       for ($k = 0; $k < $count; $k++) {
         $i = $storage[$k];
-        $hisdata->Hand[$i] = 97;
-        $hisdata->NewCards[$i] = 1;
+        $hisdata->setCard($i, 97);
       }
     }
 ]]></code>
@@ -3537,10 +3534,8 @@
     else
       for ($i = 1; $i <= 8; $i++)
         if ($this->getCard($hisdata->Hand[$i])->hasKeyword('Dragon')) {
-          $mydata->Hand[$i] = $hisdata->Hand[$i];
-          $mydata->NewCards[$i] = 1;
-          $hisdata->Hand[$i] = $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardDifferent');
-          $hisdata->NewCards[$i] = 1;
+          $mydata->setCard($i, $hisdata->Hand[$i]);
+          $hisdata->setCard($i, $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardDifferent'));
           if ($cardpos == $i) $nextcard = 0;
         }
 ]]></code>
@@ -3863,8 +3858,8 @@
     <effect><![CDATA[Attack: 2<br />Enemy recruits: -1<br />Replace a card in hand with self]]></effect>
     <code><![CDATA[
     $hisdata->attack(2); $hisdata->Recruits-= 1;
-    $mydata->Hand[$mode] = $card->id();
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $mydata->setCard($mode, $card->id());
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2006-05-01</created>
     <modified>2011-12-24</modified>
@@ -3950,8 +3945,7 @@
     $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
     for ($i = 1; $i <= 8; $i++) {
       if ($i != $mode and $i != $cardpos) {
-        $mydata->Hand[$i] = $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardRandom');
-        $mydata->NewCards[$i] = 1;
+        $mydata->setCard($i, $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardRandom'));
       }
     }
 ]]></code>
@@ -4566,8 +4560,7 @@
       shuffle($my_storage);
       for ($k = 0; $k < $my_count; $k++) {
         $i = $my_storage[$k];
-        $mydata->Hand[$i] = $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardNoRare');
-        $mydata->NewCards[$i] = 1;
+        $mydata->setCard($i, $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardNoRare'));
       }
     }
     $his_count = min(count($his_storage), 3);
@@ -4575,8 +4568,7 @@
       shuffle($his_storage);
       for ($k = 0; $k < $his_count; $k++) {
         $i = $his_storage[$k];
-        $hisdata->Hand[$i] = $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardNoRare');
-        $hisdata->NewCards[$i] = 1;
+        $hisdata->setCard($i, $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardNoRare'));
       }
     }
 ]]></code>
@@ -4599,10 +4591,8 @@
     $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
     if ($mode != $cardpos and $this->getCard($mydata->Hand[$mode])->getClass() != 'Rare' and $this->getCard($hisdata->Hand[$mode])->getClass() != 'Rare') {
       $tmp = $mydata->Hand[$mode];
-      $mydata->Hand[$mode] = $hisdata->Hand[$mode];
-      $mydata->NewCards[$mode] = 1;
-      $hisdata->Hand[$mode] = $tmp;
-      $hisdata->NewCards[$mode] = 1;
+      $mydata->setCard($mode, $hisdata->Hand[$mode]);
+      $hisdata->setCard($mode, $tmp);
     }
 ]]></code>
     <created>2007-05-08</created>
@@ -4625,9 +4615,9 @@
     $trans = array('Common', 'Common', 'Common', 'Common', 'Uncommon', 'Uncommon', 'Uncommon', 'Rare');
     shuffle($trans);
     for ($i = 1; $i <= 8; $i++) {
-      $mydata->Hand[$i] = $this->drawCard($this->getList(array('class'=>$trans[$i-1], 'keyword'=>'Undead')), $mydata->Hand, $i, 'drawCardList');
+      $mydata->setCard($i, $this->drawCard($this->getList(array('class'=>$trans[$i-1], 'keyword'=>'Undead')), $mydata->Hand, $i, 'drawCardList'));
     }
-    $mydata->NewCards = array(1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;
+    $nextcard = 0;
 ]]></code>
     <created>2006-11-14</created>
     <modified>2012-09-08</modified>
@@ -4918,8 +4908,7 @@
     <code><![CDATA[
     $mydata->Wall+= 1;
     if ($mode != $cardpos) {
-      $mydata->Hand[$mode] = $this->drawCard($my_deck, $mydata->Hand, $mode, 'drawCardRandom');
-      $mydata->NewCards[$mode] = 1;
+      $mydata->setCard($mode, $this->drawCard($my_deck, $mydata->Hand, $mode, 'drawCardRandom'));
     }
 ]]></code>
     <created>2006-05-01</created>
@@ -4937,10 +4926,7 @@
     <level>0</level>
     <keywords/>
     <effect><![CDATA[Replace a card in opponent's hand with a common card from your deck]]></effect>
-    <code><![CDATA[
-    $hisdata->Hand[$mode] = $this->drawCard($my_deck->Common, $hisdata->Hand, $mode, 'drawCardList');
-    $hisdata->NewCards[$mode] = 1;
-]]></code>
+    <code><![CDATA[$hisdata->setCard($mode, $this->drawCard($my_deck->Common, $hisdata->Hand, $mode, 'drawCardList'));]]></code>
     <created>2006-05-01</created>
     <modified>2012-06-24</modified>
   </card>
@@ -5118,9 +5104,8 @@
     <keywords>Rebirth</keywords>
     <effect><![CDATA[Move selected card from opponent's hand to matching position in hand]]></effect>
     <code><![CDATA[
-    $mydata->Hand[$mode] = $hisdata->Hand[$mode];
-    $hisdata->Hand[$mode] = $this->drawCard($his_deck, $hisdata->Hand, $mode, 'drawCardDifferent');
-    $mydata->NewCards[$mode] = 1; $hisdata->NewCards[$mode] = 1;
+    $mydata->setCard($mode, $hisdata->Hand[$mode]);
+    $hisdata->setCard($mode, $this->drawCard($his_deck, $hisdata->Hand, $mode, 'drawCardDifferent'));
 ]]></code>
     <created>2006-05-01</created>
     <modified>2012-06-24</modified>
@@ -5272,9 +5257,8 @@
     <code><![CDATA[
     $rarities = array('Common' => 1, 'Uncommon' => 2, 'Rare' => 5);
     $rarity = $this->getCard($hisdata->Hand[$mode])->getClass();
-    $tmp = $rarities[$rarity];
-    $hisdata->addStock($tmp);
-    $hisdata->Hand[$mode] = $card->id(); $hisdata->NewCards[$mode] = 1;
+    $hisdata->addStock($rarities[$rarity]);
+    $hisdata->setCard($mode, $card->id());
 ]]></code>
     <created>2006-05-01</created>
     <modified>2012-12-24</modified>
@@ -5328,9 +5312,9 @@
     $trans = array('Common', 'Common', 'Common', 'Uncommon', 'Uncommon', 'Uncommon', 'Uncommon', 'Uncommon');
     shuffle($trans);
     for ($i = 1; $i <= 8; $i++) {
-      $mydata->Hand[$i] = $this->drawCard($this->getList(array('class'=>$trans[$i-1], 'keyword'=>'Soldier')), $mydata->Hand, $i, 'drawCardList');
+      $mydata->setCard($i, $this->drawCard($this->getList(array('class'=>$trans[$i-1], 'keyword'=>'Soldier')), $mydata->Hand, $i, 'drawCardList'));
     }
-    $mydata->NewCards = array(1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;
+    $nextcard = 0;
 ]]></code>
     <created>2006-05-01</created>
     <modified>2012-09-08</modified>
@@ -5455,8 +5439,8 @@
     <effect><![CDATA[Attack: 25<br />Magic: -1<br />Replace a card in hand with Vampire]]></effect>
     <code><![CDATA[
     $hisdata->attack(25);
-    $mydata->Magic-= 1; $mydata->Hand[$mode] = 28;
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $mydata->Magic-= 1; $mydata->setCard($mode, 28);
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2006-05-01</created>
     <modified>2013-03-31</modified>
@@ -5627,9 +5611,8 @@
       }
     }
     foreach ($rarities as $i => $rarity) {
-      if ($rarity == 'Common' or $rarity == 'Uncommon') {
-        $mydata->Hand[$i] = $this->drawCard($this->getList(array('class'=>$upgrades[$rarity], 'keyword'=>'Undead')), $mydata->Hand, $i, 'drawCardList');
-        $mydata->NewCards[$i] = 1;
+      if (in_array($rarity, array('Common', 'Uncommon'))) {
+        $mydata->setCard($i, $this->drawCard($this->getList(array('class'=>$upgrades[$rarity], 'keyword'=>'Undead')), $mydata->Hand, $i, 'drawCardList'));
       }
     }
 ]]></code>
@@ -5804,8 +5787,7 @@
     <effect><![CDATA[Discard a card from opponent's hand<br />Summons <b>Undead</b> of the same rarity as discarded card]]></effect>
     <code><![CDATA[
     $rarity = $this->getCard($hisdata->Hand[$mode])->getClass();
-    $hisdata->Hand[$mode] = $this->drawCard($his_deck, $hisdata->Hand, $mode, 'drawCardDifferent');
-    $hisdata->NewCards[$mode] = 1;
+    $hisdata->setCard($mode, $this->drawCard($his_deck, $hisdata->Hand, $mode, 'drawCardDifferent'));
     $nextcard = $this->drawCard($this->getList(array('class'=>$rarity, 'keyword'=>'Undead')), $mydata->Hand, $cardpos, 'drawCardList');
 ]]></code>
     <created>2007-10-04</created>
@@ -5841,8 +5823,8 @@
     <effect><![CDATA[Attack: 10<br />Replace a card in hand with self]]></effect>
     <code><![CDATA[
     $hisdata->attack(10);
-    $mydata->Hand[$mode] = $card->id();
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $mydata->setCard($mode, $card->id());
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2007-10-04</created>
     <modified>2011-12-24</modified>
@@ -5912,8 +5894,8 @@
     }
     shuffle($storage); $tmp = 0;
     for ($i = 0; ($i < count($storage) and $i < 5); $i++) {
-      $mydata->Hand[$storage[$i]] = $this->drawCard($my_deck, $mydata->Hand, $storage[$i], 'drawCardRandom');
-      $mydata->NewCards[$storage[$i]] = 1; $tmp++;
+      $mydata->setCard($storage[$i], $this->drawCard($my_deck, $mydata->Hand, $storage[$i], 'drawCardRandom'));
+      $tmp++;
     }
     $mydata->Wall+= 10 * $tmp;
 ]]></code>
@@ -5964,8 +5946,7 @@
       shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
       $storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
       $discarded_pos = array_pop($storage_temp);
-      $hisdata->Hand[$discarded_pos] = $this->drawCard($this->getList(array('class'=>'Common', 'keyword'=>'Beast')), $hisdata->Hand, $discarded_pos, 'drawCardList');
-      $hisdata->NewCards[$discarded_pos] = 1;
+      $hisdata->setCard($discarded_pos, $this->drawCard($this->getList(array('class'=>'Common', 'keyword'=>'Beast')), $hisdata->Hand, $discarded_pos, 'drawCardList'));
     }
     $tmp = $this->keywordCount($mydata->Hand, 'Beast') + $this->keywordCount($hisdata->Hand, 'Beast');
     $hisdata->attack(5 * $tmp);
@@ -6019,8 +6000,7 @@
       shuffle($storage);
       for ($i = 0; ($i < count($storage)) and ($i < $count); $i++) {
         $cur_pos = $storage[$i];
-        $hisdata->Hand[$cur_pos] = $this->drawCard($this->getList(array('class'=>'Common', 'keyword'=>'Holy')), $hisdata->Hand, $cur_pos, 'drawCardList');
-        $hisdata->NewCards[$cur_pos] = 1;
+        $hisdata->setCard($cur_pos, $this->drawCard($this->getList(array('class'=>'Common', 'keyword'=>'Holy')), $hisdata->Hand, $cur_pos, 'drawCardList'));
       }
     }
 ]]></code>
@@ -6061,8 +6041,8 @@
     <effect><![CDATA[Tower: +4<br />Replace a card in hand with <b>Holy</b>]]></effect>
     <code><![CDATA[
     $mydata->Tower+= 4;
-    $mydata->Hand[$mode] = $this->drawCard($this->getList(array('keyword'=>'Holy')), $mydata->Hand, $mode, 'drawCardList');
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $mydata->setCard($mode, $this->drawCard($this->getList(array('keyword'=>'Holy')), $mydata->Hand, $mode, 'drawCardList'));
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2007-10-04</created>
     <modified>2012-12-24</modified>
@@ -6103,8 +6083,8 @@
     <code><![CDATA[
     $mydata->Gems+= 6; $mydata->Wall+= 3;
     $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
-    $mydata->Hand[$mode] = $card->id();
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $mydata->setCard($mode, $card->id());
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2007-10-04</created>
     <modified>2011-12-24</modified>
@@ -6137,8 +6117,7 @@
       for ($i = 0; $i < 8; $i++) $trans[$i] = $i + 1;
       shuffle($trans);
       for ($i = 0; $i < count($storage); $i++) {
-        $mydata->Hand[$trans[$i]] = $storage[$i];
-        $mydata->NewCards[$trans[$i]] = 1;
+        $mydata->setCard($trans[$i], $storage[$i]);
         if ($trans[$i] == $cardpos) $nextcard = 0;
       }
       $hisdata->attack(10 * count($storage));
@@ -6253,8 +6232,7 @@
         shuffle($storage);
         for ($k = 0; $k < $count; $k++) {
           $i = $storage[$k];
-          $mydata->Hand[$i] = $mydata->LastCard[$mylastcardindex];
-          $mydata->NewCards[$i] = 1;
+          $mydata->setCard($i, $mydata->LastCard[$mylastcardindex]);
         }
       }
     }
@@ -6410,8 +6388,7 @@
     if (count($temp_array) > 0) {
       shuffle($temp_array);
       for ($i = 0; $i < count($temp_array) and $i < 3; $i++) {
-        $mydata->Hand[$temp_array[$i]] = 340;
-        $mydata->NewCards[$temp_array[$i]] = 1;
+        $mydata->setCard($temp_array[$i], 340);
       }
     }
 ]]></code>
@@ -6435,8 +6412,7 @@
     for ($i = 1; $i <= 8; $i++) {
       $my_card = $this->getCard($mydata->Hand[$i]);
       if ($i != $cardpos and $my_card->getClass() != 'Rare' and ($my_card->hasKeyword('Barbarian') or $my_card->hasKeyword('Soldier'))) {
-        $mydata->Hand[$i] = $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardRandom');
-        $mydata->NewCards[$i] = 1;
+        $mydata->setCard($i, $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardRandom'));
         $discarded++;
       }
     }
@@ -6529,9 +6505,8 @@
       }
     }
     foreach ($rarities as $i => $val) {
-      if ($val == 'Common' or $val == 'Uncommon') {
-        $mydata->Hand[$i] = $this->drawCard($this->getList(array('class'=>$upgrades[$val], 'keyword'=>'Beast')), $mydata->Hand, $i, 'drawCardList');
-        $mydata->NewCards[$i] = 1;
+      if (in_array($val, array('Common', 'Uncommon'))) {
+        $mydata->setCard($i, $this->drawCard($this->getList(array('class'=>$upgrades[$val], 'keyword'=>'Beast')), $mydata->Hand, $i, 'drawCardList'));
       }
     }
 ]]></code>
@@ -6693,8 +6668,7 @@
     $j = 0;
     for ($i = 1; $i <= 8; $i++) {
       if ($this->getCard($mydata->Hand[$i])->hasKeyword('any') and $i != $cardpos) {
-        $mydata->Hand[$i] = $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardRandom');
-        $mydata->NewCards[$i] = 1;
+        $mydata->setCard($i, $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardRandom'));
         $j++;
       }
     }
@@ -6702,8 +6676,7 @@
     $j = 0;
     for ($i = 1; $i <= 8; $i++) {
       if ($this->getCard($hisdata->Hand[$i])->hasKeyword('any')) {
-        $hisdata->Hand[$i] = $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardRandom');
-        $hisdata->NewCards[$i] = 1;
+        $hisdata->setCard($i, $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardRandom'));
         $j++;
       }
     }
@@ -6729,8 +6702,7 @@
       $mydata->Recruits+= min($this->getCard($hisdata->Hand[$cardpos])->getResources('Recruits'), 10);
     }
     else {
-      $mydata->Hand[$mode] = $card->id();
-      $mydata->NewCards[$mode] = 1;
+      $mydata->setCard($mode, $card->id());
     }
 ]]></code>
     <created>2008-02-12</created>
@@ -6883,8 +6855,7 @@
       shuffle($min_array['Common']); shuffle($min_array['Uncommon']); shuffle($min_array['Rare']);
       $min_array = array_merge($min_array['Common'], $min_array['Uncommon'], $min_array['Rare']);
       $discarded_pos = array_shift($min_array);
-      $mydata->Hand[$discarded_pos] = $this->drawCard($my_deck, $mydata->Hand, $discarded_pos, 'drawCardRandom');
-      $mydata->NewCards[$discarded_pos] = 1;
+      $mydata->setCard($discarded_pos, $this->drawCard($my_deck, $mydata->Hand, $discarded_pos, 'drawCardRandom'));
       $mydata->addStock(3);
     }
 ]]></code>
@@ -7068,8 +7039,8 @@
     $tmp = 0;
     for ($i = 1; $i <= 8; $i++) {
       if ($this->getCard($mydata->Hand[$i])->hasKeyword('Undead') and $i != $mode and $i != $cardpos) {
-        $mydata->Hand[$i] = $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardRandom');
-        $mydata->NewCards[$i] = 1; $tmp++;
+        $mydata->setCard($i, $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardRandom'));
+        $tmp++;
       }
     }
     $hisdata->attack(9 * $tmp);
@@ -7096,8 +7067,7 @@
       $mydata->Gems+= min(round($this->getCard($hisdata->Hand[$mode])->getResources('Gems') / 2),20);
       $mydata->Recruits+= min(round($this->getCard($hisdata->Hand[$mode])->getResources('Recruits') / 2),20);
     }
-    $hisdata->Hand[$mode] = $this->drawCard($his_deck, $hisdata->Hand, $mode, 'drawCardDifferent');
-    $hisdata->NewCards[$mode] = 1;
+    $hisdata->setCard($mode, $this->drawCard($his_deck, $hisdata->Hand, $mode, 'drawCardDifferent'));
 ]]></code>
     <created>2008-07-30</created>
     <modified>2008-07-30</modified>
@@ -7352,14 +7322,12 @@
     $attack_cards = array_unique(array_merge($green_c, $green_u, $mixed_c, $mixed_u));
     for ($i = 1; $i <= 8; $i++) {
       if (in_array($mydata->Hand[$i], $attack_cards) and $i != $cardpos) {
-        $mydata->Hand[$i] = $this->drawCard(array(23, 273, 297), $mydata->Hand, $i, 'drawCardList');
-        $mydata->NewCards[$i] = 1;
+        $mydata->setCard($i, $this->drawCard(array(23, 273, 297), $mydata->Hand, $i, 'drawCardList'));
       }
     }
     for ($i = 1; $i <= 8; $i++) {
       if (in_array($hisdata->Hand[$i], $attack_cards)) {
-        $hisdata->Hand[$i] = $this->drawCard(array(23, 273, 297), $hisdata->Hand, $i, 'drawCardList');
-        $hisdata->NewCards[$i] = 1;
+        $hisdata->setCard($i, $this->drawCard(array(23, 273, 297), $hisdata->Hand, $i, 'drawCardList'));
       }
     }
 ]]></code>
@@ -7483,7 +7451,7 @@
     <level>10</level>
     <keywords/>
     <effect><![CDATA[Replace a card in hand with Tartarus gate]]></effect>
-    <code><![CDATA[$mydata->Hand[$mode] = 313; if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;]]></code>
+    <code><![CDATA[$mydata->setCard($mode, 313); if ($mode == $cardpos) $nextcard = 0;]]></code>
     <created>2008-12-24</created>
     <modified>2012-04-07</modified>
   </card>
@@ -7523,8 +7491,8 @@
     <code><![CDATA[
     $hisdata->attack(7);
     $recruits_production*= 2;
-    $mydata->Hand[$mode] = $this->drawCard($this->getList(array('keyword'=>'Alliance')), $mydata->Hand, $mode, 'drawCardList');
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $mydata->setCard($mode, $this->drawCard($this->getList(array('keyword'=>'Alliance')), $mydata->Hand, $mode, 'drawCardList'));
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2008-12-24</created>
     <modified>2011-12-24</modified>
@@ -7607,8 +7575,7 @@
     }
     if (count($storage) > 0) {
       $discarded_pos = $storage[$this->arrayRand($storage)];
-      $mydata->Hand[$discarded_pos] = $this->drawCard($my_deck, $mydata->Hand, $discarded_pos, 'drawCardRandom');
-      $mydata->NewCards[$discarded_pos] = 1;
+      $mydata->setCard($discarded_pos, $this->drawCard($my_deck, $mydata->Hand, $discarded_pos, 'drawCardRandom'));
       $mydata->Gems+= 30;
     }
 ]]></code>
@@ -7631,8 +7598,8 @@
     $mydata->Tower+= 2; $mydata->Wall+= 3;
     $common = $this->getList(array('class'=>'Common', 'keyword'=>'Mage'));
     $uncommon = $this->getList(array('class'=>'Uncommon', 'keyword'=>'Mage'));
-    $mydata->Hand[$mode] = $this->drawCard(array_merge($common, $uncommon), $mydata->Hand, $mode, 'drawCardList');
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $mydata->setCard($mode, $this->drawCard(array_merge($common, $uncommon), $mydata->Hand, $mode, 'drawCardList'));
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2008-12-24</created>
     <modified>2013-03-31</modified>
@@ -7809,8 +7776,7 @@
     }
     if (count($storage) > 0) {
       $discarded_pos = $storage[$this->arrayRand($storage)];
-      $hisdata->Hand[$discarded_pos] = $this->drawCard($his_deck, $hisdata->Hand, $discarded_pos, 'drawCardDifferent');
-      $hisdata->NewCards[$discarded_pos] = 1;
+      $hisdata->setCard($discarded_pos, $this->drawCard($his_deck, $hisdata->Hand, $discarded_pos, 'drawCardDifferent'));
       $hisdata->Magic-= 1;
     }
 ]]></code>
@@ -7843,8 +7809,7 @@
       shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
       $storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
       $discarded_pos = array_pop($storage_temp);
-      $hisdata->Hand[$discarded_pos] = $this->drawCard($his_deck, $hisdata->Hand, $discarded_pos, 'drawCardDifferent');
-      $hisdata->NewCards[$discarded_pos] = 1;
+      $hisdata->setCard($discarded_pos, $this->drawCard($his_deck, $hisdata->Hand, $discarded_pos, 'drawCardDifferent'));
     }
 ]]></code>
     <created>2008-12-24</created>
@@ -7945,8 +7910,7 @@
     <effect><![CDATA[Discard a card from opponent's hand and pay half its cost<br />If not enough stock<br />Matching facility: -1]]></effect>
     <code><![CDATA[
     $dis_card = $this->getCard($hisdata->Hand[$mode]);
-    $hisdata->Hand[$mode] = $this->drawCard($his_deck, $hisdata->Hand, $mode, 'drawCardDifferent');
-    $hisdata->NewCards[$mode] = 1;
+    $hisdata->setCard($mode, $this->drawCard($his_deck, $hisdata->Hand, $mode, 'drawCardDifferent'));
     $resources = array('Quarry' => 'Bricks', 'Magic' => 'Gems', 'Dungeons' => 'Recruits');
     foreach ($resources as $facility => $resource) {
       $mydata->$resource-= round($dis_card->getResources($resource) / 2);
@@ -7979,8 +7943,7 @@
       shuffle($storage['Common']); shuffle($storage['Uncommon']);
       $storage_temp = array_merge($storage['Common'], $storage['Uncommon']);
       $discarded_pos = array_pop($storage_temp);
-      $hisdata->Hand[$discarded_pos] = 415;
-      $hisdata->NewCards[$discarded_pos] = 1;
+      $hisdata->setCard($discarded_pos, 415);
     }
 ]]></code>
     <created>2009-04-11</created>
@@ -8066,15 +8029,13 @@
     shuffle($my_temp); shuffle($his_temp);
     if (count($my_temp) > 0) {
       for ($i = 0; $i < count($my_temp) and $i < 6; $i++) {
-        $mydata->Hand[$my_temp[$i]] = $this->drawCard($my_deck, $mydata->Hand, $my_temp[$i], 'drawCardRandom');
-        $mydata->NewCards[$my_temp[$i]] = 1;
+        $mydata->setCard($my_temp[$i], $this->drawCard($my_deck, $mydata->Hand, $my_temp[$i], 'drawCardRandom'));
       }
       $amount = max(($i - 4), 0); $mydata->Bricks-= $amount * 10; $mydata->Quarry-= $amount;
     }
     if (count($his_temp) > 0) {
       for ($j = 0; $j < count($his_temp) and $j < 6; $j++) {
-        $hisdata->Hand[$his_temp[$j]] = $this->drawCard($his_deck, $hisdata->Hand, $his_temp[$j], 'drawCardRandom');
-        $hisdata->NewCards[$his_temp[$j]] = 1;
+        $hisdata->setCard($his_temp[$j], $this->drawCard($his_deck, $hisdata->Hand, $his_temp[$j], 'drawCardRandom'));
       }
       $amount = max(($j - 4), 0); $hisdata->Bricks-= $amount * 10; $hisdata->Quarry-= $amount;
     }
@@ -8219,13 +8180,11 @@
     $my_counter = $his_counter = 0;
     for ($i = 1; $i <= 8; $i++) {
       if ($this->getCard($mydata->Hand[$i])->hasKeyword('Mage') and $i != $cardpos) {
-        $mydata->Hand[$i] = $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardRandom');
-        $mydata->NewCards[$i] = 1;
+        $mydata->setCard($i, $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardRandom'));
         $my_counter++;
       }
       if ($this->getCard($hisdata->Hand[$i])->hasKeyword('Mage')) {
-        $hisdata->Hand[$i] = $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardRandom');
-        $hisdata->NewCards[$i] = 1;
+        $hisdata->setCard($i, $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardRandom'));
         $his_counter++;
       }
     }
@@ -8249,8 +8208,8 @@
     <effect><![CDATA[Attack: 30<br />Replace a card in hand with self]]></effect>
     <code><![CDATA[
     $hisdata->attack(30);
-    $mydata->Hand[$mode] = $card->id();
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $mydata->setCard($mode, $card->id());
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2009-04-11</created>
     <modified>2012-01-06</modified>
@@ -8425,10 +8384,8 @@
       $my_low_dis = $my_low[$this->arrayRand($my_low)];
       $my_high_dis = $my_high[$this->arrayRand($my_high)];
     }
-    $mydata->Hand[$my_low_dis] = $this->drawCard($my_deck, $mydata->Hand, $my_low_dis, 'drawCardDifferent');
-    $mydata->Hand[$my_high_dis] = $this->drawCard($my_deck, $mydata->Hand, $my_high_dis, 'drawCardDifferent');
-    $mydata->NewCards[$my_low_dis] = 1;
-    $mydata->NewCards[$my_high_dis] = 1;
+    $mydata->setCard($my_low_dis, $this->drawCard($my_deck, $mydata->Hand, $my_low_dis, 'drawCardDifferent'));
+    $mydata->setCard($my_high_dis, $this->drawCard($my_deck, $mydata->Hand, $my_high_dis, 'drawCardDifferent'));
     
     if ($his_min == $his_max) {
       shuffle($his_high);
@@ -8439,10 +8396,8 @@
       $his_low_dis = $his_low[$this->arrayRand($his_low)];
       $his_high_dis = $his_high[$this->arrayRand($his_high)];
     }
-    $hisdata->Hand[$his_low_dis] = $this->drawCard($his_deck, $hisdata->Hand, $his_low_dis, 'drawCardDifferent');
-    $hisdata->Hand[$his_high_dis] = $this->drawCard($his_deck, $hisdata->Hand, $his_high_dis, 'drawCardDifferent');
-    $hisdata->NewCards[$his_low_dis] = 1;
-    $hisdata->NewCards[$his_high_dis] = 1;
+    $hisdata->setCard($his_low_dis, $this->drawCard($his_deck, $hisdata->Hand, $his_low_dis, 'drawCardDifferent'));
+    $hisdata->setCard($his_high_dis, $this->drawCard($his_deck, $hisdata->Hand, $his_high_dis, 'drawCardDifferent'));
 ]]></code>
     <created>2009-04-11</created>
     <modified>2009-04-11</modified>
@@ -8732,14 +8687,12 @@
     $hisdata->attack(35);
     for ($i = 1; $i <= 8; $i++) {
       if ($i != $cardpos and $this->getCard($mydata->Hand[$i])->getClass() == 'Common') {
-        $mydata->Hand[$i] = $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardRandom');
-        $mydata->NewCards[$i] = 1;
+        $mydata->setCard($i, $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardRandom'));
       }
     }
     for ($i = 1; $i <= 8; $i++) {
       if ($this->getCard($hisdata->Hand[$i])->getClass() == 'Common') {
-        $hisdata->Hand[$i] = $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardNoRare');
-        $hisdata->NewCards[$i] = 1;
+        $hisdata->setCard($i, $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardNoRare'));
       }
     }
 ]]></code>
@@ -8815,8 +8768,8 @@
     <keywords>Horde</keywords>
     <effect><![CDATA[Enemy wall: -3<br />Replace a card in hand with self]]></effect>
     <code><![CDATA[
-    $hisdata->Wall-= 3; $mydata->Hand[$mode] = $card->id();
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $hisdata->Wall-= 3; $mydata->setCard($mode, $card->id());
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2009-07-22</created>
     <modified>2011-12-24</modified>
@@ -8920,8 +8873,7 @@
     }
     if (count($storage) > 0) {
       $dis_index = $storage[$this->arrayRand($storage)];
-      $mydata->Hand[$dis_index] = $this->drawCard($my_deck, $mydata->Hand, $dis_index, 'drawCardRandom');
-      $mydata->NewCards[$dis_index] = 1;
+      $mydata->setCard($dis_index, $this->drawCard($my_deck, $mydata->Hand, $dis_index, 'drawCardRandom'));
     }
 ]]></code>
     <created>2009-07-22</created>
@@ -8960,16 +8912,14 @@
       if ($i != $cardpos) {
         $cur_card = $this->getCard($mydata->Hand[$i]);
         if ($cur_card->getResources() == 0 and $cur_card->getClass() == 'Common') {
-          $mydata->Hand[$i] = $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardNoRare');
-          $mydata->NewCards[$i] = 1;
+          $mydata->setCard($i, $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardNoRare'));
         }
       }
     }
     for ($i = 1; $i <= 8; $i++) {
       $cur_card = $this->getCard($hisdata->Hand[$i]);
       if ($cur_card->getResources() == 0 and $cur_card->getClass() == 'Common') {
-        $hisdata->Hand[$i] = $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardNoRare');
-        $hisdata->NewCards[$i] = 1;
+        $hisdata->setCard($i, $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardNoRare'));
       }
     }
 ]]></code>
@@ -9026,8 +8976,7 @@
 
       for ($i = 1; $i <= 8; $i++) {
         if ($i != $cardpos and !$this->getCard($mydata->Hand[$i])->hasKeyword('Titan') and !in_array($mydata->Hand[$i], $support)) {
-          $mydata->Hand[$i] = $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardRandom');
-          $mydata->NewCards[$i] = 1;
+          $mydata->setCard($i, $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardRandom'));
         }
       }
     }
@@ -9138,7 +9087,7 @@
     <code><![CDATA[
     $hisdata->attack(18);
     $gems_production*= 3;
-    $hisdata->Hand[$mode] = 247; $hisdata->NewCards[$mode] = 1;
+    $hisdata->setCard($mode, 247);
 ]]></code>
     <created>2009-10-24</created>
     <modified>2012-09-08</modified>
@@ -9198,13 +9147,11 @@
     $discarded = 0;
     for ($i = 1; $i <= 8; $i++) {
       if ($i != $cardpos and $this->getCard($mydata->Hand[$i])->getResources() < 10) {
-        $mydata->Hand[$i] = $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardNoRare');
-        $mydata->NewCards[$i] = 1;
+        $mydata->setCard($i, $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardNoRare'));
         $discarded++;
       }
       if ($this->getCard($hisdata->Hand[$i])->getResources() < 10) {
-        $hisdata->Hand[$i] = $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardNoRare');
-        $hisdata->NewCards[$i] = 1;
+        $hisdata->setCard($i, $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardNoRare'));
         $discarded++;
       }
     }
@@ -9255,8 +9202,7 @@
       shuffle($storage);
       $brigand_list = array_merge($this->getList(array('class'=>'Uncommon', 'keyword'=>'Brigand')), $this->getList(array('class'=>'Rare', 'keyword'=>'Brigand')));
       for ($i = 0; $i < count($storage) and $i < 3; $i++) {
-        $mydata->Hand[$storage[$i]] = $this->drawCard($brigand_list, $mydata->Hand, $storage[$i], 'drawCardList');
-        $mydata->NewCards[$storage[$i]] = 1;
+        $mydata->setCard($storage[$i], $this->drawCard($brigand_list, $mydata->Hand, $storage[$i], 'drawCardList'));
       }
     }
 ]]></code>
@@ -9335,8 +9281,7 @@
       $nextcard = $hisdata->Hand[$cardpos];
     }
     else {
-      $mydata->Hand[$mode] = $card->id();
-      $mydata->NewCards[$mode] = 1;
+      $mydata->setCard($mode, $card->id());
     }
 ]]></code>
     <created>2009-10-24</created>
@@ -9410,12 +9355,10 @@
     <effect><![CDATA[If targeting self and not New, discard the matching card, else replace a card in hand with self]]></effect>
     <code><![CDATA[
     if (!isset($mynewflags[$cardpos]) and $mode == $cardpos) {
-      $hisdata->Hand[$cardpos] = $this->drawCard($his_deck, $hisdata->Hand, $cardpos, 'drawCardDifferent');
-      $hisdata->NewCards[$cardpos] = 1;
+      $hisdata->setCard($cardpos, $this->drawCard($his_deck, $hisdata->Hand, $cardpos, 'drawCardDifferent'));
     }
     else {
-      $mydata->Hand[$mode] = $card->id();
-      $mydata->NewCards[$mode] = 1;
+      $mydata->setCard($mode, $card->id());
     }
 ]]></code>
     <created>2009-10-24</created>
@@ -9457,8 +9400,7 @@
     for ($i = 1; $i <= 8; $i++) {
       if ($i != $cardpos and $this->getCard($mydata->Hand[$i])->hasKeyword('Titan')) {
         $storage[] = $mydata->Hand[$i];
-        $mydata->Hand[$i] = $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardRandom');
-        $mydata->NewCards[$i] = 1;
+        $mydata->setCard($i, $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardRandom'));
       }
     }
     if (count($storage) > 0) {
@@ -9623,8 +9565,7 @@
     <code><![CDATA[
     if ($mode != $cardpos) {
       $nextcard = $mydata->Hand[$mode];
-      $mydata->Hand[$mode] = $this->drawCard($my_deck->Uncommon, $mydata->Hand, $mode, 'drawCardList');
-      $mydata->NewCards[$mode] = 1;
+      $mydata->setCard($mode, $this->drawCard($my_deck->Uncommon, $mydata->Hand, $mode, 'drawCardList'));
     }
     else $nextcard = $this->drawCard($my_deck->Uncommon, $mydata->Hand, $cardpos, 'drawCardList');
 ]]></code>
@@ -9706,9 +9647,9 @@
     $trans = array('Common', 'Common', 'Common', 'Common', 'Uncommon', 'Uncommon', 'Uncommon', 'Rare');
     shuffle($trans);
     for ($i = 1; $i <= 8; $i++) {
-      $mydata->Hand[$i] = $this->drawCard($my_deck->$trans[$i-1], $mydata->Hand, $i, 'drawCardList');
+      $mydata->setCard($i, $this->drawCard($my_deck->$trans[$i-1], $mydata->Hand, $i, 'drawCardList'));
     }
-    $mydata->NewCards = array(1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;
+    $nextcard = 0;
 ]]></code>
     <created>2010-01-20</created>
     <modified>2010-01-20</modified>
@@ -9726,9 +9667,8 @@
     <keywords>Rebirth</keywords>
     <effect><![CDATA[Replace a card in hand with <b>Swift</b>]]></effect>
     <code><![CDATA[
-    $mydata->Hand[$mode] = $this->drawCard($this->getList(array('keyword'=>'Swift')), $mydata->Hand, $mode, 'drawCardList');
-    $mydata->NewCards[$mode] = 1;
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $mydata->setCard($mode, $this->drawCard($this->getList(array('keyword'=>'Swift')), $mydata->Hand, $mode, 'drawCardList'));
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2010-01-20</created>
     <modified>2013-03-31</modified>
@@ -9767,12 +9707,12 @@
     <keywords>Destruction</keywords>
     <effect><![CDATA[Replace matching card in opponent's hand and its neigbouring cards with Wind]]></effect>
     <code><![CDATA[
-    $hisdata->Hand[$cardpos] = 247; $hisdata->NewCards[$cardpos] = 1;
+    $hisdata->setCard($cardpos, 247);
     if ($cardpos > 1) {
-      $hisdata->Hand[$cardpos - 1] = 247; $hisdata->NewCards[$cardpos - 1] = 1;
+      $hisdata->setCard($cardpos - 1, 247);
     }
     if ($cardpos < 8) {
-      $hisdata->Hand[$cardpos + 1] = 247; $hisdata->NewCards[$cardpos + 1] = 1;
+      $hisdata->setCard($cardpos + 1, 247);
     }
 ]]></code>
     <created>2010-01-20</created>
@@ -10015,8 +9955,7 @@
     if (count($card_costs) > 0) {
       foreach ($card_costs as $i => $cost) if ($cost == $max) $max_cards[] = $i;
       $dis_pos = $max_cards[$this->arrayRand($max_cards)];
-      $hisdata->Hand[$dis_pos] = $this->drawCard($his_deck, $hisdata->Hand, $dis_pos, 'drawCardDifferent');
-      $hisdata->NewCards[$dis_pos] = 1;
+      $hisdata->setCard($dis_pos, $this->drawCard($his_deck, $hisdata->Hand, $dis_pos, 'drawCardDifferent'));
     }
 ]]></code>
     <created>2010-01-20</created>
@@ -10073,8 +10012,8 @@
     <effect><![CDATA[Replace a card in hand with a card of the same rarity (can't summon self)]]></effect>
     <code><![CDATA[
     $class = $this->getCard($mydata->Hand[$mode])->getClass();
-    $mydata->Hand[$mode] = $this->drawCard(array_diff($my_deck->$class, array($card->id(), $mydata->Hand[$mode])), $mydata->Hand, $mode, 'drawCardList');
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $mydata->setCard($mode, $this->drawCard(array_diff($my_deck->$class, array($card->id(), $mydata->Hand[$mode])), $mydata->Hand, $mode, 'drawCardList'));
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2010-03-14</created>
     <modified>2012-06-24</modified>
@@ -10207,8 +10146,8 @@
     <effect><![CDATA[Gems: +N<br />N = #<b>Nature</b> in hand (max 4)<br />Replace a card in hand with common <b>Nature</b>]]></effect>
     <code><![CDATA[
     $mydata->Gems+= min($this->keywordCount($mydata->Hand, 'Nature'), 4);
-    $mydata->Hand[$mode] = $this->drawCard($this->getList(array('class'=>'Common', 'keyword'=>'Nature')), $mydata->Hand, $mode, 'drawCardList');
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $mydata->setCard($mode, $this->drawCard($this->getList(array('class'=>'Common', 'keyword'=>'Nature')), $mydata->Hand, $mode, 'drawCardList'));
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2010-03-14</created>
     <modified>2011-04-24</modified>
@@ -10401,13 +10340,11 @@
     }
     if (count($my_storage) > 0 and count($my_storage) >= count($his_storage)) {
       $pos = $my_storage[$this->arrayRand($my_storage)];
-      $mydata->Hand[$pos] = $this->drawCard($my_deck->Rare, $mydata->Hand, $pos, 'drawCardList');
-      $mydata->NewCards[$pos] = 1;
+      $mydata->setCard($pos, $this->drawCard($my_deck->Rare, $mydata->Hand, $pos, 'drawCardList'));
     }
     if (count($his_storage) > 0 and count($my_storage) <= count($his_storage)) {
       $pos = $his_storage[$this->arrayRand($his_storage)];
-      $hisdata->Hand[$pos] = $this->drawCard($his_deck->Rare, $hisdata->Hand, $pos, 'drawCardList');
-      $hisdata->NewCards[$pos] = 1;
+      $hisdata->setCard($pos, $this->drawCard($his_deck->Rare, $hisdata->Hand, $pos, 'drawCardList'));
     }
 ]]></code>
     <created>2010-03-14</created>
@@ -10521,8 +10458,7 @@
     if (count($storage) > 0) {
       $dis_index = $storage[$this->arrayRand($storage)];
       if (!$this->getCard($mydata->Hand[$dis_index])->hasKeyword('Unliving')) $mydata->Wall+= 5;
-      $mydata->Hand[$dis_index] = $this->drawCard($my_deck, $mydata->Hand, $dis_index, 'drawCardRandom');
-      $mydata->NewCards[$dis_index] = 1;
+      $mydata->setCard($dis_index, $this->drawCard($my_deck, $mydata->Hand, $dis_index, 'drawCardRandom'));
     }
 ]]></code>
     <created>2010-06-21</created>
@@ -10848,7 +10784,7 @@
     $hisdata->attack(30); $tmp = 0;
     for ($i = 1; $i <= 8; $i++) {
       if ($i != $cardpos and $this->getCard($mydata->Hand[$i])->getClass() == 'Common') {
-        $mydata->Hand[$i] = 13; $mydata->NewCards[$i] = 1; $tmp++;
+        $mydata->setCard($i, 13); $tmp++;
       }
     }
     $mydata->Recruits+= $tmp * 2;
@@ -11010,8 +10946,7 @@
     <effect><![CDATA[Stock: +4<br />Replace a card in opponent's hand with a rare card from your deck]]></effect>
     <code><![CDATA[
     $mydata->addStock(4);
-    $hisdata->Hand[$mode] = $this->drawCard($my_deck->Rare, $hisdata->Hand, $mode, 'drawCardList');
-    $hisdata->NewCards[$mode] = 1;
+    $hisdata->setCard($mode, $this->drawCard($my_deck->Rare, $hisdata->Hand, $mode, 'drawCardList'));
 ]]></code>
     <created>2010-06-21</created>
     <modified>2010-06-21</modified>
@@ -11078,8 +11013,7 @@
       shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
       $storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
       $discarded_pos = array_pop($storage_temp);
-      $hisdata->Hand[$discarded_pos] = $this->drawCard($his_deck, $hisdata->Hand, $discarded_pos, 'drawCardDifferent');
-      $hisdata->NewCards[$discarded_pos] = 1;
+      $hisdata->setCard($discarded_pos, $this->drawCard($his_deck, $hisdata->Hand, $discarded_pos, 'drawCardDifferent'));
     }
 ]]></code>
     <created>2010-06-21</created>
@@ -11140,8 +11074,7 @@
     for ($i = 1; $i <= 8; $i++) {
       $cur_card = $this->getCard($hisdata->Hand[$i]);
       if ($cur_card->hasKeyword('Quick') or $cur_card->hasKeyword('Swift')) {
-        $hisdata->Hand[$i] = $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardRandom');
-        $hisdata->NewCards[$i] = 1;
+        $hisdata->setCard($i, $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardRandom'));
       }
     }
 ]]></code>
@@ -11230,8 +11163,8 @@
     <effect><![CDATA[Recruits: +3<br />Enemy wall: -3<br />Replace a card in hand with Piranhas]]></effect>
     <code><![CDATA[
     $mydata->Recruits+= 3;
-    $hisdata->Wall-= 3; $mydata->Hand[$mode] = 504;
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $hisdata->Wall-= 3; $mydata->setCard($mode, 504);
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2010-06-21</created>
     <modified>2011-12-24</modified>
@@ -11271,10 +11204,9 @@
     for ($i = 1; $i <= 8; $i++) {
       if ($i != $cardpos) {
         $rarity = $this->getCard($mydata->Hand[$i])->getClass();
-        $mydata->Hand[$i] = $this->drawCard(array_diff($my_deck->$rarity, array(569, $mydata->Hand[$i])), $mydata->Hand, $i, 'drawCardList');
+        $mydata->setCard($i, $this->drawCard(array_diff($my_deck->$rarity, array(569, $mydata->Hand[$i])), $mydata->Hand, $i, 'drawCardList'));
       }
     }
-    $mydata->NewCards = array(1=> 1, 1, 1, 1, 1, 1, 1, 1);
 ]]></code>
     <created>2010-06-21</created>
     <modified>2010-11-01</modified>
@@ -11313,12 +11245,10 @@
     <code><![CDATA[
     $mydata->Tower+= 15;
     if ($cardpos > 1) {
-      $mydata->Hand[$cardpos - 1] = $this->drawCard($this->getList(array('keyword'=>'Burning')), $mydata->Hand, $cardpos - 1, 'drawCardList');
-      $mydata->NewCards[$cardpos - 1] = 1;
+      $mydata->setCard($cardpos - 1, $this->drawCard($this->getList(array('keyword'=>'Burning')), $mydata->Hand, $cardpos - 1, 'drawCardList'));
     }
     if ($cardpos < 8) {
-      $mydata->Hand[$cardpos + 1] = $this->drawCard($this->getList(array('keyword'=>'Burning')), $mydata->Hand, $cardpos + 1, 'drawCardList');
-      $mydata->NewCards[$cardpos + 1] = 1;
+      $mydata->setCard($cardpos + 1, $this->drawCard($this->getList(array('keyword'=>'Burning')), $mydata->Hand, $cardpos + 1, 'drawCardList'));
     }
 ]]></code>
     <created>2010-06-21</created>
@@ -11575,8 +11505,8 @@
     $rarities = array('Common' => 2, 'Uncommon' => 6, 'Rare' => 14);
     $cur_rarity = $this->getCard($mydata->Hand[$mode])->getClass();
     $mydata->Wall+= $rarities[$cur_rarity];
-    $mydata->Hand[$mode] = $card->id();
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $mydata->setCard($mode, $card->id());
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2010-09-10</created>
     <modified>2012-04-07</modified>
@@ -11654,10 +11584,10 @@
     <effect><![CDATA[Replace neighbouring cards with Wheat farm]]></effect>
     <code><![CDATA[
     if ($cardpos > 1) {
-      $mydata->Hand[$cardpos - 1] = 566; $mydata->NewCards[$cardpos - 1] = 1;
+      $mydata->setCard($cardpos - 1, 566);
     }
     if ($cardpos < 8) {
-      $mydata->Hand[$cardpos + 1] = 566; $mydata->NewCards[$cardpos + 1] = 1;
+      $mydata->setCard($cardpos + 1, 566);
     }
 ]]></code>
     <created>2010-09-10</created>
@@ -11777,7 +11707,7 @@
     <code><![CDATA[
     $hisdata->attack(8);
     $hisdata->addRandomResources(-14);
-    $hisdata->Hand[$cardpos] = 23; $hisdata->NewCards[$cardpos] = 1;
+    $hisdata->setCard($cardpos, 23);
 ]]></code>
     <created>2010-09-10</created>
     <modified>2010-11-01</modified>
@@ -11797,7 +11727,7 @@
     <code><![CDATA[
     $hisdata->addRandomResources(-5);
     if ($this->getCard($hisdata->Hand[$cardpos])->getClass() != 'Rare') {
-      $hisdata->Hand[$cardpos] = 297; $hisdata->NewCards[$cardpos] = 1;
+      $hisdata->setCard($cardpos, 297);
     }
 ]]></code>
     <created>2010-09-10</created>
@@ -11948,8 +11878,8 @@
     <effect><![CDATA[Attack: 8<br />Replace a card in hand with <b>Frenzy</b>]]></effect>
     <code><![CDATA[
     $hisdata->attack(8);
-    $mydata->Hand[$mode] = $this->drawCard($this->getList(array('keyword'=>'Frenzy')), $mydata->Hand, $mode, 'drawCardList');
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $mydata->setCard($mode, $this->drawCard($this->getList(array('keyword'=>'Frenzy')), $mydata->Hand, $mode, 'drawCardList'));
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2010-10-03</created>
     <modified>2013-07-27</modified>
@@ -11986,9 +11916,8 @@
     <keywords/>
     <effect><![CDATA[Replace a card in hand with Recruits only no support keyword attack card]]></effect>
     <code><![CDATA[
-    $mydata->Hand[$mode] = $this->drawCard($this->getList(array('cost'=>'Green', 'advanced'=>'Attack:', 'support'=>'No keywords')), $mydata->Hand, $mode, 'drawCardList');
+    $mydata->setCard($mode, $this->drawCard($this->getList(array('cost'=>'Green', 'advanced'=>'Attack:', 'support'=>'No keywords')), $mydata->Hand, $mode, 'drawCardList'));
     if ($mode == $cardpos) $nextcard = 0;
-    else $mydata->NewCards[$mode] = 1;
 ]]></code>
     <created>2010-10-03</created>
     <modified>2012-04-07</modified>
@@ -12045,16 +11974,14 @@
     for ($i = 1; $i <= 8; $i++) {
       $cur_card = $mydata->Hand[$i];
       if ($this->getCard($cur_card)->getClass() != 'Rare' and !in_array($cur_card, $my_cards) and $i != $cardpos) {
-        $mydata->Hand[$i] = $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardNoRare');
-        $mydata->NewCards[$i] = 1;
+        $mydata->setCard($i, $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardNoRare'));
       }
     }
     $his_cards = array_merge($his_deck->Common, $his_deck->Uncommon);
     for ($i = 1; $i <= 8; $i++) {
       $cur_card = $hisdata->Hand[$i];
       if ($this->getCard($cur_card)->getClass() != 'Rare' and !in_array($cur_card, $his_cards)) {
-        $hisdata->Hand[$i] = $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardNoRare');
-        $hisdata->NewCards[$i] = 1;
+        $hisdata->setCard($i, $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardNoRare'));
       }
     }
 ]]></code>
@@ -12093,8 +12020,7 @@
     $hisdata->attack(16);
     if ($this->getCard($hisdata->Hand[$mode])->getClass() != 'Rare') {
       $nextcard = $hisdata->Hand[$mode];
-      $hisdata->Hand[$mode] = $this->drawCard($his_deck, $hisdata->Hand, $mode, 'drawCardDifferent');
-      $hisdata->NewCards[$mode] = 1;
+      $hisdata->setCard($mode, $this->drawCard($his_deck, $hisdata->Hand, $mode, 'drawCardDifferent'));
     }
 ]]></code>
     <created>2011-01-01</created>
@@ -12403,8 +12329,7 @@
     $mydata->Tower+= 3;
     $selected = $this->getCard($mydata->Hand[$mode]);
     if (!$selected->hasKeyword('Unliving')) {
-      $mydata->Hand[$mode] = $this->drawCard($this->getList(array('class'=>$selected->getClass(), 'keyword'=>'Unliving')), $mydata->Hand, $mode, 'drawCardList');
-      $mydata->NewCards[$mode] = 1;
+      $mydata->setCard($mode, $this->drawCard($this->getList(array('class'=>$selected->getClass(), 'keyword'=>'Unliving')), $mydata->Hand, $mode, 'drawCardList'));
     }
 ]]></code>
     <created>2011-04-24</created>
@@ -12439,8 +12364,7 @@
       shuffle($storage['Common']); shuffle($storage['Uncommon']);
       $storage_temp = array_merge($storage['Common'], $storage['Uncommon']);
       $discarded_pos = array_pop($storage_temp);
-      $hisdata->Hand[$discarded_pos] = $this->drawCard($his_deck, $hisdata->Hand, $discarded_pos, 'drawCardDifferent');
-      $hisdata->NewCards[$discarded_pos] = 1;
+      $hisdata->setCard($discarded_pos, $this->drawCard($his_deck, $hisdata->Hand, $discarded_pos, 'drawCardDifferent'));
     }
 ]]></code>
     <created>2011-04-24</created>
@@ -12593,10 +12517,10 @@
     <effect><![CDATA[Replace neighbouring cards with Hydra<br />Attack: 5N<br />N = #Hydra cards in game]]></effect>
     <code><![CDATA[
     if ($cardpos > 1) {
-      $mydata->Hand[$cardpos - 1] = 635; $mydata->NewCards[$cardpos - 1] = 1;
+      $mydata->setCard($cardpos - 1, 635);
     }
     if ($cardpos < 8) {
-      $mydata->Hand[$cardpos + 1] = 635; $mydata->NewCards[$cardpos + 1] = 1;
+      $mydata->setCard($cardpos + 1, 635);
     }
     $tmp = 0;
     for ($i = 1; $i <= 8; $i++) {
@@ -12620,7 +12544,7 @@
     <level>7</level>
     <keywords>Illusion,Unliving</keywords>
     <effect><![CDATA[Wall: +15<br />Replace a card in hand with Mirror golem]]></effect>
-    <code><![CDATA[$mydata->Wall+= 15; $mydata->Hand[$mode] = 479; if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;]]></code>
+    <code><![CDATA[$mydata->Wall+= 15; $mydata->setCard($mode, 479); if ($mode == $cardpos) $nextcard = 0;]]></code>
     <created>2011-04-24</created>
     <modified>2011-04-24</modified>
   </card>
@@ -12703,8 +12627,7 @@
     <code><![CDATA[
     for ($i = 1; $i <= 8; $i++) {
       if ($this->getCard($hisdata->Hand[$i])->getClass() == 'Rare') {
-        $hisdata->Hand[$i] = $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardNoRare');
-        $hisdata->NewCards[$i] = 1;
+        $hisdata->setCard($i, $this->drawCard($his_deck, $hisdata->Hand, $i, 'drawCardNoRare'));
       }
     }
 ]]></code>
@@ -12724,8 +12647,8 @@
     <keywords/>
     <effect><![CDATA[Magic: +1<br />Replace a card in hand with Book of magic]]></effect>
     <code><![CDATA[
-    $mydata->Magic+= 1; $mydata->Hand[$mode] = 34;
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $mydata->Magic+= 1; $mydata->setCard($mode, 34);
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2011-09-24</created>
     <modified>2011-09-24</modified>
@@ -12743,8 +12666,8 @@
     <keywords/>
     <effect><![CDATA[Quarry: +1<br />Replace a card in hand with Master bricklayer]]></effect>
     <code><![CDATA[
-    $mydata->Quarry+= 1; $mydata->Hand[$mode] = 22;
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $mydata->Quarry+= 1; $mydata->setCard($mode, 22);
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2011-09-24</created>
     <modified>2011-09-24</modified>
@@ -12762,8 +12685,8 @@
     <keywords/>
     <effect><![CDATA[Dungeon: +1<br />Replace a card in hand with Blacksmith]]></effect>
     <code><![CDATA[
-    $mydata->Dungeons+= 1; $mydata->Hand[$mode] = 12;
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $mydata->Dungeons+= 1; $mydata->setCard($mode, 12);
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2011-09-24</created>
     <modified>2011-09-24</modified>
@@ -13026,8 +12949,8 @@
     $mydata->Tower+= 2; $recruits_production*= 2;
     $common = $this->getList(array('class'=>'Common', 'keyword'=>'Horde'));
     $uncommon = $this->getList(array('class'=>'Uncommon', 'keyword'=>'Horde'));
-    $mydata->Hand[$mode] = $this->drawCard(array_merge($common, $uncommon), $mydata->Hand, $mode, 'drawCardList');
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $mydata->setCard($mode, $this->drawCard(array_merge($common, $uncommon), $mydata->Hand, $mode, 'drawCardList'));
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2012-01-06</created>
     <modified>2012-04-07</modified>
@@ -13245,8 +13168,7 @@
         shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
         $storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
         $discarded_pos = array_pop($storage_temp);
-        $hisdata->Hand[$discarded_pos] = 274;
-        $hisdata->NewCards[$discarded_pos] = 1;
+        $hisdata->setCard($discarded_pos, 274);
       }
     }
 ]]></code>
@@ -13267,8 +13189,8 @@
     <effect><![CDATA[Replace a card in hand with a rare <b>Dragon</b>]]></effect>
     <code><![CDATA[
     $dragon = $this->getList(array('class'=>'Rare', 'keyword'=>'Dragon'));
-    $mydata->Hand[$mode] = $this->drawCard($dragon, $mydata->Hand, $mode, 'drawCardList');
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $mydata->setCard($mode, $this->drawCard($dragon, $mydata->Hand, $mode, 'drawCardList'));
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2012-06-24</created>
     <modified>2012-09-08</modified>
@@ -13351,12 +13273,10 @@
     $aria = array_merge($uncommon, $rare);
     $aria = array_diff($aria, array($card->id()));
     if ($cardpos > 1) {
-      $mydata->Hand[$cardpos - 1] = $this->drawCard($aria, $mydata->Hand, $cardpos - 1, 'drawCardList');
-      $mydata->NewCards[$cardpos - 1] = 1;
+      $mydata->setCard($cardpos - 1, $this->drawCard($aria, $mydata->Hand, $cardpos - 1, 'drawCardList'));
     }
     if ($cardpos < 8) {
-      $mydata->Hand[$cardpos + 1] = $this->drawCard($aria, $mydata->Hand, $cardpos + 1, 'drawCardList');
-      $mydata->NewCards[$cardpos + 1] = 1;
+      $mydata->setCard($cardpos + 1, $this->drawCard($aria, $mydata->Hand, $cardpos + 1, 'drawCardList'));
     }
 ]]></code>
     <created>2012-06-24</created>
@@ -13398,12 +13318,10 @@
     <code><![CDATA[
     $hisdata->Wall-= 38; $mydata->Bricks+=21;
     if ($cardpos > 1) {
-      $mydata->Hand[$cardpos - 1] = 247;
-      $mydata->NewCards[$cardpos - 1] = 1;
+      $mydata->setCard($cardpos - 1, 247);
     }
     if ($cardpos < 8) {
-      $mydata->Hand[$cardpos + 1] = 247;
-      $mydata->NewCards[$cardpos + 1] = 1;
+      $mydata->setCard($cardpos + 1, 247);
     }
     $nextcard = 349;
 ]]></code>
@@ -13441,15 +13359,13 @@
     <code><![CDATA[
     $hisdata->attack(25);
     if ($cardpos > 1) {
-      $mydata->Hand[$cardpos - 1] = $this->drawCard($this->getList(array('keyword'=>'Horde')), $mydata->Hand, $cardpos - 1, 'drawCardList');
-      $mydata->NewCards[$cardpos - 1] = 1;
+      $mydata->setCard($cardpos - 1, $this->drawCard($this->getList(array('keyword'=>'Horde')), $mydata->Hand, $cardpos - 1, 'drawCardList'));
     }
     if ($cardpos < 8) {
-      $mydata->Hand[$cardpos + 1] = $this->drawCard($this->getList(array('keyword'=>'Horde')), $mydata->Hand, $cardpos + 1, 'drawCardList');
-      $mydata->NewCards[$cardpos + 1] = 1;
+      $mydata->setCard($cardpos + 1, $this->drawCard($this->getList(array('keyword'=>'Horde')), $mydata->Hand, $cardpos + 1, 'drawCardList'));
     }
-    $mydata->Hand[$mode] = $card->id();
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $mydata->setCard($mode, $card->id());
+    if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
     <created>2012-06-24</created>
     <modified>2012-06-24</modified>
@@ -13557,8 +13473,8 @@
     <effect><![CDATA[Replace a card in hand with a <b>Horde</b> of the same rarity<br />Recruits prod x3]]></effect>
     <code><![CDATA[
     $class = $this->getCard($mydata->Hand[$mode])->getClass();
-    $mydata->Hand[$mode] = $this->drawCard(array_diff($this->getList(array('class'=>$class, 'keyword'=>'Horde')), array($mydata->Hand[$mode])), $mydata->Hand, $mode, 'drawCardList');
-    if ($mode == $cardpos) $nextcard = 0; else $mydata->NewCards[$mode] = 1;
+    $mydata->setCard($mode, $this->drawCard(array_diff($this->getList(array('class'=>$class, 'keyword'=>'Horde')), array($mydata->Hand[$mode])), $mydata->Hand, $mode, 'drawCardList'));
+    if ($mode == $cardpos) $nextcard = 0;
     $recruits_production*= 3;
 ]]></code>
     <created>2012-06-24</created>
@@ -13579,8 +13495,7 @@
     <code><![CDATA[
     $target_card = $this->getCard($hisdata->Hand[$mode]);
     if ($target_card->getClass() == 'Common') {
-      $hisdata->Hand[$mode] = $this->drawCard($his_deck, $hisdata->Hand, $mode, 'drawCardDifferent');
-      $hisdata->NewCards[$mode] = 1;
+      $hisdata->setCard($mode, $this->drawCard($his_deck, $hisdata->Hand, $mode, 'drawCardDifferent'));
       $attack = $target_card->getResources();
       $hisdata->attack($attack);
     }
@@ -13731,8 +13646,7 @@
     }
     if (count($storage) > 0) {
       $discarded_pos = $storage[$this->arrayRand($storage)];
-      $mydata->Hand[$discarded_pos] = $this->drawCard($my_deck, $mydata->Hand, $discarded_pos, 'drawCardRandom');
-      $mydata->NewCards[$discarded_pos] = 1;
+      $mydata->setCard($discarded_pos, $this->drawCard($my_deck, $mydata->Hand, $discarded_pos, 'drawCardRandom'));
       $mydata->Recruits+= 20;
     }
 ]]></code>
@@ -13847,8 +13761,7 @@
     $target_cards = array_merge($this->getList(array('advanced'=>'Tower: +')), $this->getList(array('advanced'=>'Wall: +')));
     for ($i = 1; $i <= 8; $i++) {
       if (in_array($hisdata->Hand[$i], $target_cards)) {
-        $hisdata->Hand[$i] = 247;
-        $hisdata->NewCards[$i] = 1;
+        $hisdata->setCard($i, 247);
       }
     }
 ]]></code>
@@ -13989,12 +13902,10 @@
     <effect><![CDATA[Replace neighbouring cards with rare cards]]></effect>
     <code><![CDATA[
     if ($cardpos > 1) {
-      $mydata->Hand[$cardpos - 1] = $this->drawCard($this->getList(array('class'=>'Rare')), $mydata->Hand, $cardpos - 1, 'drawCardList');
-      $mydata->NewCards[$cardpos - 1] = 1;
+      $mydata->setCard($cardpos - 1, $this->drawCard($this->getList(array('class'=>'Rare')), $mydata->Hand, $cardpos - 1, 'drawCardList'));
     }
     if ($cardpos < 8) {
-      $mydata->Hand[$cardpos + 1] = $this->drawCard($this->getList(array('class'=>'Rare')), $mydata->Hand, $cardpos + 1, 'drawCardList');
-      $mydata->NewCards[$cardpos + 1] = 1;
+      $mydata->setCard($cardpos + 1, $this->drawCard($this->getList(array('class'=>'Rare')), $mydata->Hand, $cardpos + 1, 'drawCardList'));
     }
 ]]></code>
     <created>2013-01-01</created>
@@ -14048,12 +13959,10 @@
     if ($mode != $cardpos) {
       $cur_card = $this->getCard($mydata->Hand[$mode]);
       if ($cur_card->id() == 131) {
-        $mydata->Hand[$mode] = $this->drawCard($this->getList(array('keyword'=>'Dragon')), $mydata->Hand, $mode, 'drawCardList');
-        $mydata->NewCards[$mode] = 1;
+        $mydata->setCard($mode, $this->drawCard($this->getList(array('keyword'=>'Dragon')), $mydata->Hand, $mode, 'drawCardList'));
       }
       elseif ($cur_card->hasKeyword('Dragon')) {
-        $mydata->Hand[$mode] = $this->drawCard(array_diff($this->getList(array('class'=>$cur_card->getClass(), 'keyword'=>'Dragon')), array($cur_card->id())), $mydata->Hand, $mode, 'drawCardList');
-        $mydata->NewCards[$mode] = 1;
+        $mydata->setCard($mode, $this->drawCard(array_diff($this->getList(array('class'=>$cur_card->getClass(), 'keyword'=>'Dragon')), array($cur_card->id())), $mydata->Hand, $mode, 'drawCardList'));
       }
     }
 ]]></code>
@@ -14149,8 +14058,7 @@
     <code><![CDATA[
     for ($i = 1; $i <= 8; $i++) {
       if ($i != $cardpos and $this->getCard($mydata->Hand[$i])->getClass() == 'Rare') {
-        $mydata->Hand[$i] = $this->drawCard($my_deck->Rare, $mydata->Hand, $i, 'drawCardList');
-        $mydata->NewCards[$i] = 1;
+        $mydata->setCard($i, $this->drawCard($my_deck->Rare, $mydata->Hand, $i, 'drawCardList'));
       }
     }
     $nextcard = $this->drawCard($this->getList(array('class'=>'Rare', 'keyword'=>'Illusion')), $mydata->Hand, $cardpos, 'drawCardList');
@@ -14190,8 +14098,7 @@
     $hisdata->attack(26);
     for ($i = 1; $i <= 8; $i++) {
       $rarity = $this->getCard($hisdata->Hand[$i])->getClass();
-      $hisdata->Hand[$i] = $this->drawCard($my_deck->$rarity, $hisdata->Hand, $i, 'drawCardList');
-      $hisdata->NewCards[$i] = 1;
+      $hisdata->setCard($i, $this->drawCard($my_deck->$rarity, $hisdata->Hand, $i, 'drawCardList'));
     }
 ]]></code>
     <created>2013-07-27</created>
@@ -14214,8 +14121,7 @@
     $target_cards = array_merge($this->getList(array('advanced'=>"Discard ")), $this->getList(array('advanced'=>'Replace ')));
     for ($i = 1; $i <= 8; $i++) {
       if (in_array($hisdata->Hand[$i], $target_cards)) {
-        $hisdata->Hand[$i] = $this->drawCard($his_deck->Common, $hisdata->Hand, $i, 'drawCardList');
-        $hisdata->NewCards[$i] = 1;
+        $hisdata->setCard($i, $this->drawCard($his_deck->Common, $hisdata->Hand, $i, 'drawCardList'));
       }
     }
 ]]></code>
@@ -14253,8 +14159,7 @@
     <code><![CDATA[
     for ($i = 1; $i <= 8; $i++) {
       if ($i != $cardpos) {
-        $mydata->Hand[$i] = $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardRandom');
-        $mydata->NewCards[$i] = 1;
+        $mydata->setCard($i, $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardRandom'));
       }
     }
 ]]></code>
@@ -14277,9 +14182,9 @@
     $trans = array('Common', 'Common', 'Common', 'Uncommon', 'Uncommon', 'Uncommon', 'Rare', 'Rare');
     shuffle($trans);
     for ($i = 1; $i <= 8; $i++) {
-      $mydata->Hand[$i] = $this->drawCard($this->getList(array('class'=>$trans[$i-1], 'keyword'=>'Runic')), $mydata->Hand, $i, 'drawCardList');
+      $mydata->setCard($i, $this->drawCard($this->getList(array('class'=>$trans[$i-1], 'keyword'=>'Runic')), $mydata->Hand, $i, 'drawCardList'));
     }
-    $mydata->NewCards = array(1=> 1, 1, 1, 1, 1, 1, 1, 1); $nextcard = 0;
+    $nextcard = 0;
 ]]></code>
     <created>2014-01-01</created>
     <modified>2014-01-01</modified>
@@ -14369,8 +14274,7 @@
     for ($i = 1; $i <= 8; $i++) {
       $his_card = $this->getCard($hisdata->Hand[$i]);
       if ($his_card->hasKeyword('Alliance') or $his_card->hasKeyword('Mage') or $his_card->hasKeyword('Runic') or $his_card->hasKeyword('Soldier')) {
-        $hisdata->Hand[$i] = 248;
-        $hisdata->NewCards[$i] = 1;
+        $hisdata->setCard($i, 248);
       }
     }
 ]]></code>
@@ -14455,14 +14359,12 @@
     <code><![CDATA[
     $hisdata->attack(30);
     $recruits_production*= 2;
-    $hisdata->Hand[$cardpos] = 381; $hisdata->NewCards[$cardpos] = 1;
+    $hisdata->setCard($cardpos, 381);
     if ($cardpos > 1) {
-      $hisdata->Hand[$cardpos - 1] = 381;
-      $hisdata->NewCards[$cardpos - 1] = 1;
+      $hisdata->setCard($cardpos - 1, 381);
     }
     if ($cardpos < 8) {
-      $hisdata->Hand[$cardpos + 1] = 381;
-      $hisdata->NewCards[$cardpos + 1] = 1;
+      $hisdata->setCard($cardpos + 1, 381);
     }
 ]]></code>
     <created>2014-01-01</created>
