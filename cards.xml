@@ -9033,15 +9033,7 @@
     <effect><![CDATA[Lowest facility: +1<br />Lowest resource prod x3]]></effect>
     <code><![CDATA[
     $mydata->addLowestFacility(1);
-    $min = min($mydata->Bricks, $mydata->Gems, $mydata->Recruits);
-    $res = ['Bricks' => $mydata->Bricks, 'Gems' => $mydata->Gems, 'Recruits' => $mydata->Recruits];
-    $temp = array();
-    foreach ($res as $resource => $r_value) {
-      if ($r_value == $min) {
-        $temp[$resource] = $r_value;
-      }
-    }
-    $chosen = $this->arrayRand($temp);
+    $chosen = $mydata->detectLowestResource();
     if ($chosen == 'Bricks') $bricks_production*= 3;
     elseif ($chosen == 'Gems') $gems_production*= 3;
     elseif ($chosen == 'Recruits') $recruits_production*= 3;
