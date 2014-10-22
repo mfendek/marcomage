@@ -10,11 +10,7 @@
     <p>Alliance consists of many elven tribes that live mostly as nomads. Tribes have distinct traits, such as weapon skills, magic abilities and also they worship different deities. Each tribe has a keeper who functions as a leader and also performs spiritual services for the tribe. Some tribes have abandoned nomadic way of life, built cities and settled down. Elven tribes as a whole are ruled by the elven lord. The tribal keepers perform a sacred ritual every twenty years. Being a test of skill, this ritual will decide which one of the keepers will become the next elven lord for the upcoming ruling period. Ancient forest creatures guard elven lands, but at the time of need they can be summoned to bolster elven army.</p>
     <p>Alliance has the ability to produce resources very effectively. Elves are skilled in swordsmanship, archery and support magic. Large forest creatures fulfill the role of living siege machines. With the abundance of resources, the Alliance is always eager to trade and cooperate with other factions.</p>
 ]]></lore>
-    <code><![CDATA[
-    $bricks_production*= 2;
-    $gems_production*= 2;
-    $recruits_production*= 2;
-]]></code>
+    <code><![CDATA[$production->multiply(2);]]></code>
   </keyword>
   <keyword>
     <name>Aqua</name>
@@ -156,7 +152,7 @@
     <code><![CDATA[
     $caps = ['Common' => 2, 'Uncommon' => 5, 'Rare' => 10];
     $cap = $caps[$card->getClass()];
-    $recruits_production*= 2; $hisdata->attack(min($mydata->Dungeons * $recruits_production, $cap));
+    $production->multiplyRecruits(2); $hisdata->attack(min($mydata->Dungeons * $production->recruits(), $cap));
     ]]></code>
   </keyword>
   <keyword>
@@ -293,7 +289,7 @@
       }
 
       if ($tmp > 0) {
-        $gems_production*= 2; // when there already is a dragon egg in hand add gems production
+        $production->multiplyGems(2); // when there already is a dragon egg in hand add gems production
       }
       else {
         $nextcard = 131; // add dragon egg otherwise
@@ -554,7 +550,7 @@
     <bonus_gain>0</bonus_gain>
     <description>Player gets an additional turn, but no production this turn. It is impossible to draw a rare card after a Quick card is played.</description>
     <lore><![CDATA[<p>Creatures with awesome speed are known and feared even though they are usually only lightly armored and have inferior combat capabilities. Their greatest strength is their ability to strike without the fear of retaliation from the enemy. They usually form special harassing units that are used in independent operations to weaken the enemy before the main army arrives.</p>]]></lore>
-    <code><![CDATA[$nextplayer = $playername; $bricks_production = 0; $gems_production = 0; $recruits_production = 0;]]></code>
+    <code><![CDATA[$nextplayer = $playername; $production->multiply(0);]]></code>
   </keyword>
   <keyword>
     <name>Rebirth</name>
@@ -734,9 +730,6 @@
     <bonus_gain>8</bonus_gain>
     <description>Artificial workers - additional bricks production based on played card rarity (Common - x2, Uncommon - x3, Rare - x4).</description>
     <lore><![CDATA[<p>Artificial soldiers that lack free will or the concepts of mercy or morale are the dwarven answer to the dreaded undead hordes. Golems are expendable and perform better in battle than dozens of dwarves. They are created and controlled by the golem masters - rune mages who are specialized in manipulation and animation runes. Even if golem is defeated, its material can be reused to built antoher golem making them one of the most cost-efficient soldiers.</p>]]></lore>
-    <code><![CDATA[
-    $b_prod = ['Common' => 2, 'Uncommon' => 3, 'Rare' => 4];
-    $bricks_production*= $b_prod[$card->getClass()];
-]]></code>
+    <code><![CDATA[$b_prod = ['Common' => 2, 'Uncommon' => 3, 'Rare' => 4]; $production->multiplyBricks($b_prod[$card->getClass()]);]]></code>
   </keyword>
 </keywords>

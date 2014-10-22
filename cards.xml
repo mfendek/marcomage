@@ -1366,7 +1366,7 @@
     <keywords>Far sight</keywords>
     <effect><![CDATA[Production x0<br />Enemy tower: -3<br />Replace a card in hand with self]]></effect>
     <code><![CDATA[
-    $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
+    $production->multiply(0);
     $hisdata->Tower-= 3; $mydata->setCard($mode, $card->id());
     if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
@@ -2125,7 +2125,7 @@
     <level>0</level>
     <keywords>Restoration</keywords>
     <effect><![CDATA[Production x2]]></effect>
-    <code><![CDATA[$bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2;]]></code>
+    <code><![CDATA[$production->multiply(2);]]></code>
     <created>2006-05-01</created>
     <modified>2010-07-22</modified>
   </card>
@@ -2192,10 +2192,7 @@
     <level>0</level>
     <keywords>Alliance</keywords>
     <effect><![CDATA[Tower: +7<br />Production x2]]></effect>
-    <code><![CDATA[
-    $mydata->Tower+= 7;
-    $bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2;
-]]></code>
+    <code><![CDATA[$mydata->Tower+= 7; $production->multiply(2);]]></code>
     <created>2006-05-01</created>
     <modified>2009-04-11</modified>
   </card>
@@ -2432,10 +2429,7 @@
     <level>0</level>
     <keywords>Alliance,Mage</keywords>
     <effect><![CDATA[Attack: 9<br />Production x2]]></effect>
-    <code><![CDATA[
-    $hisdata->attack(9);
-    $bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2;
-]]></code>
+    <code><![CDATA[$hisdata->attack(9); $production->multiply(2);]]></code>
     <created>2006-05-01</created>
     <modified>2011-01-24</modified>
   </card>
@@ -2560,7 +2554,7 @@
     <level>3</level>
     <keywords>Alliance</keywords>
     <effect><![CDATA[Bricks prod x15]]></effect>
-    <code><![CDATA[$bricks_production*= 15;]]></code>
+    <code><![CDATA[$production->multiplyBricks(15);]]></code>
     <created>2006-05-01</created>
     <modified>2012-12-24</modified>
   </card>
@@ -3141,7 +3135,7 @@
     <level>0</level>
     <keywords>Swift</keywords>
     <effect><![CDATA[Production x2]]></effect>
-    <code><![CDATA[$bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2;]]></code>
+    <code><![CDATA[$production->multiply(2);]]></code>
     <created>2006-05-01</created>
     <modified>2007-11-25</modified>
   </card>
@@ -3256,7 +3250,7 @@
     <keywords/>
     <effect><![CDATA[Production x0<br />Attack: 9 + 9N<br />N = #Facilities that were lowered to 1]]></effect>
     <code><![CDATA[
-    $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
+    $production->multiply(0);
     $tmp = 0;
     if ($mydata->Quarry == 1) $tmp++;
     if ($mydata->Magic == 1) $tmp++;
@@ -3427,7 +3421,7 @@
     <level>0</level>
     <keywords>Alliance</keywords>
     <effect><![CDATA[Tower: +5<br />Recruits prod x3]]></effect>
-    <code><![CDATA[$mydata->Tower+= 5; $recruits_production*= 3;]]></code>
+    <code><![CDATA[$mydata->Tower+= 5; $production->multiplyRecruits(3);]]></code>
     <created>2006-05-01</created>
     <modified>2010-01-20</modified>
   </card>
@@ -3443,7 +3437,7 @@
     <level>5</level>
     <keywords>Alliance,Far sight,Skirmisher</keywords>
     <effect><![CDATA[Attack: 11<br />Gems prod x2]]></effect>
-    <code><![CDATA[$hisdata->attack(11); $gems_production*= 2;]]></code>
+    <code><![CDATA[$hisdata->attack(11); $production->multiplyGems(2);]]></code>
     <created>2006-05-01</created>
     <modified>2011-01-24</modified>
   </card>
@@ -3942,7 +3936,7 @@
     <effect><![CDATA[Wall: +2<br />Production x0<br />Discard your hand except the selected card]]></effect>
     <code><![CDATA[
     $mydata->Wall+= 2;
-    $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
+    $production->multiply(0);
     for ($i = 1; $i <= 8; $i++) {
       if ($i != $mode and $i != $cardpos) {
         $mydata->setCard($i, $this->drawCard($my_deck, $mydata->Hand, $i, 'drawCardRandom'));
@@ -4236,7 +4230,7 @@
     <code><![CDATA[
     $hisdata->attack(20);
     $mydata->Tower+= 10; $mydata->Wall+= 10;
-    $bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2;
+    $production->multiply(2);
 ]]></code>
     <created>2006-05-01</created>
     <modified>2010-04-11</modified>
@@ -4588,7 +4582,7 @@
     <keywords/>
     <effect><![CDATA[Production x0<br />Switches selected non-rare card with its matching non-rare card (can't target self)]]></effect>
     <code><![CDATA[
-    $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
+    $production->multiply(0);
     if ($mode != $cardpos and $this->getCard($mydata->Hand[$mode])->getClass() != 'Rare' and $this->getCard($hisdata->Hand[$mode])->getClass() != 'Rare') {
       $tmp = $mydata->Hand[$mode];
       $mydata->setCard($mode, $hisdata->Hand[$mode]);
@@ -4731,7 +4725,7 @@
     <level>0</level>
     <keywords>Beast,Horde</keywords>
     <effect><![CDATA[Attack: 9<br />Recruits prod x2]]></effect>
-    <code><![CDATA[$hisdata->attack(9); $recruits_production*= 2;]]></code>
+    <code><![CDATA[$hisdata->attack(9); $production->multiplyRecruits(2);]]></code>
     <created>2006-05-01</created>
     <modified>2011-12-24</modified>
   </card>
@@ -4799,10 +4793,7 @@
     <level>5</level>
     <keywords/>
     <effect><![CDATA[Stock: +4<br />Production x0]]></effect>
-    <code><![CDATA[
-    $mydata->addStock(4);
-    $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
-]]></code>
+    <code><![CDATA[$mydata->addStock(4); $production->multiply(0);]]></code>
     <created>2006-05-01</created>
     <modified>2007-09-26</modified>
   </card>
@@ -5020,7 +5011,7 @@
     <level>0</level>
     <keywords/>
     <effect><![CDATA[Bricks prod x2]]></effect>
-    <code><![CDATA[$bricks_production*= 2;]]></code>
+    <code><![CDATA[$production->multiplyBricks(2);]]></code>
     <created>2006-05-01</created>
     <modified>2009-10-26</modified>
   </card>
@@ -5347,11 +5338,7 @@
     <level>0</level>
     <keywords>Durable</keywords>
     <effect><![CDATA[Recruits prod x0<br />Enemy stock: -1<br />Enemy tower: -12]]></effect>
-    <code><![CDATA[
-    $recruits_production = 0;
-    $hisdata->addStock(-1);
-    $hisdata->Tower-= 12;
-]]></code>
+    <code><![CDATA[$production->multiplyRecruits(0); $hisdata->addStock(-1); $hisdata->Tower-= 12;]]></code>
     <created>2006-05-01</created>
     <modified>2011-09-24</modified>
   </card>
@@ -6082,7 +6069,7 @@
     <effect><![CDATA[Gems: +6<br />Wall: +3<br />Production x0<br />Replace a card in hand with self]]></effect>
     <code><![CDATA[
     $mydata->Gems+= 6; $mydata->Wall+= 3;
-    $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
+    $production->multiply(0);
     $mydata->setCard($mode, $card->id());
     if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
@@ -6158,7 +6145,7 @@
     <keywords/>
     <effect><![CDATA[Recruits prod x2<br />If Tower or Wall was damaged during opponent's last round<br />Enemy stock: -2]]></effect>
     <code><![CDATA[
-    $recruits_production*= 2;
+    $production->multiplyRecruits(2);
     if ($mychanges['Tower'] < 0 or $mychanges['Wall'] < 0) {
       $hisdata->addStock(-2);
     }
@@ -6298,7 +6285,7 @@
     <effect><![CDATA[Attack: 26<br />If last card played was a <b>Mage</b><br />Gems prod x4]]></effect>
     <code><![CDATA[
     if ($mylast_card->hasKeyword('Mage') and $mylast_action == 'play') {
-      $gems_production*= 4;
+      $production->multiplyGems(4);
     }
     $hisdata->attack(26);
 ]]></code>
@@ -6342,7 +6329,7 @@
     <level>3</level>
     <keywords>Soldier,Frenzy</keywords>
     <effect><![CDATA[Attack: 6<br />Recruits prod x2]]></effect>
-    <code><![CDATA[$hisdata->attack(6); $recruits_production*= 2;]]></code>
+    <code><![CDATA[$hisdata->attack(6); $production->multiplyRecruits(2);]]></code>
     <created>2008-02-12</created>
     <modified>2012-12-24</modified>
   </card>
@@ -6496,7 +6483,7 @@
     <keywords/>
     <effect><![CDATA[Upgrades rarities of all <b>Beast</b> in hand<br />Production x0]]></effect>
     <code><![CDATA[
-    $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
+    $production->multiply(0);
     $rarities = array();
     $upgrades = ['Common' => 'Uncommon', 'Uncommon' => 'Rare'];
     for ($i = 1; $i <= 8; $i++) {
@@ -6997,7 +6984,7 @@
     <effect><![CDATA[Attack: 35<br />If #<b>Dragon</b> in hand > 1<br />Gems prod x2]]></effect>
     <code><![CDATA[
     $hisdata->attack(35);
-    if ($this->keywordCount($mydata->Hand, 'Dragon') > 1) $gems_production*= 2;
+    if ($this->keywordCount($mydata->Hand, 'Dragon') > 1) $production->multiplyGems(2);
 ]]></code>
     <created>2008-07-30</created>
     <modified>2012-06-24</modified>
@@ -7105,10 +7092,7 @@
     <level>5</level>
     <keywords>Alliance</keywords>
     <effect><![CDATA[Tower: +7<br />Wall: +11<br />Production x3]]></effect>
-    <code><![CDATA[
-    $mydata->Tower+= 7; $mydata->Wall+= 11;
-    $bricks_production*= 3; $gems_production*= 3; $recruits_production*= 3;
-]]></code>
+    <code><![CDATA[$mydata->Tower+= 7; $mydata->Wall+= 11; $production->multiply(3);]]></code>
     <created>2008-07-30</created>
     <modified>2009-04-11</modified>
   </card>
@@ -7490,7 +7474,7 @@
     <effect><![CDATA[Attack: 7<br />Recruits prod x2<br />Replace a card in hand with <b>Alliance</b>]]></effect>
     <code><![CDATA[
     $hisdata->attack(7);
-    $recruits_production*= 2;
+    $production->multiplyRecruits(2);
     $mydata->setCard($mode, $this->drawCard($this->getList(['keyword'=>'Alliance']), $mydata->Hand, $mode, 'drawCardList'));
     if ($mode == $cardpos) $nextcard = 0;
 ]]></code>
@@ -7709,10 +7693,7 @@
     <level>8</level>
     <keywords>Runic,Durable,Skirmisher</keywords>
     <effect><![CDATA[Production x0<br />Negates the negative effect of opponent's last round on wall (max 20)]]></effect>
-    <code><![CDATA[
-    $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
-    $mydata->Wall-= min(0, max(-20, $mychanges['Wall']));
-]]></code>
+    <code><![CDATA[$production->multiply(0); $mydata->Wall-= min(0, max(-20, $mychanges['Wall']));]]></code>
     <created>2008-12-24</created>
     <modified>2011-04-24</modified>
   </card>
@@ -7728,7 +7709,7 @@
     <level>7</level>
     <keywords>Barbarian,Beast,Frenzy</keywords>
     <effect><![CDATA[Attack: 35<br />Recruits prod x2]]></effect>
-    <code><![CDATA[$hisdata->attack(35); $recruits_production*= 2;]]></code>
+    <code><![CDATA[$hisdata->attack(35); $production->multiplyRecruits(2);]]></code>
     <created>2008-12-24</created>
     <modified>2013-07-27</modified>
   </card>
@@ -8112,10 +8093,7 @@
     <level>9</level>
     <keywords/>
     <effect><![CDATA[Production x0<br />Summons Plague, Catastrophe or Death prophet]]></effect>
-    <code><![CDATA[
-    $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
-    $nextcard = $this->drawCard([15, 80, 422], $mydata->Hand, $cardpos, 'drawCardList');
-]]></code>
+    <code><![CDATA[$production->multiply(0); $nextcard = $this->drawCard([15, 80, 422], $mydata->Hand, $cardpos, 'drawCardList');]]></code>
     <created>2009-04-11</created>
     <modified>2012-06-24</modified>
   </card>
@@ -8226,7 +8204,7 @@
     <level>5</level>
     <keywords>Alliance</keywords>
     <effect><![CDATA[Tower: +7<br />Recruits prod x10]]></effect>
-    <code><![CDATA[$mydata->Tower+= 7; $recruits_production*= 10;]]></code>
+    <code><![CDATA[$mydata->Tower+= 7; $production->multiplyRecruits(10);]]></code>
     <created>2009-04-11</created>
     <modified>2013-07-27</modified>
   </card>
@@ -8535,7 +8513,7 @@
     <level>3</level>
     <keywords>Dragon</keywords>
     <effect><![CDATA[Gems prod x2]]></effect>
-    <code><![CDATA[$gems_production*= 2;]]></code>
+    <code><![CDATA[$production->multiplyGems(2);]]></code>
     <created>2009-07-22</created>
     <modified>2009-07-22</modified>
   </card>
@@ -8786,10 +8764,7 @@
     <level>8</level>
     <keywords>Legend,Nature</keywords>
     <effect><![CDATA[Production xN<br />N = #<b>Alliance</b> + #<b>Nature</b> in hand (max 5)]]></effect>
-    <code><![CDATA[
-    $tmp = min($this->keywordCount($mydata->Hand, 'Alliance') + $this->keywordCount($mydata->Hand, 'Nature'), 5);
-    $bricks_production*= $tmp; $gems_production*= $tmp; $recruits_production*= $tmp;
-]]></code>
+    <code><![CDATA[$production->multiply(min(5, $this->keywordCount($mydata->Hand, 'Alliance') + $this->keywordCount($mydata->Hand, 'Nature')));]]></code>
     <created>2009-07-22</created>
     <modified>2010-09-23</modified>
   </card>
@@ -8996,7 +8971,7 @@
     <level>7</level>
     <keywords>Burning,Rebirth,Enduring (8)</keywords>
     <effect><![CDATA[Attack: 17<br />Gems prod x2]]></effect>
-    <code><![CDATA[$hisdata->attack(17); $gems_production*= 2;]]></code>
+    <code><![CDATA[$hisdata->attack(17); $production->multiplyGems(2);]]></code>
     <created>2009-07-22</created>
     <modified>2012-06-24</modified>
   </card>
@@ -9031,13 +9006,7 @@
     <level>5</level>
     <keywords/>
     <effect><![CDATA[Lowest facility: +1<br />Lowest resource prod x3]]></effect>
-    <code><![CDATA[
-    $mydata->addLowestFacility(1);
-    $chosen = $mydata->detectLowestResource();
-    if ($chosen == 'Bricks') $bricks_production*= 3;
-    elseif ($chosen == 'Gems') $gems_production*= 3;
-    elseif ($chosen == 'Recruits') $recruits_production*= 3;
-]]></code>
+    <code><![CDATA[$mydata->addLowestFacility(1); $production->multiply(3, $mydata->detectLowestResource());]]></code>
     <created>2009-07-22</created>
     <modified>2010-02-27</modified>
   </card>
@@ -9076,11 +9045,7 @@
     <level>7</level>
     <keywords>Mage,Swift,Aria</keywords>
     <effect><![CDATA[Attack: 18<br />Gems prod x3<br />Replace a card in opponent's hand with Wind]]></effect>
-    <code><![CDATA[
-    $hisdata->attack(18);
-    $gems_production*= 3;
-    $hisdata->setCard($mode, 247);
-]]></code>
+    <code><![CDATA[$hisdata->attack(18); $production->multiplyGems(3); $hisdata->setCard($mode, 247);]]></code>
     <created>2009-10-24</created>
     <modified>2012-09-08</modified>
   </card>
@@ -9578,7 +9543,7 @@
     <effect><![CDATA[If Wall > Enemy wall<br />Enemy tower: -8<br />else<br />Gems prod x2]]></effect>
     <code><![CDATA[
     if ($mydata->Wall > $hisdata->Wall) $hisdata->Tower-= 8;
-    else $gems_production*= 2;
+    else $production->multiplyGems(2);
 ]]></code>
     <created>2009-11-16</created>
     <modified>2012-06-24</modified>
@@ -9680,7 +9645,7 @@
     <code><![CDATA[
     $mydata->Wall+= 3;
     if ($mychanges['Bricks'] < 0 or $mychanges['Gems'] < 0 or $mychanges['Recruits'] < 0) {
-      $bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2;
+      $production->multiply(2);
     }
 ]]></code>
     <created>2010-01-20</created>
@@ -10303,12 +10268,7 @@
     <level>7</level>
     <keywords>Alliance,Holy</keywords>
     <effect><![CDATA[Lowest facility prod x2]]></effect>
-    <code><![CDATA[
-    $chosen = $mydata->detectLowestFacility();
-    if ($chosen == 'Quarry') $bricks_production*= 2;
-    elseif ($chosen == 'Magic') $gems_production*= 2;
-    elseif ($chosen == 'Dungeons') $recruits_production*= 2;
-]]></code>
+    <code><![CDATA[$production->multiply(2, $mydata->detectLowestFacility());]]></code>
     <created>2010-03-14</created>
     <modified>2011-01-24</modified>
   </card>
@@ -10700,7 +10660,7 @@
     <keywords>Alliance</keywords>
     <effect><![CDATA[Gems prod x2<br />Enemy tower: -N<br />Attack: 8 - N<br />N = #<b>Alliance</b> in hand]]></effect>
     <code><![CDATA[
-    $gems_production*= 2;
+    $production->multiplyGems(2);
     $tmp = $this->keywordCount($mydata->Hand, 'Alliance');
     $hisdata->Tower-= $tmp;
     if ($tmp < 8) $hisdata->attack(8 - $tmp);
@@ -11531,12 +11491,7 @@
     <level>2</level>
     <keywords>Runic</keywords>
     <effect><![CDATA[Highest facility prod x2]]></effect>
-    <code><![CDATA[
-    $chosen = $mydata->detectHighestFacility();
-    if ($chosen == 'Quarry') $bricks_production*= 2;
-    elseif ($chosen == 'Magic') $gems_production*= 2;
-    elseif ($chosen == 'Dungeons') $recruits_production*= 2;
-]]></code>
+    <code><![CDATA[$production->multiply(2, $mydata->detectHighestFacility());]]></code>
     <created>2010-09-10</created>
     <modified>2011-04-24</modified>
   </card>
@@ -11737,7 +11692,7 @@
     <level>7</level>
     <keywords/>
     <effect><![CDATA[Replace your hand with Red mage, Conjurer, Wizard, Chaos wizard, Librarian, Summon master, Sorceress and Wind witch<br />Gems prod x3]]></effect>
-    <code><![CDATA[$mydata->setHandShuffled([329, 82, 457, 589, 109, 564, 53, 467]); $nextcard = 0; $gems_production*= 3;]]></code>
+    <code><![CDATA[$mydata->setHandShuffled([329, 82, 457, 589, 109, 564, 53, 467]); $nextcard = 0; $production->multiplyGems(3);]]></code>
     <created>2010-09-10</created>
     <modified>2012-09-08</modified>
   </card>
@@ -11793,7 +11748,7 @@
     <level>9</level>
     <keywords>Alliance,Mage</keywords>
     <effect><![CDATA[Attack: 8N<br />N = #Magic<br />Gems prod x6<br />]]></effect>
-    <code><![CDATA[$hisdata->attack(8 * $mydata->Magic); $gems_production*= 6;]]></code>
+    <code><![CDATA[$hisdata->attack(8 * $mydata->Magic); $production->multiplyGems(6);]]></code>
     <created>2010-10-03</created>
     <modified>2010-12-24</modified>
   </card>
@@ -11890,7 +11845,7 @@
     <effect><![CDATA[Dungeon: +1<br />Attack: 10N<br />N = #Dungeon - #Enemy dungeon<br />Recruits prod x0]]></effect>
     <code><![CDATA[
     $mydata->Dungeons+= 1; $tmp = max(0, $mydata->Dungeons - $hisdata->Dungeons);
-    $hisdata->attack(10 * $tmp); $recruits_production = 0;
+    $hisdata->attack(10 * $tmp); $production->multiplyRecruits(0);
 ]]></code>
     <created>2010-10-03</created>
     <modified>2010-12-24</modified>
@@ -12030,10 +11985,7 @@
     <level>10</level>
     <keywords>Durable</keywords>
     <effect><![CDATA[Production x0<br />Recruits: +20]]></effect>
-    <code><![CDATA[
-    $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
-    $mydata->Recruits+= 20;
-]]></code>
+    <code><![CDATA[$production->multiply(0); $mydata->Recruits+= 20;]]></code>
     <created>2011-01-01</created>
     <modified>2011-01-01</modified>
   </card>
@@ -12376,8 +12328,8 @@
     <effect><![CDATA[Attack: 5<br />Mode1:<br />Gems prod x2<br />Mode2:<br />Recruits prod x2]]></effect>
     <code><![CDATA[
     $hisdata->attack(5);
-    if ($mode == 1) $gems_production*= 2;
-    elseif ($mode == 2) $recruits_production*= 2;
+    if ($mode == 1) $production->multiplyGems(2);
+    elseif ($mode == 2) $production->multiplyRecruits(2);
 ]]></code>
     <created>2011-04-24</created>
     <modified>2012-04-07</modified>
@@ -12414,7 +12366,7 @@
     <level>8</level>
     <keywords>Horde</keywords>
     <effect><![CDATA[Tower: +7<br />Production x0]]></effect>
-    <code><![CDATA[$mydata->Tower+= 7; $bricks_production = 0; $gems_production = 0; $recruits_production = 0;]]></code>
+    <code><![CDATA[$mydata->Tower+= 7; $production->multiply(0);]]></code>
     <created>2011-04-24</created>
     <modified>2011-12-24</modified>
   </card>
@@ -12447,9 +12399,9 @@
     <keywords>Alliance,Holy</keywords>
     <effect><![CDATA[Mode1:<br />Bricks prod x3<br />Mode2:<br />Gems prod x3<br />Mode3:<br />Recruits prod x3]]></effect>
     <code><![CDATA[
-    if ($mode == 1) $bricks_production*= 3;
-    elseif ($mode == 2) $gems_production*= 3;
-    elseif ($mode == 3) $recruits_production*= 3;
+    if ($mode == 1) $production->multiplyBricks(3);
+    elseif ($mode == 2) $production->multiplyGems(3);
+    elseif ($mode == 3) $production->multiplyRecruits(3);
 ]]></code>
     <created>2011-04-24</created>
     <modified>2011-04-24</modified>
@@ -12584,7 +12536,7 @@
     <level>8</level>
     <keywords>Horde</keywords>
     <effect><![CDATA[Wall: +10<br />Bricks prod x0<br />Recruits prod x0]]></effect>
-    <code><![CDATA[$mydata->Wall+= 10; $bricks_production = 0; $recruits_production = 0;]]></code>
+    <code><![CDATA[$mydata->Wall+= 10; $production->multiplyBricks(0); $production->multiplyRecruits(0);]]></code>
     <created>2011-09-24</created>
     <modified>2011-12-24</modified>
   </card>
@@ -12836,7 +12788,7 @@
     <level>5</level>
     <keywords>Alliance,Mage</keywords>
     <effect><![CDATA[Attack: 3<br />If Gems < Enemy gems<br />Gems prod x2]]></effect>
-    <code><![CDATA[$hisdata->attack(3); if ($mydata->Gems < $hisdata->Gems) $gems_production*= 2;]]></code>
+    <code><![CDATA[$hisdata->attack(3); if ($mydata->Gems < $hisdata->Gems) $production->multiplyGems(2);]]></code>
     <created>2011-09-24</created>
     <modified>2011-09-24</modified>
   </card>
@@ -12852,14 +12804,7 @@
     <level>7</level>
     <keywords>Durable</keywords>
     <effect><![CDATA[Tower: +15<br />Lowest facility: +1<br />Highest facility prod x0]]></effect>
-    <code><![CDATA[
-    $mydata->Tower+= 15;
-    $mydata->addLowestFacility(1);
-    $chosen = $mydata->detectHighestFacility();
-    if ($chosen == 'Quarry') $bricks_production = 0;
-    elseif ($chosen == 'Magic') $gems_production = 0;
-    elseif ($chosen == 'Dungeons') $recruits_production = 0;
-]]></code>
+    <code><![CDATA[$mydata->Tower+= 15; $mydata->addLowestFacility(1); $production->multiply(0, $mydata->detectHighestFacility());]]></code>
     <created>2011-09-24</created>
     <modified>2012-12-24</modified>
   </card>
@@ -12876,7 +12821,7 @@
     <keywords>Alliance</keywords>
     <effect><![CDATA[Production x2<br />You lose 1 random resource for each non-<b>Alliance</b> card in hand]]></effect>
     <code><![CDATA[
-    $bricks_production*= 2; $gems_production*= 2; $recruits_production*= 2;
+    $production->multiply(2);
     for ($i = 1; $i <= 8; $i++) {
       if ($i != $cardpos and !$this->getCard($mydata->Hand[$i])->hasKeyword('Alliance')) {
         $mydata->addRandomResources(-1);
@@ -12938,7 +12883,7 @@
     <keywords/>
     <effect><![CDATA[Tower: +2<br />Recruits prod x2<br />Replace a card in hand with non-rare <b>Horde</b>]]></effect>
     <code><![CDATA[
-    $mydata->Tower+= 2; $recruits_production*= 2;
+    $mydata->Tower+= 2; $production->multiplyRecruits(2);
     $common = $this->getList(['class'=>'Common', 'keyword'=>'Horde']);
     $uncommon = $this->getList(['class'=>'Uncommon', 'keyword'=>'Horde']);
     $mydata->setCard($mode, $this->drawCard(array_merge($common, $uncommon), $mydata->Hand, $mode, 'drawCardList'));
@@ -13149,7 +13094,7 @@
     <effect><![CDATA[If not New<br />Production x0<br />Replace highest rarity card in opponent's hand with Hidden treasure]]></effect>
     <code><![CDATA[
     if (!isset($mynewflags[$cardpos])) {
-      $bricks_production = 0; $gems_production = 0; $recruits_production = 0;
+      $production->multiply(0);
       $storage = ['Common' => array(), 'Uncommon' => array(), 'Rare' => array()];
       for ($i = 1; $i <= 8; $i++) {
         $cur_card = $this->getCard($hisdata->Hand[$i]);
@@ -13290,7 +13235,7 @@
     $hisdata->attack(3);
     $mydata->Wall+= 7;
     $attack_cards = $this->getList(['advanced'=>'Attack:']);
-    if (in_array($hisdata->Hand[$cardpos], $attack_cards)) $bricks_production*= 2;
+    if (in_array($hisdata->Hand[$cardpos], $attack_cards)) $production->multiplyBricks(2);
 ]]></code>
     <created>2012-06-24</created>
     <modified>2013-07-27</modified>
@@ -13467,7 +13412,7 @@
     $class = $this->getCard($mydata->Hand[$mode])->getClass();
     $mydata->setCard($mode, $this->drawCard(array_diff($this->getList(['class'=>$class, 'keyword'=>'Horde']), [$mydata->Hand[$mode]]), $mydata->Hand, $mode, 'drawCardList'));
     if ($mode == $cardpos) $nextcard = 0;
-    $recruits_production*= 3;
+    $production->multiplyRecruits(3);
 ]]></code>
     <created>2012-06-24</created>
     <modified>2013-03-31</modified>
@@ -13528,7 +13473,7 @@
     <keywords>Alliance,Legend</keywords>
     <effect><![CDATA[Production x4<br />Summons non-common <b>Alliance</b>]]></effect>
     <code><![CDATA[
-    $bricks_production*= 4; $gems_production*= 4; $recruits_production*= 4; 
+    $production->multiply(4);
     $uncommon = $this->getList(['class'=>'Uncommon', 'keyword'=>'Alliance']);
     $rare = $this->getList(['class'=>'Rare', 'keyword'=>'Alliance']);
     $nextcard = $this->drawCard(array_merge($uncommon, $rare), $mydata->Hand, $cardpos, 'drawCardList');
@@ -13589,7 +13534,7 @@
     <level>10</level>
     <keywords>Alliance,Nature</keywords>
     <effect><![CDATA[Enemy wall: -3<br />If Enemy wall is divisible by 2<br />Recruits prod x2]]></effect>
-    <code><![CDATA[$hisdata->Wall-= 3; if ((max(0, $hisdata->Wall) % 2) == 0) $recruits_production*= 2;]]></code>
+    <code><![CDATA[$hisdata->Wall-= 3; if ((max(0, $hisdata->Wall) % 2) == 0) $production->multiplyRecruits(2);]]></code>
     <created>2013-01-01</created>
     <modified>2013-01-01</modified>
   </card>
@@ -13844,7 +13789,7 @@
     <level>10</level>
     <keywords>Dragon,Unliving</keywords>
     <effect><![CDATA[Attack: 20<br />Wall: +25<br />Bricks prod x3]]></effect>
-    <code><![CDATA[$hisdata->attack(20); $mydata->Wall+= 25; $bricks_production*= 3;]]></code>
+    <code><![CDATA[$hisdata->attack(20); $mydata->Wall+= 25; $production->multiplyBricks(3);]]></code>
     <created>2013-01-01</created>
     <modified>2013-01-01</modified>
   </card>
@@ -13860,7 +13805,7 @@
     <level>10</level>
     <keywords>Beast,Horde,Charge (30)</keywords>
     <effect><![CDATA[Attack: 30<br />Recruits prod x4]]></effect>
-    <code><![CDATA[$hisdata->attack(30); $recruits_production*= 4;]]></code>
+    <code><![CDATA[$hisdata->attack(30); $production->multiplyRecruits(4);]]></code>
     <created>2013-01-01</created>
     <modified>2013-10-19</modified>
   </card>
@@ -13915,7 +13860,7 @@
     <level>10</level>
     <keywords>Horde</keywords>
     <effect><![CDATA[Tower: +4N<br />Wall: +15<br />Production x0<br />N = #<b>Horde</b> in hand]]></effect>
-    <code><![CDATA[$mydata->Tower+= 4 * $this->keywordCount($mydata->Hand, 'Horde'); $mydata->Wall+= 15; $bricks_production = 0; $gems_production = 0; $recruits_production = 0;]]></code>
+    <code><![CDATA[$mydata->Tower+= 4 * $this->keywordCount($mydata->Hand, 'Horde'); $mydata->Wall+= 15; $production->multiply(0);]]></code>
     <created>2013-01-01</created>
     <modified>2013-01-01</modified>
   </card>
@@ -14350,7 +14295,7 @@
     <effect><![CDATA[Attack 30<br />Recruits prod x2<br />Replace matching card in opponent's hand and its neighbours with Purified ashes]]></effect>
     <code><![CDATA[
     $hisdata->attack(30);
-    $recruits_production*= 2;
+    $production->multiplyRecruits(2);
     $hisdata->setCard($cardpos, 381);
     if ($cardpos > 1) {
       $hisdata->setCard($cardpos - 1, 381);

@@ -753,9 +753,7 @@
 			$nextcard = -1;
 			
 			// default production factor
-			$bricks_production = 1;
-			$gems_production = 1;
-			$recruits_production = 1;
+			$production = new CGameProduction();
 			
 			// branch here according to $action
 			if ($action == 'play')
@@ -880,9 +878,9 @@
 			}
 			
 			// add production at the end of turn
-			$mydata->Bricks+= $bricks_production * $mydata->Quarry;
-			$mydata->Gems+= $gems_production * $mydata->Magic;
-			$mydata->Recruits+= $recruits_production * $mydata->Dungeons;
+			$mydata->Bricks+= $production->bricks() * $mydata->Quarry;
+			$mydata->Gems+= $production->gems() * $mydata->Magic;
+			$mydata->Recruits+= $production->recruits() * $mydata->Dungeons;
 			
 			// compute changes on game attributes
 			$my_diffs = $his_diffs = array();
@@ -1165,9 +1163,7 @@
 			$nextcard = -1;
 			
 			// default production factor
-			$bricks_production = 1;
-			$gems_production = 1;
-			$recruits_production = 1;
+			$production = new CGameProduction();
 			
 			$mydata->Bricks-= $card->Bricks;
 			$mydata->Gems-= $card->Gems;
@@ -1255,9 +1251,9 @@
 			}
 			
 			// add production at the end of turn
-			$mydata->Bricks+= $bricks_production * $mydata->Quarry;
-			$mydata->Gems+= $gems_production * $mydata->Magic;
-			$mydata->Recruits+= $recruits_production * $mydata->Dungeons;
+			$mydata->Bricks+= $production->bricks() * $mydata->Quarry;
+			$mydata->Gems+= $production->gems() * $mydata->Magic;
+			$mydata->Recruits+= $production->recruits() * $mydata->Dungeons;
 			
 			// compute changes on game attributes
 			$attributes = array('Quarry', 'Magic', 'Dungeons', 'Bricks', 'Gems', 'Recruits', 'Tower', 'Wall');
@@ -2130,4 +2126,91 @@
 			$this->setHand($hand);
 		}
 	}
+
+
+	class CGameProduction
+	{
+		protected $bricks;
+		protected $gems;
+		protected $recruits;
+
+		public function __construct()
+		{
+			// default production factor
+			$this->bricks = 1;
+			$this->gems = 1;
+			$this->recruits = 1;
+		}
+
+		public function bricks()
+		{
+			return $this->bricks;
+		}
+
+		public function gems()
+		{
+			return $this->gems;
+		}
+
+		public function recruits()
+		{
+			return $this->recruits;
+		}
+
+		///
+		/// Multiply bricks production
+		/// @param int $factor production factor
+		public function multiplyBricks($factor)
+		{
+			$this->multiply($factor, 'Bricks');
+		}
+
+		///
+		/// Multiply gems production
+		/// @param int $factor production factor
+		public function multiplyGems($factor)
+		{
+			$this->multiply($factor, 'Gems');
+		}
+
+		///
+		/// Multiply recruits production
+		/// @param int $factor production factor
+		public function multiplyRecruits($factor)
+		{
+			$this->multiply($factor, 'Recruits');
+		}
+
+		///
+		/// Multiply production
+		/// @param int $factor production factor
+		/// @param string $type production type (supports names by both resources and facilities)
+		public function multiply($factor, $type = '')
+		{
+			// only non-negative factor is allowed
+			if ($factor < 0) {
+				return;
+			}
+
+			// case 1: bricks
+			if (in_array($type, ['Bricks', 'Quarry'])) {
+				$this->bricks*= $factor;
+			}
+			// case 2: gems
+			elseif (in_array($type, ['Gems', 'Magic'])) {
+				$this->gems*= $factor;
+			}
+			// case 3: recruits
+			elseif (in_array($type, ['Recruits', 'Dungeons'])) {
+				$this->recruits*= $factor;
+			}
+			// case 4: all
+			else {
+				$this->bricks*= $factor;
+				$this->gems*= $factor;
+				$this->recruits*= $factor;
+			}
+		}
+	}
+
 ?>
