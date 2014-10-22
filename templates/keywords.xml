@@ -53,7 +53,7 @@
       }
       if (count($storage) > 0) {
         asort($storage);
-        $amounts = array('Common' => 1, 'Uncommon' => 2, 'Rare' => 4);
+        $amounts = ['Common' => 1, 'Uncommon' => 2, 'Rare' => 4];
         $amount = $amounts[$card->getClass()]; $i = 0;
 
         foreach ($storage as $discarded_pos => $cost) {
@@ -76,10 +76,10 @@
     <lore><![CDATA[<p>Banish is a spell that was invented solely for the purpose to counter the durable materials and render them useless. Banish can be cast directly on target or can be used to enchant a weapon to hold the banish property.</p>]]></lore>
     <code><![CDATA[
     // target card is discarded only if it has same or lower rarity than the played card
-    $rarities = array('Common' => 0, 'Uncommon' => 1, 'Rare' => 2);
-    $storage = array('Common' => array(), 'Uncommon' => array(), 'Rare' => array());
+    $rarities = ['Common' => 0, 'Uncommon' => 1, 'Rare' => 2];
+    $storage = ['Common' => array(), 'Uncommon' => array(), 'Rare' => array()];
     $played_rank = $rarities[$card->getClass()];
-    $persistent = $this->getList(array('advanced'=>'Replace a card in hand with self'));
+    $persistent = $this->getList(['advanced'=>'Replace a card in hand with self']);
 
     for ($i = 1; $i <= 8; $i++) {
       $dis_card = $this->getCard($hisdata->Hand[$i]);
@@ -99,7 +99,7 @@
       $discarded_pos = array_pop($storage_temp);
       
       if ($card->getClass() == 'Rare') {
-        $new_card = $this->drawCard($this->getList(array('class'=>'Common', 'cost'=>'Zero')), $hisdata->Hand, $discarded_pos, 'drawCardList');
+        $new_card = $this->drawCard($this->getList(['class'=>'Common', 'cost'=>'Zero']), $hisdata->Hand, $discarded_pos, 'drawCardList');
       }
       else {
         $new_card = $this->drawCard($his_deck, $hisdata->Hand, $discarded_pos, 'drawCardDifferent');
@@ -118,7 +118,7 @@
     <p>Barbarians are able to raze fortifications to the ground and burn down buildings with deadly efficiency, plundering enemy resources in the process.</p>
 ]]></lore>
     <code><![CDATA[
-    $damage = array('Common' => 3, 'Uncommon' => 8, 'Rare' => 15);
+    $damage = ['Common' => 3, 'Uncommon' => 8, 'Rare' => 15];
     if ($hisdata->Wall <= 0) {
       $penalty = round($damage[$card->getClass()] / 2);
       $hisdata->addStock(-$penalty);
@@ -138,7 +138,7 @@
     <p>Brigands specialize in stealing resources, thus crippling the enemy before they can do harm.</p>
 ]]></lore>
     <code><![CDATA[
-    $stock = array('Common' => 1, 'Uncommon' => 2, 'Rare' => 3);
+    $stock = ['Common' => 1, 'Uncommon' => 2, 'Rare' => 3];
     $gained = $stock[$card->getClass()];
     $mydata->addStock($gained);
     $hisdata->addStock(-$gained);
@@ -154,7 +154,7 @@
     <p>Agility and nimbleness of a beast greatly surpasses human limitations. Armed with claws, teeth and killer instinct, bred in great numbers, the beasts are cheaper and more expendable than regular soldiers.</p>
 ]]></lore>
     <code><![CDATA[
-    $caps = array('Common' => 2, 'Uncommon' => 5, 'Rare' => 10);
+    $caps = ['Common' => 2, 'Uncommon' => 5, 'Rare' => 10];
     $cap = $caps[$card->getClass()];
     $recruits_production*= 2; $hisdata->attack(min($mydata->Dungeons * $recruits_production, $cap));
     ]]></code>
@@ -170,8 +170,8 @@
 ]]></lore>
     <code><![CDATA[
     // target card is discarded only if it has same or lower rarity than the played card
-    $rarities = array('Common' => 0, 'Uncommon' => 1, 'Rare' => 2);
-    $storage = array('Common' => array(), 'Uncommon' => array(), 'Rare' => array());
+    $rarities = ['Common' => 0, 'Uncommon' => 1, 'Rare' => 2];
+    $storage = ['Common' => array(), 'Uncommon' => array(), 'Rare' => array()];
     $played_rank = $rarities[$card->getClass()];
     
     for ($i = 1; $i <= 8; $i++) {
@@ -237,13 +237,13 @@
 ]]></lore>
     <code><![CDATA[
     $penalties = array();
-    foreach (array('Bricks', 'Gems', 'Recruits') as $resource) {
+    foreach (['Bricks', 'Gems', 'Recruits'] as $resource) {
       if ($card->getResources($resource) > 0) {
         $penalties[] = $resource;
       }
     }
     if (count($penalties) > 0) {
-      $rarities = array('Common' => 2, 'Uncommon' => 3, 'Rare' => 4);
+      $rarities = ['Common' => 2, 'Uncommon' => 3, 'Rare' => 4];
       $amount = $rarities[$card->getClass()];
       $penalty = $penalties[$this->arrayRand($penalties)];
 
@@ -335,7 +335,7 @@
       $bricks = $cur_card->getResources('Bricks');
       $gems = $cur_card->getResources('Gems');
       $recruits = $cur_card->getResources('Recruits');
-      $rarities = array('Common' => 1, 'Uncommon' => 3, 'Rare' => 9);
+      $rarities = ['Common' => 1, 'Uncommon' => 3, 'Rare' => 9];
       $factor = $rarities[$card->getClass()];
       
       if ($bricks > 0 and $gems == 0 and $recruits == 0) {
@@ -343,10 +343,10 @@
       }
       elseif ($bricks == 0 and $gems > 0 and $recruits == 0) {
         // raise lowest token counter
-        if (count(array_diff($mydata->TokenNames, array('none'))) > 0) {
+        if (count(array_diff($mydata->TokenNames, ['none'])) > 0) {
           $min = 1000;
           $chosen = array();
-          $my_tokens = array_diff($mydata->TokenNames, array('none')); // remove inactive token counters
+          $my_tokens = array_diff($mydata->TokenNames, ['none']); // remove inactive token counters
           foreach ($my_tokens as $i => $token_name) {
             $min = min($min, $mydata->TokenValues[$i]);
           }
@@ -369,7 +369,7 @@
     }
     
     // reveal opponent's cards based on played card rarity
-    $offsets = array('Common' => 1, 'Uncommon' => 2, 'Rare' => 8);
+    $offsets = ['Common' => 1, 'Uncommon' => 2, 'Rare' => 8];
     $offset = $offsets[$card->getClass()];
     $start = max($cardpos - $offset, 1);
     $finish = min($cardpos + $offset, 8);
@@ -417,7 +417,7 @@
     <lore><![CDATA[<p>Good generals are aware of the effect of army's high morale on its combat performance. Frenzy goes one step further. A frenzied creature is partially insane and can be dangerous to use, however when unleashed in the right time and right place it can break the enemy ranks and cause severe damage to the enemy.</p>]]></lore>
     <code><![CDATA[
     if (($cardpos > 1 and $this->getCard($mydata->Hand[$cardpos - 1])->hasKeyword('Frenzy')) or ($cardpos < 8 and $this->getCard($mydata->Hand[$cardpos + 1])->hasKeyword('Frenzy'))) {
-      $rarities = array('Common' => 1, 'Uncommon' => 2, 'Rare' => 3);
+      $rarities = ['Common' => 1, 'Uncommon' => 2, 'Rare' => 3];
       $coef = $rarities[$card->getClass()];
       $hisdata->attack(round(($coef * $card->getResources('Recruits')) / 3));
     }
@@ -431,9 +431,9 @@
     <lore><![CDATA[<p>People with spiritual talents who dislike the corrupting nature of magic often decide to become priests instead of mages. Priests use their talents to heal and protect their allies, also at a time of need they are able to call to their deity for intervention. In addition, they are the most effective weapon against both demons and the undead. An undead killed by a priest can't be reanimated ever again.</p>]]></lore>
     <code><![CDATA[
     // target card is discarded only if it has same or lower rarity than the played card
-    $rarities = array('Common' => 0, 'Uncommon' => 1, 'Rare' => 2);
-    $storage = array('Common' => array(), 'Uncommon' => array(), 'Rare' => array());
-    $resources = array('Common' => 1, 'Uncommon' => 2, 'Rare' => 5);
+    $rarities = ['Common' => 0, 'Uncommon' => 1, 'Rare' => 2];
+    $storage = ['Common' => array(), 'Uncommon' => array(), 'Rare' => array()];
+    $resources = ['Common' => 1, 'Uncommon' => 2, 'Rare' => 5];
     $played_rank = $rarities[$card->getClass()];
     $mydata->addRandomResources($resources[$card->getClass()]);
 
@@ -465,7 +465,7 @@
     <lore><![CDATA[<p>Fear is an effective tool in any war. Enemies of the Horde had many opportunities to witness the effectiveness of such tactic. Broken formations, chaotic retreat and disobedience of orders often lead to loss of the entire army.</p>]]></lore>
     <code><![CDATA[
     if (($cardpos > 1 and $this->getCard($mydata->Hand[$cardpos - 1])->hasKeyword('Horde')) or ($cardpos < 8 and $this->getCard($mydata->Hand[$cardpos + 1])->hasKeyword('Horde'))) {
-      $rarities = array('Common' => 0, 'Uncommon' => 1, 'Rare' => 2);
+      $rarities = ['Common' => 0, 'Uncommon' => 1, 'Rare' => 2];
       $recruits = $card->getResources('Recruits');
 
       $matching_card = $this->getCard($hisdata->Hand[$cardpos]);
@@ -483,7 +483,7 @@
     <lore><![CDATA[<p>Illusion magic manipulates the environment rather than the target. Within the changed environment the target becomes confused and often the whole damage done by the spell is done by the target itself. Illusion mages often play important rules in political intrigues.</p>]]></lore>
     <code><![CDATA[
     if ($mylast_card->hasKeyword('Illusion') and $mylast_action == 'play' and $mylast_card->getClass() != 'Common' and $card->id() != $mylast_card->id()) {
-      $storage = array('Common' => array(), 'Uncommon' => array(), 'Rare' => array());
+      $storage = ['Common' => array(), 'Uncommon' => array(), 'Rare' => array()];
       for ($i = 1; $i <= 8; $i++) {
         $cur_card = $this->getCard($mydata->Hand[$i]);
         $rarity = $cur_card->getClass();
@@ -544,7 +544,7 @@
     <lore><![CDATA[<p>Nature magic is rarely understood by humans. Being chaotic and unpredictable it's the opposite of the magic commonly used by humans, therefore only few have been able to master it. In addition, nature magic is also about life and death, which often leads to arts that are forbidden by many factions.</p>]]></lore>
     <code><![CDATA[
     if ($mylast_card->hasKeyword('Nature') and $mylast_action == 'play' and $mylast_card->getClass() != 'Common' and $card->id() != $mylast_card->id()) {
-      $nextcard = $this->drawCard($this->getList(array('class'=>'Rare', 'keyword'=>'Nature')), $mydata->Hand, $cardpos, 'drawCardList');
+      $nextcard = $this->drawCard($this->getList(['class'=>'Rare', 'keyword'=>'Nature']), $mydata->Hand, $cardpos, 'drawCardList');
     }
 ]]></code>
   </keyword>
@@ -604,7 +604,7 @@
     <p>Technological dominance and rune magic allows the dwarves to construct sturdy fortifications that can be repaired very quickly and efficiently.</p>
 ]]></lore>
     <code><![CDATA[
-    $rarities = array('Common' => 2, 'Uncommon' => 5, 'Rare' => 10);
+    $rarities = ['Common' => 2, 'Uncommon' => 5, 'Rare' => 10];
     $factor = $rarities[$card->getClass()];
     if ($mychanges['Tower'] < 0) {
       $tower_damage = $mychanges['Tower'] * (-1);
@@ -623,7 +623,7 @@
     <description>Demolition - if played card damages opponent's Tower or Wall and opponent raised his Tower or Wall last round, he suffers additional damage to Tower or Wall based on played card rarity (C-1, U-2, R-5) for Tower and (C-2, U-4, R-10) for Wall. The additional damage can't exceed the Tower or Wall increase.</description>
     <lore><![CDATA[<p>Powerful creatures and war machines are often used as a siege weapons during the battle. Their attack is so powerful that fortifications that were built only recently may fail to endure such force and break apart.</p>]]></lore>
     <code><![CDATA[
-    $rarities = array('Common' => 1, 'Uncommon' => 2, 'Rare' => 5);
+    $rarities = ['Common' => 1, 'Uncommon' => 2, 'Rare' => 5];
     $factor = $rarities[$card->getClass()];
     if ($hischanges['Tower'] > 0 and $hisdata_temp['Tower'] > $hisdata->Tower) {
       $hisdata->Tower-= min($hischanges['Tower'], $factor);
@@ -642,10 +642,10 @@
     <lore><![CDATA[<p>Skirmishers are troops designed to counter enemy cavalry. Their combat capabilities may be inferior, but their role is crucial in any army. They are trained to protect their allies at all costs and down to the last man.</p>]]></lore>
     <code><![CDATA[
     // target card is discarded only if it has same or lower rarity than the played card
-    $rarities = array('Common' => 0, 'Uncommon' => 1, 'Rare' => 2);
-    $storage = $r_storage = array('Common' => array(), 'Uncommon' => array(), 'Rare' => array());
+    $rarities = ['Common' => 0, 'Uncommon' => 1, 'Rare' => 2];
+    $storage = $r_storage = ['Common' => array(), 'Uncommon' => array(), 'Rare' => array()];
     $played_rank = $rarities[$card->getClass()];
-    $secondary_cards = $this->getList(array('cost'=>'Green', 'advanced'=>'Attack:'));
+    $secondary_cards = $this->getList(['cost'=>'Green', 'advanced'=>'Attack:']);
 
     for ($i = 1; $i <= 8; $i++) {
       $dis_card = $this->getCard($hisdata->Hand[$i]);
@@ -673,7 +673,7 @@
       $discarded_pos = array_pop($storage_temp);
 
       if ($card->getClass() == 'Rare') {
-        $new_card = $this->drawCard($this->getList(array('class'=>'Common', 'cost'=>'Zero')), $hisdata->Hand, $discarded_pos, 'drawCardList');
+        $new_card = $this->drawCard($this->getList(['class'=>'Common', 'cost'=>'Zero']), $hisdata->Hand, $discarded_pos, 'drawCardList');
       }
       else {
         $new_card = $this->drawCard($his_deck, $hisdata->Hand, $discarded_pos, 'drawCardDifferent');
@@ -707,7 +707,7 @@
     <description>Titan's will - summons a Titan not present in hand.</description>
     <lore><![CDATA[<p>One of the titans who didn't get eradicated by the gods was smashed to pieces. Although each piece is alive and can be used as a separate, anyone who is able to find all the pieces and complete them into the greater whole will possess an unstoppable war machine which is feared even by gods.</p>]]></lore>
     <code><![CDATA[
-    $titans = array_diff($this->getList(array('keyword'=>'Titan')), $mydata->Hand);
+    $titans = array_diff($this->getList(['keyword'=>'Titan']), $mydata->Hand);
     if (count($titans) > 0) {
       $nextcard = $this->drawCard($titans, $mydata->Hand, $cardpos, 'drawCardList');
     }
@@ -721,7 +721,7 @@
     <lore><![CDATA[<p>Mages that were corrupted by the promise of eternal life are transformed to liches. These powerful creatures are able to conjure vast armies of undead to fight for their cause. An undead can't die, therefore much of the corpses can be reanimated after the battle to plague the living once again.</p>]]></lore>
     <code><![CDATA[
     $coef = (($card->getResources('Bricks') > 0) ? 1 : 0) + (($card->getResources('Gems') > 0) ? 1 : 0) + (($card->getResources('Recruits') > 0) ? 1 : 0);
-    $bonuses = array(0 => 0, 1 => 2/3, 2 => 1/2, 3 => 1/3);
+    $bonuses = [0 => 0, 1 => 2/3, 2 => 1/2, 3 => 1/3];
     $bonus = $bonuses[$coef];
     $mydata->Bricks+= round($card->getResources('Bricks') * $bonus);
     $mydata->Gems+= round($card->getResources('Gems') * $bonus);
@@ -735,7 +735,7 @@
     <description>Artificial workers - additional bricks production based on played card rarity (Common - x2, Uncommon - x3, Rare - x4).</description>
     <lore><![CDATA[<p>Artificial soldiers that lack free will or the concepts of mercy or morale are the dwarven answer to the dreaded undead hordes. Golems are expendable and perform better in battle than dozens of dwarves. They are created and controlled by the golem masters - rune mages who are specialized in manipulation and animation runes. Even if golem is defeated, its material can be reused to built antoher golem making them one of the most cost-efficient soldiers.</p>]]></lore>
     <code><![CDATA[
-    $b_prod = array('Common' => 2, 'Uncommon' => 3, 'Rare' => 4);
+    $b_prod = ['Common' => 2, 'Uncommon' => 3, 'Rare' => 4];
     $bricks_production*= $b_prod[$card->getClass()];
 ]]></code>
   </keyword>
