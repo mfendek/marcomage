@@ -338,11 +338,13 @@
         $mydata->Tower+= 2 * $factor; // raise tower
       }
       elseif ($bricks == 0 and $gems > 0 and $recruits == 0) {
+        // remove inactive token counters
+        $my_tokens = array_diff($mydata->TokenNames, ['none']);
+
         // raise lowest token counter
-        if (count(array_diff($mydata->TokenNames, ['none'])) > 0) {
+        if (count($my_tokens) > 0) {
           $min = 1000;
           $chosen = array();
-          $my_tokens = array_diff($mydata->TokenNames, ['none']); // remove inactive token counters
           foreach ($my_tokens as $i => $token_name) {
             $min = min($min, $mydata->TokenValues[$i]);
           }

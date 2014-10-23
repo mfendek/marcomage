@@ -808,18 +808,18 @@
 								$amount = $this->keywordCount($mydata->Hand, $keyword_name) - 1;
 	
 								// check if player has matching token counter set
-								$token_index = array_search($keyword_name, $mydata->TokenNames);
+								$token_index = $mydata->findToken($keyword_name);
 	
 								if ($token_index)
 								{
 									// increase token counter by basic gain + bonus gain
-									$mydata->TokenValues[$token_index]+= $keyword->Basic_gain + $amount * $keyword->Bonus_gain;
+									$mydata->addToken($keyword_name, $keyword->Basic_gain + $amount * $keyword->Bonus_gain);
 	
 									// execute token keyword effect if counter reached 100
-									if ($mydata->TokenValues[$token_index] >= 100)
+									if ($mydata->getToken($keyword_name) >= 100)
 									{
 										// reset token counter
-										$mydata->TokenValues[$token_index] = 0;
+										$mydata->setToken($keyword_name, 0);
 	
 										// execute token keyword effect
 										if( eval($keyword->Code) === FALSE )
@@ -1211,18 +1211,18 @@
 							$amount = $this->keywordCount($mydata->Hand, $keyword_name) - 1;
 
 							// check if player has matching token counter set
-							$token_index = array_search($keyword_name, $mydata->TokenNames);
+							$token_index = $mydata->findToken($keyword_name);
 
 							if ($token_index)
 							{
 								// increase token counter by basic gain + bonus gain
-								$mydata->TokenValues[$token_index]+= $keyword->Basic_gain + $amount * $keyword->Bonus_gain;
+								$mydata->addToken($keyword_name, $keyword->Basic_gain + $amount * $keyword->Bonus_gain);
 
 								// execute token keyword effect if counter reached 100
-								if ($mydata->TokenValues[$token_index] >= 100)
+								if ($mydata->getToken($keyword_name) >= 100)
 								{
 									// reset token counter
-									$mydata->TokenValues[$token_index] = 0;
+									$mydata->setToken($keyword_name, 0);
 
 									// execute token keyword effect
 									if( eval($keyword->Code) === FALSE )
@@ -2124,6 +2124,63 @@
 		{
 			shuffle($hand);
 			$this->setHand($hand);
+		}
+
+		///
+		/// Find specified token index
+		/// @param string $name token name
+		/// @return int token index, false otherwise
+		public function findToken($name)
+		{
+			$tokenIndex = array_search($name, $this->TokenNames);
+			if ($tokenIndex) {
+				return $tokenIndex;
+			}
+
+			return false;
+		}
+
+		///
+		/// Get specified token amount
+		/// @param string $name token name
+		/// @return bool|int token amount when found, false otherwise
+		public function getToken($name)
+		{
+			$tokenIndex = $this->findToken($name);
+			if ($tokenIndex) {
+				return $this->TokenValues[$tokenIndex];
+			}
+
+			return false;
+		}
+
+		///
+		/// Set token to specified value
+		/// @param string $name token name
+		/// @param int $amount new token amount
+		public function setToken($name, $amount)
+		{
+			// amount has to be non-negative
+			if ($amount < 0) {
+				return;
+			}
+
+			$tokenIndex = $this->findToken($name);
+			if ($tokenIndex) {
+				$this->TokenValues[$tokenIndex] = $amount;
+			}
+		}
+
+		///
+		/// Add specified value to token
+		/// @param string $name token name
+		/// @param int $amount token amount (can be negative)
+		public function addToken($name, $amount)
+		{
+			$tokenIndex = $this->findToken($name);
+			if ($tokenIndex) {
+				$this->TokenValues[$tokenIndex]+= $amount;
+			}
 		}
 	}
 

@@ -3115,11 +3115,7 @@
     <level>4</level>
     <keywords>Mage,Swift,Rebirth</keywords>
     <effect><![CDATA[Attack: 20<br /><b>Mage</b> tokens = 0]]></effect>
-    <code><![CDATA[
-    $hisdata->attack(20);
-    $tmp = array_search('Mage', $mydata->TokenNames);
-    if ($tmp) $mydata->TokenValues[$tmp] = 0;
-]]></code>
+    <code><![CDATA[$hisdata->attack(20); $mydata->setToken('Mage', 0);]]></code>
     <created>2006-05-01</created>
     <modified>2012-06-24</modified>
   </card>
@@ -3503,7 +3499,7 @@
     <effect><![CDATA[Summons a <b>Soldier</b><br />If <b>Soldier</b> tokens are set gain recruits cost of the summoned card (max 6)]]></effect>
     <code><![CDATA[
     $nextcard = $this->drawCard($this->getList(['keyword'=>'Soldier']), $mydata->Hand, $cardpos, 'drawCardList');
-    if (array_search('Soldier', $mydata->TokenNames))
+    if ($mydata->findToken('Soldier'))
       $mydata->Recruits+= min($this->getCard($nextcard)->getResources('Recruits'), 6);
 ]]></code>
     <created>2006-05-01</created>
@@ -3680,8 +3676,7 @@
     $uncommon = $this->getList(['class'=>'Uncommon', 'keyword'=>'Undead']);
     $rare = $this->getList(['class'=>'Rare', 'keyword'=>'Undead']);
     $nextcard = $this->drawCard(array_merge($uncommon, $rare), $mydata->Hand, $cardpos, 'drawCardList');
-    $tmp = array_search('Undead', $mydata->TokenNames);
-    if ($tmp and $mydata->TokenValues[$tmp] > 50) {
+    if ($mydata->getToken('Undead') > 50) {
       $cur_card = $this->getCard($nextcard);
       $mydata->Bricks+= min($cur_card->getResources('Bricks'), 10);
       $mydata->Gems+= min($cur_card->getResources('Gems'), 10);
@@ -5753,8 +5748,7 @@
       $hisdata->Tower= 0; $hisdata->Wall= 0;
     }
     else {
-      $tmp = array_search('Titan', $mydata->TokenNames);
-      if ($tmp) $mydata->TokenValues[$tmp]+= 60;
+      $mydata->addToken('Titan', 60);
     }
 ]]></code>
     <created>2007-08-19</created>
@@ -6048,7 +6042,7 @@
     <effect><![CDATA[Summons a <b>Barbarian</b><br />If <b>Barbarian</b> tokens are set<br />Stock: +3]]></effect>
     <code><![CDATA[
     $nextcard = $this->drawCard($this->getList(['keyword'=>'Barbarian']), $mydata->Hand, $cardpos, 'drawCardList');
-    if (array_search('Barbarian', $mydata->TokenNames)) {
+    if ($mydata->findToken('Barbarian')) {
       $mydata->addStock(3);
     }
 ]]></code>
@@ -10983,11 +10977,7 @@
     <level>10</level>
     <keywords>Destruction</keywords>
     <effect><![CDATA[Enemy stock: -2<br />If <b>Mage</b> tokens > 60<br />Enemy stock: -3]]></effect>
-    <code><![CDATA[
-    $tmp = array_search('Mage', $mydata->TokenNames);
-    $reduction = ($tmp and $mydata->TokenValues[$tmp] > 60) ? 5 : 2;
-    $hisdata->addStock(-$reduction);
-]]></code>
+    <code><![CDATA[$reduction = ($mydata->getToken('Mage') > 60) ? 5 : 2; $hisdata->addStock(-$reduction);]]></code>
     <created>2010-06-21</created>
     <modified>2010-12-24</modified>
   </card>
@@ -11046,14 +11036,11 @@
     <keywords>Mage</keywords>
     <effect><![CDATA[If <b>Mage</b> tokens > 50<br />Summons a <b>Legend</b><br /><b>Mage</b> tokens: = 0<br />else<br /><b>Mage</b> tokens: +40]]></effect>
     <code><![CDATA[
-    $tmp = array_search('Mage', $mydata->TokenNames);
-    if ($tmp) {
-      if ($mydata->TokenValues[$tmp] > 50) {
-        $nextcard = $this->drawCard($this->getList(['keyword'=>'Legend']), $mydata->Hand, $cardpos, 'drawCardList');
-        $mydata->TokenValues[$tmp] = 0;
-      }
-      else $mydata->TokenValues[$tmp]+= 40;
+    if ($mydata->getToken('Mage') > 50) {
+      $nextcard = $this->drawCard($this->getList(['keyword'=>'Legend']), $mydata->Hand, $cardpos, 'drawCardList');
+      $mydata->setToken('Mage', 0);
     }
+    else $mydata->addToken('Mage', 40);
 ]]></code>
     <created>2010-06-21</created>
     <modified>2010-07-22</modified>
@@ -11220,7 +11207,7 @@
     <effect><![CDATA[Tower: +2<br />Wall: +4<br />If <b>Soldier</b> tokens are set<br />Summons a <b>Soldier</b> with <b>Charge</b>]]></effect>
     <code><![CDATA[
     $mydata->Tower+= 2; $mydata->Wall+= 4;
-    if (array_search('Soldier', $mydata->TokenNames)) {
+    if ($mydata->findToken('Soldier')) {
       $soldier = $this->getList(['keyword'=>'Soldier']);
       $charge = $this->getList(['keyword'=>'Charge']);
       $nextcard = $this->drawCard(array_intersect($soldier, $charge), $mydata->Hand, $cardpos, 'drawCardList');
@@ -11552,11 +11539,7 @@
     <level>10</level>
     <keywords>Mage</keywords>
     <effect><![CDATA[Tower: +3<br /><b>Mage</b> tokens: +30]]></effect>
-    <code><![CDATA[
-    $mydata->Tower+= 3;
-    $tmp = array_search('Mage', $mydata->TokenNames);
-    if ($tmp) $mydata->TokenValues[$tmp]+= 30;
-]]></code>
+    <code><![CDATA[$mydata->Tower+= 3; $mydata->addToken('Mage', 30);]]></code>
     <created>2010-09-10</created>
     <modified>2013-03-31</modified>
   </card>
@@ -11709,8 +11692,7 @@
     <keywords>Burning,Siege</keywords>
     <effect><![CDATA[Attack: 3 + N / 10<br />N = <b>Mage</b> tokens<br />If Enemy tower > 45<br />Enemy tower: -5]]></effect>
     <code><![CDATA[
-    $tmp = array_search('Mage', $mydata->TokenNames);
-    $dmg = ($tmp) ? round($mydata->TokenValues[$tmp]/10) : 0;
+    $dmg = ($mydata->findToken('Mage')) ? round($mydata->getToken('Mage') / 10) : 0;
     $hisdata->attack(3 + $dmg);
     if ($hisdata->Tower > 45) $hisdata->Tower-= 5;
 ]]></code>
@@ -13452,11 +13434,7 @@
     <level>10</level>
     <keywords>Soldier,Unliving</keywords>
     <effect><![CDATA[Attack: 4<br /><b>Titan</b> tokens: +10]]></effect>
-    <code><![CDATA[
-    $hisdata->attack(4);
-    $tmp = array_search('Titan', $mydata->TokenNames);
-    if ($tmp) $mydata->TokenValues[$tmp]+= 10;
-]]></code>
+    <code><![CDATA[$hisdata->attack(4); $mydata->addToken('Titan', 10);]]></code>
     <created>2013-01-01</created>
     <modified>2013-01-01</modified>
   </card>
