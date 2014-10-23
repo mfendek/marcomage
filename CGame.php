@@ -808,9 +808,7 @@
 								$amount = $this->keywordCount($mydata->Hand, $keyword_name) - 1;
 	
 								// check if player has matching token counter set
-								$token_index = $mydata->findToken($keyword_name);
-	
-								if ($token_index)
+								if ($mydata->findToken($keyword_name))
 								{
 									// increase token counter by basic gain + bonus gain
 									$mydata->addToken($keyword_name, $keyword->Basic_gain + $amount * $keyword->Bonus_gain);
@@ -1211,9 +1209,7 @@
 							$amount = $this->keywordCount($mydata->Hand, $keyword_name) - 1;
 
 							// check if player has matching token counter set
-							$token_index = $mydata->findToken($keyword_name);
-
-							if ($token_index)
+							if ($mydata->findToken($keyword_name))
 							{
 								// increase token counter by basic gain + bonus gain
 								$mydata->addToken($keyword_name, $keyword->Basic_gain + $amount * $keyword->Bonus_gain);
