@@ -782,6 +782,28 @@
 				$hishand = $hisdata->Hand;
 				$mynewcards = $mydata->NewCards;
 				$hisnewcards = $hisdata->NewCards;
+
+				// process token gains
+				if ($card->Keywords != '') {
+					// list all token keywords
+					$keywords = $carddb->tokenKeywords();
+
+					foreach ($keywords as $keyword_name) {
+						if ($card->hasKeyWord($keyword_name)) {
+							$keyword = $keyworddb->getKeyword($keyword_name);
+							if (!$keyword) {
+								$result['error'] = 'Failed to load keyword data';
+								return $result;
+							}
+	
+							// count number of cards with matching keyword (we don't count the played card)
+							$amount = $this->keywordCount($mydata->Hand, $keyword_name) - 1;
+
+							// increase token counter by basic gain + bonus gain
+							$mydata->addToken($keyword_name, $keyword->Basic_gain + $amount * $keyword->Bonus_gain);
+						}
+					}
+				}
 				
 				// execute card action !!!
 				if( eval($card->Code) === FALSE )
@@ -791,11 +813,12 @@
 				$this->applyGameLimits($mydata);
 				$this->applyGameLimits($hisdata);
 
-				// keyword processing
+				// process keyword effects
 				if ($card->Keywords != '')
 				{
 					// list all keywords in order they are to be executed
 					$keywords = $this->keywordsOrder();
+
 					foreach ($keywords as $keyword_name)
 						if ($card->hasKeyword($keyword_name))
 						{
@@ -807,22 +830,15 @@
 								// count number of cards with matching keyword (we don't count the played card)
 								$amount = $this->keywordCount($mydata->Hand, $keyword_name) - 1;
 	
-								// check if player has matching token counter set
-								if ($mydata->findToken($keyword_name))
+								// check if player has matching token counter set and counter reached 100
+								if ($mydata->getToken($keyword_name) >= 100)
 								{
-									// increase token counter by basic gain + bonus gain
-									$mydata->addToken($keyword_name, $keyword->Basic_gain + $amount * $keyword->Bonus_gain);
-	
-									// execute token keyword effect if counter reached 100
-									if ($mydata->getToken($keyword_name) >= 100)
-									{
-										// reset token counter
-										$mydata->setToken($keyword_name, 0);
-	
-										// execute token keyword effect
-										if( eval($keyword->Code) === FALSE )
-											error_log("Debug: ".$keyword_name.": ".$keyword->Code);
-									}
+									// reset token counter
+									$mydata->setToken($keyword_name, 0);
+
+									// execute token keyword effect
+									if( eval($keyword->Code) === FALSE )
+										error_log("Debug: ".$keyword_name.": ".$keyword->Code);
 								}
 							}
 							// case 2: standard keyword
@@ -1183,6 +1199,28 @@
 			$hishand = $hisdata->Hand;
 			$mynewcards = $mydata->NewCards;
 			$hisnewcards = $hisdata->NewCards;
+
+			// process token gains
+			if ($card->Keywords != '') {
+				// list all token keywords
+				$keywords = $carddb->tokenKeywords();
+
+				foreach ($keywords as $keyword_name) {
+					if ($card->hasKeyWord($keyword_name)) {
+						$keyword = $keyworddb->getKeyword($keyword_name);
+						if (!$keyword) {
+							$result['error'] = 'Failed to load keyword data';
+							return $result;
+						}
+
+						// count number of cards with matching keyword (we don't count the played card)
+						$amount = $this->keywordCount($mydata->Hand, $keyword_name) - 1;
+
+						// increase token counter by basic gain + bonus gain
+						$mydata->addToken($keyword_name, $keyword->Basic_gain + $amount * $keyword->Bonus_gain);
+					}
+				}
+			}
 			
 			// execute card action !!!
 			if( eval($card->Code) === FALSE )
@@ -1192,11 +1230,12 @@
 			$this->applyGameLimits($mydata);
 			$this->applyGameLimits($hisdata);
 
-			// keyword processing
+			// process keyword effects
 			if ($card->Keywords != '')
 			{
 				// list all keywords in order they are to be executed
 				$keywords = $this->keywordsOrder();
+
 				foreach ($keywords as $keyword_name)
 					if ($card->hasKeyword($keyword_name))
 					{
@@ -1208,22 +1247,15 @@
 							// count number of cards with matching keyword (we don't count the played card)
 							$amount = $this->keywordCount($mydata->Hand, $keyword_name) - 1;
 
-							// check if player has matching token counter set
-							if ($mydata->findToken($keyword_name))
+							// check if player has matching token counter set and counter reached 100
+							if ($mydata->getToken($keyword_name) >= 100)
 							{
-								// increase token counter by basic gain + bonus gain
-								$mydata->addToken($keyword_name, $keyword->Basic_gain + $amount * $keyword->Bonus_gain);
+								// reset token counter
+								$mydata->setToken($keyword_name, 0);
 
-								// execute token keyword effect if counter reached 100
-								if ($mydata->getToken($keyword_name) >= 100)
-								{
-									// reset token counter
-									$mydata->setToken($keyword_name, 0);
-
-									// execute token keyword effect
-									if( eval($keyword->Code) === FALSE )
-										error_log("Debug: ".$keyword_name.": ".$keyword->Code);
-								}
+								// execute token keyword effect
+								if( eval($keyword->Code) === FALSE )
+									error_log("Debug: ".$keyword_name.": ".$keyword->Code);
 							}
 						}
 						// case 2: standard keyword

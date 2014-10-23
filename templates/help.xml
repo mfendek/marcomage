@@ -137,9 +137,9 @@
 <p>Turn actions order of execution</p>
 <ol>
 	<li>card cost is subtracted</li>
+	<li>token counters (if present) are updated based on card keywords</li>
 	<li>card effect is executed</li>
 	<li>game limits are applied</li>
-	<li>token counters (if present) are updated based on card keywords</li>
 	<li>keyword(s) effect is executed</li>
 	<li>game limits are applied</li>
 	<li>resource production is added to player's stock based on player's facilities</li>
