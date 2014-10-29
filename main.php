@@ -2330,7 +2330,7 @@
 				$game_limit = $opponent->getSettings()->getSetting('GameLimit');
 
 				if ($game_limit == 'yes' and $gamedb->checkGame($player->name(), $opponent_name))
-					{ $error = htmlencode($opponent_name)." doesn't wish to play with you more than one game at the same time."; $current = 'Games'; break; }
+					{ $error = 'Unable to join game because opponent has disabled simultaneous games'; $current = 'Games'; break; }
 
 				// join the game
 				$db->txnBegin();
