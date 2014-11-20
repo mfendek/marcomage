@@ -75,4 +75,11 @@ $(document).ready(function() {
 			}
 	});
 
+	// element title tooltip
+	$("img.achievement, img.insignia, img.icon, img.revealed, p.facility, p.resource, p.info_label, div.progress_bar").click(function() {
+		if ($(this).attr('title') != '') {
+			$.cursorMessage($(this).attr('title'));
+		}
+	});
+
 });

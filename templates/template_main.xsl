@@ -29,6 +29,7 @@
 	<meta name="keywords" content="Arcomage, MArcomage, multiplayer, free, online, fantasy, card game, fantasy novels"/>
 	<link rel="stylesheet" href="styles/general.css" type="text/css" title="standard style" />
 	<link rel="stylesheet" href="styles/card.css" type="text/css" title="standard style" />
+	<link rel="stylesheet" href="styles/cursor.css" type="text/css" title="standard style" />
 	<xsl:choose>
 		<xsl:when test="$param/is_logged_in = 'yes'">
 			<link rel="stylesheet" href="styles/menubar.css" type="text/css" title="standard style" />
@@ -59,6 +60,7 @@
 	<script type="text/javascript" src="javascript/jquery/jquery_ui.js"></script>
 	<script type="text/javascript" src="javascript/scrollto.js"></script>
 	<script type="text/javascript" src="javascript/cookie.js"></script>
+	<script type="text/javascript" src="javascript/cursor.js"></script>
 	<script type="text/javascript" src="javascript/utils.js"></script>
 	<script type="text/javascript" src="javascript/{$current_section}.js"></script>
 	<xsl:if test="$param/new_user = 'yes'">
