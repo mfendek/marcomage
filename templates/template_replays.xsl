@@ -374,7 +374,7 @@
 					</xsl:if>
 				</p>
 				<p class="resource">
-					<xsl:attribute name="title">Bricks: <xsl:value-of select="$param/p1Bricks"/> (Resources total: <xsl:value-of select="$param/p1Bricks + $param/p1Gems + $param/p1Recruits"/>)</xsl:attribute>
+					<xsl:attribute name="title">Bricks: <xsl:value-of select="$param/p1Bricks"/> (Resources total: <xsl:value-of select="$param/p1Bricks + $param/p1Gems + $param/p1Recruits"/> / <xsl:value-of select="$param/res_victory"/>)</xsl:attribute>
 					<xsl:value-of select="$param/p1Bricks"/>
 					<xsl:if test="$param/p1changes/Bricks != 0">
 						<span class="changes"><xsl:value-of select="$param/p1changes/Bricks"/></span>
@@ -390,7 +390,7 @@
 					</xsl:if>
 				</p>
 				<p class="resource">
-					<xsl:attribute name="title">Gems: <xsl:value-of select="$param/p1Gems"/> (Resources total: <xsl:value-of select="$param/p1Bricks + $param/p1Gems + $param/p1Recruits"/>)</xsl:attribute>
+					<xsl:attribute name="title">Gems: <xsl:value-of select="$param/p1Gems"/> (Resources total: <xsl:value-of select="$param/p1Bricks + $param/p1Gems + $param/p1Recruits"/> / <xsl:value-of select="$param/res_victory"/>)</xsl:attribute>
 					<xsl:value-of select="$param/p1Gems"/>
 					<xsl:if test="$param/p1changes/Gems != 0">
 						<span class="changes"><xsl:value-of select="$param/p1changes/Gems"/></span>
@@ -406,7 +406,7 @@
 					</xsl:if>
 				</p>
 				<p class="resource">
-					<xsl:attribute name="title">Recruits: <xsl:value-of select="$param/p1Recruits"/> (Resources total: <xsl:value-of select="$param/p1Bricks + $param/p1Gems + $param/p1Recruits"/>)</xsl:attribute>
+					<xsl:attribute name="title">Recruits: <xsl:value-of select="$param/p1Recruits"/> (Resources total: <xsl:value-of select="$param/p1Bricks + $param/p1Gems + $param/p1Recruits"/> / <xsl:value-of select="$param/res_victory"/>)</xsl:attribute>
 					<xsl:value-of select="$param/p1Recruits"/>
 					<xsl:if test="$param/p1changes/Recruits != 0">
 						<span class="changes"><xsl:value-of select="$param/p1changes/Recruits"/></span>
@@ -634,7 +634,7 @@
 					</xsl:if>
 				</p>
 				<p class="resource">
-					<xsl:attribute name="title">Bricks: <xsl:value-of select="$param/p2Bricks"/> (Resources total: <xsl:value-of select="$param/p2Bricks + $param/p2Gems + $param/p2Recruits"/>)</xsl:attribute>
+					<xsl:attribute name="title">Bricks: <xsl:value-of select="$param/p2Bricks"/> (Resources total: <xsl:value-of select="$param/p2Bricks + $param/p2Gems + $param/p2Recruits"/> / <xsl:value-of select="$param/res_victory"/>)</xsl:attribute>
 					<xsl:value-of select="$param/p2Bricks"/>
 					<xsl:if test="$param/p2changes/Bricks != 0">
 						<span class="changes"><xsl:value-of select="$param/p2changes/Bricks"/></span>
@@ -650,7 +650,7 @@
 					</xsl:if>
 				</p>
 				<p class="resource">
-					<xsl:attribute name="title">Gems: <xsl:value-of select="$param/p2Gems"/> (Resources total: <xsl:value-of select="$param/p2Bricks + $param/p2Gems + $param/p2Recruits"/>)</xsl:attribute>
+					<xsl:attribute name="title">Gems: <xsl:value-of select="$param/p2Gems"/> (Resources total: <xsl:value-of select="$param/p2Bricks + $param/p2Gems + $param/p2Recruits"/> / <xsl:value-of select="$param/res_victory"/>)</xsl:attribute>
 					<xsl:value-of select="$param/p2Gems"/>
 					<xsl:if test="$param/p2changes/Gems != 0">
 						<span class="changes"><xsl:value-of select="$param/p2changes/Gems"/></span>
@@ -666,7 +666,7 @@
 					</xsl:if>
 				</p>
 				<p class="resource">
-					<xsl:attribute name="title">Recruits: <xsl:value-of select="$param/p2Recruits"/> (Resources total: <xsl:value-of select="$param/p2Bricks + $param/p2Gems + $param/p2Recruits"/>)</xsl:attribute>
+					<xsl:attribute name="title">Recruits: <xsl:value-of select="$param/p2Recruits"/> (Resources total: <xsl:value-of select="$param/p2Bricks + $param/p2Gems + $param/p2Recruits"/> / <xsl:value-of select="$param/res_victory"/>)</xsl:attribute>
 					<xsl:value-of select="$param/p2Recruits"/>
 					<xsl:if test="$param/p2changes/Recruits != 0">
 						<span class="changes"><xsl:value-of select="$param/p2changes/Recruits"/></span>
@@ -948,7 +948,7 @@
 					</xsl:if>
 				</p>
 				<p class="resource">
-					<xsl:attribute name="title">Bricks: <xsl:value-of select="$param/p1Bricks"/> (Resources total: <xsl:value-of select="$param/p1Bricks + $param/p1Gems + $param/p1Recruits"/>)</xsl:attribute>
+					<xsl:attribute name="title">Bricks: <xsl:value-of select="$param/p1Bricks"/> (Resources total: <xsl:value-of select="$param/p1Bricks + $param/p1Gems + $param/p1Recruits"/> / <xsl:value-of select="$param/res_victory"/>)</xsl:attribute>
 					<xsl:value-of select="$param/p1Bricks"/>
 					<xsl:if test="$param/p1changes/Bricks != 0">
 						<span class="changes"><xsl:value-of select="$param/p1changes/Bricks"/></span>
@@ -964,7 +964,7 @@
 					</xsl:if>
 				</p>
 				<p class="resource">
-					<xsl:attribute name="title">Gems: <xsl:value-of select="$param/p1Gems"/> (Resources total: <xsl:value-of select="$param/p1Bricks + $param/p1Gems + $param/p1Recruits"/>)</xsl:attribute>
+					<xsl:attribute name="title">Gems: <xsl:value-of select="$param/p1Gems"/> (Resources total: <xsl:value-of select="$param/p1Bricks + $param/p1Gems + $param/p1Recruits"/> / <xsl:value-of select="$param/res_victory"/>)</xsl:attribute>
 					<xsl:value-of select="$param/p1Gems"/>
 					<xsl:if test="$param/p1changes/Gems != 0">
 						<span class="changes"><xsl:value-of select="$param/p1changes/Gems"/></span>
@@ -980,7 +980,7 @@
 					</xsl:if>
 				</p>
 				<p class="resource">
-					<xsl:attribute name="title">Recruits: <xsl:value-of select="$param/p1Recruits"/> (Resources total: <xsl:value-of select="$param/p1Bricks + $param/p1Gems + $param/p1Recruits"/>)</xsl:attribute>
+					<xsl:attribute name="title">Recruits: <xsl:value-of select="$param/p1Recruits"/> (Resources total: <xsl:value-of select="$param/p1Bricks + $param/p1Gems + $param/p1Recruits"/> / <xsl:value-of select="$param/res_victory"/>)</xsl:attribute>
 					<xsl:value-of select="$param/p1Recruits"/>
 					<xsl:if test="$param/p1changes/Recruits != 0">
 						<span class="changes"><xsl:value-of select="$param/p1changes/Recruits"/></span>
@@ -1208,7 +1208,7 @@
 					</xsl:if>
 				</p>
 				<p class="resource">
-					<xsl:attribute name="title">Bricks: <xsl:value-of select="$param/p2Bricks"/> (Resources total: <xsl:value-of select="$param/p2Bricks + $param/p2Gems + $param/p2Recruits"/>)</xsl:attribute>
+					<xsl:attribute name="title">Bricks: <xsl:value-of select="$param/p2Bricks"/> (Resources total: <xsl:value-of select="$param/p2Bricks + $param/p2Gems + $param/p2Recruits"/> / <xsl:value-of select="$param/res_victory"/>)</xsl:attribute>
 					<xsl:value-of select="$param/p2Bricks"/>
 					<xsl:if test="$param/p2changes/Bricks != 0">
 						<span class="changes"><xsl:value-of select="$param/p2changes/Bricks"/></span>
@@ -1224,7 +1224,7 @@
 					</xsl:if>
 				</p>
 				<p class="resource">
-					<xsl:attribute name="title">Gems: <xsl:value-of select="$param/p2Gems"/> (Resources total: <xsl:value-of select="$param/p2Bricks + $param/p2Gems + $param/p2Recruits"/>)</xsl:attribute>
+					<xsl:attribute name="title">Gems: <xsl:value-of select="$param/p2Gems"/> (Resources total: <xsl:value-of select="$param/p2Bricks + $param/p2Gems + $param/p2Recruits"/> / <xsl:value-of select="$param/res_victory"/>)</xsl:attribute>
 					<xsl:value-of select="$param/p2Gems"/>
 					<xsl:if test="$param/p2changes/Gems != 0">
 						<span class="changes"><xsl:value-of select="$param/p2changes/Gems"/></span>
@@ -1240,7 +1240,7 @@
 					</xsl:if>
 				</p>
 				<p class="resource">
-					<xsl:attribute name="title">Recruits: <xsl:value-of select="$param/p2Recruits"/> (Resources total: <xsl:value-of select="$param/p2Bricks + $param/p2Gems + $param/p2Recruits"/>)</xsl:attribute>
+					<xsl:attribute name="title">Recruits: <xsl:value-of select="$param/p2Recruits"/> (Resources total: <xsl:value-of select="$param/p2Bricks + $param/p2Gems + $param/p2Recruits"/> / <xsl:value-of select="$param/res_victory"/>)</xsl:attribute>
 					<xsl:value-of select="$param/p2Recruits"/>
 					<xsl:if test="$param/p2changes/Recruits != 0">
 						<span class="changes"><xsl:value-of select="$param/p2changes/Recruits"/></span>

@@ -4163,6 +4163,7 @@ case 'Games_details':
 	$params['game']['AIMode'] = $game->getGameMode('AIMode');
 	$params['game']['max_tower'] = $game_config[$g_mode]['max_tower'];
 	$params['game']['max_wall'] = $game_config[$g_mode]['max_wall'];
+	$params['game']['res_victory'] = $game_config[$g_mode]['res_victory'];
 
 	$chat_notification = ($player->name() == $player1) ? $game->ChatNotification1 : $game->ChatNotification2;
 	$params['game']['chat_notification'] = $chat_notification;
@@ -4674,6 +4675,7 @@ case 'Replays_details':
 	$params['replay']['AIMode'] = $replay->getGameMode('AIMode');
 	$params['replay']['max_tower'] = $game_config[$g_mode]['max_tower'];
 	$params['replay']['max_wall'] = $game_config[$g_mode]['max_wall'];
+	$params['replay']['res_victory'] = $game_config[$g_mode]['res_victory'];
 
 	// player1 hand
 	$p1hand = $p1data->Hand;
@@ -4857,6 +4859,7 @@ case 'Replays_history':
 	$params['replays_history']['AIMode'] = $replay->getGameMode('AIMode');
 	$params['replays_history']['max_tower'] = $game_config[$g_mode]['max_tower'];
 	$params['replays_history']['max_wall'] = $game_config[$g_mode]['max_wall'];
+	$params['replays_history']['res_victory'] = $game_config[$g_mode]['res_victory'];
 
 	// player1 hand
 	$p1hand = $p1data->Hand;
