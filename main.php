@@ -1614,6 +1614,10 @@
 				// check card mode
 				if (!is_numeric($mode)) { $error = 'Invalid mode.'; $current = 'Games_details'; break; }
 
+				// validate current round (prevents unintentional game actions via formular re-submit)
+				$currentRound = (isset($_POST['current_round']) and is_numeric($_POST['current_round'])) ? $_POST['current_round'] : 0;
+				if ($currentRound > 0 and $currentRound != $game->Round) { $error = 'Unintentional re-submit detected, ignoring game action.'; $current = 'Games_details'; break; }
+
 				// the rest of the checks are done internally
 				$result = $game->playCard($player->name(), $cardpos, $mode, $action);
 				if ($result != 'OK') { $error = $result; $current = 'Games_details'; break; }

@@ -1266,6 +1266,10 @@
 
 	<!-- end chatboard -->
 
+	<div>
+		<input type="hidden" name="current_round" value="{$param/Round}"/>
+	</div>
+
 	<!-- game note dialog (do not display) -->
 	<div id="game_note_dialog" title="Game note" style="display: none">
 		<textarea name="Content" rows="10" cols="50"><xsl:value-of select="$param/GameNote"/></textarea>
