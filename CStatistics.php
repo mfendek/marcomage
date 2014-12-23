@@ -297,7 +297,15 @@
 				$values[$data['CardID']] = $data['value']; // assign a statistic value to each card id
 			}
 
-			$cards_data = $carddb->getData($cards);
+			// case 1: card statistics are avaialbe
+			if (count($cards) > 0) {
+				$cards_data = $carddb->getData($cards);
+			}
+			// case 2: there are no card statistics available
+			else {
+				$cards_data = array();
+			}
+
 			$separated = array('Common' => array(), 'Uncommon' => array(), 'Rare' => array());
 			$statistics = array(
 			'Common' => array('top' => array(), 'bottom' => array()), 
