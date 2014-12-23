@@ -558,10 +558,10 @@
     <name>Rebirth</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>If #Burning + #Legend + #Mage cards in hand is greater than 3, the card stays in hand and half of the gems cost of the played card will be returned.</description>
+    <description>If #Burning + #Demonic + #Legend + #Mage cards in hand is greater than 3, the card stays in hand and half of the gems cost of the played card will be returned.</description>
     <lore><![CDATA[<p>Ancient creatures are often very difficult to defeat, but most feared are those who will not die on defeat, they will just be reborn and will continue the fight once again. However, they are not immortal. To be successfully reborn they need to draw power from their environment. Once they have depleted all the reserves they will meet their final death.</p>]]></lore>
     <code><![CDATA[
-    $count = $this->keywordCount($mydata->Hand, 'Burning') + $this->keywordCount($mydata->Hand, 'Legend') + $this->keywordCount($mydata->Hand, 'Mage');
+    $count = $this->keywordCount($mydata->Hand, 'Burning') + $this->keywordCount($mydata->Hand, 'Demonic') + $this->keywordCount($mydata->Hand, 'Legend') + $this->keywordCount($mydata->Hand, 'Mage');
     if ($count > 3) {
       $nextcard = $card->id();
       $mydata->Gems+= round($card->getResources('Gems') / 2);
