@@ -10,7 +10,7 @@
 	$db = new CDatabase($server, $username, $password, $database);
 	if( $db->status != 'SUCCESS' )
 	{
-		header("Content-type: text/html");
+		header("Content-Type: text/html");
 		die("Unable to connect to database, aborting.");
 	}
 
@@ -18,7 +18,7 @@
 	||  false === $db->Query("SET time_zone='Etc/UTC'")
 	&&  false === $db->Query("SET time_zone='+0:00'") )
 	{
-		header("Content-type: text/html");
+		header("Content-Type: text/html");
 		die("Unable to configure time zone, aborting.");
 	}
 
