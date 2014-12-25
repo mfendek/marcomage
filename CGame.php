@@ -1909,7 +1909,7 @@
 				}
 			}
 
-			return \Utils::arrayMtRand($temp);
+			return arrayMtRand($temp);
 		}
 
 		///
@@ -1942,7 +1942,7 @@
 				}
 			}
 
-			return \Utils::arrayMtRand($temp);
+			return arrayMtRand($temp);
 		}
 
 		///
