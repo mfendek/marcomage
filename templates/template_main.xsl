@@ -56,23 +56,23 @@
 		<xsl:if test="$section_name = 'Games' and $param/current_games &gt; 0"> (<xsl:value-of select="$param/current_games" />)</xsl:if>
 		<xsl:text> - MArcomage</xsl:text>
 	</title>
-	<script type="text/javascript" src="javascript/jquery/jquery.js"></script>
-	<script type="text/javascript" src="javascript/jquery/jquery_ui.js"></script>
-	<script type="text/javascript" src="javascript/scrollto.js"></script>
-	<script type="text/javascript" src="javascript/cookie.js"></script>
-	<script type="text/javascript" src="javascript/cursor.js"></script>
-	<script type="text/javascript" src="javascript/utils.js"></script>
-	<script type="text/javascript" src="javascript/{$current_section}.js"></script>
+	<script type="text/javascript" src="js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="js/jquery/jquery_ui.js"></script>
+	<script type="text/javascript" src="js/scrollto.js"></script>
+	<script type="text/javascript" src="js/cookie.js"></script>
+	<script type="text/javascript" src="js/cursor.js"></script>
+	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/{$current_section}.js"></script>
 	<xsl:if test="$param/new_user = 'yes'">
-		<script type="text/javascript" src="javascript/intro.js"></script>
+		<script type="text/javascript" src="js/intro.js"></script>
 	</xsl:if>
 	<xsl:if test="$param/new_level_gained &gt; 0">
-		<script type="text/javascript" src="javascript/levelup.js"></script>
+		<script type="text/javascript" src="js/levelup.js"></script>
 	</xsl:if>
 	<xsl:if test="$param/level = 0">
-		<script type="text/javascript" src="javascript/highlight.js"></script>
+		<script type="text/javascript" src="js/highlight.js"></script>
 	</xsl:if>
-	<xsl:comment><![CDATA[[if lt IE 9]><script type="text/javascript" src="javascript/ie9.js"></script><![endif]]]></xsl:comment>
+	<xsl:comment><![CDATA[[if lt IE 9]><script type="text/javascript" src="js/ie9.js"></script><![endif]]]></xsl:comment>
 	</head>
 	<body>
 	<form action="" enctype="multipart/form-data" method="post">
