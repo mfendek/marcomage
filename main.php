@@ -5124,9 +5124,9 @@ default:
 
 	// HTML header - enable xhtml+xml mode if the client supports it
 	if ( stristr(@$_SERVER["HTTP_ACCEPT"],"application/xhtml+xml") )
-		header("Content-type: application/xhtml+xml");
+		header("Content-Type: application/xhtml+xml");
 	else
-		header("Content-type: text/html");
+		header("Content-Type: text/html");
 
 	// HTML code generation
 
