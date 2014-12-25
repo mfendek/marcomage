@@ -449,8 +449,12 @@
 			return $resource;
 		}
 		
-		public function getData()
+		public function getData($field = '')
 		{
+			if ($field != '') {
+				return $this->$field;
+			}
+
 			$data['id']       = $this->ID;
 			$data['name']     = $this->Name;
 			$data['class']    = $this->Class;
