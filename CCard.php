@@ -50,7 +50,7 @@
 		public function getList(array $filters = array())
 		{
 			// list all cards
-			$cards = $this->getData(null);
+			$cards = $this->getData();
 
 			// remove default from cards
 			unset($cards[0]);
@@ -207,7 +207,7 @@
 		/// The result will use the same keys and key order as the input.
 		/// @param array $ids an array of card ids to retrieve
 		/// @return array an array of the requested cards' data
-		public function getData($ids)
+		public function getData($ids = null)
 		{
 			// return nothing in case no IDs are specified
 			if (!is_null($ids) and count($ids) == 0) {
