@@ -50,7 +50,7 @@
 		public function getList(array $filters = array())
 		{
 			// list all cards
-			$cards = $this->getData(array(), true);
+			$cards = $this->getData(null);
 
 			// remove default from cards
 			unset($cards[0]);
@@ -207,10 +207,10 @@
 		/// The result will use the same keys and key order as the input.
 		/// @param array $ids an array of card ids to retrieve
 		/// @return array an array of the requested cards' data
-		public function getData(array $ids, $fetchAll = false)
+		public function getData($ids)
 		{
-			// return nothing in case fatch all flag is disabled and no IDs are specified
-			if (!$fetchAll and count($ids) == 0) {
+			// return nothing in case no IDs are specified
+			if (!is_null($ids) and count($ids) == 0) {
 				return array();
 			}
 
@@ -268,8 +268,8 @@
 				}
 			}
 
-			// return all cards in case fatch all flag is enabled and no IDs are specified
-			if ($fetchAll and count($ids) == 0) {
+			// return all cards in case IDs are set to special value
+			if (is_null($ids)) {
 				return $this->cache;
 			}
 
