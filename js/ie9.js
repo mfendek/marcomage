@@ -725,7 +725,7 @@ IE7.CSS = new (Fix.extend({ // single instance
     } catch (e) {
       cssText = "";
     }
-    if (httpRequest) cssText = loadFile(styleSheet.href, path) || cssText;
+    if (httpRequest) cssText = loadFile(styleSheet._href || styleSheet.href, path) || cssText;
     return cssText;
   },
   
@@ -865,7 +865,7 @@ var StyleSheet = Base.extend({
     // Load all style sheets in the document
     for (var i = 0; i < styleSheets.length; i++) {
       var styleSheet = styleSheets[i];
-      if (!styleSheet.disabled && !styleSheet.ie7) this.cssText += getCSSText(styleSheet);
+      if (!styleSheet.disabled && !styleSheet.ie7) this.cssText += getCSSText(styleSheet, path);
     }
     
     // helper functions
