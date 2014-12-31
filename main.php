@@ -3469,6 +3469,17 @@ case 'Registration':
 
 
 case 'Decks_edit':
+	$params['deck_edit']['created_dates'] = $created_dates = $carddb->listCreationDates();
+	$params['deck_edit']['modified_dates'] = $carddb->listModifyDates();
+
+	$score = $scoredb->getScore($player->name());
+	$player_level = $score->ScoreData->Level;
+
+	// determine initial date created filter
+	// players in tutorial are given no filters selected to avoid confusion (they are limited by card level anyway)
+	// all other players are given created filter set to most recent batch of new cards to prevent unnecessary card image loading
+	$initialValue = ($player_level >= 10 and count($created_dates) > 0) ? $created_dates[0] : 'none';
+
 	$currentdeck = $params['deck_edit']['CurrentDeck'] = isset($_POST['CurrentDeck']) ? $_POST['CurrentDeck'] : '';
 	$namefilter = $params['deck_edit']['NameFilter'] = isset($_POST['NameFilter']) ? $_POST['NameFilter'] : '';
 	$classfilter = $params['deck_edit']['ClassFilter'] = isset($_POST['ClassFilter']) ? $_POST['ClassFilter'] : 'none';
@@ -3476,19 +3487,14 @@ case 'Decks_edit':
 	$keywordfilter = $params['deck_edit']['KeywordFilter'] = isset($_POST['KeywordFilter']) ? $_POST['KeywordFilter'] : 'none';
 	$advancedfilter = $params['deck_edit']['AdvancedFilter'] = isset($_POST['AdvancedFilter']) ? $_POST['AdvancedFilter'] : 'none';
 	$supportfilter = $params['deck_edit']['SupportFilter'] = isset($_POST['SupportFilter']) ? $_POST['SupportFilter'] : 'none';
-	$createdfilter = $params['deck_edit']['CreatedFilter'] = isset($_POST['CreatedFilter']) ? $_POST['CreatedFilter'] : 'none';
+	$createdfilter = $params['deck_edit']['CreatedFilter'] = isset($_POST['CreatedFilter']) ? $_POST['CreatedFilter'] : $initialValue;
 	$modifiedfilter = $params['deck_edit']['ModifiedFilter'] = isset($_POST['ModifiedFilter']) ? $_POST['ModifiedFilter'] : 'none';
 	$levelfilter = $params['deck_edit']['LevelFilter'] = isset($_POST['LevelFilter']) ? $_POST['LevelFilter'] : 'none';
 	$params['deck_edit']['card_sort'] = isset($_POST['card_sort']) ? $_POST['card_sort'] : 'name';
 
-	$score = $scoredb->getScore($player->name());
-	$player_level = $score->ScoreData->Level;
-
 	$params['deck_edit']['player_level'] = $player_level;
 	$params['deck_edit']['levels'] = $carddb->levels($player_level);
 	$params['deck_edit']['keywords'] = $carddb->keywords();
-	$params['deck_edit']['created_dates'] = $carddb->listCreationDates();
-	$params['deck_edit']['modified_dates'] = $carddb->listModifyDates();
 
 	// download the neccessary data
 	$deck = $player->getDeck($currentdeck);
