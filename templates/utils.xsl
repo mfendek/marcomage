@@ -315,6 +315,7 @@
 	<xsl:param name="current" as="xs:string" />
 	<xsl:param name="static_values" as="xs:node-set" />
 	<xsl:param name="dynamic_values" as="xs:node-set" />
+	<xsl:param name="title" as="xs:string" select="''"/>
 
 	<xsl:variable name="converted">
 		<xsl:for-each select="exsl:node-set($dynamic_values)/*">
@@ -328,6 +329,9 @@
 		<select name="{$name}">
 			<xsl:if test="$current != 'none'">
 				<xsl:attribute name="class">filter_active</xsl:attribute>
+			</xsl:if>
+			<xsl:if test="$title != ''">
+				<xsl:attribute name="title"><xsl:value-of select="$title"/></xsl:attribute>
 			</xsl:if>
 			<xsl:for-each select="$values/*">
 				<option value="{@value}">

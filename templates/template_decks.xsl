@@ -375,7 +375,7 @@
 		<value name="Rare"     value="Rare"     />
 		<value name="Any"      value="none"     />
 	</xsl:variable>
-	<xsl:copy-of select="am:htmlSelectBox('ClassFilter', $param/ClassFilter, $classes, '')"/>
+	<xsl:copy-of select="am:htmlSelectBox('ClassFilter', $param/ClassFilter, $classes, '', 'rarity filter')"/>
 
 	<!-- card keyword filter -->
 	<xsl:variable name="keywords">
@@ -383,7 +383,7 @@
 		<value name="Any keyword"       value="Any keyword" />
 		<value name="No keywords"       value="No keywords" />
 	</xsl:variable>
-	<xsl:copy-of select="am:htmlSelectBox('KeywordFilter', $param/KeywordFilter, $keywords, $param/keywords)"/>
+	<xsl:copy-of select="am:htmlSelectBox('KeywordFilter', $param/KeywordFilter, $keywords, $param/keywords, 'keyword filter')"/>
 
 	<!-- cost filter -->
 	<xsl:variable name="costs">
@@ -394,7 +394,7 @@
 		<value name="Zero cost"      value="Zero"  />
 		<value name="Mixed cost"     value="Mixed" />
 	</xsl:variable>
-	<xsl:copy-of select="am:htmlSelectBox('CostFilter', $param/CostFilter, $costs, '')"/>
+	<xsl:copy-of select="am:htmlSelectBox('CostFilter', $param/CostFilter, $costs, '', 'cost filter')"/>
 
 	<!-- advanced filter select menu - filters based upon appearance in card text -->
 	<xsl:variable name="advanced">
@@ -427,7 +427,7 @@
 		<value name="Recruits +"     value="Recruits: +"   />
 		<value name="Recruits -"     value="Recruits: -"   />
 	</xsl:variable>
-	<xsl:copy-of select="am:htmlSelectBox('AdvancedFilter', $param/AdvancedFilter, $advanced, '')"/>
+	<xsl:copy-of select="am:htmlSelectBox('AdvancedFilter', $param/AdvancedFilter, $advanced, '', 'advanced filter')"/>
 
 	<!-- support keyword filter -->
 	<xsl:variable name="support">
@@ -435,32 +435,32 @@
 		<value name="Any keyword"       value="Any keyword" />
 		<value name="No keywords"       value="No keywords" />
 	</xsl:variable>
-	<xsl:copy-of select="am:htmlSelectBox('SupportFilter', $param/SupportFilter, $support, $param/keywords)"/>
+	<xsl:copy-of select="am:htmlSelectBox('SupportFilter', $param/SupportFilter, $support, $param/keywords, 'support keyword filter')"/>
 
 	<!-- creation date filter -->
 	<xsl:variable name="created">
 		<value name="No created filter" value="none" />
 	</xsl:variable>
-	<xsl:copy-of select="am:htmlSelectBox('CreatedFilter', $param/CreatedFilter, $created, $param/created_dates)"/>
+	<xsl:copy-of select="am:htmlSelectBox('CreatedFilter', $param/CreatedFilter, $created, $param/created_dates, 'date created filter')"/>
 
 	<!-- modification date filter -->
 	<xsl:variable name="modified">
 		<value name="No modified filter" value="none" />
 	</xsl:variable>
-	<xsl:copy-of select="am:htmlSelectBox('ModifiedFilter', $param/ModifiedFilter, $modified, $param/modified_dates)"/>
+	<xsl:copy-of select="am:htmlSelectBox('ModifiedFilter', $param/ModifiedFilter, $modified, $param/modified_dates, 'date modified filter')"/>
 
 	<!-- card level filter -->
 	<xsl:variable name="level">
 		<value name="No level filter" value="none" />
 	</xsl:variable>
-	<xsl:copy-of select="am:htmlSelectBox('LevelFilter', $param/LevelFilter, $level, $param/levels)"/>
+	<xsl:copy-of select="am:htmlSelectBox('LevelFilter', $param/LevelFilter, $level, $param/levels, 'level filter')"/>
 
 	<!-- sorting options -->
 	<xsl:variable name="card_sort">
 		<value name="Sort by name" value="name" />
 		<value name="Sort by cost" value="cost" />
 	</xsl:variable>
-	<xsl:copy-of select="am:htmlSelectBox('card_sort', $param/card_sort, $card_sort, '')"/>
+	<xsl:copy-of select="am:htmlSelectBox('card_sort', $param/card_sort, $card_sort, '', 'sorting order')"/>
 
 	<button type="submit" name="filter">Apply filters</button>
 	<button type="submit" name="card_pool_switch">
