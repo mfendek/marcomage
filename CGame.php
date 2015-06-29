@@ -863,7 +863,11 @@
 					{
 						$mydiscards_index++;
 						$mydata->DisCards[0][$mydiscards_index] = $myhand[$i];
-						$statistics->updateCardStats($myhand[$i], 'discard'); // update card statistics (card discarded by card effect)
+
+						// update card statistics (card discarded by card effect)
+						if ($this->AIMode == 'no') {
+							$statistics->updateCardStats($myhand[$i], 'discard');
+						}
 						// hide revealed card if it was revealed before and discarded now
 						if (isset($mydata->Revealed[$i])) unset($mydata->Revealed[$i]);
 					}
@@ -872,7 +876,10 @@
 					{
 						$hisdiscards_index++;
 						$mydata->DisCards[1][$hisdiscards_index] = $hishand[$i];
-						$statistics->updateCardStats($hishand[$i], 'discard'); // update card statistics (card discarded by card effect)
+						// update card statistics (card discarded by card effect)
+						if ($this->AIMode == 'no') {
+							$statistics->updateCardStats($hishand[$i], 'discard');
+						}
 						// hide revealed card if it was revealed before and discarded now
 						if (isset($hisdata->Revealed[$i])) unset($hisdata->Revealed[$i]);
 					}
@@ -1047,7 +1054,9 @@
 				$this->Round++;
 			
 			// update card statistics (card was played or discarded by standard discard action)
-			$statistics->updateCardStats($cardid, $action);
+			if ($this->AIMode == 'no') {
+				$statistics->updateCardStats($cardid, $action);
+			}
 			
 			return 'OK';
 		}
@@ -1536,7 +1545,9 @@
 				
 				if (mt_rand(1, pow(2, $match)) == 1)
 				{
-					$statistics->updateCardStats($nextcard, 'draw');
+					if ($this->AIMode == 'no') {
+						$statistics->updateCardStats($nextcard, 'draw');
+					}
 					return $nextcard; // chance to retain the card decreases exponentially as the number of matches increases
 				}
 			}
