@@ -499,7 +499,6 @@
 		
 		public function startGame($player, CDeck $deck, $challenge_name = '')
 		{
-			global $game_config;
 			global $challengesdb;
 			
 			$this->GameData[$player] = new CGamePlayerData;
@@ -507,9 +506,6 @@
 			
 			// update deck slot reference
 			$this->DeckID2 = $deck->id();
-			
-			// determine game mode (normal or long)
-			$g_mode = ($this->LongMode == 'yes') ? 'long' : 'normal';
 			
 			$this->State = 'in progress';
 			$this->LastAction = date('Y-m-d G:i:s');
@@ -524,8 +520,8 @@
 			$p1->NewCards = $p2->NewCards = $p1->Revealed = $p2->Revealed = null;
 			$p1->DisCards[0] = $p1->DisCards[1] = $p2->DisCards[0] = $p2->DisCards[1] = null; //0 - cards discarded from my hand, 1 - discarded from opponents hand
 			$p1->Changes = $p2->Changes = array ('Quarry'=> 0, 'Magic'=> 0, 'Dungeons'=> 0, 'Bricks'=> 0, 'Gems'=> 0, 'Recruits'=> 0, 'Tower'=> 0, 'Wall'=> 0);
-			$p1->Tower = $p2->Tower = $game_config[$g_mode]['init_tower'];
-			$p1->Wall = $p2->Wall = $game_config[$g_mode]['init_wall'];
+			$p1->Tower = $p2->Tower = $this->config('init_tower');
+			$p1->Wall = $p2->Wall = $this->config('init_wall');
 			$p1->Quarry = $p2->Quarry = 3;
 			$p1->Magic = $p2->Magic = 3;
 			$p1->Dungeons = $p2->Dungeons = 3;
@@ -641,7 +637,6 @@
 			global $keyworddb;
 			global $scoredb;
 			global $statistics;
-			global $game_config;
 			
 			// only allow discarding if the game is still on
 			if ($this->State != 'in progress') return 'Action not allowed!';
@@ -653,16 +648,13 @@
 			if (($cardpos < 1) || ($cardpos > 8)) return 'Wrong card position!';
 			if (($action != 'play') && ($action != 'discard')) return 'Invalid action!';
 			
-			// determine game mode (normal or long)
-			$g_mode = ($this->LongMode == 'yes') ? 'long' : 'normal';
-			
 			// game configuration
-			$max_tower = $game_config[$g_mode]['max_tower'];
-			$max_wall = $game_config[$g_mode]['max_wall'];
-			$init_tower = $game_config[$g_mode]['init_tower'];
-			$init_wall = $game_config[$g_mode]['init_wall'];
-			$res_vic = $game_config[$g_mode]['res_victory'];
-			$time_vic = $game_config[$g_mode]['time_victory'];
+			$max_tower = $this->config('max_tower');
+			$max_wall = $this->config('max_wall');
+			$init_tower = $this->config('init_tower');
+			$init_wall = $this->config('init_wall');
+			$res_vic = $this->config('res_victory');
+			$time_vic = $this->config('time_victory');
 			
 			// prepare basic information
 			$score = $scoredb->getScore($playername);
@@ -1084,7 +1076,6 @@
 			global $carddb;
 			global $keyworddb;
 			global $statistics;
-			global $game_config;
 			
 			// only allow discarding if the game is still on
 			if ($this->State != 'in progress') return 'Action not allowed!';
@@ -1098,16 +1089,13 @@
 			// disable statistics
 			$statistics->deactivate();
 			
-			// determine game mode (normal or long)
-			$g_mode = ($this->LongMode == 'yes') ? 'long' : 'normal';
-			
 			// game configuration
-			$max_tower = $game_config[$g_mode]['max_tower'];
-			$max_wall = $game_config[$g_mode]['max_wall'];
-			$init_tower = $game_config[$g_mode]['init_tower'];
-			$init_wall = $game_config[$g_mode]['init_wall'];
-			$res_vic = $game_config[$g_mode]['res_victory'];
-			$time_vic = $game_config[$g_mode]['time_victory'];
+			$max_tower = $this->config('max_tower');
+			$max_wall = $this->config('max_wall');
+			$init_tower = $this->config('init_tower');
+			$init_wall = $this->config('init_wall');
+			$res_vic = $this->config('res_victory');
+			$time_vic = $this->config('time_victory');
 			
 			// prepare basic information
 			$opponent = ($this->Player1 == $playername) ? $this->Player2 : $this->Player1;
@@ -1659,19 +1647,14 @@
 		
 		private function applyGameLimits(CGamePlayerData &$data)
 		{
-			global $game_config;
-			
-			// determine game mode (normal or long)
-			$g_mode = ($this->LongMode == 'yes') ? 'long' : 'normal';
-			
 			$data->Quarry = max($data->Quarry, 1);
 			$data->Magic = max($data->Magic, 1);
 			$data->Dungeons = max($data->Dungeons, 1);
 			$data->Bricks = max($data->Bricks, 0);
 			$data->Gems = max($data->Gems, 0);
 			$data->Recruits = max($data->Recruits, 0);
-			$data->Tower = min(max($data->Tower, 0), $game_config[$g_mode]['max_tower']);
-			$data->Wall = min(max($data->Wall, 0), $game_config[$g_mode]['max_wall']);
+			$data->Tower = min(max($data->Tower, 0), $this->config('max_tower'));
+			$data->Wall = min(max($data->Wall, 0), $this->config('max_wall'));
 
 			foreach ($data->TokenValues as $index => $token_val)
 				$data->TokenValues[$index] = max(min($data->TokenValues[$index], 100), 0);
@@ -1681,15 +1664,14 @@
 		{
 			global $carddb;
 			global $playerdb;
-			global $game_config;
 			
 			// determine game mode (normal or long)
 			$g_mode = ($this->LongMode == 'yes') ? 'long' : 'normal';
 			
 			// game configuration
-			$max_tower = $game_config[$g_mode]['max_tower'];
-			$max_wall = $game_config[$g_mode]['max_wall'];
-			$res_vic = $game_config[$g_mode]['res_victory'];
+			$max_tower = $this->config('max_tower');
+			$max_wall = $this->config('max_wall');
+			$res_vic = $this->config('res_victory');
 			
 			$opponent = ($this->Player1 == $player) ? $this->Player2 : $this->Player1;
 			$mydata = $this->GameData[$player];
@@ -1900,6 +1882,20 @@
 			if (!$turn_data) return false;
 
 			return $turn_data->GameData;
+		}
+
+		///
+		/// Get game config setting value
+		/// @param string $key setting key
+		/// @return string setting value
+		private function config($key)
+		{
+			global $game_config;
+
+			// determine game mode (normal or long)
+			$g_mode = ($this->LongMode == 'yes') ? 'long' : 'normal';
+
+			return (isset($game_config[$g_mode][$key])) ? $game_config[$g_mode][$key] : false;
 		}
 	}
 	
