@@ -816,6 +816,9 @@
 				// process keyword effects
 				if ($card->Keywords != '')
 				{
+					// we use this to cover the case when keyword token counter is filled up within a single turn
+					$triggeredTokens = array();
+
 					// list all keywords in order they are to be executed
 					$keywords = $this->keywordsOrder();
 
@@ -835,6 +838,9 @@
 								{
 									// reset token counter
 									$mydata->setToken($keyword_name, 0);
+
+									// store triggered token index
+									$triggeredTokens[$mydata->findToken($keyword_name)] = 1;
 
 									// execute token keyword effect
 									if( eval($keyword->Code) === FALSE )
@@ -895,6 +901,11 @@
 				{
 					$mydata->TokenChanges[$index] += $mydata->TokenValues[$index] - $mytokens_temp[$index];
 					$hisdata->TokenChanges[$index] += $hisdata->TokenValues[$index] - $histokens_temp[$index];
+
+					// single turn token counter fill correction
+					if (isset($triggeredTokens[$index]) && $mydata->TokenChanges[$index] == 0) {
+						$mydata->TokenChanges[$index] = -100;
+					}
 				}
 			}
 			
@@ -1242,6 +1253,9 @@
 			// process keyword effects
 			if ($card->Keywords != '')
 			{
+				// we use this to cover the case when keyword token counter is filled up within a single turn
+				$triggeredTokens = array();
+
 				// list all keywords in order they are to be executed
 				$keywords = $this->keywordsOrder();
 
@@ -1261,6 +1275,9 @@
 							{
 								// reset token counter
 								$mydata->setToken($keyword_name, 0);
+
+								// store triggered token index
+								$triggeredTokens[$mydata->findToken($keyword_name)] = 1;
 
 								// execute token keyword effect
 								if( eval($keyword->Code) === FALSE )
@@ -1285,6 +1302,11 @@
 			{
 				$mydata->TokenChanges[$index] += $mydata->TokenValues[$index] - $mytokens_temp[$index];
 				$hisdata->TokenChanges[$index] += $hisdata->TokenValues[$index] - $histokens_temp[$index];
+
+				// single turn token counter fill correction
+				if (isset($triggeredTokens[$index]) && $mydata->TokenChanges[$index] == 0) {
+					$mydata->TokenChanges[$index] = -100;
+				}
 			}
 			
 			// add production at the end of turn
