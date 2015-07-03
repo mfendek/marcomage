@@ -202,23 +202,7 @@
       $hisdata->Tower-= $charge_damage;
     }
     else {
-      for ($i = 1; $i <= $charge_damage; $i++) {
-        $bricks = max(0, $hisdata->Bricks);
-        $gems = max(0, $hisdata->Gems);
-        $recruits = max(0, $hisdata->Recruits);
-        $total = $bricks + $gems + $recruits;
-
-        $tmp = ($total > 0) ? mt_rand(1,$total) : 0;
-        if ($tmp <= $bricks and $bricks > 0) {
-          $hisdata->Bricks--;
-        }
-        elseif ($tmp <= ($bricks + $gems) and $gems > 0) {
-          $hisdata->Gems--;
-        }
-        elseif ($tmp <= ($bricks + $gems + $recruits) and $recruits > 0) {
-          $hisdata->Recruits--;
-        }
-      }
+      $hisdata->addRandomResources(-$charge_damage);
     }
 ]]></code>
   </keyword>

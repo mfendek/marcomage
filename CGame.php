@@ -2028,22 +2028,89 @@
 				return;
 			}
 
-			$diff = ($amount > 0) ? 1 : -1;
-			$amount = abs($amount);
+			// case 1: resource gain - resource with lowest amount has a higher chance to be chosen
+			if ($amount > 0) {
+				// extact raw amount
+				$amount = abs($amount);
 
-			for ($i = 1; $i <= $amount; $i++) {
-				$choice = mt_rand(0,2);
-				// case 1: Bricks
-				if ($choice == 0) {
-					$this->Bricks+= $diff;
+				for ($i = 1; $i <= $amount; $i++) {
+					$bricks = max(0, $this->Bricks);
+					$gems = max(0, $this->Gems);
+					$recruits = max(0, $this->Recruits);
+
+					// resolve resource that have zero amount
+					$zero = array();
+					if ($bricks == 0) {
+						$zero[] = 'Bricks';
+					}
+
+					if ($gems == 0) {
+						$zero[] = 'Gems';
+					}
+
+					if ($recruits == 0) {
+						$zero[] = 'Recruits';
+					}
+
+					// case 1: there is at least one resource that has zero amount
+					if (count($zero) > 0) {
+						$chosen = $zero[arrayMtRand($zero)];
+						$this->$chosen++;
+					}
+					// case 2: there are no resources with zero amount
+					else {
+						// calculate total
+						$total = $bricks + $gems + $recruits;
+
+						// calculate inverse probability
+						$bricks = ceil(1000 * $total / $bricks);
+						$gems = ceil(1000 * $total / $gems);
+						$recruits = ceil(1000 * $total / $recruits);
+
+						// calculate new total
+						$total = $bricks + $gems + $recruits;
+
+						$rand = mt_rand(1, $total);
+
+						// case 1: Bricks
+						if ($rand <= $bricks) {
+							$this->Bricks++;
+						}
+						// case 2: Gems
+						elseif ($rand <= ($bricks + $gems)) {
+							$this->Gems++;
+						}
+						// case 3: Recruits
+						elseif ($rand <= ($bricks + $gems + $recruits)) {
+							$this->Recruits++;
+						}
+					}
 				}
-				// case 2: Gems
-				elseif ($choice == 1) {
-					$this->Gems+= $diff;
-				}
-				// case 3: Recruits
-				elseif ($choice == 2) {
-					$this->Recruits+= $diff;
+			}
+			// case 2: resource reduction - resource with highest amount has a higher chance to be chosen
+			else {
+				// extact raw amount
+				$amount = abs($amount);
+
+				for ($i = 1; $i <= $amount; $i++) {
+					$bricks = max(0, $this->Bricks);
+					$gems = max(0, $this->Gems);
+					$recruits = max(0, $this->Recruits);
+					$total = $bricks + $gems + $recruits;
+					$rand = ($total > 0) ? mt_rand(1, $total) : 0;
+
+					// case 1: Bricks
+					if ($rand <= $bricks and $bricks > 0) {
+						$this->Bricks--;
+					}
+					// case 2: Gems
+					elseif ($rand <= ($bricks + $gems) and $gems > 0) {
+						$this->Gems--;
+					}
+					// case 3: Recruits
+					elseif ($rand <= ($bricks + $gems + $recruits) and $recruits > 0) {
+						$this->Recruits--;
+					}
 				}
 			}
 		}
