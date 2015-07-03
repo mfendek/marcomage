@@ -33,10 +33,10 @@
 			$winner = ($winner != '') ? 'Winner: '.$winner : '';
 			
 			if ($player1_reports == "yes")
-				$this->sendMessage(SYSTEM_NAME, $player1, "Battle report", "Opponent: $player2\nOutcome: {$outcome}\n".$winner."\nHide opponent's cards: ".$hidden."\n".$message1);
+				$this->sendMessage(SYSTEM_NAME, $player1, "Battle report", "Opponent: [link=?location=Players_details&Profile=".urlencode($player2)."]".$player2."[/link]\nOutcome: {$outcome}\n".$winner."\nHide opponent's cards: ".$hidden."\n".$message1);
 			
 			if ($player2_reports == "yes")
-				$this->sendMessage(SYSTEM_NAME, $player2, "Battle report", "Opponent: $player1\nOutcome: {$outcome}\n".$winner."\nHide opponent's cards: ".$hidden."\n".$message2);
+				$this->sendMessage(SYSTEM_NAME, $player2, "Battle report", "Opponent: [link=?location=Players_details&Profile=".urlencode($player1)."]".$player1."[/link]\nOutcome: {$outcome}\n".$winner."\nHide opponent's cards: ".$hidden."\n".$message2);
 			
 			return true;
 		}
