@@ -705,7 +705,8 @@
     <description>Titan's will - summons a Titan not present in hand.</description>
     <lore><![CDATA[<p>One of the titans who didn't get eradicated by the gods was smashed to pieces. Although each piece is alive and can be used as a separate, anyone who is able to find all the pieces and complete them into the greater whole will possess an unstoppable war machine which is feared even by gods.</p>]]></lore>
     <code><![CDATA[
-    $titans = array_diff($this->getList(['keyword'=>'Titan']), $mydata->Hand);
+    $hand = $mydata->Hand; unset($hand[$cardpos]);
+    $titans = array_diff($this->getList(['keyword'=>'Titan']), $hand);
     if (count($titans) > 0) {
       $nextcard = $this->drawCard($titans, $mydata->Hand, $cardpos, 'drawCardList');
     }
