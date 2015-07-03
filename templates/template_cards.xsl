@@ -82,6 +82,7 @@
 				<value name="Bricks -"       value="Bricks: -"     />
 				<value name="Recruits +"     value="Recruits: +"   />
 				<value name="Recruits -"     value="Recruits: -"   />
+				<value name="Random resources" value="random resource" />
 			</xsl:variable>
 			<xsl:copy-of select="am:htmlSelectBox('AdvancedFilter', $param/AdvancedFilter, $advanced, '', 'advanced filter')"/>
 
