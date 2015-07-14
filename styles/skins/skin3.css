@@ -36,12 +36,12 @@ hr /* horizontal line layout */
 
 a:link /* unvisited link */
 {
-	color: rgb(74,193,83); /* medium green */
+	color: rgb(74,230,83); /* light green */
 }
 
 a:visited /* visited link */
 {
-	color: rgb(46,140,105); /* dark green */
+	color: rgb(46,200,105); /* medium green */
 }
 
 tr.table_row:hover /* highlight table row */
