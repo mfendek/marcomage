@@ -285,6 +285,7 @@
 		private $AIMode; // ai game mode (yes/no)
 		private $GameAI = false;
 		private $Chat;
+		private $playedCardPos = 0;
 		public $State; // 'waiting' / 'in progress' / 'finished' / 'P1 over' / 'P2 over'
 		public $Current; // name of the player whose turn it currently is
 		public $Round; // incremented after each play/discard action
@@ -638,6 +639,9 @@
 			global $scoredb;
 			global $statistics;
 			
+			// store played card position for future use
+			$this->playedCardPos = $cardpos;
+			
 			// only allow discarding if the game is still on
 			if ($this->State != 'in progress') return 'Action not allowed!';
 			
@@ -769,11 +773,9 @@
 				$mytokens_temp = $mydata->TokenValues;
 				$histokens_temp = $hisdata->TokenValues;
 				
-				//create a copy of both players' hands and newcards flags (for difference computations only)
+				//create a copy of both players' hands (for difference computations only)
 				$myhand = $mydata->Hand;
 				$hishand = $hisdata->Hand;
-				$mynewcards = $mydata->NewCards;
-				$hisnewcards = $hisdata->NewCards;
 
 				// process token gains
 				if ($card->Keywords != '') {
@@ -847,42 +849,6 @@
 							}
 						}
 				}
-
-				//process discarded cards
-				$mydiscards_index = count($mydata->DisCards[0]);
-				$hisdiscards_index = count($mydata->DisCards[1]);
-				
-				//compute and store the discarded cards
-				//we don't need to take into account the position of the played card. It hasn't been proccessed yet. In other words if it was discarded we know it, because the newcards flag was set, if not then newcards flag isn't set yet.
-				for ($i = 1; $i <= 8; $i++)
-				{
-					//this last condition makes sure that played card which discards itself from hand will not get into discarded cards
-					if( ((!isset($mynewcards[$i]) and isset($mydata->NewCards[$i])) or $myhand[$i] != $mydata->Hand[$i]) and $i != $cardpos )
-					{
-						$mydiscards_index++;
-						$mydata->DisCards[0][$mydiscards_index] = $myhand[$i];
-
-						// update card statistics (card discarded by card effect)
-						if ($this->AIMode == 'no') {
-							$statistics->updateCardStats($myhand[$i], 'discard');
-						}
-						// hide revealed card if it was revealed before and discarded now
-						if (isset($mydata->Revealed[$i])) unset($mydata->Revealed[$i]);
-					}
-					
-					if (((!(isset($hisnewcards[$i]))) and (isset($hisdata->NewCards[$i]))) or ($hishand[$i] != $hisdata->Hand[$i]))
-					{
-						$hisdiscards_index++;
-						$mydata->DisCards[1][$hisdiscards_index] = $hishand[$i];
-						// update card statistics (card discarded by card effect)
-						if ($this->AIMode == 'no') {
-							$statistics->updateCardStats($hishand[$i], 'discard');
-						}
-						// hide revealed card if it was revealed before and discarded now
-						if (isset($hisdata->Revealed[$i])) unset($hisdata->Revealed[$i]);
-					}
-					
-				}
 				
 				// apply limits to game attributes
 				$this->applyGameLimits($mydata);
@@ -935,7 +901,7 @@
 			// draw card at the end of turn
 			if( $nextcard > 0 )
 			{// value was decided by a card effect
-				$mydata->Hand[$cardpos] = $nextcard;
+				$this->setCard('my', $cardpos, $nextcard);
 			}
 			elseif( $nextcard == 0 )
 			{// drawing was disabled entirely by a card effect
@@ -946,7 +912,7 @@
 				elseif ($action == 'play') $drawfunc = 'drawCardRandom';
 				else $drawfunc = 'drawCardDifferent';
 				
-				$mydata->Hand[$cardpos] = $this->drawCard($my_deck, $mydata->Hand, $cardpos, $drawfunc);
+				$this->setCard('my', $cardpos, $this->drawCard($my_deck, $mydata->Hand, $cardpos, $drawfunc));
 			}
 			
 			// store info about this current action, updating history as needed
@@ -968,8 +934,14 @@
 			$mydata->LastCard[$mylastcardindex] = $cardid;
 			$mydata->LastMode[$mylastcardindex] = $mode;
 			$mydata->LastAction[$mylastcardindex] = $action;
-			$mydata->NewCards[$cardpos] = 1; //TODO: this shouldn't apply everytime
-			if (isset($mydata->Revealed[$cardpos])) unset($mydata->Revealed[$cardpos]);
+
+			// update card flags in case of discard action
+			if ($action == 'discard') {
+				$mydata->NewCards[$cardpos] = 1;
+				if (isset($mydata->Revealed[$cardpos])) {
+					unset($mydata->Revealed[$cardpos]);
+				}
+			}
 			
 			// check victory conditions (in this predetermined order)
 			if(     $mydata->Tower > 0 and $hisdata->Tower <= 0 )
@@ -1076,6 +1048,9 @@
 			global $carddb;
 			global $keyworddb;
 			global $statistics;
+
+			// store played card position for future use
+			$this->playedCardPos = $cardpos;
 			
 			// only allow discarding if the game is still on
 			if ($this->State != 'in progress') return 'Action not allowed!';
@@ -1202,11 +1177,9 @@
 			$mytokens_temp = $mydata->TokenValues;
 			$histokens_temp = $hisdata->TokenValues;
 			
-			//create a copy of both players' hands and newcards flags (for difference computations only)
+			//create a copy of both players' hands (for difference computations only)
 			$myhand = $mydata->Hand;
 			$hishand = $hisdata->Hand;
-			$mynewcards = $mydata->NewCards;
-			$hisnewcards = $hisdata->NewCards;
 
 			// process token gains
 			if ($card->Keywords != '') {
@@ -1312,7 +1285,7 @@
 			
 			// draw card by card effect)
 			if ($nextcard > 0)
-				$mydata->Hand[$cardpos] = $nextcard;
+				$this->setCard('my', $cardpos, $nextcard);
 			
 			$result = array();
 
@@ -1443,6 +1416,86 @@
 			$message = array_merge($message, $his_part);
 
 			return implode("\n", $message);
+		}
+
+		///
+		/// Set card to specified position in hand
+		/// @param string $type data type ('my', 'his')
+		/// @param int $cardPos card position in hand
+		/// @param int $cardId card id
+		/// @param bool $markAsNew (optional) mark as new flag
+		private function setCard($type, $cardPos, $cardId, $markAsNew = true)
+		{
+			global $statistics;
+
+			// determine data index
+			$myIndex = ($this->Player1 == $this->Current) ? $this->Player1 : $this->Player2;
+			$hisIndex = ($this->Player1 == $this->Current) ? $this->Player2 : $this->Player1;
+			$desiredIndex = ($type == 'my') ? $myIndex : $hisIndex;
+
+			// extract target data
+			$data = $this->GameData[$desiredIndex];
+
+			// determine card that will be discarded
+			$discardedCard = $data->Hand[$cardPos];
+
+			// set new card to specified position
+			$data->setCard($cardPos, $cardId, $markAsNew);
+
+			// process discarded card (ignore empty card or currently played card position)
+			if ($discardedCard > 0 && ($type != 'my' || $this->playedCardPos != $cardPos)) {
+				// extract data that hold discarded cards structure (always belongs to current player)
+				$discardData = $this->GameData[$myIndex];
+
+				// determine discarded cards index
+				$discardIndex = ($type == 'my') ? 0 : 1;
+				$currentIndex = count($discardData->DisCards[$discardIndex]);
+
+				$currentIndex++;
+				$discardData->DisCards[$discardIndex][$currentIndex] = $discardedCard;
+
+				// update card statistics (card discarded by card effect)
+				$statistics->updateCardStats($discardedCard, 'discard');
+			}
+		}
+
+		///
+		/// Replace card at specified position with other card
+		/// @param string $type data type ('my', 'his')
+		/// @param int $cardPos card position in hand
+		/// @param int $cardId card id
+		private function replaceCard($type, $cardPos, $cardId)
+		{
+			$this->setCard($type, $cardPos, $cardId, false);
+		}
+
+		///
+		/// Set hand data to specified values
+		/// @param string $type data type ('my', 'his')
+		/// @param array $hand new hand data (doesn't need to be indexed correctly)
+		private function setHand($type, array $hand)
+		{
+			// incorrect data
+			if (count($hand) != 8) {
+				return;
+			}
+
+			// reindex input data
+			$i = 1;
+			foreach ($hand as $cardId) {
+				$this->setCard($type, $i, $cardId);
+				$i++;
+			}
+		}
+
+		///
+		/// Set hand data to specified values with shuffle
+		/// @param string $type data type ('my', 'his')
+		/// @param array $hand new hand data (doesn't need to be indexed correctly)
+		private function setHandShuffled($type, array $hand)
+		{
+			shuffle($hand);
+			$this->setHand($type, $hand);
 		}
 
 		///
@@ -2211,7 +2264,8 @@
 		/// Sets card to specified position in hand
 		/// @param int $cardPos card position in hand
 		/// @param int $cardId card id
-		public function setCard($cardPos, $cardId)
+		/// @param bool $markAsNew (optional) mark as new flag
+		public function setCard($cardPos, $cardId, $markAsNew = true)
 		{
 			// incorrect card position
 			if (!in_array($cardPos, array(1,2,3,4,5,6,7,8))) {
@@ -2219,35 +2273,100 @@
 			}
 
 			$this->Hand[$cardPos] = $cardId;
-			$this->NewCards[$cardPos] = 1;
+			if ($markAsNew) {
+				$this->NewCards[$cardPos] = 1;
+			}
+
+			// hide current position if card was revealed
+			if (isset($this->Revealed[$cardPos])) {
+				unset($this->Revealed[$cardPos]);
+			}
 		}
 
 		///
-		/// Sets hand data to specified values
-		/// @param array $hand new hand data (doesn't need to be indexed correctly)
-		public function setHand(array $hand)
+		/// Shuffle card positions, but keep new card flags unchanged, while reseting revealed flags
+		public function shuffleHand()
 		{
-			// incorrect data
-			if (count($hand) != 8) {
+			// create index translation
+			$trans = array_keys($this->Hand);
+			shuffle($trans);
+			$trans = array_combine(array_keys($this->Hand), $trans);
+
+			// create new hand
+			$newHand = array();
+			$newFlags = array();
+			for ($i = 1; $i <= 8; $i++) {
+				$pos = $trans[$i];
+
+				 // transform card position
+				$newHand[$i] = $this->Hand[$pos];
+
+				// transform new card flag
+				if (isset($this->NewCards[$pos])) {
+					$newFlags[$i] = 1;
+				}
+
+				// hide current position if card was revealed
+				if (isset($this->Revealed[$i])) {
+					unset($this->Revealed[$i]);
+				}
+			}
+
+			// store new data
+			$this->Hand = $newHand;
+			if (count($newFlags) > 0) {
+				$this->NewCards = $newFlags;
+			}
+		}
+
+		///
+		/// Switch positions of specified cards in hand
+		/// @param int $pos1 card position 1
+		/// @param int $pos2 card position 2
+		public function switchCards($pos1, $pos2)
+		{
+			// incorrect card position
+			if (!in_array($pos1, [1, 2, 3, 4, 5, 6, 7, 8]) || !in_array($pos2, [1, 2, 3, 4, 5, 6, 7, 8])) {
 				return;
 			}
 
-			// reindex input data
-			$i = 1;
-			foreach ($hand as $cardId) {
-				$this->Hand[$i] = $cardId;
-				$this->NewCards[$i] = 1;
-				$i++;
+			// invalid card position
+			if ($pos1 == $pos2) {
+				return;
 			}
-		}
 
-		///
-		/// Sets hand data to specified values and shuffles values
-		/// @param array $hand new hand data (doesn't need to be indexed correctly)
-		public function setHandShuffled(array $hand)
-		{
-			shuffle($hand);
-			$this->setHand($hand);
+			$cardId1 = $this->Hand[$pos1];
+			$cardId2 = $this->Hand[$pos2];
+			$new1 = isset($this->NewCards[$pos1]);
+			$new2 = isset($this->NewCards[$pos2]);
+
+			// switch cards
+			$this->Hand[$pos1] = $cardId2;
+			$this->Hand[$pos2] = $cardId1;
+
+			// switch new card flags
+			if ($new1) {
+				$this->NewCards[$pos2] = 1;
+			}
+			elseif (isset($this->NewCards[$pos2])) {
+				unset($this->NewCards[$pos2]);
+			}
+
+			if ($new2) {
+				$this->NewCards[$pos1] = 1;
+			}
+			elseif (isset($this->NewCards[$pos1])) {
+				unset($this->NewCards[$pos1]);
+			}
+
+			// hide revealed positions
+			if (isset($this->Revealed[$pos1])) {
+				unset($this->Revealed[$pos1]);
+			}
+
+			if (isset($this->Revealed[$pos2])) {
+				unset($this->Revealed[$pos2]);
+			}
 		}
 
 		///

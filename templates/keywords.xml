@@ -57,7 +57,7 @@
             break;
           }
 
-          $mydata->setCard($discarded_pos, $this->drawCard($my_deck, $mydata->Hand, $discarded_pos, 'drawCardRandom'));
+          $this->setCard('my', $discarded_pos, $this->drawCard($my_deck, $mydata->Hand, $discarded_pos, 'drawCardRandom'));
           $i++;
         }
       }
@@ -100,7 +100,7 @@
       else {
         $new_card = $this->drawCard($his_deck, $hisdata->Hand, $discarded_pos, 'drawCardDifferent');
       }
-      $hisdata->setCard($discarded_pos, $new_card);
+      $this->setCard('his', $discarded_pos, $new_card);
     }
 ]]></code>
   </keyword>
@@ -186,7 +186,7 @@
       shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
       $storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
       $discarded_pos = array_pop($storage_temp);
-      $hisdata->setCard($discarded_pos, 248);
+      $this->setCard('his', $discarded_pos, 248);
     }
 ]]></code>
   </keyword>
@@ -287,7 +287,7 @@
     <bonus_gain>0</bonus_gain>
     <description>Card stays in hand.</description>
     <lore><![CDATA[<p>The dwarves invented the durable materials so they could reuse them many times, which would save much resources. They usage of such materials quickly spread to other factions as well. With everyone relying on such materials it was only a matter of time before someone would found its weakness and exploit it. Thus the Banish spell which would render the durable materials useless was invented.</p>]]></lore>
-    <code><![CDATA[$nextcard = $card->id();]]></code>
+    <code><![CDATA[$nextcard = 0; if ($hidden_cards) $mydata->Revealed[$cardpos] = 1;]]></code>
   </keyword>
   <keyword>
     <name>Enduring</name>
@@ -382,11 +382,11 @@
 
       // played card position is ignored, does not discard burning cards (rares cards can only be discarded by rares)
       if ($mine != $cardpos and !$mytarget->hasKeyword('Burning') and ($my_rarity != 'Rare' or $my_rarity == $card->getClass())) {
-        $mydata->setCard($mine, 248);
+        $this->setCard('my', $mine, 248);
       }
 
       if (!$histarget->hasKeyword('Burning') and ($his_rarity != 'Rare' or $his_rarity == $card->getClass())) {
-        $hisdata->setCard($his, 248);
+        $this->setCard('his', $his, 248);
       }
     }
 ]]></code>
@@ -435,7 +435,7 @@
       shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
       $storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
       $discarded_pos = array_pop($storage_temp);
-      $hisdata->setCard($discarded_pos, 381);
+      $this->setCard('his', $discarded_pos, 381);
     }
 ]]></code>
   </keyword>
@@ -452,7 +452,7 @@
 
       $matching_card = $this->getCard($hisdata->Hand[$cardpos]);
       if ($rarities[$card->getClass()] >= $rarities[$matching_card->getClass()] and $recruits > $matching_card->getResources('Recruits')) {
-        $hisdata->setCard($cardpos, 297);
+        $this->setCard('his', $cardpos, 297);
       }
     }
 ]]></code>
@@ -477,7 +477,7 @@
         shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
         $storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
         $discarded_pos = array_shift($storage_temp);
-        $mydata->setCard($discarded_pos, $this->drawCard($his_deck->Rare, $mydata->Hand, $discarded_pos, 'drawCardList'));
+        $this->setCard('my', $discarded_pos, $this->drawCard($his_deck->Rare, $mydata->Hand, $discarded_pos, 'drawCardList'));
       }
     }
 ]]></code>
@@ -547,7 +547,8 @@
     <code><![CDATA[
     $count = $this->keywordCount($mydata->Hand, 'Burning') + $this->keywordCount($mydata->Hand, 'Demonic') + $this->keywordCount($mydata->Hand, 'Legend') + $this->keywordCount($mydata->Hand, 'Mage');
     if ($count > 3) {
-      $nextcard = $card->id();
+      $nextcard = 0;
+      if ($hidden_cards) $mydata->Revealed[$cardpos] = 1;
       $mydata->Gems+= round($card->getResources('Gems') / 2);
     }
 ]]></code>
@@ -660,7 +661,7 @@
       else {
         $new_card = $this->drawCard($his_deck, $hisdata->Hand, $discarded_pos, 'drawCardDifferent');
       }
-      $hisdata->setCard($discarded_pos, $new_card);
+      $this->setCard('his', $discarded_pos, $new_card);
     }
 ]]></code>
   </keyword>
