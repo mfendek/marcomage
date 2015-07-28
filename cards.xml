@@ -12225,4 +12225,107 @@
     <created>2015-01-01</created>
     <modified>2015-01-01</modified>
   </card>
+  <card id="745">
+    <name>Foulhorn</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>23</bricks>
+      <gems>24</gems>
+    </cost>
+    <modes>2</modes>
+    <level>10</level>
+    <keywords>Demonic,Legend,Rebirth</keywords>
+    <effect><![CDATA[Attack: 36<br />Mode1:<br />Wall: +38<br />Mode2:<br />Gems: +18]]></effect>
+    <code><![CDATA[
+    $hisdata->attack(36);
+    if ($mode == 1) $mydata->Wall+= 38;
+    elseif ($mode == 2) $mydata->Gems+= 18;
+]]></code>
+    <created>2015-08-01</created>
+    <modified>2015-08-01</modified>
+  </card>
+  <card id="746">
+    <name>Marzanna</name>
+    <class>Rare</class>
+    <modes>8</modes>
+    <level>10</level>
+    <effect><![CDATA[Production x0<br />Opponent loses 20 random resources<br />Replace a card in hand with Blizzard, Nightmare or Undead cavalry]]></effect>
+    <code><![CDATA[
+    $production->multiply(0);
+    $hisdata->addRandomResources(-20);
+    $this->setCard('my', $mode, $this->drawCard([241, 304, 485], $mydata->Hand, $mode, 'drawCardList'));
+    if ($mode == $cardpos) $nextcard = 0;
+]]></code>
+    <created>2015-08-01</created>
+    <modified>2015-08-01</modified>
+  </card>
+  <card id="747">
+    <name>Air nomad</name>
+    <class>Rare</class>
+    <level>10</level>
+    <keywords>Quick,Aria</keywords>
+    <effect><![CDATA[Replace matching card with Wind<br />Summons Breeze, Elemental storm or Wind dragon]]></effect>
+    <code><![CDATA[
+    $this->setCard('his', $cardpos, 247);
+    $nextcard = $this->drawCard([509, 497, 679], $mydata->Hand, $cardpos, 'drawCardList');
+]]></code>
+    <created>2015-08-01</created>
+    <modified>2015-08-01</modified>
+  </card>
+  <card id="748">
+    <name>Altruism</name>
+    <class>Rare</class>
+    <level>10</level>
+    <effect><![CDATA[Player(s) with highest facility suffers<br />Highest facility: -1<br />Player(s) with lowest facility gains<br />Lowest facility: +1]]></effect>
+    <code><![CDATA[
+    $myHighest = $mydata->detectHighestFacility();
+    $myLowest = $mydata->detectLowestFacility();
+    $myHighestAmount = $mydata->$myHighest;
+    $myLowestAmount = $mydata->$myLowest;
+
+    $hisHighest = $hisdata->detectHighestFacility();
+    $hisLowest = $hisdata->detectLowestFacility();
+    $hisHighestAmount = $hisdata->$hisHighest;
+    $hisLowestAmount = $hisdata->$hisLowest;
+
+    if ($myHighestAmount != $myLowestAmount || $myLowestAmount != $hisHighestAmount || $hisHighestAmount != $hisLowestAmount) {
+      if ($myHighestAmount >= $hisHighestAmount) {
+        $mydata->$myHighest-= 1;
+      }
+      if ($myHighestAmount <= $hisHighestAmount) {
+        $hisdata->$hisHighest-= 1;
+      }
+      if ($myLowestAmount <= $hisLowestAmount) {
+        $mydata->$myLowest+= 1;
+      }
+      if ($myLowestAmount >= $hisLowestAmount) {
+        $hisdata->$hisLowest+= 1;
+      }
+    }
+]]></code>
+    <created>2015-08-01</created>
+    <modified>2015-08-01</modified>
+  </card>
+  <card id="749">
+    <name>Troll commander</name>
+    <class>Rare</class>
+    <cost>
+      <recruits>25</recruits>
+    </cost>
+    <level>10</level>
+    <keywords>Horde</keywords>
+    <effect><![CDATA[Attack: 20<br />Recruits: +15<br />Replace common <b>Horde</b> in hand with uncommon <b>Horde</b>]]></effect>
+    <code><![CDATA[
+    $hisdata->attack(20);
+    $mydata->Recruits+= 15;
+    for ($i = 1; $i <= 8; $i++) {
+      $cur_card = $this->getCard($mydata->Hand[$i]);
+      if ($i != $cardpos and $cur_card->getClass() == 'Common' and $cur_card->hasKeyword('Horde')) {
+        $this->setCard('my', $i, $this->drawCard($this->getList(['class'=>'Uncommon', 'keyword'=>'Horde']), $mydata->Hand, $i, 'drawCardList'));
+      }
+    }
+]]></code>
+    <created>2015-08-01</created>
+    <modified>2015-08-01</modified>
+  </card>
 </cards>
