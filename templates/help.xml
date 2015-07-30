@@ -411,7 +411,7 @@
 
 <ul>
 	<li>Saboteur (1 gold) - win by destroying opponent's tower, but opponent's wall must not be completely destroyed</li>
-	<li>Gentle touch (2 gold) - win by playing a common card</li>
+	<li>Gentle touch (2 gold) - win and you played a common card on your last turn</li>
 	<li>Desolator (3 gold) - win while enemy facilities = 1</li>
 	<li>Dragon (3 gold) - win by playing a <b>Dragon</b></li>
 	<li>Carpenter (4 gold) - win while each of your facility has at least double its starting value</li>
