@@ -407,20 +407,20 @@
 
 <h4>Fourth phase: Awards</h4>
 
-<p>This phase effects only the victor and allows you to gather extra gold when certain conditions are satisfied. Any number of awards can be collected.</p>
+<p>This phase effects only the victor and allows you to gather extra gold when certain conditions are satisfied. Any number of awards can be collected. Game state is examined at the end of the game.</p>
 
 <ul>
-	<li>Saboteur (1 gold) - win by destroying opponent's tower, but opponent's wall must not be completely destroyed</li>
-	<li>Gentle touch (2 gold) - win and you played a common card on your last turn</li>
-	<li>Desolator (3 gold) - win while enemy facilities = 1</li>
-	<li>Dragon (3 gold) - win by playing a <b>Dragon</b></li>
-	<li>Carpenter (4 gold) - win while each of your facility has at least double its starting value</li>
-	<li>Titan (4 gold) - win with the <b>Titan</b> set</li>
-	<li>Assassin (5 gold) - win within 10 rounds (20 rounds in long mode)</li>
-	<li>Snob (6 gold) - win by discarding a card by standard discard action</li>
-	<li>Collector (7 gold) - win with at least 4 rare cards in hand (played card doesn't count)</li>
-	<li>Builder (8 gold) - win with maximum wall</li>
-	<li>Survivor (9 gold) - win with 1 tower and 0 wall</li>
+	<li>Saboteur (1 gold) - opponent's tower is destroyed, but opponent's wall must not be completely destroyed</li>
+	<li>Gentle touch (2 gold) - you played a common card on your last turn</li>
+	<li>Desolator (3 gold) - opponent's facilities = 1</li>
+	<li>Dragon (3 gold) - you played a <b>Dragon</b> on your last turn</li>
+	<li>Carpenter (4 gold) - your every facility has at least double its starting value</li>
+	<li>Titan (4 gold) - you played <a href="?location=Cards_details&amp;card=315">Completion ritual</a> on your last turn and game ended by Destruction victory</li>
+	<li>Assassin (5 gold) - game ended within 10 rounds (20 rounds in long mode)</li>
+	<li>Snob (6 gold) - you discarded a card on your last turn by standard discard action</li>
+	<li>Collector (7 gold) - there are at least 4 rare cards in your hand (played card doesn't count)</li>
+	<li>Builder (8 gold) - your wall is at maximum</li>
+	<li>Survivor (9 gold) - you have 1 tower and 0 wall</li>
 </ul>
 
 <p>After the game the system will send you a message about the outcome of the game - a game report (when battle reports option is active). It will show you how much EXP or gold you got in each phase and how much EXP and gold did you get in the end. Also, when you gain next level, the system will sent you an information message about it.</p>
