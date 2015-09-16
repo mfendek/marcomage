@@ -1423,8 +1423,8 @@
 		/// @param string $type data type ('my', 'his')
 		/// @param int $cardPos card position in hand
 		/// @param int $cardId card id
-		/// @param bool $markAsNew (optional) mark as new flag
-		private function setCard($type, $cardPos, $cardId, $markAsNew = true)
+		/// @param array $options (optional) card options (reveal, mark as new)
+		private function setCard($type, $cardPos, $cardId, array $options = array())
 		{
 			global $statistics;
 
@@ -1439,8 +1439,14 @@
 			// determine card that will be discarded
 			$discardedCard = $data->Hand[$cardPos];
 
+			// check if revealing a card is necessary
+			if ($this->HiddenCards == 'no' && isset($options['reveal']) && $options['reveal']) {
+				// remove reveal option (hidden card mode is disabled)
+				unset($options['reveal']);
+			}
+
 			// set new card to specified position
-			$data->setCard($cardPos, $cardId, $markAsNew);
+			$data->setCard($cardPos, $cardId, $options);
 
 			// process discarded card (ignore empty card or currently played card position)
 			if ($discardedCard > 0 && ($type != 'my' || $this->playedCardPos != $cardPos)) {
@@ -1466,7 +1472,7 @@
 		/// @param int $cardId card id
 		private function replaceCard($type, $cardPos, $cardId)
 		{
-			$this->setCard($type, $cardPos, $cardId, false);
+			$this->setCard($type, $cardPos, $cardId, ['new' => false]);
 		}
 
 		///
@@ -2264,8 +2270,8 @@
 		/// Sets card to specified position in hand
 		/// @param int $cardPos card position in hand
 		/// @param int $cardId card id
-		/// @param bool $markAsNew (optional) mark as new flag
-		public function setCard($cardPos, $cardId, $markAsNew = true)
+		/// @param array $options (optional) card options (reveal, mark as new)
+		public function setCard($cardPos, $cardId, array $options = array())
 		{
 			// incorrect card position
 			if (!in_array($cardPos, array(1,2,3,4,5,6,7,8))) {
@@ -2273,12 +2279,22 @@
 			}
 
 			$this->Hand[$cardPos] = $cardId;
+
+			// process mark as new option (enabled by default)
+			$markAsNew = (!isset($options['new']) || $options['new']);
 			if ($markAsNew) {
 				$this->NewCards[$cardPos] = 1;
 			}
 
-			// hide current position if card was revealed
-			if (isset($this->Revealed[$cardPos])) {
+			// process reveal option (disabled by default)
+			$reveal = (isset($options['reveal']) && $options['reveal']);
+
+			// case 1: reveal current position
+			if ($reveal) {
+				$this->Revealed[$cardPos] = 1;
+			}
+			// case 2: hide current position if card was revealed
+			elseif (isset($this->Revealed[$cardPos])) {
 				unset($this->Revealed[$cardPos]);
 			}
 		}
