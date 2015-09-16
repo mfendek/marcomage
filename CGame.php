@@ -1472,7 +1472,15 @@
 		/// @param int $cardId card id
 		private function replaceCard($type, $cardPos, $cardId)
 		{
-			$this->setCard($type, $cardPos, $cardId, ['new' => false]);
+			$options = ['new' => false];
+
+			// detect persistent card effect
+			if ($type == 'my' && $this->playedCardPos != $cardPos && $this->HiddenCards == 'yes') {
+				// reveal card position
+				$options['reveal'] = true;
+			}
+
+			$this->setCard($type, $cardPos, $cardId, $options);
 		}
 
 		///
