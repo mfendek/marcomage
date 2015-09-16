@@ -40,10 +40,9 @@
 <p>A: No. You can make arbitrarily long chains of "Swift"/"Quick" cards.</p>
 <h4><a id="faq_q9" href="#faq_q9">Q9</a>: I used F5 to refresh the game and for some reason a card was played by itself.</h4>
 <p>A: Use OUR refresh button (located on the left part of the screen, above your empire info), not the one on the browser. For quick access use shorcut ALT+w.</p>
-<h4><a id="faq_q10" href="#faq_q10">Q10</a>: Some cards have "recently discarded cards" in their effect. What does that mean?</h4>
-<p>A: Recently discarded cards are following cards:</p>
+<h4><a id="faq_q10" href="#faq_q10">Q10</a>: Some cards have "cards in your graveyard" in their effect. What does it mean?</h4>
+<p>A: Cards in your graveyard are following cards:</p>
 <ul>
-	<li>Card discarded by you with discard button last turn</li>
 	<li>Cards that were discarded by you last round by some card effect</li>
 	<li>Cards that were discarded by opponent last round by some card effect</li>
 </ul>
