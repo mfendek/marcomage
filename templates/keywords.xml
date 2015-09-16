@@ -143,7 +143,7 @@
   <keyword>
     <name>Beast</name>
     <basic_gain>5</basic_gain>
-    <bonus_gain>4</bonus_gain>
+    <bonus_gain>7</bonus_gain>
     <description>Breeding - doubles recruits production and opponent receives bonus damage based on recruits production (max N, N based on played card rarity (Common - 2, Uncommon - 5, Rare - 10)).</description>
     <lore><![CDATA[
     <p>Wild beasts usually operate in pacts and are known for their ferocity. Several factions were able to tame some beast and incorporated them into their armies. Beasts are able to perform many different roles such as mounts, unmounted cavalry or frontline soldiers.</p>
