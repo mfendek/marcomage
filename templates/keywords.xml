@@ -287,7 +287,7 @@
     <bonus_gain>0</bonus_gain>
     <description>Card stays in hand.</description>
     <lore><![CDATA[<p>The dwarves invented the durable materials so they could reuse them many times, which would save much resources. They usage of such materials quickly spread to other factions as well. With everyone relying on such materials it was only a matter of time before someone would found its weakness and exploit it. Thus the Banish spell which would render the durable materials useless was invented.</p>]]></lore>
-    <code><![CDATA[$nextcard = 0; if ($hidden_cards) $mydata->Revealed[$cardpos] = 1;]]></code>
+    <code><![CDATA[$nextcard = 0; $this->revealCard('my', $cardpos);]]></code>
   </keyword>
   <keyword>
     <name>Enduring</name>
@@ -357,7 +357,7 @@
     $finish = min($cardpos + $offset, 8);
     
     for ($i = $start; $i <= $finish; $i++) {
-      $hisdata->Revealed[$i] = 1;
+      $this->revealCard('his', $i);
     }
 ]]></code>
   </keyword>
@@ -548,7 +548,7 @@
     $count = $this->keywordCount($mydata->Hand, 'Burning') + $this->keywordCount($mydata->Hand, 'Demonic') + $this->keywordCount($mydata->Hand, 'Legend') + $this->keywordCount($mydata->Hand, 'Mage');
     if ($count > 3) {
       $nextcard = 0;
-      if ($hidden_cards) $mydata->Revealed[$cardpos] = 1;
+      $this->revealCard('my', $cardpos);
       $mydata->Gems+= round($card->getResources('Gems') / 2);
     }
 ]]></code>

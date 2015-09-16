@@ -7912,7 +7912,7 @@
     <level>10</level>
     <keywords>Far sight</keywords>
     <effect><![CDATA[Tower: +6<br />If matching card is Revealed<br />Tower: +6<br />else<br />Reveal matching card]]></effect>
-    <code><![CDATA[$mydata->Tower+= 6; if (!$hidden_cards or isset($hisdata->Revealed[$cardpos])) $mydata->Tower+= 6; else $hisdata->Revealed[$cardpos] = 1;]]></code>
+    <code><![CDATA[$mydata->Tower+= 6; if (!$hidden_cards or isset($hisdata->Revealed[$cardpos])) $mydata->Tower+= 6; else $this->revealCard('his', $cardpos);]]></code>
     <created>2010-01-20</created>
     <modified>2012-06-24</modified>
   </card>

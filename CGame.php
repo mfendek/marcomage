@@ -1476,6 +1476,28 @@
 		}
 
 		///
+		/// Reveal card at specified position
+		/// @param string $type data type ('my', 'his')
+		/// @param int $cardPos card position in hand
+		private function revealCard($type, $cardPos)
+		{
+			// hidden game mode is inactive - nothing needs to be done
+			if ($this->HiddenCards == 'no') {
+				return;
+			}
+
+			// determine target player
+			$opponent = ($this->Player1 == $this->Current) ? $this->Player2 : $this->Player1;
+			$targetPlayer = ($type == 'my') ? $this->Current : $opponent;
+
+			// extract target data
+			$data = $this->GameData[$targetPlayer];
+
+			// reveal card
+			$data->Revealed[$cardPos] = 1;
+		}
+
+		///
 		/// Set hand data to specified values
 		/// @param string $type data type ('my', 'his')
 		/// @param array $hand new hand data (doesn't need to be indexed correctly)
