@@ -186,7 +186,7 @@
       shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
       $storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
       $discarded_pos = array_pop($storage_temp);
-      $this->setCard('his', $discarded_pos, 248);
+      $this->setCard('his', $discarded_pos, 248, ['reveal' => true]);
     }
 ]]></code>
   </keyword>
@@ -276,7 +276,8 @@
         $production->multiplyGems(2); // when there already is a dragon egg in hand add gems production
       }
       else {
-        $nextcard = 131; // add dragon egg otherwise
+        $this->setCard('my', $cardpos, 131, ['reveal' => true]);// add dragon egg otherwise
+        $nextcard = 0;
       }
     }
 ]]></code>
@@ -382,11 +383,11 @@
 
       // played card position is ignored, does not discard burning cards (rares cards can only be discarded by rares)
       if ($mine != $cardpos and !$mytarget->hasKeyword('Burning') and ($my_rarity != 'Rare' or $my_rarity == $card->getClass())) {
-        $this->setCard('my', $mine, 248);
+        $this->setCard('my', $mine, 248, ['reveal' => true]);
       }
 
       if (!$histarget->hasKeyword('Burning') and ($his_rarity != 'Rare' or $his_rarity == $card->getClass())) {
-        $this->setCard('his', $his, 248);
+        $this->setCard('his', $his, 248, ['reveal' => true]);
       }
     }
 ]]></code>
@@ -435,7 +436,7 @@
       shuffle($storage['Common']); shuffle($storage['Uncommon']); shuffle($storage['Rare']);
       $storage_temp = array_merge($storage['Common'], $storage['Uncommon'], $storage['Rare']);
       $discarded_pos = array_pop($storage_temp);
-      $this->setCard('his', $discarded_pos, 381);
+      $this->setCard('his', $discarded_pos, 381, ['reveal' => true]);
     }
 ]]></code>
   </keyword>
@@ -452,7 +453,7 @@
 
       $matching_card = $this->getCard($hisdata->Hand[$cardpos]);
       if ($rarities[$card->getClass()] >= $rarities[$matching_card->getClass()] and $recruits > $matching_card->getResources('Recruits')) {
-        $this->setCard('his', $cardpos, 297);
+        $this->setCard('his', $cardpos, 297, ['reveal' => true]);
       }
     }
 ]]></code>
