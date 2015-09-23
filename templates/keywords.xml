@@ -243,7 +243,7 @@
     <name>Destruction</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>Dark fury - if a Destruction card is played after playing a different non-common Destruction card, it reduces enemy's highest facility by 1 when it is greater than 3, otherwise it reduces opponent's highest resource by 10.</description>
+    <description>Dark fury - if a Destruction card is played after playing a different non-common Destruction card, it reduces enemy's highest facility by 1 when it is greater than 3, otherwise it reduces opponent's highest resource by 6.</description>
     <lore><![CDATA[<p><i>Offense is the best defense</i> - the motto of every mage who mastered this dark art. Destruction magic contains spells that directly cripple the enemy which often prevent them to mount a counter-offensive. One warlock who wields the destruction magic at master level is able to annihilate whole armies in matter of seconds.</p>]]></lore>
     <code><![CDATA[
     if ($mylast_card->hasKeyword('Destruction') and $mylast_action == 'play' and $mylast_card->getClass() != 'Common' and $card->id() != $mylast_card->id()) {
@@ -252,7 +252,7 @@
         $hisdata->addHighestFacility(-1);
       }
       else {
-        $hisdata->addHighestResource(-10);
+        $hisdata->addHighestResource(-6);
       }
     }
 ]]></code>
