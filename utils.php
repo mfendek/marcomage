@@ -104,7 +104,7 @@
 	
 	function checkDateInput($year, $month, $day) // check date input
 	{
-		if( $year == '0000' and $month == '00' and $day == '00' ) return "";
+		if( $year == '1000' and $month == '01' and $day == '01' ) return "";
 		elseif (!(is_numeric($year) AND is_numeric($month) AND is_numeric($day))) return "Invalid numeric input";
 		elseif (!checkdate((int)$month, (int)$day, (int)$year)) return "Invalid date";
 		else return "";
