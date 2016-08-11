@@ -59,7 +59,7 @@
 				<td>
 					<p>
 						<xsl:choose>
-							<xsl:when test="Modified != '0000-00-00 00:00:00'"><xsl:value-of select="am:datetime(Modified, $param/timezone)"/></xsl:when>
+							<xsl:when test="Modified != '1970-01-01 00:00:01'"><xsl:value-of select="am:datetime(Modified, $param/timezone)"/></xsl:when>
 							<xsl:otherwise>n/a</xsl:otherwise>
 						</xsl:choose>
 					</p>
@@ -147,7 +147,7 @@
 				<td>
 					<p>
 						<xsl:choose>
-							<xsl:when test="Modified != '0000-00-00 00:00:00'"><xsl:value-of select="am:datetime(Modified, $param/timezone)"/></xsl:when>
+							<xsl:when test="Modified != '1970-01-01 00:00:01'"><xsl:value-of select="am:datetime(Modified, $param/timezone)"/></xsl:when>
 							<xsl:otherwise>n/a</xsl:otherwise>
 						</xsl:choose>
 					</p>

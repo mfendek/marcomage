@@ -24,7 +24,7 @@
 			
 			$deck_data = new CDeckData;
 			
-			$result = $db->query('INSERT INTO `decks` (`Username`, `Deckname`, `Data`) VALUES (?, ?, ?)', array($username, $deckname, serialize($deck_data)));
+			$result = $db->query('INSERT INTO `decks` (`Username`, `Deckname`, `Data`, `Note`) VALUES (?, ?, ?, "")', array($username, $deckname, serialize($deck_data)));
 			if ($result === false) return false;
 			
 			$deck = new CDeck($db->lastId(), $this, $username, $deckname);

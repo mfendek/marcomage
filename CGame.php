@@ -26,7 +26,7 @@
 			$game_data[1]->Deck = $deck1->DeckData;
 			$game_data[2] = new CGamePlayerData;
 			
-			$result = $db->query('INSERT INTO `games` (`Player1`, `Player2`, `Data`, `DeckID1`, `GameModes`, `Timeout`) VALUES (?, ?, ?, ?, ?, ?)', array($player1, $player2, serialize($game_data), $deck1->id(), implode(',', $game_modes), $timeout));
+			$result = $db->query('INSERT INTO `games` (`Player1`, `Player2`, `Data`, `DeckID1`, `Note1`, `Note2`, `GameModes`, `Timeout`) VALUES (?, ?, ?, ?, "", "", ?, ?)', array($player1, $player2, serialize($game_data), $deck1->id(), implode(',', $game_modes), $timeout));
 			if ($result === false) return false;
 			
 			$game = new CGame($db->lastId(), $player1, $player2, $this);

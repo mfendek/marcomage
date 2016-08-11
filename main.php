@@ -3138,7 +3138,7 @@
 						$new_birthdate = implode("-", array($year, $month, $day));
 					}
 				}
-				else $new_birthdate = "0000-00-00";
+				else $new_birthdate = "1000-01-01";
 
 				if (!isset($warning)) $settings->changeSetting('Birthdate', $new_birthdate);
 
@@ -3827,7 +3827,7 @@ case 'Players_details':
 	$params['profile']['deck_slots'] = max(0,count($player_decks) - DECK_SLOTS);
 	$params['profile']['Posts'] = $forum->Threads->Posts->countPosts($cur_player);
 
-	if( $p_settings->getSetting('Birthdate') != "0000-00-00" )
+	if( $p_settings->getSetting('Birthdate') != "1000-01-01" )
 	{
 		$params['profile']['Age'] = $p_settings->age();
 		$params['profile']['Sign'] = $p_settings->sign();
@@ -4441,7 +4441,7 @@ case 'Settings':
 	//date is handled separately
 	$birthdate = $settings->getSetting('Birthdate');
 
-	if( $birthdate AND $birthdate != "0000-00-00" )
+	if( $birthdate AND $birthdate != "1000-01-01" )
 	{
 		$params['settings']['current_settings']["Age"] = $settings->age();
 		$params['settings']['current_settings']["Sign"] = $settings->sign();

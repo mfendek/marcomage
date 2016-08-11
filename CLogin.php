@@ -131,7 +131,7 @@ class CLogin // authentication module
 		if ($username == '' || $password == '') { $status = 'ERROR_INVALID_VALUES'; return false; };
 		
 		// security: store useful information about the user NOW instead of waiting until the user logs in
-		$now = time();
+		$now = date('Y-m-d H:i:s');
 		$addr = $_SERVER["REMOTE_ADDR"];
 		
 		// flood prevention - limits the frequency of account creations per ip

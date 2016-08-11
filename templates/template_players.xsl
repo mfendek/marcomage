@@ -309,7 +309,7 @@
 			<xsl:text>Registered</xsl:text>
 			<span class="detail_value">
 				<xsl:choose>
-					<xsl:when test="$param/Registered != '0000-00-00 00:00:00'"><xsl:value-of select="am:datetime($param/Registered, $param/timezone)"/></xsl:when>
+					<xsl:when test="$param/Registered != '1970-01-01 00:00:01'"><xsl:value-of select="am:datetime($param/Registered, $param/timezone)"/></xsl:when>
 				<xsl:otherwise>Before 18. August, 2009</xsl:otherwise>
 				</xsl:choose>
 			</span>
@@ -318,7 +318,7 @@
 			<xsl:text>Last seen</xsl:text>
 			<span class="detail_value">
 				<xsl:choose>
-						<xsl:when test="$param/LastQuery != '0000-00-00 00:00:00'"><xsl:value-of select="am:datetime($param/LastQuery, $param/timezone)"/></xsl:when>
+						<xsl:when test="$param/LastQuery != '1970-01-01 00:00:01'"><xsl:value-of select="am:datetime($param/LastQuery, $param/timezone)"/></xsl:when>
 					<xsl:otherwise>n/a</xsl:otherwise>
 				</xsl:choose>
 			</span>

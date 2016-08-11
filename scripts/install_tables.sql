@@ -2,6 +2,9 @@
 -- MArcomage database tables --
 -- ------------------------- --
 
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
 -- 
 -- Database: `arcomage`
 -- 
@@ -70,14 +73,14 @@ CREATE TABLE `games` (
   `Player1` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `Player2` char(20) COLLATE utf8_unicode_ci NOT NULL,
   `State` enum('waiting','in progress','finished','P1 over','P2 over') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'waiting',
-  `Current` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `Current` char(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `Round` int(3) unsigned NOT NULL DEFAULT '1',
   `Winner` char(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `Surrender` char(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `EndType` enum('Pending','Surrender','Abort','Abandon','Destruction','Draw','Construction','Resource','Timeout') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Pending',
   `Last Action` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `ChatNotification1` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `ChatNotification2` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `ChatNotification1` timestamp NOT NULL DEFAULT '1970-01-01 00:00:01',
+  `ChatNotification2` timestamp NOT NULL DEFAULT '1970-01-01 00:00:01',
   `Data` text COLLATE utf8_unicode_ci NOT NULL,
   `DeckID1` int(10) unsigned NOT NULL DEFAULT '0',
   `DeckID2` int(10) unsigned NOT NULL DEFAULT '0',
@@ -109,7 +112,7 @@ CREATE TABLE `replays` (
   `GameModes` set('HiddenCards','FriendlyPlay','LongMode','AIMode') COLLATE utf8_unicode_ci NOT NULL,
   `AI` char(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `Started` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `Finished` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `Finished` timestamp NOT NULL DEFAULT '1970-01-01 00:00:01',
   `Deleted` tinyint(1) NOT NULL DEFAULT '0',
   `Views` int(10) unsigned NOT NULL DEFAULT '0',
   `ThreadID` int(10) unsigned NOT NULL DEFAULT '0',
@@ -152,8 +155,8 @@ CREATE TABLE `logins` (
   `UserType` enum('user','moderator','supervisor','admin','squashed','limited','banned') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'user',
   `Registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Last IP` char(64) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `Last Query` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `Notification` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `Last Query` timestamp NOT NULL DEFAULT '1970-01-01 00:00:01',
+  `Notification` timestamp NOT NULL DEFAULT '1970-01-01 00:00:01',
   PRIMARY KEY (`Username`),
   KEY `Last Query` (`Last Query`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -204,12 +207,12 @@ CREATE TABLE `scores` (
 
 CREATE TABLE `settings` (
   `Username` char(20) COLLATE utf8_unicode_ci NOT NULL,
-  `Firstname` char(20) COLLATE utf8_unicode_ci NOT NULL,
-  `Surname` char(20) COLLATE utf8_unicode_ci NOT NULL,
-  `Birthdate` date NOT NULL DEFAULT '0000-00-00',
+  `Firstname` char(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `Surname` char(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `Birthdate` date NOT NULL DEFAULT '1000-01-01',
   `Gender` enum('none','male','female') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'none',
-  `Email` char(30) COLLATE utf8_unicode_ci NOT NULL,
-  `Imnumber` char(20) COLLATE utf8_unicode_ci NOT NULL,
+  `Email` char(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `Imnumber` char(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `Country` char(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Unknown',
   `Hobby` text COLLATE utf8_unicode_ci NOT NULL,
   `Avatar` char(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'noavatar.jpg',
@@ -320,7 +323,7 @@ CREATE TABLE `forum_threads` (
   `Created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `PostCount` int(10) unsigned NOT NULL DEFAULT '0',
   `LastAuthor` char(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `LastPost` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `LastPost` timestamp NOT NULL DEFAULT '1970-01-01 00:00:01',
   `CardID` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`ThreadID`),
   KEY `SectionID` (`SectionID`)

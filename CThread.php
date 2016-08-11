@@ -121,7 +121,7 @@
 			
 			$result = $db->query('SELECT `Author`, `Created` FROM `forum_posts` WHERE `ThreadID` = ? AND `Deleted` = FALSE AND `Created` = (SELECT MAX(`Created`) FROM `forum_posts` WHERE `ThreadID` = ? AND `Deleted` = FALSE)', array($thread_id, $thread_id));
 			if ($result === false) return false;
-			if (count($result) == 0) return array('Author' => '', 'Created' => '0000-00-00 00:00:00'); // there are no posts in this thread
+			if (count($result) == 0) return array('Author' => '', 'Created' => '1970-01-01 00:00:01'); // there are no posts in this thread
 
 			$data = $result[0];
 

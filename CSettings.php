@@ -23,7 +23,7 @@
 		public function createSettings($username) //creates default settings
 		{
 			$db = $this->db;
-			$result = $db->query('INSERT INTO `settings` (`Username`, `FoilCards`) VALUES (?, "")', array($username));
+			$result = $db->query('INSERT INTO `settings` (`Username`, `Hobby`, `FoilCards`) VALUES (?, "", "")', array($username));
 			if ($result === false) return false;
 
 			return true;
