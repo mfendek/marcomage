@@ -335,7 +335,11 @@
 		</xsl:variable>
 		
 		<p>Gender<span class="detail_value" style="color: {$gender_color}"><xsl:value-of select="$param/Gender"/></span></p>
-		<p>E-mail<span class="detail_value"><xsl:value-of select="$param/Email"/></span></p>
+		<p>E-mail
+			<span class="detail_value">
+				<xsl:if test="$param/is_logged_in = 'yes'"><xsl:value-of select="$param/Email"/></xsl:if>
+			</span>
+		</p>
 		<p>ICQ / IM<span class="detail_value"><xsl:value-of select="$param/Imnumber"/></span></p>
 		<p>Date of birth (dd-mm-yyyy)<span class="detail_value"><xsl:value-of select="$param/Birthdate"/></span></p>
 		<p>Age<span class="detail_value"><xsl:value-of select="$param/Age"/></span></p>

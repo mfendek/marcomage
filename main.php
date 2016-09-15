@@ -3798,6 +3798,7 @@ case 'Players_details':
 	$score = $scoredb->getScore($cur_player);
 	$player_decks = $p->listDecks();
 
+	$params['profile']['is_logged_in'] = ($session) ? 'yes' : 'no';
 	$params['profile']['PlayerName'] = $subsection_name = $p->name();
 	$params['profile']['PlayerType'] = $p->type();
 	$params['profile']['LastQuery'] = $p->lastquery();
