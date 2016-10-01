@@ -7964,7 +7964,8 @@
     $trans = ['Common', 'Common', 'Common', 'Common', 'Uncommon', 'Uncommon', 'Uncommon', 'Rare'];
     shuffle($trans);
     for ($i = 1; $i <= 8; $i++) {
-      $this->setCard('my', $i, $this->drawCard($my_deck->$trans[$i-1], $mydata->Hand, $i, 'drawCardList'));
+      $rarity = $trans[$i-1];
+      $this->setCard('my', $i, $this->drawCard($my_deck->$rarity, $mydata->Hand, $i, 'drawCardList'));
     }
     $nextcard = 0;
 ]]></code>
