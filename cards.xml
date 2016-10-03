@@ -6694,8 +6694,10 @@
       $chosen_facility_max = $top[$this->arrayRand($top)];
       $chosen_facility_min = $bottom[$this->arrayRand($bottom)];
     }
-    $mydata->$facilities[$chosen_facility_max]+= $hisdata->$chosen_facility_max;
-    $mydata->$facilities[$chosen_facility_min]+= $hisdata->$chosen_facility_min;
+    $facility_name_max = $facilities[$chosen_facility_max];
+    $facility_name_min = $facilities[$chosen_facility_min];
+    $mydata->$facility_name_max+= $hisdata->$chosen_facility_max;
+    $mydata->$facility_name_min+= $hisdata->$chosen_facility_min;
 ]]></code>
     <created>2009-04-11</created>
     <modified>2011-01-24</modified>
