@@ -1418,6 +1418,90 @@
 			return implode("\n", $message);
 		}
 
+		/**
+		 * Steal stock in favour of specified player
+		 * @param string $type data type ('my', 'his')
+		 * @param int $amount amount stolen
+		 */
+		private function stealStock($type, $amount)
+		{
+			// transfer stock
+			foreach (['Bricks', 'Gems', 'Recruits'] as $resource) {
+				$this->stealResource($type, $resource, $amount);
+			}
+		}
+
+		/**
+		 * Steal resource in favour of specified player
+		 * @param string $type data type ('my', 'his')
+		 * @param string $resource resource ('my', 'his')
+		 * @param int $amount amount stolen
+		 * @throws Exception
+		 */
+		private function stealResource($type, $resource, $amount)
+		{
+			// validate resource
+			if (!in_array($resource, ['Bricks', 'Gems', 'Recruits'])) {
+				throw new Exception('Invalid resource type ' . $resource);
+			}
+
+			// determine players
+			$opponent = ($this->Player1 == $this->Current) ? $this->Player2 : $this->Player1;
+			$sourcePlayer = ($type == 'my') ? $opponent : $this->Current;
+			$targetPlayer = ($type == 'my') ? $this->Current : $opponent;
+
+			// extract data
+			$sourceData = $this->GameData[$sourcePlayer];
+			$targetData = $this->GameData[$targetPlayer];
+
+			// transfer resource
+			$stolen = min($amount, $sourceData->$resource);
+			$sourceData->$resource -= $stolen;
+			$targetData->$resource += $stolen;
+		}
+
+		/**
+		 * Steal random resources in favour of specified player
+		 * @param string $type data type ('my', 'his')
+		 * @param int $amount amount stolen
+		 */
+		private function stealRandomResources($type, $amount)
+		{
+			// determine players
+			$opponent = ($this->Player1 == $this->Current) ? $this->Player2 : $this->Player1;
+			$sourcePlayer = ($type == 'my') ? $opponent : $this->Current;
+			$targetPlayer = ($type == 'my') ? $this->Current : $opponent;
+
+			// extract data
+			$sourceData = $this->GameData[$sourcePlayer];
+			$targetData = $this->GameData[$targetPlayer];
+
+			// transfer resources
+			for ($i = 1; $i <= $amount; $i++) {
+				$bricks = max(0, $sourceData->Bricks);
+				$gems = max(0, $sourceData->Gems);
+				$recruits = max(0, $sourceData->Recruits);
+				$total = $bricks + $gems + $recruits;
+				$rand = ($total > 0) ? mt_rand(1, $total) : 0;
+
+				// case 1: Bricks
+				if ($rand <= $bricks and $bricks > 0) {
+					$sourceData->Bricks--;
+					$targetData->Bricks++;
+				}
+				// case 2: Gems
+				elseif ($rand <= ($bricks + $gems) and $gems > 0) {
+					$sourceData->Gems--;
+					$targetData->Gems++;
+				}
+				// case 3: Recruits
+				elseif ($rand <= ($bricks + $gems + $recruits) and $recruits > 0) {
+					$sourceData->Recruits--;
+					$targetData->Recruits++;
+				}
+			}
+		}
+
 		///
 		/// Set card to specified position in hand
 		/// @param string $type data type ('my', 'his')
