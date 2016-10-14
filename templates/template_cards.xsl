@@ -59,7 +59,8 @@
 				<value name="Discard"        value="Discard "      />
 				<value name="Replace"        value="Replace "      />
 				<value name="Reveal"         value="Reveal"        />
-				<value name="Summon"         value="Summon"       />
+				<value name="Summon"         value="Summons"       />
+				<value name="Evoke"          value="Evoke"         />
 				<value name="Production"     value="Prod"          />
 				<value name="Persistent"     value="Replace a card in hand with self" />
 				<value name="Wall +"         value="Wall: +"       />

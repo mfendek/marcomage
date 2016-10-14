@@ -124,14 +124,9 @@
 					}
 				}
 
-				// skip lowercase configuration
-				$skipLowercase = [
-					'Summon'
-				];
-
 				// advanced filter
 				if (isset($filters['advanced']) and strpos($card['effect'], $filters['advanced']) === false
-					and (in_array($filters['advanced'], $skipLowercase) or strpos($card['effect'], strtolower($filters['advanced'])) === false)) {
+					and strpos($card['effect'], strtolower($filters['advanced'])) === false) {
 					continue;
 				}
 
