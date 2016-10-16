@@ -800,7 +800,7 @@
 				}
 				
 				// execute card action !!!
-				if( eval($card->Code) === FALSE )
+				if( $card->Code != '' && eval($card->Code) === FALSE )
 					error_log("Debug: ".$cardid.": ".$card->Code);
 
 				// apply limits to game attributes
@@ -837,14 +837,14 @@
 									$triggeredTokens[$mydata->findToken($keyword_name)] = 1;
 
 									// execute token keyword effect
-									if( eval($keyword->Code) === FALSE )
+									if( $keyword->Code != '' && eval($keyword->Code) === FALSE )
 										error_log("Debug: ".$keyword_name.": ".$keyword->Code);
 								}
 							}
 							// case 2: standard keyword
 							else
 							{
-								if( eval($keyword->Code) === FALSE )
+								if( $keyword->Code != '' && eval($keyword->Code) === FALSE )
 									error_log("Debug: ".$keyword_name.": ".$keyword->Code);
 							}
 						}
