@@ -130,6 +130,7 @@
 </ul>
 
 <p>Note that unlike standard drawing, card summoning picks the summoned card from the list of all possible cards (that match the filters) with equal probability. To see the list of all possible cards (that can be summoned) go to deck section, configure the filters accoring to summoning description and view the card list.</p>
+<p>Some cards have "Evoke" text in their effect description. In such case player is able to choose which card he wants to summon.</p>
 		]]>
 	</part>
 	<part name="Turn actions">
