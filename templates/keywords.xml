@@ -135,9 +135,7 @@
 ]]></lore>
     <code><![CDATA[
     $stock = ['Common' => 1, 'Uncommon' => 2, 'Rare' => 3];
-    $gained = $stock[$card->getClass()];
-    $mydata->addStock($gained);
-    $hisdata->addStock(-$gained);
+    $this->stealStock('my', $stock[$card->getClass()]);
 ]]></code>
   </keyword>
   <keyword>
@@ -543,7 +541,7 @@
     <name>Rebirth</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>If #Burning + #Demonic + #Legend + #Mage cards in hand is greater than 3, the card stays in hand and half of the gems cost of the played card will be returned.</description>
+    <description>If #Burning + #Demonic + #Legend + #Mage in hand is greater than 3, the card stays in hand and half of the gems cost of the played card will be returned.</description>
     <lore><![CDATA[<p>Ancient creatures are often very difficult to defeat, but most feared are those who will not die on defeat, they will just be reborn and will continue the fight once again. However, they are not immortal. To be successfully reborn they need to draw power from their environment. Once they have depleted all the reserves they will meet their final death.</p>]]></lore>
     <code><![CDATA[
     $count = $this->keywordCount($mydata->Hand, 'Burning') + $this->keywordCount($mydata->Hand, 'Demonic') + $this->keywordCount($mydata->Hand, 'Legend') + $this->keywordCount($mydata->Hand, 'Mage');
@@ -558,21 +556,25 @@
     <name>Restoration</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>Countermeasures - if a Restoration card is played after playing a different non-common Restoration card, you gain 6 of your lowest resource and 5 additional resources of your lowest facility if it's less than 3.</description>
+    <description>Countermeasures - if opponent lowered your stock last round, your lowest resource is raised based on played card rarity (C-3, U-6, R-9). If opponent lowered your facilities last round you gain 1 of your lowest facility if it's less than N, N based on played card rarity (C-2, U-3, R-4).</description>
     <lore><![CDATA[<p>Restoration magic is one of the most commonly used art of magic. Most factions support schools that teach this art, because its usage is very wide and safe. Restoration mages are the most accepted mages in the society. If their skills are exceptional they can even be promoted to nobility.</p>]]></lore>
     <code><![CDATA[
-    if ($mylast_card->hasKeyword('Restoration') && $mylast_action == 'play' && $mylast_card->getClass() != 'Common' && $card->id() != $mylast_card->id()) {
-      $mydata->addLowestResource(6);
+    if ($mychanges['Bricks'] < 0 || $mychanges['Gems'] < 0 || $mychanges['Recruits'] < 0) {
+      $rarities = ['Common' => 3, 'Uncommon' => 6, 'Rare' => 9];
+      $mydata->addLowestResource($rarities[$card->getClass()]);
+    }
+    if ($mychanges['Quarry'] < 0 || $mychanges['Magic'] < 0 || $mychanges['Dungeons'] < 0) {
+      $rarities = ['Common' => 2, 'Uncommon' => 3, 'Rare' => 4];
       $chosen = $mydata->detectLowestFacility();
-      if ($mydata->$chosen < 3) {
+      if ($mydata->$chosen < $rarities[$card->getClass()]) {
         if ($chosen == 'Quarry') {
-          $mydata->Bricks+= 5;
+          $mydata->Quarry+= 1;
         }
         elseif ($chosen == 'Magic') {
-          $mydata->Gems+= 5;
+          $mydata->Magic+= 1;
         }
         elseif ($chosen == 'Dungeons') {
-          $mydata->Recruits+= 5;
+          $mydata->Dungeons+= 1;
         }
       }
     }
