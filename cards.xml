@@ -12362,4 +12362,99 @@
     <created>2015-08-01</created>
     <modified>2015-08-01</modified>
   </card>
+  <card id="750">
+    <name>White whale</name>
+    <class>Rare</class>
+    <cost>
+      <gems>26</gems>
+    </cost>
+    <level>10</level>
+    <keywords>Illusion,Aria</keywords>
+    <effect><![CDATA[Attack: 50<br />Replace opponent's hand with Einzbern castle, Whirlwind, 2x Eternal dream, 2x Confusion and 2x Sorrow]]></effect>
+    <code><![CDATA[
+    $hisdata->attack(50);
+    $this->setHandShuffled('his', [699, 601, 592, 592, 557, 557, 40, 40]);
+]]></code>
+    <created>2016-10-29</created>
+    <modified>2016-10-29</modified>
+  </card>
+  <card id="751">
+    <name>Stein's gate</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>1</bricks>
+      <gems>1</gems>
+      <recruits>1</recruits>
+    </cost>
+    <modes>8</modes>
+    <level>10</level>
+    <keywords>Durable</keywords>
+    <effect><![CDATA[Evoke an uncommon card at chosen deck slot from your deck to selected position in hand]]></effect>
+    <code><![CDATA[
+    if ($mode != $cardpos) {
+      $this->setCard('my', $mode, $my_deck->Uncommon[$mode]);
+    }
+]]></code>
+    <created>2016-10-29</created>
+    <modified>2016-10-29</modified>
+  </card>
+  <card id="752">
+    <name>Crimson general</name>
+    <class>Rare</class>
+    <cost>
+      <bricks>9</bricks>
+      <gems>9</gems>
+      <recruits>9</recruits>
+    </cost>
+    <modes>3</modes>
+    <level>10</level>
+    <keywords>Mage,Soldier</keywords>
+    <effect><![CDATA[Attack: 24<br />Tower: +16<br />Evoke Tower guards, Meditation or Chain lightning]]></effect>
+    <code><![CDATA[
+    $hisdata->attack(24);
+    $mydata->Tower+= 16;
+    $summons = [1 => 72, 11, 374];
+    $nextcard = $summons[$mode];
+]]></code>
+    <created>2016-10-29</created>
+    <modified>2016-10-29</modified>
+  </card>
+  <card id="753">
+    <name>Paper master</name>
+    <class>Rare</class>
+    <level>10</level>
+    <keywords>Aria</keywords>
+    <effect><![CDATA[Summons Paper golem<br />Stock: -12<br />If not enough stock<br />Enemy wall: +50<br />Always:<br />Attack: 60]]></effect>
+    <code><![CDATA[
+    $mydata->addStock(-12);
+    foreach (['Bricks', 'Gems', 'Recruits'] as $resource) {
+      if ($mydata->$resource < 0) {
+        $hisdata->Wall+= 50;
+        break;
+      }
+    }
+    $hisdata->attack(60);
+    $nextcard = 754;
+]]></code>
+    <created>2016-10-29</created>
+    <modified>2016-10-29</modified>
+  </card>
+  <card id="754">
+    <name>Paper golem</name>
+    <class>Rare</class>
+    <level>10</level>
+    <keywords>Unliving,Aria</keywords>
+    <effect><![CDATA[Bricks prod x2<br />If #<b>Aria</b> in hand > 1<br />Attack: 10<br />If #<b>Aqua</b> in opponent's hand = 0<br />Wall: +10]]></effect>
+    <code><![CDATA[
+    $production->multiplyBricks(2);
+    if ($this->keywordCount($mydata->Hand, 'Aria') > 1) {
+      $hisdata->attack(10);
+    }
+    if ($this->keywordCount($hisdata->Hand, 'Aqua') == 0) {
+      $mydata->Wall+= 10;
+    }
+]]></code>
+    <created>2016-10-29</created>
+    <modified>2016-10-29</modified>
+  </card>
 </cards>
