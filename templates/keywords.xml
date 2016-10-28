@@ -556,7 +556,7 @@
     <name>Restoration</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>Countermeasures - if opponent lowered your stock last round, your lowest resource is raised based on played card rarity (C-3, U-6, R-9). If opponent lowered your facilities last round you gain 1 of your lowest facility if it's less than N, N based on played card rarity (C-2, U-3, R-4).</description>
+    <description>Countermeasures - if opponent lowered your stock last round, your lowest resource is raised based on played card rarity (C-3, U-6, R-9). If opponent lowered your facilities last round you gain 1 of your lowest facility if it's less than N, N is based on played card rarity (C-2, U-3, R-4).</description>
     <lore><![CDATA[<p>Restoration magic is one of the most commonly used art of magic. Most factions support schools that teach this art, because its usage is very wide and safe. Restoration mages are the most accepted mages in the society. If their skills are exceptional they can even be promoted to nobility.</p>]]></lore>
     <code><![CDATA[
     if ($mychanges['Bricks'] < 0 || $mychanges['Gems'] < 0 || $mychanges['Recruits'] < 0) {
