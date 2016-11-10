@@ -291,7 +291,7 @@
 		{
 			$db = $this->db;
 			
-			$result = $db->query('INSERT INTO `messages` (`Author`, `Recipient`, `Content`, `GameID`, `Created`) VALUES (?, ?, ?, ?, NOW())', array($author, $recipient, $content, $game_id));
+			$result = $db->query('INSERT INTO `messages` (`Author`, `Recipient`, `Subject`, `Content`, `GameID`, `Created`) VALUES (?, ?, "", ?, ?, NOW())', array($author, $recipient, $content, $game_id));
 			if ($result === false) return false;
 			
 			return true;
