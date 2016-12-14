@@ -1,117 +1,117 @@
 /*************************************************
  * MArcomage CSS stylesheet - skins - fire theme *
  *************************************************/
+/* import dark skin template */
+@import url('dark.css');
 
-@import url("dark.css"); /* import dark skin template */
-
-.skin_text /* text element layout */
-{
-	background-color: #222222; /* light black */
+/* text element layout */
+.skin-text {
+    background-color: #222222; /* light black */
 }
 
-.skin_label /* label element layout */
-{
-	background-image: url('../../img/skins/fire_label.jpg');
+/* label element layout */
+.skin-label {
+    background-image: url('../../img/skins/fire_label.jpg');
 }
 
-html /* general background layout */
-{
-	background-image: url('../../img/skins/bg_fire.jpg');
+/* general background layout */
+html {
+    background-image: url('../../img/skins/bg_fire.jpg');
 }
 
-div#menubar /* navigation bar layout */
-{
-	background-image: url('../../img/skins/fire_label.jpg');
+/* navigation bar layout */
+div#menu-bar {
+    background-image: url('../../img/skins/fire_label.jpg');
 }
 
-div#login_box /* login box layout */
-{
-	background-image: url('../../img/skins/fire_label.jpg');
+/* login box layout */
+div#login-box {
+    background-image: url('../../img/skins/fire_label.jpg');
 }
 
-hr /* horizontal line layout */
-{
-	border-color: #b01414; /* dark red */
+/* horizontal line layout */
+hr {
+    border-color: #b01414; /* dark red */
 }
 
-a:link /* unvisited link */
-{
-	color: red;
+/* unvisited link */
+a:link {
+    color: red;
 }
 
-a:visited /* visited link */
-{
-	color: #b01414; /* dark red */
+/* visited link */
+a:visited {
+    color: #b01414; /* dark red */
 }
 
-tr.table_row:hover /* highlight table row */
-{
-	background-color: #b01414; /* dark red */
+/* highlight table row */
+.table-row:hover {
+    background-color: #b01414; /* dark red */
 }
 
-h2,h3,h4,h5 /* heading layout */
-{
-	color: #f01414; /* dark red */
-	text-shadow: 0 0 1px black, 0 0 2px black, 0 0 3px black, 0 0 4px black, 0 0 5px black;
+/* heading layout */
+h2, h3, h4, h5 {
+    color: #f01414; /* dark red */
+    text-shadow: 0 0 1px black, 0 0 2px black, 0 0 3px black, 0 0 4px black, 0 0 5px black;
 }
 
-button, a.button /* submit input layout */
-{
-	background-color: #222222; /* light black */
-	border-color: gray;
-	color: #dddddd; /* light gray */
+/* submit input layout */
+button, a.button {
+    background-color: #222222; /* light black */
+    border-color: gray;
+    color: #dddddd; /* light gray */
 }
 
-.disabled /* disabled hyperlink button */
-{
-	background-color: #222222; /* light black */
-	border-color: gray;
+/* disabled hyperlink button */
+.disabled {
+    background-color: #222222; /* light black */
+    border-color: gray;
 }
 
-button.marked_button, a.marked_button /* highlighted button */
-{
-	background-color: #d01414; /* dark red */
+/* highlighted button */
+button.marked_button, a.marked_button, .nav-buttons button:hover, .nav-buttons .button:hover {
+    background-color: #d01414; /* dark red */
 }
 
-.info /* information message layout */
-{
-	text-shadow: 0 0 1px black, 0 0 2px black, 0 0 3px black, 0 0 4px black, 0 0 5px black;
+/* information message layout */
+.info {
+    text-shadow: 0 0 1px black, 0 0 2px black, 0 0 3px black, 0 0 4px black, 0 0 5px black;
 }
 
-.warning /* warning message layout */
-{
-	text-shadow: 0 0 1px black, 0 0 2px black, 0 0 3px black, 0 0 4px black, 0 0 5px black;
+/* warning message layout */
+.warning {
+    text-shadow: 0 0 1px black, 0 0 2px black, 0 0 3px black, 0 0 4px black, 0 0 5px black;
 }
 
-.error /* error message layout */
-{
-	text-shadow: 0 0 1px black, 0 0 2px black, 0 0 3px black, 0 0 4px black, 0 0 5px black;
+/* error message layout */
+.error {
+    text-shadow: 0 0 1px black, 0 0 2px black, 0 0 3px black, 0 0 4px black, 0 0 5px black;
 }
 
-p.info_label /* information label used in multiple instances in game section */
-{
-	border: medium ridge #6495ed;
-	background-color: #222222; /* light black */
+/* information label used in multiple instances in game section */
+p.info-label {
+    border: medium ridge #6495ed;
+    background-color: #222222; /* light black */
 }
 
-p.token_counter /* token counter layout */
-{
-	border: thin solid #6495ed;
-	background-color: #222222; /* light black */
+/* token counter layout */
+p.token-counter {
+    border: thin solid #6495ed;
+    background-color: #222222; /* light black */
 }
 
-div.chatbox /* chatbox window */
-{
-	border: medium ridge #6495ed;
-	background-color: #222222; /* light black */
+/* chat box window */
+div.chat-box {
+    border: medium ridge #6495ed;
+    background-color: #222222; /* light black */
 }
 
-p.flag, span.newcard /* new card flag (indicated above a new card) */
-{
-	background-color: #222222; /* light black */
+/* new card flag (indicated above a new card) */
+p.flag, span.new-card {
+    background-color: #222222; /* light black */
 }
 
-div#cost_per_turn, p.deck_stats /* avg cost per turn indicator layout */
-{
-	background-color: #222222; /* light black */
+/* avg cost per turn indicator layout */
+div.cost-per-turn, p.deck-stats {
+    background-color: #222222; /* light black */
 }

@@ -2,47 +2,54 @@
  * MArcomage JavaScript - Replays section *
  ******************************************/
 
-function ResumeReplay() // replay slideshow -> resume replay
+'use strict';
+
+// global timer
+var timer;
+
+/**
+ * Replay slide show -> resume replay
+ */
+function resumeReplay()
 {
-	$("button[name='slideshow']").html('Pause');
-	timer = window.setTimeout("window.location.href = $('a#next').attr('href')", 5000);
+    $('button[name="slideshow-play"]').hide();
+    $('button[name="slideshow-pause"]').show();
+    timer = window.setTimeout("window.location.href = $('a#next').attr('href')", 5000);
 }
 
-function PauseReplay() // replay slideshow -> pause replay
+/**
+ * Replay slide show -> pause replay
+ */
+function pauseReplay()
 {
-	$("button[name='slideshow']").html('Play');
-	window.clearTimeout(timer);
+    $('button[name="slideshow-pause"]').hide();
+    $('button[name="slideshow-play"]').show();
+    window.clearTimeout(timer);
 }
 
 $(document).ready(function() {
 
-	// apply replay filters by pressing ENTER key
-	$("input[name='PlayerFilter']").keypress(function(event) {
-		if (event.keyCode == '13') { event.preventDefault(); $("button[name='filter_replays']").click(); }
-	});
+    // apply replay filters by pressing ENTER key
+    $('input[name="player_filter"]').keypress(function(event) {
+        if (event.keyCode == '13') {
+            event.preventDefault();
+            $('button[name="replays_apply_filters"]').click();
+        }
+    });
 
-	// replay slideshow initialization
-	var timer; // global timer
+    // apply only in replay section
+    if ($('a#next').length == 1) {
+        resumeReplay();
+    }
 
-	if ($("a#next").length == 1) // apply only in replay section
-	{
-		ResumeReplay();
-	}
+    // pause replay
+    $('button[name="slideshow-pause"]').click(function() {
+        pauseReplay();
+    });
 
-	$("button[name='slideshow']").click(function() {
-		if ($("button[name='slideshow']").html() == 'Pause')
-		{
-			PauseReplay();
-		}
-		else if ($("button[name='slideshow']").html() == 'Play')
-		{
-			ResumeReplay();
-		}
-	});
-
-	// start discussion confirmation
-	$("button[name='card_thread'], button[name='concept_thread'], button[name='replay_thread']").click(function() {
-		return confirm("Are you sure you want to start a discussion?");
-	});
+    // resume replay
+    $('button[name="slideshow-play"]').click(function() {
+        resumeReplay();
+    });
 
 });

@@ -1,21 +1,21 @@
 /**********************************************
  * MArcomage CSS stylesheet - levelup section *
  **********************************************/
- 
-div#levelup_dialog div.karta /* override default dialog font for card */
-{
-	font-family: times, serif;
+
+/* override default dialog font for card */
+div#level-up-dialog div.card {
+    font-family: times, serif;
 }
 
-div#levelup_dialog > h3 /* tutorial heading */
-{
-	text-align: center;
-	margin-top: 0ex;
-	font-size: large;
+/* tutorial heading */
+div#level-up-dialog > h3 {
+    text-align: center;
+    margin-top: 0;
+    font-size: large;
 }
 
-div#levelup_dialog > p /* tutorial text */
-{
-	text-align: justify;
-	font-size: large;
+/* tutorial text */
+div#level-up-dialog > p {
+    text-align: justify;
+    font-size: large;
 }

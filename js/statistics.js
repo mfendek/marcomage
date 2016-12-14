@@ -2,8 +2,7 @@
  * MArcomage JavaScript - Statistics section *
  *********************************************/
 
-$(document).ready(function() {
+'use strict';
 
-
-
+$(document).ready(function () {
 });

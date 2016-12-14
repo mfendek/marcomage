@@ -2,175 +2,127 @@
  * MArcomage CSS stylesheet - cards section *
  ********************************************/
 
-div#cards /* cards section layout */
-{
-	min-width: 1045px;
-	text-align: center;
+/* cards list layout */
+div#cards .responsive-table {
+    text-align: center;
 }
 
-div#cards table /* cards list layout */
-{
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 1ex;
-	width: 85%;
+/* card layout within the table */
+div#cards .responsive-table div.card {
+    margin-left: 1ex;
+    margin-right: 1ex;
+    display: inline-block;
+
 }
 
-div#cards table th > p, div#cards table td > p /* table cell text */
-{
-	margin: 0.5ex 1ex 0.5ex 1ex;
-}
-
-div#cards table div.karta /* card layout within the table */
-{
-	margin-left: 2ex;
-}
-
-div#cards .filters /* filters */
-{
-	margin: 1ex 0ex 2ex 2ex;
-}
-
-p.effect /* card effect */
-{
-	text-align: left;
+/* filters */
+div#cards .filters {
+    margin: 1ex 0 2ex 2ex;
 }
 
 /* begin cards details */
 
-div#cards_details /* cards details subsection */
-{
-	min-width: 1045px;
+/* card data layout */
+div#cards_details > .skin-text {
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 1ex;
+    max-width: 30em;
+    padding: 1ex;
 }
 
-div#cards_details > .skin_text /* card data layout */
-{
-	margin-right: auto;
-	margin-left: auto;
-	margin-top: 1ex;
-	width: 50%;
-	padding: 1ex;
+/* set distance between elements */
+div#cards_details > .skin-text > p, div#cards_details > .skin-text > div.limit > p, div#cards_details > .skin-text hr {
+    margin-top: 1ex;
+    margin-bottom: 1ex;
 }
 
-div#cards_details > .skin_text > p, div#cards_details > .skin_text > div.limit > p, div#cards_details > .skin_text hr /* set distance between elements */
-{
-	margin-top: 1ex;
-	margin-bottom: 1ex;
-	font-weight: bold;
+/* card property value */
+div.limit div.row {
+    margin-top: 1ex;
+    margin-bottom: 1ex;
 }
 
-div.limit /* input formular layout */
-{
-	width: 25em;
-}
-
-div.limit > p > span /* float text to the right */
-{
-	float: right;
-}
-
-div.card_preview /* card preview layout */
-{
-	float: right;
-}
-
-div.card_preview > div.karta /* card preview spacing */
-{
-	margin-top: 0ex;
-}
-
-div.code /* card code */
-{
-	overflow: auto;
+/* card preview spacing */
+div.card-preview > div.card {
+    margin-top: 0;
 }
 
 /* end cards details */
 
 /* begin keywords table */
+/* keywords list subsection */
 
-div#keywords /* keywords list subsection */
-{
-	min-width: 1045px;
+/* keywords table */
+div#keywords table {
+    margin: 1ex auto;
 }
 
-div#keywords table /* keywords table */
-{
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 1ex;
-	width: 85%;
+/* table cell text */
+div#keywords table th, div#keywords table td {
+    padding: 1ex;
 }
 
-div#keywords table th, div#keywords table td /* table cell text */
-{
-	padding: 1ex;
+/* keyword hyperlink */
+div#keywords table tr.table-row:hover a {
+    color: inherit;
 }
 
-div#keywords table tr.table_row:hover a /* keyword hyperlink */
-{
-	color: inherit;
-}
-
-.description /* keyword description */
-{
-	margin-left: auto;
-	margin-right: auto;
-	max-width: 50em;
-	text-align: justify;
+/* keyword description */
+.description {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 50em;
+    text-align: justify;
 }
 
 /* end keywords table */
 
 /* begin keyword details */
+/* keyword details subsection */
 
-div#keyword_details /* keyword details subsection */
-{
-	min-width: 1045px;
+/* navigation */
+div#keyword-details > h3 {
+    margin: 0;
 }
 
-div#keyword_details > h3 /* navigation */
-{
-	margin: 0ex;
+/* heading */
+div#keyword-details h4 {
+    margin: 0 0 1ex 0;
 }
 
-div#keyword_details h4 /* heading */
-{
-	margin: 0ex 0ex 1ex 0ex;
+/* heading spacing */
+div#keyword-details * + h4 {
+    margin-top: 1ex;
 }
 
-div#keyword_details * + h4 /* heading spacing */
-{
-	margin-top: 1ex;
+/* keyword data */
+div#keyword-details .skin-text {
+    margin: 1ex auto 1ex auto;
+    padding: 1ex;
 }
 
-div#keyword_details .skin_text /* keyword data */
-{
-	margin: 1ex auto 1ex auto;
-	width: 60%;
-	padding: 1ex;
+/* set distance between elements */
+div#keyword-details .skin-text hr {
+    margin-top: 1ex;
 }
 
-div#keyword_details .skin_text hr /* set distance between elements */
-{
-  margin-top: 1ex;
+/* keyword insignia */
+.description > img.insignia {
+    margin-right: 1ex;
 }
 
-.description > img.insignia /* keyword insignia */
-{
-	margin-right: 1ex;
+/* keyword lore */
+.lore {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 50em;
+    text-align: justify;
 }
 
-.lore /* keyword lore */
-{
-	margin-left: auto;
-	margin-right: auto;
-	max-width: 50em;
-	text-align: justify;
-}
-
-.lore > p + p /* keyword lore spacing */
-{
-	margin-top: 1ex;
+/* keyword lore spacing */
+.lore > p + p {
+    margin-top: 1ex;
 }
 
 /* end keyword details */

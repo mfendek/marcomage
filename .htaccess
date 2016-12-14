@@ -7,7 +7,7 @@ allow from all
 </Files>
 
 # all the permitted entry points
-<Files ~ "^(index\.php|AJAXhandler\.php|fail\.php)$">
+<Files ~ "^(index\.php|fail\.php)$">
 allow from all
 </Files>
 

@@ -2,68 +2,69 @@
  * MArcomage CSS stylesheet - login section *
  ********************************************/
 
-div#login_box /* login box layout */
-{
-	padding: 1ex;
-	margin: 1ex 1ex 1ex 1ex;
-	/*min-width: 120ex;*/
-	min-width: 1045px;
+/* login box layout */
+div#login-box {
+    padding: 1ex;
+    text-align: center;
 }
 
-div#login_box h1 /* game title */
-{
-	font-size: xx-large;
-	margin: 0.5ex 15% 0ex 0ex;
-	text-align: center;
-	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white, 0 0 4px white, 0 -5px 4px #ff3, 2px -10px 6px #fd3, -2px -15px 11px #f80, 2px -25px 18px #f20;
+div#login-box > .row + .row {
+    margin-top: 1ex;
 }
 
-div#login_box h2 /* game subtitle */
-{
-	font-size: large;
-	text-align: center;
-	margin: 0ex 15% 0ex 0ex;
+/* game title */
+div#login-box h1 {
+    font-size: xx-large;
+    margin: 1ex 0 0 0;
+    text-align: center;
+    text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white, 0 0 4px white, 0 -5px 4px #ff3, 2px -10px 6px #fd3, -2px -15px 11px #f80, 2px -25px 18px #f20;
 }
 
-span#social_links /* social links */
-{
-	float: right;
+/* game subtitle */
+div#login-box h2 {
+    font-size: large;
+    text-align: center;
+    margin: 1ex 0;
 }
 
-span#social_links img /* override default border style */
-{
-	border-style: none;
+/* social links */
+#social-links {
+    margin-top: 0.5ex;
 }
 
-span#social_links a /* social links layout */
-{
-  text-decoration: none;
+/* override default border style */
+#social-links img {
+    border-style: none;
 }
 
-div#login_area /* login area layout */
-{
-	float: left;
-  text-align: left;
+/* social links layout */
+#social-links a {
+    text-decoration: none;
+}
+#social-links a + a {
+    margin-left: 0.5ex;
 }
 
-div#login_inputs > img /* login inputs align */
-{
-	vertical-align: middle;
+/* login inputs align */
+div#login-inputs img {
+    vertical-align: middle;
 }
 
-div#login_inputs > input + button /* login inputs layout */
-{
-	margin-left: 1ex;
+/* login inputs layout */
+div#login-inputs > div > * {
+    margin-top: 0.5ex;
 }
 
-p#login_message /* login message layout */
-{
-  margin-top: 1ex;
-	font-weight: bold;
-	min-height: 1em;
+/* login message layout */
+p#login-message {
+    margin-top: 1ex;
+    min-height: 1em;
 }
 
-div#sections > a.button /* hyperlink buttons in sections menu */
-{
-	margin-left: 2ex;
+/* hyperlink buttons in sections menu */
+nav#sections > * + * {
+    margin-left: 1ex;
+}
+nav#sections > * {
+    margin-top: 0.5ex;
 }

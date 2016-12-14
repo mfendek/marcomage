@@ -2,82 +2,60 @@
  * MArcomage CSS stylesheet - upper navigation bar *
  ***************************************************/
 
-div#menubar /* upper navigation bar containing section access buttons */
-{
-	text-align: center;
-	/*min-width: 120ex;*/
-	min-width: 1045px;
-	padding: 1ex 0ex 1.5ex 0ex;
+/* upper navigation bar containing section access buttons */
+div#menu-bar {
+    text-align: center;
+    padding-top: 0.5ex;
 }
 
-div#menubar a.button, div#menubar button /* upper navigation bar buttons */
-{
-	font-size: small;
+/* upper navigation bar buttons */
+div#menu-bar .button-icon {
+    margin-top: 0.5ex;
 }
 
-div#menu_float_right /* one part is floated to the right */
-{
-	float: right;
-	text-align: right;
+/* menu spacing */
+nav.menu-center > * {
+    margin-top: 0.5ex;
 }
 
-div#menu_float_right > button /* floated section contains refresh button */
-{
-	margin-right: 2ex;
+/* set distance between buttons in center part of menu bar */
+nav.menu-center > a.button + a.button, .menu-center > button {
+    margin-left: 0.5ex;
 }
 
-div#menu_center /* menu spacing */
-{
-	margin-top: 0.5ex;
+/* set distance for images that appear in the menu bar */
+div#menu-bar .navbar-notifications a + a {
+    margin-left: 0.5ex;
 }
 
-div#menu_center > a.button + a.button /* set distance between buttons in center part of menubar */
-{
-	margin-left: 2ex;
+/* one part is floated to the left */
+div#menu-player-info {
+    margin-top: 0.5ex;
+    display: inline-block;
 }
 
-div#menu_center > img /* set distance for images that appear in the menubar */
-{
-	margin-right: 1.7ex;
+/* set the distance from the left border of the screen for player name */
+div#menu-player-info > div {
+    margin-left: 1ex;
+    padding: 0.5ex 1ex 0.5ex 1ex;
 }
 
-div#menubar + hr /* horizontal line that is separating the menubar from the rest of the content */
-{
-	/*min-width: 120ex;*/
-	min-width: 1045px;
+/* profile link */
+div#menu-player-info > div > a {
+    text-decoration: none;
 }
 
-div#menu_float_left /* one part is floated to the left */
-{
-	float: left;
-	text-align: left;
+/* exp progress bar */
+div#menu-player-info div.exp-progress-bar {
+    margin-top: 0.5ex;
+    margin-left: auto;
+    margin-right: auto;
+    border: thin solid black;
+    width: 100px;
 }
 
-div#menu_float_left > div /* set the distance from the left border of the screen for player name */
-{
-	margin-left: 1ex;
-	padding: 0.5ex;
-	font-weight: bold;
-}
-
-div#menu_float_left > div > a /* profile link */
-{
-	text-decoration: none;
-}
-
-div#menu_float_left div.progress_bar /* exp progress bar */
-{
-	display: inline-block;
-	margin-left: 0.5ex;
-	margin-bottom: 0.2ex;
-	border: thin solid black;
-	text-align: left;
-	width: 50px;
-	vertical-align: middle;
-}
-
-div#menu_float_left div.progress_bar > div  /* exp progress bar - inner part */
-{
-	height: 2ex;
-	background-color: green;
+/* exp progress bar - inner part */
+div#menu-player-info div.exp-progress-bar > div {
+    height: 2ex;
+    background-color: green;
 }

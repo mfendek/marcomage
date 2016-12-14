@@ -2,234 +2,427 @@
  * MArcomage CSS stylesheet - general styles *
  *********************************************/
 
-html
-{
-	font-family: times, serif;
-	padding: 0ex;
-	margin: 0ex;
+html {
+    font-family: times, serif;
+    padding: 0;
+    margin: 0;
 }
 
-hr
-{
-	border-style: solid;
-	border-width: thin;
-	padding: 0ex;
-	margin: 0ex;
-	/* override defaults */
+hr {
+    border: thin solid;
+    /* override defaults */
+    padding: 0;
+    margin: 0;
 }
 
-input, button
-{
-	font-size: x-small;
-	color: black;
-	border: 2px outset black;
-	border-radius: 7px;
-	padding: 0.4ex 1.2ex 0.4ex 1.2ex;
-	vertical-align: middle;
+input, button {
+    font-weight: normal;
+    font-size: small;
+    color: black;
+    border: 2px outset black;
+    border-radius: 7px;
+    padding: 0.4ex 1.2ex 0.4ex 1.2ex;
+    vertical-align: middle;
+    font-family: arial, sans-serif;
 }
 
-a.button /* hyperlink button */
-{
-	font-size: x-small;
-	font-weight: bold;
-	color: black;
-	border: 2px outset black;
-	border-radius: 7px;
-	padding: 0.4ex 1.2ex 0.4ex 1.2ex;
-	vertical-align: middle;
-	text-decoration: none;
-	font-family: arial, sans-serif;
+/* hyperlink button */
+a.button {
+    display: inline-block;
+    font-size: small;
+    font-weight: normal;
+    color: black;
+    border: 2px outset black;
+    border-radius: 7px;
+    padding: 0.4ex 1.2ex 0.4ex 1.2ex;
+    vertical-align: middle;
+    text-decoration: none;
+    font-family: arial, sans-serif;
 }
 
-a.button:link, a.button:visited /* default color for hyperlink button */
-{
-	color: black;
+/* default color for hyperlink button */
+a.button:link, a.button:visited {
+    color: black;
 }
 
-a.profile, a.profile:link, a.profile:visited /* player profile link */
-{
-	text-decoration: none;
-	color: inherit;
+/* player profile link */
+a.profile, a.profile:link, a.profile:visited {
+    text-decoration: none;
+    color: inherit;
 }
 
-.disabled /* disabled hyperlink button */
-{
-	font-size: x-small;
-	font-weight: bold;
-	color: gray;
-	border: 2px outset black;
-	border-radius: 7px;
-	padding: 0.4ex 1.2ex 0.4ex 1.2ex;
-	vertical-align: middle;
-	font-family: arial, sans-serif;
+/* disabled hyperlink button */
+.disabled {
+    font-size: large;
+    font-weight: normal;
+    color: gray;
+    border: 2px outset black;
+    border-radius: 7px;
+    padding: 0.2ex 0.6ex 0.2ex 0.6ex;
+    vertical-align: middle;
+    font-family: arial, sans-serif;
+    display: inline-block;
 }
 
-body,p,h5 /* override defaults */
-{
-	padding: 0ex;
-	margin: 0ex;
+.button-icon, a.button-icon {
+    font-size: large;
+    padding: 0.2ex 0.6ex 0.2ex 0.6ex;
 }
 
-h1
-{
-	color: red;
-	text-align: center;
+.button-navigation {
+    font-size: medium;
 }
 
-h2,h3
-{
-	text-align: center;
+/* set default properties (do not rely on browser defaults) */
+body {
+    background-color: transparent;
+    font-family: times, serif;
+    line-height: normal;
+    font-size: medium;
+    color: inherit;
 }
 
-ul
-{
-	padding-left: 0ex;
-	margin-left: 2ex;
+/* override defaults */
+body, p, h5 {
+    padding: 0;
+    margin: 0;
 }
 
-select
-{
-	font-size: x-small;
-	color: black;
-	background-color: #6495ed;
-	border: thin solid black;
-	vertical-align: middle;
-	font-weight: bold;
-	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
+h1 {
+    font-family: arial, sans-serif;
+    color: red;
+    text-align: center;
 }
 
-th
-{
-	margin: 0ex;
-	padding: 0ex;
+h2, h3 {
+    font-family: arial, sans-serif;
+    text-align: center;
+    font-size: large;
 }
 
-th button /* ordering buttons in the table header */
-{
-	margin-left: 2ex;
+h4, h5 {
+    font-family: arial, sans-serif;
+    line-height: normal;
+    font-size: medium;
 }
 
-textarea /* textarea layout */
-{
-	width: 100%;
-	border: 2px inset black;
-	border-radius: 7px;
+ul {
+    padding-left: 0;
+    margin-left: 2ex;
 }
 
-table.centered /* centered table */
-{
-	margin-left: auto;
-	margin-right: auto;
+select {
+    font-size: small;
+    color: black;
+    background-color: #6495ed;
+    border: thin solid black;
+    vertical-align: middle;
+    font-weight: normal;
+    /*text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;*/
+    font-family: arial, sans-serif;
+    padding: 0.3ex 0.5ex 0.3ex 0.5ex;
 }
 
-p.information_line /* information message layout */
-{
-	text-align: center;
-	padding-bottom: 0.5ex;
-	font-weight: bold;
+th {
+    margin: 0;
+    padding: 0;
 }
 
-p.blank_line /* when no information is displayed, display blank line */
-{
-	padding-bottom: 0.5ex;
-	margin: 0ex;
-	height: 1.2em;
-	/*min-width: 120ex;*/
-	min-width: 1045px;
+/* text area layout */
+textarea {
+    font-family: monospace;
+    font-weight: normal;
+    width: 100%;
+    border: 2px inset black;
+    border-radius: 7px;
+    color: black;
+    margin-top: 1ex;
 }
 
-div.clear_floats /* clear both floats */
-{
-	clear: both;
+/* table cell spacing */
+table {
+    border-spacing: 0;
+    border-collapse: separate;
 }
 
-input[type="text"], input[type="password"] /* input text fields */
-{
-	border-style: inset;
+/* table cell padding */
+table > tbody > tr > th, table > tbody > tr > td {
+    padding: 0;
 }
 
-button /* submit input layout */
-{
-	font-weight: bold;
+/* default table header styles */
+table > tbody > tr > th {
+    font-family: arial, sans-serif;
+    text-align: center;
 }
 
-img.avatar /* avatar picture */
-{
-	border: thin solid white;
-	margin-bottom: 0.2ex;
-	margin-right: 0.5ex;
-	background-color: black;
-	vertical-align: middle;
+/* centered table */
+table.centered {
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.small_button /* small button */
-{
-	padding: 0ex 0.5ex 0ex 0.5ex;
-	font-size: x-small;
+/* centered row */
+div.centered, tr.centered > td {
+    text-align: center;
 }
 
-input.table_checkbox /* checkbox layout */
-{
-	border-width: thin;
-	border-style: solid;
-	padding: 0.7ex;
+/* centered row */
+td.centered, tr.centered > td > p.flag {
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.filters /* filters */
-{
-	text-align: center;
+/* table align top */
+tr.align-top, td.align-top {
+    vertical-align: top;
 }
 
-.filters > button /* set distance between filter buttons */
-{
-	margin-right: 1ex;
+/* table align bottom */
+.align-bottom {
+    vertical-align: bottom;
 }
 
-.online /* highlight player name if he is online */
-{
-	font-weight: bold;
+/* table align right */
+.align-right > div, .align-right > table {
+    margin-left: auto
 }
 
-.filter_active /* highlight filter when active */
-{
-	background-color: green;
+/* information message layout */
+p.information-line {
+    font-family: arial, sans-serif;
+    text-align: center;
+    line-height: 20px;
 }
 
-button.pushed, a.pushed, a.button:active /* selected button */
-{
-	border-style: inset;
+/* when no information is displayed, display blank line */
+p.blank-line {
+    margin: 0;
+    height: 20px;
 }
 
-img.icon /* icon image */
-{
-	vertical-align: middle;
-	margin-left: 0.5ex;
+/* clear both floats */
+div.clear-floats {
+    clear: both;
 }
 
-.p_online,.p_offline,.p_inactive,.p_dead /* player name layout */
-{
-	font-weight: bold;
+/* input text fields */
+input[type="text"], input[type="password"] {
+    border-style: inset;
 }
 
-blockquote > div /* quote text layout */
-{
-	padding: 1.8em 0.8em 0.8em 0.8em;
-	background-image: url('../img/quote.gif');
-	background-position: 10px 10px;
-	background-repeat: no-repeat;
-	font-size: small;
-	border-radius: 7px;
+input[type="file"] {
+    display: inline-block;
 }
 
-blockquote > div > cite /* author name layout in quote text */
-{
-	display: block;
-	font-style: normal;
-	font-weight: bold;
-	margin-left: 2.5ex;
+/* avatar picture */
+img.avatar {
+    border: thin solid white;
+    margin-bottom: 0.2ex;
+    margin-right: 0.5ex;
+    background-color: black;
+    vertical-align: middle;
 }
 
-*[title] /* display help cursor when additional description is available */
-{
-	cursor: help;
+.bb-code-buttons {
+    margin-top: 1ex;
+}
+
+/* checkbox layout */
+input[type="checkbox"] {
+    margin: 3px;
+}
+
+input.table-checkbox {
+    border: thin solid;
+    padding: 0.7ex;
+}
+
+fieldset {
+    display: block;
+    border: 2px groove threedface;
+    padding: 1ex 2ex 2ex 2ex;
+}
+
+legend {
+    display: block;
+    border-width: initial;
+    border-style: none;
+    border-color: initial;
+    border-image: initial;
+    width: auto;
+    padding: 0 0.5ex 0 0.5ex;
+    margin: 0;
+    font-size: medium;
+    color: inherit;
+}
+
+/* card and keyword code */
+div.code > pre {
+    font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+    color: black;
+}
+
+/* filters */
+.filters {
+    text-align: center;
+}
+
+/* set distance between filter buttons */
+.filters * + button, .filters * + .button, .filters * + .disabled {
+    margin-left: 0.5ex;
+}
+
+/* highlight filter when active */
+.filter-active {
+    background-color: green;
+}
+
+/* selected button */
+button.pushed, a.pushed, a.button:active {
+    border-style: inset;
+}
+
+/* icon image */
+img.icon {
+    vertical-align: middle;
+    margin-left: 0.5ex;
+}
+
+/* quote text layout */
+blockquote {
+    padding: 0;
+    margin-bottom: 1ex;
+    margin-left: 2ex;
+    font-size: medium;
+    border: none;
+}
+
+blockquote > div {
+    padding: 1.8em 0.8em 0.8em 0.8em;
+    background: url('../img/quote.gif') no-repeat 10px 10px;
+    font-size: small;
+    border-radius: 7px;
+}
+
+/* author name layout in quote text */
+blockquote > div > cite {
+    display: block;
+    font-style: normal;
+    margin-left: 2.5ex;
+}
+
+.container .top-level {
+    margin-top: 1ex;
+    margin-left: 0.5ex;
+    margin-right: 0.5ex;
+}
+
+/* newly unlocked cards during level up message */
+.unlocked-cards {
+    text-align: center;
+}
+.unlocked-cards > div {
+    display: inline-block;
+    vertical-align: top;
+}
+
+/* JQuery UI close button */
+.ui-dialog-titlebar-close {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+/* fade table row hover effect */
+.table-row {
+    transition: background-color 400ms;
+}
+
+.table-row p {
+    transition: color 400ms;
+}
+
+/* navigation bar buttons highlight */
+.nav-buttons button, .nav-buttons .button {
+    transition: background-color 400ms;
+}
+
+/* Bootstrap grid default spacing */
+.container, .container .row > div[class*='col-'] {
+    padding-left: 0;
+    padding-right: 0;
+}
+.container .row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* responsive table */
+div.responsive-table {
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 0.5ex;
+    margin-bottom: 1ex;
+}
+
+/* responsive table header */
+div.responsive-table > div.row:first-child {
+    font-family: arial, sans-serif;
+    text-align: center;
+}
+
+/* cell spacing */
+div.responsive-table > div > div > p {
+    margin: 1ex;
+}
+
+/* clickable row */
+div.responsive-table .row.details {
+    cursor: pointer;
+}
+
+/* modal screen center display */
+div[role="dialog"].modal .vertical-alignment-helper {
+   display: table;
+   height: 100%;
+   width: 100%;
+   pointer-events: none;
+}
+
+div[role="dialog"].modal .vertical-align-center {
+    display: table-cell;
+    vertical-align: middle;
+    pointer-events: none;
+}
+
+div[role="dialog"].modal .modal-content {
+    width: inherit;
+    height: inherit;
+    margin: 0 auto;
+    pointer-events: all;
+}
+
+/* general modal layout */
+div[role="dialog"].modal .modal-dialog {
+    text-align: center;
+    color: black;
+}
+
+div[role="dialog"].modal .modal-dialog .modal-title {
+    font-family: arial, sans-serif;
+    text-align: left;
+}
+
+div[role="dialog"].modal .modal-dialog .modal-footer {
+    text-align: center;
+}
+
+#error-message .modal-dialog .modal-body p {
+    color: red;
+}
+
+div[role="dialog"].modal button[name="close-modal"] {
+    background-color: transparent;
+    border-style: none;
+    float: right;
 }

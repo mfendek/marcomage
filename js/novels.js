@@ -2,8 +2,7 @@
  * MArcomage JavaScript - Novels section *
  *****************************************/
 
-$(document).ready(function() {
+'use strict';
 
-
-
+$(document).ready(function () {
 });

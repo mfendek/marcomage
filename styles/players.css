@@ -1,209 +1,184 @@
 /**********************************************
  * MArcomage CSS stylesheet - players section *
  **********************************************/
- 
+
 /* begin playerslist */
 
-
-div#players > table /* players table */
-{
-	padding: 1ex;
+/* players table */
+div#players > .responsive-table {
+    text-align: center;
 }
 
-div#players > table p /* players table row layout */
-{
-	margin: 0ex 1ex 0ex 1ex;
+/* filters */
+div#players .filters {
+    margin: 1ex 0 2ex 2ex;
 }
 
-div#players th button /* set distance for ordering buttons from header texts in the table header */
-{
-	margin-left: 1ex;
+/* player achievement link */
+a.achievement-link {
+    text-decoration: none;
 }
 
-div#players > table tr.table_row:hover a.profile /* player profile hyperlink */
-{
-	text-decoration: underline;
+/* player achievement bordering */
+a.achievement-link > img {
+    border-style: none;
 }
 
-div#players .filters /* filters */
-{
-	margin: 1ex 0ex 2ex 2ex;
-}
-
-a.achievement_link /* player achievement link */
-{
-	text-decoration: none;
-}
-
-a.achievement_link > img /* player achievement bordering */
-{
-	border-style: none;
-}
-
-/* end playerslist */
+/* end players list */
 
 /* begin user details */
-
-div#details /* set minimum width to whole section (grants immunity to resize) */
-{
-	min-width: 1045px;
+div#details {
+    margin-top: 1ex;
 }
 
-div#details > div.skin_text > p + p /* line spacing */
-{
-	margin-top: 1ex;
+/* line spacing */
+div#details > div.skin-text p + p, div#details > div.skin-text > p {
+    margin-top: 1ex;
+}
+div#details .row > div > p {
+    margin-top: 0.5ex;
+    margin-bottom: 0.5ex;
 }
 
-div#details > div.skin_text /* user details content layout */
-{
-	margin-left: auto;
-	margin-right: auto;
-	width: 50%;
-	padding: 0ex 1ex 1ex 1ex;
-	margin-bottom: 1ex;
+/* icon spacing */
+div#details img.icon {
+    margin-left: 0;
+}
+div#details * + img.icon {
+    margin-left: 0.5ex;
 }
 
-div#details > div.skin_text .detail_value /* player data values */
-{
-	font-weight: bold;
+/* user details content layout */
+div#details > div.skin-text {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 50em;
+    padding: 0 1ex 1ex 1ex;
+    margin-bottom: 1ex;
 }
 
-div#details p > .detail_value /* player data values spacing */
-{
-	margin-left: 1ex;
+/* player hobbies */
+div#details .hobbies {
+    line-height: 1.6;
+    margin-top: 1ex;
 }
 
-div#details .hobbies /* player hobbies */
-{
-	line-height: 1.6;
+/* section name layout */
+div#details h3 {
+    margin: 0.5ex 0 0 0;
 }
 
-div#details h3 /* section name layout */
-{
-	margin: 0.5ex 0ex 0ex 0ex;
+/* checkbox layout */
+div#details input[type="checkbox"] {
+    padding: 0.5ex;
+    margin: 0 2ex 0 0;
+    border: thin solid;
 }
 
-div#details input[type="checkbox"] /* checkbox layout */
-{
-	padding: 0.5ex;
-	margin: 0ex 2ex 0ex 0ex;
-	border-style: solid;
-	border-width: thin;
+div#details div.profile-header {
+    margin-top: 1ex;
+    margin-bottom: 1ex;
+    text-align: center;
 }
 
-div.details_float_right /* float both avatar and zodiac to the right */
-{
-	float: right;
-	text-align: center;
-	font-weight: bold;
+div#details div.profile-header p {
+    margin-top: 1ex;
+    margin-bottom: 1ex;
 }
 
-div.details_float_right img /* avatar and zodiac pictures */
-{
-	background-color: black;
-	padding: 0.5ex;
-	margin: 0.5ex 1ex 0ex 1ex;
-	border: medium ridge white;
+/* avatar and zodiac pictures */
+img.bordered-image {
+    background-color: black;
+    padding: 0.5ex;
+    margin: 0.5ex 1ex 0 1ex;
+    border: medium ridge white;
 }
 
-div.statistics /* versus statistics layout */
-{
-	clear: right;
-	float: right;
-	width: 12em;
-	margin: 1ex;
-	border: medium ridge white;
-	padding: 0ex 1ex 1ex 1ex;
+/* versus statistics layout */
+div.statistics {
+    max-width: 20em;
+    margin: 1ex auto 1ex auto;
+    border: medium ridge white;
+    padding: 0 1ex 1ex 1ex;
 }
 
-div.statistics > p + p /* line spacing */
-{
-	margin-top: 0.5ex;
+/* line spacing */
+div.statistics > p + p {
+    margin-top: 0.5ex;
 }
 
-div.statistics > p > span /* float values to the right */
-{
-	float: right;
-	font-weight: bold;
+/* statistics values */
+div.statistics > p > span {
+    float: right;
 }
 
-div.statistics > h4 /* versus statistics heading */
-{
-	margin: 0.5ex 0ex 0.5ex 0ex;
+/* versus statistics heading */
+div.statistics > h4 {
+    margin: 0.5ex 0 0.5ex 0;
 }
 
-.challenge_text /* challenge text input and display layout */
-{
-	margin-top: 1ex;
-	margin-bottom: 1ex;
+/* exp progress bar */
+div.exp-progress-bar {
+    border: thin solid black;
+    text-align: left;
+    margin-top: 1ex;
+    margin-bottom: 1ex;
+    width: 200px;
 }
 
-div.progress_bar /* exp progress bar */
-{
-	border: thin solid black;
-	text-align: left;
-	margin-top: 1ex;
-	margin-bottom: 1ex;
-	width: 200px;
+/* exp progress bar - inner part */
+div.exp-progress-bar > div {
+    height: 2ex;
+    background-color: green;
 }
 
-div.progress_bar > div  /* exp progress bar - inner part */
-{
-	height: 2ex;
-	background-color: green;
+/* admin panel */
+div#details fieldset {
+    margin-top: 1ex;
 }
 
-div#details fieldset /* admin panel */
-{
-	margin-top: 1ex;
-}
-
-div#details fieldset > p + p /* admin panel - spacing */
-{
-	margin-top: 0.5ex;
+/* admin panel - spacing */
+div#details fieldset > p + p {
+    margin-top: 0.5ex;
 }
 
 /* end user details */
 
 /* begin user achievements */
-
-div#achievements /* set minimum width to whole section (grants immunity to resize) */
-{
-	min-width: 1045px;
+div#achievements {
+    text-align: center;
 }
 
-div#achievements h3 /* section name layout */
-{
-	margin: 0.5ex 0ex 1ex 0ex;
+/* section name layout */
+div#achievements h3 {
+    margin: 0.5ex 0 1ex 0;
 }
 
-div#achievements > table /* achievements table */
-{
-	margin-bottom: 1ex;
+/* achievements table spacing */
+div#achievements .skin-label {
+    margin-bottom: 1ex;
+    padding-bottom: 1ex;
 }
 
-div#achievements > table table /* achievements inner table */
-{
-	padding: 1ex;
+/* achievements table heading */
+div#achievements p.achievement-heading {
+    margin: 1ex;
+    font-family: arial, sans-serif;
 }
 
-div#achievements table p /* achievements table spacing */
-{
-	margin: 1ex;
+/* achievement name */
+div#achievements p.achievement-name {
+    font-family: arial, sans-serif;
+    font-size: small;
+    text-align: center;
+    margin-top: 0.5ex;
+    margin-bottom: 0.5ex;
 }
 
-div#achievements table table p /* achievement name */
-{
-	font-size: small;
-	font-weight: bold;
-	text-align: center;
-	margin-top: 0.5ex;
-	margin-bottom: 0.5ex;
-}
-
-div#achievements img.achievement /* achievement picture */
-{
-	margin: 0.5ex 0.5ex 1ex 0.5ex;
+/* achievement picture */
+div#achievements img.achievement {
+    margin-top: 0.5ex;
+    margin-bottom: 1ex;
 }
 
 /* end user achievements */

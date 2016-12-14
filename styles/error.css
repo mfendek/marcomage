@@ -2,7 +2,17 @@
  * MArcomage CSS stylesheet - error section *
  ********************************************/
 
-.error_message /* error message layout */
-{
-	font-size: x-large;
+div#error-page {
+    padding-bottom: 5ex;
+}
+div#error-page > div {
+    text-align: center;
+}
+div#error-page p {
+    margin-top: 4ex;
+    margin-bottom: 4ex;
+}
+
+div#error-page .error-details {
+    font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
 }

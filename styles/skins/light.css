@@ -2,171 +2,163 @@
  * MArcomage CSS stylesheet - skins - light skin template *
  **********************************************************/
 
-@import url("../../js/jquery/light/jquery_ui_light.css"); /* import JQuery light skin */
+/*@import url('../../js/jquery/light/jquery_ui_light.css'); !* import JQuery light skin *!*/
 
-.skin_label /* label element layout */
-{
-	background-repeat: repeat;
+/* label element layout */
+.skin-label {
+    background-repeat: repeat;
 }
 
-.skin_text, .skin_label, img.achievement /* border layout */
-{
-	border: 2px outset black;
-	border-radius: 7px;
+/* border layout */
+.skin-text, .skin-label, img.achievement {
+    border: 2px outset black;
+    border-radius: 7px;
 }
 
-html /* general background layout */
-{
-	background-repeat: repeat;
+/* general background layout */
+html {
+    background-repeat: repeat;
 }
 
-div#menubar /* navigation bar layout */
-{
-	background-repeat: repeat;
+/* navigation bar layout */
+div#menu-bar {
+    background-repeat: repeat;
 }
 
-div#login_box /* login box layout */
-{
-	background-repeat: repeat;
-	border: 2px outset black;
-	border-radius: 7px;
+/* login box layout */
+div#login-box {
+    background-repeat: repeat;
+    border: 2px outset black;
+    border-radius: 7px;
 }
 
-hr /* horizontal line layout */
-{
-	border-color: black;
+/* horizontal line layout */
+hr {
+    border-color: black;
 }
 
-.new_message /* new message */
-{
-	color: red;
-	font-weight: bold;
-	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
+/* new message */
+.new_message {
+    color: red;
+    text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
 }
 
-.unread /* unread message */
-{
-	color: orange;
-	font-weight: bold;
-	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
+/* unread message */
+.unread {
+    color: orange;
+    text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
 }
 
-.system_message /* system message */
-{
-	color: #6495ed; /* light blue */
-	font-weight: bold;
-	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
+/* system message */
+.system_message {
+    color: #6495ed; /* light blue */
+    text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
 }
 
-button, a.button, .disabled /* submit input layout */
-{
-	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
+/* submit input layout */
+button, a.button, .disabled {
+    text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
 }
 
-button[disabled] /* disabled submit input */
-{
-	color: gray;
+/* disabled submit input */
+button[disabled] {
+    color: gray;
 }
 
-.info /* information message layout */
-{
-	color: green;
+/* information message layout */
+.info {
+    color: green;
 }
 
-.warning /* warning message layout */
-{
-	color: purple;
+/* warning message layout */
+.warning {
+    color: purple;
 }
 
-.error /* error message layout */
-{
-	color: red;
+/* error message layout */
+.error {
+    color: red;
 }
 
-.p_online /* online player layout */
-{
-	color: green;
+/* online player layout */
+.p_online {
+    color: green;
 }
 
-.p_offline /* offline player layout */
-{
-	color: red;
+/* offline player layout */
+.p_offline {
+    color: red;
 }
 
-.p_inactive /* inactive player layout */
-{
-	color: maroon;
+/* inactive player layout */
+.p_inactive {
+    color: maroon;
 }
 
-.p_dead /* dead player layout */
-{
-	color: gray;
+/* dead player layout */
+.p_dead {
+    color: gray;
 }
 
-.player
-{
-	color: green;
+.player {
+    color: green;
 }
 
-p.info_label .opponent
-{
-	color: red;
+p.info-label .opponent {
+    color: red;
 }
 
-.chatbox_player
-{
-	color: green;
+.chat-box-player {
+    color: green;
 }
 
-.chatbox_opponent
-{
-	color: purple;
+.chat-box-opponent {
+    color: purple;
 }
 
-.chatbox_system
-{
-	color: red;
+.chat-box-system {
+    color: red;
 }
 
-div#cost_per_turn, p.deck_stats /* avg cost per turn indicator layout */
-{
-	border: 2px outset black;
-	color: black;
+/* avg cost per turn indicator layout */
+div.cost-per-turn, p.deck-stats {
+    border: 2px outset black;
+    color: black;
 }
 
-#cost_per_turn > b:first-child /* bricks */
-{
-	color: red;
+/* bricks */
+.cost-per-turn > b:first-child {
+    color: red;
 }
 
-#cost_per_turn > b:first-child + b /* gems */
-{
-	color: blue;
+/* gems */
+.cost-per-turn > b:first-child + b {
+    color: blue;
 }
 
-#cost_per_turn > b:first-child + b + b /* recruits */
-{
-	color: green;
+/* recruits */
+.cost-per-turn > b:first-child + b + b {
+    color: green;
 }
 
-div.details_float_right p /* avatar and zodiac text color */
-{
-	color: green;
+/* avatar and zodiac text color */
+div.details_float_right p {
+    color: green;
 }
 
-.detail_value /* player's detail attribute color */
-{
-	color: green;
+/* player's detail attribute color */
+.detail_value {
+    color: green;
 }
 
-div.progress_bar /* exp progress bar */
-{
-	background-color: #dddddd; /* light gray */
+/* exp progress bar */
+div.exp-progress-bar {
+    background-color: #dddddd; /* light gray */
 }
 
-blockquote > div /* quote text layout */
-{
-	border: thin solid black;
-	color: black;
-	background-color: #fefefe; /* very light gray */
+/* quote text layout */
+blockquote > div {
+    border: thin solid black;
+    color: black;
+    background-color: #fefefe; /* very light gray */
 }

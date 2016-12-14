@@ -2,37 +2,44 @@
  * MArcomage CSS stylesheet - registration section *
  ***************************************************/
 
-div#registration /* registration layout */
-{
-	text-align: center;
-	padding: 2ex 0ex 2ex 0ex;
-	padding-top: 10ex;
+/* registration layout */
+div#registration {
+    text-align: center;
+    padding: 5ex 0 5ex 0;
 }
 
-div#registration div > button + button /* set distance between inputs in the registration */
-{
-	margin-left: 3ex;
+/* set distance between inputs in the registration */
+div#registration div > button + button {
+    margin-left: 3ex;
 }
 
-div#registration > * + * /* set distance between any two neighbouring elements in the registration */
-{
-	margin-top: 0.5ex;
+/* set distance between any two neighbouring elements in the registration */
+div#registration > * + * {
+    margin-top: 0.5ex;
 }
 
-div#registration > h3 /* registration title */
-{
-	font-size: x-large;
+/* registration title */
+div#registration > h3 {
+    font-size: x-large;
 }
 
-div#registration > p /* registration text */
-{
-	color: black;
-	font-size: large;
-	font-weight: bold;
-	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
+/* registration text */
+div#registration > p {
+    /*color: black;*/
+    font-size: large;
+    font-family: arial, sans-serif;
+    /*text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;*/
 }
 
-div#registration > div > input, div#registration > div > button /* registration inputs */
-{
-	font-size: medium;
+/* registration inputs */
+div#registration > div > input, div#registration > div > button {
+    font-size: medium;
+    margin-top: 0.5ex;
+}
+
+/* CAPTCHA layout */
+div.g-recaptcha {
+    display: inline-block;
+    transform: scale(0.8);
+    transform-origin: 50% 50%;
 }

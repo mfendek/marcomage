@@ -2,187 +2,212 @@
  * MArcomage CSS stylesheet - decks section *
  ********************************************/
 
-/* begin decklist */
+/* begin deck list */
 
-div#decks /* center buttons in deck list */
-{
-	min-width: 1045px;
-	text-align: center;
-	margin-bottom: 1ex;
+/* center buttons in deck list */
+div.decks {
+    text-align: center;
+    margin-bottom: 1ex;
 }
 
-div#decks > table /* decks list layout */
-{
-	margin-left: auto;
-	margin-right: auto;
+/* decks navigation (top) */
+div.decks-nav-bar {
+    margin-top: 1ex;
+    text-align: center;
+    margin-bottom: 1ex;
+}
+div.decks-nav-bar > * {
+    vertical-align: middle;
+    display: inline-block;
+}
+div.decks-nav-bar > div {
+    padding: 0.5ex 1ex 0.5ex 1ex;
 }
 
-div#decks > table th > p, div#decks > table td > p /* table cell text */
-{
-	margin: 0.5ex 1ex 0.5ex 1ex;
+/* decks navigation (bottom) */
+.responsive-table + div.decks-nav-bar {
+    margin: 0.5ex 0 0 0;
 }
 
-div.decks_navbar /* decks navigation (top) */
-{
-	text-align: center;
-	margin-bottom: 1ex;
-}
-
-table + div.decks_navbar /* decks navigation (bottom) */
-{
-	margin: 0.5ex 0ex 0ex 0ex;
-}
-
-div#decks a.deck, div#decks a.deck:link, div#decks a.deck:visited /* deck link */
-{
-	color: inherit;
-}
-
-/* end decklist */
+/* end deck list */
 
 /* begin filters */
 
-div.filters, div.misc /* filters and misc part */
-{
-	text-align: left;
-	/*min-width: 120ex;*/
-	min-width: 1045px;
-	padding-bottom: 0.5ex;
-	margin-left: 5ex;
+/* filters and misc part */
+div.deck-options {
+    margin-top: 0.5ex;
+    margin-bottom: 0.5ex;
+    text-align: center;
+}
+div.deck-options > * {
+    vertical-align: middle;
+}
+div.deck-options > * + * {
+    margin-left: 0.5ex;
 }
 
-div#cost_per_turn /* avg cost per turn indicator layout */
-{
-	float: right;
-	margin-right: 5ex;
-	border-radius: 7px;
-	padding: 0ex 0.5ex 0ex 0.5ex;
+/* avg cost per turn indicator layout */
+div.cost-per-turn {
+    display: inline-block;
+    border-radius: 7px;
+    padding: 0.5ex 0.8ex 0.5ex 0.8ex;
 }
 
-div#cost_per_turn > b, p.deck_stats > b /* set distance between avg cost per turn indicators */
-{
-	margin-left: 0.5ex;
+/* set distance between avg cost per turn indicators */
+div.cost-per-turn > b, p.deck-stats > b {
+    margin-left: 0.5ex;
 }
 
-p.deck_stats /* deck statistics */
-{
-	float: right;
-	margin-right: 1ex;
-	border-radius: 7px;
-	padding: 0ex 0.5ex 0ex 0.5ex;
+/* deck statistics */
+p.deck-stats {
+    display: inline-block;
+    border-radius: 7px;
+    padding: 0.5ex 0.8ex 0.5ex 0.8ex;
 }
 
-div#tokens /* tokens layout */
-{
-	float: right;
-	margin-right: 5ex;
+div#tokens {
+    display: inline-block;
+}
+
+div.back-to-game {
+    margin-top: 1ex;
+    text-align: center;
 }
 
 /* end filters */
 
 /* begin deck */
 
-div#card_pool > table /* position card pool in the center */
-{
-	margin-left: auto;
-	margin-right: auto;
+/* card pool layout */
+div#card-pool {
+    text-align: center;
 }
 
-div#card_pool /* card pool layout */
-{
-	text-align: center;
-	/*min-width: 114ex;*/
-	min-width: 950px;
+div#card-pool > div {
+    display: inline-block;
+    vertical-align: top;
 }
 
-.hidden /* empty slot layout */
-{
-	display: none;
+/* locked card container */
+div#card-pool > div > div[id*="card_"] {
+    position: relative
 }
 
-table.deck /* deck table layout */
-{
-	text-align: center;
-	margin: 1ex 3% 1ex 3%;
-	width: 94%;
+/* locked card */
+div#card-pool .locked-card {
+    position: absolute;
+    top: 41px;
+    left: 11px;
+    font-family: arial, sans-serif;
+    font-size: large;
+    color: red;
+    text-shadow: 0 0 1px black, 0 0 2px black, 0 0 3px black, 0 0 4px black, 0 0 5px black;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+    transform: rotate(-45deg);
 }
 
-table.deck th > p /* deck table header */
-{
-	font-size: large;
-	padding: 1ex;
-	background-color: #6495ed; /* light blue */
+/* empty slot layout */
+.hidden {
+    display: none;
 }
 
-table.deck button /* set distance of "return" buttons in the deck table */
-{
-	margin-bottom: 1ex;
+/* deck table header */
+p.deck-header {
+    font-family: arial, sans-serif;
+    font-size: large;
+    padding-top: 0.5ex;
+    padding-bottom: 0.5ex;
+    background-color: #6495ed; /* light blue */
+    text-align: center;
+    text-transform: capitalize;
 }
 
-table.deck > tr > td + td /* deck inner borders */
-{
-	border-left: thin solid #6495ed; /* light blue */
+/* common cards heading */
+p.deck-header.common {
+    color: lime;
 }
 
-table.deck th:first-child > p /* common cards heading */
-{
-	color: lime;
+/* uncommon cards heading */
+p.deck-header.uncommon {
+    color: #8b0000; /* DarkRed */
 }
 
-table.deck th:first-child + th > p /* uncommon cards heading */
-{
-	color: #8b0000; /* DarkRed */
+/* rare cards heading */
+p.deck-header.rare {
+    color: yellow;
 }
 
-table.deck th:first-child + th + th > p /* rare cards heading */
-{
-	color: yellow;
+/* taken card in card pool */
+.taken > div.card {
+    opacity: 0.6;
 }
 
-.taken > div.karta /* taken card in card pool */
-{
-	opacity: 0.6;
+#deck-note-dialog {
+    display: none;
 }
 
 /* end deck */
 
 /* begin shared deck details */
 
-div#deck_shared .skin_text /* shared deck data */
-{
-	margin: 1ex auto 1ex auto;
-	max-width: 50em;
-	width: 35%;
+/* shared deck data */
+div#deck-shared .skin-text {
+    margin: 1ex auto 1ex auto;
+    max-width: 30em;
 }
 
-div#deck_shared .skin_text p /* deck note */
-{
-	text-align: justify;
-	margin: 1ex 1.5ex 1ex 1.5ex;
+/* deck note */
+div#deck-shared .skin-text p {
+    text-align: justify;
+    margin: 1ex 1.5ex 1ex 1.5ex;
 }
+
+/* deck table layout */
+div.deck {
+    margin-top: 1ex;
+}
+
+div.deck .skin-label {
+    margin-bottom: 1ex;
+}
+
+div.deck .deck-cards {
+    padding-left: 2ex;
+    padding-right: 2ex;
+    padding-bottom: 1ex;
+    text-align: center;
+}
+
+div.deck .deck-cards .card {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* set distance of "return" buttons in the deck table */
+div.deck .deck-cards button {
+    margin-bottom: 1ex;
+}
+
 
 /* end shared deck details */
 
 /* begin deck note */
+/* deck note subsection */
 
-div#deck_note /* deck note subsection */
-{
-	min-width: 1045px;
+/* deck note layout */
+div.deck-note > div {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 30em;
+    padding: 1ex;
 }
 
-div#deck_note > div /* deck note layout */
-{
-	margin-right: auto;
-	margin-left: auto;
-	width: 50%;
-	font-weight: bold;
-	padding: 1ex;
-}
-
-div#deck_note > div > * /* set distance between elements */
-{
-	margin-bottom: 1ex;
-	margin-top: 1ex;
+/* set distance between elements */
+div.deck-note > div > * {
+    margin-bottom: 1ex;
+    margin-top: 1ex;
 }
 
 /* end deck note */

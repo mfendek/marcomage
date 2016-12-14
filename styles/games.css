@@ -2,384 +2,468 @@
  * MArcomage CSS stylesheet - games section *
  ********************************************/
 
-/* begin gamelist */
+/* begin game list */
 
-div#games /* game section layout */
-{
-	min-width: 1045px;
-	text-align: center;
+/* game section layout */
+div#games {
+    text-align: center;
 }
 
-div#games h3 /* section heading */
-{
-	margin: 0ex;
+/* section heading */
+div#games h3 {
+    margin: 0;
 }
 
-div#games table /* table layout */
-{
-	margin: 0.5ex auto 1ex auto;
+/* table layout */
+div#games table {
+    margin: 0.5ex auto 1ex auto;
 }
 
-div#games table th > p, div#games table td > p /* table cell text */
-{
-	margin: 0.5ex 1ex 0.5ex 1ex;
+/* table cell text */
+div#games table th > p, div#games table td > p {
+    margin: 0.5ex 1ex 0.5ex 1ex;
 }
 
-div#games input[type="checkbox"] /* checkbox layout */
-{
-	padding: 0.5ex;
-	margin: 0ex 2ex 0ex 0ex;
-	border-style: solid;
-	border-width: thin;
+/* checkbox layout */
+div#games input[type="checkbox"] {
+    padding: 0.5ex;
+    margin: 0 1ex 0 0;
+    border: thin solid;
 }
 
-div#active_games /* active games subsection */
-{
-	float: left;
-	width: 61%;
-	margin: 0ex 0ex 1ex 1ex;
+/* active games subsection */
+div#active-games {
+    padding-left: 1ex;
+    padding-right: 1ex;
+    margin-bottom: 1ex;
 }
 
-div#hosted_games /* hosted games subsection */
-{
-	float: right;
-	width: 36%;
-	margin: 0ex 1ex 1ex 0ex;
+/* hosted games subsection */
+div#hosted-games {
+    margin-bottom: 1ex;
 }
 
-div#ai_challenges /* AI challenges section */
-{
-	margin-left: 1ex;
-	margin-right: 1ex;
+/* AI challenges section */
+div#ai-challenges {
+    margin-left: 1ex;
+    margin-right: 1ex;
 }
 
-div#ai_challenges > div /* AI challenges list */
-{
-	margin: 1ex auto 1ex auto;
-	padding: 1ex;
-	max-width: 50em;
+/* AI challenges list */
+div#ai-challenges > div {
+    margin: 1ex auto 1ex auto;
+    padding: 1ex;
+    max-width: 50em;
 }
 
-div#ai_challenges h4 /* AI challenge heading */
-{
-	margin: 0ex 0ex 0.5ex 0ex;
+/* AI challenge heading */
+div#ai-challenges h4 {
+    margin: 0 0 0.5ex 0;
 }
 
-div#ai_challenges p /* AI challenge body */
-{
-	text-align: justify;
+/* AI challenge body */
+div#ai-challenges p {
+    text-align: justify;
 }
 
-div#active_games h3, div#hosted_games h3 /* subsection heading */
-{
-	margin: 2ex;
+/* subsection heading */
+div#active-games h3, div#hosted-games h3 {
+    margin: 2ex;
 }
 
-div#hosted_games > p > a.button + a.button /* distance between subsection buttons */
-{
-	margin-left: 2ex;
+/* distance between subsection buttons */
+div#hosted-games > p > a.button + a.button {
+    margin-left: 0.5ex;
 }
 
-div#games .filters /* filters layout */
-{
-	margin: 1ex 0ex 2ex 2ex;
+/* filters layout */
+div#games .filters {
+    margin-top: 1ex;
+    margin-bottom: 1ex;
 }
 
-div#games .misc /* misc layout */
-{
-	margin-top: 1ex;
+/* misc layout */
+div#games .misc {
+    margin-top: 1ex;
 }
 
-p.ended_game /* color for text information about the game ("game has ended") */
-{
-	font-style: italic;
+/* color for text information about the game ("game has ended") */
+p.ended-game {
+    font-style: italic;
 }
 
-p.flags /* flags column */
-{
-	text-align: left;
+/* flags column */
+p.flags {
+    text-align: left;
 }
 
-/* end gamelist */
+/* end game list */
 
 /* begin card flags */
 
-div.flag_space /* card flags area */
-{
-	width: 90px;
-	margin-top: 0.5ex;
+/* card flags area */
+div.flag-space {
+    margin-top: 0.5ex;
 }
 
-span.newcard /* new card flag (indicated above a new card) */
-{
-	border-color: #6495ed;
-	border-style: ridge;
-	border-radius: 7px;
-	font-size: x-small;
-	padding: 0ex 1ex 0ex 1ex;
-	float: left;
+/* new card flag (indicated above a new card) */
+span.new-card {
+    text-transform: uppercase;
+    border: ridge #6495ed;
+    border-radius: 7px;
+    font-size: x-small;
+    padding: 0 1ex 0 1ex;
 }
 
-img.revealed /* reveal flag */
-{
-	float: right;
+/* card flag */
+p.flag {
+    text-transform: uppercase;
+    border: ridge #6495ed;
+    border-radius: 7px;
+    font-size: x-small;
+    max-width: 86px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-p.flag /* card flag */
-{
-	border-color: #6495ed;
-	margin-top: 1ex;
-	border-style: ridge;
-	border-radius: 7px;
-	font-size: x-small;
-	max-width: 86px;
+/* played card tag */
+p.played {
+    border-color: green;
 }
 
-p.played /* played card tag */
-{
-	border-color: green;
+p.played > span {
+    text-transform: none;
 }
 
-p.discarded /* discarded card flag */
-{
-	border-color: red;
+/* discarded card flag */
+p.discarded {
+    border-color: red;
 }
 
 /* end card flags */
 
 /* begin game */
-
-div#game
-{
-	min-width: 1045px;
-	padding-top: 1ex;
-	padding-bottom: 1ex;
+div.game > div.game-display {
+    padding-top: 1ex;
+    padding-bottom: 1ex;
+    background: no-repeat center center;
+    background-size: cover;
 }
 
-div#game input[type="radio"] /* radio button */
-{
-	padding: 1ex;
-	margin: 0ex;
-	border-style: solid;
-	border-width: thin;
+div.game .row > div > * {
+    margin-top: 0.5ex;
+    margin-bottom: 0.5ex;
 }
 
-p.facility /* facilites text */
-{
-	color: white;
-	padding: 0.9ex 0ex 0ex 0.6ex;
-	font-size: x-large;
+div.game .hand, div.game .row > div {
+    text-align: center;
 }
 
-p.resource /* resources text */
-{
-	color: black;
-	margin: 2ex 0ex 0ex 0.8ex;
-	font-weight: bold;
-	font-size: medium;
+div.game .hand > div {
+    display: inline-block;
+    vertical-align: top;
 }
 
-tr.buttons > td /* in game buttons */
-{
-	text-align: center;
+/* add extra margin when cards are displayed in the "hand" part of the game section*/
+div.game .hand div.card, div.game .hand div.hidden-card {
+    margin: 1.5ex 1ex 0.7ex 1ex;
 }
 
-td.stats > div /* facilites/resources layout */
-{
-	background-position: center center;
-	background-repeat: no-repeat;
-	height: 70px;
-	width: 78px;
-	text-align: left;
+
+div.game .empire-info > div {
+    display: inline-block;
+    vertical-align: bottom;
 }
 
-td.stats > div + h5 /* player and opponent names */
-{
-	font-weight: bold;
-	margin: 1ex 0ex 0.5ex 0ex;
-	font-size: medium;
-	text-align: center;
+div.game .empire-info > div.card-list {
+    vertical-align: top;
+    min-width: 98px;
 }
 
-td.stats > div:first-child /* quarry/bricks layout image */
-{
-	background-image: url('../img/game/bricks.png');
+/* radio button */
+div.game input[type="radio"] {
+    padding: 1ex;
+    margin: 0;
+    border: thin solid;
 }
 
-td.stats > div:first-child + div /* magic/gems layout image */
-{
-	background-image: url('../img/game/gems.png');
+/* facilities text */
+p.facility {
+    color: white;
+    padding: 0;
+    margin: 0 0 0 5px;
+    height: 54px;
+    line-height: 54px;
+    font-size: 24px;
 }
 
-td.stats > div:first-child + div + div /* dungeon/recruits layout image */
-{
-	background-image: url('../img/game/recruits.png');
+/* resources text */
+p.resource {
+    color: black;
+    padding: 0;
+    margin: 0 0 0 5px;
+    font-weight: bold;
+    height: 16px;
+    line-height: 16px;
+    font-size: 16px;
 }
 
-td.stats > h5 > img /* flag image*/
-{
-	margin-left: 0.5ex;
-	margin-right: 0.5ex;
+p.info-label.castle {
+    margin-top: 1ex;
+    padding-left: 1ex;
+    padding-right: 1ex;
 }
 
-span.changes /* attributes changes layout */
-{
-	margin-left: 0.3ex;
-	font-size: x-small;
-	font-weight: normal;
+/* in game buttons */
+.buttons {
+    text-align: center;
 }
 
-p.info_label /* information label used in multiple instances in game section */
-{
-	text-align: center;
-	border-radius: 7px;
-	font-size: medium;
-	font-weight: bold;
+.buttons > * + * {
+    margin-left: 1ex;
 }
 
-select.card_modes /* card mode selector */
-{
-	margin-left: 2.5ex;
+/* facilities/resources layout */
+.stats > div {
+    background: no-repeat center center;
+    height: 70px;
+    width: 78px;
+    text-align: left;
 }
 
-p.history_label /* card history label */
-{
-	font-size: small;
-	margin-top: 1ex;
+/* player and opponent names */
+div.game .token-counter.player-label {
+    font-size: small;
+    font-family: arial, sans-serif;
 }
 
-div.history /* history of played cards */
-{
-	overflow: auto;
-	width: 98px;
-	height: 85%; /* prevents Chrome display bug (overflow related) */
+div.game .token-counter > img {
+    margin-bottom: 0.5ex;
 }
 
-div.chatsection /* chat section layout */
-{
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
-	max-width: 61em;
+/* quarry/bricks layout image */
+.stats > div:first-child {
+    background-image: url('../img/game/bricks.png');
 }
 
-div.chatbox /* chatbox window */
-{
-	overflow: auto;
-	max-height: 11.5ex;
-	margin-top: 0.5ex;
-	margin-left: auto;
-	margin-right: auto;
-	border-radius: 7px;
-	padding: 0ex 0.5ex 0.5ex 0.5ex;
-	text-align: left;
-	width: 51em;
+/* magic/gems layout image */
+.stats > div:first-child + div {
+    background-image: url('../img/game/gems.png');
 }
 
-div.chatbox > div /* chatbox message content */
-{
-	margin-left: 0.5ex;
+/* dungeon/recruits layout image */
+.stats > div:first-child + div + div {
+    background-image: url('../img/game/recruits.png');
 }
 
-input.chatboard /* chatbox input elements */
-{
-	font-size: small;
-	padding: 0ex 0.5ex 0ex 0.5ex;
+/* flag image*/
+.stats > h5 > img {
+    margin-left: 0.5ex;
+    margin-right: 0.5ex;
 }
 
-div#chat_inputs /* chatbox inputs */
-{
-	margin-top: 1ex;
+/* attributes changes layout */
+span.changes {
+    margin-left: 0.3ex;
+    font-size: x-small;
+    font-weight: normal;
 }
 
-div#chat_inputs > input[type="text"] /* chat message input */
-{
-	font-size: medium;
-	margin-right: 2ex;
+/* information label used in multiple instances in game section */
+p.info-label {
+    text-align: center;
+    border-radius: 7px;
+    font-size: medium;
 }
 
-div#chat_dialog > div /* chat message list */
-{
-	overflow: auto;
-	height: 20em;
+/* card mode selector */
+select.card-modes {
+    margin-left: 0.5ex;
 }
 
-div.chat_message /* chat message */
-{
-	max-width: 50em;
-	padding-top: 0.5ex;
-	padding-bottom: 1ex;
-	margin-left: 0.5ex;
+/* card history label */
+p.history-label {
+    text-transform: uppercase;
+    font-size: x-small;
 }
 
-div.towerbody /* body part of the tower */
-{
-	background-image: url('../img/game/tower_body.png');
-	background-position: bottom left;
-	background-repeat: repeat-y;
-	width: 37px;
+/* history of played and discarded cards */
+div.history, div.discarded-cards-list {
+    overflow: auto;
+    width: 98px;
+    height: 85%; /* prevents Chrome display bug (overflow related) */
+    margin-left: auto;
+    margin-right: auto;
 }
 
-div.wallbody /* body part of the wall */
-{
-	background-image: url('../img/game/wall_body.png');
-	background-position: bottom left;
-	background-repeat: repeat-y;
-	width: 19px;
+div.discarded-cards-list {
+    width: 99px;
 }
 
-p.token_counter /* token counter layout */
-{
-	padding: 0.3ex 0.2ex 0.3ex 0.2ex;
-	margin: 1ex 0.5ex 0ex 0.5ex;
-	border-radius: 7px;
-	font-size: small;
-	text-align: center;
+td.discarded-cards-separator {
+    border-right: thin solid yellow;
 }
 
-p.token_counter > span /* token counter value */
-{
-	margin-left: 0.5ex;
+/* chat section layout */
+div.chat-section {
+    margin-top: 1ex;
+    margin-bottom: 1ex;
+    padding-left: 2ex;
+    padding-right: 2ex;
 }
 
-td.game_mode_flags > img /* game mode flags */
-{
-	margin: 0ex;
+/* chat box window */
+div.chat-box {
+    overflow: auto;
+    max-height: 11.5ex;
+    margin-top: 0.5ex;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 7px;
+    padding: 0.5ex 1ex 1ex 1ex;
+    text-align: left;
+    max-width: 50em;
 }
 
-div.unplayable > div.karta /* unplayable card */
-{
-	opacity: 0.6;
+/* chat box message content */
+div.chat-box > div {
+    margin-left: 0.5ex;
 }
 
-div.selected_card /* selected card */
-{
-	border-style: double;
-	border-color: black;
+/* chat box inputs */
+div#chat-inputs {
+    margin-top: 1ex;
+}
+div#chat-inputs > * {
+    vertical-align: middle;
+}
+
+/* chat message input */
+div.chat-section textarea {
+    font-size: medium;
+    margin-top: 1ex;
+    max-width: 50em;
+}
+
+/* chat message list */
+div#chat-dialog > div {
+    overflow: auto;
+    height: 20em;
+}
+
+/* chat message */
+div.chat-message {
+    max-width: 50em;
+    padding-top: 0.5ex;
+    padding-bottom: 1ex;
+    margin-left: 0.5ex;
+}
+
+/* tower display */
+div.tower-display {
+    margin: 0 1ex 0 1ex;
+}
+
+div.tower-display > div {
+    background: url('../img/game/tower_body.png') repeat-y bottom left;
+    width: 37px;
+    margin-left: 14px;
+}
+
+div.tower-display > img, div.wall-display > img {
+    display: block
+}
+
+/* wall display */
+div.wall-display > div {
+    background: url('../img/game/wall_body.png') repeat-y bottom left;
+    width: 19px;
+}
+
+div.game .game-state {
+    display: inline-block;
+    padding-left: 1ex;
+    padding-right: 1ex;
+}
+
+/* token counter layout */
+div.game .empire-info > div.token-list {
+    display: block;
+}
+
+div.token-list > p.token-counter {
+    padding: 0.5ex 1ex 0.5ex 1ex;
+    margin: 1ex 0.5ex 0 0.5ex;
+    border-radius: 7px;
+    font-size: small;
+    text-align: center;
+    display: inline-block;
+}
+
+/* token counter value */
+div.token-list > p.token-counter > span {
+    margin-left: 0.5ex;
+}
+
+/* game mode flags */
+.game-mode-flags {
+    display: inline-block;
+}
+
+.game-mode-flags > img {
+    margin: 0;
+}
+
+/* unplayable card */
+div.unplayable > div.card {
+    opacity: 0.6;
+    transition: opacity 200ms;
+}
+
+div.unplayable > div.card:hover {
+    opacity: 1;
+}
+
+/* selected card */
+div.selected-card {
+    border: double black;
+}
+
+/* game cheat menu */
+div.game div#game-cheat-menu {
+    text-align: center;
+}
+
+/* replays navigation bar */
+div.game p.information-line > * + * {
+    margin-left: 0.5ex;
+}
+
+div.game button[name="slideshow-play"], div.game button[name="slideshow-pause"] {
+    display: none;
+}
+
+#game-note-dialog, #chat-dialog {
+    display: none;
 }
 
 /* end game */
 
 /* begin game note */
+/* game note subsection */
 
-div#game_note /* game note subsection */
-{
-	min-width: 1045px;
+/* game note layout */
+div.game-note > div {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 30em;
+    padding: 1ex;
 }
 
-div#game_note > div /* game note layout */
-{
-	margin-right: auto;
-	margin-left: auto;
-	width: 50%;
-	font-weight: bold;
-	padding: 1ex;
-}
-
-div#game_note > div > * /* set distance between elements */
-{
-	margin-bottom: 1ex;
-	margin-top: 1ex;
+/* set distance between elements */
+div.game-note > div > * {
+    margin-bottom: 1ex;
+    margin-top: 1ex;
 }
 
 /* end message details */

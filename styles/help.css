@@ -2,78 +2,71 @@
  * MArcomage CSS stylesheet - help section *
  *******************************************/
 
-div#help /* section layout */
-{
-	text-align: left;
-	min-width: 1045px;
-	margin-bottom: 1ex;
+/* section layout */
+div#help {
+    margin-bottom: 1ex;
 }
 
-div#help_menu /* menu part of help section */
-{
-	float: left;
-	width: 20%;
-	margin-left: 1ex;
-	margin-bottom: 1ex;
+/* menu part of help section */
+aside#help-menu {
+    margin-bottom: 1ex;
 }
 
-div#help_menu ul /* menu layout */
-{
-	list-style-type: none;
+/* menu layout */
+aside#help-menu ul {
+    font-family: arial, sans-serif;
+    list-style-type: none;
 }
 
-div#help_menu > ul > li /* set distance between list items */
-{
-	margin-bottom: 2ex;
-	margin-top: 2ex;
+/* set distance between list items */
+aside#help-menu > ul > li {
+    margin-bottom: 1ex;
+    margin-top: 1ex;
 }
 
-div#help_menu > ul a.button /* menu button layout */
-{
-	padding: 0.1ex 0.9ex 0.1ex 0.9ex;
-	margin-right: 3ex;
-	margin-bottom: 0.5ex;
+/* menu button layout */
+aside#help-menu > ul a.button {
+    padding: 0.1ex 0.9ex 0.1ex 0.9ex;
+    margin-right: 3ex;
+    margin-bottom: 0.5ex;
 }
 
-div#content /* content part of help section */
-{
-	float: right;
-	width: 70%;
-	text-align: justify;
-	padding: 1ex 5ex 2ex 5ex;
-	line-height: 3.5ex;
-	min-height: 420px;
-	margin-right: 1ex;
-	margin-bottom: 1ex;
+/* content part of help section */
+div#content {
+    text-align: justify;
+    padding: 1ex 5ex 2ex 5ex;
+    line-height: 3.5ex;
+    min-height: 420px;
+    margin-bottom: 1ex;
 }
 
-div#content > div /* text content */
-{
-	margin-left: auto;
-	margin-right: auto;
-	max-width: 50em;
+/* text content */
+div#content > div {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 50em;
 }
 
-div#content img.icon /* icon image */
-{
-	margin: 0ex 0.5ex 0ex 0ex;
+/* icon image */
+div#content img.icon {
+    margin: 0 0.5ex 0 0;
 }
 
-div#content table /* table layout */
-{
-	text-align: center;
-	margin-top: 2ex;
-	margin-bottom: 2ex;
+/* table layout */
+div#content table {
+    text-align: center;
+    margin-top: 2ex;
+    margin-bottom: 2ex;
 }
 
-div#content > div > p > img, div#content > div > p > a > img /* image bordering */
-{
-	margin: 1ex;
-	border: medium solid white;
-	border-radius: 7px;
+/* image bordering */
+div#content > div > p > img, div#content > div > p > a > img {
+    margin: 1ex;
+    border: medium solid white;
+    border-radius: 7px;
 }
 
-div#content > div > p + p /* set distance between paragraphs */
-{
-	margin-top: 2ex;
+/* set distance between paragraphs */
+div#content > div > p + p {
+    margin-top: 2ex;
 }

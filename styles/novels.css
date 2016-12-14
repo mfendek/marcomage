@@ -2,90 +2,75 @@
  * MArcomage CSS stylesheet - novels section *
  *********************************************/
 
-div#novels /* novels layout */
-{
-	text-align: left;
-	min-width: 1045px;
-	margin-bottom: 1ex;
-	margin-right: 1ex;
+/* menu part of novels section */
+aside#novels-menu {
+    margin-bottom: 1ex;
 }
 
-div#nov_float_left /* menu part of novels section */
-{
-	float: left;
-	width: 20%;
-	margin-left: 1ex;
-	margin-bottom: 1ex;
+/* menu layout */
+aside#novels-menu ul {
+    list-style-type: none;
 }
 
-div#nov_float_left ul /* menu layout */
-{
-	list-style-type: none;
+/* set distance between list items */
+aside#novels-menu > ul > li {
+    margin-bottom: 2ex;
+    margin-top: 2ex;
 }
 
-div#nov_float_left > ul > li /* set distance between list items */
-{
-	margin-bottom: 2ex;
-	margin-top: 2ex;
+/* menu button layout */
+aside#novels-menu > ul a.button {
+    margin-right: 1ex;
 }
 
-div#nov_float_left > ul a.button /* menu button layout */
-{
-	padding: 0.1ex 0.9ex 0.1ex 0.9ex;
-	margin-right: 3ex;
-	margin-bottom: 0.5ex;
+/* second level menu layout */
+aside#novels-menu > ul ul > li {
+    margin-bottom: 1ex;
+    margin-top: 1ex;
+    font-size: medium;
+    font-style: normal;
 }
 
-div#nov_float_left > ul ul > li /* second level menu layout */
-{
-	margin-bottom: 1ex;
-	margin-top: 1ex;
-	font-size: medium;
-	font-style: normal;
+/* content part of novels section */
+div#novels-content {
+    text-align: justify;
+    padding: 1ex 5ex 2ex 5ex;
+    line-height: 3.5ex;
+    min-height: 420px;
+    margin-bottom: 1ex;
 }
 
-div#nov_float_right /* content part of novels section */
-{
-	float: right;
-	width: 70%;
-	text-align: justify;
-	padding: 1ex 5ex 2ex 5ex;
-	line-height: 3.5ex;
-	min-height: 420px;
-	margin-bottom: 1ex;
+/* text content */
+div#novels-content > div {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 50em;
 }
 
-div#nov_float_right /* text content */
-{
-	margin-left: auto;
-	margin-right: auto;
-	max-width: 50em;
+/* top and bottom navigation bar */
+div.navigation {
+    text-align: center;
+    margin-top: 2ex;
+    margin-bottom: 2ex;
 }
 
-div.navigation /* top and bottom navigation bar */
-{
-	text-align: center;
-	margin-top: 2ex;
-	margin-bottom: 2ex;
+/* "previous" button layout in the navigation bar */
+.previous {
+    float: left;
 }
 
-.previous /* "previous" button layout in the navigation bar */
-{
-	float: left;
+/* "next" button layout in the navigation bar */
+.next {
+    float: right;
 }
 
-.next /* "next" button layout in the navigation bar */
-{
-	float: right;
+/* heading layout in novels content */
+div#novels h4 {
+    text-align: center;
 }
 
-div#novels h4 /* heading layout in novels content */
-{
-	text-align: center;
-}
-
-div#novels h5 /* heading layout in novels content */
-{
-	text-align: center;
-	font-size: large;
+/* heading layout in novels content */
+div#novels h5 {
+    text-align: center;
+    font-size: large;
 }

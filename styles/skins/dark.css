@@ -2,193 +2,185 @@
  * MArcomage CSS stylesheet - skins - dark skin template *
  *********************************************************/
 
-@import url("../../js/jquery/dark/jquery_ui_dark.css"); /* import JQuery dark skin */
+/*@import url('../../js/jquery/dark/jquery_ui_dark.css'); !* import JQuery dark skin *!*/
 
-.skin_text /* text element layout */
-{
-	color: #cccccc; /* light gray */
+/* text element layout */
+.skin-text {
+    color: #cccccc; /* light gray */
 }
 
-.skin_label /* label element layout */
-{
-	background-repeat: repeat;
-	color: #cccccc; /* light gray */
+/* label element layout */
+.skin_label {
+    background-repeat: repeat;
+    color: #cccccc; /* light gray */
 }
 
-.skin_text, .skin_label, img.achievement /* border layout */
-{
-	border: 2px outset #cccccc;
-	border-radius: 7px;
+/* border layout */
+.skin-text, .skin-label, img.achievement {
+    border: 2px outset #cccccc;
+    border-radius: 7px;
 }
 
-html /* general background layout */
-{
-	background-repeat: repeat;
-	color: #cccccc; /* light gray */
+/* general background layout */
+html {
+    background-repeat: repeat;
+    color: #cccccc; /* light gray */
 }
 
-div#menubar /* navigation bar layout */
-{
-	background-repeat: repeat;
+/* navigation bar layout */
+div#menu-bar {
+    background-repeat: repeat;
 }
 
-div#login_box /* login box layout */
-{
-	background-repeat: repeat;
-	border: 2px outset #cccccc;
-	border-radius: 7px;
+/* login box layout */
+div#login-box {
+    background-repeat: repeat;
+    border: 2px outset #cccccc;
+    border-radius: 7px;
 }
 
-input, button, textarea, a.button, .disabled /* input text fields */
-{
-	background-color: #dddddd; /* very light gray */
+/* input text fields */
+input, button, textarea, a.button, .disabled {
+    background-color: #dddddd; /* very light gray */
 }
 
-.new_message /* new message */
-{
-	color: red;
-	font-weight: bold;
+/* new message */
+.new_message {
+    color: red;
 }
 
-.unread /* unread message */
-{
-	color: orange;
-	font-weight: bold;
+/* unread message */
+.unread {
+    color: orange;
 }
 
-.system_message /* system message */
-{
-	color: #6495ed; /* light blue */
-	font-weight: bold;
+/* system message */
+.system_message {
+    color: #6495ed; /* light blue */
 }
 
-button, a.button:link, a.button:visited /* submit input layout */
-{
-	color: #dddddd; /* very light gray */
+/* submit input layout */
+button, a.button:link, a.button:visited {
+    color: #dddddd; /* very light gray */
 }
 
-button[disabled] /* disabled submit input */
-{
-	color: gray;
+/* disabled submit input */
+button[disabled] {
+    color: gray;
 }
 
-.info /* information message layout */
-{
-	color: lime;
+/* information message layout */
+.info {
+    color: lime;
 }
 
-.warning /* warning message layout */
-{
-	color: yellow;
+/* warning message layout */
+.warning {
+    color: yellow;
 }
 
-.error /* error message layout */
-{
-	color: red;
+/* error message layout */
+.error {
+    color: red;
 }
 
-.p_online /* online player layout */
-{
-	color: lime;
+/* online player layout */
+.p_online {
+    color: lime;
 }
 
-.p_offline /* offline player layout */
-{
-	color: red;
+/* offline player layout */
+.p_offline {
+    color: red;
 }
 
-.p_inactive /* inactive player layout */
-{
-	color: maroon;
+/* inactive player layout */
+.p_inactive {
+    color: maroon;
 }
 
-.p_dead /* dead player layout */
-{
-	color: gray;
+/* dead player layout */
+.p_dead {
+    color: gray;
 }
 
-p.info_label /* information label used in multiple instances in game section */
-{
-	color: #dddddd; /* very light gray */
+/* information label used in multiple instances in game section */
+p.info-label {
+    color: #dddddd; /* very light gray */
 }
 
-.player
-{
-	color: lime;
+p.info-label .opponent {
+    color: #ff69b4; /* hot pink */
 }
 
-p.info_label .opponent
-{
-	color: #ff69b4; /* hot pink */
+/* token counter layout */
+.token-counter {
+    color: #dddddd; /* very light gray */
 }
 
-p.token_counter /* token counter layout */
-{
-	color: #dddddd; /* very light gray */
+.player {
+    color: lime;
 }
 
-div.chatbox /* chatbox window */
-{
-	color: #dddddd; /* very light gray */
+/* chat box window */
+div.chat-box {
+    color: #dddddd; /* very light gray */
 }
 
-p.flag, span.newcard /* new card flag (indicated above a new card) */
-{
-	color: #dddddd; /* very light gray */
+/* new card flag (indicated above a new card) */
+p.flag, span.new-card {
+    color: #dddddd; /* very light gray */
 }
 
-.chatbox_player
-{
-	color: #add8e6; /* light blue */
+.chat-box-player {
+    color: #add8e6; /* light blue */
 }
 
-.chatbox_opponent
-{
-	color: #90ee90; /* light green */
+.chat-box-opponent {
+    color: #90ee90; /* light green */
 }
 
-.chatbox_system
-{
-	color: red;
+.chat-box-system {
+    color: red;
 }
 
-div#cost_per_turn, p.deck_stats /* avg cost per turn indicator layout */
-{
-	border: 2px outset #cccccc;
-	color: #cccccc; /* light gray */
+/* avg cost per turn indicator layout */
+div.cost-per-turn, p.deck-stats {
+    border: 2px outset #cccccc;
+    color: #cccccc; /* light gray */
 }
 
-#cost_per_turn > b:first-child /* bricks */
-{
-	color: #bc8f8f; /* RosyBrown */
+/* bricks */
+.cost-per-turn > b:first-child {
+    color: #bc8f8f; /* RosyBrown */
 }
 
-#cost_per_turn > b:first-child + b /* gems */
-{
-	color: #00bfff; /* DeepSkyBlue */
+/* gems */
+.cost-per-turn > b:first-child + b {
+    color: #00bfff; /* DeepSkyBlue */
 }
 
-#cost_per_turn > b:first-child + b + b /* recruits */
-{
-	color: #8fbc8f; /* DarkSeaGreen */
+/* recruits */
+.cost-per-turn > b:first-child + b + b {
+    color: #8fbc8f; /* DarkSeaGreen */
 }
 
-div.details_float_right p /* avatar and zodiac text color */
-{
-	color: lime;
+/* avatar and zodiac text color */
+div.details_float_right p {
+    color: lime;
 }
 
-.detail_value /* player's detail attribute color */
-{
-	color: lime;
+/* player's detail attribute color */
+.detail_value {
+    color: lime;
 }
 
-div.progress_bar /* exp progress bar */
-{
-	background-color: gray;
+/* exp progress bar */
+div.exp-progress-bar {
+    background-color: gray;
 }
 
-blockquote > div /* quote text layout */
-{
-	border: thin solid #cccccc; /* light gray */
+/* quote text layout */
+blockquote > div {
+    border: thin solid #cccccc; /* light gray */
 }

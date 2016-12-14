@@ -1,86 +1,80 @@
 /*************************************************
  * MArcomage CSS stylesheet - skins - blue theme *
  *************************************************/
+/* import light skin template */
+@import url('light.css');
 
-@import url("light.css"); /* import light skin template */
-
-.skin_text /* text element layout */
-{
-	background-image: url('../../img/skins/blue_text.jpg');
-	background-repeat: repeat;
+/* text element layout */
+.skin-text {
+    background: url('../../img/skins/blue_text.jpg') repeat;
 }
 
-.skin_label /* label element layout */
-{
-	background-image: url('../../img/skins/blue_label.gif');
+/* label element layout */
+.skin-label {
+    background-image: url('../../img/skins/blue_label.gif');
 }
 
-html /* general background layout */
-{
-	background-image: url('../../img/skins/bg_blue.gif');
+/* general background layout */
+html {
+    background-image: url('../../img/skins/bg_blue.gif');
 }
 
-div#menubar /* navigation bar layout */
-{
-	background-image: url('../../img/skins/blue_label.gif');
+/* navigation bar layout */
+div#menu-bar {
+    background-image: url('../../img/skins/blue_label.gif');
 }
 
-div#login_box /* login box layout */
-{
-	background-image: url('../../img/skins/blue_label.gif');
+/* login box layout */
+div#login-box {
+    background-image: url('../../img/skins/blue_label.gif');
 }
 
-tr.table_row:hover /* highlight table row */
-{
-	background-color: rgb(205,206,255); /* light purple */
+/* highlight table row */
+.table-row:hover {
+    background-color: rgb(205, 206, 255); /* light purple */
 }
 
-h2,h3,h4,h5 /* heading layout */
-{
-	color: rgb(150,120, 167); /* light purple */
-	text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
+/* heading layout */
+h2, h3, h4, h5 {
+    color: rgb(150, 120, 167); /* light purple */
+    text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;
 }
 
-button, a.button, .disabled /* submit input layout */
-{
-	background-color: rgb(150,138, 255); /* light purple */
-	border-color: rgb(205,206,255); /* light purple */
+/* submit input layout */
+button, a.button, .disabled {
+    background-color: rgb(150, 138, 255); /* light purple */
+    border-color: rgb(205, 206, 255); /* light purple */
 }
 
-button.marked_button, a.marked_button /* highlighted button */
-{
-	background-color: rgb(5,204,0); /* medium green */
+/* highlighted button */
+button.marked_button, a.marked_button, .nav-buttons button:hover, .nav-buttons .button:hover {
+    background-color: rgb(5, 204, 0); /* medium green */
 }
 
-p.info_label /* information label used in multiple instances in game section */
-{
-	border: medium ridge rgb(150,138, 255); /* light purple */
-	background-image: url('../../img/skins/blue_text.jpg');
-	background-repeat: repeat;
+/* information label used in multiple instances in game section */
+p.info-label {
+    border: medium ridge rgb(150, 138, 255); /* light purple */
+    background: url('../../img/skins/blue_text.jpg') repeat;
 }
 
-p.token_counter /* token counter layout */
-{
-	border: thin solid rgb(150,138, 255); /* light purple */
-	background-image: url('../../img/skins/blue_text.jpg');
-	background-repeat: repeat;
+/* token counter layout */
+p.token-counter {
+    border: thin solid rgb(150, 138, 255); /* light purple */
+    background: url('../../img/skins/blue_text.jpg') repeat;
 }
 
-div.chatbox /* chatbox window */
-{
-	border: medium ridge rgb(150,138, 255); /* light purple */
-	background-image: url('../../img/skins/blue_text.jpg');
-	background-repeat: repeat;
+/* chat box window */
+div.chat-box {
+    border: medium ridge rgb(150, 138, 255); /* light purple */
+    background: url('../../img/skins/blue_text.jpg') repeat;
 }
 
-p.flag, span.newcard /* new card flag (indicated above a new card) */
-{
-	background-image: url('../../img/skins/blue_text.jpg');
-	background-repeat: repeat;
+/* new card flag (indicated above a new card) */
+p.flag, span.new-card {
+    background: url('../../img/skins/blue_text.jpg') repeat;
 }
 
-div#cost_per_turn, p.deck_stats /* avg cost per turn indicator layout */
-{
-	background-image: url('../../img/skins/blue_text.jpg');
-	background-repeat: repeat;
+/* avg cost per turn indicator layout */
+div.cost-per-turn, p.deck-stats {
+    background: url('../../img/skins/blue_text.jpg') repeat;
 }

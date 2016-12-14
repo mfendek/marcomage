@@ -1,188 +1,173 @@
 /************************************************
  * MArcomage CSS stylesheet - skins - old theme *
  ************************************************/
+/* import dark skin template */
+@import url('dark.css');
 
-@import url("dark.css"); /* import dark skin template */
-
-.skin_text /* text element layout */
-{
-	background-color: rgb(40, 40, 65); /* dark blue */
-	color: white;
+/* text element layout */
+.skin-text {
+    background-color: rgb(40, 40, 65); /* dark blue */
+    color: white;
 }
 
-.skin_label /* label element layout */
-{
-	background-image: url('../../img/skins/old_label.jpg');
-	color: white;
+/* label element layout */
+.skin-label {
+    background-image: url('../../img/skins/old_label.jpg');
+    color: white;
 }
 
-.skin_text, .skin_label /* border layout */
-{
-	border: thin solid yellow;
+/* border layout */
+.skin-text, .skin-label {
+    border: thin solid yellow;
 }
 
-html /* general background layout */
-{
-	background-color: black;
-	color: white;
+/* general background layout */
+html {
+    background-color: black;
+    color: white;
 }
 
-div#menubar /* navigation bar layout */
-{
-	background-color: black;
-	color: lime;
+/* navigation bar layout */
+div#menu-bar {
+    background-color: black;
+    color: lime;
 }
 
-div#login_box /* login box layout */
-{
-	background-image: url('../../img/skins/old_label.jpg');
+/* login box layout */
+div#login-box {
+    background-image: url('../../img/skins/old_label.jpg');
 }
 
-hr /* horizontal line layout */
-{
-	color: yellow;
-	border-style: inset; /* override */
+/* horizontal line layout */
+hr {
+    color: yellow;
+    border-style: inset; /* override */
 }
 
-a:link /* unvisited link */
-{
-	color: yellow;
+/* unvisited link */
+a:link {
+    color: yellow;
 }
 
-a:visited /* visited link */
-{
-	color: #ee82ee; /* purple */
+/* visited link */
+a:visited {
+    color: #ee82ee; /* purple */
 }
 
-tr.table_row:hover /* highlight table row */
-{
-	background-color: rgb(80,80,80); /* gray */
-	color: white;
+/* highlight table row */
+.table-row:hover {
+    background-color: rgb(80, 80, 80); /* gray */
+    color: white;
 }
 
-h2,h3,h4,h5 /* heading layout */
-{
-	color: #ffff66; /* sandy yellow */
+/* heading layout */
+h2, h3, h4, h5 {
+    color: #ffff66; /* sandy yellow */
 }
 
-button, a.button /* submit input layout */
-{
-	background-color: black;
-	border-color: #6495ed; /* light blue */
-	color: #ffff66; /* sandy yellow */
+/* submit input layout */
+button, a.button {
+    background-color: black;
+    border-color: #6495ed; /* light blue */
+    color: #ffff66; /* sandy yellow */
 }
 
-.disabled /* disabled hyperlink button */
-{
-	background-color: black;
-	border-color: #6495ed; /* light blue */
+/* disabled hyperlink button */
+.disabled {
+    background-color: black;
+    border-color: #6495ed; /* light blue */
 }
 
-button[disabled] /* disabled submit input */
-{
-	color: gray;
+/* disabled submit input */
+button[disabled] {
+    color: gray;
 }
 
-a.button:link, a.button:visited
-{
-	color: #ffff66; /* sandy yellow */
+a.button:link, a.button:visited {
+    color: #ffff66; /* sandy yellow */
 }
 
-button.marked_button, a.marked_button:link, a.marked_button:visited /* highlighted button */
-{
-	background-color: yellow;
-	color: black;
+/* highlighted button */
+button.marked_button, a.marked_button:link, a.marked_button:visited, .nav-buttons button:hover, .nav-buttons .button:hover {
+    background-color: yellow;
+    color: black;
 }
 
-p.info_label /* information label used in multiple instances in game section */
-{
-	border: medium ridge #6495ed;
-	background-color: black;
-	color: white;
-	font-weight: normal;
+/* information label used in multiple instances in game section */
+p.info-label {
+    border: medium ridge #6495ed;
+    background-color: black;
+    color: white;
+    font-weight: normal;
 }
 
-p.token_counter /* token counter layout */
-{
-	border: thin solid #6495ed;
-	background-color: black;
-	color: white;
+/* token counter layout */
+p.token-counter {
+    border: thin solid #6495ed;
+    background-color: black;
+    color: white;
 }
 
-div.chatbox /* chatbox window */
-{
-	border: medium ridge #6495ed;
-	background-color: rgb(40, 40, 65); /* dark blue */
+/* chat box window */
+div.chat-box {
+    border: medium ridge #6495ed;
+    background-color: rgb(40, 40, 65); /* dark blue */
 }
 
-p.flag, span.newcard /* new card flag (indicated above a new card) */
-{
-	background-color: rgb(40, 40, 65); /* dark blue */
+/* new card flag (indicated above a new card) */
+p.flag, span.new-card {
+    background-color: rgb(40, 40, 65); /* dark blue */
 }
 
-div#cost_per_turn, p.deck_stats /* avg cost per turn indicator layout */
-{
-	background-color: rgb(40, 40, 65); /* dark blue */
+/* avg cost per turn indicator layout */
+div.cost-per-turn, p.deck-stats {
+    background-color: rgb(40, 40, 65); /* dark blue */
 }
 
 /* backwards compatibility hacks start here */
 
-
-div#forum .skin_text
-{
-	border-style: none;
+div.forum .skin-text {
+    border-style: none;
 }
 
-div#forum .skin_label
-{
-	border-color: #6495ed; /* light blue */
-	border-style: ridge;
-	border-width: 3px;
+div.forum .skin-label {
+    border: 3px ridge #6495ed; /* light blue */
 }
 
-div#forum > h3 /* forum title layout */
-{
-	color: #6699ff; /* light blue */
+/* forum title layout */
+div.forum > h3 {
+    color: #6699ff; /* light blue */
 }
 
-div#forum table /* forum table layout */
-{
-	border-color: #6495ed; /* light blue */
-	border-style: ridge;
-	border-width: 3px;
-	background-color: #050529; /* very dark blue */
+/* forum table layout */
+div.forum table {
+    border: 3px ridge #6495ed; /* light blue */
+    background-color: #050529; /* very dark blue */
 }
 
-div#forum button
-{
-	border-color: lime;
-	border-style: outset;
-	border-width: 1px;
-	padding: 0.4ex 1.2ex 0.4ex 1.2ex;
+div.forum button {
+    border: 1px outset lime;
+    padding: 0.4ex 1.2ex 0.4ex 1.2ex;
 }
 
-div#forum th > p
-{
-	color: #f4a460; /* salmon brown */
+div.forum th > p {
+    color: #f4a460; /* salmon brown */
 }
 
-div#game .flag
-{
-	color: orange;
-	border-color: white;
-	margin: 1ex 0ex 1ex 0ex;
-	border-style: ridge;
-	background-color: black;
-	font-size: x-small;
-	width: 86px;
+div.game .flag {
+    color: orange;
+    margin: 1ex 0 1ex 0;
+    border: ridge white;
+    background-color: black;
+    font-size: x-small;
+    width: 86px;
 }
 
-div#game select
-{
-	font-size: x-small;
-	color: yellow;
-	background-color: black;
-	border: 2px outset #6495ed; /* light blue */
-	vertical-align: middle;
-	text-shadow: none;
+div.game select {
+    font-size: small;
+    color: yellow;
+    background-color: black;
+    border: 2px outset #6495ed; /* light blue */
+    vertical-align: middle;
+    text-shadow: none;
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<am:entry xmlns:am="http://arcomage.netvor.sk">
+<am:entry xmlns:am="http://arcomage.net">
 <am:content xmlns="http://www.w3.org/1999/xhtml">
 
 <h4>Overview</h4>
 <p>
-<acronym title="Multiplayer Arcomage">MArcomage</acronym> is an online card game inspired by the classic <a href="http://en.wikipedia.org/wiki/Arcomage">Arcomage</a> minigame.
+<abbr title="Multiplayer Arcomage">MArcomage</abbr> is an online card game inspired by the classic <a href="http://en.wikipedia.org/wiki/Arcomage">Arcomage</a> minigame.
 This card game simulates an epic battle between two empires, involving actions such as constructing buildings, training troops and attacking each other with armies, spells and intrigue.
 MArcomage brings the original game to the internet, greatly expanding on its ideas while preserving its apperance and core gameplay.
 </p>
@@ -16,42 +16,46 @@ Gaining experience unlocks access to the deck editor, card album, replay viewer,
 
 <h4>Features</h4>
 <ul>
-	<li><b>deck building</b> - construct 45-card decks out of a pool of 600+ unique cards, using complex search filters</li>
-	<li><b>match-making</b> - host a game and wait for someone to join, challenge specific players, or practice against the game AI</li>
-	<li><b>turn-based</b> - play at your own pace, as slow as you like or as fast as your opponent can keep up</li>
-	<li><b>interaction</b> - talk to other players via forums, private messaging or in-game chat</li>
-	<li><b>ranking</b> - player ladder, experience levels, unlockable extra features, achievements, gameplay statistics</li>
-	<li><b>personalization</b> - avatar images, multiple color and background schemes, various card and game layout options</li>
-	<li><b>compatibility</b> - support for all recent browsers, fully valid xhtml, javascript not required</li>
-	<li><b>enhancements</b>, not available in original Arcomage
-		<ul>
-			<li>new game mechanics (keywords, tokens, card summoning and many more)</li>
-			<li>special game modes (friendly play, hidden cards, long mode)</li>
-			<li>multiple victory types (destruction, tower building, resource accumulation, surrender)</li>
-			<li>game history browser and replay database, turn outcome preview, in-game notepad</li>
-		</ul>
-	</li>
+  <li><b>deck building</b> - construct 45-card decks out of a pool of 750+ unique cards, using complex search filters</li>
+  <li><b>match-making</b> - host a game and wait for someone to join, challenge specific players, or practice against the game AI</li>
+  <li><b>turn-based</b> - play at your own pace, as slow as you like or as fast as your opponent can keep up</li>
+  <li><b>interaction</b> - talk to other players via forums, private messaging or in-game chat</li>
+  <li><b>ranking</b> - player ladder, experience levels, unlockable extra features, achievements, gameplay statistics</li>
+  <li><b>personalization</b> - avatar images, multiple color and background schemes, various card and game layout options</li>
+  <li><b>compatibility</b> - support for all popular browsers and modern resolutions, javascript not required but recommended</li>
+  <li><b>enhancements</b>, not available in original Arcomage
+    <ul>
+      <li>new game mechanics (keywords, tokens, card summoning and many more)</li>
+      <li>special game modes (friendly play, hidden cards, long mode)</li>
+      <li>multiple victory types (destruction, tower building, resource accumulation, surrender)</li>
+      <li>game history browser and replay database, turn outcome preview, in-game notepad</li>
+    </ul>
+  </li>
 </ul>
 
 <h4>Screenshots</h4>
 <p>
-	<a style="text-decoration:none" href="img/screen_game_section.jpg"><img src="img/screen_game_section_s.jpg" width="328px" height="200px" title="card battle" alt="card battle"/></a>
-	<a style="text-decoration:none" href="img/screen_deck_section.jpg"><img src="img/screen_deck_section_s.jpg" width="328px" height="200px" title="deck editor" alt="deck editor"/></a>
+  <a style="text-decoration:none" href="img/screen_game_section.jpg">
+    <img src="img/screen_game_section_s.png" width="328" height="226" title="card battle" alt="card battle"/>
+  </a>
+  <a style="text-decoration:none" href="img/screen_deck_section.jpg">
+    <img src="img/screen_deck_section_s.png" width="328" height="226" title="deck editor" alt="deck editor"/>
+  </a>
 </p>
 
 <h4>Links</h4>
 <ul>
-	<li><a href="http://arcomage.net/">http://arcomage.net/</a> - official website (you are here)</li>
-	<li><a href="irc://irc.freenode.org/arcomage">irc://irc.freenode.org/#arcomage</a> - irc channel, everybody's invited!</li>
-	<li><a href="https://arcomage.net/trac/">https://arcomage.net/trac/</a> - wiki and bug tracking system</li>
-	<li><a href="https://docs.google.com/uc?id=0BydnMBGrM4NWNmY3ZDE1MjItMzMxYS00YzMxLWI5MjQtMTQyM2VkOGU3ODU4&amp;export=download&amp;authkey=CNbY7foB&amp;hl=en">Original Arcomage</a> - standalone version</li>
-	<li><a href="http://www.gatewayheaven.com/projects/arcomage/">Arcomage Tribute</a> - a fan-made open source project (single player only)</li>
+  <li><a href="http://arcomage.net/">http://arcomage.net/</a> - official website (you are here)</li>
+  <li><a href="irc://irc.freenode.org/arcomage">irc://irc.freenode.org/#arcomage</a> - irc channel, everybody's invited!</li>
+  <li><a href="https://arcomage.net/trac/">https://arcomage.net/trac/</a> - wiki and bug tracking system</li>
+  <li><a href="https://docs.google.com/uc?id=0BydnMBGrM4NWNmY3ZDE1MjItMzMxYS00YzMxLWI5MjQtMTQyM2VkOGU3ODU4&amp;export=download&amp;authkey=CNbY7foB&amp;hl=en">Original Arcomage</a> - standalone version</li>
+  <li><a href="http://www.gatewayheaven.com/projects/arcomage/">Arcomage Tribute</a> - a fan-made open source project (single player only)</li>
 </ul>
 
 <h4>Contact</h4>
 <ul>
-	<li>Mojmír Fendek - <a href="?location=Players_details&amp;Profile=Mojko">Mojko</a> - <a href="mailto:mfendek@gmail.com">mfendek@gmail.com</a></li>
-	<li>Viktor Štujber - <a href="?location=Players_details&amp;Profile=theultramage">theultramage</a> - <a href="mailto:theultramage@gmail.com">theultramage@gmail.com</a></li>
+  <li>Mojmír Fendek - <a href="?location=Players_details&amp;Profile=Mojko">Mojko</a> - <a href="mailto:mfendek@gmail.com">mfendek@gmail.com</a></li>
+  <li>Viktor Štujber - <a href="?location=Players_details&amp;Profile=theultramage">theultramage</a> - <a href="mailto:theultramage@gmail.com">theultramage@gmail.com</a></li>
 </ul>
 
 </am:content>

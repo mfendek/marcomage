@@ -1,95 +1,95 @@
 /*************************************************
  * MArcomage CSS stylesheet - skins - star theme *
  *************************************************/
+/* import dark skin template */
+@import url('dark.css');
 
-@import url("dark.css"); /* import dark skin template */
-
-.skin_text /* text element layout */
-{
-	background-color: rgb(50, 50, 75); /* dark blue */
+/* text element layout */
+.skin-text {
+    background-color: rgb(50, 50, 75); /* dark blue */
 }
 
-.skin_label /* label element layout */
-{
-	background-image: url('../../img/skins/star_label.jpg');
+/* label element layout */
+.skin-label {
+    background-image: url('../../img/skins/star_label.jpg');
 }
 
-html /* general background layout */
-{
-	background-image: url('../../img/skins/bg_star.jpg');
+/* general background layout */
+html {
+    background-image: url('../../img/skins/bg_star.jpg');
 }
 
-div#menubar /* navigation bar layout */
-{
-	background-image: url('../../img/skins/star_label.jpg');
+/* navigation bar layout */
+div#menu-bar {
+    background-image: url('../../img/skins/star_label.jpg');
 }
 
-div#login_box /* login box layout */
-{
-	background-image: url('../../img/skins/star_label.jpg');
+/* login box layout */
+div#login-box {
+    background-image: url('../../img/skins/star_label.jpg');
 }
 
-hr /* horizontal line layout */
-{
-	border-color: #eeeeee; /* very light gray */
+/* horizontal line layout */
+hr {
+    border-color: #eeeeee; /* very light gray */
 }
 
-a:link /* unvisited link */
-{
-	color: #87cefa; /* light sky blue */
+/* unvisited link */
+a:link {
+    color: #87cefa; /* light sky blue */
 }
 
-a:visited /* visited link */
-{
-	color: #6495ed; /* light blue */
+/* visited link */
+a:visited {
+    color: #6495ed; /* light blue */
 }
 
-tr.table_row:hover /* highlight table row */
-{
-	background-color: #6495ed; /* light blue */
-	color: black;
+/* highlight table row */
+.table-row:hover {
+    background-color: #6495ed; /* light blue */
+    color: black;
 }
 
-h2,h3,h4,h5 /* heading layout */
-{
-	color: #6495ed; /* light blue */
+/* heading layout */
+h2, h3, h4, h5 {
+    color: #6495ed; /* light blue */
 }
 
-button, a.button, .disabled /* submit input layout */
-{
-	background-color: rgb(70, 70, 100); /* dark blue */
-	border-color: #191970; /* midnight blue */
+/* submit input layout */
+button, a.button, .disabled {
+    background-color: rgb(70, 70, 100); /* dark blue */
+    border-color: #191970; /* midnight blue */
 }
 
-button.marked_button, a.marked_button /* highlighted button */
-{
-	background-color: green;
+/* highlighted button */
+button.marked_button, a.marked_button, .nav-buttons button:hover, .nav-buttons .button:hover {
+    background-color: green;
 }
 
-p.info_label /* information label used in multiple instances in game section */
-{
-	border: medium ridge #6495ed;
-	background-color: rgb(70, 70, 100); /* dark blue */
+/* information label used in multiple instances in game section */
+p.info-label {
+    border: medium ridge #6495ed;
+    background-color: rgb(70, 70, 100); /* dark blue */
 }
 
-p.token_counter /* token counter layout */
-{
-	border: thin solid #6495ed;
-	background-color: rgb(70, 70, 100); /* dark blue */
+/* token counter layout */
+p.token-counter {
+    border: thin solid #6495ed;
+    background-color: rgb(70, 70, 100); /* dark blue */
 }
 
-div.chatbox /* chatbox window */
-{
-	border: medium ridge #6495ed;
-	background-color: rgb(70, 70, 100); /* dark blue */
+/* chat box window */
+div.chat-box {
+    border: medium ridge #6495ed;
+    background-color: rgb(70, 70, 100); /* dark blue */
 }
 
-p.flag, span.newcard /* new card flag (indicated above a new card) */
-{
-	background-color: rgb(50, 50, 75); /* dark blue */
+/* new card flag (indicated above a new card) */
+p.flag, span.new-card {
+    background-color: rgb(50, 50, 75); /* dark blue */
 }
 
-div#cost_per_turn, p.deck_stats /* avg cost per turn indicator layout */
-{
-	background-color: rgb(50, 50, 75); /* dark blue */
+/* avg cost per turn indicator layout */
+div.cost-per-turn, p.deck-stats {
+    background-color: rgb(50, 50, 75); /* dark blue */
 }

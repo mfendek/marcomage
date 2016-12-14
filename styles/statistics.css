@@ -2,68 +2,64 @@
  * MArcomage CSS stylesheet - statistics section *
  *************************************************/
 
-div#statistics /* set minimum width to whole section (grants immunity to resize) */
-{
-	min-width: 1045px;
+/* set distance between separate lines */
+div#statistics p {
+    margin-top: 0.5ex;
 }
 
-div#statistics > div.skin_label /* content layout */
-{
-	width: 80%;
-	margin: 2ex auto 1ex auto;
+/* column heading */
+div#statistics h4 {
+    margin-top: 1ex;
+    margin-bottom: 1ex;
+    text-align: center;
 }
 
-div#statistics p /* set distance between separate lines */
-{
-	margin-top: 0.5ex;
+/* statistics info heading */
+div#statistics h5 {
+    margin-top: 1ex;
+    margin-bottom: 1ex;
+    text-align: center;
+    font-size: medium;
 }
 
-div#statistics h4 /* column heading */
-{
-	margin-top: 1ex;
-	margin-bottom: 1ex;
-	text-align: center;
+/* statistic group (subsection) layout */
+div#statistics div.skin-text {
+    padding-left: 1ex;
+    padding-right: 1ex;
+    padding-bottom: 1ex;
+    font-family: arial, sans-serif;
+
 }
 
-div#statistics h5 /* statistics info heading */
-{
-	margin-top: 1ex;
-	margin-bottom: 1ex;
-	text-align: center;
-	font-size: medium;
+/* data list layout */
+div#statistics div.skin-text > ol {
+    padding-left: 3ex;
+    margin: 0;
 }
 
-div#statistics div.skin_text /* statistic group (subsection) layout */
-{
-	width: 17em;
-	margin: 1ex;
-	padding: 0ex 1ex 1ex 1ex;
+/* data list item highlight */
+div#statistics div.skin-text > ol > li, div#statistics div.skin-text > p {
+    padding: 0.5ex;
+    transition: background-color 400ms;
 }
 
-div#statistics div.skin_text > ol /* data list layout */
-{
-	padding-left: 5ex;
-	margin: 0ex;
+/* data list item highlight */
+div#statistics div.skin-text > ol > li:hover, div#statistics div.skin-text > p:hover {
+    background-color: rgba(255, 255, 255, 0.3);
 }
 
-div#statistics div.skin_text > ol > li + li /* data list spacing */
-{
-	margin-top: 0.5ex;
+/* data list spacing */
+div#statistics div.skin-text > ol > li + li {
+    margin-top: 0.5ex;
 }
 
-div#statistics div.skin_text > ol > li > span, div#statistics div.skin_text > p > span /* data list values */
-{
-	float: right;
-	font-weight: bold;
+/* data list values */
+div#statistics div.skin-text > ol > li > span, div#statistics div.skin-text > p > span {
+    float: right;
 }
 
-div#statistics div.skin_text /* floated columns */
-{
-	float: left;
-}
-
-div#statistics div.filters /* subsection navigation */
-{
-	text-align: center;
-	margin-top: 1ex;
+/* subsection navigation */
+div#statistics div.filters {
+    text-align: center;
+    margin-top: 1ex;
 }

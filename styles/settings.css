@@ -2,101 +2,102 @@
  * MArcomage CSS stylesheet - settings section *
  ***********************************************/
 
-div#settings /* settings layout */
-{
-	min-width: 1045px;
+/* settings layout */
+div#profile-settings, div#account-settings {
+    padding: 0 2ex 1ex 2ex;
+    margin-top: 1ex;
+    margin-bottom: 1ex;
 }
 
-div#sett_float_left /* user settings layout */
-{
-	float: left;
-	width: 45%;
-	padding: 0ex 2ex 1ex 2ex;
-	margin: 0ex 0ex 1ex 1ex;
+/* avatar and zodiac sign pictures */
+div#profile-settings h4 + img {
+    background-color: black;
+    padding: 0.5ex;
+    margin: 0.5ex 1ex 0 1ex;
+    border: medium ridge white;
 }
 
-div#sett_float_left h4 + img /* avatar and zodiac sign pictures */
-{
-	background-color: black;
-	padding: 0.5ex;
-	margin: 0.5ex 1ex 0ex 1ex;
-	border: medium ridge white;
+/* avatar and zodiac sign are floated to the right */
+div#profile-settings h3 + div, div#profile-settings h3 + div + div {
+    float: right;
+    text-align: center;
 }
 
-div#sett_float_left h3 + div, div#sett_float_left h3 + div + div /* avatar and zodiac sign are floated to the right */
-{
-	float: right;
-	text-align: center;
+/* avatar and zodiac sign header text */
+div#settings h4 {
+    margin: 0;
+    padding: 0;
+    text-align: center;
 }
 
-div#settings h4 /* avatar and zodiac sign header text */
-{
-	margin: 0ex;
-	padding: 0ex;
-	text-align: center;
+/* settings header layout */
+div#settings > div > h4 {
+    margin: 1ex 0 1ex 0;
 }
 
-div#settings > div > h4 /* settings header layout */
-{
-	margin: 1ex 0ex 1ex 0ex;
+div#settings hr {
+    margin-top: 2ex;
+    margin-bottom: 1ex;
 }
 
-div#sett_float_left > p, div#sett_float_right > div > p /* line spacing */
-{
-	margin-top: 0.8ex;
-	margin-bottom: 0.8ex;
+/* line spacing */
+div#profile-settings > p, div#account-settings > div > p {
+    margin-top: 0.8ex;
+    margin-bottom: 0.8ex;
 }
 
-div#settings input, div#settings button /* set distance of inputs from the text */
-{
-	margin-right: 2ex;
+/* set distance of inputs from the text */
+div#settings input {
+    margin-right: 1ex;
 }
 
-div#settings select /* set distance of selects from other elements */
-{
-	margin-right: 2ex;
+/* set distance of selects from other elements */
+div#settings select {
+    margin-right: 1ex;
 }
 
-div#sett_float_right /* game settings layout */
-{
-	float: right;
-	width: 46%;
-	padding: 0ex 2ex 1ex 2ex;
-	margin: 0ex 1ex 1ex 0ex;
+/* checkbox layout */
+div#settings input[type="checkbox"] {
+    padding: 0.5ex;
+    margin: 0 2ex 0 0;
+    border: thin solid;
 }
 
-div#settings input[type="checkbox"] /* checkbox layout */
-{
-	padding: 0.5ex;
-	margin: 0ex 2ex 0ex 0ex;
-	border-style: solid;
-	border-width: thin;
+/* checkbox description layout */
+div#settings input[type="checkbox"] + span {
+    vertical-align: middle;
 }
 
-div#settings input[type="checkbox"] + span /* checkbox description layout */
-{
-	vertical-align: middle;
+/* radio button */
+div#settings input[type="radio"] {
+    padding: 1ex;
+    border: thin solid;
+    margin: 0 1ex 0 0;
 }
 
-div#settings input[type="radio"] /* radio button */
-{
-	padding: 1ex;
-	margin: 0ex;
-	border-style: solid;
-	border-width: thin;
-	margin-right: 1ex;
+div#settings .wallet {
+    margin-right: 1ex;
 }
 
-div#preview /* background image preview */
-{
-	float: right;
-	text-align: center;
-	margin-right: 5ex;
-	margin-top: 1ex;
+div#settings .shop-item + .shop-item {
+    margin-top: 2ex;
 }
 
-div#preview > img /* background image preview - image layout */
-{
-	border: medium ridge white;
-	margin-top: 0.5ex;
+div#settings .shop-item > p {
+    margin-top: 0.8ex;
+    margin-bottom: 0.8ex;
+}
+
+/* background image preview */
+div#preview {
+    float: right;
+    text-align: center;
+    margin-right: 5ex;
+    margin-top: 1ex;
+}
+
+/* background image preview - image layout */
+div#preview > img {
+    border: medium ridge white;
+    margin-top: 0.5ex;
 }

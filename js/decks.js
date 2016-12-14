@@ -2,241 +2,390 @@
  * MArcomage JavaScript - Decks section *
  ****************************************/
 
-function TakeCard(id) // add card to deck via AJAX
+'use strict';
+
+/**
+ * Add card to deck via AJAX
+ * @param {int}cardId
+ * @returns {boolean}
+ */
+function takeCard(cardId)
 {
-	var str = new String();
-	var card = str.concat("#card_", id);
-	var username = GetSessionData('Username');
-	var session_id = GetSessionData('SessionID');
-	var deck = $("input[name='CurrentDeck']").val();
+    var card = '#card_' + cardId;
+    var deckId = $('input[name="CurrentDeck"]').val();
+    var api = dic().apiManager();
+    var notification = dic().notificationsManager();
 
-	$.post("AJAXhandler.php", { action: 'take', Username: username, SessionID: session_id, deck_id: deck, card_id: id }, function(data){
-		var result = $.parseJSON(data);
-		if (result.error) { alert(result.error); return false; } // AJAX failed, display error message
+    api.takeCard(deckId, cardId, function(result) {
+        // AJAX failed, display error message
+        if (result.error) {
+            notification.displayError(result.error);
+            return;
+        }
 
-		var slot = str.concat("#slot_", result.slot);
+        var slot = '#slot_' + result.slot;
+        var takenCard = result.taken_card;
 
-		// move selected card to deck
-		$(card).removeAttr('onclick'); // disallow the card to be removed from the deck (prevent double clicks)
-		$(card).find(".karta").animate({ opacity: 0.6 }, 'slow', function() {
-			$(slot).html($(card).html());
-			$(card).addClass('taken'); // mark card as taken
-			$(slot).find(".karta").css("opacity", 1);
-			$(slot).hide();
-			$(slot).fadeIn('slow');
-			$(slot).attr('onclick', str.concat("return RemoveCard(", id, ")")); // allow a card to be removed from deck
-		});
+        // move selected card to deck
+        // disallow the card to be removed from the deck (prevent double clicks)
+        $(card).removeAttr('onclick');
 
-		// update tokens when needed
-		if (result.tokens != "no")
-		{
-			var token;
+        $(card).find('.card').animate({opacity: 0.6}, 'slow', function() {
+            $(slot).html(takenCard);
 
-			$("#tokens > select").each(function(i) {
-				token = document.getElementsByName(str.concat("Token", i + 1)).item(0);
-				$(this).find("option").each(function(j) {
-					if ($(this).val() == result.tokens[i + 1]) { token.selectedIndex = j; };
-				});
-			});
-		}
+            // initialize hint tooltip for newly added card
+            $(slot).find('[title]').tooltip({
+                classes: {
+                    'ui-tooltip': 'ui-corner-all ui-widget-shadow'
+                },
+                placement: 'bottom'
+            });
 
-		// recalculate avg cost per turn
-		$("#cost_per_turn > b").each(function(i) {
-			$(this).html(result.avg[i]);
-		});
- });
+            // mark card as taken
+            $(card).addClass('taken');
+            $(slot).find('.card').css('opacity', 1);
+            $(slot).hide();
+            $(slot).fadeIn('slow');
 
-	return false; // disable standard processing
+            // allow a card to be removed from deck
+            $(slot).attr('onclick', 'return removeCard(' + cardId + ')');
+        });
+
+        // update tokens when needed
+        if (result.tokens != 'no') {
+            var token;
+
+            $('#tokens > select').each(function(i) {
+                token = document.getElementsByName('Token' + (i + 1)).item(0);
+                $(this).find('option').each(function(j) {
+                    if ($(this).val() == result.tokens[i + 1]) {
+                        token.selectedIndex = j;
+                    }
+                });
+            });
+        }
+
+        // recalculate avg cost per turn
+        $('.cost-per-turn > b').each(function(i) {
+            $(this).html(result.avg[i]);
+        });
+    });
+
+    // disable standard processing
+    return false;
 }
 
-function RemoveCard(id) // remove card from deck via AJAX
+/**
+ * Remove card from deck via AJAX
+ * @param {int}cardId
+ * @returns {boolean}
+ */
+function removeCard(cardId)
 {
-	var str = new String();
-	var card = str.concat("#card_", id);
-	var username = GetSessionData('Username');
-	var session_id = GetSessionData('SessionID');
-	var deck = $("input[name='CurrentDeck']").val();
+    var card = '#card_' + cardId;
+    var deckId = $('input[name="CurrentDeck"]').val();
+    var api = dic().apiManager();
+    var notification = dic().notificationsManager();
 
-	$.post("AJAXhandler.php", { action: 'remove', Username: username, SessionID: session_id, deck_id: deck, card_id: id }, function(data){
-		var result = $.parseJSON(data);
-		if (result.error) { alert(result.error); return false; } // AJAX failed, display error message
+    api.removeCard(deckId, cardId, function(result) {
+        // AJAX failed, display error message
+        if (result.error) {
+            notification.displayError(result.error);
+            return;
+        }
 
-		var slot = str.concat("#slot_", result.slot);
-		var empty = '<div class="karta no_class zero_cost with_bgimage"><div class="null">0</div><h5>Empty</h5><img src="img/cards/card_0.png" width="80px" height="60px" alt="" /><p></p><div></div></div>';
+        var slot = '#slot_' + result.slot;
+        var empty = result['slot_html'];
 
-		// move selected card to card pool
-		$(slot).removeAttr('onclick'); // disallow the card to be removed from the deck (prevent double clicks)
-		$(slot).find("noscript").remove(); // remove return card button
-		$(card).removeClass('taken'); // unmark card as taken
-		$(card).find(".karta").css("opacity", 0.6);
-		$(card).attr('onclick', str.concat("return TakeCard(", id, ")")); // allow a card to be removed from deck
-		$(slot).fadeOut('slow', function() {
-			$(slot).html(empty);
-			$(slot).show();
-			$(card).find(".karta").animate({ opacity: 1 }, 'slow');
-		});
+        // move selected card to card pool
 
-		// recalculate avg cost per turn
-		$("#cost_per_turn > b").each(function(i) {
-			$(this).html(result.avg[i]);
-		});
- });
+        // disallow the card to be removed from the deck (prevent double clicks)
+        $(slot).removeAttr('onclick');
 
-	return false; // disable standard processing
+        // remove return card button
+        $(slot).find('noscript').remove();
+
+        // unmark card as taken
+        $(card).removeClass('taken');
+        $(card).find('.card').css('opacity', 0.6);
+
+        // allow a card to be removed from deck
+        $(card).attr('onclick', 'return takeCard(' + cardId + ')');
+        $(slot).fadeOut('slow', function() {
+            $(slot).html(empty);
+            $(slot).show();
+            $(card).find('.card').animate({ opacity: 1 }, 'slow');
+        });
+
+        // recalculate avg cost per turn
+        $('.cost-per-turn > b').each(function(i) {
+            $(this).html(result.avg[i]);
+        });
+    });
+
+    // disable standard processing
+    return false;
 }
 
 $(document).ready(function() {
+    var api = dic().apiManager();
+    var notification = dic().notificationsManager();
+    var confirmed = false;
 
-	// apply card filters by pressing ENTER key
-	$("input[name='NameFilter']").keypress(function(event) {
-		if (event.keyCode == '13') { event.preventDefault(); $("button[name='filter']").click(); }
-	});
+    // apply card filters by pressing ENTER key
+    $('input[name="name_filter"]').keypress(function(event) {
+        if (event.keyCode == '13') {
+            event.preventDefault();
+            $('button[name="deck_apply_filters"]').click();
+        }
+    });
 
-	// show/hide card pool
-	$("button[name='card_pool_switch']").click(function() {
-		if ($("button[name='card_pool_switch']").html() == 'Show card pool') // show card pool
-		{
-			$("button[name='card_pool_switch']").html('Expanding...'); // block switch button while animating
+    // card pool lock
+    var cardPoolLock = false;
 
-			// repair card pool state if necessary
-			$("#card_pool").hide();
-			$("#card_pool").css('height', 'hide');
-			$("#card_pool").css('opacity', 0);
+    // show/hide card pool
+    $('button[name="card_pool_switch"]').click(function() {
+        var cardPool =  $('#card-pool');
+        var cardPoolSwitch = $(this);
+        var cardPoolIcon = $(this).find('span');
 
-			// expand card pool
-			$("#card_pool").animate({ height: 'show' }, 'slow', function() {
-				$("#card_pool").animate({ opacity: 1 }, 'slow', function() {
-					$("#card_pool").show();
+        // card pool is locked
+        if (cardPoolLock) {
+            return false;
+        }
 
-					// update switch button and hidden data element
-					$("button[name='card_pool_switch']").html('Hide card pool');
-					$("input[name='CardPool']").val('yes');
-				});
-			});
-		}
-		else if ($("button[name='card_pool_switch']").html() == 'Hide card pool') // hide card pool
-		{
-			$("button[name='card_pool_switch']").html('Collapsing...'); // block switch button while animating
-			$("#card_pool").show(); // repair card pool state if necessary
+        // show card pool
+        if (cardPoolSwitch.hasClass('show-card-pool')) {
+            // block switch button while animating
+            cardPoolLock = true;
 
-			// collapse card pool
-			$("#card_pool").animate({ opacity: 0 }, 'slow', function() {
-				$("#card_pool").animate({ height: 'hide' }, 'slow', function() {
-					$("#card_pool").hide();
+            // repair card pool state if necessary
+            cardPool.hide();
+            cardPool.css('height', 'hide');
+            cardPool.css('opacity', 0);
 
-					// update switch button and hidden data element
-					$("button[name='card_pool_switch']").html('Show card pool');
-					$("input[name='CardPool']").val('no');
-				});
-			});
-		}
+            // expand card pool
+            cardPool.animate({height: 'show'}, 'slow', function() {
+                $('#card-pool').animate({opacity: 1}, 'slow', function() {
+                    $('#card-pool').show();
 
-		return false;
-	});
+                    // update hidden data element
+                    $('input[name="card_pool"]').val('yes');
 
-	// deck reset confirmation
-	$("button[name='reset_deck_prepare']").click(function() {
-		if (confirm("All cards will be removed from the deck, all token counters will be reset and deck statistics will be reset as well. Are you sure you want to continue?"))
-		{
-			// skip standard confirmation
-			$("button[name='reset_deck_prepare']").attr('name', 'reset_deck_confirm');
-			return true;
-		}
-		else return false;
-	});
+                    // unlock card pool
+                    cardPoolSwitch.removeClass('show-card-pool');
+                    cardPoolSwitch.addClass('hide-card-pool');
+                    cardPoolIcon.removeClass('glyphicon-resize-full');
+                    cardPoolIcon.addClass('glyphicon-resize-small');
+                    cardPoolLock = false;
+                });
+            });
+        }
+        // hide card pool
+        else if (cardPoolSwitch.hasClass('hide-card-pool')) {
+            // block switch button while animating
+            cardPoolLock = true;
 
-	// deck statistics reset confirmation
-	$("button[name='reset_stats_prepare']").click(function() {
-		if (confirm("Deck statistics will be reset. Are you sure you want to continue?"))
-		{
-			// skip standard confirmation
-			$("button[name='reset_stats_prepare']").attr('name', 'reset_stats_confirm');
-			return true;
-		}
-		else return false;
-	});
+            // repair card pool state if necessary
+            cardPool.show();
 
-	// deck share confirmation
-	$("button[name='share_deck']").click(function() {
-		return confirm("Are you sure you want to share this deck to other players?");
-	});
+            // collapse card pool
+            cardPool.animate({opacity: 0}, 'slow', function() {
+                $('#card-pool').animate({height: 'hide'}, 'slow', function() {
+                    $('#card-pool').hide();
 
-	// import shared deck confirmation
-	$("button[name='import_shared_deck']").click(function() {
+                    // update hidden data element
+                    $('input[name="card_pool"]').val('no');
 
-		// extract target deck name
-		var target_deck_id = $("select[name='SelectedDeck']").val();
-		var target_deck = $("select[name='SelectedDeck'] >  option[value='" + target_deck_id + "']").text();
+                    // unlock card pool
+                    cardPoolSwitch.removeClass('hide-card-pool');
+                    cardPoolSwitch.addClass('show-card-pool');
+                    cardPoolIcon.removeClass('glyphicon-resize-small');
+                    cardPoolIcon.addClass('glyphicon-resize-full');
+                    cardPoolLock = false;
+                });
+            });
+        }
 
-		// extract source deck name
-		var source_deck = $(this).parent().parent().find("a.deck").text();
+        return false;
+    });
 
-		return confirm("Are you sure you want to import " + source_deck + " into " + target_deck + "?");
-	});
+    // deck reset confirmation
+    $('button[name="reset_deck_prepare"]').click(function() {
+        // action was already approved
+        if (confirmed) {
+            // skip standard confirmation
+            $('button[name="reset_deck_prepare"]').attr('name', 'reset_deck_confirm');
+            return true;
+        }
 
-	// open deck note
-	$("a#deck_note").click(function(event) {
-		 event.preventDefault();
-		 $("#deck_note_dialog").dialog("open");
-	});
+        var triggerButton = $(this);
+        var message = 'All cards will be removed from the deck, all token counters will be reset and deck statistics will be reset as well. Are you sure you want to continue?';
 
-	// deck note handler
-	$("#deck_note_dialog").dialog({
-		autoOpen: false,
-		show: "fade",
-		hide: "fade",
-		buttons: {
-			Save: function()
-			{
-				var deck_note = $("textarea[name='Content']").val();
+        // request confirmation
+        notification.displayConfirm('Action confirmation', message, function(result) {
+            if (result) {
+                // pass confirmation
+                confirmed = true;
+                triggerButton.click();
+            }
+        });
 
-				// check user input
-				if (deck_note.length > 1000) alert('Deck note is too long');
-				else
-				{
-					var username = GetSessionData('Username');
-					var session_id = GetSessionData('SessionID');
-					var deck = $("input[name='CurrentDeck']").val();
+        return false;
+    });
 
-					$.post("AJAXhandler.php", { action: 'save_dnote', Username: username, SessionID: session_id, deck_id: deck, note: deck_note }, function(data){
-						var result = $.parseJSON(data);
-						if (result.error) { alert(result.error); return false; } // AJAX failed, display error message
+    // deck statistics reset confirmation
+    $('button[name="reset_stats_prepare"]').click(function() {
+        // action was already approved
+        if (confirmed) {
+            // skip standard confirmation
+            $('button[name="reset_stats_prepare"]').attr('name', 'reset_stats_confirm');
+            return true;
+        }
 
-						// update note button highlight
-						// case 1: note is empty (remove highlight)
-						if (deck_note == "")
-							$("a#deck_note").removeClass('marked_button');
+        var triggerButton = $(this);
+        var message = 'Deck statistics will be reset. Are you sure you want to continue?';
 
-						// case 2: note is not empty (add highlight if not present)
-						else if (!$("a#deck_note").hasClass('marked_button'))
-							$("a#deck_note").addClass('marked_button');
+        // request confirmation
+        notification.displayConfirm('Action confirmation', message, function(result) {
+            if (result) {
+                // pass confirmation
+                confirmed = true;
+                triggerButton.click();
+            }
+        });
 
-						$("#deck_note_dialog").dialog("close");
-					});
-				}
-			},
-			Clear: function()
-			{
-				var username = GetSessionData('Username');
-				var session_id = GetSessionData('SessionID');
-				var deck = $("input[name='CurrentDeck']").val();
+        return false;
+    });
 
-				$.post("AJAXhandler.php", { action: 'clear_dnote', Username: username, SessionID: session_id, deck_id: deck }, function(data){
-					var result = $.parseJSON(data);
-					if (result.error) { alert(result.error); return false; } // AJAX failed, display error message
+    // deck share confirmation
+    $('button[name="share_deck"]').click(function() {
+        // action was already approved
+        if (confirmed) {
+            return true;
+        }
 
-					// clear input field
-					$("textarea[name='Content']").val('');
+        var triggerButton = $(this);
+        var message = 'Are you sure you want to share this deck to other players?';
 
-					// update note button highlight (remove highlight)
-					$("a#deck_note").removeClass('marked_button');
-				});
-			},
-			Back: function()
-			{
-				$(this).dialog("close");
-			}
-		}
-	});
+        // request confirmation
+        notification.displayConfirm('Action confirmation', message, function(result) {
+            if (result) {
+                // pass confirmation
+                confirmed = true;
+                triggerButton.click();
+            }
+        });
+
+        return false;
+    });
+
+    // import shared deck confirmation
+    $('button[name="import_shared_deck"]').click(function() {
+        // action was already approved
+        if (confirmed) {
+            return true;
+        }
+
+        // extract target deck name
+        var targetDeckId = $('select[name="SelectedDeck"]').val();
+        var targetDeck = $('select[name="SelectedDeck"] >  option[value="' + targetDeckId + '"]').text();
+
+        // extract source deck name
+        var sourceDeck = $(this).parent().parent().find('a.deck').text();
+
+        var triggerButton = $(this);
+        var message = 'Are you sure you want to import ' + sourceDeck + ' into ' + targetDeck + '?';
+
+        // request confirmation
+        notification.displayConfirm('Action confirmation', message, function(result) {
+            if (result) {
+                // pass confirmation
+                confirmed = true;
+                triggerButton.click();
+            }
+        });
+
+        return false;
+    });
+
+    // open deck note
+    $('a#deck-note').click(function(event) {
+        event.preventDefault();
+        $('#deck-note-dialog').dialog('open');
+    });
+
+    // deck note handler
+    $('#deck-note-dialog').dialog({
+        autoOpen: false,
+        show: 'fade',
+        hide: 'fade',
+        title: 'Note',
+        buttons: {
+            Save: function() {
+                var deckNote = $('textarea[name="content"]').val();
+
+                // check user input
+                if (deckNote.length > 1000) {
+                    notification.displayError('Deck note is too long');
+                    return;
+                }
+
+                var deckId = $('input[name="CurrentDeck"]').val();
+
+                api.saveDeckNote(deckId, deckNote, function(result) {
+                    // AJAX failed, display error message
+                    if (result.error) {
+                        notification.displayError(result.error);
+                        return;
+                    }
+
+                    // update note button highlight
+                    // case 1: note is empty (remove highlight)
+                    if (deckNote == '') {
+                        $('a#deck-note').removeClass('marked_button');
+                    }
+                    // case 2: note is not empty (add highlight if not present)
+                    else if (!$('a#deck-note').hasClass('marked_button')) {
+                        $('a#deck-note').addClass('marked_button');
+                    }
+
+                    $('#deck-note-dialog').dialog('close');
+                });
+            },
+            Clear: function() {
+                var deckId = $('input[name="CurrentDeck"]').val();
+
+                api.clearDeckNote(deckId, function(result) {
+                    // AJAX failed, display error message
+                    if (result.error) {
+                        notification.displayError(result.error);
+                        return;
+                    }
+
+                    // clear input field
+                    $('textarea[name="content"]').val('');
+
+                    // update note button highlight (remove highlight)
+                    $('a#deck-note').removeClass('marked_button');
+                });
+            },
+            Close: function() {
+                $(this).dialog('close');
+            }
+        }
+    });
+
+    // file upload
+    $('button[name="import_deck"]').click(function() {
+        var uploadedFile = $('input[name="deck_data_file"]');
+
+        // no file was selected
+        if (uploadedFile.val() == '') {
+            // prompt user to select a file
+            uploadedFile.click();
+            return false;
+        }
+    });
 
 });

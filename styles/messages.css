@@ -4,132 +4,116 @@
 
 /* begin challenges */
 
-div#message_section /* challenge section (soon to be renamed to messages) */
-{
-	min-width: 1045px;
-	text-align: center;
+/* challenge section (soon to be renamed to messages) */
+div#message_section {
+    text-align: center;
 }
 
-div#challenges /* challenges oriented messages subsection */
-{
-	float: left;
-	width: 46%;
-	margin: 0ex 0ex 1ex 1ex;
+/* challenges oriented messages subsection */
+div#challenges {
+    margin-top: 1ex;
+    margin-bottom: 1ex;
 }
 
-div#challenges > p /* challenge message */
-{
-	font-size: medium;
-	margin-bottom: 1ex;
-	margin-right: auto;
-	margin-left: auto;
+/* challenge message */
+div#challenges > p {
+    font-size: medium;
+    margin-bottom: 1ex;
+    margin-right: auto;
+    margin-left: auto;
 }
 
-div#challenges > p > a.button + a.button /* distance between buttons */
-{
-	margin-left: 2ex;
+/* distance between buttons */
+div#challenges > p > a.button + a.button {
+    margin-left: 1ex;
 }
 
 /* end challenges */
 
 /* begin messages */
 
-div#messages /* private messages subsection */
-{
-	float: right;
-	width: 51%;
-	margin: 0ex 1ex 1ex 0ex;
+/* private messages subsection */
+div#messages {
+    margin-top: 1ex;
+    margin-bottom: 1ex;
+    padding-right: 1ex;
+    padding-left: 1ex;
 }
 
-div#messages > p > a.button + a.button /* distance between buttons */
-{
-	margin-left: 2ex;
+/* distance between buttons */
+div#messages > p > a.button + a.button {
+    margin-left: 1ex;
 }
 
-div#messages th > p, div#messages td > p /* table cell text */
-{
-	margin: 0.5ex 1ex 0.5ex 1ex;
+/* table cell text */
+div#messages th > p, div#messages td > p {
+    margin: 0.5ex 1ex 0.5ex 1ex;
 }
 
-div#messages > table /* private messages table */
-{
-	margin: 0ex 1ex 2ex 2ex;
-	max-width: 32em;
+/* private messages table */
+div#messages > table {
+    margin: 0 auto 2ex auto;
+    max-width: 32em;
 }
 
-div#messages .filters /* filters and navigation */
-{
-	margin: 0.5ex 0ex 0.5ex 2ex;
-	text-align: left;
+/* filters and navigation */
+div#messages .filters {
+    margin: 0.5ex 0 0.5ex 2ex;
 }
 
 /* end messages */
 
 /* begin message details */
 
-div#mes_details /* private message details subsection */
-{
-	min-width: 1045px;
+/* private message details subsection */
+
+/* private message layout */
+div.mes_details > div {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 50em;
+    padding: 1ex;
 }
 
-div#mes_details > div /* private message layout */
-{
-	margin-right: auto;
-	margin-left: auto;
-	width: 50%;
-	font-weight: bold;
-	padding: 1ex;
+/* set distance between elements */
+div.mes_details > div > * {
+    margin-bottom: 1ex;
+    margin-top: 1ex;
 }
 
-div#mes_details > div > * /* set distance between elements */
-{
-	margin-bottom: 1ex;
-	margin-top: 1ex;
+/* justify private message text */
+div.mes_details > div > p {
+    text-align: justify;
 }
 
-div#mes_details > div > p /* justifiy private message text */
-{
-	text-align: justify;
+/* highlight private message information (author, recipient...) */
+div.mes_details > div > p > span {
+    color: green;
+    margin-right: 1ex;
 }
 
-div#mes_details > div > p > span /* highlight private message information (author, recipient...) */
-{
-	color: green;
-	margin-right: 1ex;
+/* MArcopost stamp picture */
+img.stamp_picture {
+    float: right;
 }
 
-img.stamp_picture /* MArcopost stamp picture */
-{
-	float: right;
+/* challenge layout */
+div.challenge_box > div {
+    padding: 1ex;
+    margin: 1ex;
 }
 
-div.challenge_box > div /* challenge layout */
-{
-	padding: 1ex;
-	margin: 1ex;
+/* set distance between elements within a challenge */
+div.challenge_box > div > p + p {
+    margin-top: 1ex;
 }
 
-div.challenge_box > div > p + p /* set distance between elements within a challenge */
-{
-	margin-top: 1ex;
-}
-
-div.challenge_box > div > p > span /* highlight important information in a challenge */
-{
-	font-weight: bold;
-}
-
-div.challenge_box > div > p > a.small_button /* set distance between info buttons and text */
-{
-	margin-right: 0.5ex;
-}
-
-div.challenge_content /* challenge text layout */
-{
-	font-style: italic;
-	text-align: justify;
-	margin-left: 2ex;
-	margin-right: 2ex;
+/* challenge text layout */
+div.challenge_content {
+    font-style: italic;
+    text-align: justify;
+    margin-left: 2ex;
+    margin-right: 2ex;
 }
 
 /* end message details */

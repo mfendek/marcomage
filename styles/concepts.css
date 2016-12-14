@@ -3,106 +3,68 @@
  ***********************************************/
 
 /* begin concepts */
-
-div#concepts /* concepts section layout */
-{
-	min-width: 1045px;
-	text-align: center;
+/* concepts section layout */
+div#concepts {
+    text-align: center;
 }
 
-div#concepts table /* concepts list layout */
-{
-	margin-left: auto;
-	margin-right: auto;
-	width: 75%;
+/* card display within table */
+div#concepts .responsive-table div.card {
+    margin-left: 1ex;
+    margin-right: 1ex;
+    display: inline-block;
 }
 
-div#concepts table th > p, div#concepts table td > p /* table cell text */
-{
-	margin: 0.5ex 1ex 0.5ex 1ex;
+/* filters */
+div#concepts .filters {
+    margin: 1ex 0 2ex 2ex;
 }
 
-div#concepts .filters /* filters */
-{
-	margin: 1ex 0ex 2ex 2ex;
+/* note layout */
+div.note {
+    text-align: justify;
 }
 
-div.note /* note layout */
-{
-	text-align: justify;
-}
-
-p.highlighted /* highlight new concept */
-{
-	color: red;
-	font-weight: bold;
+/* highlight new concept */
+p.highlighted {
+    color: red;
 }
 
 /* end concepts */
 
 /* begin concepts edit */
+/* #concepts edit subsection */
 
-div#concepts_edit /* #concepts edit subsection */
-{
-	min-width: 1045px;
+/* card edit form */
+div.concepts-edit > .skin-text {
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 1ex;
+    max-width: 30em;
+    padding: 1ex;
 }
 
-div#concepts_edit > .skin_text /* card edit formular */
-{
-	margin-right: auto;
-	margin-left: auto;
-	margin-top: 1ex;
-	width: 50%;
-	padding: 1ex;
+/* set distance between elements */
+div.concepts-edit > .skin-text > p, div.concepts-edit > .skin-text > div.limit > p, div.concepts-edit > .skin-text hr {
+    margin-top: 1ex;
+    margin-bottom: 1ex;
 }
 
-div#concepts_edit > .skin_text > p, div#concepts_edit > .skin_text > div.limit > p, div#concepts_edit > .skin_text hr /* set distance between elements */
-{
-	margin-top: 1ex;
-	margin-bottom: 1ex;
-	font-weight: bold;
+/* set distance between BBcode buttons */
+div.concepts-edit > .skin-text div.bb-code-buttons > button {
+    margin-left: 0;
+    margin-bottom: 1ex;
 }
 
-div#concepts_edit > .skin_text input + input, div#concepts_edit > .skin_text button + button /* set distance between elements */
-{
-	margin-left: 1ex;
+/* input form layout */
+div.limit > div.row {
+    margin-top: 1ex;
+    margin-bottom: 1ex;
 }
 
-div#concepts_edit > .skin_text div.BBcodeButtons > button /* set distance between BBcode buttons */
-{
-	margin-left: 0ex;
-	margin-bottom: 1ex;
-}
-
-div#concepts_edit > .skin_text input[type="file"] /* set distance between elements */
-{
-	margin-left: 1ex;
-	margin-right: 1ex;
-}
-
-div#concepts_edit > .skin_text > a.button /* set distance between hyperlink buttons */
-{
-	margin-right: 1ex;
-}
-
-div.limit /* input formular layout */
-{
-	width: 20em;
-}
-
-div.limit > p > span /* float inputs to the right */
-{
-	float: right;
-}
-
-div.card_preview /* card preview layout */
-{
-	float: right;
-}
-
-div.card_preview > div.karta /* card preview spacing */
-{
-	margin-top: 0ex;
+/* card preview spacing */
+div.card-preview > div.card {
+    margin-top: 0;
 }
 
 /* end concepts details */

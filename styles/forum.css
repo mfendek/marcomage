@@ -4,250 +4,195 @@
 
 /* begin section */
 
-div#forum /* forum layout */
-{
-	text-align: center;
-	min-height: 500px;
-	min-width: 1045px;
+/* forum layout */
+div.forum {
+    text-align: center;
 }
 
-div#forum > div /* forum content layout */
-{
-	margin: 2ex 1ex 1ex 1ex;
+/* forum content layout */
+div.forum div.skin-text {
+    margin-bottom: 1ex;
 }
 
-div#forum a /* standard hyperlink */
-{
-	text-decoration: none;
-	color: inherit;
+div.forum .filters {
+    margin-bottom: 0.5ex;
 }
 
-div#forum tr.table_row:hover a /* standard hyperlink hover layout */
-{
-	text-decoration: underline;
+/* standard hyperlink */
+div.forum a {
+    text-decoration: none;
+    color: inherit;
 }
 
-div#forum tr div > h5 /* section heading layout - description */
-{
-	font-size: medium;
-	float: left;
-	width: 52%;
-	text-align: left;
-	margin: 1ex 0ex 1ex 1ex;
+/* standard hyperlink hover layout */
+div.forum tr.table-row:hover a {
+    text-decoration: underline;
 }
 
-div#forum tr div > h5 > a /* section heading layout - title */
-{
-	font-size: large;
-	margin-left: 1ex;
+/* section heading layout - description */
+div.forum tr div > h5 {
+    font-size: medium;
+    margin: 1ex 0 1ex 1ex;
 }
 
-div#forum tr div:hover > h5 > a /* section heading hover layout - title */
-{
-	text-decoration: underline;
+/* section heading layout - title */
+div.forum tr div > h5 > a {
+    font-size: large;
+    margin-left: 1ex;
 }
 
-div#forum tr div > h5 + p /* section heading layout - right side with buttons */
-{
-	float: right;
-	width: 45%;
-	text-align: right;
-	margin: 1ex 1ex 1ex 0ex;
+/* section heading hover layout - title */
+div.forum tr div:hover > h5 > a {
+    text-decoration: underline;
 }
 
-div#forum tr div > h5 + p > * + *  /* section heading layout - right side with buttons - set distance between inputs */
-{
-	margin-left: 2ex;
+/* section heading layout - right side with buttons */
+div.forum div.navigation, div#thread-details div.navigation {
+    margin: 1ex 0 1ex 0;
 }
 
-div#forum tr div > h5 + p + div /* end section heading */
-{
-	clear: both;
+/* set distance between inputs in the right part of the thread navigation menu */
+div.forum div.navigation > * + *, div#thread-details div.navigation > * + * {
+    margin-left: 0.5ex;
 }
 
-div#forum table /* forum table layout */
-{
-	width: 100%;
+/* section heading layout - right side with buttons - set distance between inputs */
+div.forum tr div > h5 + p > * + * {
+    margin-left: 2ex;
 }
 
-div#forum th > p /* forum table header layout */
-{
-	margin: 1ex;
-	font-weight: bold;
+/* forum table layout */
+div.forum table {
+    width: 100%;
 }
 
-div#forum td > p /* forum table cell layout */
-{
-	margin-bottom: 0.5ex;
-	margin-top: 0.5ex;
+/* forum table header layout */
+div.forum th > p {
+    margin: 1ex;
 }
 
-div#forum img, div#thread_details img /* info picture layout (locked thread) */
-{
-	vertical-align: middle;
+/* forum table cell layout */
+div.forum td > p {
+    margin: 0.5ex;
 }
 
-button.search_button /* search button layout */
-{
-	float: right;
+/* info picture layout (locked thread) */
+div.forum img, div#thread-details img {
+    vertical-align: middle;
 }
 
-.headings /* thread headings */
-{
-	text-align: left;
+/* thread headings */
+.headings {
+    text-align: left;
 }
 
-.new /* highlighted post layout - new post date */
-{
-	color: red;
-	font-weight: bold;
+/* highlighted post layout - new post date */
+.new {
+    color: red;
 }
 
 /* end section */
 
 /* begin forum_new_edit */
+
 /* same CSS for new post, new thread, edit post, edit thread */
 
-div#forum_new_edit /* forum edit layout */
-{
-	min-width: 1045px;
+/* forum edit layout */
+div.forum-new-edit > div {
+    max-width: 50em;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 1ex;
 }
 
-div#forum_new_edit > div /* forum edit layout */
-{
-	margin-right: auto;
-	margin-left: auto;
-	width: 50%;
-	font-weight: bold;
-	padding: 1ex;
+/* set distance between elements */
+div.forum-new-edit > div > * {
+    margin-bottom: 1ex;
+    margin-top: 1ex;
 }
 
-div#forum_new_edit > div > * /* set distance between elements */
-{
-	margin-bottom: 1ex;
-	margin-top: 1ex;
+/* input layout */
+div.forum-new-edit > div > p > button {
+    margin-left: 1ex;
+    font-size: medium;
 }
 
-div#forum_new_edit > div > p > button /* input layout */
-{
-	margin-left: 1ex;
-	font-size: medium;
+div.forum-new-edit > div > p > select {
+    margin-left: 1ex;
 }
 
 /* end forum_new_edit */
 
 /* begin thread details */
 
-div#thread_details /* thread details layout */
-{
-	text-align: center;
-	min-height: 500px;
-	min-width: 1045px;
+/* thread details layout */
+div#thread-details {
+    text-align: center;
 }
 
-div#thread_details > h3 /* thread details heading layout */
-{
-	margin: 0ex;
+/* thread details heading layout */
+div#thread-details > h3 {
+    margin: 0;
 }
 
-div#thread_details > h4 /* thread details subtitle layout */
-{
-	margin: 0ex;
-	font-size: large;
+/* thread navigation menu - heading description */
+div.thread-bar h5 {
+    font-size: medium;
+    margin: 1ex 0 1ex 1ex;
 }
 
-div.thread_bar /* thread navigation menu layout (top and bottom) */
-{
-	margin: 1ex;
+/* thread navigation menu - heading text */
+div.thread-bar h5 > a {
+    font-size: large;
+    text-decoration: none;
+    color: inherit;
 }
 
-div.thread_bar > h5 /* thread navigation menu - heading description */
-{
-	float: left;
-	width: 50%;
-	font-size: medium;
-	text-align: left;
-	margin: 1ex 0ex 1ex 1ex;
+/* thread navigation menu - spacing */
+div.thread-bar h5 > * {
+    margin-left: 1ex;
 }
 
-div.thread_bar > h5 > a  /* thread navigation menu - heading text */
-{
-	font-size: large;
-	text-decoration: none;
-	color: inherit;
+/* thread navigation menu - hover layout */
+div.thread-bar:hover h5 > a {
+    text-decoration: underline;
 }
 
-div.thread_bar > h5 > *  /* thread navigation menu - spacing */
-{
-	margin-left: 1ex;
+/* post list layout */
+div#post-list > div {
+    margin-top: 1ex;
+    margin-bottom: 1ex;
 }
 
-div.thread_bar:hover > h5 > a  /* thread navigation menu - hover layot */
-{
-	text-decoration: underline;
+/* post header layout */
+div#post-list div.post-header {
+    font-size: medium;
+    margin: 1ex;
 }
 
-div.thread_bar > p /* thread navigation menu - right part with buttons */
-{
-	float: right;
-	width: 47%;
-	text-align: right;
-	margin: 1ex 1ex 1ex 0ex;
+div#post-list div.post-author, div#post-list div.post-buttons {
+    margin-top: 0.5ex;
 }
 
-div.thread_bar > p > * + * /* set distance between inputs in the right part of the thread navigation menu */
-{
-	margin-left: 2ex;
+/* permalink layout */
+div#post-list a.permalink {
+    margin-left: 1ex;
 }
 
-div#post_list > div /* post list layout */
-{
-	margin: 1ex;
+/* post layout - avatar part */
+div#post-list div.post-avatar {
+    margin: 1ex;
 }
 
-div#post_list div.post_header /* post header layout */
-{
-	font-size: medium;
-	text-align: right;
-	margin: 1ex;
+/* post layout - content part */
+div#post-list div.post-content {
+    margin: 1ex;
 }
 
-div#post_list div.post_header > button + button /* post header - header buttons */
-{
-	margin-left: 1ex;
-}
-
-div#post_list span.post_title /* post header - post title layout */
-{
-	float: left;
-}
-
-div#post_list a.permalink /* permalink layout */
-{
-	margin-left: 1ex;
-	font-size: small;
-}
-
-div#post_list div.post_avatar /* post layout - avatar part */
-{
-	float: left;
-	width: 14%;
-	text-align: left;
-	margin: 0ex 0ex 1ex 1ex;
-}
-
-div#post_list div.post_content /* post layout - content part */
-{
-	float: right;
-	width: 84%;
-	text-align: center;
-	margin-bottom: 1ex;
-}
-
-div#post_list div.post_content > div /* post layout - inner content part */
-{
-	text-align: justify;
-	max-width: 50em;
+/* post layout - inner content part */
+div#post-list div.post-content > div {
+    text-align: justify;
+    max-width: 50em;
 }
 
 /* end thread details */

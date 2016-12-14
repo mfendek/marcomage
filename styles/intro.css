@@ -2,15 +2,15 @@
  * MArcomage CSS stylesheet - intro section *
  ********************************************/
 
-div#intro_dialog > h3 /* tutorial heading */
-{
-	text-align: center;
-	margin-top: 0ex;
-	font-size: large;
+/* tutorial heading */
+div#intro-dialog > h3 {
+    text-align: center;
+    margin-top: 0;
+    font-size: large;
 }
 
-div#intro_dialog > p /* tutorial text */
-{
-	text-align: justify;
-	font-size: large;
+/* tutorial text */
+div#intro-dialog > p {
+    text-align: justify;
+    font-size: large;
 }

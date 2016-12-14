@@ -2,38 +2,44 @@
  * MArcomage JavaScript - levelup functions *
  ********************************************/
 
-function highlightSection(section) // highlight specified section
+'use strict';
+
+/**
+ * Highlight specified section
+ * @param {string}section
+ */
+function highlightSection(section)
 {
-	$("div#menu_center > a:contains('" + section + "')").effect('highlight', {}, 1000);
-	window.setTimeout(highlightSection, 1500, section);
+    $('div#menu-center > a:contains("' + section + '")').effect('highlight', {}, 1000);
+    window.setTimeout(highlightSection, 1500, section);
 }
 
 $(document).ready(function() {
+    var levelUpDialog = $('#level-up-dialog');
 
-	$("#levelup_dialog").bind( "dialogclose", function() {
-		// highlight newly unlocked section
-		if ($("input[name='unlock_section']").length == 1)
-		{
-			highlightSection($("input[name='unlock_section']").val());
-		}
-	});
+    levelUpDialog.bind('dialogclose', function() {
+        // highlight newly unlocked section
+        var unlockSection = $('input[name="unlock_section"]');
+        if (unlockSection.length == 1) {
+            highlightSection(unlockSection.val());
+        }
+    });
 
-	// levelup dialog
-	$("#levelup_dialog").dialog({
-		autoOpen: true,
-		show: "fade",
-		hide: "fade",
-		width: 1050,
-		modal: true,
-		draggable: false,
-		closeOnEscape: true,
-		resizable: false,
-		buttons: {
-			'Close': function()
-				{
-					$("#levelup_dialog").dialog("close");
-				}
-		}
-	});
+    // level up dialog
+    levelUpDialog.dialog({
+        autoOpen: true,
+        show: 'fade',
+        hide: 'fade',
+        width: $('.container').width(),
+        modal: true,
+        draggable: false,
+        closeOnEscape: true,
+        resizable: false,
+        buttons: {
+            'Close': function() {
+                $('#level-up-dialog').dialog('close');
+            }
+        }
+    });
 
 });

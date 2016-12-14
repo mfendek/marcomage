@@ -1,59 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<am:entry xmlns:am="http://arcomage.netvor.sk">
+<am:entry xmlns:am="http://arcomage.net">
 <am:content xmlns="http://www.w3.org/1999/xhtml">
 
 <h2>Frequently Asked Questions</h2>
 <hr />
 
 <h4><a id="faq_q1" href="#faq_q1">Q1</a>: I have noticed some unexpected behaviour from the system, I think I have found a bug. What should I do now?</h4>
-<p>A:</p>
 
 <ol>
-	<li>try to find solution in this FAQ, <a href="?location=Help">Game manual</a> or <a href="?location=Forum_section&amp;CurrentSection=3">Support section</a> of the Forum (you can use a search there)</li>
-	<li>refresh your browser cache either by pressing the F5 button once, while you are within the screen that causes the bug</li>
-	<li>refresh the entire <a href="#faq_q13">browser cache</a> manually</li>
-	<li>document the bug (describe what you expected it to do and what happened instead, provide a screenshot, describe the situation when it happened, in which location and so on...)</li>
-	<li>report the bug on the <a href="?location=Forum_section&amp;CurrentSection=3">Support section</a> of the Forum or send it to either <a href="mailto:illuminati@pobox.sk">Mojko</a> or <a href="mailto:theultramage@gmail.com">theultramage</a>, we will do what we can to solve the problem</li>
+  <li>try to find solution in this FAQ, <a href="?location=Help">Game manual</a> or <a href="?location=Forum_section&amp;CurrentSection=3">Support section</a> of the Forum (you can use a search there)</li>
+  <li>refresh your browser cache either by pressing the F5 button once, while you are within the screen that causes the bug</li>
+  <li>refresh the entire <a href="#faq_q13">browser cache</a> manually</li>
+  <li>document the bug (describe what you expected it to do and what happened instead, provide a screenshot, describe the situation when it happened, in which location and so on...)</li>
+  <li>report the bug on the <a href="?location=Forum_section&amp;CurrentSection=3">Support section</a> of the Forum or send it to either <a href="mailto:illuminati@pobox.sk">Mojko</a> or <a href="mailto:theultramage@gmail.com">theultramage</a>, we will do what we can to solve the problem</li>
 </ol>
 
 <h4><a id="faq_q2" href="#faq_q2">Q2</a>: I can't log in. How do I fix that?</h4>
-<p>A: If you are sure you have used the right login and password, try to delete cookies for our site in your browser. You should find cookie management in options/preferences/advanced options.</p>
+<p>If you are sure you have used the right login and password, try to delete cookies for our site in your browser. You should find cookie management in options/preferences/advanced options.</p>
 <h4><a id="faq_q3" href="#faq_q3">Q3</a>: My browser doesn't display your site properly. You have errors in your website. Can you fix it?</h4>
-<p>A: We made this website according to <a href="http://www.w3.org/">W3C</a> standards, so the cause is most likely the browser you're using. We know that <a href="http://www.mozilla.com/en-US/firefox/?from=getfirefox">Firefox</a>, <a href="http://www.opera.com/">Opera</a> or <a href="http://www.google.com/chrome/">Chrome</a> have no problems displaying it, perhaps you could try using one. Writing a report might not be a bad idea, too - it would help us make future plans.</p>
+<p>We made this website according to <a href="http://www.w3.org/">W3C</a> standards, so the cause is most likely the browser you're using. We know that <a href="http://www.mozilla.com/en-US/firefox/?from=getfirefox">Firefox</a>, <a href="http://www.opera.com/">Opera</a> or <a href="http://www.google.com/chrome/">Chrome</a> have no problems displaying it, perhaps you could try using one. Writing a report might not be a bad idea, too - it would help us make future plans.</p>
 <h4><a id="faq_q4" href="#faq_q4">Q4</a>: When I play a card, its cost should be subtracted from my stock, but it isn't. I ended up with more resources than I should have. Why is that?</h4>
-<p>A: The card cost is always the same as it is displayed on the card. There is no way these two values would differ. So you probably didn't realize that after the card is played (at the end of your turn), you get resources from your facilities. This is probably the reason why you ended up with more resources than you expected.</p>
+<p>The card cost is always the same as it is displayed on the card. There is no way these two values would differ. So you probably didn't realize that after the card is played (at the end of your turn), you get resources from your facilities. This is probably the reason why you ended up with more resources than you expected.</p>
 <h4><a id="faq_q5" href="#faq_q5">Q5</a>: What is a turn anyway? How it works?</h4>
-<p>A: Turn is one elementary step in a game you are playing. A turn consits of these steps:</p>
+<p>Turn is one elementary step in a game you are playing. A turn consits of these steps:</p>
 <ol>
-	<li>Cost of a card is substracted</li>
-	<li>Effect of the card takes place</li>
-	<li>Keywords with side-effects apply</li>
-	<li>Game limits apply (resources cannot be lower than 0, wall below 0, facitlies below 1...)</li>
-	<li>Resource production</li>
-	<li>End game condition is checked</li>
+  <li>Cost of a card is substracted</li>
+  <li>Effect of the card takes place</li>
+  <li>Keywords with side-effects apply</li>
+  <li>Game limits apply (resources cannot be lower than 0, wall below 0, facitlies below 1...)</li>
+  <li>Resource production</li>
+  <li>End game condition is checked</li>
 </ol>
 <h4><a id="faq_q6" href="#faq_q6">Q6</a>: I played an if-then-else card, fulfilling the condition, but instead the secondary effect took place. Why?</h4>
-<p>A: Remember that this condition is evaluated AFTER the card cost is subtracted from your stock. This may be the reason why the secondary effect was chosen.</p>
+<p>Remember that this condition is evaluated AFTER the card cost is subtracted from your stock. This may be the reason why the secondary effect was chosen.</p>
 <h4><a id="faq_q7" href="#faq_q7">Q7</a>: I played a "Swift" card and I got an unexpected increase of resources. How does a "Swift" card work?</h4>
-<p>A: Simple - by playing a "Swift" card you get a full extra turn, including resource production.</p>
+<p>Simple - by playing a "Swift" card you get a full extra turn, including resource production.</p>
 <h4><a id="faq_q8" href="#faq_q8">Q8</a>: Is the number of "Swift"/"Quick" cards played in a row limited?</h4>
-<p>A: No. You can make arbitrarily long chains of "Swift"/"Quick" cards.</p>
+<p>No. You can make arbitrarily long chains of "Swift"/"Quick" cards.</p>
 <h4><a id="faq_q9" href="#faq_q9">Q9</a>: I used F5 to refresh the game and for some reason a card was played by itself.</h4>
-<p>A: Use OUR refresh button (located on the left part of the screen, above your empire info), not the one on the browser. For quick access use shorcut ALT+w.</p>
+<p>Use OUR refresh button (located on the left part of the screen, above your empire info), not the one on the browser. For quick access use shorcut ALT+w.</p>
 <h4><a id="faq_q10" href="#faq_q10">Q10</a>: Some cards have "cards in your graveyard" in their effect. What does it mean?</h4>
-<p>A: Cards in your graveyard are following cards:</p>
+<p>Cards in your graveyard are following cards:</p>
 <ul>
-	<li>Cards that were discarded by you last round by some card effect</li>
-	<li>Cards that were discarded by opponent last round by some card effect</li>
+  <li>Cards that were discarded by you last round by some card effect</li>
+  <li>Cards that were discarded by opponent last round by some card effect</li>
 </ul>
 
 <h4><a id="faq_q11" href="#faq_q11">Q11</a>: Some cards with modes like Militia, Vampire lord or Ranger for example can target their own position in hand. What will happen if I do that?</h4>
-<p>A: It depends on the card, when card is played, card related actions are executed in this order:</p>
+<p>It depends on the card, when card is played, card related actions are executed in this order:</p>
 
 <ol>
-	<li>Card effect</li>
-	<li>Keyword effect</li>
-	<li>Normal drawing - new card is added in place of the played one (can be disabled or effected by card effect or keyword effect)</li>
+  <li>Card effect</li>
+  <li>Keyword effect</li>
+  <li>Normal drawing - new card is added in place of the played one (can be disabled or effected by card effect or keyword effect)</li>
 </ol>
 
 <p>When Militia or Ranger are played with mode that targets their own position, the card effect is overridden by normal drawing, because it happens as the last action. When Vampire lord is played with mode that targets his own position, it is different. Card effect adds a Vampire into the postion of the played card, but <b>Durable</b> keyword makes sure, that next card received by normal drawing will be the Vampire lord, so it will undo the card efect. In most cases it doesn't make much sense to play the mode that targets such position, but there can be situations when you may want to play it this way (for example, when you don't want to discard any of the cards from your hand).</p>
@@ -75,43 +74,42 @@
 <p>Windows 8 users may have encounter "403 forbidden error". In this case click on the small WAMP server icon in the right bottom part of the screen, then click on 'Apache' item in the menu list and finally 'httpd.cond'. Find 'listen 80' and change it to 'listen 0.0.0.0:80'. Save and restart WAMP.</p>
 
 <h4><a id="faq_q13" href="#faq_q13">Q13</a>: How do I refresh my browser's cache?</h4>
-<p>A:</p>
 
 <ul>
-	<li>Firefox
-		<ol>
-			<li>select <b>Tools</b></li>
-			<li>select <b>Clear recent history</b></li>
-			<li>have only the <b>Cache</b> checkbox checked</li>
-			<li>select <b>Clear now</b></li>
-		</ol>
-	</li>
-	<li>Chrome
-		<ol>
-			<li>select <b>Tools</b></li>
-			<li>select <b>Clear browsing data</b></li>
-			<li>have only the <b>Empty the cache</b> checkbox checked</li>
-			<li>select <b>Clear browsing data</b></li>
-		</ol>
-	</li>
-	<li>Opera
-		<ol>
-			<li>select <b>Tools</b></li>
-			<li>select <b>Delete private data</b></li>
-			<li>select <b>Detailed options</b></li>
-			<li>have only the <b>Delete entire cache</b> checkbox checked</li>
-			<li>select <b>Delete</b></li>
-		</ol>
-	</li>
-	<li>Safari
-		<ol>
-			<li>click on the gear icon located in the upper right part of the screen</li>
-			<li>select <b>Show menu bar</b></li>
-			<li>select <b>Edit</b> in the upper left part of the screen</li>
-			<li>select <b>Empty cache</b></li>
-			<li>select <b>Empty</b></li>
-		</ol>
-	</li>
+  <li>Firefox
+    <ol>
+      <li>select <b>Tools</b></li>
+      <li>select <b>Clear recent history</b></li>
+      <li>have only the <b>Cache</b> checkbox checked</li>
+      <li>select <b>Clear now</b></li>
+    </ol>
+  </li>
+  <li>Chrome
+    <ol>
+      <li>select <b>Tools</b></li>
+      <li>select <b>Clear browsing data</b></li>
+      <li>have only the <b>Empty the cache</b> checkbox checked</li>
+      <li>select <b>Clear browsing data</b></li>
+    </ol>
+  </li>
+  <li>Opera
+    <ol>
+      <li>select <b>Tools</b></li>
+      <li>select <b>Delete private data</b></li>
+      <li>select <b>Detailed options</b></li>
+      <li>have only the <b>Delete entire cache</b> checkbox checked</li>
+      <li>select <b>Delete</b></li>
+    </ol>
+  </li>
+  <li>Safari
+    <ol>
+      <li>click on the gear icon located in the upper right part of the screen</li>
+      <li>select <b>Show menu bar</b></li>
+      <li>select <b>Edit</b> in the upper left part of the screen</li>
+      <li>select <b>Empty cache</b></li>
+      <li>select <b>Empty</b></li>
+    </ol>
+  </li>
 </ul>
 
 </am:content>
