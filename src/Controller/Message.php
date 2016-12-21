@@ -32,8 +32,8 @@ class Message extends ControllerAbstract
         }
 
         // validate message from player's point of view
-        if (($message->getAuthor() == $player->getUsername() && $message->getAuthorDelete() == 1)
-            || ($message->getRecipient() == $player->getUsername() && $message->getRecipientDelete() == 1)) {
+        if (($message->getAuthor() == $player->getUsername() && $message->getIsDeletedAuthor() == 1)
+            || ($message->getRecipient() == $player->getUsername() && $message->getIsDeletedRecipient() == 1)) {
             throw new Exception('Message was already deleted', Exception::WARNING);
         }
 
@@ -96,8 +96,8 @@ class Message extends ControllerAbstract
         }
 
         // validate message from player's point of view
-        if (($message->getAuthor() == $player->getUsername() && $message->getAuthorDelete() == 1)
-            || ($message->getRecipient() == $player->getUsername() && $message->getRecipientDelete() == 1)) {
+        if (($message->getAuthor() == $player->getUsername() && $message->getIsDeletedAuthor() == 1)
+            || ($message->getRecipient() == $player->getUsername() && $message->getIsDeletedRecipient() == 1)) {
             throw new Exception('Message was already deleted', Exception::WARNING);
         }
 
@@ -127,8 +127,8 @@ class Message extends ControllerAbstract
         }
 
         // validate message from player's point of view
-        if (($message->getAuthor() == $player->getUsername() && $message->getAuthorDelete() == 1)
-            || ($message->getRecipient() == $player->getUsername() && $message->getRecipientDelete() == 1)) {
+        if (($message->getAuthor() == $player->getUsername() && $message->getIsDeletedAuthor() == 1)
+            || ($message->getRecipient() == $player->getUsername() && $message->getIsDeletedRecipient() == 1)) {
             throw new Exception('Message was already deleted', Exception::WARNING);
         }
 
@@ -140,11 +140,11 @@ class Message extends ControllerAbstract
         else {
             // case 1: author
             if ($message->getAuthor() == $player->getUsername()) {
-                $message->setAuthorDelete(1);
+                $message->setIsDeletedAuthor(1);
             }
             // case 2: recipient
             else {
-                $message->setRecipientDelete(1);
+                $message->setIsDeletedRecipient(1);
             }
         }
 
@@ -338,7 +338,7 @@ class Message extends ControllerAbstract
             // extract message ids
             $systemIds = array();
             foreach ($result->data() as $data) {
-                $systemIds[] = $data['MessageID'];
+                $systemIds[] = $data['message_id'];
             }
 
             // there are some system messages

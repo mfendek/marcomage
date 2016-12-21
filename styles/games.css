@@ -15,13 +15,8 @@ div#games h3 {
 }
 
 /* table layout */
-div#games table {
-    margin: 0.5ex auto 1ex auto;
-}
-
-/* table cell text */
-div#games table th > p, div#games table td > p {
-    margin: 0.5ex 1ex 0.5ex 1ex;
+div#games .responsive-table {
+    margin-top: 0.5ex;
 }
 
 /* checkbox layout */
@@ -40,6 +35,8 @@ div#active-games {
 
 /* hosted games subsection */
 div#hosted-games {
+    padding-left: 1ex;
+    padding-right: 1ex;
     margin-bottom: 1ex;
 }
 
@@ -150,6 +147,25 @@ div.game > div.game-display {
     background-size: cover;
 }
 
+/* breakpoint specific layout */
+@media screen and (max-width: 991px) {
+    /* hide background image */
+    div.game > div.game-display {
+        background-size: 0 0;
+    }
+
+    /* hide tower and wall display */
+    div.tower-display, div.wall-display {
+        display: none;
+    }
+
+    /* facilities and stock are displayed next to each other */
+    .stats > div {
+        display: inline-block;
+        vertical-align: top;
+    }
+}
+
 div.game .row > div > * {
     margin-top: 0.5ex;
     margin-bottom: 0.5ex;
@@ -224,7 +240,7 @@ p.info-label.castle {
 }
 
 /* facilities/resources layout */
-.stats > div {
+div.stock-info {
     background: no-repeat center center;
     height: 70px;
     width: 78px;
@@ -242,17 +258,17 @@ div.game .token-counter > img {
 }
 
 /* quarry/bricks layout image */
-.stats > div:first-child {
+div.stock-info.bricks {
     background-image: url('../img/game/bricks.png');
 }
 
 /* magic/gems layout image */
-.stats > div:first-child + div {
+div.stock-info.gems {
     background-image: url('../img/game/gems.png');
 }
 
 /* dungeon/recruits layout image */
-.stats > div:first-child + div + div {
+div.stock-info.recruits {
     background-image: url('../img/game/recruits.png');
 }
 
@@ -437,6 +453,11 @@ div.game div#game-cheat-menu {
 /* replays navigation bar */
 div.game p.information-line > * + * {
     margin-left: 0.5ex;
+}
+
+#games > .responsive-table {
+    margin-left: 0.5ex;
+    margin-right: 0.5ex;
 }
 
 div.game button[name="slideshow-play"], div.game button[name="slideshow-pause"] {

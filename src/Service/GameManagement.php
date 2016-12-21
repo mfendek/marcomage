@@ -137,14 +137,14 @@ class GameManagement extends ServiceAbstract
         $setting = $this->dbEntity()->setting()->getSettingAsserted($opponentName);
 
         // check if simultaneous games are allowed (depends on host settings)
-        $gameLimit = $setting->getSetting('GameLimit');
+        $gameLimit = $setting->getSetting('unique_game_opponent');
         $result = $dbEntityGame->checkGame($playerName, $opponentName);
         if ($result->isError()) {
             throw new Exception('Failed to check game between two players');
         }
         $checkGame = $result->isSuccess();
 
-        if ($gameLimit == 1 && $checkGame) {
+        if ($gameLimit == 'yes' && $checkGame) {
             throw new Exception('Unable to join game because opponent has disabled simultaneous games', Exception::WARNING);
         }
 

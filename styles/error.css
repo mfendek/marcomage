@@ -5,9 +5,15 @@
 div#error-page {
     padding-bottom: 5ex;
 }
+
+div#error-page > h1 {
+    text-shadow: 0 0 1px black, 0 0 2px black, 0 0 3px black, 0 0 4px black, 0 0 5px black;
+}
+
 div#error-page > div {
     text-align: center;
 }
+
 div#error-page p {
     margin-top: 4ex;
     margin-bottom: 4ex;

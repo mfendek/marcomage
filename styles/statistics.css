@@ -24,6 +24,7 @@ div#statistics h5 {
 
 /* statistic group (subsection) layout */
 div#statistics div.skin-text {
+    margin-bottom: 1ex;
     padding-left: 1ex;
     padding-right: 1ex;
     padding-bottom: 1ex;

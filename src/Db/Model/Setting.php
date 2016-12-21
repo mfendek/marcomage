@@ -14,7 +14,7 @@ class Setting extends ModelAbstract
      */
     public function getUsername()
     {
-        return $this->getFieldValue('Username');
+        return $this->getFieldValue('username');
     }
 
     /**
@@ -22,7 +22,7 @@ class Setting extends ModelAbstract
      */
     public function getBirthDate()
     {
-        return $this->getFieldValue('Birthdate');
+        return $this->getFieldValue('birth_date');
     }
 
     /**
@@ -143,21 +143,21 @@ class Setting extends ModelAbstract
     public static function listBooleanSettings()
     {
         return [
-            'FriendlyFlag',
-            'BlindFlag',
-            'LongFlag',
-            'Insignias',
-            'PlayButtons',
-            'Chatorder',
-            'IntegratedChat',
-            'Avatargame',
-            'OldCardLook',
-            'Miniflags',
-            'Reports',
-            'Forum_notification',
-            'Concepts_notification',
-            'RandomDeck',
-            'GameLimit',
+            'friendly_flag',
+            'blind_flag',
+            'long_flag',
+            'keyword_insignia',
+            'play_card_button',
+            'chat_reverse_order',
+            'integrated_chat',
+            'in_game_avatar',
+            'old_card_look',
+            'card_mini_flag',
+            'battle_report',
+            'forum_notification',
+            'concept_notification',
+            'use_random_deck',
+            'unique_game_opponent',
         ];
     }
 
@@ -168,24 +168,24 @@ class Setting extends ModelAbstract
     public static function listOtherSettings()
     {
         return [
-            'Firstname',
-            'Surname',
-            'Birthdate',
-            'Gender',
-            'Email',
-            'Imnumber',
-            'Country',
-            'Hobby',
-            'Avatar',
-            'Status',
-            'Timezone',
-            'Skin',
-            'Background',
-            'DefaultFilter',
-            'Autorefresh',
-            'AutoAi',
-            'Timeout',
-            'FoilCards',
+            'first_name',
+            'surname',
+            'birth_date',
+            'gender',
+            'email',
+            'im_number',
+            'country',
+            'hobby',
+            'avatar',
+            'status',
+            'timezone',
+            'skin',
+            'game_bg_image',
+            'default_player_filter',
+            'auto_refresh_timer',
+            'auto_ai_timer',
+            'game_turn_timeout',
+            'foil_cards',
         ];
     }
 }

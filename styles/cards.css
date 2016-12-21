@@ -54,13 +54,11 @@ div.card-preview > div.card {
 /* keywords list subsection */
 
 /* keywords table */
-div#keywords table {
-    margin: 1ex auto;
-}
-
-/* table cell text */
-div#keywords table th, div#keywords table td {
-    padding: 1ex;
+div#keywords .responsive-table {
+    margin-top: 1ex;
+    margin-left: 0.5ex;
+    margin-right: 0.5ex;
+    text-align: center;
 }
 
 /* keyword hyperlink */

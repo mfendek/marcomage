@@ -224,11 +224,11 @@ abstract class UtilAbstract
 
     /**
      * Fetch questions log
-     * @return string
+     * @return array
      */
     public function questionsLog()
     {
-        return implode("\n", $this->log);
+        return $this->log;
     }
 
     /**

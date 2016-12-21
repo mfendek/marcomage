@@ -1,0 +1,9 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+RENAME TABLE `chats` TO `chat`;
+
+ALTER TABLE `chat` CHANGE `GameID` `game_id` INT(10) UNSIGNED NOT NULL,
+CHANGE `Timestamp` `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+CHANGE `Name` `author` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+CHANGE `Message` `message` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;

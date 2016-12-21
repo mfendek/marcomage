@@ -44,7 +44,7 @@ class Webpage extends TemplateDataAbstract
         $setting = $this->getCurrentSettings();
 
         $data['files'] = $files;
-        $data['timezone'] = $setting->getSetting('Timezone');
+        $data['timezone'] = $setting->getSetting('timezone');
 
         return new Result(['webpage' => $data], $subsectionName);
     }
@@ -70,7 +70,7 @@ class Webpage extends TemplateDataAbstract
         $data = array();
         $config = $this->getDic()->config();
 
-        $data['captcha_key'] = ($config['catpcha']['enabled']) ? $config['catpcha']['public_key'] : '';
+        $data['captcha_key'] = ($config['captcha']['enabled']) ? $config['captcha']['public_key'] : '';
 
         return new Result(['registration' => $data]);
     }

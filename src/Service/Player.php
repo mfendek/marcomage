@@ -41,7 +41,7 @@ class Player extends ServiceAbstract
             throw new Exception('Session id does not match', Exception::WARNING);
         }
 
-        if (time() - Date::strToTime($player->getLastQuery()) > self::SESSION_TIMEOUT) {
+        if (time() - Date::strToTime($player->getLastActivity()) > self::SESSION_TIMEOUT) {
             throw new Exception('Session has expired', Exception::WARNING);
         }
     }
@@ -65,14 +65,14 @@ class Player extends ServiceAbstract
             $sessionId = mt_rand(1, pow(2, 31) - 1);
 
             $player->setSessionId($sessionId);
-            $player->setNotification($player->getLastQuery());
+            $player->setNotification($player->getLastActivity());
         }
 
         $now = time();
 
-        // store current `Last IP` and `Last Query`, refresh cookies
+        // store current `last_ip` and `last_activity`, refresh cookies
         $player->setLastIp(Ip::getIp());
-        $player->setLastQuery(Date::timeToStr());
+        $player->setLastActivity(Date::timeToStr());
 
         // try even if not sure
         if ($cookies == 'yes' || $cookies == 'maybe') {
@@ -86,7 +86,7 @@ class Player extends ServiceAbstract
 
         // save player data
         if (!$player->save()) {
-            throw new Exception('Failed to save initial player data');
+            throw new Exception('Failed to save player session data');
         }
 
         return $newCookies;
@@ -114,7 +114,7 @@ class Player extends ServiceAbstract
         $player
             ->setPassword(md5($password))
             ->setLastIp(Ip::getIp())
-            ->setLastQuery(Date::timeToStr());
+            ->setLastActivity(Date::timeToStr());
 
         if (!$player->save()) {
             $db->rollBack();
@@ -212,18 +212,18 @@ class Player extends ServiceAbstract
 
         $db->beginTransaction();
 
-        // chats
+        // chat
         $result = $dbEntityChat->renameChats($playerName, $newName);
         if ($result->isError()) {
             $db->rollBack();
-            throw new Exception('Failed to rename player in chats table');
+            throw new Exception('Failed to rename player in chat table');
         }
 
         // concepts
         $result = $dbEntityConcept->renameConcepts($playerName, $newName);
         if ($result->isError()) {
             $db->rollBack();
-            throw new Exception('Failed to rename player in concepts table');
+            throw new Exception('Failed to rename player in concept table');
         }
 
         // decks
@@ -293,7 +293,7 @@ class Player extends ServiceAbstract
         $result = $dbEntityPlayer->renamePlayer($playerName, $newName);
         if ($result->isErrorOrNoEffect()) {
             $db->rollBack();
-            throw new Exception('Failed to rename player in logins table');
+            throw new Exception('Failed to rename player in login table');
         }
 
         // messages - author
@@ -335,14 +335,14 @@ class Player extends ServiceAbstract
         $result = $dbEntityScore->renameScores($playerName, $newName);
         if ($result->isErrorOrNoEffect()) {
             $db->rollBack();
-            throw new Exception('Failed to rename player in scores table');
+            throw new Exception('Failed to rename player in score table');
         }
 
         // settings
         $result = $dbEntitySetting->renameSettings($playerName, $newName);
         if ($result->isErrorOrNoEffect()) {
             $db->rollBack();
-            throw new Exception('Failed to rename player in settings table');
+            throw new Exception('Failed to rename player in setting table');
         }
 
         $db->commit();
@@ -378,7 +378,7 @@ class Player extends ServiceAbstract
 
         $games = array();
         foreach ($result->data() as $data) {
-            $games[] = $data['GameID'];
+            $games[] = $data['game_id'];
         }
 
         $db->beginTransaction();
@@ -425,7 +425,7 @@ class Player extends ServiceAbstract
                 throw new Exception('Failed to delete games');
             }
 
-            // chats data
+            // chat data
             $result = $dbEntityChat->deleteChats($games);
             if ($result->isError()) {
                 $db->rollBack();
@@ -466,7 +466,7 @@ class Player extends ServiceAbstract
         $excessDecks = array();
         foreach ($decks as $i => $deckData) {
             if ($i >= DeckModel::DECK_SLOTS) {
-                $deck = $dbEntityDeck->getDeckAsserted($deckData['DeckID']);
+                $deck = $dbEntityDeck->getDeckAsserted($deckData['deck_id']);
                 $excessDecks[] = $deck;
             }
         }
@@ -518,7 +518,7 @@ class Player extends ServiceAbstract
 
             // buy game slot
             $score->setGold($score->getGold() - GameModel::GAME_SLOT_COST);
-            $score->setData('GameSlots', $score->getData('GameSlots') + 1);
+            $score->setGameSlots($score->getGameSlots() + 1);
         }
         // case 2: deck slot
         elseif ($item == 'deck_slot') {

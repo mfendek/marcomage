@@ -16,147 +16,146 @@ class PdoScore extends PdoAbstract
     protected function schema()
     {
         return [
-            'entity_name' => 'scores',
-            'model_name' => 'score',
+            'entity_name' => 'score',
             'primary_fields' => [
-                'Username',
+                'username',
             ],
             'fields' => [
-                'Username' => [
+                'username' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Level' => [
+                'level' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Exp' => [
+                'exp' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Gold' => [
+                'gold' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Wins' => [
+                'wins' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Losses' => [
+                'losses' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Draws' => [
+                'draws' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'GameSlots' => [
+                'game_slots' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Assassin' => [
+                'assassin' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Builder' => [
+                'builder' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Carpenter' => [
+                'carpenter' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Collector' => [
+                'collector' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Desolator' => [
+                'desolator' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Dragon' => [
+                'dragon' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Gentle_touch' => [
+                'gentle_touch' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Saboteur' => [
+                'saboteur' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Snob' => [
+                'snob' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Survivor' => [
+                'survivor' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Titan' => [
+                'titan' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Quarry' => [
+                'quarry' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Magic' => [
+                'magic' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Dungeons' => [
+                'dungeons' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Rares' => [
+                'rares' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Tower' => [
+                'tower' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Wall' => [
+                'wall' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'TowerDamage' => [
+                'tower_damage' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'WallDamage' => [
+                'wall_damage' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Challenges' => [
+                'ai_challenges' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
@@ -172,7 +171,7 @@ class PdoScore extends PdoAbstract
      */
     public function createScore($username)
     {
-        return parent::createModel(['Username' => $username]);
+        return parent::createModel(['username' => $username]);
     }
 
     /**
@@ -187,7 +186,7 @@ class PdoScore extends PdoAbstract
             return $this->getGuestScore();
         }
 
-        return parent::getModel(['Username' => $username], $asserted);
+        return parent::getModel(['username' => $username], $asserted);
     }
 
     /**
@@ -220,6 +219,6 @@ class PdoScore extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('UPDATE `scores` SET `Username` = ? WHERE `Username` = ?', [$newName, $player]);
+        return $db->query('UPDATE `score` SET `username` = ? WHERE `username` = ?', [$newName, $player]);
     }
 }

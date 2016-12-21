@@ -9,6 +9,7 @@ use ArcomageException as Exception;
 use Db\Model\Player as PlayerModel;
 use Util\Date;
 use Util\Input;
+use Util\Rename;
 
 class Setting extends ControllerAbstract
 {
@@ -22,34 +23,34 @@ class Setting extends ControllerAbstract
 
         $this->result()->setCurrent('Settings');
 
-        $this->assertParamsExist(['Hobby', 'Status', 'DefaultFilter', 'Gender', 'Birthdate']);
+        $this->assertParamsExist(['hobby', 'status', 'default_player_filter', 'gender', 'birth_date']);
 
         // validate hobby
-        if (mb_strlen($request['Hobby']) > PlayerModel::HOBBY_LENGTH) {
+        if (mb_strlen($request['hobby']) > PlayerModel::HOBBY_LENGTH) {
             // trim hobby text to appropriate length
-            $request['Hobby'] = mb_substr($request['Hobby'], 0, PlayerModel::HOBBY_LENGTH);
+            $request['hobby'] = mb_substr($request['hobby'], 0, PlayerModel::HOBBY_LENGTH);
 
             $this->result()->setWarning('Hobby text is too long');
         }
 
         // validate player status
-        if (!in_array($request['Status'], ['newbie', 'ready', 'quick', 'dnd', 'none'])) {
+        if (!in_array($request['status'], ['newbie', 'ready', 'quick', 'dnd', 'none'])) {
             $this->result()
-                ->changeRequest('Status', 'none')
+                ->changeRequest('status', 'none')
                 ->setWarning('Invalid player status');
         }
 
         // validate default player filter setting
-        if (!in_array($request['DefaultFilter'], ['none', 'active', 'offline', 'all'])) {
+        if (!in_array($request['default_player_filter'], ['none', 'active', 'offline', 'all'])) {
             $this->result()
-                ->changeRequest('DefaultFilter', 'none')
+                ->changeRequest('default_player_filter', 'none')
                 ->setWarning('Invalid player filter');
         }
 
         // validate gender setting
-        if (!in_array($request['Gender'], ['none', 'male', 'female'])) {
+        if (!in_array($request['gender'], ['none', 'male', 'female'])) {
             $this->result()
-                ->changeRequest('Gender', 'none')
+                ->changeRequest('gender', 'none')
                 ->setWarning('Invalid gender setting');
         }
 
@@ -66,7 +67,7 @@ class Setting extends ControllerAbstract
         // process other settings
         foreach ($otherSettings as $settingName) {
             // omit birth date, avatar and foil cards
-            if (!in_array($settingName, ['Birthdate', 'Avatar', 'FoilCards'])) {
+            if (!in_array($settingName, ['birth_date', 'avatar', 'foil_cards'])) {
                 $this->assertParamsExist([$settingName]);
 
                 $setting->changeSetting($settingName, $request[$settingName]);
@@ -74,15 +75,15 @@ class Setting extends ControllerAbstract
         }
 
         // birth date is not mandatory
-        if ($request['Birthdate'] != '') {
-            $birthDate = explode('-', $request['Birthdate']);
+        if ($request['birth_date'] != '') {
+            $birthDate = explode('-', $request['birth_date']);
 
             // date is expected to be in format dd-mm-yyyy
             if (count($birthDate) != 3) {
                 $this->result()->setWarning('Invalid birth date');
             }
             else {
-                list($year, $month, $day) = explode('-', $request['Birthdate']);
+                list($year, $month, $day) = explode('-', $request['birth_date']);
 
                 $result = Input::checkDateInput($year, $month, $day);
                 if ($result != '') {
@@ -93,7 +94,7 @@ class Setting extends ControllerAbstract
                     $this->result()->setWarning('Future birth date not allowed');
                 }
                 else {
-                    $setting->changeSetting('Birthdate', $request['Birthdate']);
+                    $setting->changeSetting('birth_date', $request['birth_date']);
                 }
             }
         }
@@ -125,7 +126,7 @@ class Setting extends ControllerAbstract
         $setting = $this->getCurrentSettings();
 
         // determine avatar picture paths
-        $formerName = $setting->getSetting('Avatar');
+        $formerName = $setting->getSetting('avatar');
         $uploadDir = $config['upload_dir']['avatar'];
         $formerPath = $uploadDir . $formerName;
 
@@ -163,7 +164,7 @@ class Setting extends ControllerAbstract
             unlink($formerPath);
         }
 
-        $setting->changeSetting('Avatar', $codeName);
+        $setting->changeSetting('avatar', $codeName);
         if (!$setting->save()) {
             throw new Exception('Failed to change avatar');
         }
@@ -188,7 +189,7 @@ class Setting extends ControllerAbstract
 
         $setting = $this->getCurrentSettings();
 
-        $formerName = $setting->getSetting('Avatar');
+        $formerName = $setting->getSetting('avatar');
         $formerPath = $config['upload_dir']['avatar'] . $formerName;
 
         // delete avatar picture
@@ -196,7 +197,7 @@ class Setting extends ControllerAbstract
             unlink($formerPath);
         }
 
-        $setting->changeSetting('Avatar', 'noavatar.jpg');
+        $setting->changeSetting('avatar', 'noavatar.jpg');
         if (!$setting->save()) {
             throw new Exception('Failed to reset avatar');
         }
@@ -216,9 +217,9 @@ class Setting extends ControllerAbstract
 
         $this->result()->setCurrent('Settings');
 
-        $this->assertParamsNonEmpty(['password', 'confirm_password']);
+        $this->assertParamsNonEmpty(['new_password', 'confirm_password']);
 
-        $newPassword = trim($request['password']);
+        $newPassword = trim($request['new_password']);
         $newPasswordConf = trim($request['confirm_password']);
 
         // validate passwords
@@ -254,7 +255,7 @@ class Setting extends ControllerAbstract
 
         $this->service()->player()->buyItem($player->getUsername(), $request['selected_item']);
 
-        $this->result()->setInfo('Shop item (' . $request['selected_item'] . ') has been successfully purchased');
+        $this->result()->setInfo('Shop item (' . Rename::underscoreToTextName($request['selected_item']) . ') has been successfully purchased');
     }
 
     /**

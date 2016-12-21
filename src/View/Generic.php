@@ -31,9 +31,9 @@ class Generic extends TemplateDataAbstract
         $setting = $this->getCurrentSettings();
 
         $dataMain['is_logged_in'] = ($this->isSession()) ? 'yes' : 'no';
-        $dataMain['skin'] = $setting->getSetting('Skin');
+        $dataMain['skin'] = $setting->getSetting('skin');
         $dataMain['new_user'] = ($newUser) ? 'yes' : 'no';
-        $dataMain['include_captcha'] = ($current == 'Registration' && $config['catpcha']['enabled']) ? 'yes' : 'no';
+        $dataMain['include_captcha'] = ($current == 'Registration' && $config['captcha']['enabled']) ? 'yes' : 'no';
         $dataMain['jquery_version'] = $config['jquery']['version'];
         $dataMain['jquery_ui_version'] = $config['jquery']['ui_version'];
         $dataMain['bootstrap_version'] = $config['bootstrap']['version'];
@@ -74,9 +74,9 @@ class Generic extends TemplateDataAbstract
                     'level_op' => '=',
                     'forbidden' => false,
                 ]));
-                $dataMain['card_old_look'] = $setting->getSetting('OldCardLook');
-                $dataMain['card_insignias'] = $setting->getSetting('Insignias');
-                $dataMain['card_foils'] = $setting->getSetting('FoilCards');
+                $dataMain['card_old_look'] = $setting->getSetting('old_card_look');
+                $dataMain['card_insignias'] = $setting->getSetting('keyword_insignia');
+                $dataMain['card_foils'] = $setting->getSetting('foil_cards');
             }
 
             // fetch player's score data
@@ -84,14 +84,14 @@ class Generic extends TemplateDataAbstract
             $score = $dbEntityScore->getScoreAsserted($player->getUsername());
 
             $dataNav['level'] = $dataMain['level'] = $score->getLevel();
-            $dataNav['exp'] = $score->getData('Exp');
+            $dataNav['exp'] = $score->getExp();
             $dataNav['next_level'] = $score->nextLevel();
             $dataNav['exp_bar'] = $score->expBar();
 
             // menu bar notifications (depends on current user's game settings)
             $newPosts = $newConcepts = false;
-            $forumNotification = ($setting->getSetting('Forum_notification') == 'yes');
-            $conceptsNotification = ($setting->getSetting('Concepts_notification') == 'yes');
+            $forumNotification = ($setting->getSetting('forum_notification') == 'yes');
+            $conceptsNotification = ($setting->getSetting('concept_notification') == 'yes');
 
             // new forum posts notification
             if ($forumNotification) {
@@ -122,7 +122,7 @@ class Generic extends TemplateDataAbstract
             }
             $challengesTo = array();
             foreach ($result->data() as $resultData) {
-                $challengesTo[] = $resultData['Player1'];
+                $challengesTo[] = $resultData['player1'];
             }
 
             // unread messages notification
@@ -130,7 +130,7 @@ class Generic extends TemplateDataAbstract
             if ($result->isErrorOrNoEffect()) {
                 throw new Exception('Failed to count unread messages');
             }
-            $unreadMessages = $result[0]['CountUnread'];
+            $unreadMessages = $result[0]['count_unread'];
 
             $dataNav['message_notice'] = (count($challengesTo) + $unreadMessages > 0) ? 'yes' : 'no';
 

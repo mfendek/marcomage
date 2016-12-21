@@ -21,7 +21,7 @@
         <xsl:param name="resourceVictory" as="xs:integer"/>
 
         <xsl:variable name="info">
-            <div>
+            <div class="stock-info bricks">
                 <p class="facility">
                     <xsl:attribute name="title">
                         <xsl:text>Quarry: </xsl:text>
@@ -55,7 +55,7 @@
                     </xsl:if>
                 </p>
             </div>
-            <div>
+            <div class="stock-info gems">
                 <p class="facility">
                     <xsl:attribute name="title">
                         <xsl:text>Magic: </xsl:text>
@@ -89,7 +89,7 @@
                     </xsl:if>
                 </p>
             </div>
-            <div>
+            <div class="stock-info recruits">
                 <p class="facility">
                     <xsl:attribute name="title">
                         <xsl:text>Dungeon: </xsl:text>
@@ -138,50 +138,52 @@
         <xsl:param name="maxWall" as="xs:integer"/>
 
         <xsl:variable name="info">
-            <p class="info-label castle">
-                <span>
-                    <xsl:attribute name="title">
+            <div>
+                <p class="info-label castle">
+                    <span>
+                        <xsl:attribute name="title">
+                            <xsl:text>Tower: </xsl:text>
+                            <xsl:value-of select="$tower"/>
+                            <xsl:text> / </xsl:text>
+                            <xsl:value-of select="$maxTower"/>
+                            <xsl:text> (Castle total: </xsl:text>
+                            <xsl:value-of select="$tower + $wall"/>
+                            <xsl:text> / </xsl:text>
+                            <xsl:value-of select="$maxTower + $maxWall"/>
+                            <xsl:text>)</xsl:text>
+                        </xsl:attribute>
                         <xsl:text>Tower: </xsl:text>
                         <xsl:value-of select="$tower"/>
-                        <xsl:text> / </xsl:text>
-                        <xsl:value-of select="$maxTower"/>
-                        <xsl:text> (Castle total: </xsl:text>
-                        <xsl:value-of select="$tower + $wall"/>
-                        <xsl:text> / </xsl:text>
-                        <xsl:value-of select="$maxTower + $maxWall"/>
-                        <xsl:text>)</xsl:text>
-                    </xsl:attribute>
-                    <xsl:text>Tower: </xsl:text>
-                    <xsl:value-of select="$tower"/>
-                </span>
-                <xsl:if test="$changeTower != 0">
-                    <span class="changes">
-                        <xsl:value-of select="$changeTower"/>
                     </span>
-                </xsl:if>
-            </p>
-            <p class="info-label castle">
-                <span>
-                    <xsl:attribute name="title">
+                    <xsl:if test="$changeTower != 0">
+                        <span class="changes">
+                            <xsl:value-of select="$changeTower"/>
+                        </span>
+                    </xsl:if>
+                </p>
+                <p class="info-label castle">
+                    <span>
+                        <xsl:attribute name="title">
+                            <xsl:text>Wall: </xsl:text>
+                            <xsl:value-of select="$wall"/>
+                            <xsl:text> / </xsl:text>
+                            <xsl:value-of select="$maxWall"/>
+                            <xsl:text> (Castle total: </xsl:text>
+                            <xsl:value-of select="$tower + $wall"/>
+                            <xsl:text> / </xsl:text>
+                            <xsl:value-of select="$maxTower + $maxWall"/>
+                            <xsl:text>)</xsl:text>
+                        </xsl:attribute>
                         <xsl:text>Wall: </xsl:text>
                         <xsl:value-of select="$wall"/>
-                        <xsl:text> / </xsl:text>
-                        <xsl:value-of select="$maxWall"/>
-                        <xsl:text> (Castle total: </xsl:text>
-                        <xsl:value-of select="$tower + $wall"/>
-                        <xsl:text> / </xsl:text>
-                        <xsl:value-of select="$maxTower + $maxWall"/>
-                        <xsl:text>)</xsl:text>
-                    </xsl:attribute>
-                    <xsl:text>Wall: </xsl:text>
-                    <xsl:value-of select="$wall"/>
-                </span>
-                <xsl:if test="$changeWall != 0">
-                    <span class="changes">
-                        <xsl:value-of select="$changeWall"/>
                     </span>
-                </xsl:if>
-            </p>
+                    <xsl:if test="$changeWall != 0">
+                        <span class="changes">
+                            <xsl:value-of select="$changeWall"/>
+                        </span>
+                    </xsl:if>
+                </p>
+            </div>
         </xsl:variable>
         <func:result select="exsl:node-set($info)"/>
     </func:function>

@@ -40,7 +40,7 @@ class Deck extends TemplateDataAbstract
             ? $createdDates[0] : 'none';
 
         // initialize filters
-        $deckId = $data['CurrentDeck'] = isset($input['CurrentDeck']) ? $input['CurrentDeck'] : '';
+        $deckId = $data['current_deck'] = isset($input['current_deck']) ? $input['current_deck'] : '';
         $nameFilter = $data['name_filter'] = isset($input['name_filter']) ? $input['name_filter'] : '';
         $rarityFilter = $data['rarity_filter'] = isset($input['rarity_filter']) ? $input['rarity_filter'] : 'none';
         $costFilter = $data['cost_filter'] = isset($input['cost_filter']) ? $input['cost_filter'] : 'none';
@@ -73,9 +73,9 @@ class Deck extends TemplateDataAbstract
         // load card display settings
         $setting = $this->getCurrentSettings();
 
-        $data['card_old_look'] = $setting->getSetting('OldCardLook');
-        $data['card_insignias'] = $setting->getSetting('Insignias');
-        $data['card_foils'] = $setting->getSetting('FoilCards');
+        $data['card_old_look'] = $setting->getSetting('old_card_look');
+        $data['card_insignias'] = $setting->getSetting('keyword_insignia');
+        $data['card_foils'] = $setting->getSetting('foil_cards');
         // calculate average cost per turn
         $data['avg_cost'] = $this->service()->deck()->avgCostPerTurn($deck);
         $data['card_pool'] = (isset($input['card_pool']) && $input['card_pool'] == 'no') ? 'no' : 'yes';
@@ -142,7 +142,7 @@ class Deck extends TemplateDataAbstract
         $data['tokens'] = $deck->getData()->Tokens;
         $data['token_keywords'] = XmlKeyword::tokenKeywords();
         $data['note'] = $deck->getNote();
-        $data['shared'] = ($deck->getShared() == 1) ? 'yes' : 'no';
+        $data['shared'] = ($deck->getIsShared() == 1) ? 'yes' : 'no';
 
         return new Result(['deck_edit' => $data], $deck->getDeckName());
     }
@@ -159,11 +159,11 @@ class Deck extends TemplateDataAbstract
         $player = $this->getCurrentPlayer();
 
         // validate deck id
-        $this->assertInputNonEmpty(['CurrentDeck']);
-        if (!is_numeric($input['CurrentDeck']) || $input['CurrentDeck'] <= 0) {
+        $this->assertInputNonEmpty(['current_deck']);
+        if (!is_numeric($input['current_deck']) || $input['current_deck'] <= 0) {
             throw new Exception('Invalid deck id', Exception::WARNING);
         }
-        $deckId = $input['CurrentDeck'];
+        $deckId = $input['current_deck'];
 
         $deck = $this->dbEntity()->deck()->getDeckAsserted($deckId);
 
@@ -172,7 +172,7 @@ class Deck extends TemplateDataAbstract
             throw new Exception('Can only edit own deck', Exception::WARNING);
         }
 
-        $data['CurrentDeck'] = $deckId;
+        $data['current_deck'] = $deckId;
 
         // determine if user input should be used or not
         $data['text'] = (isset($input['content'])) ? $input['content'] : $deck->getNote();
@@ -206,7 +206,7 @@ class Deck extends TemplateDataAbstract
         $data['player_level'] = $score->getLevel();
         $data['tutorial_end'] = PlayerModel::TUTORIAL_END;
         $data['list'] = $decks;
-        $data['timezone'] = $setting->getSetting('Timezone');
+        $data['timezone'] = $setting->getSetting('timezone');
 
         return new Result(['decks' => $data]);
     }
@@ -228,7 +228,7 @@ class Deck extends TemplateDataAbstract
 
         // default ordering and condition
         $data['current_order'] = $order = (isset($input['decks_current_order'])) ? $input['decks_current_order'] : 'DESC';
-        $data['current_condition'] = $condition = (isset($input['decks_current_condition'])) ? $input['decks_current_condition'] : 'Modified';
+        $data['current_condition'] = $condition = (isset($input['decks_current_condition'])) ? $input['decks_current_condition'] : 'modified_at';
 
         // validate current page
         $currentPage = ((isset($input['decks_current_page'])) ? $input['decks_current_page'] : 0);
@@ -249,7 +249,7 @@ class Deck extends TemplateDataAbstract
         if ($result->isErrorOrNoEffect()) {
             throw new Exception('Failed to count pages for shared decks');
         }
-        $pages = ceil($result[0]['Count'] / \Db\Model\Deck::DECKS_PER_PAGE);
+        $pages = ceil($result[0]['count'] / \Db\Model\Deck::DECKS_PER_PAGE);
 
         // list deck authors
         $result = $dbEntityDeck->listAuthors();
@@ -259,7 +259,7 @@ class Deck extends TemplateDataAbstract
 
         $authors = array();
         foreach ($result->data() as $authorData) {
-            $authors[] = $authorData['Username'];
+            $authors[] = $authorData['username'];
         }
 
         // list player's decks
@@ -275,7 +275,7 @@ class Deck extends TemplateDataAbstract
         $data['page_count'] = $pages;
         $data['authors'] = $authors;
         $data['decks'] = $decks;
-        $data['timezone'] = $setting->getSetting('Timezone');
+        $data['timezone'] = $setting->getSetting('timezone');
 
         return new Result(['decks_shared' => $data]);
     }
@@ -293,17 +293,17 @@ class Deck extends TemplateDataAbstract
         $dbEntityThread = $this->dbEntity()->forumThread();
 
         // validate deck id
-        $this->assertInputNonEmpty(['CurrentDeck']);
-        if (!is_numeric($input['CurrentDeck']) || $input['CurrentDeck'] <= 0) {
+        $this->assertInputNonEmpty(['current_deck']);
+        if (!is_numeric($input['current_deck']) || $input['current_deck'] <= 0) {
             throw new Exception('Invalid deck id', Exception::WARNING);
         }
-        $deckId = $input['CurrentDeck'];
+        $deckId = $input['current_deck'];
 
         // load shared deck
         $deck = $this->dbEntity()->deck()->getDeckAsserted($deckId);
 
         // validate deck
-        if ($deck->getShared() == 0) {
+        if ($deck->getIsShared() == 0) {
             throw new Exception('Selected deck is not shared', Exception::WARNING);
         }
         if (!$deck->isReady()) {
@@ -323,9 +323,9 @@ class Deck extends TemplateDataAbstract
 
         $data['deck_id'] = $deck->getDeckId();
         $data['deck_name'] = $deck->getDeckName();
-        $data['card_old_look'] = $setting->getSetting('OldCardLook');
-        $data['card_insignias'] = $setting->getSetting('Insignias');
-        $data['card_foils'] = $setting->getSetting('FoilCards');
+        $data['card_old_look'] = $setting->getSetting('old_card_look');
+        $data['card_insignias'] = $setting->getSetting('keyword_insignia');
+        $data['card_foils'] = $setting->getSetting('foil_cards');
         $data['tokens'] = (count($tokens) > 0) ? implode(", ", $tokens) : '';
 
         // calculate average cost per turn
@@ -341,7 +341,7 @@ class Deck extends TemplateDataAbstract
         if ($result->isError()) {
             throw new Exception('Failed to find forum thread by deck id');
         }
-        $threadId = ($result->isSuccess()) ? $result[0]['ThreadID'] : 0;
+        $threadId = ($result->isSuccess()) ? $result[0]['thread_id'] : 0;
         $data['discussion'] = ($threadId) ? $threadId : 0;
         $data['create_thread'] = ($this->checkAccess('create_thread')) ? 'yes' : 'no';
 

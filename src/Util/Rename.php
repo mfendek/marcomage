@@ -38,4 +38,20 @@ class Rename
 
         return implode('', $className);
     }
+
+    /**
+     * Convert underscored string to human readable text format
+     * @param string $name
+     * @return string
+     */
+    public static function underscoreToTextName($name)
+    {
+        $name = explode('_', $name);
+        $className = array();
+        foreach ($name as $key => $segment) {
+            $className[] = ($key == 0) ? ucfirst($segment) : $segment;
+        }
+
+        return implode(' ', $className);
+    }
 }

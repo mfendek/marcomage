@@ -141,7 +141,7 @@ class Concept extends ControllerAbstract
         }
 
         $this->result()
-            ->changeRequest('CurrentConcept', $concept->getCardId())
+            ->changeRequest('current_concept', $concept->getCardId())
             ->setInfo('New card created')
             ->setCurrent('Concepts_edit');
     }
@@ -168,7 +168,7 @@ class Concept extends ControllerAbstract
         }
 
         $this->result()
-            ->changeRequest('CurrentConcept', $conceptId)
+            ->changeRequest('current_concept', $conceptId)
             ->setCurrent('Concepts_edit');
     }
 
@@ -180,11 +180,12 @@ class Concept extends ControllerAbstract
     {
         $request = $this->request();
         $player = $this->getCurrentPlayer();
+        $dbEntityThread = $this->dbEntity()->forumThread();
 
         $this->result()->setCurrent('Concepts');
 
-        $this->assertParamsNonEmpty(['CurrentConcept']);
-        $conceptId = $request['CurrentConcept'];
+        $this->assertParamsNonEmpty(['current_concept']);
+        $conceptId = $request['current_concept'];
         $concept = $this->dbEntity()->concept()->getConceptAsserted($conceptId);
 
         // check access rights
@@ -207,7 +208,13 @@ class Concept extends ControllerAbstract
         // store concept name in case it will be changed
         $oldName = $concept->getName();
         $newName = $data['name'];
-        $threadId = $concept->getThreadId();
+
+        // find related forum thread
+        $result = $dbEntityThread->conceptThread($concept->getCardId());
+        if ($result->isError()) {
+            throw new Exception('Failed to find forum thread by concept id');
+        }
+        $threadId = ($result->isSuccess()) ? $result[0]['thread_id'] : 0;
 
         // add default cost values
         if (trim($data['bricks']) == '') {
@@ -232,7 +239,7 @@ class Concept extends ControllerAbstract
             ->setEffect($data['effect'])
             ->setKeywords($data['keywords'])
             ->setNote($data['note'])
-            ->setLastChange(Date::timeToStr());
+            ->setModifiedAt(Date::timeToStr());
 
         if (!$concept->save()) {
             throw new Exception('Failed to save changes');
@@ -263,11 +270,12 @@ class Concept extends ControllerAbstract
     {
         $request = $this->request();
         $dbEntityConcept = $this->dbEntity()->concept();
+        $dbEntityThread = $this->dbEntity()->forumThread();
 
         $this->result()->setCurrent('Concepts');
 
-        $this->assertParamsNonEmpty(['CurrentConcept']);
-        $conceptId = $request['CurrentConcept'];
+        $this->assertParamsNonEmpty(['current_concept']);
+        $conceptId = $request['current_concept'];
 
         // check access rights
         if (!$this->checkAccess('edit_all_card')) {
@@ -290,7 +298,13 @@ class Concept extends ControllerAbstract
         // store concept name in case it will be changed
         $oldName = $concept->getName();
         $newName = $data['name'];
-        $threadId = $concept->getThreadId();
+
+        // find related forum thread
+        $result = $dbEntityThread->conceptThread($concept->getCardId());
+        if ($result->isError()) {
+            throw new Exception('Failed to find forum thread by concept id');
+        }
+        $threadId = ($result->isSuccess()) ? $result[0]['thread_id'] : 0;
 
         // add default cost values
         if (trim($data['bricks']) == '') {
@@ -351,8 +365,8 @@ class Concept extends ControllerAbstract
 
         $this->result()->setCurrent('Concepts');
 
-        $this->assertParamsNonEmpty(['CurrentConcept']);
-        $conceptId = $request['CurrentConcept'];
+        $this->assertParamsNonEmpty(['current_concept']);
+        $conceptId = $request['current_concept'];
 
         $concept = $this->dbEntity()->concept()->getConceptAsserted($conceptId);
 
@@ -406,7 +420,7 @@ class Concept extends ControllerAbstract
         // set new picture
         $concept
             ->setPicture($codeName)
-            ->setLastChange(Date::timeToStr());
+            ->setModifiedAt(Date::timeToStr());
 
         if (!$concept->save()) {
             throw new Exception('Failed to save changes');
@@ -427,8 +441,8 @@ class Concept extends ControllerAbstract
 
         $this->result()->setCurrent('Concepts');
 
-        $this->assertParamsNonEmpty(['CurrentConcept']);
-        $conceptId = $request['CurrentConcept'];
+        $this->assertParamsNonEmpty(['current_concept']);
+        $conceptId = $request['current_concept'];
 
         $concept = $this->dbEntity()->concept()->getConceptAsserted($conceptId);
 
@@ -452,7 +466,7 @@ class Concept extends ControllerAbstract
         // reset concept picture to default
         $concept
             ->setPicture('blank.jpg')
-            ->setLastChange(Date::timeToStr());
+            ->setModifiedAt(Date::timeToStr());
 
         if (!$concept->save()) {
             throw new Exception('Failed to save changes');
@@ -482,7 +496,7 @@ class Concept extends ControllerAbstract
         }
 
         $this->result()
-            ->changeRequest('CurrentConcept', $conceptId)
+            ->changeRequest('current_concept', $conceptId)
             ->setCurrent('Concepts_edit');
     }
 
@@ -494,16 +508,23 @@ class Concept extends ControllerAbstract
     {
         $request = $this->request();
         $player = $this->getCurrentPlayer();
+        $dbEntityThread = $this->dbEntity()->forumThread();
 
         $this->result()->setCurrent('Concepts');
 
-        $this->assertParamsNonEmpty(['CurrentConcept']);
-        $conceptId = $request['CurrentConcept'];
+        $this->assertParamsNonEmpty(['current_concept']);
+        $conceptId = $request['current_concept'];
 
         $concept = $this->dbEntity()->concept()->getConceptAsserted($conceptId);
 
+        // find related forum thread
+        $result = $dbEntityThread->conceptThread($concept->getCardId());
+        if ($result->isError()) {
+            throw new Exception('Failed to find forum thread by concept id');
+        }
+        $threadId = ($result->isSuccess()) ? $result[0]['thread_id'] : 0;
+
         // extract concept data relevant for related forum thread
-        $threadId = $concept->getThreadId();
         $conceptName = $concept->getName();
 
         // check access rights
@@ -548,9 +569,9 @@ class Concept extends ControllerAbstract
 
         $this->result()->setCurrent('Concepts');
 
-        $this->assertParamsNonEmpty(['CurrentConcept']);
+        $this->assertParamsNonEmpty(['current_concept']);
 
-        $conceptId = $request['CurrentConcept'];
+        $conceptId = $request['current_concept'];
 
         // check access rights
         if (!$this->checkAccess('create_thread')) {
@@ -561,30 +582,32 @@ class Concept extends ControllerAbstract
         $concept = $this->dbEntity()->concept()->getConceptAsserted($conceptId);
         $this->result()->setCurrent('Concepts_details');
 
+        // find related forum thread
+        $result = $dbEntityThread->conceptThread($concept->getCardId());
+        if ($result->isError()) {
+            throw new Exception('Failed to find forum thread by concept id');
+        }
+        $threadId = ($result->isSuccess()) ? $result[0]['thread_id'] : 0;
+
         // check if related forum thread already exists
-        $threadId = $concept->getThreadId();
         if ($threadId > 0) {
             $this->result()
-                ->changeRequest('CurrentThread', $threadId)
+                ->changeRequest('current_thread', $threadId)
                 ->setCurrent('Forum_thread');
 
             throw new Exception('Thread already exists', Exception::WARNING);
         }
 
         // create new concept thread
-        $newThread = $dbEntityThread->createThread($concept->getName(), $player->getUsername(), 'normal', ForumThread::CONCEPTS_SECTION_ID);
+        $newThread = $dbEntityThread->createThread(
+            $concept->getName(), $player->getUsername(), 'normal', ForumThread::CONCEPTS_SECTION_ID, $concept->getCardId()
+        );
         if (!$newThread->save()) {
             throw new Exception('Failed to create new thread');
         }
 
-        // attach concept to newly created forum thread
-        $concept->setThreadId($newThread->getThreadId());
-        if (!$concept->save()) {
-            throw new Exception('Failed to assign new thread');
-        }
-
         $this->result()
-            ->changeRequest('CurrentThread', $newThread->getThreadId())
+            ->changeRequest('current_thread', $newThread->getThreadId())
             ->setInfo('Thread created')
             ->setCurrent('Forum_thread');
     }

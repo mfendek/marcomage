@@ -70,11 +70,11 @@ class Player extends TemplateDataAbstract
         $data['is_logged_in'] = ($this->isSession()) ? 'yes' : 'no';
 
         // validate sorting order
-        $condition = (isset($input['players_sort'])) ? $input['players_sort'] : 'Level';
+        $condition = (isset($input['players_sort'])) ? $input['players_sort'] : 'level';
         if (!in_array($condition, [
-            'Level', 'Username', 'Country', 'Quarry', 'Magic', 'Dungeons', 'Rares', 'Challenges', 'Tower', 'Wall',
-            'TowerDamage', 'WallDamage', 'Assassin', 'Builder', 'Carpenter', 'Collector', 'Desolator', 'Dragon',
-            'Gentle_touch', 'Saboteur', 'Snob', 'Survivor', 'Titan'
+            'level', 'username', 'country', 'quarry', 'magic', 'dungeons', 'rares', 'ai_challenges', 'tower', 'wall',
+            'tower_damage', 'wall_damage', 'assassin', 'builder', 'carpenter', 'collector', 'desolator', 'dragon',
+            'gentle_touch', 'saboteur', 'snob', 'survivor', 'titan'
         ])) {
             throw new Exception('Invalid sorting condition', Exception::WARNING);
         }
@@ -82,14 +82,14 @@ class Player extends TemplateDataAbstract
         $data['players_sort'] = $condition;
 
         // choose correct sorting order
-        $ascOrder = ['Country', 'Username'];
+        $ascOrder = ['country', 'username'];
         $order = (in_array($condition, $ascOrder)) ? 'ASC' : 'DESC';
 
         $setting = $this->getCurrentSettings();
 
         // validate activity filter
         $activityFilter = (isset($input['activity_filter']))
-            ? $input['activity_filter'] : $setting->getSetting('DefaultFilter');
+            ? $input['activity_filter'] : $setting->getSetting('default_player_filter');
         if (!in_array($activityFilter, ['none', 'active', 'offline', 'all'])) {
             throw new Exception('Invalid activity filter', Exception::WARNING);
         }
@@ -146,9 +146,9 @@ class Player extends TemplateDataAbstract
             throw new Exception('Failed to count pages for players list');
         }
 
-        $data['page_count'] = ceil($result[0]['Count'] / PlayerModel::PLAYERS_PER_PAGE);
+        $data['page_count'] = ceil($result[0]['count'] / PlayerModel::PLAYERS_PER_PAGE);
 
-        // get the list of all existing players; (Username, Wins, Losses, Draws, Last Query, Free slots, Avatar, Country)
+        // get the list of all existing players; (username, wins, losses, draws, last activity, free slots, avatar, country)
         $result = $dbEntityPlayer->listPlayers(
             $activityFilter, $statusFilter, $playerNameFilter, $condition, $order, $currentPage
         );
@@ -160,20 +160,20 @@ class Player extends TemplateDataAbstract
         // for each player, display their name, score, and if conditions are met, also display the challenge button
         foreach ($list as $i => $playerData) {
             $data['list'][] = [
-                'name' => $playerData['Username'],
-                'rank' => $playerData['UserType'],
-                'level' => $playerData['Level'],
-                'wins' => $playerData['Wins'],
-                'losses' => $playerData['Losses'],
-                'draws' => $playerData['Draws'],
-                'avatar' => $playerData['Avatar'],
-                'status' => $playerData['Status'],
-                'friendly_flag' => ($playerData['FriendlyFlag'] == 1) ? 'yes' : 'no',
-                'blind_flag' => ($playerData['BlindFlag'] == 1) ? 'yes' : 'no',
-                'long_flag' => ($playerData['LongFlag'] == 1) ? 'yes' : 'no',
-                'country' => $playerData['Country'],
-                'last_query' => $playerData['Last Query'],
-                'inactivity' => time() - Date::strToTime($playerData['Last Query']),
+                'name' => $playerData['username'],
+                'rank' => $playerData['user_type'],
+                'level' => $playerData['level'],
+                'wins' => $playerData['wins'],
+                'losses' => $playerData['losses'],
+                'draws' => $playerData['draws'],
+                'avatar' => $playerData['avatar'],
+                'status' => $playerData['status'],
+                'friendly_flag' => ($playerData['friendly_flag'] == 1) ? 'yes' : 'no',
+                'blind_flag' => ($playerData['blind_flag'] == 1) ? 'yes' : 'no',
+                'long_flag' => ($playerData['long_flag'] == 1) ? 'yes' : 'no',
+                'country' => $playerData['country'],
+                'last_query' => $playerData['last_activity_at'],
+                'inactivity' => time() - Date::strToTime($playerData['last_activity_at']),
             ];
         }
 
@@ -230,30 +230,30 @@ class Player extends TemplateDataAbstract
         $data['is_logged_in'] = ($this->isSession()) ? 'yes' : 'no';
         $data['player_name'] = $subsectionName = $opponent->getUsername();
         $data['player_type'] = $opponent->getUserType();
-        $data['last_query'] = $opponent->getLastQuery();
+        $data['last_query'] = $opponent->getLastActivity();
         $data['registered'] = $opponent->getRegistered();
-        $data['first_name'] = $opponentSetting->getSetting('Firstname');
-        $data['surname'] = $opponentSetting->getSetting('Surname');
-        $data['gender'] = $opponentSetting->getSetting('Gender');
-        $data['country'] = $opponentSetting->getSetting('Country');
-        $data['status'] = $opponentSetting->getSetting('Status');
-        $data['friendly_flag'] = $opponentSetting->getSetting('FriendlyFlag');
-        $data['blind_flag'] = $opponentSetting->getSetting('BlindFlag');
-        $data['long_flag'] = $opponentSetting->getSetting('LongFlag');
-        $data['avatar'] = $opponentSetting->getSetting('Avatar');
-        $data['email'] = $opponentSetting->getSetting('Email');
-        $data['im_number'] = $opponentSetting->getSetting('Imnumber');
-        $data['hobby'] = $opponentSetting->getSetting('Hobby');
-        $data['level'] = $opponentScore->getData('Level');
+        $data['first_name'] = $opponentSetting->getSetting('first_name');
+        $data['surname'] = $opponentSetting->getSetting('surname');
+        $data['gender'] = $opponentSetting->getSetting('gender');
+        $data['country'] = $opponentSetting->getSetting('country');
+        $data['status'] = $opponentSetting->getSetting('status');
+        $data['friendly_flag'] = $opponentSetting->getSetting('friendly_flag');
+        $data['blind_flag'] = $opponentSetting->getSetting('blind_flag');
+        $data['long_flag'] = $opponentSetting->getSetting('long_flag');
+        $data['avatar'] = $opponentSetting->getSetting('avatar');
+        $data['email'] = $opponentSetting->getSetting('email');
+        $data['im_number'] = $opponentSetting->getSetting('im_number');
+        $data['hobby'] = $opponentSetting->getSetting('hobby');
+        $data['level'] = $opponentScore->getLevel();
         $data['free_slots'] = $opponentFreeSlots;
-        $data['exp'] = $opponentScore->getData('Exp');
+        $data['exp'] = $opponentScore->getExp();
         $data['next_level'] = $opponentScore->nextLevel();
         $data['exp_bar'] = $opponentScore->expBar();
-        $data['wins'] = $opponentScore->getData('Wins');
-        $data['losses'] = $opponentScore->getData('Losses');
-        $data['draws'] = $opponentScore->getData('Draws');
-        $data['gold'] = $opponentScore->getData('Gold');
-        $data['game_slots'] = $opponentScore->getData('GameSlots');
+        $data['wins'] = $opponentScore->getData('wins');
+        $data['losses'] = $opponentScore->getData('losses');
+        $data['draws'] = $opponentScore->getData('draws');
+        $data['gold'] = $opponentScore->getGold();
+        $data['game_slots'] = $opponentScore->getGameSlots();
         $data['deck_slots'] = max(0, count($opponentDecks) - DeckModel::DECK_SLOTS);
         $data['avatar_path'] = $config['upload_dir']['avatar'];
 
@@ -262,14 +262,14 @@ class Player extends TemplateDataAbstract
         if ($result->isError()) {
             throw new Exception('Failed to count forum posts');
         }
-        $posts = $result[0]['Count'];
+        $posts = $result[0]['count'];
         $data['post_count'] = $posts;
 
         // case 1: birthday is set
-        if ($opponentSetting->getSetting('Birthdate') != Date::DATE_ZERO) {
+        if ($opponentSetting->getSetting('birth_date') != Date::DATE_ZERO) {
             $data['age'] = $opponentSetting->age();
             $data['sign'] = $opponentSetting->sign();
-            $data['birth_date'] = date('d-m-Y', Date::strToTime($opponentSetting->getSetting('Birthdate')));
+            $data['birth_date'] = date('d-m-Y', Date::strToTime($opponentSetting->getSetting('birth_date')));
         }
         // case 2: birthday is not set
         else {
@@ -285,12 +285,12 @@ class Player extends TemplateDataAbstract
         $decks = $result->data();
 
         $data['current_player_name'] = $player->getUsername();
-        $data['hidden_cards'] = $setting->getSetting('BlindFlag');
-        $data['friendly_play'] = $setting->getSetting('FriendlyFlag');
-        $data['long_mode'] = $setting->getSetting('LongFlag');
-        $data['random_deck_option'] = $setting->getSetting('RandomDeck');
-        $data['timezone'] = $setting->getSetting('Timezone');
-        $data['timeout'] = $setting->getSetting('Timeout');
+        $data['hidden_cards'] = $setting->getSetting('blind_flag');
+        $data['friendly_play'] = $setting->getSetting('friendly_flag');
+        $data['long_mode'] = $setting->getSetting('long_flag');
+        $data['random_deck_option'] = $setting->getSetting('use_random_deck');
+        $data['timezone'] = $setting->getSetting('timezone');
+        $data['timeout'] = $setting->getSetting('game_turn_timeout');
         $data['send_challenges'] = ($this->checkAccess('send_challenges')) ? 'yes' : 'no';
         $data['messages'] = ($this->checkAccess('messages')) ? 'yes' : 'no';
         $data['change_rights'] = ($this->checkAccess('change_rights')
@@ -301,7 +301,7 @@ class Player extends TemplateDataAbstract
         $data['export_deck'] = ($this->checkAccess('export_deck')) ? 'yes' : 'no';
         $data['free_slots'] = $freeSlots;
         $data['decks'] = $decks;
-        $data['random_deck'] = (count($decks) > 0) ? $decks[Random::arrayMtRand($decks)]['DeckID'] : '';
+        $data['random_deck'] = (count($decks) > 0) ? $decks[Random::arrayMtRand($decks)]['deck_id'] : '';
 
         $score = $this->dbEntity()->score()->getScoreAsserted($player->getUsername());
 

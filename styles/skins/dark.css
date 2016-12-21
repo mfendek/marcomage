@@ -2,8 +2,6 @@
  * MArcomage CSS stylesheet - skins - dark skin template *
  *********************************************************/
 
-/*@import url('../../js/jquery/dark/jquery_ui_dark.css'); !* import JQuery dark skin *!*/
-
 /* text element layout */
 .skin-text {
     color: #cccccc; /* light gray */
@@ -82,26 +80,6 @@ button[disabled] {
 /* error message layout */
 .error {
     color: red;
-}
-
-/* online player layout */
-.p_online {
-    color: lime;
-}
-
-/* offline player layout */
-.p_offline {
-    color: red;
-}
-
-/* inactive player layout */
-.p_inactive {
-    color: maroon;
-}
-
-/* dead player layout */
-.p_dead {
-    color: gray;
 }
 
 /* information label used in multiple instances in game section */

@@ -18,13 +18,12 @@ class PdoMessage extends PdoAbstract
     protected function schema()
     {
         return [
-            'entity_name' => 'messages',
-            'model_name' => 'message',
+            'entity_name' => 'message',
             'primary_fields' => [
-                'MessageID',
+                'message_id',
             ],
             'fields' => [
-                'MessageID' => [
+                'message_id' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [
@@ -32,43 +31,43 @@ class PdoMessage extends PdoAbstract
                         EntityAbstract::OPT_AUTO_ID,
                     ],
                 ],
-                'Author' => [
+                'author' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Recipient' => [
+                'recipient' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Subject' => [
+                'subject' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Content' => [
+                'content' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'AuthorDelete' => [
+                'is_deleted_author' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'RecipientDelete' => [
+                'is_deleted_recipient' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Unread' => [
+                'is_unread' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 1,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'GameID' => [
+                'game_id' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Created' => [
+                'created_at' => [
                     'type' => EntityAbstract::TYPE_DATETIME,
                     'default' => Date::DATETIME_ZERO,
                     'options' => [EntityAbstract::OPT_INSERT_DATETIME],
@@ -85,11 +84,11 @@ class PdoMessage extends PdoAbstract
     private function createMessage(array $data)
     {
         return parent::createModel([
-            'Author' => $data['author'],
-            'Recipient' => $data['recipient'],
-            'Subject' => $data['subject'],
-            'Content' => $data['content'],
-            'GameID' => $data['game_id'],
+            'author' => $data['author'],
+            'recipient' => $data['recipient'],
+            'subject' => $data['subject'],
+            'content' => $data['content'],
+            'game_id' => $data['game_id'],
         ]);
     }
 
@@ -100,7 +99,7 @@ class PdoMessage extends PdoAbstract
      */
     public function getMessage($messageId, $asserted = false)
     {
-        return parent::getModel(['MessageID' => $messageId], $asserted);
+        return parent::getModel(['message_id' => $messageId], $asserted);
     }
 
     /**
@@ -229,8 +228,8 @@ class PdoMessage extends PdoAbstract
         $params[] = $player;
 
         return $db->query(
-            'SELECT `MessageID` FROM `messages` WHERE `MessageID` IN ('. implode(',', $placeholders) .')'
-            . ' AND `Author` = ? AND `Recipient` = ?'
+            'SELECT `message_id` FROM `message` WHERE `message_id` IN ('. implode(',', $placeholders) .')'
+            . ' AND `author` = ? AND `recipient` = ?'
             , $params
         );
     }
@@ -250,7 +249,7 @@ class PdoMessage extends PdoAbstract
             $params[] = $id;
         }
 
-        return $db->query('DELETE FROM `messages` WHERE `MessageID` IN ('. implode(',', $placeholders) .')', $params);
+        return $db->query('DELETE FROM `message` WHERE `message_id` IN ('. implode(',', $placeholders) .')', $params);
     }
 
     /**
@@ -273,9 +272,9 @@ class PdoMessage extends PdoAbstract
         }
 
         return $db->query(
-            'UPDATE `messages` SET `AuthorDelete` = (CASE WHEN `Author` = ? THEN TRUE ELSE `AuthorDelete` END)'
-            . ', `RecipientDelete` = (CASE WHEN `Recipient` = ? THEN TRUE ELSE `RecipientDelete` END)'
-            . ' WHERE `MessageID` IN ('. implode(',', $placeholders) .')'
+            'UPDATE `message` SET `is_deleted_author` = (CASE WHEN `author` = ? THEN TRUE ELSE `is_deleted_author` END)'
+            . ', `is_deleted_recipient` = (CASE WHEN `recipient` = ? THEN TRUE ELSE `is_deleted_recipient` END)'
+            . ' WHERE `message_id` IN ('. implode(',', $placeholders) .')'
             , $params
         );
     }
@@ -290,9 +289,9 @@ class PdoMessage extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'DELETE FROM `messages` WHERE (`GameID` = 0 AND ((`Author` = ? AND `Recipient` = ?)'
-            . ' OR (`Author` = ? AND `RecipientDelete` = TRUE) OR (`Recipient` = ? AND `AuthorDelete` = TRUE)))'
-            . ' OR (`GameID` > 0 AND (`Author` = ? OR `Recipient` = ?))'
+            'DELETE FROM `message` WHERE (`game_id` = 0 AND ((`author` = ? AND `recipient` = ?)'
+            . ' OR (`author` = ? AND `is_deleted_recipient` = TRUE) OR (`recipient` = ? AND `is_deleted_author` = TRUE)))'
+            . ' OR (`game_id` > 0 AND (`author` = ? OR `recipient` = ?))'
             , [Player::SYSTEM_NAME, $player, $player, $player, $player, $player]
         );
     }
@@ -306,7 +305,7 @@ class PdoMessage extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('DELETE FROM `messages` WHERE `GameID` = ?', [$gameId]);
+        return $db->query('DELETE FROM `message` WHERE `game_id` = ?', [$gameId]);
     }
 
     /**
@@ -319,7 +318,7 @@ class PdoMessage extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('UPDATE `messages` SET `Author` = ? WHERE `Author` = ?', [$newName, $player]);
+        return $db->query('UPDATE `message` SET `author` = ? WHERE `author` = ?', [$newName, $player]);
     }
 
     /**
@@ -332,7 +331,7 @@ class PdoMessage extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('UPDATE `messages` SET `Recipient` = ? WHERE `Recipient` = ?', [$newName, $player]);
+        return $db->query('UPDATE `message` SET `recipient` = ? WHERE `recipient` = ?', [$newName, $player]);
     }
 
     /**
@@ -349,8 +348,8 @@ class PdoMessage extends PdoAbstract
     {
         $db = $this->db();
 
-        $nameQuery = ($name != '') ? ' AND `Author` LIKE ?' : '';
-        $dateQuery = ($date != 'none') ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '';
+        $nameQuery = ($name != '') ? ' AND `author` LIKE ?' : '';
+        $dateQuery = ($date != 'none') ? ' AND `created_at` >= NOW() - INTERVAL ? DAY' : '';
 
         $params = [$player];
         if ($name != '') {
@@ -360,13 +359,13 @@ class PdoMessage extends PdoAbstract
             $params[] = $date;
         }
 
-        $condition = (in_array($condition, ['Author', 'Created'])) ? $condition : 'Created';
+        $condition = (in_array($condition, ['author', 'created_at'])) ? $condition : 'created_at';
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
         $page = (is_numeric($page)) ? $page : 0;
 
         return $db->query(
-            'SELECT `MessageID`, `Author`, `Recipient`, `Subject`, `Content`, (CASE WHEN `Unread` = TRUE THEN "yes" ELSE "no" END) as `Unread`'
-            . ', `Created` FROM `messages` WHERE `GameID` = 0 AND `Recipient` = ? AND `RecipientDelete` = FALSE'
+            'SELECT `message_id`, `author`, `recipient`, `subject`, `content`, (CASE WHEN `is_unread` = TRUE THEN "yes" ELSE "no" END) as `is_unread`'
+            . ', `created_at` FROM `message` WHERE `game_id` = 0 AND `recipient` = ? AND `is_deleted_recipient` = FALSE'
             . $nameQuery . $dateQuery . ' ORDER BY `' . $condition . '` ' . $order
             . ' LIMIT ' . (Message::MESSAGES_PER_PAGE * $page) . ' , ' . Message::MESSAGES_PER_PAGE . ''
             , $params
@@ -384,8 +383,8 @@ class PdoMessage extends PdoAbstract
     {
         $db = $this->db();
 
-        $nameQuery = ($name != '') ? ' AND `Author` LIKE ?' : '';
-        $dateQuery = ($date != 'none') ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '';
+        $nameQuery = ($name != '') ? ' AND `author` LIKE ?' : '';
+        $dateQuery = ($date != 'none') ? ' AND `created_at` >= NOW() - INTERVAL ? DAY' : '';
 
         $params = [$player];
         if ($name != '') {
@@ -396,8 +395,8 @@ class PdoMessage extends PdoAbstract
         }
 
         return $db->query(
-            'SELECT COUNT(`MessageID`) as `Count` FROM `messages` WHERE `GameID` = 0'
-            . ' AND `Recipient` = ? AND `RecipientDelete` = FALSE' . $nameQuery . $dateQuery . ''
+            'SELECT COUNT(`message_id`) as `count` FROM `message` WHERE `game_id` = 0'
+            . ' AND `recipient` = ? AND `is_deleted_recipient` = FALSE' . $nameQuery . $dateQuery . ''
             , $params
         );
     }
@@ -416,8 +415,8 @@ class PdoMessage extends PdoAbstract
     {
         $db = $this->db();
 
-        $nameQuery = ($name != '') ? ' AND `Recipient` LIKE ?' : '';
-        $dateQuery = ($date != 'none') ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '';
+        $nameQuery = ($name != '') ? ' AND `recipient` LIKE ?' : '';
+        $dateQuery = ($date != 'none') ? ' AND `created_at` >= NOW() - INTERVAL ? DAY' : '';
 
         $params = [$player];
         if ($name != '') {
@@ -427,13 +426,13 @@ class PdoMessage extends PdoAbstract
             $params[] = $date;
         }
 
-        $condition = (in_array($condition, ['Recipient', 'Created'])) ? $condition : 'Created';
+        $condition = (in_array($condition, ['recipient', 'created_at'])) ? $condition : 'created_at';
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
         $page = (is_numeric($page)) ? $page : 0;
 
         return $db->query(
-            'SELECT `MessageID`, `Author`, `Recipient`, `Subject`, `Content`, (CASE WHEN `Unread` = TRUE THEN "yes" ELSE "no" END) as `Unread`'
-            . ', `Created` FROM `messages` WHERE `GameID` = 0 AND `Author` = ? AND `AuthorDelete` = FALSE'
+            'SELECT `message_id`, `author`, `recipient`, `subject`, `content`, (CASE WHEN `is_unread` = TRUE THEN "yes" ELSE "no" END) as `is_unread`'
+            . ', `created_at` FROM `message` WHERE `game_id` = 0 AND `author` = ? AND `is_deleted_author` = FALSE'
             . $nameQuery . $dateQuery . ' ORDER BY `' . $condition . '` ' . $order
             . ' LIMIT ' . (Message::MESSAGES_PER_PAGE * $page) . ' , ' . Message::MESSAGES_PER_PAGE . ''
             , $params
@@ -451,8 +450,8 @@ class PdoMessage extends PdoAbstract
     {
         $db = $this->db();
 
-        $nameQuery = ($name != '') ? ' AND `Recipient` LIKE ?' : '';
-        $dateQuery = ($date != 'none') ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '';
+        $nameQuery = ($name != '') ? ' AND `recipient` LIKE ?' : '';
+        $dateQuery = ($date != 'none') ? ' AND `created_at` >= NOW() - INTERVAL ? DAY' : '';
 
         $params = [$player];
         if ($name != '') {
@@ -463,8 +462,8 @@ class PdoMessage extends PdoAbstract
         }
 
         return $db->query(
-            'SELECT COUNT(`MessageID`) as `Count` FROM `messages` WHERE `GameID` = 0'
-            . ' AND `Author` = ? AND `AuthorDelete` = FALSE' . $nameQuery . $dateQuery . ''
+            'SELECT COUNT(`message_id`) as `count` FROM `message` WHERE `game_id` = 0'
+            . ' AND `author` = ? AND `is_deleted_author` = FALSE' . $nameQuery . $dateQuery . ''
             , $params
         );
     }
@@ -482,8 +481,8 @@ class PdoMessage extends PdoAbstract
     {
         $db = $this->db();
 
-        $nameQuery = ($name != '') ? ' AND `Author` LIKE ?' : '';
-        $dateQuery = ($date != 'none') ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '';
+        $nameQuery = ($name != '') ? ' AND `author` LIKE ?' : '';
+        $dateQuery = ($date != 'none') ? ' AND `created_at` >= NOW() - INTERVAL ? DAY' : '';
 
         $params = [Player::SYSTEM_NAME];
         if ($name != '') {
@@ -493,13 +492,13 @@ class PdoMessage extends PdoAbstract
             $params[] = $date;
         }
 
-        $condition = (in_array($condition, ['Author', 'Created'])) ? $condition : 'Created';
+        $condition = (in_array($condition, ['author', 'created_at'])) ? $condition : 'created_at';
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
         $page = (is_numeric($page)) ? $page : 0;
 
         return $db->query(
-            'SELECT `MessageID`, `Author`, `Recipient`, `Subject`, `Content`, (CASE WHEN `Unread` = TRUE THEN "yes" ELSE "no" END) as `Unread`'
-            . ', `Created` FROM `messages` WHERE `GameID` = 0 AND `Author` != ?' . $nameQuery . $dateQuery
+            'SELECT `message_id`, `author`, `recipient`, `subject`, `content`, (CASE WHEN `is_unread` = TRUE THEN "yes" ELSE "no" END) as `is_unread`'
+            . ', `created_at` FROM `message` WHERE `game_id` = 0 AND `author` != ?' . $nameQuery . $dateQuery
             . ' ORDER BY `' . $condition . '` ' . $order . ' LIMIT '
             . (Message::MESSAGES_PER_PAGE * $page) . ' , ' . Message::MESSAGES_PER_PAGE . ''
             , $params
@@ -516,8 +515,8 @@ class PdoMessage extends PdoAbstract
     {
         $db = $this->db();
 
-        $nameQuery = ($name != '') ? ' AND `Author` LIKE ?' : '';
-        $dateQuery = ($date != 'none') ? ' AND `Created` >= NOW() - INTERVAL ? DAY' : '';
+        $nameQuery = ($name != '') ? ' AND `author` LIKE ?' : '';
+        $dateQuery = ($date != 'none') ? ' AND `created_at` >= NOW() - INTERVAL ? DAY' : '';
 
         $params = [Player::SYSTEM_NAME];
         if ($name != '') {
@@ -528,7 +527,7 @@ class PdoMessage extends PdoAbstract
         }
 
         return $db->query(
-            'SELECT COUNT(`MessageID`) as `Count` FROM `messages` WHERE `GameID` = 0 AND `Author` != ?'
+            'SELECT COUNT(`message_id`) as `count` FROM `message` WHERE `game_id` = 0 AND `author` != ?'
             . $nameQuery . $dateQuery . ''
             , $params
         );
@@ -544,8 +543,8 @@ class PdoMessage extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT COUNT(`MessageID`) as `CountUnread` FROM `messages` WHERE `GameID` = 0'
-            . ' AND `Recipient` = ? AND `RecipientDelete` = FALSE AND `Unread` = TRUE'
+            'SELECT COUNT(`message_id`) as `count_unread` FROM `message` WHERE `game_id` = 0'
+            . ' AND `recipient` = ? AND `is_deleted_recipient` = FALSE AND `is_unread` = TRUE'
             , [$player]
         );
     }
@@ -579,10 +578,10 @@ class PdoMessage extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT `GameID`, `Recipient`, `Content`, `Created`'
-            . ', (CASE WHEN `Last Query` >= NOW() - INTERVAL 10 MINUTE THEN "yes" ELSE "no" END) as `Online` FROM'
-            . ' (SELECT `Recipient`, `Content`, `Created`, `GameID` FROM `messages` WHERE `GameID` > 0 AND `Author` = ?) as `messages`'
-            . ' INNER JOIN `logins` ON `messages`.`Recipient` = `logins`.`Username` ORDER BY `Created` DESC'
+            'SELECT `game_id`, `recipient`, `content`, `created_at`'
+            . ', (CASE WHEN `last_activity_at` >= NOW() - INTERVAL 10 MINUTE THEN "yes" ELSE "no" END) as `online` FROM'
+            . ' (SELECT `recipient`, `content`, `created_at`, `game_id` FROM `message` WHERE `game_id` > 0 AND `author` = ?) as `message`'
+            . ' INNER JOIN `login` ON `message`.`recipient` = `login`.`username` ORDER BY `created_at` DESC'
             , [$player]
         );
     }
@@ -597,10 +596,10 @@ class PdoMessage extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT `GameID`, `Author`, `Content`, `Created`'
-            . ', (CASE WHEN `Last Query` >= NOW() - INTERVAL 10 MINUTE THEN "yes" ELSE "no" END) as `Online` FROM'
-            . ' (SELECT `Author`, `Content`, `Created`, `GameID` FROM `messages` WHERE `GameID` > 0 AND `Recipient` = ?) as `messages`'
-            . ' INNER JOIN `logins` ON `messages`.`Author` = `logins`.`Username` ORDER BY `Created` DESC'
+            'SELECT `game_id`, `author`, `content`, `created_at`'
+            . ', (CASE WHEN `last_activity_at` >= NOW() - INTERVAL 10 MINUTE THEN "yes" ELSE "no" END) as `online` FROM'
+            . ' (SELECT `author`, `content`, `created_at`, `game_id` FROM `message` WHERE `game_id` > 0 AND `recipient` = ?) as `message`'
+            . ' INNER JOIN `login` ON `message`.`author` = `login`.`username` ORDER BY `created_at` DESC'
             , [$player]
         );
     }

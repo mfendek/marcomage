@@ -30,12 +30,12 @@
                     </xsl:choose>
 
                     <xsl:variable name="types">
-                        <type name="Played - latest" value="Played"/>
-                        <type name="Played - overall" value="PlayedTotal"/>
-                        <type name="Discarded - latest" value="Discarded"/>
-                        <type name="Discarded - overall" value="DiscardedTotal"/>
-                        <type name="Drawn - latest" value="Drawn"/>
-                        <type name="Drawn - overall" value="DrawnTotal"/>
+                        <type name="Played - latest" value="played"/>
+                        <type name="Played - overall" value="played_total"/>
+                        <type name="Discarded - latest" value="discarded"/>
+                        <type name="Discarded - overall" value="discarded_total"/>
+                        <type name="Drawn - latest" value="drawn"/>
+                        <type name="Drawn - overall" value="drawn_total"/>
                     </xsl:variable>
 
                     <select name="selected_statistic">
@@ -186,8 +186,8 @@
                                     <xsl:for-each select="$param/suggested/*">
                                         <li>
                                             <span><xsl:value-of select="count"/></span>
-                                            <a class="profile" href="{am:makeUrl('Players_details', 'Profile', Author)}">
-                                                <xsl:value-of select="Author"/>
+                                            <a class="profile" href="{am:makeUrl('Players_details', 'Profile', author)}">
+                                                <xsl:value-of select="author"/>
                                             </a>
                                         </li>
                                     </xsl:for-each>
@@ -198,8 +198,8 @@
                                     <xsl:for-each select="$param/implemented/*">
                                         <li>
                                             <span><xsl:value-of select="count"/></span>
-                                            <a class="profile" href="{am:makeUrl('Players_details', 'Profile', Author)}">
-                                                <xsl:value-of select="Author"/>
+                                            <a class="profile" href="{am:makeUrl('Players_details', 'Profile', author)}">
+                                                <xsl:value-of select="author"/>
                                             </a>
                                         </li>
                                     </xsl:for-each>

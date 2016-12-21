@@ -79,23 +79,27 @@
 
             <xsl:choose>
                 <xsl:when test="count($param/list/*) &gt; 0">
-                    <div class="responsive-table skin-text">
+                    <div class="responsive-table table-sm skin-text">
                         <!-- table header -->
                         <div class="row">
                             <xsl:variable name="columns">
-                                <column name="Winner" text="Winner" sortable="yes" size="2"/>
-                                <column name="Loser" text="Defeated" sortable="no" size="2"/>
-                                <column name="EndType" text="Outcome" sortable="no" size="1"/>
-                                <column name="Rounds" text="Rounds" sortable="yes" size="2"/>
-                                <column name="Started" text="Started" sortable="yes" size="1"/>
-                                <column name="Finished" text="Finished" sortable="yes" size="1"/>
-                                <column name="GameModes" text="Modes" sortable="no" size="2"/>
-                                <column name="Views" text="Views" sortable="no" size="1"/>
+                                <column name="winner" text="Winner" sortable="yes" size="2"/>
+                                <column name="loser" text="Defeated" sortable="no" size="2"/>
+                                <column name="outcome_type" text="Outcome" sortable="no" size="1"/>
+                                <column name="rounds" text="Rounds" sortable="yes" size="2"/>
+                                <column name="started_at" text="Started" sortable="yes" size="1"/>
+                                <column name="finished_at" text="Finished" sortable="yes" size="1"/>
+                                <column name="game_modes" text="Modes" sortable="no" size="2"/>
+                                <column name="views" text="Views" sortable="no" size="1"/>
                             </xsl:variable>
 
                             <xsl:for-each select="exsl:node-set($columns)/*">
                                 <div class="col-sm-{@size}">
                                     <p>
+                                        <xsl:if test="@sortable = 'yes'">
+                                            <xsl:attribute name="class">sortable</xsl:attribute>
+                                        </xsl:if>
+
                                         <span><xsl:value-of select="@text"/></span>
                                         <xsl:if test="@sortable = 'yes'">
                                             <button class="button-icon" type="submit" value="{@name}">
@@ -124,11 +128,11 @@
                             <!-- AI challenge name transformation -->
                             <xsl:variable name="player2">
                                 <xsl:choose>
-                                    <xsl:when test="AI != ''">
-                                        <xsl:value-of select="AI"/>
+                                    <xsl:when test="ai_name != ''">
+                                        <xsl:value-of select="ai_name"/>
                                     </xsl:when>
                                     <xsl:otherwise>
-                                        <xsl:value-of select="Player2"/>
+                                        <xsl:value-of select="player2"/>
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </xsl:variable>
@@ -137,21 +141,21 @@
                                     <p>
                                         <xsl:variable name="winner">
                                             <xsl:choose>
-                                                <xsl:when test="Winner != '' and Winner = Player1">
-                                                    <xsl:value-of select="Player1"/>
+                                                <xsl:when test="winner != '' and winner = player1">
+                                                    <xsl:value-of select="player1"/>
                                                 </xsl:when>
-                                                <xsl:when test="Winner != '' and Winner = Player2">
+                                                <xsl:when test="winner != '' and winner = player2">
                                                     <xsl:value-of select="$player2"/>
                                                 </xsl:when>
                                                 <xsl:otherwise>
-                                                    <xsl:value-of select="Player1"/> / <xsl:value-of select="$player2"/>
+                                                    <xsl:value-of select="player1"/> / <xsl:value-of select="$player2"/>
                                                 </xsl:otherwise>
                                             </xsl:choose>
                                         </xsl:variable>
 
                                         <xsl:choose>
-                                            <xsl:when test="Deleted = 'no'">
-                                                <a class="profile" href="{am:makeUrl('Replays_details', 'CurrentReplay', GameID, 'PlayerView', 1, 'Turn', 1)}">
+                                            <xsl:when test="is_deleted = 'no'">
+                                                <a class="profile" href="{am:makeUrl('Replays_details', 'CurrentReplay', game_id, 'PlayerView', 1, 'Turn', 1)}">
                                                     <xsl:value-of select="$winner"/>
                                                 </a>
                                             </xsl:when>
@@ -162,19 +166,19 @@
                                 <div class="col-sm-2">
                                     <p>
                                         <xsl:choose>
-                                            <xsl:when test="Winner = Player1">
+                                            <xsl:when test="winner = player1">
                                                 <xsl:value-of select="$player2"/>
                                             </xsl:when>
-                                            <xsl:when test="Winner = Player2">
-                                                <xsl:value-of select="Player1"/>
+                                            <xsl:when test="winner = player2">
+                                                <xsl:value-of select="player1"/>
                                             </xsl:when>
                                         </xsl:choose>
                                     </p>
                                 </div>
-                                <div class="col-sm-1"><p><xsl:value-of select="EndType"/></p></div>
-                                <div class="col-sm-2"><p><xsl:value-of select="Rounds"/></p></div>
-                                <div class="col-sm-1"><p><xsl:value-of select="am:dateTime(Started, $param/timezone)"/></p></div>
-                                <div class="col-sm-1"><p><xsl:value-of select="am:dateTime(Finished, $param/timezone)"/></p></div>
+                                <div class="col-sm-1"><p><xsl:value-of select="outcome_type"/></p></div>
+                                <div class="col-sm-2"><p><xsl:value-of select="rounds"/></p></div>
+                                <div class="col-sm-1"><p><xsl:value-of select="am:dateTime(started_at, $param/timezone)"/></p></div>
+                                <div class="col-sm-1"><p><xsl:value-of select="am:dateTime(finished_at, $param/timezone)"/></p></div>
                                 <div class="col-sm-2">
                                     <p>
                                         <xsl:copy-of select="am:gameModeFlags(
@@ -182,11 +186,11 @@
                                             am:hasGameMode(GameModes, 'FriendlyPlay'),
                                             am:hasGameMode(GameModes, 'LongMode'),
                                             am:hasGameMode(GameModes, 'AIMode'),
-                                            AI
+                                            ai_name
                                         )"/>
                                     </p>
                                 </div>
-                                <div class="col-sm-1"><p><xsl:value-of select="Views"/></p></div>
+                                <div class="col-sm-1"><p><xsl:value-of select="views"/></p></div>
                             </div>
                         </xsl:for-each>
                     </div>
@@ -308,13 +312,13 @@
 
                         <!-- discussion -->
                         <xsl:choose>
-                            <xsl:when test="$param/thread_id = 0 and $param/create_thread = 'yes'">
+                            <xsl:when test="$param/discussion = 0 and $param/create_thread = 'yes'">
                                 <button class="button-icon" type="submit" name="find_replay_thread" value="{$param/current_replay}" title="Start discussion">
                                     <span class="glyphicon glyphicon-comment"/>
                                 </button>
                             </xsl:when>
-                            <xsl:when test="$param/thread_id &gt; 0">
-                                <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'CurrentThread', $param/thread_id, 'CurrentPage', 0)}" title="View discussion">
+                            <xsl:when test="$param/discussion &gt; 0">
+                                <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $param/discussion, 'CurrentPage', 0)}" title="View discussion">
                                     <span class="glyphicon glyphicon-comment"/>
                                 </a>
                             </xsl:when>
@@ -350,7 +354,7 @@
                                     <xsl:text>.</xsl:text>
                                 </xsl:when>
                                 <!-- opponent won -->
-                                <xsl:when test="($param/winner = '') and ($param/end_type = 'Draw')">
+                                <xsl:when test="($param/winner = '') and ($param/outcome_type = 'Draw')">
                                     <xsl:text>Game ended in a draw in round </xsl:text>
                                     <xsl:value-of select="$param/round"/>
                                     <xsl:text> (turn </xsl:text>
@@ -358,7 +362,7 @@
                                     <xsl:text>).</xsl:text>
                                 </xsl:when>
                                 <!-- draw -->
-                                <xsl:when test="($param/winner = '') and ($param/end_type = 'Abort')">
+                                <xsl:when test="($param/winner = '') and ($param/outcome_type = 'Abort')">
                                     <xsl:text>Game was aborted in round </xsl:text>
                                     <xsl:value-of select="$param/round"/>
                                     <xsl:text> (turn </xsl:text>
@@ -411,7 +415,7 @@
                 <!-- player1 cards -->
                 <div class="row hand">
                     <xsl:copy-of select="am:hand(
-                        $param/p1_hand, $param/hidden_cards, $param/card_mini_flags,
+                        $param/p1_hand, $param/hidden_cards, $param/card_mini_flag,
                         $param/card_old_look, $param/card_insignias, $param/p1_card_foils
                     )"/>
                 </div>
@@ -428,7 +432,7 @@
                         </div>
 
                         <!-- player1 tower and wall -->
-                        <div class="castle_display">
+                        <div>
                             <xsl:copy-of select="am:castleDisplay(
                                 'left', $param/p1_tower, $param/p1_wall, $param/max_tower, $param/max_wall
                             )"/>
@@ -474,7 +478,7 @@
                     </div>
                     <div class="col-md-3 empire-info">
                         <!-- player2 tower and wall -->
-                        <div class="castle_display">
+                        <div>
                             <xsl:copy-of select="am:castleDisplay(
                                 'right', $param/p2_tower, $param/p2_wall, $param/max_tower, $param/max_wall
                             )"/>
@@ -505,7 +509,7 @@
                 <!-- player2 cards -->
                 <div class="row hand">
                     <xsl:copy-of select="am:hand(
-                        $param/p2_hand, $param/hidden_cards, $param/card_mini_flags,
+                        $param/p2_hand, $param/hidden_cards, $param/card_mini_flag,
                         $param/card_old_look, $param/card_insignias, $param/p2_card_foils
                     )"/>
                 </div>
@@ -640,7 +644,7 @@
                 <!-- player1 cards -->
                 <div class="row hand">
                     <xsl:copy-of select="am:hand(
-                        $param/p1_hand, $param/hidden_cards, $param/card_mini_flags,
+                        $param/p1_hand, $param/hidden_cards, $param/card_mini_flag,
                         $param/card_old_look, $param/card_insignias, $param/p1_card_foils
                     )"/>
                 </div>
@@ -657,7 +661,7 @@
                         </div>
 
                         <!-- player1 tower and wall -->
-                        <div class="castle_display">
+                        <div>
                             <xsl:copy-of select="am:castleDisplay(
                                 'left', $param/p1_tower, $param/p1_wall, $param/max_tower, $param/max_wall
                             )"/>
@@ -703,7 +707,7 @@
                     </div>
                     <div class="col-md-3 empire-info">
                         <!-- player2 tower and wall -->
-                        <div class="castle_display">
+                        <div>
                             <xsl:copy-of select="am:castleDisplay(
                                 'right', $param/p2_tower, $param/p2_wall, $param/max_tower, $param/max_wall
                             )"/>
@@ -734,7 +738,7 @@
                 <!-- player2 cards -->
                 <div class="row hand">
                     <xsl:copy-of select="am:opponentHand(
-                        $param/p2_hand, $param/hidden_cards, $param/card_mini_flags,
+                        $param/p2_hand, $param/hidden_cards, $param/card_mini_flag,
                         $param/card_old_look, $param/card_insignias, $param/p2_card_foils
                     )"/>
                 </div>

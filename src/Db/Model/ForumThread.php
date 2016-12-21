@@ -27,7 +27,7 @@ class ForumThread extends ModelAbstract
      */
     public function getThreadId()
     {
-        return $this->getFieldValue('ThreadID');
+        return $this->getFieldValue('thread_id');
     }
 
     /**
@@ -35,7 +35,7 @@ class ForumThread extends ModelAbstract
      */
     public function getTitle()
     {
-        return $this->getFieldValue('Title');
+        return $this->getFieldValue('title');
     }
 
     /**
@@ -43,7 +43,7 @@ class ForumThread extends ModelAbstract
      */
     public function getAuthor()
     {
-        return $this->getFieldValue('Author');
+        return $this->getFieldValue('author');
     }
 
     /**
@@ -51,7 +51,7 @@ class ForumThread extends ModelAbstract
      */
     public function getPriority()
     {
-        return $this->getFieldValue('Priority');
+        return $this->getFieldValue('priority');
     }
 
     /**
@@ -59,15 +59,15 @@ class ForumThread extends ModelAbstract
      */
     public function getLocked()
     {
-        return $this->getFieldValue('Locked');
+        return $this->getFieldValue('is_locked');
     }
 
     /**
      * @return int
      */
-    public function getDeleted()
+    public function getIsDeleted()
     {
-        return $this->getFieldValue('Deleted');
+        return $this->getFieldValue('is_deleted');
     }
 
     /**
@@ -75,7 +75,7 @@ class ForumThread extends ModelAbstract
      */
     public function getSectionId()
     {
-        return $this->getFieldValue('SectionID');
+        return $this->getFieldValue('section_id');
     }
 
     /**
@@ -83,7 +83,7 @@ class ForumThread extends ModelAbstract
      */
     public function getCreated()
     {
-        return $this->getFieldValue('Created');
+        return $this->getFieldValue('created_at');
     }
 
     /**
@@ -91,7 +91,7 @@ class ForumThread extends ModelAbstract
      */
     public function getPostCount()
     {
-        return $this->getFieldValue('PostCount');
+        return $this->getFieldValue('post_count');
     }
 
     /**
@@ -99,7 +99,7 @@ class ForumThread extends ModelAbstract
      */
     public function getLastAuthor()
     {
-        return $this->getFieldValue('LastAuthor');
+        return $this->getFieldValue('last_author');
     }
 
     /**
@@ -107,7 +107,7 @@ class ForumThread extends ModelAbstract
      */
     public function getLastPost()
     {
-        return $this->getFieldValue('LastPost');
+        return $this->getFieldValue('last_post');
     }
 
     /**
@@ -115,8 +115,7 @@ class ForumThread extends ModelAbstract
      */
     public function getReferenceId()
     {
-        // TODO this field needs to be renamed to reference_id which can hold either card id, concept id, replay id or deck id
-        return $this->getFieldValue('CardID');
+        return $this->getFieldValue('reference_id');
     }
 
     /**
@@ -125,15 +124,17 @@ class ForumThread extends ModelAbstract
     public function getData()
     {
         $data = array();
-        $data['ThreadID'] = $this->getThreadId();
-        $data['Title'] = $this->getTitle();
-        $data['Author'] = $this->getAuthor();
-        $data['Priority'] = $this->getPriority();
-        $data['Locked'] = ($this->getLocked() == 1) ? 'yes' : 'no';
-        $data['SectionID'] = $this->getSectionId();
-        $data['Created'] = $this->getCreated();
+        $data['thread_id'] = $this->getThreadId();
+        $data['title'] = $this->getTitle();
+        $data['author'] = $this->getAuthor();
+        $data['priority'] = $this->getPriority();
+        $data['is_locked'] = ($this->getLocked() == 1) ? 'yes' : 'no';
+        $data['section_id'] = $this->getSectionId();
+        $data['created_at'] = $this->getCreated();
         $data['reference_card'] = ($this->getSectionId() == self::CARDS_SECTION_ID) ? $this->getReferenceId() : 0;
         $data['reference_deck'] = ($this->getSectionId() == self::DECKS_SECTION_ID) ? $this->getReferenceId() : 0;
+        $data['reference_concept'] = ($this->getSectionId() == self::CONCEPTS_SECTION_ID) ? $this->getReferenceId() : 0;
+        $data['reference_replay'] = ($this->getSectionId() == self::REPLAYS_SECTION_ID) ? $this->getReferenceId() : 0;
 
         return $data;
     }
@@ -144,7 +145,7 @@ class ForumThread extends ModelAbstract
      */
     public function setTitle($title)
     {
-        return $this->setFieldValue('Title', $title);
+        return $this->setFieldValue('title', $title);
     }
 
     /**
@@ -153,7 +154,7 @@ class ForumThread extends ModelAbstract
      */
     public function setAuthor($author)
     {
-        return $this->setFieldValue('Author', $author);
+        return $this->setFieldValue('author', $author);
     }
 
     /**
@@ -162,7 +163,7 @@ class ForumThread extends ModelAbstract
      */
     public function setPriority($priority)
     {
-        return $this->setFieldValue('Priority', $priority);
+        return $this->setFieldValue('priority', $priority);
     }
 
     /**
@@ -171,16 +172,16 @@ class ForumThread extends ModelAbstract
      */
     public function setLocked($locked)
     {
-        return $this->setFieldValue('Locked', $locked);
+        return $this->setFieldValue('is_locked', $locked);
     }
 
     /**
      * @param int $deleted
      * @return $this
      */
-    public function setDeleted($deleted)
+    public function setIsDeleted($deleted)
     {
-        return $this->setFieldValue('Deleted', $deleted);
+        return $this->setFieldValue('is_deleted', $deleted);
     }
 
     /**
@@ -189,7 +190,7 @@ class ForumThread extends ModelAbstract
      */
     public function setSectionId($sectionId)
     {
-        return $this->setFieldValue('SectionID', $sectionId);
+        return $this->setFieldValue('section_id', $sectionId);
     }
 
     /**
@@ -198,7 +199,7 @@ class ForumThread extends ModelAbstract
      */
     public function setCreated($created)
     {
-        return $this->setFieldValue('Created', $created);
+        return $this->setFieldValue('created_at', $created);
     }
 
     /**
@@ -207,7 +208,7 @@ class ForumThread extends ModelAbstract
      */
     public function setPostCount($postCount)
     {
-        return $this->setFieldValue('PostCount', $postCount);
+        return $this->setFieldValue('post_count', $postCount);
     }
 
     /**
@@ -216,7 +217,7 @@ class ForumThread extends ModelAbstract
      */
     public function setLastAuthor($lastAuthor)
     {
-        return $this->setFieldValue('LastAuthor', $lastAuthor);
+        return $this->setFieldValue('last_author', $lastAuthor);
     }
 
     /**
@@ -225,7 +226,7 @@ class ForumThread extends ModelAbstract
      */
     public function setLastPost($lastPost)
     {
-        return $this->setFieldValue('LastPost', $lastPost);
+        return $this->setFieldValue('last_post', $lastPost);
     }
 
     /**
@@ -234,6 +235,6 @@ class ForumThread extends ModelAbstract
      */
     public function setReferenceId($cardId)
     {
-        return $this->setFieldValue('CardID', $cardId);
+        return $this->setFieldValue('reference_id', $cardId);
     }
 }

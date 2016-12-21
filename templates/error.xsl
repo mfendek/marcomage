@@ -16,7 +16,7 @@
         <div id="error-page" class="skin-text top-level">
             <h1>Error has occurred</h1>
             <div>
-                <p><img width="350" height="212" src="img/error.gif" alt=""/></p>
+                <p><img class="img-rounded" width="350" height="212" src="img/error.gif" alt=""/></p>
                 <p>Something went wrong. Error details are listed below:</p>
                 <p class="error-details"><xsl:value-of select="$param/message"/></p>
             </div>

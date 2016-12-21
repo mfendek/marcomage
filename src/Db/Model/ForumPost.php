@@ -22,7 +22,7 @@ class ForumPost extends ModelAbstract
      */
     public function getPostId()
     {
-        return $this->getFieldValue('PostID');
+        return $this->getFieldValue('post_id');
     }
 
     /**
@@ -30,7 +30,7 @@ class ForumPost extends ModelAbstract
      */
     public function getAuthor()
     {
-        return $this->getFieldValue('Author');
+        return $this->getFieldValue('author');
     }
 
     /**
@@ -38,7 +38,7 @@ class ForumPost extends ModelAbstract
      */
     public function getContent()
     {
-        return $this->getFieldValue('Content');
+        return $this->getFieldValue('content');
     }
 
     /**
@@ -46,15 +46,15 @@ class ForumPost extends ModelAbstract
      */
     public function getThreadId()
     {
-        return $this->getFieldValue('ThreadID');
+        return $this->getFieldValue('thread_id');
     }
 
     /**
      * @return int
      */
-    public function getDeleted()
+    public function getIsDeleted()
     {
-        return $this->getFieldValue('Deleted');
+        return $this->getFieldValue('is_deleted');
     }
 
     /**
@@ -62,7 +62,7 @@ class ForumPost extends ModelAbstract
      */
     public function getCreated()
     {
-        return $this->getFieldValue('Created');
+        return $this->getFieldValue('created_at');
     }
 
     /**
@@ -71,12 +71,12 @@ class ForumPost extends ModelAbstract
     public function getData()
     {
         $data = array();
-        $data['PostID'] = $this->getPostId();
-        $data['Author'] = $this->getAuthor();
-        $data['Content'] = $this->getContent();
-        $data['ThreadID'] = $this->getThreadId();
-        $data['Deleted'] = $this->getDeleted();
-        $data['Created'] = $this->getCreated();
+        $data['post_id'] = $this->getPostId();
+        $data['author'] = $this->getAuthor();
+        $data['content'] = $this->getContent();
+        $data['thread_id'] = $this->getThreadId();
+        $data['is_deleted'] = $this->getIsDeleted();
+        $data['created_at'] = $this->getCreated();
 
         return $data;
     }
@@ -87,7 +87,7 @@ class ForumPost extends ModelAbstract
      */
     public function setAuthor($author)
     {
-        return $this->setFieldValue('Author', $author);
+        return $this->setFieldValue('author', $author);
     }
 
     /**
@@ -96,7 +96,7 @@ class ForumPost extends ModelAbstract
      */
     public function setContent($content)
     {
-        return $this->setFieldValue('Content', $content);
+        return $this->setFieldValue('content', $content);
     }
 
     /**
@@ -105,16 +105,16 @@ class ForumPost extends ModelAbstract
      */
     public function setThreadId($threadId)
     {
-        return $this->setFieldValue('ThreadID', $threadId);
+        return $this->setFieldValue('thread_id', $threadId);
     }
 
     /**
      * @param int $deleted
      * @return $this
      */
-    public function setDeleted($deleted)
+    public function setIsDeleted($deleted)
     {
-        return $this->setFieldValue('Deleted', $deleted);
+        return $this->setFieldValue('is_deleted', $deleted);
     }
 
     /**
@@ -123,6 +123,6 @@ class ForumPost extends ModelAbstract
      */
     public function setCreated($created)
     {
-        return $this->setFieldValue('Created', $created);
+        return $this->setFieldValue('created_at', $created);
     }
 }

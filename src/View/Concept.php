@@ -34,7 +34,7 @@ class Concept extends TemplateDataAbstract
 
         // default ordering and condition
         $data['current_order'] = $order = (isset($input['concepts_current_order'])) ? $input['concepts_current_order'] : 'DESC';
-        $data['current_condition'] = $condition = (isset($input['concepts_current_condition'])) ? $input['concepts_current_condition'] : 'LastChange';
+        $data['current_condition'] = $condition = (isset($input['concepts_current_condition'])) ? $input['concepts_current_condition'] : 'modified_at';
 
         // validate current page
         $currentPage = ((isset($input['concepts_current_page'])) ? $input['concepts_current_page'] : 0);
@@ -60,7 +60,7 @@ class Concept extends TemplateDataAbstract
         if ($result->isErrorOrNoEffect()) {
             throw new Exception('Failed to count pages for concepts list');
         }
-        $pages = ceil($result[0]['Count'] / Card::CARDS_PER_PAGE);
+        $pages = ceil($result[0]['count'] / Card::CARDS_PER_PAGE);
 
         $data['list'] = $concepts;
         $data['page_count'] = $pages;
@@ -75,20 +75,20 @@ class Concept extends TemplateDataAbstract
         }
         $authors = array();
         foreach ($result->data() as $authorData) {
-            $authors[] = $authorData['Author'];
+            $authors[] = $authorData['author'];
         }
 
         $data['notification'] = $player->getNotification();
         $data['authors'] = $authors;
         $data['my_cards'] = (in_array($player->getUsername(), $authors) ? 'yes' : 'no');
-        $data['timezone'] = $setting->getSetting('Timezone');
+        $data['timezone'] = $setting->getSetting('timezone');
         $data['player_name'] = $player->getUsername();
         $data['create_card'] = ($this->checkAccess('create_card')) ? 'yes' : 'no';
         $data['edit_own_card'] = ($this->checkAccess('edit_own_card')) ? 'yes' : 'no';
         $data['edit_all_card'] = ($this->checkAccess('edit_all_card')) ? 'yes' : 'no';
         $data['delete_own_card'] = ($this->checkAccess('delete_own_card')) ? 'yes' : 'no';
         $data['delete_all_card'] = ($this->checkAccess('delete_all_card')) ? 'yes' : 'no';
-        $data['card_old_look'] = $setting->getSetting('OldCardLook');
+        $data['card_old_look'] = $setting->getSetting('old_card_look');
 
         return new Result(['concepts' => $data]);
     }
@@ -132,12 +132,12 @@ class Concept extends TemplateDataAbstract
         $player = $this->getCurrentPlayer();
 
         // validate concept id
-        $this->assertInputNonEmpty(['CurrentConcept']);
-        if (!is_numeric($input['CurrentConcept']) || $input['CurrentConcept'] <= 0) {
+        $this->assertInputNonEmpty(['current_concept']);
+        if (!is_numeric($input['current_concept']) || $input['current_concept'] <= 0) {
             throw new Exception('Invalid concept id', Exception::WARNING);
         }
 
-        $concept = $this->dbEntity()->concept()->getConceptAsserted($input['CurrentConcept']);
+        $concept = $this->dbEntity()->concept()->getConceptAsserted($input['current_concept']);
         $setting = $this->getCurrentSettings();
 
         // add upload dir prefix to concept picture
@@ -150,7 +150,7 @@ class Concept extends TemplateDataAbstract
         $data['delete_all_card'] = ($this->checkAccess('delete_all_card')) ? 'yes' : 'no';
         $data['player_name'] = $player->getUsername();
         $data['delete'] = (isset($input['delete_concept'])) ? 'yes' : 'no';
-        $data['card_old_look'] = $setting->getSetting('OldCardLook');
+        $data['card_old_look'] = $setting->getSetting('old_card_look');
 
         return new Result(['concepts_edit' => $data], $concept->getName());
     }
@@ -165,26 +165,35 @@ class Concept extends TemplateDataAbstract
         $input = $this->input();
 
         $config = $this->getDic()->config();
+        $dbEntityThread = $this->dbEntity()->forumThread();
 
         // validate concept id
-        $this->assertInputNonEmpty(['CurrentConcept']);
-        if (!is_numeric($input['CurrentConcept']) || $input['CurrentConcept'] <= 0) {
+        $this->assertInputNonEmpty(['current_concept']);
+        if (!is_numeric($input['current_concept']) || $input['current_concept'] <= 0) {
             throw new Exception('Invalid concept id', Exception::WARNING);
         }
 
-        $concept = $this->dbEntity()->concept()->getConceptAsserted($input['CurrentConcept']);
+        $concept = $this->dbEntity()->concept()->getConceptAsserted($input['current_concept']);
         $setting = $this->getCurrentSettings();
 
         // add upload dir prefix to concept picture
         $conceptData = $concept->getData();
         $conceptData['picture'] = $config['upload_dir']['concept'] . $conceptData['picture'];
 
+        // find related forum thread
+        $result = $dbEntityThread->conceptThread($concept->getCardId());
+        if ($result->isError()) {
+            throw new Exception('Failed to find forum thread by concept id');
+        }
+        $threadId = ($result->isSuccess()) ? $result[0]['thread_id'] : 0;
+
         $data['data'] = $conceptData;
+        $data['discussion'] = ($threadId) ? $threadId : 0;
         $data['create_thread'] = ($this->checkAccess('create_thread')) ? 'yes' : 'no';
         $data['edit_all_card'] = ($this->checkAccess('edit_all_card')) ? 'yes' : 'no';
         $data['delete_own_card'] = ($this->checkAccess('delete_own_card')) ? 'yes' : 'no';
         $data['delete_all_card'] = ($this->checkAccess('delete_all_card')) ? 'yes' : 'no';
-        $data['card_old_look'] = $setting->getSetting('OldCardLook');
+        $data['card_old_look'] = $setting->getSetting('old_card_look');
 
         return new Result(['concepts_details' => $data], $concept->getName());
     }

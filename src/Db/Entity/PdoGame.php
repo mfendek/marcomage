@@ -18,13 +18,12 @@ class PdoGame extends PdoAbstract
     protected function schema()
     {
         return [
-            'entity_name' => 'games',
-            'model_name' => 'game',
+            'entity_name' => 'game',
             'primary_fields' => [
-                'GameID',
+                'game_id',
             ],
             'fields' => [
-                'GameID' => [
+                'game_id' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [
@@ -32,61 +31,61 @@ class PdoGame extends PdoAbstract
                         EntityAbstract::OPT_AUTO_ID,
                     ],
                 ],
-                'Player1' => [
+                'player1' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Player2' => [
+                'player2' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'State' => [
+                'state' => [
                     // 'waiting' / 'in progress' / 'finished' / 'P1 over' / 'P2 over'
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => 'waiting',
                 ],
-                'Current' => [
+                'current' => [
                     // name of the player whose turn it currently is
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Round' => [
+                'round' => [
                     // incremented after each play/discard action
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 1,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Winner' => [
+                'winner' => [
                     // if not empty, name of the winner
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Surrender' => [
+                'surrender' => [
                     // if not empty, name of the player who requested to surrender
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'EndType' => [
-                    // game end type: 'Pending', 'Construction', 'Destruction', 'Resource', 'Timeout', 'Draw', 'Surrender', 'Abort', 'Abandon'
+                'outcome_type' => [
+                    // game outcome type: 'Pending', 'Construction', 'Destruction', 'Resource', 'Timeout', 'Draw', 'Surrender', 'Abort', 'Abandon'
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => 'Pending',
                 ],
-                'Last Action' => [
+                'last_action_at' => [
                     'type' => EntityAbstract::TYPE_DATETIME,
                     'default' => Date::DATETIME_ZERO,
                     'options' => [EntityAbstract::OPT_INSERT_DATETIME],
                 ],
-                'ChatNotification1' => [
+                'chat_notification1' => [
                     // timestamp of the last chat view for Player1
                     'type' => EntityAbstract::TYPE_DATETIME,
                     'default' => Date::DATETIME_ZERO,
                 ],
-                'ChatNotification2' => [
+                'chat_notification2' => [
                     // timestamp of the last chat view for Player2
                     'type' => EntityAbstract::TYPE_DATETIME,
                     'default' => Date::DATETIME_ZERO,
                 ],
-                'Data' => [
+                'data' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                     'options' => [
@@ -94,27 +93,27 @@ class PdoGame extends PdoAbstract
                         EntityAbstract::OPT_SERIALIZE_PHP,
                     ],
                 ],
-                'DeckID1' => [
+                'deck_id1' => [
                     // player's 1 deck slot reference ID (statistics purposes only)
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'DeckID2' => [
+                'deck_id2' => [
                     // player's 2 deck slot reference ID (statistics purposes only)
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Note1' => [
+                'note1' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Note2' => [
+                'note2' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'GameModes' => [
+                'game_modes' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                     'options' => [
@@ -122,12 +121,12 @@ class PdoGame extends PdoAbstract
                         EntityAbstract::OPT_SERIALIZE_LIST,
                     ],
                 ],
-                'Timeout' => [
+                'turn_timeout' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'AI' => [
+                'ai_name' => [
                     // AI challenge name (optional)
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
@@ -152,10 +151,10 @@ class PdoGame extends PdoAbstract
 
         /* @var \Db\Model\Game $game */
         $game = parent::createModel([
-            'Player1' => $player1,
-            'Player2' => $player2,
-            'DeckID1' => $deck->getDeckId(),
-            'Timeout' => $timeout,
+            'player1' => $player1,
+            'player2' => $player2,
+            'deck_id1' => $deck->getDeckId(),
+            'turn_timeout' => $timeout,
         ]);
 
         return $game
@@ -173,7 +172,7 @@ class PdoGame extends PdoAbstract
      */
     public function getGame($gameId, $asserted = false)
     {
-        return parent::getModel(['GameID' => $gameId], $asserted);
+        return parent::getModel(['game_id' => $gameId], $asserted);
     }
 
     /**
@@ -194,7 +193,7 @@ class PdoGame extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('SELECT `GameID` FROM `games` WHERE `Player1` = ? OR `Player2` = ?', [
+        return $db->query('SELECT `game_id` FROM `game` WHERE `player1` = ? OR `player2` = ?', [
             $player, $player
         ]);
     }
@@ -214,7 +213,7 @@ class PdoGame extends PdoAbstract
             $params[] = $gameId;
         }
 
-        return $db->query('DELETE FROM `games` WHERE `GameID` IN (' . implode(",", $queryString) . ')', $params);
+        return $db->query('DELETE FROM `game` WHERE `game_id` IN (' . implode(",", $queryString) . ')', $params);
     }
 
     /**
@@ -230,13 +229,13 @@ class PdoGame extends PdoAbstract
         $db = $this->db();
 
         // outgoing = challenges from + hosted_games
-        $outgoing = '`Player1` = ? AND `State` = "waiting"';
+        $outgoing = '`player1` = ? AND `state` = "waiting"';
 
         // active games 1
-        $games1 = '`Player1` = ? AND `State` != "waiting" AND `State` != "P1 over"';
+        $games1 = '`player1` = ? AND `state` != "waiting" AND `state` != "P1 over"';
 
         // active games 2
-        $games2 = '`Player2` = ? AND `State` != "waiting" AND `State` != "P2 over"';
+        $games2 = '`player2` = ? AND `state` != "waiting" AND `state` != "P2 over"';
 
         // common query params
         $params = [$player, $player, $player];
@@ -244,14 +243,14 @@ class PdoGame extends PdoAbstract
 
         // process optional incoming challenges
         if (!$omitChallenges) {
-            $challengesTo = '`Player2` = ? AND `State` = "waiting"';
+            $challengesTo = '`player2` = ? AND `state` = "waiting"';
             $challengesQuery = ' OR (' . $challengesTo . ')';
 
             $params[] = $player;
         }
 
         return $db->query(
-            'SELECT COUNT(`GameID`) as `count` FROM `games` WHERE ('
+            'SELECT COUNT(`game_id`) as `count` FROM `game` WHERE ('
             . $outgoing . ') OR (' . $games1 . ') OR (' . $games2 . ')'.$challengesQuery
             , $params
         );
@@ -266,7 +265,7 @@ class PdoGame extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('SELECT `Player2` FROM `games` WHERE `Player1` = ? AND `Player2` != "" AND `State` = "waiting"', [
+        return $db->query('SELECT `player2` FROM `game` WHERE `player1` = ? AND `player2` != "" AND `state` = "waiting"', [
             $player
         ]);
     }
@@ -280,7 +279,7 @@ class PdoGame extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('SELECT `Player1` FROM `games` WHERE `Player2` = ? AND `State` = "waiting"', [
+        return $db->query('SELECT `player1` FROM `game` WHERE `player2` = ? AND `state` = "waiting"', [
             $player
         ]);
     }
@@ -297,14 +296,14 @@ class PdoGame extends PdoAbstract
     {
         $db = $this->db();
 
-        $hiddenQuery = ($hidden != "none") ? ' AND FIND_IN_SET("HiddenCards", `GameModes`) ' . (($hidden == 'include') ? '>' : '=') . ' 0' : '';
-        $friendlyQuery = ($friendly != "none") ? ' AND FIND_IN_SET("FriendlyPlay", `GameModes`) ' . (($friendly == 'include') ? '>' : '=') . ' 0' : '';
-        $longQuery = ($long != "none") ? ' AND FIND_IN_SET("LongMode", `GameModes`) ' . (($long == 'include') ? '>' : '=') . ' 0' : '';
+        $hiddenQuery = ($hidden != "none") ? ' AND FIND_IN_SET("HiddenCards", `game_modes`) ' . (($hidden == 'include') ? '>' : '=') . ' 0' : '';
+        $friendlyQuery = ($friendly != "none") ? ' AND FIND_IN_SET("FriendlyPlay", `game_modes`) ' . (($friendly == 'include') ? '>' : '=') . ' 0' : '';
+        $longQuery = ($long != "none") ? ' AND FIND_IN_SET("LongMode", `game_modes`) ' . (($long == 'include') ? '>' : '=') . ' 0' : '';
 
         return $db->query(
-            'SELECT `GameID`, `Player1`, `Last Action`, `GameModes`, `Timeout` FROM `games`'
-            . ' WHERE `Player1` != ? AND `Player2` = "" AND `State` = "waiting"'
-            . $hiddenQuery . $friendlyQuery . $longQuery . ' ORDER BY `Last Action` DESC'
+            'SELECT `game_id`, `player1`, `last_action_at`, `game_modes`, `turn_timeout` FROM `game`'
+            . ' WHERE `player1` != ? AND `player2` = "" AND `state` = "waiting"'
+            . $hiddenQuery . $friendlyQuery . $longQuery . ' ORDER BY `last_action_at` DESC'
             , [$player]
         );
     }
@@ -318,8 +317,8 @@ class PdoGame extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT `GameID`, `Last Action`, `GameModes`, `Timeout` FROM `games`'
-            . ' WHERE `Player1` = ? AND `Player2` = "" AND `State` = "waiting" ORDER BY `Last Action` DESC'
+            'SELECT `game_id`, `last_action_at`, `game_modes`, `turn_timeout` FROM `game`'
+            . ' WHERE `player1` = ? AND `player2` = "" AND `state` = "waiting" ORDER BY `last_action_at` DESC'
             , [$player]
         );
     }
@@ -334,8 +333,8 @@ class PdoGame extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT `GameID` FROM `games` WHERE (`Player1` = ? AND `State` != "waiting" AND `State` != "P1 over")'
-            . ' OR (`Player2` = ? AND `State` != "waiting" AND `State` != "P2 over")'
+            'SELECT `game_id` FROM `game` WHERE (`player1` = ? AND `state` != "waiting" AND `state` != "P1 over")'
+            . ' OR (`player2` = ? AND `state` != "waiting" AND `state` != "P2 over")'
             , [$player, $player]
         );
     }
@@ -350,9 +349,9 @@ class PdoGame extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT `GameID`, `Player1`, `Player2`, `State`, `Current`, `Round`, `Last Action`, `GameModes`, `Timeout`, `AI` FROM `games`'
-            . ' WHERE (`Player1` = ? AND `State` != "waiting" AND `State` != "P1 over")'
-            . ' OR (`Player2` = ? AND `State` != "waiting" AND `State` != "P2 over") ORDER BY `Last Action` DESC'
+            'SELECT `game_id`, `player1`, `player2`, `state`, `current`, `round`, `last_action_at`, `game_modes`, `turn_timeout`, `ai_name` FROM `game`'
+            . ' WHERE (`player1` = ? AND `state` != "waiting" AND `state` != "P1 over")'
+            . ' OR (`player2` = ? AND `state` != "waiting" AND `state` != "P2 over") ORDER BY `last_action_at` DESC'
             , [$player, $player]
         );
     }
@@ -366,7 +365,7 @@ class PdoGame extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('SELECT COUNT(`GameID`) as `count` FROM `games` WHERE `Current` = ? AND `State` = "in progress"', [
+        return $db->query('SELECT COUNT(`game_id`) as `count` FROM `game` WHERE `current` = ? AND `state` = "in progress"', [
             $player
         ]);
     }
@@ -381,11 +380,11 @@ class PdoGame extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT `GameID`, (CASE WHEN `Player1` = ? THEN `Player2` ELSE `Player1` END) as `Opponent` FROM `games`'
-            . ' WHERE (`Player1` = ? OR `Player2` = ?) AND ((`State` = "in progress" AND ((`Current` = ? AND `Surrender` = "")'
-            . ' OR (`Surrender` != ? AND `Surrender` != "") OR (`Timeout` > 0 AND `Last Action` <= NOW() - INTERVAL `Timeout` SECOND'
-            . ' AND `Current` != ? AND `Player2` != ?))) OR `Player2` = ? OR `State` = "finished"'
-            . ' OR (`State` = "P1 over" AND `Player2` = ?) OR (`State` = "P2 over" AND `Player1` = ?))'
+            'SELECT `game_id`, (CASE WHEN `player1` = ? THEN `player2` ELSE `player1` END) as `Opponent` FROM `game`'
+            . ' WHERE (`player1` = ? OR `player2` = ?) AND ((`state` = "in progress" AND ((`current` = ? AND `surrender` = "")'
+            . ' OR (`surrender` != ? AND `surrender` != "") OR (`turn_timeout` > 0 AND `last_action_at` <= NOW() - INTERVAL `turn_timeout` SECOND'
+            . ' AND `current` != ? AND `player2` != ?))) OR `player2` = ? OR `state` = "finished"'
+            . ' OR (`state` = "P1 over" AND `player2` = ?) OR (`state` = "P2 over" AND `player1` = ?))'
             , [
             $player, $player, $player, $player, $player, $player
             , Player::SYSTEM_NAME, Player::SYSTEM_NAME, $player, $player
@@ -403,8 +402,8 @@ class PdoGame extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT 1 FROM `games` WHERE `State` = "in progress" AND ((`Player1` = ? AND `Player2` = ?)'
-            . ' OR (`Player1` = ? AND `Player2` = ?)) LIMIT 1'
+            'SELECT 1 FROM `game` WHERE `state` = "in progress" AND ((`player1` = ? AND `player2` = ?)'
+            . ' OR (`player1` = ? AND `player2` = ?)) LIMIT 1'
             , [$player1, $player2, $player2, $player1]
         );
     }
@@ -419,7 +418,7 @@ class PdoGame extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('UPDATE `games` SET `Player1` = ? WHERE `Player1` = ?', [
+        return $db->query('UPDATE `game` SET `player1` = ? WHERE `player1` = ?', [
             $new_name, $player
         ]);
     }
@@ -434,7 +433,7 @@ class PdoGame extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('UPDATE `games` SET `Player2` = ? WHERE `Player2` = ?', [
+        return $db->query('UPDATE `game` SET `player2` = ? WHERE `player2` = ?', [
             $new_name, $player
         ]);
     }
@@ -449,7 +448,7 @@ class PdoGame extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('UPDATE `games` SET `Current` = ? WHERE `Current` = ?', [
+        return $db->query('UPDATE `game` SET `current` = ? WHERE `current` = ?', [
             $newName, $player
         ]);
     }
@@ -464,7 +463,7 @@ class PdoGame extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('UPDATE `games` SET `Winner` = ? WHERE `Winner` = ?', [
+        return $db->query('UPDATE `game` SET `winner` = ? WHERE `winner` = ?', [
             $newName, $player
         ]);
     }
@@ -479,7 +478,7 @@ class PdoGame extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('UPDATE `games` SET `Surrender` = ? WHERE `Surrender` = ?', [
+        return $db->query('UPDATE `game` SET `surrender` = ? WHERE `surrender` = ?', [
             $newName, $player
         ]);
     }

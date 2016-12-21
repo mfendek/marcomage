@@ -29,7 +29,7 @@ class Challenge extends ControllerAbstract
 
         $this->result()->setCurrent('Messages');
 
-        $this->assertParamsNonEmpty(['AcceptDeck']);
+        $this->assertParamsNonEmpty(['accept_deck']);
 
         // check access rights
         if (!$this->checkAccess('accept_challenges')) {
@@ -50,7 +50,7 @@ class Challenge extends ControllerAbstract
         }
 
         $opponentName = $game->getPlayer1();
-        $deckId = $request['AcceptDeck'];
+        $deckId = $request['accept_deck'];
 
         $deck = $this->service()->deck()->loadReadyDeck($deckId, $player->getUsername(), $game->getGameModes());
 
@@ -187,14 +187,14 @@ class Challenge extends ControllerAbstract
         }
 
         $this->assertParamsExist(['content']);
-        $this->assertParamsNonEmpty(['ChallengeDeck']);
+        $this->assertParamsNonEmpty(['challenge_deck']);
 
         // check challenge text length
         if (mb_strlen($request['content']) > MessageModel::CHALLENGE_LENGTH) {
             throw new Exception('Message too long', Exception::WARNING);
         }
 
-        $deckId = $request['ChallengeDeck'];
+        $deckId = $request['challenge_deck'];
 
         // set game modes
         $hiddenCards = (isset($request['hidden_cards']) ? 'yes' : 'no');
@@ -224,7 +224,7 @@ class Challenge extends ControllerAbstract
 
         $timeoutValues = GameModel::listTimeoutValues();
         $timeoutKeys = array_keys($timeoutValues);
-        $turnTimeout = (isset($request['Timeout']) && in_array($request['Timeout'], $timeoutKeys)) ? $request['Timeout'] : 0;
+        $turnTimeout = (isset($request['turn_timeout']) && in_array($request['turn_timeout'], $timeoutKeys)) ? $request['turn_timeout'] : 0;
 
         $challengeText = "Hide opponent's cards: " . $hiddenCards . "\n";
         $challengeText.= 'Friendly play: ' . $friendlyPlay . "\n";

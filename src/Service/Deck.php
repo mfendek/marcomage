@@ -64,8 +64,8 @@ class Deck extends ServiceAbstract
 
         foreach ($starterData as $deckName => $deckData) {
             $deck = $dbEntityDeck->createCustomDeck([
-                'Username' => PlayerModel::SYSTEM_NAME,
-                'Deckname' => $deckName,
+                'username' => PlayerModel::SYSTEM_NAME,
+                'deck_name' => $deckName,
             ]);
             $deck->setData($deckData);
 
@@ -181,8 +181,8 @@ class Deck extends ServiceAbstract
 
         foreach ($challengeData as $deckName => $deckData) {
             $deck = $dbEntityDeck->createCustomDeck([
-                'Username' => PlayerModel::SYSTEM_NAME,
-                'Deckname' => $deckName,
+                'username' => PlayerModel::SYSTEM_NAME,
+                'deck_name' => $deckName,
             ]);
             $deck->setData($deckData);
 
@@ -262,17 +262,17 @@ class Deck extends ServiceAbstract
         $subArray = ['Common' => 0, 'Uncommon' => 0, 'Rare' => 0];
 
         $sum = [
-            'Bricks' => $subArray,
-            'Gems' => $subArray,
-            'Recruits' => $subArray,
-            'Count' => $subArray
+            'bricks' => $subArray,
+            'gems' => $subArray,
+            'recruits' => $subArray,
+            'count' => $subArray
         ];
         $avg = [
-            'Bricks' => $subArray,
-            'Gems' => $subArray,
-            'Recruits' => $subArray
+            'bricks' => $subArray,
+            'gems' => $subArray,
+            'recruits' => $subArray
         ];
-        $cost = ['Bricks' => 0, 'Gems' => 0, 'Recruits' => 0];
+        $cost = ['bricks' => 0, 'gems' => 0, 'recruits' => 0];
 
         // load card data into the structure
         foreach ($subArray as $rarity => $value) {
@@ -280,10 +280,10 @@ class Deck extends ServiceAbstract
                 if ($cardId != 0) {
                     $card = $defEntityCard->getCard($cardId);
 
-                    $sum['Bricks'][$rarity]+= $card->getData('Bricks');
-                    $sum['Gems'][$rarity]+= $card->getData('Gems');
-                    $sum['Recruits'][$rarity]+= $card->getData('Recruits');
-                    $sum['Count'][$rarity]+= 1;
+                    $sum['bricks'][$rarity]+= $card->getData('Bricks');
+                    $sum['gems'][$rarity]+= $card->getData('Gems');
+                    $sum['recruits'][$rarity]+= $card->getData('Recruits');
+                    $sum['count'][$rarity]+= 1;
                 }
             }
         }
@@ -291,13 +291,13 @@ class Deck extends ServiceAbstract
         // calculate average cost per resource type
         foreach ($avg as $type => $value) {
             // common cards
-            $common = ($sum['Count']['Common'] > 0) ? ($sum[$type]['Common'] * 0.65) / $sum['Count']['Common'] : 0;
+            $common = ($sum['count']['Common'] > 0) ? ($sum[$type]['Common'] * 0.65) / $sum['count']['Common'] : 0;
 
             // uncommon cards
-            $uncommon = ($sum['Count']['Uncommon'] > 0) ? ($sum[$type]['Uncommon'] * 0.29) / $sum['Count']['Uncommon'] : 0;
+            $uncommon = ($sum['count']['Uncommon'] > 0) ? ($sum[$type]['Uncommon'] * 0.29) / $sum['count']['Uncommon'] : 0;
 
             // rare cards
-            $rare = ($sum['Count']['Rare'] > 0) ? ($sum[$type]['Rare'] * 0.06) / $sum['Count']['Rare'] : 0;
+            $rare = ($sum['count']['Rare'] > 0) ? ($sum[$type]['Rare'] * 0.06) / $sum['count']['Rare'] : 0;
 
             $cost[$type] = round($common + $uncommon + $rare, 2);
         }
@@ -413,7 +413,7 @@ class Deck extends ServiceAbstract
             $this->setAutoTokens($deck);
         }
 
-        $deck->setModified(Date::timeToStr());
+        $deck->setModifiedAt(Date::timeToStr());
         if (!$deck->save()) {
             throw new Exception('Unable to add the chosen card to this deck');
         }
@@ -447,7 +447,7 @@ class Deck extends ServiceAbstract
             throw new Exception('Failed to remove card from deck data');
         }
 
-        $deck->setModified(Date::timeToStr());
+        $deck->setModifiedAt(Date::timeToStr());
         if (!$deck->save()) {
             throw new Exception('Unable to remove the chosen card from this deck');
         }
@@ -471,7 +471,7 @@ class Deck extends ServiceAbstract
         // update deck note
         $deck
             ->setNote($note)
-            ->setModified(Date::timeToStr());
+            ->setModifiedAt(Date::timeToStr());
 
         if (!$deck->save()) {
             throw new Exception('Failed to save deck note');

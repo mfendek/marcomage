@@ -174,14 +174,14 @@ class Player extends ControllerAbstract
         $setting = $this->dbEntity()->setting()->getSettingAsserted($opponentName);
 
         // delete avatar picture
-        $formerName = $setting->getSetting('Avatar');
+        $formerName = $setting->getSetting('avatar');
         $formerPath = $config['upload_dir']['avatar'] . $formerName;
 
         if (file_exists($formerPath) && $formerName != 'noavatar.jpg') {
             unlink($formerPath);
         }
 
-        $setting->changeSetting('Avatar', 'noavatar.jpg');
+        $setting->changeSetting('avatar', 'noavatar.jpg');
         if (!$setting->save()) {
             throw new Exception('Failed to reset avatar');
         }
@@ -213,9 +213,9 @@ class Player extends ControllerAbstract
             throw new Exception('Access denied', Exception::WARNING);
         }
 
-        $this->assertParamsNonEmpty(['ExportDeck']);
+        $this->assertParamsNonEmpty(['exported_deck']);
 
-        $deckId = $request['ExportDeck'];
+        $deckId = $request['exported_deck'];
         $deck = $this->dbEntity()->deck()->getDeckAsserted($deckId);
 
         $file = $deck->toCSV();

@@ -16,27 +16,26 @@ class PdoChat extends PdoAbstract
     protected function schema()
     {
         return [
-            'entity_name' => 'chats',
+            'entity_name' => 'chat',
             'primary_fields' => [
-                'GameID',
+                'game_id',
             ],
             'fields' => [
-                'GameID' => [
+                'game_id' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Timestamp' => [
-                    // created timestamp
+                'created_at' => [
                     'type' => EntityAbstract::TYPE_DATETIME,
                     'default' => Date::DATETIME_ZERO,
                     'options' => [EntityAbstract::OPT_INSERT_DATETIME],
                 ],
-                'Name' => [
+                'author' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Message' => [
+                'message' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
@@ -55,7 +54,7 @@ class PdoChat extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('INSERT INTO `chats` (`GameID`, `Name`, `Message`) VALUES (?, ?, ?)', [
+        return $db->query('INSERT INTO `chat` (`game_id`, `author`, `message`) VALUES (?, ?, ?)', [
             $gameId, $name, $message
         ]);
     }
@@ -70,7 +69,7 @@ class PdoChat extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('UPDATE `chats` SET `Name` = ? WHERE `Name` = ?', [
+        return $db->query('UPDATE `chat` SET `author` = ? WHERE `author` = ?', [
             $newName, $player
         ]);
     }
@@ -84,7 +83,7 @@ class PdoChat extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('DELETE FROM `chats` WHERE `GameID` = ?', [$gameId]);
+        return $db->query('DELETE FROM `chat` WHERE `game_id` = ?', [$gameId]);
     }
 
     /**
@@ -102,7 +101,7 @@ class PdoChat extends PdoAbstract
             $params[] = $gameId;
         }
 
-        return $db->query('DELETE FROM `chats` WHERE `GameID` IN (' . implode(",", $qString) . ')', $params);
+        return $db->query('DELETE FROM `chat` WHERE `game_id` IN (' . implode(",", $qString) . ')', $params);
     }
 
     /**
@@ -117,7 +116,7 @@ class PdoChat extends PdoAbstract
 
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
 
-        return $db->query('SELECT `Name`, `Message`, `Timestamp` FROM `chats` WHERE `GameID` = ? ORDER BY `Timestamp` ' . $order . '', [
+        return $db->query('SELECT `author`, `message`, `created_at` FROM `chat` WHERE `game_id` = ? ORDER BY `created_at` ' . $order . '', [
             $gameId
         ]);
     }
@@ -133,7 +132,7 @@ class PdoChat extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('SELECT 1 FROM `chats` WHERE `GameID` = ? AND `Name` != ? AND `Timestamp` > ? LIMIT 1', [
+        return $db->query('SELECT 1 FROM `chat` WHERE `game_id` = ? AND `author` != ? AND `created_at` > ? LIMIT 1', [
             $gameId, $player, $time
         ]);
     }

@@ -34,7 +34,7 @@ class Statistic extends ServiceAbstract
         $totalGames = 0;
         foreach ($result->data() as $data) {
             $totalGames+= $data['count'];
-            $statistics[$data['EndType']] = $data['count'];
+            $statistics[$data['outcome_type']] = $data['count'];
         }
 
         // calculate percentage, restructure data
@@ -68,7 +68,7 @@ class Statistic extends ServiceAbstract
         foreach ($result->data() as $resData) {
             $totalGames+= $resData['count'];
 
-            $modes = explode(",", $resData['GameModes']);
+            $modes = explode(",", $resData['game_modes']);
             foreach ($modes as $mode) {
                 if (isset($gameModes[$mode])) {
                     $gameModes[$mode]+= $resData['count'];
@@ -176,8 +176,8 @@ class Statistic extends ServiceAbstract
         }
 
         $data = $result[0];
-        $statistics['turns'] = $data['Turns'];
-        $statistics['rounds'] = $data['Rounds'];
+        $statistics['turns'] = $data['turns'];
+        $statistics['rounds'] = $data['rounds'];
 
         // average game duration (long mode)
         $result = $dbEntityReplay->versusGameDurationLong($player1, $player2);
@@ -186,8 +186,8 @@ class Statistic extends ServiceAbstract
         }
 
         $data = $result[0];
-        $statistics['turns_long'] = $data['Turns'];
-        $statistics['rounds_long'] = $data['Rounds'];
+        $statistics['turns_long'] = $data['turns'];
+        $statistics['rounds_long'] = $data['rounds'];
 
         return $statistics;
     }
@@ -271,8 +271,8 @@ class Statistic extends ServiceAbstract
         }
 
         $data = $result[0];
-        $statistics['turns'] = $data['Turns'];
-        $statistics['rounds'] = $data['Rounds'];
+        $statistics['turns'] = $data['turns'];
+        $statistics['rounds'] = $data['rounds'];
 
         // average game duration (long mode)
         $result = $dbEntityReplay->totalGameDurationLong($player);
@@ -281,8 +281,8 @@ class Statistic extends ServiceAbstract
         }
 
         $data = $result[0];
-        $statistics['turns_long'] = $data['Turns'];
-        $statistics['rounds_long'] = $data['Rounds'];
+        $statistics['turns_long'] = $data['turns'];
+        $statistics['rounds_long'] = $data['rounds'];
 
         return $statistics;
     }
@@ -308,7 +308,7 @@ class Statistic extends ServiceAbstract
         // create a list of existing card ids
         $updateIds = array();
         foreach ($result->data() as $data) {
-            $updateIds[] = $data['CardID'];
+            $updateIds[] = $data['card_id'];
         }
 
         foreach ($stats as $cardId => $actions) {

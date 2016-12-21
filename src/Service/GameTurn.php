@@ -71,12 +71,12 @@ class GameTurn extends ServiceAbstract
             );
 
             // update AI challenge score in case of AI challenge game
-            if ($game->getAI() != '' && $game->getWinner() == $playerName) {
-                $this->service()->gameAward()->updateAward($playerName, 'Challenges');
+            if ($game->getAiName() != '' && $game->getWinner() == $playerName) {
+                $this->service()->gameAward()->updateAward($playerName, 'ai_challenges');
             }
 
             // case 1: standard AI mode
-            if ($game->checkGameMode('AIMode') && $game->getAI() == '') {
+            if ($game->checkGameMode('AIMode') && $game->getAiName() == '') {
                 // fetch player's level
                 $score = $this->dbEntity()->score()->getScoreAsserted($playerName);
 
@@ -108,7 +108,7 @@ class GameTurn extends ServiceAbstract
                     $setting = $this->dbEntity()->setting()->getSettingAsserted($playerName);
 
                     // send level up message
-                    if ($levelUp && $setting->getSetting('Reports') == 'yes') {
+                    if ($levelUp && $setting->getSetting('battle_report') == 'yes') {
                         $message = $dbEntityMessage->levelUp($playerName, $score->getLevel());
                         if (!$message->save()) {
                             throw new Exception('Failed to send level up message');
@@ -148,24 +148,24 @@ class GameTurn extends ServiceAbstract
         $score2 = $this->dbEntity()->score()->getScoreAsserted($player2);
 
         // calculate exp data for both players
-        $exp1 = $serviceGameAward->calculateExp($game, $player1, $score1->getData('Level'), $score2->getData('Level'));
-        $exp2 = $serviceGameAward->calculateExp($game, $player2, $score1->getData('Level'), $score2->getData('Level'));
+        $exp1 = $serviceGameAward->calculateExp($game, $player1, $score1->getLevel(), $score2->getLevel());
+        $exp2 = $serviceGameAward->calculateExp($game, $player2, $score1->getLevel(), $score2->getLevel());
 
         // update score
         // player 1 won
         if ($game->getWinner() == $player1) {
-            $score1->setData('Wins', $score1->getData('Wins') + 1);
-            $score2->setData('Losses', $score2->getData('Losses') + 1);
+            $score1->setData('wins', $score1->getData('wins') + 1);
+            $score2->setData('losses', $score2->getData('losses') + 1);
         }
         // player 2 won
         elseif ($game->getWinner() == $player2) {
-            $score2->setData('Wins', $score2->getData('Wins') + 1);
-            $score1->setData('Losses', $score1->getData('Losses') + 1);
+            $score2->setData('wins', $score2->getData('wins') + 1);
+            $score1->setData('losses', $score1->getData('losses') + 1);
         }
         // draw
         else {
-            $score1->setData('Draws', $score1->getData('Draws') + 1);
-            $score2->setData('Draws', $score1->getData('Draws') + 1);
+            $score1->setData('draws', $score1->getData('draws') + 1);
+            $score2->setData('draws', $score1->getData('draws') + 1);
         }
 
         $levelUp1 = $score1->addExp($exp1['exp']);
@@ -190,10 +190,10 @@ class GameTurn extends ServiceAbstract
 
         // display level-up dialog
         if ($levelUp1 && $player1 == $playerName) {
-            $levelUpFlag = $score1->getData('Level');
+            $levelUpFlag = $score1->getLevel();
         }
         if ($levelUp2 && $player2 == $playerName) {
-            $levelUpFlag = $score2->getData('Level');
+            $levelUpFlag = $score2->getLevel();
         }
 
         // load settings for both players
@@ -201,23 +201,23 @@ class GameTurn extends ServiceAbstract
         $setting2 = $this->dbEntity()->setting()->getSettingAsserted($player2);
 
         // send level up messages
-        $player1Report = $setting1->getSetting('Reports');
+        $player1Report = $setting1->getSetting('battle_report');
         if ($levelUp1 && $player1Report == 'yes') {
-            $message = $dbEntityMessage->levelUp($player1, $score1->getData('Level'));
+            $message = $dbEntityMessage->levelUp($player1, $score1->getLevel());
             if (!$message->save()) {
                 throw new Exception('Failed to send level up message');
             }
         }
-        $player2Report = $setting2->getSetting('Reports');
+        $player2Report = $setting2->getSetting('battle_report');
         if ($levelUp2 && $player2Report == 'yes') {
-            $message = $dbEntityMessage->levelUp($player2, $score2->getData('Level'));
+            $message = $dbEntityMessage->levelUp($player2, $score2->getLevel());
             if (!$message->save()) {
                 throw new Exception('Failed to send level up message');
             }
         }
 
         // send battle report message
-        $outcome = GameUtil::outcomeMessage($game->getEndType());
+        $outcome = GameUtil::outcomeMessage($game->getOutcomeType());
         $winner = $game->getWinner();
         $hidden = $game->checkGameMode('HiddenCards');
 
@@ -272,8 +272,8 @@ class GameTurn extends ServiceAbstract
 
         $gameAi = $this->service()->gameAi();
         // add custom config in case of challenge AI
-        if ($game->getAI() != '') {
-            $challenge = $defEntityChallenge->getChallenge($game->getAI());
+        if ($game->getAiName() != '') {
+            $challenge = $defEntityChallenge->getChallenge($game->getAiName());
             $gameAi->setCustomConfig($challenge->getConfig());
         }
 
@@ -285,7 +285,7 @@ class GameTurn extends ServiceAbstract
         // case 2: decision is provided
         else {
             // only allow action in case of standard AI
-            if ($game->getAI() != '') {
+            if ($game->getAiName() != '') {
                 throw new Exception('Action only allowed in game vs standard AI', Exception::WARNING);
             }
         }
@@ -300,7 +300,7 @@ class GameTurn extends ServiceAbstract
         $playerLevel = $score->getLevel();
 
         // sabotage standard AI to relax the difficulty
-        if ($game->getAI() == '' && $action == 'play' && $playerLevel < PlayerModel::TUTORIAL_END) {
+        if ($game->getAiName() == '' && $action == 'play' && $playerLevel < PlayerModel::TUTORIAL_END) {
             $chance = max(1 / 2 - $playerLevel / 20, 0);
             $chance = round($chance * 100);
             $gamble = mt_rand(1, 100);
@@ -326,8 +326,8 @@ class GameTurn extends ServiceAbstract
             );
 
             // update AI challenge score in case of AI challenge game
-            if ($game->getAI() != '' && $game->getWinner() == $playerName) {
-                $this->service()->gameAward()->updateAward($playerName, 'Challenges');
+            if ($game->getAiName() != '' && $game->getWinner() == $playerName) {
+                $this->service()->gameAward()->updateAward($playerName, 'ai_challenges');
             }
         }
     }

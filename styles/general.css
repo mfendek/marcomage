@@ -292,6 +292,7 @@ img.icon {
 /* quote text layout */
 blockquote {
     padding: 0;
+    margin-top: 1ex;
     margin-bottom: 1ex;
     margin-left: 2ex;
     font-size: medium;
@@ -325,6 +326,31 @@ blockquote > div > cite {
 .unlocked-cards > div {
     display: inline-block;
     vertical-align: top;
+}
+
+.icon-player-activity {
+    vertical-align: middle;
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: thin solid black;
+    border-radius: 8px;
+}
+
+.icon-player-activity.online {
+    background-color: lime;
+}
+
+.icon-player-activity.offline {
+    background-color: red;
+}
+
+.icon-player-activity.inactive {
+    background-color: maroon;
+}
+
+.icon-player-activity.dead {
+    background-color: gray;
 }
 
 /* JQuery UI close button */
@@ -369,6 +395,42 @@ div.responsive-table {
 div.responsive-table > div.row:first-child {
     font-family: arial, sans-serif;
     text-align: center;
+}
+
+/* breakpoint specific layout */
+@media screen and (max-width: 767px) {
+    /* separate list items visually */
+    div.responsive-table.table-sm > div.row + div.row {
+        border-top: thin solid rgba(0, 0, 0, 0.3);
+    }
+
+    /* hide responsive table header */
+    div.responsive-table.table-sm > div.row:first-child > div[class*='col-'] > * {
+        display: none;
+    }
+
+    /* show only sortable column names */
+    div.responsive-table.table-sm > div.row:first-child > div[class*='col-'] > p.sortable {
+        display: block;
+    }
+}
+
+/* breakpoint specific layout */
+@media screen and (max-width: 991px) {
+    /* separate list items visually */
+    div.responsive-table.table-md > div.row + div.row {
+        border-top: thin solid rgba(0, 0, 0, 0.3);
+    }
+
+    /* hide responsive table header */
+    div.responsive-table.table-md > div.row:first-child > div[class*='col-'] > * {
+        display: none;
+    }
+
+    /* show only sortable column names */
+    div.responsive-table.table-md > div.row:first-child > div[class*='col-'] > p.sortable {
+        display: block;
+    }
 }
 
 /* cell spacing */

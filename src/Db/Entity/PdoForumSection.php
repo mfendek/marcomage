@@ -14,25 +14,25 @@ class PdoForumSection extends PdoAbstract
     protected function schema()
     {
         return [
-            'entity_name' => 'forum_sections',
+            'entity_name' => 'forum_section',
             'primary_fields' => [
-                'SectionID',
+                'section_id',
             ],
             'fields' => [
-                'SectionID' => [
+                'section_id' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'SectionName' => [
+                'section_name' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Description' => [
+                'description' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'SectionOrder' => [
+                'section_order' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
@@ -51,9 +51,9 @@ class PdoForumSection extends PdoAbstract
 
         // get section list with thread count, ordered by custom order (alphabetical order is not suited for our needs)
         return $db->query(
-            'SELECT `forum_sections`.`SectionID`, `SectionName`, `Description`, IFNULL(`count`, 0) as `count` FROM `forum_sections`'
-            . ' LEFT OUTER JOIN (SELECT `SectionID`, COUNT(`ThreadID`) as `count` FROM `forum_threads`'
-            . ' WHERE `Deleted` = FALSE GROUP BY `SectionID`) as `threads` USING (`SectionID`) ORDER BY `SectionOrder` ASC'
+            'SELECT `forum_section`.`section_id`, `section_name`, `description`, IFNULL(`count`, 0) as `count` FROM `forum_section`'
+            . ' LEFT OUTER JOIN (SELECT `section_id`, COUNT(`thread_id`) as `count` FROM `forum_thread`'
+            . ' WHERE `is_deleted` = FALSE GROUP BY `section_id`) as `threads` USING (`section_id`) ORDER BY `section_order` ASC'
         );
     }
 
@@ -66,7 +66,7 @@ class PdoForumSection extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('SELECT `SectionID`, `SectionName` FROM `forum_sections` WHERE `SectionID` != ? ORDER BY `SectionOrder`', [
+        return $db->query('SELECT `section_id`, `section_name` FROM `forum_section` WHERE `section_id` != ? ORDER BY `section_order`', [
             $currentSection
         ]);
     }
@@ -80,7 +80,7 @@ class PdoForumSection extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('SELECT `SectionID`, `SectionName`, `Description` FROM `forum_sections` WHERE `SectionID` = ?', [
+        return $db->query('SELECT `section_id`, `section_name`, `description` FROM `forum_section` WHERE `section_id` = ?', [
             $sectionId
         ]);
     }
@@ -101,15 +101,15 @@ class PdoForumSection extends PdoAbstract
 
         if ($target == 'posts' || $target == 'all') {
             if ($section != 'any') {
-                $postSectionQuery = ' AND `SectionID` = ?';
+                $postSectionQuery = ' AND `section_id` = ?';
             }
 
             // search post text content
-            $postQuery = 'SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`'
-                . ', `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM (SELECT DISTINCT `ThreadID` FROM `forum_posts`'
-                . ' WHERE `Deleted` = FALSE AND `Content` LIKE ?) as `posts` INNER JOIN'
-                . ' (SELECT `ThreadID`, `Title`, `Author`, `Priority`, `Locked`, `Created`, `PostCount`, `LastAuthor`, `LastPost`'
-                . ' FROM `forum_threads` WHERE `Deleted` = FALSE' . $postSectionQuery . ') as `threads` USING(`ThreadID`)';
+            $postQuery = 'SELECT `thread_id`, `title`, `author`, `priority`, (CASE WHEN `is_locked` = TRUE THEN "yes" ELSE "no" END) as `is_locked`'
+                . ', `created_at`, `post_count`, `last_author`, `last_post` FROM (SELECT DISTINCT `thread_id` FROM `forum_post`'
+                . ' WHERE `is_deleted` = FALSE AND `content` LIKE ?) as `posts` INNER JOIN'
+                . ' (SELECT `thread_id`, `title`, `author`, `priority`, `is_locked`, `created_at`, `post_count`, `last_author`, `last_post`'
+                . ' FROM `forum_thread` WHERE `is_deleted` = FALSE' . $postSectionQuery . ') as `threads` USING(`thread_id`)';
 
             $params[] = '%' . $phrase . '%';
 
@@ -120,13 +120,13 @@ class PdoForumSection extends PdoAbstract
 
         if ($target == 'threads' || $target == 'all') {
             if ($section != 'any') {
-                $threadSectionQuery = ' AND `SectionID` = ?';
+                $threadSectionQuery = ' AND `section_id` = ?';
             }
 
             // search thread title
-            $threadQuery = 'SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`'
-                . ', `Created`, `PostCount`, `LastAuthor`, `LastPost` FROM `forum_threads`'
-                . ' WHERE `Deleted` = FALSE AND `Title` LIKE ?' . $threadSectionQuery . '';
+            $threadQuery = 'SELECT `thread_id`, `title`, `author`, `priority`, (CASE WHEN `is_locked` = TRUE THEN "yes" ELSE "no" END) as `is_locked`'
+                . ', `created_at`, `post_count`, `last_author`, `last_post` FROM `forum_thread`'
+                . ' WHERE `is_deleted` = FALSE AND `title` LIKE ?' . $threadSectionQuery . '';
             $params[] = '%' . $phrase . '%';
 
             if ($section != 'any') {
@@ -135,7 +135,7 @@ class PdoForumSection extends PdoAbstract
         }
 
         // merge results
-        $query = $postQuery . (($target == 'all') ? ' UNION DISTINCT ' : '') . $threadQuery . ' ORDER BY `LastPost` DESC';
+        $query = $postQuery . (($target == 'all') ? ' UNION DISTINCT ' : '') . $threadQuery . ' ORDER BY `last_post` DESC';
 
         return $db->query($query, $params);
     }

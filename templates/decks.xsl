@@ -25,26 +25,20 @@
                 </div>
             </xsl:if>
 
-            <div class="responsive-table skin-text">
+            <div class="responsive-table table-sm skin-text">
                 <!-- table header -->
                 <div class="row">
                     <div class="col-sm-4">
                         <p>Name</p>
                     </div>
-                    <div class="col-sm-1">
-                        <p>Wins</p>
+                    <div class="col-sm-3">
+                        <p>Wins / Losses / Draws</p>
                     </div>
-                    <div class="col-sm-1">
-                        <p>Losses</p>
-                    </div>
-                    <div class="col-sm-1">
-                        <p>Draws</p>
-                    </div>
-                    <div class="col-sm-1">
-                        <p>Shared</p>
-                    </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <p>Last change</p>
+                    </div>
+                    <div class="col-sm-2">
+                        <p/>
                     </div>
                 </div>
 
@@ -53,39 +47,38 @@
                     <div class="row table-row details">
                         <div class="col-sm-4">
                             <p>
-                                <xsl:if test="Ready = 'yes'">
-                                    <xsl:attribute name="class">p_online</xsl:attribute>
-                                </xsl:if>
-                                <a class="profile" href="{am:makeUrl('Decks_edit', 'CurrentDeck', DeckID)}">
-                                    <xsl:value-of select="Deckname"/>
+                                <a class="profile" href="{am:makeUrl('Decks_edit', 'current_deck', deck_id)}">
+                                    <xsl:value-of select="deck_name"/>
                                 </a>
                             </p>
                         </div>
-                        <div class="col-sm-1">
-                            <p><xsl:value-of select="Wins"/></p>
-                        </div>
-                        <div class="col-sm-1">
-                            <p><xsl:value-of select="Losses"/></p>
-                        </div>
-                        <div class="col-sm-1">
-                            <p><xsl:value-of select="Draws"/></p>
-                        </div>
-                        <div class="col-sm-1">
+                        <div class="col-sm-3">
                             <p>
-                                <xsl:choose>
-                                    <xsl:when test="Shared = 1">yes</xsl:when>
-                                    <xsl:otherwise>no</xsl:otherwise>
-                                </xsl:choose>
+                                <xsl:value-of select="wins"/>
+                                <xsl:text> / </xsl:text>
+                                <xsl:value-of select="losses"/>
+                                <xsl:text> / </xsl:text>
+                                <xsl:value-of select="draws"/>
                             </p>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <p>
                                 <xsl:choose>
-                                    <xsl:when test="Modified != '1970-01-01 00:00:01'">
-                                        <xsl:value-of select="am:dateTime(Modified, $param/timezone)"/>
+                                    <xsl:when test="modified_at != '1970-01-01 00:00:01'">
+                                        <xsl:value-of select="am:dateTime(modified_at, $param/timezone)"/>
                                     </xsl:when>
                                     <xsl:otherwise>n/a</xsl:otherwise>
                                 </xsl:choose>
+                            </p>
+                        </div>
+                        <div class="col-sm-2">
+                            <p>
+                                <xsl:if test="is_ready = 'yes'">
+                                    <span class="deck-item-icon"><span class="glyphicon glyphicon-ok" title="Ready"/></span>
+                                </xsl:if>
+                                <xsl:if test="is_shared = 1">
+                                    <span class="deck-item-icon"><span class="glyphicon glyphicon-eye-open" title="Shared"/></span>
+                                </xsl:if>
                             </p>
                         </div>
                     </div>
@@ -120,30 +113,32 @@
 
                 <!-- selected deck -->
                 <span>Target deck</span>
-                <select name="SelectedDeck" size="1">
+                <select name="selected_deck" size="1">
                     <xsl:for-each select="$param/decks/*">
-                        <option value="{DeckID}">
-                            <xsl:value-of select="Deckname"/>
+                        <option value="{deck_id}">
+                            <xsl:value-of select="deck_name"/>
                         </option>
                     </xsl:for-each>
                 </select>
             </div>
 
-            <div class="responsive-table skin-text">
+            <div class="responsive-table table-sm skin-text">
                 <!-- table header -->
                 <div class="row">
                     <xsl:variable name="columns">
-                        <column name="Deckname" text="Name" sortable="yes" size="2"/>
-                        <column name="Username" text="Author" sortable="yes" size="3"/>
-                        <column name="Wins" text="Wins" sortable="no" size="1"/>
-                        <column name="Losses" text="Losses" sortable="no" size="1"/>
-                        <column name="Draws" text="Draws" sortable="no" size="1"/>
-                        <column name="Modified" text="Last change" sortable="yes" size="3"/>
+                        <column name="deck_name" text="Name" sortable="yes" size="2"/>
+                        <column name="username" text="Author" sortable="yes" size="3"/>
+                        <column name="score" text="Wins / Losses / Draws" sortable="no" size="3"/>
+                        <column name="modified_at" text="Last change" sortable="yes" size="3"/>
                     </xsl:variable>
 
                     <xsl:for-each select="exsl:node-set($columns)/*">
                         <div class="col-sm-{@size}">
                             <p>
+                                <xsl:if test="@sortable = 'yes'">
+                                    <xsl:attribute name="class">sortable</xsl:attribute>
+                                </xsl:if>
+
                                 <span><xsl:value-of select="@text"/></span>
                                 <xsl:if test="@sortable = 'yes'">
                                     <button class="button-icon" type="submit" value="{@name}">
@@ -175,32 +170,32 @@
                     <div class="row table-row details">
                         <div class="col-sm-2">
                             <p>
-                                <a class="profile" href="{am:makeUrl('Decks_details', 'CurrentDeck', DeckID)}">
-                                    <xsl:value-of select="Deckname"/>
+                                <a class="profile" href="{am:makeUrl('Decks_details', 'current_deck', deck_id)}">
+                                    <xsl:value-of select="deck_name"/>
                                 </a>
                             </p>
                         </div>
                         <div class="col-sm-3">
                             <p>
-                                <a class="profile" href="{am:makeUrl('Players_details', 'Profile', Username)}">
-                                    <xsl:value-of select="Username"/>
+                                <a class="profile" href="{am:makeUrl('Players_details', 'Profile', username)}">
+                                    <xsl:value-of select="username"/>
                                 </a>
                             </p>
                         </div>
-                        <div class="col-sm-1">
-                            <p><xsl:value-of select="Wins"/></p>
-                        </div>
-                        <div class="col-sm-1">
-                            <p><xsl:value-of select="Losses"/></p>
-                        </div>
-                        <div class="col-sm-1">
-                            <p><xsl:value-of select="Draws"/></p>
+                        <div class="col-sm-3">
+                            <p>
+                                <xsl:value-of select="wins"/>
+                                <xsl:text> / </xsl:text>
+                                <xsl:value-of select="losses"/>
+                                <xsl:text> / </xsl:text>
+                                <xsl:value-of select="draws"/>
+                            </p>
                         </div>
                         <div class="col-sm-3">
                             <p>
                                 <xsl:choose>
-                                    <xsl:when test="Modified != '1970-01-01 00:00:01'">
-                                        <xsl:value-of select="am:dateTime(Modified, $param/timezone)"/>
+                                    <xsl:when test="modified_at != '1970-01-01 00:00:01'">
+                                        <xsl:value-of select="am:dateTime(modified_at, $param/timezone)"/>
                                     </xsl:when>
                                     <xsl:otherwise>n/a</xsl:otherwise>
                                 </xsl:choose>
@@ -208,7 +203,7 @@
                         </div>
                         <div class="col-sm-1">
                             <p>
-                                <button class="button-icon" type="submit" name="import_shared_deck" value="{DeckID}" title="Import">
+                                <button class="button-icon" type="submit" name="import_shared_deck" value="{deck_id}" title="Import">
                                     <span class="glyphicon glyphicon-duplicate"/>
                                 </button>
                             </p>
@@ -248,7 +243,7 @@
                         </button>
                     </xsl:when>
                     <xsl:when test="$param/discussion &gt; 0">
-                        <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'CurrentThread', $param/discussion, 'CurrentPage', 0)}" title="View discussion">
+                        <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $param/discussion, 'CurrentPage', 0)}" title="View discussion">
                             <span class="glyphicon glyphicon-comment"/>
                         </a>
                     </xsl:when>
@@ -258,9 +253,9 @@
                         <xsl:value-of select="$param/deck_name"/>
                     </span>
                     <span class="cost-per-turn" title="average cost per turn (bricks, gems, recruits)">
-                        <b><xsl:value-of select="$param/avg_cost/Bricks"/></b>
-                        <b><xsl:value-of select="$param/avg_cost/Gems"/></b>
-                        <b><xsl:value-of select="$param/avg_cost/Recruits"/></b>
+                        <b><xsl:value-of select="$param/avg_cost/bricks"/></b>
+                        <b><xsl:value-of select="$param/avg_cost/gems"/></b>
+                        <b><xsl:value-of select="$param/avg_cost/recruits"/></b>
                     </span>
                     <xsl:if test="$param/tokens != ''">
                         <span>
@@ -347,7 +342,7 @@
                     </xsl:choose>
                 </xsl:if>
 
-                <a class="button button-icon" id="deck-note" href="{am:makeUrl('Decks_note', 'CurrentDeck', $param/CurrentDeck)}" title="Note">
+                <a class="button button-icon" id="deck-note" href="{am:makeUrl('Decks_note', 'current_deck', $param/current_deck)}" title="Note">
                     <xsl:if test="$param/note != ''">
                         <xsl:attribute name="class">button button-icon marked_button</xsl:attribute>
                     </xsl:if>
@@ -386,9 +381,9 @@
                 </div>
 
                 <div class="cost-per-turn" title="average cost per turn (bricks, gems, recruits)">
-                    <b><xsl:value-of select="$param/avg_cost/Bricks"/></b>
-                    <b><xsl:value-of select="$param/avg_cost/Gems"/></b>
-                    <b><xsl:value-of select="$param/avg_cost/Recruits"/></b>
+                    <b><xsl:value-of select="$param/avg_cost/bricks"/></b>
+                    <b><xsl:value-of select="$param/avg_cost/gems"/></b>
+                    <b><xsl:value-of select="$param/avg_cost/recruits"/></b>
                 </div>
 
                 <p class="deck-stats">
@@ -508,7 +503,7 @@
 
         <!-- remember the current location across pages -->
         <div>
-            <input type="hidden" name="CurrentDeck" value="{$param/CurrentDeck}"/>
+            <input type="hidden" name="current_deck" value="{$param/current_deck}"/>
             <input type="hidden" name="card_pool" value="{$param/card_pool}"/>
         </div>
 
@@ -530,7 +525,7 @@
             <h3>Deck note</h3>
 
             <div class="skin-text">
-                <a class="button button-icon" href="{am:makeUrl('Decks_edit', 'CurrentDeck', $param/CurrentDeck)}">
+                <a class="button button-icon" href="{am:makeUrl('Decks_edit', 'current_deck', $param/current_deck)}">
                     <span class="glyphicon glyphicon-arrow-left"/>
                 </a>
                 <button type="submit" name="save_deck_note_return">Save &amp; return</button>
@@ -544,7 +539,7 @@
                 </textarea>
             </div>
 
-            <input type="hidden" name="CurrentDeck" value="{$param/CurrentDeck}"/>
+            <input type="hidden" name="current_deck" value="{$param/current_deck}"/>
         </div>
 
     </xsl:template>

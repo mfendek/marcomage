@@ -115,9 +115,9 @@ class Card extends TemplateDataAbstract
         // load card display settings
         $setting = $this->getCurrentSettings();
 
-        $data['card_old_look'] = $setting->getSetting('OldCardLook');
-        $data['card_insignias'] = $setting->getSetting('Insignias');
-        $data['card_foils'] = $setting->getSetting('FoilCards');
+        $data['card_old_look'] = $setting->getSetting('old_card_look');
+        $data['card_insignias'] = $setting->getSetting('keyword_insignia');
+        $data['card_foils'] = $setting->getSetting('foil_cards');
 
         return new Result(['cards' => $data]);
     }
@@ -151,7 +151,7 @@ class Card extends TemplateDataAbstract
         if ($result->isError()) {
             throw new Exception('Failed to find forum thread by card id');
         }
-        $threadId = ($result->isSuccess()) ? $result[0]['ThreadID'] : 0;
+        $threadId = ($result->isSuccess()) ? $result[0]['thread_id'] : 0;
 
         // load card statistics
         $result = $dbEntityStatistic->cardStatistics($cardId);
@@ -160,7 +160,8 @@ class Card extends TemplateDataAbstract
         }
         if ($result->isNoEffect()) {
             $cardStats = [
-                'Played' => 0, 'Discarded' => 0, 'Drawn' => 0, 'PlayedTotal' => 0, 'DiscardedTotal' => 0, 'DrawnTotal' => 0
+                'played' => 0, 'discarded' => 0, 'drawn' => 0,
+                'played_total' => 0, 'discarded_total' => 0, 'drawn_total' => 0,
             ];
         }
         else {
@@ -174,15 +175,15 @@ class Card extends TemplateDataAbstract
         $data['create_thread'] = ($this->checkAccess('create_thread')) ? 'yes' : 'no';
         $data['statistics'] = $cardStats;
         $data['foil_cost'] = \Def\Model\Card::FOIL_COST;
-        $data['gold'] = $score->getData('Gold');
+        $data['gold'] = $score->getGold();
         $data['is_logged_in'] = ($this->isSession()) ? 'yes' : 'no';
 
         // load card display settings
         $setting = $this->getCurrentSettings();
 
-        $data['card_old_look'] = $setting->getSetting('OldCardLook');
-        $data['card_insignias'] = $setting->getSetting('Insignias');
-        $data['card_foils'] = $foil_cards = $setting->getSetting('FoilCards');
+        $data['card_old_look'] = $setting->getSetting('old_card_look');
+        $data['card_insignias'] = $setting->getSetting('keyword_insignia');
+        $data['card_foils'] = $foil_cards = $setting->getSetting('foil_cards');
 
         // determine if current card has a foil version
         $foil_cards = ($foil_cards == '') ? [] : explode(",", $foil_cards);
@@ -218,9 +219,9 @@ class Card extends TemplateDataAbstract
         // load card display settings
         $setting = $this->getCurrentSettings();
 
-        $data['card_old_look'] = $setting->getSetting('OldCardLook');
-        $data['card_insignias'] = $setting->getSetting('Insignias');
-        $data['card_foils'] = $setting->getSetting('FoilCards');
+        $data['card_old_look'] = $setting->getSetting('old_card_look');
+        $data['card_insignias'] = $setting->getSetting('keyword_insignia');
+        $data['card_foils'] = $setting->getSetting('foil_cards');
 
         return new Result(['cards_lookup' => $data], $cardData['name']);
     }

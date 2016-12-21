@@ -17,13 +17,12 @@ class PdoConcept extends PdoAbstract
     protected function schema()
     {
         return [
-            'entity_name' => 'concepts',
-            'model_name' => 'concept',
+            'entity_name' => 'concept',
             'primary_fields' => [
-                'CardID',
+                'card_id',
             ],
             'fields' => [
-                'CardID' => [
+                'card_id' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [
@@ -31,62 +30,57 @@ class PdoConcept extends PdoAbstract
                         EntityAbstract::OPT_AUTO_ID,
                     ],
                 ],
-                'Name' => [
+                'name' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Rarity' => [
+                'rarity' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Bricks' => [
+                'bricks' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Gems' => [
+                'gems' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Recruits' => [
+                'recruits' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Effect' => [
+                'effect' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Keywords' => [
+                'keywords' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Picture' => [
+                'picture' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => 'blank.jpg',
                 ],
-                'Note' => [
+                'note' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'State' => [
+                'state' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => 'waiting',
                 ],
-                'Author' => [
+                'author' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'LastChange' => [
+                'modified_at' => [
                     'type' => EntityAbstract::TYPE_DATETIME,
                     'default' => Date::DATETIME_ZERO,
                     'options' => [EntityAbstract::OPT_INSERT_DATETIME],
-                ],
-                'ThreadID' => [
-                    'type' => EntityAbstract::TYPE_INT32,
-                    'default' => 0,
-                    'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
             ],
         ];
@@ -100,15 +94,15 @@ class PdoConcept extends PdoAbstract
     public function createConcept(array $data)
     {
         return parent::createModel([
-            'Name' => $data['name'],
-            'Rarity' => $data['rarity'],
-            'Bricks' => $data['bricks'],
-            'Gems' => $data['gems'],
-            'Recruits' => $data['recruits'],
-            'Effect' => $data['effect'],
-            'Keywords' => $data['keywords'],
-            'Note' => $data['note'],
-            'Author' => $data['author'],
+            'name' => $data['name'],
+            'rarity' => $data['rarity'],
+            'bricks' => $data['bricks'],
+            'gems' => $data['gems'],
+            'recruits' => $data['recruits'],
+            'effect' => $data['effect'],
+            'keywords' => $data['keywords'],
+            'note' => $data['note'],
+            'author' => $data['author'],
         ]);
     }
 
@@ -119,7 +113,7 @@ class PdoConcept extends PdoAbstract
      */
     public function getConcept($cardId, $asserted = false)
     {
-        return parent::getModel(['CardID' => $cardId], $asserted);
+        return parent::getModel(['card_id' => $cardId], $asserted);
     }
 
     /**
@@ -146,10 +140,10 @@ class PdoConcept extends PdoAbstract
     {
         $db = $this->db();
 
-        $nameQuery = ($name != '') ? ' AND `Name` LIKE ?' : '';
-        $authorQuery = ($author != 'none') ? ' AND `Author` = ?' : '';
-        $dateQuery = ($date != 'none') ? ' AND `LastChange` >= NOW() - INTERVAL ? DAY' : '';
-        $stateQuery = ($state != 'none') ? ' AND `State` = ?' : '';
+        $nameQuery = ($name != '') ? ' AND `name` LIKE ?' : '';
+        $authorQuery = ($author != 'none') ? ' AND `author` = ?' : '';
+        $dateQuery = ($date != 'none') ? ' AND `modified_at` >= NOW() - INTERVAL ? DAY' : '';
+        $stateQuery = ($state != 'none') ? ' AND `state` = ?' : '';
 
         $params = array();
         if ($name != '') {
@@ -165,14 +159,14 @@ class PdoConcept extends PdoAbstract
             $params[] = $state;
         }
 
-        $condition = (in_array($condition, ['Name', 'LastChange'])) ? $condition : 'LastChange';
+        $condition = (in_array($condition, ['name', 'modified_at'])) ? $condition : 'modified_at';
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
         $page = (is_numeric($page)) ? $page : 0;
 
         return $db->query(
-            'SELECT `CardID` as `id`, `Name` as `name`, `Rarity` as `rarity`, `Bricks` as `bricks`, `Gems` as `gems`'
-            . ', `Recruits` as `recruits`, `Effect` as `effect`, `Keywords` as `keywords`, `Picture` as `picture`'
-            . ', `Note` as `note`, `State` as `state`, `Author` as `author`, `LastChange` as `lastchange` FROM `concepts`'
+            'SELECT `card_id` as `id`, `name`, `rarity`, `bricks`, `gems`'
+            . ', `recruits`, `effect`, `keywords`, `picture`'
+            . ', `note`, `state`, `author`, `modified_at` FROM `concept`'
             . ' WHERE 1' . $nameQuery . $authorQuery . $dateQuery . $stateQuery
             . ' ORDER BY `' . $condition . '` ' . $order . ' LIMIT '
             . (Card::CARDS_PER_PAGE * $page) . ' , ' . Card::CARDS_PER_PAGE . ''
@@ -192,10 +186,10 @@ class PdoConcept extends PdoAbstract
     {
         $db = $this->db();
 
-        $nameQuery = ($name != '') ? ' AND `Name` LIKE ?' : '';
-        $authorQuery = ($author != 'none') ? ' AND `Author` = ?' : '';
-        $dateQuery = ($date != 'none') ? ' AND `LastChange` >= NOW() - INTERVAL ? DAY' : '';
-        $stateQuery = ($state != 'none') ? ' AND `State` = ?' : '';
+        $nameQuery = ($name != '') ? ' AND `name` LIKE ?' : '';
+        $authorQuery = ($author != 'none') ? ' AND `author` = ?' : '';
+        $dateQuery = ($date != 'none') ? ' AND `modified_at` >= NOW() - INTERVAL ? DAY' : '';
+        $stateQuery = ($state != 'none') ? ' AND `state` = ?' : '';
 
         $params = array();
         if ($name != '') {
@@ -212,7 +206,7 @@ class PdoConcept extends PdoAbstract
         }
 
         return $db->query(
-            'SELECT COUNT(`CardID`) as `Count` FROM `concepts` WHERE 1'
+            'SELECT COUNT(`card_id`) as `count` FROM `concept` WHERE 1'
             . $nameQuery . $authorQuery . $dateQuery . $stateQuery . ''
             , $params
         );
@@ -227,7 +221,7 @@ class PdoConcept extends PdoAbstract
     {
         $db = $this->db();
 
-        $dateQuery = ($date != 'none') ? ' AND `LastChange` >= NOW() - INTERVAL ? DAY' : '';
+        $dateQuery = ($date != 'none') ? ' AND `modified_at` >= NOW() - INTERVAL ? DAY' : '';
 
         $params = array();
         if ($date != 'none') {
@@ -235,7 +229,7 @@ class PdoConcept extends PdoAbstract
         }
 
         return $db->query(
-            'SELECT DISTINCT `Author` FROM `concepts` WHERE 1' . $dateQuery . ' ORDER BY `Author` ASC', $params
+            'SELECT DISTINCT `author` FROM `concept` WHERE 1' . $dateQuery . ' ORDER BY `author` ASC', $params
         );
     }
 
@@ -248,19 +242,7 @@ class PdoConcept extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('SELECT 1 FROM `concepts` WHERE `LastChange` > ? LIMIT 1', [$time]);
-    }
-
-    /**
-     * Find a concept that is assigned to specified forum thread
-     * @param int $threadId
-     * @return \Db\Util\Result
-     */
-    public function findConcept($threadId)
-    {
-        $db = $this->db();
-
-        return $db->query('SELECT `CardID` FROM `concepts` WHERE `ThreadID` = ?', [$threadId]);
+        return $db->query('SELECT 1 FROM `concept` WHERE `modified_at` > ? LIMIT 1', [$time]);
     }
 
     /**
@@ -273,7 +255,7 @@ class PdoConcept extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('UPDATE `concepts` SET `Author` = ? WHERE `Author` = ?', [$newName, $player]);
+        return $db->query('UPDATE `concept` SET `author` = ? WHERE `author` = ?', [$newName, $player]);
     }
 
     /**
@@ -285,8 +267,8 @@ class PdoConcept extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT `Author`, COUNT(`Author`) as `count` FROM `concepts` WHERE `State` = "waiting"'
-            . ' OR `State` = "interesting" GROUP BY `Author` ORDER BY `count` DESC, `Author` ASC LIMIT 10'
+            'SELECT `author`, COUNT(`author`) as `count` FROM `concept` WHERE `state` = "waiting"'
+            . ' OR `state` = "interesting" GROUP BY `author` ORDER BY `count` DESC, `author` ASC LIMIT 10'
         );
     }
 
@@ -299,8 +281,8 @@ class PdoConcept extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT `Author`, COUNT(`Author`) as `count` FROM `concepts`'
-            . ' WHERE `State` = "implemented" GROUP BY `Author` ORDER BY `count` DESC, `Author` ASC LIMIT 10'
+            'SELECT `author`, COUNT(`author`) as `count` FROM `concept`'
+            . ' WHERE `state` = "implemented" GROUP BY `author` ORDER BY `count` DESC, `author` ASC LIMIT 10'
         );
     }
 }

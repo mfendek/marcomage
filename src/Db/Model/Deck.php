@@ -10,7 +10,7 @@ class Deck extends ModelAbstract
     /**
      * Maximum number of decks slots (base number, can be extended by extra decks slots)
      */
-    const DECK_SLOTS = 8;
+    const DECK_SLOTS = 5;
 
     /**
      * Bonus deck slot cost in gold
@@ -32,7 +32,7 @@ class Deck extends ModelAbstract
      */
     public function getDeckId()
     {
-        return $this->getFieldValue('DeckID');
+        return $this->getFieldValue('deck_id');
     }
 
     /**
@@ -40,7 +40,7 @@ class Deck extends ModelAbstract
      */
     public function getUsername()
     {
-        return $this->getFieldValue('Username');
+        return $this->getFieldValue('username');
     }
 
     /**
@@ -48,15 +48,15 @@ class Deck extends ModelAbstract
      */
     public function getDeckName()
     {
-        return $this->getFieldValue('Deckname');
+        return $this->getFieldValue('deck_name');
     }
 
     /**
      * @return int
      */
-    public function getReady()
+    public function getIsReady()
     {
-        return $this->getFieldValue('Ready');
+        return $this->getFieldValue('is_ready');
     }
 
     /**
@@ -64,7 +64,7 @@ class Deck extends ModelAbstract
      */
     public function getData()
     {
-        return $this->getFieldValue('Data');
+        return $this->getFieldValue('data');
     }
 
     /**
@@ -72,7 +72,7 @@ class Deck extends ModelAbstract
      */
     public function getNote()
     {
-        return $this->getFieldValue('Note');
+        return $this->getFieldValue('note');
     }
 
     /**
@@ -80,7 +80,7 @@ class Deck extends ModelAbstract
      */
     public function getWins()
     {
-        return $this->getFieldValue('Wins');
+        return $this->getFieldValue('wins');
     }
 
     /**
@@ -88,7 +88,7 @@ class Deck extends ModelAbstract
      */
     public function getLosses()
     {
-        return $this->getFieldValue('Losses');
+        return $this->getFieldValue('losses');
     }
 
     /**
@@ -96,23 +96,23 @@ class Deck extends ModelAbstract
      */
     public function getDraws()
     {
-        return $this->getFieldValue('Draws');
+        return $this->getFieldValue('draws');
     }
 
     /**
      * @return int
      */
-    public function getShared()
+    public function getIsShared()
     {
-        return $this->getFieldValue('Shared');
+        return $this->getFieldValue('is_shared');
     }
 
     /**
      * @return string
      */
-    public function getModified()
+    public function getModifiedAt()
     {
-        return $this->getFieldValue('Modified');
+        return $this->getFieldValue('modified_at');
     }
 
     /**
@@ -121,7 +121,7 @@ class Deck extends ModelAbstract
      */
     public function setUsername($username)
     {
-        return $this->setFieldValue('Username', $username);
+        return $this->setFieldValue('username', $username);
     }
 
     /**
@@ -130,16 +130,16 @@ class Deck extends ModelAbstract
      */
     public function setDeckName($deckName)
     {
-        return $this->setFieldValue('Deckname', $deckName);
+        return $this->setFieldValue('deck_name', $deckName);
     }
 
     /**
      * @param int $ready
      * @return $this
      */
-    public function setReady($ready)
+    public function setIsReady($ready)
     {
-        return $this->setFieldValue('Ready', $ready);
+        return $this->setFieldValue('is_ready', $ready);
     }
 
     /**
@@ -148,7 +148,7 @@ class Deck extends ModelAbstract
      */
     public function setData(\CDeckData $data)
     {
-        $this->setFieldValue('Data', $data->sanitizeCardData());
+        $this->setFieldValue('data', $data->sanitizeCardData());
         $this->updateIsReady();
         return $this;
     }
@@ -159,7 +159,7 @@ class Deck extends ModelAbstract
      */
     public function setNote($note)
     {
-        return $this->setFieldValue('Note', $note);
+        return $this->setFieldValue('note', $note);
     }
 
     /**
@@ -168,7 +168,7 @@ class Deck extends ModelAbstract
      */
     public function setWins($wins)
     {
-        return $this->setFieldValue('Wins', $wins);
+        return $this->setFieldValue('wins', $wins);
     }
 
     /**
@@ -177,7 +177,7 @@ class Deck extends ModelAbstract
      */
     public function setLosses($losses)
     {
-        return $this->setFieldValue('Losses', $losses);
+        return $this->setFieldValue('losses', $losses);
     }
 
     /**
@@ -186,25 +186,25 @@ class Deck extends ModelAbstract
      */
     public function setDraws($draws)
     {
-        return $this->setFieldValue('Draws', $draws);
+        return $this->setFieldValue('draws', $draws);
     }
 
     /**
      * @param int $shared
      * @return $this
      */
-    public function setShared($shared)
+    public function setIsShared($shared)
     {
-        return $this->setFieldValue('Shared', $shared);
+        return $this->setFieldValue('is_shared', $shared);
     }
 
     /**
      * @param string $modified
      * @return $this
      */
-    public function setModified($modified)
+    public function setModifiedAt($modified)
     {
-        return $this->setFieldValue('Modified', $modified);
+        return $this->setFieldValue('modified_at', $modified);
     }
 
     /**
@@ -224,7 +224,7 @@ class Deck extends ModelAbstract
      */
     public function isReady()
     {
-        return ($this->getReady() == 1);
+        return ($this->getIsReady() == 1);
     }
 
     /**
@@ -234,7 +234,7 @@ class Deck extends ModelAbstract
     public function updateIsReady()
     {
         $data = $this->getData();
-        return $this->setReady(
+        return $this->setIsReady(
             (int)($data->countRarity('Common') == 15
                 && $data->countRarity('Uncommon') == 15
                 && $data->countRarity('Rare') == 15)

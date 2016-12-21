@@ -29,7 +29,7 @@ class Game extends ModelAbstract
      */
     public function getGameId()
     {
-        return $this->getFieldValue('GameID');
+        return $this->getFieldValue('game_id');
     }
 
     /**
@@ -37,7 +37,7 @@ class Game extends ModelAbstract
      */
     public function getPlayer1()
     {
-        return $this->getFieldValue('Player1');
+        return $this->getFieldValue('player1');
     }
 
     /**
@@ -45,7 +45,7 @@ class Game extends ModelAbstract
      */
     public function getPlayer2()
     {
-        return $this->getFieldValue('Player2');
+        return $this->getFieldValue('player2');
     }
 
     /**
@@ -53,7 +53,7 @@ class Game extends ModelAbstract
      */
     public function getState()
     {
-        return $this->getFieldValue('State');
+        return $this->getFieldValue('state');
     }
 
     /**
@@ -61,7 +61,7 @@ class Game extends ModelAbstract
      */
     public function getCurrent()
     {
-        return $this->getFieldValue('Current');
+        return $this->getFieldValue('current');
     }
 
     /**
@@ -69,7 +69,7 @@ class Game extends ModelAbstract
      */
     public function getRound()
     {
-        return $this->getFieldValue('Round');
+        return $this->getFieldValue('round');
     }
 
     /**
@@ -77,7 +77,7 @@ class Game extends ModelAbstract
      */
     public function getWinner()
     {
-        return $this->getFieldValue('Winner');
+        return $this->getFieldValue('winner');
     }
 
     /**
@@ -85,15 +85,15 @@ class Game extends ModelAbstract
      */
     public function getSurrender()
     {
-        return $this->getFieldValue('Surrender');
+        return $this->getFieldValue('surrender');
     }
 
     /**
      * @return string
      */
-    public function getEndType()
+    public function getOutcomeType()
     {
-        return $this->getFieldValue('EndType');
+        return $this->getFieldValue('outcome_type');
     }
 
     /**
@@ -101,7 +101,7 @@ class Game extends ModelAbstract
      */
     public function getLastAction()
     {
-        return $this->getFieldValue('Last Action');
+        return $this->getFieldValue('last_action_at');
     }
 
     /**
@@ -109,7 +109,7 @@ class Game extends ModelAbstract
      */
     public function getChatNotification1()
     {
-        return $this->getFieldValue('ChatNotification1');
+        return $this->getFieldValue('chat_notification1');
     }
 
     /**
@@ -117,7 +117,7 @@ class Game extends ModelAbstract
      */
     public function getChatNotification2()
     {
-        return $this->getFieldValue('ChatNotification2');
+        return $this->getFieldValue('chat_notification2');
     }
 
     /**
@@ -125,7 +125,7 @@ class Game extends ModelAbstract
      */
     public function getData()
     {
-        return $this->getFieldValue('Data');
+        return $this->getFieldValue('data');
     }
 
     /**
@@ -133,7 +133,7 @@ class Game extends ModelAbstract
      */
     public function getDeckId1()
     {
-        return $this->getFieldValue('DeckID1');
+        return $this->getFieldValue('deck_id1');
     }
 
     /**
@@ -141,7 +141,7 @@ class Game extends ModelAbstract
      */
     public function getDeckId2()
     {
-        return $this->getFieldValue('DeckID2');
+        return $this->getFieldValue('deck_id2');
     }
 
     /**
@@ -150,7 +150,7 @@ class Game extends ModelAbstract
      */
     public function getNote($player)
     {
-        return (($this->getPlayer1() == $player) ? $this->getFieldValue('Note1') : $this->getFieldValue('Note2'));
+        return (($this->getPlayer1() == $player) ? $this->getFieldValue('note1') : $this->getFieldValue('note2'));
     }
 
     /**
@@ -158,7 +158,7 @@ class Game extends ModelAbstract
      */
     public function getGameModes()
     {
-        return $this->getFieldValue('GameModes');
+        return $this->getFieldValue('game_modes');
     }
 
     /**
@@ -166,15 +166,15 @@ class Game extends ModelAbstract
      */
     public function getTimeout()
     {
-        return $this->getFieldValue('Timeout');
+        return $this->getFieldValue('turn_timeout');
     }
 
     /**
      * @return string
      */
-    public function getAI()
+    public function getAiName()
     {
-        return $this->getFieldValue('AI');
+        return $this->getFieldValue('ai_name');
     }
 
     /**
@@ -183,7 +183,7 @@ class Game extends ModelAbstract
      */
     public function setPlayer1($player)
     {
-        return $this->setFieldValue('Player1', $player);
+        return $this->setFieldValue('player1', $player);
     }
 
     /**
@@ -192,7 +192,7 @@ class Game extends ModelAbstract
      */
     public function setPlayer2($player)
     {
-        return $this->setFieldValue('Player2', $player);
+        return $this->setFieldValue('player2', $player);
     }
 
     /**
@@ -201,7 +201,7 @@ class Game extends ModelAbstract
      */
     public function setState($state)
     {
-        return $this->setFieldValue('State', $state);
+        return $this->setFieldValue('state', $state);
     }
 
     /**
@@ -210,7 +210,7 @@ class Game extends ModelAbstract
      */
     public function setCurrent($current)
     {
-        return $this->setFieldValue('Current', $current);
+        return $this->setFieldValue('current', $current);
     }
 
     /**
@@ -219,7 +219,7 @@ class Game extends ModelAbstract
      */
     public function setRound($round)
     {
-        return $this->setFieldValue('Round', $round);
+        return $this->setFieldValue('round', $round);
     }
 
     /**
@@ -228,7 +228,7 @@ class Game extends ModelAbstract
      */
     public function setWinner($winner)
     {
-        return $this->setFieldValue('Winner', $winner);
+        return $this->setFieldValue('winner', $winner);
     }
 
     /**
@@ -237,16 +237,16 @@ class Game extends ModelAbstract
      */
     public function setSurrender($surrender)
     {
-        return $this->setFieldValue('Surrender', $surrender);
+        return $this->setFieldValue('surrender', $surrender);
     }
 
     /**
-     * @param string $endType
+     * @param string $outcomeType
      * @return $this
      */
-    public function setEndType($endType)
+    public function setOutcomeType($outcomeType)
     {
-        return $this->setFieldValue('EndType', $endType);
+        return $this->setFieldValue('outcome_type', $outcomeType);
     }
 
     /**
@@ -255,7 +255,7 @@ class Game extends ModelAbstract
      */
     public function setLastAction($lastAction)
     {
-        return $this->setFieldValue('Last Action', $lastAction);
+        return $this->setFieldValue('last_action_at', $lastAction);
     }
 
     /**
@@ -264,7 +264,7 @@ class Game extends ModelAbstract
      */
     public function setChatNotification1($chatNotification)
     {
-        return $this->setFieldValue('ChatNotification1', $chatNotification);
+        return $this->setFieldValue('chat_notification1', $chatNotification);
     }
 
     /**
@@ -273,7 +273,7 @@ class Game extends ModelAbstract
      */
     public function setChatNotification2($chatNotification)
     {
-        return $this->setFieldValue('ChatNotification2', $chatNotification);
+        return $this->setFieldValue('chat_notification2', $chatNotification);
     }
 
     /**
@@ -282,7 +282,7 @@ class Game extends ModelAbstract
      */
     public function setData(array $data)
     {
-        return $this->setFieldValue('Data', $data);
+        return $this->setFieldValue('data', $data);
     }
 
     /**
@@ -291,7 +291,7 @@ class Game extends ModelAbstract
      */
     public function setDeckId1($deckId)
     {
-        return $this->setFieldValue('DeckID1', $deckId);
+        return $this->setFieldValue('deck_id1', $deckId);
     }
 
     /**
@@ -300,7 +300,7 @@ class Game extends ModelAbstract
      */
     public function setDeckId2($deckId)
     {
-        return $this->setFieldValue('DeckID2', $deckId);
+        return $this->setFieldValue('deck_id2', $deckId);
     }
 
     /**
@@ -311,10 +311,10 @@ class Game extends ModelAbstract
     public function setNote($player, $newContent)
     {
         if ($this->getPlayer1() == $player) {
-            return $this->setFieldValue('Note1', $newContent);
+            return $this->setFieldValue('note1', $newContent);
         }
         else {
-            return $this->setFieldValue('Note2', $newContent);
+            return $this->setFieldValue('note2', $newContent);
         }
     }
 
@@ -325,10 +325,10 @@ class Game extends ModelAbstract
     public function resetChatNotification($player)
     {
         if ($this->getPlayer1() == $player) {
-            return $this->setFieldValue('ChatNotification1', Date::timeToStr());
+            return $this->setFieldValue('chat_notification1', Date::timeToStr());
         }
         else {
-            return $this->setFieldValue('ChatNotification2', Date::timeToStr());
+            return $this->setFieldValue('chat_notification2', Date::timeToStr());
         }
     }
 
@@ -338,7 +338,7 @@ class Game extends ModelAbstract
      */
     public function setGameModes(array $gameModes)
     {
-        return $this->setFieldValue('GameModes', $gameModes);
+        return $this->setFieldValue('game_modes', $gameModes);
     }
 
     /**
@@ -347,16 +347,16 @@ class Game extends ModelAbstract
      */
     public function setTimeout($timeout)
     {
-        return $this->setFieldValue('Timeout', $timeout);
+        return $this->setFieldValue('turn_timeout', $timeout);
     }
 
     /**
      * @param string $ai
      * @return $this
      */
-    public function setAI($ai)
+    public function setAiName($ai)
     {
-        return $this->setFieldValue('AI', $ai);
+        return $this->setFieldValue('ai_name', $ai);
     }
 
     /**

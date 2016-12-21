@@ -52,7 +52,7 @@
             </xsl:choose>
             <!-- end buttons and filters -->
 
-            <div class="responsive-table skin-text">
+            <div class="responsive-table table-md skin-text">
                 <!-- table header -->
                 <div class="row">
                     <div class="col-md-1">
@@ -148,7 +148,7 @@
                             </button>
                         </xsl:when>
                         <xsl:when test="$param/discussion &gt; 0">
-                            <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'CurrentThread', $param/discussion, 'CurrentPage', 0)}" title="View discussion">
+                            <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $param/discussion, 'CurrentPage', 0)}" title="View discussion">
                                 <span class="glyphicon glyphicon-comment"/>
                             </a>
                         </xsl:when>
@@ -222,25 +222,25 @@
                     <div class="row">
                         <div class="col-xs-6">Played</div>
                         <div class="col-xs-6">
-                            <xsl:value-of select="$param/statistics/Played"/>
+                            <xsl:value-of select="$param/statistics/played"/>
                             <xsl:text> / </xsl:text>
-                            <xsl:value-of select="$param/statistics/PlayedTotal"/>
+                            <xsl:value-of select="$param/statistics/played_total"/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-6">Discarded</div>
                         <div class="col-xs-6">
-                            <xsl:value-of select="$param/statistics/Discarded"/>
+                            <xsl:value-of select="$param/statistics/discarded"/>
                             <xsl:text> / </xsl:text>
-                            <xsl:value-of select="$param/statistics/DiscardedTotal"/>
+                            <xsl:value-of select="$param/statistics/discarded_total"/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-6">Drawn</div>
                         <div class="col-xs-6">
-                            <xsl:value-of select="$param/statistics/Drawn"/>
+                            <xsl:value-of select="$param/statistics/drawn"/>
                             <xsl:text> / </xsl:text>
-                            <xsl:value-of select="$param/statistics/DrawnTotal"/>
+                            <xsl:value-of select="$param/statistics/drawn_total"/>
                         </div>
                     </div>
                 </div>
@@ -277,11 +277,11 @@
         <xsl:variable name="param" select="$params/cards_keywords"/>
 
         <div id="keywords">
-            <table class="skin-text">
-                <tr>
-                    <th/>
-                    <th>
-                        <p>
+            <div class="responsive-table table-sm skin-text">
+                <!-- table header -->
+                <div class="row">
+                    <div class="col-sm-2">
+                        <p class="sortable">
                             <xsl:choose>
                                 <xsl:when test="$param/order = 'name'">
                                     <a href="{am:makeUrl('Cards_keywords', 'keywords_order', 'execution')}">Order</a>
@@ -289,9 +289,9 @@
                                 <xsl:otherwise>Order</xsl:otherwise>
                             </xsl:choose>
                         </p>
-                    </th>
-                    <th>
-                        <p>
+                    </div>
+                    <div class="col-sm-2">
+                        <p class="sortable">
                             <xsl:choose>
                                 <xsl:when test="$param/order = 'execution'">
                                     <a href="{am:makeUrl('Cards_keywords', 'keywords_order', 'name')}">Name</a>
@@ -299,29 +299,29 @@
                                 <xsl:otherwise>Name</xsl:otherwise>
                             </xsl:choose>
                         </p>
-                    </th>
-                    <th><p>Effect</p></th>
-                </tr>
+                    </div>
+                    <div class="col-sm-8">
+                        <p>Effect</p>
+                    </div>
+                </div>
+
+                <!-- table body -->
                 <xsl:for-each select="$param/keywords/*">
-                    <tr class="table-row">
-                        <td>
+                    <div class="row table-row details">
+                        <div class="col-sm-2">
                             <p>
                                 <img class="insignia" src="img/insignias/{am:fileName(name)}.png" width="12" height="12" alt="{name}" title="{name}"/>
+                                <span><xsl:value-of select="order"/></span>
                             </p>
-                        </td>
-                        <td>
+                        </div>
+                        <div class="col-sm-2">
                             <p>
-                                <xsl:value-of select="order"/>
-                            </p>
-                        </td>
-                        <td>
-                            <p>
-                                <a href="{am:makeUrl('Cards_keyword_details', 'keyword', name)}">
+                                <a class="profile" href="{am:makeUrl('Cards_keyword_details', 'keyword', name)}">
                                     <xsl:value-of select="name"/>
                                 </a>
                             </p>
-                        </td>
-                        <td>
+                        </div>
+                        <div class="col-sm-8">
                             <p class="description">
                                 <xsl:if test="basic_gain &gt; 0 or bonus_gain &gt; 0">
                                     <xsl:text>Basic gain </xsl:text>
@@ -332,10 +332,10 @@
                                 </xsl:if>
                                 <xsl:value-of select="am:cardEffect(description)" disable-output-escaping="yes"/>
                             </p>
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
                 </xsl:for-each>
-            </table>
+            </div>
         </div>
 
     </xsl:template>

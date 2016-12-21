@@ -7,6 +7,7 @@
 namespace View;
 
 use ArcomageException as Exception;
+use Db\Model\Player as PlayerModel;
 use Util\Rename;
 
 abstract class TemplateDataAbstract
@@ -127,7 +128,7 @@ abstract class TemplateDataAbstract
     }
 
     /**
-     * @return \Db\Model\Player
+     * @return PlayerModel
      */
     protected function getCurrentPlayer()
     {
@@ -163,6 +164,6 @@ abstract class TemplateDataAbstract
      */
     protected function checkAccess($accessRight)
     {
-        return \Access::checkAccess($this->getCurrentPlayer()->getUserType(), $accessRight);
+        return PlayerModel::checkAccess($this->getCurrentPlayer()->getUserType(), $accessRight);
     }
 }

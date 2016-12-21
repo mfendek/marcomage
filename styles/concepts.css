@@ -8,6 +8,11 @@ div#concepts {
     text-align: center;
 }
 
+div#concepts .responsive-table {
+    margin-left: 0.5ex;
+    margin-right: 0.5ex;
+}
+
 /* card display within table */
 div#concepts .responsive-table div.card {
     margin-left: 1ex;

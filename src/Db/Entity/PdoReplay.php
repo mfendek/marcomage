@@ -19,44 +19,43 @@ class PdoReplay extends PdoAbstract
     protected function schema()
     {
         return [
-            'entity_name' => 'replays',
-            'model_name' => 'replay',
+            'entity_name' => 'replay',
             'primary_fields' => [
-                'GameID',
+                'game_id',
             ],
             'fields' => [
-                'GameID' => [
+                'game_id' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Player1' => [
+                'player1' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Player2' => [
+                'player2' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Rounds' => [
+                'rounds' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 1,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Turns' => [
+                'turns' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 1,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Winner' => [
+                'winner' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'EndType' => [
+                'outcome_type' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => 'Pending',
                 ],
-                'GameModes' => [
+                'game_modes' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                     'options' => [
@@ -64,35 +63,30 @@ class PdoReplay extends PdoAbstract
                         EntityAbstract::OPT_SERIALIZE_LIST,
                     ],
                 ],
-                'AI' => [
+                'ai_name' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Started' => [
+                'started_at' => [
                     'type' => EntityAbstract::TYPE_DATETIME,
                     'default' => Date::DATETIME_ZERO,
                     'options' => [EntityAbstract::OPT_INSERT_DATETIME],
                 ],
-                'Finished' => [
+                'finished_at' => [
                     'type' => EntityAbstract::TYPE_DATETIME,
                     'default' => Date::DATETIME_ZERO,
                 ],
-                'Deleted' => [
+                'is_deleted' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Views' => [
+                'views' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'ThreadID' => [
-                    'type' => EntityAbstract::TYPE_INT32,
-                    'default' => 0,
-                    'options' => [EntityAbstract::OPT_UNSIGNED],
-                ],
-                'Data' => [
+                'data' => [
                     'type' => EntityAbstract::TYPE_BINARY,
                     'default' => '',
                     'options' => [
@@ -150,10 +144,10 @@ class PdoReplay extends PdoAbstract
 
         /* @var $replay Replay */
         $replay = parent::createModel([
-            'GameID' => $game->getGameId(),
-            'Player1' => $player1,
-            'Player2' => $game->getPlayer2(),
-            'AI' => $game->getAI(),
+            'game_id' => $game->getGameId(),
+            'player1' => $player1,
+            'player2' => $game->getPlayer2(),
+            'ai_name' => $game->getAiName(),
         ]);
 
         return $replay
@@ -168,7 +162,7 @@ class PdoReplay extends PdoAbstract
      */
     public function getReplay($gameId, $asserted = false)
     {
-        return parent::getModel(['GameID' => $gameId], $asserted);
+        return parent::getModel(['game_id' => $gameId], $asserted);
     }
 
     /**
@@ -195,7 +189,7 @@ class PdoReplay extends PdoAbstract
             $params[] = $gameId;
         }
 
-        return $db->query('DELETE FROM `replays` WHERE `GameID` IN (' . implode(",", $queryString) . ')', $params);
+        return $db->query('DELETE FROM `replay` WHERE `game_id` IN (' . implode(",", $queryString) . ')', $params);
     }
 
     /**
@@ -218,13 +212,13 @@ class PdoReplay extends PdoAbstract
 
         // TODO optimize: merge all filters into one condition?
 
-        $playerQuery = ($player != '') ? 'AND (`Player1` LIKE ? OR `Player2` LIKE ?)' : '';
-        $hiddenQuery = ($hidden != 'none') ? ' AND FIND_IN_SET("HiddenCards", `GameModes`) ' . (($hidden == 'include') ? '>' : '=') . ' 0' : '';
-        $friendlyQuery = ($friendly != "none") ? ' AND FIND_IN_SET("FriendlyPlay", `GameModes`) ' . (($friendly == 'include') ? '>' : '=') . ' 0' : '';
-        $longQuery = ($long != 'none') ? ' AND FIND_IN_SET("LongMode", `GameModes`) ' . (($long == 'include') ? '>' : '=') . ' 0' : '';
-        $aiQuery = ($ai != 'none') ? ' AND FIND_IN_SET("AIMode", `GameModes`) ' . (($ai == 'include') ? '>' : '=') . ' 0' : '';
-        $chQuery = ($challenge != 'none') ? (($challenge == 'include') ? ' AND `AI` != ""' : (($challenge == 'exclude') ? ' AND `AI` = ""' : ' AND `AI` = ?')) : '';
-        $victoryQuery = ($victory != 'none') ? '`EndType` = ?' : '`EndType` != "Pending"';
+        $playerQuery = ($player != '') ? 'AND (`player1` LIKE ? OR `player2` LIKE ?)' : '';
+        $hiddenQuery = ($hidden != 'none') ? ' AND FIND_IN_SET("HiddenCards", `game_modes`) ' . (($hidden == 'include') ? '>' : '=') . ' 0' : '';
+        $friendlyQuery = ($friendly != "none") ? ' AND FIND_IN_SET("FriendlyPlay", `game_modes`) ' . (($friendly == 'include') ? '>' : '=') . ' 0' : '';
+        $longQuery = ($long != 'none') ? ' AND FIND_IN_SET("LongMode", `game_modes`) ' . (($long == 'include') ? '>' : '=') . ' 0' : '';
+        $aiQuery = ($ai != 'none') ? ' AND FIND_IN_SET("AIMode", `game_modes`) ' . (($ai == 'include') ? '>' : '=') . ' 0' : '';
+        $chQuery = ($challenge != 'none') ? (($challenge == 'include') ? ' AND `ai_name` != ""' : (($challenge == 'exclude') ? ' AND `ai_name` = ""' : ' AND `ai_name` = ?')) : '';
+        $victoryQuery = ($victory != 'none') ? '`outcome_type` = ?' : '`outcome_type` != "Pending"';
 
         $params = array();
         if ($victory != 'none') {
@@ -239,14 +233,14 @@ class PdoReplay extends PdoAbstract
         }
 
         $condition = (in_array($condition, [
-            'Winner', 'Rounds', 'Turns', 'Started', 'Finished'
-        ])) ? $condition : 'Finished';
+            'winner', 'rounds', 'turns', 'started_at', 'finished_at'
+        ])) ? $condition : 'finished_at';
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
         $page = (is_numeric($page)) ? $page : 0;
 
         return $db->query(
-            'SELECT `GameID`, `Player1`, `Player2`, `Started`, `Finished`, `Rounds`, `Turns`, `GameModes`, `AI`'
-            . ', `Winner`, `EndType`, (CASE WHEN `Deleted` = TRUE THEN "yes" ELSE "no" END) as `Deleted`, `Views` FROM `replays`'
+            'SELECT `game_id`, `player1`, `player2`, `started_at`, `finished_at`, `rounds`, `turns`, `game_modes`, `ai_name`'
+            . ', `winner`, `outcome_type`, (CASE WHEN `is_deleted` = TRUE THEN "yes" ELSE "no" END) as `is_deleted`, `views` FROM `replay`'
             . ' WHERE ' . $victoryQuery . $playerQuery . $hiddenQuery . $friendlyQuery . $longQuery . $aiQuery . $chQuery
             . ' ORDER BY `' . $condition . '` ' . $order . ' LIMIT '
             . (Replay::REPLAYS_PER_PAGE * $page) . ' , ' . Replay::REPLAYS_PER_PAGE . ''
@@ -269,13 +263,13 @@ class PdoReplay extends PdoAbstract
     {
         $db = $this->db();
 
-        $playerQuery = ($player != '') ? 'AND (`Player1` LIKE ? OR `Player2` LIKE ?)' : '';
-        $hiddenQuery = ($hidden != 'none') ? ' AND FIND_IN_SET("HiddenCards", `GameModes`) ' . (($hidden == 'include') ? '>' : '=') . ' 0' : '';
-        $friendlyQuery = ($friendly != "none") ? ' AND FIND_IN_SET("FriendlyPlay", `GameModes`) ' . (($friendly == 'include') ? '>' : '=') . ' 0' : '';
-        $longQuery = ($long != 'none') ? ' AND FIND_IN_SET("LongMode", `GameModes`) ' . (($long == 'include') ? '>' : '=') . ' 0' : '';
-        $aiQuery = ($ai != 'none') ? ' AND FIND_IN_SET("AIMode", `GameModes`) ' . (($ai == 'include') ? '>' : '=') . ' 0' : '';
-        $chQuery = ($challenge != 'none') ? (($challenge == 'include') ? ' AND `AI` != ""' : (($challenge == 'exclude') ? ' AND `AI` = ""' : ' AND `AI` = ?')) : '';
-        $victoryQuery = ($victory != 'none') ? '`EndType` = ?' : '`EndType` != "Pending"';
+        $playerQuery = ($player != '') ? 'AND (`player1` LIKE ? OR `player2` LIKE ?)' : '';
+        $hiddenQuery = ($hidden != 'none') ? ' AND FIND_IN_SET("HiddenCards", `game_modes`) ' . (($hidden == 'include') ? '>' : '=') . ' 0' : '';
+        $friendlyQuery = ($friendly != "none") ? ' AND FIND_IN_SET("FriendlyPlay", `game_modes`) ' . (($friendly == 'include') ? '>' : '=') . ' 0' : '';
+        $longQuery = ($long != 'none') ? ' AND FIND_IN_SET("LongMode", `game_modes`) ' . (($long == 'include') ? '>' : '=') . ' 0' : '';
+        $aiQuery = ($ai != 'none') ? ' AND FIND_IN_SET("AIMode", `game_modes`) ' . (($ai == 'include') ? '>' : '=') . ' 0' : '';
+        $chQuery = ($challenge != 'none') ? (($challenge == 'include') ? ' AND `ai_name` != ""' : (($challenge == 'exclude') ? ' AND `ai_name` = ""' : ' AND `ai_name` = ?')) : '';
+        $victoryQuery = ($victory != 'none') ? '`outcome_type` = ?' : '`outcome_type` != "Pending"';
 
         $params = array();
         if ($victory != 'none') {
@@ -290,22 +284,10 @@ class PdoReplay extends PdoAbstract
         }
 
         return $db->query(
-            'SELECT COUNT(`GameID`) as `Count` FROM `replays` WHERE '
+            'SELECT COUNT(`game_id`) as `count` FROM `replay` WHERE '
             . $victoryQuery . $playerQuery . $hiddenQuery . $friendlyQuery . $longQuery . $aiQuery . $chQuery . ''
             , $params
         );
-    }
-
-    /**
-     * Find replay by forum thread id
-     * @param int $threadId
-     * @return \Db\Util\Result
-     */
-    public function findReplay($threadId)
-    {
-        $db = $this->db();
-
-        return $db->query('SELECT `GameID` FROM `replays` WHERE `ThreadID` = ?', [$threadId]);
     }
 
     /**
@@ -318,7 +300,7 @@ class PdoReplay extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('UPDATE `replays` SET `Player1` = ? WHERE `Player1` = ?', [$newName, $player]);
+        return $db->query('UPDATE `replay` SET `player1` = ? WHERE `player1` = ?', [$newName, $player]);
     }
 
     /**
@@ -331,7 +313,7 @@ class PdoReplay extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('UPDATE `replays` SET `Player2` = ? WHERE `Player2` = ?', [$newName, $player]);
+        return $db->query('UPDATE `replay` SET `player2` = ? WHERE `player2` = ?', [$newName, $player]);
     }
 
     /**
@@ -344,7 +326,7 @@ class PdoReplay extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('UPDATE `replays` SET `Winner` = ? WHERE `Winner` = ?', [$newName, $player]);
+        return $db->query('UPDATE `replay` SET `winner` = ? WHERE `winner` = ?', [$newName, $player]);
     }
 
     /**
@@ -357,7 +339,7 @@ class PdoReplay extends PdoAbstract
 
         // get number of different victory types
         return $db->query(
-            'SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays` WHERE `EndType` != "Pending" GROUP BY `EndType`'
+            'SELECT `outcome_type`, COUNT(`outcome_type`) as `count` FROM `replay` WHERE `outcome_type` != "Pending" GROUP BY `outcome_type`'
         );
     }
 
@@ -370,8 +352,8 @@ class PdoReplay extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT `GameModes`, COUNT(`GameModes`) as `count` FROM `replays`'
-            . ' WHERE `EndType` != "Pending" GROUP BY `GameModes`'
+            'SELECT `game_modes`, COUNT(`game_modes`) as `count` FROM `replay`'
+            . ' WHERE `outcome_type` != "Pending" GROUP BY `game_modes`'
         );
     }
 
@@ -384,8 +366,8 @@ class PdoReplay extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT COUNT(`GameID`) as `ai` FROM `replays`'
-            . ' WHERE `EndType` != "Pending" AND FIND_IN_SET("AIMode", `GameModes`) > 0 AND `AI` = ""'
+            'SELECT COUNT(`game_id`) as `ai` FROM `replay`'
+            . ' WHERE `outcome_type` != "Pending" AND FIND_IN_SET("AIMode", `game_modes`) > 0 AND `ai_name` = ""'
         );
     }
 
@@ -398,8 +380,8 @@ class PdoReplay extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT COUNT(`GameID`) as `ai_wins` FROM `replays`'
-            . ' WHERE `EndType` != "Pending" AND FIND_IN_SET("AIMode", `GameModes`) > 0 AND `AI` = "" AND `Winner` = ?'
+            'SELECT COUNT(`game_id`) as `ai_wins` FROM `replay`'
+            . ' WHERE `outcome_type` != "Pending" AND FIND_IN_SET("AIMode", `game_modes`) > 0 AND `ai_name` = "" AND `winner` = ?'
             , [Player::SYSTEM_NAME]
         );
     }
@@ -413,7 +395,7 @@ class PdoReplay extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT COUNT(`GameID`) as `challenge` FROM `replays` WHERE `EndType` != "Pending" AND `AI` != ""'
+            'SELECT COUNT(`game_id`) as `challenge` FROM `replay` WHERE `outcome_type` != "Pending" AND `ai_name` != ""'
         );
     }
 
@@ -426,7 +408,7 @@ class PdoReplay extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT COUNT(`GameID`) as `challenge_wins` FROM `replays` WHERE `EndType` != "Pending" AND `AI` != "" AND `Winner` = ?'
+            'SELECT COUNT(`game_id`) as `challenge_wins` FROM `replay` WHERE `outcome_type` != "Pending" AND `ai_name` != "" AND `winner` = ?'
             , [Player::SYSTEM_NAME]
         );
     }
@@ -443,9 +425,9 @@ class PdoReplay extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays`'
-            . ' WHERE `EndType` != "Pending" AND ((`Player1` = ? AND `Player2` = ?)'
-            . ' OR (`Player1` = ? AND `Player2` = ?)) AND `Winner` = ? GROUP BY `EndType` ORDER BY `count` DESC'
+            'SELECT `outcome_type`, COUNT(`outcome_type`) as `count` FROM `replay`'
+            . ' WHERE `outcome_type` != "Pending" AND ((`player1` = ? AND `player2` = ?)'
+            . ' OR (`player1` = ? AND `player2` = ?)) AND `winner` = ? GROUP BY `outcome_type` ORDER BY `count` DESC'
             , [$player1, $player2, $player2, $player1, $winner]
         );
     }
@@ -461,9 +443,9 @@ class PdoReplay extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays`'
-            . ' WHERE `EndType` != "Pending" AND FIND_IN_SET("LongMode", `GameModes`) = 0 AND ((`Player1` = ? AND `Player2` = ?)'
-            . ' OR (`Player1` = ? AND `Player2` = ?))'
+            'SELECT ROUND(IFNULL(AVG(`turns`), 0), 1) as `turns`, ROUND(IFNULL(AVG(`rounds`), 0), 1) as `rounds` FROM `replay`'
+            . ' WHERE `outcome_type` != "Pending" AND FIND_IN_SET("LongMode", `game_modes`) = 0 AND ((`player1` = ? AND `player2` = ?)'
+            . ' OR (`player1` = ? AND `player2` = ?))'
             , [$player1, $player2, $player2, $player1]
         );
     }
@@ -479,9 +461,9 @@ class PdoReplay extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays`'
-            . ' WHERE `EndType` != "Pending" AND FIND_IN_SET("LongMode", `GameModes`) > 0'
-            . ' AND ((`Player1` = ? AND `Player2` = ?) OR (`Player1` = ? AND `Player2` = ?))'
+            'SELECT ROUND(IFNULL(AVG(`turns`), 0), 1) as `turns`, ROUND(IFNULL(AVG(`rounds`), 0), 1) as `rounds` FROM `replay`'
+            . ' WHERE `outcome_type` != "Pending" AND FIND_IN_SET("LongMode", `game_modes`) > 0'
+            . ' AND ((`player1` = ? AND `player2` = ?) OR (`player1` = ? AND `player2` = ?))'
             , [$player1, $player2, $player2, $player1]
         );
     }
@@ -496,8 +478,8 @@ class PdoReplay extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays`'
-            . ' WHERE `EndType` != "Pending" AND (`Player1` = ? OR `Player2` = ?) AND `Winner` = ? GROUP BY `EndType`'
+            'SELECT `outcome_type`, COUNT(`outcome_type`) as `count` FROM `replay`'
+            . ' WHERE `outcome_type` != "Pending" AND (`player1` = ? OR `player2` = ?) AND `winner` = ? GROUP BY `outcome_type`'
             . ' ORDER BY `count` DESC'
             , [$player, $player, $player]
         );
@@ -513,9 +495,9 @@ class PdoReplay extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays`'
-            . ' WHERE `EndType` != "Pending" AND (`Player1` = ? OR `Player2` = ?) AND `Winner` != ? AND `Winner` != ""'
-            . ' GROUP BY `EndType` ORDER BY `count` DESC'
+            'SELECT `outcome_type`, COUNT(`outcome_type`) as `count` FROM `replay`'
+            . ' WHERE `outcome_type` != "Pending" AND (`player1` = ? OR `player2` = ?) AND `winner` != ? AND `winner` != ""'
+            . ' GROUP BY `outcome_type` ORDER BY `count` DESC'
             , [$player, $player, $player]
         );
     }
@@ -530,8 +512,8 @@ class PdoReplay extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT `EndType`, COUNT(`EndType`) as `count` FROM `replays`'
-            . ' WHERE `EndType` != "Pending" AND (`Player1` = ? OR `Player2` = ?) AND `Winner` = "" GROUP BY `EndType`'
+            'SELECT `outcome_type`, COUNT(`outcome_type`) as `count` FROM `replay`'
+            . ' WHERE `outcome_type` != "Pending" AND (`player1` = ? OR `player2` = ?) AND `winner` = "" GROUP BY `outcome_type`'
             . ' ORDER BY `count` DESC'
             , [$player, $player]
         );
@@ -547,8 +529,8 @@ class PdoReplay extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays`'
-            . ' WHERE `EndType` != "Pending" AND FIND_IN_SET("LongMode", `GameModes`) = 0 AND (`Player1` = ? OR `Player2` = ?)'
+            'SELECT ROUND(IFNULL(AVG(`turns`), 0), 1) as `turns`, ROUND(IFNULL(AVG(`rounds`), 0), 1) as `rounds` FROM `replay`'
+            . ' WHERE `outcome_type` != "Pending" AND FIND_IN_SET("LongMode", `game_modes`) = 0 AND (`player1` = ? OR `player2` = ?)'
             , [$player, $player]
         );
     }
@@ -563,8 +545,8 @@ class PdoReplay extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT ROUND(IFNULL(AVG(`Turns`), 0), 1) as `Turns`, ROUND(IFNULL(AVG(`Rounds`), 0), 1) as `Rounds` FROM `replays`'
-            . ' WHERE `EndType` != "Pending" AND FIND_IN_SET("LongMode", `GameModes`) > 0 AND (`Player1` = ? OR `Player2` = ?)'
+            'SELECT ROUND(IFNULL(AVG(`turns`), 0), 1) as `turns`, ROUND(IFNULL(AVG(`rounds`), 0), 1) as `rounds` FROM `replay`'
+            . ' WHERE `outcome_type` != "Pending" AND FIND_IN_SET("LongMode", `game_modes`) > 0 AND (`player1` = ? OR `player2` = ?)'
             , [$player, $player]
         );
     }

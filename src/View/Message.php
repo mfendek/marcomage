@@ -9,6 +9,7 @@ use ArcomageException as Exception;
 use Db\Model\Player as PlayerModel;
 use Util\Date;
 use Util\Encode;
+use Util\Input;
 use Util\Random;
 
 class Message extends TemplateDataAbstract
@@ -28,8 +29,8 @@ class Message extends TemplateDataAbstract
         $defEntityChallenge = $this->defEntity()->challenge();
 
         // determine current challenges and messages subsection
-        $currentSubsection = (isset($input['challenges_subsection'])) ? $input['challenges_subsection'] : 'incoming';
-        $currentLocation = (isset($input['messages_subsection'])) ? $input['messages_subsection'] : 'inbox';
+        $currentSubsection = Input::defaultValue($input, 'challenges_subsection', 'incoming');
+        $currentLocation = Input::defaultValue($input, 'messages_subsection', 'inbox');
 
         // validate challenges subsection
         if (!in_array($currentSubsection, ['incoming', 'outgoing'])) {
@@ -51,8 +52,8 @@ class Message extends TemplateDataAbstract
         // player's settings
         $data['player_name'] = $player->getUsername();
         $data['notification'] = $player->getNotification();
-        $data['timezone'] = $setting->getSetting('Timezone');
-        $data['random_deck_option'] = $setting->getSetting('RandomDeck');
+        $data['timezone'] = $setting->getSetting('timezone');
+        $data['random_deck_option'] = $setting->getSetting('use_random_deck');
         $data['system_name'] = PlayerModel::SYSTEM_NAME;
 
         // decks related data
@@ -63,7 +64,7 @@ class Message extends TemplateDataAbstract
         $decks = $result->data();
 
         $data['decks'] = $decks;
-        $data['random_deck'] = (count($decks) > 0) ? $decks[Random::arrayMtRand($decks)]['DeckID'] : '';
+        $data['random_deck'] = (count($decks) > 0) ? $decks[Random::arrayMtRand($decks)]['deck_id'] : '';
         $data['deck_count'] = count($decks);
         $data['free_slots'] = $this->service()->gameUtil()->countFreeSlots($player->getUsername(), true);
 
@@ -98,16 +99,16 @@ class Message extends TemplateDataAbstract
         $data['current_subsection'] = $currentSubsection;
 
         // validate current page
-        $currentPage = (isset($input['messages_current_page'])) ? $input['messages_current_page'] : 0;
+        $currentPage = Input::defaultValue($input, 'messages_current_page', 0);
         if (!is_numeric($currentPage) || $currentPage < 0) {
             throw new Exception('Invalid messages page', Exception::WARNING);
         }
 
         // initialize message filters
-        $data['date_val'] = $date = (isset($input['date_filter'])) ? $input['date_filter'] : 'none';
-        $data['name_val'] = $name = (isset($input['name_filter'])) ? Encode::postDecode($input['name_filter']) : '';
-        $data['current_order'] = $currentOrder = (isset($input['messages_current_order'])) ? $input['messages_current_order'] : 'DESC';
-        $data['current_condition'] = $currentCondition = (isset($input['messages_current_condition'])) ? $input['messages_current_condition'] : 'Created';
+        $data['date_val'] = $date = Input::defaultValue($input, 'date_filter', 'none');
+        $data['name_val'] = $name = Encode::postDecode(Input::defaultValue($input, 'name_filter'));
+        $data['current_order'] = $currentOrder = Input::defaultValue($input, 'messages_current_order', 'DESC');
+        $data['current_condition'] = $currentCondition = Input::defaultValue($input, 'messages_current_condition', 'created_at');
         $data['current_page'] = $currentPage;
 
         // case 1: all mail section
@@ -122,7 +123,7 @@ class Message extends TemplateDataAbstract
             if ($result->isErrorOrNoEffect()) {
                 throw new Exception('Failed to count pages for all messages list');
             }
-            $pageCount = ceil($result[0]['Count'] / \Db\Model\Message::MESSAGES_PER_PAGE);
+            $pageCount = ceil($result[0]['count'] / \Db\Model\Message::MESSAGES_PER_PAGE);
         }
         // case 2: sent mail section
         elseif ($currentLocation == 'sent_mail') {
@@ -138,7 +139,7 @@ class Message extends TemplateDataAbstract
             if ($result->isErrorOrNoEffect()) {
                 throw new Exception('Failed to count pages for messages from list');
             }
-            $pageCount = ceil($result[0]['Count'] / \Db\Model\Message::MESSAGES_PER_PAGE);
+            $pageCount = ceil($result[0]['count'] / \Db\Model\Message::MESSAGES_PER_PAGE);
         }
         // case 3: inbox section
         else {
@@ -154,7 +155,7 @@ class Message extends TemplateDataAbstract
             if ($result->isErrorOrNoEffect()) {
                 throw new Exception('Failed to count pages for messages to list');
             }
-            $pageCount = ceil($result[0]['Count'] / \Db\Model\Message::MESSAGES_PER_PAGE);
+            $pageCount = ceil($result[0]['count'] / \Db\Model\Message::MESSAGES_PER_PAGE);
         }
 
         // messages elated data
@@ -199,8 +200,8 @@ class Message extends TemplateDataAbstract
             }
 
             // validate message from player's point of view
-            if (($message->getAuthor() == $player->getUsername() && $message->getAuthorDelete() == 1)
-                || ($message->getRecipient() == $player->getUsername() && $message->getRecipientDelete() == 1)) {
+            if (($message->getAuthor() == $player->getUsername() && $message->getIsDeletedAuthor() == 1)
+                || ($message->getRecipient() == $player->getUsername() && $message->getIsDeletedRecipient() == 1)) {
                 throw new Exception('Message was already deleted', Exception::WARNING);
             }
         }
@@ -209,7 +210,7 @@ class Message extends TemplateDataAbstract
 
         $data['player_name'] = $player->getUsername();
         $data['system_name'] = PlayerModel::SYSTEM_NAME;
-        $data['timezone'] = $setting->getSetting('Timezone');
+        $data['timezone'] = $setting->getSetting('timezone');
 
         $data['author'] = $message->getAuthor();
         $data['recipient'] = $message->getRecipient();
@@ -219,9 +220,7 @@ class Message extends TemplateDataAbstract
         $data['delete'] = (isset($input['message_delete'])) ? 'yes' : 'no';
         $data['messages'] = ($this->checkAccess('messages')) ? 'yes' : 'no';
 
-        $currentLocation = (isset($input['messages_subsection'])) ? $input['messages_subsection'] : 'inbox';
-
-        $data['current_location'] = $currentLocation;
+        $data['current_location'] = Input::defaultValue($input, 'messages_subsection', 'inbox');
         $data['created'] = $message->getCreated();
 
         // assign stamp picture based in timestamp
@@ -240,8 +239,8 @@ class Message extends TemplateDataAbstract
 
         $data['author'] = $input['author'];
         $data['recipient'] = $input['recipient'];
-        $data['content'] = (isset($input['content'])) ? $input['content'] : '';
-        $data['subject'] = (isset($input['subject'])) ? $input['subject'] : '';
+        $data['content'] = Input::defaultValue($input, 'content');
+        $data['subject'] = Input::defaultValue($input, 'subject');
 
         return new Result(['message_new' => $data]);
     }

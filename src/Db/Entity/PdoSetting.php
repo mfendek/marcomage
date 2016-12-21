@@ -17,165 +17,164 @@ class PdoSetting extends PdoAbstract
     protected function schema()
     {
         return [
-            'entity_name' => 'settings',
-            'model_name' => 'setting',
+            'entity_name' => 'setting',
             'primary_fields' => [
-                'Username',
+                'username',
             ],
             'fields' => [
-                'Username' => [
+                'username' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Firstname' => [
+                'first_name' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Surname' => [
+                'surname' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Birthdate' => [
+                'birth_date' => [
                     'type' => EntityAbstract::TYPE_DATE,
                     'default' => Date::DATE_ZERO,
                 ],
-                'Gender' => [
+                'gender' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => 'none',
                 ],
-                'Email' => [
+                'email' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Imnumber' => [
+                'im_number' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Country' => [
+                'country' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => 'Unknown',
                 ],
-                'Hobby' => [
+                'hobby' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Avatar' => [
+                'avatar' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => 'noavatar.jpg',
                 ],
-                'Status' => [
+                'status' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => 'newbie',
                 ],
-                'FriendlyFlag' => [
+                'friendly_flag' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'BlindFlag' => [
+                'blind_flag' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'LongFlag' => [
+                'long_flag' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Timezone' => [
+                'timezone' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '0',
                 ],
-                'Insignias' => [
+                'keyword_insignia' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 1,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'PlayButtons' => [
+                'play_card_button' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 1,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Chatorder' => [
+                'chat_reverse_order' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'IntegratedChat' => [
+                'integrated_chat' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Avatargame' => [
+                'in_game_avatar' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 1,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'OldCardLook' => [
+                'old_card_look' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Miniflags' => [
+                'card_mini_flag' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Reports' => [
+                'battle_report' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Forum_notification' => [
+                'forum_notification' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 1,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Concepts_notification' => [
+                'concept_notification' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 1,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Skin' => [
+                'skin' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Background' => [
+                'game_bg_image' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'DefaultFilter' => [
+                'default_player_filter' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => 'none',
                 ],
-                'Autorefresh' => [
+                'auto_refresh_timer' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'AutoAi' => [
+                'auto_ai_timer' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 5,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'RandomDeck' => [
+                'use_random_deck' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 1,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'GameLimit' => [
+                'unique_game_opponent' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Timeout' => [
+                'game_turn_timeout' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'FoilCards' => [
+                'foil_cards' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                     // TODO do we want this?
@@ -195,7 +194,7 @@ class PdoSetting extends PdoAbstract
      */
     public function createSetting($username)
     {
-        return parent::createModel(['Username' => $username]);
+        return parent::createModel(['username' => $username]);
     }
 
     /**
@@ -210,7 +209,7 @@ class PdoSetting extends PdoAbstract
             return $this->getGuestSettings();
         }
 
-        return parent::getModel(['Username' => $username], $asserted);
+        return parent::getModel(['username' => $username], $asserted);
     }
 
     /**
@@ -229,15 +228,15 @@ class PdoSetting extends PdoAbstract
     public function getGuestSettings()
     {
         return $this->createModel([
-            'Skin' => 0,
-            'Timezone' => '0',
-            'Autorefresh' => 0,
-            'OldCardLook' => 0,
-            'Insignias' => 1,
-            'Country' => 'Arcomage',
-            'Avatar' => 'noavatar.jpg',
-            'DefaultFilter' => 'none',
-            'FoilCards' => '',
+            'skin' => 0,
+            'timezone' => '0',
+            'auto_refresh_timer' => 0,
+            'old_card_look' => 0,
+            'keyword_insignia' => 1,
+            'country' => 'Arcomage',
+            'avatar' => 'noavatar.jpg',
+            'default_player_filter' => 'none',
+            'foil_cards' => '',
         ])
         ->resetCreated()
         ->cleanup();
@@ -253,6 +252,6 @@ class PdoSetting extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('UPDATE `settings` SET `Username` = ? WHERE `Username` = ?', [$newName, $player]);
+        return $db->query('UPDATE `setting` SET `username` = ? WHERE `username` = ?', [$newName, $player]);
     }
 }

@@ -18,13 +18,12 @@ class PdoForumThread extends PdoAbstract
     protected function schema()
     {
         return [
-            'entity_name' => 'forum_threads',
-            'model_name' => 'forum_thread',
+            'entity_name' => 'forum_thread',
             'primary_fields' => [
-                'ThreadID',
+                'thread_id',
             ],
             'fields' => [
-                'ThreadID' => [
+                'thread_id' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [
@@ -32,52 +31,52 @@ class PdoForumThread extends PdoAbstract
                         EntityAbstract::OPT_AUTO_ID,
                     ],
                 ],
-                'Title' => [
+                'title' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Author' => [
+                'author' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Priority' => [
+                'priority' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => 'normal',
                 ],
-                'Locked' => [
+                'is_locked' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Deleted' => [
+                'is_deleted' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'SectionID' => [
+                'section_id' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Created' => [
+                'created_at' => [
                     'type' => EntityAbstract::TYPE_DATETIME,
                     'default' => Date::DATETIME_ZERO,
                     'options' => [EntityAbstract::OPT_INSERT_DATETIME],
                 ],
-                'PostCount' => [
+                'post_count' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'LastAuthor' => [
+                'last_author' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'LastPost' => [
+                'last_post' => [
                     'type' => EntityAbstract::TYPE_DATETIME,
                     'default' => Date::DATETIME_ZERO,
                 ],
-                'CardID' => [
+                'reference_id' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
@@ -92,17 +91,17 @@ class PdoForumThread extends PdoAbstract
      * @param string $author author
      * @param string $priority priority
      * @param int $sectionId section id
-     * @param int [$cardId] card id reference
+     * @param int [$referenceId] card id reference
      * @return ForumThread
      */
-    public function createThread($title, $author, $priority, $sectionId, $cardId = 0)
+    public function createThread($title, $author, $priority, $sectionId, $referenceId = 0)
     {
         return parent::createModel([
-            'Title' => $title,
-            'Author' => $author,
-            'Priority' => $priority,
-            'SectionID' => $sectionId,
-            'CardID' => $cardId,
+            'title' => $title,
+            'author' => $author,
+            'priority' => $priority,
+            'section_id' => $sectionId,
+            'reference_id' => $referenceId,
         ]);
     }
 
@@ -113,7 +112,7 @@ class PdoForumThread extends PdoAbstract
      */
     public function getThread($threadId, $asserted = false)
     {
-        return parent::getModel(['ThreadID' => $threadId], $asserted);
+        return parent::getModel(['thread_id' => $threadId], $asserted);
     }
 
     /**
@@ -136,10 +135,10 @@ class PdoForumThread extends PdoAbstract
 
         // get threads list for current section
         return $db->query(
-            'SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`'
-            . ', `Created`, `PostCount`, `LastAuthor`, `LastPost`, CEIL(`PostCount` / ' . ForumPost::POSTS_PER_PAGE . ') as `LastPage`'
-            . ', `SectionID` FROM `forum_threads` WHERE `SectionID` = ? AND `Deleted` = FALSE'
-            . ' ORDER BY `LastPost` DESC, `Created` DESC LIMIT ' . ForumThread::NUM_THREADS . ''
+            'SELECT `thread_id`, `title`, `author`, `priority`, (CASE WHEN `is_locked` = TRUE THEN "yes" ELSE "no" END) as `is_locked`'
+            . ', `created_at`, `post_count`, `last_author`, `last_post`, CEIL(`post_count` / ' . ForumPost::POSTS_PER_PAGE . ') as `last_page`'
+            . ', `section_id` FROM `forum_thread` WHERE `section_id` = ? AND `is_deleted` = FALSE'
+            . ' ORDER BY `last_post` DESC, `created_at` DESC LIMIT ' . ForumThread::NUM_THREADS . ''
             , [$sectionId]
         );
     }
@@ -153,7 +152,7 @@ class PdoForumThread extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('SELECT `ThreadID` FROM `forum_threads` WHERE `Title` = ? AND `Deleted` = FALSE', [
+        return $db->query('SELECT `thread_id` FROM `forum_thread` WHERE `title` = ? AND `is_deleted` = FALSE', [
             $title
         ]);
     }
@@ -167,7 +166,7 @@ class PdoForumThread extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('SELECT `ThreadID` FROM `forum_threads` WHERE `CardID` = ? AND `SectionID` = ? AND `Deleted` = FALSE', [
+        return $db->query('SELECT `thread_id` FROM `forum_thread` WHERE `reference_id` = ? AND `section_id` = ? AND `is_deleted` = FALSE', [
             $cardId, ForumThread::CARDS_SECTION_ID
         ]);
     }
@@ -181,8 +180,36 @@ class PdoForumThread extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('SELECT `ThreadID` FROM `forum_threads` WHERE `CardID` = ? AND `SectionID` = ? AND `Deleted` = FALSE', [
+        return $db->query('SELECT `thread_id` FROM `forum_thread` WHERE `reference_id` = ? AND `section_id` = ? AND `is_deleted` = FALSE', [
             $deckId, ForumThread::DECKS_SECTION_ID
+        ]);
+    }
+
+    /**
+     * Find matching thread for specified concept
+     * @param int $deckId card id
+     * @return \Db\Util\Result
+     */
+    public function conceptThread($deckId)
+    {
+        $db = $this->db();
+
+        return $db->query('SELECT `thread_id` FROM `forum_thread` WHERE `reference_id` = ? AND `section_id` = ? AND `is_deleted` = FALSE', [
+            $deckId, ForumThread::CONCEPTS_SECTION_ID
+        ]);
+    }
+
+    /**
+     * Find matching thread for specified replay
+     * @param int $deckId card id
+     * @return \Db\Util\Result
+     */
+    public function replayThread($deckId)
+    {
+        $db = $this->db();
+
+        return $db->query('SELECT `thread_id` FROM `forum_thread` WHERE `reference_id` = ? AND `section_id` = ? AND `is_deleted` = FALSE', [
+            $deckId, ForumThread::REPLAYS_SECTION_ID
         ]);
     }
 
@@ -199,13 +226,13 @@ class PdoForumThread extends PdoAbstract
         $page = (is_numeric($page)) ? $page : 0;
 
         return $db->query(
-            'SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`'
-            . ', `Created`, `PostCount`, `LastAuthor`, `LastPost`, CEIL(`PostCount` / ' . ForumPost::POSTS_PER_PAGE . ') as `LastPage`'
-            . ', 0 as `flag` FROM `forum_threads` WHERE `SectionID` = ? AND `Deleted` = FALSE AND `Priority` = "sticky" UNION'
-            . ' SELECT `ThreadID`, `Title`, `Author`, `Priority`, (CASE WHEN `Locked` = TRUE THEN "yes" ELSE "no" END) as `Locked`'
-            . ', `Created`, `PostCount`, `LastAuthor`, `LastPost`, CEIL(`PostCount` / ' . ForumPost::POSTS_PER_PAGE . ') as `LastPage`'
-            . ', 1 as `flag` FROM `forum_threads` WHERE `SectionID` = ? AND `Deleted` = FALSE AND `Priority` != "sticky"'
-            . ' ORDER BY `Flag` ASC, `LastPost` DESC, `Created` DESC'
+            'SELECT `thread_id`, `title`, `author`, `priority`, (CASE WHEN `is_locked` = TRUE THEN "yes" ELSE "no" END) as `is_locked`'
+            . ', `created_at`, `post_count`, `last_author`, `last_post`, CEIL(`post_count` / ' . ForumPost::POSTS_PER_PAGE . ') as `last_page`'
+            . ', 0 as `flag` FROM `forum_thread` WHERE `section_id` = ? AND `is_deleted` = FALSE AND `priority` = "sticky" UNION'
+            . ' SELECT `thread_id`, `title`, `author`, `priority`, (CASE WHEN `is_locked` = TRUE THEN "yes" ELSE "no" END) as `is_locked`'
+            . ', `created_at`, `post_count`, `last_author`, `last_post`, CEIL(`post_count` / ' . ForumPost::POSTS_PER_PAGE . ') as `last_page`'
+            . ', 1 as `flag` FROM `forum_thread` WHERE `section_id` = ? AND `is_deleted` = FALSE AND `priority` != "sticky"'
+            . ' ORDER BY `flag` ASC, `last_post` DESC, `created_at` DESC'
             . ' LIMIT ' . (ForumThread::THREADS_PER_PAGE * $page) . ' , ' . ForumThread::THREADS_PER_PAGE . ''
             , [$sectionId, $sectionId]
         );
@@ -221,7 +248,7 @@ class PdoForumThread extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT `ThreadID`, `Title` FROM `forum_threads` WHERE `ThreadID` != ? AND `Deleted` = FALSE ORDER BY `Title` ASC',
+            'SELECT `thread_id`, `title` FROM `forum_thread` WHERE `thread_id` != ? AND `is_deleted` = FALSE ORDER BY `title` ASC',
             [$threadId]
         );
     }
@@ -235,7 +262,7 @@ class PdoForumThread extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('SELECT COUNT(`ThreadID`) as `Count` FROM `forum_threads` WHERE `SectionID` = ? AND `Deleted` = FALSE', [
+        return $db->query('SELECT COUNT(`thread_id`) as `count` FROM `forum_thread` WHERE `section_id` = ? AND `is_deleted` = FALSE', [
             $section
         ]);
     }
@@ -250,8 +277,8 @@ class PdoForumThread extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT `Author`, `Created` FROM `forum_posts` WHERE `ThreadID` = ? AND `Deleted` = FALSE'
-            . ' AND `Created` = (SELECT MAX(`Created`) FROM `forum_posts` WHERE `ThreadID` = ? AND `Deleted` = FALSE)'
+            'SELECT `author`, `created_at` FROM `forum_post` WHERE `thread_id` = ? AND `is_deleted` = FALSE'
+            . ' AND `created_at` = (SELECT MAX(`created_at`) FROM `forum_post` WHERE `thread_id` = ? AND `is_deleted` = FALSE)'
             , [$threadId, $threadId]
         );
     }
@@ -266,7 +293,7 @@ class PdoForumThread extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('UPDATE `forum_threads` SET `Author` = ? WHERE `Author` = ?', [$newName, $player]);
+        return $db->query('UPDATE `forum_thread` SET `author` = ? WHERE `author` = ?', [$newName, $player]);
     }
 
     /**
@@ -279,7 +306,7 @@ class PdoForumThread extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('UPDATE `forum_threads` SET `LastAuthor` = ? WHERE `LastAuthor` = ?', [
+        return $db->query('UPDATE `forum_thread` SET `last_author` = ? WHERE `last_author` = ?', [
             $newName, $player
         ]);
     }

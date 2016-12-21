@@ -126,19 +126,21 @@ function ApiManager()
      * @param {string}action
      * @param {object}data
      * @param {function}callback
-     * @param {boolean}[isSessionProtected]
      */
-    this.executeCall = function(action, data, callback, isSessionProtected)
+    this.executeCall = function(action, data, callback)
     {
-        // optional param
-        isSessionProtected = (typeof isSessionProtected !== 'undefined') ? isSessionProtected : true;
-
         // add mandatory data
         data['action'] = action;
 
-        // include session data if necessary
-        if (isSessionProtected) {
+        // include session data if available
+        var username = getSessionData('username');
+        var sessionId = getSessionData('session_id');
+
+        if (typeof(username) != 'undefined') {
             data['username'] = getSessionData('username');
+        }
+
+        if (typeof(sessionId) != 'undefined') {
             data['session_id'] = getSessionData('session_id');
         }
 
@@ -277,7 +279,7 @@ function ApiManager()
     {
         this.executeCall('card_lookup', {
             card_id: cardId
-        }, callback, false);
+        }, callback);
     };
 
     /**
@@ -443,7 +445,7 @@ $(document).ready(function() {
         classes: {
             'ui-tooltip': 'ui-corner-all ui-widget-shadow'
         },
-        placement: 'bottom'
+        placement: 'auto bottom'
     });
 
     // process details row click

@@ -4,8 +4,8 @@
 
 /* begin challenges */
 
-/* challenge section (soon to be renamed to messages) */
-div#message_section {
+/* messages section */
+div#messages-section {
     text-align: center;
 }
 
@@ -51,9 +51,8 @@ div#messages th > p, div#messages td > p {
 }
 
 /* private messages table */
-div#messages > table {
-    margin: 0 auto 2ex auto;
-    max-width: 32em;
+div#messages > .resposive-table {
+    margin-bottom: 2ex;
 }
 
 /* filters and navigation */
@@ -68,7 +67,7 @@ div#messages .filters {
 /* private message details subsection */
 
 /* private message layout */
-div.mes_details > div {
+div.message-details > div {
     margin-right: auto;
     margin-left: auto;
     max-width: 50em;
@@ -76,40 +75,44 @@ div.mes_details > div {
 }
 
 /* set distance between elements */
-div.mes_details > div > * {
+div.message-details > div > * {
     margin-bottom: 1ex;
     margin-top: 1ex;
 }
 
 /* justify private message text */
-div.mes_details > div > p {
+div.message-details > div > p {
     text-align: justify;
 }
 
 /* highlight private message information (author, recipient...) */
-div.mes_details > div > p > span {
+div.message-details > div > p > span {
     color: green;
     margin-right: 1ex;
 }
 
 /* MArcopost stamp picture */
-img.stamp_picture {
+img.post-stamp {
     float: right;
 }
 
 /* challenge layout */
-div.challenge_box > div {
+div.challenge-box > div {
     padding: 1ex;
     margin: 1ex;
 }
 
+div.challenge-box .icon-player-activity {
+    margin-left: 0.5ex;
+}
+
 /* set distance between elements within a challenge */
-div.challenge_box > div > p + p {
+div.challenge-box > div > p + p {
     margin-top: 1ex;
 }
 
 /* challenge text layout */
-div.challenge_content {
+div.challenge-content {
     font-style: italic;
     text-align: justify;
     margin-left: 2ex;

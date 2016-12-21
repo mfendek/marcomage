@@ -31,7 +31,7 @@ class Misc extends ControllerAbstract
 
         $this->result()->setCurrent($request['reset_notification']);
 
-        $player->setNotification($player->getLastQuery());
+        $player->setNotification($player->getLastActivity());
         if (!$player->save()) {
             throw new Exception('Failed to reset notification');
         }

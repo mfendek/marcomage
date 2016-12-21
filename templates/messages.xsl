@@ -16,7 +16,7 @@
     <xsl:template match="section[. = 'Messages']">
         <xsl:variable name="param" select="$params/messages"/>
 
-        <div id="message_section">
+        <div id="messages-section">
 
             <div class="row">
                 <div class="col-md-6">
@@ -53,13 +53,13 @@
                         <xsl:if test="($param/current_subsection = 'incoming') and ($param/deck_count &gt; 0)">
                             <p>
                                 <xsl:text>Select deck </xsl:text>
-                                <select name="AcceptDeck" size="1">
+                                <select name="accept_deck" size="1">
                                     <xsl:if test="$param/random_deck_option = 'yes'">
                                         <option value="{$param/random_deck}">select random</option>
                                     </xsl:if>
                                     <xsl:for-each select="$param/decks/*">
-                                        <option value="{DeckID}">
-                                            <xsl:value-of select="Deckname"/>
+                                        <option value="{deck_id}">
+                                            <xsl:value-of select="deck_name"/>
                                         </option>
                                     </xsl:for-each>
                                     <xsl:for-each select="$param/ai_challenges/*">
@@ -74,38 +74,38 @@
 
                         <xsl:choose>
                             <xsl:when test="$param/challenges_count &gt; 0">
-                                <div class="challenge_box">
+                                <div class="challenge-box">
                                     <xsl:for-each select="$param/challenges/*">
                                         <div class="skin-text">
                                             <xsl:choose>
                                                 <xsl:when test="$param/current_subsection = 'incoming'">
                                                     <p>
                                                         <span>
-                                                            <xsl:if test="Online = 'yes'">
-                                                                <xsl:attribute name="class">p_online</xsl:attribute>
-                                                            </xsl:if>
-                                                            <a class="profile" href="{am:makeUrl('Players_details', 'Profile', Author)}">
-                                                                <xsl:value-of select="Author"/>
+                                                            <a class="profile" href="{am:makeUrl('Players_details', 'Profile', author)}">
+                                                                <xsl:value-of select="author"/>
                                                             </a>
+                                                            <xsl:if test="online = 'yes'">
+                                                                <span class="icon-player-activity online" title="online"/>
+                                                            </xsl:if>
                                                         </span>
                                                         <xsl:text> has challenged you on </xsl:text>
                                                         <span>
-                                                            <xsl:value-of select="am:dateTime(Created, $param/timezone)"/>
+                                                            <xsl:value-of select="am:dateTime(created_at, $param/timezone)"/>
                                                         </span>
                                                     </p>
-                                                    <xsl:if test="Content != ''">
-                                                        <div class="challenge_content">
-                                                            <xsl:value-of select="am:bbCodeParseExtended(Content)" disable-output-escaping="yes"/>
+                                                    <xsl:if test="content != ''">
+                                                        <div class="challenge-content">
+                                                            <xsl:value-of select="am:bbCodeParseExtended(content)" disable-output-escaping="yes"/>
                                                         </div>
                                                     </xsl:if>
                                                     <p>
                                                         <xsl:if test="($param/deck_count &gt; 0) and ($param/free_slots &gt; 0) and ($param/accept_challenges = 'yes')">
-                                                            <button type="submit" name="accept_challenge" value="{GameID}">
-                                                                Accept
+                                                            <button type="submit" name="accept_challenge" value="{game_id}">
+                                                                <xsl:text>Accept</xsl:text>
                                                             </button>
                                                         </xsl:if>
-                                                        <button type="submit" name="reject_challenge" value="{GameID}">
-                                                            Reject
+                                                        <button type="submit" name="reject_challenge" value="{game_id}">
+                                                            <xsl:text>Reject</xsl:text>
                                                         </button>
                                                     </p>
                                                 </xsl:when>
@@ -113,26 +113,26 @@
                                                     <p>
                                                         <xsl:text>You challenged </xsl:text>
                                                         <span>
-                                                            <xsl:if test="Online = 'yes'">
-                                                                <xsl:attribute name="class">p_online</xsl:attribute>
-                                                            </xsl:if>
-                                                            <a class="profile" href="{am:makeUrl('Players_details', 'Profile', Recipient)}">
-                                                                <xsl:value-of select="Recipient"/>
+                                                            <a class="profile" href="{am:makeUrl('Players_details', 'Profile', recipient)}">
+                                                                <xsl:value-of select="recipient"/>
                                                             </a>
+                                                            <xsl:if test="online = 'yes'">
+                                                                <span class="icon-player-activity online" title="online"/>
+                                                            </xsl:if>
                                                         </span>
                                                         <xsl:text> on </xsl:text>
                                                         <span>
-                                                            <xsl:value-of select="am:dateTime(Created, $param/timezone)"/>
+                                                            <xsl:value-of select="am:dateTime(created_at, $param/timezone)"/>
                                                         </span>
                                                     </p>
-                                                    <xsl:if test="Content != ''">
-                                                        <div class="challenge_content">
-                                                            <xsl:value-of select="am:bbCodeParseExtended(Content)" disable-output-escaping="yes"/>
+                                                    <xsl:if test="content != ''">
+                                                        <div class="challenge-content">
+                                                            <xsl:value-of select="am:bbCodeParseExtended(content)" disable-output-escaping="yes"/>
                                                         </div>
                                                     </xsl:if>
                                                     <p>
-                                                        <button type="submit" name="withdraw_challenge" value="{GameID}">
-                                                            Withdraw challenge
+                                                        <button type="submit" name="withdraw_challenge" value="{game_id}">
+                                                            <xsl:text>Withdraw challenge</xsl:text>
                                                         </button>
                                                     </p>
                                                 </xsl:when>
@@ -229,20 +229,20 @@
                         <!-- begin messages table -->
 
                         <xsl:if test="$param/messages_count &gt; 0">
-                            <table class="skin-text">
-                                <!-- begin table header -->
-                                <tr>
-                                    <th>
-                                        <xsl:choose>
-                                            <xsl:when test="$param/current_location = 'sent_mail'">
-                                                <p>
+                            <div class="responsive-table table-sm skin-text">
+                                <!-- table header -->
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="sortable">
+                                            <xsl:choose>
+                                                <xsl:when test="$param/current_location = 'sent_mail'">
                                                     <span>To</span>
-                                                    <button class="button-icon" type="submit" value="Recipient">
-                                                        <xsl:if test="$param/current_condition = 'Recipient'">
+                                                    <button class="button-icon" type="submit" value="recipient">
+                                                        <xsl:if test="$param/current_condition = 'recipient'">
                                                             <xsl:attribute name="class">button-icon pushed</xsl:attribute>
                                                         </xsl:if>
                                                         <xsl:choose>
-                                                            <xsl:when test="(($param/current_condition = 'Recipient') and ($param/current_order = 'DESC'))">
+                                                            <xsl:when test="(($param/current_condition = 'recipient') and ($param/current_order = 'DESC'))">
                                                                 <xsl:attribute name="name">messages_order_asc</xsl:attribute>
                                                                 <span class="glyphicon glyphicon-sort-by-attributes-alt"/>
                                                             </xsl:when>
@@ -252,17 +252,15 @@
                                                             </xsl:otherwise>
                                                         </xsl:choose>
                                                     </button>
-                                                </p>
-                                            </xsl:when>
-                                            <xsl:otherwise>
-                                                <p>
+                                                </xsl:when>
+                                                <xsl:otherwise>
                                                     <span>From</span>
-                                                    <button class="button-icon" type="submit" value="Author">
-                                                        <xsl:if test="$param/current_condition = 'Author'">
+                                                    <button class="button-icon" type="submit" value="author">
+                                                        <xsl:if test="$param/current_condition = 'author'">
                                                             <xsl:attribute name="class">button-icon pushed</xsl:attribute>
                                                         </xsl:if>
                                                         <xsl:choose>
-                                                            <xsl:when test="(($param/current_condition = 'Author') and ($param/current_order = 'DESC'))">
+                                                            <xsl:when test="(($param/current_condition = 'author') and ($param/current_order = 'DESC'))">
                                                                 <xsl:attribute name="name">messages_order_asc</xsl:attribute>
                                                                 <span class="glyphicon glyphicon-sort-by-attributes-alt"/>
                                                             </xsl:when>
@@ -272,23 +270,23 @@
                                                             </xsl:otherwise>
                                                         </xsl:choose>
                                                     </button>
-                                                </p>
-                                            </xsl:otherwise>
-                                        </xsl:choose>
-                                    </th>
-                                    <xsl:if test="$param/current_location = 'all_mail'">
-                                        <th><p>To</p></th>
-                                    </xsl:if>
-                                    <th><p>Subject</p></th>
-                                    <th>
-                                        <p>
+                                                </xsl:otherwise>
+                                            </xsl:choose>
+                                            <xsl:if test="$param/current_location = 'all_mail'"> / To</xsl:if>
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <p>Subject</p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <p class="sortable">
                                             <span>Sent on</span>
-                                            <button class="button-icon" type="submit" value="Created">
-                                                <xsl:if test="$param/current_condition = 'Created'">
+                                            <button class="button-icon" type="submit" value="created_at">
+                                                <xsl:if test="$param/current_condition = 'created_at'">
                                                     <xsl:attribute name="class">button-icon pushed</xsl:attribute>
                                                 </xsl:if>
                                                 <xsl:choose>
-                                                    <xsl:when test="(($param/current_condition = 'Created') and ($param/current_order = 'DESC'))">
+                                                    <xsl:when test="(($param/current_condition = 'created_at') and ($param/current_order = 'DESC'))">
                                                         <xsl:attribute name="name">messages_order_asc</xsl:attribute>
                                                         <span class="glyphicon glyphicon-sort-by-attributes-alt"/>
                                                     </xsl:when>
@@ -299,48 +297,54 @@
                                                 </xsl:choose>
                                             </button>
                                         </p>
-                                    </th>
-                                    <th/>
-                                </tr>
-                                <!-- end table header -->
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <p/>
+                                    </div>
+                                </div>
 
-                                <!-- begin table body -->
+                                <!-- table body -->
                                 <xsl:for-each select="$param/messages/*">
-                                    <tr class="table-row">
+                                    <div class="row table-row">
                                         <xsl:if test="$param/current_location = 'inbox'">
                                             <xsl:choose>
                                                 <!-- TODO format time to seconds and independent of user timezone -->
-                                                <xsl:when test="Unread = 'yes' and am:dateDiff(Created, $param/notification) &lt;= 0">
-                                                    <xsl:attribute name="class">table-row new_message</xsl:attribute>
+                                                <xsl:when test="is_unread = 'yes' and am:dateDiff(created_at, $param/notification) &lt;= 0">
+                                                    <xsl:attribute name="class">row table-row new_message</xsl:attribute>
                                                 </xsl:when>
-                                                <xsl:when test="Unread = 'yes'">
-                                                    <xsl:attribute name="class">table-row unread</xsl:attribute>
+                                                <xsl:when test="is_unread = 'yes'">
+                                                    <xsl:attribute name="class">row table-row unread</xsl:attribute>
                                                 </xsl:when>
-                                                <xsl:when test="Author = $param/system_name">
-                                                    <xsl:attribute name="class">table-row system_message</xsl:attribute>
+                                                <xsl:when test="author = $param/system_name">
+                                                    <xsl:attribute name="class">row table-row system_message</xsl:attribute>
                                                 </xsl:when>
                                             </xsl:choose>
                                         </xsl:if>
-                                        <td>
+                                        <div class="col-sm-3">
                                             <p>
                                                 <xsl:choose>
                                                     <xsl:when test="$param/current_location = 'sent_mail'">
-                                                        <xsl:value-of select="Recipient"/>
+                                                        <xsl:value-of select="recipient"/>
                                                     </xsl:when>
                                                     <xsl:otherwise>
-                                                        <xsl:value-of select="Author"/>
+                                                        <xsl:value-of select="author"/>
                                                     </xsl:otherwise>
                                                 </xsl:choose>
+                                                <xsl:if test="$param/current_location = 'all_mail'">
+                                                    <xsl:text> / </xsl:text>
+                                                    <xsl:value-of select="recipient"/>
+                                                </xsl:if>
                                             </p>
-                                        </td>
-                                        <xsl:if test="$param/current_location = 'all_mail'">
-                                            <td><p><xsl:value-of select="Recipient"/></p></td>
-                                        </xsl:if>
-                                        <td><p><xsl:value-of select="Subject"/></p></td>
-                                        <td><p><xsl:value-of select="am:dateTime(Created, $param/timezone)"/></p></td>
-                                        <td>
-                                            <p style="text-align: left">
-                                                <button class="button-icon" type="submit" value="{MessageID}" title="Message details">
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <p><xsl:value-of select="subject"/></p>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <p><xsl:value-of select="am:dateTime(created_at, $param/timezone)"/></p>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <p>
+                                                <button class="button-icon" type="submit" value="{message_id}" title="Message details">
                                                     <xsl:choose>
                                                         <xsl:when test="$param/current_location = 'all_mail'">
                                                             <xsl:attribute name="name">message_retrieve</xsl:attribute>
@@ -352,19 +356,18 @@
                                                     <span class="glyphicon glyphicon-zoom-in"/>
                                                 </button>
                                                 <xsl:if test="$param/current_location != 'all_mail'">
-                                                    <input type="checkbox" class="table-checkbox" name="mass_delete_{position()}" value="{MessageID}"/>
+                                                    <input type="checkbox" class="table-checkbox" name="mass_delete_{position()}" value="{message_id}"/>
                                                 </xsl:if>
-                                                <xsl:if test="(($param/send_messages = 'yes') and ($param/current_location = 'inbox') and (Author != $param/system_name) and (Author != $param/player_name))">
-                                                    <button class="button-icon" type="submit" name="message_create" value="{Author}" title="Reply">
+                                                <xsl:if test="(($param/send_messages = 'yes') and ($param/current_location = 'inbox') and (author != $param/system_name) and (author != $param/player_name))">
+                                                    <button class="button-icon" type="submit" name="message_create" value="{author}" title="Reply">
                                                         <span class="glyphicon glyphicon-share-alt"/>
                                                     </button>
                                                 </xsl:if>
                                             </p>
-                                        </td>
-                                    </tr>
+                                        </div>
+                                    </div>
                                 </xsl:for-each>
-                                <!-- end table body -->
-                            </table>
+                            </div>
                         </xsl:if>
 
                         <!-- end messages table -->
@@ -389,12 +392,12 @@
     <xsl:template match="section[. = 'Messages_details']">
         <xsl:variable name="param" select="$params/message_details"/>
 
-        <div class="mes_details">
+        <div class="message-details">
 
             <h3>Message details</h3>
 
             <div class="skin-text">
-                <img class="stamp_picture" src="img/stamps/stamp{$param/stamp}.png" width="100" height="100" alt="Marcopost stamp"/>
+                <img class="post-stamp" src="img/stamps/stamp{$param/stamp}.png" width="100" height="100" alt="Marcopost stamp"/>
                 <p>
                     <span>From:</span>
                     <xsl:value-of select="$param/author"/>
@@ -450,12 +453,12 @@
     <xsl:template match="section[. = 'Messages_new']">
         <xsl:variable name="param" select="$params/message_new"/>
 
-        <div class="mes_details">
+        <div class="message-details">
 
             <h3>New message</h3>
 
             <div class="skin-text">
-                <img class="stamp_picture" src="img/stamps/stamp0.png" width="100" height="100" alt="Marcopost stamp"/>
+                <img class="post-stamp" src="img/stamps/stamp0.png" width="100" height="100" alt="Marcopost stamp"/>
                 <p>
                     <span>From:</span>
                     <xsl:value-of select="$param/author"/>

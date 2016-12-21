@@ -29,7 +29,7 @@ class Forum extends ServiceAbstract
         // reindex section data by section id
         $sections = array();
         foreach ($result->data() as $data) {
-            $sections[$data['SectionID']] = $data;
+            $sections[$data['section_id']] = $data;
         }
 
         // add thread list to each section
@@ -60,7 +60,7 @@ class Forum extends ServiceAbstract
             throw new Exception('Failed to find latest post in thread');
         }
 
-        $lastPost = ($result->isSuccess()) ? $result[0] : ['Author' => '', 'Created' => Date::DATETIME_ZERO];
+        $lastPost = ($result->isSuccess()) ? $result[0] : ['author' => '', 'created_at' => Date::DATETIME_ZERO];
 
         return $lastPost;
     }

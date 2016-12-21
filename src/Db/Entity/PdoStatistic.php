@@ -14,42 +14,42 @@ class PdoStatistic extends PdoAbstract
     protected function schema()
     {
         return [
-            'entity_name' => 'chats',
+            'entity_name' => 'statistic',
             'primary_fields' => [
-                'CardID',
+                'card_id',
             ],
             'fields' => [
-                'CardID' => [
+                'card_id' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Played' => [
+                'played' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Discarded' => [
+                'discarded' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'PlayedTotal' => [
+                'played_total' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'DiscardedTotal' => [
+                'discarded_total' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Drawn' => [
+                'drawn' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'DrawnTotal' => [
+                'drawn_total' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
@@ -68,12 +68,12 @@ class PdoStatistic extends PdoAbstract
         $db = $this->db();
 
         $condition = (in_array($condition, [
-            'Played', 'PlayedTotal', 'Discarded', 'DiscardedTotal', 'Drawn', 'DrawnTotal'
-        ])) ? $condition : 'Played';
+            'played', 'played_total', 'discarded', 'discarded_total', 'drawn', 'drawn_total'
+        ])) ? $condition : 'played';
 
         return $db->query(
-            'SELECT `CardID`, `' . $condition . '` as `value` FROM `statistics` WHERE `CardID` > 0 ORDER BY `'
-            . $condition . '` DESC, `CardID` ASC'
+            'SELECT `card_id`, `' . $condition . '` as `value` FROM `statistic` WHERE `card_id` > 0 ORDER BY `'
+            . $condition . '` DESC, `card_id` ASC'
         );
     }
 
@@ -87,7 +87,7 @@ class PdoStatistic extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT `Played`, `Discarded`, `Drawn`, `PlayedTotal`, `DiscardedTotal`, `DrawnTotal` FROM `statistics` WHERE `CardID` = ?'
+            'SELECT `played`, `discarded`, `drawn`, `played_total`, `discarded_total`, `drawn_total` FROM `statistic` WHERE `card_id` = ?'
             , [$cardId]
         );
     }
@@ -107,7 +107,7 @@ class PdoStatistic extends PdoAbstract
         }
 
         return $db->query(
-            'SELECT `CardID` FROM `statistics` WHERE `CardID` IN (' . implode(",", $queryString) . ')'
+            'SELECT `card_id` FROM `statistic` WHERE `card_id` IN (' . implode(",", $queryString) . ')'
             , $ids
         );
     }
@@ -124,9 +124,9 @@ class PdoStatistic extends PdoAbstract
 
         // action to column names translation
         $trans = [
-            'play' => 'Played',
-            'discard' => 'Discarded',
-            'draw' => 'Drawn',
+            'play' => 'played',
+            'discard' => 'discarded',
+            'draw' => 'drawn',
         ];
 
         $queryString = $params = array();
@@ -136,13 +136,13 @@ class PdoStatistic extends PdoAbstract
             $params[] = $amount;
 
             // total counter
-            $queryString[] = '`' . $trans[$action] . 'Total` = `' . $trans[$action] . 'Total` + ?';
+            $queryString[] = '`' . $trans[$action] . '_total` = `' . $trans[$action] . '_total` + ?';
             $params[] = $amount;
         }
 
         $params[] = $cardId;
 
-        return $db->query('UPDATE `statistics` SET ' . implode(", ", $queryString) . ' WHERE `CardID` = ?', $params);
+        return $db->query('UPDATE `statistic` SET ' . implode(", ", $queryString) . ' WHERE `card_id` = ?', $params);
     }
 
     /**
@@ -157,9 +157,9 @@ class PdoStatistic extends PdoAbstract
 
         // action to column names translation
         $trans = [
-            'play' => 'Played',
-            'discard' => 'Discarded',
-            'draw' => 'Drawn',
+            'play' => 'played',
+            'discard' => 'discarded',
+            'draw' => 'drawn',
         ];
 
         $columnString = $queryString = $params = array();
@@ -172,13 +172,13 @@ class PdoStatistic extends PdoAbstract
             $params[] = $amount;
 
             // total counter
-            $columnString[] = '`' . $trans[$action] . 'Total`';
+            $columnString[] = '`' . $trans[$action] . '_total`';
             $queryString[] = '?';
             $params[] = $amount;
         }
 
         return $db->query(
-            'INSERT INTO `statistics` (`CardID`,' . implode(",", $columnString) . ')'
+            'INSERT INTO `statistic` (`card_id`,' . implode(",", $columnString) . ')'
             . ' VALUES (?,' . implode(",", $queryString) . ')'
             , $params
         );

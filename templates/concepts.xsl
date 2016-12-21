@@ -100,46 +100,46 @@
 
             <!-- end buttons and filters -->
 
-            <div class="responsive-table skin-text">
+            <div class="responsive-table table-sm skin-text">
                 <!-- table header -->
                 <div class="row">
-                    <div class="col-sm-2">
-                        <p>Card</p>
-                    </div>
-                    <div class="col-sm-2">
-                        <p>
-                            <span>Name</span>
-                            <xsl:if test="$param/is_logged_in = 'yes'">
-                                <button class="button-icon" type="submit" value="Name">
-                                    <xsl:if test="$param/current_condition = 'Name'">
-                                        <xsl:attribute name="class">button-icon pushed</xsl:attribute>
-                                    </xsl:if>
-                                    <xsl:choose>
-                                        <xsl:when test="(($param/current_condition = 'Name') and ($param/current_order = 'DESC'))">
-                                            <xsl:attribute name="name">concepts_order_asc</xsl:attribute>
-                                            <span class="glyphicon glyphicon-sort-by-attributes-alt"/>
-                                        </xsl:when>
-                                        <xsl:otherwise>
-                                            <xsl:attribute name="name">concepts_order_desc</xsl:attribute>
-                                            <span class="glyphicon glyphicon-sort-by-attributes"/>
-                                        </xsl:otherwise>
-                                    </xsl:choose>
-                                </button>
-                            </xsl:if>
-                        </p>
-                    </div>
-                    <div class="col-sm-1">
-                        <p>Rarity</p>
-                    </div>
-                    <div class="col-sm-2">
-                        <p>Author</p>
-                    </div>
-                    <div class="col-sm-2">
-                        <p>Last change</p>
-                    </div>
-                    <div class="col-sm-1">
-                        <p>State</p>
-                    </div>
+                    <xsl:variable name="columns">
+                        <column name="card" text="Card" sortable="no" size="2"/>
+                        <column name="name" text="Name" sortable="yes" size="2"/>
+                        <column name="rarity" text="Rarity" sortable="no" size="1"/>
+                        <column name="author" text="Author" sortable="no" size="2"/>
+                        <column name="modified_at" text="Last change" sortable="yes" size="2"/>
+                        <column name="state" text="State" sortable="no" size="1"/>
+                    </xsl:variable>
+
+                    <xsl:for-each select="exsl:node-set($columns)/*">
+                        <div class="col-sm-{@size}">
+                            <p>
+                                <xsl:if test="$param/is_logged_in = 'yes' and @sortable = 'yes'">
+                                    <xsl:attribute name="class">sortable</xsl:attribute>
+                                </xsl:if>
+
+                                <span><xsl:value-of select="@text"/></span>
+                                <xsl:if test="$param/is_logged_in = 'yes' and @sortable = 'yes'">
+                                    <button class="button-icon" type="submit" value="{@name}">
+                                        <xsl:if test="$param/current_condition = @name">
+                                            <xsl:attribute name="class">button-icon pushed</xsl:attribute>
+                                        </xsl:if>
+                                        <xsl:choose>
+                                            <xsl:when test="(($param/current_condition = @name) and ($param/current_order = 'DESC'))">
+                                                <xsl:attribute name="name">concepts_order_asc</xsl:attribute>
+                                                <span class="glyphicon glyphicon-sort-by-attributes-alt"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:attribute name="name">concepts_order_desc</xsl:attribute>
+                                                <span class="glyphicon glyphicon-sort-by-attributes"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </button>
+                                </xsl:if>
+                            </p>
+                        </div>
+                    </xsl:for-each>
                     <div class="col-sm-2">
                         <p/>
                     </div>
@@ -153,7 +153,7 @@
                         </div>
                         <div class="col-sm-2">
                             <p>
-                                <a href="{am:makeUrl('Concepts_details', 'CurrentConcept', id)}">
+                                <a href="{am:makeUrl('Concepts_details', 'current_concept', id)}">
                                     <xsl:value-of select="name"/>
                                 </a>
                             </p>
@@ -172,10 +172,10 @@
                         </div>
                         <div class="col-sm-2">
                             <p>
-                                <xsl:if test="am:dateDiff(lastchange, $param/notification) &lt; 0">
+                                <xsl:if test="am:dateDiff(modified_at, $param/notification) &lt; 0">
                                     <xsl:attribute name="class">highlighted</xsl:attribute>
                                 </xsl:if>
-                                <xsl:value-of select="am:dateTime(lastchange, $param/timezone)"/>
+                                <xsl:value-of select="am:dateTime(modified_at, $param/timezone)"/>
                             </p>
                         </div>
                         <div class="col-sm-1"><p><xsl:value-of select="state"/></p></div>
@@ -340,7 +340,7 @@
                     <a class="button button-icon" href="{am:makeUrl('Concepts')}">
                         <span class="glyphicon glyphicon-arrow-left"/>
                     </a>
-                    <a class="button button-icon" href="{am:makeUrl('Concepts_details', 'CurrentConcept', $param/data/id)}" title="Details">
+                    <a class="button button-icon" href="{am:makeUrl('Concepts_details', 'current_concept', $param/data/id)}" title="Details">
                         <span class="glyphicon glyphicon-zoom-in"/>
                     </a>
                     <xsl:if test="$param/data/author = $param/player_name">
@@ -463,7 +463,7 @@
                 </textarea>
             </div>
 
-            <input type="hidden" name="CurrentConcept" value="{$param/data/id}"/>
+            <input type="hidden" name="current_concept" value="{$param/data/id}"/>
         </div>
 
     </xsl:template>
@@ -487,13 +487,13 @@
                     </xsl:if>
 
                     <xsl:choose>
-                        <xsl:when test="$param/data/threadid = 0 and $param/create_thread = 'yes'">
+                        <xsl:when test="$param/discussion = 0 and $param/create_thread = 'yes'">
                             <button class="button-icon" type="submit" name="find_concept_thread" title="Start discussion">
                                 <span class="glyphicon glyphicon-comment"/>
                             </button>
                         </xsl:when>
-                        <xsl:when test="$param/data/threadid &gt; 0">
-                            <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'CurrentThread', $param/data/threadid, 'CurrentPage', 0)}" title="View discussion">
+                        <xsl:when test="$param/discussion &gt; 0">
+                            <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $param/discussion, 'CurrentPage', 0)}" title="View discussion">
                                 <span class="glyphicon glyphicon-comment"/>
                             </a>
                         </xsl:when>
@@ -559,7 +559,7 @@
                 </div>
                 <div class="clear-floats"/>
             </div>
-            <input type="hidden" name="CurrentConcept" value="{$param/data/id}"/>
+            <input type="hidden" name="current_concept" value="{$param/data/id}"/>
         </div>
 
     </xsl:template>

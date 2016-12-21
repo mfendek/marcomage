@@ -25,24 +25,24 @@ div.forum a {
 }
 
 /* standard hyperlink hover layout */
-div.forum tr.table-row:hover a {
+div.forum .row .table-row:hover a {
     text-decoration: underline;
 }
 
 /* section heading layout - description */
-div.forum tr div > h5 {
+div.forum .row div > h5 {
     font-size: medium;
     margin: 1ex 0 1ex 1ex;
 }
 
 /* section heading layout - title */
-div.forum tr div > h5 > a {
+div.forum .row div > h5 > a {
     font-size: large;
     margin-left: 1ex;
 }
 
 /* section heading hover layout - title */
-div.forum tr div:hover > h5 > a {
+div.forum .row div:hover > h5 > a {
     text-decoration: underline;
 }
 
@@ -57,13 +57,8 @@ div.forum div.navigation > * + *, div#thread-details div.navigation > * + * {
 }
 
 /* section heading layout - right side with buttons - set distance between inputs */
-div.forum tr div > h5 + p > * + * {
+div.forum div > h5 + p > * + * {
     margin-left: 2ex;
-}
-
-/* forum table layout */
-div.forum table {
-    width: 100%;
 }
 
 /* forum table header layout */
@@ -71,19 +66,9 @@ div.forum th > p {
     margin: 1ex;
 }
 
-/* forum table cell layout */
-div.forum td > p {
-    margin: 0.5ex;
-}
-
 /* info picture layout (locked thread) */
 div.forum img, div#thread-details img {
     vertical-align: middle;
-}
-
-/* thread headings */
-.headings {
-    text-align: left;
 }
 
 /* highlighted post layout - new post date */

@@ -1027,7 +1027,7 @@ class GameUseCard extends ServiceAbstract
         // process AI challenge (done only if the game is an AI challenge)
         if (count($challenge) > 0) {
             // AI challenge name
-            $game->setAI($challenge['name']);
+            $game->setAiName($challenge['name']);
 
             // override game attributes
             $p1Init = $challenge['init']['his'];
@@ -1128,7 +1128,7 @@ class GameUseCard extends ServiceAbstract
         }
 
         // AI challenge check (rare cards are not allowed to be played by player in this game mode)
-        if (in_array($action, ['play', 'preview', 'test']) && $game->getAI() != '' && $card->getRarity() == 'Rare'
+        if (in_array($action, ['play', 'preview', 'test']) && $game->getAiName() != '' && $card->getRarity() == 'Rare'
             && $playerName != PlayerModel::SYSTEM_NAME) {
             $result['error'] = "Rare cards can't be played in this game mode!";
             return $result;
@@ -1241,7 +1241,7 @@ class GameUseCard extends ServiceAbstract
         if (in_array($action, ['play', 'preview', 'test'])) {
             // update player score (award 'Rares' - number of rare cards played)
             if ($action == 'play' && $card->getRarity() == 'Rare' && !$game->checkGameMode('FriendlyPlay')) {
-                $this->gainAward('Rares');
+                $this->gainAward('rares');
             }
 
             // subtract card cost
@@ -1374,14 +1374,14 @@ class GameUseCard extends ServiceAbstract
             // update player score (awards 'Quarry', 'Magic', 'Dungeons', 'Tower', 'Wall')
             foreach (['Quarry', 'Magic', 'Dungeons', 'Tower', 'Wall'] as $attribute) {
                 if ($myDiffs[$attribute] > 0) {
-                    $this->gainAward($attribute, $myDiffs[$attribute]);
+                    $this->gainAward(strtolower($attribute), $myDiffs[$attribute]);
                 }
             }
 
             // update player score (award 'TowerDamage' and 'WallDamage')
             foreach (['Tower', 'Wall'] as $attribute) {
                 if ($hisDiffs[$attribute] < 0) {
-                    $this->gainAward($attribute . 'Damage', ($hisDiffs[$attribute] * (-1)));
+                    $this->gainAward(strtolower($attribute) . '_damage', ($hisDiffs[$attribute] * (-1)));
                 }
             }
         }
@@ -1543,63 +1543,63 @@ class GameUseCard extends ServiceAbstract
         // tower destruction victory - player
         if ($myData->Tower > 0 && $hisData->Tower <= 0) {
             $game->setWinner($playerName)
-                ->setEndType('Destruction')
+                ->setOutcomeType('Destruction')
                 ->setState('finished');
         }
         // tower destruction victory - opponent
         elseif ($myData->Tower <= 0 && $hisData->Tower > 0) {
             $game->setWinner($opponent)
-                ->setEndType('Destruction')
+                ->setOutcomeType('Destruction')
                 ->setState('finished');
         }
         // tower destruction victory - draw
         elseif ($myData->Tower <= 0 && $hisData->Tower <= 0) {
             $game->setWinner('')
-                ->setEndType('Draw')
+                ->setOutcomeType('Draw')
                 ->setState('finished');
         }
         // tower building victory - player
         elseif ($myData->Tower >= $maxTower && $hisData->Tower < $maxTower) {
             $game->setWinner($playerName)
-                ->setEndType('Construction')
+                ->setOutcomeType('Construction')
                 ->setState('finished');
         }
         // tower building victory - opponent
         elseif ($myData->Tower < $maxTower && $hisData->Tower >= $maxTower) {
             $game->setWinner($opponent)
-                ->setEndType('Construction')
+                ->setOutcomeType('Construction')
                 ->setState('finished');
         }
         // tower building victory - draw
         elseif ($myData->Tower >= $maxTower && $hisData->Tower >= $maxTower) {
             $game->setWinner('')
-                ->setEndType('Draw')
+                ->setOutcomeType('Draw')
                 ->setState('finished');
         }
         // resource accumulation victory - player
         elseif (($myData->Bricks + $myData->Gems + $myData->Recruits) >= $resourceVictory
             && !(($hisData->Bricks + $hisData->Gems + $hisData->Recruits) >= $resourceVictory)) {
             $game->setWinner($playerName)
-                ->setEndType('Resource')
+                ->setOutcomeType('Resource')
                 ->setState('finished');
         }
         // resource accumulation victory - opponent
         elseif (($hisData->Bricks + $hisData->Gems + $hisData->Recruits) >= $resourceVictory
             && !(($myData->Bricks + $myData->Gems + $myData->Recruits) >= $resourceVictory)) {
             $game->setWinner($opponent)
-                ->setEndType('Resource')
+                ->setOutcomeType('Resource')
                 ->setState('finished');
         }
         // resource accumulation victory - draw
         elseif (($myData->Bricks + $myData->Gems + $myData->Recruits) >= $resourceVictory
             && ($hisData->Bricks + $hisData->Gems + $hisData->Recruits) >= $resourceVictory) {
             $game->setWinner('')
-                ->setEndType('Draw')
+                ->setOutcomeType('Draw')
                 ->setState('finished');
         }
         // timeout victory
         elseif ($game->getRound() >= $timeoutVictory) {
-            $game->setEndType('Timeout')
+            $game->setOutcomeType('Timeout')
                 ->setState('finished');
 
             // compare towers
@@ -1637,7 +1637,7 @@ class GameUseCard extends ServiceAbstract
             // else draw
             else {
                 $game->setWinner('')
-                    ->setEndType('Draw');
+                    ->setOutcomeType('Draw');
             }
         }
 

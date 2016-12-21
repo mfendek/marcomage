@@ -70,6 +70,12 @@ class Ajax extends MiddlewareAbstract
                 throw new Exception('Invalid session', Exception::WARNING);
             }
         }
+        // public action - attempt to check session, but allow guest access as well
+        elseif (!empty($request['username']) && !empty($request['session_id'])) {
+            $request['username'] = Encode::postDecode($request['username']);
+
+            $this->beginSession(['username' => $request['username'], 'session_id' => $request['session_id']]);
+        }
 
         $this->result()->enableControllerProcessing();
 

@@ -53,7 +53,7 @@ class GameCheat extends ServiceAbstract
         }
 
         // only allow action in case of standard AI
-        if ($game->getAI() != '') {
+        if ($game->getAiName() != '') {
             throw new Exception('Action only allowed in game vs standard AI', Exception::WARNING);
         }
 
@@ -128,7 +128,7 @@ class GameCheat extends ServiceAbstract
         }
 
         // only allow action in case of standard AI
-        if ($game->getAI() != '') {
+        if ($game->getAiName() != '') {
             throw new Exception('Action only allowed in game vs standard AI', Exception::WARNING);
         }
 
@@ -192,7 +192,7 @@ class GameCheat extends ServiceAbstract
         }
 
         // only allow action in case of standard AI
-        if ($game->getAI() != '') {
+        if ($game->getAiName() != '') {
             throw new Exception('Action only allowed in game vs standard AI', Exception::WARNING);
         }
 

@@ -7,6 +7,7 @@ namespace Util;
 
 use JBBCode\CardEmbed;
 use JBBCode\DefaultCodeDefinitionSet;
+use JBBCode\KeywordEmbed;
 use JBBCode\Parser;
 
 class Encode
@@ -32,8 +33,9 @@ class Encode
         // basic set
         $parser->addCodeDefinitionSet(new DefaultCodeDefinitionSet());
 
-        // custom card code
+        // custom BB code
         $parser->addCodeDefinition(new CardEmbed());
+        $parser->addCodeDefinition(new KeywordEmbed());
 
         // internal link
         $parser->addBBCode('link', '<a href="{param}">{param}</a>', false, false);
@@ -43,11 +45,11 @@ class Encode
 //        $parser->addBBCode('card', '<span class="card-lookup-{option}"><a href="?location=Cards_details&amp;card={option}">{param}</a></span>', true, false);
 
         // keyword link
-        $parser->addBBCode('keyword', '<a href="?location=Cards_keyword_details&amp;keyword={param}">{param}</a>', false, false);
-        $parser->addBBCode('keyword', '<a href="?location=Cards_keyword_details&amp;keyword={option}">{param}</a>', true, false);
+//        $parser->addBBCode('keyword', '<a href="?location=Cards_keyword_details&amp;keyword={param}">{param}</a>', false, false);
+//        $parser->addBBCode('keyword', '<a href="?location=Cards_keyword_details&amp;keyword={option}">{param}</a>', true, false);
 
         // concept link
-        $parser->addBBCode('concept', '<a href="?location=Concepts_details&amp;CurrentConcept={option}">{param}</a>', true, false);
+        $parser->addBBCode('concept', '<a href="?location=Concepts_details&amp;current_concept={option}">{param}</a>', true, false);
 
         // add extended options if necessary
         if ($extended) {

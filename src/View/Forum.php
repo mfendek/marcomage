@@ -37,7 +37,7 @@ class Forum extends TemplateDataAbstract
         $data['is_logged_in'] = ($this->isSession()) ? 'yes' : 'no';
         $data['groups'] = $groups;
         $data['notification'] = $player->getNotification();
-        $data['timezone'] = $setting->getSetting('Timezone');
+        $data['timezone'] = $setting->getSetting('timezone');
 
         return new Result(['forum_overview' => $data]);
     }
@@ -79,13 +79,13 @@ class Forum extends TemplateDataAbstract
 
         $sections = array();
         foreach ($result->data() as $sectionData) {
-            $sections[$sectionData['SectionID']] = $sectionData;
+            $sections[$sectionData['section_id']] = $sectionData;
         }
 
         $data['threads'] = $threads;
         $data['sections'] = $sections;
         $data['notification'] = $player->getNotification();
-        $data['timezone'] = $setting->getSetting('Timezone');
+        $data['timezone'] = $setting->getSetting('timezone');
 
         return new Result(['forum_search' => $data], 'Search');
     }
@@ -104,11 +104,11 @@ class Forum extends TemplateDataAbstract
         $dbEntityForumThread = $this->dbEntity()->forumThread();
 
         // validate current section
-        $this->assertInputNonEmpty(['CurrentSection']);
-        if (!is_numeric($input['CurrentSection']) || $input['CurrentSection'] <= 0) {
+        $this->assertInputNonEmpty(['current_section']);
+        if (!is_numeric($input['current_section']) || $input['current_section'] <= 0) {
             throw new Exception('Invalid forum section id', Exception::WARNING);
         }
-        $sectionId = $input['CurrentSection'];
+        $sectionId = $input['current_section'];
 
         // validate current page
         $currentPage = Input::defaultValue($input, 'section_current_page', 0);
@@ -141,7 +141,7 @@ class Forum extends TemplateDataAbstract
         if ($result->isErrorOrNoEffect()) {
             throw new Exception('Failed to count pages for thread list');
         }
-        $pages = ceil($result[0]['Count'] / ForumThreadModel::THREADS_PER_PAGE);
+        $pages = ceil($result[0]['count'] / ForumThreadModel::THREADS_PER_PAGE);
 
         $setting = $this->getCurrentSettings();
 
@@ -151,9 +151,9 @@ class Forum extends TemplateDataAbstract
         $data['current_page'] = $currentPage;
         $data['create_thread'] = ($this->checkAccess('create_thread')) ? 'yes' : 'no';
         $data['notification'] = $player->getNotification();
-        $data['timezone'] = $setting->getSetting('Timezone');
+        $data['timezone'] = $setting->getSetting('timezone');
 
-        return new Result(['forum_section' => $data], $section['SectionName']);
+        return new Result(['forum_section' => $data], $section['section_name']);
     }
 
     /**
@@ -167,17 +167,15 @@ class Forum extends TemplateDataAbstract
 
         $config = $this->getDic()->config();
         $player = $this->getCurrentPlayer();
-        $dbEntityConcept = $this->dbEntity()->concept();
         $dbEntityForumSection = $this->dbEntity()->forumSection();
         $dbEntityForumPost = $this->dbEntity()->forumPost();
-        $dbEntityReplay = $this->dbEntity()->replay();
 
         // validate thread id
-        $this->assertInputNonEmpty(['CurrentThread']);
-        if (!is_numeric($input['CurrentThread']) || $input['CurrentThread'] <= 0) {
+        $this->assertInputNonEmpty(['current_thread']);
+        if (!is_numeric($input['current_thread']) || $input['current_thread'] <= 0) {
             throw new Exception('Missing forum thread id', Exception::WARNING);
         }
-        $threadId = $input['CurrentThread'];
+        $threadId = $input['current_thread'];
 
         // validate current page
         $currentPage = Input::defaultValue($input, 'CurrentPage', 0);
@@ -188,7 +186,7 @@ class Forum extends TemplateDataAbstract
         $thread = $this->dbEntity()->forumThread()->getThreadAsserted($threadId);
 
         // check if thread isn't deleted
-        if ($thread->getDeleted() == 1) {
+        if ($thread->getIsDeleted() == 1) {
             throw new Exception('Forum thread was already deleted ' . $threadId, Exception::WARNING);
         }
 
@@ -214,7 +212,7 @@ class Forum extends TemplateDataAbstract
         if ($result->isErrorOrNoEffect()) {
             throw new Exception('Failed to count pages for posts list');
         }
-        $pages = ceil($result[0]['Count'] / ForumPostModel::POSTS_PER_PAGE);
+        $pages = ceil($result[0]['count'] / ForumPostModel::POSTS_PER_PAGE);
 
         $setting = $this->getCurrentSettings();
 
@@ -227,26 +225,11 @@ class Forum extends TemplateDataAbstract
         $data['delete_post'] = Input::defaultValue($input, 'delete_post', 0);
         $data['player_name'] = $player->getUsername();
         $data['notification'] = $player->getNotification();
-        $data['timezone'] = $setting->getSetting('Timezone');
+        $data['timezone'] = $setting->getSetting('timezone');
         $data['avatar_path'] = $config['upload_dir']['avatar'];
 
-        // find attached concept
-        $result = $dbEntityConcept->findConcept($threadId);
-        if ($result->isError()) {
-            throw new Exception('Failed to find concept by thread id');
-        }
-        $conceptId = ($result->isSuccess()) ? $result[0]['CardID'] : 0;
-
-        // find attached replay
-        $result = $dbEntityReplay->findReplay($threadId);
-        if ($result->isError()) {
-            throw new Exception('Failed to find replay by thread id');
-        }
-        $replayId = ($result->isSuccess()) ? $result[0]['GameID'] : 0;
-
-        $data['concept'] = $conceptId;
-        $data['replay'] = $replayId;
         $data['posts_per_page'] = ForumPostModel::POSTS_PER_PAGE;
+        $data['is_logged_in'] = ($this->isSession()) ? 'yes' : 'no';
 
         $data['lock_thread'] = ($this->checkAccess('lock_thread')) ? 'yes' : 'no';
         $data['del_all_thread'] = ($this->checkAccess('del_all_thread')) ? 'yes' : 'no';
@@ -271,25 +254,25 @@ class Forum extends TemplateDataAbstract
         $dbEntityForumSection = $this->dbEntity()->forumSection();
 
         // validate section id
-        $this->assertInputNonEmpty(['CurrentSection']);
-        if (!is_numeric($input['CurrentSection']) || $input['CurrentSection'] <= 0) {
+        $this->assertInputNonEmpty(['current_section']);
+        if (!is_numeric($input['current_section']) || $input['current_section'] <= 0) {
             throw new Exception('Invalid forum section id', Exception::WARNING);
         }
 
         // load current forum section
-        $result = $dbEntityForumSection->getSection($input['CurrentSection']);
+        $result = $dbEntityForumSection->getSection($input['current_section']);
         if ($result->isError()) {
             throw new Exception('Failed to load forum section data');
         }
         if ($result->isNoEffect()) {
-            throw new Exception('Forum section not found ' . $input['CurrentSection'], Exception::WARNING);
+            throw new Exception('Forum section not found ' . $input['current_section'], Exception::WARNING);
         }
         $section = $result[0];
 
         $data['section_data'] = $section;
         $data['content'] = Input::defaultValue($input, 'content');
         $data['title'] = Input::defaultValue($input, 'title');
-        $data['change_priority'] = ($this->checkAccess('chng_priority')) ? 'yes' : 'no';
+        $data['change_priority'] = ($this->checkAccess('change_priority')) ? 'yes' : 'no';
 
         return new Result(['forum_thread_new' => $data], 'New thread');
     }
@@ -304,16 +287,16 @@ class Forum extends TemplateDataAbstract
         $input = $this->input();
 
         // validate thread id
-        $this->assertInputNonEmpty(['CurrentThread']);
-        if (!is_numeric($input['CurrentThread']) || $input['CurrentThread'] <= 0) {
+        $this->assertInputNonEmpty(['current_thread']);
+        if (!is_numeric($input['current_thread']) || $input['current_thread'] <= 0) {
             throw new Exception('Invalid forum thread id', Exception::WARNING);
         }
 
-        $threadId = $input['CurrentThread'];
+        $threadId = $input['current_thread'];
         $thread = $this->dbEntity()->forumThread()->getThreadAsserted($threadId);
 
         // check if thread isn't deleted
-        if ($thread->getDeleted() == 1) {
+        if ($thread->getIsDeleted() == 1) {
             throw new Exception('Forum thread was already deleted ' . $threadId, Exception::WARNING);
         }
 
@@ -341,16 +324,16 @@ class Forum extends TemplateDataAbstract
         $dbEntityForumSection = $this->dbEntity()->forumSection();
 
         // validate thread id
-        $this->assertInputNonEmpty(['CurrentThread']);
-        if (!is_numeric($input['CurrentThread']) || $input['CurrentThread'] <= 0) {
+        $this->assertInputNonEmpty(['current_thread']);
+        if (!is_numeric($input['current_thread']) || $input['current_thread'] <= 0) {
             throw new Exception('Invalid forum thread id', Exception::WARNING);
         }
 
-        $threadId = $input['CurrentThread'];
+        $threadId = $input['current_thread'];
         $thread = $this->dbEntity()->forumThread()->getThreadAsserted($threadId);
 
         // check if thread isn't deleted
-        if ($thread->getDeleted() == 1) {
+        if ($thread->getIsDeleted() == 1) {
             throw new Exception('Forum thread was already deleted ' . $threadId, Exception::WARNING);
         }
 
@@ -372,13 +355,13 @@ class Forum extends TemplateDataAbstract
 
         $sections = array();
         foreach ($result->data() as $sectionData) {
-            $sections[$sectionData['SectionID']] = $sectionData;
+            $sections[$sectionData['section_id']] = $sectionData;
         }
 
         $data['thread_data'] = $thread->getData();
         $data['section_data'] = $section;
         $data['SectionList'] = $sections;
-        $data['change_priority'] = ($this->checkAccess('chng_priority')) ? 'yes' : 'no';
+        $data['change_priority'] = ($this->checkAccess('change_priority')) ? 'yes' : 'no';
         $data['move_thread'] = ($this->checkAccess('move_thread')) ? 'yes' : 'no';
 
         return new Result(['forum_thread_edit' => $data], $thread->getTitle());
@@ -410,7 +393,7 @@ class Forum extends TemplateDataAbstract
         $post = $this->dbEntity()->forumPost()->getPostAsserted($input['current_post']);
 
         // check if post isn't deleted
-        if ($post->getDeleted() == 1) {
+        if ($post->getIsDeleted() == 1) {
             throw new Exception('Forum post was already deleted ' . $post->getPostId(), Exception::WARNING);
         }
 
@@ -424,7 +407,7 @@ class Forum extends TemplateDataAbstract
         $thread = $this->dbEntity()->forumThread()->getThreadAsserted($post->getThreadId());
 
         // check if thread isn't deleted
-        if ($thread->getDeleted() == 1) {
+        if ($thread->getIsDeleted() == 1) {
             throw new Exception('Forum thread was already deleted ' . $thread->getThreadId(), Exception::WARNING);
         }
 

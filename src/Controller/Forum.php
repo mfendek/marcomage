@@ -8,6 +8,7 @@ namespace Controller;
 use ArcomageException as Exception;
 use Db\Model\ForumPost as ForumPostModel;
 use Util\Date;
+use Util\Input;
 
 class Forum extends ControllerAbstract
 {
@@ -41,9 +42,9 @@ class Forum extends ControllerAbstract
 
         $this->result()->setCurrent('Forum_section');
 
-        $this->assertParamsNonEmpty(['CurrentSection', 'Priority', 'title', 'content']);
+        $this->assertParamsNonEmpty(['current_section', 'priority', 'title', 'content']);
 
-        $sectionId = $request['CurrentSection'];
+        $sectionId = $request['current_section'];
 
         // validate forum section id
         if (!is_numeric($sectionId)) {
@@ -51,8 +52,8 @@ class Forum extends ControllerAbstract
         }
 
         // check access rights
-        if (!$this->checkAccess('create_thread') || (!$this->checkAccess('chng_priority')
-                && ($request['Priority'] != 'normal'))) {
+        if (!$this->checkAccess('create_thread') || (!$this->checkAccess('change_priority')
+                && ($request['priority'] != 'normal'))) {
             throw new Exception('Access denied', Exception::WARNING);
         }
 
@@ -81,12 +82,12 @@ class Forum extends ControllerAbstract
             throw new Exception('Failed to check thread title');
         }
 
-        $threadId = ($result->isSuccess()) ? $result[0]['ThreadID'] : 0;
+        $threadId = ($result->isSuccess()) ? $result[0]['thread_id'] : 0;
 
         // thread already exists - redirect to that thread
         if ($threadId > 0) {
             $this->result()
-                ->changeRequest('CurrentThread', $threadId)
+                ->changeRequest('current_thread', $threadId)
                 ->setCurrent('Forum_thread');
             throw new Exception('Thread already exists', Exception::WARNING);
         }
@@ -94,7 +95,7 @@ class Forum extends ControllerAbstract
         $db->beginTransaction();
 
         // create new thread
-        $thread = $dbEntityForumThread->createThread($request['title'], $player->getUsername(), $request['Priority'], $sectionId);
+        $thread = $dbEntityForumThread->createThread($request['title'], $player->getUsername(), $request['priority'], $sectionId);
         if (!$thread->save()) {
             $db->rollBack();
             throw new Exception('Failed to create new thread');
@@ -143,13 +144,13 @@ class Forum extends ControllerAbstract
 
         $this->result()->setCurrent('Forum_section');
 
-        $this->assertParamsNonEmpty(['CurrentThread']);
-        $threadId = $request['CurrentThread'];
+        $this->assertParamsNonEmpty(['current_thread']);
+        $threadId = $request['current_thread'];
 
         $thread = $this->dbEntity()->forumThread()->getThreadAsserted($threadId);
 
         // check if thread isn't deleted
-        if ($thread->getDeleted() == 1) {
+        if ($thread->getIsDeleted() == 1) {
             throw new Exception('Forum thread was already deleted ' . $threadId, Exception::WARNING);
         }
 
@@ -184,13 +185,13 @@ class Forum extends ControllerAbstract
 
         $this->result()->setCurrent('Forum_section');
 
-        $this->assertParamsNonEmpty(['CurrentThread']);
-        $threadId = $request['CurrentThread'];
+        $this->assertParamsNonEmpty(['current_thread']);
+        $threadId = $request['current_thread'];
 
         $thread = $this->dbEntity()->forumThread()->getThreadAsserted($threadId);
 
         // check if thread isn't deleted
-        if ($thread->getDeleted() == 1) {
+        if ($thread->getIsDeleted() == 1) {
             throw new Exception('Forum thread was already deleted ' . $threadId, Exception::WARNING);
         }
 
@@ -238,19 +239,17 @@ class Forum extends ControllerAbstract
     {
         $request = $this->request();
 
-        $dbEntityConcept = $this->dbEntity()->concept();
         $dbEntityForumPost = $this->dbEntity()->forumPost();
-        $dbEntityReplay = $this->dbEntity()->replay();
 
         $this->result()->setCurrent('Forum_section');
 
-        $this->assertParamsNonEmpty(['CurrentThread']);
-        $threadId = $request['CurrentThread'];
+        $this->assertParamsNonEmpty(['current_thread']);
+        $threadId = $request['current_thread'];
 
         $thread = $this->dbEntity()->forumThread()->getThreadAsserted($threadId);
 
         // check if thread isn't deleted
-        if ($thread->getDeleted() == 1) {
+        if ($thread->getIsDeleted() == 1) {
             throw new Exception('Forum thread was already deleted ' . $threadId, Exception::WARNING);
         }
 
@@ -262,7 +261,7 @@ class Forum extends ControllerAbstract
         }
 
         // delete thread
-        $thread->setDeleted(1);
+        $thread->setIsDeleted(1);
         if (!$thread->save()) {
             $this->result()->setCurrent('Forum_thread');
             throw new Exception('Failed to delete thread');
@@ -272,40 +271,6 @@ class Forum extends ControllerAbstract
         $result = $dbEntityForumPost->deleteThreadPosts($threadId);
         if ($result->isError()) {
             throw new Exception('Failed to delete thread posts');
-        }
-
-        // check for linked card concepts, update when necessary
-        $result = $dbEntityConcept->findConcept($threadId);
-        if ($result->isError()) {
-            throw new Exception('Failed to find concept by thread id');
-        }
-        $conceptId = ($result->isSuccess()) ? $result[0]['CardID'] : 0;
-
-        // detach concept from thread
-        if ($conceptId > 0) {
-            $concept = $this->dbEntity()->concept()->getConceptAsserted($conceptId);
-
-            $concept->setThreadId(0);
-            if (!$concept->save()) {
-                throw new Exception('Failed to unlink matching concept');
-            }
-        }
-
-        // check for linked replays
-        $result = $dbEntityReplay->findReplay($threadId);
-        if ($result->isError()) {
-            throw new Exception('Failed to find replay by thread id');
-        }
-        $replayId = ($result->isSuccess()) ? $result[0]['GameID'] : 0;
-
-        // detach replay from thread
-        if ($replayId > 0) {
-            $replay = $this->dbEntity()->replay()->getReplayAsserted($replayId);
-
-            $replay->setThreadId(0);
-            if (!$replay->save()) {
-                throw new Exception('Failed to unlink matching replay');
-            }
         }
 
         $this->result()
@@ -323,13 +288,13 @@ class Forum extends ControllerAbstract
 
         $this->result()->setCurrent('Forum_section');
 
-        $this->assertParamsNonEmpty(['CurrentThread']);
-        $threadId = $request['CurrentThread'];
+        $this->assertParamsNonEmpty(['current_thread']);
+        $threadId = $request['current_thread'];
 
         $thread = $this->dbEntity()->forumThread()->getThreadAsserted($threadId);
 
         // check if thread isn't deleted
-        if ($thread->getDeleted() == 1) {
+        if ($thread->getIsDeleted() == 1) {
             throw new Exception('Forum thread was already deleted ' . $threadId, Exception::WARNING);
         }
 
@@ -361,13 +326,13 @@ class Forum extends ControllerAbstract
 
         $this->result()->setCurrent('Forum_section');
 
-        $this->assertParamsNonEmpty(['CurrentThread']);
-        $threadId = $request['CurrentThread'];
+        $this->assertParamsNonEmpty(['current_thread']);
+        $threadId = $request['current_thread'];
 
         $thread = $this->dbEntity()->forumThread()->getThreadAsserted($threadId);
 
         // check if thread isn't deleted
-        if ($thread->getDeleted() == 1) {
+        if ($thread->getIsDeleted() == 1) {
             throw new Exception('Forum thread was already deleted ' . $threadId, Exception::WARNING);
         }
 
@@ -403,7 +368,7 @@ class Forum extends ControllerAbstract
             $this->result()->setCurrent('Forum_post_new');
             throw new Exception('Failed to check latest post creation');
         }
-        $latestPost = ($result->isSuccess()) ? $result[0]['Created'] : 0;
+        $latestPost = ($result->isSuccess()) ? $result[0]['created_at'] : 0;
 
         // anti-spam protection (user is allowed to create posts at most every 5 seconds)
         if ($latestPost && (time() - Date::strToTime($latestPost)) <= 5) {
@@ -441,13 +406,13 @@ class Forum extends ControllerAbstract
 
         $this->result()->setCurrent('Forum_section');
 
-        $this->assertParamsNonEmpty(['CurrentThread']);
-        $threadId = $request['CurrentThread'];
+        $this->assertParamsNonEmpty(['current_thread']);
+        $threadId = $request['current_thread'];
 
         $thread = $this->dbEntity()->forumThread()->getThreadAsserted($threadId);
 
         // check if thread isn't deleted
-        if ($thread->getDeleted() == 1) {
+        if ($thread->getIsDeleted() == 1) {
             throw new Exception('Forum thread was already deleted ' . $threadId, Exception::WARNING);
         }
 
@@ -477,13 +442,13 @@ class Forum extends ControllerAbstract
 
         $this->result()->setCurrent('Forum_section');
 
-        $this->assertParamsNonEmpty(['CurrentThread']);
-        $threadId = $request['CurrentThread'];
+        $this->assertParamsNonEmpty(['current_thread']);
+        $threadId = $request['current_thread'];
 
         $thread = $this->dbEntity()->forumThread()->getThreadAsserted($threadId);
 
         // check if thread isn't deleted
-        if ($thread->getDeleted() == 1) {
+        if ($thread->getIsDeleted() == 1) {
             throw new Exception('Forum thread was already deleted ' . $threadId, Exception::WARNING);
         }
 
@@ -519,13 +484,13 @@ class Forum extends ControllerAbstract
 
         $this->result()->setCurrent('Forum_section');
 
-        $this->assertParamsNonEmpty(['CurrentThread']);
-        $threadId = $request['CurrentThread'];
+        $this->assertParamsNonEmpty(['current_thread']);
+        $threadId = $request['current_thread'];
 
         $thread = $this->dbEntity()->forumThread()->getThreadAsserted($threadId);
 
         // check if thread isn't deleted
-        if ($thread->getDeleted() == 1) {
+        if ($thread->getIsDeleted() == 1) {
             throw new Exception('Forum thread was already deleted ' . $threadId, Exception::WARNING);
         }
 
@@ -549,7 +514,7 @@ class Forum extends ControllerAbstract
         }
 
         // priority input is optional
-        $newPriority = ((isset($request['Priority'])) ? $request['Priority'] : $thread->getPriority());
+        $newPriority = Input::defaultValue($request, 'priority', $thread->getPriority());
 
         // validate priority
         if (!in_array($newPriority, ['normal', 'important', 'sticky'])) {
@@ -558,7 +523,7 @@ class Forum extends ControllerAbstract
         }
 
         // check access rights
-        if (!$this->checkAccess('chng_priority') && $newPriority != $thread->getPriority()) {
+        if (!$this->checkAccess('change_priority') && $newPriority != $thread->getPriority()) {
             throw new Exception('Access denied', Exception::WARNING);
         }
 
@@ -585,13 +550,13 @@ class Forum extends ControllerAbstract
 
         $this->result()->setCurrent('Forum_section');
 
-        $this->assertParamsNonEmpty(['CurrentThread']);
-        $threadId = $request['CurrentThread'];
+        $this->assertParamsNonEmpty(['current_thread']);
+        $threadId = $request['current_thread'];
 
         $thread = $this->dbEntity()->forumThread()->getThreadAsserted($threadId);
 
         // check if thread isn't deleted
-        if ($thread->getDeleted() == 1) {
+        if ($thread->getIsDeleted() == 1) {
             throw new Exception('Forum thread was already deleted ' . $threadId, Exception::WARNING);
         }
 
@@ -638,13 +603,13 @@ class Forum extends ControllerAbstract
 
         $this->result()->setCurrent('Forum_section');
 
-        $this->assertParamsNonEmpty(['CurrentThread']);
-        $threadId = $request['CurrentThread'];
+        $this->assertParamsNonEmpty(['current_thread']);
+        $threadId = $request['current_thread'];
 
         $thread = $this->dbEntity()->forumThread()->getThreadAsserted($threadId);
 
         // check if thread isn't deleted
-        if ($thread->getDeleted() == 1) {
+        if ($thread->getIsDeleted() == 1) {
             throw new Exception('Forum thread was already deleted ' . $threadId, Exception::WARNING);
         }
 
@@ -661,7 +626,7 @@ class Forum extends ControllerAbstract
 
 
         // check if post isn't deleted
-        if ($post->getDeleted() == 1) {
+        if ($post->getIsDeleted() == 1) {
             $this->result()->setCurrent('Forum_section');
             throw new Exception('Forum post was already deleted ' . $post->getPostId(), Exception::WARNING);
         }
@@ -688,13 +653,13 @@ class Forum extends ControllerAbstract
 
         $this->result()->setCurrent('Forum_section');
 
-        $this->assertParamsNonEmpty(['CurrentThread']);
-        $threadId = $request['CurrentThread'];
+        $this->assertParamsNonEmpty(['current_thread']);
+        $threadId = $request['current_thread'];
 
         $thread = $this->dbEntity()->forumThread()->getThreadAsserted($threadId);
 
         // check if thread isn't deleted
-        if ($thread->getDeleted() == 1) {
+        if ($thread->getIsDeleted() == 1) {
             throw new Exception('Forum thread was already deleted ' . $threadId, Exception::WARNING);
         }
 
@@ -711,7 +676,7 @@ class Forum extends ControllerAbstract
         $post = $this->dbEntity()->forumPost()->getPostAsserted($postId);
 
         // check if post isn't deleted
-        if ($post->getDeleted() == 1) {
+        if ($post->getIsDeleted() == 1) {
             throw new Exception('Forum post was already deleted ' . $post->getPostId(), Exception::WARNING);
         }
 
@@ -752,13 +717,13 @@ class Forum extends ControllerAbstract
         // only symbolic functionality... rest is handled below
         $this->result()->setCurrent('Forum_section');
 
-        $this->assertParamsNonEmpty(['CurrentThread']);
-        $threadId = $request['CurrentThread'];
+        $this->assertParamsNonEmpty(['current_thread']);
+        $threadId = $request['current_thread'];
 
         $thread = $this->dbEntity()->forumThread()->getThreadAsserted($threadId);
 
         // check if thread isn't deleted
-        if ($thread->getDeleted() == 1) {
+        if ($thread->getIsDeleted() == 1) {
             throw new Exception('Forum thread was already deleted ' . $threadId, Exception::WARNING);
         }
 
@@ -787,13 +752,13 @@ class Forum extends ControllerAbstract
 
         $this->result()->setCurrent('Forum_section');
 
-        $this->assertParamsNonEmpty(['CurrentThread']);
-        $threadId = $request['CurrentThread'];
+        $this->assertParamsNonEmpty(['current_thread']);
+        $threadId = $request['current_thread'];
 
         $thread = $this->dbEntity()->forumThread()->getThreadAsserted($threadId);
 
         // check if thread isn't deleted
-        if ($thread->getDeleted() == 1) {
+        if ($thread->getIsDeleted() == 1) {
             throw new Exception('Forum thread was already deleted ' . $threadId, Exception::WARNING);
         }
 
@@ -819,11 +784,11 @@ class Forum extends ControllerAbstract
         $post = $this->dbEntity()->forumPost()->getPostAsserted($postId);
 
         // check if post isn't deleted
-        if ($post->getDeleted() == 1) {
+        if ($post->getIsDeleted() == 1) {
             throw new Exception('Forum post was already deleted ' . $post->getPostId(), Exception::WARNING);
         }
 
-        $post->setDeleted(1);
+        $post->setIsDeleted(1);
         if (!$post->save()) {
             throw new Exception('Failed to delete post');
         }
@@ -834,8 +799,8 @@ class Forum extends ControllerAbstract
         // update post count, last author and last post
         $thread
             ->setPostCount($thread->getPostCount() - 1)
-            ->setLastAuthor($lastPost['Author'])
-            ->setLastPost($lastPost['Created']);
+            ->setLastAuthor($lastPost['author'])
+            ->setLastPost($lastPost['created_at']);
 
         if (!$thread->save()) {
             throw new Exception('Failed to save forum thread');
@@ -859,13 +824,13 @@ class Forum extends ControllerAbstract
 
         $this->result()->setCurrent('Forum_section');
 
-        $this->assertParamsNonEmpty(['CurrentThread']);
-        $threadId = $request['CurrentThread'];
+        $this->assertParamsNonEmpty(['current_thread']);
+        $threadId = $request['current_thread'];
 
         $sourceThread = $dbEntityForumThread->getThreadAsserted($threadId);
 
         // check if thread isn't deleted
-        if ($sourceThread->getDeleted() == 1) {
+        if ($sourceThread->getIsDeleted() == 1) {
             throw new Exception('Forum thread was already deleted ' . $threadId, Exception::WARNING);
         }
 
@@ -883,14 +848,14 @@ class Forum extends ControllerAbstract
         $targetThread = $dbEntityForumThread->getThreadAsserted($newThreadId);
 
         // check if thread isn't deleted
-        if ($targetThread->getDeleted() == 1) {
+        if ($targetThread->getIsDeleted() == 1) {
             throw new Exception('Forum thread was already deleted ' . $newThreadId, Exception::WARNING);
         }
 
         $post = $this->dbEntity()->forumPost()->getPostAsserted($postId);
 
         // check if post isn't deleted
-        if ($post->getDeleted() == 1) {
+        if ($post->getIsDeleted() == 1) {
             throw new Exception('Forum post was already deleted ' . $post->getPostId(), Exception::WARNING);
         }
 
@@ -905,8 +870,8 @@ class Forum extends ControllerAbstract
         // update post count, last author and last post
         $sourceThread
             ->setPostCount($sourceThread->getPostCount() - 1)
-            ->setLastAuthor($lastPost['Author'])
-            ->setLastPost($lastPost['Created']);
+            ->setLastAuthor($lastPost['author'])
+            ->setLastPost($lastPost['created_at']);
 
         if (!$sourceThread->save()) {
             throw new Exception('Failed to save forum thread');
@@ -918,8 +883,8 @@ class Forum extends ControllerAbstract
         // update post count, last author and last post
         $targetThread
             ->setPostCount($targetThread->getPostCount() + 1)
-            ->setLastAuthor($lastPost['Author'])
-            ->setLastPost($lastPost['Created']);
+            ->setLastAuthor($lastPost['author'])
+            ->setLastPost($lastPost['created_at']);
 
         if (!$targetThread->save()) {
             throw new Exception('Failed to save forum thread');

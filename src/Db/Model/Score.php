@@ -24,7 +24,7 @@ class Score extends ModelAbstract
      */
     public function getUsername()
     {
-        return $this->getFieldValue('Username');
+        return $this->getFieldValue('username');
     }
 
     /**
@@ -32,7 +32,7 @@ class Score extends ModelAbstract
      */
     public function getLevel()
     {
-        return $this->getFieldValue('Level');
+        return $this->getFieldValue('level');
     }
 
     /**
@@ -40,7 +40,7 @@ class Score extends ModelAbstract
      */
     public function getExp()
     {
-        return $this->getFieldValue('Exp');
+        return $this->getFieldValue('exp');
     }
 
     /**
@@ -48,7 +48,7 @@ class Score extends ModelAbstract
      */
     public function getGold()
     {
-        return $this->getFieldValue('Gold');
+        return $this->getFieldValue('gold');
     }
 
     /**
@@ -56,7 +56,7 @@ class Score extends ModelAbstract
      */
     public function getGameSlots()
     {
-        return $this->getFieldValue('GameSlots');
+        return $this->getFieldValue('game_slots');
     }
 
     /**
@@ -75,7 +75,7 @@ class Score extends ModelAbstract
      */
     public function setLevel($level)
     {
-        return $this->setFieldValue('Level', $level);
+        return $this->setFieldValue('level', $level);
     }
 
     /**
@@ -84,7 +84,7 @@ class Score extends ModelAbstract
      */
     public function setExp($exp)
     {
-        return $this->setFieldValue('Exp', $exp);
+        return $this->setFieldValue('exp', $exp);
     }
 
     /**
@@ -93,7 +93,7 @@ class Score extends ModelAbstract
      */
     public function setGold($gold)
     {
-        return $this->setFieldValue('Gold', $gold);
+        return $this->setFieldValue('gold', $gold);
     }
 
     /**
@@ -102,7 +102,7 @@ class Score extends ModelAbstract
      */
     public function setGameSlots($gameSlots)
     {
-        return $this->setFieldValue('GameSlots', $gameSlots);
+        return $this->setFieldValue('game_slots', $gameSlots);
     }
 
     /**

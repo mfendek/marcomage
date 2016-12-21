@@ -8,6 +8,7 @@ namespace Controller;
 use ArcomageException as Exception;
 use Db\Model\Player as PlayerModel;
 use Util\Date;
+use Util\Input;
 
 class Game extends ControllerAbstract
 {
@@ -464,7 +465,7 @@ class Game extends ControllerAbstract
             $game
                 ->setState('finished')
                 ->setWinner(($game->getPlayer1() == $game->getSurrender()) ? $game->getPlayer2() : $game->getPlayer1())
-                ->setEndType('Surrender');
+                ->setOutcomeType('Surrender');
 
             $this->service()->gameUtil()->saveGameWithReplay($game);
 
@@ -591,7 +592,7 @@ class Game extends ControllerAbstract
         $game
             ->setState('finished')
             ->setWinner(($game->getPlayer1() == $game->getSurrender()) ? $game->getPlayer2() : $game->getPlayer1())
-            ->setEndType('Surrender');
+            ->setOutcomeType('Surrender');
 
         $this->service()->gameUtil()->saveGameWithReplay($game);
 
@@ -657,7 +658,7 @@ class Game extends ControllerAbstract
         $game
             ->setState('finished')
             ->setWinner('')
-            ->setEndType('Abort');
+            ->setOutcomeType('Abort');
 
         $this->service()->gameUtil()->saveGameWithReplay($game);
     }
@@ -716,7 +717,7 @@ class Game extends ControllerAbstract
         $game
             ->setState('finished')
             ->setWinner($player->getUsername())
-            ->setEndType('Abandon');
+            ->setOutcomeType('Abandon');
 
         $this->service()->gameUtil()->saveGameWithReplay($game);
 
@@ -785,7 +786,7 @@ class Game extends ControllerAbstract
             throw new Exception('Access denied', Exception::WARNING);
         }
 
-        $this->assertParamsNonEmpty(['SelectedDeck']);
+        $this->assertParamsNonEmpty(['selected_deck']);
 
         // set game modes
         $gameModes = array();
@@ -799,8 +800,8 @@ class Game extends ControllerAbstract
             $gameModes[] = 'LongMode';
         }
 
-        $turnTimeout = (isset($request['Timeout'])) ? $request['Timeout'] : 0;
-        $deckId = $request['SelectedDeck'];
+        $turnTimeout = Input::defaultValue($request, 'turn_timeout', 0);
+        $deckId = $request['selected_deck'];
 
         $this->service()->gameManagement()->hostGame($player->getUsername(), $deckId, $gameModes, $turnTimeout);
 
@@ -856,12 +857,12 @@ class Game extends ControllerAbstract
             throw new Exception('Access denied', Exception::WARNING);
         }
 
-        $this->assertParamsNonEmpty(['SelectedDeck']);
+        $this->assertParamsNonEmpty(['selected_deck']);
 
         $gameId = $request['join_game'];
         $game = $this->dbEntity()->game()->getGameAsserted($gameId);
 
-        $deckId = $request['SelectedDeck'];
+        $deckId = $request['selected_deck'];
 
         $this->service()->gameManagement()->joinGame($player->getUsername(), $deckId, $game);
 
@@ -887,7 +888,7 @@ class Game extends ControllerAbstract
             throw new Exception('Access denied', Exception::WARNING);
         }
 
-        $this->assertParamsNonEmpty(['SelectedDeck', 'SelectedAIDeck']);
+        $this->assertParamsNonEmpty(['selected_deck', 'selected_ai_deck']);
 
         // set game modes
         $gameModes = array();
@@ -899,7 +900,7 @@ class Game extends ControllerAbstract
         }
 
         $this->service()->gameManagement()->startAiGame(
-            $player->getUsername(), $request['SelectedDeck'], $request['SelectedAIDeck'], $gameModes
+            $player->getUsername(), $request['selected_deck'], $request['selected_ai_deck'], $gameModes
         );
 
         $this->result()
@@ -926,10 +927,10 @@ class Game extends ControllerAbstract
             throw new Exception('Access denied', Exception::WARNING);
         }
 
-        $this->assertParamsNonEmpty(['SelectedDeck', 'selected_challenge']);
+        $this->assertParamsNonEmpty(['selected_deck', 'selected_challenge']);
 
         $this->service()->gameManagement()->startAiChallenge(
-            $player->getUsername(), $request['SelectedDeck'], $request['selected_challenge']
+            $player->getUsername(), $request['selected_deck'], $request['selected_challenge']
         );
 
         $this->result()
@@ -954,9 +955,9 @@ class Game extends ControllerAbstract
             throw new Exception('Access denied', Exception::WARNING);
         }
 
-        $this->assertParamsNonEmpty(['SelectedDeck']);
+        $this->assertParamsNonEmpty(['selected_deck']);
 
-        $deckId = $request['SelectedDeck'];
+        $deckId = $request['selected_deck'];
 
         $game = $this->service()->gameManagement()->startAiGame($player->getUsername(), $deckId, 'starter_deck', []);
 

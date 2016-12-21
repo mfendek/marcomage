@@ -17,13 +17,12 @@ class PdoForumPost extends PdoAbstract
     protected function schema()
     {
         return [
-            'entity_name' => 'forum_posts',
-            'model_name' => 'forum_post',
+            'entity_name' => 'forum_post',
             'primary_fields' => [
-                'PostID',
+                'post_id',
             ],
             'fields' => [
-                'PostID' => [
+                'post_id' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [
@@ -31,25 +30,25 @@ class PdoForumPost extends PdoAbstract
                         EntityAbstract::OPT_AUTO_ID,
                     ],
                 ],
-                'Author' => [
+                'author' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Content' => [
+                'content' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'ThreadID' => [
+                'thread_id' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Deleted' => [
+                'is_deleted' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Created' => [
+                'created_at' => [
                     'type' => EntityAbstract::TYPE_DATETIME,
                     'default' => Date::DATETIME_ZERO,
                     'options' => [EntityAbstract::OPT_INSERT_DATETIME],
@@ -68,9 +67,9 @@ class PdoForumPost extends PdoAbstract
     public function createPost($threadId, $author, $content)
     {
         return parent::createModel([
-            'Author' => $author,
-            'Content' => $content,
-            'ThreadID' => $threadId,
+            'author' => $author,
+            'content' => $content,
+            'thread_id' => $threadId,
         ]);
     }
 
@@ -81,7 +80,7 @@ class PdoForumPost extends PdoAbstract
      */
     public function getPost($postId, $asserted = false)
     {
-        return parent::getModel(['PostID' => $postId], $asserted);
+        return parent::getModel(['post_id' => $postId], $asserted);
     }
 
     /**
@@ -107,15 +106,15 @@ class PdoForumPost extends PdoAbstract
 //
 //        foreach ($deletedPosts as $postId) {
 //            if ($first) {
-//                $postQuery .= '`PostID` = "' . $db->Escape($postId) . '"';
+//                $postQuery .= '`post_id` = "' . $db->Escape($postId) . '"';
 //                $first = false;
 //            }
 //            else {
-//                $postQuery .= ' OR `PostID` = "' . $db->Escape($postId) . '"';
+//                $postQuery .= ' OR `post_id` = "' . $db->Escape($postId) . '"';
 //            }
 //        }
 //
-//        return $db->query('UPDATE `forum_posts` SET `Deleted` = TRUE WHERE ' . $postQuery . '');
+//        return $db->query('UPDATE `forum_post` SET `Deleted` = TRUE WHERE ' . $postQuery . '');
 //    }
 
 //    /**
@@ -133,15 +132,15 @@ class PdoForumPost extends PdoAbstract
 //
 //        foreach ($movedPosts as $postId) {
 //            if ($first) {
-//                $postQuery .= '`PostID` = "' . $db->Escape($postId) . '"';
+//                $postQuery .= '`post_id` = "' . $db->Escape($postId) . '"';
 //                $first = false;
 //            }
 //            else {
-//                $postQuery .= ' OR `PostID` = "' . $db->Escape($postId) . '"';
+//                $postQuery .= ' OR `post_id` = "' . $db->Escape($postId) . '"';
 //            }
 //        }
 //
-//        return $db->query('UPDATE `forum_posts` SET `ThreadID` = "' . $db->Escape($newThread) . '" WHERE ' . $postQuery . '');
+//        return $db->query('UPDATE `forum_post` SET `thread_id` = "' . $db->Escape($newThread) . '" WHERE ' . $postQuery . '');
 //    }
 
     /**
@@ -157,9 +156,9 @@ class PdoForumPost extends PdoAbstract
         $page = (is_numeric($page)) ? $page : 0;
 
         return $db->query(
-            'SELECT `PostID`, `Author`, `Content`, `Created`, IFNULL(`Avatar`,"noavatar.jpg") as `Avatar` FROM `forum_posts`'
-            . ' LEFT OUTER JOIN `settings` ON `forum_posts`.`Author` = `settings`.`Username`'
-            . ' WHERE `ThreadID` = ? AND `Deleted` = FALSE ORDER BY `Created` ASC LIMIT '
+            'SELECT `post_id`, `author`, `content`, `created_at`, IFNULL(`avatar`,"noavatar.jpg") as `avatar` FROM `forum_post`'
+            . ' LEFT OUTER JOIN `setting` ON `forum_post`.`author` = `setting`.`username`'
+            . ' WHERE `thread_id` = ? AND `is_deleted` = FALSE ORDER BY `created_at` ASC LIMIT '
             . (ForumPost::POSTS_PER_PAGE * $page) . ' , ' . ForumPost::POSTS_PER_PAGE . ''
             , [$threadId]
         );
@@ -174,7 +173,7 @@ class PdoForumPost extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('SELECT COUNT(`PostID`) as `Count` FROM `forum_posts` WHERE `ThreadID` = ? AND `Deleted` = FALSE', [
+        return $db->query('SELECT COUNT(`post_id`) as `count` FROM `forum_post` WHERE `thread_id` = ? AND `is_deleted` = FALSE', [
             $threadId
         ]);
     }
@@ -188,7 +187,7 @@ class PdoForumPost extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('SELECT COUNT(`PostID`) as `Count` FROM `forum_posts` WHERE `Author` = ? AND `Deleted` = FALSE', [
+        return $db->query('SELECT COUNT(`post_id`) as `count` FROM `forum_post` WHERE `author` = ? AND `is_deleted` = FALSE', [
             $author
         ]);
     }
@@ -203,7 +202,7 @@ class PdoForumPost extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('SELECT 1 FROM `forum_posts` WHERE `Created` > ? AND `Deleted` = FALSE LIMIT 1', [
+        return $db->query('SELECT 1 FROM `forum_post` WHERE `created_at` > ? AND `is_deleted` = FALSE LIMIT 1', [
             $time
         ]);
     }
@@ -219,7 +218,7 @@ class PdoForumPost extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT `Created` FROM `forum_posts` WHERE `Author` = ? AND `Deleted` = FALSE ORDER BY `Created` DESC LIMIT 1', [
+            'SELECT `created_at` FROM `forum_post` WHERE `author` = ? AND `is_deleted` = FALSE ORDER BY `created_at` DESC LIMIT 1', [
             $author
         ]);
     }
@@ -234,7 +233,7 @@ class PdoForumPost extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('UPDATE `forum_posts` SET `Author` = ? WHERE `Author` = ?', [
+        return $db->query('UPDATE `forum_post` SET `author` = ? WHERE `author` = ?', [
             $newName, $player
         ]);
     }
@@ -248,6 +247,6 @@ class PdoForumPost extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('UPDATE `forum_posts` SET `Deleted` = TRUE WHERE `ThreadID` = ?', [$threadId]);
+        return $db->query('UPDATE `forum_post` SET `is_deleted` = TRUE WHERE `thread_id` = ?', [$threadId]);
     }
 }

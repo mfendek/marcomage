@@ -70,8 +70,8 @@ class Misc extends TemplateDataAbstract
         }
         $decks = $result->data();
 
-        $data['gold'] = $score->getData('Gold');
-        $data['game_slots'] = $score->getData('GameSlots');
+        $data['gold'] = $score->getGold();
+        $data['game_slots'] = $score->getGameSlots();
         $data['deck_slots'] = max(0, count($decks) - DeckModel::DECK_SLOTS);
         $data['game_slot_cost'] = GameModel::GAME_SLOT_COST;
         $data['deck_slot_cost'] = DeckModel::DECK_SLOT_COST;
@@ -79,7 +79,7 @@ class Misc extends TemplateDataAbstract
         $data['tutorial_end'] = PlayerModel::TUTORIAL_END;
 
         // date is handled separately
-        $birthDate = $setting->getSetting('Birthdate');
+        $birthDate = $setting->getSetting('birth_date');
 
         // case 1: birthday is provided
         if ($birthDate && $birthDate != Date::DATE_ZERO) {
@@ -122,8 +122,8 @@ class Misc extends TemplateDataAbstract
         }
 
         // validate selected statistic
-        $currentStatistic = Input::defaultValue($input, 'selected_statistic', 'Played');
-        if (!in_array($currentStatistic, ['Played', 'PlayedTotal', 'Discarded', 'DiscardedTotal', 'Drawn', 'DrawnTotal'])) {
+        $currentStatistic = Input::defaultValue($input, 'selected_statistic', 'played');
+        if (!in_array($currentStatistic, ['played', 'played_total', 'discarded', 'discarded_total', 'drawn', 'drawn_total'])) {
             throw new Exception('Invalid selected statistic', Exception::WARNING);
         }
 
@@ -149,10 +149,10 @@ class Misc extends TemplateDataAbstract
 
             $cards = $values = array();
             foreach ($cardStats as $statData) {
-                $cards[] = $statData['CardID'];
+                $cards[] = $statData['card_id'];
 
                 // assign a statistic value to each card id
-                $values[$statData['CardID']] = $statData['value'];
+                $values[$statData['card_id']] = $statData['value'];
             }
 
             // case 1: card statistics are available

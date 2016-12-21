@@ -19,7 +19,7 @@ class Replay extends ModelAbstract
      */
     public function getGameId()
     {
-        return $this->getFieldValue('GameID');
+        return $this->getFieldValue('game_id');
     }
 
     /**
@@ -27,7 +27,7 @@ class Replay extends ModelAbstract
      */
     public function getPlayer1()
     {
-        return $this->getFieldValue('Player1');
+        return $this->getFieldValue('player1');
     }
 
     /**
@@ -35,7 +35,7 @@ class Replay extends ModelAbstract
      */
     public function getPlayer2()
     {
-        return $this->getFieldValue('Player2');
+        return $this->getFieldValue('player2');
     }
 
     /**
@@ -43,7 +43,7 @@ class Replay extends ModelAbstract
      */
     public function getRounds()
     {
-        return $this->getFieldValue('Rounds');
+        return $this->getFieldValue('rounds');
     }
 
     /**
@@ -51,7 +51,7 @@ class Replay extends ModelAbstract
      */
     public function getTurns()
     {
-        return $this->getFieldValue('Turns');
+        return $this->getFieldValue('turns');
     }
 
     /**
@@ -59,7 +59,7 @@ class Replay extends ModelAbstract
      */
     public function getWinner()
     {
-        return $this->getFieldValue('Winner');
+        return $this->getFieldValue('winner');
     }
 
     /**
@@ -67,7 +67,7 @@ class Replay extends ModelAbstract
      */
     public function getEndType()
     {
-        return $this->getFieldValue('EndType');
+        return $this->getFieldValue('outcome_type');
     }
 
     /**
@@ -75,7 +75,7 @@ class Replay extends ModelAbstract
      */
     public function getGameModes()
     {
-        return $this->getFieldValue('GameModes');
+        return $this->getFieldValue('game_modes');
     }
 
     /**
@@ -83,7 +83,7 @@ class Replay extends ModelAbstract
      */
     public function getAi()
     {
-        return $this->getFieldValue('AI');
+        return $this->getFieldValue('ai_name');
     }
 
     /**
@@ -91,7 +91,7 @@ class Replay extends ModelAbstract
      */
     public function getStarted()
     {
-        return $this->getFieldValue('Started');
+        return $this->getFieldValue('started_at');
     }
 
     /**
@@ -99,15 +99,15 @@ class Replay extends ModelAbstract
      */
     public function getFinished()
     {
-        return $this->getFieldValue('Finished');
+        return $this->getFieldValue('finished_at');
     }
 
     /**
      * @return string
      */
-    public function getDeleted()
+    public function getIsDeleted()
     {
-        return $this->getFieldValue('Deleted');
+        return $this->getFieldValue('is_deleted');
     }
 
     /**
@@ -115,15 +115,7 @@ class Replay extends ModelAbstract
      */
     public function getViews()
     {
-        return $this->getFieldValue('Views');
-    }
-
-    /**
-     * @return int
-     */
-    public function getThreadId()
-    {
-        return $this->getFieldValue('ThreadID');
+        return $this->getFieldValue('views');
     }
 
     /**
@@ -131,7 +123,7 @@ class Replay extends ModelAbstract
      */
     public function getData()
     {
-        return $this->getFieldValue('Data');
+        return $this->getFieldValue('data');
     }
 
     /**
@@ -140,7 +132,7 @@ class Replay extends ModelAbstract
      */
     public function setPlayer1($player1)
     {
-        return $this->setFieldValue('Player1', $player1);
+        return $this->setFieldValue('player1', $player1);
     }
 
     /**
@@ -149,7 +141,7 @@ class Replay extends ModelAbstract
      */
     public function setPlayer2($player2)
     {
-        return $this->setFieldValue('Player2', $player2);
+        return $this->setFieldValue('player2', $player2);
     }
 
     /**
@@ -158,7 +150,7 @@ class Replay extends ModelAbstract
      */
     public function setRounds($rounds)
     {
-        return $this->setFieldValue('Rounds', $rounds);
+        return $this->setFieldValue('rounds', $rounds);
     }
 
     /**
@@ -167,7 +159,7 @@ class Replay extends ModelAbstract
      */
     public function setTurns($turns)
     {
-        return $this->setFieldValue('Turns', $turns);
+        return $this->setFieldValue('turns', $turns);
     }
 
     /**
@@ -176,7 +168,7 @@ class Replay extends ModelAbstract
      */
     public function setWinner($winner)
     {
-        return $this->setFieldValue('Winner', $winner);
+        return $this->setFieldValue('winner', $winner);
     }
 
     /**
@@ -185,7 +177,7 @@ class Replay extends ModelAbstract
      */
     public function setEndType($endType)
     {
-        return $this->setFieldValue('EndType', $endType);
+        return $this->setFieldValue('outcome_type', $endType);
     }
 
     /**
@@ -194,7 +186,7 @@ class Replay extends ModelAbstract
      */
     public function setGameModes(array $gameModes)
     {
-        return $this->setFieldValue('GameModes', $gameModes);
+        return $this->setFieldValue('game_modes', $gameModes);
     }
 
     /**
@@ -203,7 +195,7 @@ class Replay extends ModelAbstract
      */
     public function setAi($ai)
     {
-        return $this->setFieldValue('AI', $ai);
+        return $this->setFieldValue('ai_name', $ai);
     }
 
     /**
@@ -212,7 +204,7 @@ class Replay extends ModelAbstract
      */
     public function setStarted($started)
     {
-        return $this->setFieldValue('Started', $started);
+        return $this->setFieldValue('started_at', $started);
     }
 
     /**
@@ -221,16 +213,16 @@ class Replay extends ModelAbstract
      */
     public function setFinished($finished)
     {
-        return $this->setFieldValue('Finished', $finished);
+        return $this->setFieldValue('finished_at', $finished);
     }
 
     /**
      * @param int $deleted
      * @return $this
      */
-    public function setDeleted($deleted)
+    public function setIsDeleted($deleted)
     {
-        return $this->setFieldValue('Deleted', $deleted);
+        return $this->setFieldValue('is_deleted', $deleted);
     }
 
     /**
@@ -239,16 +231,7 @@ class Replay extends ModelAbstract
      */
     public function setViews($views)
     {
-        return $this->setFieldValue('Views', $views);
-    }
-
-    /**
-     * @param int $threadId
-     * @return $this
-     */
-    public function setThreadId($threadId)
-    {
-        return $this->setFieldValue('ThreadID', $threadId);
+        return $this->setFieldValue('views', $views);
     }
 
     /**
@@ -257,7 +240,7 @@ class Replay extends ModelAbstract
      */
     public function setData(array $data)
     {
-        return $this->setFieldValue('Data', $data);
+        return $this->setFieldValue('data', $data);
     }
 
     /**
@@ -303,7 +286,7 @@ class Replay extends ModelAbstract
         // finish replay in case the game is finished
         if ($game->getState() == 'finished') {
             $this->setWinner($game->getWinner());
-            $this->setEndType($game->getEndType());
+            $this->setEndType($game->getOutcomeType());
             $this->setFinished(Date::timeToStr());
         }
     }

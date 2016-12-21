@@ -53,19 +53,19 @@ class Replay extends TemplateDataAbstract
         // load needed settings
         $setting = $this->getCurrentSettings();
 
-        $data['card_old_look'] = $setting->getSetting('OldCardLook');
-        $data['card_insignias'] = $setting->getSetting('Insignias');
-        $data['card_mini_flags'] = $setting->getSetting('Miniflags');
-        $data['background_img'] = $setting->getSetting('Background');
+        $data['card_old_look'] = $setting->getSetting('old_card_look');
+        $data['card_insignias'] = $setting->getSetting('keyword_insignia');
+        $data['card_mini_flag'] = $setting->getSetting('card_mini_flag');
+        $data['background_img'] = $setting->getSetting('game_bg_image');
 
         // attempt to load setting of both players
         $player1Setting = $this->dbEntity()->setting()->getSetting($player1);
         $player2Setting = $this->dbEntity()->setting()->getSetting($player2);
 
-        $data['p1_card_foils'] = $player1Setting->getSetting('FoilCards');
-        $data['p2_card_foils'] = $player2Setting->getSetting('FoilCards');
-        $data['p1_country'] = $player1Setting->getSetting('Country');
-        $data['p2_country'] = $player2Setting->getSetting('Country');
+        $data['p1_card_foils'] = $player1Setting->getSetting('foil_cards');
+        $data['p2_card_foils'] = $player2Setting->getSetting('foil_cards');
+        $data['p1_country'] = $player1Setting->getSetting('country');
+        $data['p2_country'] = $player2Setting->getSetting('country');
 
         $gameConfig = GameModel::gameConfig();
 
@@ -73,9 +73,8 @@ class Replay extends TemplateDataAbstract
         $data['turns'] = $replay->getTurns();
         $data['round'] = $turnData->Round;
         $data['outcome'] = GameUtil::outcomeMessage($replay->getEndType());
-        $data['end_type'] = $replay->getEndType();
+        $data['outcome_type'] = $replay->getEndType();
         $data['winner'] = $replay->getWinner();
-        $data['thread_id'] = $replay->getThreadId();
         $data['player1'] = $player1;
         $data['player2'] = $player2;
         $data['current_player'] = $turnData->Current;
@@ -214,7 +213,7 @@ class Replay extends TemplateDataAbstract
 
         // default ordering and condition
         $order = Input::defaultValue($input, 'replays_current_order', 'DESC');
-        $cond = Input::defaultValue($input, 'replays_current_condition', 'Finished');
+        $cond = Input::defaultValue($input, 'replays_current_condition', 'finished_at');
 
         $data['order'] = $order;
         $data['cond'] = $cond;
@@ -234,13 +233,13 @@ class Replay extends TemplateDataAbstract
         if ($result->isErrorOrNoEffect()) {
             throw new Exception('Failed to count paged for replays list');
         }
-        $pages = ceil($result[0]['Count'] / \Db\Model\Replay::REPLAYS_PER_PAGE);
+        $pages = ceil($result[0]['count'] / \Db\Model\Replay::REPLAYS_PER_PAGE);
 
         $setting = $this->getCurrentSettings();
 
         $data['list'] = $replays;
         $data['page_count'] = $pages;
-        $data['timezone'] = $setting->getSetting('Timezone');
+        $data['timezone'] = $setting->getSetting('timezone');
         $data['ai_challenges'] = $challengeNames;
 
         return new Result(['replays' => $data]);
@@ -254,6 +253,8 @@ class Replay extends TemplateDataAbstract
     {
         $data = array();
         $input = $this->input();
+
+        $dbEntityThread = $this->dbEntity()->forumThread();
 
         // validate game id
         $this->assertInputNonEmpty(['CurrentReplay']);
@@ -290,6 +291,14 @@ class Replay extends TemplateDataAbstract
                 throw new Exception('Failed to save replay data');
             }
         }
+
+        // find related forum thread
+        $result = $dbEntityThread->replayThread($gameId);
+        if ($result->isError()) {
+            throw new Exception('Failed to find forum thread by replay id');
+        }
+        $threadId = ($result->isSuccess()) ? $result[0]['thread_id'] : 0;
+        $data['discussion'] = ($threadId) ? $threadId : 0;
 
         // add replay view data
         $replayView = $this->formatReplayData($replay, $playerView, $turn);

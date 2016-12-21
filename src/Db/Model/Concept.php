@@ -22,7 +22,7 @@ class Concept extends ModelAbstract
      */
     public function getCardId()
     {
-        return $this->getFieldValue('CardID');
+        return $this->getFieldValue('card_id');
     }
 
     /**
@@ -30,7 +30,7 @@ class Concept extends ModelAbstract
      */
     public function getName()
     {
-        return $this->getFieldValue('Name');
+        return $this->getFieldValue('name');
     }
 
     /**
@@ -38,7 +38,7 @@ class Concept extends ModelAbstract
      */
     public function getRarity()
     {
-        return $this->getFieldValue('Rarity');
+        return $this->getFieldValue('rarity');
     }
 
     /**
@@ -46,7 +46,7 @@ class Concept extends ModelAbstract
      */
     public function getBricks()
     {
-        return $this->getFieldValue('Bricks');
+        return $this->getFieldValue('bricks');
     }
 
     /**
@@ -54,7 +54,7 @@ class Concept extends ModelAbstract
      */
     public function getGems()
     {
-        return $this->getFieldValue('Gems');
+        return $this->getFieldValue('gems');
     }
 
     /**
@@ -62,7 +62,7 @@ class Concept extends ModelAbstract
      */
     public function getRecruits()
     {
-        return $this->getFieldValue('Recruits');
+        return $this->getFieldValue('recruits');
     }
 
     /**
@@ -70,7 +70,7 @@ class Concept extends ModelAbstract
      */
     public function getEffect()
     {
-        return $this->getFieldValue('Effect');
+        return $this->getFieldValue('effect');
     }
 
     /**
@@ -78,7 +78,7 @@ class Concept extends ModelAbstract
      */
     public function getKeywords()
     {
-        return $this->getFieldValue('Keywords');
+        return $this->getFieldValue('keywords');
     }
 
     /**
@@ -86,7 +86,7 @@ class Concept extends ModelAbstract
      */
     public function getPicture()
     {
-        return $this->getFieldValue('Picture');
+        return $this->getFieldValue('picture');
     }
 
     /**
@@ -94,7 +94,7 @@ class Concept extends ModelAbstract
      */
     public function getNote()
     {
-        return $this->getFieldValue('Note');
+        return $this->getFieldValue('note');
     }
 
     /**
@@ -102,7 +102,7 @@ class Concept extends ModelAbstract
      */
     public function getState()
     {
-        return $this->getFieldValue('State');
+        return $this->getFieldValue('state');
     }
 
     /**
@@ -110,23 +110,15 @@ class Concept extends ModelAbstract
      */
     public function getAuthor()
     {
-        return $this->getFieldValue('Author');
+        return $this->getFieldValue('author');
     }
 
     /**
      * @return string
      */
-    public function getLastChange()
+    public function getModifiedAt()
     {
-        return $this->getFieldValue('LastChange');
-    }
-
-    /**
-     * @return int
-     */
-    public function getThreadId()
-    {
-        return $this->getFieldValue('ThreadID');
+        return $this->getFieldValue('modified_at');
     }
 
     /**
@@ -147,8 +139,7 @@ class Concept extends ModelAbstract
             'note' => $this->getNote(),
             'state' => $this->getState(),
             'author' => $this->getAuthor(),
-            'lastchange' => $this->getLastChange(),
-            'threadid' => $this->getThreadId(),
+            'modified_at' => $this->getModifiedAt(),
         ];
     }
 
@@ -158,7 +149,7 @@ class Concept extends ModelAbstract
      */
     public function setName($name)
     {
-        return $this->setFieldValue('Name', $name);
+        return $this->setFieldValue('name', $name);
     }
 
     /**
@@ -167,7 +158,7 @@ class Concept extends ModelAbstract
      */
     public function setRarity($rarity)
     {
-        return $this->setFieldValue('Rarity', $rarity);
+        return $this->setFieldValue('rarity', $rarity);
     }
 
     /**
@@ -176,7 +167,7 @@ class Concept extends ModelAbstract
      */
     public function setBricks($bricks)
     {
-        return $this->setFieldValue('Bricks', $bricks);
+        return $this->setFieldValue('bricks', $bricks);
     }
 
     /**
@@ -185,7 +176,7 @@ class Concept extends ModelAbstract
      */
     public function setGems($gems)
     {
-        return $this->setFieldValue('Gems', $gems);
+        return $this->setFieldValue('gems', $gems);
     }
 
     /**
@@ -194,7 +185,7 @@ class Concept extends ModelAbstract
      */
     public function setRecruits($recruits)
     {
-        return $this->setFieldValue('Recruits', $recruits);
+        return $this->setFieldValue('recruits', $recruits);
     }
 
     /**
@@ -203,7 +194,7 @@ class Concept extends ModelAbstract
      */
     public function setEffect($effect)
     {
-        return $this->setFieldValue('Effect', $effect);
+        return $this->setFieldValue('effect', $effect);
     }
 
     /**
@@ -212,7 +203,7 @@ class Concept extends ModelAbstract
      */
     public function setKeywords($keywords)
     {
-        return $this->setFieldValue('Keywords', $keywords);
+        return $this->setFieldValue('keywords', $keywords);
     }
 
     /**
@@ -221,7 +212,7 @@ class Concept extends ModelAbstract
      */
     public function setPicture($picture)
     {
-        return $this->setFieldValue('Picture', $picture);
+        return $this->setFieldValue('picture', $picture);
     }
 
     /**
@@ -230,7 +221,7 @@ class Concept extends ModelAbstract
      */
     public function setNote($note)
     {
-        return $this->setFieldValue('Note', $note);
+        return $this->setFieldValue('note', $note);
     }
 
     /**
@@ -239,7 +230,7 @@ class Concept extends ModelAbstract
      */
     public function setState($state)
     {
-        return $this->setFieldValue('State', $state);
+        return $this->setFieldValue('state', $state);
     }
 
     /**
@@ -248,24 +239,15 @@ class Concept extends ModelAbstract
      */
     public function setAuthor($author)
     {
-        return $this->setFieldValue('Author', $author);
+        return $this->setFieldValue('author', $author);
     }
 
     /**
      * @param string $lastChange
      * @return $this
      */
-    public function setLastChange($lastChange)
+    public function setModifiedAt($lastChange)
     {
-        return $this->setFieldValue('LastChange', $lastChange);
-    }
-
-    /**
-     * @param int $threadId
-     * @return $this
-     */
-    public function setThreadId($threadId)
-    {
-        return $this->setFieldValue('ThreadID', $threadId);
+        return $this->setFieldValue('modified_at', $lastChange);
     }
 }

@@ -76,15 +76,15 @@ class Game extends TemplateDataAbstract
         // load needed settings
         $setting = $this->dbEntity()->setting()->getSettingAsserted($playerName);
 
-        $data['card_old_look'] = $setting->getSetting('OldCardLook');
-        $data['card_insignias'] = $setting->getSetting('Insignias');
-        $data['p1_card_foils'] = $setting->getSetting('FoilCards');
-        $data['p2_card_foils'] = $opponentSetting->getSetting('FoilCards');
-        $data['card_mini_flags'] = $setting->getSetting('Miniflags');
+        $data['card_old_look'] = $setting->getSetting('old_card_look');
+        $data['card_insignias'] = $setting->getSetting('keyword_insignia');
+        $data['p1_card_foils'] = $setting->getSetting('foil_cards');
+        $data['p2_card_foils'] = $opponentSetting->getSetting('foil_cards');
+        $data['card_mini_flag'] = $setting->getSetting('card_mini_flag');
 
-        $data['p1_country'] = $setting->getSetting('Country');
-        $data['p2_country'] = $opponentSetting->getSetting('Country');
-        $data['background_img'] = $setting->getSetting('Background');
+        $data['p1_country'] = $setting->getSetting('country');
+        $data['p2_country'] = $opponentSetting->getSetting('country');
+        $data['background_img'] = $setting->getSetting('game_bg_image');
 
         $gameConfig = GameModel::gameConfig();
 
@@ -93,7 +93,7 @@ class Game extends TemplateDataAbstract
         $data['surrender'] = $game->getSurrender();
         $data['player_name'] = $player->getUsername();
         $data['opponent_name'] = $opponentName;
-        $data['ai_name'] = $game->getAI();
+        $data['ai_name'] = $game->getAiName();
         $data['system_name'] = PlayerModel::SYSTEM_NAME;
         $data['current'] = $game->getCurrent();
         $data['hidden_cards'] = ($game->checkGameMode('HiddenCards')) ? 'yes' : 'no';
@@ -118,7 +118,7 @@ class Game extends TemplateDataAbstract
             $entry['suggested'] = (!empty($decision) && $decision['cardpos'] == $i && $decision['action'] == 'play') ? 'yes' : 'no';
 
             // block playability of rare card is case of AI challenge
-            $blocked = ($game->getAI() != '' && $card['rarity'] == 'Rare');
+            $blocked = ($game->getAiName() != '' && $card['rarity'] == 'Rare');
 
             // playability
             $entry['playable'] = ($player1Data->Bricks >= $card['bricks'] && $player1Data->Gems >= $card['gems']
@@ -246,13 +246,13 @@ class Game extends TemplateDataAbstract
 
         // process player's settings
         $data['player_name'] = $player->getUsername();
-        $data['timezone'] = $setting->getSetting('Timezone');
-        $data['blind_flag'] = $setting->getSetting('BlindFlag');
-        $data['friendly_flag'] = $setting->getSetting('FriendlyFlag');
-        $data['long_flag'] = $setting->getSetting('LongFlag');
-        $data['random_deck_option'] = $setting->getSetting('RandomDeck');
-        $data['auto_refresh'] = $setting->getSetting('Autorefresh');
-        $data['timeout'] = $setting->getSetting('Timeout');
+        $data['timezone'] = $setting->getSetting('timezone');
+        $data['blind_flag'] = $setting->getSetting('blind_flag');
+        $data['friendly_flag'] = $setting->getSetting('friendly_flag');
+        $data['long_flag'] = $setting->getSetting('long_flag');
+        $data['random_deck_option'] = $setting->getSetting('use_random_deck');
+        $data['auto_refresh'] = $setting->getSetting('auto_refresh_timer');
+        $data['timeout'] = $setting->getSetting('game_turn_timeout');
         $data['system_name'] = PlayerModel::SYSTEM_NAME;
 
         $score = $this->dbEntity()->score()->getScoreAsserted($player->getUsername());
@@ -271,49 +271,49 @@ class Game extends TemplateDataAbstract
         if (count($list) > 0) {
             foreach ($list as $i => $gameData) {
                 // determine opponent name
-                $opponentName = ($gameData['Player1'] != $player->getUsername()) ? $gameData['Player1'] : $gameData['Player2'];
+                $opponentName = ($gameData['player1'] != $player->getUsername()) ? $gameData['player1'] : $gameData['player2'];
 
                 // determine opponent's activity (only in case of human player)
                 $lastSeen = Date::timeToStr();
-                if (strpos($gameData['GameModes'], 'AIMode') === false) {
+                if (strpos($gameData['game_modes'], 'AIMode') === false) {
                     $opponent = $this->dbEntity()->player()->getPlayerAsserted($opponentName);
 
-                    $lastSeen = $opponent->getLastQuery();
+                    $lastSeen = $opponent->getLastActivity();
                 }
                 $inactivity = time() - Date::strToTime($lastSeen);
 
                 $timeout = '';
-                if ($gameData['Timeout'] > 0 && $gameData['Current'] == $player->getUsername()
+                if ($gameData['turn_timeout'] > 0 && $gameData['current'] == $player->getUsername()
                     && $opponentName != PlayerModel::SYSTEM_NAME) {
                     // case 1: time is up
-                    if (time() - Date::strToTime($gameData['Last Action']) >= $gameData['Timeout']) {
+                    if (time() - Date::strToTime($gameData['last_action_at']) >= $gameData['turn_timeout']) {
                         $timeout = 'time is up';
                     }
                     // case 2: there is still some time left
                     else {
-                        $timeout = Input::formatTimeDiff($gameData['Timeout'] - time() + Date::strToTime($gameData['Last Action']));
+                        $timeout = Input::formatTimeDiff($gameData['turn_timeout'] - time() + Date::strToTime($gameData['last_action_at']));
                     }
                 }
 
                 $data['list'][$i] = [
                     'opponent' => $opponentName,
-                    'ready' => ($gameData['Current'] == $player->getUsername()) ? 'yes' : 'no',
-                    'game_id' => $gameData['GameID'],
-                    'game_state' => $gameData['State'],
-                    'round' => $gameData['Round'],
+                    'ready' => ($gameData['current'] == $player->getUsername()) ? 'yes' : 'no',
+                    'game_id' => $gameData['game_id'],
+                    'game_state' => $gameData['state'],
+                    'round' => $gameData['round'],
                     'active' => ($inactivity < 10 * Date::MINUTE) ? 'yes' : 'no',
                     'is_dead' => ($inactivity > 3 * Date::WEEK) ? 'yes' : 'no',
-                    'game_action' => $gameData['Last Action'],
-                    'finish_allowed' => (time() - Date::strToTime($gameData['Last Action']) >= 3 * Date::WEEK
-                        && $gameData['Current'] != $player->getUsername()
+                    'game_action' => $gameData['last_action_at'],
+                    'finish_allowed' => (time() - Date::strToTime($gameData['last_action_at']) >= 3 * Date::WEEK
+                        && $gameData['current'] != $player->getUsername()
                         && $opponentName != PlayerModel::SYSTEM_NAME) ? 'yes' : 'no',
-                    'finish_move' => ($gameData['Timeout'] > 0
-                        && time() - Date::strToTime($gameData['Last Action']) >= $gameData['Timeout']
-                        && $gameData['Current'] != $player->getUsername()
+                    'finish_move' => ($gameData['turn_timeout'] > 0
+                        && time() - Date::strToTime($gameData['last_action_at']) >= $gameData['turn_timeout']
+                        && $gameData['current'] != $player->getUsername()
                         && $opponentName != PlayerModel::SYSTEM_NAME) ? 'yes' : 'no',
-                    'game_modes' => $gameData['GameModes'],
+                    'game_modes' => $gameData['game_modes'],
                     'timeout' => $timeout,
-                    'ai' => $gameData['AI'],
+                    'ai' => $gameData['ai_name'],
                 ];
             }
         }
@@ -346,8 +346,8 @@ class Game extends TemplateDataAbstract
 
         $data['free_slots'] = $this->service()->gameUtil()->countFreeSlots($player->getUsername());
         $data['decks'] = $decks;
-        $data['random_deck'] = (count($decks) > 0) ? $decks[Random::arrayMtRand($decks)]['DeckID'] : '';
-        $data['random_ai_deck'] = (count($decks) > 0) ? $decks[Random::arrayMtRand($decks)]['DeckID'] : '';
+        $data['random_deck'] = (count($decks) > 0) ? $decks[Random::arrayMtRand($decks)]['deck_id'] : '';
+        $data['random_ai_deck'] = (count($decks) > 0) ? $decks[Random::arrayMtRand($decks)]['deck_id'] : '';
         $result = $defEntityChallenge->listChallenges();
         if ($result->isError()) {
             throw new Exception('Failed to list AI challenges');
@@ -357,21 +357,21 @@ class Game extends TemplateDataAbstract
         // compute opponent's activity for free games
         if (count($freeGames) > 0) {
             foreach ($freeGames as $i => $gameData) {
-                $opponentName = $gameData['Player1'];
+                $opponentName = $gameData['player1'];
 
                 $opponent = $this->dbEntity()->player()->getPlayerAsserted($opponentName);
                 $setting = $this->dbEntity()->setting()->getSettingAsserted($opponentName);
 
-                $inactivity = time() - Date::strToTime($opponent->getLastQuery());
+                $inactivity = time() - Date::strToTime($opponent->getLastActivity());
 
                 $data['free_games'][$i] = [
                     'opponent' => $opponentName,
-                    'game_id' => $gameData['GameID'],
+                    'game_id' => $gameData['game_id'],
                     'active' => ($inactivity < 10 * Date::MINUTE) ? 'yes' : 'no',
-                    'status' => $setting->getSetting('Status'),
-                    'game_action' => $gameData['Last Action'],
-                    'game_modes' => $gameData['GameModes'],
-                    'timeout' => $gameData['Timeout'],
+                    'status' => $setting->getSetting('status'),
+                    'game_action' => $gameData['last_action_at'],
+                    'game_modes' => $gameData['game_modes'],
+                    'timeout' => $gameData['turn_timeout'],
                 ];
             }
         }
@@ -380,10 +380,10 @@ class Game extends TemplateDataAbstract
         if (count($hostedGames) > 0) {
             foreach ($hostedGames as $i => $gameData) {
                 $data['hosted_games'][$i] = [
-                    'game_id' => $gameData['GameID'],
-                    'game_action' => $gameData['Last Action'],
-                    'game_modes' => $gameData['GameModes'],
-                    'timeout' => $gameData['Timeout'],
+                    'game_id' => $gameData['game_id'],
+                    'game_action' => $gameData['last_action_at'],
+                    'game_modes' => $gameData['game_modes'],
+                    'timeout' => $gameData['turn_timeout'],
                 ];
             }
         }
@@ -420,7 +420,7 @@ class Game extends TemplateDataAbstract
         // prepare additional data
         $data = array();
 
-        $data['chat'] = (\Access::checkAccess($player->getUserType(), 'chat')) ? 'yes' : 'no';
+        $data['chat'] = (PlayerModel::checkAccess($player->getUserType(), 'chat')) ? 'yes' : 'no';
 
         $score = $this->dbEntity()->score()->getScoreAsserted($player->getUsername());
 
@@ -450,8 +450,8 @@ class Game extends TemplateDataAbstract
         // load needed settings
         $setting = $this->dbEntity()->setting()->getSettingAsserted($player->getUsername());
 
-        $data['timezone'] = $setting->getSetting('Timezone');
-        $data['play_buttons'] = $setting->getSetting('PlayButtons');
+        $data['timezone'] = $setting->getSetting('timezone');
+        $data['play_buttons'] = $setting->getSetting('play_card_button');
 
         $game = $dbEntityGame->getGameAsserted($gameId);
 
@@ -459,17 +459,17 @@ class Game extends TemplateDataAbstract
         $player2 = $game->getPlayer2();
 
         // disable auto-refresh if it's player's turn
-        $data['auto_refresh'] = ($player->getUsername() == $game->getCurrent()) ? 0 : $setting->getSetting('Autorefresh');
+        $data['auto_refresh'] = ($player->getUsername() == $game->getCurrent()) ? 0 : $setting->getSetting('auto_refresh_timer');
 
         $opponentName = ($player1 != $player->getUsername()) ? $player1 : $player2;
 
         // disable auto ai move if it's player's turn or if this is PvP game
         $data['auto_ai'] = ($player->getUsername() == $game->getCurrent()
-            || $opponentName != PlayerModel::SYSTEM_NAME) ? 0 : $setting->getSetting('AutoAi');
+            || $opponentName != PlayerModel::SYSTEM_NAME) ? 0 : $setting->getSetting('auto_ai_timer');
 
         $data['round'] = $game->getRound();
-        $data['outcome'] = GameUtil::outcomeMessage($game->getEndType());
-        $data['end_type'] = $game->getEndType();
+        $data['outcome'] = GameUtil::outcomeMessage($game->getOutcomeType());
+        $data['outcome_type'] = $game->getOutcomeType();
         $data['winner'] = $game->getWinner();
         $data['has_note'] = ($game->getNote($player->getUsername()) != '') ? 'yes' : 'no';
         $data['game_note'] = $game->getNote($player->getUsername());
@@ -501,7 +501,7 @@ class Game extends TemplateDataAbstract
 
         $nextGames = array();
         foreach ($result->data() as $nextGameData) {
-            $nextGames[$nextGameData['GameID']] = $nextGameData['Opponent'];
+            $nextGames[$nextGameData['game_id']] = $nextGameData['Opponent'];
         }
 
         $data['next_game_button'] = (count($nextGames) > 0) ? 'yes' : 'no';
@@ -533,14 +533,14 @@ class Game extends TemplateDataAbstract
         $data['timeout'] = $timeout;
 
         // chat board
-        $data['display_avatar'] = $setting->getSetting('Avatargame');
+        $data['display_avatar'] = $setting->getSetting('in_game_avatar');
 
         $data['avatar_path'] = $config['upload_dir']['avatar'];
-        $data['p1_avatar'] = $setting->getSetting('Avatar');
-        $data['p2_avatar'] = $opponentSetting->getSetting('Avatar');
+        $data['p1_avatar'] = $setting->getSetting('avatar');
+        $data['p2_avatar'] = $opponentSetting->getSetting('avatar');
 
-        $data['integrated_chat'] = $setting->getSetting('IntegratedChat');
-        $data['reverse_chat'] = $reverseChat = $setting->getSetting('Chatorder');
+        $data['integrated_chat'] = $setting->getSetting('integrated_chat');
+        $data['reverse_chat'] = $reverseChat = $setting->getSetting('chat_reverse_order');
         $order = ($reverseChat == 'yes') ? 'ASC' : 'DESC';
 
         // list in-game chat messages
@@ -606,9 +606,9 @@ class Game extends TemplateDataAbstract
         // load needed settings
         $setting = $this->getCurrentSettings();
 
-        $data['card_old_look'] = $setting->getSetting('OldCardLook');
-        $data['card_insignias'] = $setting->getSetting('Insignias');
-        $data['card_foils'] = $setting->getSetting('FoilCards');
+        $data['card_old_look'] = $setting->getSetting('old_card_look');
+        $data['card_insignias'] = $setting->getSetting('keyword_insignia');
+        $data['card_foils'] = $setting->getSetting('foil_cards');
         $data['current_game'] = $gameId;
 
         // load card data

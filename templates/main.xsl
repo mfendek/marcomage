@@ -316,6 +316,9 @@
                                         <img src="img/new_card.gif" alt="" width="10" height="14" title="New card concept"/>
                                     </a>
                                 </xsl:if>
+                                <button class="button-icon" type="submit" name="reset_notification" value="{am:urlEncode($current_section)}" title="Clear notifications">
+                                    <span class="glyphicon glyphicon-repeat"/>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -361,9 +364,6 @@
                             <span class="glyphicon glyphicon-{@icon}"/>
                         </a>
                     </xsl:for-each>
-                    <button class="button-icon" type="submit" name="reset_notification" value="{am:urlEncode($current_section)}" title="Reset notifications">
-                        <span class="glyphicon glyphicon-pushpin"/>
-                    </button>
                     <button class="button-icon" type="submit" name="Logout" accesskey="q" title="Logout">
                         <span class="glyphicon glyphicon-log-out"/>
                     </button>

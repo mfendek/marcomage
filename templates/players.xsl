@@ -55,29 +55,29 @@
 
                         <!-- players list sort -->
                         <xsl:variable name="sortTypes">
-                            <value name="Level" value="Level"/>
-                            <value name="Username" value="Username"/>
-                            <value name="Country" value="Country"/>
-                            <value name="Quarry gained" value="Quarry"/>
-                            <value name="Magic gained" value="Magic"/>
-                            <value name="Dungeons gained" value="Dungeons"/>
-                            <value name="Rares played" value="Rares"/>
-                            <value name="AI challenges" value="Challenges"/>
-                            <value name="Tower built" value="Tower"/>
-                            <value name="Wall built" value="Wall"/>
-                            <value name="Tower destroyed" value="TowerDamage"/>
-                            <value name="Wall destroyed" value="WallDamage"/>
-                            <value name="Assassin" value="Assassin"/>
-                            <value name="Builder" value="Builder"/>
-                            <value name="Carpenter" value="Carpenter"/>
-                            <value name="Collector" value="Collector"/>
-                            <value name="Desolator" value="Desolator"/>
-                            <value name="Dragon" value="Dragon"/>
-                            <value name="Gentle touch" value="Gentle_touch"/>
-                            <value name="Saboteur" value="Saboteur"/>
-                            <value name="Snob" value="Snob"/>
-                            <value name="Survivor" value="Survivor"/>
-                            <value name="Titan" value="Titan"/>
+                            <value name="Level" value="level"/>
+                            <value name="Username" value="username"/>
+                            <value name="Country" value="country"/>
+                            <value name="Quarry gained" value="quarry"/>
+                            <value name="Magic gained" value="magic"/>
+                            <value name="Dungeons gained" value="dungeons"/>
+                            <value name="Rares played" value="rares"/>
+                            <value name="AI challenges" value="ai_challenges"/>
+                            <value name="Tower built" value="tower"/>
+                            <value name="Wall built" value="wall"/>
+                            <value name="Tower destroyed" value="tower_damage"/>
+                            <value name="Wall destroyed" value="wall_damage"/>
+                            <value name="Assassin" value="assassin"/>
+                            <value name="Builder" value="builder"/>
+                            <value name="Carpenter" value="carpenter"/>
+                            <value name="Collector" value="collector"/>
+                            <value name="Desolator" value="desolator"/>
+                            <value name="Dragon" value="dragon"/>
+                            <value name="Gentle touch" value="gentle_touch"/>
+                            <value name="Saboteur" value="saboteur"/>
+                            <value name="Snob" value="snob"/>
+                            <value name="Survivor" value="survivor"/>
+                            <value name="Titan" value="titan"/>
                         </xsl:variable>
                         <xsl:copy-of select="am:htmlSelectBox('players_sort', $param/players_sort, $sortTypes, '')"/>
 
@@ -99,18 +99,16 @@
             </xsl:choose>
 
             <!-- begin players list -->
-            <div class="responsive-table skin-text">
+            <div class="responsive-table table-sm skin-text">
                 <!-- table header -->
                 <div class="row">
                     <div class="col-sm-2" />
 
                     <xsl:variable name="columns">
-                        <column name="Username" text="Username" sortable="yes" size="3"/>
-                        <column name="Level" text="Level" sortable="yes" size="1"/>
-                        <column name="Wins" text="Wins" sortable="no" size="1"/>
-                        <column name="Losses" text="Losses" sortable="no" size="1"/>
-                        <column name="Draws" text="Draws" sortable="no" size="1"/>
-                        <column name="Status" text="Status" sortable="no" size="2"/>
+                        <column name="username" text="Username" sortable="yes" size="3"/>
+                        <column name="level" text="Level" sortable="yes" size="1"/>
+                        <column name="score" text="Wins / Losses / Draws" sortable="no" size="3"/>
+                        <column name="status" text="Status" sortable="no" size="2"/>
                         <column name="other" text="" sortable="no" size="1"/>
                     </xsl:variable>
 
@@ -131,22 +129,8 @@
                                 </p>
                             </xsl:if>
                         </div>
-
-                        <xsl:variable name="playerActivity">
-                            <!-- choose name color according to inactivity time -->
-                            <xsl:choose>
-                                <!-- 3 weeks = dead -->
-                                <xsl:when test="inactivity &gt; 60*60*24*7*3">p_dead</xsl:when>
-                                <!-- 1 week = inactive -->
-                                <xsl:when test="inactivity &gt; 60*60*24*7*1">p_inactive</xsl:when>
-                                <!-- 10 minutes = offline -->
-                                <xsl:when test="inactivity &gt; 60*10       ">p_offline</xsl:when>
-                                <!-- online -->
-                                <xsl:otherwise>p_online</xsl:otherwise>
-                            </xsl:choose>
-                        </xsl:variable>
                         <div class="col-sm-3">
-                            <p class="{$playerActivity}">
+                            <p>
                                 <a class="achievement-link" href="{am:makeUrl('Players_achievements', 'Profile', name)}">
                                     <img class="icon" height="16" width="16" src="img/achievement.png" alt="{name}'s achievements" title="{name}'s achievements"/>
                                 </a>
@@ -154,6 +138,27 @@
                                 <a class="profile" href="{am:makeUrl('Players_details', 'Profile', name)}">
                                     <xsl:value-of select="name"/>
                                 </a>
+
+                                <!-- choose name color according to inactivity time -->
+                                <xsl:choose>
+                                    <!-- 3 weeks = dead -->
+                                    <xsl:when test="inactivity &gt; 60 * 60 * 24 * 7 * 3">
+                                        <span class="icon-player-activity dead" title="dead"/>
+                                    </xsl:when>
+                                    <!-- 1 week = inactive -->
+                                    <xsl:when test="inactivity &gt; 60 * 60 * 24 * 7 * 1">
+                                        <span class="icon-player-activity inactive" title="inactive"/>
+                                    </xsl:when>
+                                    <!-- 10 minutes = offline -->
+                                    <xsl:when test="inactivity &gt; 60 * 10">
+                                        <span class="icon-player-activity offline" title="offline"/>
+                                    </xsl:when>
+                                    <!-- online -->
+                                    <xsl:otherwise>
+                                        <span class="icon-player-activity online" title="online"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+
                                 <xsl:if test="rank != 'user'">
                                     <!-- player rank -->
                                     <img class="icon" width="9" height="12" src="img/{rank}.png" alt="rank flag" title="{rank}"/>
@@ -162,9 +167,15 @@
                         </div>
 
                         <div class="col-sm-1"><p><xsl:value-of select="level"/></p></div>
-                        <div class="col-sm-1"><p><xsl:value-of select="wins"/></p></div>
-                        <div class="col-sm-1"><p><xsl:value-of select="losses"/></p></div>
-                        <div class="col-sm-1"><p><xsl:value-of select="draws"/></p></div>
+                        <div class="col-sm-3">
+                            <p>
+                                <xsl:value-of select="wins"/>
+                                <xsl:text> / </xsl:text>
+                                <xsl:value-of select="losses"/>
+                                <xsl:text> / </xsl:text>
+                                <xsl:value-of select="draws"/>
+                            </p>
+                        </div>
 
                         <div class="col-sm-2">
                             <p>
@@ -428,7 +439,7 @@
                                         <span>
                                             <xsl:value-of select="count"/> (<xsl:value-of select="ratio"/>%)
                                         </span>
-                                        <xsl:value-of select="EndType"/>
+                                        <xsl:value-of select="outcome_type"/>
                                     </p>
                                 </xsl:for-each>
                                 <p>
@@ -444,7 +455,7 @@
                                         <span>
                                             <xsl:value-of select="count"/> (<xsl:value-of select="ratio"/>%)
                                         </span>
-                                        <xsl:value-of select="EndType"/>
+                                        <xsl:value-of select="outcome_type"/>
                                     </p>
                                 </xsl:for-each>
                                 <p>
@@ -460,7 +471,7 @@
                                         <span>
                                             <xsl:value-of select="count"/> (<xsl:value-of select="ratio"/>%)
                                         </span>
-                                        <xsl:value-of select="EndType"/>
+                                        <xsl:value-of select="outcome_type"/>
                                     </p>
                                 </xsl:for-each>
                                 <p>
@@ -527,13 +538,13 @@
 
                         <xsl:when test="$activeDecks &gt; 0 and $param/free_slots &gt; 0">
                             <p>
-                                <select name="ChallengeDeck" size="1">
+                                <select name="challenge_deck" size="1">
                                     <xsl:if test="$param/random_deck_option = 'yes'">
                                         <option value="{$param/random_deck}">select random</option>
                                     </xsl:if>
                                     <xsl:for-each select="$param/decks/*">
-                                        <option value="{DeckID}">
-                                            <xsl:value-of select="Deckname"/>
+                                        <option value="{deck_id}">
+                                            <xsl:value-of select="deck_name"/>
                                         </option>
                                     </xsl:for-each>
                                     <xsl:for-each select="$param/ai_challenges/*">
@@ -553,7 +564,7 @@
                                     <value name="1800" text="30 minutes"/>
                                     <value name="300" text="5 minutes"/>
                                 </xsl:variable>
-                                <select name="Timeout" title="Turn timeout">
+                                <select name="turn_timeout" title="Turn timeout">
                                     <xsl:for-each select="exsl:node-set($timeoutValues)/*">
                                         <option value="{@name}">
                                             <xsl:if test="$param/timeout = @name">
@@ -651,22 +662,22 @@
                 <xsl:if test="$param/export_deck = 'yes' and count($param/export_decks/*) &gt; 0">
                     <fieldset>
                         <legend>Deck options</legend>
-                        <select name="ExportDeck" size="1">
+                        <select name="exported_deck" size="1">
                             <xsl:for-each select="$param/export_decks/*">
-                                <option value="{DeckID}">
-                                    <xsl:value-of select="Deckname"/>
+                                <option value="{deck_id}">
+                                    <xsl:value-of select="deck_name"/>
                                     <xsl:text> (</xsl:text>
-                                    <xsl:value-of select="Wins"/>
+                                    <xsl:value-of select="wins"/>
                                     <xsl:text> / </xsl:text>
-                                    <xsl:value-of select="Losses"/>
+                                    <xsl:value-of select="losses"/>
                                     <xsl:text> / </xsl:text>
-                                    <xsl:value-of select="Draws"/>
+                                    <xsl:value-of select="draws"/>
                                     <xsl:text>)</xsl:text>
                                 </option>
                             </xsl:for-each>
                         </select>
                         <button type="submit" name="export_deck_remote" value="{am:urlEncode($opponent)}">
-                            Export deck
+                            <xsl:text>Export deck</xsl:text>
                         </button>
                     </fieldset>
                 </xsl:if>
@@ -675,7 +686,7 @@
                     <fieldset>
                         <legend>System message</legend>
                         <button type="submit" name="system_notification" value="{am:urlEncode($opponent)}">
-                            Send system notification
+                            <xsl:text>Send system notification</xsl:text>
                         </button>
                     </fieldset>
                 </xsl:if>
@@ -770,7 +781,7 @@
                                                         <xsl:value-of select="count"/>
                                                         <xsl:text> / </xsl:text>
                                                         <xsl:value-of select="condition"/>
-                                                        <xsl:text> ) - </xsl:text>
+                                                        <xsl:text>) - </xsl:text>
                                                         <xsl:value-of select="desc"/>
                                                         <xsl:text> (</xsl:text>
                                                         <xsl:value-of select="reward"/>

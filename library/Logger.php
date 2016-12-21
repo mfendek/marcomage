@@ -88,8 +88,21 @@ class Logger
 
         // process DB messages
         $dbMessage = array();
+
+        // DB error available
         if ($pdoErrors != '') {
             $dbMessage[]= 'PDO: '.$dbPdo->errorsLog();
+        }
+        // DB error is empty
+        else {
+            // add last question from PDO with effected rows
+            $questionsLog = $dbPdo->questionsLog();
+
+            // proceed only if we have at least one question log entry
+            if (count($questionsLog) > 0) {
+                $lastQuestion = array_pop($questionsLog);
+                $dbMessage[]= 'PDO: last question: ' . $lastQuestion . ' effected rows: ' . $dbPdo->effectedRows();
+            }
         }
 
         $dbMessage = implode("\n", $dbMessage);

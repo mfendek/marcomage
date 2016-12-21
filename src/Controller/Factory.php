@@ -197,6 +197,7 @@ class Factory extends \FactoryAbstract
                 'scripts' => [
                     'init_game_auto_increment',
                     'players_cleanup',
+                    'r2636',
                 ],
             ],
         ];
@@ -249,7 +250,7 @@ class Factory extends \FactoryAbstract
 
         // controller action not found
         if (empty($controller) || empty($action)) {
-            throw new Exception('controller action is not white-listed');
+            throw new Exception('controller action is not white-listed', Exception::WARNING);
         }
 
         /* @var ControllerAbstract $controller */

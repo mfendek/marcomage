@@ -17,13 +17,12 @@ class PdoDeck extends PdoAbstract
     protected function schema()
     {
         return [
-            'entity_name' => 'decks',
-            'model_name' => 'deck',
+            'entity_name' => 'deck',
             'primary_fields' => [
-                'DeckID',
+                'deck_id',
             ],
             'fields' => [
-                'DeckID' => [
+                'deck_id' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [
@@ -31,20 +30,20 @@ class PdoDeck extends PdoAbstract
                         EntityAbstract::OPT_AUTO_ID,
                     ],
                 ],
-                'Username' => [
+                'username' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Deckname' => [
+                'deck_name' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Ready' => [
+                'is_ready' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Data' => [
+                'data' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                     'options' => [
@@ -52,31 +51,31 @@ class PdoDeck extends PdoAbstract
                         EntityAbstract::OPT_SERIALIZE_PHP,
                     ],
                 ],
-                'Note' => [
+                'note' => [
                     'type' => EntityAbstract::TYPE_STRING,
                     'default' => '',
                 ],
-                'Wins' => [
+                'wins' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Losses' => [
+                'losses' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Draws' => [
+                'draws' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Shared' => [
+                'is_shared' => [
                     'type' => EntityAbstract::TYPE_INT32,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'Modified' => [
+                'modified_at' => [
                     'type' => EntityAbstract::TYPE_DATETIME,
                     'default' => Date::DATETIME_ZERO,
                     'options' => [
@@ -111,8 +110,8 @@ class PdoDeck extends PdoAbstract
     {
         /* @var Deck $deck */
         $deck = parent::createModel([
-            'Username' => $username,
-            'Deckname' => $deckName,
+            'username' => $username,
+            'deck_name' => $deckName,
         ]);
 
         return $deck->setData(new \CDeckData());
@@ -125,7 +124,7 @@ class PdoDeck extends PdoAbstract
      */
     public function getDeck($deckId, $asserted = false)
     {
-        return parent::getModel(['DeckID' => $deckId], $asserted);
+        return parent::getModel(['deck_id' => $deckId], $asserted);
     }
 
     /**
@@ -147,8 +146,8 @@ class PdoDeck extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT `DeckID`, `Deckname`, `Modified`, (CASE WHEN `Ready` = TRUE THEN "yes" ELSE "no" END) as `Ready`'
-            . ', `Wins`, `Losses`, `Draws`, `Shared` FROM `decks` WHERE `Username` = ?'
+            'SELECT `deck_id`, `deck_name`, `modified_at`, (CASE WHEN `is_ready` = TRUE THEN "yes" ELSE "no" END) as `is_ready`'
+            . ', `wins`, `losses`, `draws`, `is_shared` FROM `deck` WHERE `username` = ?'
             , [$username]
         );
     }
@@ -165,21 +164,21 @@ class PdoDeck extends PdoAbstract
     {
         $db = $this->db();
 
-        $authorQuery = ($author != 'none') ? ' AND `Username` = ?' : '';
+        $authorQuery = ($author != 'none') ? ' AND `username` = ?' : '';
 
         $params = array();
         if ($author != 'none') {
             $params[] = $author;
         }
 
-        $validConditions = ['Username', 'Deckname', 'Modified'];
-        $condition = (in_array($condition, $validConditions)) ? $condition : 'Modified';
+        $validConditions = ['username', 'deck_name', 'modified_at'];
+        $condition = (in_array($condition, $validConditions)) ? $condition : 'modified_at';
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
         $page = (is_numeric($page)) ? $page : 0;
 
         return $db->query(
-            'SELECT `DeckID`, `Username`, `Deckname`, `Modified`, `Wins`, `Losses`, `Draws` FROM `decks`'
-            . ' WHERE `Shared` = TRUE AND `Ready` = TRUE' . $authorQuery . ' ORDER BY `' . $condition . '` ' . $order
+            'SELECT `deck_id`, `username`, `deck_name`, `modified_at`, `wins`, `losses`, `draws` FROM `deck`'
+            . ' WHERE `is_shared` = TRUE AND `is_ready` = TRUE' . $authorQuery . ' ORDER BY `' . $condition . '` ' . $order
             . ' LIMIT ' . (Deck::DECKS_PER_PAGE * $page) . ', ' . Deck::DECKS_PER_PAGE . ''
             , $params
         );
@@ -194,7 +193,7 @@ class PdoDeck extends PdoAbstract
     {
         $db = $this->db();
 
-        $authorQuery = ($author != "none") ? ' AND `Username` = ?' : '';
+        $authorQuery = ($author != "none") ? ' AND `username` = ?' : '';
 
         $params = array();
         if ($author != 'none') {
@@ -202,7 +201,7 @@ class PdoDeck extends PdoAbstract
         }
 
         return $db->query(
-            'SELECT COUNT(`DeckID`) as `Count` FROM `decks` WHERE `Shared` = TRUE AND `Ready` = TRUE' . $authorQuery . ''
+            'SELECT COUNT(`deck_id`) as `count` FROM `deck` WHERE `is_shared` = TRUE AND `is_ready` = TRUE' . $authorQuery . ''
             , $params
         );
     }
@@ -216,7 +215,7 @@ class PdoDeck extends PdoAbstract
         $db = $this->db();
 
         return $db->query(
-            'SELECT DISTINCT `Username` FROM `decks` WHERE `Shared` = TRUE AND `Ready` = TRUE ORDER BY `Username` ASC'
+            'SELECT DISTINCT `username` FROM `deck` WHERE `is_shared` = TRUE AND `is_ready` = TRUE ORDER BY `username` ASC'
         );
     }
 
@@ -229,7 +228,7 @@ class PdoDeck extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('SELECT `DeckID`, `Deckname` FROM `decks` WHERE `Username` = ? AND `Ready` = TRUE', [
+        return $db->query('SELECT `deck_id`, `deck_name` FROM `deck` WHERE `username` = ? AND `is_ready` = TRUE', [
             $username
         ]);
     }
@@ -244,7 +243,7 @@ class PdoDeck extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('UPDATE `decks` SET `Username` = ? WHERE `Username` = ?', [$newName, $player]);
+        return $db->query('UPDATE `deck` SET `username` = ? WHERE `username` = ?', [$newName, $player]);
     }
 
     /**
@@ -256,6 +255,6 @@ class PdoDeck extends PdoAbstract
     {
         $db = $this->db();
 
-        return $db->query('DELETE FROM `decks` WHERE `Username` = ?', [$player]);
+        return $db->query('DELETE FROM `deck` WHERE `username` = ?', [$player]);
     }
 }

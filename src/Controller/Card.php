@@ -61,7 +61,7 @@ class Card extends ControllerAbstract
         if ($result->isError()) {
             throw new Exception('Failed to find thread by card id ' . $cardId);
         }
-        $threadId = ($result->isSuccess()) ? $result[0]['ThreadID'] : 0;
+        $threadId = ($result->isSuccess()) ? $result[0]['thread_id'] : 0;
 
         // thread not found - create new thread
         if (!$threadId) {
@@ -80,7 +80,7 @@ class Card extends ControllerAbstract
         }
 
         $this->result()
-            ->changeRequest('CurrentThread', $threadId)
+            ->changeRequest('current_thread', $threadId)
             ->setCurrent('Forum_thread');
     }
 
@@ -107,7 +107,7 @@ class Card extends ControllerAbstract
         // load foil cards list for current player
         $setting = $this->getCurrentSettings();
 
-        $foilCards = $setting->getSetting('FoilCards');
+        $foilCards = $setting->getSetting('foil_cards');
         $foilCards = ($foilCards == '') ? [] : explode(',', $foilCards);
 
         // check if card can be purchased
@@ -133,7 +133,7 @@ class Card extends ControllerAbstract
 
         // store bought card
         array_push($foilCards, $boughtCard);
-        $setting->changeSetting('FoilCards', implode(',', $foilCards));
+        $setting->changeSetting('foil_cards', implode(',', $foilCards));
 
         if (!$setting->save()) {
             $db->rollBack();

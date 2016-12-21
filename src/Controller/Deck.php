@@ -25,8 +25,8 @@ class Deck extends ControllerAbstract
 
         $this->result()->setCurrent('Decks');
 
-        $this->assertParamsNonEmpty(['CurrentDeck']);
-        $deckId = $request['CurrentDeck'];
+        $this->assertParamsNonEmpty(['current_deck']);
+        $deckId = $request['current_deck'];
 
         // load deck
         $deck = $this->dbEntity()->deck()->getDeckAsserted($deckId);
@@ -55,8 +55,8 @@ class Deck extends ControllerAbstract
 
         $this->result()->setCurrent('Decks');
 
-        $this->assertParamsNonEmpty(['CurrentDeck']);
-        $deckId = $request['CurrentDeck'];
+        $this->assertParamsNonEmpty(['current_deck']);
+        $deckId = $request['current_deck'];
 
         // load deck
         $deck = $this->dbEntity()->deck()->getDeckAsserted($deckId);
@@ -84,8 +84,8 @@ class Deck extends ControllerAbstract
 
         $this->result()->setCurrent('Decks');
 
-        $this->assertParamsNonEmpty(['CurrentDeck']);
-        $deckId = $request['CurrentDeck'];
+        $this->assertParamsNonEmpty(['current_deck']);
+        $deckId = $request['current_deck'];
 
         $deck = $this->dbEntity()->deck()->getDeckAsserted($deckId);
 
@@ -124,7 +124,7 @@ class Deck extends ControllerAbstract
         // save token data
         $deck
             ->setTokens($sorted_tokens)
-            ->setModified(Date::timeToStr());
+            ->setModifiedAt(Date::timeToStr());
         if (!$deck->save()) {
             throw new Exception('Unable to set tokens in this deck');
         }
@@ -143,8 +143,8 @@ class Deck extends ControllerAbstract
 
         $this->result()->setCurrent('Decks');
 
-        $this->assertParamsNonEmpty(['CurrentDeck']);
-        $deckId = $request['CurrentDeck'];
+        $this->assertParamsNonEmpty(['current_deck']);
+        $deckId = $request['current_deck'];
 
         $deck = $this->dbEntity()->deck()->getDeckAsserted($deckId);
 
@@ -158,7 +158,7 @@ class Deck extends ControllerAbstract
         // set tokens automatically
         $this->service()->deck()->setAutoTokens($deck);
 
-        $deck->setModified(Date::timeToStr());
+        $deck->setModifiedAt(Date::timeToStr());
         if (!$deck->save()) {
             throw new Exception('Unable to set tokens automatically in this deck');
         }
@@ -177,8 +177,8 @@ class Deck extends ControllerAbstract
 
         $this->result()->setCurrent('Decks');
 
-        $this->assertParamsNonEmpty(['CurrentDeck']);
-        $deckId = $request['CurrentDeck'];
+        $this->assertParamsNonEmpty(['current_deck']);
+        $deckId = $request['current_deck'];
 
         $deck = $this->dbEntity()->deck()->getDeckAsserted($deckId);
 
@@ -207,8 +207,8 @@ class Deck extends ControllerAbstract
 
         $this->result()->setCurrent('Decks');
 
-        $this->assertParamsNonEmpty(['CurrentDeck']);
-        $deckId = $request['CurrentDeck'];
+        $this->assertParamsNonEmpty(['current_deck']);
+        $deckId = $request['current_deck'];
 
         $deck = $this->dbEntity()->deck()->getDeckAsserted($deckId);
 
@@ -239,8 +239,8 @@ class Deck extends ControllerAbstract
 
         $this->result()->setCurrent('Decks');
 
-        $this->assertParamsNonEmpty(['CurrentDeck']);
-        $deckId = $request['CurrentDeck'];
+        $this->assertParamsNonEmpty(['current_deck']);
+        $deckId = $request['current_deck'];
 
         $deck = $this->dbEntity()->deck()->getDeckAsserted($deckId);
 
@@ -270,8 +270,8 @@ class Deck extends ControllerAbstract
 
         $this->result()->setCurrent('Decks');
 
-        $this->assertParamsNonEmpty(['CurrentDeck']);
-        $deckId = $request['CurrentDeck'];
+        $this->assertParamsNonEmpty(['current_deck']);
+        $deckId = $request['current_deck'];
 
         $deck = $this->dbEntity()->deck()->getDeckAsserted($deckId);
 
@@ -320,8 +320,8 @@ class Deck extends ControllerAbstract
 
         $this->result()->setCurrent('Decks');
 
-        $this->assertParamsNonEmpty(['CurrentDeck']);
-        $deckId = $request['CurrentDeck'];
+        $this->assertParamsNonEmpty(['current_deck']);
+        $deckId = $request['current_deck'];
 
         $deck = $this->dbEntity()->deck()->getDeckAsserted($deckId);
 
@@ -336,7 +336,7 @@ class Deck extends ControllerAbstract
         $deck
             ->resetData()
             ->resetStatistics()
-            ->setModified(Date::timeToStr());
+            ->setModifiedAt(Date::timeToStr());
         if (!$deck->save()) {
             throw new Exception('Failed to reset deck');
         }
@@ -364,8 +364,8 @@ class Deck extends ControllerAbstract
 
         $this->result()->setCurrent('Decks');
 
-        $this->assertParamsNonEmpty(['CurrentDeck']);
-        $deckId = $request['CurrentDeck'];
+        $this->assertParamsNonEmpty(['current_deck']);
+        $deckId = $request['current_deck'];
 
         $deck = $this->dbEntity()->deck()->getDeckAsserted($deckId);
 
@@ -379,7 +379,7 @@ class Deck extends ControllerAbstract
         // reset deck statistics
         $deck
             ->resetStatistics()
-            ->setModified(Date::timeToStr());
+            ->setModifiedAt(Date::timeToStr());
         if (!$deck->save()) {
             throw new Exception('Failed to reset statistics');
         }
@@ -399,8 +399,8 @@ class Deck extends ControllerAbstract
 
         $this->result()->setCurrent('Decks');
 
-        $this->assertParamsNonEmpty(['CurrentDeck']);
-        $deckId = $request['CurrentDeck'];
+        $this->assertParamsNonEmpty(['current_deck']);
+        $deckId = $request['current_deck'];
 
         $deck = $this->dbEntity()->deck()->getDeckAsserted($deckId);
 
@@ -430,7 +430,7 @@ class Deck extends ControllerAbstract
         $deckNames = array();
         foreach ($list as $deckData) {
             // omit current deck
-            if ($deck->getDeckId() != $deckData['DeckID']) {
+            if ($deck->getDeckId() != $deckData['deck_id']) {
                 $deckNames[] = $deckData['Deckname'];
             }
         }
@@ -444,7 +444,7 @@ class Deck extends ControllerAbstract
         // update deck name
         $deck
             ->setDeckName($newName)
-            ->setModified(Date::timeToStr());
+            ->setModifiedAt(Date::timeToStr());
         if (!$deck->save()) {
             throw new Exception('Failed to rename deck');
         }
@@ -463,8 +463,8 @@ class Deck extends ControllerAbstract
 
         $this->result()->setCurrent('Decks');
 
-        $this->assertParamsNonEmpty(['CurrentDeck']);
-        $deckId = $request['CurrentDeck'];
+        $this->assertParamsNonEmpty(['current_deck']);
+        $deckId = $request['current_deck'];
 
         $deck = $this->dbEntity()->deck()->getDeckAsserted($deckId);
 
@@ -500,8 +500,8 @@ class Deck extends ControllerAbstract
 
         $this->result()->setCurrent('Decks');
 
-        $this->assertParamsNonEmpty(['CurrentDeck']);
-        $deckId = $request['CurrentDeck'];
+        $this->assertParamsNonEmpty(['current_deck']);
+        $deckId = $request['current_deck'];
 
         $deck = $this->dbEntity()->deck()->getDeckAsserted($deckId);
 
@@ -569,7 +569,7 @@ class Deck extends ControllerAbstract
         $deckNames = array();
         foreach ($list as $deckData) {
             // omit current deck
-            if ($deck->getDeckId() != $deckData['DeckID']) {
+            if ($deck->getDeckId() != $deckData['deck_id']) {
                 $deckNames[] = $deckData['Deckname'];
             }
         }
@@ -616,7 +616,7 @@ class Deck extends ControllerAbstract
         $deck
             ->setData($deckData)
             ->setTokens(array_combine([1, 2, 3], $tokens))
-            ->setModified(Date::timeToStr());
+            ->setModifiedAt(Date::timeToStr());
 
         if (!$deck->save()) {
             throw new Exception('Failed to import deck');
@@ -686,8 +686,8 @@ class Deck extends ControllerAbstract
         $this->result()->setCurrent('Decks_shared');
         $sourceDeckId = $request['import_shared_deck'];
 
-        $this->assertParamsNonEmpty(['SelectedDeck']);
-        $targetDeckId = $request['SelectedDeck'];
+        $this->assertParamsNonEmpty(['selected_deck']);
+        $targetDeckId = $request['selected_deck'];
 
         // check if deck import makes sense
         if ($sourceDeckId == $targetDeckId) {
@@ -706,7 +706,7 @@ class Deck extends ControllerAbstract
         $sourceDeck = $this->dbEntity()->deck()->getDeckAsserted($sourceDeckId);
 
         // check if source deck is shared
-        if ($sourceDeck->getShared() == 0) {
+        if ($sourceDeck->getIsShared() == 0) {
             throw new Exception('Selected deck is not shared', Exception::WARNING);
         }
 
@@ -727,7 +727,7 @@ class Deck extends ControllerAbstract
         $deck
             ->setDeckName($sourceDeck->getDeckName())
             ->setData($sourceDeck->getData())
-            ->setModified(Date::timeToStr());
+            ->setModifiedAt(Date::timeToStr());
 
         if (!$deck->save()) {
             $this->result()->setCurrent('Decks_edit');
@@ -735,7 +735,7 @@ class Deck extends ControllerAbstract
         }
 
         $this->result()
-            ->changeRequest('CurrentDeck', $targetDeckId)
+            ->changeRequest('current_deck', $targetDeckId)
             ->setInfo('Deck successfully imported from shared deck')
             ->setCurrent('Decks_edit');
     }
@@ -751,8 +751,8 @@ class Deck extends ControllerAbstract
 
         $this->result()->setCurrent('Decks');
 
-        $this->assertParamsNonEmpty(['CurrentDeck']);
-        $deckId = $request['CurrentDeck'];
+        $this->assertParamsNonEmpty(['current_deck']);
+        $deckId = $request['current_deck'];
 
         $deck = $this->dbEntity()->deck()->getDeckAsserted($deckId);
 
@@ -764,11 +764,11 @@ class Deck extends ControllerAbstract
         $this->result()->setCurrent('Decks_edit');
 
         // check if deck ins't already shared
-        if ($deck->getShared() == 1) {
+        if ($deck->getIsShared() == 1) {
             throw new Exception('Deck is already shared', Exception::WARNING);
         }
 
-        $deck->setShared(1);
+        $deck->setIsShared(1);
         if (!$deck->save()) {
             throw new Exception('Failed to share deck');
         }
@@ -787,8 +787,8 @@ class Deck extends ControllerAbstract
 
         $this->result()->setCurrent('Decks');
 
-        $this->assertParamsNonEmpty(['CurrentDeck']);
-        $deckId = $request['CurrentDeck'];
+        $this->assertParamsNonEmpty(['current_deck']);
+        $deckId = $request['current_deck'];
 
         $deck = $this->dbEntity()->deck()->getDeckAsserted($deckId);
 
@@ -800,11 +800,11 @@ class Deck extends ControllerAbstract
         $this->result()->setCurrent('Decks_edit');
 
         // check if deck isn't already unshared
-        if ($deck->getShared() == 0) {
+        if ($deck->getIsShared() == 0) {
             throw new Exception('Deck is already unshared', Exception::WARNING);
         }
 
-        $deck->setShared(0);
+        $deck->setIsShared(0);
         if (!$deck->save()) {
             throw new Exception('Failed to unshare deck');
         }
@@ -854,7 +854,7 @@ class Deck extends ControllerAbstract
         if ($result->isError()) {
             throw new Exception('Failed to find thread by deck id ' . $deckId);
         }
-        $threadId = ($result->isSuccess()) ? $result[0]['ThreadID'] : 0;
+        $threadId = ($result->isSuccess()) ? $result[0]['thread_id'] : 0;
 
         // thread not found - create new thread
         if (!$threadId) {
@@ -873,7 +873,7 @@ class Deck extends ControllerAbstract
         }
 
         $this->result()
-            ->changeRequest('CurrentThread', $threadId)
+            ->changeRequest('current_thread', $threadId)
             ->setCurrent('Forum_thread');
     }
 }

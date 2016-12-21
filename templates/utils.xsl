@@ -152,7 +152,7 @@
                 <button type="button" name="bold" title="Bold - [b]text[/b]">B</button>
                 <button type="button" name="italics" title="Italics - [i]text[/i]">I</button>
                 <button type="button" name="link" title="Internal hyperlink - [link=?location=...]text[/link]">
-                    Link
+                    <xsl:text>Link</xsl:text>
                 </button>
                 <button type="button" name="url" title="External hyperlink - [url=http://...]text[/url]">Url</button>
                 <button type="button" name="quote" title="Quote - [quote=name]text[/quote]">Quote</button>
@@ -540,7 +540,7 @@
                 <!-- keywords -->
                 <xsl:choose>
                     <xsl:when test="$card/picture">
-                        <p><b><xsl:value-of select="$card/keywords"/></b></p>
+                        <p class="keywords"><b><xsl:value-of select="$card/keywords"/></b></p>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:variable name="descriptions" select="document('../xml/keywords.xml')/am:keywords"/>

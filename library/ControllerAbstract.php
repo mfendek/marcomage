@@ -115,7 +115,7 @@ abstract class ControllerAbstract
      */
     protected function checkAccess($accessRight)
     {
-        return \Access::checkAccess($this->getCurrentPlayer()->getUserType(), $accessRight);
+        return \Db\Model\Player::checkAccess($this->getCurrentPlayer()->getUserType(), $accessRight);
     }
 
     /**

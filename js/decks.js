@@ -12,7 +12,7 @@
 function takeCard(cardId)
 {
     var card = '#card_' + cardId;
-    var deckId = $('input[name="CurrentDeck"]').val();
+    var deckId = $('input[name="current_deck"]').val();
     var api = dic().apiManager();
     var notification = dic().notificationsManager();
 
@@ -38,7 +38,7 @@ function takeCard(cardId)
                 classes: {
                     'ui-tooltip': 'ui-corner-all ui-widget-shadow'
                 },
-                placement: 'bottom'
+                placement: 'auto bottom'
             });
 
             // mark card as taken
@@ -83,7 +83,7 @@ function takeCard(cardId)
 function removeCard(cardId)
 {
     var card = '#card_' + cardId;
-    var deckId = $('input[name="CurrentDeck"]').val();
+    var deckId = $('input[name="current_deck"]').val();
     var api = dic().apiManager();
     var notification = dic().notificationsManager();
 
@@ -288,8 +288,8 @@ $(document).ready(function() {
         }
 
         // extract target deck name
-        var targetDeckId = $('select[name="SelectedDeck"]').val();
-        var targetDeck = $('select[name="SelectedDeck"] >  option[value="' + targetDeckId + '"]').text();
+        var targetDeckId = $('select[name="selected_deck"]').val();
+        var targetDeck = $('select[name="selected_deck"] >  option[value="' + targetDeckId + '"]').text();
 
         // extract source deck name
         var sourceDeck = $(this).parent().parent().find('a.deck').text();
@@ -331,7 +331,7 @@ $(document).ready(function() {
                     return;
                 }
 
-                var deckId = $('input[name="CurrentDeck"]').val();
+                var deckId = $('input[name="current_deck"]').val();
 
                 api.saveDeckNote(deckId, deckNote, function(result) {
                     // AJAX failed, display error message
@@ -354,7 +354,7 @@ $(document).ready(function() {
                 });
             },
             Clear: function() {
-                var deckId = $('input[name="CurrentDeck"]').val();
+                var deckId = $('input[name="current_deck"]').val();
 
                 api.clearDeckNote(deckId, function(result) {
                     // AJAX failed, display error message

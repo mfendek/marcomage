@@ -92,7 +92,7 @@ class GameUtil extends ServiceAbstract
 
         $score = $this->dbEntity()->score()->getScoreAsserted($playerName);
 
-        return max(0, GameModel::MAX_GAMES + $score->getData('GameSlots') - $gameCount);
+        return max(0, GameModel::MAX_GAMES + $score->getGameSlots() - $gameCount);
     }
 
     /**
@@ -224,7 +224,7 @@ class GameUtil extends ServiceAbstract
 
         $list = array();
         foreach ($result->data() as $data) {
-            $list[$data['GameID']] = $data['Opponent'];
+            $list[$data['game_id']] = $data['Opponent'];
         }
 
         // check if there is an active game
@@ -245,7 +245,7 @@ class GameUtil extends ServiceAbstract
             }
 
             // separate games into two groups based on opponent activity
-            $inactivity = time() - Date::strToTime($opponent->getLastQuery());
+            $inactivity = time() - Date::strToTime($opponent->getLastActivity());
 
             // case 1: active player
             if ($inactivity < 10 * Date::MINUTE) {

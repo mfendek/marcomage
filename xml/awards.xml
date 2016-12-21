@@ -1,102 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--MArcomage awards database (XML)-->
 <awards xmlns="http://arcomage.net">
-  <award name="Wall" desc="build # wall">
+  <award name="wall" desc="build # wall">
     <achievement name="Defender" condition="50000" reward="20" />
     <achievement name="Protector" condition="100000" reward="40" />
     <achievement name="Guardian" condition="150000" reward="60" />
   </award>
-  <award name="WallDamage" desc="inflict # wall damage to your opponent">
+  <award name="wall_damage" desc="inflict # wall damage to your opponent">
     <achievement name="Invader" condition="50000" reward="20" />
     <achievement name="Ransacker" condition="100000" reward="40" />
     <achievement name="Ravager" condition="150000" reward="60" />
   </award>
-  <award name="Quarry" desc="increase your quarry by #">
+  <award name="quarry" desc="increase your quarry by #">
     <achievement name="Sculptor" condition="250" reward="25" />
     <achievement name="Mason" condition="500" reward="50" />
     <achievement name="Architect" condition="750" reward="75" />
   </award>
-  <award name="Magic" desc="increase your magic by #">
+  <award name="magic" desc="increase your magic by #">
     <achievement name="Apprentice" condition="250" reward="25" />
     <achievement name="Librarian" condition="500" reward="50" />
     <achievement name="Lore keeper" condition="750" reward="75" />
   </award>
-  <award name="Dungeons" desc="increase your dungeon by #">
+  <award name="dungeons" desc="increase your dungeon by #">
     <achievement name="Sergeant" condition="250" reward="25" />
     <achievement name="Colonel" condition="500" reward="50" />
     <achievement name="Marshal" condition="750" reward="75" />
   </award>
-  <award name="Tower" desc="build # tower">
+  <award name="tower" desc="build # tower">
     <achievement name="Tower guard" condition="50000" reward="30" />
     <achievement name="Honor guard" condition="100000" reward="60" />
     <achievement name="Royal guard" condition="150000" reward="90" />
   </award>
-  <award name="TowerDamage" desc="inflict # tower damage to your opponent">
+  <award name="tower_damage" desc="inflict # tower damage to your opponent">
     <achievement name="Assailant" condition="50000" reward="30" />
     <achievement name="Aggressor" condition="100000" reward="60" />
     <achievement name="Conqueror" condition="150000" reward="90" />
   </award>
-  <award name="Rares" desc="play # rare cards">
+  <award name="rares" desc="play # rare cards">
     <achievement name="Evoker" condition="500" reward="35" />
     <achievement name="Magician" condition="1000" reward="70" />
     <achievement name="Archmage" condition="1500" reward="105" />
   </award>
-  <award name="Challenges" desc="win # AI challenges">
+  <award name="ai_challenges" desc="win # AI challenges">
     <achievement name="Adventurer" condition="100" reward="40" />
     <achievement name="Explorer" condition="200" reward="80" />
     <achievement name="Vanguard" condition="300" reward="120" />
   </award>
-  <award name="Saboteur" desc="gain # saboteur awards">
+  <award name="saboteur" desc="gain # saboteur awards">
     <achievement name="Intruder" condition="50" reward="25" />
     <achievement name="Backstabber" condition="100" reward="50" />
     <achievement name="Infiltrator" condition="150" reward="75" />
   </award>
-  <award name="Gentle_touch" desc="gain # gentle touch awards">
+  <award name="gentle_touch" desc="gain # gentle touch awards">
     <achievement name="Goblin" condition="50" reward="50" />
     <achievement name="Halfling" condition="100" reward="100" />
     <achievement name="Dwarf" condition="150" reward="150" />
   </award>
-  <award name="Desolator" desc="gain # desolator awards">
+  <award name="desolator" desc="gain # desolator awards">
     <achievement name="Pillager" condition="50" reward="75" />
     <achievement name="Scourge" condition="100" reward="150" />
     <achievement name="Defiler" condition="150" reward="225" />
   </award>
-  <award name="Dragon" desc="gain # dragon awards">
+  <award name="dragon" desc="gain # dragon awards">
     <achievement name="Dragon apprentice" condition="50" reward="75" />
     <achievement name="Dragon trainer" condition="100" reward="150" />
     <achievement name="Dragon master" condition="150" reward="225" />
   </award>
-  <award name="Carpenter" desc="gain # carpenter awards">
+  <award name="carpenter" desc="gain # carpenter awards">
     <achievement name="Student" condition="50" reward="100" />
     <achievement name="Scholar" condition="100" reward="200" />
     <achievement name="Professor" condition="150" reward="300" />
   </award>
-  <award name="Titan" desc="gain # titan awards">
+  <award name="titan" desc="gain # titan awards">
     <achievement name="Awakening titan" condition="50" reward="100" />
     <achievement name="Defiler of the gods" condition="100" reward="200" />
     <achievement name="Bane of the gods" condition="150" reward="300" />
   </award>
-  <award name="Assassin" desc="gain # assassin awards">
+  <award name="assassin" desc="gain # assassin awards">
     <achievement name="Cutthroat" condition="50" reward="125" />
     <achievement name="Eliminator" condition="100" reward="250" />
     <achievement name="Executioner" condition="150" reward="375" />
   </award>
-  <award name="Snob" desc="gain # snob awards">
+  <award name="snob" desc="gain # snob awards">
     <achievement name="Elder" condition="50" reward="150" />
     <achievement name="Stewart" condition="100" reward="300" />
     <achievement name="Governour" condition="150" reward="450" />
   </award>
-  <award name="Collector" desc="gain # collector awards">
+  <award name="collector" desc="gain # collector awards">
     <achievement name="Count" condition="50" reward="175" />
     <achievement name="Baron" condition="100" reward="350" />
     <achievement name="Lord" condition="150" reward="525" />
   </award>
-  <award name="Builder" desc="gain # builder awards">
+  <award name="builder" desc="gain # builder awards">
     <achievement name="Guardsman" condition="50" reward="200" />
     <achievement name="Sentry" condition="100" reward="400" />
     <achievement name="Keeper" condition="150" reward="600" />
   </award>
-  <award name="Survivor" desc="gain # survivor awards">
+  <award name="survivor" desc="gain # survivor awards">
     <achievement name="Advisor" condition="50" reward="225" />
     <achievement name="Counselor" condition="100" reward="450" />
     <achievement name="Strategist" condition="150" reward="675" />

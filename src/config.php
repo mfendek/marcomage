@@ -23,7 +23,7 @@ return [
             'type' => 'file',
         ],
     ],
-    'catpcha' => [
+    'captcha' => [
         'enabled' => false,
         'public_key' => '',
         'private_key' => '',
@@ -50,5 +50,5 @@ return [
     ],
 
     // used to flush cached files like stylesheets and javascript files
-    'client_cache_version' => '2016-12-17',
+    'client_cache_version' => '2016-12-31',
 ];

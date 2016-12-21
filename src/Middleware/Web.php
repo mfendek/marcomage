@@ -86,12 +86,12 @@ class Web extends MiddlewareAbstract
                     $config = $this->getDic()->config();
 
                     // validate CAPTCHA if enabled
-                    if ($config['catpcha']['enabled']) {
+                    if ($config['captcha']['enabled']) {
                         if (empty($request['g-recaptcha-response'])) {
                             throw new Exception('CAPTCHA field is missing', Exception::WARNING);
                         }
 
-                        $captcha = new ReCaptcha($config['catpcha']['private_key']);
+                        $captcha = new ReCaptcha($config['captcha']['private_key']);
                         $resp = $captcha->verify($request['g-recaptcha-response'], Ip::getIp());
 
                         if (!$resp->isSuccess()) {

@@ -85,7 +85,7 @@ class Replay extends ControllerAbstract
     {
         $request = $this->request();
         $player = $this->getCurrentPlayer();
-        $dbEntityForumThread = $this->dbEntity()->forumThread();
+        $dbEntityThread = $this->dbEntity()->forumThread();
 
         $this->result()->setCurrent('Replays');
 
@@ -98,11 +98,17 @@ class Replay extends ControllerAbstract
 
         $replay = $this->dbEntity()->replay()->getReplayAsserted($replayId);
 
+        // find related forum thread
+        $result = $dbEntityThread->replayThread($replayId);
+        if ($result->isError()) {
+            throw new Exception('Failed to find forum thread by replay id');
+        }
+        $threadId = ($result->isSuccess()) ? $result[0]['thread_id'] : 0;
+
         // check if attached thread doesn't already exist
-        $threadId = $replay->getThreadId();
         if ($threadId > 0) {
             $this->result()
-                ->changeRequest('CurrentThread', $threadId)
+                ->changeRequest('current_thread', $threadId)
                 ->setCurrent('Forum_thread');
 
             throw new Exception('Thread already exists', Exception::WARNING);
@@ -111,18 +117,15 @@ class Replay extends ControllerAbstract
         // create thread title
         $threadName = $replay->getPlayer1() . ' vs ' . $replay->getPlayer2() . ' (' . $replayId . ')';
 
-        $thread = $dbEntityForumThread->createThread($threadName, $player->getUsername(), 'normal', ForumThread::REPLAYS_SECTION_ID);
+        $thread = $dbEntityThread->createThread(
+            $threadName, $player->getUsername(), 'normal', ForumThread::REPLAYS_SECTION_ID, $replayId
+        );
         if (!$thread->save()) {
             throw new Exception('Failed to create new thread');
         }
 
-        $replay->setThreadId($thread->getThreadId());
-        if (!$replay->save()) {
-            throw new Exception('Failed to assign new thread');
-        }
-
         $this->result()
-            ->changeRequest('CurrentThread', $thread->getThreadId())
+            ->changeRequest('current_thread', $thread->getThreadId())
             ->setInfo('Thread created')
             ->setCurrent('Forum_thread');
     }

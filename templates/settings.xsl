@@ -34,32 +34,32 @@
 
                         <div>
                             <h4>Avatar</h4>
-                            <img height="60" width="60" src="{$param/avatar_path}{$settings/Avatar}" alt="avatar"/>
+                            <img height="60" width="60" src="{$param/avatar_path}{$settings/avatar}" alt="avatar"/>
                         </div>
 
                         <p><button type="submit" name="save_settings">Save settings</button></p>
                         <p>
-                            <input type="text" name="Firstname" maxlength="20" value="{$settings/Firstname}"/>
+                            <input type="text" name="first_name" maxlength="20" value="{$settings/first_name}"/>
                             <xsl:text>First name</xsl:text>
                         </p>
 
                         <p>
-                            <input type="text" name="Surname" maxlength="20" value="{$settings/Surname}"/>
+                            <input type="text" name="surname" maxlength="20" value="{$settings/surname}"/>
                             <xsl:text>Surname</xsl:text>
                         </p>
 
                         <p>
-                            <input type="email" name="Email" maxlength="30" value="{$settings/Email}"/>
+                            <input type="email" name="email" maxlength="30" value="{$settings/email}"/>
                             <xsl:text>E-mail</xsl:text>
                         </p>
 
                         <p>
-                            <input type="text" name="Imnumber" maxlength="20" value="{$settings/Imnumber}"/>
+                            <input type="text" name="im_number" maxlength="20" value="{$settings/im_number}"/>
                             <xsl:text>ICQ / IM number</xsl:text>
                         </p>
 
                         <p>
-                            <select name="Gender">
+                            <select name="gender">
                                 <xsl:variable name="genderTypes">
                                     <type name="none" text="select"/>
                                     <type name="male" text="male"/>
@@ -67,7 +67,7 @@
                                 </xsl:variable>
                                 <xsl:for-each select="exsl:node-set($genderTypes)/*">
                                     <option value="{@name}">
-                                        <xsl:if test="$settings/Gender = @name">
+                                        <xsl:if test="$settings/gender = @name">
                                             <xsl:attribute name="selected">selected</xsl:attribute>
                                         </xsl:if>
                                         <xsl:value-of select="@text"/>
@@ -78,7 +78,7 @@
                         </p>
 
                         <p>
-                            <input type="date" name="Birthdate" min="1000-01-01" max="2016-01-01" size="10" value="{$settings/birth_date}"/>
+                            <input type="date" name="birth_date" min="1000-01-01" max="2016-01-01" size="10" value="{$settings/birth_date}"/>
                             <xsl:text>Date of birth (dd-mm-yyyy)</xsl:text>
                         </p>
 
@@ -93,7 +93,7 @@
                         </p>
 
                         <p>
-                            <select name="Country">
+                            <select name="country">
                                 <option value="Unknown">I'm a pirate - no country</option>
                                 <xsl:variable name="countries">
                                     <country name="Albania"/>
@@ -206,7 +206,7 @@
                                 </xsl:variable>
                                 <xsl:for-each select="exsl:node-set($countries)/*">
                                     <option value="{@name}">
-                                        <xsl:if test="$settings/Country = @name">
+                                        <xsl:if test="$settings/country = @name">
                                             <xsl:attribute name="selected">selected</xsl:attribute>
                                         </xsl:if>
                                         <xsl:value-of select="@name"/>
@@ -214,11 +214,11 @@
                                 </xsl:for-each>
                             </select>
                             <xsl:text>Country</xsl:text>
-                            <img class="icon" width="18" height="12" src="img/flags/{$settings/Country}.gif" alt="country flag" title="{$settings/Country}"/>
+                            <img class="icon" width="18" height="12" src="img/flags/{$settings/country}.gif" alt="country flag" title="{$settings/country}"/>
                         </p>
 
                         <p>
-                            <select name="Status">
+                            <select name="status">
                                 <xsl:variable name="statusTypes">
                                     <status name="none" text="none"/>
                                     <status name="ready" text="looking for game"/>
@@ -228,7 +228,7 @@
                                 </xsl:variable>
                                 <xsl:for-each select="exsl:node-set($statusTypes)/*">
                                     <option value="{@name}">
-                                        <xsl:if test="$settings/Status = @name">
+                                        <xsl:if test="$settings/status = @name">
                                             <xsl:attribute name="selected">selected</xsl:attribute>
                                         </xsl:if>
                                         <xsl:value-of select="@text"/>
@@ -236,15 +236,15 @@
                                 </xsl:for-each>
                             </select>
                             <xsl:text>Status</xsl:text>
-                            <xsl:if test="$settings/Status != 'none'">
-                                <img class="icon" width="20" height="14" src="img/{$settings/Status}.png" alt="status flag" title="{$settings/Status}"/>
+                            <xsl:if test="$settings/status != 'none'">
+                                <img class="icon" width="20" height="14" src="img/{$settings/status}.png" alt="status flag" title="{$settings/status}"/>
                             </xsl:if>
                         </p>
 
                         <p>Game mode flags</p>
                         <p>
-                            <input type="checkbox" name="BlindFlag">
-                                <xsl:if test="$settings/BlindFlag = 'yes'">
+                            <input type="checkbox" name="blind_flag">
+                                <xsl:if test="$settings/blind_flag = 'yes'">
                                     <xsl:attribute name="checked">checked</xsl:attribute>
                                 </xsl:if>
                             </input>
@@ -252,13 +252,13 @@
                                 <xsl:attribute name="title">players are unable to see each other's cards</xsl:attribute>
                                 <xsl:text>Hidden cards</xsl:text>
                             </span>
-                            <xsl:if test="$settings/BlindFlag = 'yes'">
+                            <xsl:if test="$settings/blind_flag = 'yes'">
                                 <img class="icon" width="20" height="14" src="img/blind.png" alt="Hidden cards" title="Hidden cards"/>
                             </xsl:if>
                         </p>
                         <p>
-                            <input type="checkbox" name="FriendlyFlag">
-                                <xsl:if test="$settings/FriendlyFlag = 'yes'">
+                            <input type="checkbox" name="friendly_flag">
+                                <xsl:if test="$settings/friendly_flag = 'yes'">
                                     <xsl:attribute name="checked">checked</xsl:attribute>
                                 </xsl:if>
                             </input>
@@ -266,13 +266,13 @@
                                 <xsl:attribute name="title">the game will not effect player's score</xsl:attribute>
                                 <xsl:text>Friendly play</xsl:text>
                             </span>
-                            <xsl:if test="$settings/FriendlyFlag = 'yes'">
+                            <xsl:if test="$settings/friendly_flag = 'yes'">
                                 <img class="icon" width="20" height="14" src="img/friendly_play.png" alt="Friendly play" title="Friendly play"/>
                             </xsl:if>
                         </p>
                         <p>
-                            <input type="checkbox" name="LongFlag">
-                                <xsl:if test="$settings/LongFlag = 'yes'">
+                            <input type="checkbox" name="long_flag">
+                                <xsl:if test="$settings/long_flag = 'yes'">
                                     <xsl:attribute name="checked">checked</xsl:attribute>
                                 </xsl:if>
                             </input>
@@ -282,15 +282,15 @@
                                 </xsl:attribute>
                                 <xsl:text>Long mode</xsl:text>
                             </span>
-                            <xsl:if test="$settings/LongFlag = 'yes'">
+                            <xsl:if test="$settings/long_flag = 'yes'">
                                 <img class="icon" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
                             </xsl:if>
                         </p>
 
                         <p>Hobbies, Interests:</p>
                         <p>
-                            <textarea name="Hobby" rows="5" cols="30">
-                                <xsl:value-of select="$settings/Hobby"/>
+                            <textarea name="hobby" rows="5" cols="30">
+                                <xsl:value-of select="$settings/hobby"/>
                             </textarea>
                         </p>
 
@@ -366,7 +366,7 @@
                             </p>
 
                             <p>
-                                <input type="password" name="password" maxlength="20" placeholder="Password..."/>
+                                <input type="password" name="new_password" maxlength="20" placeholder="Password..."/>
                                 <xsl:text>New password</xsl:text>
                             </p>
                             <p>
@@ -376,7 +376,7 @@
                             <p><button type="submit" name="change_password">Change password</button></p>
 
                             <p>
-                                <select name="Timezone">
+                                <select name="timezone">
                                     <xsl:variable name="timezones">
                                         <timezone offset="-12" name="Eniwetok, Kwajalein"/>
                                         <timezone offset="-11" name="Midway Island, Samoa"/>
@@ -406,7 +406,7 @@
                                     </xsl:variable>
                                     <xsl:for-each select="exsl:node-set($timezones)/*">
                                         <option value="{@offset}">
-                                            <xsl:if test="$settings/Timezone = @offset">
+                                            <xsl:if test="$settings/timezone = @offset">
                                                 <xsl:attribute name="selected">selected</xsl:attribute>
                                             </xsl:if>
                                             <xsl:text>GMT </xsl:text>
@@ -420,15 +420,15 @@
                             </p>
 
                             <h4>Layout options</h4>
-                            <xsl:if test="$settings/Background != 0">
+                            <xsl:if test="$settings/game_bg_image != 0">
                                 <div id="preview">
                                     <h4>Background image</h4>
-                                    <img width="204" height="152" src="img/backgrounds/bg_{$settings/Background}.jpg" alt=""/>
+                                    <img width="204" height="152" src="img/backgrounds/bg_{$settings/game_bg_image}.jpg" alt=""/>
                                 </div>
                             </xsl:if>
 
                             <p>
-                                <select name="DefaultFilter">
+                                <select name="default_player_filter">
                                     <xsl:variable name="filterTypes">
                                         <filter name="none" text="No players filters"/>
                                         <filter name="active" text="Active players"/>
@@ -437,7 +437,7 @@
                                     </xsl:variable>
                                     <xsl:for-each select="exsl:node-set($filterTypes)/*">
                                         <option value="{@name}">
-                                            <xsl:if test="$settings/DefaultFilter = @name">
+                                            <xsl:if test="$settings/default_player_filter = @name">
                                                 <xsl:attribute name="selected">selected</xsl:attribute>
                                             </xsl:if>
                                             <xsl:value-of select="@text"/>
@@ -453,7 +453,7 @@
                             </p>
 
                             <p>
-                                <select name="Skin">
+                                <select name="skin">
                                     <xsl:variable name="skins">
                                         <skin value="0" name="blue (dark)"/>
                                         <skin value="1" name="rain (light)"/>
@@ -468,7 +468,7 @@
                                     <xsl:for-each select="exsl:node-set($skins)/*">
                                         <xsl:sort select="@name" order="ascending"/>
                                         <option value="{@value}">
-                                            <xsl:if test="$settings/Skin = @value">
+                                            <xsl:if test="$settings/skin = @value">
                                                 <xsl:attribute name="selected">selected</xsl:attribute>
                                             </xsl:if>
                                             <xsl:value-of select="@name"/>
@@ -484,7 +484,7 @@
                             </p>
 
                             <p>
-                                <select name="Background">
+                                <select name="game_bg_image">
                                     <xsl:variable name="backgrounds">
                                         <background value="0" name="- transparent -"/>
                                         <background value="1" name="hill castle"/>
@@ -523,7 +523,7 @@
                                     <xsl:for-each select="exsl:node-set($backgrounds)/*">
                                         <xsl:sort select="@name" order="ascending"/>
                                         <option value="{@value}">
-                                            <xsl:if test="$settings/Background = @value">
+                                            <xsl:if test="$settings/game_bg_image = @value">
                                                 <xsl:attribute name="selected">selected</xsl:attribute>
                                             </xsl:if>
                                             <xsl:value-of select="@name"/>
@@ -539,7 +539,7 @@
                             </p>
 
                             <p>
-                                <select name="Autorefresh">
+                                <select name="auto_refresh_timer">
                                     <xsl:variable name="refreshValues">
                                         <value name="0" text="off"/>
                                         <value name="10" text="10 seconds"/>
@@ -550,7 +550,7 @@
                                     </xsl:variable>
                                     <xsl:for-each select="exsl:node-set($refreshValues)/*">
                                         <option value="{@name}">
-                                            <xsl:if test="$settings/Autorefresh = @name">
+                                            <xsl:if test="$settings/auto_refresh_timer = @name">
                                                 <xsl:attribute name="selected">selected</xsl:attribute>
                                             </xsl:if>
                                             <xsl:value-of select="@text"/>
@@ -566,7 +566,7 @@
                             </p>
 
                             <p>
-                                <select name="AutoAi">
+                                <select name="auto_ai_timer">
                                     <xsl:variable name="autoAiValues">
                                         <value name="0" text="disabled"/>
                                         <value name="5" text="5 seconds"/>
@@ -576,7 +576,7 @@
                                     </xsl:variable>
                                     <xsl:for-each select="exsl:node-set($autoAiValues)/*">
                                         <option value="{@name}">
-                                            <xsl:if test="$settings/AutoAi = @name">
+                                            <xsl:if test="$settings/auto_ai_timer = @name">
                                                 <xsl:attribute name="selected">selected</xsl:attribute>
                                             </xsl:if>
                                             <xsl:value-of select="@text"/>
@@ -592,7 +592,7 @@
                             </p>
 
                             <p>
-                                <select name="Timeout">
+                                <select name="game_turn_timeout">
                                     <xsl:variable name="timeoutValues">
                                         <value name="0" text="unlimited"/>
                                         <value name="86400" text="1 day"/>
@@ -605,7 +605,7 @@
                                     </xsl:variable>
                                     <xsl:for-each select="exsl:node-set($timeoutValues)/*">
                                         <option value="{@name}">
-                                            <xsl:if test="$settings/Timeout = @name">
+                                            <xsl:if test="$settings/game_turn_timeout = @name">
                                                 <xsl:attribute name="selected">selected</xsl:attribute>
                                             </xsl:if>
                                             <xsl:value-of select="@text"/>
@@ -621,8 +621,8 @@
                             </p>
 
                             <p>
-                                <input type="checkbox" name="Insignias">
-                                    <xsl:if test="$settings/Insignias = 'yes'">
+                                <input type="checkbox" name="keyword_insignia">
+                                    <xsl:if test="$settings/keyword_insignia = 'yes'">
                                         <xsl:attribute name="checked">checked</xsl:attribute>
                                     </xsl:if>
                                 </input>
@@ -630,13 +630,13 @@
                                     <xsl:attribute name="title">
                                         <xsl:text>display card keywords in form of an insignia instead of text form</xsl:text>
                                     </xsl:attribute>
-                                    <xsl:text>Show keyword insignias</xsl:text>
+                                    <xsl:text>Show keyword insignia</xsl:text>
                                 </span>
                             </p>
 
                             <p>
-                                <input type="checkbox" name="PlayButtons">
-                                    <xsl:if test="$settings/PlayButtons = 'yes'">
+                                <input type="checkbox" name="play_card_button">
+                                    <xsl:if test="$settings/play_card_button = 'yes'">
                                         <xsl:attribute name="checked">checked</xsl:attribute>
                                     </xsl:if>
                                 </input>
@@ -649,8 +649,8 @@
                             </p>
 
                             <p>
-                                <input type="checkbox" name="Chatorder">
-                                    <xsl:if test="$settings/Chatorder = 'yes'">
+                                <input type="checkbox" name="chat_reverse_order">
+                                    <xsl:if test="$settings/chat_reverse_order = 'yes'">
                                         <xsl:attribute name="checked">checked</xsl:attribute>
                                     </xsl:if>
                                 </input>
@@ -663,8 +663,8 @@
                             </p>
 
                             <p>
-                                <input type="checkbox" name="IntegratedChat">
-                                    <xsl:if test="$settings/IntegratedChat = 'yes'">
+                                <input type="checkbox" name="integrated_chat">
+                                    <xsl:if test="$settings/integrated_chat = 'yes'">
                                         <xsl:attribute name="checked">checked</xsl:attribute>
                                     </xsl:if>
                                 </input>
@@ -677,8 +677,8 @@
                             </p>
 
                             <p>
-                                <input type="checkbox" name="Avatargame">
-                                    <xsl:if test="$settings/Avatargame = 'yes'">
+                                <input type="checkbox" name="in_game_avatar">
+                                    <xsl:if test="$settings/in_game_avatar = 'yes'">
                                         <xsl:attribute name="checked">checked</xsl:attribute>
                                     </xsl:if>
                                 </input>
@@ -689,20 +689,20 @@
                             </p>
 
                             <p>
-                                <input type="checkbox" name="OldCardLook">
-                                    <xsl:if test="$settings/OldCardLook = 'yes'">
+                                <input type="checkbox" name="old_card_look">
+                                    <xsl:if test="$settings/old_card_look = 'yes'">
                                         <xsl:attribute name="checked">checked</xsl:attribute>
                                     </xsl:if>
                                 </input>
                                 <span>
-                                    <xsl:attribute name="title">display cards with old appearance</xsl:attribute>
+                                    <xsl:attribute name="title">display cards without background images</xsl:attribute>
                                     <xsl:text>Old card appearance</xsl:text>
                                 </span>
                             </p>
 
                             <p>
-                                <input type="checkbox" name="Miniflags">
-                                    <xsl:if test="$settings/Miniflags = 'yes'">
+                                <input type="checkbox" name="card_mini_flag">
+                                    <xsl:if test="$settings/card_mini_flag = 'yes'">
                                         <xsl:attribute name="checked">checked</xsl:attribute>
                                     </xsl:if>
                                 </input>
@@ -715,8 +715,8 @@
                             </p>
 
                             <p>
-                                <input type="checkbox" name="Reports">
-                                    <xsl:if test="$settings/Reports = 'yes'">
+                                <input type="checkbox" name="battle_report">
+                                    <xsl:if test="$settings/battle_report = 'yes'">
                                         <xsl:attribute name="checked">checked</xsl:attribute>
                                     </xsl:if>
                                 </input>
@@ -729,8 +729,8 @@
                             </p>
 
                             <p>
-                                <input type="checkbox" name="Forum_notification">
-                                    <xsl:if test="$settings/Forum_notification = 'yes'">
+                                <input type="checkbox" name="forum_notification">
+                                    <xsl:if test="$settings/forum_notification = 'yes'">
                                         <xsl:attribute name="checked">checked</xsl:attribute>
                                     </xsl:if>
                                 </input>
@@ -743,8 +743,8 @@
                             </p>
 
                             <p>
-                                <input type="checkbox" name="Concepts_notification">
-                                    <xsl:if test="$settings/Concepts_notification = 'yes'">
+                                <input type="checkbox" name="concept_notification">
+                                    <xsl:if test="$settings/concept_notification = 'yes'">
                                         <xsl:attribute name="checked">checked</xsl:attribute>
                                     </xsl:if>
                                 </input>
@@ -757,8 +757,8 @@
                             </p>
 
                             <p>
-                                <input type="checkbox" name="RandomDeck">
-                                    <xsl:if test="$settings/RandomDeck = 'yes'">
+                                <input type="checkbox" name="use_random_deck">
+                                    <xsl:if test="$settings/use_random_deck = 'yes'">
                                         <xsl:attribute name="checked">checked</xsl:attribute>
                                     </xsl:if>
                                 </input>
@@ -771,8 +771,8 @@
                             </p>
 
                             <p>
-                                <input type="checkbox" name="GameLimit">
-                                    <xsl:if test="$settings/GameLimit = 'yes'">
+                                <input type="checkbox" name="unique_game_opponent">
+                                    <xsl:if test="$settings/unique_game_opponent = 'yes'">
                                         <xsl:attribute name="checked">checked</xsl:attribute>
                                     </xsl:if>
                                 </input>

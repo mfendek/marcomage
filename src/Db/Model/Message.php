@@ -32,7 +32,7 @@ class Message extends ModelAbstract
      */
     public function getMessageId()
     {
-        return $this->getFieldValue('MessageID');
+        return $this->getFieldValue('message_id');
     }
 
     /**
@@ -40,7 +40,7 @@ class Message extends ModelAbstract
      */
     public function getAuthor()
     {
-        return $this->getFieldValue('Author');
+        return $this->getFieldValue('author');
     }
 
     /**
@@ -48,7 +48,7 @@ class Message extends ModelAbstract
      */
     public function getRecipient()
     {
-        return $this->getFieldValue('Recipient');
+        return $this->getFieldValue('recipient');
     }
 
     /**
@@ -56,7 +56,7 @@ class Message extends ModelAbstract
      */
     public function getSubject()
     {
-        return $this->getFieldValue('Subject');
+        return $this->getFieldValue('subject');
     }
 
     /**
@@ -64,23 +64,23 @@ class Message extends ModelAbstract
      */
     public function getContent()
     {
-        return $this->getFieldValue('Content');
+        return $this->getFieldValue('content');
     }
 
     /**
      * @return int
      */
-    public function getAuthorDelete()
+    public function getIsDeletedAuthor()
     {
-        return $this->getFieldValue('AuthorDelete');
+        return $this->getFieldValue('is_deleted_author');
     }
 
     /**
      * @return int
      */
-    public function getRecipientDelete()
+    public function getIsDeletedRecipient()
     {
-        return $this->getFieldValue('RecipientDelete');
+        return $this->getFieldValue('is_deleted_recipient');
     }
 
     /**
@@ -88,7 +88,7 @@ class Message extends ModelAbstract
      */
     public function getUnread()
     {
-        return $this->getFieldValue('Unread');
+        return $this->getFieldValue('is_unread');
     }
 
     /**
@@ -96,7 +96,7 @@ class Message extends ModelAbstract
      */
     public function getGameId()
     {
-        return $this->getFieldValue('GameID');
+        return $this->getFieldValue('game_id');
     }
 
     /**
@@ -104,7 +104,7 @@ class Message extends ModelAbstract
      */
     public function getCreated()
     {
-        return $this->getFieldValue('Created');
+        return $this->getFieldValue('created_at');
     }
 
     /**
@@ -113,7 +113,7 @@ class Message extends ModelAbstract
      */
     public function setAuthor($author)
     {
-        return $this->setFieldValue('Author', $author);
+        return $this->setFieldValue('author', $author);
     }
 
     /**
@@ -122,7 +122,7 @@ class Message extends ModelAbstract
      */
     public function setRecipient($recipient)
     {
-        return $this->setFieldValue('Recipient', $recipient);
+        return $this->setFieldValue('recipient', $recipient);
     }
 
     /**
@@ -131,7 +131,7 @@ class Message extends ModelAbstract
      */
     public function setSubject($subject)
     {
-        return $this->setFieldValue('Subject', $subject);
+        return $this->setFieldValue('subject', $subject);
     }
 
     /**
@@ -140,25 +140,25 @@ class Message extends ModelAbstract
      */
     public function setContent($content)
     {
-        return $this->setFieldValue('Content', $content);
+        return $this->setFieldValue('content', $content);
     }
 
     /**
      * @param int $authorDelete
      * @return $this
      */
-    public function setAuthorDelete($authorDelete)
+    public function setIsDeletedAuthor($authorDelete)
     {
-        return $this->setFieldValue('AuthorDelete', $authorDelete);
+        return $this->setFieldValue('is_deleted_author', $authorDelete);
     }
 
     /**
      * @param int $recipientDelete
      * @return $this
      */
-    public function setRecipientDelete($recipientDelete)
+    public function setIsDeletedRecipient($recipientDelete)
     {
-        return $this->setFieldValue('RecipientDelete', $recipientDelete);
+        return $this->setFieldValue('is_deleted_recipient', $recipientDelete);
     }
 
     /**
@@ -167,7 +167,7 @@ class Message extends ModelAbstract
      */
     public function setUnread($unread)
     {
-        return $this->setFieldValue('Unread', $unread);
+        return $this->setFieldValue('is_unread', $unread);
     }
 
     /**
@@ -176,7 +176,7 @@ class Message extends ModelAbstract
      */
     public function setGameId($gameId)
     {
-        return $this->setFieldValue('GameID', $gameId);
+        return $this->setFieldValue('game_id', $gameId);
     }
 
     /**
@@ -185,6 +185,6 @@ class Message extends ModelAbstract
      */
     public function setCreated($created)
     {
-        return $this->setFieldValue('Created', $created);
+        return $this->setFieldValue('created_at', $created);
     }
 }

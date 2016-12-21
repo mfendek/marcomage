@@ -24,89 +24,101 @@
                 <xsl:for-each select="$param/groups/*">
                     <div class="col-md-6">
                         <div class="skin-text top-level">
-                            <table>
-                                <tr>
-                                    <th>
-                                        <p>
+                            <div class="responsive-table table-sm">
+                                <!-- table header -->
+                                <div class="row">
+                                    <div class="col-sm-1">
+                                        <p class="sortable">
                                             <xsl:if test="$param/is_logged_in = 'yes'">
                                                 <button class="button-icon" type="submit" name="forum_search" title="Search">
                                                     <span class="glyphicon glyphicon-search"/>
                                                 </button>
                                             </xsl:if>
                                         </p>
-                                    </th>
-                                    <th><p>Topic</p></th>
-                                    <th><p>Author</p></th>
-                                    <th><p>Posts</p></th>
-                                    <th><p>Latest post</p></th>
-                                </tr>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <p>Topic</p>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <p>Author</p>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <p>Posts</p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <p>Latest post</p>
+                                    </div>
+                                </div>
 
+                                <!-- table body -->
                                 <xsl:for-each select="sections/*">
-
-                                    <tr>
-                                        <td colspan="5">
+                                    <div class="row table-row">
+                                        <div class="col-sm-12">
                                             <div class="skin-label">
                                                 <h5>
-                                                    <a href="{am:makeUrl('Forum_section', 'CurrentSection', SectionID)}">
-                                                        <xsl:value-of select="SectionName"/>
+                                                    <a href="{am:makeUrl('Forum_section', 'current_section', section_id)}">
+                                                        <xsl:value-of select="section_name"/>
                                                     </a>
                                                     <xsl:text> (</xsl:text>
                                                     <xsl:value-of select="count"/>
                                                     <xsl:text>) - </xsl:text>
-                                                    <xsl:value-of select="Description"/>
+                                                    <xsl:value-of select="description"/>
                                                 </h5>
                                             </div>
-                                        </td>
-                                    </tr>
+                                        </div>
+                                    </div>
+
                                     <xsl:for-each select="threadlist/*">
 
-                                        <xsl:variable name="hasPosts" select="boolean(PostCount > 0)"/>
+                                        <xsl:variable name="hasPosts" select="boolean(post_count > 0)"/>
 
-                                        <tr class="table-row">
-                                            <td>
+                                        <div class="row table-row">
+                                            <div class="col-sm-1">
                                                 <p>
                                                     <xsl:choose>
-                                                        <xsl:when test="Priority = 'sticky'">
+                                                        <xsl:when test="priority = 'sticky'">
                                                             <img src="img/sticky.gif" width="22" height="15" alt="sticky" title="Sticky" class="icon"/>
                                                         </xsl:when>
-                                                        <xsl:when test="Priority = 'important'">
+                                                        <xsl:when test="priority = 'important'">
                                                             <img src="img/important.gif" width="18" height="13" alt="important" title="Important" class="icon"/>
                                                         </xsl:when>
                                                     </xsl:choose>
-                                                    <xsl:if test="Locked = 'yes'">
+                                                    <xsl:if test="is_locked = 'yes'">
                                                         <img src="img/locked.gif" width="15" height="16" alt="locked" title="Locked" class="icon"/>
                                                     </xsl:if>
                                                 </p>
-                                            </td>
-                                            <td>
-                                                <p class="headings">
-                                                    <a href="{am:makeUrl('Forum_thread', 'CurrentThread', ThreadID, 'CurrentPage', 0)}">
-                                                        <xsl:value-of select="Title"/>
-                                                    </a>
-                                                </p>
-                                            </td>
-                                            <td>
+                                            </div>
+                                            <div class="col-sm-5">
                                                 <p>
-                                                    <a class="profile" href="{am:makeUrl('Players_details', 'Profile', Author)}">
-                                                        <xsl:value-of select="Author"/>
+                                                    <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'CurrentPage', 0)}">
+                                                        <xsl:value-of select="title"/>
                                                     </a>
                                                 </p>
-                                            </td>
-                                            <td><p><xsl:value-of select="PostCount"/></p></td>
-                                            <td>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <p>
+                                                    <a class="profile" href="{am:makeUrl('Players_details', 'Profile', author)}">
+                                                        <xsl:value-of select="author"/>
+                                                    </a>
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-1">
+                                                <p><xsl:value-of select="post_count"/></p>
+                                            </div>
+                                            <div class="col-sm-3">
                                                 <xsl:choose>
                                                     <xsl:when test="$hasPosts">
                                                         <p>
-                                                            <xsl:if test="am:dateDiff(LastPost, $param/notification) &lt; 0">
+                                                            <xsl:if test="am:dateDiff(last_post, $param/notification) &lt; 0">
                                                                 <xsl:attribute name="class">new</xsl:attribute>
                                                             </xsl:if>
-                                                            <a href="{am:makeUrl('Forum_thread', 'CurrentThread', ThreadID, 'CurrentPage', am:max(LastPage - 1, 0))}#latest">
-                                                                <xsl:value-of select="am:dateTime(LastPost, $param/timezone)"/>
+                                                            <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'CurrentPage', am:max(last_page - 1, 0))}#latest">
+                                                                <xsl:value-of select="am:dateTime(last_post, $param/timezone)"/>
                                                             </a>
                                                             <xsl:text> by </xsl:text>
                                                             <a class="profile"
-                                                               href="{am:makeUrl('Players_details', 'Profile', LastAuthor)}">
-                                                                <xsl:value-of select="LastAuthor"/>
+                                                               href="{am:makeUrl('Players_details', 'Profile', last_author)}">
+                                                                <xsl:value-of select="last_author"/>
                                                             </a>
                                                         </p>
                                                     </xsl:when>
@@ -114,16 +126,14 @@
                                                         <p>n/a</p>
                                                     </xsl:otherwise>
                                                 </xsl:choose>
-                                            </td>
-                                        </tr>
+                                            </div>
+                                        </div>
                                     </xsl:for-each>
                                 </xsl:for-each>
-
-                            </table>
+                            </div>
                         </div>
                     </div>
                 </xsl:for-each>
-
             </div>
         </div>
     </xsl:template>
@@ -175,11 +185,11 @@
                         <xsl:text>any section</xsl:text>
                     </option>
                     <xsl:for-each select="$param/sections/*">
-                        <option value="{SectionID}">
-                            <xsl:if test="$param/section = SectionID">
+                        <option value="{section_id}">
+                            <xsl:if test="$param/section = section_id">
                                 <xsl:attribute name="selected">selected</xsl:attribute>
                             </xsl:if>
-                            <xsl:value-of select="SectionName"/>
+                            <xsl:value-of select="section_name"/>
                         </option>
                     </xsl:for-each>
                 </select>
@@ -190,67 +200,78 @@
             <xsl:choose>
                 <xsl:when test="count($param/threads/*) &gt; 0">
                     <div class="skin-text">
+                        <div class="responsive-table table-sm">
+                            <!-- table header -->
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <p/>
+                                </div>
+                                <div class="col-sm-5">
+                                    <p>Topic</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>Author</p>
+                                </div>
+                                <div class="col-sm-1">
+                                    <p>Posts</p>
+                                </div>
+                                <div class="col-sm-3">
+                                    <p>Latest post</p>
+                                </div>
+                            </div>
 
-                        <table>
-
-                            <tr>
-                                <th><p/></th>
-                                <th><p>Topic</p></th>
-                                <th><p>Author</p></th>
-                                <th><p>Posts</p></th>
-                                <th><p>Latest post</p></th>
-                            </tr>
-
+                            <!-- table body -->
                             <xsl:for-each select="$param/threads/*">
+                                <xsl:variable name="hasPosts" select="boolean(post_count > 0)"/>
 
-                                <xsl:variable name="hasPosts" select="boolean(PostCount > 0)"/>
-
-                                <tr class="table-row">
-                                    <td>
+                                <div class="row table-row">
+                                    <div class="col-sm-1">
                                         <p>
                                             <xsl:choose>
-                                                <xsl:when test="Priority = 'sticky'">
+                                                <xsl:when test="priority = 'sticky'">
                                                     <img src="img/sticky.gif" width="22" height="15" alt="sticky" title="Sticky" class="icon"/>
                                                 </xsl:when>
-                                                <xsl:when test="Priority = 'important'">
+                                                <xsl:when test="priority = 'important'">
                                                     <img src="img/important.gif" width="18" height="13" alt="important" title="Important" class="icon"/>
                                                 </xsl:when>
                                             </xsl:choose>
-                                            <xsl:if test="Locked = 'yes'">
+                                            <xsl:if test="is_locked = 'yes'">
                                                 <img src="img/locked.gif" width="15" height="16" alt="locked" title="Locked" class="icon"/>
                                             </xsl:if>
                                         </p>
-                                    </td>
-                                    <td>
-                                        <p class="headings">
-                                            <a href="{am:makeUrl('Forum_thread', 'CurrentThread', ThreadID, 'CurrentPage', 0)}">
-                                                <xsl:value-of select="Title"/>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <p>
+                                            <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'CurrentPage', 0)}">
+                                                <xsl:value-of select="title"/>
                                             </a>
                                         </p>
-                                    </td>
-                                    <td>
+                                    </div>
+                                    <div class="col-sm-2">
                                         <p>
                                             <a class="profile"
-                                               href="{am:makeUrl('Players_details', 'Profile', Author)}">
-                                                <xsl:value-of select="Author"/>
+                                               href="{am:makeUrl('Players_details', 'Profile', author)}">
+                                                <xsl:value-of select="author"/>
                                             </a>
                                         </p>
-                                    </td>
-                                    <td><p><xsl:value-of select="PostCount"/></p></td>
-                                    <td>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <p><xsl:value-of select="post_count"/></p>
+                                    </div>
+                                    <div class="col-sm-3">
                                         <xsl:choose>
                                             <xsl:when test="$hasPosts">
                                                 <p>
-                                                    <xsl:if test="am:dateDiff(LastPost, $param/notification) &lt; 0">
+                                                    <xsl:if test="am:dateDiff(last_post, $param/notification) &lt; 0">
                                                         <xsl:attribute name="class">new</xsl:attribute>
                                                     </xsl:if>
-                                                    <a href="{am:makeUrl('Forum_thread', 'CurrentThread', ThreadID, 'CurrentPage', am:max(LastPage - 1, 0))}#latest">
-                                                        <xsl:value-of select="am:dateTime(LastPost, $param/timezone)"/>
+                                                    <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'CurrentPage', am:max(last_page - 1, 0))}#latest">
+                                                        <xsl:value-of select="am:dateTime(last_post, $param/timezone)"/>
                                                     </a>
                                                     <xsl:text> by </xsl:text>
                                                     <a class="profile"
-                                                       href="{am:makeUrl('Players_details', 'Profile', LastAuthor)}">
-                                                        <xsl:value-of select="LastAuthor"/>
+                                                       href="{am:makeUrl('Players_details', 'Profile', last_author)}">
+                                                        <xsl:value-of select="last_author"/>
                                                     </a>
                                                 </p>
                                             </xsl:when>
@@ -258,13 +279,10 @@
                                                 <p>n/a</p>
                                             </xsl:otherwise>
                                         </xsl:choose>
-                                    </td>
-                                </tr>
-
+                                    </div>
+                                </div>
                             </xsl:for-each>
-
-                        </table>
-
+                        </div>
                     </div>
                 </xsl:when>
                 <xsl:otherwise>
@@ -283,42 +301,51 @@
 
             <div class="skin-text">
 
-                <table>
-
-                    <tr>
-                        <th>
-                            <p>
+                <div class="responsive-table table-sm">
+                    <!-- table header -->
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <p class="sortable">
                                 <xsl:if test="$param/is_logged_in = 'yes'">
                                     <button class="button-icon" type="submit" name="forum_search" title="Search">
                                         <span class="glyphicon glyphicon-search"/>
                                     </button>
                                 </xsl:if>
                             </p>
-                        </th>
-                        <th><p>Topic</p></th>
-                        <th><p>Author</p></th>
-                        <th><p>Posts</p></th>
-                        <th><p>Latest post</p></th>
-                    </tr>
+                        </div>
+                        <div class="col-sm-5">
+                            <p>Topic</p>
+                        </div>
+                        <div class="col-sm-2">
+                            <p>Author</p>
+                        </div>
+                        <div class="col-sm-1">
+                            <p>Posts</p>
+                        </div>
+                        <div class="col-sm-3">
+                            <p>Latest post</p>
+                        </div>
+                    </div>
 
-                    <tr>
-                        <td colspan="5">
+                    <!-- table body -->
+                    <div class="row table-row">
+                        <div class="col-sm-12">
                             <div class="skin-label">
                                 <div class="row">
                                     <div class="col-md-7">
                                         <h5>
                                             <a href="{am:makeUrl('Forum')}">
-                                                <xsl:value-of select="$param/section/SectionName"/>
+                                                <xsl:value-of select="$param/section/section_name"/>
                                             </a>
                                             <xsl:text> - </xsl:text>
-                                            <xsl:value-of select="$param/section/Description"/>
+                                            <xsl:value-of select="$param/section/description"/>
                                         </h5>
                                     </div>
                                     <div class="col-md-5">
                                         <div class="navigation">
                                             <!-- navigation -->
                                             <xsl:copy-of select="am:forumNavigation(
-                                                'Forum_section', 'CurrentSection', $param/section/SectionID,
+                                                'Forum_section', 'current_section', $param/section/section_id,
                                                 'section_current_page', $param/current_page, $param/pages
                                             )"/>
 
@@ -331,59 +358,60 @@
                                     </div>
                                 </div>
                             </div>
-
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
 
                     <xsl:for-each select="$param/threads/*">
 
-                        <xsl:variable name="hasPosts" select="boolean(PostCount > 0)"/>
+                        <xsl:variable name="hasPosts" select="boolean(post_count > 0)"/>
 
-                        <tr class="table-row">
-                            <td>
+                        <div class="row table-row">
+                            <div class="col-sm-1">
                                 <p>
                                     <xsl:choose>
-                                        <xsl:when test="Priority = 'sticky'">
+                                        <xsl:when test="priority = 'sticky'">
                                             <img src="img/sticky.gif" width="22" height="15" alt="sticky" title="Sticky" class="icon"/>
                                         </xsl:when>
-                                        <xsl:when test="Priority = 'important'">
+                                        <xsl:when test="priority = 'important'">
                                             <img src="img/important.gif" width="18" height="13" alt="important" title="Important" class="icon"/>
                                         </xsl:when>
                                     </xsl:choose>
-                                    <xsl:if test="Locked = 'yes'">
+                                    <xsl:if test="is_locked = 'yes'">
                                         <img src="img/locked.gif" width="15" height="16" alt="locked" title="Locked" class="icon"/>
                                     </xsl:if>
                                 </p>
-                            </td>
-                            <td>
-                                <p class="headings">
-                                    <a href="{am:makeUrl('Forum_thread', 'CurrentThread', ThreadID, 'CurrentPage', 0)}">
-                                        <xsl:value-of select="Title"/>
-                                    </a>
-                                </p>
-                            </td>
-                            <td>
+                            </div>
+                            <div class="col-sm-5">
                                 <p>
-                                    <a class="profile" href="{am:makeUrl('Players_details', 'Profile', Author)}">
-                                        <xsl:value-of select="Author"/>
+                                    <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'CurrentPage', 0)}">
+                                        <xsl:value-of select="title"/>
                                     </a>
                                 </p>
-                            </td>
-                            <td><p><xsl:value-of select="PostCount"/></p></td>
-                            <td>
+                            </div>
+                            <div class="col-sm-2">
+                                <p>
+                                    <a class="profile" href="{am:makeUrl('Players_details', 'Profile', author)}">
+                                        <xsl:value-of select="author"/>
+                                    </a>
+                                </p>
+                            </div>
+                            <div class="col-sm-1">
+                                <p><xsl:value-of select="post_count"/></p>
+                            </div>
+                            <div class="col-sm-3">
                                 <xsl:choose>
                                     <xsl:when test="$hasPosts">
                                         <p>
-                                            <xsl:if test="am:dateDiff(LastPost, $param/notification) &lt; 0">
+                                            <xsl:if test="am:dateDiff(last_post, $param/notification) &lt; 0">
                                                 <xsl:attribute name="class">new</xsl:attribute>
                                             </xsl:if>
-                                            <a href="{am:makeUrl('Forum_thread', 'CurrentThread', ThreadID, 'CurrentPage', am:max(LastPage - 1, 0))}#latest">
-                                                <xsl:value-of select="am:dateTime(LastPost, $param/timezone)"/>
+                                            <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'CurrentPage', am:max(last_page - 1, 0))}#latest">
+                                                <xsl:value-of select="am:dateTime(last_post, $param/timezone)"/>
                                             </a>
                                             <xsl:text> by </xsl:text>
                                             <a class="profile"
-                                               href="{am:makeUrl('Players_details', 'Profile', LastAuthor)}">
-                                                <xsl:value-of select="LastAuthor"/>
+                                               href="{am:makeUrl('Players_details', 'Profile', last_author)}">
+                                                <xsl:value-of select="last_author"/>
                                             </a>
                                         </p>
                                     </xsl:when>
@@ -391,17 +419,13 @@
                                         <p>n/a</p>
                                     </xsl:otherwise>
                                 </xsl:choose>
-                            </td>
-                        </tr>
-
+                            </div>
+                        </div>
                     </xsl:for-each>
-
-                </table>
-
+                </div>
             </div>
 
-            <input type="hidden" name="CurrentSection" value="{$param/section/SectionID}"/>
-
+            <input type="hidden" name="current_section" value="{$param/section/section_id}"/>
         </div>
     </xsl:template>
 
@@ -413,7 +437,7 @@
         <xsl:variable name="thread" select="$param/thread_data"/>
         <xsl:variable name="deletePost" select="$param/delete_post"/>
         <!-- is unlocked or you have the right to lock/unlock -->
-        <xsl:variable name="canModify" select="$thread/Locked = 'no' or $param/lock_thread = 'yes'"/>
+        <xsl:variable name="canModify" select="$thread/is_locked = 'no' or $param/lock_thread = 'yes'"/>
 
         <div id="thread-details" class="top-level">
 
@@ -422,14 +446,14 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h5>
-                                <a href="{am:makeUrl('Forum_section', 'CurrentSection', $section/SectionID)}">
-                                    <xsl:value-of select="$section/SectionName"/>
+                                <a href="{am:makeUrl('Forum_section', 'current_section', $section/section_id)}">
+                                    <xsl:value-of select="$section/section_name"/>
                                 </a>
                                 <span>&gt;</span>
-                                <a href="{am:makeUrl('Forum_thread', 'CurrentThread', $thread/ThreadID, 'CurrentPage', $param/current_page)}">
-                                    <xsl:value-of select="$thread/Title"/>
+                                <a href="{am:makeUrl('Forum_thread', 'current_thread', $thread/thread_id, 'CurrentPage', $param/current_page)}">
+                                    <xsl:value-of select="$thread/title"/>
                                 </a>
-                                <xsl:if test="$thread/Locked = 'yes'">
+                                <xsl:if test="$thread/is_locked = 'yes'">
                                     <img src="img/locked.gif" width="15" height="16" alt="locked" title="Locked" class="icon"/>
                                 </xsl:if>
                             </h5>
@@ -437,8 +461,8 @@
                         <div class="col-md-6">
                             <div class="navigation">
                                 <xsl:choose>
-                                    <xsl:when test="$param/concept &gt; 0">
-                                        <a class="button" href="{am:makeUrl('Concepts_details', 'CurrentConcept', $param/concept)}">
+                                    <xsl:when test="$thread/reference_concept &gt; 0">
+                                        <a class="button" href="{am:makeUrl('Concepts_details', 'current_concept', $thread/reference_concept)}">
                                             <xsl:text>View concept</xsl:text>
                                         </a>
                                     </xsl:when>
@@ -447,13 +471,13 @@
                                             <xsl:text>View card</xsl:text>
                                         </a>
                                     </xsl:when>
-                                    <xsl:when test="$param/replay &gt; 0">
-                                        <a class="button" href="{am:makeUrl('Replays_details', 'CurrentReplay', $param/replay, 'PlayerView', 1, 'Turn', 1)}">
+                                    <xsl:when test="$param/is_logged_in = 'yes' and $thread/reference_replay &gt; 0">
+                                        <a class="button" href="{am:makeUrl('Replays_details', 'CurrentReplay', $thread/reference_replay, 'PlayerView', 1, 'Turn', 1)}">
                                             <xsl:text>View replay</xsl:text>
                                         </a>
                                     </xsl:when>
-                                    <xsl:when test="$thread/reference_deck &gt; 0">
-                                        <a class="button" href="{am:makeUrl('Decks_details', 'CurrentDeck', $thread/reference_deck)}">
+                                    <xsl:when test="$param/is_logged_in = 'yes' and $thread/reference_deck &gt; 0">
+                                        <a class="button" href="{am:makeUrl('Decks_details', 'current_deck', $thread/reference_deck)}">
                                             <xsl:text>View deck</xsl:text>
                                         </a>
                                     </xsl:when>
@@ -461,7 +485,7 @@
 
                                 <xsl:if test="$param/lock_thread = 'yes'">
                                     <xsl:choose>
-                                        <xsl:when test="$thread/Locked = 'no'">
+                                        <xsl:when test="$thread/is_locked = 'no'">
                                             <button class="button-icon" type="submit" name="thread_lock" title="Lock">
                                                 <span class="glyphicon glyphicon-lock"/>
                                             </button>
@@ -497,11 +521,11 @@
 
                                 <!-- navigation -->
                                 <xsl:copy-of select="am:forumNavigation(
-                                    'Forum_thread', 'CurrentThread', $thread/ThreadID,
+                                    'Forum_thread', 'current_thread', $thread/thread_id,
                                     'CurrentPage', $param/current_page, $param/pages_count
                                 )"/>
 
-                                <xsl:if test="$param/create_post = 'yes' and $thread/Locked = 'no'">
+                                <xsl:if test="$param/create_post = 'yes' and $thread/is_locked = 'no'">
                                     <button class="button-icon" type="submit" name="new_post" title="New post">
                                         <span class="glyphicon glyphicon-plus"/>
                                     </button>
@@ -527,52 +551,52 @@
                                     <xsl:if test="position() = last()">
                                         <a id="latest"/>
                                     </xsl:if>
-                                    <a href="{am:makeUrl('Players_details', 'Profile', Author)}">
-                                        <xsl:value-of select="Author"/>
+                                    <a href="{am:makeUrl('Players_details', 'Profile', author)}">
+                                        <xsl:value-of select="author"/>
                                     </a>
 
                                     <xsl:text> on </xsl:text>
 
                                     <span>
-                                        <xsl:if test="am:dateDiff(Created, $param/notification) &lt; 0">
+                                        <xsl:if test="am:dateDiff(created_at, $param/notification) &lt; 0">
                                             <xsl:attribute name="class">new</xsl:attribute>
                                         </xsl:if>
-                                        <xsl:value-of select="am:dateTime(Created, $param/timezone)"/>
+                                        <xsl:value-of select="am:dateTime(created_at, $param/timezone)"/>
                                     </span>
                                 </div>
                             </div>
 
                             <div class="col-sm-6">
                                 <div class="post-buttons">
-                                    <xsl:if test="$param/create_post = 'yes' and $thread/Locked = 'no'">
-                                        <button class="button-icon" type="submit" name="quote_post" value="{PostID}" title="Quote">
-                                            <span class="glyphicon glyphicon-tag"/>
+                                    <xsl:if test="$param/create_post = 'yes' and $thread/is_locked = 'no'">
+                                        <button class="button-icon" type="submit" name="quote_post" value="{post_id}" title="Quote">
+                                            <span class="glyphicon glyphicon-share"/>
                                         </button>
                                     </xsl:if>
 
-                                    <xsl:if test="($param/edit_all_post = 'yes' or ($param/edit_own_post = 'yes' and $param/player_name = Author)) and $canModify">
-                                        <button class="button-icon" type="submit" name="edit_post" value="{PostID}" title="Edit">
+                                    <xsl:if test="($param/edit_all_post = 'yes' or ($param/edit_own_post = 'yes' and $param/player_name = author)) and $canModify">
+                                        <button class="button-icon" type="submit" name="edit_post" value="{post_id}" title="Edit">
                                             <span class="glyphicon glyphicon-pencil"/>
                                         </button>
                                     </xsl:if>
 
                                     <xsl:if test="$param/del_all_post = 'yes' and $canModify">
                                         <xsl:choose>
-                                            <xsl:when test="$deletePost != PostID">
-                                                <button class="button-icon" type="submit" name="delete_post" value="{PostID}" title="Delete">
+                                            <xsl:when test="$deletePost != post_id">
+                                                <button class="button-icon" type="submit" name="delete_post" value="{post_id}" title="Delete">
                                                     <span class="glyphicon glyphicon-trash"/>
                                                 </button>
                                             </xsl:when>
                                             <xsl:otherwise>
-                                                <button class="button-icon marked_button" type="submit" name="delete_post_confirm" value="{PostID}" title="Confirm delete">
+                                                <button class="button-icon marked_button" type="submit" name="delete_post_confirm" value="{post_id}" title="Confirm delete">
                                                     <span class="glyphicon glyphicon-trash"/>
                                                 </button>
                                             </xsl:otherwise>
                                         </xsl:choose>
                                     </xsl:if>
 
-                                    <xsl:variable name="postId" select="concat('post', PostID)"/>
-                                    <a id="{$postId}" class="permalink" href="{am:makeUrl('Forum_thread', 'CurrentThread', $thread/ThreadID, 'CurrentPage', $param/current_page)}#{$postId}" title="Permalink">
+                                    <xsl:variable name="postId" select="concat('post', post_id)"/>
+                                    <a id="{$postId}" class="permalink" href="{am:makeUrl('Forum_thread', 'current_thread', $thread/thread_id, 'CurrentPage', $param/current_page)}#{$postId}" title="Permalink">
                                         <xsl:text>#</xsl:text>
                                         <xsl:value-of select="position() + $param/current_page * $param/posts_per_page"/>
                                     </a>
@@ -583,8 +607,8 @@
                         <div class="row">
                             <div class="col-md-1">
                                 <div class="post-avatar">
-                                    <a href="{am:makeUrl('Players_details', 'Profile', Author)}">
-                                        <img class="avatar" height="60" width="60" src="{$param/avatar_path}{Avatar}" alt="avatar"/>
+                                    <a href="{am:makeUrl('Players_details', 'Profile', author)}">
+                                        <img class="avatar" height="60" width="60" src="{$param/avatar_path}{avatar}" alt="avatar"/>
                                     </a>
                                 </div>
                             </div>
@@ -592,7 +616,7 @@
                             <div class="col-md-11">
                                 <div class="post-content">
                                     <div>
-                                        <xsl:value-of select="am:bbCodeParseExtended(Content)" disable-output-escaping="yes"/>
+                                        <xsl:value-of select="am:bbCodeParseExtended(content)" disable-output-escaping="yes"/>
                                     </div>
                                 </div>
                             </div>
@@ -604,8 +628,8 @@
 
             <xsl:copy-of select="$navigationBar"/>
 
-            <input type="hidden" name="CurrentSection" value="{$thread/SectionID}"/>
-            <input type="hidden" name="CurrentThread" value="{$thread/ThreadID}"/>
+            <input type="hidden" name="current_section" value="{$thread/section_id}"/>
+            <input type="hidden" name="current_thread" value="{$thread/thread_id}"/>
             <input type="hidden" name="current_page" value="{$param/current_page}"/>
 
         </div>
@@ -621,7 +645,7 @@
 
             <h3>Create new thread to the section
                 <span>
-                    <xsl:value-of select="$section/SectionName"/>
+                    <xsl:value-of select="$section/section_name"/>
                 </span>
             </h3>
 
@@ -633,7 +657,7 @@
 
                     <xsl:text>Priority:</xsl:text>
 
-                    <select name="Priority">
+                    <select name="priority">
                         <option value="normal" selected="selected">Normal</option>
                         <xsl:if test="$param/change_priority = 'yes'">
                             <option value="important">Important</option>
@@ -643,7 +667,7 @@
 
                 </p>
 
-                <a class="button button-icon" href="{am:makeUrl('Forum_section', 'CurrentSection', $section/SectionID)}">
+                <a class="button button-icon" href="{am:makeUrl('Forum_section', 'current_section', $section/section_id)}">
                     <span class="glyphicon glyphicon-arrow-left"/>
                 </a>
                 <button class="button-icon" type="submit" name="create_thread" title="Create thread">
@@ -658,7 +682,7 @@
 
             </div>
 
-            <input type="hidden" name="CurrentSection" value="{$section/SectionID}"/>
+            <input type="hidden" name="current_section" value="{$section/section_id}"/>
         </div>
     </xsl:template>
 
@@ -672,13 +696,13 @@
 
             <h3>New post in thread
                 <span>
-                    <xsl:value-of select="$thread/Title"/>
+                    <xsl:value-of select="$thread/title"/>
                 </span>
             </h3>
 
             <div class="skin-text">
 
-                <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'CurrentThread', $thread/ThreadID, 'CurrentPage', 0)}">
+                <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $thread/thread_id, 'CurrentPage', 0)}">
                     <span class="glyphicon glyphicon-arrow-left"/>
                 </a>
                 <button class="button-icon" type="submit" name="create_post" title="Create post">
@@ -693,7 +717,7 @@
 
             </div>
 
-            <input type="hidden" name="CurrentThread" value="{$thread/ThreadID}"/>
+            <input type="hidden" name="current_thread" value="{$thread/thread_id}"/>
 
         </div>
     </xsl:template>
@@ -711,13 +735,13 @@
             <h3>Edit thread</h3>
 
             <div class="skin-text">
-                <p>Topic: <input type="text" name="title" maxlength="50" size="45" value="{$thread/Title}"/>
+                <p>Topic: <input type="text" name="title" maxlength="50" size="45" value="{$thread/title}"/>
                 </p>
 
                 <p>
                     <xsl:text>Priority:</xsl:text>
 
-                    <select name="Priority">
+                    <select name="priority">
                         <xsl:if test="$param/change_priority = 'no'">
                             <xsl:attribute name="disabled">disabled</xsl:attribute>
                         </xsl:if>
@@ -730,7 +754,7 @@
 
                         <xsl:for-each select="exsl:node-set($priorityTypes)/*">
                             <option value="{@name}">
-                                <xsl:if test="$thread/Priority = @name">
+                                <xsl:if test="$thread/priority = @name">
                                     <xsl:attribute name="selected">selected</xsl:attribute>
                                 </xsl:if>
                                 <xsl:value-of select="@text"/>
@@ -739,7 +763,7 @@
                     </select>
                 </p>
 
-                <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'CurrentThread', $thread/ThreadID, 'CurrentPage', 0)}">
+                <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $thread/thread_id, 'CurrentPage', 0)}">
                     <span class="glyphicon glyphicon-arrow-left"/>
                 </a>
                 <button class="button-icon" type="submit" name="modify_thread" title="Save">
@@ -752,7 +776,7 @@
                     <p>
                         Current section:
                         <span>
-                            <xsl:value-of select="$section/SectionName"/>
+                            <xsl:value-of select="$section/section_name"/>
                         </span>
                     </p>
 
@@ -761,8 +785,8 @@
 
                         <select name="section_select">
                             <xsl:for-each select="$sectionList/*">
-                                <option value="{SectionID}">
-                                    <xsl:value-of select="SectionName"/>
+                                <option value="{section_id}">
+                                    <xsl:value-of select="section_name"/>
                                 </option>
                             </xsl:for-each>
                         </select>
@@ -773,7 +797,7 @@
                     </p>
                 </xsl:if>
             </div>
-            <input type="hidden" name="CurrentThread" value="{$thread/ThreadID}"/>
+            <input type="hidden" name="current_thread" value="{$thread/thread_id}"/>
         </div>
     </xsl:template>
 
@@ -789,7 +813,7 @@
         <div class="forum-new-edit">
             <h3>Edit post</h3>
             <div class="skin-text">
-                <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'CurrentThread', $post/ThreadID, 'CurrentPage', $currentPage)}">
+                <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $post/thread_id, 'CurrentPage', $currentPage)}">
                     <span class="glyphicon glyphicon-arrow-left"/>
                 </a>
                 <button class="button-icon" type="submit" name="modify_post" title="Save">
@@ -807,7 +831,7 @@
                     <p>
                         Current thread:
                         <span>
-                            <xsl:value-of select="$thread/Title"/>
+                            <xsl:value-of select="$thread/title"/>
                         </span>
                     </p>
                     <xsl:if test="count($threadList/*) &gt; 0">
@@ -815,8 +839,8 @@
                             <xsl:text>Target thread:</xsl:text>
                             <select name="thread_select">
                                 <xsl:for-each select="$threadList/*">
-                                    <option value="{ThreadID}">
-                                        <xsl:value-of select="Title"/>
+                                    <option value="{thread_id}">
+                                        <xsl:value-of select="title"/>
                                     </option>
                                 </xsl:for-each>
                             </select>
@@ -829,8 +853,8 @@
                 </xsl:if>
             </div>
 
-            <input type="hidden" name="CurrentThread" value="{$post/ThreadID}"/>
-            <input type="hidden" name="current_post" value="{$post/PostID}"/>
+            <input type="hidden" name="current_thread" value="{$post/thread_id}"/>
+            <input type="hidden" name="current_post" value="{$post/post_id}"/>
             <input type="hidden" name="current_page" value="{$currentPage}"/>
         </div>
     </xsl:template>

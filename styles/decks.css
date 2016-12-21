@@ -29,6 +29,19 @@ div.decks-nav-bar > div {
     margin: 0.5ex 0 0 0;
 }
 
+div.decks .responsive-table {
+    margin-left: 0.5ex;
+    margin-right: 0.5ex;
+}
+
+div.decks .row .deck-item-icon {
+    display: inline-block;
+}
+
+div.decks .row .deck-item-icon + .deck-item-icon {
+    margin-left: 0.5ex;
+}
+
 /* end deck list */
 
 /* begin filters */

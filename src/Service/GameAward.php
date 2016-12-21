@@ -8,6 +8,7 @@ namespace Service;
 use ArcomageException as Exception;
 use Db\Model\Game as GameModel;
 use Def\Entity\XmlAward;
+use Util\Rename;
 
 class GameAward extends ServiceAbstract
 {
@@ -74,7 +75,7 @@ class GameAward extends ServiceAbstract
         $hisData = $game->playerData($opponent);
         $round = $game->getRound();
         $winner = $game->getWinner();
-        $endType = $game->getEndType();
+        $endType = $game->getOutcomeType();
         $myLevel = ($game->getPlayer1() == $player) ? $player1Level : $player2Level;
         $hisLevel = ($game->getPlayer2() == $player) ? $player2Level : $player1Level;
 
@@ -289,17 +290,17 @@ class GameAward extends ServiceAbstract
 
             // awards list 'award_name' => 'gold_gain'
             $awards = [
-                'Saboteur' => 1,
-                'Gentle touch' => 2,
-                'Desolator' => 3,
-                'Dragon' => 3,
-                'Carpenter' => 4,
-                'Titan' => 4,
-                'Assassin' => 5,
-                'Snob' => 6,
-                'Collector' => 7,
-                'Builder' => 8,
-                'Survivor' => 9
+                'saboteur' => 1,
+                'gentle_touch' => 2,
+                'desolator' => 3,
+                'dragon' => 3,
+                'carpenter' => 4,
+                'titan' => 4,
+                'assassin' => 5,
+                'snob' => 6,
+                'collector' => 7,
+                'builder' => 8,
+                'survivor' => 9
             ];
             // sort alphabetically
             ksort($awards);
@@ -308,37 +309,37 @@ class GameAward extends ServiceAbstract
 
             // Assassin
             if ($round <= $assassinLimit && $standardVictory) {
-                $received[] = 'Assassin';
+                $received[] = 'assassin';
             }
 
             // Desolator
             if ($hisData->Quarry == 1 && $hisData->Magic == 1 && $hisData->Dungeons == 1) {
-                $received[] = 'Desolator';
+                $received[] = 'desolator';
             }
 
             // Dragon
             if ($myLastCard->hasKeyword('Dragon') && $myLastAction == 'play' && $standardVictory) {
-                $received[] = 'Dragon';
+                $received[] = 'dragon';
             }
 
             // Carpenter
             if ($myData->Quarry >= 6 && $myData->Magic >= 6 && $myData->Dungeons >= 6) {
-                $received[] = 'Carpenter';
+                $received[] = 'carpenter';
             }
 
             // Builder
             if ($myData->Wall == $maxWall) {
-                $received[] = 'Builder';
+                $received[] = 'builder';
             }
 
             // Gentle touch
             if ($myLastCard->getRarity() == 'Common' && $myLastAction == 'play' && $standardVictory) {
-                $received[] = 'Gentle touch';
+                $received[] = 'gentle_touch';
             }
 
             // Snob
             if ($myLastAction == 'discard' && $standardVictory) {
-                $received[] = 'Snob';
+                $received[] = 'snob';
             }
 
             // Collector
@@ -352,33 +353,33 @@ class GameAward extends ServiceAbstract
                 }
             }
             if ($tmp >= 4) {
-                $received[] = 'Collector';
+                $received[] = 'collector';
             }
 
             // Titan
             if ($myLastCard->id() == 315 && $myLastAction == 'play' && $endType == 'Destruction') {
-                $received[] = 'Titan';
+                $received[] = 'titan';
             }
 
             // Saboteur
             if ($hisData->Tower == 0 && $hisData->Wall > 0 && $standardVictory) {
-                $received[] = 'Saboteur';
+                $received[] = 'saboteur';
             }
 
             // Survivor
             if ($myData->Tower == 1 && $myData->Wall == 0) {
-                $received[] = 'Survivor';
+                $received[] = 'survivor';
             }
 
             // update message, calculate gold
             // case 1: awards achieved
             if (count($received) > 0) {
-                $awardTemp = array();
+                $awardsGained = array();
                 foreach ($received as $award) {
                     $gold+= $awards[$award];
-                    $awardTemp[] = $award . ' (' . $awards[$award] . ' gold)';
+                    $awardsGained[] = Rename::underscoreToTextName($award) . ' (' . $awards[$award] . ' gold)';
                 }
-                $message.= 'Awards' . "\n" . implode("\n", $awardTemp) . "\n";
+                $message.= 'Awards' . "\n" . implode("\n", $awardsGained) . "\n";
             }
             // case 2: no awards achieved
             else {
@@ -423,7 +424,7 @@ class GameAward extends ServiceAbstract
 
         // check if award is supported
         if (!in_array($award, $awardsList)) {
-            throw new Exception('Unsupported award');
+            throw new Exception('Unsupported award '. $award);
         }
 
         $score = $this->dbEntity()->score()->getScoreAsserted($player->getUsername());
