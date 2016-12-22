@@ -170,7 +170,12 @@ class Card extends TemplateDataAbstract
 
         $score = $this->dbEntity()->score()->getScoreAsserted($this->getCurrentPlayer()->getUsername());
 
-        $data['data'] = $cardData = $card->getData();
+        $cardData = $card->getData();
+
+        // parse keywords list
+        $cardData['keywords'] = ($cardData['keywords'] != '') ? explode(',', $cardData['keywords']) : [];
+
+        $data['data'] = $cardData;
         $data['discussion'] = ($threadId) ? $threadId : 0;
         $data['create_thread'] = ($this->checkAccess('create_thread')) ? 'yes' : 'no';
         $data['statistics'] = $cardStats;
