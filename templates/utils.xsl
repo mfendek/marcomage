@@ -400,23 +400,35 @@
     <func:function name="am:cardEffect">
         <xsl:param name="effect" as="xs:string"/>
         <xsl:param name="option" as="xs:string" select="''"/>
-        <!-- ad-hoc html entity corrections -->
-        <xsl:variable name="replace">
-            <from> &lt; </from>
-            <to> &amp;lt; </to>
-            <from> &gt; </from>
-            <to> &amp;gt; </to>
-            <from> &lt;= </from>
-            <to> &amp;lt;= </to>
-            <from> &gt;= </from>
-            <to> &amp;gt;= </to>
+
+        <xsl:variable name="result">
+            <xsl:choose>
+                <!-- case 1: plain text only (used in title elements) -->
+                <xsl:when test="$option = 'plain_text'">
+                    <xsl:value-of select="$effect" />
+                </xsl:when>
+                <!-- case 2: standard case -->
+                <xsl:otherwise>
+                    <!-- ad-hoc html entity corrections -->
+                    <xsl:variable name="replace">
+                        <from> &lt; </from>
+                        <to> &amp;lt; </to>
+                        <from> &gt; </from>
+                        <to> &amp;gt; </to>
+                        <from> &lt;= </from>
+                        <to> &amp;lt;= </to>
+                        <from> &gt;= </from>
+                        <to> &amp;gt;= </to>
+                    </xsl:variable>
+                    <xsl:value-of select="str:replace(
+                        $effect, exsl:node-set($replace)/*[local-name()='from'],
+                        exsl:node-set($replace)/*[local-name()='to']
+                    )" />
+                </xsl:otherwise>
+            </xsl:choose>
         </xsl:variable>
 
-        <func:result select="php:functionString('Util\Encode::cardDecode', str:replace(
-                $effect, exsl:node-set($replace)/*[local-name()='from'],
-                exsl:node-set($replace)/*[local-name()='to']
-            ), $option
-        )"/>
+        <func:result select="php:functionString('Util\Encode::cardDecode', $result, $option)"/>
     </func:function>
 
 
