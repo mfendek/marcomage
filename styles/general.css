@@ -355,8 +355,14 @@ blockquote > div > cite {
 
 /* JQuery UI close button */
 .ui-dialog-titlebar-close {
-    background-color: transparent;
-    border-color: transparent;
+    background-color: white;
+    border-color: grey;
+    color: black;
+}
+.ui-dialog-titlebar-close:before {
+    position: relative;
+    top: -5px;
+    content: 'x';
 }
 
 /* fade table row hover effect */
