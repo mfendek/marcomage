@@ -98,6 +98,7 @@ class Game extends TemplateDataAbstract
         $data['current'] = $game->getCurrent();
         $data['hidden_cards'] = ($game->checkGameMode('HiddenCards')) ? 'yes' : 'no';
         $data['friendly_play'] = ($game->checkGameMode('FriendlyPlay')) ? 'yes' : 'no';
+        $data['long_mode'] = ($game->checkGameMode('LongMode')) ? 'yes' : 'no';
         $gameMode = ($game->checkGameMode('LongMode')) ? 'long' : 'normal';
         $data['ai_mode'] = ($game->checkGameMode('AIMode')) ? 'yes' : 'no';
         $data['max_tower'] = $gameConfig[$gameMode]['max_tower'];
