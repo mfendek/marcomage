@@ -133,7 +133,7 @@ class Replay extends TemplateDataAbstract
         }
 
         $data['p2_last_card'] = $serviceGameUtil->formatLastCard($player2Data);
-        $data['p2_tokens'] = array_reverse($serviceGameUtil->formatTokens($player2Data));
+        $data['p2_tokens'] = $serviceGameUtil->formatTokens($player2Data);
         $data['p1_changes'] = $serviceGameUtil->formatChanges($player1Data);
         $data['p2_changes'] = $serviceGameUtil->formatChanges($player2Data);
 

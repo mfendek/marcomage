@@ -251,6 +251,7 @@ div.stock-info {
 div.game .token-counter.player-label {
     font-size: small;
     font-family: arial, sans-serif;
+    display: inline-block;
 }
 
 div.game .token-counter > img {
@@ -403,11 +404,11 @@ div.game .game-state {
 }
 
 /* token counter layout */
-div.game .empire-info > div.token-list {
+div.game .empire-info > div.player-info {
     display: block;
 }
 
-div.token-list > p.token-counter {
+div.player-info p.token-counter {
     padding: 0.5ex 1ex 0.5ex 1ex;
     margin: 1ex 0.5ex 0 0.5ex;
     border-radius: 7px;

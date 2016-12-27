@@ -438,15 +438,17 @@
                             )"/>
                         </div>
 
-                        <div class="token-list">
+                        <div class="player-info">
+                            <!-- player1 tokens -->
+                            <div class="token-list">
+                                <xsl:copy-of select="am:tokens($param/p1_tokens, $param/card_insignias)"/>
+                            </div>
+
                             <!-- player1 name -->
                             <p class="token-counter player-label">
                                 <xsl:copy-of select="am:playerName($param/player1, $param/ai_name, $param/system_name)"/>
                                 <img class="icon" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
                             </p>
-
-                            <!-- player1 tokens -->
-                            <xsl:copy-of select="am:tokens($param/p1_tokens, $param/card_insignias)"/>
                         </div>
                     </div>
                     <div class="col-md-6 empire-info">
@@ -493,9 +495,11 @@
                             )"/>
                         </div>
 
-                        <div class="token-list">
+                        <div class="player-info">
                             <!-- player2 tokens -->
-                            <xsl:copy-of select="am:tokens($param/p2_tokens, $param/card_insignias)"/>
+                            <div class="token-list">
+                                <xsl:copy-of select="am:tokens($param/p2_tokens, $param/card_insignias)"/>
+                            </div>
 
                             <!-- player2 name -->
                             <p class="token-counter player-label">
@@ -667,15 +671,17 @@
                             )"/>
                         </div>
 
-                        <div class="token-list">
+                        <div class="player-info">
+                            <!-- player1 tokens -->
+                            <div class="token-list">
+                                <xsl:copy-of select="am:tokens($param/p1_tokens, $param/card_insignias)"/>
+                            </div>
+
                             <!-- player1 name -->
                             <p class="token-counter player-label">
                                 <xsl:copy-of select="am:playerName($param/player1, $param/ai_name, $param/system_name)"/>
                                 <img class="icon" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
                             </p>
-
-                            <!-- player1 tokens -->
-                            <xsl:copy-of select="am:tokens($param/p1_tokens, $param/card_insignias)"/>
                         </div>
                     </div>
                     <div class="col-md-6 empire-info">
@@ -722,9 +728,11 @@
                             )"/>
                         </div>
 
-                        <div class="token-list">
+                        <div class="player-info">
                             <!-- player2 tokens -->
-                            <xsl:copy-of select="am:tokens($param/p2_tokens, $param/card_insignias)"/>
+                            <div class="token-list">
+                                <xsl:copy-of select="am:tokens($param/p2_tokens, $param/card_insignias)"/>
+                            </div>
 
                             <!-- player2 name -->
                             <p class="token-counter player-label">

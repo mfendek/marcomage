@@ -218,7 +218,7 @@ class Game extends TemplateDataAbstract
         }
 
         $data['p2_last_card'] = $serviceGameUtil->formatLastCard($player2Data);
-        $data['p2_tokens'] = array_reverse($serviceGameUtil->formatTokens($player2Data));
+        $data['p2_tokens'] = $serviceGameUtil->formatTokens($player2Data);
 
         // - <game state indicator>
         $data['opponent_is_online'] = ($opponent->isOnline()) ? 'yes' : 'no';
