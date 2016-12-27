@@ -8469,7 +8469,7 @@
     </cost>
     <level>10</level>
     <effect><![CDATA[Enemy tower: -N<br />N = 2 + #Enemy tower / 10]]></effect>
-    <code><![CDATA[$t->hisData()->addTower(-round($t->hisData()->Tower / 10) + 2);]]></code>
+    <code><![CDATA[$t->hisData()->addTower(-(round($t->hisData()->Tower / 10) + 2));]]></code>
     <created>2010-01-20</created>
     <modified>2013-12-24</modified>
   </card>
