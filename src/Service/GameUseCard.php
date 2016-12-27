@@ -28,6 +28,12 @@ class GameUseCard extends ServiceAbstract
     private $playedCardMode = 0;
 
     /**
+     * Played card id
+     * @var int
+     */
+    private $playedCardId = 0;
+
+    /**
      * Name of the player who executed card action
      * @var string
      */
@@ -204,7 +210,7 @@ class GameUseCard extends ServiceAbstract
      */
     private function card()
     {
-        return $this->getCard($this->myData()->Hand[$this->cardPos()]);
+        return $this->getCard($this->playedCardId);
     }
 
     /**
@@ -1109,6 +1115,7 @@ class GameUseCard extends ServiceAbstract
 
         // find out what card is at that position
         $cardId = $myData->Hand[$cardPos];
+        $this->playedCardId = $cardId;
 
         // load played card
         $card = $defEntityCard->getCard($cardId);
