@@ -41,7 +41,6 @@ class Misc extends ControllerAbstract
 
     /**
      * View card statistics
-     * @return bool
      */
     protected function cardStatistics()
     {

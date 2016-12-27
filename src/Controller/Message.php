@@ -158,7 +158,6 @@ class Message extends ControllerAbstract
 
     /**
      * Cancel new message creation
-     * @return bool
      */
     protected function messageCancel()
     {
