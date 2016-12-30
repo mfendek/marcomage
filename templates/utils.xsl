@@ -506,7 +506,7 @@
                             </div>
                         </xsl:if>
                         <xsl:if test="$card/bricks &gt; 0">
-                            <div class="icon_bricks">
+                            <div class="icon-bricks">
                                 <xsl:value-of select="$card/bricks"/>
                             </div>
                         </xsl:if>

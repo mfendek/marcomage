@@ -153,17 +153,19 @@ div.card > h5 {
 }
 
 /* resource cost */
-div.icon-mixed, div.icon-zero, div.icon-recruits, div.icon-gems, div.icon_bricks {
+div.icon-mixed, div.icon-zero, div.icon-recruits, div.icon-gems, div.icon-bricks {
     font-weight: bold;
     background: no-repeat center;
     line-height: 16px;
     width: 16px;
     text-align: center;
     float: right;
+    border-radius: 8px;
 }
 
-div.card > div.icon_bricks {
-    background-image: url('../img/card/bricks_cost.png');
+div.card > div.icon-bricks {
+    /*background-image: url('../img/card/bricks_cost.png');*/
+    background: white radial-gradient(circle, rgba(254, 70, 70, 0.2) 10%, rgba(254, 70, 70, 0.3) 15%, rgba(254, 70, 70, 1) 60%);
 }
 
 div.card > div.icon-mixed {
@@ -171,15 +173,18 @@ div.card > div.icon-mixed {
 }
 
 div.card > div.icon-zero {
-    background-image: url('../img/card/zero_cost.png');
+    /*background-image: url('../img/card/zero_cost.png');*/
+    background: white radial-gradient(circle, rgba(161, 161, 161, 0.2) 10%, rgba(161, 161, 161, 0.3) 15%, rgba(161, 161, 161, 1) 60%);
 }
 
 div.card > div.icon-gems {
-    background-image: url('../img/card/gems_cost.png');
+    /*background-image: url('../img/card/gems_cost.png');*/
+    background: white radial-gradient(circle, rgba(67, 67, 254, 0.2) 10%, rgba(67, 67, 254, 0.3) 15%, rgba(67, 67, 254, 1) 60%);
 }
 
 div.card > div.icon-recruits {
-    background-image: url('../img/card/recruits_cost.png');
+    /*background-image: url('../img/card/recruits_cost.png');*/
+    background: white radial-gradient(circle, rgba(55, 154, 55, 0.2) 10%, rgba(55, 154, 55, 0.3) 15%, rgba(55, 154, 55, 1) 60%);
 }
 
 /* border around the card image, based on rarity */
