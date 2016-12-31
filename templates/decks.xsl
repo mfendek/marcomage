@@ -475,12 +475,12 @@
                                     <xsl:attribute name="class">taken</xsl:attribute>
                                 </xsl:when>
                             </xsl:choose>
-                            <xsl:if test="locked = 'yes'">
-                                <p class="locked-card">locked</p>
-                            </xsl:if>
                             <xsl:copy-of select="am:cardString(
                                 current(), $param/card_old_look, $param/card_insignias, $param/card_foils
                             )"/>
+                            <xsl:if test="locked = 'yes'">
+                                <p class="locked-card">locked</p>
+                            </xsl:if>
                         </div>
                         <xsl:if test="locked = 'no' and excluded = 'no'">
                             <noscript>
