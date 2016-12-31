@@ -427,18 +427,18 @@ div.token-list > p.token-counter > span {
 }
 
 /* unplayable card */
-div.unplayable > div.card {
+div.unplayable {
     opacity: 0.6;
     transition: opacity 200ms;
 }
 
-div.unplayable > div.card:hover {
+div.unplayable:hover {
     opacity: 1;
 }
 
 /* selected card */
 div.selected-card {
-    border: double black;
+    border-color: yellow;
 }
 
 /* game cheat menu */

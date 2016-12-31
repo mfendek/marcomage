@@ -15,6 +15,7 @@ div.card {
     min-height: 18px;
     box-sizing: content-box;
     background: repeat 0 0;
+    transition: border-color 200ms;
 }
 
 /* add extra margin when cards are displayed in the "history" part of the game section*/

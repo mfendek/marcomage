@@ -156,13 +156,11 @@ $(document).ready(function() {
                 // unselect previously selected card
                 $('input[name="selected_card"]:checked').removeAttr('checked');
 
-                selectedCard.css('border-color', '#ffffff');
                 selectedCard.removeClass('selected-card');
 
                 // select specified card
                 $(this).parent().nextAll("input[name='selected_card']").attr('checked', 'checked');
                 $(this).addClass('selected-card');
-                $(this).css('border-color', '#000000');
 
                 if (!$(this).parent().hasClass('unplayable')) {
                     // case 1: card is playable -> show play and preview buttons
@@ -180,7 +178,6 @@ $(document).ready(function() {
             else {
                 // unselect selected card
                 $('input[name="selected_card"]:checked').removeAttr('checked');
-                selectedCard.css('border-color', '#ffffff');
                 selectedCard.removeClass('selected-card');
 
                 // return action buttons to initial state
