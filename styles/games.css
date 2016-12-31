@@ -118,7 +118,7 @@ p.flag {
     border: ridge #6495ed;
     border-radius: 7px;
     font-size: x-small;
-    max-width: 86px;
+    max-width: 88px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -193,7 +193,7 @@ div.game .empire-info > div {
 
 div.game .empire-info > div.card-list {
     vertical-align: top;
-    min-width: 94px;
+    min-width: 96px;
 }
 
 /* radio button */
@@ -307,7 +307,7 @@ p.history-label {
 /* history of played and discarded cards */
 div.history, div.discarded-cards-list {
     overflow: auto;
-    width: 94px;
+    width: 96px;
     margin-left: auto;
     margin-right: auto;
 }
