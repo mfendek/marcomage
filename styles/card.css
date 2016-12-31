@@ -2,23 +2,11 @@
  * MArcomage CSS stylesheet - card *
  ***********************************/
 
-/*
-  card layout: 
-
-  <div class="card [?]_class [?]_cost {with-bg-image}">
-    <div class="[cost]">[value]</div> {+}
-    <h5>[name]</h5>
-    <img src="[path]" width="80px" height="60px" alt="" />
-    <p><b>[keywords]</b></p>
-    <p>[effect]</p>
-  </div>
-*/
-
 /* card */
 div.card {
     font-family: arial, sans-serif;
     width: 86px;
-    border: 3px ridge white;
+    border: 1px solid black;
     border-radius: 7px;
     margin: 1.5ex 0.5ex 0.7ex 0.5ex;
     font-size: xx-small;
@@ -150,65 +138,86 @@ div.card > h5 {
     margin: 2px;
     color: black;
     text-shadow: none;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
 }
 
-/* resource cost */
-div.icon-mixed, div.icon-zero, div.icon-recruits, div.icon-gems, div.icon-bricks {
+/* card top icon */
+.icon-zero, .icon-recruits, .icon-gems, .icon-bricks, .icon-rarity {
+    display: inline-block;
     font-weight: bold;
     background: no-repeat center;
     line-height: 16px;
     width: 16px;
     text-align: center;
-    float: right;
     border-radius: 8px;
+    text-shadow: 0 0 1px white;
 }
 
-div.card > div.icon-bricks {
+.icon-rarity {
+    float: right;
+}
+
+div.card-top {
+    margin: 0.5ex;
+}
+
+div.card-top > .icon-bricks {
     /*background-image: url('../img/card/bricks_cost.png');*/
-    background: white radial-gradient(circle, rgba(254, 70, 70, 0.2) 10%, rgba(254, 70, 70, 0.3) 15%, rgba(254, 70, 70, 1) 60%);
+    background: white radial-gradient(
+            circle, rgba(254, 70, 70, 0.2) 10%, rgba(254, 70, 70, 0.3) 15%,
+            rgba(254, 70, 70, 1) 50%, rgba(0, 0, 0, 1) 100%);
 }
 
-div.card > div.icon-mixed {
-    background-image: url('../img/card/mixed_cost.png');
-}
-
-div.card > div.icon-zero {
+div.card-top > .icon-zero {
     /*background-image: url('../img/card/zero_cost.png');*/
-    background: white radial-gradient(circle, rgba(161, 161, 161, 0.2) 10%, rgba(161, 161, 161, 0.3) 15%, rgba(161, 161, 161, 1) 60%);
+    background: white radial-gradient(
+            circle, rgba(161, 161, 161, 0.2) 10%, rgba(161, 161, 161, 0.3) 15%,
+            rgba(161, 161, 161, 1) 50%, rgba(0, 0, 0, 1) 100%);
 }
 
-div.card > div.icon-gems {
+div.card-top > .icon-gems {
     /*background-image: url('../img/card/gems_cost.png');*/
-    background: white radial-gradient(circle, rgba(67, 67, 254, 0.2) 10%, rgba(67, 67, 254, 0.3) 15%, rgba(67, 67, 254, 1) 60%);
+    background: white radial-gradient(
+            circle, rgba(67, 67, 254, 0.2) 10%, rgba(67, 67, 254, 0.3) 15%,
+            rgba(67, 67, 254, 1) 50%, rgba(0, 0, 0, 1) 100%);
 }
 
-div.card > div.icon-recruits {
+div.card-top > .icon-recruits {
     /*background-image: url('../img/card/recruits_cost.png');*/
-    background: white radial-gradient(circle, rgba(55, 154, 55, 0.2) 10%, rgba(55, 154, 55, 0.3) 15%, rgba(55, 154, 55, 1) 60%);
+    background: white radial-gradient(
+            circle, rgba(55, 154, 55, 0.2) 10%, rgba(55, 154, 55, 0.3) 15%,
+            rgba(55, 154, 55, 1) 50%, rgba(0, 0, 0, 1) 100%);
 }
 
-/* border around the card image, based on rarity */
-div.card > img {
-    border: 3px ridge;
-    border-radius: 5px;
+div.card-top > .icon-rarity.common {
+    background: white radial-gradient(
+            circle, rgba(0, 255, 0, 0.1) 10%, rgba(0, 255, 0, 0.2) 15%,
+            rgba(0, 255, 0, 0.7) 50%, rgba(0, 0, 0, 1) 100%);
+}
+
+div.card-top > .icon-rarity.uncommon {
+    background: white radial-gradient(
+            circle, rgba(139, 0, 0, 0.1) 10%, rgba(139, 0, 0, 0.2) 15%,
+            rgba(139, 0, 0, 0.7) 50%, rgba(0, 0, 0, 1) 100%);
+}
+
+div.card-top > .icon-rarity.rare {
+    background: white radial-gradient(
+            circle, rgba(255, 255, 0, 0.1) 10%, rgba(255, 255, 0, 0.2) 15%,
+            rgba(255, 255, 0, 0.7) 50%, rgba(0, 0, 0, 1) 100%);
+}
+
+div.card > div.card-image {
+    position: relative;
+    text-align: center;
+}
+
+/* border around the card image */
+div.card-image > img {
+    border: thin solid black;
     box-sizing: content-box;
-    display: block;
-}
-
-div.card.common > img {
-    border-color: Lime;
-}
-
-div.card.uncommon > img {
-    border-color: #8b0000; /* DarkRed */
-}
-
-div.card.rare > img {
-    border-color: Yellow;
-}
-
-div.card.no-rarity > img {
-    border-color: White;
 }
 
 /* highlight currently looked up card */
@@ -222,14 +231,14 @@ div.card.no-rarity > img {
 
 /* card mini flags */
 div.mini-flags {
-    float: left;
-    margin-top: -63px;
-    margin-left: 3px;
+    position: absolute;
+    bottom: 2px;
+    left: 5px;
 }
 
 /* card mini flags images */
 div.mini-flags > img {
-    border: thin solid white;
+    border-radius: 6px;
 }
 
 /* set distance of the card text from the card border (left and right) */

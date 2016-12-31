@@ -37,12 +37,6 @@ class Concept extends ServiceAbstract
             throw new Exception('Card cost cannot be negative', Exception::WARNING);
         }
 
-        // check card cost - value validity (cannot have 3 different values)
-        if ($data['bricks'] > 0 && $data['gems'] > 0 && $data['recruits'] > 0
-            && !($data['bricks'] == $data['gems'] && $data['gems'] == $data['recruits'])) {
-            throw new Exception('Invalid cost input', Exception::WARNING);
-        }
-
         // check state
         if (isset($data['state']) && !in_array($data['state'], ['waiting', 'rejected', 'interesting', 'implemented'])) {
             throw new Exception('Invalid concept state', Exception::WARNING);

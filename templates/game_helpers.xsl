@@ -351,7 +351,7 @@
                                             </xsl:when>
                                             <xsl:otherwise>
                                                 <xsl:attribute name="class">flag discarded</xsl:attribute>
-                                                <xsl:text>discarded!</xsl:text>
+                                                <xsl:text>discarded</xsl:text>
                                             </xsl:otherwise>
                                         </xsl:choose>
                                     </p>

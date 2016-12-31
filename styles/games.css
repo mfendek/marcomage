@@ -193,7 +193,7 @@ div.game .empire-info > div {
 
 div.game .empire-info > div.card-list {
     vertical-align: top;
-    min-width: 98px;
+    min-width: 94px;
 }
 
 /* radio button */
@@ -307,14 +307,9 @@ p.history-label {
 /* history of played and discarded cards */
 div.history, div.discarded-cards-list {
     overflow: auto;
-    width: 98px;
-    height: 85%; /* prevents Chrome display bug (overflow related) */
+    width: 94px;
     margin-left: auto;
     margin-right: auto;
-}
-
-div.discarded-cards-list {
-    width: 99px;
 }
 
 td.discarded-cards-separator {

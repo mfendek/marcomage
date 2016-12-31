@@ -485,69 +485,70 @@
 
             <div class="card {$rarity}{$type}{$bgImage}{$foil}">
                 <!-- display the cost (spheres with numbers in the center) -->
-                <xsl:choose>
-                    <xsl:when test="$card/bricks &gt; 0 and $card/gems = $card/bricks and $card/recruits = $card/bricks">
-                        <div class="icon-mixed">
-                            <xsl:value-of select="$card/bricks"/>
-                        </div>
-                    </xsl:when>
-                    <xsl:when test="$card/bricks = 0 and $card/gems = 0 and $card/recruits = 0">
-                        <div class="icon-zero">0</div>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:if test="$card/recruits &gt; 0">
-                            <div class="icon-recruits">
-                                <xsl:value-of select="$card/recruits"/>
-                            </div>
-                        </xsl:if>
-                        <xsl:if test="$card/gems &gt; 0">
-                            <div class="icon-gems">
-                                <xsl:value-of select="$card/gems"/>
-                            </div>
-                        </xsl:if>
-                        <xsl:if test="$card/bricks &gt; 0">
-                            <div class="icon-bricks">
-                                <xsl:value-of select="$card/bricks"/>
-                            </div>
-                        </xsl:if>
-                    </xsl:otherwise>
-                </xsl:choose>
-
-                <!-- name -->
-                <h5><xsl:value-of select="$card/name"/></h5>
-
-                <!-- card's image and its border (colored via CSS according to class) -->
-                <img width="80" height="60" alt="{$card/name}">
+                <div class="card-top">
                     <xsl:choose>
-                        <xsl:when test="$card/picture">
-                            <xsl:attribute name="src">
-                                <xsl:value-of select="$card/picture"/>
-                            </xsl:attribute>
+                        <xsl:when test="$card/bricks = 0 and $card/gems = 0 and $card/recruits = 0">
+                            <span class="icon-zero">0</span>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:attribute name="src">
-                                <xsl:text>img/cards/card_</xsl:text>
-                                <xsl:value-of select="$card/id"/>
-                                <xsl:text>.png?v=</xsl:text>
-                                <xsl:value-of select="$card/modified"/>
-                            </xsl:attribute>
-                            <xsl:if test="$revealed or $new">
-                                <xsl:attribute name="style">float: left</xsl:attribute>
+                            <xsl:if test="$card/bricks &gt; 0">
+                                <span class="icon-bricks">
+                                    <xsl:value-of select="$card/bricks"/>
+                                </span>
+                            </xsl:if>
+                            <xsl:if test="$card/gems &gt; 0">
+                                <span class="icon-gems">
+                                    <xsl:value-of select="$card/gems"/>
+                                </span>
+                            </xsl:if>
+                            <xsl:if test="$card/recruits &gt; 0">
+                                <span class="icon-recruits">
+                                    <xsl:value-of select="$card/recruits"/>
+                                </span>
                             </xsl:if>
                         </xsl:otherwise>
                     </xsl:choose>
-                </img>
-                <xsl:if test="$revealed or $new">
-                    <div class="mini-flags">
-                        <xsl:if test="$new">
-                            <img src="img/card/new_miniflag.png" width="12" height="12" alt="new card" title="New card"/>
-                        </xsl:if>
-                        <xsl:if test="$revealed">
-                            <img src="img/card/revealed_miniflag.png" width="12" height="12" alt="revealed" title="Revealed"/>
-                        </xsl:if>
-                    </div>
-                    <div class="clear-floats"/>
-                </xsl:if>
+
+                    <xsl:choose>
+                        <xsl:when test="$card/rarity = 'Common'"><span class="icon-rarity common">C</span></xsl:when>
+                        <xsl:when test="$card/rarity = 'Uncommon'"><span class="icon-rarity uncommon">U</span></xsl:when>
+                        <xsl:when test="$card/rarity = 'Rare'"><span class="icon-rarity rare">R</span></xsl:when>
+                    </xsl:choose>
+                </div>
+
+                <!-- card's image and its border (colored via CSS according to class) -->
+                <div class="card-image">
+                    <img width="80" height="60" class="img-rounded" alt="{$card/name}">
+                        <xsl:choose>
+                            <xsl:when test="$card/picture">
+                                <xsl:attribute name="src">
+                                    <xsl:value-of select="$card/picture"/>
+                                </xsl:attribute>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="src">
+                                    <xsl:text>img/cards/card_</xsl:text>
+                                    <xsl:value-of select="$card/id"/>
+                                    <xsl:text>.png?v=</xsl:text>
+                                    <xsl:value-of select="$card/modified"/>
+                                </xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </img>
+                    <xsl:if test="$revealed or $new">
+                        <div class="mini-flags">
+                            <xsl:if test="$new">
+                                <img src="img/card/new_miniflag.png" width="12" height="12" alt="new card" title="New card"/>
+                            </xsl:if>
+                            <xsl:if test="$revealed">
+                                <img src="img/card/revealed_miniflag.png" width="12" height="12" alt="revealed" title="Revealed"/>
+                            </xsl:if>
+                        </div>
+                    </xsl:if>
+                </div>
+
+                <!-- name -->
+                <h5><xsl:value-of select="$card/name"/></h5>
 
                 <!-- keywords -->
                 <xsl:choose>
