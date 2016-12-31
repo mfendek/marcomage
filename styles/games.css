@@ -155,7 +155,7 @@ div.game > div.game-display {
     }
 
     /* hide tower and wall display */
-    div.tower-display, div.wall-display {
+    div.game .empire-info > div.castle-display {
         display: none;
     }
 

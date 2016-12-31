@@ -432,7 +432,7 @@
                         </div>
 
                         <!-- player1 tower and wall -->
-                        <div>
+                        <div class="castle-display">
                             <xsl:copy-of select="am:castleDisplay(
                                 'left', $param/p1_tower, $param/p1_wall, $param/max_tower, $param/max_wall
                             )"/>
@@ -480,7 +480,7 @@
                     </div>
                     <div class="col-md-3 empire-info">
                         <!-- player2 tower and wall -->
-                        <div>
+                        <div class="castle-display">
                             <xsl:copy-of select="am:castleDisplay(
                                 'right', $param/p2_tower, $param/p2_wall, $param/max_tower, $param/max_wall
                             )"/>
@@ -665,7 +665,7 @@
                         </div>
 
                         <!-- player1 tower and wall -->
-                        <div>
+                        <div class="castle-display">
                             <xsl:copy-of select="am:castleDisplay(
                                 'left', $param/p1_tower, $param/p1_wall, $param/max_tower, $param/max_wall
                             )"/>
@@ -713,7 +713,7 @@
                     </div>
                     <div class="col-md-3 empire-info">
                         <!-- player2 tower and wall -->
-                        <div>
+                        <div class="castle-display">
                             <xsl:copy-of select="am:castleDisplay(
                                 'right', $param/p2_tower, $param/p2_wall, $param/max_tower, $param/max_wall
                             )"/>
