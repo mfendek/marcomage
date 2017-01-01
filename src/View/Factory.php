@@ -123,7 +123,7 @@ class Factory extends \FactoryAbstract
 
         // validate template data
         if (empty($name)) {
-            throw new Exception('template is not white-listed ' . $section);
+            throw new Exception('template is not white-listed ' . $section, Exception::WARNING);
         }
 
         return $this->loadResource($name);
