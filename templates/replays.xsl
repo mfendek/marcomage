@@ -197,7 +197,7 @@
 
                     <div class="filters">
                         <!-- lower navigation -->
-                        <xsl:copy-of select="am:lowerNavigation($param/page_count, $param/current_page, 'replays', 'Replays')"/>
+                        <xsl:copy-of select="am:lowerNavigation($param/page_count, $param/current_page, 'replays')"/>
                     </div>
                 </xsl:when>
                 <xsl:otherwise>

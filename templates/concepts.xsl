@@ -200,9 +200,7 @@
             <xsl:if test="$param/is_logged_in = 'yes'">
                 <div class="filters">
                     <!-- lower navigation -->
-                    <xsl:copy-of select="am:lowerNavigation(
-                        $param/page_count, $param/current_page, 'concepts', 'Concepts'
-                    )"/>
+                    <xsl:copy-of select="am:lowerNavigation($param/page_count, $param/current_page, 'concepts')"/>
                 </div>
             </xsl:if>
 

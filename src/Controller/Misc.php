@@ -10,16 +10,6 @@ use ArcomageException as Exception;
 class Misc extends ControllerAbstract
 {
     /**
-     * Refresh button
-     */
-    protected function refreshSection()
-    {
-        $request = $this->request();
-
-        $this->result()->setCurrent($request['refresh_section']);
-    }
-
-    /**
      * Reset notification
      * @throws Exception
      */

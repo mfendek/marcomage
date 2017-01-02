@@ -150,7 +150,6 @@ class Factory extends \FactoryAbstract
                     'delete_mass_messages',
                 ],
                 'misc' => [
-                    'refresh_section',
                     'reset_notification',
                     'card_statistics',
                     'other_statistics',
