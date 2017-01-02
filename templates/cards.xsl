@@ -192,7 +192,7 @@
                     <div class="row">
                         <div class="col-xs-6">Keywords</div>
                         <div class="col-xs-6">
-                            <xsl:for-each select="$param/data/keywords/*">
+                            <xsl:for-each select="$param/data/keywords_list/*">
                                 <a href="{am:makeUrl('Cards_keyword_details', 'keyword', .)}">
                                     <xsl:value-of select="."/>
                                 </a>

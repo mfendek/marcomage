@@ -173,7 +173,7 @@ class Card extends TemplateDataAbstract
         $cardData = $card->getData();
 
         // parse keywords list
-        $cardData['keywords'] = ($cardData['keywords'] != '') ? explode(',', $cardData['keywords']) : [];
+        $cardData['keywords_list'] = ($cardData['keywords'] != '') ? explode(',', $cardData['keywords']) : [];
 
         $data['data'] = $cardData;
         $data['discussion'] = ($threadId) ? $threadId : 0;
