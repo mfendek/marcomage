@@ -217,7 +217,7 @@ div.card > div.card-image {
 
 /* border around the card image */
 div.card-image > img {
-    border: thin solid black;
+    border: thin solid rgba(0, 0, 0, 0.5);
     box-sizing: content-box;
 }
 
@@ -287,7 +287,7 @@ div.hidden-card > p.flag {
 
 /* keyword insignia layout */
 img.insignia {
-    border: thin solid black;
+    border: thin solid rgba(0, 0, 0, 0.5);
     vertical-align: middle;
 }
 

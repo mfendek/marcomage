@@ -267,7 +267,7 @@
         <xsl:variable name="current_section" select="$param/section_name"/>
 
         <div id="menu-bar" class="skin-label top-level">
-            <div class="row nav-buttons">
+            <div class="row">
                 <div class="col-md-2">
                     <div id="menu-player-info">
                         <div class="skin-text">
@@ -323,7 +323,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-7">
+                <div class="col-md-7 nav-buttons">
                     <xsl:variable name="sections">
                         <!-- section name, level requirement -->
                         <value name="Games" level="0"/>
@@ -348,7 +348,7 @@
                         </xsl:for-each>
                     </nav>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 nav-buttons">
                     <xsl:variable name="sections">
                         <value name="Webpage" icon="home"/>
                         <value name="Help" icon="question-sign"/>

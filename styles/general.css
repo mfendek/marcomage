@@ -333,24 +333,23 @@ blockquote > div > cite {
     display: inline-block;
     width: 12px;
     height: 12px;
-    border: thin solid black;
     border-radius: 8px;
 }
 
 .icon-player-activity.online {
-    background-color: lime;
+    background: radial-gradient(circle, rgba(0, 255, 0, 1) 35%, rgba(0, 0, 0, 1) 100%);
 }
 
 .icon-player-activity.offline {
-    background-color: red;
+    background: radial-gradient(circle, rgba(255, 0, 0, 1) 35%, rgba(0, 0, 0, 1) 100%);
 }
 
 .icon-player-activity.inactive {
-    background-color: maroon;
+    background: radial-gradient(circle, rgba(128, 0, 0, 1) 35%, rgba(0, 0, 0, 1) 100%);
 }
 
 .icon-player-activity.dead {
-    background-color: gray;
+    background: radial-gradient(circle, rgba(128, 128, 128, 1) 35%, rgba(0, 0, 0, 1) 100%);
 }
 
 /* JQuery UI close button */
