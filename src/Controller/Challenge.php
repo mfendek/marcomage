@@ -144,26 +144,6 @@ class Challenge extends ControllerAbstract
     }
 
     /**
-     * Challenge specific player
-     * @throws Exception
-     */
-    protected function prepareChallenge()
-    {
-        $request = $this->request();
-
-        // check access rights
-        if (!$this->checkAccess('send_challenges')) {
-            $this->result()->setCurrent('Players');
-            throw new Exception('Access denied', Exception::WARNING);
-        }
-
-        // this is only used to assist the function below
-        $this->result()
-            ->changeRequest('Profile', Encode::postDecode($request['prepare_challenge']))
-            ->setCurrent('Players_details');
-    }
-
-    /**
      * Send challenge
      * @throws Exception
      */

@@ -317,8 +317,6 @@ class Player extends TemplateDataAbstract
 
         $data['ai_challenges'] = $aiChallenges;
 
-        $data['challenging'] = (isset($input['prepare_challenge'])) ? 'yes' : 'no';
-
         // versus statistics
         $statistics = array();
         if ($this->isSession()) {

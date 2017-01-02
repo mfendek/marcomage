@@ -27,7 +27,6 @@ class Factory extends \FactoryAbstract
                 'challenge' => [
                     'accept_challenge',
                     'reject_challenge',
-                    'prepare_challenge',
                     'send_challenge',
                     'withdraw_challenge',
                 ],
