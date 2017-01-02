@@ -39,7 +39,7 @@ class Ajax extends MiddlewareAbstract
         }
 
         return new Response(
-            json_encode($data, JSON_PRETTY_PRINT), ['content-type: application/json; charset=utf-8']
+            json_encode($data, JSON_PRETTY_PRINT), ['Content-Type: application/json; charset=utf-8']
         );
     }
 

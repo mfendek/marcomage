@@ -38,7 +38,7 @@ class Scripts extends MiddlewareAbstract
         }
 
         return new Response(
-            implode("\n", $data), ['content-type: text/plain; charset=utf-8']
+            implode("\n", $data), ['Content-Type: text/plain; charset=utf-8']
         );
     }
 
