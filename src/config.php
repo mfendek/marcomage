@@ -50,5 +50,5 @@ return [
     ],
 
     // used to flush cached files like stylesheets and javascript files
-    'client_cache_version' => '2016-12-31',
+    'client_cache_version' => '2017-01-03',
 ];
