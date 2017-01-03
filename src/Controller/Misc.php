@@ -10,6 +10,16 @@ use ArcomageException as Exception;
 class Misc extends ControllerAbstract
 {
     /**
+     * Back to top button
+     */
+    protected function backToTop()
+    {
+        $request = $this->request();
+
+        $this->result()->setCurrent($request['back_to_top']);
+    }
+
+    /**
      * Reset notification
      * @throws Exception
      */

@@ -233,6 +233,7 @@
         <xsl:param name="pageCount" as="xs:integer"/>
         <xsl:param name="current" as="xs:integer"/>
         <xsl:param name="arrowButton" as="xs:string"/>
+        <xsl:param name="backButton" as="xs:string"/>
 
         <xsl:variable name="output">
             <xsl:variable name="navButtonName" select="concat($arrowButton, '_select_page')" />
@@ -245,7 +246,7 @@
                 <span class="glyphicon glyphicon-chevron-left"/>
             </button>
 
-            <button class="button-icon" type="button" name="back_to_top">
+            <button class="button-icon" type="submit" name="back_to_top" value="{$backButton}">
                 <span class="glyphicon glyphicon-triangle-top"/>
             </button>
 

@@ -602,6 +602,8 @@ $(document).ready(function() {
     // scroll to top of current page
     $('button[name="back_to_top"]').click(function() {
         $('html, body').animate({ scrollTop: 0 }, 'slow');
+
+        return false;
     });
 
 });

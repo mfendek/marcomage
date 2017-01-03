@@ -214,7 +214,7 @@
 
             <div class="decks-nav-bar">
                 <!-- lower navigation -->
-                <xsl:copy-of select="am:lowerNavigation($param/page_count, $param/current_page, 'decks')"/>
+                <xsl:copy-of select="am:lowerNavigation($param/page_count, $param/current_page, 'decks', 'Decks_shared')"/>
             </div>
 
             <input type="hidden" name="decks_current_page" value="{$param/current_page}"/>
