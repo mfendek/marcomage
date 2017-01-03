@@ -178,7 +178,7 @@ class Forum extends TemplateDataAbstract
         $threadId = $input['current_thread'];
 
         // validate current page
-        $currentPage = Input::defaultValue($input, 'CurrentPage', 0);
+        $currentPage = Input::defaultValue($input, 'thread_current_page', 0);
         if (!is_numeric($currentPage) || $currentPage < 0) {
             throw new Exception('Invalid forum thread page', Exception::WARNING);
         }
@@ -385,7 +385,7 @@ class Forum extends TemplateDataAbstract
         }
 
         // validate current page
-        $currentPage = Input::defaultValue($input, 'CurrentPage', 0);;
+        $currentPage = Input::defaultValue($input, 'thread_current_page', 0);;
         if (!is_numeric($currentPage) || $currentPage < 0) {
             throw new Exception('Invalid forum section page', Exception::WARNING);
         }

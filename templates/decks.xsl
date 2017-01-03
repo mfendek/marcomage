@@ -241,7 +241,7 @@
                         </button>
                     </xsl:when>
                     <xsl:when test="$param/discussion &gt; 0">
-                        <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $param/discussion, 'CurrentPage', 0)}" title="View discussion">
+                        <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $param/discussion, 'thread_current_page', 0)}" title="View discussion">
                             <span class="glyphicon glyphicon-comment"/>
                         </a>
                     </xsl:when>

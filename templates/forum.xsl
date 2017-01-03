@@ -90,7 +90,7 @@
                                             </div>
                                             <div class="col-sm-5">
                                                 <p>
-                                                    <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'CurrentPage', 0)}">
+                                                    <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'thread_current_page', 0)}">
                                                         <xsl:value-of select="title"/>
                                                     </a>
                                                 </p>
@@ -112,7 +112,7 @@
                                                             <xsl:if test="am:dateDiff(last_post, $param/notification) &lt; 0">
                                                                 <xsl:attribute name="class">new</xsl:attribute>
                                                             </xsl:if>
-                                                            <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'CurrentPage', am:max(last_page - 1, 0))}#latest">
+                                                            <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'thread_current_page', am:max(last_page - 1, 0))}#latest">
                                                                 <xsl:value-of select="am:dateTime(last_post, $param/timezone)"/>
                                                             </a>
                                                             <xsl:text> by </xsl:text>
@@ -242,7 +242,7 @@
                                     </div>
                                     <div class="col-sm-5">
                                         <p>
-                                            <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'CurrentPage', 0)}">
+                                            <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'thread_current_page', 0)}">
                                                 <xsl:value-of select="title"/>
                                             </a>
                                         </p>
@@ -265,7 +265,7 @@
                                                     <xsl:if test="am:dateDiff(last_post, $param/notification) &lt; 0">
                                                         <xsl:attribute name="class">new</xsl:attribute>
                                                     </xsl:if>
-                                                    <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'CurrentPage', am:max(last_page - 1, 0))}#latest">
+                                                    <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'thread_current_page', am:max(last_page - 1, 0))}#latest">
                                                         <xsl:value-of select="am:dateTime(last_post, $param/timezone)"/>
                                                     </a>
                                                     <xsl:text> by </xsl:text>
@@ -383,7 +383,7 @@
                             </div>
                             <div class="col-sm-5">
                                 <p>
-                                    <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'CurrentPage', 0)}">
+                                    <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'thread_current_page', 0)}">
                                         <xsl:value-of select="title"/>
                                     </a>
                                 </p>
@@ -405,7 +405,7 @@
                                             <xsl:if test="am:dateDiff(last_post, $param/notification) &lt; 0">
                                                 <xsl:attribute name="class">new</xsl:attribute>
                                             </xsl:if>
-                                            <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'CurrentPage', am:max(last_page - 1, 0))}#latest">
+                                            <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'thread_current_page', am:max(last_page - 1, 0))}#latest">
                                                 <xsl:value-of select="am:dateTime(last_post, $param/timezone)"/>
                                             </a>
                                             <xsl:text> by </xsl:text>
@@ -450,7 +450,7 @@
                                     <xsl:value-of select="$section/section_name"/>
                                 </a>
                                 <span>&gt;</span>
-                                <a href="{am:makeUrl('Forum_thread', 'current_thread', $thread/thread_id, 'CurrentPage', $param/current_page)}">
+                                <a href="{am:makeUrl('Forum_thread', 'current_thread', $thread/thread_id, 'thread_current_page', $param/current_page)}">
                                     <xsl:value-of select="$thread/title"/>
                                 </a>
                                 <xsl:if test="$thread/is_locked = 'yes'">
@@ -522,7 +522,7 @@
                                 <!-- navigation -->
                                 <xsl:copy-of select="am:forumNavigation(
                                     'Forum_thread', 'current_thread', $thread/thread_id,
-                                    'CurrentPage', $param/current_page, $param/pages_count
+                                    'thread_current_page', $param/current_page, $param/pages_count
                                 )"/>
 
                                 <xsl:if test="$param/create_post = 'yes' and $thread/is_locked = 'no'">
@@ -596,7 +596,7 @@
                                     </xsl:if>
 
                                     <xsl:variable name="postId" select="concat('post', post_id)"/>
-                                    <a id="{$postId}" class="permalink" href="{am:makeUrl('Forum_thread', 'current_thread', $thread/thread_id, 'CurrentPage', $param/current_page)}#{$postId}" title="Permalink">
+                                    <a id="{$postId}" class="permalink" href="{am:makeUrl('Forum_thread', 'current_thread', $thread/thread_id, 'thread_current_page', $param/current_page)}#{$postId}" title="Permalink">
                                         <xsl:text>#</xsl:text>
                                         <xsl:value-of select="position() + $param/current_page * $param/posts_per_page"/>
                                     </a>
@@ -630,7 +630,7 @@
 
             <input type="hidden" name="current_section" value="{$thread/section_id}"/>
             <input type="hidden" name="current_thread" value="{$thread/thread_id}"/>
-            <input type="hidden" name="current_page" value="{$param/current_page}"/>
+            <input type="hidden" name="thread_current_page" value="{$param/current_page}"/>
 
         </div>
     </xsl:template>
@@ -702,7 +702,7 @@
 
             <div class="skin-text">
 
-                <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $thread/thread_id, 'CurrentPage', 0)}">
+                <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $thread/thread_id, 'thread_current_page', 0)}">
                     <span class="glyphicon glyphicon-arrow-left"/>
                 </a>
                 <button class="button-icon" type="submit" name="create_post" title="Create post">
@@ -763,7 +763,7 @@
                     </select>
                 </p>
 
-                <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $thread/thread_id, 'CurrentPage', 0)}">
+                <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $thread/thread_id, 'thread_current_page', 0)}">
                     <span class="glyphicon glyphicon-arrow-left"/>
                 </a>
                 <button class="button-icon" type="submit" name="modify_thread" title="Save">
@@ -813,7 +813,7 @@
         <div class="forum-new-edit">
             <h3>Edit post</h3>
             <div class="skin-text">
-                <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $post/thread_id, 'CurrentPage', $currentPage)}">
+                <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $post/thread_id, 'thread_current_page', $currentPage)}">
                     <span class="glyphicon glyphicon-arrow-left"/>
                 </a>
                 <button class="button-icon" type="submit" name="modify_post" title="Save">
@@ -855,7 +855,7 @@
 
             <input type="hidden" name="current_thread" value="{$post/thread_id}"/>
             <input type="hidden" name="current_post" value="{$post/post_id}"/>
-            <input type="hidden" name="current_page" value="{$currentPage}"/>
+            <input type="hidden" name="thread_current_page" value="{$currentPage}"/>
         </div>
     </xsl:template>
 

@@ -392,7 +392,7 @@ class Forum extends ControllerAbstract
         }
 
         $this->result()
-            ->changeRequest('CurrentPage', max(ceil($thread->getPostCount() / ForumPostModel::POSTS_PER_PAGE) - 1, 0))
+            ->changeRequest('thread_current_page', max(ceil($thread->getPostCount() / ForumPostModel::POSTS_PER_PAGE) - 1, 0))
             ->setInfo('Post created');
     }
 
@@ -765,8 +765,8 @@ class Forum extends ControllerAbstract
         $this->result()->setCurrent('Forum_thread');
 
         // validate current page
-        $this->assertParamsExist(['CurrentPage']);
-        if (!is_numeric($request['CurrentPage'])) {
+        $this->assertParamsExist(['thread_current_page']);
+        if (!is_numeric($request['thread_current_page'])) {
             throw new Exception('Invalid thread page', Exception::WARNING);
         }
 
@@ -808,7 +808,7 @@ class Forum extends ControllerAbstract
 
         $maxPage = max(ceil($thread->getPostCount() / ForumPostModel::POSTS_PER_PAGE) - 1, 0);
         $this->result()
-            ->changeRequest('CurrentPage', ($request['CurrentPage'] <= $maxPage) ? $request['CurrentPage'] : $maxPage)
+            ->changeRequest('thread_current_page', ($request['thread_current_page'] <= $maxPage) ? $request['thread_current_page'] : $maxPage)
             ->setInfo('Post deleted');
     }
 
@@ -892,7 +892,7 @@ class Forum extends ControllerAbstract
 
         // go to first page of target thread on success
         $this->result()
-            ->changeRequest('CurrentPage', 0)
+            ->changeRequest('thread_current_page', 0)
             ->setInfo('Thread changed')
             ->setCurrent('Forum_post_edit');
     }
