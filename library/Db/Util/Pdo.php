@@ -22,7 +22,7 @@ class Pdo extends UtilAbstract
         $errorMessage = '';
 
         // compose PDO dns string
-        $dsn = 'mysql:dbname='.$this->database.';host='.$this->server.(($this->port != '') ? ';port='.$this->port : '');
+        $dsn = 'mysql:dbname=' . $this->database . ';host=' . $this->server . (($this->port != '') ? ';port=' . $this->port : '');
 
         // attempt to connect via PDO
         try {
@@ -32,15 +32,15 @@ class Pdo extends UtilAbstract
             ]);
         }
         catch (\PDOException $e) {
-            $errorMessage = 'failed to create PDO '.$e->getMessage();
+            $errorMessage = 'failed to create PDO ' . $e->getMessage();
             $this->logError(self::STATUS_OFFLINE_INIT, $errorMessage);
         }
 
         if ($this->status != self::STATUS_OK) {
             // add extra debug for internal IPs
-            $extraDebug = (Ip::isInternalIp()) ? ' '.$this->status.' '.$errorMessage : '';
+            $extraDebug = (Ip::isInternalIp()) ? ' ' . $this->status . ' ' . $errorMessage : '';
 
-            throw new Exception('Unable to connect to DB (via PDO), aborting.'.$extraDebug);
+            throw new Exception('Unable to connect to DB (via PDO), aborting.' . $extraDebug);
         }
 
         $this->resource = $db;
@@ -138,14 +138,14 @@ class Pdo extends UtilAbstract
         // execute
         $result = $statement->execute($params);
         if (!$result) {
-            $this->logError(self::STATUS_QUESTION_E, implode(" ", $statement->errorInfo()), $question);
+            $this->logError(self::STATUS_QUESTION_E, implode(' ', $statement->errorInfo()), $question);
             return new Result(Result::ERROR);
         }
 
         // process result data
         $data = $statement->fetchAll(\PDO::FETCH_ASSOC);
         if ($data === false) {
-            $this->logError(self::STATUS_QUESTION_F, implode(" ", $statement->errorInfo()), $question);
+            $this->logError(self::STATUS_QUESTION_F, implode(' ', $statement->errorInfo()), $question);
             return new Result(Result::ERROR);
         }
 
