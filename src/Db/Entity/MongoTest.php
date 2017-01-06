@@ -173,7 +173,7 @@ class MongoTest extends MongoAbstract
      */
     public function testUpdate()
     {
-        return $this->updateNative(['a' => 66], ['$set' => ['a' => 67]], ['multi' => true]);
+        return $this->modify(['a' => 66], ['$set' => ['a' => 67]], ['multi' => true]);
     }
 
     /**

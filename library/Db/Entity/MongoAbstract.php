@@ -305,7 +305,7 @@ abstract class MongoAbstract extends EntityAbstract
      * @param array [$options]
      * @return Result
      */
-    protected function updateNative(array $conditions, array $operations, array $options = [])
+    protected function modify(array $conditions, array $operations, array $options = [])
     {
         $db = $this->db();
 
@@ -556,7 +556,7 @@ abstract class MongoAbstract extends EntityAbstract
             }
         }
 
-        $result = $this->updateNative($conditions, ['$set' => $update], ['multi' => false]);
+        $result = $this->modify($conditions, ['$set' => $update], ['multi' => false]);
 
         // error occurred
         if ($result->isError()) {
