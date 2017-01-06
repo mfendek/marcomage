@@ -1,0 +1,23 @@
+/********************************
+* DB install MongoDB collections
+*********************************/
+
+/* collection `auto_increment` */
+db.createCollection('auto_increment')
+
+/* set current auto-increment to proper value */
+db.auto_increment.insert({ '_id' : 'test', 'counter' : NumberInt('0') })
+
+/***********************************************************************************/
+
+/* collection `test` */
+db.createCollection('test')
+db.test.createIndex( { '[test_a]' : 1, '[test_b]': 1 }, { name: 'a_b', unique: true } )
+db.test.createIndex( { '[test_c]': 1 } )
+
+/* sharding index */
+db.test.createIndex( { '_id': 'hashed' } )
+
+db.runCommand( { shardCollection: 'arcomage.test', key: { '_id': 'hashed' } } )
+
+/***********************************************************************************/

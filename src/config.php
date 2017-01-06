@@ -13,7 +13,20 @@ return [
             'database' => 'arcomage',
             'port' => '',
             'qlog' => true,
-        ]
+        ],
+        'mongo' => [
+            'server' => 'localhost',
+            'username' => '',
+            'password' => '',
+            'database' => 'arcomage',
+            'port' => '27017',
+            'replica_set' => '', // this setting is relevant only if single replica set is used
+            'additional_hosts' => '', // format mongodb://[username:password@]host1[:port1][,host2[:port2:],...]/db
+            'qlog' => true,
+            'entity' => [
+                'aliases' => false,
+            ],
+        ],
     ],
     'logger' => [
         'error_writer' => [

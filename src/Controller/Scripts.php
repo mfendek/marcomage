@@ -97,6 +97,65 @@ class Scripts extends ControllerAbstract
     /**
      * @throws Exception
      */
+    protected function mongoInstallScript()
+    {
+        $request = $this->request();
+        $ef = $this->dbEntity();
+
+        // script output options
+        $aliasEnabled = (!empty($request['alias']) && $request['alias'] == 1);
+        $shardingEnabled = (!empty($request['sharding']) && $request['sharding'] == 1);
+
+        // list all entities
+        $entities = [
+            $ef->test(),
+        ];
+
+        // load generic install script
+        $file = file_get_contents('scripts/install_collections.json');
+
+        // list all aliases
+        foreach ($entities as $entity) {
+            /* @var \Db\Entity\EntityAbstract $entity */
+            $aliases = $entity->fieldMap($aliasEnabled);
+
+            // replace all aliases
+            foreach ($aliases as $alias => $field) {
+                $file = str_replace('['.$alias.']', $field, $file);
+            }
+        }
+
+        // comment all sharding commands
+        if (!$shardingEnabled) {
+            $lines = array();
+            foreach (explode("\n", $file) as $line) {
+                if (strpos($line, 'shardCollection') !== false) {
+                    $line = '/* '.$line.' */';
+                }
+
+                $lines[] = $line;
+            }
+
+            $file = implode("\n", $lines);
+        }
+
+        // create new install script file
+        $fileName = 'db_install.json';
+        $contentType = 'text/plain; charset=UTF-8';
+        $fileLength = mb_strlen($file);
+
+        // create raw output
+        $this->result()->setRawOutput($file, [
+            'Content-Encoding: UTF-8',
+            'Content-Type: ' . $contentType,
+            'Content-Disposition: attachment; filename="' . $fileName . '"',
+            'Content-Length: ' . $fileLength,
+        ]);
+    }
+
+    /**
+     * @throws Exception
+     */
     protected function r2636()
     {
         $db = $this->getDb();

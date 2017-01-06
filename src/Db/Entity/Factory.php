@@ -204,4 +204,20 @@ class Factory extends \FactoryAbstract
     {
         return $this->loadResource('Pdo_Game');
     }
+
+    /**
+     * @return MongoAutoIncrement
+     */
+    public function autoIncrement()
+    {
+        return $this->loadResource('Mongo_AutoIncrement');
+    }
+
+    /**
+     * @return MongoTest
+     */
+    public function test()
+    {
+        return $this->loadResource('Mongo_Test');
+    }
 }

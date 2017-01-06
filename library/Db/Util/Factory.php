@@ -38,4 +38,13 @@ class Factory extends \FactoryAbstract
     {
         return $this->loadResource('Pdo');
     }
+
+    /**
+     * Load DB util Mongo
+     * @return Mongo
+     */
+    public function mongo()
+    {
+        return $this->loadResource('Mongo');
+    }
 }

@@ -196,6 +196,7 @@ class Factory extends \FactoryAbstract
                 'scripts' => [
                     'init_game_auto_increment',
                     'players_cleanup',
+                    'mongo_install_script',
                     'r2636',
                 ],
             ],

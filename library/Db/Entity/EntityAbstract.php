@@ -73,6 +73,7 @@ abstract class EntityAbstract
     const TYPE_DATE = 'type_date';
     const TYPE_DATETIME = 'type_datetime';
     const TYPE_BINARY = 'type_binary';
+    const TYPE_MONGO_ID = 'type_mongo_id';
     const OPERATION_NONE = 'operation_none';
     const OPERATION_CREATE = 'operation_create';
     const OPERATION_READ = 'operation_read';

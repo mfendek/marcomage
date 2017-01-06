@@ -82,26 +82,33 @@ class Logger
         $method = $class.'::'.$function;
 
         $factory = $this->getDic()->dbUtilFactory();
-        $dbPdo = $factory->pdo();
 
-        $pdoErrors = $dbPdo->errorsLog();
+        $errors = [
+            'pdo' => $factory->pdo(),
+            'mongo' => $factory->mongo(),
+        ];
 
         // process DB messages
         $dbMessage = array();
 
-        // DB error available
-        if ($pdoErrors != '') {
-            $dbMessage[]= 'PDO: '.$dbPdo->errorsLog();
-        }
-        // DB error is empty
-        else {
-            // add last question from PDO with effected rows
-            $questionsLog = $dbPdo->questionsLog();
+        /* @var $dbUtil \Db\Util\UtilAbstract */
+        foreach ($errors as $dbType => $dbUtil) {
+            $errorsLog = $dbUtil->errorsLog();
 
-            // proceed only if we have at least one question log entry
-            if (count($questionsLog) > 0) {
-                $lastQuestion = array_pop($questionsLog);
-                $dbMessage[]= 'PDO: last question: ' . $lastQuestion . ' effected rows: ' . $dbPdo->effectedRows();
+            // DB error available
+            if ($errorsLog != '') {
+                $dbMessage[]= $dbType . ': ' . $errorsLog;
+            }
+            // DB error is empty
+            else {
+                // add last question from DB with effected rows
+                $questionsLog = $dbUtil->questionsLog();
+
+                // proceed only if we have at least one question log entry
+                if (count($questionsLog) > 0) {
+                    $lastQuestion = array_pop($questionsLog);
+                    $dbMessage[]= $dbType . ': last question: ' . $lastQuestion . ' effected rows: ' . $dbUtil->effectedRows();
+                }
             }
         }
 
