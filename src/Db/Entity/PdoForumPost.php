@@ -23,7 +23,7 @@ class PdoForumPost extends PdoAbstract
             ],
             'fields' => [
                 'post_id' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [
                         EntityAbstract::OPT_UNSIGNED,
@@ -39,12 +39,12 @@ class PdoForumPost extends PdoAbstract
                     'default' => '',
                 ],
                 'thread_id' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
                 'is_deleted' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],

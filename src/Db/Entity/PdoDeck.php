@@ -23,7 +23,7 @@ class PdoDeck extends PdoAbstract
             ],
             'fields' => [
                 'deck_id' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [
                         EntityAbstract::OPT_UNSIGNED,
@@ -39,7 +39,7 @@ class PdoDeck extends PdoAbstract
                     'default' => '',
                 ],
                 'is_ready' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
@@ -56,22 +56,22 @@ class PdoDeck extends PdoAbstract
                     'default' => '',
                 ],
                 'wins' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
                 'losses' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
                 'draws' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
                 'is_shared' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],

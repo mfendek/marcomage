@@ -32,7 +32,7 @@ class PdoPlayer extends PdoAbstract
                     'default' => '',
                 ],
                 'session_id' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],

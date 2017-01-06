@@ -24,7 +24,7 @@ class PdoForumThread extends PdoAbstract
             ],
             'fields' => [
                 'thread_id' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [
                         EntityAbstract::OPT_UNSIGNED,
@@ -44,17 +44,17 @@ class PdoForumThread extends PdoAbstract
                     'default' => 'normal',
                 ],
                 'is_locked' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
                 'is_deleted' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
                 'section_id' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
@@ -64,7 +64,7 @@ class PdoForumThread extends PdoAbstract
                     'options' => [EntityAbstract::OPT_INSERT_DATETIME],
                 ],
                 'post_count' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
@@ -77,7 +77,7 @@ class PdoForumThread extends PdoAbstract
                     'default' => Date::DATETIME_ZERO,
                 ],
                 'reference_id' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],

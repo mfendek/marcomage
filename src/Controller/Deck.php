@@ -475,13 +475,13 @@ class Deck extends ControllerAbstract
 
         // export deck data
         $file = $deck->toCSV();
-        $content_type = 'text/csv';
+        $contentType = 'text/csv';
         $fileName = preg_replace("/[^a-zA-Z0-9_-]/i", "_", $deck->getDeckName()) . '.csv';
         $fileLength = mb_strlen($file);
 
         // create raw output
         $this->result()->setRawOutput($file, [
-            'Content-Type: ' . $content_type . '',
+            'Content-Type: ' . $contentType . '',
             'Content-Disposition: attachment; filename="' . $fileName . '"',
             'Content-Length: ' . $fileLength,
         ]);

@@ -12,16 +12,6 @@ use Db\Util\Result;
 abstract class PdoAbstract extends EntityAbstract
 {
     /**
-     * @param Pdo $db
-     * @param array [$config]
-     */
-    public function __construct(Pdo $db, array $config = array())
-    {
-        $this->db = $db;
-        $this->config = $config;
-    }
-
-    /**
      * @return Pdo
      */
     protected function db()
@@ -36,6 +26,8 @@ abstract class PdoAbstract extends EntityAbstract
      */
     protected function create(array $data)
     {
+        $db = $this->db();
+
         // prepare query data
         $fields = $placeholders = $params = array();
         foreach ($data as $name => $value) {
@@ -45,12 +37,15 @@ abstract class PdoAbstract extends EntityAbstract
         }
 
         // execute query
-        $result = $this->db()->query('INSERT INTO `'.$this->entityName().'` ('.implode(", ", $fields).') VALUES ('.implode(", ", $placeholders).')', $params);
+        $result = $db->query(
+            'INSERT INTO `' . $this->entityName() . '` (' . implode(', ', $fields) . ') VALUES (' . implode(', ', $placeholders) . ')',
+            $params
+        );
 
         // add auto-id field if necessary
         $autoIdField = $this->findAutoIdField();
         if (!empty($autoIdField) && $result->isSuccess()) {
-            return new Result(Result::SUCCESS, ['new_id' => $this->db()->lastId()]);
+            return new Result(Result::SUCCESS, ['new_id' => $db->lastId()]);
         }
 
         return $result;
@@ -63,13 +58,15 @@ abstract class PdoAbstract extends EntityAbstract
      */
     protected function read(array $conditions)
     {
+        $db = $this->db();
+
         // data fields part of the query
         $fields = array();
         foreach ($this->fieldNames() as $name) {
             $fields[] = '`'.$name.'`';
         }
 
-        $fields = implode(", ", $fields);
+        $fields = implode(', ', $fields);
 
         // primary keys part of the query
         $primaryFields = $params = array();
@@ -79,7 +76,10 @@ abstract class PdoAbstract extends EntityAbstract
         }
 
         // execute query
-        $result = $this->db()->query('SELECT '.$fields.' FROM `'.$this->entityName().'` WHERE '.implode(" AND ", $primaryFields).' LIMIT 1', $params);
+        $result = $db->query(
+            'SELECT ' . $fields . ' FROM `' . $this->entityName() . '` WHERE ' . implode(' AND ', $primaryFields) . ' LIMIT 1',
+            $params
+        );
 
         // error occurred
         if ($result->isError()) {
@@ -104,6 +104,8 @@ abstract class PdoAbstract extends EntityAbstract
      */
     protected function update(array $conditions, array $data)
     {
+        $db = $this->db();
+
         // data part of the query
         $fields = $params = array();
         foreach ($data as $name => $value) {
@@ -119,7 +121,10 @@ abstract class PdoAbstract extends EntityAbstract
         }
 
         // execute query
-        $result = $this->db()->query('UPDATE `'.$this->entityName().'` SET '.implode(", ", $fields).' WHERE '.implode(" AND ", $primaryFields).' LIMIT 1', $params);
+        $result = $db->query(
+            'UPDATE `' . $this->entityName() . '` SET ' . implode(', ', $fields) . ' WHERE ' . implode(' AND ', $primaryFields) . ' LIMIT 1',
+            $params
+        );
 
         // error occurred
         if ($result->isError()) {
@@ -127,7 +132,7 @@ abstract class PdoAbstract extends EntityAbstract
         }
 
         // query had no effect
-        if ($this->db()->effectedRows() == 0) {
+        if ($db->effectedRows() == 0) {
             return new Result(Result::NO_EFFECT);
         }
 
@@ -141,6 +146,8 @@ abstract class PdoAbstract extends EntityAbstract
      */
     protected function delete(array $conditions)
     {
+        $db = $this->db();
+
         // primary keys part of the query
         $primaryFields = $params = array();
         foreach ($conditions as $name => $value) {
@@ -149,7 +156,10 @@ abstract class PdoAbstract extends EntityAbstract
         }
 
         // execute query
-        $result = $this->db()->query('DELETE FROM `'.$this->entityName().'` WHERE '.implode(" AND ", $primaryFields).' LIMIT 1', $params);
+        $result = $db->query(
+            'DELETE FROM `' . $this->entityName() . '` WHERE ' . implode(' AND ', $primaryFields) . ' LIMIT 1',
+            $params
+        );
 
         // process result
         if ($result->isError()) {
@@ -157,10 +167,20 @@ abstract class PdoAbstract extends EntityAbstract
         }
 
         // query had no effect
-        if ($this->db()->effectedRows() == 0) {
+        if ($db->effectedRows() == 0) {
             return new Result(Result::NO_EFFECT);
         }
 
         return new Result(Result::SUCCESS);
+    }
+
+    /**
+     * @param Pdo $db
+     * @param array [$config]
+     */
+    public function __construct(Pdo $db, array $config = [])
+    {
+        $this->db = $db;
+        $this->config = $config;
     }
 }

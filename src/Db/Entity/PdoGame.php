@@ -24,7 +24,7 @@ class PdoGame extends PdoAbstract
             ],
             'fields' => [
                 'game_id' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [
                         EntityAbstract::OPT_UNSIGNED,
@@ -51,7 +51,7 @@ class PdoGame extends PdoAbstract
                 ],
                 'round' => [
                     // incremented after each play/discard action
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 1,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
@@ -95,13 +95,13 @@ class PdoGame extends PdoAbstract
                 ],
                 'deck_id1' => [
                     // player's 1 deck slot reference ID (statistics purposes only)
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
                 'deck_id2' => [
                     // player's 2 deck slot reference ID (statistics purposes only)
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
@@ -122,7 +122,7 @@ class PdoGame extends PdoAbstract
                     ],
                 ],
                 'turn_timeout' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],

@@ -69,8 +69,7 @@ abstract class EntityAbstract
     const OPT_UPDATE_DATETIME = 'opt_update_datetime';
 
     const TYPE_STRING = 'type_string';
-    const TYPE_INT32 = 'type_int_32';
-    const TYPE_INT64 = 'type_int_64';
+    const TYPE_INT = 'type_int';
     const TYPE_DATE = 'type_date';
     const TYPE_DATETIME = 'type_datetime';
     const TYPE_BINARY = 'type_binary';
@@ -572,7 +571,7 @@ abstract class EntityAbstract
     public function validateFieldValue($field, $value)
     {
         // validation cases
-        if (in_array($this->fieldType($field), [self::TYPE_INT32, self::TYPE_INT64])) {
+        if ($this->fieldType($field) == self::TYPE_INT) {
             // basic integer validation
             if (!is_numeric($value)) {
                 return false;
@@ -600,8 +599,7 @@ abstract class EntityAbstract
             $value = $data[$name];
 
             // validate integer data type
-            if (in_array($this->fieldType($name), [self::TYPE_INT32, self::TYPE_INT64])
-                && filter_var($value, FILTER_VALIDATE_INT) === false) {
+            if ($this->fieldType($name) == self::TYPE_INT && filter_var($value, FILTER_VALIDATE_INT) === false) {
                 throw new Exception(
                     'Invalid primary key value - integer validation failed',
                     Exception::WARNING

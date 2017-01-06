@@ -20,7 +20,7 @@ class PdoForumSection extends PdoAbstract
             ],
             'fields' => [
                 'section_id' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
@@ -33,7 +33,7 @@ class PdoForumSection extends PdoAbstract
                     'default' => '',
                 ],
                 'section_order' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],

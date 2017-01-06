@@ -25,7 +25,7 @@ class PdoReplay extends PdoAbstract
             ],
             'fields' => [
                 'game_id' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
@@ -38,12 +38,12 @@ class PdoReplay extends PdoAbstract
                     'default' => '',
                 ],
                 'rounds' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 1,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
                 'turns' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 1,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
@@ -77,12 +77,12 @@ class PdoReplay extends PdoAbstract
                     'default' => Date::DATETIME_ZERO,
                 ],
                 'is_deleted' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
                 'views' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],

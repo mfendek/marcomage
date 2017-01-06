@@ -22,7 +22,7 @@ class PdoChat extends PdoAbstract
             ],
             'fields' => [
                 'game_id' => [
-                    'type' => EntityAbstract::TYPE_INT32,
+                    'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
