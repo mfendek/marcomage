@@ -86,7 +86,7 @@
                         <xsl:if test="$param/new_level_gained &gt; 0">
                             <script type="text/javascript" src="js/levelup.js?v={$param/cc_version}"/>
                         </xsl:if>
-                        <xsl:if test="$param/level = 0">
+                        <xsl:if test="$param/tutorial_active = 'yes'">
                             <script type="text/javascript" src="js/highlight.js?v={$param/cc_version}"/>
                         </xsl:if>
                         <xsl:if test="$param/include_captcha = 'yes'">

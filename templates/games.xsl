@@ -796,7 +796,7 @@
                                     <button type="submit" name="finish_move">Execute opponent's move</button>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <xsl:if test="$param/play_buttons = 'no' and $isMyTurn">
+                                    <xsl:if test="$param/play_buttons = 'no' and $isMyTurn and $param/cards_playable = 'yes'">
                                         <button type="submit" name="play_card" value="0">Play</button>
                                     </xsl:if>
                                     <xsl:if test="$isMyTurn">
@@ -806,7 +806,7 @@
                             </xsl:choose>
 
                             <!-- card preview -->
-                            <xsl:if test="$isMyTurn and $param/hidden_cards = 'no'">
+                            <xsl:if test="$isMyTurn and $param/hidden_cards = 'no' and $param/cards_playable = 'yes'">
                                 <button class="button-icon" type="submit" name="preview_card" title="Preview">
                                     <span class="glyphicon glyphicon-eye-open"/>
                                 </button>
@@ -857,7 +857,7 @@
                 <!-- end messages and game buttons -->
 
                 <!-- begin your cards -->
-                <div class="row hand my_hand">
+                <div class="row hand my-hand">
                     <xsl:for-each select="exsl:node-set($param/p1_hand)/*">
                         <div>
                             <!-- display card flags, if set -->
@@ -878,6 +878,10 @@
                             <!-- display card -->
                             <div>
                                 <xsl:choose>
+                                    <!-- suggested and unplayable card -->
+                                    <xsl:when test="$isMyTurn and suggested = 'yes' and playable = 'no'">
+                                        <xsl:attribute name="class">unplayable suggested</xsl:attribute>
+                                    </xsl:when>
                                     <!-- unplayable card -->
                                     <xsl:when test="$isMyTurn and playable = 'no'">
                                         <xsl:attribute name="class">unplayable</xsl:attribute>
@@ -908,8 +912,20 @@
                                 <input type="radio" name="selected_card" value="{position()}"/>
                                 <xsl:if test="playable = 'yes' and modes &gt; 0">
                                     <select name="card_mode[{position()}]" class="card-modes" size="1">
+                                        <xsl:variable name="suggestedMode">
+                                            <xsl:choose>
+                                                <xsl:when test="suggested = 'yes'">
+                                                    <xsl:value-of select="suggested_mode"/>
+                                                </xsl:when>
+                                                <xsl:otherwise>0</xsl:otherwise>
+                                            </xsl:choose>
+                                        </xsl:variable>
                                         <xsl:for-each select="str:split(am:numbers(1, modes), ',')">
                                             <option value="{.}">
+                                                <!-- pre-select suggested mode -->
+                                                <xsl:if test="$suggestedMode &gt; 0 and $suggestedMode = .">
+                                                    <xsl:attribute name="selected">selected</xsl:attribute>
+                                                </xsl:if>
                                                 <xsl:value-of select="."/>
                                             </option>
                                         </xsl:for-each>

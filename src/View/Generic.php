@@ -6,6 +6,7 @@
 namespace View;
 
 use ArcomageException as Exception;
+use Db\Model\Player as PlayerModel;
 use Util\Encode;
 
 class Generic extends TemplateDataAbstract
@@ -83,7 +84,8 @@ class Generic extends TemplateDataAbstract
             $dbEntityScore = $this->dbEntity()->score();
             $score = $dbEntityScore->getScoreAsserted($player->getUsername());
 
-            $dataNav['level'] = $dataMain['level'] = $score->getLevel();
+            $dataMain['tutorial_active'] = ($score->getLevel() < PlayerModel::TUTORIAL_END) ? 'yes' : 'no';
+            $dataNav['level'] = $score->getLevel();
             $dataNav['exp'] = $score->getExp();
             $dataNav['next_level'] = $score->nextLevel();
             $dataNav['exp_bar'] = $score->expBar();

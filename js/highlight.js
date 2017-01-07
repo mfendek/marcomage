@@ -10,7 +10,7 @@
 function highlightQuickButton()
 {
     $('div#games button[name="quick_game"]').effect('highlight', {}, 1000);
-    window.setTimeout(highlightQuickButton, 1500);
+    window.setTimeout(highlightQuickButton, 3000);
 }
 
 /**
@@ -19,7 +19,7 @@ function highlightQuickButton()
 function highlightLeaveButton()
 {
     $('div.game button[name="leave_game"]').effect('highlight', {}, 1000);
-    window.setTimeout(highlightLeaveButton, 1500);
+    window.setTimeout(highlightLeaveButton, 3000);
 }
 
 /**
@@ -32,23 +32,38 @@ function highlightCards()
     // case 1: single play card button mode is active
     if (playCard.length == 1 && playCard.val() == 0) {
         // case 1: highlight playable cards
-        if ($('div.game tr.hand:first-child div.selected-card').length == 0) {
-            $('div.game tr.hand:first-child div.suggested > div.card').animate({ borderColor: '#000000' }, 500, function() {
-                $(this).animate({ borderColor: '#ffffff'} , 500);
+        if ($('div.game .hand.my-hand div.selected-card').length == 0) {
+            $('div.game .hand.my-hand div.suggested > div.card').animate({ opacity: 0.6 }, 500, function() {
+                $(this).animate({ opacity: 1} , 500);
             });
             window.setTimeout(highlightCards, 3000);
         }
         // case 2: highlight play button
         else if (playCard.length == 1) {
             playCard.effect('highlight', {}, 1000);
-            window.setTimeout(highlightCards, 1500);
+            window.setTimeout(highlightCards, 3000);
         }
     }
     // case 2: multiple play card button mode is active
-    else {
+    else if (playCard.length > 0) {
         playCard = $('div.game button.suggested');
         playCard.effect('highlight', {}, 1000);
-        window.setTimeout(highlightCards, 1500);
+        window.setTimeout(highlightCards, 3000);
+    }
+    // case 3: no play card button is available
+    else {
+        // case 1: highlight a card for discard action
+        if ($('div.game .hand.my-hand div.selected-card').length == 0) {
+            $('div.game .hand.my-hand div.suggested > div.card').animate({ opacity: 0.6 }, 500, function() {
+                $(this).animate({ opacity: 1} , 500);
+            });
+            window.setTimeout(highlightCards, 3000);
+        }
+        // case 2: highlight discard button
+        else {
+            $('div.game button[name="discard_card"]').effect('highlight', {}, 1000);
+            window.setTimeout(highlightCards, 3000);
+        }
     }
 }
 
@@ -60,9 +75,7 @@ $(document).ready(function() {
     }
 
     // highlight selectable cards
-    if ($('div.game button[name="play_card"]').length > 0) {
-        highlightCards();
-    }
+    highlightCards();
 
     // highlight leave game button
     if ($('div.game button[name="leave_game"]').length > 0) {

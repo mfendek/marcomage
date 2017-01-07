@@ -146,7 +146,7 @@ $(document).ready(function() {
     $('button[name="play_card"][value="0"], button[name="discard_card"], button[name="preview_card"]').css('opacity', 0.6);
 
     // card selection (via card)
-    $('.my_hand div.card').click(function() {
+    $('.my-hand div.card').click(function() {
         // active only on player's turn
         if ($('input[name="selected_card"]').length > 0) {
             var selectedCard = $('div.selected-card');

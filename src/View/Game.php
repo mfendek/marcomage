@@ -62,8 +62,8 @@ class Game extends TemplateDataAbstract
 
         $score = $this->dbEntity()->score()->getScoreAsserted($player->getUsername());
 
-        // prepare play suggestion for new players
-        if ($score->getLevel() == 0 && $player->getUsername() == $game->getCurrent() && $game->getState() == 'in progress') {
+        // prepare play suggestion for players in tutorial
+        if ($score->getLevel() < PlayerModel::TUTORIAL_END && $player->getUsername() == $game->getCurrent() && $game->getState() == 'in progress') {
             $decision = $serviceGameAi->determineMove($player->getUsername(), $game);
         }
 
@@ -110,13 +110,16 @@ class Game extends TemplateDataAbstract
         $handData = $defEntityCard->getData($p1Hand);
 
         // process card data
+        $playable = false;
         $keywordList = array();
         foreach ($handData as $i => $card) {
             $entry = array();
             $entry['card_data'] = $card;
 
             // suggested card
-            $entry['suggested'] = (!empty($decision) && $decision['cardpos'] == $i && $decision['action'] == 'play') ? 'yes' : 'no';
+            $entry['suggested'] = (!empty($decision) && $decision['cardpos'] == $i) ? 'yes' : 'no';
+            $entry['suggested_mode'] = (!empty($decision) && $decision['cardpos'] == $i && $decision['action'] == 'play'
+                && $decision['mode'] > 0) ? $decision['mode'] : 0;
 
             // block playability of rare card is case of AI challenge
             $blocked = ($game->getAiName() != '' && $card['rarity'] == 'Rare');
@@ -124,6 +127,11 @@ class Game extends TemplateDataAbstract
             // playability
             $entry['playable'] = ($player1Data->Bricks >= $card['bricks'] && $player1Data->Gems >= $card['gems']
                 && $player1Data->Recruits >= $card['recruits'] && !$blocked) ? 'yes' : 'no';
+
+            // determine if at least one card is playable
+            if ($entry['playable'] == 'yes') {
+                $playable = true;
+            }
 
             // modes
             $entry['modes'] = $card['modes'];
@@ -144,6 +152,9 @@ class Game extends TemplateDataAbstract
                 }
             }
         }
+
+        // determine of at least one card is playable
+        $data['cards_playable'] = ($playable) ? 'yes' : 'no';
 
         // determine keyword counts
         $keywordsCount = array();
