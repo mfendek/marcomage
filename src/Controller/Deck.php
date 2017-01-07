@@ -431,7 +431,7 @@ class Deck extends ControllerAbstract
         foreach ($list as $deckData) {
             // omit current deck
             if ($deck->getDeckId() != $deckData['deck_id']) {
-                $deckNames[] = $deckData['Deckname'];
+                $deckNames[] = $deckData['deck_name'];
             }
         }
 
@@ -570,7 +570,7 @@ class Deck extends ControllerAbstract
         foreach ($list as $deckData) {
             // omit current deck
             if ($deck->getDeckId() != $deckData['deck_id']) {
-                $deckNames[] = $deckData['Deckname'];
+                $deckNames[] = $deckData['deck_name'];
             }
         }
 
