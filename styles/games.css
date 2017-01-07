@@ -252,6 +252,7 @@ div.game .token-counter.player-label {
     font-size: small;
     font-family: arial, sans-serif;
     display: inline-block;
+    margin-top: 0;
 }
 
 div.game .token-counter > img {
@@ -445,6 +446,9 @@ div.unplayable > div.card::after {
 }
 div.unplayable > div.card:hover::after, div.unplayable > div.card.selected-card::after {
     opacity: 0;
+
+    /* this prevents the mask from hindering tooltips */
+    visibility: hidden;
 }
 
 /* selected card */
