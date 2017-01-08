@@ -12,8 +12,8 @@ div#web-page {
 /* image bordering */
 div#web-page-content > div > p > img, div#web-page-content > div > p > a > img {
     margin: 1ex;
-    border: medium solid white;
-    border-radius: 7px;
+    border: thin solid rgba(255, 255, 255, 0.8);
+    border-radius: 6px;
 }
 
 /* menu part of web page section */

@@ -62,7 +62,7 @@ div.deck-options > * + * {
 /* avg cost per turn indicator layout */
 div.cost-per-turn {
     display: inline-block;
-    border-radius: 7px;
+    border-radius: 6px;
     padding: 0.5ex 0.8ex 0.5ex 0.8ex;
 }
 
@@ -74,7 +74,7 @@ div.cost-per-turn > b, p.deck-stats > b {
 /* deck statistics */
 p.deck-stats {
     display: inline-block;
-    border-radius: 7px;
+    border-radius: 6px;
     padding: 0.5ex 0.8ex 0.5ex 0.8ex;
 }
 

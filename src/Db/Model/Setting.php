@@ -150,7 +150,6 @@ class Setting extends ModelAbstract
             'play_card_button',
             'chat_reverse_order',
             'integrated_chat',
-            'in_game_avatar',
             'old_card_look',
             'card_mini_flag',
             'battle_report',

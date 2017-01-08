@@ -62,8 +62,8 @@ div#content table {
 /* image bordering */
 div#content > div > p > img, div#content > div > p > a > img {
     margin: 1ex;
-    border: medium solid white;
-    border-radius: 7px;
+    border: thin solid rgba(255, 255, 255, 0.8);
+    border-radius: 6px;
 }
 
 /* set distance between paragraphs */

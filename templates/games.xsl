@@ -507,7 +507,10 @@
                                             <xsl:sort select="fullname" order="ascending"/>
                                             <div id="ai-challenge-{name}" class="skin-text">
                                                 <h4><xsl:value-of select="fullname"/></h4>
-                                                <p><xsl:value-of select="description"/></p>
+                                                <p>
+                                                    <img class="avatar" height="60" width="60" src="{$param/avatar_path}{am:fileName(name)}.png" alt="avatar"/>
+                                                    <xsl:value-of select="description"/>
+                                                </p>
                                             </div>
                                         </xsl:for-each>
                                     </div>
@@ -962,6 +965,8 @@
                                 <img class="icon" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
                             </p>
 
+                            <img class="avatar" height="60" width="60" src="{$param/avatar_path}{$param/p1_avatar}" alt="avatar"/>
+
                             <!-- my tokens -->
                             <div class="token-list">
                                 <xsl:copy-of select="am:tokens($param/p1_tokens, $param/card_insignias)"/>
@@ -1014,7 +1019,7 @@
 
                         <div class="player-info">
                             <!-- opponent's name -->
-                            <p class="token-counter player-label">
+                            <p class="token-counter player-label opponent-label">
                                 <img class="icon" width="18" height="12" src="img/flags/{$param/p2_country}.gif" alt="country flag" title="{$param/p2_country}"/>
 
                                 <xsl:copy-of select="am:playerName($param/opponent_name, $param/ai_name, $param/system_name)"/>
@@ -1023,6 +1028,12 @@
                                     <span class="icon-player-activity online" title="online"/>
                                 </xsl:if>
                             </p>
+
+                            <xsl:variable name="avatarName" select="am:avatarFileName(
+                                $param/p2_avatar, $param/opponent_name, $param/ai_name, $param/system_name
+                            )"/>
+
+                            <img class="avatar" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
 
                             <!-- his tokens -->
                             <div class="token-list">
@@ -1048,19 +1059,8 @@
                 <!-- disabled in case integrated chat setting is disabled -->
                 <xsl:if test="$param/integrated_chat = 'yes'">
                     <div class="row chat-section">
-                        <!-- player avatar -->
-                        <xsl:if test="$param/display_avatar = 'yes'">
-                            <div class="col-sm-2">
-                                <img class="avatar avatar_left" height="60" width="60" src="{$param/avatar_path}{$param/p1_avatar}" alt="avatar"/>
-                            </div>
-                        </xsl:if>
-
                         <!-- main chat board content -->
                         <div class="col-sm-12">
-                            <xsl:if test="$param/display_avatar = 'yes'">
-                                <xsl:attribute name="class">col-sm-8</xsl:attribute>
-                            </xsl:if>
-
                             <div>
                                 <!-- message list -->
                                 <xsl:if test="count($param/message_list/*) &gt; 0">
@@ -1071,20 +1071,38 @@
                                         </xsl:if>
                                         <xsl:for-each select="$param/message_list/*">
                                             <p>
-                                                <xsl:choose>
-                                                    <xsl:when test="author = $param/player_name">
-                                                        <xsl:attribute name="class">chat-box-player</xsl:attribute>
-                                                    </xsl:when>
-                                                    <xsl:when test="author = $param/opponent_name">
-                                                        <xsl:attribute name="class">chat-box-opponent</xsl:attribute>
-                                                    </xsl:when>
-                                                    <xsl:otherwise>
-                                                        <xsl:attribute name="class">chat-box-system</xsl:attribute>
-                                                    </xsl:otherwise>
-                                                </xsl:choose>
-                                                <xsl:value-of select="author"/>
-                                                <xsl:text> on </xsl:text>
-                                                <xsl:value-of select="am:dateTime(created_at, $param/timezone)"/>
+                                                <img class="avatar" height="20" width="20" alt="avatar">
+                                                    <xsl:choose>
+                                                        <xsl:when test="author = $param/player_name">
+                                                            <xsl:attribute name="src">
+                                                                <xsl:value-of select="$param/avatar_path"/>
+                                                                <xsl:value-of select="$param/p1_avatar"/>
+                                                            </xsl:attribute>
+                                                        </xsl:when>
+                                                        <xsl:when test="author = $param/opponent_name">
+                                                            <xsl:attribute name="src">
+                                                                <xsl:value-of select="$param/avatar_path"/>
+                                                                <xsl:value-of select="$param/p2_avatar"/>
+                                                            </xsl:attribute>
+                                                        </xsl:when>
+                                                    </xsl:choose>
+                                                </img>
+                                                <span>
+                                                    <xsl:choose>
+                                                        <xsl:when test="author = $param/player_name">
+                                                            <xsl:attribute name="class">chat-box-player</xsl:attribute>
+                                                        </xsl:when>
+                                                        <xsl:when test="author = $param/opponent_name">
+                                                            <xsl:attribute name="class">chat-box-opponent</xsl:attribute>
+                                                        </xsl:when>
+                                                        <xsl:otherwise>
+                                                            <xsl:attribute name="class">chat-box-system</xsl:attribute>
+                                                        </xsl:otherwise>
+                                                    </xsl:choose>
+                                                    <xsl:value-of select="author"/>
+                                                    <xsl:text> on </xsl:text>
+                                                    <xsl:value-of select="am:dateTime(created_at, $param/timezone)"/>
+                                                </span>
                                             </p>
                                             <div>
                                                 <xsl:value-of select="am:bbCodeParseExtended(message)" disable-output-escaping="yes"/>
@@ -1104,13 +1122,6 @@
                                 </xsl:if>
                             </div>
                         </div>
-
-                        <!-- opponent's avatar -->
-                        <xsl:if test="$param/display_avatar = 'yes'">
-                            <div class="col-sm-2">
-                                <img class="avatar avatar_right" height="60" width="60" src="{$param/avatar_path}{$param/p2_avatar}" alt="avatar"/>
-                            </div>
-                        </xsl:if>
                     </div>
                 </xsl:if>
 
@@ -1127,24 +1138,22 @@
                                 </xsl:if>
                                 <xsl:for-each select="$param/message_list/*">
                                     <p>
-                                        <xsl:if test="$param/display_avatar = 'yes'">
-                                            <img class="avatar" height="20" width="20" alt="avatar">
-                                                <xsl:choose>
-                                                    <xsl:when test="author = $param/player_name">
-                                                        <xsl:attribute name="src">
-                                                            <xsl:value-of select="$param/avatar_path"/>
-                                                            <xsl:value-of select="$param/p1_avatar"/>
-                                                        </xsl:attribute>
-                                                    </xsl:when>
-                                                    <xsl:when test="author = $param/opponent_name">
-                                                        <xsl:attribute name="src">
-                                                            <xsl:value-of select="$param/avatar_path"/>
-                                                            <xsl:value-of select="$param/p2_avatar"/>
-                                                        </xsl:attribute>
-                                                    </xsl:when>
-                                                </xsl:choose>
-                                            </img>
-                                        </xsl:if>
+                                        <img class="avatar" height="20" width="20" alt="avatar">
+                                            <xsl:choose>
+                                                <xsl:when test="author = $param/player_name">
+                                                    <xsl:attribute name="src">
+                                                        <xsl:value-of select="$param/avatar_path"/>
+                                                        <xsl:value-of select="$param/p1_avatar"/>
+                                                    </xsl:attribute>
+                                                </xsl:when>
+                                                <xsl:when test="author = $param/opponent_name">
+                                                    <xsl:attribute name="src">
+                                                        <xsl:value-of select="$param/avatar_path"/>
+                                                        <xsl:value-of select="$param/p2_avatar"/>
+                                                    </xsl:attribute>
+                                                </xsl:when>
+                                            </xsl:choose>
+                                        </img>
                                         <span>
                                             <xsl:choose>
                                                 <xsl:when test="author = $param/player_name">
@@ -1305,6 +1314,8 @@
                                 <img class="icon" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
                             </p>
 
+                            <img class="avatar" height="60" width="60" src="{$param/avatar_path}{$param/p1_avatar}" alt="avatar"/>
+
                             <!-- my tokens -->
                             <div class="token-list">
                                 <xsl:copy-of select="am:tokens($param/p1_tokens, $param/card_insignias)"/>
@@ -1357,7 +1368,7 @@
 
                         <div class="player-info">
                             <!-- opponent's name -->
-                            <p class="token-counter player-label">
+                            <p class="token-counter player-label opponent-label">
                                 <img class="icon" width="18" height="12" src="img/flags/{$param/p2_country}.gif" alt="country flag" title="{$param/p2_country}"/>
 
                                 <xsl:copy-of select="am:playerName($param/opponent_name, $param/ai_name, $param/system_name)"/>
@@ -1366,6 +1377,12 @@
                                     <span class="icon-player-activity online" title="online"/>
                                 </xsl:if>
                             </p>
+
+                            <xsl:variable name="avatarName" select="am:avatarFileName(
+                                $param/p2_avatar, $param/opponent_name, $param/ai_name, $param/system_name
+                            )"/>
+
+                            <img class="avatar" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
 
                             <!-- his tokens -->
                             <div class="token-list">

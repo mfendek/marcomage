@@ -25,6 +25,7 @@ class Game extends TemplateDataAbstract
     {
         $data = array();
 
+        $config = $this->getDic()->config();
         $defEntityCard = $this->defEntity()->card();
         $defEntityKeyword = $this->defEntity()->keyword();
         $dbEntityPlayer = $this->dbEntity()->player();
@@ -85,6 +86,9 @@ class Game extends TemplateDataAbstract
         $data['p1_country'] = $setting->getSetting('country');
         $data['p2_country'] = $opponentSetting->getSetting('country');
         $data['background_img'] = $setting->getSetting('game_bg_image');
+        $data['avatar_path'] = $config['upload_dir']['avatar'];
+        $data['p1_avatar'] = $setting->getSetting('avatar');
+        $data['p2_avatar'] = $opponentSetting->getSetting('avatar');
 
         $gameConfig = GameModel::gameConfig();
 
@@ -249,6 +253,7 @@ class Game extends TemplateDataAbstract
         $data = array();
         $input = $this->input();
 
+        $config = $this->getDic()->config();
         $player = $this->getCurrentPlayer();
         $defEntityChallenge = $this->defEntity()->challenge();
         $dbEntityChallenge = $this->dbEntity()->deck();
@@ -266,6 +271,7 @@ class Game extends TemplateDataAbstract
         $data['auto_refresh'] = $setting->getSetting('auto_refresh_timer');
         $data['timeout'] = $setting->getSetting('game_turn_timeout');
         $data['system_name'] = PlayerModel::SYSTEM_NAME;
+        $data['avatar_path'] = $config['upload_dir']['avatar'];
 
         $score = $this->dbEntity()->score()->getScoreAsserted($player->getUsername());
 
@@ -412,7 +418,6 @@ class Game extends TemplateDataAbstract
         $input = $this->input();
         $player = $this->getCurrentPlayer();
 
-        $config = $this->getDic()->config();
         $dbEntityGame = $this->dbEntity()->game();
         $defEntityCard = $this->defEntity()->card();
         $dbEntityChat = $this->dbEntity()->chat();
@@ -519,7 +524,6 @@ class Game extends TemplateDataAbstract
         $data['next_game_button'] = (count($nextGames) > 0) ? 'yes' : 'no';
 
         $opponent = $dbEntityPlayer->getPlayerAsserted($opponentName);
-        $opponentSetting = $this->dbEntity()->setting()->getSettingAsserted($opponentName);
 
         $data['opponent_is_dead'] = ($opponent->isDead()) ? 'yes' : 'no';
         $data['finish_game'] = (time() - Date::strToTime($game->getLastAction()) >= 3 * Date::WEEK
@@ -545,12 +549,6 @@ class Game extends TemplateDataAbstract
         $data['timeout'] = $timeout;
 
         // chat board
-        $data['display_avatar'] = $setting->getSetting('in_game_avatar');
-
-        $data['avatar_path'] = $config['upload_dir']['avatar'];
-        $data['p1_avatar'] = $setting->getSetting('avatar');
-        $data['p2_avatar'] = $opponentSetting->getSetting('avatar');
-
         $data['integrated_chat'] = $setting->getSetting('integrated_chat');
         $data['reverse_chat'] = $reverseChat = $setting->getSetting('chat_reverse_order');
         $order = ($reverseChat == 'yes') ? 'ASC' : 'DESC';

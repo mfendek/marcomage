@@ -1,0 +1,1 @@
+ALTER TABLE `setting` DROP `in_game_avatar`;

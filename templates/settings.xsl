@@ -28,13 +28,13 @@
 
                         <div>
                             <h4>Zodiac sign</h4>
-                            <img height="100" width="100" src="img/zodiac/{$settings/sign}.jpg" alt="sign"/>
+                            <img class="zodiac-sign" height="100" width="100" src="img/zodiac/{$settings/sign}.jpg" alt="sign"/>
                             <h4><xsl:value-of select="$settings/sign"/></h4>
                         </div>
 
                         <div>
                             <h4>Avatar</h4>
-                            <img height="60" width="60" src="{$param/avatar_path}{$settings/avatar}" alt="avatar"/>
+                            <img class="avatar-preview" height="60" width="60" src="{$param/avatar_path}{$settings/avatar}" alt="avatar"/>
                         </div>
 
                         <p><button type="submit" name="save_settings">Save settings</button></p>
@@ -673,18 +673,6 @@
                                         <xsl:text>integrate chat into the game screen instead of using chat pop-up tool</xsl:text>
                                     </xsl:attribute>
                                     <xsl:text>Integrated chat</xsl:text>
-                                </span>
-                            </p>
-
-                            <p>
-                                <input type="checkbox" name="in_game_avatar">
-                                    <xsl:if test="$settings/in_game_avatar = 'yes'">
-                                        <xsl:attribute name="checked">checked</xsl:attribute>
-                                    </xsl:if>
-                                </input>
-                                <span>
-                                    <xsl:attribute name="title">display avatars of both players in the game</xsl:attribute>
-                                    <xsl:text>Show avatar in game</xsl:text>
                                 </span>
                             </p>
 

@@ -528,4 +528,34 @@
     </func:function>
 
 
+    <!-- avatar file name -->
+    <func:function name="am:avatarFileName">
+        <xsl:param name="avatar" as="xs:string"/>
+        <xsl:param name="name" as="xs:string"/>
+        <xsl:param name="aiName" as="xs:string"/>
+        <xsl:param name="systemName" as="xs:string"/>
+
+        <xsl:variable name="result">
+            <xsl:choose>
+                <!-- case 1: AI avatar -->
+                <xsl:when test="$name = $systemName">
+                    <xsl:choose>
+                        <!-- case 1: AI challenge avatar -->
+                        <xsl:when test="$aiName != ''">
+                            <xsl:value-of select="concat(am:fileName($aiName), '.png')"/>
+                        </xsl:when>
+                        <!-- case 2: standard AI avatar -->
+                        <xsl:otherwise>ai.png</xsl:otherwise>
+                    </xsl:choose>
+                </xsl:when>
+                <!-- case 2: real player avatar -->
+                <xsl:otherwise>
+                    <xsl:value-of select="$avatar"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <func:result select="$result"/>
+    </func:function>
+
+
 </xsl:stylesheet>

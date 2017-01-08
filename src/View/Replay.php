@@ -31,6 +31,7 @@ class Replay extends TemplateDataAbstract
      */
     private function formatReplayData(\Db\Model\Replay $replay, $playerView, $turn)
     {
+        $config = $this->getDic()->config();
         $defEntityCard = $this->defEntity()->card();
         $serviceGameUtil = $this->service()->gameUtil();
 
@@ -66,6 +67,9 @@ class Replay extends TemplateDataAbstract
         $data['p2_card_foils'] = $player2Setting->getSetting('foil_cards');
         $data['p1_country'] = $player1Setting->getSetting('country');
         $data['p2_country'] = $player2Setting->getSetting('country');
+        $data['avatar_path'] = $config['upload_dir']['avatar'];
+        $data['p1_avatar'] = $player1Setting->getSetting('avatar');
+        $data['p2_avatar'] = $player2Setting->getSetting('avatar');
 
         $gameConfig = GameModel::gameConfig();
 

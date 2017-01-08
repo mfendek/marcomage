@@ -20,7 +20,7 @@ input, button {
     font-size: small;
     color: black;
     border: 2px outset black;
-    border-radius: 7px;
+    border-radius: 6px;
     padding: 0.4ex 1.2ex 0.4ex 1.2ex;
     vertical-align: middle;
     font-family: arial, sans-serif;
@@ -33,7 +33,7 @@ a.button {
     font-weight: normal;
     color: black;
     border: 2px outset black;
-    border-radius: 7px;
+    border-radius: 6px;
     padding: 0.4ex 1.2ex 0.4ex 1.2ex;
     vertical-align: middle;
     text-decoration: none;
@@ -57,7 +57,7 @@ a.profile, a.profile:link, a.profile:visited {
     font-weight: normal;
     color: gray;
     border: 2px outset black;
-    border-radius: 7px;
+    border-radius: 6px;
     padding: 0.2ex 0.6ex 0.2ex 0.6ex;
     vertical-align: middle;
     font-family: arial, sans-serif;
@@ -134,7 +134,7 @@ textarea {
     font-weight: normal;
     width: 100%;
     border: 2px inset black;
-    border-radius: 7px;
+    border-radius: 6px;
     color: black;
     margin-top: 1ex;
 }
@@ -217,7 +217,7 @@ input[type="file"] {
 
 /* avatar picture */
 img.avatar {
-    border: thin solid white;
+    border: thin solid rgba(255, 255, 255, 0.8);
     margin-bottom: 0.2ex;
     margin-right: 0.5ex;
     background-color: black;
@@ -303,7 +303,7 @@ blockquote > div {
     padding: 1.8em 0.8em 0.8em 0.8em;
     background: url('../img/quote.gif') no-repeat 10px 10px;
     font-size: small;
-    border-radius: 7px;
+    border-radius: 6px;
 }
 
 /* author name layout in quote text */

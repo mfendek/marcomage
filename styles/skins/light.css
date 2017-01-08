@@ -10,7 +10,7 @@
 /* border layout */
 .skin-text, .skin-label, img.achievement {
     border: 2px outset black;
-    border-radius: 7px;
+    border-radius: 6px;
 }
 
 /* general background layout */
@@ -27,7 +27,7 @@ div#menu-bar {
 div#login-box {
     background-repeat: repeat;
     border: 2px outset black;
-    border-radius: 7px;
+    border-radius: 6px;
 }
 
 /* horizontal line layout */

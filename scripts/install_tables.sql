@@ -315,7 +315,6 @@ CREATE TABLE `setting` (
   `play_card_button` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `chat_reverse_order` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `integrated_chat` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `in_game_avatar` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `old_card_look` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `card_mini_flag` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `battle_report` tinyint(1) unsigned NOT NULL DEFAULT '0',

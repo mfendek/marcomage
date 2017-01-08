@@ -105,11 +105,6 @@ class PdoSetting extends PdoAbstract
                     'default' => 0,
                     'options' => [EntityAbstract::OPT_UNSIGNED],
                 ],
-                'in_game_avatar' => [
-                    'type' => EntityAbstract::TYPE_INT,
-                    'default' => 1,
-                    'options' => [EntityAbstract::OPT_UNSIGNED],
-                ],
                 'old_card_look' => [
                     'type' => EntityAbstract::TYPE_INT,
                     'default' => 0,

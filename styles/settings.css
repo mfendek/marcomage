@@ -10,11 +10,15 @@ div#profile-settings, div#account-settings {
 }
 
 /* avatar and zodiac sign pictures */
-div#profile-settings h4 + img {
+div#profile-settings img.zodiac-sign, div#profile-settings img.avatar-preview {
     background-color: black;
     padding: 0.5ex;
     margin: 0.5ex 1ex 0 1ex;
-    border: medium ridge white;
+    border: thin solid rgba(255, 255, 255, 0.8);
+    border-radius: 6px;
+}
+div#profile-settings img.zodiac-sign {
+    margin: 0.5ex 1ex 0.5ex 1ex;
 }
 
 /* avatar and zodiac sign are floated to the right */
@@ -98,6 +102,7 @@ div#preview {
 
 /* background image preview - image layout */
 div#preview > img {
-    border: medium ridge white;
     margin-top: 0.5ex;
+    border: thin solid rgba(255, 255, 255, 0.8);
+    border-radius: 6px;
 }

@@ -445,6 +445,12 @@
                                 <img class="icon" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
                             </p>
 
+                            <xsl:variable name="avatarName" select="am:avatarFileName(
+                                $param/p1_avatar, $param/player1, $param/ai_name, $param/system_name
+                            )"/>
+
+                            <img class="avatar" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+
                             <!-- player1 tokens -->
                             <div class="token-list">
                                 <xsl:copy-of select="am:tokens($param/p1_tokens, $param/card_insignias)"/>
@@ -497,10 +503,16 @@
 
                         <div class="player-info">
                             <!-- player2 name -->
-                            <p class="token-counter player-label">
+                            <p class="token-counter player-label opponent-label">
                                 <img class="icon" width="18" height="12" src="img/flags/{$param/p2_country}.gif" alt="country flag" title="{$param/p2_country}"/>
                                 <xsl:copy-of select="am:playerName($param/player2, $param/ai_name, $param/system_name)"/>
                             </p>
+
+                            <xsl:variable name="avatarName" select="am:avatarFileName(
+                                $param/p2_avatar, $param/player2, $param/ai_name, $param/system_name
+                            )"/>
+
+                            <img class="avatar" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
 
                             <!-- player2 tokens -->
                             <div class="token-list">
@@ -678,6 +690,8 @@
                                 <img class="icon" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
                             </p>
 
+                            <img class="avatar" height="60" width="60" src="{$param/avatar_path}{$param/p1_avatar}" alt="avatar"/>
+
                             <!-- player1 tokens -->
                             <div class="token-list">
                                 <xsl:copy-of select="am:tokens($param/p1_tokens, $param/card_insignias)"/>
@@ -730,10 +744,16 @@
 
                         <div class="player-info">
                             <!-- player2 name -->
-                            <p class="token-counter player-label">
+                            <p class="token-counter player-label opponent-label">
                                 <img class="icon" width="18" height="12" src="img/flags/{$param/p2_country}.gif" alt="country flag" title="{$param/p2_country}"/>
                                 <xsl:copy-of select="am:playerName($param/player2, $param/ai_name, $param/system_name)"/>
                             </p>
+
+                            <xsl:variable name="avatarName" select="am:avatarFileName(
+                                $param/p2_avatar, $param/player2, $param/ai_name, $param/system_name
+                            )"/>
+
+                            <img class="avatar" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
 
                             <!-- player2 tokens -->
                             <div class="token-list">
