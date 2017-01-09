@@ -173,6 +173,10 @@ class GameManagement extends ServiceAbstract
     {
         $dbEntityGame = $this->dbEntity()->game();
 
+        // always active in AI game
+        $gameModes[] = 'FriendlyPlay';
+        $gameModes[] = 'AIMode';
+
         $deck = $this->service()->deck()->loadReadyDeck($deckId, $playerName, $gameModes);
 
         $aiDeckId = (is_numeric($aiDeckId)) ? $aiDeckId : 'starter_deck';
@@ -203,10 +207,6 @@ class GameManagement extends ServiceAbstract
             throw new Exception('Too many games / challenges! Please resolve some', Exception::WARNING);
         }
 
-        // always active in AI game
-        $gameModes[] = 'FriendlyPlay';
-        $gameModes[] = 'AIMode';
-
         // create a new game
         $game = $dbEntityGame->createGame($playerName, '', $deck, $gameModes);
 
@@ -230,6 +230,11 @@ class GameManagement extends ServiceAbstract
         $defEntityChallenge = $this->defEntity()->challenge();
         $dbEntityDeck = $this->dbEntity()->deck();
         $dbEntityGame = $this->dbEntity()->game();
+
+        // validate deck id
+        if ($this->service()->deck()->isChallengeDeck($deckId)) {
+            throw new Exception('You are not allowed to use challenge deck in AI challenge game', Exception::WARNING);
+        }
 
         $deck = $dbEntityDeck->getDeckAsserted($deckId);
 
