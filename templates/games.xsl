@@ -711,7 +711,7 @@
 
                 <!-- begin messages and game buttons -->
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <!-- game mode flags -->
                         <div class="game-mode-flags">
                             <xsl:copy-of select="am:gameModeFlags(
@@ -776,7 +776,7 @@
                         </xsl:if>
                         <!-- end surrender/abort button -->
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-7">
                         <div class="buttons">
                             <!-- 'refresh' button -->
                             <a class="button button-icon" id="game_refresh" href="{am:makeUrl('Games_details', 'current_game', $param/current_game)}" accesskey="w" title="Refresh">
