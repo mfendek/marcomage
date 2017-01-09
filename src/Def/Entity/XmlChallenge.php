@@ -50,6 +50,10 @@ class XmlChallenge extends EntityAbstract
             $currentChallenge['name'] = (string)$challenge->attributes()->name;
             $currentChallenge['fullname'] = (string)$challenge->fullname;
             $currentChallenge['description'] = (string)$challenge->description;
+            $currentChallenge['common'] = (string)$challenge->deck->common;
+            $currentChallenge['uncommon'] = (string)$challenge->deck->uncommon;
+            $currentChallenge['rare'] = (string)$challenge->deck->rare;
+            $currentChallenge['tokens'] = (string)$challenge->deck->tokens;
             $challenges[] = $currentChallenge;
         }
 

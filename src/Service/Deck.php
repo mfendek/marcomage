@@ -15,6 +15,21 @@ use Util\Date;
 class Deck extends ServiceAbstract
 {
     /**
+     * @param string $data
+     * @return array
+     */
+    private function parseDeckData($data)
+    {
+        if (empty($data)) {
+            return array();
+        }
+
+        $data = explode(',', $data);
+
+        return array_combine(range(1, count($data)), array_values($data));
+    }
+
+    /**
      * Returns list of started decks indexed by deck name
      * @return array decks
      */
@@ -77,109 +92,38 @@ class Deck extends ServiceAbstract
 
     /**
      * Returns list of challenge decks indexed by deck name
+     * @throws Exception
      * @return array decks
      */
     public function challengeDecks()
     {
+        $defEntityChallenge = $this->defEntity()->challenge();
         $dbEntityDeck = $this->dbEntity()->deck();
-        $challengeDecks = $challengeData = array();
 
-        // Grofgul's deck
-        $deckData = new \CDeckData();
-        $deckData->Common = [
-            1 => 71, 619, 71, 586, 584, 60, 258, 619, 608, 237, 188, 60, 624, 556, 119
-        ];
-        $deckData->Uncommon = [
-            1 => 617, 405, 375, 123, 154, 388, 618, 146, 432, 388, 118, 617, 174, 617, 388
-        ];
-        $deckData->Rare = [
-            1 => 407, 377, 407, 377, 546, 546, 377, 389, 389, 199, 389, 407, 199, 199, 546
-        ];
-        $deckData->Tokens[1] = 'Alliance';
-        $challengeData['Grofgul'] = $deckData;
+        $result = $defEntityChallenge->listChallenges();
+        if ($result->isError()) {
+            throw new Exception('Failed to list AI challenges');
+        }
 
-        // Marquis' deck
-        $deckData = new \CDeckData();
-        $deckData->Common = [
-            1 => 608, 445, 481, 484, 538, 402, 570, 114, 112, 578, 578, 578, 445, 484, 538
-        ];
-        $deckData->Uncommon = [
-            1 => 543, 576, 120, 133, 230, 186, 321, 296, 28, 446, 543, 576, 543, 576, 120
-        ];
-        $deckData->Rare = [
-            1 => 612, 612, 612, 612, 612, 612, 612, 612, 612, 612, 612, 612, 612, 612, 612
-        ];
-        $deckData->Tokens[1] = 'Undead';
-        $challengeData['Marquis'] = $deckData;
+        $aiChallenges = $result->data();
 
-        // Demetrios' deck
-        $deckData = new \CDeckData();
-        $deckData->Common = [
-            1 => 387, 301, 79, 91, 570, 559, 521, 524, 149, 575, 289, 501, 606, 559, 454
-        ];
-        $deckData->Uncommon = [
-            1 => 14, 3, 84, 37, 29, 497, 162, 175, 560, 35, 523, 505, 525, 525, 523
-        ];
-        $deckData->Rare = [
-            1 => 161, 229, 285, 222, 530, 285, 530, 161, 229, 285, 222, 530, 222, 530, 161
-        ];
-        $challengeData['Demetrios'] = $deckData;
+        $challengeDecks = array();
+        foreach ($aiChallenges as $challenge) {
+            $deckData = new \CDeckData();
 
-        // Sophie's deck
-        $deckData = new \CDeckData();
-        $deckData->Common = [
-            1 => 417, 18, 278, 275, 395, 490, 537, 582, 586, 587, 582, 587, 537, 537, 278
-        ];
-        $deckData->Uncommon = [
-            1 => 231, 155, 5, 200, 492, 87, 137, 386, 72, 72, 155, 492, 5, 231, 137
-        ];
-        $deckData->Rare = [
-            1 => 295, 499, 143, 517, 64, 401, 67, 294, 148, 21, 209, 231, 143, 517, 499
-        ];
-        $challengeData['Sophie'] = $deckData;
+            // cards
+            $deckData->Common = $this->parseDeckData($challenge['common']);
+            $deckData->Uncommon = $this->parseDeckData($challenge['uncommon']);
+            $deckData->Rare = $this->parseDeckData($challenge['rare']);
 
-        // Myr's deck
-        $deckData = new \CDeckData();
-        $deckData->Common = [
-            1 => 589, 589, 589, 82, 82, 82, 357, 357, 153, 153, 153, 597, 597, 608, 586
-        ];
-        $deckData->Uncommon = [
-            1 => 172, 172, 109, 109, 53, 53, 53, 425, 425, 564, 338, 338, 11, 174, 155
-        ];
-        $deckData->Rare = [
-            1 => 467, 467, 467, 121, 121, 121, 9, 9, 499, 596, 577, 577, 435, 435, 173
-        ];
-        $deckData->Tokens[1] = 'Mage';
-        $challengeData['Myr'] = $deckData;
+            // tokens
+            $tokens = $this->parseDeckData($challenge['tokens']);
+            foreach ($tokens as $key => $val) {
+                $deckData->Tokens[$key] = $val;
+            }
 
-        // Gilgamesh's deck
-        $deckData = new \CDeckData();
-        $deckData->Common = [
-            1 => 664, 642, 69, 32, 75, 66, 644, 74, 401, 456, 192, 643, 21, 663, 339
-        ];
-        $deckData->Uncommon = [
-            1 => 435, 277, 70, 616, 506, 450, 614, 181, 427, 622, 61, 110, 181, 232, 464
-        ];
-        $deckData->Rare = [
-            1 => 654, 125, 235, 426, 615, 138, 637, 239, 4, 611, 234, 233, 428, 9, 141
-        ];
-        $challengeData['Gilgamesh'] = $deckData;
+            $deckName = $challenge['name'];
 
-        // Duroth's deck
-        $deckData = new \CDeckData();
-        $deckData->Common = [
-            1 => 250, 250, 250, 250, 440, 440, 645, 645, 645, 645, 628, 628, 628, 628, 628
-        ];
-        $deckData->Uncommon = [
-            1 => 195, 195, 195, 701, 701, 701, 679, 679, 679, 622, 622, 622, 670, 670, 131
-        ];
-        $deckData->Rare = [
-            1 => 615, 637, 127, 86, 167, 61, 239, 126, 665, 128, 506, 428, 577, 6, 92
-        ];
-        $deckData->Tokens[1] = 'Alliance';
-        $challengeData['Duroth'] = $deckData;
-
-        foreach ($challengeData as $deckName => $deckData) {
             $deck = $dbEntityDeck->createCustomDeck([
                 'username' => PlayerModel::SYSTEM_NAME,
                 'deck_name' => $deckName,

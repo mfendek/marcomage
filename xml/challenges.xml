@@ -4,6 +4,12 @@
   <challenge name="Grofgul">
     <fullname>Grofgul</fullname>
     <description>Grofgul leads a kingdom of industrious dwarven miners, artisans, and warriors. His kingdom is renowned for its output of bricks, gems, and recruits, and Grofgul is known to neglect his buildings and army in favour of economic gains. Your upstart nation begins with a mere 20 tower and 15 wall. Grofgul begins with 90 tower, 80 wall, 7 of each facility, and 20 of each resource. Can you claim victory before Grofgul's economic domination becomes too much?</description>
+    <deck>
+      <common>71,619,71,586,584,60,258,619,608,237,188,60,624,556,119</common>
+      <uncommon>617,405,375,123,154,388,618,146,432,388,118,617,174,617,388</uncommon>
+      <rare>407,377,407,377,546,546,377,389,389,199,389,407,199,199,546</rare>
+      <tokens>Alliance</tokens>
+    </deck>
     <initialization>
       <mine>
         <quarry>7</quarry>
@@ -52,6 +58,12 @@
   <challenge name="Marquis">
     <fullname>Le Marquis de Vrille</fullname>
     <description>For as long as anybody can remember, the Marquis has inhabited the crumbling Manoir D'Effroi, a once-great castle now overgrown with blackened vines and surrounded by misty swamps. The locals say he commands a brigade of reanimated creatures that haunt the swamps: banshees, ents, treants, shamans, and vampires alike. Can you fend off these dread creatures and reclaim the corrupted swamps?</description>
+    <deck>
+      <common>608,445,481,484,538,402,570,114,112,578,578,578,445,484,538</common>
+      <uncommon>543,576,120,133,230,186,321,296,28,446,543,576,543,576,120</uncommon>
+      <rare>612,612,612,612,612,612,612,612,612,612,612,612,612,612,612</rare>
+      <tokens>Undead</tokens>
+    </deck>
     <initialization>
       <mine>
         <quarry>3</quarry>
@@ -100,6 +112,12 @@
   <challenge name="Demetrios">
     <fullname>Captain Demetrios</fullname>
     <description>Captain Demetrios is a terrible warlock whose name is feared by all who travel the seas. Demetrios commands an array of sea creatures and  destruction spells designed to nullify his opponent's facilities, allowing him to claim an easy victory. You begin with only two of each facility; can you survive the Captain's desolation?</description>
+    <deck>
+      <common>387,301,79,91,570,559,521,524,149,575,289,501,606,559,454</common>
+      <uncommon>14,3,84,37,29,497,162,175,560,35,523,505,525,525,523</uncommon>
+      <rare>161,229,285,222,530,285,530,161,229,285,222,530,222,530,161</rare>
+      <tokens/>
+    </deck>
     <initialization>
       <mine>
         <quarry>3</quarry>
@@ -148,6 +166,12 @@
   <challenge name="Sophie">
     <fullname>Sophie</fullname>
     <description>Sophie the Architect has been studying the principles of construction for many years, and is a master of tower-building. She tends to ignore her opponents and apply a single-minded focus to achieving a quick construction victory. Because she relies on few keywords, Sophie is known to make excellent use of Minaret and Sheath your swords.</description>
+    <deck>
+      <common>417,18,278,275,395,490,537,582,586,587,582,587,537,537,278</common>
+      <uncommon>231,155,5,200,492,87,137,386,72,72,155,492,5,231,137</uncommon>
+      <rare>295,499,143,517,64,401,67,294,148,21,209,231,143,517,499</rare>
+      <tokens/>
+    </deck>
     <initialization>
       <mine>
         <quarry>6</quarry>
@@ -196,6 +220,12 @@
   <challenge name="Myr">
     <fullname>Myr the Magelord</fullname>
     <description>Myr the magelord is a powerful wizard able to manipulate time. None knows his real age because he stopped the flow of his own body's time. Many mages and wizards have been his pupils, also Luna the sorceress studied in his academy. Will you be able to stop the neverending attacks of Myr's followers?</description>
+    <deck>
+      <common>589,589,589,82,82,82,357,357,153,153,153,597,597,608,586</common>
+      <uncommon>172,172,109,109,53,53,53,425,425,564,338,338,11,174,155</uncommon>
+      <rare>467,467,467,121,121,121,9,9,499,596,577,577,435,435,173</rare>
+      <tokens>Mage</tokens>
+    </deck>
     <initialization>
       <mine>
         <quarry>2</quarry>
@@ -244,6 +274,12 @@
   <challenge name="Gilgamesh">
     <fullname>Gilgamesh the King of Heroes</fullname>
     <description>Legends say that Gilgamesh was a hero that fulfilled every quest and defeated every enemy. Unmatched in combat he gained immortality by defeating the death itself. He now travels the world collecting rare treasures for his vast collection. To overcome boredom, he sometimes challenges mortals for a duel. Can you beat the King of Heroes and his legendary collection?</description>
+    <deck>
+      <common>664,642,69,32,75,66,644,74,401,456,192,643,21,663,339</common>
+      <uncommon>435,277,70,616,506,450,614,181,427,622,61,110,181,232,464</uncommon>
+      <rare>654,125,235,426,615,138,637,239,4,611,234,233,428,9,141</rare>
+      <tokens/>
+    </deck>
     <initialization>
       <mine>
         <quarry>3</quarry>
@@ -292,6 +328,12 @@
   <challenge name="Duroth">
     <fullname>Duroth the Eternal</fullname>
     <description>Few dragons live to become as old as Duroth. Disgusted with the society built by the younger generation at his homeland, he left to travel the world. No one knows what is it that he is seeking, but one thing is certain - he is a force to be reckon with.</description>
+    <deck>
+      <common>250,250,250,250,440,440,645,645,645,645,628,628,628,628,628</common>
+      <uncommon>195,195,195,701,701,701,679,679,679,622,622,622,670,670,131</uncommon>
+      <rare>615,637,127,86,167,61,239,126,665,128,506,428,577,6,92</rare>
+      <tokens>Alliance</tokens>
+    </deck>
     <initialization>
       <mine>
         <quarry>3</quarry>
