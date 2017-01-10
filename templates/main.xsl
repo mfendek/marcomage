@@ -125,7 +125,7 @@
 
                                 <!-- display welcome message for new users -->
                                 <xsl:if test="$param/new_user = 'yes'">
-                                    <div id="intro-dialog" title="Introduction" style="display: none">
+                                    <div id="intro-dialog">
                                         <h3>Welcome to MArcomage</h3>
                                         <p>
                                             Greetings <b><xsl:value-of select="$param/player_name"/></b>.
@@ -153,7 +153,7 @@
 
                                     <xsl:variable name="levelup_data" select="exsl:node-set($levels)/*[@id = $param/new_level_gained]"/>
                                     <xsl:if test="$levelup_data">
-                                        <div id="level-up-dialog" title="Level up!" style="display: none">
+                                        <div id="level-up-dialog">
                                             <h3>Congratulations, you have reached level <xsl:value-of select="$levelup_data/@id"/> !</h3>
                                             <xsl:if test="$levelup_data/@section != ''">
                                                 <p><b><xsl:value-of select="$levelup_data/@section"/></b> section unlocked.</p>

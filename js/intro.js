@@ -23,6 +23,7 @@ $(document).ready(function() {
         autoOpen: true,
         show: 'fade',
         hide: 'fade',
+        title: 'Introduction',
         width: 500,
         modal: true,
         draggable: false,

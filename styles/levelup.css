@@ -2,6 +2,10 @@
  * MArcomage CSS stylesheet - levelup section *
  **********************************************/
 
+div#level-up-dialog {
+    display: none;
+}
+
 /* override default dialog font for card */
 div#level-up-dialog div.card {
     font-family: times, serif;

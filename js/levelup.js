@@ -30,6 +30,7 @@ $(document).ready(function() {
         autoOpen: true,
         show: 'fade',
         hide: 'fade',
+        title: 'Level up!',
         width: $('.container').width(),
         modal: true,
         draggable: false,

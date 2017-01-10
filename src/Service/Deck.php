@@ -26,6 +26,7 @@ class Deck extends ServiceAbstract
 
         $data = explode(',', $data);
 
+        // reindex array starting from 1
         return array_combine(range(1, count($data)), array_values($data));
     }
 

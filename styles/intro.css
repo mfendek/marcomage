@@ -2,6 +2,10 @@
  * MArcomage CSS stylesheet - intro section *
  ********************************************/
 
+div#intro-dialog {
+    display: none;
+}
+
 /* tutorial heading */
 div#intro-dialog > h3 {
     text-align: center;
