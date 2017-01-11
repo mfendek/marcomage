@@ -328,6 +328,10 @@ blockquote > div > cite {
     vertical-align: top;
 }
 
+.challenge-deck {
+    background-color: green;
+}
+
 .icon-player-activity {
     vertical-align: middle;
     display: inline-block;

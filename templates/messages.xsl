@@ -64,7 +64,7 @@
                                     </xsl:for-each>
                                     <xsl:for-each select="$param/ai_challenges/*">
                                         <xsl:sort select="fullname" order="ascending"/>
-                                        <option value="{name}">
+                                        <option value="{name}" class="challenge-deck">
                                             <xsl:value-of select="name"/>
                                         </option>
                                     </xsl:for-each>
