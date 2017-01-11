@@ -477,6 +477,11 @@ class GameUseCard extends ServiceAbstract
             if ($discardedCard->hasKeyword('Cursed')) {
                 // override new card by discarded card
                 $cardId = $discardedCardId;
+
+                // add revealed status if the discarded card was already revealed
+                if ($game->checkGameMode('HiddenCards') && !empty($data->Revealed[$cardPos])) {
+                    $options['reveal'] = true;
+                }
             }
         }
 
