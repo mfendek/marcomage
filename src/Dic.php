@@ -16,10 +16,29 @@ class Dic implements ArrayAccess
     private static function initParams()
     {
         $dic = self::getInstance();
-        $dic['request'] = $_REQUEST;
+//        $dic['request'] = $_REQUEST;
         $dic['server'] = $_SERVER;
         $dic['cookies'] = $_COOKIE;
         $dic['files'] = $_FILES;
+
+        // apply backwards compatibility corrections
+        $request = $_REQUEST;
+        $patch = [
+            'CurrentConcept' => 'current_concept',
+            'CurrentDeck' => 'current_deck',
+            'CurrentSection' => 'current_section',
+            'CurrentThread' => 'current_thread',
+            'CurrentPage' => 'thread_current_page',
+        ];
+
+        foreach ($patch as $find => $replace) {
+            if (isset($request[$find])) {
+                $request[$replace] = $request[$find];
+                unset($request[$find]);
+            }
+        }
+
+        $dic['request'] = $request;
     }
 
     /**
