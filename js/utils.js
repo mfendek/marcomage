@@ -473,13 +473,19 @@ $(document).ready(function() {
             var parentCard = (triggerElem.parents('.card').length > 0) ? triggerElem.parents('.card') : triggerElem;
             var target = parentCard.offset();
 
-            var widthOffset = (parentCard.outerWidth() - parentCard.innerWidth()) / 2;
-            var heightOffset = parentCard.outerHeight();
-
-            cardLookup.css({ 'top': target.top + heightOffset, 'left': target.left - widthOffset });
+            // default lookup position is below the card
+            var topPosition = target.top + parentCard.outerHeight();
 
             // pass card html to lookup display
             cardLookup.html(data);
+
+            // in the case there is not enough space below the parent card, display the card lookup above
+            if (parentCard.offset().top + parentCard.outerHeight() >
+                ($(window).scrollTop() + $(window).height() - cardLookup.outerHeight())) {
+                topPosition = target.top - cardLookup.outerHeight();
+            }
+
+            cardLookup.css({ 'top': topPosition, 'left': target.left });
             cardLookup.fadeIn('fast');
         },
 

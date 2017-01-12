@@ -300,3 +300,7 @@ div#card-lookup {
     top: 0;
     left: 0;
 }
+div#card-lookup > .card {
+    margin-left: 0;
+    margin-right: 0;
+}
