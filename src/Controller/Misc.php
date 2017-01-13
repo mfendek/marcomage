@@ -33,10 +33,10 @@ class Misc extends ControllerAbstract
 
         $player->setNotification($player->getLastActivity());
         if (!$player->save()) {
-            throw new Exception('Failed to reset notification');
+            throw new Exception('Failed to clear notification');
         }
 
-        $this->result()->setInfo('Notification successfully reset');
+        $this->result()->setInfo('Notification successfully cleared');
     }
 
     /**
