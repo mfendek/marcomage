@@ -50,7 +50,7 @@
 
                             <xsl:if test="string($entry/am:date/text())">
                                 <div class="date-time">
-                                    <xsl:value-of select="am:dateTime($entry/am:date/text(), $param/timezone)"/>
+                                    <xsl:copy-of select="am:dateTime($entry/am:date/text(), $param/timezone)"/>
                                 </div>
                             </xsl:if>
 

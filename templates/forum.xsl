@@ -113,7 +113,7 @@
                                                                 <xsl:attribute name="class">new</xsl:attribute>
                                                             </xsl:if>
                                                             <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'thread_current_page', am:max(last_page - 1, 0))}#latest">
-                                                                <xsl:value-of select="am:dateTime(last_post, $param/timezone)"/>
+                                                                <xsl:copy-of select="am:dateTime(last_post, $param/timezone)"/>
                                                             </a>
                                                             <xsl:text> by </xsl:text>
                                                             <a class="profile"
@@ -266,7 +266,7 @@
                                                         <xsl:attribute name="class">new</xsl:attribute>
                                                     </xsl:if>
                                                     <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'thread_current_page', am:max(last_page - 1, 0))}#latest">
-                                                        <xsl:value-of select="am:dateTime(last_post, $param/timezone)"/>
+                                                        <xsl:copy-of select="am:dateTime(last_post, $param/timezone)"/>
                                                     </a>
                                                     <xsl:text> by </xsl:text>
                                                     <a class="profile"
@@ -406,7 +406,7 @@
                                                 <xsl:attribute name="class">new</xsl:attribute>
                                             </xsl:if>
                                             <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'thread_current_page', am:max(last_page - 1, 0))}#latest">
-                                                <xsl:value-of select="am:dateTime(last_post, $param/timezone)"/>
+                                                <xsl:copy-of select="am:dateTime(last_post, $param/timezone)"/>
                                             </a>
                                             <xsl:text> by </xsl:text>
                                             <a class="profile"
@@ -561,7 +561,7 @@
                                         <xsl:if test="am:dateDiff(created_at, $param/notification) &lt; 0">
                                             <xsl:attribute name="class">new</xsl:attribute>
                                         </xsl:if>
-                                        <xsl:value-of select="am:dateTime(created_at, $param/timezone)"/>
+                                        <xsl:copy-of select="am:dateTime(created_at, $param/timezone)"/>
                                     </span>
                                 </div>
                             </div>

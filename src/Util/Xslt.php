@@ -78,10 +78,10 @@ class Xslt
      * NOTE: If using Etc/GMT, see http://bugs.php.net/bug.php?id=34710 !
      * @param string $time the datetime string (in a strtotime() compatible format)
      * @param string $zone the time zone string (Etc/UTC and such)
-     * @param string $format the format string for date()
+     * @param string [$format] the format string for date()
      * @return string
      */
-    public static function zoneTime($time, $zone, $format)
+    public static function zoneTime($time, $zone, $format = Date::DATETIME_FORMAT)
     {
         $date = new \DateTime($time, new \DateTimeZone('UTC'));
         $date->setTimezone(new \DateTimeZone($zone));

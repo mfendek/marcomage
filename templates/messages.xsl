@@ -89,9 +89,7 @@
                                                             </xsl:if>
                                                         </span>
                                                         <xsl:text> has challenged you on </xsl:text>
-                                                        <span>
-                                                            <xsl:value-of select="am:dateTime(created_at, $param/timezone)"/>
-                                                        </span>
+                                                        <xsl:copy-of select="am:dateTime(created_at, $param/timezone)"/>
                                                     </p>
                                                     <xsl:if test="content != ''">
                                                         <div class="challenge-content">
@@ -121,9 +119,7 @@
                                                             </xsl:if>
                                                         </span>
                                                         <xsl:text> on </xsl:text>
-                                                        <span>
-                                                            <xsl:value-of select="am:dateTime(created_at, $param/timezone)"/>
-                                                        </span>
+                                                        <xsl:copy-of select="am:dateTime(created_at, $param/timezone)"/>
                                                     </p>
                                                     <xsl:if test="content != ''">
                                                         <div class="challenge-content">
@@ -340,7 +336,7 @@
                                             <p><xsl:value-of select="subject"/></p>
                                         </div>
                                         <div class="col-sm-3">
-                                            <p><xsl:value-of select="am:dateTime(created_at, $param/timezone)"/></p>
+                                            <p><xsl:copy-of select="am:dateTime(created_at, $param/timezone)"/></p>
                                         </div>
                                         <div class="col-sm-3">
                                             <p>
@@ -399,20 +395,20 @@
             <div class="skin-text">
                 <img class="post-stamp" src="img/stamps/stamp{$param/stamp}.png" width="100" height="100" alt="Marcopost stamp"/>
                 <p>
-                    <span>From:</span>
+                    <span class="field-name">From:</span>
                     <xsl:value-of select="$param/author"/>
                 </p>
                 <p>
-                    <span>To:</span>
+                    <span class="field-name">To:</span>
                     <xsl:value-of select="$param/recipient"/>
                 </p>
                 <p>
-                    <span>Subject:</span>
+                    <span class="field-name">Subject:</span>
                     <xsl:value-of select="$param/subject"/>
                 </p>
                 <p>
-                    <span>Sent on:</span>
-                    <xsl:value-of select="am:dateTime($param/created, $param/timezone)"/>
+                    <span class="field-name">Sent on:</span>
+                    <xsl:copy-of select="am:dateTime($param/created, $param/timezone)"/>
                 </p>
                 <p>
                     <button class="button-icon" type="submit" name="message_cancel">

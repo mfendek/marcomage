@@ -86,7 +86,7 @@ div.message-details > div > p {
 }
 
 /* highlight private message information (author, recipient...) */
-div.message-details > div > p > span {
+div.message-details span.field-name {
     color: green;
     margin-right: 1ex;
 }

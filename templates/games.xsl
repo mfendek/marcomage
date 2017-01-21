@@ -115,7 +115,7 @@
                                             <div class="col-sm-2"><p><xsl:value-of select="timeout"/></p></div>
                                             <div class="col-sm-1"><p><xsl:value-of select="round"/></p></div>
                                             <div class="col-sm-2">
-                                                <p><xsl:value-of select="am:dateTime(game_action, $param/timezone)"/></p>
+                                                <p><xsl:copy-of select="am:dateTime(game_action, $param/timezone)"/></p>
                                             </div>
                                         </div>
                                     </xsl:for-each>
@@ -279,7 +279,7 @@
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <p>
-                                                            <xsl:value-of select="am:dateTime(game_action, $param/timezone)"/>
+                                                            <xsl:copy-of select="am:dateTime(game_action, $param/timezone)"/>
                                                         </p>
                                                     </div>
                                                     <div class="col-sm-2">
@@ -404,7 +404,7 @@
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <p>
-                                                            <xsl:value-of select="am:dateTime(game_action, $param/timezone)"/>
+                                                            <xsl:copy-of select="am:dateTime(game_action, $param/timezone)"/>
                                                         </p>
                                                     </div>
                                                     <div class="col-sm-2">
@@ -1101,7 +1101,7 @@
                                                     </xsl:choose>
                                                     <xsl:value-of select="author"/>
                                                     <xsl:text> on </xsl:text>
-                                                    <xsl:value-of select="am:dateTime(created_at, $param/timezone)"/>
+                                                    <xsl:copy-of select="am:dateTime(created_at, $param/timezone)"/>
                                                 </span>
                                             </p>
                                             <div>
@@ -1172,7 +1172,7 @@
                                             </xsl:choose>
                                             <xsl:value-of select="author"/>
                                             <xsl:text> on </xsl:text>
-                                            <xsl:value-of select="am:dateTime(created_at, $param/timezone)"/>
+                                            <xsl:copy-of select="am:dateTime(created_at, $param/timezone)"/>
                                         </span>
                                     </p>
                                     <div class="chat-message">

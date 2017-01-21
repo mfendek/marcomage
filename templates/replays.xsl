@@ -177,8 +177,8 @@
                                 </div>
                                 <div class="col-sm-1"><p><xsl:value-of select="outcome_type"/></p></div>
                                 <div class="col-sm-2"><p><xsl:value-of select="rounds"/></p></div>
-                                <div class="col-sm-1"><p><xsl:value-of select="am:dateTime(started_at, $param/timezone)"/></p></div>
-                                <div class="col-sm-1"><p><xsl:value-of select="am:dateTime(finished_at, $param/timezone)"/></p></div>
+                                <div class="col-sm-1"><p><xsl:copy-of select="am:dateTime(started_at, $param/timezone)"/></p></div>
+                                <div class="col-sm-1"><p><xsl:copy-of select="am:dateTime(finished_at, $param/timezone)"/></p></div>
                                 <div class="col-sm-2">
                                     <p>
                                         <xsl:copy-of select="am:gameModeFlags(

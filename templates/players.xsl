@@ -346,7 +346,7 @@
                                 <p class="detail_value">
                                     <xsl:choose>
                                         <xsl:when test="$param/registered != '1970-01-01 00:00:01'">
-                                            <xsl:value-of select="am:dateTime($param/registered, $param/timezone)"/>
+                                            <xsl:copy-of select="am:dateTime($param/registered, $param/timezone)"/>
                                         </xsl:when>
                                         <xsl:otherwise>Before 18. August, 2009</xsl:otherwise>
                                     </xsl:choose>
@@ -359,7 +359,7 @@
                                 <p class="detail_value">
                                     <xsl:choose>
                                         <xsl:when test="$param/last_query != '1970-01-01 00:00:01'">
-                                            <xsl:value-of select="am:dateTime($param/last_query, $param/timezone)"/>
+                                            <xsl:copy-of select="am:dateTime($param/last_query, $param/timezone)"/>
                                         </xsl:when>
                                         <xsl:otherwise>n/a</xsl:otherwise>
                                     </xsl:choose>

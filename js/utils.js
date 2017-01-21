@@ -612,4 +612,28 @@ $(document).ready(function() {
         return false;
     });
 
+    // localize timestamp
+    $('[data-timestamp]').each(function() {
+        // extract timestamp
+        var timestamp = $(this).attr('data-timestamp');
+        timestamp = timestamp.split(' ');
+
+        // extract date and time
+        var date = timestamp[0];
+        var time = timestamp[1];
+        date = date.split('-');
+        time = time.split(':');
+
+        // determine UTC datetime
+        var datetime = new Date();
+        datetime.setUTCFullYear(date[0]);
+        datetime.setUTCMonth(date[1] - 1, date[2]); // JavaScript month numbering starts from 0, not from 1
+        datetime.setUTCHours(time[0]);
+        datetime.setUTCMinutes(time[1]);
+        datetime.setUTCSeconds(time[2]);
+
+        // format timestamp to local format and time zone
+        $(this).text(datetime.toLocaleString());
+    });
+
 });

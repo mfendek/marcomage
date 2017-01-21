@@ -117,7 +117,11 @@
         <xsl:param name="timezone" as="xs:string" select="'+0'"/>
         <xsl:variable name="date" select="str:replace($datetime, ' ', 'T')"/>
         <xsl:variable name="zone" select="concat('Etc/GMT', str:replace(str:replace(str:replace($timezone, '+', '*'), '-', '+'), '*', '-'))"/>
-        <func:result select="php:functionString('Util\Xslt::zoneTime', $date, $zone, 'H:i, j. M, Y')"/>
+        <func:result>
+            <span data-timestamp="{php:functionString('Util\Xslt::zoneTime', $date, '+0')}">
+                <xsl:value-of select="php:functionString('Util\Xslt::zoneTime', $date, $zone, 'H:i, j. M, Y')"/>
+            </span>
+        </func:result>
     </func:function>
 
 

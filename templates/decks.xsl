@@ -65,7 +65,7 @@
                             <p>
                                 <xsl:choose>
                                     <xsl:when test="modified_at != '1970-01-01 00:00:01'">
-                                        <xsl:value-of select="am:dateTime(modified_at, $param/timezone)"/>
+                                        <xsl:copy-of select="am:dateTime(modified_at, $param/timezone)"/>
                                     </xsl:when>
                                     <xsl:otherwise>n/a</xsl:otherwise>
                                 </xsl:choose>
@@ -195,7 +195,7 @@
                             <p>
                                 <xsl:choose>
                                     <xsl:when test="modified_at != '1970-01-01 00:00:01'">
-                                        <xsl:value-of select="am:dateTime(modified_at, $param/timezone)"/>
+                                        <xsl:copy-of select="am:dateTime(modified_at, $param/timezone)"/>
                                     </xsl:when>
                                     <xsl:otherwise>n/a</xsl:otherwise>
                                 </xsl:choose>

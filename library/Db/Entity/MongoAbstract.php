@@ -70,11 +70,11 @@ abstract class MongoAbstract extends EntityAbstract
         }
         // case 2: date
         elseif ($type == EntityAbstract::TYPE_DATE) {
-            $result = $value->toDateTime()->format('Y-m-d');
+            $result = $value->toDateTime()->format(Date::DATE_FORMAT);
         }
         // case 3: datetime
         elseif ($type == EntityAbstract::TYPE_DATETIME) {
-            $result = $value->toDateTime()->format('Y-m-d H:i:s');
+            $result = $value->toDateTime()->format(Date::DATETIME_FORMAT);
         }
         // case 4: binary
         elseif ($type == EntityAbstract::TYPE_BINARY) {

@@ -9,6 +9,8 @@ class Date
 {
     const DATE_ZERO = '1000-01-01';
     const DATETIME_ZERO = '1970-01-01 00:00:01';
+    const DATE_FORMAT = 'Y-m-d';
+    const DATETIME_FORMAT = 'Y-m-d H:i:s';
 
     const MINUTE = 60;
     const DAY = 24 * 60 * 60;
@@ -25,7 +27,7 @@ class Date
             $datetime = time();
         }
 
-        return date('Y-m-d H:i:s', $datetime);
+        return date(self::DATETIME_FORMAT, $datetime);
     }
 
     /**
@@ -36,7 +38,7 @@ class Date
     {
         // no time was specified - use current time
         if ($datetime == '') {
-            $datetime = date('Y-m-d H:i:s');
+            $datetime = date(self::DATETIME_FORMAT);
         }
 
         return ($datetime != self::DATETIME_ZERO) ? strtotime($datetime) : 0;
