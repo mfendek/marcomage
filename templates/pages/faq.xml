@@ -60,6 +60,7 @@
 <h4><a id="faq_q12" href="#faq_q12">Q12</a>: I want to install my own MArcomage server on my computer (Windows OS). How do I do that?</h4>
 <ol>
   <li>download and install <a href="https://tortoisesvn.net/downloads.html">Tortoise SVN</a> which will allow you to download MArcomage source code</li>
+  <li>download and install <a href="https://getcomposer.org/download/">Composer</a> which will allow you to download third party source code used in MArcomage</li>
   <li>download <a href="http://www.wampserver.com/en/">WAMP server</a>, which will allow you to run local web server</li>
   <li>install WAMP server (for example in "C:\wamp")</li>
   <li>open "C:\wamp\www" directory' and right click on the empty space inside the directory to open context menu</li>
@@ -68,6 +69,7 @@
   <li>click on the small WAMP server icon with left mouse button in the right bottom part of the screen. A WAMP server menu will appear. Move mouse over 'PHP', then 'PHP extensions'. If 'php_xsl' extension is not enabled (doesn't have a check) enable it by clicking on it with left mouse button.</li>
   <li>start WAMP server, click on the small WAMP server icon in the right bottom part of the screen. Choose 'phpmyadmin' in the menu. Click on 'import'. Choose DB install script (located in 'arcomage/release/scripts/install_tables.sql') and execute it.</li>
   <li>open 'release/config.php' with a text editor and change username value to 'root'</li>
+  <li>open a terminal and navigate into project root (to arcomage/release/ directory) and run composer install command</li>
   <li>open your web browser and enter "http://localhost/arcomage/release/" as url and press ENTER. You should now have your own MArcomage server running</li>
 </ol>
 

@@ -1,0 +1,23 @@
+{
+    "name" : "marcomage",
+    "description" : "MArcomage - free multiplayer on-line fantasy card game",
+    "license" : "GNU General Public License",
+    "config": {
+        "preferred-install": "dist",
+        "autoloader-suffix": "Arcomage"
+    },
+
+    "require": {
+        "jbbcode/jbbcode": "^1.3",
+        "google/recaptcha": "^1.1"
+    },
+
+    "autoload": {
+        "classmap": [
+            "src/", "library/", "vendor/"
+        ],
+        "psr-0": {
+            "" : ["src/", "library/"]
+        }
+    }
+}

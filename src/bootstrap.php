@@ -4,27 +4,28 @@
  * | MARCOMAGE BOOTSTRAP FILE | *
  * ---------------------------- */
 
-// autoload setup
-spl_autoload_register(function ($class) {
-    $class = ltrim($class, '\\');
-    return include str_replace(
-            ['\\', '_'], DIRECTORY_SEPARATOR, $class
-        ) . '.php';
-}, true, true);
-
-set_include_path(implode(PATH_SEPARATOR, array(
-    realpath(APPLICATION_PATH . '/library'),
-    realpath(APPLICATION_PATH . '/src'),
-    get_include_path()
-)));
-
 // redirect errors to our own logfile
-error_reporting(-1); // everything
-
-// ini_set("display_errors", "Off");
+error_reporting(-1);
 ini_set('error_log', 'logs/arcomage-error-' . strftime('%Y%m%d') . '.log');
 
-// TODO this may come in handy if we want to log errors into something else (DB, external log service...)
+// autoload setup for PSR 4 (via composer) with PSR 0 fallback
+require(APPLICATION_PATH . '/vendor/autoload.php');
+
+// autoload setup for PSR 0 (currently unused as we use composer)
+//spl_autoload_register(function ($class) {
+//    $class = ltrim($class, '\\');
+//    return include str_replace(
+//            ['\\', '_'], DIRECTORY_SEPARATOR, $class
+//        ) . '.php';
+//}, true, true);
+//
+//set_include_path(implode(PATH_SEPARATOR, [
+//    realpath(APPLICATION_PATH . '/library'),
+//    realpath(APPLICATION_PATH . '/src'),
+//    get_include_path(),
+//]));
+
+// NOTE: this may come in handy if we want to log errors into something else (DB, external log service...)
 //$dic = Dic::getInstance();
 //
 //set_error_handler(function ($n, $s, $f, $l, $ctx = array()) use ($dic) {
@@ -91,5 +92,6 @@ mb_http_output('UTF-8');
 // config setup
 Dic::setConfig(
     require(APPLICATION_PATH . '/src/config.php'),
-    (file_exists(APPLICATION_PATH . '/src/config_production.php')) ? require(APPLICATION_PATH . '/src/config_production.php') : []
+    (file_exists(APPLICATION_PATH . '/src/config_production.php'))
+        ? require(APPLICATION_PATH . '/src/config_production.php') : []
 );
