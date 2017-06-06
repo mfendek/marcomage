@@ -142,7 +142,7 @@ CREATE TABLE `forum_thread` (
   `post_count` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `last_author` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `last_post` timestamp NOT NULL DEFAULT '1970-01-01 00:00:01',
-  `card_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `reference_id` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`thread_id`),
   KEY `section_id` (`section_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;

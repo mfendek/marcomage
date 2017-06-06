@@ -636,4 +636,11 @@ $(document).ready(function() {
         $(this).text(datetime.toLocaleString());
     });
 
+    // print button
+    $('button[name="print"]').click(function() {
+        window.print();
+
+        return false;
+    });
+
 });

@@ -89,15 +89,15 @@ class Dic implements ArrayAccess
      * Gets a parameter or an object
      * @param mixed $id
      * @return mixed
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     function offsetGet($id)
     {
         if (!array_key_exists($id, $this->values)) {
-            throw new \InvalidArgumentException(sprintf('Identifier "%s" is not defined.', $id));
+            throw new InvalidArgumentException(sprintf('Identifier "%s" is not defined.', $id));
         }
 
-        return $this->values[$id] instanceof \Closure ? $this->values[$id]($this) : $this->values[$id];
+        return $this->values[$id] instanceof Closure ? $this->values[$id]($this) : $this->values[$id];
     }
 
     /**
@@ -153,12 +153,12 @@ class Dic implements ArrayAccess
      * Gets a parameter or the closure defining an object
      * @param $id
      * @return mixed
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     function raw($id)
     {
         if (!array_key_exists($id, $this->values)) {
-            throw new \InvalidArgumentException(sprintf('Identifier "%s" is not defined.', $id));
+            throw new InvalidArgumentException(sprintf('Identifier "%s" is not defined.', $id));
         }
 
         return $this->values[$id];
@@ -227,7 +227,7 @@ class Dic implements ArrayAccess
         });
 
         $dic['view'] = $dic->share(function($dic) {
-            $view = new \View\View($dic);
+            $view = new View\View($dic);
 
             return $view;
         });
@@ -251,34 +251,34 @@ class Dic implements ArrayAccess
         });
 
         $dic['service_factory'] = $dic->share(function($dic) {
-            $serviceFactory = new \Service\Factory($dic);
+            $serviceFactory = new Service\Factory($dic);
 
             return $serviceFactory;
         });
 
         $dic['view_factory'] = $dic->share(function($dic) {
-            $viewFactory = new \View\Factory($dic);
+            $viewFactory = new View\Factory($dic);
 
             return $viewFactory;
         });
 
         $dic['controller_factory'] = $dic->share(function($dic) {
-            $controllerFactory = new \Controller\Factory($dic);
+            $controllerFactory = new Controller\Factory($dic);
 
             return $controllerFactory;
         });
 
         $dic['middleware_factory'] = $dic->share(function($dic) {
-            $middlewareFactory = new \Middleware\Factory($dic);
+            $middlewareFactory = new Middleware\Factory($dic);
 
             return $middlewareFactory;
         });
     }
 
     /**
-     * @param \Db\Model\Player $player
+     * @param Db\Model\Player $player
      */
-    public static function setPlayer(\Db\Model\Player $player)
+    public static function setPlayer(Db\Model\Player $player)
     {
         $dic = self::getInstance();
         $dic['player'] = $player;
@@ -315,7 +315,7 @@ class Dic implements ArrayAccess
     }
 
     /**
-     * @return \Controller\Response
+     * @return Controller\Response
      */
     public static function dispatch()
     {
@@ -401,7 +401,7 @@ class Dic implements ArrayAccess
     }
 
     /**
-     * @return \Service\Factory
+     * @return Service\Factory
      */
     public static function serviceFactory()
     {
@@ -409,7 +409,7 @@ class Dic implements ArrayAccess
     }
 
     /**
-     * @return \View\Factory
+     * @return View\Factory
      */
     public static function viewFactory()
     {
@@ -417,7 +417,7 @@ class Dic implements ArrayAccess
     }
 
     /**
-     * @return \Controller\Factory
+     * @return Controller\Factory
      */
     public static function controllerFactory()
     {
@@ -425,7 +425,7 @@ class Dic implements ArrayAccess
     }
 
     /**
-     * @return \Middleware\Factory
+     * @return Middleware\Factory
      */
     public static function middlewareFactory()
     {
@@ -433,7 +433,7 @@ class Dic implements ArrayAccess
     }
 
     /**
-     * @return \Db\Model\Player
+     * @return Db\Model\Player
      */
     public static function getPlayer()
     {

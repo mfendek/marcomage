@@ -324,6 +324,10 @@
                     <span class="glyphicon glyphicon-save-file"/>
                 </button>
 
+                <button class="button-icon" type="button" name="print" title="Print">
+                    <span class="glyphicon glyphicon-print" />
+                </button>
+
                 <!-- share/unshare button -->
                 <xsl:if test="$param/player_level &gt;= $param/tutorial_end">
                     <xsl:choose>

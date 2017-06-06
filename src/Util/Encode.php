@@ -30,32 +30,33 @@ class Encode
     {
         $parser = new Parser();
 
-        // basic set
-        $parser->addCodeDefinitionSet(new DefaultCodeDefinitionSet());
+        $parser
+            // basic set
+            ->addCodeDefinitionSet(new DefaultCodeDefinitionSet())
 
-        // custom BB code
-        $parser->addCodeDefinition(new CardEmbed());
-        $parser->addCodeDefinition(new KeywordEmbed());
+            // custom BB code
+            ->addCodeDefinition(new CardEmbed())
+            ->addCodeDefinition(new KeywordEmbed())
 
-        // internal link
-        $parser->addBBCode('link', '<a href="{param}">{param}</a>', false, false);
-        $parser->addBBCode('link', '<a href="{option}">{param}</a>', true, false);
+            // internal link
+            ->addBBCode('link', '<a href="{param}">{param}</a>', false, false)
+            ->addBBCode('link', '<a href="{option}">{param}</a>', true, false)
 
-        // card link
-//        $parser->addBBCode('card', '<span class="card-lookup-{option}"><a href="?location=Cards_details&amp;card={option}">{param}</a></span>', true, false);
-
-        // keyword link
-//        $parser->addBBCode('keyword', '<a href="?location=Cards_keyword_details&amp;keyword={param}">{param}</a>', false, false);
-//        $parser->addBBCode('keyword', '<a href="?location=Cards_keyword_details&amp;keyword={option}">{param}</a>', true, false);
-
-        // concept link
-        $parser->addBBCode('concept', '<a href="?location=Concepts_details&amp;current_concept={option}">{param}</a>', true, false);
+            // concept link
+            ->addBBCode(
+                'concept',
+                '<a href="?location=Concepts_details&amp;current_concept={option}">{param}</a>', true, false
+            );
 
         // add extended options if necessary
         if ($extended) {
             // quote
-            $parser->addBBCode('quote', '<blockquote><div><br/>{param}</div></blockquote>', false, true, 5);
-            $parser->addBBCode('quote', '<blockquote><div><cite>{option} wrote:</cite><br/>{param}</div></blockquote>', true, true, 5);
+            $parser
+                ->addBBCode('quote', '<blockquote><div><br/>{param}</div></blockquote>', false, true, 5)
+                ->addBBCode(
+                    'quote',
+                    '<blockquote><div><cite>{option} wrote:</cite><br/>{param}</div></blockquote>', true, true, 5
+                );
         }
 
         return $parser;
@@ -186,7 +187,9 @@ class Encode
 
                 $data = array_pop($data);
 
-                return ($option == 'plain_text') ? $data['name'] : '<span class="card-lookup-' . $cardId . '">' . $data['name'] . '</span>';
+                return ($option == 'plain_text')
+                    ? $data['name']
+                    : '<span class="card-lookup-' . $cardId . '">' . $data['name'] . '</span>';
             },
             $cardEffect
         );

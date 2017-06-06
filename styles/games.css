@@ -153,7 +153,7 @@ div.game > div.game-display {
 }
 
 /* breakpoint specific layout */
-@media screen and (max-width: 991px) {
+@media (max-width: 991px) {
     /* hide background image */
     div.game > div.game-display {
         background-size: 0 0;

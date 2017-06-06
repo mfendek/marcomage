@@ -407,7 +407,7 @@ div.responsive-table > div.row:first-child {
 }
 
 /* breakpoint specific layout */
-@media screen and (max-width: 767px) {
+@media (max-width: 767px) {
     /* separate list items visually */
     div.responsive-table.table-sm > div.row + div.row {
         border-top: thin solid rgba(0, 0, 0, 0.3);
@@ -425,7 +425,7 @@ div.responsive-table > div.row:first-child {
 }
 
 /* breakpoint specific layout */
-@media screen and (max-width: 991px) {
+@media (max-width: 991px) {
     /* separate list items visually */
     div.responsive-table.table-md > div.row + div.row {
         border-top: thin solid rgba(0, 0, 0, 0.3);
@@ -496,4 +496,15 @@ div[role="dialog"].modal button[name="close-modal"] {
     background-color: transparent;
     border-style: none;
     float: right;
+}
+
+@media only print {
+    .deck-options,
+    #menu-bar {
+        display: none;
+    }
+
+    .container {
+        width: 100%;
+    }
 }
