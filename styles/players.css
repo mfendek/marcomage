@@ -11,6 +11,21 @@ div#players > .responsive-table {
     margin-right: 0.5ex;
 }
 
+div#players > .responsive-table .details .avatar {
+    margin: 0;
+}
+
+/* vertical align for table cells */
+@media (min-width: 768px) {
+    div#players > .responsive-table .details p {
+        line-height: 60px;
+    }
+
+    div#players > .responsive-table .details .button-icon {
+        line-height: initial;
+    }
+}
+
 /* filters */
 div#players .filters {
     margin: 1ex 0 2ex 2ex;

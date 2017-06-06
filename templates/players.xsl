@@ -121,13 +121,11 @@
                 <xsl:for-each select="$list/*">
                     <div class="row table-row details">
                         <div class="col-sm-2">
-                            <xsl:if test="avatar != 'noavatar.jpg'">
-                                <p>
-                                    <a href="{am:makeUrl('Players_details', 'Profile', name)}">
-                                        <img class="avatar" height="60" width="60" src="{$param/avatar_path}{avatar}" alt="avatar"/>
-                                    </a>
-                                </p>
-                            </xsl:if>
+                            <p>
+                                <a href="{am:makeUrl('Players_details', 'Profile', name)}">
+                                    <img class="avatar" height="60" width="60" src="{$param/avatar_path}{avatar}" alt="avatar"/>
+                                </a>
+                            </p>
                         </div>
                         <div class="col-sm-3">
                             <p>
