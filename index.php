@@ -4,10 +4,8 @@
  */
 
 try {
-    define('APPLICATION_PATH', __DIR__);
-
     // execute bootstrap scripts
-    require(APPLICATION_PATH . '/src/bootstrap.php');
+    require(__DIR__ . '/src/bootstrap.php');
 
     // check if necessary PHP extensions are loaded
     foreach (['XSL', 'PDO'] as $extension) {

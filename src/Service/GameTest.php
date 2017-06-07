@@ -17,7 +17,7 @@ class GameTest extends ServiceAbstract
      * @param bool $testSummary if active returns summary of all test results instead stopping on first error
      * @param bool $hiddenCards enable/disable hidden cards mode
      * @throws Exception
-     * @return string
+     * @return array
      */
     public function runCardTests($testSummary, $hiddenCards)
     {
@@ -255,7 +255,10 @@ class GameTest extends ServiceAbstract
             }
         }
 
-        return implode("\n", array_merge($errors, $log));
+        return [
+            'errors' => $errors,
+            'log' => $log,
+        ];
     }
 
     /**
@@ -263,7 +266,7 @@ class GameTest extends ServiceAbstract
      * @param bool $testSummary if active returns summary of all test results instead stopping on first error
      * @param bool $hiddenCards enable/disable hidden cards mode
      * @throws Exception
-     * @return string
+     * @return array
      */
     public function runKeywordTests($testSummary, $hiddenCards)
     {
@@ -450,6 +453,9 @@ class GameTest extends ServiceAbstract
             }
         }
 
-        return implode("\n", array_merge($errors, $log));
+        return [
+            'errors' => $errors,
+            'log' => $log,
+        ];
     }
 }

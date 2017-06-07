@@ -4,6 +4,9 @@
  * | MARCOMAGE BOOTSTRAP FILE | *
  * ---------------------------- */
 
+// application path needs to be defined here as this file is also used when running tests
+define('APPLICATION_PATH', str_replace(DIRECTORY_SEPARATOR . 'src', '', __DIR__));
+
 // redirect errors to our own logfile
 error_reporting(-1);
 ini_set('error_log', 'logs/arcomage-error-' . strftime('%Y%m%d') . '.log');

@@ -9,15 +9,16 @@
 
     "require": {
         "jbbcode/jbbcode": "^1.3",
-        "google/recaptcha": "^1.1"
+        "google/recaptcha": "^1.1",
+        "phpunit/phpunit": "^5.7"
     },
 
     "autoload": {
         "classmap": [
-            "src/", "library/", "vendor/"
+            "src/", "library/", "tests/", "vendor/"
         ],
         "psr-0": {
-            "" : ["src/", "library/"]
+            "" : ["src/", "library/", "tests/"]
         }
     }
 }

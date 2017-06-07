@@ -78,6 +78,8 @@ class Misc extends ControllerAbstract
             $testSummary, isset($request['hidden_cards'])
         );
 
+        $file = implode("\n", array_merge($file['errors'], $file['log']));
+
         // case 1: test summary enabled - raw file output
         if ($testSummary) {
             $contentType = 'text/csv';
@@ -120,6 +122,8 @@ class Misc extends ControllerAbstract
         $file = $this->service()->gameTest()->runKeywordTests(
             $testSummary, isset($request['hidden_cards'])
         );
+
+        $file = implode("\n", array_merge($file['errors'], $file['log']));
 
         // case 1: test summary enabled - raw file output
         if ($testSummary) {
