@@ -222,23 +222,23 @@ class Factory extends \FactoryAbstract
     }
 
     /**
-     * @param string $context
+     * @param string $middleware
      * @throws Exception
      * @return Result
      */
-    public function executeControllerAction($context)
+    public function executeControllerAction($middleware)
     {
         $request = $this->getDic()->request();
         $controllers = self::controllers();
 
-        // validate controller context
-        if (empty($controllers[$context])) {
-            throw new Exception('context not found '.$context);
+        // validate middleware
+        if (empty($controllers[$middleware])) {
+            throw new Exception('middleware not found '.$middleware);
         }
 
         // validate controller action
         $controller = $action = '';
-        foreach ($controllers[$context] as $controllerName => $actionList) {
+        foreach ($controllers[$middleware] as $controllerName => $actionList) {
             foreach ($request as $key => $value) {
                 if (in_array($key, $actionList)) {
                     $controller = $controllerName;

@@ -141,10 +141,10 @@ abstract class MiddlewareAbstract extends \ControllerAbstract
     }
 
     /**
-     * @param string $context
+     * @param string $middleware
      * @return Response
      */
-    public function getResult($context)
+    public function getResult($middleware)
     {
         // clear result
         $this->result = null;
@@ -175,7 +175,7 @@ abstract class MiddlewareAbstract extends \ControllerAbstract
         // execute controller action if necessary
         if ($this->result()->isSuccess() && $this->result()->controllerProcessing()) {
             try {
-                $controllerResult = $this->getDic()->controllerFactory()->executeControllerAction($context);
+                $controllerResult = $this->getDic()->controllerFactory()->executeControllerAction($middleware);
 
                 // controller raw output is set
                 if (!empty($controllerResult->rawOutput())) {

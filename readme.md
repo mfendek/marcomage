@@ -34,6 +34,11 @@ Configuration that is not present in the production config is inherited from bas
  Layout mode is the default one and is used for rendering pages.
  Fragment mode is used for rendering HTML fragments which is usually used for AJAX, but can be used for other purposes like RSS feeds.
  
+ Application uses single entry point system (`index.php`). Single entry point determines the correct `Middleware` based on request data.
+ `Middleware` acts as a gateway to application, it serves as a wrap for controllers. 
+ `Middleware` typically provides common functionality for controllers like session validation
+ and response formatting (`HTML`, `JSON` ...).
+ 
  ## Features
  
  * game lobby (used for management of games)
@@ -52,3 +57,10 @@ Configuration that is not present in the production config is inherited from bas
  * complete card database
  * card suggestions section (this is where users can create their own cards)
  
+ ## Maintenance
+ 
+ Maintenance scripts are located in the `Scripts` controller and are accessed via the `Scripts` middleware. 
+ Here is an example of the `maintenance url`:
+ 
+ `?m=scripts&name=<script_name>&password=<maintenance_access_password>`
+  

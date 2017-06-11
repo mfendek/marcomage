@@ -4,15 +4,8 @@
  */
 
 try {
-    // execute bootstrap scripts
+    // bootstrap application
     require(__DIR__ . '/src/bootstrap.php');
-
-    // check if necessary PHP extensions are loaded
-    foreach (['XSL', 'PDO'] as $extension) {
-        if (!extension_loaded($extension)) {
-            throw new Exception('PHP ' . $extension . ' extension not loaded');
-        }
-    }
 
     // dispatch response
     $response = Dic::dispatch();

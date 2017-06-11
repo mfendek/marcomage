@@ -98,3 +98,10 @@ Dic::setConfig(
     (file_exists(APPLICATION_PATH . '/src/config_production.php'))
         ? require(APPLICATION_PATH . '/src/config_production.php') : []
 );
+
+// check if necessary PHP extensions are loaded
+foreach (['XSL', 'PDO'] as $extension) {
+    if (!extension_loaded($extension)) {
+        throw new Exception('PHP ' . $extension . ' extension not loaded');
+    }
+}
