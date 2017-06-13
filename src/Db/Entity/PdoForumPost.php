@@ -7,6 +7,7 @@ namespace Db\Entity;
 
 use Db\Model\ForumPost;
 use Util\Date;
+use Util\Input;
 
 class PdoForumPost extends PdoAbstract
 {
@@ -153,7 +154,7 @@ class PdoForumPost extends PdoAbstract
     {
         $db = $this->db();
 
-        $page = (is_numeric($page)) ? $page : 0;
+        $page = Input::unsignedInt($page);
 
         return $db->query(
             'SELECT `post_id`, `author`, `content`, `created_at`, IFNULL(`avatar`,"noavatar.jpg") as `avatar` FROM `forum_post`'

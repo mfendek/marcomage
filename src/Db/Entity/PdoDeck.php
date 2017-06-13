@@ -7,6 +7,7 @@ namespace Db\Entity;
 
 use Db\Model\Deck;
 use Util\Date;
+use Util\Input;
 
 class PdoDeck extends PdoAbstract
 {
@@ -174,7 +175,7 @@ class PdoDeck extends PdoAbstract
         $validConditions = ['username', 'deck_name', 'modified_at'];
         $condition = (in_array($condition, $validConditions)) ? $condition : 'modified_at';
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
-        $page = (is_numeric($page)) ? $page : 0;
+        $page = Input::unsignedInt($page);
 
         return $db->query(
             'SELECT `deck_id`, `username`, `deck_name`, `modified_at`, `wins`, `losses`, `draws` FROM `deck`'

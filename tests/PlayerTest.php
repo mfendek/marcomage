@@ -79,7 +79,7 @@ class PlayerTest extends PHPUnit_Framework_TestCase
         $dic = Dic::getInstance();
         $dbEntityMessage = $dic->dbEntityFactory()->message();
 
-        $messages = $dbEntityMessage->listMessagesTo($this->playerName, 'none', '', '', '', 0);
+        $messages = $dbEntityMessage->listMessagesTo($this->playerName);
         $this->assertEquals(1, count($messages->data()));
     }
 }

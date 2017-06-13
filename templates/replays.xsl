@@ -182,10 +182,10 @@
                                 <div class="col-sm-2">
                                     <p>
                                         <xsl:copy-of select="am:gameModeFlags(
-                                            am:hasGameMode(GameModes, 'HiddenCards'),
-                                            am:hasGameMode(GameModes, 'FriendlyPlay'),
-                                            am:hasGameMode(GameModes, 'LongMode'),
-                                            am:hasGameMode(GameModes, 'AIMode'),
+                                            am:hasGameMode(game_modes, 'HiddenCards'),
+                                            am:hasGameMode(game_modes, 'FriendlyPlay'),
+                                            am:hasGameMode(game_modes, 'LongMode'),
+                                            am:hasGameMode(game_modes, 'AIMode'),
                                             ai_name
                                         )"/>
                                     </p>

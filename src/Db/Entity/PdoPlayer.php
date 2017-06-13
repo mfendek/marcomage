@@ -7,6 +7,7 @@ namespace Db\Entity;
 
 use Db\Model\Player;
 use Util\Date;
+use Util\Input;
 
 class PdoPlayer extends PdoAbstract
 {
@@ -97,17 +98,19 @@ class PdoPlayer extends PdoAbstract
 
     /**
      * List players
-     * @param string $activity activity filter
-     * @param string $status status filter
-     * @param string $name name filter
-     * @param string $condition order condition
-     * @param string $order order option
-     * @param int $page current page
+     * @param array $data
      * @return \Db\Util\Result
      */
-    public function listPlayers($activity, $status, $name, $condition, $order, $page)
+    public function listPlayers(array $data)
     {
         $db = $this->db();
+
+        $name = (isset($data['name'])) ? $data['name'] : '';
+        $status = (isset($data['status'])) ? $data['status'] : 'none';
+        $activity = (isset($data['activity'])) ? $data['activity'] : 'none';
+        $condition = (isset($data['condition'])) ? $data['condition'] : '';
+        $order = (isset($data['order'])) ? $data['order'] : 'ASC';
+        $page = (isset($data['page'])) ? $data['page'] : 0;
 
         $interval = ($activity == 'active' ? '10 MINUTE'
             : ($activity == 'offline' ? '1 WEEK'
@@ -134,7 +137,7 @@ class PdoPlayer extends PdoAbstract
         ];
         $condition = (in_array($condition, $validConditions)) ? $condition : 'level';
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
-        $page = (is_numeric($page)) ? $page : 0;
+        $page = Input::unsignedInt($page);
 
         return $db->query(
             'SELECT `username`, `user_type`, `level`, `wins`, `losses`, `draws`, `avatar`, `status`, `friendly_flag`'
@@ -148,14 +151,16 @@ class PdoPlayer extends PdoAbstract
 
     /**
      * Count pages for players list
-     * @param string $activity activity filter
-     * @param string $status status filter
-     * @param string $name name filter
+     * @param array $data
      * @return \Db\Util\Result
      */
-    public function countPages($activity, $status, $name)
+    public function countPages(array $data)
     {
         $db = $this->db();
+
+        $name = (isset($data['name'])) ? $data['name'] : '';
+        $status = (isset($data['status'])) ? $data['status'] : 'none';
+        $activity = (isset($data['activity'])) ? $data['activity'] : 'none';
 
         $interval = ($activity == 'active' ? '10 MINUTE'
             : ($activity == 'offline' ? '1 WEEK'

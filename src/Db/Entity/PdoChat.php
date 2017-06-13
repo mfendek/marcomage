@@ -107,10 +107,10 @@ class PdoChat extends PdoAbstract
     /**
      * List chat messages for specified game
      * @param int $gameId game id
-     * @param string $order message order
+     * @param string [$order] message order
      * @return \Db\Util\Result
      */
-    public function listChatMessages($gameId, $order)
+    public function listChatMessages($gameId, $order = 'ASC')
     {
         $db = $this->db();
 

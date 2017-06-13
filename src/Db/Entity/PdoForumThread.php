@@ -8,6 +8,7 @@ namespace Db\Entity;
 use Db\Model\ForumPost;
 use Db\Model\ForumThread;
 use Util\Date;
+use Util\Input;
 
 class PdoForumThread extends PdoAbstract
 {
@@ -223,7 +224,7 @@ class PdoForumThread extends PdoAbstract
     {
         $db = $this->db();
 
-        $page = (is_numeric($page)) ? $page : 0;
+        $page = Input::unsignedInt($page);
 
         return $db->query(
             'SELECT `thread_id`, `title`, `author`, `priority`, (CASE WHEN `is_locked` = TRUE THEN "yes" ELSE "no" END) as `is_locked`'

@@ -194,31 +194,38 @@ class PdoReplay extends PdoAbstract
 
     /**
      * List replays according to specified filters
-     * @param string $player player filter
-     * @param string $hidden hidden mode filter
-     * @param string $friendly friendly mode filter
-     * @param string $long long mode filter
-     * @param string $ai ai mode filter
-     * @param string $challenge challenge mode filter
-     * @param string $victory victory filter
-     * @param string $condition order condition
-     * @param string $order order option
-     * @param int $page current page
+     * @param array $data
      * @return \Db\Util\Result
      */
-    public function listReplays($player, $hidden, $friendly, $long, $ai, $challenge, $victory, $condition, $order, $page)
+    public function listReplays(array $data)
     {
         $db = $this->db();
 
-        // TODO optimize: merge all filters into one condition?
+        $player = (isset($data['player'])) ? $data['player'] : '';
+        $hidden = (isset($data['hidden'])) ? $data['hidden'] : 'none';
+        $friendly = (isset($data['friendly'])) ? $data['friendly'] : 'none';
+        $long = (isset($data['long'])) ? $data['long'] : 'none';
+        $ai = (isset($data['ai'])) ? $data['ai'] : 'none';
+        $challenge = (isset($data['challenge'])) ? $data['challenge'] : 'none';
+        $victory = (isset($data['victory'])) ? $data['victory'] : 'none';
+        $condition = (isset($data['condition'])) ? $data['condition'] : '';
+        $order = (isset($data['order'])) ? $data['order'] : 'ASC';
+        $page = (isset($data['page'])) ? $data['page'] : 0;
 
-        $playerQuery = ($player != '') ? 'AND (`player1` LIKE ? OR `player2` LIKE ?)' : '';
-        $hiddenQuery = ($hidden != 'none') ? ' AND FIND_IN_SET("HiddenCards", `game_modes`) ' . (($hidden == 'include') ? '>' : '=') . ' 0' : '';
-        $friendlyQuery = ($friendly != "none") ? ' AND FIND_IN_SET("FriendlyPlay", `game_modes`) ' . (($friendly == 'include') ? '>' : '=') . ' 0' : '';
-        $longQuery = ($long != 'none') ? ' AND FIND_IN_SET("LongMode", `game_modes`) ' . (($long == 'include') ? '>' : '=') . ' 0' : '';
-        $aiQuery = ($ai != 'none') ? ' AND FIND_IN_SET("AIMode", `game_modes`) ' . (($ai == 'include') ? '>' : '=') . ' 0' : '';
-        $chQuery = ($challenge != 'none') ? (($challenge == 'include') ? ' AND `ai_name` != ""' : (($challenge == 'exclude') ? ' AND `ai_name` = ""' : ' AND `ai_name` = ?')) : '';
-        $victoryQuery = ($victory != 'none') ? '`outcome_type` = ?' : '`outcome_type` != "Pending"';
+        $playerQuery = ($player != '')
+            ? 'AND (`player1` LIKE ? OR `player2` LIKE ?)' : '';
+        $hiddenQuery = ($hidden != 'none')
+            ? ' AND FIND_IN_SET("HiddenCards", `game_modes`) ' . (($hidden == 'include') ? '>' : '=') . ' 0' : '';
+        $friendlyQuery = ($friendly != "none")
+            ? ' AND FIND_IN_SET("FriendlyPlay", `game_modes`) ' . (($friendly == 'include') ? '>' : '=') . ' 0' : '';
+        $longQuery = ($long != 'none')
+            ? ' AND FIND_IN_SET("LongMode", `game_modes`) ' . (($long == 'include') ? '>' : '=') . ' 0' : '';
+        $aiQuery = ($ai != 'none')
+            ? ' AND FIND_IN_SET("AIMode", `game_modes`) ' . (($ai == 'include') ? '>' : '=') . ' 0' : '';
+        $chQuery = ($challenge != 'none')
+            ? (($challenge == 'include') ? ' AND `ai_name` != ""' : (($challenge == 'exclude') ? ' AND `ai_name` = ""' : ' AND `ai_name` = ?')) : '';
+        $victoryQuery = ($victory != 'none')
+            ? '`outcome_type` = ?' : '`outcome_type` != "Pending"';
 
         $params = array();
         if ($victory != 'none') {
@@ -250,18 +257,20 @@ class PdoReplay extends PdoAbstract
 
     /**
      * Count pages for replays list
-     * @param string $player player filter
-     * @param string $hidden hidden mode filter
-     * @param string $friendly friendly mode filter
-     * @param string $long long mode filter
-     * @param string $ai ai mode filter
-     * @param string $challenge challenge mode filter
-     * @param string $victory victory filter
+     * @param array $data
      * @return \Db\Util\Result
      */
-    public function countPages($player, $hidden, $friendly, $long, $ai, $challenge, $victory)
+    public function countPages(array $data)
     {
         $db = $this->db();
+
+        $player = (isset($data['player'])) ? $data['player'] : '';
+        $hidden = (isset($data['hidden'])) ? $data['hidden'] : 'none';
+        $friendly = (isset($data['friendly'])) ? $data['friendly'] : 'none';
+        $long = (isset($data['long'])) ? $data['long'] : 'none';
+        $ai = (isset($data['ai'])) ? $data['ai'] : 'none';
+        $challenge = (isset($data['challenge'])) ? $data['challenge'] : 'none';
+        $victory = (isset($data['victory'])) ? $data['victory'] : 'none';
 
         $playerQuery = ($player != '') ? 'AND (`player1` LIKE ? OR `player2` LIKE ?)' : '';
         $hiddenQuery = ($hidden != 'none') ? ' AND FIND_IN_SET("HiddenCards", `game_modes`) ' . (($hidden == 'include') ? '>' : '=') . ' 0' : '';

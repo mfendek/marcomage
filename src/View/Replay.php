@@ -222,18 +222,26 @@ class Replay extends TemplateDataAbstract
         $data['order'] = $order;
         $data['cond'] = $cond;
 
-        $result = $dbEntityReplay->listReplays(
-            $playerFilter, $hiddenFilter, $friendlyFilter, $longFilter, $aiFilter,
-            $challengeFilter, $victoryFilter, $cond, $order, $currentPage
-        );
+        $listParams = [
+            'player' => $playerFilter,
+            'hidden' => $hiddenFilter,
+            'friendly' => $friendlyFilter,
+            'long' => $longFilter,
+            'ai' => $aiFilter,
+            'challenge' => $challengeFilter,
+            'victory' => $victoryFilter,
+            'condition' => $cond,
+            'order' => $order,
+            'page' => $currentPage,
+        ];
+
+        $result = $dbEntityReplay->listReplays($listParams);
         if ($result->isError()) {
             throw new Exception('Failed to list replays');
         }
         $replays = $result->data();
 
-        $result = $dbEntityReplay->countPages(
-            $playerFilter, $hiddenFilter, $friendlyFilter, $longFilter, $aiFilter, $challengeFilter, $victoryFilter
-        );
+        $result = $dbEntityReplay->countPages($listParams);
         if ($result->isErrorOrNoEffect()) {
             throw new Exception('Failed to count paged for replays list');
         }

@@ -7,6 +7,7 @@ namespace Db\Entity;
 
 use Def\Model\Card;
 use Util\Date;
+use Util\Input;
 
 class PdoConcept extends PdoAbstract
 {
@@ -127,18 +128,20 @@ class PdoConcept extends PdoAbstract
 
     /**
      * List concepts
-     * @param string $name concept name
-     * @param string $author player name
-     * @param string $date date filter
-     * @param string $state state filter
-     * @param string $condition order condition
-     * @param string $order order option
-     * @param int $page current page
+     * @param array $data
      * @return \Db\Util\Result
      */
-    public function getList($name, $author, $date, $state, $condition, $order, $page)
+    public function getList(array $data)
     {
         $db = $this->db();
+
+        $name = (isset($data['name'])) ? $data['name'] : '';
+        $author = (isset($data['author'])) ? $data['author'] : 'none';
+        $date = (isset($data['date'])) ? $data['date'] : 'none';
+        $state = (isset($data['state'])) ? $data['state'] : 'none';
+        $condition = (isset($data['condition'])) ? $data['condition'] : '';
+        $order = (isset($data['order'])) ? $data['order'] : 'ASC';
+        $page = (isset($data['page'])) ? $data['page'] : 0;
 
         $nameQuery = ($name != '') ? ' AND `name` LIKE ?' : '';
         $authorQuery = ($author != 'none') ? ' AND `author` = ?' : '';
@@ -161,7 +164,7 @@ class PdoConcept extends PdoAbstract
 
         $condition = (in_array($condition, ['name', 'modified_at'])) ? $condition : 'modified_at';
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
-        $page = (is_numeric($page)) ? $page : 0;
+        $page = Input::unsignedInt($page);
 
         return $db->query(
             'SELECT `card_id` as `id`, `name`, `rarity`, `bricks`, `gems`'
@@ -176,15 +179,17 @@ class PdoConcept extends PdoAbstract
 
     /**
      * Count pages for concepts list
-     * @param string $name concept name
-     * @param string $author player name
-     * @param string $date date filter
-     * @param string $state state filter
+     * @param array $data
      * @return \Db\Util\Result
      */
-    public function countPages($name, $author, $date, $state)
+    public function countPages(array $data)
     {
         $db = $this->db();
+
+        $name = (isset($data['name'])) ? $data['name'] : '';
+        $author = (isset($data['author'])) ? $data['author'] : 'none';
+        $date = (isset($data['date'])) ? $data['date'] : 'none';
+        $state = (isset($data['state'])) ? $data['state'] : 'none';
 
         $nameQuery = ($name != '') ? ' AND `name` LIKE ?' : '';
         $authorQuery = ($author != 'none') ? ' AND `author` = ?' : '';
@@ -214,10 +219,10 @@ class PdoConcept extends PdoAbstract
 
     /**
      * List concept authors
-     * @param string $date  date filter
+     * @param string [$date] date filter
      * @return \Db\Util\Result
      */
-    public function listAuthors($date)
+    public function listAuthors($date = 'none')
     {
         $db = $this->db();
 

@@ -141,7 +141,16 @@ class Player extends TemplateDataAbstract
 
         $data['current_page'] = $currentPage;
 
-        $result = $dbEntityPlayer->countPages($activityFilter, $statusFilter, $playerNameFilter);
+        $listParams = [
+            'name' => $playerNameFilter,
+            'status' => $statusFilter,
+            'activity' => $activityFilter,
+            'condition' => $condition,
+            'order' => $order,
+            'page' => $currentPage,
+        ];
+
+        $result = $dbEntityPlayer->countPages($listParams);
         if ($result->isErrorOrNoEffect()) {
             throw new Exception('Failed to count pages for players list');
         }
@@ -149,9 +158,7 @@ class Player extends TemplateDataAbstract
         $data['page_count'] = ceil($result[0]['count'] / PlayerModel::PLAYERS_PER_PAGE);
 
         // get the list of all existing players; (username, wins, losses, draws, last activity, free slots, avatar, country)
-        $result = $dbEntityPlayer->listPlayers(
-            $activityFilter, $statusFilter, $playerNameFilter, $condition, $order, $currentPage
-        );
+        $result = $dbEntityPlayer->listPlayers($listParams);
         if ($result->isError()) {
             throw new Exception('Failed to list players');
         }

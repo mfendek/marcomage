@@ -111,15 +111,23 @@ class Message extends TemplateDataAbstract
         $data['current_condition'] = $currentCondition = Input::defaultValue($input, 'messages_current_condition', 'created_at');
         $data['current_page'] = $currentPage;
 
+        $listParams = [
+            'name' => $name,
+            'date' => $date,
+            'condition' => $currentCondition,
+            'order' => $currentOrder,
+            'page' => $currentPage,
+        ];
+
         // case 1: all mail section
         if ($currentLocation == 'all_mail') {
-            $result = $dbEntityMessage->listAllMessages($date, $name, $currentCondition, $currentOrder, $currentPage);
+            $result = $dbEntityMessage->listAllMessages($listParams);
             if ($result->isError()) {
                 throw new Exception('Failed to list all messages');
             }
             $messages = $result->data();
 
-            $result = $dbEntityMessage->countPagesAll($date, $name);
+            $result = $dbEntityMessage->countPagesAll($listParams);
             if ($result->isErrorOrNoEffect()) {
                 throw new Exception('Failed to count pages for all messages list');
             }
@@ -127,15 +135,13 @@ class Message extends TemplateDataAbstract
         }
         // case 2: sent mail section
         elseif ($currentLocation == 'sent_mail') {
-            $result = $dbEntityMessage->listMessagesFrom(
-                $player->getUsername(), $date, $name, $currentCondition, $currentOrder, $currentPage
-            );
+            $result = $dbEntityMessage->listMessagesFrom($player->getUsername(), $listParams);
             if ($result->isError()) {
                 throw new Exception('Failed to list messages from player');
             }
             $messages = $result->data();
 
-            $result = $dbEntityMessage->countPagesFrom($player->getUsername(), $date, $name);
+            $result = $dbEntityMessage->countPagesFrom($player->getUsername(), $listParams);
             if ($result->isErrorOrNoEffect()) {
                 throw new Exception('Failed to count pages for messages from list');
             }
@@ -143,15 +149,14 @@ class Message extends TemplateDataAbstract
         }
         // case 3: inbox section
         else {
-            $result = $dbEntityMessage->listMessagesTo(
-                $player->getUsername(), $date, $name, $currentCondition, $currentOrder, $currentPage
-            );
+            $result = $dbEntityMessage->listMessagesTo($player->getUsername(), $listParams);
+
             if ($result->isError()) {
                 throw new Exception('Failed to list messages to player');
             }
             $messages = $result->data();
 
-            $result = $dbEntityMessage->countPagesTo($player->getUsername(), $date, $name);
+            $result = $dbEntityMessage->countPagesTo($player->getUsername(), $listParams);
             if ($result->isErrorOrNoEffect()) {
                 throw new Exception('Failed to count pages for messages to list');
             }

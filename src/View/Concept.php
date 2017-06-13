@@ -43,8 +43,18 @@ class Concept extends TemplateDataAbstract
         }
         $data['current_page'] = $currentPage;
 
+        $listParams = [
+            'name' => $name,
+            'author' => $author,
+            'date' => $date,
+            'state' => $state,
+            'condition' => $condition,
+            'order' => $order,
+            'page' => $currentPage,
+        ];
+
         // list concepts
-        $result = $dbEntityConcept->getList($name, $author, $date, $state, $condition, $order, $currentPage);
+        $result = $dbEntityConcept->getList($listParams);
         if ($result->isError()) {
             throw new Exception('Failed to list concepts');
         }
@@ -56,7 +66,7 @@ class Concept extends TemplateDataAbstract
         }
 
         // count pages for concepts list
-        $result = $dbEntityConcept->countPages($name, $author, $date, $state);
+        $result = $dbEntityConcept->countPages($listParams);
         if ($result->isErrorOrNoEffect()) {
             throw new Exception('Failed to count pages for concepts list');
         }

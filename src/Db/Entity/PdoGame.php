@@ -287,18 +287,23 @@ class PdoGame extends PdoAbstract
     /**
      * List hosted games, where player can join
      * @param string $player player name
-     * @param string [$hidden] hidden game mode filter
-     * @param string [$friendly] friendly game mode filter
-     * @param string [$long] long game mode filter
+     * @param string array $data
      * @return \Db\Util\Result
      */
-    public function listFreeGames($player, $hidden = 'none', $friendly = 'none', $long = 'ignore')
+    public function listFreeGames($player, array $data)
     {
         $db = $this->db();
 
-        $hiddenQuery = ($hidden != "none") ? ' AND FIND_IN_SET("HiddenCards", `game_modes`) ' . (($hidden == 'include') ? '>' : '=') . ' 0' : '';
-        $friendlyQuery = ($friendly != "none") ? ' AND FIND_IN_SET("FriendlyPlay", `game_modes`) ' . (($friendly == 'include') ? '>' : '=') . ' 0' : '';
-        $longQuery = ($long != "none") ? ' AND FIND_IN_SET("LongMode", `game_modes`) ' . (($long == 'include') ? '>' : '=') . ' 0' : '';
+        $hidden = (isset($data['hidden'])) ? $data['hidden'] : 'none';
+        $friendly = (isset($data['friendly'])) ? $data['friendly'] : 'none';
+        $long = (isset($data['long'])) ? $data['long'] : 'ignore';
+
+        $hiddenQuery = ($hidden != "none")
+            ? ' AND FIND_IN_SET("HiddenCards", `game_modes`) ' . (($hidden == 'include') ? '>' : '=') . ' 0' : '';
+        $friendlyQuery = ($friendly != "none")
+            ? ' AND FIND_IN_SET("FriendlyPlay", `game_modes`) ' . (($friendly == 'include') ? '>' : '=') . ' 0' : '';
+        $longQuery = ($long != "none")
+            ? ' AND FIND_IN_SET("LongMode", `game_modes`) ' . (($long == 'include') ? '>' : '=') . ' 0' : '';
 
         return $db->query(
             'SELECT `game_id`, `player1`, `last_action_at`, `game_modes`, `turn_timeout` FROM `game`'
@@ -324,7 +329,8 @@ class PdoGame extends PdoAbstract
     }
 
     /**
-     * List active games ids for specific player (player is either on the left or right side and Status != 'waiting' or 'P? over')
+     * List active games ids for specific player
+     * (player is either on the left or right side and Status != 'waiting' or 'P? over')
      * @param string $player player name
      * @return \Db\Util\Result
      */
@@ -340,7 +346,8 @@ class PdoGame extends PdoAbstract
     }
 
     /**
-     * List active games for specific player (player is either on the left or right side and Status != 'waiting' or 'P? over')
+     * List active games for specific player
+     * (player is either on the left or right side and Status != 'waiting' or 'P? over')
      * @param string $player player name
      * @return \Db\Util\Result
      */
@@ -393,7 +400,7 @@ class PdoGame extends PdoAbstract
 
     /**
      * Check if there is already a game between two specified players
-     * @param string$player1 player 1 name
+     * @param string $player1 player 1 name
      * @param string $player2 player 2 name
      * @return \Db\Util\Result
      */

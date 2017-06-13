@@ -349,7 +349,11 @@ class Game extends TemplateDataAbstract
         $hostedGames = $result->data();
 
         // list free games
-        $result = $dbEntityGame->listFreeGames($player->getUsername(), $hiddenFilter, $friendlyFilter, $longFilter);
+        $result = $dbEntityGame->listFreeGames($player->getUsername(), [
+            'hidden' => $hiddenFilter,
+            'friendly' => $friendlyFilter,
+            'long' => $longFilter,
+        ]);
         if ($result->isError()) {
             throw new Exception('Failed to list free games');
         }

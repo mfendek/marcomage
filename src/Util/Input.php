@@ -87,4 +87,20 @@ class Input
     {
         return (isset($data[$key])) ? $data[$key] : $default;
     }
+
+    /**
+     * @param mixed $value
+     * @return int
+     */
+    public static function unsignedInt($value)
+    {
+        $value = filter_var($value, FILTER_VALIDATE_INT, [
+            'options' => [
+                'default' => 0,
+                'min_range' => 0,
+            ]
+        ]);
+
+        return (int)$value;
+    }
 }

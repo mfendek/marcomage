@@ -8,6 +8,7 @@ namespace Db\Entity;
 use Db\Model\Message;
 use Db\Model\Player;
 use Util\Date;
+use Util\Input;
 
 class PdoMessage extends PdoAbstract
 {
@@ -337,16 +338,18 @@ class PdoMessage extends PdoAbstract
     /**
      * List messages to player
      * @param string $player player name
-     * @param string $date date filter
-     * @param string $name name filter
-     * @param string $condition order condition
-     * @param string $order order option
-     * @param int $page current page
+     * @param array [$data]
      * @return \Db\Util\Result
      */
-    public function listMessagesTo($player, $date, $name, $condition, $order, $page)
+    public function listMessagesTo($player, array $data = [])
     {
         $db = $this->db();
+
+        $name = (isset($data['name'])) ? $data['name'] : '';
+        $date = (isset($data['date'])) ? $data['date'] : 'none';
+        $condition = (isset($data['condition'])) ? $data['condition'] : '';
+        $order = (isset($data['order'])) ? $data['order'] : 'ASC';
+        $page = (isset($data['page'])) ? $data['page'] : 0;
 
         $nameQuery = ($name != '') ? ' AND `author` LIKE ?' : '';
         $dateQuery = ($date != 'none') ? ' AND `created_at` >= NOW() - INTERVAL ? DAY' : '';
@@ -361,7 +364,7 @@ class PdoMessage extends PdoAbstract
 
         $condition = (in_array($condition, ['author', 'created_at'])) ? $condition : 'created_at';
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
-        $page = (is_numeric($page)) ? $page : 0;
+        $page = Input::unsignedInt($page);
 
         return $db->query(
             'SELECT `message_id`, `author`, `recipient`, `subject`, `content`, (CASE WHEN `is_unread` = TRUE THEN "yes" ELSE "no" END) as `is_unread`'
@@ -375,13 +378,15 @@ class PdoMessage extends PdoAbstract
     /**
      * Count pages for message list to
      * @param string $player player name
-     * @param string $date date filter
-     * @param string $name name filter
+     * @param array [$data]
      * @return \Db\Util\Result
      */
-    public function countPagesTo($player, $date, $name)
+    public function countPagesTo($player, array $data = [])
     {
         $db = $this->db();
+
+        $name = (isset($data['name'])) ? $data['name'] : '';
+        $date = (isset($data['date'])) ? $data['date'] : 'none';
 
         $nameQuery = ($name != '') ? ' AND `author` LIKE ?' : '';
         $dateQuery = ($date != 'none') ? ' AND `created_at` >= NOW() - INTERVAL ? DAY' : '';
@@ -404,16 +409,18 @@ class PdoMessage extends PdoAbstract
     /**
      * List messages from player
      * @param string $player player name
-     * @param string $date date filter
-     * @param string $name name filter
-     * @param string $condition order condition
-     * @param string $order order option
-     * @param int $page current page
+     * @param array [$data]
      * @return \Db\Util\Result
      */
-    public function listMessagesFrom($player, $date, $name, $condition, $order, $page)
+    public function listMessagesFrom($player, array $data = [])
     {
         $db = $this->db();
+
+        $name = (isset($data['name'])) ? $data['name'] : '';
+        $date = (isset($data['date'])) ? $data['date'] : 'none';
+        $condition = (isset($data['condition'])) ? $data['condition'] : '';
+        $order = (isset($data['order'])) ? $data['order'] : 'ASC';
+        $page = (isset($data['page'])) ? $data['page'] : 0;
 
         $nameQuery = ($name != '') ? ' AND `recipient` LIKE ?' : '';
         $dateQuery = ($date != 'none') ? ' AND `created_at` >= NOW() - INTERVAL ? DAY' : '';
@@ -428,7 +435,7 @@ class PdoMessage extends PdoAbstract
 
         $condition = (in_array($condition, ['recipient', 'created_at'])) ? $condition : 'created_at';
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
-        $page = (is_numeric($page)) ? $page : 0;
+        $page = Input::unsignedInt($page);
 
         return $db->query(
             'SELECT `message_id`, `author`, `recipient`, `subject`, `content`, (CASE WHEN `is_unread` = TRUE THEN "yes" ELSE "no" END) as `is_unread`'
@@ -442,13 +449,15 @@ class PdoMessage extends PdoAbstract
     /**
      * Count pages for message list from
      * @param string $player player name
-     * @param string $date date filter
-     * @param string $name name filter
+     * @param array [$data]
      * @return \Db\Util\Result
      */
-    public function countPagesFrom($player, $date, $name)
+    public function countPagesFrom($player, array $data = [])
     {
         $db = $this->db();
+
+        $name = (isset($data['name'])) ? $data['name'] : '';
+        $date = (isset($data['date'])) ? $data['date'] : 'none';
 
         $nameQuery = ($name != '') ? ' AND `recipient` LIKE ?' : '';
         $dateQuery = ($date != 'none') ? ' AND `created_at` >= NOW() - INTERVAL ? DAY' : '';
@@ -470,16 +479,18 @@ class PdoMessage extends PdoAbstract
 
     /**
      * List all messages (even deleted)
-     * @param string $date date filter
-     * @param string $name name filter
-     * @param string $condition order condition
-     * @param string $order order option
-     * @param string $page current page
+     * @param array [$data]
      * @return \Db\Util\Result
      */
-    public function listAllMessages($date, $name, $condition, $order, $page)
+    public function listAllMessages(array $data = [])
     {
         $db = $this->db();
+
+        $name = (isset($data['name'])) ? $data['name'] : '';
+        $date = (isset($data['date'])) ? $data['date'] : 'none';
+        $condition = (isset($data['condition'])) ? $data['condition'] : '';
+        $order = (isset($data['order'])) ? $data['order'] : 'ASC';
+        $page = (isset($data['page'])) ? $data['page'] : 0;
 
         $nameQuery = ($name != '') ? ' AND `author` LIKE ?' : '';
         $dateQuery = ($date != 'none') ? ' AND `created_at` >= NOW() - INTERVAL ? DAY' : '';
@@ -494,7 +505,7 @@ class PdoMessage extends PdoAbstract
 
         $condition = (in_array($condition, ['author', 'created_at'])) ? $condition : 'created_at';
         $order = ($order == 'ASC') ? 'ASC' : 'DESC';
-        $page = (is_numeric($page)) ? $page : 0;
+        $page = Input::unsignedInt($page);
 
         return $db->query(
             'SELECT `message_id`, `author`, `recipient`, `subject`, `content`, (CASE WHEN `is_unread` = TRUE THEN "yes" ELSE "no" END) as `is_unread`'
@@ -507,13 +518,15 @@ class PdoMessage extends PdoAbstract
 
     /**
      * Count pages for message list all
-     * @param string $date date filter
-     * @param string $name name filter
+     * @param array [$data]
      * @return \Db\Util\Result
      */
-    public function countPagesAll($date, $name)
+    public function countPagesAll(array $data = [])
     {
         $db = $this->db();
+
+        $name = (isset($data['name'])) ? $data['name'] : '';
+        $date = (isset($data['date'])) ? $data['date'] : 'none';
 
         $nameQuery = ($name != '') ? ' AND `author` LIKE ?' : '';
         $dateQuery = ($date != 'none') ? ' AND `created_at` >= NOW() - INTERVAL ? DAY' : '';
