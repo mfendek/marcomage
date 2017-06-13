@@ -1211,7 +1211,7 @@ class GameUseCard extends ServiceAbstract
             // case 2: success
             else {
                 $myChanges = $lastRoundData[(($game->getPlayer1() == $playerName) ? 1 : 2)]->Changes;
-                $hisChanges = $lastRoundData[(($game->getPlayer2() == $playerName) ? 2 : 1)]->Changes;
+                $hisChanges = $lastRoundData[(($game->getPlayer1() == $playerName) ? 2 : 1)]->Changes;
             }
         }
         // case 2: changes are still available
