@@ -790,7 +790,7 @@
                                 </button>
                             </xsl:if>
 
-                            <!-- AI move button -->
+                            <!-- execute move button -->
                             <xsl:choose>
                                 <xsl:when test="$param/ai_mode = 'yes' and not($isMyTurn) and $param/game_state = 'in progress'">
                                     <button type="submit" name="ai_move">Execute AI move</button>
@@ -801,9 +801,6 @@
                                 <xsl:otherwise>
                                     <xsl:if test="$param/play_buttons = 'no' and $isMyTurn and $param/cards_playable = 'yes'">
                                         <button type="submit" name="play_card" value="0">Play</button>
-                                    </xsl:if>
-                                    <xsl:if test="$isMyTurn">
-                                        <button type="submit" name="discard_card">Discard</button>
                                     </xsl:if>
                                 </xsl:otherwise>
                             </xsl:choose>
@@ -820,6 +817,11 @@
                                 <a class="button button-icon" href="{am:makeUrl('Replays_history', 'CurrentReplay', $param/current_game)}" title="History">
                                     <span class="glyphicon glyphicon-book"/>
                                 </a>
+                            </xsl:if>
+
+                            <!-- discard button -->
+                            <xsl:if test="$isMyTurn">
+                                <button type="submit" name="discard_card">Discard</button>
                             </xsl:if>
 
                             <!-- current deck -->

@@ -297,22 +297,22 @@
                             </div>
                             <div class="navbar-notifications">
                                 <xsl:if test="$param/game_notice = 'yes'">
-                                    <a href="{am:makeUrl('Games')}">
+                                    <a class="image-link" href="{am:makeUrl('Games')}">
                                         <img src="img/battle.gif" alt="" width="20" height="13" title="It's your turn in one of your games"/>
                                     </a>
                                 </xsl:if>
                                 <xsl:if test="$param/message_notice = 'yes'">
-                                    <a href="{am:makeUrl('Messages')}">
+                                    <a class="image-link" href="{am:makeUrl('Messages')}">
                                         <img src="img/new_post.gif" alt="" width="15" height="10" title="New private message"/>
                                     </a>
                                 </xsl:if>
                                 <xsl:if test="$param/forum_notice = 'yes'">
-                                    <a href="{am:makeUrl('Forum')}">
+                                    <a class="image-link" href="{am:makeUrl('Forum')}">
                                         <img src="img/book.gif" alt="" width="18" height="14" title="New forum post"/>
                                     </a>
                                 </xsl:if>
                                 <xsl:if test="$param/concept_notice = 'yes'">
-                                    <a href="{am:makeUrl('Concepts')}">
+                                    <a class="image-link" href="{am:makeUrl('Concepts')}">
                                         <img src="img/new_card.gif" alt="" width="10" height="14" title="New card concept"/>
                                     </a>
                                 </xsl:if>

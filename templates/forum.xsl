@@ -691,6 +691,7 @@
         <xsl:variable name="param" select="$params/forum_post_new"/>
 
         <xsl:variable name="thread" select="$param/thread_data"/>
+        <xsl:variable name="currentPage" select="$param/current_page"/>
 
         <div class="forum-new-edit">
 
@@ -702,7 +703,7 @@
 
             <div class="skin-text">
 
-                <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $thread/thread_id, 'thread_current_page', 0)}">
+                <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $thread/thread_id, 'thread_current_page', $currentPage)}">
                     <span class="glyphicon glyphicon-arrow-left"/>
                 </a>
                 <button class="button-icon" type="submit" name="create_post" title="Create post">

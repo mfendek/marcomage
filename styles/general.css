@@ -45,6 +45,13 @@ a.button:link, a.button:visited {
     color: black;
 }
 
+/* image links */
+a.image-link,
+a.image-link:link,
+a.image-link:visited {
+    text-decoration: none;
+}
+
 /* player profile link */
 a.profile, a.profile:link, a.profile:visited {
     text-decoration: none;

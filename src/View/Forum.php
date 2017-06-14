@@ -309,6 +309,13 @@ class Forum extends TemplateDataAbstract
         }
         $data['content'] = Input::defaultValue($input, 'content', (($quotedContent) ?: ''));
 
+        // validate current page
+        $currentPage = Input::defaultValue($input, 'thread_current_page', 0);;
+        if (!is_numeric($currentPage) || $currentPage < 0) {
+            throw new Exception('Invalid forum section page', Exception::WARNING);
+        }
+        $data['current_page'] = $currentPage;
+
         return new Result(['forum_post_new' => $data], $thread->getTitle());
     }
 

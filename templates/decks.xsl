@@ -28,23 +28,33 @@
             <div class="responsive-table table-sm skin-text">
                 <!-- table header -->
                 <div class="row">
+                    <div class="col-sm-1">
+                        <p>State</p>
+                    </div>
                     <div class="col-sm-4">
                         <p>Name</p>
                     </div>
                     <div class="col-sm-3">
                         <p>Wins / Losses / Draws</p>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <p>Last change</p>
-                    </div>
-                    <div class="col-sm-2">
-                        <p/>
                     </div>
                 </div>
 
                 <!-- table body -->
                 <xsl:for-each select="$param/list/*">
                     <div class="row table-row details">
+                        <div class="col-sm-1">
+                            <p>
+                                <xsl:if test="is_ready = 'yes'">
+                                    <span class="deck-item-icon"><span class="glyphicon glyphicon-ok" title="Ready"/></span>
+                                </xsl:if>
+                                <xsl:if test="is_shared = 1">
+                                    <span class="deck-item-icon"><span class="glyphicon glyphicon-eye-open" title="Shared"/></span>
+                                </xsl:if>
+                            </p>
+                        </div>
                         <div class="col-sm-4">
                             <p>
                                 <a class="profile" href="{am:makeUrl('Decks_edit', 'current_deck', deck_id)}">
@@ -61,7 +71,7 @@
                                 <xsl:value-of select="draws"/>
                             </p>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <p>
                                 <xsl:choose>
                                     <xsl:when test="modified_at != '1970-01-01 00:00:01'">
@@ -69,16 +79,6 @@
                                     </xsl:when>
                                     <xsl:otherwise>n/a</xsl:otherwise>
                                 </xsl:choose>
-                            </p>
-                        </div>
-                        <div class="col-sm-2">
-                            <p>
-                                <xsl:if test="is_ready = 'yes'">
-                                    <span class="deck-item-icon"><span class="glyphicon glyphicon-ok" title="Ready"/></span>
-                                </xsl:if>
-                                <xsl:if test="is_shared = 1">
-                                    <span class="deck-item-icon"><span class="glyphicon glyphicon-eye-open" title="Shared"/></span>
-                                </xsl:if>
                             </p>
                         </div>
                     </div>
