@@ -53,7 +53,7 @@ return [
         'concept' => 'img/concepts/',
     ],
     'external_links' => [
-        'google_plus' => 'https://plus.google.com/101815655483915729081',
+        'google_plus' => 'https://plus.google.com/+MArcomage',
         'facebook' => 'https://www.facebook.com/pages/MArcomage/182322255140456',
     ],
 
