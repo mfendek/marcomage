@@ -778,6 +778,7 @@ class Game extends ControllerAbstract
         $player = $this->getCurrentPlayer();
 
         $this->result()
+            ->changeRequest('games_subsection', 'game_creation')
             ->changeRequest('subsection', 'hosted_games')
             ->setCurrent('Games');
 
@@ -817,6 +818,7 @@ class Game extends ControllerAbstract
         $request = $this->request();
 
         $this->result()
+            ->changeRequest('games_subsection', 'game_creation')
             ->changeRequest('subsection', 'hosted_games')
             ->setCurrent('Games');
 
@@ -849,6 +851,7 @@ class Game extends ControllerAbstract
         $player = $this->getCurrentPlayer();
 
         $this->result()
+            ->changeRequest('games_subsection', 'game_creation')
             ->changeRequest('subsection', 'free_games')
             ->setCurrent('Games');
 
@@ -866,7 +869,10 @@ class Game extends ControllerAbstract
 
         $this->service()->gameManagement()->joinGame($player->getUsername(), $deckId, $game);
 
-        $this->result()->setInfo('You have joined ' . $game->getPlayer1() . "'s game");
+        $this->result()
+            ->changeRequest('current_game', $game->getGameId())
+            ->setInfo('You have joined ' . $game->getPlayer1() . "'s game")
+            ->setCurrent('Games_details');
     }
 
     /**
@@ -880,6 +886,7 @@ class Game extends ControllerAbstract
         $player = $this->getCurrentPlayer();
 
         $this->result()
+            ->changeRequest('games_subsection', 'game_creation')
             ->changeRequest('subsection', 'ai_games')
             ->setCurrent('Games');
 
@@ -899,13 +906,14 @@ class Game extends ControllerAbstract
             $gameModes[] = 'LongMode';
         }
 
-        $this->service()->gameManagement()->startAiGame(
+        $game = $this->service()->gameManagement()->startAiGame(
             $player->getUsername(), $request['selected_deck'], $request['selected_ai_deck'], $gameModes
         );
 
         $this->result()
+            ->changeRequest('current_game', $game->getGameId())
             ->setInfo('Game vs AI created')
-            ->setCurrent('Games');
+            ->setCurrent('Games_details');
     }
 
     /**
@@ -919,6 +927,7 @@ class Game extends ControllerAbstract
         $player = $this->getCurrentPlayer();
 
         $this->result()
+            ->changeRequest('games_subsection', 'game_creation')
             ->changeRequest('subsection', 'ai_games')
             ->setCurrent('Games');
 
@@ -929,13 +938,14 @@ class Game extends ControllerAbstract
 
         $this->assertParamsNonEmpty(['selected_deck', 'selected_challenge']);
 
-        $this->service()->gameManagement()->startAiChallenge(
+        $game = $this->service()->gameManagement()->startAiChallenge(
             $player->getUsername(), $request['selected_deck'], $request['selected_challenge']
         );
 
         $this->result()
+            ->changeRequest('current_game', $game->getGameId())
             ->setInfo('AI challenge created')
-            ->setCurrent('Games');
+            ->setCurrent('Games_details');
     }
 
     /**
@@ -973,6 +983,7 @@ class Game extends ControllerAbstract
     protected function filterHostedGames()
     {
         $this->result()
+            ->changeRequest('games_subsection', 'game_creation')
             ->changeRequest('subsection', 'free_games')
             ->setCurrent('Games');
     }

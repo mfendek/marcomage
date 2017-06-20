@@ -223,6 +223,7 @@ class GameManagement extends ServiceAbstract
      * @param string $playerName
      * @param int $deckId
      * @param string $challengeName
+     * @return GameModel
      * @throws Exception
      */
     public function startAiChallenge($playerName, $deckId, $challengeName)
@@ -278,5 +279,7 @@ class GameManagement extends ServiceAbstract
         $this->service()->gameUseCard()->startGame($game, PlayerModel::SYSTEM_NAME, $aiDeck, $challengeData);
 
         $this->service()->gameUtil()->saveGameCreateReplay($game);
+
+        return $game;
     }
 }

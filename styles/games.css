@@ -40,6 +40,10 @@ div#hosted-games {
     margin-bottom: 1ex;
 }
 
+#games .subsection-navigation .current-section {
+    text-decoration: underline;
+}
+
 /* AI challenges section */
 div#ai-challenges {
     margin-left: 1ex;
@@ -60,6 +64,7 @@ div#ai-challenges h4 {
 
 /* AI challenge body */
 div#ai-challenges p {
+    min-height: 60px;
     text-align: justify;
 }
 div#ai-challenges img.avatar {
