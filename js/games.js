@@ -86,18 +86,6 @@ function autoAiMove()
     }
 }
 
-/**
- * @param {string}name
- */
-function showAiChallenge(name)
-{
-    // hide all ai challenges
-    $('#ai-challenges > div').hide();
-
-    // show the selected one
-    $('#ai-challenge-' + name).show();
-}
-
 $(document).ready(function() {
     var api = dic().apiManager();
     var notification = dic().notificationsManager();
@@ -436,13 +424,10 @@ $(document).ready(function() {
         }
     });
 
-    // AI challenges selector initialization
-    var aiSelector = $('select[name="selected_challenge"]');
-    showAiChallenge(aiSelector.val());
-
-    // AI challenges selector
-    aiSelector.change(function() {
-        showAiChallenge($(this).val());
+    // select AI challenge
+    $('#ai-challenges > div').click(function() {
+        var challengeName = $(this).attr('id').replace('ai-challenge-', '');
+        $('select[name="selected_challenge"]').val(challengeName);
     });
 
 });
