@@ -207,7 +207,12 @@
                                 <xsl:copy-of select="am:upperNavigation($param/page_count, $param/current_page, 'messages')"/>
 
                                 <xsl:if test="$param/current_location != 'all_mail'">
-                                    <button type="submit" name="delete_mass_messages">Delete selected</button>
+                                    <button class="button-icon" type="submit" name="delete_mass_messages" title="Delete selected">
+                                        <span class="glyphicon glyphicon-trash"/>
+                                    </button>
+                                    <button class="button-icon" type="button" name="select_all_messages" title="Select / deselect all">
+                                        <span class="glyphicon glyphicon-check"/>
+                                    </button>
                                 </xsl:if>
                             </xsl:if>
 

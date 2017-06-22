@@ -68,4 +68,18 @@ $(document).ready(function() {
         return false;
     });
 
+    // select / deselect all messages button
+    $('button[name="select_all_messages"]').click(function() {
+        var checkboxes = $('input[type="checkbox"][name^="mass_delete_"]');
+
+        // all checkboxes are checked - deselect all
+        if (checkboxes.filter(':checked').length == checkboxes.length) {
+            checkboxes.prop('checked', false);
+        }
+        // at least one checkbox is deselected - select all
+        else {
+            checkboxes.prop('checked', true);
+        }
+    });
+
 });

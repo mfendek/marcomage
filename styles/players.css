@@ -88,7 +88,7 @@ div#details h3 {
 /* checkbox layout */
 div#details input[type="checkbox"] {
     padding: 0.5ex;
-    margin: 0 2ex 0 0;
+    margin: 0 1ex 0.5ex 0;
     border: thin solid;
 }
 

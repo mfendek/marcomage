@@ -237,6 +237,7 @@ img.avatar {
 
 /* checkbox layout */
 input[type="checkbox"] {
+    font-size: large;
     margin: 3px;
 }
 
