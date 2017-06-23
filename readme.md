@@ -63,4 +63,33 @@ Configuration that is not present in the production config is inherited from bas
  Here is an example of the `maintenance url`:
  
  `?m=scripts&name=<script_name>&password=<maintenance_access_password>`
-  
+ 
+ ## Development
+ 
+ ### Backend
+ 
+ Run `composer install` to update backend libraries. In case you want to update existing libraries run `composer update`.
+ You need to commit `composer.json` and `composer.lock` files in case they were changed. Never run `composer update` on production.
+ 
+ ### Frontend
+ 
+ Run `yarn install` to update frontend libraries. Run `npm run watch` as a preprocessor watcher.
+ Run `yarn package` before commit. In case libraries were updated you need to commit both `package.json` and `yarn.lock` files.
+ 
+ ## Production deployment
+ 
+ * run `svn update`
+ * run `composer install`
+ * run DB scripts (optional)
+ 
+ ## Coding standards
+ 
+ * PSR (backend)
+ * Air BnB (frontend).
+ 
+ ## Links
+ 
+ * Composer - https://getcomposer.org/
+ * Node - https://nodejs.org/
+ * Yarn - https://yarnpkg.com/
+ 
