@@ -2,11 +2,17 @@
  * MArcomage JavaScript - Players section *
  ******************************************/
 
-'use strict';
+import $ from 'jquery';
+
+export default function () {
 
 $(document).ready(function() {
-    var notification = dic().notificationsManager();
-    var confirmed = false;
+    if (!$.dic.bodyData().isSectionActive('players')) {
+        return;
+    }
+
+    let notification = $.dic.notificationsManager();
+    let confirmed = false;
 
     // apply player filters by pressing ENTER key
     $('input[name="pname_filter"]').keypress(function(event) {
@@ -23,7 +29,7 @@ $(document).ready(function() {
             return true;
         }
 
-        var triggerButton = $(this);
+        let triggerButton = $(this);
 
         // request confirmation
         notification.displayConfirm('Action confirmation', 'Do you really want to ' + $(this).html() + '?', function(result) {
@@ -38,3 +44,5 @@ $(document).ready(function() {
     });
 
 });
+
+}

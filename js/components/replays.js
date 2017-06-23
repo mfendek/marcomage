@@ -2,10 +2,12 @@
  * MArcomage JavaScript - Replays section *
  ******************************************/
 
-'use strict';
+import $ from 'jquery';
+
+export default function () {
 
 // global timer
-var timer;
+let timer;
 
 /**
  * Replay slide show -> resume replay
@@ -14,7 +16,10 @@ function resumeReplay()
 {
     $('button[name="slideshow-play"]').hide();
     $('button[name="slideshow-pause"]').show();
-    timer = window.setTimeout("window.location.href = $('a#next').attr('href')", 5000);
+
+    timer = window.setTimeout(function() {
+        window.location.href = $('a#next').attr('href');
+    }, 5000);
 }
 
 /**
@@ -28,6 +33,9 @@ function pauseReplay()
 }
 
 $(document).ready(function() {
+    if (!$.dic.bodyData().isSectionActive('replays')) {
+        return;
+    }
 
     // apply replay filters by pressing ENTER key
     $('input[name="player_filter"]').keypress(function(event) {
@@ -53,3 +61,5 @@ $(document).ready(function() {
     });
 
 });
+
+}

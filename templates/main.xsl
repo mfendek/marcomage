@@ -25,23 +25,24 @@
                     <xsl:apply-templates select="$param/section"/>
                 </xsl:when>
                 <xsl:otherwise>
+                    <xsl:variable name="section_name" select="$param/section_name"/>
+                    <xsl:variable name="current_section" select="am:lowercase($section_name)"/>
+                    <!-- HTML header -->
                     <head>
-                        <!-- HTML header -->
-                        <xsl:variable name="section_name" select="$param/section_name"/>
-                        <xsl:variable name="current_section" select="am:lowercase($section_name)"/>
-
                         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                         <meta name="description" content="free online fantasy card game inspired by original Arcomage"/>
                         <meta name="author" content="Mojmír Fendek, Viktor Štujber"/>
                         <meta name="keywords" content="Arcomage, MArcomage, multiplayer, free, online, fantasy, card game, fantasy novels"/>
 
-                        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/{$param/jquery_version}/jquery.min.js"/>
-                        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/{$param/jquery_ui_version}/jquery-ui.min.js"/>
-                        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/{$param/jquery_ui_version}/themes/smoothness/jquery-ui.css" type="text/css" title="standard style"/>
+                        <script type="text/javascript" src="js/dist/main.js?v={$param/cc_version}"/>
+                        <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/{$param/jquery_version}/jquery.min.js"/>-->
+                        <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/{$param/jquery_ui_version}/jquery-ui.min.js"/>-->
+                        <!--<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/{$param/jquery_ui_version}/themes/smoothness/jquery-ui.css" type="text/css" title="standard style"/>-->
 
-                        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/{$param/bootstrap_version}/js/bootstrap.min.js" />
-                        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/{$param/bootstrap_version}/css/bootstrap.min.css" />
+                        <!--<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/{$param/bootstrap_version}/js/bootstrap.min.js" />-->
+                        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/{$param/bootstrap_version}/css/bootstrap.min.css" />-->
 
+                        <link rel="stylesheet" href="styles/css/main.css?v={$param/cc_version}" type="text/css" title="standard style"/>
                         <link rel="stylesheet" href="styles/general.css?v={$param/cc_version}" type="text/css" title="standard style"/>
                         <link rel="stylesheet" href="styles/card.css?v={$param/cc_version}" type="text/css" title="standard style"/>
                         <xsl:choose>
@@ -74,29 +75,21 @@
                             </xsl:if>
                             <xsl:text> - MArcomage</xsl:text>
                         </title>
-                        <!--<script type="text/javascript" src="js/jquery/jquery.js"></script>-->
-                        <!--<script type="text/javascript" src="js/jquery/jquery_ui.js"></script>-->
-                        <script type="text/javascript" src="js/scrollto.js"/>
-                        <script type="text/javascript" src="js/cookie.js"/>
-                        <script type="text/javascript" src="js/utils.js?v={$param/cc_version}"/>
-                        <script type="text/javascript" src="js/{$current_section}.js?v={$param/cc_version}"/>
-                        <xsl:if test="$param/new_user = 'yes'">
-                            <script type="text/javascript" src="js/intro.js?v={$param/cc_version}"/>
-                        </xsl:if>
-                        <xsl:if test="$param/new_level_gained &gt; 0">
-                            <script type="text/javascript" src="js/levelup.js?v={$param/cc_version}"/>
-                        </xsl:if>
-                        <xsl:if test="$param/tutorial_active = 'yes'">
-                            <script type="text/javascript" src="js/highlight.js?v={$param/cc_version}"/>
-                        </xsl:if>
+                        <!--<script type="text/javascript" src="js/{$current_section}.js?v={$param/cc_version}"/>-->
+                        <!--<xsl:if test="$param/new_user = 'yes'">-->
+                            <!--<script type="text/javascript" src="js/intro.js?v={$param/cc_version}"/>-->
+                        <!--</xsl:if>-->
+                        <!--<xsl:if test="$param/new_level_gained &gt; 0">-->
+                            <!--<script type="text/javascript" src="js/levelup.js?v={$param/cc_version}"/>-->
+                        <!--</xsl:if>-->
+                        <!--<xsl:if test="$param/tutorial_active = 'yes'">-->
+                            <!--<script type="text/javascript" src="js/highlight.js?v={$param/cc_version}"/>-->
+                        <!--</xsl:if>-->
                         <xsl:if test="$param/include_captcha = 'yes'">
                             <script src='https://www.google.com/recaptcha/api.js'/>
                         </xsl:if>
-                        <!--<xsl:comment>-->
-                            <!--<![CDATA[[if lt IE 9]><script type="text/javascript" src="js/ie9.js"></script><![endif]]]>-->
-                        <!--</xsl:comment>-->
                     </head>
-                    <body>
+                    <body data-section="{$current_section}" data-tutorial="{$param/tutorial_active}">
                         <div class="container">
                             <form enctype="multipart/form-data" method="post">
 
@@ -125,14 +118,32 @@
 
                                 <!-- display welcome message for new users -->
                                 <xsl:if test="$param/new_user = 'yes'">
-                                    <div id="intro-dialog">
-                                        <h3>Welcome to MArcomage</h3>
-                                        <p>
-                                            Greetings <b><xsl:value-of select="$param/player_name"/></b>.
-                                            By playing games you earn <b>experience</b> points and once you have sufficient
-                                            amount, you will gain a new <b>level</b>. This will unlock new <b>cards</b> and even
-                                            entire new <b>sections</b> to explore. Now, without further delay, let's play the game.
-                                        </p>
+                                    <div class="modal fade" id="intro-dialog" role="dialog">
+                                        <div class="vertical-alignment-helper">
+                                            <div class="modal-dialog vertical-align-center">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button name="close-modal" type="button" class="close" data-dismiss="modal">&#10006;</button>
+                                                        <p class="modal-title">Welcome to MArcomage</p>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>
+                                                            Greetings <b><xsl:value-of select="$param/player_name"/></b>.
+                                                            By playing games you earn <b>experience</b> points and once you have sufficient
+                                                            amount, you will gain a new <b>level</b>. This will unlock new <b>cards</b> and even
+                                                            entire new <b>sections</b> to explore. Now, without further delay, let's play the game.
+                                                        </p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button name="intro-dialog-dismiss" type="button" class="btn btn-default" data-dismiss="modal">
+                                                            <span class="btn-inner">
+                                                                <span class="btn-text">Close</span>
+                                                            </span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </xsl:if>
 
@@ -153,28 +164,48 @@
 
                                     <xsl:variable name="levelup_data" select="exsl:node-set($levels)/*[@id = $param/new_level_gained]"/>
                                     <xsl:if test="$levelup_data">
-                                        <div id="level-up-dialog">
-                                            <h3>Congratulations, you have reached level <xsl:value-of select="$levelup_data/@id"/> !</h3>
-                                            <xsl:if test="$levelup_data/@section != ''">
-                                                <p><b><xsl:value-of select="$levelup_data/@section"/></b> section unlocked.</p>
-                                                <input type="hidden" name="unlock_section" value="{$levelup_data/@section}"/>
-                                            </xsl:if>
-                                            <xsl:if test="$levelup_data/@desc != ''">
-                                                <p><xsl:value-of select="$levelup_data/@desc"/></p>
-                                            </xsl:if>
-                                            <xsl:if test="count($param/new_cards/*) &gt; 0">
-                                                <p>New cards available.</p>
-                                                <div class="unlocked-cards">
-                                                    <xsl:for-each select="$param/new_cards/*">
-                                                        <xsl:sort select="name" order="ascending"/>
-                                                        <div>
-                                                            <xsl:copy-of select="am:cardString(
-                                                                current(), $param/card_old_look, $param/card_insignias, $param/card_foils
-                                                            )"/>
+                                        <div class="modal fade" id="level-up-dialog" role="dialog">
+                                            <div class="vertical-alignment-helper">
+                                                <div class="modal-dialog vertical-align-center">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button name="close-modal" type="button" class="close" data-dismiss="modal">&#10006;</button>
+                                                            <p class="modal-title">Congratulations, you have reached level <xsl:value-of select="$levelup_data/@id"/> !</p>
                                                         </div>
-                                                    </xsl:for-each>
+                                                        <div class="modal-body">
+                                                            <p>
+                                                                <xsl:if test="$levelup_data/@section != ''">
+                                                                    <p><b><xsl:value-of select="$levelup_data/@section"/></b> section unlocked.</p>
+                                                                    <input type="hidden" name="unlock_section" value="{$levelup_data/@section}"/>
+                                                                </xsl:if>
+                                                                <xsl:if test="$levelup_data/@desc != ''">
+                                                                    <p><xsl:value-of select="$levelup_data/@desc"/></p>
+                                                                </xsl:if>
+                                                                <xsl:if test="count($param/new_cards/*) &gt; 0">
+                                                                    <p>New cards available.</p>
+                                                                    <div class="unlocked-cards">
+                                                                        <xsl:for-each select="$param/new_cards/*">
+                                                                            <xsl:sort select="name" order="ascending"/>
+                                                                            <div>
+                                                                                <xsl:copy-of select="am:cardString(
+                                                                                    current(), $param/card_old_look, $param/card_insignias, $param/card_foils
+                                                                                )"/>
+                                                                            </div>
+                                                                        </xsl:for-each>
+                                                                    </div>
+                                                                </xsl:if>
+                                                            </p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button name="level-up-dialog-dismiss" type="button" class="btn btn-default" data-dismiss="modal">
+                                                                <span class="btn-inner">
+                                                                    <span class="btn-text">Close</span>
+                                                                </span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </xsl:if>
+                                            </div>
                                         </div>
                                     </xsl:if>
                                 </xsl:if>

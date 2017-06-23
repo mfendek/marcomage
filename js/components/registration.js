@@ -2,12 +2,17 @@
  * MArcomage JavaScript - Registration section *
  ***********************************************/
 
-'use strict';
+import $ from 'jquery';
+
+export default function () {
 
 $(document).ready(function() {
-    var notification = dic().notificationsManager();
+    if (!$.dic.bodyData().isSectionActive('registration')) {
+        return;
+    }
 
-    var newUsername = $('input[name="new_username"]');
+    let notification = $.dic.notificationsManager();
+    let newUsername = $('input[name="new_username"]');
 
     // set focus on login name
     newUsername.focus();
@@ -57,3 +62,5 @@ $(document).ready(function() {
         }
     });
 });
+
+}

@@ -2,7 +2,9 @@
  * MArcomage JavaScript - Decks section *
  ****************************************/
 
-'use strict';
+import $ from 'jquery';
+
+export default function () {
 
 /**
  * Add card to deck via AJAX
@@ -11,10 +13,10 @@
  */
 function takeCard(cardId)
 {
-    var card = '#card_' + cardId;
-    var deckId = $('input[name="current_deck"]').val();
-    var api = dic().apiManager();
-    var notification = dic().notificationsManager();
+    let card = '#card_' + cardId;
+    let deckId = $('input[name="current_deck"]').val();
+    let api = $.dic.apiManager();
+    let notification = $.dic.notificationsManager();
 
     api.takeCard(deckId, cardId, function(result) {
         // AJAX failed, display error message
@@ -23,8 +25,8 @@ function takeCard(cardId)
             return;
         }
 
-        var slot = '#slot_' + result.slot;
-        var takenCard = result.taken_card;
+        let slot = '#slot_' + result.slot;
+        let takenCard = result.taken_card;
 
         // move selected card to deck
         // disallow the card to be removed from the deck (prevent double clicks)
@@ -53,7 +55,7 @@ function takeCard(cardId)
 
         // update tokens when needed
         if (result.tokens != 'no') {
-            var token;
+            let token;
 
             $('#tokens > select').each(function(i) {
                 token = document.getElementsByName('Token' + (i + 1)).item(0);
@@ -82,10 +84,10 @@ function takeCard(cardId)
  */
 function removeCard(cardId)
 {
-    var card = '#card_' + cardId;
-    var deckId = $('input[name="current_deck"]').val();
-    var api = dic().apiManager();
-    var notification = dic().notificationsManager();
+    let card = '#card_' + cardId;
+    let deckId = $('input[name="current_deck"]').val();
+    let api = $.dic.apiManager();
+    let notification = $.dic.notificationsManager();
 
     api.removeCard(deckId, cardId, function(result) {
         // AJAX failed, display error message
@@ -94,8 +96,8 @@ function removeCard(cardId)
             return;
         }
 
-        var slot = '#slot_' + result.slot;
-        var empty = result['slot_html'];
+        let slot = '#slot_' + result.slot;
+        let empty = result['slot_html'];
 
         // move selected card to card pool
 
@@ -128,9 +130,13 @@ function removeCard(cardId)
 }
 
 $(document).ready(function() {
-    var api = dic().apiManager();
-    var notification = dic().notificationsManager();
-    var confirmed = false;
+    if (!$.dic.bodyData().isSectionActive('decks')) {
+        return;
+    }
+
+    let api = $.dic.apiManager();
+    let notification = $.dic.notificationsManager();
+    let confirmed = false;
 
     // apply card filters by pressing ENTER key
     $('input[name="name_filter"]').keypress(function(event) {
@@ -141,13 +147,13 @@ $(document).ready(function() {
     });
 
     // card pool lock
-    var cardPoolLock = false;
+    let cardPoolLock = false;
 
     // show/hide card pool
     $('button[name="card_pool_switch"]').click(function() {
-        var cardPool =  $('#card-pool');
-        var cardPoolSwitch = $(this);
-        var cardPoolIcon = $(this).find('span');
+        let cardPool =  $('#card-pool');
+        let cardPoolSwitch = $(this);
+        let cardPoolIcon = $(this).find('span');
 
         // card pool is locked
         if (cardPoolLock) {
@@ -219,8 +225,8 @@ $(document).ready(function() {
             return true;
         }
 
-        var triggerButton = $(this);
-        var message = 'All cards will be removed from the deck, all token counters will be reset and deck statistics will be reset as well. Are you sure you want to continue?';
+        let triggerButton = $(this);
+        let message = 'All cards will be removed from the deck, all token counters will be reset and deck statistics will be reset as well. Are you sure you want to continue?';
 
         // request confirmation
         notification.displayConfirm('Action confirmation', message, function(result) {
@@ -243,8 +249,8 @@ $(document).ready(function() {
             return true;
         }
 
-        var triggerButton = $(this);
-        var message = 'Deck statistics will be reset. Are you sure you want to continue?';
+        let triggerButton = $(this);
+        let message = 'Deck statistics will be reset. Are you sure you want to continue?';
 
         // request confirmation
         notification.displayConfirm('Action confirmation', message, function(result) {
@@ -265,8 +271,8 @@ $(document).ready(function() {
             return true;
         }
 
-        var triggerButton = $(this);
-        var message = 'Are you sure you want to share this deck to other players?';
+        let triggerButton = $(this);
+        let message = 'Are you sure you want to share this deck to other players?';
 
         // request confirmation
         notification.displayConfirm('Action confirmation', message, function(result) {
@@ -288,14 +294,14 @@ $(document).ready(function() {
         }
 
         // extract target deck name
-        var targetDeckId = $('select[name="selected_deck"]').val();
-        var targetDeck = $('select[name="selected_deck"] >  option[value="' + targetDeckId + '"]').text();
+        let targetDeckId = $('select[name="selected_deck"]').val();
+        let targetDeck = $('select[name="selected_deck"] >  option[value="' + targetDeckId + '"]').text();
 
         // extract source deck name
-        var sourceDeck = $(this).parent().parent().find('a.deck').text();
+        let sourceDeck = $(this).parent().parent().find('a.deck').text();
 
-        var triggerButton = $(this);
-        var message = 'Are you sure you want to import ' + sourceDeck + ' into ' + targetDeck + '?';
+        let triggerButton = $(this);
+        let message = 'Are you sure you want to import ' + sourceDeck + ' into ' + targetDeck + '?';
 
         // request confirmation
         notification.displayConfirm('Action confirmation', message, function(result) {
@@ -312,73 +318,67 @@ $(document).ready(function() {
     // open deck note
     $('a#deck-note').click(function(event) {
         event.preventDefault();
-        $('#deck-note-dialog').dialog('open');
+        $('#deck-note-dialog').modal();
     });
 
-    // deck note handler
-    $('#deck-note-dialog').dialog({
-        autoOpen: false,
-        show: 'fade',
-        hide: 'fade',
-        title: 'Note',
-        buttons: {
-            Save: function() {
-                var deckNote = $('textarea[name="content"]').val();
+    // save deck note button
+    $('button[name="deck-note-dialog-save"]').click(function() {
+        let deckNote = $('textarea[name="content"]').val();
 
-                // check user input
-                if (deckNote.length > 1000) {
-                    notification.displayError('Deck note is too long');
-                    return;
-                }
-
-                var deckId = $('input[name="current_deck"]').val();
-
-                api.saveDeckNote(deckId, deckNote, function(result) {
-                    // AJAX failed, display error message
-                    if (result.error) {
-                        notification.displayError(result.error);
-                        return;
-                    }
-
-                    // update note button highlight
-                    // case 1: note is empty (remove highlight)
-                    if (deckNote == '') {
-                        $('a#deck-note').removeClass('marked_button');
-                    }
-                    // case 2: note is not empty (add highlight if not present)
-                    else if (!$('a#deck-note').hasClass('marked_button')) {
-                        $('a#deck-note').addClass('marked_button');
-                    }
-
-                    $('#deck-note-dialog').dialog('close');
-                });
-            },
-            Clear: function() {
-                var deckId = $('input[name="current_deck"]').val();
-
-                api.clearDeckNote(deckId, function(result) {
-                    // AJAX failed, display error message
-                    if (result.error) {
-                        notification.displayError(result.error);
-                        return;
-                    }
-
-                    // clear input field
-                    $('textarea[name="content"]').val('');
-
-                    // update note button highlight (remove highlight)
-                    $('a#deck-note').removeClass('marked_button');
-                });
-            },
-            Close: function() {
-                $(this).dialog('close');
-            }
+        // check user input
+        if (deckNote.length > 1000) {
+            notification.displayError('Deck note is too long');
+            return;
         }
+
+        let deckId = $('input[name="current_deck"]').val();
+
+        api.saveDeckNote(deckId, deckNote, function(result) {
+            // AJAX failed, display error message
+            if (result.error) {
+                notification.displayError(result.error);
+                return;
+            }
+
+            // update note button highlight
+            // case 1: note is empty (remove highlight)
+            if (deckNote == '') {
+                $('a#deck-note').removeClass('marked_button');
+            }
+            // case 2: note is not empty (add highlight if not present)
+            else if (!$('a#deck-note').hasClass('marked_button')) {
+                $('a#deck-note').addClass('marked_button');
+            }
+
+            $('#deck-note-dialog').modal('hide');
+        });
+    });
+
+    // clear deck note button
+    $('button[name="deck-note-dialog-clear"]').click(function() {
+        let deckId = $('input[name="current_deck"]').val();
+
+        api.clearDeckNote(deckId, function(result) {
+            // AJAX failed, display error message
+            if (result.error) {
+                notification.displayError(result.error);
+                return;
+            }
+
+            // clear input field
+            $('textarea[name="content"]').val('');
+
+            // update note button highlight (remove highlight)
+            $('a#deck-note').removeClass('marked_button');
+        });
+
+        // hide note dialog
+        $('#deck-note-dialog').modal('hide');
     });
 
     // file upload
     $('button[name="import_deck"]').click(function() {
-        var uploadedFile = $('input[name="deck_data_file"]');
+        let uploadedFile = $('input[name="deck_data_file"]');
 
         // no file was selected
         if (uploadedFile.val() == '') {
@@ -389,3 +389,5 @@ $(document).ready(function() {
     });
 
 });
+
+}

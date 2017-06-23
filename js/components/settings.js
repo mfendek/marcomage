@@ -2,23 +2,29 @@
  * MArcomage JavaScript - Settings section *
  *******************************************/
 
-'use strict';
+import $ from 'jquery';
+
+export default function () {
 
 $(document).ready(function() {
-    var notification = dic().notificationsManager();
-    var confirmed = false;
+    if (!$.dic.bodyData().isSectionActive('settings')) {
+        return;
+    }
+
+    let notification = $.dic.notificationsManager();
+    let confirmed = false;
 
     // purchase item (MArcomage shop)
     $('button[name="buy_item"]').click(function() {
-        var selected = $('select[name="selected_item"]').val();
+        let selected = $('select[name="selected_item"]').val();
 
         // action was already approved
         if (confirmed) {
             return true;
         }
 
-        var triggerButton = $(this);
-        var message = 'Do you really want to purchase ' + $('#' + selected + '_desc').text() + '?';
+        let triggerButton = $(this);
+        let message = 'Do you really want to purchase ' + $('#' + selected + '_desc').text() + '?';
 
         // request confirmation
         notification.displayConfirm('Purchase confirmation', message, function(result) {
@@ -39,7 +45,7 @@ $(document).ready(function() {
             return true;
         }
 
-        var triggerButton = $(this);
+        let triggerButton = $(this);
 
         // request confirmation
         notification.displayConfirm('Action confirmation', 'Do you really want to skip tutorial?', function(result) {
@@ -55,7 +61,7 @@ $(document).ready(function() {
 
     // file upload
     $('button[name="upload_avatar_image"]').click(function() {
-        var uploadedFile = $('input[name="avatar_image_file"]');
+        let uploadedFile = $('input[name="avatar_image_file"]');
 
         // no file was selected
         if (uploadedFile.val() == '') {
@@ -66,3 +72,5 @@ $(document).ready(function() {
     });
 
 });
+
+}

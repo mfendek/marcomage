@@ -254,13 +254,15 @@ class Game extends TemplateDataAbstract
         $input = $this->input();
 
         $config = $this->getDic()->config();
+        $newUser = $this->getDic()->newUserFlag();
         $player = $this->getCurrentPlayer();
         $defEntityChallenge = $this->defEntity()->challenge();
         $dbEntityChallenge = $this->dbEntity()->deck();
         $dbEntityGame = $this->dbEntity()->game();
 
         $setting = $this->getCurrentSettings();
-        $gamesSubsection = Input::defaultValue($input, 'games_subsection', 'started_games');
+        $default = ($newUser) ? 'game_creation' : 'started_games';
+        $gamesSubsection = Input::defaultValue($input, 'games_subsection', $default);
         $gamesSubsection = (in_array($gamesSubsection, ['started_games', 'game_creation']))
             ? $gamesSubsection : 'started_games';
         $data['games_subsection'] = $gamesSubsection;

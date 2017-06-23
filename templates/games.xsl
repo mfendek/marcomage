@@ -1122,61 +1122,110 @@
                 <!-- chat modal dialog -->
                 <xsl:if test="$param/integrated_chat = 'no'">
                     <!-- enabled in case integrated chat setting is disabled -->
-                    <div id="chat-dialog">
-                        <!-- message list -->
-                        <div>
-                            <xsl:if test="count($param/message_list/*) &gt; 0">
-                                <!-- scrolls chat box to bottom if reverse chat order setting is active -->
-                                <xsl:if test="$param/reverse_chat = 'yes'">
-                                    <xsl:attribute name="class">scroll_max</xsl:attribute>
-                                </xsl:if>
-                                <xsl:for-each select="$param/message_list/*">
-                                    <p>
-                                        <img class="avatar" height="20" width="20" alt="avatar">
-                                            <xsl:choose>
-                                                <xsl:when test="author = $param/player_name">
-                                                    <xsl:attribute name="src">
-                                                        <xsl:value-of select="$param/avatar_path"/>
-                                                        <xsl:value-of select="$param/p1_avatar"/>
-                                                    </xsl:attribute>
-                                                </xsl:when>
-                                                <xsl:when test="author = $param/opponent_name">
-                                                    <xsl:attribute name="src">
-                                                        <xsl:value-of select="$param/avatar_path"/>
-                                                        <xsl:value-of select="$param/p2_avatar"/>
-                                                    </xsl:attribute>
-                                                </xsl:when>
-                                            </xsl:choose>
-                                        </img>
-                                        <span>
-                                            <xsl:choose>
-                                                <xsl:when test="author = $param/player_name">
-                                                    <xsl:attribute name="class">chat-box-player</xsl:attribute>
-                                                </xsl:when>
-                                                <!-- highlight new chat messages (never highlight own chat messages) -->
-                                                <xsl:when test="am:dateDiff(created_at, $param/chat_notification) &lt; 0">
-                                                    <xsl:attribute name="class">new_message</xsl:attribute>
-                                                </xsl:when>
-                                                <xsl:when test="author = $param/opponent_name">
-                                                    <xsl:attribute name="class">chat-box-opponent</xsl:attribute>
-                                                </xsl:when>
-                                                <xsl:otherwise>
-                                                    <xsl:attribute name="class">chat-box-system</xsl:attribute>
-                                                </xsl:otherwise>
-                                            </xsl:choose>
-                                            <xsl:value-of select="author"/>
-                                            <xsl:text> on </xsl:text>
-                                            <xsl:copy-of select="am:dateTime(created_at, $param/timezone)"/>
-                                        </span>
-                                    </p>
-                                    <div class="chat-message">
-                                        <xsl:value-of select="am:bbCodeParseExtended(message)" disable-output-escaping="yes"/>
+                    <div class="modal fade" id="chat-window-dialog" role="dialog">
+                        <div class="vertical-alignment-helper">
+                            <div class="modal-dialog vertical-align-center">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button name="close-modal" type="button" class="close" data-dismiss="modal">&#10006;</button>
+                                        <p class="modal-title">Chat</p>
                                     </div>
-                                </xsl:for-each>
-                            </xsl:if>
-                        </div>
+                                    <div class="modal-body">
+                                        <!-- message list -->
+                                        <div>
+                                            <xsl:if test="count($param/message_list/*) &gt; 0">
+                                                <!-- scrolls chat box to bottom if reverse chat order setting is active -->
+                                                <xsl:if test="$param/reverse_chat = 'yes'">
+                                                    <xsl:attribute name="class">scroll_max</xsl:attribute>
+                                                </xsl:if>
+                                                <xsl:for-each select="$param/message_list/*">
+                                                    <p>
+                                                        <img class="avatar" height="20" width="20" alt="avatar">
+                                                            <xsl:choose>
+                                                                <xsl:when test="author = $param/player_name">
+                                                                    <xsl:attribute name="src">
+                                                                        <xsl:value-of select="$param/avatar_path"/>
+                                                                        <xsl:value-of select="$param/p1_avatar"/>
+                                                                    </xsl:attribute>
+                                                                </xsl:when>
+                                                                <xsl:when test="author = $param/opponent_name">
+                                                                    <xsl:attribute name="src">
+                                                                        <xsl:value-of select="$param/avatar_path"/>
+                                                                        <xsl:value-of select="$param/p2_avatar"/>
+                                                                    </xsl:attribute>
+                                                                </xsl:when>
+                                                            </xsl:choose>
+                                                        </img>
+                                                        <span>
+                                                            <xsl:choose>
+                                                                <xsl:when test="author = $param/player_name">
+                                                                    <xsl:attribute name="class">chat-box-player</xsl:attribute>
+                                                                </xsl:when>
+                                                                <!-- highlight new chat messages (never highlight own chat messages) -->
+                                                                <xsl:when test="am:dateDiff(created_at, $param/chat_notification) &lt; 0">
+                                                                    <xsl:attribute name="class">new_message</xsl:attribute>
+                                                                </xsl:when>
+                                                                <xsl:when test="author = $param/opponent_name">
+                                                                    <xsl:attribute name="class">chat-box-opponent</xsl:attribute>
+                                                                </xsl:when>
+                                                                <xsl:otherwise>
+                                                                    <xsl:attribute name="class">chat-box-system</xsl:attribute>
+                                                                </xsl:otherwise>
+                                                            </xsl:choose>
+                                                            <xsl:value-of select="author"/>
+                                                            <xsl:text> on </xsl:text>
+                                                            <xsl:copy-of select="am:dateTime(created_at, $param/timezone)"/>
+                                                        </span>
+                                                    </p>
+                                                    <div class="chat-message">
+                                                        <xsl:value-of select="am:bbCodeParseExtended(message)" disable-output-escaping="yes"/>
+                                                    </div>
+                                                </xsl:for-each>
+                                            </xsl:if>
+                                        </div>
 
-                        <textarea name="chat_area" rows="3" cols="50"/>
+                                        <textarea name="chat_area" rows="3" cols="50"/>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button name="chat-dialog-bold" type="button" class="btn btn-default">
+                                            <span class="btn-inner">
+                                                <span class="btn-text">B</span>
+                                            </span>
+                                        </button>
+                                        <button name="chat-dialog-italic" type="button" class="btn btn-default">
+                                            <span class="btn-inner">
+                                                <span class="btn-text">I</span>
+                                            </span>
+                                        </button>
+                                        <button name="chat-dialog-link" type="button" class="btn btn-default">
+                                            <span class="btn-inner">
+                                                <span class="btn-text">L</span>
+                                            </span>
+                                        </button>
+                                        <button name="chat-dialog-url" type="button" class="btn btn-default">
+                                            <span class="btn-inner">
+                                                <span class="btn-text">U</span>
+                                            </span>
+                                        </button>
+                                        <button name="chat-dialog-quote" type="button" class="btn btn-default">
+                                            <span class="btn-inner">
+                                                <span class="btn-text">Q</span>
+                                            </span>
+                                        </button>
+                                        <button name="chat-dialog-send" type="button" class="btn btn-default">
+                                            <span class="btn-inner">
+                                                <span class="btn-text">Send</span>
+                                            </span>
+                                        </button>
+                                        <button name="chat-dialog-dismiss" type="button" class="btn btn-default" data-dismiss="modal">
+                                            <span class="btn-inner">
+                                                <span class="btn-text">Close</span>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </xsl:if>
 
@@ -1206,10 +1255,41 @@
             </div>
 
             <!-- game note modal dialog -->
-            <div id="game-note-dialog">
-                <textarea name="content" rows="10" cols="50">
-                    <xsl:value-of select="$param/game_note"/>
-                </textarea>
+            <div class="modal fade" id="game-note-dialog" role="dialog">
+                <div class="vertical-alignment-helper">
+                    <div class="modal-dialog vertical-align-center">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button name="close-modal" type="button" class="close" data-dismiss="modal">&#10006;</button>
+                                <p class="modal-title">Note</p>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    <textarea name="content" rows="10" cols="50">
+                                        <xsl:value-of select="$param/game_note"/>
+                                    </textarea>
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button name="game-note-dialog-save" type="button" class="btn btn-default">
+                                    <span class="btn-inner">
+                                        <span class="btn-text">Save</span>
+                                    </span>
+                                </button>
+                                <button name="game-note-dialog-clear" type="button" class="btn btn-default">
+                                    <span class="btn-inner">
+                                        <span class="btn-text">Clear</span>
+                                    </span>
+                                </button>
+                                <button name="game-note-dialog-dismiss" type="button" class="btn btn-default" data-dismiss="modal">
+                                    <span class="btn-inner">
+                                        <span class="btn-text">Close</span>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

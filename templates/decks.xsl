@@ -510,10 +510,41 @@
         </div>
 
         <!-- deck note dialog -->
-        <div id="deck-note-dialog">
-            <textarea name="content" rows="10" cols="50">
-                <xsl:value-of select="$param/note"/>
-            </textarea>
+        <div class="modal fade" id="deck-note-dialog" role="dialog">
+            <div class="vertical-alignment-helper">
+                <div class="modal-dialog vertical-align-center">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button name="close-modal" type="button" class="close" data-dismiss="modal">&#10006;</button>
+                            <p class="modal-title">Note</p>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                <textarea name="content" rows="10" cols="50">
+                                    <xsl:value-of select="$param/note"/>
+                                </textarea>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button name="deck-note-dialog-save" type="button" class="btn btn-default">
+                                <span class="btn-inner">
+                                    <span class="btn-text">Save</span>
+                                </span>
+                            </button>
+                            <button name="deck-note-dialog-clear" type="button" class="btn btn-default">
+                                <span class="btn-inner">
+                                    <span class="btn-text">Clear</span>
+                                </span>
+                            </button>
+                            <button name="deck-note-dialog-dismiss" type="button" class="btn btn-default" data-dismiss="modal">
+                                <span class="btn-inner">
+                                    <span class="btn-text">Close</span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </xsl:template>

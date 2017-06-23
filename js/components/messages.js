@@ -2,11 +2,17 @@
  * MArcomage JavaScript - Messages section *
  *******************************************/
 
-'use strict';
+import $ from 'jquery';
+
+export default function () {
 
 $(document).ready(function() {
-    var notification = dic().notificationsManager();
-    var confirmed = false;
+    if (!$.dic.bodyData().isSectionActive('messages')) {
+        return;
+    }
+
+    let notification = $.dic.notificationsManager();
+    let confirmed = false;
 
     // apply message filters by pressing ENTER key
     $('input[name="name_filter"]').keypress(function(event) {
@@ -25,8 +31,8 @@ $(document).ready(function() {
             return true;
         }
 
-        var triggerButton = $(this);
-        var message = 'Current message will be deleted. Are you sure you want to continue?';
+        let triggerButton = $(this);
+        let message = 'Current message will be deleted. Are you sure you want to continue?';
 
         // request confirmation
         notification.displayConfirm('Action confirmation', message, function(result) {
@@ -53,8 +59,8 @@ $(document).ready(function() {
             return true;
         }
 
-        var triggerButton = $(this);
-        var message = 'All selected messages will be deleted. Are you sure you want to continue?';
+        let triggerButton = $(this);
+        let message = 'All selected messages will be deleted. Are you sure you want to continue?';
 
         // request confirmation
         notification.displayConfirm('Action confirmation', message, function(result) {
@@ -70,7 +76,7 @@ $(document).ready(function() {
 
     // select / deselect all messages button
     $('button[name="select_all_messages"]').click(function() {
-        var checkboxes = $('input[type="checkbox"][name^="mass_delete_"]');
+        let checkboxes = $('input[type="checkbox"][name^="mass_delete_"]');
 
         // all checkboxes are checked - deselect all
         if (checkboxes.filter(':checked').length == checkboxes.length) {
@@ -83,3 +89,5 @@ $(document).ready(function() {
     });
 
 });
+
+}

@@ -2,11 +2,17 @@
  * MArcomage JavaScript - Concepts section *
  *******************************************/
 
-'use strict';
+import $ from 'jquery';
+
+export default function () {
 
 $(document).ready(function() {
-    var notification = dic().notificationsManager();
-    var confirmed = false;
+    if (!$.dic.bodyData().isSectionActive('concepts')) {
+        return;
+    }
+
+    let notification = $.dic.notificationsManager();
+    let confirmed = false;
 
     // apply card filters by pressing ENTER key
     $('input[name="card_name"]').keypress(function(event) {
@@ -25,8 +31,8 @@ $(document).ready(function() {
             return true;
         }
 
-        var triggerButton = $(this);
-        var message = 'Card concept data will be deleted. Are you sure you want to continue?';
+        let triggerButton = $(this);
+        let message = 'Card concept data will be deleted. Are you sure you want to continue?';
 
         // request confirmation
         notification.displayConfirm('Action confirmation', message, function(result) {
@@ -42,7 +48,7 @@ $(document).ready(function() {
 
     // file upload
     $('button[name="upload_concept_image"]').click(function() {
-        var uploadedFile = $('input[name="concept_image_file"]');
+        let uploadedFile = $('input[name="concept_image_file"]');
 
         // no file was selected
         if (uploadedFile.val() == '') {
@@ -53,3 +59,5 @@ $(document).ready(function() {
     });
 
 });
+
+}

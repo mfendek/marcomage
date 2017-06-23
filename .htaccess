@@ -12,7 +12,7 @@ allow from all
 </Files>
 
 # various browser-related file extensions
-<Files ~ "\.(html|css|js||jpg|jpeg|gif|png|ico)$">
+<Files ~ "\.(html|css|js||jpg|jpeg|gif|png|ico|woff|woff2|ttf|svg|eot)$">
 allow from all
 </Files>
 

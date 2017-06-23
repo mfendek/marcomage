@@ -565,8 +565,8 @@
         <xsl:variable name="result">
             <h3 class="subsection-navigation">
                 <xsl:variable name="items">
-                    <value name="started_games" text="Started games"/>
-                    <value name="game_creation" text="Game creation"/>
+                    <value name="started_games" text="Active games"/>
+                    <value name="game_creation" text="Create game"/>
                 </xsl:variable>
                 <xsl:for-each select="exsl:node-set($items)/*">
                     <!-- menu item separator -->

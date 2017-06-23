@@ -2,11 +2,17 @@
  * MArcomage JavaScript - Cards section *
  ****************************************/
 
-'use strict';
+import $ from 'jquery';
+
+export default function () {
 
 $(document).ready(function() {
-    var notification = dic().notificationsManager();
-    var confirmed = false;
+    if (!$.dic.bodyData().isSectionActive('cards')) {
+        return;
+    }
+
+    let notification = $.dic.notificationsManager();
+    let confirmed = false;
 
     // purchase foil card version
     $('button[name="buy_foil_card"]').click(function() {
@@ -15,8 +21,8 @@ $(document).ready(function() {
             return true;
         }
 
-        var triggerButton = $(this);
-        var message = $('#foil-version-purchase').text() + '?';
+        let triggerButton = $(this);
+        let message = $('#foil-version-purchase').text() + '?';
         message = message.replace('version', 'version of ' + $('#foil-version-name').text()) + '?';
 
         // request confirmation
@@ -40,3 +46,5 @@ $(document).ready(function() {
     });
 
 });
+
+}

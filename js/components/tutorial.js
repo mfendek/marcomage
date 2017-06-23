@@ -2,7 +2,9 @@
  * MArcomage JavaScript - highlighting functions *
  *************************************************/
 
-'use strict';
+import $ from 'jquery';
+
+export default function () {
 
 /**
  * Highlight quick game vs AI button
@@ -27,7 +29,11 @@ function highlightLeaveButton()
  */
 function highlightCards()
 {
-    var playCard = $('div.game button[name="play_card"]');
+    if (!$.dic.bodyData().isTutorialActive()) {
+        return;
+    }
+
+    let playCard = $('div.game button[name="play_card"]');
 
     // case 1: single play card button mode is active
     if (playCard.length == 1 && playCard.val() == 0) {
@@ -83,3 +89,5 @@ $(document).ready(function() {
     }
 
 });
+
+}

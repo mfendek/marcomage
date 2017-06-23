@@ -2,7 +2,9 @@
  * MArcomage JavaScript - support functions *
  ********************************************/
 
-'use strict';
+import $ from 'jquery';
+
+export default function () {
 
 /**
  * Refresh user screen (top-level sections only)
@@ -12,7 +14,7 @@ function refresh()
     // do not use window.location.reload() because it may cause redundant POST request
     // do not use direct assigning to window.location.href because each reload will be stored in browsing history
     // do not use window.location.href as a source, because it may contain garbage
-    window.location.replace($('div#menu-center > a.pushed').attr('href'));
+    window.location.replace($('.menu-center > a.pushed').attr('href'));
 }
 
 /**
@@ -22,48 +24,12 @@ function refresh()
  */
 function getSessionData(name)
 {
-    var cookieValue = $.cookie(name);
+    let cookieValue = $.cookie(name);
     if (cookieValue != null && cookieValue != '') {
         return cookieValue;
     }
 
     return $('input[name="' + name + '"][type="hidden"]').val();
-}
-
-/**
- * Adds a pair of tags to the highlighted text in the text area with given name
- * if no text is highlighted, append the beginning and ending tag to whatever's in the text area
- * @param {string}openingTag
- * @param {string}closingTag
- * @param {string}content
- */
-function addTags(openingTag, closingTag, content) {
-    var obj = document.getElementsByName(content).item(0);
-    obj.focus();
-
-    // Internet Explorer
-    if (document.selection && document.selection.createRange) {
-        var currentSelection = document.selection.createRange();
-
-        if (currentSelection.parentElement() == obj) {
-            currentSelection.text = openingTag + currentSelection.text + closingTag;
-        }
-    }
-    // Firefox
-    else if (typeof(obj) != 'undefined') {
-        var length = parseInt(obj.value.length);
-        var selStart = obj.selectionStart;
-        var selEnd = obj.selectionEnd;
-
-        obj.value = obj.value.substring(0, selStart) + openingTag + obj.value.substring(selStart, selEnd)
-            + closingTag + obj.value.substring(selEnd, length);
-    }
-    // other
-    else {
-        obj.value += openingTag + closingTag;
-    }
-
-    obj.focus();
 }
 
 /**
@@ -86,7 +52,12 @@ function dic()
             {
                 // lazy load
                 if (!this.cache[name]) {
-                    this.cache[name] = new window[name];
+                    let object = {};
+
+                    // variable class name is processed by eval (class name is not user input)
+                    eval('object = new ' + name + '();');
+
+                    this.cache[name] = object;
                 }
 
                 return this.cache[name];
@@ -108,12 +79,31 @@ function dic()
             notificationsManager: function()
             {
                 return this.getService('NotificationsManager');
+            },
+
+            /**
+             * @returns {BodyData}
+             */
+            bodyData: function()
+            {
+                return this.getService('BodyData');
+            },
+
+            /**
+             * @returns {BBcode}
+             */
+            bbCode: function()
+            {
+                return this.getService('BBcode');
             }
         };
     }
 
     return $.dic;
 }
+
+// store DIC into global namespace so we could access it anywhere
+$.dic = dic();
 
 /**
  * API manager contains API connection related functionality
@@ -133,8 +123,8 @@ function ApiManager()
         data['action'] = action;
 
         // include session data if available
-        var username = getSessionData('username');
-        var sessionId = getSessionData('session_id');
+        let username = getSessionData('username');
+        let sessionId = getSessionData('session_id');
 
         if (typeof(username) != 'undefined') {
             data['username'] = getSessionData('username');
@@ -304,7 +294,7 @@ function NotificationsManager()
      */
     this.displayError = function(message)
     {
-        var error = $('#error-message');
+        let error = $('#error-message');
         error.find('.modal-body > p').text(message);
         error.modal();
     };
@@ -316,7 +306,7 @@ function NotificationsManager()
      */
     this.displayInfo = function(heading, message)
     {
-        var info = $('#info-message');
+        let info = $('#info-message');
         info.find('.modal-title').text(heading);
         info.find('.modal-body').html(message);
         info.modal();
@@ -330,7 +320,7 @@ function NotificationsManager()
      */
     this.displayConfirm = function(heading, message, callback)
     {
-        var confirm = $('#confirm-message');
+        let confirm = $('#confirm-message');
         confirm.find('.modal-title').text(heading);
         confirm.find('.modal-body').html(message);
         confirm.modal();
@@ -357,14 +347,102 @@ function NotificationsManager()
     };
 }
 
-$(document).ready(function() {
-    var api = dic().apiManager();
-    var notification = dic().notificationsManager();
-    var confirmed = false;
+/**
+ * Body data
+ * @constructor
+ */
+function BodyData()
+{
+    /**
+     * @type {string}
+     */
+    this.cache = {};
 
-    // login box auto focus
-    var username = $('#login-inputs input[name="username"]');
-    if (username.length > 0) {
+    /**
+     * @param {string}field
+     * @returns {string}
+     */
+    this.getData = function(field)
+    {
+        // data is not cached yet
+        if (!this.cache[field]) {
+            let data = $('body').attr('data-' + field);
+            this.cache[field] = (typeof data !== 'undefined') ? data : '';
+        }
+
+        return this.cache[field];
+    };
+
+    /**
+     * Check if specified section is active
+     * @param {string}section
+     */
+    this.isSectionActive = function(section)
+    {
+        return (this.getData('section') == section);
+    };
+
+    /**
+     * Check if tutorial is active
+     */
+    this.isTutorialActive = function()
+    {
+        return (this.getData('tutorial') == 'yes');
+    };
+}
+
+/**
+ * BB code
+ * @constructor
+ */
+function BBcode()
+{
+    /**
+     * Adds a pair of tags to the highlighted text in the text area with given name
+     * if no text is highlighted, append the beginning and ending tag to whatever's in the text area
+     * @param {string}openingTag
+     * @param {string}closingTag
+     * @param {string}content
+     */
+    this.addTags = function(openingTag, closingTag, content)
+    {
+        let obj = document.getElementsByName(content).item(0);
+        obj.focus();
+
+        // Internet Explorer
+        if (document.selection && document.selection.createRange) {
+            let currentSelection = document.selection.createRange();
+
+            if (currentSelection.parentElement() == obj) {
+                currentSelection.text = openingTag + currentSelection.text + closingTag;
+            }
+        }
+        // Firefox
+        else if (typeof(obj) != 'undefined') {
+            let length = parseInt(obj.value.length);
+            let selStart = obj.selectionStart;
+            let selEnd = obj.selectionEnd;
+
+            obj.value = obj.value.substring(0, selStart) + openingTag + obj.value.substring(selStart, selEnd)
+                + closingTag + obj.value.substring(selEnd, length);
+        }
+        // other
+        else {
+            obj.value += openingTag + closingTag;
+        }
+
+        obj.focus();
+    };
+}
+
+$(document).ready(function() {
+    let api = $.dic.apiManager();
+    let notification = $.dic.notificationsManager();
+    let confirmed = false;
+
+    // login box auto focus (ommited in case of registration)
+    let username = $('#login-inputs input[name="username"]');
+    if (username.length > 0 && !$.dic.bodyData().isSectionActive('registration')) {
         // set focus on login name
         username.focus();
 
@@ -410,32 +488,34 @@ $(document).ready(function() {
 
     // BBcode buttons handling
     $('div.bb-code-buttons > button').click(function() {
+        let bbCode = $.dic.bbCode();
+
         // get target element name
-        var target = $(this).parent().attr('id');
+        let target = $(this).parent().attr('id');
         switch ($(this).attr('name')) {
             case 'bold':
-                addTags('[b]', '[/b]', target);
+                bbCode.addTags('[b]', '[/b]', target);
                 break;
             case 'italics':
-                addTags('[i]', '[/i]', target);
+                bbCode.addTags('[i]', '[/i]', target);
                 break;
             case 'link':
-                addTags('[link]', '[/link]', target);
+                bbCode.addTags('[link]', '[/link]', target);
                 break;
             case 'url':
-                addTags('[url]', '[/url]', target);
+                bbCode.addTags('[url]', '[/url]', target);
                 break;
             case 'quote':
-                addTags('[quote]', '[/quote]', target);
+                bbCode.addTags('[quote]', '[/quote]', target);
                 break;
             case 'card':
-                addTags('[card]', '[/card]', target);
+                bbCode.addTags('[card]', '[/card]', target);
                 break;
             case 'keyword':
-                addTags('[keyword]', '[/keyword]', target);
+                bbCode.addTags('[keyword]', '[/keyword]', target);
                 break;
             case 'concept':
-                addTags('[concept]', '[/concept]', target);
+                bbCode.addTags('[concept]', '[/concept]', target);
                 break;
         }
     });
@@ -457,7 +537,7 @@ $(document).ready(function() {
     });
 
     // looked up cards will be stored here
-    var cardLookupManager = {
+    let cardLookupManager = {
         cache: {},
 
         currentLookUp: -1,
@@ -469,12 +549,12 @@ $(document).ready(function() {
         showCard: function(triggerElem, data)
         {
             // position the lookup display
-            var cardLookup = $('#card-lookup');
-            var parentCard = (triggerElem.parents('.card').length > 0) ? triggerElem.parents('.card') : triggerElem;
-            var target = parentCard.offset();
+            let cardLookup = $('#card-lookup');
+            let parentCard = (triggerElem.parents('.card').length > 0) ? triggerElem.parents('.card') : triggerElem;
+            let target = parentCard.offset();
 
             // default lookup position is below the card
-            var topPosition = target.top + parentCard.outerHeight();
+            let topPosition = target.top + parentCard.outerHeight();
 
             // pass card html to lookup display
             cardLookup.html(data);
@@ -512,7 +592,7 @@ $(document).ready(function() {
             // case 2: card is not cached
             else {
                 // store current card id to prevent conflicts based on delayed requests
-                var currentCard = cardId;
+                let currentCard = cardId;
 
                 api.lookupCard(cardId, function(result) {
                     // AJAX failed, display error message
@@ -555,13 +635,13 @@ $(document).ready(function() {
     // card lookup
     $('[class*="card-lookup-"]').hover(function() {
         // extract card id
-        var lookupTrigger = $(this);
-        var cardId = parseInt(lookupTrigger.attr('class').replace('card-lookup-', ''));
+        let lookupTrigger = $(this);
+        let cardId = parseInt(lookupTrigger.attr('class').replace('card-lookup-', ''));
 
         cardLookupManager.startLookup(cardId, lookupTrigger);
     }, function() {
-        var lookupTrigger = $(this);
-        var cardId = parseInt(lookupTrigger.attr('class').replace('card-lookup-', ''));
+        let lookupTrigger = $(this);
+        let cardId = parseInt(lookupTrigger.attr('class').replace('card-lookup-', ''));
 
         // lookup has been replaced in the meantime
         if (cardLookupManager.currentLookUp != cardId) {
@@ -591,7 +671,7 @@ $(document).ready(function() {
             return true;
         }
 
-        var triggerButton = $(this);
+        let triggerButton = $(this);
 
         // request confirmation
         notification.displayConfirm('Action confirmation', 'Are you sure you want to start a discussion?', function(result) {
@@ -615,17 +695,17 @@ $(document).ready(function() {
     // localize timestamp
     $('[data-timestamp]').each(function() {
         // extract timestamp
-        var timestamp = $(this).attr('data-timestamp');
+        let timestamp = $(this).attr('data-timestamp');
         timestamp = timestamp.split(' ');
 
         // extract date and time
-        var date = timestamp[0];
-        var time = timestamp[1];
+        let date = timestamp[0];
+        let time = timestamp[1];
         date = date.split('-');
         time = time.split(':');
 
         // determine UTC datetime
-        var datetime = new Date();
+        let datetime = new Date();
         datetime.setUTCFullYear(date[0]);
         datetime.setUTCMonth(date[1] - 1, date[2]); // JavaScript month numbering starts from 0, not from 1
         datetime.setUTCHours(time[0]);
@@ -642,5 +722,6 @@ $(document).ready(function() {
 
         return false;
     });
-
 });
+
+}

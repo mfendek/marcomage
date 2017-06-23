@@ -2,14 +2,16 @@
  * MArcomage JavaScript - Games section *
  ****************************************/
 
-'use strict';
+import $ from 'jquery';
+
+export default function () {
 
 /**
  * Refresh user screen within the games list section
  */
 function refreshGameList()
 {
-    var api = dic().apiManager();
+    let api = $.dic.apiManager();
 
     // check if there are any active games available
     api.activeGames(function(result) {
@@ -22,7 +24,7 @@ function refreshGameList()
         // active games are available
         if (result['active_games']) {
             // refresh game screen
-            window.location.replace($('div#hosted-games > p > a.pushed').attr('href'));
+            window.location.reload();
         }
     });
 }
@@ -32,9 +34,9 @@ function refreshGameList()
  */
 function refreshGame()
 {
-    var api = dic().apiManager();
+    let api = $.dic.apiManager();
 
-    var nextGame = $('div.game button[name="next_game"]');
+    let nextGame = $('div.game button[name="next_game"]');
 
     // case 1: it is not player's turn in current game and the next game button is available - go to next game
     if ($('div.game button[name="discard_card"]').length == 0 && nextGame.length > 0) {
@@ -64,8 +66,8 @@ function refreshGame()
  */
 function startGameRefresh()
 {
-    var timer = 0;
-    var autoRefresh = $('div.game input[name="auto_refresh"]');
+    let timer = 0;
+    let autoRefresh = $('div.game input[name="auto_refresh"]');
 
     if (autoRefresh.length == 1) {
         timer = window.setInterval(refreshGame, parseInt(autoRefresh.val()) * 1000);
@@ -79,7 +81,7 @@ function startGameRefresh()
  */
 function autoAiMove()
 {
-    var aiMove = $('div.game button[name="ai_move"]');
+    let aiMove = $('div.game button[name="ai_move"]');
 
     if (aiMove.length == 1) {
         aiMove.click();
@@ -87,17 +89,21 @@ function autoAiMove()
 }
 
 $(document).ready(function() {
-    var api = dic().apiManager();
-    var notification = dic().notificationsManager();
+    if (!$.dic.bodyData().isSectionActive('games')) {
+        return;
+    }
+
+    let api = $.dic.apiManager();
+    let notification = $.dic.notificationsManager();
 
     // initialize games list refresh if active
-    var autoRefresh = $('div#games > input[name="auto_refresh"]');
+    let autoRefresh = $('div#games > input[name="auto_refresh"]');
     if (autoRefresh.length == 1) {
-        var gamesTimer = window.setInterval(refreshGameList, parseInt(autoRefresh.val()) * 1000);
+        let gamesTimer = window.setInterval(refreshGameList, parseInt(autoRefresh.val()) * 1000);
     }
 
     // activate auto AI move
-    var autoAi = $('div.game input[name="auto_ai"]');
+    let autoAi = $('div.game input[name="auto_ai"]');
     if (autoAi.length == 1) {
         window.setTimeout(autoAiMove, parseInt(autoAi.val()) * 1000);
     }
@@ -137,7 +143,7 @@ $(document).ready(function() {
     $('.my-hand div.card').click(function() {
         // active only on player's turn
         if ($('input[name="selected_card"]').length > 0) {
-            var selectedCard = $('div.selected-card');
+            let selectedCard = $('div.selected-card');
 
             // case 1: unselected card is selected
             if (!$(this).hasClass('selected-card')) {
@@ -176,7 +182,7 @@ $(document).ready(function() {
 
     // card selection (via card modes)
     $('select.card-modes').click(function() {
-        var currentCard = $(this).prevAll('div').children('div.card');
+        let currentCard = $(this).prevAll('div').children('div.card');
 
         if (!currentCard.hasClass('selected-card')) {
             currentCard.click();
@@ -185,7 +191,7 @@ $(document).ready(function() {
 
     // card preview processing
     $('button[name="preview_card"]').click(function() {
-        var selectedCard = $('input[name="selected_card"]:checked');
+        let selectedCard = $('input[name="selected_card"]:checked');
         if (selectedCard.length == 0) {
             notification.displayError('No card was selected!');
             return false;
@@ -196,7 +202,7 @@ $(document).ready(function() {
             return false;
         }
 
-        var cardPosition = selectedCard.val();
+        let cardPosition = selectedCard.val();
 
         // store card position
         $(this).val(cardPosition);
@@ -205,7 +211,7 @@ $(document).ready(function() {
     });
 
     // initialize in-game refresh if active
-    var gameRefreshTimer = 0;
+    let gameRefreshTimer = 0;
 
     if ($('div.game input[name="auto_refresh"]').length == 1) {
         gameRefreshTimer = startGameRefresh();
@@ -222,9 +228,10 @@ $(document).ready(function() {
         }
     });
 
-    var gameNoteDialog = $('#game-note-dialog');
+    let gameNoteDialog = $('#game-note-dialog');
 
-    gameNoteDialog.bind('dialogclose', function() {
+    // dismiss dialog callback
+    gameNoteDialog.on('hidden.bs.modal', function() {
         // enable auto refresh when user closes the game note
         gameRefreshTimer = startGameRefresh();
     });
@@ -234,77 +241,71 @@ $(document).ready(function() {
         event.preventDefault();
         // disable auto refresh when user opens the game note
         window.clearInterval(gameRefreshTimer);
-        $('#game-note-dialog').dialog('open');
+        $('#game-note-dialog').modal();
     });
 
-    // game note handler
-    gameNoteDialog.dialog({
-        autoOpen: false,
-        show: 'fade',
-        hide: 'fade',
-        title: 'Note',
-        buttons: {
-            Save: function() {
-                var gameNote = $('textarea[name="content"]').val();
+    // save game note button
+    $('button[name="game-note-dialog-save"]').click(function() {
+        let gameNote = $('textarea[name="content"]').val();
 
-                // check user input
-                if (gameNote.length > 1000) {
-                    notification.displayError('Game note is too long');
-                    return;
-                }
-
-                var gameId = $('input[name="current_game"]').val();
-
-                api.saveGameNote(gameId, gameNote, function(result) {
-                    // AJAX failed, display error message
-                    if (result.error) {
-                        notification.displayError(result.error);
-                        return;
-                    }
-
-                    // update note button highlight
-                    // case 1: note is empty (remove highlight)
-                    if (gameNote == '') {
-                        $('a#game-note').removeClass('marked_button');
-                    }
-                    // case 2: note is not empty (add highlight if not present)
-                    else if (!$('a#game-note').hasClass('marked_button')) {
-                        $('a#game-note').addClass('marked_button');
-                    }
-
-                    $('#game-note-dialog').dialog('close');
-                });
-            },
-            Clear: function() {
-                var gameId = $('input[name="current_game"]').val();
-
-                api.clearGameNote(gameId, function(result) {
-                    // AJAX failed, display error message
-                    if (result.error) {
-                        notification.displayError(result.error);
-                        return;
-                    }
-
-                    // clear input field
-                    $('textarea[name="content"]').val('');
-
-                    // update note button highlight (remove highlight)
-                    $('a#game-note').removeClass('marked_button');
-                });
-            },
-            Close: function() {
-                $(this).dialog('close');
-            }
+        // check user input
+        if (gameNote.length > 1000) {
+            notification.displayError('Game note is too long');
+            return;
         }
+
+        let gameId = $('input[name="current_game"]').val();
+
+        api.saveGameNote(gameId, gameNote, function(result) {
+            // AJAX failed, display error message
+            if (result.error) {
+                notification.displayError(result.error);
+                return;
+            }
+
+            // update note button highlight
+            // case 1: note is empty (remove highlight)
+            if (gameNote == '') {
+                $('a#game-note').removeClass('marked_button');
+            }
+            // case 2: note is not empty (add highlight if not present)
+            else if (!$('a#game-note').hasClass('marked_button')) {
+                $('a#game-note').addClass('marked_button');
+            }
+
+            $('#game-note-dialog').modal('hide');
+        });
+    });
+
+    // clear game note button
+    $('button[name="game-note-dialog-clear"]').click(function() {
+        let gameId = $('input[name="current_game"]').val();
+
+        api.clearGameNote(gameId, function(result) {
+            // AJAX failed, display error message
+            if (result.error) {
+                notification.displayError(result.error);
+                return;
+            }
+
+            // clear input field
+            $('textarea[name="content"]').val('');
+
+            // update note button highlight (remove highlight)
+            $('a#game-note').removeClass('marked_button');
+        });
+
+        // hide note dialog
+        $('#game-note-dialog').modal('hide');
     });
 
     // scroll standard chat
     $('div.chat-section div.scroll_max').scrollTo('max');
 
     // chat modal dialog
-    var chatDialog = $('#chat-dialog');
+    let chatDialog = $('#chat-window-dialog');
     if (chatDialog.length > 0) {
-        chatDialog.bind('dialogclose', function() {
+        chatDialog.on('hidden.bs.modal', function() {
             // enable auto-refresh when user closes the chat
             gameRefreshTimer = startGameRefresh();
         });
@@ -317,7 +318,7 @@ $(document).ready(function() {
             window.clearInterval(gameRefreshTimer);
 
             // reset chat notification for current player
-            var gameId = $('input[name="current_game"]').val();
+            let gameId = $('input[name="current_game"]').val();
 
             api.resetChatNotification(gameId, function(result) {
                 // AJAX failed, display error message
@@ -328,69 +329,65 @@ $(document).ready(function() {
             });
 
 
-            var chatDialog = $('#chat-dialog');
+            let chatDialog = $('#chat-window-dialog');
 
             // scrolling must be done only after the dialog has been opened
-            chatDialog.bind('dialogopen', function() {
-                $('#chat-dialog div.scroll_max').delay(400).scrollTo('max');
+            chatDialog.on('shown.bs.modal', function() {
+                $('#chat-window-dialog div.scroll_max').delay(400).scrollTo('max');
             });
-            chatDialog.dialog('open');
+
+            chatDialog.modal();
         });
 
-        // chat handler
-        chatDialog.dialog({
-            autoOpen: false,
-            show: 'fade',
-            hide: 'fade',
-            width: 500,
-            height: 600,
-            title: 'Chat',
-            buttons: {
-                B: function() {
-                    addTags('[b]', '[/b]', 'chat_area');
-                },
-                I: function() {
-                    addTags('[i]', '[/i]', 'chat_area');
-                },
-                L: function() {
-                    addTags('[link]', '[/link]', 'chat_area');
-                },
-                U: function() {
-                    addTags('[url]', '[/url]', 'chat_area');
-                },
-                Q: function() {
-                    addTags('[quote]', '[/quote]', 'chat_area');
-                },
-                Send: function() {
-                    var chatMessage = $('textarea[name="chat_area"]').val();
+        // send message button
+        $('button[name="chat-dialog-send"]').click(function() {
+            let chatMessage = $('textarea[name="chat_area"]').val();
 
-                    // check user input
-                    if (chatMessage.length > 300) {
-                        notification.displayError('Chat message is too long');
-                        return;
-                    }
-
-                    var gameId = $('input[name="current_game"]').val();
-
-                    api.sendChatMessage(gameId, chatMessage, function(result) {
-                        // AJAX failed, display error message
-                        if (result.error) {
-                            notification.displayError(result.error);
-                            return;
-                        }
-
-                        chatDialog.dialog('close');
-                        refreshGame();
-                    });
-                },
-                Close: function() {
-                    $(this).dialog('close');
-                }
+            // check user input
+            if (chatMessage.length > 300) {
+                notification.displayError('Chat message is too long');
+                return;
             }
+
+            let gameId = $('input[name="current_game"]').val();
+
+            api.sendChatMessage(gameId, chatMessage, function(result) {
+                // AJAX failed, display error message
+                if (result.error) {
+                    notification.displayError(result.error);
+                    return;
+                }
+
+                chatDialog.modal('hide');
+                refreshGame();
+            });
+        });
+
+        let bbCode = $.dic.bbCode();
+
+        // BB code buttons
+        $('button[name="chat-dialog-bold"]').click(function() {
+            bbCode.addTags('[b]', '[/b]', 'chat_area');
+        });
+
+        $('button[name="chat-dialog-italic"]').click(function() {
+            bbCode.addTags('[i]', '[/i]', 'chat_area');
+        });
+
+        $('button[name="chat-dialog-link"]').click(function() {
+            bbCode.addTags('[link]', '[/link]', 'chat_area');
+        });
+
+        $('button[name="chat-dialog-url"]').click(function() {
+            bbCode.addTags('[url]', '[/url]', 'chat_area');
+        });
+
+        $('button[name="chat-dialog-quote"]').click(function() {
+            bbCode.addTags('[quote]', '[/quote]', 'chat_area');
         });
 
         // open chat automatically if there are new messages
-        var showChat = $('div.game button.marked_button[name="show_chat"]');
+        let showChat = $('div.game button.marked_button[name="show_chat"]');
         if (showChat.length == 1) {
             showChat.click();
         }
@@ -398,7 +395,7 @@ $(document).ready(function() {
 
     // show/hide cheating menu
     $('button[name="show_cheats"]').click(function() {
-        var showCheats = $('button[name="show_cheats"]');
+        let showCheats = $('button[name="show_cheats"]');
 
         // case 1: button is in 'show' mode
         if (showCheats.html() == 'Cheat') {
@@ -426,8 +423,10 @@ $(document).ready(function() {
 
     // select AI challenge
     $('#ai-challenges > div').click(function() {
-        var challengeName = $(this).attr('id').replace('ai-challenge-', '');
+        let challengeName = $(this).attr('id').replace('ai-challenge-', '');
         $('select[name="selected_challenge"]').val(challengeName);
     });
 
 });
+
+}

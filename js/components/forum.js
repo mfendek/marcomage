@@ -2,11 +2,17 @@
  * MArcomage JavaScript - Forum section *
  ****************************************/
 
-'use strict';
+import $ from 'jquery';
+
+export default function () {
 
 $(document).ready(function() {
-    var notification = dic().notificationsManager();
-    var confirmed = false;
+    if (!$.dic.bodyData().isSectionActive('forum')) {
+        return;
+    }
+
+    let notification = $.dic.notificationsManager();
+    let confirmed = false;
 
     // executes forum search by pressing the ENTER key
     $('input[name="phrase"]').keypress(function(event) {
@@ -25,8 +31,8 @@ $(document).ready(function() {
             return true;
         }
 
-        var triggerButton = $(this);
-        var message = 'Current thread and all its posts will be deleted. Are you sure you want to continue?';
+        let triggerButton = $(this);
+        let message = 'Current thread and all its posts will be deleted. Are you sure you want to continue?';
 
         // request confirmation
         notification.displayConfirm('Action confirmation', message, function(result) {
@@ -49,8 +55,8 @@ $(document).ready(function() {
             return true;
         }
 
-        var triggerButton = $(this);
-        var message = 'Current post will be deleted. Are you sure you want to continue?';
+        let triggerButton = $(this);
+        let message = 'Current post will be deleted. Are you sure you want to continue?';
 
         // request confirmation
         notification.displayConfirm('Action confirmation', message, function(result) {
@@ -65,3 +71,5 @@ $(document).ready(function() {
     });
 
 });
+
+}

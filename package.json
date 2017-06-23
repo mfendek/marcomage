@@ -1,0 +1,32 @@
+{
+  "name": "MArcomage-theme",
+  "version": "0.0.1",
+  "description": "MArcomage online multiplayer fantasy card game theme.",
+  "repository": {
+    "url": "https://arcomage.net/svn",
+    "type": "svn"
+  },
+  "scripts": {
+    "watch": "webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js --watch",
+    "build": "webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "package": "NODE_ENV=production webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "lint": "node_modules/.bin/eslint src/js"
+  },
+  "license": "GPL-3.0",
+  "dependencies": {
+    "bootstrap-sass": "^3.3.7",
+    "expose-loader": "^0.7",
+    "jquery": "^3.1.1",
+    "jquery-ui": "^1.12.1",
+    "laravel-mix": "^0.5",
+    "webpack": "^2.5.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.13.1",
+    "eslint-config-airbnb": "^14.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
+    "eslint-plugin-react": "^6.9.0"
+  }
+}
