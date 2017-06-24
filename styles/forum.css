@@ -150,21 +150,18 @@ div#post-list > div {
 }
 
 /* post header layout */
-div#post-list div.post-header {
+div#post-list {
     font-size: medium;
     margin: 1ex;
 }
 
-div#post-list div.post-author, div#post-list div.post-buttons {
+div#post-list div.post-buttons {
+    margin-bottom: 1ex;
     margin-top: 0.5ex;
 }
 
-/* permalink layout */
-div#post-list a.permalink {
-    margin-left: 1ex;
-}
-
 /* post layout - avatar part */
+div#post-list div.post-author,
 div#post-list div.post-avatar {
     margin: 1ex;
 }

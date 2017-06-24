@@ -544,9 +544,8 @@
                 <xsl:for-each select="$param/post_list/*">
 
                     <div class="skin-text">
-                        <div class="post-header row">
-
-                            <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <div class="post-author">
                                     <xsl:if test="position() = last()">
                                         <a id="latest"/>
@@ -564,10 +563,20 @@
                                         <xsl:copy-of select="am:dateTime(created_at, $param/timezone)"/>
                                     </span>
                                 </div>
-                            </div>
 
-                            <div class="col-sm-6">
+                                <div class="post-avatar">
+                                    <a href="{am:makeUrl('Players_details', 'Profile', author)}">
+                                        <img class="avatar" height="60" width="60" src="{$param/avatar_path}{avatar}" alt="avatar"/>
+                                    </a>
+                                </div>
+
                                 <div class="post-buttons">
+                                    <xsl:variable name="postId" select="concat('post', post_id)"/>
+                                    <a id="{$postId}" class="permalink" href="{am:makeUrl('Forum_thread', 'current_thread', $thread/thread_id, 'thread_current_page', $param/current_page)}#{$postId}" title="Permalink">
+                                        <xsl:text>#</xsl:text>
+                                        <xsl:value-of select="position() + $param/current_page * $param/posts_per_page"/>
+                                    </a>
+
                                     <xsl:if test="$param/create_post = 'yes' and $thread/is_locked = 'no'">
                                         <button class="button-icon" type="submit" name="quote_post" value="{post_id}" title="Quote">
                                             <span class="glyphicon glyphicon-share"/>
@@ -594,26 +603,10 @@
                                             </xsl:otherwise>
                                         </xsl:choose>
                                     </xsl:if>
-
-                                    <xsl:variable name="postId" select="concat('post', post_id)"/>
-                                    <a id="{$postId}" class="permalink" href="{am:makeUrl('Forum_thread', 'current_thread', $thread/thread_id, 'thread_current_page', $param/current_page)}#{$postId}" title="Permalink">
-                                        <xsl:text>#</xsl:text>
-                                        <xsl:value-of select="position() + $param/current_page * $param/posts_per_page"/>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-1">
-                                <div class="post-avatar">
-                                    <a href="{am:makeUrl('Players_details', 'Profile', author)}">
-                                        <img class="avatar" height="60" width="60" src="{$param/avatar_path}{avatar}" alt="avatar"/>
-                                    </a>
                                 </div>
                             </div>
 
-                            <div class="col-md-11">
+                            <div class="col-md-9">
                                 <div class="post-content">
                                     <div>
                                         <xsl:value-of select="am:bbCodeParseExtended(content)" disable-output-escaping="yes"/>
