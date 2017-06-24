@@ -16,7 +16,7 @@ $(document).ready(function() {
 
     // apply player filters by pressing ENTER key
     $('input[name="pname_filter"]').keypress(function(event) {
-        if (event.keyCode == '13') {
+        if (event.keyCode === $.dic.KEY_ENTER) {
             event.preventDefault();
             $('button[name="players_apply_filters"]').click();
         }

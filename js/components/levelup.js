@@ -20,14 +20,14 @@ $(document).ready(function() {
     let levelUpDialog = $('#level-up-dialog');
 
     // dialog is inactive
-    if (levelUpDialog.length == 0) {
+    if (levelUpDialog.length === 0) {
         return;
     }
 
     levelUpDialog.on('hidden.bs.modal', function() {
         // highlight newly unlocked section
         let unlockSection = $('input[name="unlock_section"]');
-        if (unlockSection.length == 1) {
+        if (unlockSection.length === 1) {
             // TODO doesn't work on <a> elements only buttons
             // highlightSection(unlockSection.val());
         }

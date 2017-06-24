@@ -39,7 +39,7 @@ $(document).ready(function() {
 
     // apply card filters by pressing ENTER key
     $('input[name="name_filter"]').keypress(function(event) {
-        if (event.keyCode == '13') {
+        if (event.keyCode === $.dic.KEY_ENTER) {
             event.preventDefault();
             $('button[name="cards_apply_filters"]').click();
         }

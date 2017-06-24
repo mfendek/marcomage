@@ -107,7 +107,9 @@
                                                     <p class="ended-game">Game has ended</p>
                                                 </xsl:when>
                                                 <xsl:when test="ready = 'yes'">
-                                                    <img src="img/battle.gif" alt="" width="20" height="13" title="It's your turn"/>
+                                                    <p>
+                                                        <img src="img/battle.gif" alt="" width="20" height="13" title="It's your turn"/>
+                                                    </p>
                                                 </xsl:when>
                                             </xsl:choose>
                                         </div>
@@ -1187,40 +1189,27 @@
                                         <textarea name="chat_area" rows="3" cols="50"/>
                                     </div>
                                     <div class="modal-footer">
-                                        <button name="chat-dialog-bold" type="button" class="btn btn-default">
-                                            <span class="btn-inner">
-                                                <span class="btn-text">B</span>
-                                            </span>
-                                        </button>
-                                        <button name="chat-dialog-italic" type="button" class="btn btn-default">
-                                            <span class="btn-inner">
-                                                <span class="btn-text">I</span>
-                                            </span>
-                                        </button>
-                                        <button name="chat-dialog-link" type="button" class="btn btn-default">
-                                            <span class="btn-inner">
-                                                <span class="btn-text">L</span>
-                                            </span>
-                                        </button>
-                                        <button name="chat-dialog-url" type="button" class="btn btn-default">
-                                            <span class="btn-inner">
-                                                <span class="btn-text">U</span>
-                                            </span>
-                                        </button>
-                                        <button name="chat-dialog-quote" type="button" class="btn btn-default">
-                                            <span class="btn-inner">
-                                                <span class="btn-text">Q</span>
-                                            </span>
-                                        </button>
+                                        <xsl:variable name="bbCodeButtons">
+                                            <item name="bold" text="B" />
+                                            <item name="italic" text="I" />
+                                            <item name="link" text="L" />
+                                            <item name="url" text="U" />
+                                            <item name="quote" text="Q" />
+                                        </xsl:variable>
+
+                                        <xsl:for-each select="exsl:node-set($bbCodeButtons)/*">
+                                            <button name="chat-dialog-{@name}" type="button" class="btn btn-default">
+                                                <span class="btn-inner">
+                                                    <span class="btn-text"><xsl:value-of select="@text"/></span>
+                                                </span>
+                                            </button>
+                                        </xsl:for-each>
+
                                         <button name="chat-dialog-send" type="button" class="btn btn-default">
-                                            <span class="btn-inner">
-                                                <span class="btn-text">Send</span>
-                                            </span>
+                                            <span class="btn-inner"><span class="btn-text">Send</span></span>
                                         </button>
                                         <button name="chat-dialog-dismiss" type="button" class="btn btn-default" data-dismiss="modal">
-                                            <span class="btn-inner">
-                                                <span class="btn-text">Close</span>
-                                            </span>
+                                            <span class="btn-inner"><span class="btn-text">Close</span></span>
                                         </button>
                                     </div>
                                 </div>
@@ -1272,19 +1261,13 @@
                             </div>
                             <div class="modal-footer">
                                 <button name="game-note-dialog-save" type="button" class="btn btn-default">
-                                    <span class="btn-inner">
-                                        <span class="btn-text">Save</span>
-                                    </span>
+                                    <span class="btn-inner"><span class="btn-text">Save</span></span>
                                 </button>
                                 <button name="game-note-dialog-clear" type="button" class="btn btn-default">
-                                    <span class="btn-inner">
-                                        <span class="btn-text">Clear</span>
-                                    </span>
+                                    <span class="btn-inner"><span class="btn-text">Clear</span></span>
                                 </button>
                                 <button name="game-note-dialog-dismiss" type="button" class="btn btn-default" data-dismiss="modal">
-                                    <span class="btn-inner">
-                                        <span class="btn-text">Close</span>
-                                    </span>
+                                    <span class="btn-inner"><span class="btn-text">Close</span></span>
                                 </button>
                             </div>
                         </div>

@@ -30,7 +30,8 @@ function takeCard(cardId)
 
         // move selected card to deck
         // disallow the card to be removed from the deck (prevent double clicks)
-        $(card).removeAttr('onclick');
+        $(card).removeAttr('data-take-card');
+        $(card).unbind('click');
 
         $(card).find('.card').animate({opacity: 0.6}, 'slow', function() {
             $(slot).html(takenCard);
@@ -50,17 +51,22 @@ function takeCard(cardId)
             $(slot).fadeIn('slow');
 
             // allow a card to be removed from deck
-            $(slot).attr('onclick', 'return removeCard(' + cardId + ')');
+            $(slot).attr('data-remove-card', cardId);
+            $(slot).click(function() {
+                let cardId = parseInt($(this).attr('data-remove-card'));
+
+                return removeCard(cardId);
+            });
         });
 
         // update tokens when needed
-        if (result.tokens != 'no') {
+        if (result.tokens !== 'no') {
             let token;
 
             $('#tokens > select').each(function(i) {
                 token = document.getElementsByName('Token' + (i + 1)).item(0);
                 $(this).find('option').each(function(j) {
-                    if ($(this).val() == result.tokens[i + 1]) {
+                    if ($(this).val() === result.tokens[i + 1]) {
                         token.selectedIndex = j;
                     }
                 });
@@ -102,7 +108,8 @@ function removeCard(cardId)
         // move selected card to card pool
 
         // disallow the card to be removed from the deck (prevent double clicks)
-        $(slot).removeAttr('onclick');
+        $(slot).removeAttr('data-remove-card');
+        $(slot).unbind('click');
 
         // remove return card button
         $(slot).find('noscript').remove();
@@ -111,8 +118,14 @@ function removeCard(cardId)
         $(card).removeClass('taken');
         $(card).find('.card').css('opacity', 0.6);
 
-        // allow a card to be removed from deck
-        $(card).attr('onclick', 'return takeCard(' + cardId + ')');
+        // allow a card to be removed from card pool
+        $(card).attr('data-take-card', cardId);
+        $(card).click(function() {
+            let cardId = parseInt($(this).attr('data-take-card'));
+
+            return takeCard(cardId);
+        });
+
         $(slot).fadeOut('slow', function() {
             $(slot).html(empty);
             $(slot).show();
@@ -140,7 +153,7 @@ $(document).ready(function() {
 
     // apply card filters by pressing ENTER key
     $('input[name="name_filter"]').keypress(function(event) {
-        if (event.keyCode == '13') {
+        if (event.keyCode === $.dic.KEY_ENTER) {
             event.preventDefault();
             $('button[name="deck_apply_filters"]').click();
         }
@@ -342,7 +355,7 @@ $(document).ready(function() {
 
             // update note button highlight
             // case 1: note is empty (remove highlight)
-            if (deckNote == '') {
+            if (deckNote === '') {
                 $('a#deck-note').removeClass('marked_button');
             }
             // case 2: note is not empty (add highlight if not present)
@@ -381,11 +394,25 @@ $(document).ready(function() {
         let uploadedFile = $('input[name="deck_data_file"]');
 
         // no file was selected
-        if (uploadedFile.val() == '') {
+        if (uploadedFile.val() === '') {
             // prompt user to select a file
             uploadedFile.click();
             return false;
         }
+    });
+
+    // take card from card pool
+    $('[data-take-card]').click(function() {
+        let cardId = parseInt($(this).attr('data-take-card'));
+
+        return takeCard(cardId);
+    });
+
+    // remove card from deck
+    $('[data-remove-card]').click(function() {
+        let cardId = parseInt($(this).attr('data-remove-card'));
+
+        return removeCard(cardId);
     });
 
 });

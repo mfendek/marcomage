@@ -64,7 +64,7 @@ $(document).ready(function() {
         let uploadedFile = $('input[name="avatar_image_file"]');
 
         // no file was selected
-        if (uploadedFile.val() == '') {
+        if (uploadedFile.val() === '') {
             // prompt user to select a file
             uploadedFile.click();
             return false;

@@ -39,7 +39,7 @@ function refreshGame()
     let nextGame = $('div.game button[name="next_game"]');
 
     // case 1: it is not player's turn in current game and the next game button is available - go to next game
-    if ($('div.game button[name="discard_card"]').length == 0 && nextGame.length > 0) {
+    if ($('div.game button[name="discard_card"]').length === 0 && nextGame.length > 0) {
         nextGame.click();
     }
     // case 2: stay in current game and refresh screen
@@ -69,7 +69,7 @@ function startGameRefresh()
     let timer = 0;
     let autoRefresh = $('div.game input[name="auto_refresh"]');
 
-    if (autoRefresh.length == 1) {
+    if (autoRefresh.length === 1) {
         timer = window.setInterval(refreshGame, parseInt(autoRefresh.val()) * 1000);
     }
 
@@ -83,7 +83,7 @@ function autoAiMove()
 {
     let aiMove = $('div.game button[name="ai_move"]');
 
-    if (aiMove.length == 1) {
+    if (aiMove.length === 1) {
         aiMove.click();
     }
 }
@@ -98,19 +98,19 @@ $(document).ready(function() {
 
     // initialize games list refresh if active
     let autoRefresh = $('div#games > input[name="auto_refresh"]');
-    if (autoRefresh.length == 1) {
+    if (autoRefresh.length === 1) {
         let gamesTimer = window.setInterval(refreshGameList, parseInt(autoRefresh.val()) * 1000);
     }
 
     // activate auto AI move
     let autoAi = $('div.game input[name="auto_ai"]');
-    if (autoAi.length == 1) {
+    if (autoAi.length === 1) {
         window.setTimeout(autoAiMove, parseInt(autoAi.val()) * 1000);
     }
 
     // card selector verification (play card)
     $('button[name="play_card"][value="0"]').click(function() {
-        if ($('input[name="selected_card"]:checked').length == 0) {
+        if ($('input[name="selected_card"]:checked').length === 0) {
             notification.displayError('No card was selected!');
             return false;
         }
@@ -125,7 +125,7 @@ $(document).ready(function() {
 
     // card selector verification (discard card)
     $('button[name="discard_card"]').click(function() {
-        if ($('input[name="selected_card"]:checked').length == 0) {
+        if ($('input[name="selected_card"]:checked').length === 0) {
             notification.displayError('No card was selected!');
             return false;
         }
@@ -192,7 +192,7 @@ $(document).ready(function() {
     // card preview processing
     $('button[name="preview_card"]').click(function() {
         let selectedCard = $('input[name="selected_card"]:checked');
-        if (selectedCard.length == 0) {
+        if (selectedCard.length === 0) {
             notification.displayError('No card was selected!');
             return false;
         }
@@ -213,7 +213,7 @@ $(document).ready(function() {
     // initialize in-game refresh if active
     let gameRefreshTimer = 0;
 
-    if ($('div.game input[name="auto_refresh"]').length == 1) {
+    if ($('div.game input[name="auto_refresh"]').length === 1) {
         gameRefreshTimer = startGameRefresh();
     }
 
@@ -222,7 +222,7 @@ $(document).ready(function() {
         window.clearInterval(gameRefreshTimer);
 
         // sends in game chat message by pressing ENTER key
-        if (event.keyCode == '13') {
+        if (event.keyCode === $.dic.KEY_ENTER) {
             event.preventDefault();
             $('button[name="send_message"]').click();
         }
@@ -265,7 +265,7 @@ $(document).ready(function() {
 
             // update note button highlight
             // case 1: note is empty (remove highlight)
-            if (gameNote == '') {
+            if (gameNote === '') {
                 $('a#game-note').removeClass('marked_button');
             }
             // case 2: note is not empty (add highlight if not present)
@@ -388,7 +388,7 @@ $(document).ready(function() {
 
         // open chat automatically if there are new messages
         let showChat = $('div.game button.marked_button[name="show_chat"]');
-        if (showChat.length == 1) {
+        if (showChat.length === 1) {
             showChat.click();
         }
     }
@@ -398,7 +398,7 @@ $(document).ready(function() {
         let showCheats = $('button[name="show_cheats"]');
 
         // case 1: button is in 'show' mode
-        if (showCheats.html() == 'Cheat') {
+        if (showCheats.html() === 'Cheat') {
             // update button mode
             showCheats.html('Hide');
 

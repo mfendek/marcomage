@@ -25,7 +25,7 @@ function refresh()
 function getSessionData(name)
 {
     let cookieValue = $.cookie(name);
-    if (cookieValue != null && cookieValue != '') {
+    if (cookieValue !== null && cookieValue !== '') {
         return cookieValue;
     }
 
@@ -38,8 +38,10 @@ function getSessionData(name)
 function dic()
 {
     // initialize on first use
-    if (typeof $.dic == 'undefined') {
+    if (typeof $.dic === 'undefined') {
         $.dic = {
+            KEY_ENTER: 13,
+
             // local cache, used to store service objects
             cache: {},
 
@@ -126,11 +128,11 @@ function ApiManager()
         let username = getSessionData('username');
         let sessionId = getSessionData('session_id');
 
-        if (typeof(username) != 'undefined') {
+        if (typeof(username) !== 'undefined') {
             data['username'] = getSessionData('username');
         }
 
-        if (typeof(sessionId) != 'undefined') {
+        if (typeof(sessionId) !== 'undefined') {
             data['session_id'] = getSessionData('session_id');
         }
 
@@ -342,7 +344,7 @@ function NotificationsManager()
 
         // dismiss dialog callback
         confirm.on('hidden.bs.modal', function() {
-            callback(confirm.find('input[name="confirmed"]').val() != '');
+            callback(confirm.find('input[name="confirmed"]').val() !== '');
         });
     };
 }
@@ -379,7 +381,7 @@ function BodyData()
      */
     this.isSectionActive = function(section)
     {
-        return (this.getData('section') == section);
+        return (this.getData('section') === section);
     };
 
     /**
@@ -387,7 +389,7 @@ function BodyData()
      */
     this.isTutorialActive = function()
     {
-        return (this.getData('tutorial') == 'yes');
+        return (this.getData('tutorial') === 'yes');
     };
 }
 
@@ -413,12 +415,12 @@ function BBcode()
         if (document.selection && document.selection.createRange) {
             let currentSelection = document.selection.createRange();
 
-            if (currentSelection.parentElement() == obj) {
+            if (currentSelection.parentElement() === obj) {
                 currentSelection.text = openingTag + currentSelection.text + closingTag;
             }
         }
         // Firefox
-        else if (typeof(obj) != 'undefined') {
+        else if (typeof(obj) !== 'undefined') {
             let length = parseInt(obj.value.length);
             let selStart = obj.selectionStart;
             let selEnd = obj.selectionEnd;
@@ -448,11 +450,11 @@ $(document).ready(function() {
 
         // login name input handling
         username.keypress(function(event) {
-            if (event.keyCode == '13') {
+            if (event.keyCode === $.dic.KEY_ENTER) {
                 event.preventDefault();
 
                 // login name is specified - move cursor to the next input
-                if ($('input[name="username"]').val() != '') {
+                if ($('input[name="username"]').val() !== '') {
                     $('input[name="password"]').focus();
                 }
             }
@@ -460,11 +462,11 @@ $(document).ready(function() {
 
         // password input handling
         $('input[name="password"]').keypress(function(event) {
-            if (event.keyCode == '13') {
+            if (event.keyCode === $.dic.KEY_ENTER) {
                 event.preventDefault();
 
                 // password is specified - execute login
-                if ($('input[name="password"]').val() != '') {
+                if ($('input[name="password"]').val() !== '') {
                     $('button[name="login"]').click();
                 }
             }
@@ -472,7 +474,7 @@ $(document).ready(function() {
 
         // check if both login inputs are filled
         $('button[name="login"]').click(function() {
-            if ($('input[name="username"]').val() == '' || $('input[name="password"]').val() == '') {
+            if ($('input[name="username"]').val() === '' || $('input[name="password"]').val() === '') {
                 notification.displayInfo('Mandatory input required', 'Please input your login name and password');
                 return false;
             }
@@ -481,7 +483,7 @@ $(document).ready(function() {
 
     // blocks ENTER key to prevent section redirects
     $('input[type!="password"], input[name!="username"], input[name!="new_username"], select').keypress(function(event) {
-        if (event.keyCode == '13') {
+        if (event.keyCode === $.dic.KEY_ENTER) {
             event.preventDefault();
         }
     });
@@ -605,7 +607,7 @@ $(document).ready(function() {
                     cardLookupManager.cache[cardId] = result.data;
 
                     // display card if current card has not changed in the meantime
-                    if (currentCard == cardId) {
+                    if (currentCard === cardId) {
                         cardLookupManager.showCard(trigger, result.data);
                     }
                 });
@@ -625,7 +627,7 @@ $(document).ready(function() {
             // delay the lookup render to prevent accidental triggers
             setTimeout(function() {
                 // proceed only if user has not changed focus to something else
-                if (cardLookupManager.currentLookUp == cardId) {
+                if (cardLookupManager.currentLookUp === cardId) {
                     cardLookupManager.lookupCard(cardId, trigger);
                 }
             }, 500);
@@ -644,7 +646,7 @@ $(document).ready(function() {
         let cardId = parseInt(lookupTrigger.attr('class').replace('card-lookup-', ''));
 
         // lookup has been replaced in the meantime
-        if (cardLookupManager.currentLookUp != cardId) {
+        if (cardLookupManager.currentLookUp !== cardId) {
             return;
         }
 
@@ -717,7 +719,7 @@ $(document).ready(function() {
     });
 
     // print button
-    $('button[name="print"]').click(function() {
+    $('button[name="print"]').click(() => {
         window.print();
 
         return false;

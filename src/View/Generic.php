@@ -35,9 +35,6 @@ class Generic extends TemplateDataAbstract
         $dataMain['skin'] = $setting->getSetting('skin');
         $dataMain['new_user'] = ($newUser) ? 'yes' : 'no';
         $dataMain['include_captcha'] = ($current == 'Registration' && $config['captcha']['enabled']) ? 'yes' : 'no';
-        $dataMain['jquery_version'] = $config['jquery']['version'];
-        $dataMain['jquery_ui_version'] = $config['jquery']['ui_version'];
-        $dataMain['bootstrap_version'] = $config['bootstrap']['version'];
         $dataMain['cc_version'] = $config['client_cache_version'];
         $dataNav['google_plus'] = $config['external_links']['google_plus'];
         $dataNav['facebook'] = $config['external_links']['facebook'];

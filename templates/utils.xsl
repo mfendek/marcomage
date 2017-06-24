@@ -802,7 +802,7 @@
                                                 </xsl:if>
 
                                                 <xsl:if test="not($static) and id &gt; 0">
-                                                    <xsl:attribute name="onclick">return removeCard(<xsl:value-of select="id"/>)</xsl:attribute>
+                                                    <xsl:attribute name="data-remove-card"><xsl:value-of select="id"/></xsl:attribute>
                                                 </xsl:if>
 
                                                 <xsl:copy-of select="am:cardString(

@@ -35,13 +35,6 @@
                         <meta name="keywords" content="Arcomage, MArcomage, multiplayer, free, online, fantasy, card game, fantasy novels"/>
 
                         <script type="text/javascript" src="js/dist/main.js?v={$param/cc_version}"/>
-                        <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/{$param/jquery_version}/jquery.min.js"/>-->
-                        <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/{$param/jquery_ui_version}/jquery-ui.min.js"/>-->
-                        <!--<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/{$param/jquery_ui_version}/themes/smoothness/jquery-ui.css" type="text/css" title="standard style"/>-->
-
-                        <!--<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/{$param/bootstrap_version}/js/bootstrap.min.js" />-->
-                        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/{$param/bootstrap_version}/css/bootstrap.min.css" />-->
-
                         <link rel="stylesheet" href="styles/css/main.css?v={$param/cc_version}" type="text/css" title="standard style"/>
                         <link rel="stylesheet" href="styles/general.css?v={$param/cc_version}" type="text/css" title="standard style"/>
                         <link rel="stylesheet" href="styles/card.css?v={$param/cc_version}" type="text/css" title="standard style"/>
@@ -75,16 +68,6 @@
                             </xsl:if>
                             <xsl:text> - MArcomage</xsl:text>
                         </title>
-                        <!--<script type="text/javascript" src="js/{$current_section}.js?v={$param/cc_version}"/>-->
-                        <!--<xsl:if test="$param/new_user = 'yes'">-->
-                            <!--<script type="text/javascript" src="js/intro.js?v={$param/cc_version}"/>-->
-                        <!--</xsl:if>-->
-                        <!--<xsl:if test="$param/new_level_gained &gt; 0">-->
-                            <!--<script type="text/javascript" src="js/levelup.js?v={$param/cc_version}"/>-->
-                        <!--</xsl:if>-->
-                        <!--<xsl:if test="$param/tutorial_active = 'yes'">-->
-                            <!--<script type="text/javascript" src="js/highlight.js?v={$param/cc_version}"/>-->
-                        <!--</xsl:if>-->
                         <xsl:if test="$param/include_captcha = 'yes'">
                             <script src='https://www.google.com/recaptcha/api.js'/>
                         </xsl:if>
@@ -136,9 +119,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button name="intro-dialog-dismiss" type="button" class="btn btn-default" data-dismiss="modal">
-                                                            <span class="btn-inner">
-                                                                <span class="btn-text">Close</span>
-                                                            </span>
+                                                            <span class="btn-inner"><span class="btn-text">Close</span></span>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -198,9 +179,7 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button name="level-up-dialog-dismiss" type="button" class="btn btn-default" data-dismiss="modal">
-                                                                <span class="btn-inner">
-                                                                    <span class="btn-text">Close</span>
-                                                                </span>
+                                                                <span class="btn-inner"><span class="btn-text">Close</span></span>
                                                             </button>
                                                         </div>
                                                     </div>
@@ -225,9 +204,7 @@
                                         <div class="modal-body"><p/></div>
                                         <div class="modal-footer">
                                             <button name="error-message-dismiss" type="button" class="btn btn-default">
-                                                <span class="btn-inner">
-                                                    <span class="btn-text">Ok</span>
-                                                </span>
+                                                <span class="btn-inner"><span class="btn-text">Ok</span></span>
                                             </button>
                                         </div>
                                     </div>
@@ -247,9 +224,7 @@
                                         <div class="modal-body"/>
                                         <div class="modal-footer">
                                             <button name="info-message-dismiss" type="button" class="btn btn-default">
-                                                <span class="btn-inner">
-                                                    <span class="btn-text">Ok</span>
-                                                </span>
+                                                <span class="btn-inner"><span class="btn-text">Ok</span></span>
                                             </button>
                                         </div>
                                     </div>
@@ -269,9 +244,7 @@
                                         <div class="modal-body"/>
                                         <div class="modal-footer">
                                             <button name="confirm" type="button" class="btn btn-default">
-                                                <span class="btn-inner">
-                                                    <span class="btn-text">Ok</span>
-                                                </span>
+                                                <span class="btn-inner"><span class="btn-text">Ok</span></span>
                                             </button>
                                             <button name="cancel" type="button" class="btn btn-default" data-dismiss="modal">
                                                 <span class="btn-inner">

@@ -16,7 +16,7 @@ $(document).ready(function() {
 
     // apply card filters by pressing ENTER key
     $('input[name="card_name"]').keypress(function(event) {
-        if (event.keyCode == '13') {
+        if (event.keyCode === $.dic.KEY_ENTER) {
             event.preventDefault();
             $('button[name="concepts_apply_filters"]').click();
         }
@@ -51,7 +51,7 @@ $(document).ready(function() {
         let uploadedFile = $('input[name="concept_image_file"]');
 
         // no file was selected
-        if (uploadedFile.val() == '') {
+        if (uploadedFile.val() === '') {
             // prompt user to select a file
             uploadedFile.click();
             return false;

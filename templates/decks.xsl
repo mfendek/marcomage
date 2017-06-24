@@ -471,7 +471,7 @@
                         <div id="card_{id}">
                             <xsl:choose>
                                 <xsl:when test="locked = 'no' and excluded = 'no'">
-                                    <xsl:attribute name="onclick">return takeCard(<xsl:value-of select="id"/>)</xsl:attribute>
+                                    <xsl:attribute name="data-take-card"><xsl:value-of select="id"/></xsl:attribute>
                                 </xsl:when>
                                 <xsl:when test="locked = 'no' and excluded = 'yes'">
                                     <xsl:attribute name="class">taken</xsl:attribute>
@@ -527,19 +527,13 @@
                         </div>
                         <div class="modal-footer">
                             <button name="deck-note-dialog-save" type="button" class="btn btn-default">
-                                <span class="btn-inner">
-                                    <span class="btn-text">Save</span>
-                                </span>
+                                <span class="btn-inner"><span class="btn-text">Save</span></span>
                             </button>
                             <button name="deck-note-dialog-clear" type="button" class="btn btn-default">
-                                <span class="btn-inner">
-                                    <span class="btn-text">Clear</span>
-                                </span>
+                                <span class="btn-inner"><span class="btn-text">Clear</span></span>
                             </button>
                             <button name="deck-note-dialog-dismiss" type="button" class="btn btn-default" data-dismiss="modal">
-                                <span class="btn-inner">
-                                    <span class="btn-text">Close</span>
-                                </span>
+                                <span class="btn-inner"><span class="btn-text">Close</span></span>
                             </button>
                         </div>
                     </div>

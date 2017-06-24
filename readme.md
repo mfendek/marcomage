@@ -13,6 +13,7 @@ Players may customize their profile and adjust the interface's appearance. The g
 1. checkout SVN repository from `https://arcomage.net/svn/`
 2. run composer install in `release` directory
 3. run DB install script located in `release/scripts/install_tables.sql`
+4. point your virtual host to project directory (you need to choose a branch, `release` should be used by default)
 
 ## Configuration
 
@@ -73,23 +74,33 @@ Configuration that is not present in the production config is inherited from bas
  
  ### Frontend
  
- Run `yarn install` to update frontend libraries. Run `npm run watch` as a preprocessor watcher.
- Run `yarn package` before commit. In case libraries were updated you need to commit both `package.json` and `yarn.lock` files.
+ Run `yarn install` to update frontend libraries. Run `yarn watch` as a preprocessor watcher and `yarn build` if you want a one time build.
+ Run `yarn package` before committing your changes. In case libraries were updated you need to commit both `package.json` and `yarn.lock` files.
+ 
+ ## Dependency management
+ 
+ Third party libraries should be included via `Composer` or `Yarn`.
+ If a library is not available in such form it may be included manually.
+ It's important to make sure that such library is separated from the rest of the code by keeping it in a separate directory for example.
  
  ## Production deployment
  
  * run `svn update`
  * run `composer install`
- * run DB scripts (optional)
+ * run maintenance scripts (optional)
  
  ## Coding standards
  
- * PSR (backend)
- * Air BnB (frontend).
+ * PSR-1, PSR-2 (backend)
+ * Air BnB, BEM (frontend)
  
  ## Links
  
  * Composer - https://getcomposer.org/
  * Node - https://nodejs.org/
  * Yarn - https://yarnpkg.com/
+ * PSR-1 - http://www.php-fig.org/psr/psr-1/
+ * PSR-2 - http://www.php-fig.org/psr/psr-2/
+ * Air BnB - https://github.com/airbnb/javascript
+ * BEM - http://getbem.com/naming/
  

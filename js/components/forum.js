@@ -16,7 +16,7 @@ $(document).ready(function() {
 
     // executes forum search by pressing the ENTER key
     $('input[name="phrase"]').keypress(function(event) {
-        if (event.keyCode == '13') {
+        if (event.keyCode === $.dic.KEY_ENTER) {
             event.preventDefault();
             $('button[name="forum_search"]').click();
         }

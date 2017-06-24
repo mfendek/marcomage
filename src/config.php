@@ -41,13 +41,6 @@ return [
         'public_key' => '',
         'private_key' => '',
     ],
-    'jquery' => [
-        'version' => '3.1.0',
-        'ui_version' => '1.12.0',
-    ],
-    'bootstrap' => [
-        'version' => '3.3.7',
-    ],
     'upload_dir' => [
         'avatar' => 'img/avatars/',
         'concept' => 'img/concepts/',

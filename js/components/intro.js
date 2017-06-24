@@ -10,7 +10,7 @@ $(document).ready(function() {
     let introDialog = $('#intro-dialog');
 
     // dialog is inactive
-    if (introDialog.length == 0) {
+    if (introDialog.length === 0) {
         return;
     }
 

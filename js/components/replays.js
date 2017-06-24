@@ -39,14 +39,14 @@ $(document).ready(function() {
 
     // apply replay filters by pressing ENTER key
     $('input[name="player_filter"]').keypress(function(event) {
-        if (event.keyCode == '13') {
+        if (event.keyCode === $.dic.KEY_ENTER) {
             event.preventDefault();
             $('button[name="replays_apply_filters"]').click();
         }
     });
 
     // apply only in replay section
-    if ($('a#next').length == 1) {
+    if ($('a#next').length === 1) {
         resumeReplay();
     }
 

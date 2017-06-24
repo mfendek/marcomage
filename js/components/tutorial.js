@@ -36,16 +36,16 @@ function highlightCards()
     let playCard = $('div.game button[name="play_card"]');
 
     // case 1: single play card button mode is active
-    if (playCard.length == 1 && playCard.val() == 0) {
+    if (playCard.length === 1 && playCard.val() === 0) {
         // case 1: highlight playable cards
-        if ($('div.game .hand.my-hand div.selected-card').length == 0) {
+        if ($('div.game .hand.my-hand div.selected-card').length === 0) {
             $('div.game .hand.my-hand div.suggested > div.card').animate({ opacity: 0.6 }, 500, function() {
                 $(this).animate({ opacity: 1} , 500);
             });
             window.setTimeout(highlightCards, 3000);
         }
         // case 2: highlight play button
-        else if (playCard.length == 1) {
+        else if (playCard.length === 1) {
             playCard.effect('highlight', {}, 1000);
             window.setTimeout(highlightCards, 3000);
         }
@@ -59,7 +59,7 @@ function highlightCards()
     // case 3: no play card button is available
     else {
         // case 1: highlight a card for discard action
-        if ($('div.game .hand.my-hand div.selected-card').length == 0) {
+        if ($('div.game .hand.my-hand div.selected-card').length === 0) {
             $('div.game .hand.my-hand div.suggested > div.card').animate({ opacity: 0.6 }, 500, function() {
                 $(this).animate({ opacity: 1} , 500);
             });
