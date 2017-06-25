@@ -300,7 +300,7 @@
             <div class="deck-options">
                 <xsl:choose>
                     <xsl:when test="$param/reset = 'no'">
-                        <button class="button-icon" type="submit" name="reset_deck_prepare" title="Reset deck">
+                        <button class="button-icon" type="submit" name="reset_deck_prepare" title="Empty deck">
                             <span class="glyphicon glyphicon-trash"/>
                         </button>
                     </xsl:when>
