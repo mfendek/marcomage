@@ -18,7 +18,6 @@
     <xsl:template match="section[. = 'Games']">
         <xsl:variable name="param" select="$params/games"/>
         <xsl:variable name="activeDecks" select="count($param/decks/*)"/>
-        <xsl:variable name="list" select="$param/list"/>
         <xsl:variable name="timeoutValues">
             <value name="0" text="no limit"/>
             <value name="86400" text="1 day"/>
@@ -31,22 +30,47 @@
         </xsl:variable>
 
         <div id="games">
-            <xsl:if test="$param/games_subsection = 'started_games'">
-                <!-- begin active games list -->
-                <div id="active-games" class="skin-label top-level">
-                    <xsl:copy-of select="am:gameSectionNavigation($param/games_subsection)"/>
+            <div class="skin-label top-level games-subsection">
+                <!-- subsection navigation -->
+                <p class="subsection-navigation">
+                    <xsl:variable name="subsections">
+                        <item name="active_games" text="Active games"/>
+                        <item name="free_games" text="Hosted games"/>
+                        <item name="hosted_games" text="My games"/>
+                        <item name="ai_games" text="AI games"/>
+                    </xsl:variable>
+
+                    <xsl:for-each select="exsl:node-set($subsections)/*">
+                        <a class="button" href="{am:makeUrl('Games', 'subsection', @name)}">
+                            <xsl:if test="$param/current_subsection = @name">
+                                <xsl:attribute name="class">button pushed</xsl:attribute>
+                            </xsl:if>
+                            <xsl:value-of select="@text"/>
+                        </a>
+                    </xsl:for-each>
+                    <xsl:if test="$param/show_quick_game = 'yes' and $activeDecks &gt; 0 and $param/free_slots &gt; 0">
+                        <button type="submit" name="quick_game">Quick game</button>
+                    </xsl:if>
+                </p>
+
+                <xsl:if test="$param/current_subsection = 'active_games'">
+                    <xsl:variable name="list" select="$param/list"/>
+                    <!-- begin active games list -->
                     <xsl:choose>
                         <xsl:when test="count($list/*) &gt; 0">
                             <div class="responsive-table table-sm skin-text">
                                 <!-- table header -->
                                 <div class="row">
+                                    <div class="col-sm-1">
+                                        <p/>
+                                    </div>
                                     <div class="col-sm-2">
                                         <p>Opponent</p>
                                     </div>
                                     <div class="col-sm-2">
                                         <p>Modes</p>
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-2">
                                         <p>Info</p>
                                     </div>
                                     <div class="col-sm-2">
@@ -63,6 +87,15 @@
                                 <!-- table body -->
                                 <xsl:for-each select="$list/*">
                                     <div class="row table-row details">
+                                        <div class="col-sm-1">
+                                            <p>
+                                                <xsl:variable name="avatarName" select="am:avatarFileName(
+                                                    avatar, opponent, ai, $param/system_name
+                                                )"/>
+
+                                                <img class="avatar" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+                                            </p>
+                                        </div>
                                         <div class="col-sm-2">
                                             <p>
                                                 <a class="profile" href="{am:makeUrl('Games_details', 'current_game', game_id)}">
@@ -92,7 +125,7 @@
                                                 )"/>
                                             </p>
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-2">
                                             <xsl:choose>
                                                 <xsl:when test="game_state = 'in progress' and is_dead = 'yes'">
                                                     <p class="ended-game">Can be aborted</p>
@@ -126,14 +159,10 @@
                             <p class="information-line warning">You have no active games.</p>
                         </xsl:otherwise>
                     </xsl:choose>
-                </div>
-                <!-- end active games list -->
-            </xsl:if>
-            <xsl:if test="$param/games_subsection = 'game_creation'">
-                <!-- begin hosted games list -->
-                <div id="hosted-games" class="skin-label top-level">
-                    <xsl:copy-of select="am:gameSectionNavigation($param/games_subsection)"/>
-
+                    <!-- end active games list -->
+                </xsl:if>
+                <xsl:if test="$param/current_subsection != 'active_games'">
+                    <!-- begin hosted games list -->
                     <!-- warning messages -->
                     <xsl:if test="$activeDecks = 0">
                         <p class="information-line warning">You need at least one ready deck to host/join a game.</p>
@@ -141,30 +170,6 @@
                     <xsl:if test="$param/free_slots = 0">
                         <p class="information-line warning">You cannot host/enter any more games.</p>
                     </xsl:if>
-
-                    <!-- subsection navigation -->
-                    <p>
-                        <a class="button" href="{am:makeUrl('Games', 'games_subsection', 'game_creation', 'subsection', 'free_games')}">
-                            <xsl:if test="$param/current_subsection = 'free_games'">
-                                <xsl:attribute name="class">button pushed</xsl:attribute>
-                            </xsl:if>
-                            <xsl:text>Hosted games</xsl:text>
-                        </a>
-
-                        <a class="button" href="{am:makeUrl('Games', 'games_subsection', 'game_creation', 'subsection', 'hosted_games')}">
-                            <xsl:if test="$param/current_subsection = 'hosted_games'">
-                                <xsl:attribute name="class">button pushed</xsl:attribute>
-                            </xsl:if>
-                            <xsl:text>My games</xsl:text>
-                        </a>
-
-                        <a class="button" href="{am:makeUrl('Games', 'games_subsection', 'game_creation', 'subsection', 'ai_games')}">
-                            <xsl:if test="$param/current_subsection = 'ai_games'">
-                                <xsl:attribute name="class">button pushed</xsl:attribute>
-                            </xsl:if>
-                            <xsl:text>AI games</xsl:text>
-                        </a>
-                    </p>
 
                     <xsl:choose>
                         <!-- begin subsection free games -->
@@ -193,7 +198,6 @@
                                             </xsl:for-each>
                                         </xsl:if>
                                     </select>
-                                    <button type="submit" name="quick_game">Quick game vs AI</button>
                                 </xsl:if>
 
                                 <xsl:variable name="modeOptions">
@@ -225,7 +229,10 @@
                                     <div class="responsive-table table-sm skin-text">
                                         <!-- table header -->
                                         <div class="row">
-                                            <div class="col-sm-3">
+                                            <div class="col-sm-1">
+                                                <p/>
+                                            </div>
+                                            <div class="col-sm-2">
                                                 <p>Opponent</p>
                                             </div>
                                             <div class="col-sm-2">
@@ -245,7 +252,16 @@
                                         <!-- table body -->
                                         <xsl:for-each select="$param/free_games/*">
                                             <div class="row table-row">
-                                                <div class="col-sm-3">
+                                                <div class="col-sm-1">
+                                                    <p>
+                                                        <xsl:variable name="avatarName" select="am:avatarFileName(
+                                                            avatar, opponent, ai, $param/system_name
+                                                        )"/>
+
+                                                        <img class="avatar" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+                                                    </p>
+                                                </div>
+                                                <div class="col-sm-2">
                                                     <p>
                                                         <xsl:if test="status != 'none'">
                                                             <img class="icon" width="20" height="14" src="img/{status}.png" alt="status flag" title="{status}"/>
@@ -514,10 +530,9 @@
                         </xsl:when>
                         <!-- end AI games subsection -->
                     </xsl:choose>
-
-                </div>
-                <!-- end hosted games section -->
-            </xsl:if>
+                    <!-- end hosted games section -->
+                </xsl:if>
+            </div>
 
             <!-- auto refresh -->
             <xsl:if test="$param/auto_refresh &gt; 0">

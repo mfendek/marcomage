@@ -558,34 +558,4 @@
     </func:function>
 
 
-    <!-- games subsection navigation -->
-    <func:function name="am:gameSectionNavigation">
-        <xsl:param name="subsection" as="xs:string"/>
-
-        <xsl:variable name="result">
-            <h3 class="subsection-navigation">
-                <xsl:variable name="items">
-                    <value name="started_games" text="Active games"/>
-                    <value name="game_creation" text="Create game"/>
-                </xsl:variable>
-                <xsl:for-each select="exsl:node-set($items)/*">
-                    <!-- menu item separator -->
-                    <xsl:if test="position() &gt; 1">
-                        <span>|</span>
-                    </xsl:if>
-
-                    <!-- menu item -->
-                    <a href="{am:makeUrl('Games', 'games_subsection', @name)}">
-                        <xsl:if test="$subsection = @name">
-                            <xsl:attribute name="class">current-section</xsl:attribute>
-                        </xsl:if>
-                        <xsl:value-of select="@text"/>
-                    </a>
-                </xsl:for-each>
-            </h3>
-        </xsl:variable>
-        <func:result select="exsl:node-set($result)"/>
-    </func:function>
-
-
 </xsl:stylesheet>

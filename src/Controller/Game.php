@@ -778,7 +778,6 @@ class Game extends ControllerAbstract
         $player = $this->getCurrentPlayer();
 
         $this->result()
-            ->changeRequest('games_subsection', 'game_creation')
             ->changeRequest('subsection', 'hosted_games')
             ->setCurrent('Games');
 
@@ -818,7 +817,6 @@ class Game extends ControllerAbstract
         $request = $this->request();
 
         $this->result()
-            ->changeRequest('games_subsection', 'game_creation')
             ->changeRequest('subsection', 'hosted_games')
             ->setCurrent('Games');
 
@@ -851,7 +849,6 @@ class Game extends ControllerAbstract
         $player = $this->getCurrentPlayer();
 
         $this->result()
-            ->changeRequest('games_subsection', 'game_creation')
             ->changeRequest('subsection', 'free_games')
             ->setCurrent('Games');
 
@@ -886,7 +883,6 @@ class Game extends ControllerAbstract
         $player = $this->getCurrentPlayer();
 
         $this->result()
-            ->changeRequest('games_subsection', 'game_creation')
             ->changeRequest('subsection', 'ai_games')
             ->setCurrent('Games');
 
@@ -927,7 +923,6 @@ class Game extends ControllerAbstract
         $player = $this->getCurrentPlayer();
 
         $this->result()
-            ->changeRequest('games_subsection', 'game_creation')
             ->changeRequest('subsection', 'ai_games')
             ->setCurrent('Games');
 
@@ -983,7 +978,6 @@ class Game extends ControllerAbstract
     protected function filterHostedGames()
     {
         $this->result()
-            ->changeRequest('games_subsection', 'game_creation')
             ->changeRequest('subsection', 'free_games')
             ->setCurrent('Games');
     }

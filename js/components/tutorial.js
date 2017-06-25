@@ -29,10 +29,6 @@ function highlightLeaveButton()
  */
 function highlightCards()
 {
-    if (!$.dic.bodyData().isTutorialActive()) {
-        return;
-    }
-
     let playCard = $('div.game button[name="play_card"]');
 
     // case 1: single play card button mode is active
@@ -74,6 +70,9 @@ function highlightCards()
 }
 
 $(document).ready(function() {
+    if (!$.dic.bodyData().isTutorialActive()) {
+        return;
+    }
 
     // highlight quick game vs AI button in games section
     if ($('div#games button[name="quick_game"]').length > 0) {

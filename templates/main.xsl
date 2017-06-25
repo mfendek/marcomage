@@ -327,14 +327,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-7 nav-buttons">
+                <div class="col-md-6 nav-buttons">
                     <xsl:variable name="sections">
                         <!-- section name, level requirement -->
                         <value name="Games" level="0"/>
                         <value name="Decks" level="1"/>
-                        <value name="Messages" level="0"/>
                         <value name="Players" level="0"/>
-                        <value name="Forum" level="0"/>
                         <value name="Replays" level="3"/>
                         <value name="Cards" level="2"/>
                         <value name="Concepts" level="5"/>
@@ -352,9 +350,11 @@
                         </xsl:for-each>
                     </nav>
                 </div>
-                <div class="col-md-3 nav-buttons">
+                <div class="col-md-4 nav-buttons">
                     <xsl:variable name="sections">
                         <value name="Webpage" icon="home"/>
+                        <value name="Messages" icon="envelope" />
+                        <value name="Forum" icon="list-alt"/>
                         <value name="Help" icon="question-sign"/>
                         <value name="Settings" icon="wrench"/>
                         <value name="Statistics" icon="stats"/>

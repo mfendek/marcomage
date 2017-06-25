@@ -254,18 +254,13 @@ class Game extends TemplateDataAbstract
         $input = $this->input();
 
         $config = $this->getDic()->config();
-        $newUser = $this->getDic()->newUserFlag();
         $player = $this->getCurrentPlayer();
         $defEntityChallenge = $this->defEntity()->challenge();
         $dbEntityChallenge = $this->dbEntity()->deck();
         $dbEntityGame = $this->dbEntity()->game();
-
+        $dbEntitySetting = $this->dbEntity()->setting();
         $setting = $this->getCurrentSettings();
-        $default = ($newUser) ? 'game_creation' : 'started_games';
-        $gamesSubsection = Input::defaultValue($input, 'games_subsection', $default);
-        $gamesSubsection = (in_array($gamesSubsection, ['started_games', 'game_creation']))
-            ? $gamesSubsection : 'started_games';
-        $data['games_subsection'] = $gamesSubsection;
+        $score = $this->dbEntity()->score()->getScoreAsserted($player->getUsername());
 
         // process player's settings
         $data['player_name'] = $player->getUsername();
@@ -279,8 +274,24 @@ class Game extends TemplateDataAbstract
         $data['system_name'] = PlayerModel::SYSTEM_NAME;
         $data['avatar_path'] = $config['upload_dir']['avatar'];
 
+        $passedTutorial = ($score->getLevel() >= PlayerModel::TUTORIAL_END);
+        $currentSubsection = Input::defaultValue($input, 'subsection', 'active_games');
+        $data['current_subsection'] = $currentSubsection;
+        $data['show_quick_game'] = (!$passedTutorial) ? 'yes' : 'no';
+        $data['avatar_path'] = $config['upload_dir']['avatar'];
+
+        // list player's ready decks
+        $result = $dbEntityChallenge->listReadyDecks($player->getUsername());
+        if ($result->isError()) {
+            throw new Exception('Failed to list ready decks for player');
+        }
+        $decks = $result->data();
+
+        $data['free_slots'] = $this->service()->gameUtil()->countFreeSlots($player->getUsername());
+        $data['decks'] = $decks;
+
         // started games subsection specific data
-        if ($gamesSubsection == 'started_games') {
+        if ($currentSubsection == 'active_games') {
             // list games
             $result = $dbEntityGame->listGamesData($player->getUsername());
             if ($result->isError()) {
@@ -296,10 +307,11 @@ class Game extends TemplateDataAbstract
 
                     // determine opponent's activity (only in case of human player)
                     $lastSeen = Date::timeToStr();
+                    $avatar = '';
                     if (strpos($gameData['game_modes'], 'AIMode') === false) {
                         $opponent = $this->dbEntity()->player()->getPlayerAsserted($opponentName);
-
                         $lastSeen = $opponent->getLastActivity();
+                        $avatar = $dbEntitySetting->getSettingAsserted($opponentName)->getSetting('avatar');
                     }
                     $inactivity = time() - Date::strToTime($lastSeen);
 
@@ -318,6 +330,7 @@ class Game extends TemplateDataAbstract
 
                     $data['list'][$i] = [
                         'opponent' => $opponentName,
+                        'avatar' => $avatar,
                         'ready' => ($gameData['current'] == $player->getUsername()) ? 'yes' : 'no',
                         'game_id' => $gameData['game_id'],
                         'game_state' => $gameData['state'],
@@ -339,85 +352,84 @@ class Game extends TemplateDataAbstract
                 }
             }
         }
-
         // game creation subsection specific data
-        if ($gamesSubsection == 'game_creation') {
-            $score = $this->dbEntity()->score()->getScoreAsserted($player->getUsername());
-
+        else {
             // determine if AI challenges should be shown
-            $data['show_challenges'] = ($score->getLevel() >= PlayerModel::TUTORIAL_END) ? 'yes' : 'no';
-            $data['current_subsection'] = Input::defaultValue($input, 'subsection', 'free_games');
-            $data['hidden_cards'] = $hiddenFilter = Input::defaultValue($input, 'hidden_cards', 'none');
-            $data['friendly_play'] = $friendlyFilter = Input::defaultValue($input, 'friendly_play', 'none');
-            $data['long_mode'] = $longFilter = Input::defaultValue($input, 'long_mode', 'none');
-
-            // list hosted game
-            $result = $dbEntityGame->listHostedGames($player->getUsername());
-            if ($result->isError()) {
-                throw new Exception('Failed to list hosted games');
-            }
-            $hostedGames = $result->data();
-
-            // list free games
-            $result = $dbEntityGame->listFreeGames($player->getUsername(), [
-                'hidden' => $hiddenFilter,
-                'friendly' => $friendlyFilter,
-                'long' => $longFilter,
-            ]);
-            if ($result->isError()) {
-                throw new Exception('Failed to list free games');
-            }
-            $freeGames = $result->data();
-
-            // list player's ready decks
-            $result = $dbEntityChallenge->listReadyDecks($player->getUsername());
-            if ($result->isError()) {
-                throw new Exception('Failed to list ready decks for player');
-            }
-            $decks = $result->data();
-
-            $data['free_slots'] = $this->service()->gameUtil()->countFreeSlots($player->getUsername());
-            $data['decks'] = $decks;
+            $data['show_challenges'] = ($passedTutorial) ? 'yes' : 'no';
             $data['random_deck'] = (count($decks) > 0) ? $decks[Random::arrayMtRand($decks)]['deck_id'] : '';
             $data['random_ai_deck'] = (count($decks) > 0) ? $decks[Random::arrayMtRand($decks)]['deck_id'] : '';
-            $result = $defEntityChallenge->listChallenges();
-            if ($result->isError()) {
-                throw new Exception('Failed to list AI challenges');
+
+            // free games section specific data
+            if ($currentSubsection == 'free_games') {
+                $hiddenFilter = Input::defaultValue($input, 'hidden_cards', 'none');
+                $friendlyFilter = Input::defaultValue($input, 'friendly_play', 'none');
+                $longFilter = Input::defaultValue($input, 'long_mode', 'none');
+
+                $data['hidden_cards'] = $hiddenFilter;
+                $data['friendly_play'] = $friendlyFilter;
+                $data['long_mode'] = $longFilter;
+
+                // list free games
+                $result = $dbEntityGame->listFreeGames($player->getUsername(), [
+                    'hidden' => $hiddenFilter,
+                    'friendly' => $friendlyFilter,
+                    'long' => $longFilter,
+                ]);
+                if ($result->isError()) {
+                    throw new Exception('Failed to list free games');
+                }
+                $freeGames = $result->data();
+
+                // compute opponent's activity for free games
+                if (count($freeGames) > 0) {
+                    foreach ($freeGames as $i => $gameData) {
+                        $opponentName = $gameData['player1'];
+                        $opponent = $this->dbEntity()->player()->getPlayerAsserted($opponentName);
+                        $setting = $this->dbEntity()->setting()->getSettingAsserted($opponentName);
+                        $inactivity = time() - Date::strToTime($opponent->getLastActivity());
+
+                        $data['free_games'][$i] = [
+                            'opponent' => $opponentName,
+                            'game_id' => $gameData['game_id'],
+                            'active' => ($inactivity < 10 * Date::MINUTE) ? 'yes' : 'no',
+                            'status' => $setting->getSetting('status'),
+                            'avatar' => $setting->getSetting('avatar'),
+                            'game_action' => $gameData['last_action_at'],
+                            'game_modes' => $gameData['game_modes'],
+                            'timeout' => $gameData['turn_timeout'],
+                        ];
+                    }
+                }
+
             }
-            $data['ai_challenges'] = $result->data();
+            // hosted games section specific data
+            elseif ($currentSubsection == 'hosted_games') {
+                // list hosted game
+                $result = $dbEntityGame->listHostedGames($player->getUsername());
+                if ($result->isError()) {
+                    throw new Exception('Failed to list hosted games');
+                }
+                $hostedGames = $result->data();
 
-            // compute opponent's activity for free games
-            if (count($freeGames) > 0) {
-                foreach ($freeGames as $i => $gameData) {
-                    $opponentName = $gameData['player1'];
-
-                    $opponent = $this->dbEntity()->player()->getPlayerAsserted($opponentName);
-                    $setting = $this->dbEntity()->setting()->getSettingAsserted($opponentName);
-
-                    $inactivity = time() - Date::strToTime($opponent->getLastActivity());
-
-                    $data['free_games'][$i] = [
-                        'opponent' => $opponentName,
-                        'game_id' => $gameData['game_id'],
-                        'active' => ($inactivity < 10 * Date::MINUTE) ? 'yes' : 'no',
-                        'status' => $setting->getSetting('status'),
-                        'game_action' => $gameData['last_action_at'],
-                        'game_modes' => $gameData['game_modes'],
-                        'timeout' => $gameData['turn_timeout'],
-                    ];
+                // reformat hosted games
+                if (count($hostedGames) > 0) {
+                    foreach ($hostedGames as $i => $gameData) {
+                        $data['hosted_games'][$i] = [
+                            'game_id' => $gameData['game_id'],
+                            'game_action' => $gameData['last_action_at'],
+                            'game_modes' => $gameData['game_modes'],
+                            'timeout' => $gameData['turn_timeout'],
+                        ];
+                    }
                 }
             }
-
-            // reformat hosted games
-            if (count($hostedGames) > 0) {
-                foreach ($hostedGames as $i => $gameData) {
-                    $data['hosted_games'][$i] = [
-                        'game_id' => $gameData['game_id'],
-                        'game_action' => $gameData['last_action_at'],
-                        'game_modes' => $gameData['game_modes'],
-                        'timeout' => $gameData['turn_timeout'],
-                    ];
+            // AI games section specific data
+            elseif ($currentSubsection == 'ai_games') {
+                $result = $defEntityChallenge->listChallenges();
+                if ($result->isError()) {
+                    throw new Exception('Failed to list AI challenges');
                 }
+                $data['ai_challenges'] = $result->data();
             }
         }
 

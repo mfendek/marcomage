@@ -9,11 +9,6 @@ div#games {
     text-align: center;
 }
 
-/* section heading */
-div#games h3 {
-    margin: 0;
-}
-
 /* table layout */
 div#games .responsive-table {
     margin-top: 0.5ex;
@@ -22,26 +17,15 @@ div#games .responsive-table {
 /* checkbox layout */
 div#games input[type="checkbox"] {
     padding: 0.5ex;
-    margin: 0 0.5ex 0.5ex 0;
+    margin: 0;
     border: thin solid;
 }
 
 /* active games subsection */
-div#active-games {
+.games-subsection {
     padding-left: 1ex;
     padding-right: 1ex;
     margin-bottom: 1ex;
-}
-
-/* hosted games subsection */
-div#hosted-games {
-    padding-left: 1ex;
-    padding-right: 1ex;
-    margin-bottom: 1ex;
-}
-
-#games .subsection-navigation .current-section {
-    text-decoration: underline;
 }
 
 /* AI challenges section */
@@ -73,13 +57,18 @@ div#ai-challenges img.avatar {
     margin-bottom: 1ex;
 }
 
-/* subsection heading */
-div#active-games h3, div#hosted-games h3 {
-    margin: 2ex;
+/* subsection navigation */
+.subsection-navigation {
+    margin-bottom: 1ex;
+    margin-top: 0.5ex;
+}
+
+.subsection-navigation > * {
+    margin-top: 0.5ex;
 }
 
 /* distance between subsection buttons */
-div#hosted-games > p > a.button + a.button {
+.subsection-navigation > * + * {
     margin-left: 0.5ex;
 }
 
@@ -91,7 +80,23 @@ div#games .filters {
 
 /* misc layout */
 div#games .misc {
+    margin-bottom: 1ex;
     margin-top: 1ex;
+}
+
+div#games .responsive-table .table-row .avatar {
+    margin: 0;
+}
+
+/* vertical align for table cells */
+@media (min-width: 992px) {
+    div#games .responsive-table .table-row p {
+        line-height: 60px;
+    }
+
+    div#games .responsive-table .table-row button {
+        line-height: initial;
+    }
 }
 
 /* color for text information about the game ("game has ended") */
