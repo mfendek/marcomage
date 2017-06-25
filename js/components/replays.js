@@ -33,13 +33,15 @@ function pauseReplay()
 }
 
 $(document).ready(function() {
-    if (!$.dic.bodyData().isSectionActive('replays')) {
+    let dic = $.dic;
+
+    if (!dic.bodyData().isSectionActive('replays')) {
         return;
     }
 
     // apply replay filters by pressing ENTER key
     $('input[name="player_filter"]').keypress(function(event) {
-        if (event.keyCode === $.dic.KEY_ENTER) {
+        if (event.keyCode === dic.KEY_ENTER) {
             event.preventDefault();
             $('button[name="replays_apply_filters"]').click();
         }

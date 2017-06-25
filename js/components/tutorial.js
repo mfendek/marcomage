@@ -70,7 +70,9 @@ function highlightCards()
 }
 
 $(document).ready(function() {
-    if (!$.dic.bodyData().isTutorialActive()) {
+    let dic = $.dic;
+
+    if (!dic.bodyData().isTutorialActive()) {
         return;
     }
 

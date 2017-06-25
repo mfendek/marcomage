@@ -438,19 +438,20 @@ function BBcode()
 }
 
 $(document).ready(function() {
-    let api = $.dic.apiManager();
-    let notification = $.dic.notificationsManager();
+    let dic = $.dic;
+    let api = dic.apiManager();
+    let notification = dic.notificationsManager();
     let confirmed = false;
 
     // login box auto focus (ommited in case of registration)
     let username = $('#login-inputs input[name="username"]');
-    if (username.length > 0 && !$.dic.bodyData().isSectionActive('registration')) {
+    if (username.length > 0 && !dic.bodyData().isSectionActive('registration')) {
         // set focus on login name
         username.focus();
 
         // login name input handling
         username.keypress(function(event) {
-            if (event.keyCode === $.dic.KEY_ENTER) {
+            if (event.keyCode === dic.KEY_ENTER) {
                 event.preventDefault();
 
                 // login name is specified - move cursor to the next input
@@ -462,7 +463,7 @@ $(document).ready(function() {
 
         // password input handling
         $('input[name="password"]').keypress(function(event) {
-            if (event.keyCode === $.dic.KEY_ENTER) {
+            if (event.keyCode === dic.KEY_ENTER) {
                 event.preventDefault();
 
                 // password is specified - execute login
@@ -483,14 +484,14 @@ $(document).ready(function() {
 
     // blocks ENTER key to prevent section redirects
     $('input[type!="password"], input[name!="username"], input[name!="new_username"], select').keypress(function(event) {
-        if (event.keyCode === $.dic.KEY_ENTER) {
+        if (event.keyCode === dic.KEY_ENTER) {
             event.preventDefault();
         }
     });
 
     // BBcode buttons handling
     $('div.bb-code-buttons > button').click(function() {
-        let bbCode = $.dic.bbCode();
+        let bbCode = dic.bbCode();
 
         // get target element name
         let target = $(this).parent().attr('id');

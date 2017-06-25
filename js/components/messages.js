@@ -7,16 +7,18 @@ import $ from 'jquery';
 export default function () {
 
 $(document).ready(function() {
-    if (!$.dic.bodyData().isSectionActive('messages')) {
+    let dic = $.dic;
+
+    if (!dic.bodyData().isSectionActive('messages')) {
         return;
     }
 
-    let notification = $.dic.notificationsManager();
+    let notification = dic.notificationsManager();
     let confirmed = false;
 
     // apply message filters by pressing ENTER key
     $('input[name="name_filter"]').keypress(function(event) {
-        if (event.keyCode === $.dic.KEY_ENTER) {
+        if (event.keyCode === dic.KEY_ENTER) {
             event.preventDefault();
             $('button[name="messages_apply_filters"]').click();
         }

@@ -7,11 +7,13 @@ import $ from 'jquery';
 export default function () {
 
 $(document).ready(function() {
-    if (!$.dic.bodyData().isSectionActive('settings')) {
+    let dic = $.dic;
+
+    if (!dic.bodyData().isSectionActive('settings')) {
         return;
     }
 
-    let notification = $.dic.notificationsManager();
+    let notification = dic.notificationsManager();
     let confirmed = false;
 
     // purchase item (MArcomage shop)

@@ -7,11 +7,13 @@ import $ from 'jquery';
 export default function () {
 
 $(document).ready(function() {
-    if (!$.dic.bodyData().isSectionActive('cards')) {
+    let dic = $.dic;
+
+    if (!dic.bodyData().isSectionActive('cards')) {
         return;
     }
 
-    let notification = $.dic.notificationsManager();
+    let notification = dic.notificationsManager();
     let confirmed = false;
 
     // purchase foil card version
@@ -39,7 +41,7 @@ $(document).ready(function() {
 
     // apply card filters by pressing ENTER key
     $('input[name="name_filter"]').keypress(function(event) {
-        if (event.keyCode === $.dic.KEY_ENTER) {
+        if (event.keyCode === dic.KEY_ENTER) {
             event.preventDefault();
             $('button[name="cards_apply_filters"]').click();
         }

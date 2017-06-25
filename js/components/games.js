@@ -11,7 +11,8 @@ export default function () {
  */
 function refreshGameList()
 {
-    let api = $.dic.apiManager();
+    let dic = $.dic;
+    let api = dic.apiManager();
 
     // check if there are any active games available
     api.activeGames(function(result) {
@@ -34,8 +35,8 @@ function refreshGameList()
  */
 function refreshGame()
 {
-    let api = $.dic.apiManager();
-
+    let dic = $.dic;
+    let api = dic.apiManager();
     let nextGame = $('div.game button[name="next_game"]');
 
     // case 1: it is not player's turn in current game and the next game button is available - go to next game
@@ -89,12 +90,14 @@ function autoAiMove()
 }
 
 $(document).ready(function() {
+    let dic = $.dic;
+
     if (!$.dic.bodyData().isSectionActive('games')) {
         return;
     }
 
-    let api = $.dic.apiManager();
-    let notification = $.dic.notificationsManager();
+    let api = dic.apiManager();
+    let notification = dic.notificationsManager();
 
     // initialize games list refresh if active
     let autoRefresh = $('div#games > input[name="auto_refresh"]');
@@ -222,7 +225,7 @@ $(document).ready(function() {
         window.clearInterval(gameRefreshTimer);
 
         // sends in game chat message by pressing ENTER key
-        if (event.keyCode === $.dic.KEY_ENTER) {
+        if (event.keyCode === dic.KEY_ENTER) {
             event.preventDefault();
             $('button[name="send_message"]').click();
         }
@@ -363,7 +366,7 @@ $(document).ready(function() {
             });
         });
 
-        let bbCode = $.dic.bbCode();
+        let bbCode = dic.bbCode();
 
         // BB code buttons
         $('button[name="chat-dialog-bold"]').click(function() {

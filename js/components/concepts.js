@@ -7,16 +7,18 @@ import $ from 'jquery';
 export default function () {
 
 $(document).ready(function() {
-    if (!$.dic.bodyData().isSectionActive('concepts')) {
+    let dic = $.dic;
+
+    if (!dic.bodyData().isSectionActive('concepts')) {
         return;
     }
 
-    let notification = $.dic.notificationsManager();
+    let notification = dic.notificationsManager();
     let confirmed = false;
 
     // apply card filters by pressing ENTER key
     $('input[name="card_name"]').keypress(function(event) {
-        if (event.keyCode === $.dic.KEY_ENTER) {
+        if (event.keyCode === dic.KEY_ENTER) {
             event.preventDefault();
             $('button[name="concepts_apply_filters"]').click();
         }

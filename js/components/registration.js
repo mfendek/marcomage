@@ -7,11 +7,13 @@ import $ from 'jquery';
 export default function () {
 
 $(document).ready(function() {
-    if (!$.dic.bodyData().isSectionActive('registration')) {
+    let dic = $.dic;
+
+    if (!dic.bodyData().isSectionActive('registration')) {
         return;
     }
 
-    let notification = $.dic.notificationsManager();
+    let notification = dic.notificationsManager();
     let newUsername = $('input[name="new_username"]');
 
     // set focus on login name
@@ -19,7 +21,7 @@ $(document).ready(function() {
 
     // login name input handling
     newUsername.keypress(function(event) {
-        if (event.keyCode === $.dic.KEY_ENTER) {
+        if (event.keyCode === dic.KEY_ENTER) {
             event.preventDefault();
 
             // login name is specified - move cursor to the next input
@@ -31,7 +33,7 @@ $(document).ready(function() {
 
     // new password input handling
     $('input[name="new_password"]').keypress(function(event) {
-        if (event.keyCode === $.dic.KEY_ENTER) {
+        if (event.keyCode === dic.KEY_ENTER) {
             event.preventDefault();
 
             // new password is specified - move cursor to the next input
@@ -43,7 +45,7 @@ $(document).ready(function() {
 
     // new password confirmation input handling
     $('input[name="confirm_password"]').keypress(function(event) {
-        if (event.keyCode === $.dic.KEY_ENTER) {
+        if (event.keyCode === dic.KEY_ENTER) {
             event.preventDefault();
 
             // new password is specified - execute register

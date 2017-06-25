@@ -13,10 +13,11 @@ export default function () {
  */
 function takeCard(cardId)
 {
+    let dic = $.dic;
     let card = '#card_' + cardId;
     let deckId = $('input[name="current_deck"]').val();
-    let api = $.dic.apiManager();
-    let notification = $.dic.notificationsManager();
+    let api = dic.apiManager();
+    let notification = dic.notificationsManager();
 
     api.takeCard(deckId, cardId, function(result) {
         // AJAX failed, display error message
@@ -90,10 +91,11 @@ function takeCard(cardId)
  */
 function removeCard(cardId)
 {
+    let dic = $.dic;
     let card = '#card_' + cardId;
     let deckId = $('input[name="current_deck"]').val();
-    let api = $.dic.apiManager();
-    let notification = $.dic.notificationsManager();
+    let api = dic.apiManager();
+    let notification = dic.notificationsManager();
 
     api.removeCard(deckId, cardId, function(result) {
         // AJAX failed, display error message
@@ -143,17 +145,19 @@ function removeCard(cardId)
 }
 
 $(document).ready(function() {
-    if (!$.dic.bodyData().isSectionActive('decks')) {
+    let dic = $.dic;
+
+    if (!dic.bodyData().isSectionActive('decks')) {
         return;
     }
 
-    let api = $.dic.apiManager();
-    let notification = $.dic.notificationsManager();
+    let api = dic.apiManager();
+    let notification = dic.notificationsManager();
     let confirmed = false;
 
     // apply card filters by pressing ENTER key
     $('input[name="name_filter"]').keypress(function(event) {
-        if (event.keyCode === $.dic.KEY_ENTER) {
+        if (event.keyCode === dic.KEY_ENTER) {
             event.preventDefault();
             $('button[name="deck_apply_filters"]').click();
         }
