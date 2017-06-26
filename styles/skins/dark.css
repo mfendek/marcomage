@@ -162,3 +162,13 @@ div.exp-progress-bar {
 blockquote > div {
     border: thin solid #cccccc; /* light gray */
 }
+
+/* modal dialog styles */
+[role="dialog"].modal .modal-content {
+    background-color: #111111;
+    color: #eeeeee;
+}
+
+[role="dialog"].modal button[name="close-modal"] {
+    color: #ffffff;
+}
