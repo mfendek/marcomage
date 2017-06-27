@@ -12,8 +12,8 @@ export default function () {
  */
 function highlightSection(section)
 {
-    $('.menu-center > a:contains("' + section + '")').effect('bounce', {}, 1000);
-    window.setTimeout(highlightSection, 1500, section);
+    $('.menu-center > a:contains("' + section + '")').effect('fade', {}, 800);
+    window.setTimeout(highlightSection, 3000, section);
 }
 
 $(document).ready(function() {
@@ -28,8 +28,7 @@ $(document).ready(function() {
         // highlight newly unlocked section
         let unlockSection = $('input[name="unlock_section"]');
         if (unlockSection.length === 1) {
-            // TODO doesn't work on <a> elements only buttons
-            // highlightSection(unlockSection.val());
+            highlightSection(unlockSection.val());
         }
     });
 
