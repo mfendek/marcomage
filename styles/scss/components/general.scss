@@ -4,73 +4,78 @@
 
 html {
   font-family: $font-family-times;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 hr {
   border: thin solid;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
-input, button {
-  font-weight: normal;
-  font-size: small;
-  color: $black;
+button,
+input {
   border: 2px outset $black;
   border-radius: 6px;
+  color: $black;
+  font-family: $font-family-arial;
+  font-size: small;
+  font-weight: normal;
   padding: 0.4ex 1.2ex 0.4ex 1.2ex;
   vertical-align: middle;
-  font-family: $font-family-arial;
 }
 
-/* hyperlink button */
+// hyperlink button
 a.button {
-  display: inline-block;
-  font-size: small;
-  font-weight: normal;
-  color: $black;
   border: 2px outset $black;
   border-radius: 6px;
-  padding: 0.4ex 1.2ex 0.4ex 1.2ex;
-  vertical-align: middle;
-  text-decoration: none;
+  color: $black;
+  display: inline-block;
   font-family: $font-family-arial;
+  font-size: small;
+  font-weight: normal;
+  padding: 0.4ex 1.2ex 0.4ex 1.2ex;
+  text-decoration: none;
+  vertical-align: middle;
 }
 
-/* default color for hyperlink button */
-a.button:link, a.button:visited {
+// default color for hyperlink button
+a.button:link,
+a.button:visited {
   color: $black;
 }
 
-/* image links */
+// image links
 a.image-link,
 a.image-link:link,
 a.image-link:visited {
   text-decoration: none;
 }
 
-/* player profile link */
-a.profile, a.profile:link, a.profile:visited {
-  text-decoration: none;
+// player profile link
+a.profile,
+a.profile:link,
+a.profile:visited {
   color: inherit;
+  text-decoration: none;
 }
 
-/* disabled hyperlink button */
+// disabled hyperlink button
 .disabled {
-  font-size: large;
-  font-weight: normal;
-  color: $gray;
   border: 2px outset $black;
   border-radius: 6px;
+  color: $gray;
+  display: inline-block;
+  font-family: $font-family-arial;
+  font-size: large;
+  font-weight: normal;
   padding: 0.2ex 0.6ex 0.2ex 0.6ex;
   vertical-align: middle;
-  font-family: $font-family-arial;
-  display: inline-block;
 }
 
-.button-icon, a.button-icon {
+.button-icon,
+a.button-icon {
   font-size: large;
   padding: 0.2ex 0.6ex 0.2ex 0.6ex;
 }
@@ -79,53 +84,57 @@ a.profile, a.profile:link, a.profile:visited {
   font-size: medium;
 }
 
-/* set default properties (do not rely on browser defaults) */
+// set default properties (do not rely on browser defaults)
 body {
   background-color: $transparent-full;
-  font-family: $font-family-times;
-  line-height: normal;
-  font-size: medium;
   color: inherit;
+  font-family: $font-family-times;
+  font-size: medium;
+  line-height: normal;
 }
 
-/* override defaults */
-body, p, h5 {
+// override defaults
+body,
+h5,
+p {
   padding: 0;
   margin: 0;
 }
 
 h1 {
-  font-family: $font-family-arial;
   color: $red;
+  font-family: $font-family-arial;
   text-align: center;
 }
 
-h2, h3 {
+h2,
+h3 {
   font-family: $font-family-arial;
-  text-align: center;
   font-size: large;
+  text-align: center;
 }
 
-h4, h5 {
+h4,
+h5 {
   font-family: $font-family-arial;
-  line-height: normal;
   font-size: medium;
+  line-height: normal;
 }
 
 ul {
-  padding-left: 0;
   margin-left: 2ex;
+  padding-left: 0;
 }
 
 select {
-  font-size: small;
-  color: $black;
   background-color: $light-blue;
   border: thin solid $black;
-  vertical-align: middle;
-  font-weight: normal;
+  color: $black;
   font-family: $font-family-arial;
+  font-size: small;
+  font-weight: normal;
   padding: 0.3ex 0.5ex 0.3ex 0.5ex;
+  vertical-align: middle;
 }
 
 th {
@@ -133,86 +142,92 @@ th {
   padding: 0;
 }
 
-/* text area layout */
+// text area layout
 textarea {
-  font-family: $font-family-monospace;
-  font-weight: normal;
-  width: 100%;
   border: 2px inset $black;
   border-radius: 6px;
   color: $black;
+  font-family: $font-family-monospace;
+  font-weight: normal;
   margin-top: 1ex;
+  width: 100%;
 }
 
-/* table cell spacing */
+// table cell spacing
 table {
-  border-spacing: 0;
   border-collapse: separate;
+  border-spacing: 0;
 }
 
-/* table cell padding */
-table > tbody > tr > th, table > tbody > tr > td {
+// table cell padding
+table > tbody > tr > td,
+table > tbody > tr > th {
   padding: 0;
 }
 
-/* default table header styles */
+// default table header styles
 table > tbody > tr > th {
   font-family: $font-family-arial;
   text-align: center;
 }
 
-/* centered table */
+// centered table
 table.centered {
   margin-left: auto;
   margin-right: auto;
 }
 
-/* centered row */
-div.centered, tr.centered > td {
+// centered row
+div.centered,
+tr.centered > td {
   text-align: center;
 }
 
-/* centered row */
-td.centered, tr.centered > td > p.flag {
+// centered row
+td.centered,
+tr.centered > td > p.flag {
   margin-left: auto;
   margin-right: auto;
 }
 
-/* table align top */
-tr.align-top, td.align-top {
+// table align top
+td.align-top,
+tr.align-top {
   vertical-align: top;
 }
 
-/* table align bottom */
+// table align bottom
 .align-bottom {
   vertical-align: bottom;
 }
 
-/* table align right */
-.align-right > div, .align-right > table {
+// table align right
+.align-right > div,
+.align-right > table {
   margin-left: auto
 }
 
-/* information message layout */
+// information message layout
 p.information-line {
   font-family: $font-family-arial;
-  text-align: center;
   line-height: 20px;
+  text-align: center;
 }
 
-/* when no information is displayed, display blank line */
+// when no information is displayed, display blank line
 p.blank-line {
-  margin: 0;
   height: 20px;
+  margin: 0;
 }
 
-/* clear both floats */
+// clear both floats
 div.clear-floats {
   clear: both;
 }
 
-/* input text fields */
-input[type="text"], input[type="password"] {
+// input text fields
+input[type="password"],
+input[type="text"] {
   border-style: inset;
 }
 
@@ -220,12 +235,12 @@ input[type="file"] {
   display: inline-block;
 }
 
-/* avatar picture */
+// avatar picture
 img.avatar {
+  background-color: $black;
   border: thin solid $white-shade;
   margin-bottom: 0.2ex;
   margin-right: 0.5ex;
-  background-color: $black;
   vertical-align: middle;
 }
 
@@ -233,7 +248,7 @@ img.avatar {
   margin-top: 1ex;
 }
 
-/* checkbox layout */
+// checkbox layout
 input[type="checkbox"] {
   font-size: large;
   margin: 3px;
@@ -245,74 +260,78 @@ input.table-checkbox {
 }
 
 fieldset {
-  display: block;
   border: 2px groove threedface;
+  display: block;
   padding: 1ex 2ex 2ex 2ex;
 }
 
 legend {
-  display: block;
-  border-width: initial;
-  border-style: none;
   border-color: initial;
   border-image: initial;
-  width: auto;
-  padding: 0 0.5ex 0 0.5ex;
-  margin: 0;
-  font-size: medium;
+  border-style: none;
+  border-width: initial;
   color: inherit;
+  display: block;
+  font-size: medium;
+  margin: 0;
+  padding: 0 0.5ex 0 0.5ex;
+  width: auto;
 }
 
-/* card and keyword code */
+// card and keyword code
 div.code > pre {
   font-family: $font-family-monospace;
   color: $black;
 }
 
-/* filters */
+// filters
 .filters {
   text-align: center;
 }
 
-/* set distance between filter buttons */
-.filters * + button, .filters * + .button, .filters * + .disabled {
+// set distance between filter buttons
+.filters * + button,
+.filters * + .button,
+.filters * + .disabled {
   margin-left: 0.5ex;
 }
 
-/* highlight filter when active */
+// highlight filter when active
 .filter-active {
   background-color: $green;
 }
 
-/* selected button */
-button.pushed, a.pushed, a.button:active {
+// selected button
+a.pushed,
+a.button:active,
+button.pushed {
   border-style: inset;
 }
 
-/* icon image */
+// icon image
 img.icon {
-  vertical-align: middle;
   margin-left: 0.5ex;
+  vertical-align: middle;
 }
 
-/* quote text layout */
+// quote text layout
 blockquote {
-  padding: 0;
-  margin-top: 1ex;
+  border: none;
+  font-size: medium;
   margin-bottom: 1ex;
   margin-left: 2ex;
-  font-size: medium;
-  border: none;
+  margin-top: 1ex;
+  padding: 0;
 }
 
 blockquote > div {
-  padding: 1.8em 0.8em 0.8em 0.8em;
   background: url('/img/quote.gif') no-repeat 10px 10px;
-  font-size: small;
   border-radius: 6px;
+  font-size: small;
+  padding: 1.8em 0.8em 0.8em 0.8em;
 }
 
-/* author name layout in quote text */
+// author name layout in quote text
 blockquote > div > cite {
   display: block;
   font-style: normal;
@@ -320,12 +339,12 @@ blockquote > div > cite {
 }
 
 .container .top-level {
-  margin-top: 1ex;
   margin-left: 0.5ex;
   margin-right: 0.5ex;
+  margin-top: 1ex;
 }
 
-/* newly unlocked cards during level up message */
+// newly unlocked cards during level up message
 .unlocked-cards {
   text-align: center;
 }
@@ -340,43 +359,30 @@ blockquote > div > cite {
 }
 
 .icon-player-activity {
-  vertical-align: middle;
-  display: inline-block;
-  width: 12px;
-  height: 12px;
   border-radius: 8px;
+  display: inline-block;
+  height: 12px;
+  vertical-align: middle;
+  width: 12px;
 }
 
 .icon-player-activity.online {
-  background: radial-gradient(circle, $lime 35%, $black 100%);
+  @include circular-gradient($lime);
 }
 
 .icon-player-activity.offline {
-  background: radial-gradient(circle, $red 35%, $black 100%);
+  @include circular-gradient($red);
 }
 
 .icon-player-activity.inactive {
-  background: radial-gradient(circle, $brown 35%, $black 100%);
+  @include circular-gradient($brown);
 }
 
 .icon-player-activity.dead {
-  background: radial-gradient(circle, $gray 35%, $black 100%);
+  @include circular-gradient($brown);
 }
 
-/* JQuery UI close button */
-.ui-dialog-titlebar-close {
-  background-color: $white;
-  border-color: $gray;
-  color: $black;
-}
-
-.ui-dialog-titlebar-close:before {
-  position: relative;
-  top: -5px;
-  content: 'x';
-}
-
-/* fade table row hover effect */
+// fade table row hover effect
 .table-row {
   transition: background-color 400ms;
 }
@@ -385,13 +391,15 @@ blockquote > div > cite {
   transition: color 400ms;
 }
 
-/* navigation bar buttons highlight */
-.nav-buttons button, .nav-buttons .button {
+// navigation bar buttons highlight
+.nav-buttons button,
+.nav-buttons .button {
   transition: background-color 400ms;
 }
 
-/* Bootstrap grid default spacing */
-.container, .container .row > div[class*='col-'] {
+// Bootstrap grid default spacing
+.container,
+.container .row > div[class*='col-'] {
   padding-left: 0;
   padding-right: 0;
 }
@@ -401,91 +409,91 @@ blockquote > div > cite {
   margin-right: 0;
 }
 
-/* responsive table */
+// responsive table
 div.responsive-table {
+  margin-bottom: 1ex;
   margin-left: auto;
   margin-right: auto;
   padding-bottom: 0.5ex;
-  margin-bottom: 1ex;
 }
 
-/* responsive table header */
+// responsive table header
 div.responsive-table > div.row:first-child {
   font-family: $font-family-arial;
   text-align: center;
 }
 
-/* breakpoint specific layout */
-@media (max-width: 767px) {
-  /* separate list items visually */
+// breakpoint specific layout
+@media (max-width: $screen-xs-max) {
+  // separate list items visually
   div.responsive-table.table-sm > div.row + div.row {
     border-top: thin solid $transparent-shadow;
   }
 
-  /* hide responsive table header */
+  // hide responsive table header
   div.responsive-table.table-sm > div.row:first-child > div[class*='col-'] > * {
     display: none;
   }
 
-  /* show only sortable column names */
+  // show only sortable column names
   div.responsive-table.table-sm > div.row:first-child > div[class*='col-'] > p.sortable {
     display: block;
   }
 }
 
-/* breakpoint specific layout */
-@media (max-width: 991px) {
-  /* separate list items visually */
+// breakpoint specific layout
+@media (max-width: $screen-sm-max) {
+  // separate list items visually
   div.responsive-table.table-md > div.row + div.row {
     border-top: thin solid $transparent-shadow;
   }
 
-  /* hide responsive table header */
+  // hide responsive table header
   div.responsive-table.table-md > div.row:first-child > div[class*='col-'] > * {
     display: none;
   }
 
-  /* show only sortable column names */
+  // show only sortable column names
   div.responsive-table.table-md > div.row:first-child > div[class*='col-'] > p.sortable {
     display: block;
   }
 }
 
-/* cell spacing */
+// cell spacing
 div.responsive-table > div > div > p {
   margin: 1ex;
 }
 
-/* clickable row */
+// clickable row
 div.responsive-table .row.details {
   cursor: pointer;
 }
 
-/* modal screen center display */
+// modal screen center display
 div[role="dialog"].modal .vertical-alignment-helper {
   display: table;
   height: 100%;
-  width: 100%;
   pointer-events: none;
+  width: 100%;
 }
 
 div[role="dialog"].modal .vertical-align-center {
   display: table-cell;
-  vertical-align: middle;
   pointer-events: none;
+  vertical-align: middle;
 }
 
 div[role="dialog"].modal .modal-content {
-  width: inherit;
   height: inherit;
   margin: 0 auto;
   pointer-events: all;
+  width: inherit;
 }
 
-/* general modal layout */
+// general modal layout
 div[role="dialog"].modal .modal-dialog {
-  text-align: center;
   color: $black;
+  text-align: center;
 }
 
 div[role="dialog"].modal .modal-dialog .modal-title {

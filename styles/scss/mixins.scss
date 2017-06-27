@@ -1,0 +1,5 @@
+// Mixins
+
+@mixin circular-gradient($color) {
+  background: radial-gradient(circle, $color 35%, $black 100%)
+}

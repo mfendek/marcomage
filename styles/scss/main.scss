@@ -13,5 +13,6 @@
 @import "~bootstrap-sass/assets/stylesheets/_bootstrap";
 
 // Components
+@import "./mixins";
 @import "./typography";
 @import "./components/general";
