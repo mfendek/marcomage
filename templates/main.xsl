@@ -36,7 +36,6 @@
 
                         <script type="text/javascript" src="js/dist/main.js?v={$param/cc_version}"/>
                         <link rel="stylesheet" href="styles/css/main.css?v={$param/cc_version}" type="text/css" title="standard style"/>
-                        <link rel="stylesheet" href="styles/card.css?v={$param/cc_version}" type="text/css" title="standard style"/>
                         <xsl:choose>
                             <xsl:when test="$param/is_logged_in = 'yes'">
                                 <link rel="stylesheet" href="styles/menubar.css?v={$param/cc_version}" type="text/css" title="standard style"/>
