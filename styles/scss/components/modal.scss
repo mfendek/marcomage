@@ -1,0 +1,53 @@
+/*******************************************
+ * MArcomage CSS stylesheet - modal styles *
+ *******************************************/
+
+div[role="dialog"].modal {
+  // modal screen center display
+  .vertical-alignment-helper {
+    display: table;
+    height: 100%;
+    pointer-events: none;
+    width: 100%;
+  }
+
+  .vertical-align-center {
+    display: table-cell;
+    pointer-events: none;
+    vertical-align: middle;
+  }
+
+  .modal-content {
+    height: inherit;
+    margin: 0 auto;
+    pointer-events: all;
+    width: inherit;
+  }
+
+  // general modal layout
+  .modal-dialog {
+    color: $black;
+    text-align: center;
+
+    .modal-title {
+      font-family: $font-family-arial;
+      text-align: left;
+    }
+
+    .modal-footer {
+      text-align: center;
+    }
+  }
+
+  button[name="close-modal"] {
+    background-color: $transparent-full;
+    border-style: none;
+    float: right;
+  }
+
+}
+
+// TODO this should be a modifier
+#error-message .modal-dialog .modal-body p {
+  color: $red;
+}

@@ -7,3 +7,63 @@
 $font-family-arial: arial, sans-serif !default;
 $font-family-times: times, serif !default;
 $font-family-monospace: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace !default;
+
+h1 {
+  color: $red;
+  font-family: $font-family-arial;
+  text-align: center;
+}
+
+h2,
+h3 {
+  font-family: $font-family-arial;
+  font-size: large;
+  text-align: center;
+}
+
+h4,
+h5 {
+  font-family: $font-family-arial;
+  font-size: medium;
+  line-height: normal;
+}
+
+h5 {
+  padding: 0;
+  margin: 0;
+}
+
+p {
+  padding: 0;
+  margin: 0;
+}
+
+// card and keyword code
+div.code > pre {
+  font-family: $font-family-monospace;
+  color: $black;
+}
+
+// quote text layout
+blockquote {
+  border: none;
+  font-size: medium;
+  margin-bottom: 1ex;
+  margin-left: 2ex;
+  margin-top: 1ex;
+  padding: 0;
+
+  &> div {
+    background: url('/img/quote.gif') no-repeat 10px 10px;
+    border-radius: 6px;
+    font-size: small;
+    padding: 1.8em 0.8em 0.8em 0.8em;
+
+    // author name layout in quote text
+    &> cite {
+      display: block;
+      font-style: normal;
+      margin-left: 2.5ex;
+    }
+  }
+}

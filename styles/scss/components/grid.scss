@@ -1,0 +1,24 @@
+/****************************************************
+ * MArcomage CSS stylesheet - Bootstrap grid styles *
+ ****************************************************/
+
+.container {
+  padding-left: 0;
+  padding-right: 0;
+
+  .top-level {
+    margin-left: 0.5ex;
+    margin-right: 0.5ex;
+    margin-top: 1ex;
+  }
+
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+
+    &> div[class*='col-'] {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+}

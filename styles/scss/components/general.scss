@@ -91,36 +91,11 @@ body {
   font-family: $font-family-times;
   font-size: medium;
   line-height: normal;
-}
-
-// override defaults
-body,
-h5,
-p {
   padding: 0;
   margin: 0;
 }
 
-h1 {
-  color: $red;
-  font-family: $font-family-arial;
-  text-align: center;
-}
-
-h2,
-h3 {
-  font-family: $font-family-arial;
-  font-size: large;
-  text-align: center;
-}
-
-h4,
-h5 {
-  font-family: $font-family-arial;
-  font-size: medium;
-  line-height: normal;
-}
-
+// override defaults
 ul {
   margin-left: 2ex;
   padding-left: 0;
@@ -137,11 +112,6 @@ select {
   vertical-align: middle;
 }
 
-th {
-  margin: 0;
-  padding: 0;
-}
-
 // text area layout
 textarea {
   border: 2px inset $black;
@@ -151,60 +121,6 @@ textarea {
   font-weight: normal;
   margin-top: 1ex;
   width: 100%;
-}
-
-// table cell spacing
-table {
-  border-collapse: separate;
-  border-spacing: 0;
-}
-
-// table cell padding
-table > tbody > tr > td,
-table > tbody > tr > th {
-  padding: 0;
-}
-
-// default table header styles
-table > tbody > tr > th {
-  font-family: $font-family-arial;
-  text-align: center;
-}
-
-// centered table
-table.centered {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-// centered row
-div.centered,
-tr.centered > td {
-  text-align: center;
-}
-
-// centered row
-td.centered,
-tr.centered > td > p.flag {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-// table align top
-td.align-top,
-tr.align-top {
-  vertical-align: top;
-}
-
-// table align bottom
-.align-bottom {
-  vertical-align: bottom;
-}
-
-// table align right
-.align-right > div,
-.align-right > table {
-  margin-left: auto
 }
 
 // information message layout
@@ -278,12 +194,6 @@ legend {
   width: auto;
 }
 
-// card and keyword code
-div.code > pre {
-  font-family: $font-family-monospace;
-  color: $black;
-}
-
 // filters
 .filters {
   text-align: center;
@@ -312,36 +222,6 @@ button.pushed {
 img.icon {
   margin-left: 0.5ex;
   vertical-align: middle;
-}
-
-// quote text layout
-blockquote {
-  border: none;
-  font-size: medium;
-  margin-bottom: 1ex;
-  margin-left: 2ex;
-  margin-top: 1ex;
-  padding: 0;
-}
-
-blockquote > div {
-  background: url('/img/quote.gif') no-repeat 10px 10px;
-  border-radius: 6px;
-  font-size: small;
-  padding: 1.8em 0.8em 0.8em 0.8em;
-}
-
-// author name layout in quote text
-blockquote > div > cite {
-  display: block;
-  font-style: normal;
-  margin-left: 2.5ex;
-}
-
-.container .top-level {
-  margin-left: 0.5ex;
-  margin-right: 0.5ex;
-  margin-top: 1ex;
 }
 
 // newly unlocked cards during level up message
@@ -382,146 +262,8 @@ blockquote > div > cite {
   @include circular-gradient($brown);
 }
 
-// fade table row hover effect
-.table-row {
-  transition: background-color 400ms;
-}
-
-.table-row p {
-  transition: color 400ms;
-}
-
 // navigation bar buttons highlight
 .nav-buttons button,
 .nav-buttons .button {
   transition: background-color 400ms;
-}
-
-// Bootstrap grid default spacing
-.container,
-.container .row > div[class*='col-'] {
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.container .row {
-  margin-left: 0;
-  margin-right: 0;
-}
-
-// responsive table
-div.responsive-table {
-  margin-bottom: 1ex;
-  margin-left: auto;
-  margin-right: auto;
-  padding-bottom: 0.5ex;
-}
-
-// responsive table header
-div.responsive-table > div.row:first-child {
-  font-family: $font-family-arial;
-  text-align: center;
-}
-
-// breakpoint specific layout
-@media (max-width: $screen-xs-max) {
-  // separate list items visually
-  div.responsive-table.table-sm > div.row + div.row {
-    border-top: thin solid $transparent-shadow;
-  }
-
-  // hide responsive table header
-  div.responsive-table.table-sm > div.row:first-child > div[class*='col-'] > * {
-    display: none;
-  }
-
-  // show only sortable column names
-  div.responsive-table.table-sm > div.row:first-child > div[class*='col-'] > p.sortable {
-    display: block;
-  }
-}
-
-// breakpoint specific layout
-@media (max-width: $screen-sm-max) {
-  // separate list items visually
-  div.responsive-table.table-md > div.row + div.row {
-    border-top: thin solid $transparent-shadow;
-  }
-
-  // hide responsive table header
-  div.responsive-table.table-md > div.row:first-child > div[class*='col-'] > * {
-    display: none;
-  }
-
-  // show only sortable column names
-  div.responsive-table.table-md > div.row:first-child > div[class*='col-'] > p.sortable {
-    display: block;
-  }
-}
-
-// cell spacing
-div.responsive-table > div > div > p {
-  margin: 1ex;
-}
-
-// clickable row
-div.responsive-table .row.details {
-  cursor: pointer;
-}
-
-// modal screen center display
-div[role="dialog"].modal .vertical-alignment-helper {
-  display: table;
-  height: 100%;
-  pointer-events: none;
-  width: 100%;
-}
-
-div[role="dialog"].modal .vertical-align-center {
-  display: table-cell;
-  pointer-events: none;
-  vertical-align: middle;
-}
-
-div[role="dialog"].modal .modal-content {
-  height: inherit;
-  margin: 0 auto;
-  pointer-events: all;
-  width: inherit;
-}
-
-// general modal layout
-div[role="dialog"].modal .modal-dialog {
-  color: $black;
-  text-align: center;
-}
-
-div[role="dialog"].modal .modal-dialog .modal-title {
-  font-family: $font-family-arial;
-  text-align: left;
-}
-
-div[role="dialog"].modal .modal-dialog .modal-footer {
-  text-align: center;
-}
-
-#error-message .modal-dialog .modal-body p {
-  color: $red;
-}
-
-div[role="dialog"].modal button[name="close-modal"] {
-  background-color: $transparent-full;
-  border-style: none;
-  float: right;
-}
-
-@media only print {
-  .deck-options,
-  #menu-bar {
-    display: none;
-  }
-
-  .container {
-    width: 100%;
-  }
 }

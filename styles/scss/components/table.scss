@@ -1,0 +1,134 @@
+/*******************************************
+ * MArcomage CSS stylesheet - table styles *
+ *******************************************/
+
+// table cell spacing
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+
+  // centered table
+  &.centered {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  // table cell padding
+  &> tbody > tr > td,
+  &> tbody > tr > th {
+    padding: 0;
+  }
+
+  // default table header styles
+  &> tbody > tr > th {
+    font-family: $font-family-arial;
+    text-align: center;
+  }
+
+  th {
+    margin: 0;
+    padding: 0;
+  }
+
+  // centered row
+  tr.centered > td {
+    text-align: center;
+  }
+
+  // centered row
+  td.centered,
+  tr.centered > td > p.flag {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  // table align top
+  td.align-top,
+  tr.align-top {
+    vertical-align: top;
+  }
+
+  // table align bottom
+  .align-bottom {
+    vertical-align: bottom;
+  }
+}
+
+// table align right
+.align-right > div,
+.align-right > table {
+  margin-left: auto
+}
+
+// responsive table
+div.responsive-table {
+  margin-bottom: 1ex;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 0.5ex;
+
+  // fade table row hover effect
+  .table-row {
+    transition: background-color 400ms;
+  }
+
+  .table-row p {
+    transition: color 400ms;
+  }
+
+  // responsive table header
+  &> div.row:first-child {
+    font-family: $font-family-arial;
+    text-align: center;
+  }
+
+  // cell spacing
+  &> div > div > p {
+    margin: 1ex;
+  }
+
+  // clickable row
+  .row.details {
+    cursor: pointer;
+  }
+
+  // breakpoint specific layout
+  @media (max-width: $screen-xs-max) {
+    &.table-sm {
+      // separate list items visually
+      &> div.row + div.row {
+        border-top: thin solid $transparent-shadow;
+      }
+
+      // hide responsive table header
+      &> div.row:first-child > div[class*='col-'] > * {
+        display: none;
+      }
+
+      // show only sortable column names
+      &> div.row:first-child > div[class*='col-'] > p.sortable {
+        display: block;
+      }
+    }
+  }
+
+  // breakpoint specific layout
+  @media (max-width: $screen-sm-max) {
+    &.table-md {
+      // separate list items visually
+      &> div.row + div.row {
+        border-top: thin solid $transparent-shadow;
+      }
+
+      // hide responsive table header
+      &> div.row:first-child > div[class*='col-'] > * {
+        display: none;
+      }
+
+      // show only sortable column names
+      &> div.row:first-child > div[class*='col-'] > p.sortable {
+        display: block;
+      }
+    }
+  }
+}

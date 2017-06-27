@@ -1,0 +1,14 @@
+/**********************************************
+ * MArcomage CSS stylesheet - printing styles *
+ **********************************************/
+
+@media only print {
+  .deck-options,
+  #menu-bar {
+    display: none;
+  }
+
+  .container {
+    width: 100%;
+  }
+}
