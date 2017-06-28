@@ -2,69 +2,6 @@
  * MArcomage CSS stylesheet - card *
  ***********************************/
 
-// card
-div.card {
-  font-family: $font-family-arial;
-  width: 88px;
-  border: thin solid black;
-  border-radius: 7px;
-  margin: 1.5ex 0.5ex 0.7ex 0.5ex;
-  font-size: xx-small;
-  text-align: left;
-  color: $black;
-  min-height: 18px;
-  box-sizing: content-box;
-  background: repeat 0 0;
-  transition: border-color 200ms;
-}
-
-// add extra margin when cards are displayed in the "history" part of the game section
-div.history div.card {
-  margin: 1.5ex 0.5ex 0.7ex 0.5ex;
-}
-
-// background color, based on cost
-div.card.bricks-cost {
-  background-color: $rosy-brown;
-}
-
-div.card.gems-cost {
-  background-color: $deep-sky-blue;
-}
-
-div.card.recruits-cost {
-  background-color: $dark-sea-green;
-}
-
-div.card.mixed-cost {
-  background-color: $dark-golden-rod;
-}
-
-div.card.zero-cost {
-  background-color: $gainsboro;
-}
-
-// background image, based on cost
-div.card.bricks-cost.with-bg-image {
-  background-image: url('/img/card/bricks_bg.png');
-}
-
-div.card.gems-cost.with-bg-image {
-  background-image: url('/img/card/gems_bg.png');
-}
-
-div.card.recruits-cost.with-bg-image {
-  background-image: url('/img/card/recruits_bg.png');
-}
-
-div.card.mixed-cost.with-bg-image {
-  background-image: url('/img/card/mixed_bg.png');
-}
-
-div.card.zero-cost.with-bg-image {
-  background-image: url('/img/card/zero_bg.png');
-}
-
 // foil cards animations
 @keyframes card-background-foil-bricks {
   from {
@@ -111,128 +48,221 @@ div.card.zero-cost.with-bg-image {
   }
 }
 
-// background image, based on cost - foil version
-div.card.bricks-cost.with-bg-image.foil {
-  //background-image: url('/img/card/foil_bricks_bg.png');
-  animation-name: card-background-foil-bricks;
-  animation-duration: 3s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-
-div.card.gems-cost.with-bg-image.foil {
-  //background-image: url('/img/card/foil_gems_bg.png');
-  animation-name: card-background-foil-gems;
-  animation-duration: 16s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-
-div.card.recruits-cost.with-bg-image.foil {
-  //background-image: url('/img/card/foil_recruits_bg.png');
-  animation-name: card-background-foil-recruits;
-  animation-duration: 6s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-
-div.card.mixed-cost.with-bg-image.foil {
-  //background-image: url('/img/card/foil_mixed_bg.png');
-  animation-name: card-background-foil-mixed;
-  animation-duration: 8s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-
-div.card.zero-cost.with-bg-image.foil {
-  //background-image: url('/img/card/foil_zero_bg.png');
-  animation-name: card-background-foil-zero;
-  animation-duration: 15s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-
-// card title
-div.card > h5 {
-  font-weight: normal;
-  font-size: xx-small;
-  margin: 2px;
-  color: $black;
-  text-shadow: none;
-  text-align: center;
-  background-color: $white-shade-light;
-  border: thin solid $black-shade-light;
-  border-radius: 4px;
-}
-
-// card top icon
-.icon-zero,
-.icon-recruits,
-.icon-gems,
-.icon-bricks,
-.icon-rarity {
-  display: inline-block;
-  font-weight: bold;
-  background: no-repeat center;
-  line-height: 16px;
-  width: 16px;
-  text-align: center;
-  border-radius: 8px;
-  text-shadow: 0 0 1px $white;
-}
-
-.icon-rarity {
-  float: right;
-}
-
-div.card-top {
-  margin: 0.5ex;
-}
-
-div.card-top > .icon-bricks {
-  //background-image: url('/img/card/bricks_cost.png');
-  @include circular-gradient-full($brick-red, $black);
-}
-
-div.card-top > .icon-zero {
-  //background-image: url('/img/card/zero_cost.png');
-  @include circular-gradient-full($light-gray, $black);
-}
-
-div.card-top > .icon-gems {
-  //background-image: url('/img/card/gems_cost.png');
-  @include circular-gradient-full($navy-blue, $black);
-}
-
-div.card-top > .icon-recruits {
-  //background-image: url('/img/card/recruits_cost.png');
-  @include circular-gradient-full($light-green, $black);
-}
-
-div.card-top > .icon-rarity.common {
-  @include circular-gradient-fade($lime, $black);
-}
-
-div.card-top > .icon-rarity.uncommon {
-  @include circular-gradient-fade($dark-brown, $black);
-}
-
-div.card-top > .icon-rarity.rare {
-  @include circular-gradient-fade($yellow, $black);
-}
-
-div.card > div.card-image {
-  position: relative;
-  text-align: center;
-}
-
-// border around the card image
-div.card-image > img {
-  border: thin solid $black-shade-light;
+// card
+.card {
+  background: repeat 0 0;
+  border: thin solid black;
+  border-radius: 7px;
   box-sizing: content-box;
+  color: $black;
+  font-family: $font-family-arial;
+  font-size: xx-small;
+  margin: 1.5ex 0.5ex 0.7ex 0.5ex;
+  min-height: 18px;
+  text-align: left;
+  transition: border-color 200ms;
+  width: 88px;
+
+  // background color and background image (with and without foil version) based on cost
+  &.bricks-cost {
+    background-color: $rosy-brown;
+
+    &.with-bg-image {
+      background-image: url('/img/card/bricks_bg.png');
+
+      &.foil {
+        //background-image: url('/img/card/foil_bricks_bg.png');
+        animation-duration: 3s;
+        animation-iteration-count: infinite;
+        animation-name: card-background-foil-bricks;
+        animation-timing-function: linear;
+      }
+    }
+  }
+
+  &.gems-cost {
+    background-color: $deep-sky-blue;
+
+    &.with-bg-image {
+      background-image: url('/img/card/gems_bg.png');
+
+      &.foil {
+        //background-image: url('/img/card/foil_gems_bg.png');
+        animation-duration: 16s;
+        animation-iteration-count: infinite;
+        animation-name: card-background-foil-gems;
+        animation-timing-function: linear;
+      }
+    }
+  }
+
+  &.recruits-cost {
+    background-color: $dark-sea-green;
+
+    &.with-bg-image {
+      background-image: url('/img/card/recruits_bg.png');
+
+      &.foil {
+        //background-image: url('/img/card/foil_recruits_bg.png');
+        animation-duration: 6s;
+        animation-iteration-count: infinite;
+        animation-name: card-background-foil-recruits;
+        animation-timing-function: linear;
+      }
+    }
+  }
+
+  &.mixed-cost {
+    background-color: $dark-golden-rod;
+
+    &.with-bg-image {
+      background-image: url('/img/card/mixed_bg.png');
+
+      &.foil {
+        //background-image: url('/img/card/foil_mixed_bg.png');
+        animation-duration: 8s;
+        animation-iteration-count: infinite;
+        animation-name: card-background-foil-mixed;
+        animation-timing-function: linear;
+      }
+    }
+  }
+
+  &.zero-cost {
+    background-color: $gainsboro;
+
+    &.with-bg-image {
+      background-image: url('/img/card/zero_bg.png');
+
+      &.foil {
+        //background-image: url('/img/card/foil_zero_bg.png');
+        animation-duration: 15s;
+        animation-iteration-count: infinite;
+        animation-name: card-background-foil-zero;
+        animation-timing-function: linear;
+      }
+    }
+  }
+
+  // card title
+  h5 {
+    background-color: $white-shade-light;
+    border: thin solid $black-shade-light;
+    border-radius: 4px;
+    color: $black;
+    font-size: xx-small;
+    font-weight: normal;
+    margin: 2px;
+    text-shadow: none;
+    text-align: center;
+  }
+
+  // card header icons
+  .icon-bricks,
+  .icon-gems,
+  .icon-rarity,
+  .icon-recruits,
+  .icon-zero {
+    background: no-repeat center;
+    border-radius: 8px;
+    display: inline-block;
+    font-weight: bold;
+    line-height: 16px;
+    text-align: center;
+    text-shadow: 0 0 1px $white;
+    width: 16px;
+  }
+
+  .icon-rarity {
+    float: right;
+  }
+
+  // TODO rename to card header
+  .card-top {
+    margin: 0.5ex;
+
+    .icon-bricks {
+      //background-image: url('/img/card/bricks_cost.png');
+      @include circular-gradient-full($brick-red, $black);
+    }
+
+    .icon-zero {
+      //background-image: url('/img/card/zero_cost.png');
+      @include circular-gradient-full($light-gray, $black);
+    }
+
+    .icon-gems {
+      //background-image: url('/img/card/gems_cost.png');
+      @include circular-gradient-full($navy-blue, $black);
+    }
+
+    .icon-recruits {
+      //background-image: url('/img/card/recruits_cost.png');
+      @include circular-gradient-full($light-green, $black);
+    }
+
+    .icon-rarity.common {
+      @include circular-gradient-fade($lime, $black);
+    }
+
+    .icon-rarity.uncommon {
+      @include circular-gradient-fade($dark-brown, $black);
+    }
+
+    .icon-rarity.rare {
+      @include circular-gradient-fade($yellow, $black);
+    }
+  }
+
+  .card-image {
+    position: relative;
+    text-align: center;
+
+    // border around the card image
+    &> img {
+      border: thin solid $black-shade-light;
+      box-sizing: content-box;
+    }
+
+    // card mini flags
+    .mini-flags {
+      bottom: 2px;
+      left: 6px;
+      position: absolute;
+
+      // card mini flags images
+      img {
+        border: thin solid $white-shade-light;
+        border-radius: 6px;
+      }
+    }
+  }
+
+  // keywords
+  .keywords {
+    margin: 2px 2px 0 2px;
+  }
+
+  // card effect
+  .effect {
+    line-height: 11px;
+    margin: 2px;
+  }
+
+  // override default link font color within the card
+  a {
+    color: inherit;
+  }
+}
+
+// add extra margin when cards are displayed in the "history" part of the game section
+// TODO this belongs in game component
+div.history div.card {
+  margin: 1.5ex 0.5ex 0.7ex 0.5ex;
 }
 
 // highlight currently looked up card
+// TODO rename and move data to data attribute
 [class*="card-lookup-"] {
   border-radius: 4px;
 }
@@ -242,77 +272,44 @@ div.card-image > img {
   transition: background-color 600ms;
 }
 
-// card mini flags
-div.mini-flags {
-  position: absolute;
-  bottom: 2px;
-  left: 6px;
-}
-
-// card mini flags images
-div.mini-flags > img {
-  border: thin solid $white-shade-light;
-  border-radius: 6px;
-}
-
-// set distance of the card text from the card border (left and right)
-div.card > p {
-  margin: 0 2px 0 2px;
-}
-
-// keywords
-div.card > p.keywords {
-  margin-top: 2px;
-}
-
-// card effect
-div.card > p.effect {
-  margin-top: 2px;
-  margin-bottom: 2px;
-  line-height: 11px;
-}
-
-// override default link font color within the card
-div.card a {
-  color: inherit;
-}
-
 // hidden card layout
-div.hidden-card {
-  position: relative;
-  font-size: x-small;
-  width: 86px;
-  height: 100px;
-  border: thin solid $black;
-  border-radius: 7px;
-  margin: 1ex 0.5ex 0.7ex 0.5ex;
+.hidden-card {
   background: $black url('/img/card/hidden_card.png') no-repeat;
   background-size: cover;
+  border: thin solid $black;
+  border-radius: 7px;
   box-sizing: content-box;
-}
+  font-size: x-small;
+  height: 100px;
+  margin: 1ex 0.5ex 0.7ex 0.5ex;
+  position: relative;
+  width: 86px;
 
-div.hidden-card > p.flag {
-  position: absolute;
-  width: 100%;
-  top: 42px;
-  transform: rotate(-45deg);
+  &.flag {
+    position: absolute;
+    top: 42px;
+    transform: rotate(-45deg);
+    width: 100%;
+  }
 }
 
 // keyword insignia layout
+// TODO this is a global component
 img.insignia {
   border: thin solid $black-shade-light;
   vertical-align: middle;
 }
 
 // card lookup (card reference display)
-div#card-lookup {
+// TODO change to class
+#card-lookup {
   display: none;
+  left: 0;
   position: absolute;
   top: 0;
-  left: 0;
-}
 
-div#card-lookup > .card {
-  margin-left: 0;
-  margin-right: 0;
+  .card {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
