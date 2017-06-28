@@ -191,49 +191,34 @@ div.card-top {
 
 div.card-top > .icon-bricks {
   //background-image: url('/img/card/bricks_cost.png');
-  // TODO move to mixins
-  background: white radial-gradient(
-    circle, rgba(254, 70, 70, 0.2) 10%, rgba(254, 70, 70, 0.3) 15%,
-    rgba(254, 70, 70, 1) 50%, rgba(0, 0, 0, 1) 100%);
+  @include circular-gradient-full($brick-red, $black);
 }
 
 div.card-top > .icon-zero {
   //background-image: url('/img/card/zero_cost.png');
-  background: white radial-gradient(
-    circle, rgba(161, 161, 161, 0.2) 10%, rgba(161, 161, 161, 0.3) 15%,
-    rgba(161, 161, 161, 1) 50%, rgba(0, 0, 0, 1) 100%);
+  @include circular-gradient-full($light-gray, $black);
 }
 
 div.card-top > .icon-gems {
   //background-image: url('/img/card/gems_cost.png');
-  background: white radial-gradient(
-    circle, rgba(67, 67, 254, 0.2) 10%, rgba(67, 67, 254, 0.3) 15%,
-    rgba(67, 67, 254, 1) 50%, rgba(0, 0, 0, 1) 100%);
+  @include circular-gradient-full($navy-blue, $black);
 }
 
 div.card-top > .icon-recruits {
   //background-image: url('/img/card/recruits_cost.png');
-  background: white radial-gradient(
-    circle, rgba(55, 154, 55, 0.2) 10%, rgba(55, 154, 55, 0.3) 15%,
-    rgba(55, 154, 55, 1) 50%, rgba(0, 0, 0, 1) 100%);
+  @include circular-gradient-full($light-green, $black);
 }
 
 div.card-top > .icon-rarity.common {
-  background: white radial-gradient(
-    circle, rgba(0, 255, 0, 0.1) 10%, rgba(0, 255, 0, 0.2) 15%,
-    rgba(0, 255, 0, 0.7) 50%, rgba(0, 0, 0, 1) 100%);
+  @include circular-gradient-fade($lime, $black);
 }
 
 div.card-top > .icon-rarity.uncommon {
-  background: white radial-gradient(
-    circle, rgba(139, 0, 0, 0.1) 10%, rgba(139, 0, 0, 0.2) 15%,
-    rgba(139, 0, 0, 0.7) 50%, rgba(0, 0, 0, 1) 100%);
+  @include circular-gradient-fade($dark-brown, $black);
 }
 
 div.card-top > .icon-rarity.rare {
-  background: white radial-gradient(
-    circle, rgba(255, 255, 0, 0.1) 10%, rgba(255, 255, 0, 0.2) 15%,
-    rgba(255, 255, 0, 0.7) 50%, rgba(0, 0, 0, 1) 100%);
+  @include circular-gradient-fade($yellow, $black);
 }
 
 div.card > div.card-image {

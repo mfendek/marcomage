@@ -3,3 +3,13 @@
 @mixin circular-gradient($color) {
   background: radial-gradient(circle, $color 35%, $black 100%)
 }
+
+@mixin circular-gradient-full($inner-color, $outer-color) {
+  background: white radial-gradient(circle, transparentize($inner-color, 0.8) 10%,
+          transparentize($inner-color, 0.7) 15%, $inner-color 50%, $outer-color 100%);
+}
+
+@mixin circular-gradient-fade($inner-color, $outer-color) {
+  background: white radial-gradient(circle, transparentize($inner-color, 0.9) 10%, transparentize($inner-color, 0.8) 15%,
+          transparentize($inner-color, 0.3) 50%, $outer-color 100%);
+}
