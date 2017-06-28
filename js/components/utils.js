@@ -132,7 +132,7 @@ $(document).ready(function() {
         showCard: function(triggerElem, data)
         {
             // position the lookup display
-            let cardLookup = $('#card-lookup');
+            let cardLookup = $('#card-lookup-hint');
             let parentCard = (triggerElem.parents('.card').length > 0) ? triggerElem.parents('.card') : triggerElem;
             let target = parentCard.offset();
 
@@ -156,7 +156,7 @@ $(document).ready(function() {
         {
             cardLookupManager = this;
 
-            $('#card-lookup').fadeOut('fast');
+            $('#card-lookup-hint').fadeOut('fast');
         },
 
         /**
@@ -216,15 +216,15 @@ $(document).ready(function() {
     };
 
     // card lookup
-    $('[class*="card-lookup-"]').hover(function() {
+    $('[data-card-lookup]').hover(function() {
         // extract card id
         let lookupTrigger = $(this);
-        let cardId = parseInt(lookupTrigger.attr('class').replace('card-lookup-', ''));
+        let cardId = parseInt(lookupTrigger.attr('data-card-lookup'));
 
         cardLookupManager.startLookup(cardId, lookupTrigger);
     }, function() {
         let lookupTrigger = $(this);
-        let cardId = parseInt(lookupTrigger.attr('class').replace('card-lookup-', ''));
+        let cardId = parseInt(lookupTrigger.attr('data-card-lookup'));
 
         // lookup has been replaced in the meantime
         if (cardLookupManager.currentLookUp !== cardId) {

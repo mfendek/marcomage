@@ -189,7 +189,7 @@ class Encode
 
                 return ($option == 'plain_text')
                     ? $data['name']
-                    : '<span class="card-lookup-' . $cardId . '">' . $data['name'] . '</span>';
+                    : '<span data-card-lookup="' . $cardId . '">' . $data['name'] . '</span>';
             },
             $cardEffect
         );
@@ -201,7 +201,7 @@ class Encode
                 $cardId = $matches[1];
                 $cardName = $matches[2];
 
-                return '<span class="card-lookup-' . $cardId . '">' . $cardName . '</span>';
+                return '<span data-card-lookup="' . $cardId . '">' . $cardName . '</span>';
             },
             $cardEffect
         );

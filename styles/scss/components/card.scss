@@ -145,7 +145,7 @@
   }
 
   // card title
-  h5 {
+  &__title {
     background-color: $white-shade-light;
     border: thin solid $black-shade-light;
     border-radius: 4px;
@@ -177,8 +177,7 @@
     float: right;
   }
 
-  // TODO rename to card header
-  .card-top {
+  &__header {
     margin: 0.5ex;
 
     .icon-bricks {
@@ -214,7 +213,7 @@
     }
   }
 
-  .card-image {
+  &__image {
     position: relative;
     text-align: center;
 
@@ -239,12 +238,12 @@
   }
 
   // keywords
-  .keywords {
+  &__keywords {
     margin: 2px 2px 0 2px;
   }
 
   // card effect
-  .effect {
+  &__effect {
     line-height: 11px;
     margin: 2px;
   }
@@ -257,22 +256,23 @@
 
 // add extra margin when cards are displayed in the "history" part of the game section
 // TODO this belongs in game component
-div.history div.card {
+.history .card {
   margin: 1.5ex 0.5ex 0.7ex 0.5ex;
 }
 
 // highlight currently looked up card
-// TODO rename and move data to data attribute
-[class*="card-lookup-"] {
+// TODO this is a generic component
+[data-card-lookup] {
   border-radius: 4px;
-}
 
-[class*="card-lookup-"]:hover {
-  background-color: $black-shade-lighter;
-  transition: background-color 600ms;
+  &:hover {
+    background-color: $black-shade-lighter;
+    transition: background-color 600ms;
+  }
 }
 
 // hidden card layout
+// TODO this belongs in game component
 .hidden-card {
   background: $black url('/img/card/hidden_card.png') no-repeat;
   background-size: cover;
@@ -295,14 +295,15 @@ div.history div.card {
 
 // keyword insignia layout
 // TODO this is a global component
-img.insignia {
+.keyword-insignia {
   border: thin solid $black-shade-light;
+  border-radius: 50%;
   vertical-align: middle;
 }
 
 // card lookup (card reference display)
-// TODO change to class
-#card-lookup {
+// TODO this is a generic component
+.card-lookup-hint {
   display: none;
   left: 0;
   position: absolute;

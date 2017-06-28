@@ -381,7 +381,7 @@
                         </xsl:if>
                         <xsl:choose>
                             <xsl:when test="$insignias = 'yes'">
-                                <img class="insignia" src="img/insignias/{am:fileName(name)}.png" width="12" height="12" alt="{name}" title="{name}"/>
+                                <img class="keyword-insignia" src="img/insignias/{am:fileName(name)}.png" width="12" height="12" alt="{name}" title="{name}"/>
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:value-of select="name"/>

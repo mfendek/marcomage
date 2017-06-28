@@ -489,7 +489,7 @@
 
             <div class="card {$rarity}{$type}{$bgImage}{$foil}">
                 <!-- display the cost (spheres with numbers in the center) -->
-                <div class="card-top">
+                <div class="card__header">
                     <xsl:choose>
                         <xsl:when test="$card/bricks = 0 and $card/gems = 0 and $card/recruits = 0">
                             <span class="icon-zero">0</span>
@@ -521,7 +521,7 @@
                 </div>
 
                 <!-- card's image and its border (colored via CSS according to class) -->
-                <div class="card-image">
+                <div class="card__image">
                     <img width="80" height="60" class="img-rounded" alt="{$card/name}">
                         <xsl:choose>
                             <xsl:when test="$card/picture">
@@ -552,16 +552,16 @@
                 </div>
 
                 <!-- name -->
-                <h5><xsl:value-of select="$card/name"/></h5>
+                <h5 class="card__title"><xsl:value-of select="$card/name"/></h5>
 
                 <!-- keywords -->
                 <xsl:choose>
                     <xsl:when test="$card/picture">
-                        <p class="keywords"><b><xsl:value-of select="$card/keywords"/></b></p>
+                        <p class="card__keywords"><b><xsl:value-of select="$card/keywords"/></b></p>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:variable name="descriptions" select="document('../xml/keywords.xml')/am:keywords"/>
-                        <p class="keywords">
+                        <p class="card__keywords">
                             <xsl:for-each select="str:split($card/keywords, ',')">
                                 <xsl:variable name="keywordName" select="."/>
                                 <xsl:variable name="keyword" select="$descriptions/am:keyword[contains($keywordName, am:name)]"/>
@@ -585,7 +585,7 @@
                                 </xsl:variable>
                                 <xsl:choose>
                                     <xsl:when test="$insignias = 'yes'">
-                                        <img class="insignia" src="img/insignias/{am:fileName($keyword/am:name)}.png"
+                                        <img class="keyword-insignia" src="img/insignias/{am:fileName($keyword/am:name)}.png"
                                              width="12" height="12" alt="{$keywordName}"
                                              title="{concat($keywordName, ' - ', $keywordDescription)}"/>
                                     </xsl:when>
@@ -605,7 +605,7 @@
                 </xsl:choose>
 
                 <!-- card effect -->
-                <p class="effect">
+                <p class="card__effect">
                     <xsl:choose>
                         <xsl:when test="$card/picture">
                             <xsl:value-of select="am:bbCodeParse($card/effect)" disable-output-escaping="yes"/>

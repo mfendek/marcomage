@@ -316,7 +316,7 @@
                     <div class="row table-row details">
                         <div class="col-sm-2">
                             <p>
-                                <img class="insignia" src="img/insignias/{am:fileName(name)}.png" width="12" height="12" alt="{name}" title="{name}"/>
+                                <img class="keyword-insignia" src="img/insignias/{am:fileName(name)}.png" width="12" height="12" alt="{name}" title="{name}"/>
                                 <span><xsl:value-of select="order"/></span>
                             </p>
                         </div>
@@ -363,7 +363,7 @@
                     <div class="skin-text">
                         <h4>Effect</h4>
                         <p class="description">
-                            <img class="insignia" src="img/insignias/{am:fileName($keyword/am:name)}.png" width="12"
+                            <img class="keyword-insignia" src="img/insignias/{am:fileName($keyword/am:name)}.png" width="12"
                                  height="12" alt="{$keyword/am:name}" title="{$keyword/am:name}"/>
                             <xsl:if test="$keyword/am:basic_gain &gt; 0 or $keyword/am:bonus_gain &gt; 0">
                                 <xsl:text>Basic gain </xsl:text>

@@ -15,7 +15,7 @@ class CardEmbed extends CodeDefinition
         parent::__construct();
         $this->setTagName('card');
         $this->setReplacementText(
-            '<span class="card-lookup-{option}"><a href="?location=Cards_details&amp;card={option}">{param}</a></span>'
+            '<span data-card-lookup="{option}"><a href="?location=Cards_details&amp;card={option}">{param}</a></span>'
         );
         $this->setUseOption(true);
         $this->setParseContent(false);

@@ -188,7 +188,7 @@
                                 </xsl:if>
                             </form>
                         </div>
-                        <div id="card-lookup"/>
+                        <div id="card-lookup-hint" class="card-lookup-hint"/>
 
                         <!-- error message dialog -->
                         <div class="modal fade" id="error-message" role="dialog">
