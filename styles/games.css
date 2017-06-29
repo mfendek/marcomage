@@ -88,17 +88,6 @@ div#games .responsive-table .table-row .avatar-image {
     margin: 0;
 }
 
-/* vertical align for table cells */
-@media (min-width: 992px) {
-    div#games .responsive-table .table-row p {
-        line-height: 60px;
-    }
-
-    div#games .responsive-table .table-row button {
-        line-height: initial;
-    }
-}
-
 /* color for text information about the game ("game has ended") */
 p.ended-game {
     font-style: italic;

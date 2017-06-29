@@ -15,17 +15,6 @@ div#players > .responsive-table .table-row--details .avatar-image {
     margin: 0;
 }
 
-/* vertical align for table cells */
-@media (min-width: 768px) {
-    div#players > .responsive-table .table-row--details p {
-        line-height: 60px;
-    }
-
-    div#players > .responsive-table .table-row--details .button-icon {
-        line-height: initial;
-    }
-}
-
 /* filters */
 div#players .filters {
     margin: 1ex 0 2ex 2ex;

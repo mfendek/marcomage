@@ -99,7 +99,7 @@
             </xsl:choose>
 
             <!-- begin players list -->
-            <div class="responsive-table table-sm skin-text">
+            <div class="responsive-table responsive-table--with-avatars-sm table-sm skin-text">
                 <!-- table header -->
                 <div class="row">
                     <div class="col-sm-2" />
