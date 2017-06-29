@@ -2,7 +2,7 @@
  * MArcomage CSS stylesheet - table styles *
  *******************************************/
 
-// table cell spacing
+// standard table
 table {
   border-collapse: separate;
   border-spacing: 0;
@@ -13,38 +13,39 @@ table {
     margin-right: auto;
   }
 
-  // table cell padding
-  &> tbody > tr > td,
-  &> tbody > tr > th {
-    padding: 0;
+  &.text-cells {
+    td,
+    th {
+      padding: 0 0.5ex 0 0.5ex;
+    }
   }
 
-  // default table header styles
-  &> tbody > tr > th {
-    font-family: $font-family-arial;
-    text-align: center;
-  }
-
+  // table header
   th {
+    font-family: $font-family-arial;
     margin: 0;
     padding: 0;
-  }
-
-  // centered row
-  tr.centered > td {
     text-align: center;
   }
 
-  // centered row
-  td.centered,
-  tr.centered > td > p.flag {
-    margin-left: auto;
-    margin-right: auto;
+  // table cell
+  td {
+    padding: 0;
+
+    // centered cell
+    &.centered {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  // centered cell
+  tr.centered td {
+    text-align: center;
   }
 
   // table align top
-  td.align-top,
-  tr.align-top {
+  .align-top {
     vertical-align: top;
   }
 
@@ -55,78 +56,75 @@ table {
 }
 
 // table align right
-.align-right > div,
-.align-right > table {
+.align-right > * {
   margin-left: auto
 }
 
 // responsive table
-div.responsive-table {
+.responsive-table {
   margin-bottom: 1ex;
   margin-left: auto;
   margin-right: auto;
   padding-bottom: 0.5ex;
 
-  // fade table row hover effect
-  .table-row {
-    transition: background-color 400ms;
-  }
-
-  .table-row p {
-    transition: color 400ms;
-  }
-
   // responsive table header
-  &> div.row:first-child {
+  &> .row:first-child {
     font-family: $font-family-arial;
     text-align: center;
   }
 
+  // fade table row hover effect
+  .table-row {
+    transition: background-color 400ms;
+
+    // clickable row
+    &--details {
+      cursor: pointer;
+    }
+
+    p {
+      transition: color 400ms;
+    }
+  }
+
   // cell spacing
-  &> div > div > p {
+  .row > [class*='col-'] > p {
     margin: 1ex;
   }
 
-  // clickable row
-  .row.details {
-    cursor: pointer;
-  }
-
-  // breakpoint specific layout
   @media (max-width: $screen-xs-max) {
     &.table-sm {
       // separate list items visually
-      &> div.row + div.row {
+      &> .row + .row {
         border-top: thin solid $transparent-shadow;
       }
 
       // hide responsive table header
-      &> div.row:first-child > div[class*='col-'] > * {
+      &> .row:first-child > [class*='col-'] > * {
         display: none;
       }
 
       // show only sortable column names
-      &> div.row:first-child > div[class*='col-'] > p.sortable {
+      &> .row:first-child > [class*='col-'] > .sortable-cell {
         display: block;
       }
     }
   }
 
-  // breakpoint specific layout
   @media (max-width: $screen-sm-max) {
     &.table-md {
       // separate list items visually
-      &> div.row + div.row {
+      &> .row + .row {
         border-top: thin solid $transparent-shadow;
       }
 
       // hide responsive table header
-      &> div.row:first-child > div[class*='col-'] > * {
+      &> .row:first-child > [class*='col-'] > * {
         display: none;
       }
 
       // show only sortable column names
-      &> div.row:first-child > div[class*='col-'] > p.sortable {
+      &> .row:first-child > [class*='col-'] > .sortable-cell {
         display: block;
       }
     }

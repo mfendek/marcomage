@@ -287,7 +287,7 @@
                 <!-- table header -->
                 <div class="row">
                     <div class="col-sm-2">
-                        <p class="sortable">
+                        <p class="sortable-cell">
                             <xsl:choose>
                                 <xsl:when test="$param/order = 'name'">
                                     <a href="{am:makeUrl('Cards_keywords', 'keywords_order', 'execution')}">Order</a>
@@ -297,7 +297,7 @@
                         </p>
                     </div>
                     <div class="col-sm-2">
-                        <p class="sortable">
+                        <p class="sortable-cell">
                             <xsl:choose>
                                 <xsl:when test="$param/order = 'execution'">
                                     <a href="{am:makeUrl('Cards_keywords', 'keywords_order', 'name')}">Name</a>
@@ -313,7 +313,7 @@
 
                 <!-- table body -->
                 <xsl:for-each select="$param/keywords/*">
-                    <div class="row table-row details">
+                    <div class="row table-row table-row--details">
                         <div class="col-sm-2">
                             <p>
                                 <img class="keyword-insignia" src="img/insignias/{am:fileName(name)}.png" width="12" height="12" alt="{name}" title="{name}"/>
@@ -322,7 +322,7 @@
                         </div>
                         <div class="col-sm-2">
                             <p>
-                                <a class="profile" href="{am:makeUrl('Cards_keyword_details', 'keyword', name)}">
+                                <a class="hidden-link" href="{am:makeUrl('Cards_keyword_details', 'keyword', name)}">
                                     <xsl:value-of select="name"/>
                                 </a>
                             </p>

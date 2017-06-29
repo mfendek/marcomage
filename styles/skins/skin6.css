@@ -73,7 +73,7 @@ button, a.button {
 }
 
 /* disabled hyperlink button */
-.disabled {
+.disabled-button {
     background-color: black;
     border-color: #6495ed; /* light blue */
 }
@@ -115,7 +115,7 @@ div.chat-box {
 }
 
 /* new card flag (indicated above a new card) */
-p.flag, span.new-card {
+p.card-flag, span.new-card {
     background-color: rgb(40, 40, 65); /* dark blue */
 }
 
@@ -154,7 +154,7 @@ div.forum th > p {
     color: #f4a460; /* salmon brown */
 }
 
-div.game .flag {
+div.game .card-flag {
     color: orange;
     margin: 1ex 0 1ex 0;
     border: ridge white;

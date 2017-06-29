@@ -2,7 +2,7 @@
  * MArcomage CSS stylesheet - modal styles *
  *******************************************/
 
-div[role="dialog"].modal {
+[role="dialog"].modal {
   // modal screen center display
   .vertical-alignment-helper {
     display: table;
@@ -34,20 +34,20 @@ div[role="dialog"].modal {
       text-align: left;
     }
 
+    .modal-body {
+      &--error-message p {
+        color: $red;
+      }
+    }
+
     .modal-footer {
       text-align: center;
     }
   }
 
-  button[name="close-modal"] {
+  [name="close-modal"] {
     background-color: $transparent-full;
     border-style: none;
     float: right;
   }
-
-}
-
-// TODO this should be a modifier
-#error-message .modal-dialog .modal-body p {
-  color: $red;
 }

@@ -116,7 +116,7 @@
                         <div class="col-sm-{@size}">
                             <p>
                                 <xsl:if test="$param/is_logged_in = 'yes' and @sortable = 'yes'">
-                                    <xsl:attribute name="class">sortable</xsl:attribute>
+                                    <xsl:attribute name="class">sortable-cell</xsl:attribute>
                                 </xsl:if>
 
                                 <span><xsl:value-of select="@text"/></span>
@@ -165,7 +165,7 @@
                         </div>
                         <div class="col-sm-2">
                             <p>
-                                <a class="profile" href="{am:makeUrl('Players_details', 'Profile', author)}">
+                                <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', author)}">
                                     <xsl:value-of select="author"/>
                                 </a>
                             </p>
@@ -507,7 +507,7 @@
                     <div class="row">
                         <div class="col-xs-6">Author</div>
                         <div class="col-xs-6">
-                            <a class="profile" href="{am:makeUrl('Players_details', 'Profile', $param/data/author)}">
+                            <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', $param/data/author)}">
                                 <xsl:value-of select="$param/data/author"/>
                             </a>
                         </div>

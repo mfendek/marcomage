@@ -41,7 +41,7 @@ h2, h3, h4, h5 {
 }
 
 /* submit input layout */
-button, a.button, .disabled {
+button, a.button, .disabled-button {
     background-color: rgb(150, 138, 255); /* light purple */
     border-color: rgb(205, 206, 255); /* light purple */
 }
@@ -70,7 +70,7 @@ div.chat-box {
 }
 
 /* new card flag (indicated above a new card) */
-p.flag, span.new-card {
+p.card-flag, span.new-card {
     background: url('../../img/skins/blue_text.jpg') repeat;
 }
 

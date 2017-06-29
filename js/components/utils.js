@@ -112,10 +112,10 @@ $(document).ready(function() {
     });
 
     // process details row click
-    $('.responsive-table .row.details').click(function() {
+    $('.responsive-table .table-row--details').click(function() {
         // navigate to row details
-        if ($(this).find('a.profile').length > 0) {
-            window.location.assign($(this).find('a.profile').attr('href'));
+        if ($(this).find('a.hidden-link').length > 0) {
+            window.location.assign($(this).find('a.hidden-link').attr('href'));
         }
     });
 

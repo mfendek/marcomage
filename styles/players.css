@@ -11,17 +11,17 @@ div#players > .responsive-table {
     margin-right: 0.5ex;
 }
 
-div#players > .responsive-table .details .avatar {
+div#players > .responsive-table .table-row--details .avatar-image {
     margin: 0;
 }
 
 /* vertical align for table cells */
 @media (min-width: 768px) {
-    div#players > .responsive-table .details p {
+    div#players > .responsive-table .table-row--details p {
         line-height: 60px;
     }
 
-    div#players > .responsive-table .details .button-icon {
+    div#players > .responsive-table .table-row--details .button-icon {
         line-height: initial;
     }
 }
@@ -58,10 +58,10 @@ div#details .row > div > p {
 }
 
 /* icon spacing */
-div#details img.icon {
+div#details .icon-image {
     margin-left: 0;
 }
-div#details * + img.icon {
+div#details * + .icon-image {
     margin-left: 0.5ex;
 }
 

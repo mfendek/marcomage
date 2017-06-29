@@ -122,7 +122,7 @@
                                                     </a>
                                                 </xsl:when>
                                                 <xsl:otherwise>
-                                                    <span class="disabled">
+                                                    <span class="disabled-button">
                                                         <span class="glyphicon glyphicon-chevron-left"/>
                                                     </span>
                                                 </xsl:otherwise>
@@ -137,7 +137,7 @@
                                                     </a>
                                                 </xsl:when>
                                                 <xsl:otherwise>
-                                                    <span class="disabled">
+                                                    <span class="disabled-button">
                                                         <span class="glyphicon glyphicon-chevron-right"/>
                                                     </span>
                                                 </xsl:otherwise>

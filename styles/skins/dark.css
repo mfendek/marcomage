@@ -38,7 +38,7 @@ div#login-box {
 }
 
 /* input text fields */
-input, button, textarea, a.button, .disabled {
+input, button, textarea, a.button, .disabled-button {
     background-color: #dddddd; /* very light gray */
 }
 
@@ -106,7 +106,7 @@ div.chat-box {
 }
 
 /* new card flag (indicated above a new card) */
-p.flag, span.new-card {
+p.card-flag, span.new-card {
     color: #dddddd; /* very light gray */
 }
 

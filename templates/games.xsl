@@ -86,19 +86,19 @@
 
                                 <!-- table body -->
                                 <xsl:for-each select="$list/*">
-                                    <div class="row table-row details">
+                                    <div class="row table-row table-row--details">
                                         <div class="col-sm-1">
                                             <p>
                                                 <xsl:variable name="avatarName" select="am:avatarFileName(
                                                     avatar, opponent, ai, $param/system_name
                                                 )"/>
 
-                                                <img class="avatar" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+                                                <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
                                             </p>
                                         </div>
                                         <div class="col-sm-2">
                                             <p>
-                                                <a class="profile" href="{am:makeUrl('Games_details', 'current_game', game_id)}">
+                                                <a class="hidden-link" href="{am:makeUrl('Games_details', 'current_game', game_id)}">
                                                     <xsl:choose>
                                                         <xsl:when test="opponent = $param/system_name">
                                                             <xsl:copy-of select="am:playerName(opponent, ai, $param/system_name)"/>
@@ -207,15 +207,15 @@
                                 </xsl:variable>
 
                                 <!-- hidden cards filter -->
-                                <img class="icon" width="20" height="14" src="img/blind.png" alt="Hidden cards" title="Hidden cards"/>
+                                <img class="icon-image" width="20" height="14" src="img/blind.png" alt="Hidden cards" title="Hidden cards"/>
                                 <xsl:copy-of select="am:htmlSelectBox('hidden_cards', $param/hidden_cards, $modeOptions, '')"/>
 
                                 <!-- friendly game filter -->
-                                <img class="icon" width="20" height="14" src="img/friendly_play.png" alt="Friendly play" title="Friendly play"/>
+                                <img class="icon-image" width="20" height="14" src="img/friendly_play.png" alt="Friendly play" title="Friendly play"/>
                                 <xsl:copy-of select="am:htmlSelectBox('friendly_play', $param/friendly_play, $modeOptions, '')"/>
 
                                 <!-- friendly game filter -->
-                                <img class="icon" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
+                                <img class="icon-image" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
                                 <xsl:copy-of select="am:htmlSelectBox('long_mode', $param/long_mode, $modeOptions, '')"/>
                                 <button class="button-icon" type="submit" name="filter_hosted_games" title="Apply filters">
                                     <span class="glyphicon glyphicon-filter"/>
@@ -258,16 +258,16 @@
                                                             avatar, opponent, ai, $param/system_name
                                                         )"/>
 
-                                                        <img class="avatar" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+                                                        <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
                                                     </p>
                                                 </div>
                                                 <div class="col-sm-2">
                                                     <p>
                                                         <xsl:if test="status != 'none'">
-                                                            <img class="icon" width="20" height="14" src="img/{status}.png" alt="status flag" title="{status}"/>
+                                                            <img class="icon-image" width="20" height="14" src="img/{status}.png" alt="status flag" title="{status}"/>
                                                         </xsl:if>
 
-                                                        <a class="profile" href="{am:makeUrl('Players_details', 'Profile', opponent)}">
+                                                        <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', opponent)}">
                                                             <xsl:value-of select="opponent"/>
                                                         </a>
 
@@ -343,19 +343,19 @@
                                         </xsl:if>
                                     </select>
 
-                                    <img class="icon" width="20" height="14" src="img/blind.png" alt="Hidden cards" title="Hidden cards"/>
+                                    <img class="icon-image" width="20" height="14" src="img/blind.png" alt="Hidden cards" title="Hidden cards"/>
                                     <input type="checkbox" name="hidden_mode">
                                         <xsl:if test="$param/blind_flag = 'yes'">
                                             <xsl:attribute name="checked">checked</xsl:attribute>
                                         </xsl:if>
                                     </input>
-                                    <img class="icon" width="20" height="14" src="img/friendly_play.png" alt="Friendly play" title="Friendly play"/>
+                                    <img class="icon-image" width="20" height="14" src="img/friendly_play.png" alt="Friendly play" title="Friendly play"/>
                                     <input type="checkbox" name="friendly_mode">
                                         <xsl:if test="$param/friendly_flag = 'yes'">
                                             <xsl:attribute name="checked">checked</xsl:attribute>
                                         </xsl:if>
                                     </input>
-                                    <img class="icon" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
+                                    <img class="icon-image" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
                                     <input type="checkbox" name="long_mode">
                                         <xsl:if test="$param/long_flag = 'yes'">
                                             <xsl:attribute name="checked">checked</xsl:attribute>
@@ -478,13 +478,13 @@
                                         </xsl:for-each>
                                     </select>
 
-                                    <img class="icon" width="20" height="14" src="img/blind.png" alt="Hidden cards" title="Hidden cards"/>
+                                    <img class="icon-image" width="20" height="14" src="img/blind.png" alt="Hidden cards" title="Hidden cards"/>
                                     <input type="checkbox" name="hidden_mode">
                                         <xsl:if test="$param/blind_flag = 'yes'">
                                             <xsl:attribute name="checked">checked</xsl:attribute>
                                         </xsl:if>
                                     </input>
-                                    <img class="icon" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
+                                    <img class="icon-image" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
                                     <input type="checkbox" name="long_mode">
                                         <xsl:if test="$param/long_flag = 'yes'">
                                             <xsl:attribute name="checked">checked</xsl:attribute>
@@ -519,7 +519,7 @@
                                         <div id="ai-challenge-{name}" class="skin-text">
                                             <h4><xsl:value-of select="fullname"/></h4>
                                             <p>
-                                                <img class="avatar" height="60" width="60" src="{$param/avatar_path}{am:fileName(name)}.png" alt="avatar"/>
+                                                <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{am:fileName(name)}.png" alt="avatar"/>
                                                 <xsl:value-of select="description"/>
                                             </p>
                                         </div>
@@ -885,7 +885,7 @@
                                     </div>
                                 </xsl:when>
                                 <xsl:when test="new_card = 'yes' and $param/card_mini_flag = 'no'">
-                                    <p class="flag">new card</p>
+                                    <p class="card-flag">new card</p>
                                 </xsl:when>
                             </xsl:choose>
 
@@ -973,10 +973,10 @@
                             <!-- player name -->
                             <p class="token-counter player-label">
                                 <xsl:value-of select="$param/player_name"/>
-                                <img class="icon" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
+                                <img class="icon-image" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
                             </p>
 
-                            <img class="avatar" height="60" width="60" src="{$param/avatar_path}{$param/p1_avatar}" alt="avatar"/>
+                            <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$param/p1_avatar}" alt="avatar"/>
 
                             <!-- my tokens -->
                             <div class="token-list">
@@ -1031,7 +1031,7 @@
                         <div class="player-info">
                             <!-- opponent's name -->
                             <p class="token-counter player-label opponent-label">
-                                <img class="icon" width="18" height="12" src="img/flags/{$param/p2_country}.gif" alt="country flag" title="{$param/p2_country}"/>
+                                <img class="icon-image" width="18" height="12" src="img/flags/{$param/p2_country}.gif" alt="country flag" title="{$param/p2_country}"/>
 
                                 <xsl:copy-of select="am:playerName($param/opponent_name, $param/ai_name, $param/system_name)"/>
 
@@ -1044,7 +1044,7 @@
                                 $param/p2_avatar, $param/opponent_name, $param/ai_name, $param/system_name
                             )"/>
 
-                            <img class="avatar" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+                            <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
 
                             <!-- his tokens -->
                             <div class="token-list">
@@ -1082,7 +1082,7 @@
                                         </xsl:if>
                                         <xsl:for-each select="$param/message_list/*">
                                             <p>
-                                                <img class="avatar" height="20" width="20" alt="avatar">
+                                                <img class="avatar-image" height="20" width="20" alt="avatar">
                                                     <xsl:choose>
                                                         <xsl:when test="author = $param/player_name">
                                                             <xsl:attribute name="src">
@@ -1157,7 +1157,7 @@
                                                 </xsl:if>
                                                 <xsl:for-each select="$param/message_list/*">
                                                     <p>
-                                                        <img class="avatar" height="20" width="20" alt="avatar">
+                                                        <img class="avatar-image" height="20" width="20" alt="avatar">
                                                             <xsl:choose>
                                                                 <xsl:when test="author = $param/player_name">
                                                                     <xsl:attribute name="src">
@@ -1341,7 +1341,7 @@
                                     </div>
                                 </xsl:when>
                                 <xsl:when test="new_card = 'yes' and $param/card_mini_flag = 'no'">
-                                    <p class="flag">new card</p>
+                                    <p class="card-flag">new card</p>
                                 </xsl:when>
                             </xsl:choose>
 
@@ -1383,10 +1383,10 @@
                             <!-- player name -->
                             <p class="token-counter player-label">
                                 <xsl:value-of select="$param/player_name"/>
-                                <img class="icon" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
+                                <img class="icon-image" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
                             </p>
 
-                            <img class="avatar" height="60" width="60" src="{$param/avatar_path}{$param/p1_avatar}" alt="avatar"/>
+                            <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$param/p1_avatar}" alt="avatar"/>
 
                             <!-- my tokens -->
                             <div class="token-list">
@@ -1441,7 +1441,7 @@
                         <div class="player-info">
                             <!-- opponent's name -->
                             <p class="token-counter player-label opponent-label">
-                                <img class="icon" width="18" height="12" src="img/flags/{$param/p2_country}.gif" alt="country flag" title="{$param/p2_country}"/>
+                                <img class="icon-image" width="18" height="12" src="img/flags/{$param/p2_country}.gif" alt="country flag" title="{$param/p2_country}"/>
 
                                 <xsl:copy-of select="am:playerName($param/opponent_name, $param/ai_name, $param/system_name)"/>
 
@@ -1454,7 +1454,7 @@
                                 $param/p2_avatar, $param/opponent_name, $param/ai_name, $param/system_name
                             )"/>
 
-                            <img class="avatar" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+                            <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
 
                             <!-- his tokens -->
                             <div class="token-list">

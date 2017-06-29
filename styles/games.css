@@ -51,7 +51,7 @@ div#ai-challenges p {
     min-height: 60px;
     text-align: justify;
 }
-div#ai-challenges img.avatar {
+div#ai-challenges .avatar-image {
     float: left;
     margin-right: 1ex;
     margin-bottom: 1ex;
@@ -84,7 +84,7 @@ div#games .misc {
     margin-top: 1ex;
 }
 
-div#games .responsive-table .table-row .avatar {
+div#games .responsive-table .table-row .avatar-image {
     margin: 0;
 }
 
@@ -128,7 +128,7 @@ span.new-card {
 }
 
 /* card flag */
-p.flag {
+p.card-flag {
     text-transform: uppercase;
     border: ridge #6495ed;
     border-radius: 6px;
@@ -274,7 +274,7 @@ div.game .token-counter.player-label {
 div.game .token-counter > img {
     margin-bottom: 0.5ex;
 }
-div.game .token-counter.player-label.opponent-label > img.icon {
+div.game .token-counter.player-label.opponent-label > .icon-image {
     margin-left: 0;
     margin-right: 0.5ex;
 }
@@ -508,7 +508,7 @@ div.game button[name="slideshow-play"], div.game button[name="slideshow-pause"] 
     display: none;
 }
 
-.game-display img.avatar {
+.game-display .avatar-image {
     display: inline-block;
     margin-right: 0;
 }

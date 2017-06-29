@@ -44,7 +44,7 @@
 
                 <!-- table body -->
                 <xsl:for-each select="$param/list/*">
-                    <div class="row table-row details">
+                    <div class="row table-row table-row--details">
                         <div class="col-sm-1">
                             <p>
                                 <xsl:if test="is_ready = 'yes'">
@@ -57,7 +57,7 @@
                         </div>
                         <div class="col-sm-4">
                             <p>
-                                <a class="profile" href="{am:makeUrl('Decks_edit', 'current_deck', deck_id)}">
+                                <a class="hidden-link" href="{am:makeUrl('Decks_edit', 'current_deck', deck_id)}">
                                     <xsl:value-of select="deck_name"/>
                                 </a>
                             </p>
@@ -136,7 +136,7 @@
                         <div class="col-sm-{@size}">
                             <p>
                                 <xsl:if test="@sortable = 'yes'">
-                                    <xsl:attribute name="class">sortable</xsl:attribute>
+                                    <xsl:attribute name="class">sortable-cell</xsl:attribute>
                                 </xsl:if>
 
                                 <span><xsl:value-of select="@text"/></span>
@@ -167,17 +167,17 @@
 
                 <!-- table body -->
                 <xsl:for-each select="$param/shared_list/*">
-                    <div class="row table-row details">
+                    <div class="row table-row table-row--details">
                         <div class="col-sm-2">
                             <p>
-                                <a class="profile" href="{am:makeUrl('Decks_details', 'current_deck', deck_id)}">
+                                <a class="hidden-link" href="{am:makeUrl('Decks_details', 'current_deck', deck_id)}">
                                     <xsl:value-of select="deck_name"/>
                                 </a>
                             </p>
                         </div>
                         <div class="col-sm-3">
                             <p>
-                                <a class="profile" href="{am:makeUrl('Players_details', 'Profile', username)}">
+                                <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', username)}">
                                     <xsl:value-of select="username"/>
                                 </a>
                             </p>

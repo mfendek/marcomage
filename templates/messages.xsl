@@ -81,7 +81,7 @@
                                                 <xsl:when test="$param/current_subsection = 'incoming'">
                                                     <p>
                                                         <span>
-                                                            <a class="profile" href="{am:makeUrl('Players_details', 'Profile', author)}">
+                                                            <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', author)}">
                                                                 <xsl:value-of select="author"/>
                                                             </a>
                                                             <xsl:if test="online = 'yes'">
@@ -111,7 +111,7 @@
                                                     <p>
                                                         <xsl:text>You challenged </xsl:text>
                                                         <span>
-                                                            <a class="profile" href="{am:makeUrl('Players_details', 'Profile', recipient)}">
+                                                            <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', recipient)}">
                                                                 <xsl:value-of select="recipient"/>
                                                             </a>
                                                             <xsl:if test="online = 'yes'">
@@ -234,7 +234,7 @@
                                 <!-- table header -->
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <p class="sortable">
+                                        <p class="sortable-cell">
                                             <xsl:choose>
                                                 <xsl:when test="$param/current_location = 'sent_mail'">
                                                     <span>To</span>
@@ -280,7 +280,7 @@
                                         <p>Subject</p>
                                     </div>
                                     <div class="col-sm-3">
-                                        <p class="sortable">
+                                        <p class="sortable-cell">
                                             <span>Sent on</span>
                                             <button class="button-icon" type="submit" value="created_at">
                                                 <xsl:if test="$param/current_condition = 'created_at'">

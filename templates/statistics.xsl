@@ -186,7 +186,7 @@
                                     <xsl:for-each select="$param/suggested/*">
                                         <li>
                                             <span><xsl:value-of select="count"/></span>
-                                            <a class="profile" href="{am:makeUrl('Players_details', 'Profile', author)}">
+                                            <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', author)}">
                                                 <xsl:value-of select="author"/>
                                             </a>
                                         </li>
@@ -198,7 +198,7 @@
                                     <xsl:for-each select="$param/implemented/*">
                                         <li>
                                             <span><xsl:value-of select="count"/></span>
-                                            <a class="profile" href="{am:makeUrl('Players_details', 'Profile', author)}">
+                                            <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', author)}">
                                                 <xsl:value-of select="author"/>
                                             </a>
                                         </li>

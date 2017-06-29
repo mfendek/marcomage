@@ -119,21 +119,21 @@
 
                 <!-- table body -->
                 <xsl:for-each select="$list/*">
-                    <div class="row table-row details">
+                    <div class="row table-row table-row--details">
                         <div class="col-sm-2">
                             <p>
                                 <a href="{am:makeUrl('Players_details', 'Profile', name)}">
-                                    <img class="avatar" height="60" width="60" src="{$param/avatar_path}{avatar}" alt="avatar"/>
+                                    <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{avatar}" alt="avatar"/>
                                 </a>
                             </p>
                         </div>
                         <div class="col-sm-3">
                             <p>
                                 <a class="achievement-link" href="{am:makeUrl('Players_achievements', 'Profile', name)}">
-                                    <img class="icon" height="16" width="16" src="img/achievement.png" alt="{name}'s achievements" title="{name}'s achievements"/>
+                                    <img class="icon-image" height="16" width="16" src="img/achievement.png" alt="{name}'s achievements" title="{name}'s achievements"/>
                                 </a>
-                                <img class="icon" width="18" height="12" src="img/flags/{country}.gif" alt="country flag" title="{country}"/>
-                                <a class="profile" href="{am:makeUrl('Players_details', 'Profile', name)}">
+                                <img class="icon-image" width="18" height="12" src="img/flags/{country}.gif" alt="country flag" title="{country}"/>
+                                <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', name)}">
                                     <xsl:value-of select="name"/>
                                 </a>
 
@@ -159,7 +159,7 @@
 
                                 <xsl:if test="rank != 'user'">
                                     <!-- player rank -->
-                                    <img class="icon" width="9" height="12" src="img/{rank}.png" alt="rank flag" title="{rank}"/>
+                                    <img class="icon-image" width="9" height="12" src="img/{rank}.png" alt="rank flag" title="{rank}"/>
                                 </xsl:if>
                             </p>
                         </div>
@@ -178,7 +178,7 @@
                         <div class="col-sm-2">
                             <p>
                                 <xsl:if test="status != 'none'">
-                                    <img class="icon" width="20" height="14" src="img/{status}.png" alt="status flag" title="{status}"/>
+                                    <img class="icon-image" width="20" height="14" src="img/{status}.png" alt="status flag" title="{status}"/>
                                 </xsl:if>
                                 <xsl:copy-of select="am:gameModeFlags(blind_flag, friendly_flag, long_flag)"/>
                             </p>
@@ -287,7 +287,7 @@
                                 <p>
                                     <span class="detail_value"><xsl:value-of select="$param/player_type"/></span>
                                     <xsl:if test="$param/player_type != 'user'">
-                                        <img class="icon" width="9" height="12" src="img/{$param/player_type}.png" alt="rank flag" title="{$param/player_type}"/>
+                                        <img class="icon-image" width="9" height="12" src="img/{$param/player_type}.png" alt="rank flag" title="{$param/player_type}"/>
                                     </xsl:if>
                                 </p>
                             </div>
@@ -296,7 +296,7 @@
                             <div class="col-xs-6"><p>Status</p></div>
                             <div class="col-xs-6">
                                 <xsl:if test="$param/status != 'none'">
-                                    <img class="icon" width="20" height="14" src="img/{$param/status}.png" alt="status flag" title="{$param/status}"/>
+                                    <img class="icon-image" width="20" height="14" src="img/{$param/status}.png" alt="status flag" title="{$param/status}"/>
                                 </xsl:if>
                                 <xsl:copy-of select="am:gameModeFlags(
                                     $param/blind_flag,
@@ -309,7 +309,7 @@
                             <div class="col-xs-6"><p>Country</p></div>
                             <div class="col-xs-6">
                                 <p>
-                                    <img class="icon" width="18" height="12" src="img/flags/{$param/country}.gif" alt="country flag" title="{$param/country}"/>
+                                    <img class="icon-image" width="18" height="12" src="img/flags/{$param/country}.gif" alt="country flag" title="{$param/country}"/>
                                     <span class="detail_value"><xsl:value-of select="$param/country"/></span>
                                 </p>
                             </div>
@@ -497,14 +497,14 @@
                                         <xsl:value-of select="$param/statistics/turns_long"/>
                                     </span>
                                     <xsl:text>Turns</xsl:text>
-                                    <img class="icon" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
+                                    <img class="icon-image" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
                                 </p>
                                 <p>
                                     <span>
                                         <xsl:value-of select="$param/statistics/rounds_long"/>
                                     </span>
                                     <xsl:text>Rounds</xsl:text>
-                                    <img class="icon" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
+                                    <img class="icon-image" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
                                 </p>
 
                             </div>

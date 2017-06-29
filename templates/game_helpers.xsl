@@ -340,7 +340,7 @@
                                     <p>
                                         <xsl:choose>
                                             <xsl:when test="card_action = 'play'">
-                                                <xsl:attribute name="class">flag played</xsl:attribute>
+                                                <xsl:attribute name="class">card-flag played</xsl:attribute>
                                                 <xsl:text>played</xsl:text>
                                                 <xsl:if test="card_mode != 0">
                                                     <span>
@@ -350,7 +350,7 @@
                                                 </xsl:if>
                                             </xsl:when>
                                             <xsl:otherwise>
-                                                <xsl:attribute name="class">flag discarded</xsl:attribute>
+                                                <xsl:attribute name="class">card-flag discarded</xsl:attribute>
                                                 <xsl:text>discarded</xsl:text>
                                             </xsl:otherwise>
                                         </xsl:choose>
@@ -427,7 +427,7 @@
                             </div>
                         </xsl:when>
                         <xsl:when test="new_card = 'yes' and $miniFlags = 'no'">
-                            <p class="flag">new card</p>
+                            <p class="card-flag">new card</p>
                         </xsl:when>
                     </xsl:choose>
 
@@ -461,7 +461,7 @@
                 <div>
                     <!--  display new card indicator, if set -->
                     <xsl:if test="new_card = 'yes' and ($hiddenCards = 'no' or revealed = 'yes' or $showCards) and $miniFlags = 'no'">
-                        <p class="flag">new card</p>
+                        <p class="card-flag">new card</p>
                     </xsl:if>
 
                     <!-- display card -->
@@ -470,7 +470,7 @@
                             <div class="hidden-card">
                                 <!--  display new card indicator, if set -->
                                 <xsl:if test="new_card = 'yes'">
-                                    <p class="flag">new card</p>
+                                    <p class="card-flag">new card</p>
                                 </xsl:if>
                             </div>
                         </xsl:when>
@@ -518,7 +518,7 @@
                 </xsl:when>
                 <!-- case 2: real player name -->
                 <xsl:otherwise>
-                    <a class="profile" href="{am:makeUrl('Players_details', 'Profile', $name)}">
+                    <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', $name)}">
                         <xsl:value-of select="$name"/>
                     </a>
                 </xsl:otherwise>

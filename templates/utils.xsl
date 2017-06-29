@@ -294,7 +294,7 @@
                     </a>
                 </xsl:when>
                 <xsl:otherwise>
-                    <span class="disabled">
+                    <span class="disabled-button">
                         <span class="glyphicon glyphicon-chevron-left"/>
                     </span>
                 </xsl:otherwise>
@@ -307,7 +307,7 @@
                     </a>
                 </xsl:when>
                 <xsl:otherwise>
-                    <span class="disabled">
+                    <span class="disabled-button">
                         <span class="glyphicon glyphicon-step-backward"/>
                     </span>
                 </xsl:otherwise>
@@ -322,7 +322,7 @@
                         </a>
                     </xsl:when>
                     <xsl:otherwise>
-                        <span class="disabled">
+                        <span class="disabled-button">
                             <xsl:value-of select="text()"/>
                         </span>
                     </xsl:otherwise>
@@ -336,7 +336,7 @@
                     </a>
                 </xsl:when>
                 <xsl:otherwise>
-                    <span class="disabled">
+                    <span class="disabled-button">
                         <span class="glyphicon glyphicon-step-forward"/>
                     </span>
                 </xsl:otherwise>
@@ -349,7 +349,7 @@
                     </a>
                 </xsl:when>
                 <xsl:otherwise>
-                    <span class="disabled">
+                    <span class="disabled-button">
                         <span class="glyphicon glyphicon-chevron-right"/>
                     </span>
                 </xsl:otherwise>
@@ -842,19 +842,19 @@
 
         <xsl:variable name="result">
             <xsl:if test="$hiddenCards = 'yes'">
-                <img class="icon" src="img/blind.png" width="20" height="14" alt="Hidden cards" title="Hidden cards"/>
+                <img class="icon-image" src="img/blind.png" width="20" height="14" alt="Hidden cards" title="Hidden cards"/>
             </xsl:if>
             <xsl:if test="$friendlyPlay = 'yes'">
-                <img class="icon" src="img/friendly_play.png" width="20" height="14" alt="Friendly play" title="Friendly play"/>
+                <img class="icon-image" src="img/friendly_play.png" width="20" height="14" alt="Friendly play" title="Friendly play"/>
             </xsl:if>
             <xsl:if test="$longMode = 'yes'">
-                <img class="icon" src="img/long_mode.png" width="20" height="14" alt="Long mode" title="Long mode"/>
+                <img class="icon-image" src="img/long_mode.png" width="20" height="14" alt="Long mode" title="Long mode"/>
             </xsl:if>
             <xsl:if test="$aiMode = 'yes'">
-                <img class="icon" src="img/ai_mode.png" width="20" height="14" alt="AI mode" title="AI mode"/>
+                <img class="icon-image" src="img/ai_mode.png" width="20" height="14" alt="AI mode" title="AI mode"/>
             </xsl:if>
             <xsl:if test="$aiName != ''">
-                <img class="icon" src="img/ai_challenge.png" width="20" height="14" alt="AI challenge - {$aiName}" title="AI challenge - {$aiName}"/>
+                <img class="icon-image" src="img/ai_challenge.png" width="20" height="14" alt="AI challenge - {$aiName}" title="AI challenge - {$aiName}"/>
             </xsl:if>
         </xsl:variable>
         <func:result select="exsl:node-set($result)"/>

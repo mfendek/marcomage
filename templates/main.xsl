@@ -199,7 +199,7 @@
                                             <button name="close-modal" type="button" class="close" data-dismiss="modal">&#10006;</button>
                                             <p class="modal-title">An error has occurred</p>
                                         </div>
-                                        <div class="modal-body"><p/></div>
+                                        <div class="modal-body modal-body--error-message"><p/></div>
                                         <div class="modal-footer">
                                             <button name="error-message-dismiss" type="button" class="btn btn-default">
                                                 <span class="btn-inner"><span class="btn-text">Ok</span></span>
@@ -275,7 +275,7 @@
                         <div class="skin-text">
                             <div>
                                 <a class="achievement-link" href="{am:makeUrl('Players_achievements', 'Profile', $param/player_name)}">
-                                    <img class="icon" height="16" width="16" src="img/achievement.png"
+                                    <img class="icon-image" height="16" width="16" src="img/achievement.png"
                                          alt="{$param/player_name}'s achievements" title="{$param/player_name}'s achievements"/>
                                 </a>
 
@@ -299,22 +299,22 @@
                             </div>
                             <div class="navbar-notifications">
                                 <xsl:if test="$param/game_notice = 'yes'">
-                                    <a class="image-link" href="{am:makeUrl('Games')}">
+                                    <a class="hidden-link" href="{am:makeUrl('Games')}">
                                         <img src="img/battle.gif" alt="" width="20" height="13" title="It's your turn in one of your games"/>
                                     </a>
                                 </xsl:if>
                                 <xsl:if test="$param/message_notice = 'yes'">
-                                    <a class="image-link" href="{am:makeUrl('Messages')}">
+                                    <a class="hidden-link" href="{am:makeUrl('Messages')}">
                                         <img src="img/new_post.gif" alt="" width="15" height="10" title="New private message"/>
                                     </a>
                                 </xsl:if>
                                 <xsl:if test="$param/forum_notice = 'yes'">
-                                    <a class="image-link" href="{am:makeUrl('Forum')}">
+                                    <a class="hidden-link" href="{am:makeUrl('Forum')}">
                                         <img src="img/book.gif" alt="" width="18" height="14" title="New forum post"/>
                                     </a>
                                 </xsl:if>
                                 <xsl:if test="$param/concept_notice = 'yes'">
-                                    <a class="image-link" href="{am:makeUrl('Concepts')}">
+                                    <a class="hidden-link" href="{am:makeUrl('Concepts')}">
                                         <img src="img/new_card.gif" alt="" width="10" height="14" title="New card concept"/>
                                     </a>
                                 </xsl:if>

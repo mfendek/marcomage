@@ -214,7 +214,7 @@
                                 </xsl:for-each>
                             </select>
                             <xsl:text>Country</xsl:text>
-                            <img class="icon" width="18" height="12" src="img/flags/{$settings/country}.gif" alt="country flag" title="{$settings/country}"/>
+                            <img class="icon-image" width="18" height="12" src="img/flags/{$settings/country}.gif" alt="country flag" title="{$settings/country}"/>
                         </p>
 
                         <p>
@@ -237,7 +237,7 @@
                             </select>
                             <xsl:text>Status</xsl:text>
                             <xsl:if test="$settings/status != 'none'">
-                                <img class="icon" width="20" height="14" src="img/{$settings/status}.png" alt="status flag" title="{$settings/status}"/>
+                                <img class="icon-image" width="20" height="14" src="img/{$settings/status}.png" alt="status flag" title="{$settings/status}"/>
                             </xsl:if>
                         </p>
 
@@ -253,7 +253,7 @@
                                 <xsl:text>Hidden cards</xsl:text>
                             </span>
                             <xsl:if test="$settings/blind_flag = 'yes'">
-                                <img class="icon" width="20" height="14" src="img/blind.png" alt="Hidden cards" title="Hidden cards"/>
+                                <img class="icon-image" width="20" height="14" src="img/blind.png" alt="Hidden cards" title="Hidden cards"/>
                             </xsl:if>
                         </p>
                         <p>
@@ -267,7 +267,7 @@
                                 <xsl:text>Friendly play</xsl:text>
                             </span>
                             <xsl:if test="$settings/friendly_flag = 'yes'">
-                                <img class="icon" width="20" height="14" src="img/friendly_play.png" alt="Friendly play" title="Friendly play"/>
+                                <img class="icon-image" width="20" height="14" src="img/friendly_play.png" alt="Friendly play" title="Friendly play"/>
                             </xsl:if>
                         </p>
                         <p>
@@ -283,7 +283,7 @@
                                 <xsl:text>Long mode</xsl:text>
                             </span>
                             <xsl:if test="$settings/long_flag = 'yes'">
-                                <img class="icon" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
+                                <img class="icon-image" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
                             </xsl:if>
                         </p>
 

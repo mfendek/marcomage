@@ -28,7 +28,7 @@
                                 <!-- table header -->
                                 <div class="row">
                                     <div class="col-sm-1">
-                                        <p class="sortable">
+                                        <p class="sortable-cell">
                                             <xsl:if test="$param/is_logged_in = 'yes'">
                                                 <button class="button-icon" type="submit" name="forum_search" title="Search">
                                                     <span class="glyphicon glyphicon-search"/>
@@ -77,14 +77,14 @@
                                                 <p>
                                                     <xsl:choose>
                                                         <xsl:when test="priority = 'sticky'">
-                                                            <img src="img/sticky.gif" width="22" height="15" alt="sticky" title="Sticky" class="icon"/>
+                                                            <img src="img/sticky.gif" width="22" height="15" alt="sticky" title="Sticky" class="icon-image"/>
                                                         </xsl:when>
                                                         <xsl:when test="priority = 'important'">
-                                                            <img src="img/important.gif" width="18" height="13" alt="important" title="Important" class="icon"/>
+                                                            <img src="img/important.gif" width="18" height="13" alt="important" title="Important" class="icon-image"/>
                                                         </xsl:when>
                                                     </xsl:choose>
                                                     <xsl:if test="is_locked = 'yes'">
-                                                        <img src="img/locked.gif" width="15" height="16" alt="locked" title="Locked" class="icon"/>
+                                                        <img src="img/locked.gif" width="15" height="16" alt="locked" title="Locked" class="icon-image"/>
                                                     </xsl:if>
                                                 </p>
                                             </div>
@@ -97,7 +97,7 @@
                                             </div>
                                             <div class="col-sm-2">
                                                 <p>
-                                                    <a class="profile" href="{am:makeUrl('Players_details', 'Profile', author)}">
+                                                    <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', author)}">
                                                         <xsl:value-of select="author"/>
                                                     </a>
                                                 </p>
@@ -116,7 +116,7 @@
                                                                 <xsl:copy-of select="am:dateTime(last_post, $param/timezone)"/>
                                                             </a>
                                                             <xsl:text> by </xsl:text>
-                                                            <a class="profile"
+                                                            <a class="hidden-link"
                                                                href="{am:makeUrl('Players_details', 'Profile', last_author)}">
                                                                 <xsl:value-of select="last_author"/>
                                                             </a>
@@ -229,14 +229,14 @@
                                         <p>
                                             <xsl:choose>
                                                 <xsl:when test="priority = 'sticky'">
-                                                    <img src="img/sticky.gif" width="22" height="15" alt="sticky" title="Sticky" class="icon"/>
+                                                    <img src="img/sticky.gif" width="22" height="15" alt="sticky" title="Sticky" class="icon-image"/>
                                                 </xsl:when>
                                                 <xsl:when test="priority = 'important'">
-                                                    <img src="img/important.gif" width="18" height="13" alt="important" title="Important" class="icon"/>
+                                                    <img src="img/important.gif" width="18" height="13" alt="important" title="Important" class="icon-image"/>
                                                 </xsl:when>
                                             </xsl:choose>
                                             <xsl:if test="is_locked = 'yes'">
-                                                <img src="img/locked.gif" width="15" height="16" alt="locked" title="Locked" class="icon"/>
+                                                <img src="img/locked.gif" width="15" height="16" alt="locked" title="Locked" class="icon-image"/>
                                             </xsl:if>
                                         </p>
                                     </div>
@@ -249,7 +249,7 @@
                                     </div>
                                     <div class="col-sm-2">
                                         <p>
-                                            <a class="profile"
+                                            <a class="hidden-link"
                                                href="{am:makeUrl('Players_details', 'Profile', author)}">
                                                 <xsl:value-of select="author"/>
                                             </a>
@@ -269,7 +269,7 @@
                                                         <xsl:copy-of select="am:dateTime(last_post, $param/timezone)"/>
                                                     </a>
                                                     <xsl:text> by </xsl:text>
-                                                    <a class="profile"
+                                                    <a class="hidden-link"
                                                        href="{am:makeUrl('Players_details', 'Profile', last_author)}">
                                                         <xsl:value-of select="last_author"/>
                                                     </a>
@@ -305,7 +305,7 @@
                     <!-- table header -->
                     <div class="row">
                         <div class="col-sm-1">
-                            <p class="sortable">
+                            <p class="sortable-cell">
                                 <xsl:if test="$param/is_logged_in = 'yes'">
                                     <button class="button-icon" type="submit" name="forum_search" title="Search">
                                         <span class="glyphicon glyphicon-search"/>
@@ -370,14 +370,14 @@
                                 <p>
                                     <xsl:choose>
                                         <xsl:when test="priority = 'sticky'">
-                                            <img src="img/sticky.gif" width="22" height="15" alt="sticky" title="Sticky" class="icon"/>
+                                            <img src="img/sticky.gif" width="22" height="15" alt="sticky" title="Sticky" class="icon-image"/>
                                         </xsl:when>
                                         <xsl:when test="priority = 'important'">
-                                            <img src="img/important.gif" width="18" height="13" alt="important" title="Important" class="icon"/>
+                                            <img src="img/important.gif" width="18" height="13" alt="important" title="Important" class="icon-image"/>
                                         </xsl:when>
                                     </xsl:choose>
                                     <xsl:if test="is_locked = 'yes'">
-                                        <img src="img/locked.gif" width="15" height="16" alt="locked" title="Locked" class="icon"/>
+                                        <img src="img/locked.gif" width="15" height="16" alt="locked" title="Locked" class="icon-image"/>
                                     </xsl:if>
                                 </p>
                             </div>
@@ -390,7 +390,7 @@
                             </div>
                             <div class="col-sm-2">
                                 <p>
-                                    <a class="profile" href="{am:makeUrl('Players_details', 'Profile', author)}">
+                                    <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', author)}">
                                         <xsl:value-of select="author"/>
                                     </a>
                                 </p>
@@ -409,7 +409,7 @@
                                                 <xsl:copy-of select="am:dateTime(last_post, $param/timezone)"/>
                                             </a>
                                             <xsl:text> by </xsl:text>
-                                            <a class="profile"
+                                            <a class="hidden-link"
                                                href="{am:makeUrl('Players_details', 'Profile', last_author)}">
                                                 <xsl:value-of select="last_author"/>
                                             </a>
@@ -454,7 +454,7 @@
                                     <xsl:value-of select="$thread/title"/>
                                 </a>
                                 <xsl:if test="$thread/is_locked = 'yes'">
-                                    <img src="img/locked.gif" width="15" height="16" alt="locked" title="Locked" class="icon"/>
+                                    <img src="img/locked.gif" width="15" height="16" alt="locked" title="Locked" class="icon-image"/>
                                 </xsl:if>
                             </h5>
                         </div>
@@ -566,7 +566,7 @@
 
                                 <div class="post-avatar">
                                     <a href="{am:makeUrl('Players_details', 'Profile', author)}">
-                                        <img class="avatar" height="60" width="60" src="{$param/avatar_path}{avatar}" alt="avatar"/>
+                                        <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{avatar}" alt="avatar"/>
                                     </a>
                                 </div>
 
@@ -870,7 +870,7 @@
                     </a>
                 </xsl:when>
                 <xsl:otherwise>
-                    <span class="disabled">
+                    <span class="disabled-button">
                         <span class="glyphicon glyphicon-chevron-left"/>
                     </span>
                 </xsl:otherwise>
@@ -883,7 +883,7 @@
                     </a>
                 </xsl:when>
                 <xsl:otherwise>
-                    <span class="disabled">
+                    <span class="disabled-button">
                         <span class="glyphicon glyphicon-step-backward"/>
                     </span>
                 </xsl:otherwise>
@@ -897,7 +897,7 @@
                         </a>
                     </xsl:when>
                     <xsl:otherwise>
-                        <span class="disabled">
+                        <span class="disabled-button">
                             <xsl:value-of select="text()"/>
                         </span>
                     </xsl:otherwise>
@@ -911,7 +911,7 @@
                     </a>
                 </xsl:when>
                 <xsl:otherwise>
-                    <span class="disabled">
+                    <span class="disabled-button">
                         <span class="glyphicon glyphicon-step-forward"/>
                     </span>
                 </xsl:otherwise>
@@ -924,7 +924,7 @@
                     </a>
                 </xsl:when>
                 <xsl:otherwise>
-                    <span class="disabled">
+                    <span class="disabled-button">
                         <span class="glyphicon glyphicon-chevron-right"/>
                     </span>
                 </xsl:otherwise>

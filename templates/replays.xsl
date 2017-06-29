@@ -45,23 +45,23 @@
                 </xsl:variable>
 
                 <!-- hidden cards filter -->
-                <img class="icon" width="20" height="14" src="img/blind.png" alt="Hidden cards" title="Hidden cards"/>
+                <img class="icon-image" width="20" height="14" src="img/blind.png" alt="Hidden cards" title="Hidden cards"/>
                 <xsl:copy-of select="am:htmlSelectBox('hidden_cards', $param/hidden_cards, $modeOptions, '')"/>
 
                 <!-- friendly game filter -->
-                <img class="icon" width="20" height="14" src="img/friendly_play.png" alt="Friendly play" title="Friendly play"/>
+                <img class="icon-image" width="20" height="14" src="img/friendly_play.png" alt="Friendly play" title="Friendly play"/>
                 <xsl:copy-of select="am:htmlSelectBox('friendly_play', $param/friendly_play, $modeOptions, '')"/>
 
                 <!-- long mode filter -->
-                <img class="icon" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
+                <img class="icon-image" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
                 <xsl:copy-of select="am:htmlSelectBox('long_mode', $param/long_mode, $modeOptions, '')"/>
 
                 <!-- ai mode filter -->
-                <img class="icon" width="20" height="14" src="img/ai_mode.png" alt="AI mode" title="AI mode"/>
+                <img class="icon-image" width="20" height="14" src="img/ai_mode.png" alt="AI mode" title="AI mode"/>
                 <xsl:copy-of select="am:htmlSelectBox('ai_mode', $param/ai_mode, $modeOptions, '')"/>
 
                 <!-- ai challenge filter -->
-                <img class="icon" width="20" height="14" src="img/ai_challenge.png" alt="AI challenge" title="AI challenge"/>
+                <img class="icon-image" width="20" height="14" src="img/ai_challenge.png" alt="AI challenge" title="AI challenge"/>
                 <xsl:copy-of select="am:htmlSelectBox('challenge_filter', $param/challenge_filter, $modeOptions, $param/ai_challenges)"/>
 
                 <button class="button-icon" type="submit" name="replays_apply_filters" title="Apply filters">
@@ -97,7 +97,7 @@
                                 <div class="col-sm-{@size}">
                                     <p>
                                         <xsl:if test="@sortable = 'yes'">
-                                            <xsl:attribute name="class">sortable</xsl:attribute>
+                                            <xsl:attribute name="class">sortable-cell</xsl:attribute>
                                         </xsl:if>
 
                                         <span><xsl:value-of select="@text"/></span>
@@ -136,7 +136,7 @@
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </xsl:variable>
-                            <div class="row table-row details">
+                            <div class="row table-row table-row--details">
                                 <div class="col-sm-2">
                                     <p>
                                         <xsl:variable name="winner">
@@ -155,7 +155,7 @@
 
                                         <xsl:choose>
                                             <xsl:when test="is_deleted = 'no'">
-                                                <a class="profile" href="{am:makeUrl('Replays_details', 'CurrentReplay', game_id, 'PlayerView', 1, 'Turn', 1)}">
+                                                <a class="hidden-link" href="{am:makeUrl('Replays_details', 'CurrentReplay', game_id, 'PlayerView', 1, 'Turn', 1)}">
                                                     <xsl:value-of select="$winner"/>
                                                 </a>
                                             </xsl:when>
@@ -231,7 +231,7 @@
                                 </a>
                             </xsl:when>
                             <xsl:otherwise>
-                                <span class="disabled">
+                                <span class="disabled-button">
                                     <span class="glyphicon glyphicon-chevron-left"/>
                                 </span>
                             </xsl:otherwise>
@@ -245,7 +245,7 @@
                                 </a>
                             </xsl:when>
                             <xsl:otherwise>
-                                <span class="disabled">
+                                <span class="disabled-button">
                                     <span class="glyphicon glyphicon-step-backward"/>
                                 </span>
                             </xsl:otherwise>
@@ -260,7 +260,7 @@
                                     </a>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <span class="disabled">
+                                    <span class="disabled-button">
                                         <xsl:value-of select="text()"/>
                                     </span>
                                 </xsl:otherwise>
@@ -275,7 +275,7 @@
                                 </a>
                             </xsl:when>
                             <xsl:otherwise>
-                                <span class="disabled">
+                                <span class="disabled-button">
                                     <span class="glyphicon glyphicon-step-forward"/>
                                 </span>
                             </xsl:otherwise>
@@ -289,7 +289,7 @@
                                 </a>
                             </xsl:when>
                             <xsl:otherwise>
-                                <span class="disabled">
+                                <span class="disabled-button">
                                     <span class="glyphicon glyphicon-chevron-right"/>
                                 </span>
                             </xsl:otherwise>
@@ -442,14 +442,14 @@
                             <!-- player1 name -->
                             <p class="token-counter player-label">
                                 <xsl:copy-of select="am:playerName($param/player1, $param/ai_name, $param/system_name)"/>
-                                <img class="icon" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
+                                <img class="icon-image" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
                             </p>
 
                             <xsl:variable name="avatarName" select="am:avatarFileName(
                                 $param/p1_avatar, $param/player1, $param/ai_name, $param/system_name
                             )"/>
 
-                            <img class="avatar" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+                            <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
 
                             <!-- player1 tokens -->
                             <div class="token-list">
@@ -504,7 +504,7 @@
                         <div class="player-info">
                             <!-- player2 name -->
                             <p class="token-counter player-label opponent-label">
-                                <img class="icon" width="18" height="12" src="img/flags/{$param/p2_country}.gif" alt="country flag" title="{$param/p2_country}"/>
+                                <img class="icon-image" width="18" height="12" src="img/flags/{$param/p2_country}.gif" alt="country flag" title="{$param/p2_country}"/>
                                 <xsl:copy-of select="am:playerName($param/player2, $param/ai_name, $param/system_name)"/>
                             </p>
 
@@ -512,7 +512,7 @@
                                 $param/p2_avatar, $param/player2, $param/ai_name, $param/system_name
                             )"/>
 
-                            <img class="avatar" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+                            <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
 
                             <!-- player2 tokens -->
                             <div class="token-list">
@@ -556,7 +556,7 @@
                             </a>
                         </xsl:when>
                         <xsl:otherwise>
-                            <span class="disabled">
+                            <span class="disabled-button">
                                 <span class="glyphicon glyphicon-chevron-left"/>
                             </span>
                         </xsl:otherwise>
@@ -570,7 +570,7 @@
                             </a>
                         </xsl:when>
                         <xsl:otherwise>
-                            <span class="disabled">
+                            <span class="disabled-button">
                                 <span class="glyphicon glyphicon-step-backward"/>
                             </span>
                         </xsl:otherwise>
@@ -585,7 +585,7 @@
                                 </a>
                             </xsl:when>
                             <xsl:otherwise>
-                                <span class="disabled">
+                                <span class="disabled-button">
                                     <xsl:value-of select="text()"/>
                                 </span>
                             </xsl:otherwise>
@@ -600,7 +600,7 @@
                             </a>
                         </xsl:when>
                         <xsl:otherwise>
-                            <span class="disabled">
+                            <span class="disabled-button">
                                 <span class="glyphicon glyphicon-step-forward"/>
                             </span>
                         </xsl:otherwise>
@@ -614,7 +614,7 @@
                             </a>
                         </xsl:when>
                         <xsl:otherwise>
-                            <span class="disabled">
+                            <span class="disabled-button">
                                 <span class="glyphicon glyphicon-chevron-right"/>
                             </span>
                         </xsl:otherwise>
@@ -687,10 +687,10 @@
                             <!-- player1 name -->
                             <p class="token-counter player-label">
                                 <xsl:copy-of select="am:playerName($param/player1, $param/ai_name, $param/system_name)"/>
-                                <img class="icon" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
+                                <img class="icon-image" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
                             </p>
 
-                            <img class="avatar" height="60" width="60" src="{$param/avatar_path}{$param/p1_avatar}" alt="avatar"/>
+                            <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$param/p1_avatar}" alt="avatar"/>
 
                             <!-- player1 tokens -->
                             <div class="token-list">
@@ -745,7 +745,7 @@
                         <div class="player-info">
                             <!-- player2 name -->
                             <p class="token-counter player-label opponent-label">
-                                <img class="icon" width="18" height="12" src="img/flags/{$param/p2_country}.gif" alt="country flag" title="{$param/p2_country}"/>
+                                <img class="icon-image" width="18" height="12" src="img/flags/{$param/p2_country}.gif" alt="country flag" title="{$param/p2_country}"/>
                                 <xsl:copy-of select="am:playerName($param/player2, $param/ai_name, $param/system_name)"/>
                             </p>
 
@@ -753,7 +753,7 @@
                                 $param/p2_avatar, $param/player2, $param/ai_name, $param/system_name
                             )"/>
 
-                            <img class="avatar" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+                            <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
 
                             <!-- player2 tokens -->
                             <div class="token-list">

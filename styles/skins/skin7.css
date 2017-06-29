@@ -63,7 +63,7 @@ button, a.button {
 }
 
 /* disabled hyperlink button */
-.disabled {
+.disabled-button {
     background-color: #222222; /* light black */
     border-color: gray;
 }
@@ -107,7 +107,7 @@ div.chat-box {
 }
 
 /* new card flag (indicated above a new card) */
-p.flag, span.new-card {
+p.card-flag, span.new-card {
     background-color: #222222; /* light black */
 }
 
