@@ -26,7 +26,7 @@ html {
 }
 
 /* navigation bar layout */
-div#menu-bar {
+.inner-navbar {
     background-repeat: repeat;
 }
 

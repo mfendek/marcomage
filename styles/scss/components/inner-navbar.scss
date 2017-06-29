@@ -1,0 +1,56 @@
+/***************************************************
+ * MArcomage CSS stylesheet - inner navigation bar *
+ ***************************************************/
+
+.inner-navbar {
+  padding-top: 0.5ex;
+  text-align: center;
+
+  .button-icon {
+    margin-top: 0.5ex;
+  }
+
+  &__menu-center {
+    .button {
+      margin-left: 0.5ex;
+      margin-top: 0.5ex;
+
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+
+  &__notifications {
+    .hidden-link {
+      margin-left: 0.5ex;
+
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+
+  &__player-info {
+    display: inline-block;
+    margin-top: 0.5ex;
+
+    &> div {
+      padding: 0.5ex 1ex 0.5ex 1ex;
+    }
+  }
+}
+
+// exp progress bar
+// TODO this is a global component, it should be moved to a proper place with different modifiers
+.exp-progress-bar {
+  border: thin solid $black;
+  margin: 0.5ex auto 0;
+  width: 100px;
+
+  // exp progress bar - inner part
+  &> div {
+    background-color: $green;
+    height: 2ex;
+  }
+}

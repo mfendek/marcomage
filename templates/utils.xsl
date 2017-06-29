@@ -216,7 +216,7 @@
             <xsl:if test="$pageCount &gt; 0">
                 <!-- page selection -->
                 <xsl:for-each select="str:split(am:numbers(am:max($current - 5, 0), am:min($current + 5, am:max($pageCount - 1, 0))), ',')">
-                    <button class="button-navigation" type="submit" name="{$navButtonName}" value="{text()}">
+                    <button class="pagination-button" type="submit" name="{$navButtonName}" value="{text()}">
                         <xsl:if test="$current = .">
                             <xsl:attribute name="disabled">disabled</xsl:attribute>
                         </xsl:if>

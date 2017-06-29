@@ -89,7 +89,7 @@ table {
 
   // cell spacing
   .row > [class*='col-'] > p {
-    margin: 1ex;
+    margin: 1ex 0.5ex 1ex 0.5ex;
   }
 
   @media (max-width: $screen-xs-max) {

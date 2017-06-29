@@ -20,7 +20,7 @@ html {
 }
 
 /* navigation bar layout */
-div#menu-bar {
+.inner-navbar {
     background-image: url('../../img/skins/blue_label.gif');
 }
 
@@ -47,7 +47,7 @@ button, a.button, .disabled-button {
 }
 
 /* highlighted button */
-button.marked_button, a.marked_button, .nav-buttons button:hover, .nav-buttons .button:hover {
+button.marked_button, a.marked_button, .top-navigation-bar button:hover, .top-navigation-bar .button:hover {
     background-color: rgb(5, 204, 0); /* medium green */
 }
 

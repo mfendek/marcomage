@@ -74,8 +74,6 @@ textarea {
 .avatar-image {
   background-color: $black;
   border: thin solid $white-shade;
-  margin-bottom: 0.2ex;
-  margin-right: 0.5ex;
   vertical-align: middle;
 }
 
@@ -96,19 +94,6 @@ legend {
   margin: 0;
   padding: 0 0.5ex 0 0.5ex;
   width: auto;
-}
-
-// filters
-// TODO filters are used in many different places another then filters, needs a rename
-.filters {
-  text-align: center;
-}
-
-// set distance between filter buttons
-.filters * + button,
-.filters * + .button,
-.filters * + .disabled-button {
-  margin-left: 0.5ex;
 }
 
 // highlight filter when active
@@ -229,7 +214,7 @@ input {
   }
 }
 
-.button-navigation {
+.pagination-button {
   font-size: medium;
 }
 
@@ -239,10 +224,26 @@ input {
 
 // navigation bar buttons highlight
 // TODO this belongs to navigation bar
-.nav-buttons {
+.top-navigation-bar {
   button,
   .button {
     transition: background-color 400ms;
+  }
+}
+
+// filters
+// TODO rename to sub-navigation
+.filters {
+  text-align: center;
+
+  button,
+  .button,
+  .disabled-button {
+    margin-left: 0.5ex;
+
+    &:first-child {
+      margin-left: 0;
+    }
   }
 }
 

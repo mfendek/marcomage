@@ -18,7 +18,7 @@
         <xsl:variable name="param" select="$params/webpage"/>
 
         <div id="web-page" class="skin-text top-level">
-            <div class="row nav-buttons">
+            <div class="row top-navigation-bar">
                 <aside id="web-page-menu">
                     <xsl:variable name="webSections">
                         <value name="Main" value="Summary"/>

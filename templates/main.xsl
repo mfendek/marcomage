@@ -268,10 +268,10 @@
 
         <xsl:variable name="current_section" select="$param/section_name"/>
 
-        <div id="menu-bar" class="skin-label top-level">
+        <div class="inner-navbar skin-label top-level">
             <div class="row">
                 <div class="col-md-2">
-                    <div id="menu-player-info">
+                    <div class="inner-navbar__player-info">
                         <div class="skin-text">
                             <div>
                                 <a class="achievement-link" href="{am:makeUrl('Players_achievements', 'Profile', $param/player_name)}">
@@ -297,7 +297,7 @@
                                     </xsl:attribute>
                                 </div>
                             </div>
-                            <div class="navbar-notifications">
+                            <div class="inner-navbar__notifications">
                                 <xsl:if test="$param/game_notice = 'yes'">
                                     <a class="hidden-link" href="{am:makeUrl('Games')}">
                                         <img src="img/battle.gif" alt="" width="20" height="13" title="It's your turn in one of your games"/>
@@ -325,7 +325,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 nav-buttons">
+                <div class="col-md-6 top-navigation-bar">
                     <xsl:variable name="sections">
                         <!-- section name, level requirement -->
                         <value name="Games" level="0"/>
@@ -335,7 +335,7 @@
                         <value name="Cards" level="2"/>
                         <value name="Concepts" level="5"/>
                     </xsl:variable>
-                    <nav class="menu-center">
+                    <nav class="inner-navbar__menu-center">
                         <xsl:for-each select="exsl:node-set($sections)/*">
                             <xsl:if test="$param/level &gt;= @level">
                                 <a class="button" href="{am:makeUrl(@name)}">
@@ -348,7 +348,7 @@
                         </xsl:for-each>
                     </nav>
                 </div>
-                <div class="col-md-4 nav-buttons">
+                <div class="col-md-4 top-navigation-bar">
                     <xsl:variable name="sections">
                         <value name="Webpage" icon="home"/>
                         <value name="Messages" icon="envelope" />
@@ -452,7 +452,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row nav-buttons">
+            <div class="row top-navigation-bar">
                 <div class="col-sm-3">
                     <xsl:variable name="sections">
                         <value name="Webpage" icon="home"/>

@@ -14,7 +14,7 @@ function refresh()
     // do not use window.location.reload() because it may cause redundant POST request
     // do not use direct assigning to window.location.href because each reload will be stored in browsing history
     // do not use window.location.href as a source, because it may contain garbage
-    window.location.replace($('.menu-center > a.pushed').attr('href'));
+    window.location.replace($('.inner-navbar__menu-center > a.pushed').attr('href'));
 }
 
 $(document).ready(function() {

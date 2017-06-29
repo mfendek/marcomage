@@ -12,7 +12,7 @@ export default function () {
  */
 function highlightSection(section)
 {
-    $('.menu-center > a:contains("' + section + '")').effect('fade', {}, 800);
+    $('.inner-navbar__menu-center > a:contains("' + section + '")').effect('fade', {}, 800);
     window.setTimeout(highlightSection, 3000, section);
 }
 
