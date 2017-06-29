@@ -175,7 +175,7 @@
                                 <xsl:if test="am:dateDiff(modified_at, $param/notification) &lt; 0">
                                     <xsl:attribute name="class">highlighted</xsl:attribute>
                                 </xsl:if>
-                                <xsl:copy-of select="am:dateTime(modified_at, $param/timezone)"/>
+                                <xsl:copy-of select="am:date(modified_at, $param/timezone)"/>
                             </p>
                         </div>
                         <div class="col-sm-1"><p><xsl:value-of select="state"/></p></div>

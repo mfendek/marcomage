@@ -79,11 +79,11 @@
 
             <xsl:choose>
                 <xsl:when test="count($param/list/*) &gt; 0">
-                    <div class="responsive-table table-sm skin-text">
+                    <div class="responsive-table table-md skin-text">
                         <!-- table header -->
                         <div class="row">
                             <xsl:variable name="columns">
-                                <column name="winner" text="Winner" sortable="yes" size="2"/>
+                                <column name="winner" text="Winner" sortable="no" size="2"/>
                                 <column name="loser" text="Defeated" sortable="no" size="2"/>
                                 <column name="outcome_type" text="Outcome" sortable="no" size="1"/>
                                 <column name="rounds" text="Rounds" sortable="yes" size="2"/>
@@ -94,7 +94,7 @@
                             </xsl:variable>
 
                             <xsl:for-each select="exsl:node-set($columns)/*">
-                                <div class="col-sm-{@size}">
+                                <div class="col-md-{@size}">
                                     <p>
                                         <xsl:if test="@sortable = 'yes'">
                                             <xsl:attribute name="class">sortable-cell</xsl:attribute>
@@ -137,7 +137,7 @@
                                 </xsl:choose>
                             </xsl:variable>
                             <div class="row table-row table-row--details">
-                                <div class="col-sm-2">
+                                <div class="col-md-2">
                                     <p>
                                         <xsl:variable name="winner">
                                             <xsl:choose>
@@ -163,7 +163,7 @@
                                         </xsl:choose>
                                     </p>
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-md-2">
                                     <p>
                                         <xsl:choose>
                                             <xsl:when test="winner = player1">
@@ -175,11 +175,11 @@
                                         </xsl:choose>
                                     </p>
                                 </div>
-                                <div class="col-sm-1"><p><xsl:value-of select="outcome_type"/></p></div>
-                                <div class="col-sm-2"><p><xsl:value-of select="rounds"/></p></div>
-                                <div class="col-sm-1"><p><xsl:copy-of select="am:dateTime(started_at, $param/timezone)"/></p></div>
-                                <div class="col-sm-1"><p><xsl:copy-of select="am:dateTime(finished_at, $param/timezone)"/></p></div>
-                                <div class="col-sm-2">
+                                <div class="col-md-1"><p><xsl:value-of select="outcome_type"/></p></div>
+                                <div class="col-md-2"><p><xsl:value-of select="rounds"/></p></div>
+                                <div class="col-md-1"><p><xsl:copy-of select="am:date(started_at, $param/timezone)"/></p></div>
+                                <div class="col-md-1"><p><xsl:copy-of select="am:date(finished_at, $param/timezone)"/></p></div>
+                                <div class="col-md-2">
                                     <p>
                                         <xsl:copy-of select="am:gameModeFlags(
                                             am:hasGameMode(game_modes, 'HiddenCards'),
@@ -190,7 +190,7 @@
                                         )"/>
                                     </p>
                                 </div>
-                                <div class="col-sm-1"><p><xsl:value-of select="views"/></p></div>
+                                <div class="col-md-1"><p><xsl:value-of select="views"/></p></div>
                             </div>
                         </xsl:for-each>
                     </div>

@@ -120,6 +120,10 @@ legend {
 .icon-image {
   margin-left: 0.5ex;
   vertical-align: middle;
+
+  &:first-child {
+    margin-left: 0;
+  }
 }
 
 // newly unlocked cards during level up message

@@ -149,7 +149,7 @@
                                         <div class="col-sm-2"><p><xsl:value-of select="timeout"/></p></div>
                                         <div class="col-sm-1"><p><xsl:value-of select="round"/></p></div>
                                         <div class="col-sm-2">
-                                            <p><xsl:copy-of select="am:dateTime(game_action, $param/timezone)"/></p>
+                                            <p><xsl:copy-of select="am:date(game_action, $param/timezone)"/></p>
                                         </div>
                                     </div>
                                 </xsl:for-each>
@@ -293,7 +293,7 @@
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <p>
-                                                        <xsl:copy-of select="am:dateTime(game_action, $param/timezone)"/>
+                                                        <xsl:copy-of select="am:date(game_action, $param/timezone)"/>
                                                     </p>
                                                 </div>
                                                 <div class="col-sm-2">

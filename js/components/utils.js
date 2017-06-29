@@ -279,6 +279,7 @@ $(document).ready(function() {
     $('[data-timestamp]').each(function() {
         // extract timestamp
         let timestamp = $(this).attr('data-timestamp');
+        let format = $(this).attr('data-date-format');
         timestamp = timestamp.split(' ');
 
         // extract date and time
@@ -296,7 +297,12 @@ $(document).ready(function() {
         datetime.setUTCSeconds(time[2]);
 
         // format timestamp to local format and time zone
-        $(this).text(datetime.toLocaleString());
+        if (format === 'date') {
+            $(this).text(datetime.toLocaleDateString());
+        }
+        else if (format === 'date-time') {
+            $(this).text(datetime.toLocaleString());
+        }
     });
 
     // print button

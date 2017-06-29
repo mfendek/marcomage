@@ -118,8 +118,21 @@
         <xsl:variable name="date" select="str:replace($datetime, ' ', 'T')"/>
         <xsl:variable name="zone" select="concat('Etc/GMT', str:replace(str:replace(str:replace($timezone, '+', '*'), '-', '+'), '*', '-'))"/>
         <func:result>
-            <span data-timestamp="{php:functionString('Util\Xslt::zoneTime', $date)}">
+            <span data-date-format="date-time" data-timestamp="{php:functionString('Util\Xslt::zoneTime', $date)}">
                 <xsl:value-of select="php:functionString('Util\Xslt::zoneTime', $date, $zone, 'H:i, j. M, Y')"/>
+            </span>
+        </func:result>
+    </func:function>
+
+
+    <func:function name="am:date">
+        <xsl:param name="datetime" as="xs:string"/>
+        <xsl:param name="timezone" as="xs:string" select="'+0'"/>
+        <xsl:variable name="date" select="str:replace($datetime, ' ', 'T')"/>
+        <xsl:variable name="zone" select="concat('Etc/GMT', str:replace(str:replace(str:replace($timezone, '+', '*'), '-', '+'), '*', '-'))"/>
+        <func:result>
+            <span data-date-format="date" data-timestamp="{php:functionString('Util\Xslt::zoneTime', $date)}">
+                <xsl:value-of select="php:functionString('Util\Xslt::zoneTime', $date, $zone, 'j. M, Y')"/>
             </span>
         </func:result>
     </func:function>

@@ -453,11 +453,12 @@
                 </div>
             </div>
             <div class="row nav-buttons">
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <xsl:variable name="sections">
                         <value name="Webpage" icon="home"/>
                         <value name="Help" icon="question-sign"/>
                         <value name="Novels" icon="book"/>
+                        <value name="Forum" icon="list-alt"/>
                     </xsl:variable>
                     <xsl:for-each select="exsl:node-set($sections)/*">
                         <a class="button button-icon" href="{am:makeUrl(@name)}" title="{@name}">
@@ -468,7 +469,7 @@
                         </a>
                     </xsl:for-each>
                 </div>
-                <div class="col-sm-10">
+                <div class="col-sm-9">
                     <!-- sections menu bar -->
                     <nav id="sections">
                         <button type="submit" name="registration" tabindex="4">
@@ -478,7 +479,6 @@
                             <xsl:text>Register</xsl:text>
                         </button>
                         <xsl:variable name="sections">
-                            <value name="Forum"/>
                             <value name="Players"/>
                             <value name="Cards"/>
                             <value name="Concepts"/>
