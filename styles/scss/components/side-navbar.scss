@@ -15,6 +15,10 @@
       li {
         margin-bottom: 1ex;
         margin-top: 1ex;
+
+        .button {
+          margin-right: 1ex;
+        }
       }
     }
   }
@@ -52,5 +56,30 @@
     p + p {
       margin-top: 2ex;
     }
+
+    &--strong-headings {
+      h4 {
+        text-align: center;
+      }
+
+      h5 {
+        text-align: center;
+        font-size: large;
+      }
+    }
+  }
+
+  &__previous-page {
+    float: left;
+  }
+
+  &__next-page {
+    float: right;
+  }
+
+  &__pagination {
+    margin-bottom: 2ex;
+    margin-top: 2ex;
+    text-align: center;
   }
 }

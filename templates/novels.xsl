@@ -23,11 +23,11 @@
         <xsl:variable name="page" select="$param/page"/>
         <xsl:variable name="content" select="$parts/am:part[@name = $param/part]/am:page[position() = $page]"/>
 
-        <div id="novels">
+        <div class="side-navbar">
             <div class="row">
                 <div class="col-md-3">
                     <!-- novels menu -->
-                    <aside id="novels-menu" class="skin-label top-level">
+                    <aside class="skin-label top-level side-navbar__menu-items">
 
                         <h3>Novels menu</h3>
 
@@ -108,13 +108,13 @@
 
                 <div class="col-md-9">
                     <!-- novels content -->
-                    <div id="novels-content" class="skin-text top-level">
+                    <div class="skin-text top-level side-navbar__content side-navbar__content--strong-headings">
                         <div>
                             <xsl:choose>
                                 <xsl:when test="$content">
                                     <!-- display content -->
                                     <xsl:variable name="navigationBar">
-                                        <div class="previous">
+                                        <div class="side-navbar__previous-page">
                                             <xsl:choose>
                                                 <xsl:when test="$page &gt; 1">
                                                     <a class="button button-icon" href="{am:makeUrl('Novels', 'novel', $param/novel, 'chapter', $param/chapter, 'part', $param/part, 'page', am:max($page - 1, 1))}">
@@ -129,7 +129,7 @@
                                             </xsl:choose>
                                         </div>
 
-                                        <div class="next">
+                                        <div class="side-navbar__next-page">
                                             <xsl:choose>
                                                 <xsl:when test="$page &lt; $pages">
                                                     <a class="button button-icon" href="{am:makeUrl('Novels', 'novel', $param/novel, 'chapter', $param/chapter, 'part', $param/part, 'page', am:min($page + 1, $pages))}">
@@ -146,7 +146,7 @@
                                     </xsl:variable>
 
                                     <!-- upper navigation -->
-                                    <div class="navigation">
+                                    <div class="side-navbar__pagination">
                                         <xsl:copy-of select="$navigationBar"/>
                                         <xsl:value-of select="$page"/>
                                         <xsl:text> / </xsl:text>
@@ -157,7 +157,7 @@
                                     <xsl:value-of select="$content" disable-output-escaping="yes"/>
 
                                     <!-- lower navigation -->
-                                    <div class="navigation">
+                                    <div class="side-navbar__pagination">
                                         <xsl:copy-of select="$navigationBar"/>
                                         <a class="button button-icon" href="{am:makeUrl('Novels', 'novel', $param/novel, 'chapter', $param/chapter, 'part', $param/part, 'page', $page)}">
                                             <span class="glyphicon glyphicon-triangle-top"/>
