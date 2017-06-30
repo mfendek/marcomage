@@ -38,12 +38,6 @@
                         <link rel="stylesheet" href="styles/css/main.css?v={$param/cc_version}" type="text/css" title="standard style"/>
                         <link rel="stylesheet" href="styles/{$current_section}.css?v={$param/cc_version}" type="text/css" title="standard style"/>
                         <link rel="stylesheet" href="styles/skins/skin{$param/skin}.css?v={$param/cc_version}" type="text/css" title="standard style"/>
-                        <xsl:if test="$param/new_user = 'yes'">
-                            <link rel="stylesheet" href="styles/intro.css?v={$param/cc_version}" type="text/css" title="standard style"/>
-                        </xsl:if>
-                        <xsl:if test="$param/new_level_gained &gt; 0">
-                            <link rel="stylesheet" href="styles/levelup.css?v={$param/cc_version}" type="text/css" title="standard style"/>
-                        </xsl:if>
                         <link rel="icon" href="img/favicon.png?v={$param/cc_version}" type="image/png"/>
                         <title>
                             <xsl:if test="$param/subsection != ''">
@@ -91,7 +85,7 @@
 
                                 <!-- display welcome message for new users -->
                                 <xsl:if test="$param/new_user = 'yes'">
-                                    <div class="modal fade" id="intro-dialog" role="dialog">
+                                    <div class="modal modal--announcement fade" id="intro-dialog" role="dialog">
                                         <div class="vertical-alignment-helper">
                                             <div class="modal-dialog vertical-align-center">
                                                 <div class="modal-content">
@@ -135,7 +129,7 @@
 
                                     <xsl:variable name="levelup_data" select="exsl:node-set($levels)/*[@id = $param/new_level_gained]"/>
                                     <xsl:if test="$levelup_data">
-                                        <div class="modal fade" id="level-up-dialog" role="dialog">
+                                        <div class="modal modal--announcement fade" id="level-up-dialog" role="dialog">
                                             <div class="vertical-alignment-helper">
                                                 <div class="modal-dialog vertical-align-center">
                                                     <div class="modal-content">

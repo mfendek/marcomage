@@ -50,4 +50,20 @@
     border-style: none;
     float: right;
   }
+
+  &--announcement {
+    .modal-title {
+      font-size: large;
+      text-align: center;
+    }
+
+    .modal-body {
+      font-size: large;
+      text-align: justify;
+    }
+
+    .card {
+      font-family: times, serif;
+    }
+  }
 }
