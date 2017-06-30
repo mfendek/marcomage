@@ -19,11 +19,11 @@
         <xsl:variable name="gameManual" select="document('../xml/help.xml')/am:help"/>
         <xsl:variable name="content" select="$gameManual/am:part[@name=$param/part]"/>
 
-        <div id="help">
+        <div class="side-navbar">
             <div class="row">
                 <div class="col-sm-3">
                     <!-- game manual menu -->
-                    <aside id="help-menu" class="skin-label top-level">
+                    <aside class="skin-label top-level side-navbar__menu-items">
                         <h3>Game manual</h3>
                         <ul>
                             <xsl:for-each select="exsl:node-set($gameManual)/*">
@@ -39,7 +39,7 @@
                 </div>
                 <div class="col-sm-9">
                     <!-- game manual content -->
-                    <div id="content" class="skin-text top-level">
+                    <div class="skin-text top-level side-navbar__content">
                         <div>
                             <xsl:choose>
                                 <xsl:when test="$content">
