@@ -25,7 +25,10 @@ body {
   margin: 0;
 }
 
-// override defaults
+img {
+  border-style: none;
+}
+
 ul {
   margin-left: 2ex;
   padding-left: 0;
@@ -224,10 +227,14 @@ input {
 
 // navigation bar buttons highlight
 // TODO this belongs to navigation bar
-.top-navigation-bar {
+.top-navbar {
   button,
   .button {
     transition: background-color 400ms;
+  }
+
+  &--outer {
+    margin-top: 1ex;
   }
 }
 

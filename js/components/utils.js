@@ -24,7 +24,7 @@ $(document).ready(function() {
     let confirmed = false;
 
     // login box auto focus (ommited in case of registration)
-    let username = $('#login-inputs input[name="username"]');
+    let username = $('.outer-navbar__login-box input[name="username"]');
     if (username.length > 0 && !dic.bodyData().isSectionActive('registration')) {
         // set focus on login name
         username.focus();

@@ -1,0 +1,55 @@
+/***************************************************
+ * MArcomage CSS stylesheet - outer navigation bar *
+ ***************************************************/
+
+.outer-navbar {
+  padding: 1ex;
+  text-align: center;
+
+  &__title {
+    font-size: xx-large;
+    margin: 1ex 0 0 0;
+    text-align: center;
+    @include fire-shadow();
+  }
+
+  &__subtitle {
+    font-size: large;
+    margin: 1ex 0;
+    text-align: center;
+  }
+
+  &__social-links {
+    margin-top: 0.5ex;
+
+    .hidden-link {
+      margin-left: 0.5ex;
+
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+
+  &__login-box {
+    &> div > * {
+      margin-top: 0.5ex;
+    }
+  }
+
+  &__message {
+    margin-top: 1ex;
+    min-height: 1em;
+  }
+
+  &__sections-menu {
+    &> * {
+      margin-top: 0.5ex;
+    }
+
+    &> * + * {
+      margin-left: 1ex;
+    }
+  }
+}
+

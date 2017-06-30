@@ -24,7 +24,7 @@ html {
 }
 
 /* login box layout */
-div#login-box {
+.outer-navbar {
     background-repeat: repeat;
     border: 2px outset black;
     border-radius: 6px;

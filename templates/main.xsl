@@ -36,14 +36,6 @@
 
                         <script type="text/javascript" src="js/dist/main.js?v={$param/cc_version}"/>
                         <link rel="stylesheet" href="styles/css/main.css?v={$param/cc_version}" type="text/css" title="standard style"/>
-                        <xsl:choose>
-                            <xsl:when test="$param/is_logged_in = 'yes'">
-                                <link rel="stylesheet" href="styles/menubar.css?v={$param/cc_version}" type="text/css" title="standard style"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <link rel="stylesheet" href="styles/login.css?v={$param/cc_version}" type="text/css" title="standard style"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
                         <link rel="stylesheet" href="styles/{$current_section}.css?v={$param/cc_version}" type="text/css" title="standard style"/>
                         <link rel="stylesheet" href="styles/skins/skin{$param/skin}.css?v={$param/cc_version}" type="text/css" title="standard style"/>
                         <xsl:if test="$param/new_user = 'yes'">
@@ -325,7 +317,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 top-navigation-bar">
+                <div class="col-md-6 top-navbar">
                     <xsl:variable name="sections">
                         <!-- section name, level requirement -->
                         <value name="Games" level="0"/>
@@ -348,7 +340,7 @@
                         </xsl:for-each>
                     </nav>
                 </div>
-                <div class="col-md-4 top-navigation-bar">
+                <div class="col-md-4 top-navbar">
                     <xsl:variable name="sections">
                         <value name="Webpage" icon="home"/>
                         <value name="Messages" icon="envelope" />
@@ -400,59 +392,57 @@
         <!-- navigation bar for anonymous user -->
         <xsl:variable name="param" select="$params/navbar"/>
 
-        <div id="login-box" class="top-level">
+        <div class="outer-navbar top-level">
             <div class="row">
                 <div class="col-sm-5">
-                    <h1>MArcomage</h1>
-                    <h2>Free multiplayer on-line fantasy card game</h2>
+                    <h1 class="outer-navbar__title">MArcomage</h1>
+                    <h2 class="outer-navbar__subtitle">Free multiplayer on-line fantasy card game</h2>
                 </div>
                 <div class="col-sm-6">
-                    <div id="login_area">
-                        <div id="login-inputs" class="row">
-                            <div class="col-md-5">
-                                <input type="text" name="username" title="username" maxlength="20" placeholder="Username..." tabindex="1"/>
-                                <img src="img/username.png" width="25" height="20" alt="username"/>
-                            </div>
-                            <div class="col-md-5">
-                                <input type="password" name="password" title="password" maxlength="20" placeholder="Password..." tabindex="2"/>
-                                <img src="img/password.png" width="25" height="20" alt="password"/>
-                            </div>
-                            <div class="col-md-2">
-                                <button type="submit" name="login" tabindex="3">Login</button>
-                            </div>
+                    <div class="row outer-navbar__login-box">
+                        <div class="col-md-5">
+                            <input type="text" name="username" title="username" maxlength="20" placeholder="Username..." tabindex="1"/>
+                            <img src="img/username.png" width="25" height="20" alt="username"/>
                         </div>
-
-                        <p id="login-message">
-                            <xsl:if test="$param/error_msg != ''">
-                                <span class="error">
-                                    <xsl:value-of select="$param/error_msg"/>
-                                </span>
-                            </xsl:if>
-                            <xsl:if test="$param/warning_msg != ''">
-                                <span class="warning">
-                                    <xsl:value-of select="$param/warning_msg"/>
-                                </span>
-                            </xsl:if>
-                            <xsl:if test="$param/info_msg != ''">
-                                <span class="info">
-                                    <xsl:value-of select="$param/info_msg"/>
-                                </span>
-                            </xsl:if>
-                        </p>
+                        <div class="col-md-5">
+                            <input type="password" name="password" title="password" maxlength="20" placeholder="Password..." tabindex="2"/>
+                            <img src="img/password.png" width="25" height="20" alt="password"/>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" name="login" tabindex="3">Login</button>
+                        </div>
                     </div>
+
+                    <p class="outer-navbar__message">
+                        <xsl:if test="$param/error_msg != ''">
+                            <span class="error">
+                                <xsl:value-of select="$param/error_msg"/>
+                            </span>
+                        </xsl:if>
+                        <xsl:if test="$param/warning_msg != ''">
+                            <span class="warning">
+                                <xsl:value-of select="$param/warning_msg"/>
+                            </span>
+                        </xsl:if>
+                        <xsl:if test="$param/info_msg != ''">
+                            <span class="info">
+                                <xsl:value-of select="$param/info_msg"/>
+                            </span>
+                        </xsl:if>
+                    </p>
                 </div>
                 <div class="col-sm-1">
-                    <div id="social-links">
-                        <a href="{$param/google_plus}">
+                    <div class="outer-navbar__social-links">
+                        <a class="hidden-link" href="{$param/google_plus}">
                             <img src="img/google_plus.png" width="16" height="16" alt="google plus page"/>
                         </a>
-                        <a href="{$param/facebook}">
+                        <a class="hidden-link" href="{$param/facebook}">
                             <img src="img/facebook.png" width="16" height="16" alt="facebook page"/>
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="row top-navigation-bar">
+            <div class="row top-navbar top-navbar--outer">
                 <div class="col-sm-3">
                     <xsl:variable name="sections">
                         <value name="Webpage" icon="home"/>
@@ -471,7 +461,7 @@
                 </div>
                 <div class="col-sm-9">
                     <!-- sections menu bar -->
-                    <nav id="sections">
+                    <nav class="outer-navbar__sections-menu">
                         <button type="submit" name="registration" tabindex="4">
                             <xsl:if test="$param/current = 'Registration'">
                                 <xsl:attribute name="class">marked_button</xsl:attribute>

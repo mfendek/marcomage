@@ -25,7 +25,7 @@ html {
 }
 
 /* login box layout */
-div#login-box {
+.outer-navbar {
     background-image: url('../../img/skins/green_label.jpg');
 }
 
@@ -77,7 +77,7 @@ button, a.button, .disabled-button {
 }
 
 /* highlighted button */
-button.marked_button, a.marked_button:link, a.marked_button:visited, .top-navigation-bar button:hover, .top-navigation-bar .button:hover {
+button.marked_button, a.marked_button:link, a.marked_button:visited, .top-navbar button:hover, .top-navbar .button:hover {
     background-color: #6495ed; /* light blue */
     color: black;
     text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px white, 0 0 5px white;

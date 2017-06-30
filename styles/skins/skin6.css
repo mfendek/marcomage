@@ -34,7 +34,7 @@ html {
 }
 
 /* login box layout */
-div#login-box {
+.outer-navbar {
     background-image: url('../../img/skins/old_label.jpg');
 }
 
@@ -88,7 +88,7 @@ a.button:link, a.button:visited {
 }
 
 /* highlighted button */
-button.marked_button, a.marked_button:link, a.marked_button:visited, .top-navigation-bar button:hover, .top-navigation-bar .button:hover {
+button.marked_button, a.marked_button:link, a.marked_button:visited, .top-navbar button:hover, .top-navbar .button:hover {
     background-color: yellow;
     color: black;
 }

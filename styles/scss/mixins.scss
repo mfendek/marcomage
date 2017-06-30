@@ -6,10 +6,15 @@
 
 @mixin circular-gradient-full($inner-color, $outer-color) {
   background: white radial-gradient(circle, transparentize($inner-color, 0.8) 10%,
-          transparentize($inner-color, 0.7) 15%, $inner-color 50%, $outer-color 100%);
+    transparentize($inner-color, 0.7) 15%, $inner-color 50%, $outer-color 100%);
 }
 
 @mixin circular-gradient-fade($inner-color, $outer-color) {
   background: white radial-gradient(circle, transparentize($inner-color, 0.9) 10%, transparentize($inner-color, 0.8) 15%,
-          transparentize($inner-color, 0.3) 50%, $outer-color 100%);
+    transparentize($inner-color, 0.3) 50%, $outer-color 100%);
+}
+
+@mixin fire-shadow() {
+  text-shadow: 0 0 1px $white, 0 0 2px $white, 0 0 3px $white, 0 0 4px $white, 0 0 5px $white, 0 0 4px $white,
+    0 -5px 4px $yellow-light, 2px -10px 6px $orange-light, -2px -15px 11px $orange, 2px -25px 18px $red-light;
 }
