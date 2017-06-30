@@ -1,0 +1,35 @@
+/**************************************************
+ * MArcomage CSS stylesheet - registration widget *
+ **************************************************/
+
+.registration {
+  padding: 5ex 0 5ex 0;
+  text-align: center;
+
+  &> * + * {
+    margin-top: 0.5ex;
+  }
+
+  &__title {
+    font-size: x-large;
+    margin-bottom: 2ex;
+    margin-top: 0;
+  }
+
+  &__label {
+    font-family: $font-family-arial;
+    font-size: large;
+  }
+
+  button,
+  input {
+    font-size: medium;
+    margin-top: 0.5ex;
+  }
+
+  .g-recaptcha {
+    display: inline-block;
+    transform: scale(0.8);
+    transform-origin: 50% 50%;
+  }
+}

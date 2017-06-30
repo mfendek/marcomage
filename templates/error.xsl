@@ -13,12 +13,12 @@
 
     <xsl:template match="section[. = 'Error']">
         <xsl:variable name="param" select="$params/error"/>
-        <div id="error-page" class="skin-text top-level">
-            <h1>Error has occurred</h1>
-            <div>
+        <div class="skin-text top-level error-widget">
+            <h1 class="error-widget__title">Error has occurred</h1>
+            <div class="error-widget__content">
                 <p><img class="img-rounded" width="350" height="212" src="img/error.gif" alt=""/></p>
                 <p>Something went wrong. Error details are listed below:</p>
-                <p class="error-details"><xsl:value-of select="$param/message"/></p>
+                <p class="error-widget__message"><xsl:value-of select="$param/message"/></p>
             </div>
         </div>
     </xsl:template>

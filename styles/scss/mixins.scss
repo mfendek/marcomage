@@ -18,3 +18,7 @@
   text-shadow: 0 0 1px $white, 0 0 2px $white, 0 0 3px $white, 0 0 4px $white, 0 0 5px $white, 0 0 4px $white,
     0 -5px 4px $yellow-light, 2px -10px 6px $orange-light, -2px -15px 11px $orange, 2px -25px 18px $red-light;
 }
+
+@mixin simple-shadow($color) {
+  text-shadow: 0 0 1px $color, 0 0 2px $color, 0 0 3px $color, 0 0 4px $color, 0 0 5px $color;
+}
