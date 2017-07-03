@@ -6,8 +6,8 @@ import tooltip from 'bootstrap-sass/assets/javascripts/bootstrap/tooltip';
 import modal from 'bootstrap-sass/assets/javascripts/bootstrap/modal';
 import highlight from 'jquery-ui/ui/effects/effect-highlight';
 import fade from 'jquery-ui/ui/effects/effect-fade';
-import scrollto from './thirdparty/scrollto';
-import cookie from './thirdparty/cookie';
+import scrollto from 'jquery.scrollto/jquery.scrollTo';
+import cookie from 'jquery.cookie/jquery.cookie';
 /* eslint-enable */
 
 // Define local components

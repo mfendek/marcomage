@@ -48,6 +48,11 @@
   margin: 0.5ex auto 0;
   width: 100px;
 
+  &--large {
+    margin: 1ex 0;
+    width: 200px;
+  }
+
   // exp progress bar - inner part
   &> div {
     background-color: $green;

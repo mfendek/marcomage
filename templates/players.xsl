@@ -241,7 +241,7 @@
                     <div class="col-sm-6">
                         <div class="row">
                             <div class="col-xs-12">
-                                <div class="exp-progress-bar">
+                                <div class="exp-progress-bar exp-progress-bar--large">
                                     <xsl:attribute name="title">
                                         <xsl:value-of select="$param/exp"/>
                                         <xsl:text> / </xsl:text>

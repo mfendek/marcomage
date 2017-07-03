@@ -125,21 +125,6 @@ div.statistics > h4 {
     margin: 0.5ex 0 0.5ex 0;
 }
 
-/* exp progress bar */
-div.exp-progress-bar {
-    border: thin solid black;
-    text-align: left;
-    margin-top: 1ex;
-    margin-bottom: 1ex;
-    width: 200px;
-}
-
-/* exp progress bar - inner part */
-div.exp-progress-bar > div {
-    height: 2ex;
-    background-color: green;
-}
-
 /* admin panel */
 div#details fieldset {
     margin-top: 1ex;
