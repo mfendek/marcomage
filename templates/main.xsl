@@ -311,7 +311,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 top-navbar">
+                <div class="col-md-6 interactive-menu">
                     <xsl:variable name="sections">
                         <!-- section name, level requirement -->
                         <value name="Games" level="0"/>
@@ -334,7 +334,7 @@
                         </xsl:for-each>
                     </nav>
                 </div>
-                <div class="col-md-4 top-navbar">
+                <div class="col-md-4 interactive-menu">
                     <xsl:variable name="sections">
                         <value name="Webpage" icon="home"/>
                         <value name="Messages" icon="envelope" />
@@ -436,7 +436,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row top-navbar top-navbar--outer">
+            <div class="row interactive-menu">
                 <div class="col-sm-3">
                     <xsl:variable name="sections">
                         <value name="Webpage" icon="home"/>

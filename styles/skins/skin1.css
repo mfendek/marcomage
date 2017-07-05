@@ -48,7 +48,7 @@ button, a.button, .disabled-button {
 }
 
 /* highlighted button */
-button.marked_button, a.marked_button, .top-navbar button:hover, .top-navbar .button:hover {
+button.marked_button, a.marked_button, .interactive-menu button:hover, .interactive-menu .button:hover {
     background-color: rgb(5, 204, 0); /* medium green */
 }
 

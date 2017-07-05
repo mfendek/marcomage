@@ -225,16 +225,11 @@ input {
   margin-top: 1ex;
 }
 
-// navigation bar buttons highlight
-// TODO this belongs to navigation bar
-.top-navbar {
+// TODO make a generic component
+.interactive-menu {
   button,
   .button {
     transition: background-color 400ms;
-  }
-
-  &--outer {
-    margin-top: 1ex;
   }
 }
 

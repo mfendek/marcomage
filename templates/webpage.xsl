@@ -17,9 +17,9 @@
     <xsl:template match="section[. = 'Webpage']">
         <xsl:variable name="param" select="$params/webpage"/>
 
-        <div id="web-page" class="skin-text top-level">
-            <div class="row top-navbar">
-                <aside id="web-page-menu">
+        <div class="skin-text top-level web-page">
+            <div class="row interactive-menu">
+                <aside class="web-page__menu">
                     <xsl:variable name="webSections">
                         <value name="Main" value="Summary"/>
                         <value name="News" value="Latest news"/>
@@ -41,7 +41,7 @@
                 </aside>
             </div>
             <div class="row">
-                <div id="web-page-content">
+                <div class="web-page__content">
                     <xsl:for-each select="$param/files/*">
                         <xsl:if test="($param/recent_news_only = 'no') or (position() &lt;= 4)">
 
@@ -49,7 +49,7 @@
                             <xsl:variable name="entry" select="document(am:urlEncode(concat('pages/', text())))/am:entry"/>
 
                             <xsl:if test="string($entry/am:date/text())">
-                                <div class="date-time">
+                                <div class="web-page__date-time">
                                     <xsl:copy-of select="am:dateTime($entry/am:date/text(), $param/timezone)"/>
                                 </div>
                             </xsl:if>

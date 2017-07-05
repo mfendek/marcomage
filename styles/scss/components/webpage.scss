@@ -1,0 +1,62 @@
+/***************************************
+ * MArcomage CSS stylesheet - web page *
+ ***************************************/
+
+.web-page {
+  margin-bottom: 1ex;
+
+  &__menu {
+    margin-bottom: 1ex;
+    padding-bottom: 1ex;
+    padding-top: 1ex;
+    text-align: center;
+
+    .button {
+      margin-left: 1ex;
+
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+
+  &__content {
+    padding-left: 2ex;
+    padding-right: 2ex;
+    text-align: justify;
+
+    &> div {
+      margin-left: auto;
+      margin-right: auto;
+      max-width: $max-text-width;
+
+      p {
+        margin-bottom: 2ex;
+        margin-top: 2ex;
+      }
+    }
+
+    li {
+      margin-bottom: 0.5ex;
+      margin-top: 0.5ex;
+    }
+
+    img {
+      border: thin solid $white-shade;
+      border-radius: 6px;
+      margin: 1ex;
+    }
+
+    hr {
+      margin: 1ex 0 1ex 0;
+    }
+  }
+
+  &__date-time {
+    text-align: center;
+  }
+
+  .credits-list span {
+    color: $green;
+  }
+}
