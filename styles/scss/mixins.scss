@@ -16,7 +16,7 @@
 
 @mixin fire-shadow() {
   text-shadow: 0 0 1px $white, 0 0 2px $white, 0 0 3px $white, 0 0 4px $white, 0 0 5px $white, 0 0 4px $white,
-    0 -5px 4px $yellow-light, 2px -10px 6px $orange-light, -2px -15px 11px $orange, 2px -25px 18px $red-light;
+    0 -5px 4px $vivid-yellow-light, 2px -10px 6px $vivid-yellow, -2px -15px 11px $pure-orange, 2px -25px 18px $pure-red-light;
 }
 
 @mixin simple-shadow($color) {

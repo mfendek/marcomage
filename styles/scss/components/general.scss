@@ -35,7 +35,7 @@ ul {
 }
 
 select {
-  background-color: $light-blue;
+  background-color: $soft-blue;
   border: thin solid $black;
   color: $black;
   font-family: $font-family-arial;
@@ -101,7 +101,7 @@ legend {
 
 // highlight filter when active
 .filter-active {
-  background-color: $green;
+  background-color: $dark-lime-green;
 }
 
 // icon image
@@ -125,7 +125,7 @@ legend {
 }
 
 .challenge-deck {
-  background-color: $green;
+  background-color: $dark-lime-green;
 }
 
 .icon-player-activity {
@@ -137,19 +137,19 @@ legend {
 }
 
 .icon-player-activity.online {
-  @include circular-gradient($lime);
+  @include circular-gradient($pure-lime-green);
 }
 
 .icon-player-activity.offline {
-  @include circular-gradient($red);
+  @include circular-gradient($pure-red);
 }
 
 .icon-player-activity.inactive {
-  @include circular-gradient($brown);
+  @include circular-gradient($dark-red);
 }
 
 .icon-player-activity.dead {
-  @include circular-gradient($brown);
+  @include circular-gradient($dark-red);
 }
 
 // hidden links
@@ -194,7 +194,7 @@ input {
 
 // disabled button
 .disabled-button {
-  color: $gray;
+  color: $dark-gray;
   display: inline-block;
   font-size: large;
   padding: 0.2ex 0.6ex 0.2ex 0.6ex;

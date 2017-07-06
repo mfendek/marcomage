@@ -65,7 +65,7 @@
 
   // background color and background image (with and without foil version) based on cost
   &.bricks-cost {
-    background-color: $rosy-brown;
+    background-color: $grayish-red;
 
     &.with-bg-image {
       background-image: url('/img/card/bricks_bg.png');
@@ -81,7 +81,7 @@
   }
 
   &.gems-cost {
-    background-color: $deep-sky-blue;
+    background-color: $pure-blue;
 
     &.with-bg-image {
       background-image: url('/img/card/gems_bg.png');
@@ -97,7 +97,7 @@
   }
 
   &.recruits-cost {
-    background-color: $dark-sea-green;
+    background-color: $grayish-lime-green;
 
     &.with-bg-image {
       background-image: url('/img/card/recruits_bg.png');
@@ -113,7 +113,7 @@
   }
 
   &.mixed-cost {
-    background-color: $dark-golden-rod;
+    background-color: $strong-orange;
 
     &.with-bg-image {
       background-image: url('/img/card/mixed_bg.png');
@@ -129,7 +129,7 @@
   }
 
   &.zero-cost {
-    background-color: $gainsboro;
+    background-color: $very-light-gray;
 
     &.with-bg-image {
       background-image: url('/img/card/zero_bg.png');
@@ -182,34 +182,34 @@
 
     .icon-bricks {
       //background-image: url('/img/card/bricks_cost.png');
-      @include circular-gradient-full($brick-red, $black);
+      @include circular-gradient-full($bright-red, $black);
     }
 
     .icon-zero {
       //background-image: url('/img/card/zero_cost.png');
-      @include circular-gradient-full($light-gray, $black);
+      @include circular-gradient-full($darker-gray, $black);
     }
 
     .icon-gems {
       //background-image: url('/img/card/gems_cost.png');
-      @include circular-gradient-full($navy-blue, $black);
+      @include circular-gradient-full($bright-blue, $black);
     }
 
     .icon-recruits {
       //background-image: url('/img/card/recruits_cost.png');
-      @include circular-gradient-full($light-green, $black);
+      @include circular-gradient-full($dark-moderate-lime-green, $black);
     }
 
     .icon-rarity.common {
-      @include circular-gradient-fade($lime, $black);
+      @include circular-gradient-fade($pure-lime-green, $black);
     }
 
     .icon-rarity.uncommon {
-      @include circular-gradient-fade($dark-brown, $black);
+      @include circular-gradient-fade($darker-red, $black);
     }
 
     .icon-rarity.rare {
-      @include circular-gradient-fade($yellow, $black);
+      @include circular-gradient-fade($pure-yellow, $black);
     }
   }
 

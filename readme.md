@@ -103,4 +103,5 @@ Configuration that is not present in the production config is inherited from bas
  * PSR-2 - http://www.php-fig.org/psr/psr-2/
  * Air BnB - https://github.com/airbnb/javascript
  * BEM - http://getbem.com/naming/
+ * Color Names - http://www.colorhexa.com/
  
