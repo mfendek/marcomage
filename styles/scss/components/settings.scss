@@ -1,0 +1,79 @@
+/*********************************************
+ * MArcomage CSS stylesheet - settings panel *
+ *********************************************/
+
+.settings-panel {
+  margin-bottom: 1ex;
+  margin-top: 1ex;
+  padding: 0 2ex 1ex 2ex;
+
+  h4 {
+    margin: 1ex 0 1ex 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  &__picture {
+    float: right;
+    text-align: center;
+
+    img {
+      background-color: $black;
+      border: thin solid $white-shade;
+      border-radius: 6px;
+      margin: 0.5ex 1ex 0 1ex;
+      padding: 0.5ex;
+    }
+
+    h4 {
+      margin: 0;
+    }
+
+    h5 {
+      margin-top: 0.5ex;
+    }
+  }
+
+  hr {
+    margin-bottom: 1ex;
+    margin-top: 2ex;
+  }
+
+  p {
+    margin-bottom: 0.8ex;
+    margin-top: 0.8ex;
+  }
+
+  input,
+  select {
+    margin-right: 1ex;
+  }
+
+  input[type="checkbox"] {
+    border: thin solid;
+    margin: 0 1ex 0 0;
+    padding: 0.5ex;
+
+    &+ span {
+      vertical-align: middle;
+    }
+  }
+
+  input[type="radio"] {
+    border: thin solid;
+    margin: 0 1ex 0 0;
+    padding: 1ex;
+  }
+
+  &__wallet {
+    margin-right: 1ex;
+  }
+
+  &__shop-item {
+    margin-top: 2ex;
+
+    &:first-child {
+      margin-top: 0
+    }
+  }
+}
