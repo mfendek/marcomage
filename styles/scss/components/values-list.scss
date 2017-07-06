@@ -1,0 +1,54 @@
+/******************************************
+ * MArcomage CSS stylesheet - values list *
+ ******************************************/
+
+.values-list {
+  font-family: $font-family-arial;
+  margin-bottom: 1ex;
+  padding-bottom: 1ex;
+  padding-left: 1ex;
+  padding-right: 1ex;
+
+  h4 {
+    margin-bottom: 1ex;
+    margin-top: 1ex;
+    text-align: center;
+  }
+
+  h5 {
+    font-size: medium;
+    margin-bottom: 1ex;
+    margin-top: 1ex;
+    text-align: center;
+  }
+
+  ol {
+    margin: 0;
+    padding-left: 4ex;
+
+    li {
+      margin-top: 0.5ex;
+      padding: 0.5ex;
+      transition: background-color 400ms;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &:hover {
+        background-color: $white-shade-lighter;
+      }
+
+      span {
+        float: right;
+      }
+    }
+  }
+
+  &--plain {
+    ol {
+      list-style-type: none;
+      padding-left: 0;
+    }
+  }
+}
