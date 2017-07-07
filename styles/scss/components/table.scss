@@ -67,6 +67,14 @@ table {
   margin-right: auto;
   padding-bottom: 0.5ex;
 
+  &--centered {
+    text-align: center;
+  }
+
+  &__marked-content {
+    color: $pure-red;
+  }
+
   // responsive table header
   &> .row:first-child {
     font-family: $font-family-arial;
@@ -90,6 +98,12 @@ table {
   // cell spacing
   .row > [class*='col-'] > p {
     margin: 1ex 0.5ex 1ex 0.5ex;
+  }
+
+  .card {
+    display: inline-block;
+    margin-left: 1ex;
+    margin-right: 1ex;
   }
 
   @media (max-width: $screen-xs-max) {

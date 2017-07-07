@@ -1,0 +1,31 @@
+/****************************************
+ * MArcomage CSS stylesheet - card form *
+ ****************************************/
+
+.card-form {
+  margin: 1ex auto;
+  max-width: 50em;
+  padding: 1ex;
+
+  @media (max-width: $screen-sm-max) {
+    margin-left: 0.5ex;
+    margin-right: 0.5ex;
+  }
+
+  &__menu {
+    .button,
+    button {
+      margin-bottom: 0.5ex;
+    }
+  }
+
+  .row,
+  &> p {
+    margin-bottom: 1ex;
+    margin-top: 1ex;
+  }
+
+  &__note {
+    text-align: justify;
+  }
+}

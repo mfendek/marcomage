@@ -222,7 +222,11 @@ input {
 }
 
 .bb-code-buttons {
-  margin-top: 1ex;
+  margin-top: 0.5ex;
+
+  button {
+    margin-top: 0.5ex;
+  }
 }
 
 // TODO make a generic component
