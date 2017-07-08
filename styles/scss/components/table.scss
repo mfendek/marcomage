@@ -98,6 +98,10 @@ table {
   // cell spacing
   .row > [class*='col-'] > p {
     margin: 1ex 0.5ex 1ex 0.5ex;
+
+    &.long-text {
+      margin: 1ex;
+    }
   }
 
   .card {

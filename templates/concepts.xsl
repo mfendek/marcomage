@@ -224,88 +224,87 @@
 
             <hr/>
 
-            <div class="limit">
-                <div class="row">
-                    <div class="col-xs-3">Name</div>
-                    <div class="col-xs-9">
-                        <input type="text" name="name" maxlength="64" size="35">
-                            <xsl:if test="$param/stored = 'yes'">
-                                <xsl:attribute name="value">
-                                    <xsl:value-of select="$param/data/name"/>
-                                </xsl:attribute>
-                            </xsl:if>
-                        </input>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-3">Rarity</div>
-                    <div class="col-xs-9">
-                        <xsl:variable name="rarities">
-                            <class name="Common"/>
-                            <class name="Uncommon"/>
-                            <class name="Rare"/>
-                        </xsl:variable>
-
-                        <select name="rarity">
-                            <xsl:for-each select="exsl:node-set($rarities)/*">
-                                <option value="{@name}">
-                                    <xsl:if test="$param/stored = 'yes' and $param/data/rarity = @name">
-                                        <xsl:attribute name="selected">selected</xsl:attribute>
-                                    </xsl:if>
-                                    <xsl:value-of select="@name"/>
-                                </option>
-                            </xsl:for-each>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-3">Cost (B/G/R)</div>
-                    <div class="col-xs-9">
-                        <input type="text" name="bricks" maxlength="2" size="2">
+            <div class="row">
+                <div class="col-xs-3">Name</div>
+                <div class="col-xs-9">
+                    <input type="text" name="name" maxlength="64" size="35">
+                        <xsl:if test="$param/stored = 'yes'">
                             <xsl:attribute name="value">
-                                <xsl:choose>
-                                    <xsl:when test="$param/stored = 'yes'">
-                                        <xsl:value-of select="$param/data/bricks"/>
-                                    </xsl:when>
-                                    <xsl:otherwise>0</xsl:otherwise>
-                                </xsl:choose>
+                                <xsl:value-of select="$param/data/name"/>
                             </xsl:attribute>
-                        </input>
-                        <input type="text" name="gems" maxlength="2" size="2">
-                            <xsl:attribute name="value">
-                                <xsl:choose>
-                                    <xsl:when test="$param/stored = 'yes'">
-                                        <xsl:value-of select="$param/data/gems"/>
-                                    </xsl:when>
-                                    <xsl:otherwise>0</xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:attribute>
-                        </input>
-                        <input type="text" name="recruits" maxlength="2" size="2">
-                            <xsl:attribute name="value">
-                                <xsl:choose>
-                                    <xsl:when test="$param/stored = 'yes'">
-                                        <xsl:value-of select="$param/data/recruits"/>
-                                    </xsl:when>
-                                    <xsl:otherwise>0</xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:attribute>
-                        </input>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-3">Keywords</div>
-                    <div class="col-xs-9">
-                        <input type="text" name="keywords" maxlength="100" size="35">
-                            <xsl:if test="$param/stored = 'yes'">
-                                <xsl:attribute name="value">
-                                    <xsl:value-of select="$param/data/keywords"/>
-                                </xsl:attribute>
-                            </xsl:if>
-                        </input>
-                    </div>
+                        </xsl:if>
+                    </input>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-xs-3">Rarity</div>
+                <div class="col-xs-9">
+                    <xsl:variable name="rarities">
+                        <class name="Common"/>
+                        <class name="Uncommon"/>
+                        <class name="Rare"/>
+                    </xsl:variable>
+
+                    <select name="rarity">
+                        <xsl:for-each select="exsl:node-set($rarities)/*">
+                            <option value="{@name}">
+                                <xsl:if test="$param/stored = 'yes' and $param/data/rarity = @name">
+                                    <xsl:attribute name="selected">selected</xsl:attribute>
+                                </xsl:if>
+                                <xsl:value-of select="@name"/>
+                            </option>
+                        </xsl:for-each>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-3">Cost (B/G/R)</div>
+                <div class="col-xs-9">
+                    <input type="text" name="bricks" maxlength="2" size="2">
+                        <xsl:attribute name="value">
+                            <xsl:choose>
+                                <xsl:when test="$param/stored = 'yes'">
+                                    <xsl:value-of select="$param/data/bricks"/>
+                                </xsl:when>
+                                <xsl:otherwise>0</xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:attribute>
+                    </input>
+                    <input type="text" name="gems" maxlength="2" size="2">
+                        <xsl:attribute name="value">
+                            <xsl:choose>
+                                <xsl:when test="$param/stored = 'yes'">
+                                    <xsl:value-of select="$param/data/gems"/>
+                                </xsl:when>
+                                <xsl:otherwise>0</xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:attribute>
+                    </input>
+                    <input type="text" name="recruits" maxlength="2" size="2">
+                        <xsl:attribute name="value">
+                            <xsl:choose>
+                                <xsl:when test="$param/stored = 'yes'">
+                                    <xsl:value-of select="$param/data/recruits"/>
+                                </xsl:when>
+                                <xsl:otherwise>0</xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:attribute>
+                    </input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-3">Keywords</div>
+                <div class="col-xs-9">
+                    <input type="text" name="keywords" maxlength="100" size="35">
+                        <xsl:if test="$param/stored = 'yes'">
+                            <xsl:attribute name="value">
+                                <xsl:value-of select="$param/data/keywords"/>
+                            </xsl:attribute>
+                        </xsl:if>
+                    </input>
+                </div>
+            </div>
+
             <p>Effect</p>
             <xsl:copy-of select="am:bbCodeButtons('effect')"/>
             <textarea name="effect" rows="6" cols="50">
@@ -363,9 +362,8 @@
             </div>
             <hr/>
 
-            <div class="card-preview">
-                <xsl:copy-of select="am:cardString($param/data, $param/card_old_look)"/>
-            </div>
+            <xsl:copy-of select="am:cardString($param/data, $param/card_old_look)"/>
+
             <div class="row">
                 <div class="col-xs-3">Name</div>
                 <div class="col-xs-9">
@@ -432,6 +430,7 @@
                     </select>
                 </div>
             </div>
+
             <p>Card picture</p>
             <div>
                 <input type="file" name="concept_image_file"/>
@@ -490,49 +489,47 @@
 
             <hr/>
 
-            <div class="card-preview">
-                <xsl:copy-of select="am:cardString($param/data, $param/card_old_look)"/>
-            </div>
-            <div class="limit">
-                <div class="row">
-                    <div class="col-xs-6">Author</div>
-                    <div class="col-xs-6">
-                        <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', $param/data/author)}">
-                            <xsl:value-of select="$param/data/author"/>
-                        </a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6">Id</div>
-                    <div class="col-xs-6">
-                        <xsl:value-of select="$param/data/id"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6">Name</div>
-                    <div class="col-xs-6">
-                        <xsl:value-of select="$param/data/name"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6">Rarity</div>
-                    <div class="col-xs-6">
-                        <xsl:value-of select="$param/data/rarity"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6">Keywords</div>
-                    <div class="col-xs-6">
-                        <xsl:value-of select="$param/data/keywords"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6">State</div>
-                    <div class="col-xs-6">
-                        <xsl:value-of select="$param/data/state"/>
-                    </div>
+            <xsl:copy-of select="am:cardString($param/data, $param/card_old_look)"/>
+
+            <div class="row">
+                <div class="col-xs-6">Author</div>
+                <div class="col-xs-6">
+                    <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', $param/data/author)}">
+                        <xsl:value-of select="$param/data/author"/>
+                    </a>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-xs-6">Id</div>
+                <div class="col-xs-6">
+                    <xsl:value-of select="$param/data/id"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">Name</div>
+                <div class="col-xs-6">
+                    <xsl:value-of select="$param/data/name"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">Rarity</div>
+                <div class="col-xs-6">
+                    <xsl:value-of select="$param/data/rarity"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">Keywords</div>
+                <div class="col-xs-6">
+                    <xsl:value-of select="$param/data/keywords"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">State</div>
+                <div class="col-xs-6">
+                    <xsl:value-of select="$param/data/state"/>
+                </div>
+            </div>
+
             <p>BB code</p>
             <div>
                 <input type="text" name="bb_code" maxlength="64" size="25" value="[concept={$param/data/id}]{$param/data/name}[/concept]" title="BB code"/>

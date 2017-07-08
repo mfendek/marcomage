@@ -229,6 +229,29 @@ input {
   }
 }
 
+.long-text {
+   max-width: $max-text-width;
+   text-align: justify;
+
+  p {
+    margin-top: 1ex;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  @media (min-width: $screen-lg-min) {
+    margin-right: auto;
+  }
+ }
+
+.skin-text {
+  &--plain-content {
+    padding: 1ex;
+  }
+}
+
 // TODO make a generic component
 .interactive-menu {
   button,
