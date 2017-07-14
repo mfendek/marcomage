@@ -114,8 +114,8 @@ $(document).ready(function() {
     // process details row click
     $('.responsive-table .table-row--details').click(function() {
         // navigate to row details
-        if ($(this).find('a.hidden-link').length > 0) {
-            window.location.assign($(this).find('a.hidden-link').attr('href'));
+        if ($(this).find('a.details-link').length > 0) {
+            window.location.assign($(this).find('a.details-link').attr('href'));
         }
     });
 

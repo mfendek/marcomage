@@ -445,44 +445,39 @@
     <xsl:template match="section[. = 'Messages_new']">
         <xsl:variable name="param" select="$params/message_new"/>
 
-        <div class="message-details">
-
+        <div class="skin-text details-form">
             <h3>New message</h3>
 
-            <div class="skin-text">
-                <img class="post-stamp" src="img/stamps/stamp0.png" width="100" height="100" alt="Marcopost stamp"/>
-                <p>
-                    <span>From:</span>
-                    <xsl:value-of select="$param/author"/>
-                </p>
-                <p>
-                    <span>To:</span>
-                    <xsl:value-of select="$param/recipient"/>
-                </p>
-                <p>
-                    <span>Subject:</span>
-                    <input type="text" name="subject" maxlength="30" size="25" value="{$param/subject}"/>
-                </p>
-                <p>
-                    <button class="button-icon" type="submit" name="message_send" title="Send message">
-                        <span class="glyphicon glyphicon-send"/>
-                    </button>
-                    <button class="button-icon" type="submit" name="message_cancel" title="Discard">
-                        <span class="glyphicon glyphicon-trash"/>
-                    </button>
-                </p>
-                <xsl:copy-of select="am:bbCodeButtons('content')"/>
-                <hr/>
-
-                <textarea name="content" rows="6" cols="50">
-                    <xsl:value-of select="$param/content"/>
-                </textarea>
+            <img class="pull-right" src="img/stamps/stamp0.png" width="100" height="100" alt="Marcopost stamp"/>
+            <div class="details-form__menu">
+                <button class="button-icon" type="submit" name="message_send" title="Send message">
+                    <span class="glyphicon glyphicon-send"/>
+                </button>
+                <button class="button-icon" type="submit" name="message_cancel" title="Discard">
+                    <span class="glyphicon glyphicon-trash"/>
+                </button>
             </div>
+            <p>
+                <span class="details-form__field-name">From:</span>
+                <xsl:value-of select="$param/author"/>
+            </p>
+            <p>
+                <span class="details-form__field-name">To:</span>
+                <xsl:value-of select="$param/recipient"/>
+            </p>
+            <p>
+                <span class="details-form__field-name">Subject:</span>
+                <input type="text" name="subject" maxlength="30" size="25" value="{$param/subject}"/>
+            </p>
+            <xsl:copy-of select="am:bbCodeButtons('content')"/>
 
-            <input type="hidden" name="author" value="{$param/author}"/>
-            <input type="hidden" name="recipient" value="{$param/recipient}"/>
-
+            <textarea name="content" rows="6" cols="50">
+                <xsl:value-of select="$param/content"/>
+            </textarea>
         </div>
+
+        <input type="hidden" name="author" value="{$param/author}"/>
+        <input type="hidden" name="recipient" value="{$param/recipient}"/>
 
     </xsl:template>
 

@@ -1,0 +1,21 @@
+/*****************************************
+ * MArcomage CSS stylesheet - image grid *
+ *****************************************/
+
+.image-grid {
+  margin-bottom: 1ex;
+  text-align: center;
+
+  &__heading {
+    font-family: $font-family-arial;
+    margin-bottom: 1ex;
+    margin-top: 1ex;
+  }
+
+  &__item-title {
+    font-family: $font-family-arial;
+    font-size: small;
+    margin: 0.5ex auto 2ex;
+    max-width: 100px;
+  }
+}

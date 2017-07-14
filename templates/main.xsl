@@ -260,7 +260,7 @@
                     <div class="inner-navbar__player-info">
                         <div class="skin-text">
                             <div>
-                                <a class="achievement-link" href="{am:makeUrl('Players_achievements', 'Profile', $param/player_name)}">
+                                <a class="hidden-link" href="{am:makeUrl('Players_achievements', 'Profile', $param/player_name)}">
                                     <img class="icon-image" height="16" width="16" src="img/achievement.png"
                                          alt="{$param/player_name}'s achievements" title="{$param/player_name}'s achievements"/>
                                 </a>

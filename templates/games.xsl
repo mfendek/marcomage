@@ -98,7 +98,7 @@
                                         </div>
                                         <div class="col-sm-2">
                                             <p>
-                                                <a class="hidden-link" href="{am:makeUrl('Games_details', 'current_game', game_id)}">
+                                                <a class="hidden-link details-link" href="{am:makeUrl('Games_details', 'current_game', game_id)}">
                                                     <xsl:choose>
                                                         <xsl:when test="opponent = $param/system_name">
                                                             <xsl:copy-of select="am:playerName(opponent, ai, $param/system_name)"/>

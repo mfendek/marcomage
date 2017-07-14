@@ -25,6 +25,10 @@
     margin-top: 1ex;
   }
 
+  &__image-header {
+    text-align: center;
+  }
+
   &__content {
     text-align: justify;
   }
@@ -32,5 +36,41 @@
   &__field-name {
     color: $dark-lime-green;
     margin-right: 1ex;
+  }
+
+  .icon-image {
+    margin-left: 0;
+
+    &:not(:first-child) {
+      margin-left: 1ex;
+    }
+  }
+
+  .bordered-image {
+    background-color: $black;
+    border: thin solid $white-shade;
+    border-radius: 6px;
+    margin: 0.5ex 1ex 0 1ex;
+    padding: 0.5ex;
+  }
+
+  fieldset {
+    margin-top: 1ex;
+  }
+
+  &__data-list {
+    border: thin solid $white-shade;
+    border-radius: 6px;
+    margin: 1ex auto 1ex auto;
+    max-width: 20em;
+    padding: 0 1ex 1ex 1ex;
+
+    p {
+      margin-top: 0.5ex;
+    }
+  }
+
+  input[type="checkbox"] {
+    margin: 0 1ex 0 0;
   }
 }

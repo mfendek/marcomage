@@ -155,7 +155,7 @@
 
                                         <xsl:choose>
                                             <xsl:when test="is_deleted = 'no'">
-                                                <a class="hidden-link" href="{am:makeUrl('Replays_details', 'CurrentReplay', game_id, 'PlayerView', 1, 'Turn', 1)}">
+                                                <a class="hidden-link details-link" href="{am:makeUrl('Replays_details', 'CurrentReplay', game_id, 'PlayerView', 1, 'Turn', 1)}">
                                                     <xsl:value-of select="$winner"/>
                                                 </a>
                                             </xsl:when>

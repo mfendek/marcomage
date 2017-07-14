@@ -132,134 +132,131 @@
     <xsl:template match="section[. = 'Cards_details']">
         <xsl:variable name="param" select="$params/cards_details"/>
 
-        <div id="cards_details">
-
-            <div class="skin-text details-form">
-                <div class="details-form__menu">
-                    <a class="button button-icon" href="{am:makeUrl('Cards')}">
-                        <span class="glyphicon glyphicon-arrow-left"/>
-                    </a>
-                    <xsl:choose>
-                        <xsl:when test="$param/discussion = 0 and $param/create_thread = 'yes'">
-                            <button class="button-icon" type="submit" name="find_card_thread" value="{$param/data/id}" title="Start discussion">
-                                <span class="glyphicon glyphicon-comment"/>
-                            </button>
-                        </xsl:when>
-                        <xsl:when test="$param/discussion &gt; 0">
-                            <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $param/discussion, 'thread_current_page', 0)}" title="View discussion">
-                                <span class="glyphicon glyphicon-comment"/>
-                            </a>
-                        </xsl:when>
-                    </xsl:choose>
-                    <xsl:if test="$param/is_logged_in = 'yes' and $param/foil_version = 'no'">
-                        <span id="foil-version-purchase">
-                            <xsl:text>Buy foil version for </xsl:text>
-                            <xsl:value-of select="$param/foil_cost"/>
-                            <xsl:text> gold</xsl:text>
-                        </span>
-                        <button class="button-icon" type="submit" name="buy_foil_card" value="{$param/data/id}">
-                            <xsl:if test="$param/gold &lt; $param/foil_cost">
-                                <xsl:attribute name="disabled">disabled</xsl:attribute>
-                            </xsl:if>
-                            <span class="glyphicon glyphicon-usd"/>
+        <div class="skin-text details-form">
+            <div class="details-form__menu">
+                <a class="button button-icon" href="{am:makeUrl('Cards')}">
+                    <span class="glyphicon glyphicon-arrow-left"/>
+                </a>
+                <xsl:choose>
+                    <xsl:when test="$param/discussion = 0 and $param/create_thread = 'yes'">
+                        <button class="button-icon" type="submit" name="find_card_thread" value="{$param/data/id}" title="Start discussion">
+                            <span class="glyphicon glyphicon-comment"/>
                         </button>
-                    </xsl:if>
-                </div>
-                <hr/>
+                    </xsl:when>
+                    <xsl:when test="$param/discussion &gt; 0">
+                        <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $param/discussion, 'thread_current_page', 0)}" title="View discussion">
+                            <span class="glyphicon glyphicon-comment"/>
+                        </a>
+                    </xsl:when>
+                </xsl:choose>
+                <xsl:if test="$param/is_logged_in = 'yes' and $param/foil_version = 'no'">
+                    <span id="foil-version-purchase">
+                        <xsl:text>Buy foil version for </xsl:text>
+                        <xsl:value-of select="$param/foil_cost"/>
+                        <xsl:text> gold</xsl:text>
+                    </span>
+                    <button class="button-icon" type="submit" name="buy_foil_card" value="{$param/data/id}">
+                        <xsl:if test="$param/gold &lt; $param/foil_cost">
+                            <xsl:attribute name="disabled">disabled</xsl:attribute>
+                        </xsl:if>
+                        <span class="glyphicon glyphicon-usd"/>
+                    </button>
+                </xsl:if>
+            </div>
+            <hr/>
 
-                <xsl:copy-of select="am:cardString(
-                    $param/data, $param/card_old_look, $param/card_insignias, $param/card_foils
-                )"/>
+            <xsl:copy-of select="am:cardString(
+                $param/data, $param/card_old_look, $param/card_insignias, $param/card_foils
+            )"/>
 
-                <div class="row">
-                    <div class="col-xs-6">Id</div>
-                    <div class="col-xs-6"><xsl:value-of select="$param/data/id"/></div>
+            <div class="row">
+                <div class="col-xs-6">Id</div>
+                <div class="col-xs-6"><xsl:value-of select="$param/data/id"/></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">Name</div>
+                <div class="col-xs-6">
+                    <span id="foil-version-name"><xsl:value-of select="$param/data/name"/></span>
                 </div>
-                <div class="row">
-                    <div class="col-xs-6">Name</div>
-                    <div class="col-xs-6">
-                        <span id="foil-version-name"><xsl:value-of select="$param/data/name"/></span>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">Rarity</div>
+                <div class="col-xs-6"><xsl:value-of select="$param/data/rarity"/></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">Keywords</div>
+                <div class="col-xs-6">
+                    <xsl:for-each select="$param/data/keywords_list/*">
+                        <a href="{am:makeUrl('Cards_keyword_details', 'keyword', .)}">
+                            <xsl:value-of select="."/>
+                        </a>
+                    </xsl:for-each>
                 </div>
-                <div class="row">
-                    <div class="col-xs-6">Rarity</div>
-                    <div class="col-xs-6"><xsl:value-of select="$param/data/rarity"/></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">Cost (B / G / R)</div>
+                <div class="col-xs-6">
+                    <xsl:value-of select="$param/data/bricks"/>
+                    <xsl:text> / </xsl:text>
+                    <xsl:value-of select="$param/data/gems"/>
+                    <xsl:text> / </xsl:text>
+                    <xsl:value-of select="$param/data/recruits"/>
                 </div>
-                <div class="row">
-                    <div class="col-xs-6">Keywords</div>
-                    <div class="col-xs-6">
-                        <xsl:for-each select="$param/data/keywords_list/*">
-                            <a href="{am:makeUrl('Cards_keyword_details', 'keyword', .)}">
-                                <xsl:value-of select="."/>
-                            </a>
-                        </xsl:for-each>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">Modes</div>
+                <div class="col-xs-6"><xsl:value-of select="$param/data/modes"/></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">Level</div>
+                <div class="col-xs-6"><xsl:value-of select="$param/data/level"/></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">Created</div>
+                <div class="col-xs-6"><xsl:value-of select="am:formatDate($param/data/created)"/></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">Modified</div>
+                <div class="col-xs-6"><xsl:value-of select="am:formatDate($param/data/modified)"/></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">Played</div>
+                <div class="col-xs-6">
+                    <xsl:value-of select="$param/statistics/played"/>
+                    <xsl:text> / </xsl:text>
+                    <xsl:value-of select="$param/statistics/played_total"/>
                 </div>
-                <div class="row">
-                    <div class="col-xs-6">Cost (B / G / R)</div>
-                    <div class="col-xs-6">
-                        <xsl:value-of select="$param/data/bricks"/>
-                        <xsl:text> / </xsl:text>
-                        <xsl:value-of select="$param/data/gems"/>
-                        <xsl:text> / </xsl:text>
-                        <xsl:value-of select="$param/data/recruits"/>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">Discarded</div>
+                <div class="col-xs-6">
+                    <xsl:value-of select="$param/statistics/discarded"/>
+                    <xsl:text> / </xsl:text>
+                    <xsl:value-of select="$param/statistics/discarded_total"/>
                 </div>
-                <div class="row">
-                    <div class="col-xs-6">Modes</div>
-                    <div class="col-xs-6"><xsl:value-of select="$param/data/modes"/></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">Drawn</div>
+                <div class="col-xs-6">
+                    <xsl:value-of select="$param/statistics/drawn"/>
+                    <xsl:text> / </xsl:text>
+                    <xsl:value-of select="$param/statistics/drawn_total"/>
                 </div>
-                <div class="row">
-                    <div class="col-xs-6">Level</div>
-                    <div class="col-xs-6"><xsl:value-of select="$param/data/level"/></div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6">Created</div>
-                    <div class="col-xs-6"><xsl:value-of select="am:formatDate($param/data/created)"/></div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6">Modified</div>
-                    <div class="col-xs-6"><xsl:value-of select="am:formatDate($param/data/modified)"/></div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6">Played</div>
-                    <div class="col-xs-6">
-                        <xsl:value-of select="$param/statistics/played"/>
-                        <xsl:text> / </xsl:text>
-                        <xsl:value-of select="$param/statistics/played_total"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6">Discarded</div>
-                    <div class="col-xs-6">
-                        <xsl:value-of select="$param/statistics/discarded"/>
-                        <xsl:text> / </xsl:text>
-                        <xsl:value-of select="$param/statistics/discarded_total"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6">Drawn</div>
-                    <div class="col-xs-6">
-                        <xsl:value-of select="$param/statistics/drawn"/>
-                        <xsl:text> / </xsl:text>
-                        <xsl:value-of select="$param/statistics/drawn_total"/>
-                    </div>
-                </div>
+            </div>
 
-                <p>BB code</p>
-                <div>
-                    <input type="text" name="bb_code" maxlength="64" size="25" value="[card={$param/data/id}]{$param/data/name}[/card]" title="BB code"/>
-                </div>
-                <p>Effect</p>
-                <div>
-                    <xsl:value-of select="am:cardEffect($param/data/effect)" disable-output-escaping="yes"/>
-                </div>
-                <p>Code</p>
-                <div class="code">
-                    <pre>
-                        <xsl:copy-of select="$param/data/code/text()"/>
-                    </pre>
-                </div>
+            <p>BB code</p>
+            <div>
+                <input type="text" name="bb_code" maxlength="64" size="25" value="[card={$param/data/id}]{$param/data/name}[/card]" title="BB code"/>
+            </div>
+            <p>Effect</p>
+            <div>
+                <xsl:value-of select="am:cardEffect($param/data/effect)" disable-output-escaping="yes"/>
+            </div>
+            <p>Code</p>
+            <div class="code">
+                <pre>
+                    <xsl:copy-of select="$param/data/code/text()"/>
+                </pre>
             </div>
         </div>
 
@@ -316,7 +313,7 @@
                     </div>
                     <div class="col-sm-2">
                         <p>
-                            <a class="hidden-link" href="{am:makeUrl('Cards_keyword_details', 'keyword', name)}">
+                            <a class="hidden-link details-link" href="{am:makeUrl('Cards_keyword_details', 'keyword', name)}">
                                 <xsl:value-of select="name"/>
                             </a>
                         </p>
