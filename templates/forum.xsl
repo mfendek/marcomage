@@ -55,7 +55,7 @@
                                     <div class="row table-row">
                                         <div class="col-sm-12">
                                             <div class="skin-label">
-                                                <h5>
+                                                <h5 class="forum__section-title">
                                                     <a href="{am:makeUrl('Forum_section', 'current_section', section_id)}">
                                                         <xsl:value-of select="section_name"/>
                                                     </a>
@@ -142,7 +142,7 @@
     <xsl:template match="section[. = 'Forum_search']">
         <xsl:variable name="param" select="$params/forum_search"/>
 
-        <div class="forum top-level">
+        <div class="forum">
 
             <div class="filters">
                 <input type="text" name="phrase" maxlength="50" size="30" value="{$param/phrase}" title="search phrase"/>
@@ -199,7 +199,7 @@
 
             <xsl:choose>
                 <xsl:when test="count($param/threads/*) &gt; 0">
-                    <div class="skin-text">
+                    <div class="skin-text top-level">
                         <div class="responsive-table table-sm">
                             <!-- table header -->
                             <div class="row">
@@ -333,7 +333,7 @@
                             <div class="skin-label">
                                 <div class="row">
                                     <div class="col-md-7">
-                                        <h5>
+                                        <h5 class="forum__section-title">
                                             <a href="{am:makeUrl('Forum')}">
                                                 <xsl:value-of select="$param/section/section_name"/>
                                             </a>
@@ -342,7 +342,7 @@
                                         </h5>
                                     </div>
                                     <div class="col-md-5">
-                                        <div class="navigation">
+                                        <div class="forum__navigation">
                                             <!-- navigation -->
                                             <xsl:copy-of select="am:forumNavigation(
                                                 'Forum_section', 'current_section', $param/section/section_id,
@@ -439,13 +439,13 @@
         <!-- is unlocked or you have the right to lock/unlock -->
         <xsl:variable name="canModify" select="$thread/is_locked = 'no' or $param/lock_thread = 'yes'"/>
 
-        <div id="thread-details" class="top-level">
+        <div class="forum top-level">
 
             <xsl:variable name="navigationBar">
-                <div class="thread-bar skin-label">
+                <div class="forum__navigation-bar skin-label">
                     <div class="row">
                         <div class="col-md-6">
-                            <h5>
+                            <h5 class="forum__section-title">
                                 <a href="{am:makeUrl('Forum_section', 'current_section', $section/section_id)}">
                                     <xsl:value-of select="$section/section_name"/>
                                 </a>
@@ -459,7 +459,7 @@
                             </h5>
                         </div>
                         <div class="col-md-6">
-                            <div class="navigation">
+                            <div class="forum__navigation">
                                 <xsl:choose>
                                     <xsl:when test="$thread/reference_concept &gt; 0">
                                         <a class="button" href="{am:makeUrl('Concepts_details', 'current_concept', $thread/reference_concept)}">
@@ -539,85 +539,80 @@
 
             <xsl:copy-of select="$navigationBar"/>
 
-            <div id="post-list">
+            <xsl:for-each select="$param/post_list/*">
 
-                <xsl:for-each select="$param/post_list/*">
+                <div class="skin-text forum__item">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="forum__item-author">
+                                <xsl:if test="position() = last()">
+                                    <a id="latest"/>
+                                </xsl:if>
+                                <a href="{am:makeUrl('Players_details', 'Profile', author)}">
+                                    <xsl:value-of select="author"/>
+                                </a>
 
-                    <div class="skin-text">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="post-author">
-                                    <xsl:if test="position() = last()">
-                                        <a id="latest"/>
+                                <xsl:text> on </xsl:text>
+
+                                <span>
+                                    <xsl:if test="am:dateDiff(created_at, $param/notification) &lt; 0">
+                                        <xsl:attribute name="class">forum__new-item</xsl:attribute>
                                     </xsl:if>
-                                    <a href="{am:makeUrl('Players_details', 'Profile', author)}">
-                                        <xsl:value-of select="author"/>
-                                    </a>
-
-                                    <xsl:text> on </xsl:text>
-
-                                    <span>
-                                        <xsl:if test="am:dateDiff(created_at, $param/notification) &lt; 0">
-                                            <xsl:attribute name="class">new</xsl:attribute>
-                                        </xsl:if>
-                                        <xsl:copy-of select="am:dateTime(created_at, $param/timezone)"/>
-                                    </span>
-                                </div>
-
-                                <div class="post-avatar">
-                                    <a href="{am:makeUrl('Players_details', 'Profile', author)}">
-                                        <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{avatar}" alt="avatar"/>
-                                    </a>
-                                </div>
-
-                                <div class="post-buttons">
-                                    <xsl:variable name="postId" select="concat('post', post_id)"/>
-                                    <a id="{$postId}" class="permalink" href="{am:makeUrl('Forum_thread', 'current_thread', $thread/thread_id, 'thread_current_page', $param/current_page)}#{$postId}" title="Permalink">
-                                        <xsl:text>#</xsl:text>
-                                        <xsl:value-of select="position() + $param/current_page * $param/posts_per_page"/>
-                                    </a>
-
-                                    <xsl:if test="$param/create_post = 'yes' and $thread/is_locked = 'no'">
-                                        <button class="button-icon" type="submit" name="quote_post" value="{post_id}" title="Quote">
-                                            <span class="glyphicon glyphicon-share"/>
-                                        </button>
-                                    </xsl:if>
-
-                                    <xsl:if test="($param/edit_all_post = 'yes' or ($param/edit_own_post = 'yes' and $param/player_name = author)) and $canModify">
-                                        <button class="button-icon" type="submit" name="edit_post" value="{post_id}" title="Edit">
-                                            <span class="glyphicon glyphicon-pencil"/>
-                                        </button>
-                                    </xsl:if>
-
-                                    <xsl:if test="$param/del_all_post = 'yes' and $canModify">
-                                        <xsl:choose>
-                                            <xsl:when test="$deletePost != post_id">
-                                                <button class="button-icon" type="submit" name="delete_post" value="{post_id}" title="Delete">
-                                                    <span class="glyphicon glyphicon-trash"/>
-                                                </button>
-                                            </xsl:when>
-                                            <xsl:otherwise>
-                                                <button class="button-icon marked_button" type="submit" name="delete_post_confirm" value="{post_id}" title="Confirm delete">
-                                                    <span class="glyphicon glyphicon-trash"/>
-                                                </button>
-                                            </xsl:otherwise>
-                                        </xsl:choose>
-                                    </xsl:if>
-                                </div>
+                                    <xsl:copy-of select="am:dateTime(created_at, $param/timezone)"/>
+                                </span>
                             </div>
 
-                            <div class="col-md-9">
-                                <div class="post-content">
-                                    <div>
-                                        <xsl:value-of select="am:bbCodeParseExtended(content)" disable-output-escaping="yes"/>
-                                    </div>
-                                </div>
+                            <div class="forum__item-avatar">
+                                <a href="{am:makeUrl('Players_details', 'Profile', author)}">
+                                    <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{avatar}" alt="avatar"/>
+                                </a>
+                            </div>
+
+                            <div class="forum__item-buttons">
+                                <xsl:variable name="postId" select="concat('post', post_id)"/>
+                                <a id="{$postId}" class="permalink" href="{am:makeUrl('Forum_thread', 'current_thread', $thread/thread_id, 'thread_current_page', $param/current_page)}#{$postId}" title="Permalink">
+                                    <xsl:text>#</xsl:text>
+                                    <xsl:value-of select="position() + $param/current_page * $param/posts_per_page"/>
+                                </a>
+
+                                <xsl:if test="$param/create_post = 'yes' and $thread/is_locked = 'no'">
+                                    <button class="button-icon" type="submit" name="quote_post" value="{post_id}" title="Quote">
+                                        <span class="glyphicon glyphicon-share"/>
+                                    </button>
+                                </xsl:if>
+
+                                <xsl:if test="($param/edit_all_post = 'yes' or ($param/edit_own_post = 'yes' and $param/player_name = author)) and $canModify">
+                                    <button class="button-icon" type="submit" name="edit_post" value="{post_id}" title="Edit">
+                                        <span class="glyphicon glyphicon-pencil"/>
+                                    </button>
+                                </xsl:if>
+
+                                <xsl:if test="$param/del_all_post = 'yes' and $canModify">
+                                    <xsl:choose>
+                                        <xsl:when test="$deletePost != post_id">
+                                            <button class="button-icon" type="submit" name="delete_post" value="{post_id}" title="Delete">
+                                                <span class="glyphicon glyphicon-trash"/>
+                                            </button>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <button class="button-icon marked_button" type="submit" name="delete_post_confirm" value="{post_id}" title="Confirm delete">
+                                                <span class="glyphicon glyphicon-trash"/>
+                                            </button>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </xsl:if>
+                            </div>
+                        </div>
+
+                        <div class="col-md-9">
+                            <div class="forum__item-content">
+                                <xsl:value-of select="am:bbCodeParseExtended(content)" disable-output-escaping="yes"/>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                </xsl:for-each>
-            </div>
+            </xsl:for-each>
 
             <xsl:copy-of select="$navigationBar"/>
 
@@ -634,49 +629,47 @@
 
         <xsl:variable name="section" select="$param/section_data"/>
 
-        <div class="forum-new-edit">
-
+        <div class="skin-text details-form">
             <h3>Create new thread to the section
                 <span>
                     <xsl:value-of select="$section/section_name"/>
                 </span>
             </h3>
 
-            <div class="skin-text">
-                <p>Topic:
-                    <input type="text" name="title" maxlength="50" size="45" value="{$param/title}"/>
-                </p>
-                <p>
-
-                    <xsl:text>Priority:</xsl:text>
-
-                    <select name="priority">
-                        <option value="normal" selected="selected">Normal</option>
-                        <xsl:if test="$param/change_priority = 'yes'">
-                            <option value="important">Important</option>
-                            <option value="sticky">Sticky</option>
-                        </xsl:if>
-                    </select>
-
-                </p>
-
+            <div class="details-form__menu">
                 <a class="button button-icon" href="{am:makeUrl('Forum_section', 'current_section', $section/section_id)}">
                     <span class="glyphicon glyphicon-arrow-left"/>
                 </a>
                 <button class="button-icon" type="submit" name="create_thread" title="Create thread">
                     <span class="glyphicon glyphicon-ok"/>
                 </button>
-                <xsl:copy-of select="am:bbCodeButtons('content')"/>
-                <hr/>
-
-                <textarea name="content" rows="10" cols="50">
-                    <xsl:value-of select="$param/content"/>
-                </textarea>
-
             </div>
 
-            <input type="hidden" name="current_section" value="{$section/section_id}"/>
+            <p>
+                <span class="details-form__field-name">Topic:</span>
+                <input type="text" name="title" maxlength="50" size="45" value="{$param/title}"/>
+            </p>
+            <p>
+                <span class="details-form__field-name">Priority:</span>
+
+                <select name="priority">
+                    <option value="normal" selected="selected">Normal</option>
+                    <xsl:if test="$param/change_priority = 'yes'">
+                        <option value="important">Important</option>
+                        <option value="sticky">Sticky</option>
+                    </xsl:if>
+                </select>
+
+            </p>
+            <xsl:copy-of select="am:bbCodeButtons('content')"/>
+
+            <textarea name="content" rows="10" cols="50">
+                <xsl:value-of select="$param/content"/>
+            </textarea>
+
         </div>
+
+        <input type="hidden" name="current_section" value="{$section/section_id}"/>
     </xsl:template>
 
 
@@ -686,34 +679,30 @@
         <xsl:variable name="thread" select="$param/thread_data"/>
         <xsl:variable name="currentPage" select="$param/current_page"/>
 
-        <div class="forum-new-edit">
-
+        <div class="skin-text details-form">
             <h3>New post in thread
                 <span>
                     <xsl:value-of select="$thread/title"/>
                 </span>
             </h3>
 
-            <div class="skin-text">
-
+            <div class="details-form__menu">
                 <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $thread/thread_id, 'thread_current_page', $currentPage)}">
                     <span class="glyphicon glyphicon-arrow-left"/>
                 </a>
                 <button class="button-icon" type="submit" name="create_post" title="Create post">
                     <span class="glyphicon glyphicon-ok"/>
                 </button>
-                <xsl:copy-of select="am:bbCodeButtons('content')"/>
-                <hr/>
-
-                <textarea name="content" rows="10" cols="50">
-                    <xsl:value-of select="$param/content"/>
-                </textarea>
-
             </div>
 
-            <input type="hidden" name="current_thread" value="{$thread/thread_id}"/>
+            <xsl:copy-of select="am:bbCodeButtons('content')"/>
 
+            <textarea name="content" rows="10" cols="50">
+                <xsl:value-of select="$param/content"/>
+            </textarea>
         </div>
+
+        <input type="hidden" name="current_thread" value="{$thread/thread_id}"/>
     </xsl:template>
 
 
@@ -724,75 +713,72 @@
         <xsl:variable name="thread" select="$param/thread_data"/>
         <xsl:variable name="sectionList" select="$param/SectionList"/>
 
-        <div class="forum-new-edit">
-
+        <div class="skin-text details-form">
             <h3>Edit thread</h3>
 
-            <div class="skin-text">
-                <p>Topic: <input type="text" name="title" maxlength="50" size="45" value="{$thread/title}"/>
-                </p>
-
-                <p>
-                    <xsl:text>Priority:</xsl:text>
-
-                    <select name="priority">
-                        <xsl:if test="$param/change_priority = 'no'">
-                            <xsl:attribute name="disabled">disabled</xsl:attribute>
-                        </xsl:if>
-
-                        <xsl:variable name="priorityTypes">
-                            <type name="normal" text="Normal"/>
-                            <type name="important" text="Important"/>
-                            <type name="sticky" text="Sticky"/>
-                        </xsl:variable>
-
-                        <xsl:for-each select="exsl:node-set($priorityTypes)/*">
-                            <option value="{@name}">
-                                <xsl:if test="$thread/priority = @name">
-                                    <xsl:attribute name="selected">selected</xsl:attribute>
-                                </xsl:if>
-                                <xsl:value-of select="@text"/>
-                            </option>
-                        </xsl:for-each>
-                    </select>
-                </p>
-
+            <div class="details-form__menu">
                 <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $thread/thread_id, 'thread_current_page', 0)}">
                     <span class="glyphicon glyphicon-arrow-left"/>
                 </a>
                 <button class="button-icon" type="submit" name="modify_thread" title="Save">
                     <span class="glyphicon glyphicon-ok"/>
                 </button>
-
-                <xsl:if test="$param/move_thread = 'yes'">
-                    <hr/>
-
-                    <p>
-                        Current section:
-                        <span>
-                            <xsl:value-of select="$section/section_name"/>
-                        </span>
-                    </p>
-
-                    <p>
-                        <xsl:text>Target section:</xsl:text>
-
-                        <select name="section_select">
-                            <xsl:for-each select="$sectionList/*">
-                                <option value="{section_id}">
-                                    <xsl:value-of select="section_name"/>
-                                </option>
-                            </xsl:for-each>
-                        </select>
-
-                        <button class="button-icon" type="submit" name="move_thread" title="Change section">
-                            <span class="glyphicon glyphicon-transfer"/>
-                        </button>
-                    </p>
-                </xsl:if>
             </div>
-            <input type="hidden" name="current_thread" value="{$thread/thread_id}"/>
+
+            <p>
+                <span class="details-form__field-name">Topic:</span>
+                <input type="text" name="title" maxlength="50" size="45" value="{$thread/title}"/>
+            </p>
+
+            <p>
+                <span class="details-form__field-name">Priority:</span>
+
+                <select name="priority">
+                    <xsl:if test="$param/change_priority = 'no'">
+                        <xsl:attribute name="disabled">disabled</xsl:attribute>
+                    </xsl:if>
+
+                    <xsl:variable name="priorityTypes">
+                        <type name="normal" text="Normal"/>
+                        <type name="important" text="Important"/>
+                        <type name="sticky" text="Sticky"/>
+                    </xsl:variable>
+
+                    <xsl:for-each select="exsl:node-set($priorityTypes)/*">
+                        <option value="{@name}">
+                            <xsl:if test="$thread/priority = @name">
+                                <xsl:attribute name="selected">selected</xsl:attribute>
+                            </xsl:if>
+                            <xsl:value-of select="@text"/>
+                        </option>
+                    </xsl:for-each>
+                </select>
+            </p>
+
+            <xsl:if test="$param/move_thread = 'yes'">
+                <p>
+                    <span class="details-form__field-name">Current section:</span>
+                    <span><xsl:value-of select="$section/section_name"/></span>
+                </p>
+
+                <p>
+                    <span class="details-form__field-name">Target section:</span>
+
+                    <select name="section_select">
+                        <xsl:for-each select="$sectionList/*">
+                            <option value="{section_id}">
+                                <xsl:value-of select="section_name"/>
+                            </option>
+                        </xsl:for-each>
+                    </select>
+
+                    <button class="button-icon" type="submit" name="move_thread" title="Change section">
+                        <span class="glyphicon glyphicon-transfer"/>
+                    </button>
+                </p>
+            </xsl:if>
         </div>
+        <input type="hidden" name="current_thread" value="{$thread/thread_id}"/>
     </xsl:template>
 
 
@@ -804,53 +790,51 @@
         <xsl:variable name="threadList" select="$param/thread_list"/>
         <xsl:variable name="currentPage" select="$param/current_page"/>
 
-        <div class="forum-new-edit">
+        <div class="skin-text details-form">
             <h3>Edit post</h3>
-            <div class="skin-text">
+
+            <div class="details-form__menu">
                 <a class="button button-icon" href="{am:makeUrl('Forum_thread', 'current_thread', $post/thread_id, 'thread_current_page', $currentPage)}">
                     <span class="glyphicon glyphicon-arrow-left"/>
                 </a>
                 <button class="button-icon" type="submit" name="modify_post" title="Save">
                     <span class="glyphicon glyphicon-ok"/>
                 </button>
-                <xsl:copy-of select="am:bbCodeButtons('content')"/>
-                <hr/>
-
-                <textarea name="content" rows="10" cols="50">
-                    <xsl:value-of select="$param/content"/>
-                </textarea>
-
-                <xsl:if test="$param/move_post = 'yes'">
-                    <hr/>
-                    <p>
-                        Current thread:
-                        <span>
-                            <xsl:value-of select="$thread/title"/>
-                        </span>
-                    </p>
-                    <xsl:if test="count($threadList/*) &gt; 0">
-                        <p>
-                            <xsl:text>Target thread:</xsl:text>
-                            <select name="thread_select">
-                                <xsl:for-each select="$threadList/*">
-                                    <option value="{thread_id}">
-                                        <xsl:value-of select="title"/>
-                                    </option>
-                                </xsl:for-each>
-                            </select>
-
-                            <button class="button-icon" type="submit" name="move_post" title="Change thread">
-                                <span class="glyphicon glyphicon-transfer"/>
-                            </button>
-                        </p>
-                    </xsl:if>
-                </xsl:if>
             </div>
 
-            <input type="hidden" name="current_thread" value="{$post/thread_id}"/>
-            <input type="hidden" name="current_post" value="{$post/post_id}"/>
-            <input type="hidden" name="thread_current_page" value="{$currentPage}"/>
+            <xsl:copy-of select="am:bbCodeButtons('content')"/>
+
+            <textarea name="content" rows="10" cols="50">
+                <xsl:value-of select="$param/content"/>
+            </textarea>
+
+            <xsl:if test="$param/move_post = 'yes'">
+                <p>
+                    <span class="details-form__field-name">Current thread:</span>
+                    <span><xsl:value-of select="$thread/title"/></span>
+                </p>
+                <xsl:if test="count($threadList/*) &gt; 0">
+                    <p>
+                        <span class="details-form__field-name">Target thread:</span>
+                        <select name="thread_select">
+                            <xsl:for-each select="$threadList/*">
+                                <option value="{thread_id}">
+                                    <xsl:value-of select="title"/>
+                                </option>
+                            </xsl:for-each>
+                        </select>
+
+                        <button class="button-icon" type="submit" name="move_post" title="Change thread">
+                            <span class="glyphicon glyphicon-transfer"/>
+                        </button>
+                    </p>
+                </xsl:if>
+            </xsl:if>
         </div>
+
+        <input type="hidden" name="current_thread" value="{$post/thread_id}"/>
+        <input type="hidden" name="current_post" value="{$post/post_id}"/>
+        <input type="hidden" name="thread_current_page" value="{$currentPage}"/>
     </xsl:template>
 
 

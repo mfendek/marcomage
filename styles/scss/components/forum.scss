@@ -1,0 +1,58 @@
+/************************************
+ * MArcomage CSS stylesheet - forum *
+ ************************************/
+
+.forum {
+  text-align: center;
+
+  .skin-text {
+    margin-bottom: 1ex;
+  }
+
+  &__section-title {
+    font-size: medium;
+    margin: 1.5ex 0 1.5ex 1ex;
+  }
+
+  &__navigation {
+    margin: 1ex 0 1ex 0;
+
+    &> * {
+      margin-left: 0.5ex;
+
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+
+  &__new-item {
+    color: $pure-red;
+  }
+
+  .table-row {
+    a {
+      color: inherit;
+    }
+  }
+
+  &__navigation-bar {
+    margin-bottom: 1ex;
+  }
+
+  &__item-author,
+  &__item-avatar {
+    margin: 1ex;
+  }
+
+  &__item-content {
+    margin: 1ex;
+    max-width: 50em;
+    text-align: justify;
+  }
+
+  &__item-buttons {
+    margin-bottom: 1ex;
+    margin-top: 0.5ex;
+  }
+}
