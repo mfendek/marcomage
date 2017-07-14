@@ -1,8 +1,8 @@
-/****************************************
- * MArcomage CSS stylesheet - card form *
- ****************************************/
+/*******************************************
+ * MArcomage CSS stylesheet - details form *
+ *******************************************/
 
-.card-form {
+.details-form {
   margin: 1ex auto;
   max-width: 50em;
   padding: 1ex;
@@ -25,7 +25,12 @@
     margin-top: 1ex;
   }
 
-  &__note {
+  &__content {
     text-align: justify;
+  }
+
+  &__field-name {
+    color: $dark-lime-green;
+    margin-right: 1ex;
   }
 }

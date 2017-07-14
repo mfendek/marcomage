@@ -277,6 +277,18 @@ input {
   }
 }
 
+.subsection-navigation {
+  text-align: center;
+
+  .button {
+    margin-left: 0.5ex;
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}
+
 // input text fields
 input[type="password"],
 input[type="text"] {

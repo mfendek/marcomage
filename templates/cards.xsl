@@ -134,8 +134,8 @@
 
         <div id="cards_details">
 
-            <div class="skin-text card-form">
-                <div class="card-form__menu">
+            <div class="skin-text details-form">
+                <div class="details-form__menu">
                     <a class="button button-icon" href="{am:makeUrl('Cards')}">
                         <span class="glyphicon glyphicon-arrow-left"/>
                     </a>

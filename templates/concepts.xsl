@@ -212,8 +212,8 @@
     <xsl:template match="section[. = 'Concepts_new']">
         <xsl:variable name="param" select="$params/concepts_new"/>
 
-        <div class="skin-text card-form">
-            <div class="card-form__menu">
+        <div class="skin-text details-form">
+            <div class="details-form__menu">
                 <a class="button button-icon" href="{am:makeUrl('Concepts')}">
                     <span class="glyphicon glyphicon-arrow-left"/>
                 </a>
@@ -327,8 +327,8 @@
     <xsl:template match="section[. = 'Concepts_edit']">
         <xsl:variable name="param" select="$params/concepts_edit"/>
 
-        <div class="skin-text card-form">
-            <div class="card-form__menu">
+        <div class="skin-text details-form">
+            <div class="details-form__menu">
                 <a class="button button-icon" href="{am:makeUrl('Concepts')}">
                     <span class="glyphicon glyphicon-arrow-left"/>
                 </a>
@@ -461,8 +461,8 @@
     <xsl:template match="section[. = 'Concepts_details']">
         <xsl:variable name="param" select="$params/concepts_details"/>
 
-        <div class="skin-text card-form">
-            <div class="card-form__menu">
+        <div class="skin-text details-form">
+            <div class="details-form__menu">
                 <a class="button button-icon" href="{am:makeUrl('Concepts')}">
                     <span class="glyphicon glyphicon-arrow-left"/>
                 </a>
@@ -539,7 +539,7 @@
                 <xsl:value-of select="am:bbCodeParse($param/data/effect)" disable-output-escaping="yes"/>
             </div>
             <p>Note</p>
-            <div class="card-form__note">
+            <div class="details-form__content">
                 <xsl:value-of select="am:bbCodeParse($param/data/note)" disable-output-escaping="yes"/>
             </div>
             <div class="clear-floats"/>

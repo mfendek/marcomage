@@ -1,0 +1,32 @@
+/*******************************************
+ * MArcomage CSS stylesheet - message list *
+ *******************************************/
+
+.message-list {
+  margin: 1ex 1ex 0;
+  padding: 1ex;
+  text-align: center;
+
+  &__item {
+    font-size: medium;
+    margin-top: 1ex;
+    padding: 1ex;
+  }
+
+  &__title {
+    margin-bottom: 2ex;
+
+    .icon-player-activity {
+      margin-left: 0.5ex;
+    }
+  }
+
+  &__content {
+    margin-bottom: 2ex;
+    text-align: justify;
+  }
+
+  .information-line {
+    margin-top: 1ex;
+  }
+}
