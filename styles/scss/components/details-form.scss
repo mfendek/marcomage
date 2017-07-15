@@ -7,6 +7,10 @@
   max-width: 50em;
   padding: 1ex;
 
+  &--plain {
+    margin-bottom: 0;
+  }
+
   @media (max-width: $screen-sm-max) {
     margin-left: 0.5ex;
     margin-right: 0.5ex;

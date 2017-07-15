@@ -99,23 +99,23 @@ p.info-label .opponent {
 }
 
 /* avg cost per turn indicator layout */
-div.cost-per-turn, p.deck-stats {
-    border: 2px outset black;
+.text-label {
+    border-color: black;
     color: black;
 }
 
 /* bricks */
-.cost-per-turn > b:first-child {
+.text-label .bricks-label {
     color: red;
 }
 
 /* gems */
-.cost-per-turn > b:first-child + b {
+.text-label .gems-label {
     color: blue;
 }
 
 /* recruits */
-.cost-per-turn > b:first-child + b + b {
+.text-label .recruits-label {
     color: green;
 }
 

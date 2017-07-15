@@ -796,12 +796,12 @@
                             </xsl:variable>
                             <p>
                                 <xsl:attribute name="class">
-                                    <xsl:text>deck-header </xsl:text>
+                                    <xsl:text>deck__header deck__header--</xsl:text>
                                     <xsl:value-of select="$rarity" />
                                 </xsl:attribute>
                                 <xsl:value-of select="$rarity" />
                             </p>
-                            <div class="deck-cards">
+                            <div class="deck__cards">
                                 <xsl:variable name="column" select="position()"/>
                                 <xsl:variable name="cards" select="."/>
                                 <!-- row counting hack -->

@@ -123,23 +123,23 @@ p.card-flag, span.new-card {
 }
 
 /* avg cost per turn indicator layout */
-div.cost-per-turn, p.deck-stats {
-    border: 2px outset #cccccc;
+.text-label {
+    border-color: #cccccc;
     color: #cccccc; /* light gray */
 }
 
 /* bricks */
-.cost-per-turn > b:first-child {
+.text-label .bricks-label {
     color: #bc8f8f; /* RosyBrown */
 }
 
 /* gems */
-.cost-per-turn > b:first-child + b {
+.text-label .gems-label {
     color: #00bfff; /* DeepSkyBlue */
 }
 
 /* recruits */
-.cost-per-turn > b:first-child + b + b {
+.text-label .recruits-label {
     color: #8fbc8f; /* DarkSeaGreen */
 }
 

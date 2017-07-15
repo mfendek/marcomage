@@ -75,6 +75,6 @@ p.card-flag, span.new-card {
 }
 
 /* avg cost per turn indicator layout */
-div.cost-per-turn, p.deck-stats {
+.text-label {
     background: url('../../img/skins/blue_text.jpg') repeat;
 }

@@ -278,9 +278,43 @@ input {
 }
 
 .subsection-navigation {
+  margin-bottom: 1ex;
+  margin-top: 1ex;
   text-align: center;
 
+  &--plain {
+    margin-bottom: 0;
+  }
+
   .button {
+    margin-left: 0.5ex;
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}
+
+.glyphicon {
+  margin-left: 0.5ex;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+.text-label {
+  border-radius: 6px;
+  border-style: outset;
+  border-width: 2px;
+  display: inline-block;
+  padding: 0.5ex 0.8ex 0.5ex 0.8ex;
+
+  &--borderless {
+    border-width: 0;
+  }
+
+  b {
     margin-left: 0.5ex;
 
     &:first-child {

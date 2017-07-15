@@ -46,7 +46,7 @@ function takeCard(cardId)
             });
 
             // mark card as taken
-            $(card).addClass('taken');
+            $(card).addClass('card-pool__card-slot--taken');
             $(slot).find('.card').css('opacity', 1);
             $(slot).hide();
             $(slot).fadeIn('slow');
@@ -64,7 +64,7 @@ function takeCard(cardId)
         if (result.tokens !== 'no') {
             let token;
 
-            $('#tokens > select').each(function(i) {
+            $('#tokens-selection').find('select').each(function(i) {
                 token = document.getElementsByName('Token' + (i + 1)).item(0);
                 $(this).find('option').each(function(j) {
                     if ($(this).val() === result.tokens[i + 1]) {
@@ -75,7 +75,7 @@ function takeCard(cardId)
         }
 
         // recalculate avg cost per turn
-        $('.cost-per-turn > b').each(function(i) {
+        $('#cost-per-turn').find('b').each(function(i) {
             $(this).html(result.avg[i]);
         });
     });
@@ -117,7 +117,7 @@ function removeCard(cardId)
         $(slot).find('noscript').remove();
 
         // unmark card as taken
-        $(card).removeClass('taken');
+        $(card).removeClass('card-pool__card-slot--taken');
         $(card).find('.card').css('opacity', 0.6);
 
         // allow a card to be removed from card pool
@@ -135,7 +135,7 @@ function removeCard(cardId)
         });
 
         // recalculate avg cost per turn
-        $('.cost-per-turn > b').each(function(i) {
+        $('#cost-per-turn').find('b').each(function(i) {
             $(this).html(result.avg[i]);
         });
     });

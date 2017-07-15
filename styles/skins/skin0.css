@@ -105,6 +105,6 @@ p.card-flag, span.new-card {
 }
 
 /* avg cost per turn indicator layout */
-div.cost-per-turn, p.deck-stats {
+.text-label {
     background-color: rgb(50, 50, 75); /* dark blue */
 }
