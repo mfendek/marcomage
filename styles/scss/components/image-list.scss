@@ -1,0 +1,30 @@
+/*****************************************
+ * MArcomage CSS stylesheet - image list *
+ *****************************************/
+
+.image-list {
+  margin-left: 1ex;
+  margin-right: 1ex;
+
+  &__item {
+    margin: 1ex auto 1ex auto;
+    padding: 1ex;
+    max-width: 50em;
+  }
+
+  &__item-title {
+    margin: 0 0 0.5ex 0;
+    text-align: center;
+  }
+
+  &__item-content {
+    min-height: 60px;
+    text-align: justify;
+
+    .avatar-image {
+      float: left;
+      margin-bottom: 1ex;
+      margin-right: 1ex;
+    }
+  }
+}

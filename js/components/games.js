@@ -37,10 +37,10 @@ function refreshGame()
 {
     let dic = $.dic;
     let api = dic.apiManager();
-    let nextGame = $('div.game button[name="next_game"]');
+    let nextGame = $('.game button[name="next_game"]');
 
     // case 1: it is not player's turn in current game and the next game button is available - go to next game
-    if ($('div.game button[name="discard_card"]').length === 0 && nextGame.length > 0) {
+    if ($('.game button[name="discard_card"]').length === 0 && nextGame.length > 0) {
         nextGame.click();
     }
     // case 2: stay in current game and refresh screen
@@ -68,7 +68,7 @@ function refreshGame()
 function startGameRefresh()
 {
     let timer = 0;
-    let autoRefresh = $('div.game input[name="auto_refresh"]');
+    let autoRefresh = $('.game input[name="auto_refresh"]');
 
     if (autoRefresh.length === 1) {
         timer = window.setInterval(refreshGame, parseInt(autoRefresh.val()) * 1000);
@@ -82,7 +82,7 @@ function startGameRefresh()
  */
 function autoAiMove()
 {
-    let aiMove = $('div.game button[name="ai_move"]');
+    let aiMove = $('.game button[name="ai_move"]');
 
     if (aiMove.length === 1) {
         aiMove.click();
@@ -100,13 +100,13 @@ $(document).ready(function() {
     let notification = dic.notificationsManager();
 
     // initialize games list refresh if active
-    let autoRefresh = $('div#games > input[name="auto_refresh"]');
+    let autoRefresh = $('input[name="game_list_auto_refresh"]');
     if (autoRefresh.length === 1) {
         let gamesTimer = window.setInterval(refreshGameList, parseInt(autoRefresh.val()) * 1000);
     }
 
     // activate auto AI move
-    let autoAi = $('div.game input[name="auto_ai"]');
+    let autoAi = $('.game input[name="auto_ai"]');
     if (autoAi.length === 1) {
         window.setTimeout(autoAiMove, parseInt(autoAi.val()) * 1000);
     }
@@ -143,7 +143,7 @@ $(document).ready(function() {
     $('button[name="play_card"][value="0"], button[name="discard_card"], button[name="preview_card"]').css('opacity', 0.6);
 
     // card selection (via card)
-    $('.my-hand div.card').click(function() {
+    $('.my-hand .card').click(function() {
         // active only on player's turn
         if ($('input[name="selected_card"]').length > 0) {
             let selectedCard = $('div.selected-card');
@@ -184,8 +184,8 @@ $(document).ready(function() {
     });
 
     // card selection (via card modes)
-    $('select.card-modes').click(function() {
-        let currentCard = $(this).prevAll('div').children('div.card');
+    $('select.game__card-modes').click(function() {
+        let currentCard = $(this).prevAll('div').children('.card');
 
         if (!currentCard.hasClass('selected-card')) {
             currentCard.click();
@@ -200,7 +200,7 @@ $(document).ready(function() {
             return false;
         }
 
-        if ($('div.selected-card').parent().hasClass('unplayable')) {
+        if ($('.selected-card').parent().hasClass('unplayable')) {
             notification.displayError("Card can't be played.");
             return false;
         }
@@ -216,7 +216,7 @@ $(document).ready(function() {
     // initialize in-game refresh if active
     let gameRefreshTimer = 0;
 
-    if ($('div.game input[name="auto_refresh"]').length === 1) {
+    if ($('.game input[name="auto_refresh"]').length === 1) {
         gameRefreshTimer = startGameRefresh();
     }
 
@@ -303,10 +303,10 @@ $(document).ready(function() {
     });
 
     // scroll standard chat
-    $('div.chat-section div.scroll_max').scrollTo('max');
+    $('.chat-board .scroll-max').scrollTo('max');
 
     // chat modal dialog
-    let chatDialog = $('#chat-window-dialog');
+    let chatDialog = $('#chat-dialog');
     if (chatDialog.length > 0) {
         chatDialog.on('hidden.bs.modal', function() {
             // enable auto-refresh when user closes the chat
@@ -332,11 +332,11 @@ $(document).ready(function() {
             });
 
 
-            let chatDialog = $('#chat-window-dialog');
+            let chatDialog = $('#chat-dialog');
 
             // scrolling must be done only after the dialog has been opened
             chatDialog.on('shown.bs.modal', function() {
-                $('#chat-window-dialog div.scroll_max').delay(400).scrollTo('max');
+                $('#chat-dialog').find('.scroll-max').delay(400).scrollTo('max');
             });
 
             chatDialog.modal();
@@ -390,7 +390,7 @@ $(document).ready(function() {
         });
 
         // open chat automatically if there are new messages
-        let showChat = $('div.game button.marked_button[name="show_chat"]');
+        let showChat = $('.game button.marked_button[name="show_chat"]');
         if (showChat.length === 1) {
             showChat.click();
         }
@@ -409,7 +409,7 @@ $(document).ready(function() {
             $('input[name="cheat_menu"]').val('yes');
 
             // show cheat menu
-            $('div.game div#game-cheat-menu').slideDown('slow');
+            $('#game-cheat-menu').slideDown('slow');
         }
         // case 2: button is in 'hide' mode
         else {
@@ -420,12 +420,12 @@ $(document).ready(function() {
             $('input[name="cheat_menu"]').val('no');
 
             // hide cheat menu
-            $('div.game div#game-cheat-menu').slideUp('slow');
+            $('#game-cheat-menu').slideUp('slow');
         }
     });
 
     // select AI challenge
-    $('#ai-challenges > div').click(function() {
+    $('#ai-challenges').find('.image-list__item').click(function() {
         let challengeName = $(this).attr('id').replace('ai-challenge-', '');
         $('select[name="selected_challenge"]').val(challengeName);
     });

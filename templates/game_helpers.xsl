@@ -21,8 +21,8 @@
         <xsl:param name="resourceVictory" as="xs:integer"/>
 
         <xsl:variable name="info">
-            <div class="stock-info bricks">
-                <p class="facility">
+            <div class="game__stock-info game__stock-info--bricks">
+                <p class="game__facility">
                     <xsl:attribute name="title">
                         <xsl:text>Quarry: </xsl:text>
                         <xsl:value-of select="$stock/quarry"/>
@@ -32,12 +32,12 @@
                     </xsl:attribute>
                     <xsl:value-of select="$stock/quarry"/>
                     <xsl:if test="$changes/quarry != 0">
-                        <span class="changes">
+                        <span class="game__empire-changes">
                             <xsl:value-of select="$changes/quarry"/>
                         </span>
                     </xsl:if>
                 </p>
-                <p class="resource">
+                <p class="game__resource">
                     <xsl:attribute name="title">
                         <xsl:text>Bricks: </xsl:text>
                         <xsl:value-of select="$stock/bricks"/>
@@ -49,14 +49,14 @@
                     </xsl:attribute>
                     <xsl:value-of select="$stock/bricks"/>
                     <xsl:if test="$changes/bricks != 0">
-                        <span class="changes">
+                        <span class="game__empire-changes">
                             <xsl:value-of select="$changes/bricks"/>
                         </span>
                     </xsl:if>
                 </p>
             </div>
-            <div class="stock-info gems">
-                <p class="facility">
+            <div class="game__stock-info game__stock-info--gems">
+                <p class="game__facility">
                     <xsl:attribute name="title">
                         <xsl:text>Magic: </xsl:text>
                         <xsl:value-of select="$stock/magic"/>
@@ -66,12 +66,12 @@
                     </xsl:attribute>
                     <xsl:value-of select="$stock/magic"/>
                     <xsl:if test="$changes/magic != 0">
-                        <span class="changes">
+                        <span class="game__empire-changes">
                             <xsl:value-of select="$changes/magic"/>
                         </span>
                     </xsl:if>
                 </p>
-                <p class="resource">
+                <p class="game__resource">
                     <xsl:attribute name="title">
                         <xsl:text>Gems: </xsl:text>
                         <xsl:value-of select="$stock/gems"/>
@@ -83,14 +83,14 @@
                     </xsl:attribute>
                     <xsl:value-of select="$stock/gems"/>
                     <xsl:if test="$changes/gems != 0">
-                        <span class="changes">
+                        <span class="game__empire-changes">
                             <xsl:value-of select="$changes/gems"/>
                         </span>
                     </xsl:if>
                 </p>
             </div>
-            <div class="stock-info recruits">
-                <p class="facility">
+            <div class="game__stock-info game__stock-info--recruits">
+                <p class="game__facility">
                     <xsl:attribute name="title">
                         <xsl:text>Dungeon: </xsl:text>
                         <xsl:value-of select="$stock/dungeons"/>
@@ -100,12 +100,12 @@
                     </xsl:attribute>
                     <xsl:value-of select="$stock/dungeons"/>
                     <xsl:if test="$changes/dungeons != 0">
-                        <span class="changes">
+                        <span class="game__empire-changes">
                             <xsl:value-of select="$changes/dungeons"/>
                         </span>
                     </xsl:if>
                 </p>
-                <p class="resource">
+                <p class="game__resource">
                     <xsl:attribute name="title">
                         <xsl:text>Recruits: </xsl:text>
                         <xsl:value-of select="$stock/recruits"/>
@@ -117,7 +117,7 @@
                     </xsl:attribute>
                     <xsl:value-of select="$stock/recruits"/>
                     <xsl:if test="$changes/recruits != 0">
-                        <span class="changes">
+                        <span class="game__empire-changes">
                             <xsl:value-of select="$changes/recruits"/>
                         </span>
                     </xsl:if>
@@ -139,7 +139,7 @@
 
         <xsl:variable name="info">
             <div>
-                <p class="info-label castle">
+                <p class="info-label">
                     <span>
                         <xsl:attribute name="title">
                             <xsl:text>Tower: </xsl:text>
@@ -156,12 +156,12 @@
                         <xsl:value-of select="$tower"/>
                     </span>
                     <xsl:if test="$changeTower != 0">
-                        <span class="changes">
+                        <span class="game__empire-changes">
                             <xsl:value-of select="$changeTower"/>
                         </span>
                     </xsl:if>
                 </p>
-                <p class="info-label castle">
+                <p class="info-label">
                     <span>
                         <xsl:attribute name="title">
                             <xsl:text>Wall: </xsl:text>
@@ -178,7 +178,7 @@
                         <xsl:value-of select="$wall"/>
                     </span>
                     <xsl:if test="$changeWall != 0">
-                        <span class="changes">
+                        <span class="game__empire-changes">
                             <xsl:value-of select="$changeWall"/>
                         </span>
                     </xsl:if>
@@ -226,7 +226,7 @@
                     <xsl:if test="$orientation = 'right'">
                         <td class="align-bottom">
                             <xsl:if test="$wall &gt; 0">
-                                <div class="wall-display">
+                                <div class="game__wall-display">
                                     <img src="img/game/wall_top.png" width="19" height="11" alt=""/>
                                     <div style="height: {270 * $wall div $maxWall}px;"/>
                                 </div>
@@ -235,7 +235,7 @@
                     </xsl:if>
                     <!-- tower -->
                     <td class="align-bottom">
-                        <div class="tower-display">
+                        <div class="game__tower-display">
                             <img width="65" alt="">
                                 <xsl:choose>
                                     <xsl:when test="$tower = $maxTower">
@@ -263,7 +263,7 @@
                     <xsl:if test="$orientation = 'left'">
                         <td class="align-bottom">
                             <xsl:if test="$wall &gt; 0">
-                                <div class="wall-display">
+                                <div class="game__wall-display">
                                     <img src="img/game/wall_top.png" width="19" height="11" alt=""/>
                                     <div style="height: {270 * $wall div $maxWall}px;"/>
                                 </div>
@@ -288,12 +288,12 @@
         <xsl:variable name="result">
             <xsl:choose>
                 <xsl:when test="count($leftList/*) = 0 and count($rightList/*) = 0">
-                    <div class="card-list"/>
+                    <div class="game__card-list"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <div class="card-list">
-                        <p class="info-label history-label">Discarded</p>
-                        <div class="discarded-cards-list">
+                    <div class="game__card-list">
+                        <p class="info-label info-label--small">Discarded</p>
+                        <div class="game__card-log">
                             <table>
                                 <tr class="align-top">
                                     <xsl:for-each select="$leftList/*">
@@ -303,7 +303,7 @@
                                             )"/>
                                         </td>
                                     </xsl:for-each>
-                                    <td class="discarded-cards-separator"/>
+                                    <td class="game__card-log-separator"/>
                                     <xsl:for-each select="$rightList/*">
                                         <td>
                                             <xsl:copy-of select="am:cardString(
@@ -330,7 +330,7 @@
         <xsl:param name="foils" as="xs:string"/>
 
         <xsl:variable name="result">
-            <div class="history">
+            <div class="game__card-log">
                 <table>
                     <tr class="centered align-top">
                         <xsl:if test="count($cardList/*) &gt; 0">
@@ -340,7 +340,7 @@
                                     <p>
                                         <xsl:choose>
                                             <xsl:when test="card_action = 'play'">
-                                                <xsl:attribute name="class">card-flag played</xsl:attribute>
+                                                <xsl:attribute name="class">card-flag card-flag--played</xsl:attribute>
                                                 <xsl:text>played</xsl:text>
                                                 <xsl:if test="card_mode != 0">
                                                     <span>
@@ -350,7 +350,7 @@
                                                 </xsl:if>
                                             </xsl:when>
                                             <xsl:otherwise>
-                                                <xsl:attribute name="class">card-flag discarded</xsl:attribute>
+                                                <xsl:attribute name="class">card-flag card-flag--discarded</xsl:attribute>
                                                 <xsl:text>discarded</xsl:text>
                                             </xsl:otherwise>
                                         </xsl:choose>
@@ -391,7 +391,7 @@
                             <xsl:value-of select="value"/>
                         </span>
                         <xsl:if test="change != 0">
-                            <span class="changes">
+                            <span class="game__empire-changes">
                                 <xsl:if test="change &gt; 0">+</xsl:if>
                                 <xsl:value-of select="change"/>
                             </span>

@@ -53,18 +53,18 @@ button.marked_button, a.marked_button, .interactive-menu button:hover, .interact
 
 /* information label used in multiple instances in game section */
 p.info-label {
-    border: medium ridge rgb(150, 138, 255); /* light purple */
+    border-color: rgb(150, 138, 255); /* light purple */
     background: url('../../img/skins/blue_text.jpg') repeat;
 }
 
 /* token counter layout */
 p.token-counter {
-    border: thin solid rgb(150, 138, 255); /* light purple */
+    border-color: rgb(150, 138, 255); /* light purple */
     background: url('../../img/skins/blue_text.jpg') repeat;
 }
 
 /* chat box window */
-div.chat-box {
+.chat-board__message-box {
     border: medium ridge rgb(150, 138, 255); /* light purple */
     background: url('../../img/skins/blue_text.jpg') repeat;
 }

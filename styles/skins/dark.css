@@ -87,10 +87,6 @@ p.info-label {
     color: #dddddd; /* very light gray */
 }
 
-p.info-label .opponent {
-    color: #ff69b4; /* hot pink */
-}
-
 /* token counter layout */
 .token-counter {
     color: #dddddd; /* very light gray */
@@ -101,7 +97,7 @@ p.info-label .opponent {
 }
 
 /* chat box window */
-div.chat-box {
+.chat-board__message-box {
     color: #dddddd; /* very light gray */
 }
 
@@ -110,15 +106,15 @@ p.card-flag, span.new-card {
     color: #dddddd; /* very light gray */
 }
 
-.chat-box-player {
+.chat-heading-player {
     color: #add8e6; /* light blue */
 }
 
-.chat-box-opponent {
+.chat-heading-opponent {
     color: #90ee90; /* light green */
 }
 
-.chat-box-system {
+.chat-heading-system {
     color: red;
 }
 

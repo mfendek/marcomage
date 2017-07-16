@@ -83,18 +83,18 @@ button.marked_button, a.marked_button, .interactive-menu button:hover, .interact
 
 /* information label used in multiple instances in game section */
 p.info-label {
-    border: medium ridge #6495ed; /* light blue */
+    border-color: #6495ed; /* light blue */
     background-color: #2b2b2b; /* light black */
 }
 
 /* token counter layout */
 p.token-counter {
-    border: thin solid #6495ed; /* light blue */
+    border-color: #6495ed; /* light blue */
     background-color: #2b2b2b; /* light black */
 }
 
 /* chat box window */
-div.chat-box {
+.chat-board__message-box {
     border: medium ridge #6495ed; /* light blue */
     background-color: #2b2b2b; /* light black */
 }

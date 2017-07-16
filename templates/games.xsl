@@ -29,514 +29,511 @@
             <value name="300" text="5 minutes"/>
         </xsl:variable>
 
-        <div id="games">
-            <div class="skin-label top-level games-subsection">
-                <!-- subsection navigation -->
-                <p class="subsection-navigation">
-                    <xsl:variable name="subsections">
-                        <item name="active_games" text="Active games"/>
-                        <item name="free_games" text="Hosted games"/>
-                        <item name="hosted_games" text="My games"/>
-                        <item name="ai_games" text="AI games"/>
-                    </xsl:variable>
+        <div class="skin-label top-level">
+            <!-- subsection navigation -->
+            <p class="subsection-navigation">
+                <xsl:variable name="subsections">
+                    <item name="active_games" text="Active games"/>
+                    <item name="free_games" text="Hosted games"/>
+                    <item name="hosted_games" text="My games"/>
+                    <item name="ai_games" text="AI games"/>
+                </xsl:variable>
 
-                    <xsl:for-each select="exsl:node-set($subsections)/*">
-                        <a class="button" href="{am:makeUrl('Games', 'subsection', @name)}">
-                            <xsl:if test="$param/current_subsection = @name">
-                                <xsl:attribute name="class">button pushed</xsl:attribute>
-                            </xsl:if>
-                            <xsl:value-of select="@text"/>
-                        </a>
-                    </xsl:for-each>
-                    <xsl:if test="$param/show_quick_game = 'yes' and $activeDecks &gt; 0 and $param/free_slots &gt; 0">
-                        <button type="submit" name="quick_game">Quick game</button>
-                    </xsl:if>
-                </p>
+                <xsl:for-each select="exsl:node-set($subsections)/*">
+                    <a class="button" href="{am:makeUrl('Games', 'subsection', @name)}">
+                        <xsl:if test="$param/current_subsection = @name">
+                            <xsl:attribute name="class">button pushed</xsl:attribute>
+                        </xsl:if>
+                        <xsl:value-of select="@text"/>
+                    </a>
+                </xsl:for-each>
+                <xsl:if test="$param/show_quick_game = 'yes' and $activeDecks &gt; 0 and $param/free_slots &gt; 0">
+                    <button type="submit" name="quick_game">Quick game</button>
+                </xsl:if>
+            </p>
 
-                <xsl:if test="$param/current_subsection = 'active_games'">
-                    <xsl:variable name="list" select="$param/list"/>
-                    <!-- begin active games list -->
-                    <xsl:choose>
-                        <xsl:when test="count($list/*) &gt; 0">
-                            <div class="responsive-table responsive-table--with-avatars-md table-sm skin-text">
-                                <!-- table header -->
-                                <div class="row">
+            <xsl:if test="$param/current_subsection = 'active_games'">
+                <xsl:variable name="list" select="$param/list"/>
+                <!-- begin active games list -->
+                <xsl:choose>
+                    <xsl:when test="count($list/*) &gt; 0">
+                        <div class="responsive-table responsive-table--centered responsive-table--with-avatars-md table-sm skin-text inner-level">
+                            <!-- table header -->
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <p/>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>Opponent</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>Modes</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>Info</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>Timeout</p>
+                                </div>
+                                <div class="col-sm-1">
+                                    <p>Round</p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p>Last action</p>
+                                </div>
+                            </div>
+
+                            <!-- table body -->
+                            <xsl:for-each select="$list/*">
+                                <div class="row table-row table-row--details">
                                     <div class="col-sm-1">
-                                        <p/>
+                                        <p>
+                                            <xsl:variable name="avatarName" select="am:avatarFileName(
+                                                avatar, opponent, ai, $param/system_name
+                                            )"/>
+
+                                            <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+                                        </p>
                                     </div>
                                     <div class="col-sm-2">
-                                        <p>Opponent</p>
+                                        <p>
+                                            <a class="hidden-link details-link" href="{am:makeUrl('Games_details', 'current_game', game_id)}">
+                                                <xsl:choose>
+                                                    <xsl:when test="opponent = $param/system_name">
+                                                        <xsl:copy-of select="am:playerName(opponent, ai, $param/system_name)"/>
+                                                    </xsl:when>
+                                                    <xsl:otherwise>
+                                                        <xsl:value-of select="opponent"/>
+                                                    </xsl:otherwise>
+                                                </xsl:choose>
+                                            </a>
+
+                                            <xsl:if test="opponent != $param/system_name and active = 'yes'">
+                                                <span class="icon-player-activity online" title="online"/>
+                                            </xsl:if>
+                                        </p>
                                     </div>
                                     <div class="col-sm-2">
-                                        <p>Modes</p>
+                                        <p>
+                                            <xsl:copy-of select="am:gameModeFlags(
+                                                am:hasGameMode(game_modes, 'HiddenCards'),
+                                                am:hasGameMode(game_modes, 'FriendlyPlay'),
+                                                am:hasGameMode(game_modes, 'LongMode'),
+                                                am:hasGameMode(game_modes, 'AIMode'),
+                                                ai
+                                            )"/>
+                                        </p>
                                     </div>
                                     <div class="col-sm-2">
-                                        <p>Info</p>
+                                        <xsl:choose>
+                                            <xsl:when test="game_state = 'in progress' and is_dead = 'yes'">
+                                                <p>Can be aborted</p>
+                                            </xsl:when>
+                                            <xsl:when test="game_state = 'in progress' and finish_allowed = 'yes'">
+                                                <p>Can be finished</p>
+                                            </xsl:when>
+                                            <xsl:when test="game_state = 'in progress' and finish_move = 'yes'">
+                                                <p>AI move can be done</p>
+                                            </xsl:when>
+                                            <xsl:when test="game_state != 'in progress'">
+                                                <p>Game has ended</p>
+                                            </xsl:when>
+                                            <xsl:when test="ready = 'yes'">
+                                                <p>
+                                                    <img src="img/battle.gif" alt="" width="20" height="13" title="It's your turn"/>
+                                                </p>
+                                            </xsl:when>
+                                        </xsl:choose>
                                     </div>
+                                    <div class="col-sm-2"><p><xsl:value-of select="timeout"/></p></div>
+                                    <div class="col-sm-1"><p><xsl:value-of select="round"/></p></div>
                                     <div class="col-sm-2">
-                                        <p>Timeout</p>
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <p>Round</p>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <p>Last action</p>
+                                        <p><xsl:copy-of select="am:date(game_action, $param/timezone)"/></p>
                                     </div>
                                 </div>
+                            </xsl:for-each>
+                        </div>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <p class="information-line warning">You have no active games.</p>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <!-- end active games list -->
 
-                                <!-- table body -->
-                                <xsl:for-each select="$list/*">
-                                    <div class="row table-row table-row--details">
-                                        <div class="col-sm-1">
-                                            <p>
-                                                <xsl:variable name="avatarName" select="am:avatarFileName(
-                                                    avatar, opponent, ai, $param/system_name
-                                                )"/>
-
-                                                <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
-                                            </p>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <p>
-                                                <a class="hidden-link details-link" href="{am:makeUrl('Games_details', 'current_game', game_id)}">
-                                                    <xsl:choose>
-                                                        <xsl:when test="opponent = $param/system_name">
-                                                            <xsl:copy-of select="am:playerName(opponent, ai, $param/system_name)"/>
-                                                        </xsl:when>
-                                                        <xsl:otherwise>
-                                                            <xsl:value-of select="opponent"/>
-                                                        </xsl:otherwise>
-                                                    </xsl:choose>
-                                                </a>
-
-                                                <xsl:if test="opponent != $param/system_name and active = 'yes'">
-                                                    <span class="icon-player-activity online" title="online"/>
-                                                </xsl:if>
-                                            </p>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <p>
-                                                <xsl:copy-of select="am:gameModeFlags(
-                                                    am:hasGameMode(game_modes, 'HiddenCards'),
-                                                    am:hasGameMode(game_modes, 'FriendlyPlay'),
-                                                    am:hasGameMode(game_modes, 'LongMode'),
-                                                    am:hasGameMode(game_modes, 'AIMode'),
-                                                    ai
-                                                )"/>
-                                            </p>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <xsl:choose>
-                                                <xsl:when test="game_state = 'in progress' and is_dead = 'yes'">
-                                                    <p class="ended-game">Can be aborted</p>
-                                                </xsl:when>
-                                                <xsl:when test="game_state = 'in progress' and finish_allowed = 'yes'">
-                                                    <p class="ended-game">Can be finished</p>
-                                                </xsl:when>
-                                                <xsl:when test="game_state = 'in progress' and finish_move = 'yes'">
-                                                    <p class="ended-game">AI move can be done</p>
-                                                </xsl:when>
-                                                <xsl:when test="game_state != 'in progress'">
-                                                    <p class="ended-game">Game has ended</p>
-                                                </xsl:when>
-                                                <xsl:when test="ready = 'yes'">
-                                                    <p>
-                                                        <img src="img/battle.gif" alt="" width="20" height="13" title="It's your turn"/>
-                                                    </p>
-                                                </xsl:when>
-                                            </xsl:choose>
-                                        </div>
-                                        <div class="col-sm-2"><p><xsl:value-of select="timeout"/></p></div>
-                                        <div class="col-sm-1"><p><xsl:value-of select="round"/></p></div>
-                                        <div class="col-sm-2">
-                                            <p><xsl:copy-of select="am:date(game_action, $param/timezone)"/></p>
-                                        </div>
-                                    </div>
-                                </xsl:for-each>
-                            </div>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <p class="information-line warning">You have no active games.</p>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                    <!-- end active games list -->
+                <!-- auto refresh -->
+                <xsl:if test="$param/auto_refresh &gt; 0">
+                    <input type="hidden" name="game_list_auto_refresh" value="{$param/auto_refresh}"/>
                 </xsl:if>
-                <xsl:if test="$param/current_subsection != 'active_games'">
-                    <!-- begin hosted games list -->
-                    <!-- warning messages -->
-                    <xsl:if test="$activeDecks = 0">
-                        <p class="information-line warning">You need at least one ready deck to host/join a game.</p>
-                    </xsl:if>
-                    <xsl:if test="$param/free_slots = 0">
-                        <p class="information-line warning">You cannot host/enter any more games.</p>
-                    </xsl:if>
+            </xsl:if>
+            <xsl:if test="$param/current_subsection != 'active_games'">
+                <!-- begin hosted games list -->
+                <!-- warning messages -->
+                <xsl:if test="$activeDecks = 0">
+                    <p class="information-line warning">You need at least one ready deck to host/join a game.</p>
+                </xsl:if>
+                <xsl:if test="$param/free_slots = 0">
+                    <p class="information-line warning">You cannot host/enter any more games.</p>
+                </xsl:if>
 
-                    <xsl:choose>
-                        <!-- begin subsection free games -->
-                        <xsl:when test="$param/current_subsection = 'free_games'">
+                <xsl:choose>
+                    <!-- begin subsection free games -->
+                    <xsl:when test="$param/current_subsection = 'free_games'">
 
-                            <!-- begin filters -->
-                            <p class="filters">
-                                <!-- selected deck -->
-                                <xsl:if test="$activeDecks &gt; 0 and $param/free_slots &gt; 0">
-                                    <span>Select deck</span>
-                                    <select name="selected_deck" size="1">
-                                        <xsl:if test="$param/random_deck_option = 'yes'">
-                                            <option value="{$param/random_deck}">select random</option>
-                                        </xsl:if>
-                                        <xsl:for-each select="$param/decks/*">
-                                            <option value="{deck_id}">
-                                                <xsl:value-of select="deck_name"/>
-                                            </option>
-                                        </xsl:for-each>
-                                        <xsl:if test="$param/show_challenges = 'yes'">
-                                            <xsl:for-each select="$param/ai_challenges/*">
-                                                <xsl:sort select="fullname" order="ascending"/>
-                                                <option value="{name}" class="challenge-deck">
-                                                    <xsl:value-of select="name"/>
-                                                </option>
-                                            </xsl:for-each>
-                                        </xsl:if>
-                                    </select>
-                                </xsl:if>
-
-                                <xsl:variable name="modeOptions">
-                                    <value name="ignore" value="none"/>
-                                    <value name="include" value="include"/>
-                                    <value name="exclude" value="exclude"/>
-                                </xsl:variable>
-
-                                <!-- hidden cards filter -->
-                                <img class="icon-image" width="20" height="14" src="img/blind.png" alt="Hidden cards" title="Hidden cards"/>
-                                <xsl:copy-of select="am:htmlSelectBox('hidden_cards', $param/hidden_cards, $modeOptions, '')"/>
-
-                                <!-- friendly game filter -->
-                                <img class="icon-image" width="20" height="14" src="img/friendly_play.png" alt="Friendly play" title="Friendly play"/>
-                                <xsl:copy-of select="am:htmlSelectBox('friendly_play', $param/friendly_play, $modeOptions, '')"/>
-
-                                <!-- friendly game filter -->
-                                <img class="icon-image" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
-                                <xsl:copy-of select="am:htmlSelectBox('long_mode', $param/long_mode, $modeOptions, '')"/>
-                                <button class="button-icon" type="submit" name="filter_hosted_games" title="Apply filters">
-                                    <span class="glyphicon glyphicon-filter"/>
-                                </button>
-                            </p>
-                            <!-- end filters -->
-
-                            <!-- free games list -->
-                            <xsl:choose>
-                                <xsl:when test="count($param/free_games/*) &gt; 0">
-                                    <div class="responsive-table responsive-table--with-avatars-md table-sm skin-text">
-                                        <!-- table header -->
-                                        <div class="row">
-                                            <div class="col-sm-1">
-                                                <p/>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <p>Opponent</p>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <p>Modes</p>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <p>Timeout</p>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <p>Created</p>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <p/>
-                                            </div>
-                                        </div>
-
-                                        <!-- table body -->
-                                        <xsl:for-each select="$param/free_games/*">
-                                            <div class="row table-row">
-                                                <div class="col-sm-1">
-                                                    <p>
-                                                        <xsl:variable name="avatarName" select="am:avatarFileName(
-                                                            avatar, opponent, ai, $param/system_name
-                                                        )"/>
-
-                                                        <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
-                                                    </p>
-                                                </div>
-                                                <div class="col-sm-2">
-                                                    <p>
-                                                        <xsl:if test="status != 'none'">
-                                                            <img class="icon-image" width="20" height="14" src="img/{status}.png" alt="status flag" title="{status}"/>
-                                                        </xsl:if>
-
-                                                        <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', opponent)}">
-                                                            <xsl:value-of select="opponent"/>
-                                                        </a>
-
-                                                        <xsl:if test="active = 'yes'">
-                                                            <span class="icon-player-activity online" title="online"/>
-                                                        </xsl:if>
-                                                    </p>
-                                                </div>
-                                                <div class="col-sm-2">
-                                                    <p>
-                                                        <xsl:copy-of select="am:gameModeFlags(
-                                                            am:hasGameMode(game_modes, 'HiddenCards'),
-                                                            am:hasGameMode(game_modes, 'FriendlyPlay'),
-                                                            am:hasGameMode(game_modes, 'LongMode')
-                                                        )"/>
-                                                    </p>
-                                                </div>
-                                                <div class="col-sm-2">
-                                                    <p>
-                                                        <xsl:variable name="timeout" select="timeout"/>
-                                                        <xsl:value-of select="exsl:node-set($timeoutValues)/*[@name = $timeout]/@text"/>
-                                                    </p>
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <p>
-                                                        <xsl:copy-of select="am:date(game_action, $param/timezone)"/>
-                                                    </p>
-                                                </div>
-                                                <div class="col-sm-2">
-                                                    <xsl:if test="$activeDecks &gt; 0 and $param/free_slots &gt; 0">
-                                                        <p>
-                                                            <button type="submit" name="join_game" value="{game_id}">
-                                                                <xsl:text>Join</xsl:text>
-                                                            </button>
-                                                        </p>
-                                                    </xsl:if>
-                                                </div>
-                                            </div>
-                                        </xsl:for-each>
-                                    </div>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <p class="information-line warning">There are no hosted games.</p>
-                                </xsl:otherwise>
-                            </xsl:choose>
-
-                        </xsl:when>
-                        <!-- end subsection free games -->
-
-                        <!-- begin subsection hosted games -->
-                        <xsl:when test="$param/current_subsection = 'hosted_games'">
-
-                            <!-- host new game interface -->
+                        <!-- begin filters -->
+                        <p class="filters">
+                            <!-- selected deck -->
                             <xsl:if test="$activeDecks &gt; 0 and $param/free_slots &gt; 0">
-                                <p class="misc">
-                                    <span>Select deck</span>
-                                    <select name="selected_deck" size="1">
-                                        <xsl:if test="$param/random_deck_option = 'yes'">
-                                            <option value="{$param/random_deck}">select random</option>
-                                        </xsl:if>
-                                        <xsl:for-each select="$param/decks/*">
-                                            <option value="{deck_id}">
-                                                <xsl:value-of select="deck_name"/>
+                                <span>Select deck</span>
+                                <select name="selected_deck" size="1">
+                                    <xsl:if test="$param/random_deck_option = 'yes'">
+                                        <option value="{$param/random_deck}">select random</option>
+                                    </xsl:if>
+                                    <xsl:for-each select="$param/decks/*">
+                                        <option value="{deck_id}">
+                                            <xsl:value-of select="deck_name"/>
+                                        </option>
+                                    </xsl:for-each>
+                                    <xsl:if test="$param/show_challenges = 'yes'">
+                                        <xsl:for-each select="$param/ai_challenges/*">
+                                            <xsl:sort select="fullname" order="ascending"/>
+                                            <option value="{name}" class="challenge-deck">
+                                                <xsl:value-of select="name"/>
                                             </option>
                                         </xsl:for-each>
-                                        <xsl:if test="$param/show_challenges = 'yes'">
-                                            <xsl:for-each select="$param/ai_challenges/*">
-                                                <xsl:sort select="fullname" order="ascending"/>
-                                                <option value="{name}" class="challenge-deck">
-                                                    <xsl:value-of select="name"/>
-                                                </option>
-                                            </xsl:for-each>
-                                        </xsl:if>
-                                    </select>
-
-                                    <img class="icon-image" width="20" height="14" src="img/blind.png" alt="Hidden cards" title="Hidden cards"/>
-                                    <input type="checkbox" name="hidden_mode">
-                                        <xsl:if test="$param/blind_flag = 'yes'">
-                                            <xsl:attribute name="checked">checked</xsl:attribute>
-                                        </xsl:if>
-                                    </input>
-                                    <img class="icon-image" width="20" height="14" src="img/friendly_play.png" alt="Friendly play" title="Friendly play"/>
-                                    <input type="checkbox" name="friendly_mode">
-                                        <xsl:if test="$param/friendly_flag = 'yes'">
-                                            <xsl:attribute name="checked">checked</xsl:attribute>
-                                        </xsl:if>
-                                    </input>
-                                    <img class="icon-image" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
-                                    <input type="checkbox" name="long_mode">
-                                        <xsl:if test="$param/long_flag = 'yes'">
-                                            <xsl:attribute name="checked">checked</xsl:attribute>
-                                        </xsl:if>
-                                    </input>
-                                    <select name="turn_timeout" title="Turn timeout">
-                                        <xsl:for-each select="exsl:node-set($timeoutValues)/*">
-                                            <option value="{@name}">
-                                                <xsl:if test="$param/timeout = @name">
-                                                    <xsl:attribute name="selected">selected</xsl:attribute>
-                                                </xsl:if>
-                                                <xsl:value-of select="@text"/>
-                                            </option>
-                                        </xsl:for-each>
-                                    </select>
-                                    <button type="submit" name="host_game">Create game</button>
-                                </p>
+                                    </xsl:if>
+                                </select>
                             </xsl:if>
 
-                            <!-- hosted games by player list -->
-                            <xsl:choose>
-                                <xsl:when test="count($param/hosted_games/*) &gt; 0">
+                            <xsl:variable name="modeOptions">
+                                <value name="ignore" value="none"/>
+                                <value name="include" value="include"/>
+                                <value name="exclude" value="exclude"/>
+                            </xsl:variable>
 
-                                    <div class="responsive-table table-sm skin-text">
-                                        <!-- table header -->
-                                        <div class="row">
-                                            <div class="col-sm-4">
-                                                <p>Modes</p>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <p>Timeout</p>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <p>Created</p>
+                            <!-- hidden cards filter -->
+                            <img class="icon-image" width="20" height="14" src="img/blind.png" alt="Hidden cards" title="Hidden cards"/>
+                            <xsl:copy-of select="am:htmlSelectBox('hidden_cards', $param/hidden_cards, $modeOptions, '')"/>
+
+                            <!-- friendly game filter -->
+                            <img class="icon-image" width="20" height="14" src="img/friendly_play.png" alt="Friendly play" title="Friendly play"/>
+                            <xsl:copy-of select="am:htmlSelectBox('friendly_play', $param/friendly_play, $modeOptions, '')"/>
+
+                            <!-- friendly game filter -->
+                            <img class="icon-image" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
+                            <xsl:copy-of select="am:htmlSelectBox('long_mode', $param/long_mode, $modeOptions, '')"/>
+                            <button class="button-icon" type="submit" name="filter_hosted_games" title="Apply filters">
+                                <span class="glyphicon glyphicon-filter"/>
+                            </button>
+                        </p>
+                        <!-- end filters -->
+
+                        <!-- free games list -->
+                        <xsl:choose>
+                            <xsl:when test="count($param/free_games/*) &gt; 0">
+                                <div class="responsive-table responsive-table--centered responsive-table--with-avatars-md table-sm skin-text inner-level">
+                                    <!-- table header -->
+                                    <div class="row">
+                                        <div class="col-sm-1">
+                                            <p/>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p>Opponent</p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p>Modes</p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p>Timeout</p>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <p>Created</p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p/>
+                                        </div>
+                                    </div>
+
+                                    <!-- table body -->
+                                    <xsl:for-each select="$param/free_games/*">
+                                        <div class="row table-row">
+                                            <div class="col-sm-1">
+                                                <p>
+                                                    <xsl:variable name="avatarName" select="am:avatarFileName(
+                                                        avatar, opponent, ai, $param/system_name
+                                                    )"/>
+
+                                                    <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+                                                </p>
                                             </div>
                                             <div class="col-sm-2">
-                                                <p/>
+                                                <p>
+                                                    <xsl:if test="status != 'none'">
+                                                        <img class="icon-image" width="20" height="14" src="img/{status}.png" alt="status flag" title="{status}"/>
+                                                    </xsl:if>
+
+                                                    <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', opponent)}">
+                                                        <xsl:value-of select="opponent"/>
+                                                    </a>
+
+                                                    <xsl:if test="active = 'yes'">
+                                                        <span class="icon-player-activity online" title="online"/>
+                                                    </xsl:if>
+                                                </p>
                                             </div>
-                                        </div>
-
-
-                                        <!-- table body -->
-                                        <xsl:for-each select="$param/hosted_games/*">
-                                            <div class="row table-row">
-                                                <div class="col-sm-4">
+                                            <div class="col-sm-2">
+                                                <p>
+                                                    <xsl:copy-of select="am:gameModeFlags(
+                                                        am:hasGameMode(game_modes, 'HiddenCards'),
+                                                        am:hasGameMode(game_modes, 'FriendlyPlay'),
+                                                        am:hasGameMode(game_modes, 'LongMode')
+                                                    )"/>
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <p>
+                                                    <xsl:variable name="timeout" select="timeout"/>
+                                                    <xsl:value-of select="exsl:node-set($timeoutValues)/*[@name = $timeout]/@text"/>
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <p>
+                                                    <xsl:copy-of select="am:date(game_action, $param/timezone)"/>
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <xsl:if test="$activeDecks &gt; 0 and $param/free_slots &gt; 0">
                                                     <p>
-                                                        <xsl:copy-of select="am:gameModeFlags(
-                                                            am:hasGameMode(game_modes, 'HiddenCards'),
-                                                            am:hasGameMode(game_modes, 'FriendlyPlay'),
-                                                            am:hasGameMode(game_modes, 'LongMode')
-                                                        )"/>
-                                                    </p>
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <p>
-                                                        <xsl:variable name="timeout" select="timeout"/>
-                                                        <xsl:value-of select="exsl:node-set($timeoutValues)/*[@name = $timeout]/@text"/>
-                                                    </p>
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <p>
-                                                        <xsl:copy-of select="am:dateTime(game_action, $param/timezone)"/>
-                                                    </p>
-                                                </div>
-                                                <div class="col-sm-2">
-                                                    <p>
-                                                        <button type="submit" name="unhost_game" value="{game_id}" title="Delete game">
-                                                            <span class="glyphicon glyphicon-trash"/>
+                                                        <button type="submit" name="join_game" value="{game_id}">
+                                                            <xsl:text>Join</xsl:text>
                                                         </button>
                                                     </p>
-                                                </div>
+                                                </xsl:if>
                                             </div>
-                                        </xsl:for-each>
-                                    </div>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <p class="information-line warning">There are no hosted games.</p>
-                                </xsl:otherwise>
-                            </xsl:choose>
-
-                        </xsl:when>
-                        <!-- end hosted games subsection -->
-
-                        <!-- begin subsection AI games -->
-                        <xsl:when test="$param/current_subsection = 'ai_games'">
-
-                            <!-- host new AI game interface -->
-                            <xsl:if test="$activeDecks &gt; 0 and $param/free_slots &gt; 0">
-                                <p class="misc">
-                                    <span>Select deck</span>
-                                    <select name="selected_deck" size="1" title="your deck">
-                                        <xsl:if test="$param/random_deck_option = 'yes'">
-                                            <option value="{$param/random_deck}">select random</option>
-                                        </xsl:if>
-                                        <xsl:for-each select="$param/decks/*">
-                                            <option value="{deck_id}">
-                                                <xsl:value-of select="deck_name"/>
-                                            </option>
-                                        </xsl:for-each>
-                                        <xsl:if test="$param/show_challenges = 'yes'">
-                                            <xsl:for-each select="$param/ai_challenges/*">
-                                                <xsl:sort select="fullname" order="ascending"/>
-                                                <option value="{name}" class="challenge-deck">
-                                                    <xsl:value-of select="name"/>
-                                                </option>
-                                            </xsl:for-each>
-                                        </xsl:if>
-                                    </select>
-
-                                    <span>Select AI deck</span>
-                                    <select name="selected_ai_deck" size="1" title="AI deck (used only when playing against AI)">
-                                        <option value="starter_deck">starter deck</option>
-                                        <xsl:if test="$param/random_deck_option = 'yes'">
-                                            <option value="{$param/random_ai_deck}">select random</option>
-                                        </xsl:if>
-                                        <xsl:for-each select="$param/decks/*">
-                                            <option value="{deck_id}">
-                                                <xsl:value-of select="deck_name"/>
-                                            </option>
-                                        </xsl:for-each>
-                                    </select>
-
-                                    <img class="icon-image" width="20" height="14" src="img/blind.png" alt="Hidden cards" title="Hidden cards"/>
-                                    <input type="checkbox" name="hidden_mode">
-                                        <xsl:if test="$param/blind_flag = 'yes'">
-                                            <xsl:attribute name="checked">checked</xsl:attribute>
-                                        </xsl:if>
-                                    </input>
-                                    <img class="icon-image" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
-                                    <input type="checkbox" name="long_mode">
-                                        <xsl:if test="$param/long_flag = 'yes'">
-                                            <xsl:attribute name="checked">checked</xsl:attribute>
-                                        </xsl:if>
-                                    </input>
-                                    <button type="submit" name="ai_game">Create game</button>
-                                </p>
-                            </xsl:if>
-
-                            <!-- AI challenge interface (show only to players that finished tutorial) -->
-                            <xsl:if test="$param/show_challenges = 'yes'">
-                                <xsl:if test="$activeDecks &gt; 0">
-                                    <p class="misc">
-                                        <span>Select AI challenge</span>
-                                        <select name="selected_challenge" size="1">
-                                            <xsl:for-each select="$param/ai_challenges/*">
-                                                <xsl:sort select="fullname" order="ascending"/>
-                                                <option value="{name}">
-                                                    <xsl:value-of select="fullname"/>
-                                                </option>
-                                            </xsl:for-each>
-                                        </select>
-                                        <xsl:if test="$param/free_slots &gt; 0">
-                                            <button type="submit" name="ai_challenge">Play challenge</button>
-                                        </xsl:if>
-                                    </p>
-                                </xsl:if>
-
-                                <div id="ai-challenges">
-                                    <xsl:for-each select="$param/ai_challenges/*">
-                                        <xsl:sort select="fullname" order="ascending"/>
-                                        <div id="ai-challenge-{name}" class="skin-text">
-                                            <h4><xsl:value-of select="fullname"/></h4>
-                                            <p>
-                                                <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{am:fileName(name)}.png" alt="avatar"/>
-                                                <xsl:value-of select="description"/>
-                                            </p>
                                         </div>
                                     </xsl:for-each>
                                 </div>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <p class="information-line warning">There are no hosted games.</p>
+                            </xsl:otherwise>
+                        </xsl:choose>
+
+                    </xsl:when>
+                    <!-- end subsection free games -->
+
+                    <!-- begin subsection hosted games -->
+                    <xsl:when test="$param/current_subsection = 'hosted_games'">
+
+                        <!-- host new game interface -->
+                        <xsl:if test="$activeDecks &gt; 0 and $param/free_slots &gt; 0">
+                            <p class="filters">
+                                <span>Select deck</span>
+                                <select name="selected_deck" size="1">
+                                    <xsl:if test="$param/random_deck_option = 'yes'">
+                                        <option value="{$param/random_deck}">select random</option>
+                                    </xsl:if>
+                                    <xsl:for-each select="$param/decks/*">
+                                        <option value="{deck_id}">
+                                            <xsl:value-of select="deck_name"/>
+                                        </option>
+                                    </xsl:for-each>
+                                    <xsl:if test="$param/show_challenges = 'yes'">
+                                        <xsl:for-each select="$param/ai_challenges/*">
+                                            <xsl:sort select="fullname" order="ascending"/>
+                                            <option value="{name}" class="challenge-deck">
+                                                <xsl:value-of select="name"/>
+                                            </option>
+                                        </xsl:for-each>
+                                    </xsl:if>
+                                </select>
+
+                                <img class="icon-image" width="20" height="14" src="img/blind.png" alt="Hidden cards" title="Hidden cards"/>
+                                <input type="checkbox" name="hidden_mode">
+                                    <xsl:if test="$param/blind_flag = 'yes'">
+                                        <xsl:attribute name="checked">checked</xsl:attribute>
+                                    </xsl:if>
+                                </input>
+                                <img class="icon-image" width="20" height="14" src="img/friendly_play.png" alt="Friendly play" title="Friendly play"/>
+                                <input type="checkbox" name="friendly_mode">
+                                    <xsl:if test="$param/friendly_flag = 'yes'">
+                                        <xsl:attribute name="checked">checked</xsl:attribute>
+                                    </xsl:if>
+                                </input>
+                                <img class="icon-image" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
+                                <input type="checkbox" name="long_mode">
+                                    <xsl:if test="$param/long_flag = 'yes'">
+                                        <xsl:attribute name="checked">checked</xsl:attribute>
+                                    </xsl:if>
+                                </input>
+                                <select name="turn_timeout" title="Turn timeout">
+                                    <xsl:for-each select="exsl:node-set($timeoutValues)/*">
+                                        <option value="{@name}">
+                                            <xsl:if test="$param/timeout = @name">
+                                                <xsl:attribute name="selected">selected</xsl:attribute>
+                                            </xsl:if>
+                                            <xsl:value-of select="@text"/>
+                                        </option>
+                                    </xsl:for-each>
+                                </select>
+                                <button type="submit" name="host_game">Create game</button>
+                            </p>
+                        </xsl:if>
+
+                        <!-- hosted games by player list -->
+                        <xsl:choose>
+                            <xsl:when test="count($param/hosted_games/*) &gt; 0">
+
+                                <div class="responsive-table responsive-table--centered table-sm skin-text inner-level">
+                                    <!-- table header -->
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <p>Modes</p>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <p>Timeout</p>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <p>Created</p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p/>
+                                        </div>
+                                    </div>
+
+                                    <!-- table body -->
+                                    <xsl:for-each select="$param/hosted_games/*">
+                                        <div class="row table-row">
+                                            <div class="col-sm-4">
+                                                <p>
+                                                    <xsl:copy-of select="am:gameModeFlags(
+                                                        am:hasGameMode(game_modes, 'HiddenCards'),
+                                                        am:hasGameMode(game_modes, 'FriendlyPlay'),
+                                                        am:hasGameMode(game_modes, 'LongMode')
+                                                    )"/>
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <p>
+                                                    <xsl:variable name="timeout" select="timeout"/>
+                                                    <xsl:value-of select="exsl:node-set($timeoutValues)/*[@name = $timeout]/@text"/>
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <p>
+                                                    <xsl:copy-of select="am:dateTime(game_action, $param/timezone)"/>
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <p>
+                                                    <button type="submit" name="unhost_game" value="{game_id}" title="Delete game">
+                                                        <span class="glyphicon glyphicon-trash"/>
+                                                    </button>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </xsl:for-each>
+                                </div>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <p class="information-line warning">There are no hosted games.</p>
+                            </xsl:otherwise>
+                        </xsl:choose>
+
+                    </xsl:when>
+                    <!-- end hosted games subsection -->
+
+                    <!-- begin subsection AI games -->
+                    <xsl:when test="$param/current_subsection = 'ai_games'">
+
+                        <!-- host new AI game interface -->
+                        <xsl:if test="$activeDecks &gt; 0 and $param/free_slots &gt; 0">
+                            <p class="filters">
+                                <span>Select deck</span>
+                                <select name="selected_deck" size="1" title="your deck">
+                                    <xsl:if test="$param/random_deck_option = 'yes'">
+                                        <option value="{$param/random_deck}">select random</option>
+                                    </xsl:if>
+                                    <xsl:for-each select="$param/decks/*">
+                                        <option value="{deck_id}">
+                                            <xsl:value-of select="deck_name"/>
+                                        </option>
+                                    </xsl:for-each>
+                                    <xsl:if test="$param/show_challenges = 'yes'">
+                                        <xsl:for-each select="$param/ai_challenges/*">
+                                            <xsl:sort select="fullname" order="ascending"/>
+                                            <option value="{name}" class="challenge-deck">
+                                                <xsl:value-of select="name"/>
+                                            </option>
+                                        </xsl:for-each>
+                                    </xsl:if>
+                                </select>
+
+                                <span>Select AI deck</span>
+                                <select name="selected_ai_deck" size="1" title="AI deck (used only when playing against AI)">
+                                    <option value="starter_deck">starter deck</option>
+                                    <xsl:if test="$param/random_deck_option = 'yes'">
+                                        <option value="{$param/random_ai_deck}">select random</option>
+                                    </xsl:if>
+                                    <xsl:for-each select="$param/decks/*">
+                                        <option value="{deck_id}">
+                                            <xsl:value-of select="deck_name"/>
+                                        </option>
+                                    </xsl:for-each>
+                                </select>
+
+                                <img class="icon-image" width="20" height="14" src="img/blind.png" alt="Hidden cards" title="Hidden cards"/>
+                                <input type="checkbox" name="hidden_mode">
+                                    <xsl:if test="$param/blind_flag = 'yes'">
+                                        <xsl:attribute name="checked">checked</xsl:attribute>
+                                    </xsl:if>
+                                </input>
+                                <img class="icon-image" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
+                                <input type="checkbox" name="long_mode">
+                                    <xsl:if test="$param/long_flag = 'yes'">
+                                        <xsl:attribute name="checked">checked</xsl:attribute>
+                                    </xsl:if>
+                                </input>
+                                <button type="submit" name="ai_game">Create game</button>
+                            </p>
+                        </xsl:if>
+
+                        <!-- AI challenge interface (show only to players that finished tutorial) -->
+                        <xsl:if test="$param/show_challenges = 'yes'">
+                            <xsl:if test="$activeDecks &gt; 0">
+                                <p class="filters">
+                                    <span>Select AI challenge</span>
+                                    <select name="selected_challenge" size="1">
+                                        <xsl:for-each select="$param/ai_challenges/*">
+                                            <xsl:sort select="fullname" order="ascending"/>
+                                            <option value="{name}">
+                                                <xsl:value-of select="fullname"/>
+                                            </option>
+                                        </xsl:for-each>
+                                    </select>
+                                    <xsl:if test="$param/free_slots &gt; 0">
+                                        <button type="submit" name="ai_challenge">Play challenge</button>
+                                    </xsl:if>
+                                </p>
                             </xsl:if>
 
-                        </xsl:when>
-                        <!-- end AI games subsection -->
-                    </xsl:choose>
-                    <!-- end hosted games section -->
-                </xsl:if>
-            </div>
+                            <div id="ai-challenges" class="image-list">
+                                <xsl:for-each select="$param/ai_challenges/*">
+                                    <xsl:sort select="fullname" order="ascending"/>
+                                    <div id="ai-challenge-{name}" class="skin-text image-list__item">
+                                        <h4 class="image-list__item-title"><xsl:value-of select="fullname"/></h4>
+                                        <p class="image-list__item-content">
+                                            <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{am:fileName(name)}.png" alt="avatar"/>
+                                            <xsl:value-of select="description"/>
+                                        </p>
+                                    </div>
+                                </xsl:for-each>
+                            </div>
+                        </xsl:if>
 
-            <!-- auto refresh -->
-            <xsl:if test="$param/auto_refresh &gt; 0">
-                <input type="hidden" name="auto_refresh" value="{$param/auto_refresh}"/>
+                    </xsl:when>
+                    <!-- end AI games subsection -->
+                </xsl:choose>
+                <!-- end hosted games section -->
             </xsl:if>
         </div>
 
@@ -708,7 +705,7 @@
             </xsl:if>
 
 
-            <div class="game-display">
+            <div class="game__board">
                 <!-- custom background image -->
                 <xsl:if test="$param/background_img != 0">
                     <xsl:attribute name="style">
@@ -722,7 +719,7 @@
                 <div class="row">
                     <div class="col-md-5">
                         <!-- game mode flags -->
-                        <div class="game-mode-flags">
+                        <div class="game__mode-flags">
                             <xsl:copy-of select="am:gameModeFlags(
                                 $param/hidden_cards, $param/friendly_play, $param/long_mode, $param/ai_mode, $param/ai_name
                             )"/>
@@ -731,7 +728,7 @@
                         <!-- begin game state indicator -->
                         <xsl:choose>
                             <xsl:when test="$param/game_state = 'in progress'">
-                                <p class="info-label game-state">
+                                <p class="info-label game__state-info">
                                     <xsl:choose>
                                         <xsl:when test="$param/surrender = $param/opponent_name">
                                             <span class="player">
@@ -786,7 +783,7 @@
                         <!-- end surrender/abort button -->
                     </div>
                     <div class="col-md-7">
-                        <div class="buttons">
+                        <div class="game__buttons-bar">
                             <!-- 'refresh' button -->
                             <a class="button button-icon" id="game_refresh" href="{am:makeUrl('Games_details', 'current_game', $param/current_game)}" accesskey="w" title="Refresh">
                                 <span class="glyphicon glyphicon-refresh"/>
@@ -871,7 +868,7 @@
                 <!-- end messages and game buttons -->
 
                 <!-- begin your cards -->
-                <div class="row hand my-hand">
+                <div class="row game__hand my-hand">
                     <xsl:for-each select="exsl:node-set($param/p1_hand)/*">
                         <div>
                             <!-- display card flags, if set -->
@@ -925,7 +922,7 @@
                                 </xsl:if>
                                 <input type="radio" name="selected_card" value="{position()}"/>
                                 <xsl:if test="playable = 'yes' and modes &gt; 0">
-                                    <select name="card_mode[{position()}]" class="card-modes" size="1">
+                                    <select name="card_mode[{position()}]" class="game__card-modes" size="1">
                                         <xsl:variable name="suggestedMode">
                                             <xsl:choose>
                                                 <xsl:when test="suggested = 'yes'">
@@ -952,9 +949,9 @@
                 <!-- end your cards -->
 
                 <div class="row">
-                    <div class="col-md-3 empire-info">
+                    <div class="col-md-3">
                         <!-- my empire info -->
-                        <div class="stats">
+                        <div class="game__empire-stats">
                             <xsl:copy-of select="am:stockInfo($param/p1_stock, $param/p1_changes, $param/res_victory)"/>
                             <xsl:copy-of select="am:castleInfo(
                                 $param/p1_tower, $param/p1_changes/tower, $param/max_tower,
@@ -963,15 +960,15 @@
                         </div>
 
                         <!-- my tower and wall -->
-                        <div class="castle-display">
+                        <div class="game__castle-display">
                             <xsl:copy-of select="am:castleDisplay(
                                 'left', $param/p1_tower, $param/p1_wall, $param/max_tower, $param/max_wall
                             )"/>
                         </div>
 
-                        <div class="player-info">
+                        <div class="game__player-info">
                             <!-- player name -->
-                            <p class="token-counter player-label">
+                            <p class="token-counter game__player-name">
                                 <xsl:value-of select="$param/player_name"/>
                                 <img class="icon-image" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
                             </p>
@@ -984,7 +981,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 empire-info">
+                    <div class="col-md-6">
                         <!-- my discarded cards -->
                         <xsl:copy-of select="am:discardedCards(
                             $param/p1_discarded_cards_0, $param/p1_discarded_cards_1,
@@ -992,14 +989,14 @@
                         )"/>
 
                         <!-- my last played card(s) -->
-                        <div class="card-list">
+                        <div class="game__card-list">
                             <xsl:copy-of select="am:cardHistory(
                                 $param/p1_last_card, $param/card_old_look, $param/card_insignias, $param/p1_card_foils
                             )"/>
                         </div>
 
                         <!-- his last played card(s) -->
-                        <div class="card-list">
+                        <div class="game__card-list">
                             <xsl:copy-of select="am:cardHistory(
                                 $param/p2_last_card, $param/card_old_look, $param/card_insignias, $param/p2_card_foils
                             )"/>
@@ -1011,16 +1008,16 @@
                             $param/card_old_look, $param/card_insignias, $param/p2_card_foils
                         )"/>
                     </div>
-                    <div class="col-md-3 empire-info">
+                    <div class="col-md-3">
                         <!-- his tower and wall -->
-                        <div class="castle-display">
+                        <div class="game__castle-display">
                             <xsl:copy-of select="am:castleDisplay(
                                 'right', $param/p2_tower, $param/p2_wall, $param/max_tower, $param/max_wall
                             )"/>
                         </div>
 
                         <!-- his empire info -->
-                        <div class="stats align-right">
+                        <div class="game__empire-stats align-right">
                             <xsl:copy-of select="am:stockInfo($param/p2_stock, $param/p2_changes, $param/res_victory)"/>
                             <xsl:copy-of select="am:castleInfo(
                                 $param/p2_tower, $param/p2_changes/tower, $param/max_tower,
@@ -1028,9 +1025,9 @@
                             )"/>
                         </div>
 
-                        <div class="player-info">
+                        <div class="game__player-info">
                             <!-- opponent's name -->
-                            <p class="token-counter player-label opponent-label">
+                            <p class="token-counter game__player-name game__player-name--opponent">
                                 <img class="icon-image" width="18" height="12" src="img/flags/{$param/p2_country}.gif" alt="country flag" title="{$param/p2_country}"/>
 
                                 <xsl:copy-of select="am:playerName($param/opponent_name, $param/ai_name, $param/system_name)"/>
@@ -1055,7 +1052,7 @@
                 </div>
 
                 <!-- his cards -->
-                <div class="row hand">
+                <div class="row game__hand">
                     <xsl:copy-of select="am:opponentHand(
                         $param/p2_hand, $param/hidden_cards, $param/card_mini_flag,
                         $param/card_old_look, $param/card_insignias, $param/p2_card_foils, $param/game_state
@@ -1069,19 +1066,19 @@
             <xsl:if test="$param/ai_mode = 'no'">
                 <!-- disabled in case integrated chat setting is disabled -->
                 <xsl:if test="$param/integrated_chat = 'yes'">
-                    <div class="row chat-section">
+                    <div class="row chat-board">
                         <!-- main chat board content -->
                         <div class="col-sm-12">
                             <div>
                                 <!-- message list -->
                                 <xsl:if test="count($param/message_list/*) &gt; 0">
-                                    <div class="chat-box">
+                                    <div class="chat-board__message-box">
                                         <!-- scrolls chat box to bottom if reverse chat order setting is active -->
                                         <xsl:if test="$param/reverse_chat = 'yes'">
-                                            <xsl:attribute name="class">chat-box scroll_max</xsl:attribute>
+                                            <xsl:attribute name="class">chat-board__message-box scroll-max</xsl:attribute>
                                         </xsl:if>
                                         <xsl:for-each select="$param/message_list/*">
-                                            <p>
+                                            <p class="chat-board__message-title">
                                                 <img class="avatar-image" height="20" width="20" alt="avatar">
                                                     <xsl:choose>
                                                         <xsl:when test="author = $param/player_name">
@@ -1101,13 +1098,13 @@
                                                 <span>
                                                     <xsl:choose>
                                                         <xsl:when test="author = $param/player_name">
-                                                            <xsl:attribute name="class">chat-box-player</xsl:attribute>
+                                                            <xsl:attribute name="class">chat-heading-player</xsl:attribute>
                                                         </xsl:when>
                                                         <xsl:when test="author = $param/opponent_name">
-                                                            <xsl:attribute name="class">chat-box-opponent</xsl:attribute>
+                                                            <xsl:attribute name="class">chat-heading-opponent</xsl:attribute>
                                                         </xsl:when>
                                                         <xsl:otherwise>
-                                                            <xsl:attribute name="class">chat-box-system</xsl:attribute>
+                                                            <xsl:attribute name="class">chat-heading-system</xsl:attribute>
                                                         </xsl:otherwise>
                                                     </xsl:choose>
                                                     <xsl:value-of select="author"/>
@@ -1115,7 +1112,7 @@
                                                     <xsl:copy-of select="am:dateTime(created_at, $param/timezone)"/>
                                                 </span>
                                             </p>
-                                            <div>
+                                            <div class="chat-board__message-content">
                                                 <xsl:value-of select="am:bbCodeParseExtended(message)" disable-output-escaping="yes"/>
                                             </div>
                                         </xsl:for-each>
@@ -1124,7 +1121,7 @@
 
                                 <!-- chat board inputs -->
                                 <xsl:if test="$param/chat = 'yes'">
-                                    <div id="chat-inputs">
+                                    <div class="chat-board__inputs">
                                         <textarea name="chat_message" rows="3" cols="50" tabindex="1" accesskey="a"/>
                                         <button class="button-icon" type="submit" name="send_message" tabindex="2" accesskey="s" title="Send">
                                             <span class="glyphicon glyphicon-send"/>
@@ -1139,7 +1136,7 @@
                 <!-- chat modal dialog -->
                 <xsl:if test="$param/integrated_chat = 'no'">
                     <!-- enabled in case integrated chat setting is disabled -->
-                    <div class="modal fade" id="chat-window-dialog" role="dialog">
+                    <div class="modal fade chat-dialog" id="chat-dialog" role="dialog">
                         <div class="vertical-alignment-helper">
                             <div class="modal-dialog vertical-align-center">
                                 <div class="modal-content">
@@ -1149,11 +1146,11 @@
                                     </div>
                                     <div class="modal-body">
                                         <!-- message list -->
-                                        <div>
+                                        <div class="chat-dialog__message-box">
                                             <xsl:if test="count($param/message_list/*) &gt; 0">
                                                 <!-- scrolls chat box to bottom if reverse chat order setting is active -->
                                                 <xsl:if test="$param/reverse_chat = 'yes'">
-                                                    <xsl:attribute name="class">scroll_max</xsl:attribute>
+                                                    <xsl:attribute name="class">chat-dialog__message-box scroll-max</xsl:attribute>
                                                 </xsl:if>
                                                 <xsl:for-each select="$param/message_list/*">
                                                     <p>
@@ -1176,17 +1173,17 @@
                                                         <span>
                                                             <xsl:choose>
                                                                 <xsl:when test="author = $param/player_name">
-                                                                    <xsl:attribute name="class">chat-box-player</xsl:attribute>
+                                                                    <xsl:attribute name="class">chat-heading-player</xsl:attribute>
                                                                 </xsl:when>
                                                                 <!-- highlight new chat messages (never highlight own chat messages) -->
                                                                 <xsl:when test="am:dateDiff(created_at, $param/chat_notification) &lt; 0">
                                                                     <xsl:attribute name="class">new_message</xsl:attribute>
                                                                 </xsl:when>
                                                                 <xsl:when test="author = $param/opponent_name">
-                                                                    <xsl:attribute name="class">chat-box-opponent</xsl:attribute>
+                                                                    <xsl:attribute name="class">chat-heading-opponent</xsl:attribute>
                                                                 </xsl:when>
                                                                 <xsl:otherwise>
-                                                                    <xsl:attribute name="class">chat-box-system</xsl:attribute>
+                                                                    <xsl:attribute name="class">chat-heading-system</xsl:attribute>
                                                                 </xsl:otherwise>
                                                             </xsl:choose>
                                                             <xsl:value-of select="author"/>
@@ -1194,7 +1191,7 @@
                                                             <xsl:copy-of select="am:dateTime(created_at, $param/timezone)"/>
                                                         </span>
                                                     </p>
-                                                    <div class="chat-message">
+                                                    <div class="chat-dialog__message">
                                                         <xsl:value-of select="am:bbCodeParseExtended(message)" disable-output-escaping="yes"/>
                                                     </div>
                                                 </xsl:for-each>
@@ -1299,7 +1296,7 @@
         <xsl:variable name="isMyTurn" select="$param/game_state = 'in progress' and $param/current = $param/player_name and $param/surrender = ''"/>
 
         <div class="game top-level">
-            <div class="game-display">
+            <div class="game__board">
                 <!-- custom background image -->
                 <xsl:if test="$param/background_img != 0">
                     <xsl:attribute name="style">
@@ -1313,7 +1310,7 @@
                 <div class="row">
                     <div>
                         <!-- game mode flags -->
-                        <div class="game-mode-flags">
+                        <div class="game__mode-flags">
                             <xsl:copy-of select="am:gameModeFlags(
                                 $param/hidden_cards, $param/friendly_play, $param/long_mode, $param/ai_mode, $param/ai_name
                             )"/>
@@ -1327,7 +1324,7 @@
                 </div>
 
                 <!-- begin your cards -->
-                <div class="row hand">
+                <div class="row game__hand">
                     <xsl:for-each select="exsl:node-set($param/p1_hand)/*">
                         <div>
                             <!--  display card flags, if set -->
@@ -1362,9 +1359,9 @@
                 <!-- end your cards -->
 
                 <div class="row">
-                    <div class="col-md-3 empire-info">
+                    <div class="col-md-3">
                         <!-- my empire info -->
-                        <div class="stats">
+                        <div class="game__empire-stats">
                             <xsl:copy-of select="am:stockInfo($param/p1_stock, $param/p1_changes, $param/res_victory)"/>
                             <xsl:copy-of select="am:castleInfo(
                                 $param/p1_tower, $param/p1_changes/tower, $param/max_tower,
@@ -1373,15 +1370,15 @@
                         </div>
 
                         <!-- my tower and wall -->
-                        <div class="castle-display">
+                        <div class="game__castle-display">
                             <xsl:copy-of select="am:castleDisplay(
                                 'left', $param/p1_tower, $param/p1_wall, $param/max_tower, $param/max_wall
                             )"/>
                         </div>
 
-                        <div class="player-info">
+                        <div class="game__player-info">
                             <!-- player name -->
-                            <p class="token-counter player-label">
+                            <p class="token-counter game__player-name">
                                 <xsl:value-of select="$param/player_name"/>
                                 <img class="icon-image" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
                             </p>
@@ -1394,7 +1391,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 empire-info">
+                    <div class="col-md-6">
                         <!-- my discarded cards -->
                         <xsl:copy-of select="am:discardedCards(
                             $param/p1_discarded_cards_0, $param/p1_discarded_cards_1,
@@ -1402,14 +1399,14 @@
                         )"/>
 
                         <!-- my last played card(s) -->
-                        <div class="card-list">
+                        <div class="game__card-list">
                             <xsl:copy-of select="am:cardHistory(
                                 $param/p1_last_card, $param/card_old_look, $param/card_insignias, $param/p1_card_foils
                             )"/>
                         </div>
 
                         <!-- his last played card(s) -->
-                        <div class="card-list">
+                        <div class="game__card-list">
                             <xsl:copy-of select="am:cardHistory(
                                 $param/p2_last_card, $param/card_old_look, $param/card_insignias, $param/p2_card_foils
                             )"/>
@@ -1421,16 +1418,16 @@
                             $param/card_old_look, $param/card_insignias, $param/p2_card_foils
                         )"/>
                     </div>
-                    <div class="col-md-3 empire-info">
+                    <div class="col-md-3">
                         <!-- his tower and wall -->
-                        <div class="castle-display">
+                        <div class="game__castle-display">
                             <xsl:copy-of select="am:castleDisplay(
                                 'right', $param/p2_tower, $param/p2_wall, $param/max_tower, $param/max_wall
                             )"/>
                         </div>
 
                         <!-- his empire info -->
-                        <div class="stats align-right">
+                        <div class="game__empire-stats align-right">
                             <xsl:copy-of select="am:stockInfo($param/p2_stock, $param/p2_changes, $param/res_victory)"/>
                             <xsl:copy-of select="am:castleInfo(
                                 $param/p2_tower, $param/p2_changes/tower, $param/max_tower,
@@ -1438,9 +1435,9 @@
                             )"/>
                         </div>
 
-                        <div class="player-info">
+                        <div class="game__player-info">
                             <!-- opponent's name -->
-                            <p class="token-counter player-label opponent-label">
+                            <p class="token-counter game__player-name game__player-name--opponent">
                                 <img class="icon-image" width="18" height="12" src="img/flags/{$param/p2_country}.gif" alt="country flag" title="{$param/p2_country}"/>
 
                                 <xsl:copy-of select="am:playerName($param/opponent_name, $param/ai_name, $param/system_name)"/>
@@ -1465,7 +1462,7 @@
                 </div>
 
                 <!-- his cards -->
-                <div class="row hand">
+                <div class="row game__hand">
                     <xsl:for-each select="$param/p2_hand/*">
                         <div>
                             <!-- display hidden card -->
@@ -1487,16 +1484,10 @@
     <xsl:template match="section[. = 'Games_note']">
         <xsl:variable name="param" select="$params/game_note"/>
 
-        <!-- remember the current location across pages -->
-        <div>
-            <input type="hidden" name="current_game" value="{$param/current_game}"/>
-        </div>
-
-        <div class="game-note">
-
+        <div class="skin-text details-form">
             <h3>Game note</h3>
 
-            <div class="skin-text">
+            <div class="details-form__menu">
                 <a class="button button-icon" href="{am:makeUrl('Games_details', 'current_game', $param/current_game)}">
                     <span class="glyphicon glyphicon-arrow-left"/>
                 </a>
@@ -1504,15 +1495,15 @@
                 <button type="submit" name="save_game_note">Save</button>
                 <button type="submit" name="clear_game_note">Clear</button>
                 <button type="submit" name="clear_game_note_return">Clear &amp; return</button>
-                <hr/>
-
-                <textarea name="content" rows="10" cols="50">
-                    <xsl:value-of select="$param/text"/>
-                </textarea>
             </div>
 
+            <textarea name="content" rows="10" cols="50">
+                <xsl:value-of select="$param/text"/>
+            </textarea>
         </div>
 
+        <!-- remember the current location across pages -->
+        <input type="hidden" name="current_game" value="{$param/current_game}"/>
     </xsl:template>
 
 

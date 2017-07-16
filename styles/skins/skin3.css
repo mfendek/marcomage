@@ -85,18 +85,18 @@ button.marked_button, a.marked_button:link, a.marked_button:visited, .interactiv
 
 /* information label used in multiple instances in game section */
 p.info-label {
-    border: medium ridge green;
+    border-color: green;
     background-color: rgb(39, 73, 45); /* dark green */
 }
 
 /* token counter layout */
 p.token-counter {
-    border: thin solid green;
+    border-color: green;
     background-color: rgb(39, 73, 45); /* dark green */
 }
 
 /* chat box window */
-div.chat-box {
+.chat-board__message-box {
     border: medium ridge green;
     background-color: rgb(39, 73, 45); /* dark green */
 }

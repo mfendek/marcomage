@@ -79,7 +79,7 @@
 
             <xsl:choose>
                 <xsl:when test="count($param/list/*) &gt; 0">
-                    <div class="responsive-table table-md skin-text">
+                    <div class="responsive-table responsive-table--centered table-md skin-text top-level">
                         <!-- table header -->
                         <div class="row">
                             <xsl:variable name="columns">
@@ -222,7 +222,7 @@
             <div class="row">
                 <div class="col-sm-7">
                     <!-- begin navigation -->
-                    <p class="information-line">
+                    <div class="filters filters--plain">
                         <!-- previous -->
                         <xsl:choose>
                             <xsl:when test="$current &gt; 1">
@@ -294,11 +294,11 @@
                                 </span>
                             </xsl:otherwise>
                         </xsl:choose>
-                    </p>
+                    </div>
                     <!-- end navigation -->
                 </div>
                 <div class="col-sm-5">
-                    <p class="information-line">
+                    <div class="filters filters--plain">
                         <!-- player switcher -->
                         <xsl:variable name="view">
                             <xsl:choose>
@@ -333,7 +333,7 @@
                                 <span class="glyphicon glyphicon-pause"/>
                             </button>
                         </xsl:if>
-                    </p>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -387,7 +387,7 @@
                 </xsl:choose>
             </div>
 
-            <div class="game-display">
+            <div class="game__board">
                 <!-- custom background image -->
                 <xsl:if test="$param/background_img != 0">
                     <xsl:attribute name="style">
@@ -401,19 +401,19 @@
                 <div class="row">
                     <div>
                         <!-- game mode flags -->
-                        <div class="game-mode-flags">
+                        <div class="game__mode-flags">
                             <xsl:copy-of select="am:gameModeFlags(
                                 $param/hidden_cards, $param/friendly_play, $param/long_mode, $param/ai_mode, $param/ai_name
                             )"/>
                         </div>
 
                         <!-- game state indicator -->
-                        <p class="info-label game-state"><xsl:value-of select="$param/current_player"/>'s turn</p>
+                        <p class="info-label game__state-info"><xsl:value-of select="$param/current_player"/>'s turn</p>
                     </div>
                 </div>
 
                 <!-- player1 cards -->
-                <div class="row hand">
+                <div class="row game__hand">
                     <xsl:copy-of select="am:hand(
                         $param/p1_hand, $param/hidden_cards, $param/card_mini_flag,
                         $param/card_old_look, $param/card_insignias, $param/p1_card_foils
@@ -421,9 +421,9 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-3 empire-info">
+                    <div class="col-md-3">
                         <!-- player1 empire info -->
-                        <div class="stats">
+                        <div class="game__empire-stats">
                             <xsl:copy-of select="am:stockInfo($param/p1_stock, $param/p1_changes, $param/res_victory)"/>
                             <xsl:copy-of select="am:castleInfo(
                                 $param/p1_tower, $param/p1_changes/tower, $param/max_tower,
@@ -432,15 +432,15 @@
                         </div>
 
                         <!-- player1 tower and wall -->
-                        <div class="castle-display">
+                        <div class="game__castle-display">
                             <xsl:copy-of select="am:castleDisplay(
                                 'left', $param/p1_tower, $param/p1_wall, $param/max_tower, $param/max_wall
                             )"/>
                         </div>
 
-                        <div class="player-info">
+                        <div class="game__player-info">
                             <!-- player1 name -->
-                            <p class="token-counter player-label">
+                            <p class="token-counter game__player-name">
                                 <xsl:copy-of select="am:playerName($param/player1, $param/ai_name, $param/system_name)"/>
                                 <img class="icon-image" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
                             </p>
@@ -457,7 +457,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 empire-info">
+                    <div class="col-md-6">
                         <!-- player1 discarded cards -->
                         <xsl:copy-of select="am:discardedCards(
                             $param/p1_discarded_cards_0, $param/p1_discarded_cards_1,
@@ -465,14 +465,14 @@
                         )"/>
 
                         <!-- player1 last played card(s) -->
-                        <div class="card-list">
+                        <div class="game__card-list">
                             <xsl:copy-of select="am:cardHistory(
                                 $param/p1_last_card, $param/card_old_look, $param/card_insignias, $param/p1_card_foils
                             )"/>
                         </div>
 
                         <!-- player2 last played card(s) -->
-                        <div class="card-list">
+                        <div class="game__card-list">
                             <xsl:copy-of select="am:cardHistory(
                                 $param/p2_last_card, $param/card_old_look, $param/card_insignias, $param/p2_card_foils
                             )"/>
@@ -484,16 +484,16 @@
                             $param/card_old_look, $param/card_insignias, $param/p2_card_foils
                         )"/>
                     </div>
-                    <div class="col-md-3 empire-info">
+                    <div class="col-md-3">
                         <!-- player2 tower and wall -->
-                        <div class="castle-display">
+                        <div class="game__castle-display">
                             <xsl:copy-of select="am:castleDisplay(
                                 'right', $param/p2_tower, $param/p2_wall, $param/max_tower, $param/max_wall
                             )"/>
                         </div>
 
                         <!-- player2 empire info -->
-                        <div class="stats align-right">
+                        <div class="game__empire-stats align-right">
                             <xsl:copy-of select="am:stockInfo($param/p2_stock, $param/p2_changes, $param/res_victory)"/>
                             <xsl:copy-of select="am:castleInfo(
                                 $param/p2_tower, $param/p2_changes/tower, $param/max_tower,
@@ -501,9 +501,9 @@
                             )"/>
                         </div>
 
-                        <div class="player-info">
+                        <div class="game__player-info">
                             <!-- player2 name -->
-                            <p class="token-counter player-label opponent-label">
+                            <p class="token-counter game__player-name game__player-name--opponent">
                                 <img class="icon-image" width="18" height="12" src="img/flags/{$param/p2_country}.gif" alt="country flag" title="{$param/p2_country}"/>
                                 <xsl:copy-of select="am:playerName($param/player2, $param/ai_name, $param/system_name)"/>
                             </p>
@@ -523,7 +523,7 @@
                 </div>
 
                 <!-- player2 cards -->
-                <div class="row hand">
+                <div class="row game__hand">
                     <xsl:copy-of select="am:hand(
                         $param/p2_hand, $param/hidden_cards, $param/card_mini_flag,
                         $param/card_old_look, $param/card_insignias, $param/p2_card_foils
@@ -543,7 +543,7 @@
         <div class="game top-level">
             <div class="row">
                 <!-- begin navigation -->
-                <p class="information-line">
+                <div class="filters">
                     <a class="button" href="{am:makeUrl('Games_details', 'current_game', $param/current_replay)}">
                         <xsl:text>Back to game</xsl:text>
                     </a>
@@ -619,7 +619,7 @@
                             </span>
                         </xsl:otherwise>
                     </xsl:choose>
-                </p>
+                </div>
                 <!-- end navigation -->
             </div>
 
@@ -632,7 +632,7 @@
             </div>
 
 
-            <div class="game-display">
+            <div class="game__board">
                 <!-- custom background image -->
                 <xsl:if test="$param/background_img != 0">
                     <xsl:attribute name="style">
@@ -646,19 +646,19 @@
                 <div class="row">
                     <div>
                         <!-- game mode flags -->
-                        <div class="game-mode-flags">
+                        <div class="game__mode-flags">
                             <xsl:copy-of select="am:gameModeFlags(
                                 $param/hidden_cards, $param/friendly_play, $param/long_mode, $param/ai_mode, $param/ai_name
                             )"/>
                         </div>
 
                         <!-- game state indicator -->
-                        <p class="info-label game-state"><xsl:value-of select="$param/current_player"/>'s turn</p>
+                        <p class="info-label game__state-info"><xsl:value-of select="$param/current_player"/>'s turn</p>
                     </div>
                 </div>
 
                 <!-- player1 cards -->
-                <div class="row hand">
+                <div class="row game__hand">
                     <xsl:copy-of select="am:hand(
                         $param/p1_hand, $param/hidden_cards, $param/card_mini_flag,
                         $param/card_old_look, $param/card_insignias, $param/p1_card_foils
@@ -666,9 +666,9 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-3 empire-info">
+                    <div class="col-md-3">
                         <!-- player1 empire info -->
-                        <div class="stats">
+                        <div class="game__empire-stats">
                             <xsl:copy-of select="am:stockInfo($param/p1_stock, $param/p1_changes, $param/res_victory)"/>
                             <xsl:copy-of select="am:castleInfo(
                                 $param/p1_tower, $param/p1_changes/tower, $param/max_tower,
@@ -677,15 +677,15 @@
                         </div>
 
                         <!-- player1 tower and wall -->
-                        <div class="castle-display">
+                        <div class="game__castle-display">
                             <xsl:copy-of select="am:castleDisplay(
                                 'left', $param/p1_tower, $param/p1_wall, $param/max_tower, $param/max_wall
                             )"/>
                         </div>
 
-                        <div class="player-info">
+                        <div class="game__player-info">
                             <!-- player1 name -->
-                            <p class="token-counter player-label">
+                            <p class="token-counter game__player-name">
                                 <xsl:copy-of select="am:playerName($param/player1, $param/ai_name, $param/system_name)"/>
                                 <img class="icon-image" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
                             </p>
@@ -698,7 +698,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 empire-info">
+                    <div class="col-md-6">
                         <!-- player1 discarded cards -->
                         <xsl:copy-of select="am:discardedCards(
                             $param/p1_discarded_cards_0, $param/p1_discarded_cards_1,
@@ -706,14 +706,14 @@
                         )"/>
 
                         <!-- player1 last played card(s) -->
-                        <div class="card-list">
+                        <div class="game__card-list">
                             <xsl:copy-of select="am:cardHistory(
                                 $param/p1_last_card, $param/card_old_look, $param/card_insignias, $param/p1_card_foils
                             )"/>
                         </div>
 
                         <!-- player2 last played card(s) -->
-                        <div class="card-list">
+                        <div class="game__card-list">
                             <xsl:copy-of select="am:cardHistory(
                                 $param/p2_last_card, $param/card_old_look, $param/card_insignias, $param/p2_card_foils
                             )"/>
@@ -725,16 +725,16 @@
                             $param/card_old_look, $param/card_insignias, $param/p2_card_foils
                         )"/>
                     </div>
-                    <div class="col-md-3 empire-info">
+                    <div class="col-md-3">
                         <!-- player2 tower and wall -->
-                        <div class="castle-display">
+                        <div class="game__castle-display">
                             <xsl:copy-of select="am:castleDisplay(
                                 'right', $param/p2_tower, $param/p2_wall, $param/max_tower, $param/max_wall
                             )"/>
                         </div>
 
                         <!-- player2 empire info -->
-                        <div class="stats align-right">
+                        <div class="game__empire-stats align-right">
                             <xsl:copy-of select="am:stockInfo($param/p2_stock, $param/p2_changes, $param/res_victory)"/>
                             <xsl:copy-of select="am:castleInfo(
                                 $param/p2_tower, $param/p2_changes/tower, $param/max_tower,
@@ -742,9 +742,9 @@
                             )"/>
                         </div>
 
-                        <div class="player-info">
+                        <div class="game__player-info">
                             <!-- player2 name -->
-                            <p class="token-counter player-label opponent-label">
+                            <p class="token-counter game__player-name game__player-name--opponent">
                                 <img class="icon-image" width="18" height="12" src="img/flags/{$param/p2_country}.gif" alt="country flag" title="{$param/p2_country}"/>
                                 <xsl:copy-of select="am:playerName($param/player2, $param/ai_name, $param/system_name)"/>
                             </p>
@@ -764,7 +764,7 @@
                 </div>
 
                 <!-- player2 cards -->
-                <div class="row hand">
+                <div class="row game__hand">
                     <xsl:copy-of select="am:opponentHand(
                         $param/p2_hand, $param/hidden_cards, $param/card_mini_flag,
                         $param/card_old_look, $param/card_insignias, $param/p2_card_foils

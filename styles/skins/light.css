@@ -82,19 +82,15 @@ button[disabled] {
     color: green;
 }
 
-p.info-label .opponent {
-    color: red;
-}
-
-.chat-box-player {
+.chat-heading-player {
     color: green;
 }
 
-.chat-box-opponent {
+.chat-heading-opponent {
     color: purple;
 }
 
-.chat-box-system {
+.chat-heading-system {
     color: red;
 }
 
