@@ -25,7 +25,7 @@ $(document).ready(function() {
     });
 
     // card concept delete confirmation
-    $('div.concepts-edit button[name="delete_concept"]').click(function() {
+    $('button[name="delete_concept"]').click(function() {
         // action was already approved
         if (confirmed) {
             // skip standard confirmation

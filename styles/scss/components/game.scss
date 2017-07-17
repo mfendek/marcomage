@@ -135,7 +135,7 @@
 
   &__player-name {
     display: inline-block;
-    font-size: small;
+    font-size: $font-size-small;
     font-family: $font-family-arial;
     margin-bottom: 0.5ex;
     margin-top: 0;
@@ -154,7 +154,7 @@
   }
 
   &__empire-changes {
-    font-size: x-small;
+    font-size: $font-size-x-small;
     font-weight: normal;
     margin-left: 0.3ex;
   }
@@ -219,11 +219,11 @@
     border-radius: 6px;
     border-style: ridge;
     border-width: medium;
-    font-size: medium;
+    font-size: $font-size-medium;
     text-align: center;
 
     &--small {
-      font-size: x-small;
+      font-size: $font-size-x-small;
       text-transform: uppercase;
     }
   }
@@ -233,7 +233,7 @@
     border-style: solid;
     border-width: thin;
     display: inline-block;
-    font-size: small;
+    font-size: $font-size-small;
     margin: 1ex 0.5ex 0 0.5ex;
     padding: 0.5ex 1ex 0.5ex 1ex;
     text-align: center;
@@ -248,7 +248,7 @@
   }
 
   .flag-space {
-    font-size: x-small;
+    font-size: $font-size-x-small;
     margin-bottom: 1.5ex;
     margin-top: 0.5ex;
 
@@ -263,7 +263,7 @@
   .card-flag {
     border: ridge $soft-blue;
     border-radius: 6px;
-    font-size: x-small;
+    font-size: $font-size-x-small;
     max-width: 88px;
     margin: 0.5ex auto 1.5ex;
     text-transform: uppercase;
@@ -365,7 +365,7 @@
     margin-top: 1ex;
 
     textarea {
-      font-size: medium;
+      font-size: $font-size-medium;
       margin-top: 1ex;
       max-width: 50em;
     }

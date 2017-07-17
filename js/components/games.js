@@ -118,7 +118,7 @@ $(document).ready(function() {
             return false;
         }
 
-        if ($('div.selected-card').parent().hasClass('unplayable')) {
+        if ($('.selected-card').parent().hasClass('unplayable')) {
             notification.displayError("Card can't be played.");
             return false;
         }
@@ -184,7 +184,7 @@ $(document).ready(function() {
     });
 
     // card selection (via card modes)
-    $('select.game__card-modes').click(function() {
+    $('.game__card-modes').click(function() {
         let currentCard = $(this).prevAll('div').children('.card');
 
         if (!currentCard.hasClass('selected-card')) {
@@ -240,7 +240,7 @@ $(document).ready(function() {
     });
 
     // open game note
-    $('a#game-note').click(function(event) {
+    $('#game-note').click(function(event) {
         event.preventDefault();
         // disable auto refresh when user opens the game note
         window.clearInterval(gameRefreshTimer);
@@ -269,11 +269,11 @@ $(document).ready(function() {
             // update note button highlight
             // case 1: note is empty (remove highlight)
             if (gameNote === '') {
-                $('a#game-note').removeClass('marked-button');
+                $('#game-note').removeClass('marked-button');
             }
             // case 2: note is not empty (add highlight if not present)
-            else if (!$('a#game-note').hasClass('marked-button')) {
-                $('a#game-note').addClass('marked-button');
+            else if (!$('#game-note').hasClass('marked-button')) {
+                $('#game-note').addClass('marked-button');
             }
 
             $('#game-note-dialog').modal('hide');
@@ -295,7 +295,7 @@ $(document).ready(function() {
             $('textarea[name="content"]').val('');
 
             // update note button highlight (remove highlight)
-            $('a#game-note').removeClass('marked-button');
+            $('#game-note').removeClass('marked-button');
         });
 
         // hide note dialog

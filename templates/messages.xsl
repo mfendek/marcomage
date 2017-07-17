@@ -32,7 +32,7 @@
                         <p class="information-line warning">You cannot start any more games.</p>
                     </xsl:if>
 
-                    <div class="subsection-navigation">
+                    <div class="filters">
                         <xsl:variable name="challengeSections">
                             <value name="incoming" value="Incoming"/>
                             <value name="outgoing" value="Outgoing"/>
@@ -156,7 +156,7 @@
 
                     <!-- begin buttons and filters -->
 
-                    <div class="subsection-navigation">
+                    <div class="filters">
                         <xsl:variable name="messageSections">
                             <value name="inbox" value="Inbox"/>
                             <value name="sent_mail" value="Sent mail"/>

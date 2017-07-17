@@ -151,7 +151,7 @@
       background-color: $black;
       border: ridge $white;
       color: $pure-orange;
-      font-size: x-small;
+      font-size: $font-size-x-small;
       margin: 1ex 0 1ex 0;
       width: 88px;
     }
@@ -160,7 +160,7 @@
       background-color: $black;
       border: 2px outset $soft-blue;
       color: $pure-yellow;
-      font-size: small;
+      font-size: $font-size-small;
       text-shadow: none;
       vertical-align: middle;
     }

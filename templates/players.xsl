@@ -131,7 +131,7 @@
                             <a class="hidden-link" href="{am:makeUrl('Players_achievements', 'Profile', name)}">
                                 <img class="icon-image" height="16" width="16" src="img/achievement.png" alt="{name}'s achievements" title="{name}'s achievements"/>
                             </a>
-                            <img class="icon-image" width="18" height="12" src="img/flags/{country}.gif" alt="country flag" title="{country}"/>
+                            <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName(country)}.gif" alt="country flag" title="{country}"/>
                             <a class="hidden-link details-link" href="{am:makeUrl('Players_details', 'Profile', name)}">
                                 <xsl:value-of select="name"/>
                             </a>
@@ -306,7 +306,7 @@
                         <div class="col-xs-6"><p>Country</p></div>
                         <div class="col-xs-6">
                             <p>
-                                <img class="icon-image" width="18" height="12" src="img/flags/{$param/country}.gif" alt="country flag" title="{$param/country}"/>
+                                <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/country)}.gif" alt="country flag" title="{$param/country}"/>
                                 <span class="detail-value"><xsl:value-of select="$param/country"/></span>
                             </p>
                         </div>

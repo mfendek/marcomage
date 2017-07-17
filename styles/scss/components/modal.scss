@@ -53,12 +53,12 @@
 
   &--announcement {
     .modal-title {
-      font-size: large;
+      font-size: $font-size-large;
       text-align: center;
     }
 
     .modal-body {
-      font-size: large;
+      font-size: $font-size-large;
       text-align: justify;
     }
 

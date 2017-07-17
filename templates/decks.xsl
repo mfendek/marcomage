@@ -18,7 +18,7 @@
 
         <!-- upper navigation -->
         <xsl:if test="$param/player_level &gt;= $param/tutorial_end">
-            <div class="subsection-navigation">
+            <div class="filters">
                 <a class="button" href="{am:makeUrl('Decks_shared')}">Shared decks</a>
             </div>
         </xsl:if>
@@ -89,7 +89,7 @@
         <xsl:variable name="param" select="$params/decks_shared"/>
 
         <!-- upper navigation -->
-        <div class="subsection-navigation">
+        <div class="filters">
 
             <!-- author filter -->
             <xsl:if test="count($param/authors/*) &gt; 0">
@@ -207,7 +207,7 @@
             </xsl:for-each>
         </div>
 
-        <div class="subsection-navigation">
+        <div class="filters">
             <!-- lower navigation -->
             <xsl:copy-of select="am:lowerNavigation($param/page_count, $param/current_page, 'decks', 'Decks_shared')"/>
         </div>
@@ -267,7 +267,7 @@
     <xsl:template match="section[. = 'Decks_view']">
         <xsl:variable name="param" select="$params/deck_view"/>
 
-        <div class="subsection-navigation subsection-navigation--plain">
+        <div class="filters">
             <a class="button" href="{am:makeUrl('Games_details', 'current_game', $param/current_game)}">Back to game</a>
         </div>
 

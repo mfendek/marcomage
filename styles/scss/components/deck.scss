@@ -10,7 +10,7 @@
   &__header {
     background-color: $soft-blue;
     font-family: $font-family-arial;
-    font-size: large;
+    font-size: $font-size-large;
     padding-bottom: 0.5ex;
     padding-top: 0.5ex;
     text-align: center;
@@ -73,7 +73,7 @@
   .locked-card {
     color: $pure-red;
     font-family: $font-family-arial;
-    font-size: large;
+    font-size: $font-size-large;
     left: 11px;
     margin: 0;
     padding: 0;

@@ -18,197 +18,195 @@
     <xsl:template match="section[. = 'Replays']">
         <xsl:variable name="param" select="$params/replays"/>
 
-        <div id="games">
-            <!-- begin filters and navigation -->
-            <div class="filters">
-                <!-- player filter -->
-                <input type="text" name="player_filter" maxlength="20" size="20" value="{$param/player_filter}" title="search phrase for player name"/>
+        <!-- begin filters and navigation -->
+        <div class="filters">
+            <!-- player filter -->
+            <input type="text" name="player_filter" maxlength="20" size="20" value="{$param/player_filter}" title="search phrase for player name"/>
 
-                <!-- victory type filter -->
-                <xsl:variable name="victoryTypes">
-                    <value name="No victory filter" value="none"/>
-                    <value name="Tower building" value="Construction"/>
-                    <value name="Tower destruction" value="Destruction"/>
-                    <value name="Resource accumulation" value="Resource"/>
-                    <value name="Timeout" value="Timeout"/>
-                    <value name="Draw" value="Draw"/>
-                    <value name="Surrender" value="Surrender"/>
-                    <value name="Aborted" value="Abort"/>
-                    <value name="Abandon" value="Abandon"/>
-                </xsl:variable>
-                <xsl:copy-of select="am:htmlSelectBox('victory_filter', $param/victory_filter, $victoryTypes, '')"/>
+            <!-- victory type filter -->
+            <xsl:variable name="victoryTypes">
+                <value name="No victory filter" value="none"/>
+                <value name="Tower building" value="Construction"/>
+                <value name="Tower destruction" value="Destruction"/>
+                <value name="Resource accumulation" value="Resource"/>
+                <value name="Timeout" value="Timeout"/>
+                <value name="Draw" value="Draw"/>
+                <value name="Surrender" value="Surrender"/>
+                <value name="Aborted" value="Abort"/>
+                <value name="Abandon" value="Abandon"/>
+            </xsl:variable>
+            <xsl:copy-of select="am:htmlSelectBox('victory_filter', $param/victory_filter, $victoryTypes, '')"/>
 
-                <xsl:variable name="modeOptions">
-                    <value name="ignore" value="none"/>
-                    <value name="include" value="include"/>
-                    <value name="exclude" value="exclude"/>
-                </xsl:variable>
+            <xsl:variable name="modeOptions">
+                <value name="ignore" value="none"/>
+                <value name="include" value="include"/>
+                <value name="exclude" value="exclude"/>
+            </xsl:variable>
 
-                <!-- hidden cards filter -->
-                <img class="icon-image" width="20" height="14" src="img/blind.png" alt="Hidden cards" title="Hidden cards"/>
-                <xsl:copy-of select="am:htmlSelectBox('hidden_cards', $param/hidden_cards, $modeOptions, '')"/>
+            <!-- hidden cards filter -->
+            <img class="icon-image" width="20" height="14" src="img/blind.png" alt="Hidden cards" title="Hidden cards"/>
+            <xsl:copy-of select="am:htmlSelectBox('hidden_cards', $param/hidden_cards, $modeOptions, '')"/>
 
-                <!-- friendly game filter -->
-                <img class="icon-image" width="20" height="14" src="img/friendly_play.png" alt="Friendly play" title="Friendly play"/>
-                <xsl:copy-of select="am:htmlSelectBox('friendly_play', $param/friendly_play, $modeOptions, '')"/>
+            <!-- friendly game filter -->
+            <img class="icon-image" width="20" height="14" src="img/friendly_play.png" alt="Friendly play" title="Friendly play"/>
+            <xsl:copy-of select="am:htmlSelectBox('friendly_play', $param/friendly_play, $modeOptions, '')"/>
 
-                <!-- long mode filter -->
-                <img class="icon-image" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
-                <xsl:copy-of select="am:htmlSelectBox('long_mode', $param/long_mode, $modeOptions, '')"/>
+            <!-- long mode filter -->
+            <img class="icon-image" width="20" height="14" src="img/long_mode.png" alt="Long mode" title="Long mode"/>
+            <xsl:copy-of select="am:htmlSelectBox('long_mode', $param/long_mode, $modeOptions, '')"/>
 
-                <!-- ai mode filter -->
-                <img class="icon-image" width="20" height="14" src="img/ai_mode.png" alt="AI mode" title="AI mode"/>
-                <xsl:copy-of select="am:htmlSelectBox('ai_mode', $param/ai_mode, $modeOptions, '')"/>
+            <!-- ai mode filter -->
+            <img class="icon-image" width="20" height="14" src="img/ai_mode.png" alt="AI mode" title="AI mode"/>
+            <xsl:copy-of select="am:htmlSelectBox('ai_mode', $param/ai_mode, $modeOptions, '')"/>
 
-                <!-- ai challenge filter -->
-                <img class="icon-image" width="20" height="14" src="img/ai_challenge.png" alt="AI challenge" title="AI challenge"/>
-                <xsl:copy-of select="am:htmlSelectBox('challenge_filter', $param/challenge_filter, $modeOptions, $param/ai_challenges)"/>
+            <!-- ai challenge filter -->
+            <img class="icon-image" width="20" height="14" src="img/ai_challenge.png" alt="AI challenge" title="AI challenge"/>
+            <xsl:copy-of select="am:htmlSelectBox('challenge_filter', $param/challenge_filter, $modeOptions, $param/ai_challenges)"/>
 
-                <button class="button-icon" type="submit" name="replays_apply_filters" title="Apply filters">
-                    <span class="glyphicon glyphicon-filter"/>
-                </button>
-                <button class="button-icon" type="submit" name="show_my_replays" title="My replays">
-                    <span class="glyphicon glyphicon-user"/>
-                </button>
-            </div>
-            <div class="filters">
-                <!-- navigation -->
-                <xsl:copy-of select="am:upperNavigation($param/page_count, $param/current_page, 'replays')"/>
-            </div>
-            <!-- end filters and navigation -->
+            <button class="button-icon" type="submit" name="replays_apply_filters" title="Apply filters">
+                <span class="glyphicon glyphicon-filter"/>
+            </button>
+            <button class="button-icon" type="submit" name="show_my_replays" title="My replays">
+                <span class="glyphicon glyphicon-user"/>
+            </button>
+        </div>
+        <div class="filters">
+            <!-- navigation -->
+            <xsl:copy-of select="am:upperNavigation($param/page_count, $param/current_page, 'replays')"/>
+        </div>
+        <!-- end filters and navigation -->
 
-            <xsl:choose>
-                <xsl:when test="count($param/list/*) &gt; 0">
-                    <div class="responsive-table responsive-table--centered table-md skin-text top-level">
-                        <!-- table header -->
-                        <div class="row">
-                            <xsl:variable name="columns">
-                                <column name="winner" text="Winner" sortable="no" size="2"/>
-                                <column name="loser" text="Defeated" sortable="no" size="2"/>
-                                <column name="outcome_type" text="Outcome" sortable="no" size="1"/>
-                                <column name="rounds" text="Rounds" sortable="yes" size="2"/>
-                                <column name="started_at" text="Started" sortable="yes" size="1"/>
-                                <column name="finished_at" text="Finished" sortable="yes" size="1"/>
-                                <column name="game_modes" text="Modes" sortable="no" size="2"/>
-                                <column name="views" text="Views" sortable="no" size="1"/>
-                            </xsl:variable>
+        <xsl:choose>
+            <xsl:when test="count($param/list/*) &gt; 0">
+                <div class="responsive-table responsive-table--centered table-md skin-text top-level">
+                    <!-- table header -->
+                    <div class="row">
+                        <xsl:variable name="columns">
+                            <column name="winner" text="Winner" sortable="no" size="2"/>
+                            <column name="loser" text="Defeated" sortable="no" size="2"/>
+                            <column name="outcome_type" text="Outcome" sortable="no" size="1"/>
+                            <column name="rounds" text="Rounds" sortable="yes" size="2"/>
+                            <column name="started_at" text="Started" sortable="yes" size="1"/>
+                            <column name="finished_at" text="Finished" sortable="yes" size="1"/>
+                            <column name="game_modes" text="Modes" sortable="no" size="2"/>
+                            <column name="views" text="Views" sortable="no" size="1"/>
+                        </xsl:variable>
 
-                            <xsl:for-each select="exsl:node-set($columns)/*">
-                                <div class="col-md-{@size}">
-                                    <p>
-                                        <xsl:if test="@sortable = 'yes'">
-                                            <xsl:attribute name="class">sortable-cell</xsl:attribute>
-                                        </xsl:if>
+                        <xsl:for-each select="exsl:node-set($columns)/*">
+                            <div class="col-md-{@size}">
+                                <p>
+                                    <xsl:if test="@sortable = 'yes'">
+                                        <xsl:attribute name="class">sortable-cell</xsl:attribute>
+                                    </xsl:if>
 
-                                        <span><xsl:value-of select="@text"/></span>
-                                        <xsl:if test="@sortable = 'yes'">
-                                            <button class="button-icon" type="submit" value="{@name}">
-                                                <xsl:if test="$param/cond = @name">
-                                                    <xsl:attribute name="class">button-icon pushed</xsl:attribute>
-                                                </xsl:if>
-                                                <xsl:choose>
-                                                    <xsl:when test="$param/cond = @name and $param/order = 'DESC'">
-                                                        <xsl:attribute name="name">replays_order_asc</xsl:attribute>
-                                                        <span class="glyphicon glyphicon-sort-by-attributes-alt"/>
-                                                    </xsl:when>
-                                                    <xsl:otherwise>
-                                                        <xsl:attribute name="name">replays_order_desc</xsl:attribute>
-                                                        <span class="glyphicon glyphicon-sort-by-attributes"/>
-                                                    </xsl:otherwise>
-                                                </xsl:choose>
-                                            </button>
-                                        </xsl:if>
-                                    </p>
-                                </div>
-                            </xsl:for-each>
-                        </div>
-
-                        <!-- table body -->
-                        <xsl:for-each select="$param/list/*">
-                            <!-- AI challenge name transformation -->
-                            <xsl:variable name="player2">
-                                <xsl:choose>
-                                    <xsl:when test="ai_name != ''">
-                                        <xsl:value-of select="ai_name"/>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:value-of select="player2"/>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:variable>
-                            <div class="row table-row table-row--details">
-                                <div class="col-md-2">
-                                    <p>
-                                        <xsl:variable name="winner">
+                                    <span><xsl:value-of select="@text"/></span>
+                                    <xsl:if test="@sortable = 'yes'">
+                                        <button class="button-icon" type="submit" value="{@name}">
+                                            <xsl:if test="$param/cond = @name">
+                                                <xsl:attribute name="class">button-icon pushed</xsl:attribute>
+                                            </xsl:if>
                                             <xsl:choose>
-                                                <xsl:when test="winner != '' and winner = player1">
-                                                    <xsl:value-of select="player1"/>
-                                                </xsl:when>
-                                                <xsl:when test="winner != '' and winner = player2">
-                                                    <xsl:value-of select="$player2"/>
+                                                <xsl:when test="$param/cond = @name and $param/order = 'DESC'">
+                                                    <xsl:attribute name="name">replays_order_asc</xsl:attribute>
+                                                    <span class="glyphicon glyphicon-sort-by-attributes-alt"/>
                                                 </xsl:when>
                                                 <xsl:otherwise>
-                                                    <xsl:value-of select="player1"/> / <xsl:value-of select="$player2"/>
+                                                    <xsl:attribute name="name">replays_order_desc</xsl:attribute>
+                                                    <span class="glyphicon glyphicon-sort-by-attributes"/>
                                                 </xsl:otherwise>
                                             </xsl:choose>
-                                        </xsl:variable>
-
-                                        <xsl:choose>
-                                            <xsl:when test="is_deleted = 'no'">
-                                                <a class="hidden-link details-link" href="{am:makeUrl('Replays_details', 'CurrentReplay', game_id, 'PlayerView', 1, 'Turn', 1)}">
-                                                    <xsl:value-of select="$winner"/>
-                                                </a>
-                                            </xsl:when>
-                                            <xsl:otherwise><xsl:value-of select="$winner"/></xsl:otherwise>
-                                        </xsl:choose>
-                                    </p>
-                                </div>
-                                <div class="col-md-2">
-                                    <p>
-                                        <xsl:choose>
-                                            <xsl:when test="winner = player1">
-                                                <xsl:value-of select="$player2"/>
-                                            </xsl:when>
-                                            <xsl:when test="winner = player2">
-                                                <xsl:value-of select="player1"/>
-                                            </xsl:when>
-                                        </xsl:choose>
-                                    </p>
-                                </div>
-                                <div class="col-md-1"><p><xsl:value-of select="outcome_type"/></p></div>
-                                <div class="col-md-2"><p><xsl:value-of select="rounds"/></p></div>
-                                <div class="col-md-1"><p><xsl:copy-of select="am:date(started_at, $param/timezone)"/></p></div>
-                                <div class="col-md-1"><p><xsl:copy-of select="am:date(finished_at, $param/timezone)"/></p></div>
-                                <div class="col-md-2">
-                                    <p>
-                                        <xsl:copy-of select="am:gameModeFlags(
-                                            am:hasGameMode(game_modes, 'HiddenCards'),
-                                            am:hasGameMode(game_modes, 'FriendlyPlay'),
-                                            am:hasGameMode(game_modes, 'LongMode'),
-                                            am:hasGameMode(game_modes, 'AIMode'),
-                                            ai_name
-                                        )"/>
-                                    </p>
-                                </div>
-                                <div class="col-md-1"><p><xsl:value-of select="views"/></p></div>
+                                        </button>
+                                    </xsl:if>
+                                </p>
                             </div>
                         </xsl:for-each>
                     </div>
 
-                    <div class="filters">
-                        <!-- lower navigation -->
-                        <xsl:copy-of select="am:lowerNavigation($param/page_count, $param/current_page, 'replays', 'Replays')"/>
-                    </div>
-                </xsl:when>
-                <xsl:otherwise>
-                    <p class="information-line warning">There are no game replays.</p>
-                </xsl:otherwise>
-            </xsl:choose>
+                    <!-- table body -->
+                    <xsl:for-each select="$param/list/*">
+                        <!-- AI challenge name transformation -->
+                        <xsl:variable name="player2">
+                            <xsl:choose>
+                                <xsl:when test="ai_name != ''">
+                                    <xsl:value-of select="ai_name"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:value-of select="player2"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:variable>
+                        <div class="row table-row table-row--details">
+                            <div class="col-md-2">
+                                <p>
+                                    <xsl:variable name="winner">
+                                        <xsl:choose>
+                                            <xsl:when test="winner != '' and winner = player1">
+                                                <xsl:value-of select="player1"/>
+                                            </xsl:when>
+                                            <xsl:when test="winner != '' and winner = player2">
+                                                <xsl:value-of select="$player2"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:value-of select="player1"/> / <xsl:value-of select="$player2"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </xsl:variable>
 
-            <input type="hidden" name="replays_current_page" value="{$param/current_page}"/>
-            <input type="hidden" name="replays_current_order" value="{$param/order}"/>
-            <input type="hidden" name="replays_current_condition" value="{$param/cond}"/>
-        </div>
+                                    <xsl:choose>
+                                        <xsl:when test="is_deleted = 'no'">
+                                            <a class="hidden-link details-link" href="{am:makeUrl('Replays_details', 'CurrentReplay', game_id, 'PlayerView', 1, 'Turn', 1)}">
+                                                <xsl:value-of select="$winner"/>
+                                            </a>
+                                        </xsl:when>
+                                        <xsl:otherwise><xsl:value-of select="$winner"/></xsl:otherwise>
+                                    </xsl:choose>
+                                </p>
+                            </div>
+                            <div class="col-md-2">
+                                <p>
+                                    <xsl:choose>
+                                        <xsl:when test="winner = player1">
+                                            <xsl:value-of select="$player2"/>
+                                        </xsl:when>
+                                        <xsl:when test="winner = player2">
+                                            <xsl:value-of select="player1"/>
+                                        </xsl:when>
+                                    </xsl:choose>
+                                </p>
+                            </div>
+                            <div class="col-md-1"><p><xsl:value-of select="outcome_type"/></p></div>
+                            <div class="col-md-2"><p><xsl:value-of select="rounds"/></p></div>
+                            <div class="col-md-1"><p><xsl:copy-of select="am:date(started_at, $param/timezone)"/></p></div>
+                            <div class="col-md-1"><p><xsl:copy-of select="am:date(finished_at, $param/timezone)"/></p></div>
+                            <div class="col-md-2">
+                                <p>
+                                    <xsl:copy-of select="am:gameModeFlags(
+                                        am:hasGameMode(game_modes, 'HiddenCards'),
+                                        am:hasGameMode(game_modes, 'FriendlyPlay'),
+                                        am:hasGameMode(game_modes, 'LongMode'),
+                                        am:hasGameMode(game_modes, 'AIMode'),
+                                        ai_name
+                                    )"/>
+                                </p>
+                            </div>
+                            <div class="col-md-1"><p><xsl:value-of select="views"/></p></div>
+                        </div>
+                    </xsl:for-each>
+                </div>
+
+                <div class="filters">
+                    <!-- lower navigation -->
+                    <xsl:copy-of select="am:lowerNavigation($param/page_count, $param/current_page, 'replays', 'Replays')"/>
+                </div>
+            </xsl:when>
+            <xsl:otherwise>
+                <p class="information-line warning">There are no game replays.</p>
+            </xsl:otherwise>
+        </xsl:choose>
+
+        <input type="hidden" name="replays_current_page" value="{$param/current_page}"/>
+        <input type="hidden" name="replays_current_order" value="{$param/order}"/>
+        <input type="hidden" name="replays_current_condition" value="{$param/cond}"/>
 
     </xsl:template>
 
@@ -442,7 +440,7 @@
                             <!-- player1 name -->
                             <p class="token-counter game__player-name">
                                 <xsl:copy-of select="am:playerName($param/player1, $param/ai_name, $param/system_name)"/>
-                                <img class="icon-image" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
+                                <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p1_country)}.gif" alt="country flag" title="{$param/p1_country}"/>
                             </p>
 
                             <xsl:variable name="avatarName" select="am:avatarFileName(
@@ -504,7 +502,7 @@
                         <div class="game__player-info">
                             <!-- player2 name -->
                             <p class="token-counter game__player-name game__player-name--opponent">
-                                <img class="icon-image" width="18" height="12" src="img/flags/{$param/p2_country}.gif" alt="country flag" title="{$param/p2_country}"/>
+                                <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p2_country)}.gif" alt="country flag" title="{$param/p2_country}"/>
                                 <xsl:copy-of select="am:playerName($param/player2, $param/ai_name, $param/system_name)"/>
                             </p>
 
@@ -687,7 +685,7 @@
                             <!-- player1 name -->
                             <p class="token-counter game__player-name">
                                 <xsl:copy-of select="am:playerName($param/player1, $param/ai_name, $param/system_name)"/>
-                                <img class="icon-image" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
+                                <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p1_country)}.gif" alt="country flag" title="{$param/p1_country}"/>
                             </p>
 
                             <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$param/p1_avatar}" alt="avatar"/>
@@ -745,7 +743,7 @@
                         <div class="game__player-info">
                             <!-- player2 name -->
                             <p class="token-counter game__player-name game__player-name--opponent">
-                                <img class="icon-image" width="18" height="12" src="img/flags/{$param/p2_country}.gif" alt="country flag" title="{$param/p2_country}"/>
+                                <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p2_country)}.gif" alt="country flag" title="{$param/p2_country}"/>
                                 <xsl:copy-of select="am:playerName($param/player2, $param/ai_name, $param/system_name)"/>
                             </p>
 

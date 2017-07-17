@@ -17,7 +17,7 @@ h1 {
 h2,
 h3 {
   font-family: $font-family-arial;
-  font-size: large;
+  font-size: $font-size-large;
   text-align: center;
 }
 
@@ -29,7 +29,7 @@ h3 {
 h4,
 h5 {
   font-family: $font-family-arial;
-  font-size: medium;
+  font-size: $font-size-medium;
   line-height: normal;
 }
 
@@ -52,7 +52,7 @@ div.code > pre {
 // quote text layout
 blockquote {
   border: none;
-  font-size: medium;
+  font-size: $font-size-medium;
   margin-bottom: 1ex;
   margin-left: 2ex;
   margin-top: 1ex;
@@ -61,7 +61,7 @@ blockquote {
   &> div {
     background: url('/img/quote.gif') no-repeat 10px 10px;
     border-radius: 6px;
-    font-size: small;
+    font-size: $font-size-small;
     padding: 1.8em 0.8em 0.8em 0.8em;
 
     // author name layout in quote text

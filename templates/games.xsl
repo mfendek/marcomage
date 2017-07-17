@@ -31,7 +31,7 @@
 
         <div class="skin-label top-level">
             <!-- subsection navigation -->
-            <p class="subsection-navigation">
+            <p class="filters">
                 <xsl:variable name="subsections">
                     <item name="active_games" text="Active games"/>
                     <item name="free_games" text="Hosted games"/>
@@ -970,7 +970,7 @@
                             <!-- player name -->
                             <p class="token-counter game__player-name">
                                 <xsl:value-of select="$param/player_name"/>
-                                <img class="icon-image" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
+                                <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p1_country)}.gif" alt="country flag" title="{$param/p1_country}"/>
                             </p>
 
                             <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$param/p1_avatar}" alt="avatar"/>
@@ -1028,7 +1028,7 @@
                         <div class="game__player-info">
                             <!-- opponent's name -->
                             <p class="token-counter game__player-name game__player-name--opponent">
-                                <img class="icon-image" width="18" height="12" src="img/flags/{$param/p2_country}.gif" alt="country flag" title="{$param/p2_country}"/>
+                                <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p2_country)}.gif" alt="country flag" title="{$param/p2_country}"/>
 
                                 <xsl:copy-of select="am:playerName($param/opponent_name, $param/ai_name, $param/system_name)"/>
 
@@ -1380,7 +1380,7 @@
                             <!-- player name -->
                             <p class="token-counter game__player-name">
                                 <xsl:value-of select="$param/player_name"/>
-                                <img class="icon-image" width="18" height="12" src="img/flags/{$param/p1_country}.gif" alt="country flag" title="{$param/p1_country}"/>
+                                <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p1_country)}.gif" alt="country flag" title="{$param/p1_country}"/>
                             </p>
 
                             <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$param/p1_avatar}" alt="avatar"/>
@@ -1438,7 +1438,7 @@
                         <div class="game__player-info">
                             <!-- opponent's name -->
                             <p class="token-counter game__player-name game__player-name--opponent">
-                                <img class="icon-image" width="18" height="12" src="img/flags/{$param/p2_country}.gif" alt="country flag" title="{$param/p2_country}"/>
+                                <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p2_country)}.gif" alt="country flag" title="{$param/p2_country}"/>
 
                                 <xsl:copy-of select="am:playerName($param/opponent_name, $param/ai_name, $param/system_name)"/>
 

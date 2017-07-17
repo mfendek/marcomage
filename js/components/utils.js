@@ -70,7 +70,7 @@ $(document).ready(function() {
     });
 
     // BBcode buttons handling
-    $('div.bb-code-buttons > button').click(function() {
+    $('.bb-code-buttons > button').click(function() {
         let bbCode = dic.bbCode();
 
         // get target element name

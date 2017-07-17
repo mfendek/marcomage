@@ -213,7 +213,7 @@
                             </xsl:for-each>
                         </select>
                         <xsl:text>Country</xsl:text>
-                        <img class="icon-image" width="18" height="12" src="img/flags/{$settings/country}.gif" alt="country flag" title="{$settings/country}"/>
+                        <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($settings/country)}.gif" alt="country flag" title="{$settings/country}"/>
                     </p>
 
                     <p>

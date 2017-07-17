@@ -19,7 +19,7 @@ body {
   background-color: $transparent-full;
   color: inherit;
   font-family: $font-family-times;
-  font-size: medium;
+  font-size: $font-size-medium;
   line-height: normal;
   padding: 0;
   margin: 0;
@@ -39,7 +39,7 @@ select {
   border: thin solid $black;
   color: $black;
   font-family: $font-family-arial;
-  font-size: small;
+  font-size: $font-size-small;
   font-weight: normal;
   padding: 0.3ex 0.5ex 0.3ex 0.5ex;
   vertical-align: middle;
@@ -69,11 +69,6 @@ textarea {
   margin: 0;
 }
 
-// clear both floats
-.clear-floats {
-  clear: both;
-}
-
 .avatar-image {
   background-color: $black;
   border: thin solid $white-shade;
@@ -93,7 +88,7 @@ legend {
   border-width: initial;
   color: inherit;
   display: block;
-  font-size: medium;
+  font-size: $font-size-medium;
   margin: 0;
   padding: 0 0.5ex 0 0.5ex;
   width: auto;
@@ -170,7 +165,7 @@ input
   border-radius: 6px;
   color: $black;
   font-family: $font-family-arial;
-  font-size: small;
+  font-size: $font-size-small;
   font-weight: normal;
   padding: 0.4ex 1.2ex 0.4ex 1.2ex;
   vertical-align: middle;
@@ -184,7 +179,7 @@ input {
 }
 
 .button-icon {
-  font-size: large;
+  font-size: $font-size-large;
   padding: 0.2ex 0.6ex 0.2ex 0.6ex;
 
   &.pushed {
@@ -196,7 +191,7 @@ input {
 .disabled-button {
   color: $dark-gray;
   display: inline-block;
-  font-size: large;
+  font-size: $font-size-large;
   padding: 0.2ex 0.6ex 0.2ex 0.6ex;
 }
 
@@ -218,7 +213,7 @@ input {
 }
 
 .pagination-button {
-  font-size: medium;
+  font-size: $font-size-medium;
 }
 
 .bb-code-buttons {
@@ -252,7 +247,6 @@ input {
   }
 }
 
-// TODO make a generic component
 .interactive-menu {
   button,
   .button {
@@ -260,8 +254,6 @@ input {
   }
 }
 
-// filters
-// TODO rename to sub-navigation
 .filters {
   text-align: center;
   margin-top: 1ex;
@@ -273,24 +265,6 @@ input {
   button,
   .button,
   .disabled-button {
-    margin-left: 0.5ex;
-
-    &:first-child {
-      margin-left: 0;
-    }
-  }
-}
-
-.subsection-navigation {
-  margin-bottom: 1ex;
-  margin-top: 1ex;
-  text-align: center;
-
-  &--plain {
-    margin-bottom: 0;
-  }
-
-  .button {
     margin-left: 0.5ex;
 
     &:first-child {
@@ -339,7 +313,7 @@ input[type="file"] {
 
 // checkbox layout
 input[type="checkbox"] {
-  font-size: large;
+  font-size: $font-size-large;
   margin: 3px;
 }
 

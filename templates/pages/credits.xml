@@ -5,13 +5,11 @@
 <h2>Hall of fame</h2>
 <hr />
 
-<p style="text-align: center; font-size: large;">
+<p class="clearfix" style="text-align: center; font-size: large;">
 <img style="float: left; margin-top: 0" src="img/unicorn_left.png" alt="unicorn"/>
 <img style="float: right; margin-top: 0" src="img/unicorn_right.png" alt="unicorn"/>
 Names of all people who contributed to this site in some way, will be forever remembered in this section (presented in alphabetical order).
 </p>
-
-<div class="clear-floats"/>
 
 <ul class="credits-list">
 <li><span>Cassiraa</span> - design and new features ideas</li>

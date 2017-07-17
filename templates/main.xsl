@@ -265,7 +265,10 @@
                                 </a>
 
                                 <a href="{am:makeUrl('Players_details', 'Profile', $param/player_name)}">
-                                    [<xsl:value-of select="$param/level"/>] <xsl:value-of select="$param/player_name"/>
+                                    <xsl:text>[</xsl:text>
+                                    <xsl:value-of select="$param/level"/>
+                                    <xsl:text>] </xsl:text>
+                                    <xsl:value-of select="$param/player_name"/>
                                 </a>
                             </div>
                             <div class="exp-progress-bar">

@@ -19,7 +19,7 @@ $(document).ready(function() {
 
     // dismiss dialog callback
     introDialog.on('hidden.bs.modal', function() {
-        let quickGame = $('div#games button[name="quick_game"]');
+        let quickGame = $('button[name="quick_game"]');
 
         // start a new game if possible
         if (quickGame.length > 0) {

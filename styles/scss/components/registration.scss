@@ -11,19 +11,19 @@
   }
 
   &__title {
-    font-size: x-large;
+    font-size: $font-size-x-large;
     margin-bottom: 2ex;
     margin-top: 0;
   }
 
   &__label {
     font-family: $font-family-arial;
-    font-size: large;
+    font-size: $font-size-large;
   }
 
   button,
   input {
-    font-size: medium;
+    font-size: $font-size-medium;
     margin-top: 0.5ex;
   }
 

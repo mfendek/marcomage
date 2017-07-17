@@ -56,7 +56,7 @@
   box-sizing: content-box;
   color: $black;
   font-family: $font-family-arial;
-  font-size: xx-small;
+  font-size: $font-size-xx-small;
   margin: 1.5ex 0.5ex 0.7ex 0.5ex;
   min-height: 18px;
   text-align: left;
@@ -150,7 +150,7 @@
     border: thin solid $black-shade-light;
     border-radius: 4px;
     color: $black;
-    font-size: xx-small;
+    font-size: $font-size-xx-small;
     font-weight: normal;
     margin: 2px;
     text-shadow: none;
@@ -279,7 +279,7 @@
   border: thin solid $black;
   border-radius: 7px;
   box-sizing: content-box;
-  font-size: x-small;
+  font-size: $font-size-x-small;
   height: 100px;
   margin: 1ex 0.5ex 0.7ex 0.5ex;
   position: relative;

@@ -542,7 +542,6 @@
             <div class="details-form__content">
                 <xsl:value-of select="am:bbCodeParse($param/data/note)" disable-output-escaping="yes"/>
             </div>
-            <div class="clear-floats"/>
         </div>
         <input type="hidden" name="current_concept" value="{$param/data/id}"/>
 

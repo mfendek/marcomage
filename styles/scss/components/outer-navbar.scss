@@ -11,14 +11,14 @@
   }
 
   &__title {
-    font-size: xx-large;
+    font-size: $font-size-xx-large;
     margin: 1ex 0 0 0;
     text-align: center;
     @include fire-shadow();
   }
 
   &__subtitle {
-    font-size: large;
+    font-size: $font-size-large;
     margin: 1ex 0;
     text-align: center;
   }
