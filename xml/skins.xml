@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--MArcomage skins -->
+<skins xmlns="http://arcomage.net">
+  <skin id="0" name="blue" theme="dark"/>
+  <skin id="1" name="rain" theme="light"/>
+  <skin id="2" name="purple" theme="light"/>
+  <skin id="3" name="green" theme="dark"/>
+  <skin id="4" name="stars" theme="dark"/>
+  <skin id="5" name="clouds" theme="light"/>
+  <skin id="6" name="legacy" theme="dark"/>
+  <skin id="7" name="fire" theme="dark"/>
+  <skin id="8" name="halloween" theme="dark"/>
+</skins>

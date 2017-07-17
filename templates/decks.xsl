@@ -289,7 +289,7 @@
                     </button>
                 </xsl:when>
                 <xsl:otherwise>
-                    <button class="button-icon marked_button" type="submit" name="reset_deck_confirm" title="Confirm deck reset">
+                    <button class="button-icon marked-button" type="submit" name="reset_deck_confirm" title="Confirm deck reset">
                         <span class="glyphicon glyphicon-trash"/>
                     </button>
                 </xsl:otherwise>
@@ -330,7 +330,7 @@
 
             <a class="button button-icon" id="deck-note" href="{am:makeUrl('Decks_note', 'current_deck', $param/current_deck)}" title="Note">
                 <xsl:if test="$param/note != ''">
-                    <xsl:attribute name="class">button button-icon marked_button</xsl:attribute>
+                    <xsl:attribute name="class">button button-icon marked-button</xsl:attribute>
                 </xsl:if>
                 <span class="glyphicon glyphicon-edit"/>
             </a>
@@ -388,7 +388,7 @@
                     </button>
                 </xsl:when>
                 <xsl:otherwise>
-                    <button class="button-icon marked_button" type="submit" name="reset_stats_confirm" title="Confirm reset statistics">
+                    <button class="button-icon marked-button" type="submit" name="reset_stats_confirm" title="Confirm reset statistics">
                         <span class="glyphicon glyphicon-retweet"/>
                     </button>
                 </xsl:otherwise>

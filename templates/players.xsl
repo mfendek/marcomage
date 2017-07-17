@@ -257,13 +257,13 @@
                     <div class="row">
                         <div class="col-xs-6"><p>Level</p></div>
                         <div class="col-xs-6">
-                            <p class="detail_value"><xsl:value-of select="$param/level"/></p>
+                            <p class="detail-value"><xsl:value-of select="$param/level"/></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-6"><p>Wins / Losses / Draws</p></div>
                         <div class="col-xs-6">
-                            <p class="detail_value">
+                            <p class="detail-value">
                                 <xsl:value-of select="$param/wins"/>
                                 <xsl:text> / </xsl:text>
                                 <xsl:value-of select="$param/losses"/>
@@ -275,14 +275,14 @@
                     <div class="row">
                         <div class="col-xs-6"><p>Free slots</p></div>
                         <div class="col-xs-6">
-                            <p class="detail_value"><xsl:value-of select="$param/free_slots"/></p>
+                            <p class="detail-value"><xsl:value-of select="$param/free_slots"/></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-6"><p>Rank</p></div>
                         <div class="col-xs-6">
                             <p>
-                                <span class="detail_value"><xsl:value-of select="$param/player_type"/></span>
+                                <span class="detail-value"><xsl:value-of select="$param/player_type"/></span>
                                 <xsl:if test="$param/player_type != 'user'">
                                     <img class="icon-image" width="9" height="12" src="img/{$param/player_type}.png" alt="rank flag" title="{$param/player_type}"/>
                                 </xsl:if>
@@ -307,38 +307,38 @@
                         <div class="col-xs-6">
                             <p>
                                 <img class="icon-image" width="18" height="12" src="img/flags/{$param/country}.gif" alt="country flag" title="{$param/country}"/>
-                                <span class="detail_value"><xsl:value-of select="$param/country"/></span>
+                                <span class="detail-value"><xsl:value-of select="$param/country"/></span>
                             </p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-6"><p>Gold</p></div>
                         <div class="col-xs-6">
-                            <p class="detail_value"><xsl:value-of select="$param/gold"/></p>
+                            <p class="detail-value"><xsl:value-of select="$param/gold"/></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-6"><p>Bonus game slots</p></div>
                         <div class="col-xs-6">
-                            <p class="detail_value"><xsl:value-of select="$param/game_slots"/></p>
+                            <p class="detail-value"><xsl:value-of select="$param/game_slots"/></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-6"><p>Bonus deck slots</p></div>
                         <div class="col-xs-6">
-                            <p class="detail_value"><xsl:value-of select="$param/deck_slots"/></p>
+                            <p class="detail-value"><xsl:value-of select="$param/deck_slots"/></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-6"><p>Forum posts</p></div>
                         <div class="col-xs-6">
-                            <p class="detail_value"><xsl:value-of select="$param/post_count"/></p>
+                            <p class="detail-value"><xsl:value-of select="$param/post_count"/></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-6"><p>Registered</p></div>
                         <div class="col-xs-6">
-                            <p class="detail_value">
+                            <p class="detail-value">
                                 <xsl:choose>
                                     <xsl:when test="$param/registered != '1970-01-01 00:00:01'">
                                         <xsl:copy-of select="am:dateTime($param/registered, $param/timezone)"/>
@@ -351,7 +351,7 @@
                     <div class="row">
                         <div class="col-xs-6"><p>Last seen</p></div>
                         <div class="col-xs-6">
-                            <p class="detail_value">
+                            <p class="detail-value">
                                 <xsl:choose>
                                     <xsl:when test="$param/last_query != '1970-01-01 00:00:01'">
                                         <xsl:copy-of select="am:dateTime($param/last_query, $param/timezone)"/>
@@ -364,20 +364,20 @@
                     <div class="row">
                         <div class="col-xs-6"><p>First name</p></div>
                         <div class="col-xs-6">
-                            <p class="detail_value"><xsl:value-of select="$param/first_name"/></p>
+                            <p class="detail-value"><xsl:value-of select="$param/first_name"/></p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-6"><p>Surname</p></div>
                         <div class="col-xs-6">
-                            <p class="detail_value"><xsl:value-of select="$param/surname"/></p>
+                            <p class="detail-value"><xsl:value-of select="$param/surname"/></p>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-xs-6"><p>Gender</p></div>
                         <div class="col-xs-6">
-                            <p class="detail_value">
+                            <p class="detail-value">
                                 <xsl:value-of select="$param/gender"/>
                             </p>
                         </div>
@@ -386,7 +386,7 @@
                     <div class="row">
                         <div class="col-xs-6"><p>E-mail</p></div>
                         <div class="col-xs-6">
-                            <p class="detail_value">
+                            <p class="detail-value">
                                 <xsl:if test="$param/is_logged_in = 'yes'">
                                     <xsl:value-of select="$param/email"/>
                                 </xsl:if>
@@ -397,21 +397,21 @@
                     <div class="row">
                         <div class="col-xs-6"><p>ICQ / IM</p></div>
                         <div class="col-xs-6">
-                            <p class="detail_value"><xsl:value-of select="$param/im_number"/></p>
+                            <p class="detail-value"><xsl:value-of select="$param/im_number"/></p>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-xs-6"><p>Date of birth</p></div>
                         <div class="col-xs-6">
-                            <p class="detail_value"><xsl:value-of select="$param/birth_date"/></p>
+                            <p class="detail-value"><xsl:value-of select="$param/birth_date"/></p>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-xs-6"><p>Age</p></div>
                         <div class="col-xs-6">
-                            <p class="detail_value"><xsl:value-of select="$param/age"/></p>
+                            <p class="detail-value"><xsl:value-of select="$param/age"/></p>
                         </div>
                     </div>
                 </div>
@@ -503,7 +503,7 @@
             </div>
 
             <p>Hobbies, interests</p>
-            <div class="details-form__content detail_value">
+            <div class="details-form__content detail-value">
                 <xsl:copy-of select="am:textEncode($param/hobby)"/>
             </div>
 

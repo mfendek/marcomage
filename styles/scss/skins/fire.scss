@@ -1,0 +1,106 @@
+/****************************************
+ * MArcomage CSS stylesheet - fire skin *
+ ****************************************/
+
+.fire-skin {
+  background-image: url('/img/skins/bg_fire.jpg');
+
+  .skin-text {
+    background-color: $mostly-black;
+  }
+
+  .skin-label {
+    background-image: url('/img/skins/fire_label.jpg');
+  }
+
+  .inner-navbar {
+    background-image: url('/img/skins/fire_label.jpg');
+  }
+
+  .outer-navbar {
+    background-image: url('/img/skins/fire_label.jpg');
+  }
+
+  hr {
+    border-color: $dark-red-light;
+  }
+
+  a:link {
+    color: $pure-red;
+  }
+
+  a:visited {
+    color: $dark-red-light;
+  }
+
+  .table-row:hover {
+    background-color: $dark-red-light;
+
+    a:link,
+    a:visited {
+      color: inherit;
+    }
+  }
+
+  h2,
+  h3,
+  h4,
+  h5 {
+    color: $vivid-red;
+    @include simple-shadow($black);
+  }
+
+  .button,
+  button {
+    background-color: $mostly-black;
+    border-color: $dark-gray;
+    color: $very-light-gray;
+  }
+
+  .disabled-button {
+    background-color: $mostly-black;
+    border-color: $dark-gray;
+  }
+
+  .marked-button,
+  .interactive-menu button:hover,
+  .interactive-menu .button:hover {
+    background-color: $dark-red-light;
+  }
+
+  .info {
+    @include simple-shadow($black);
+  }
+
+  .warning {
+    @include simple-shadow($black);
+  }
+
+  .error {
+    @include simple-shadow($black);
+  }
+
+  .info-label {
+    border-color: $soft-blue;
+    background-color: $mostly-black;
+  }
+
+  .token-counter {
+    border-color: $soft-blue;
+    background-color: $mostly-black;
+  }
+
+  .chat-board__message-box {
+    border-color: $soft-blue;
+    background-color: $mostly-black;
+  }
+
+  .card-flag,
+  .new-card {
+    background-color: $mostly-black;
+  }
+
+  .text-label {
+    background-color: $mostly-black;
+  }
+}

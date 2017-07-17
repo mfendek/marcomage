@@ -1,0 +1,105 @@
+/*****************************************
+ * MArcomage CSS stylesheet - green skin *
+ *****************************************/
+
+.green-skin {
+  background-image: url('/img/skins/bg_green.jpg');
+
+  .skin-text {
+    background-color: $very-dark-lime-green;
+  }
+
+  .skin-label {
+    background-image: url('/img/skins/green_label.jpg');
+  }
+
+  .inner-navbar {
+    background-image: url('/img/skins/green_label.jpg');
+  }
+
+  .outer-navbar {
+    background-image: url('/img/skins/green_label.jpg');
+  }
+
+  hr {
+    border-color: $pure-light-gray;
+  }
+
+  a:link {
+    color: $soft-lime-green;
+  }
+
+  a:visited {
+    color: $strong-cyan-lime-green;
+  }
+
+  .table-row:hover {
+    background-color: $dark-lime-green;
+
+    a:link,
+    a:visited {
+      color: inherit;
+    }
+  }
+
+  h2,
+  h3,
+  h4,
+  h5 {
+    color: $very-light-gray;
+    @include simple-shadow($black);
+  }
+
+  .new-message {
+    @include simple-shadow($black);
+  }
+
+  .unread-message {
+    @include simple-shadow($black);
+  }
+
+  .system-message {
+    @include simple-shadow($black);
+  }
+
+  .button,
+  button,
+  .disabled-button {
+    background-color: $dark-lime-green;
+    border-color: $very-dark-lime-green;
+  }
+
+  .marked-button,
+  a.marked-button:link,
+  a.marked-button:visited,
+  .interactive-menu button:hover,
+  .interactive-menu .button:hover {
+    background-color: $soft-blue;
+    color: $black;
+    @include simple-shadow($white);
+  }
+
+  .info-label {
+    background-color: $very-dark-lime-green;
+    border-color: $dark-lime-green;
+  }
+
+  .token-counter {
+    background-color: $very-dark-lime-green;
+    border-color: $dark-lime-green;
+  }
+
+  .chat-board__message-box {
+    background-color: $very-dark-lime-green;
+    border-color: $dark-lime-green;
+  }
+
+  .card-flag,
+  .new-card {
+    background-color: $very-dark-lime-green;
+  }
+
+  .text-label {
+    background-color:$very-dark-lime-green;
+  }
+}

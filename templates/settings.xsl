@@ -421,7 +421,7 @@
                         <h4>Layout options</h4>
                         <xsl:if test="$settings/game_bg_image != 0">
                             <div class="settings-panel__picture">
-                                <h4>Background image</h4>
+                                <h4>Game background</h4>
                                 <img width="204" height="152" src="img/backgrounds/bg_{$settings/game_bg_image}.jpg" alt=""/>
                             </div>
                         </xsl:if>
@@ -453,24 +453,17 @@
 
                         <p>
                             <select name="skin">
-                                <xsl:variable name="skins">
-                                    <skin value="0" name="blue (dark)"/>
-                                    <skin value="1" name="rain (light)"/>
-                                    <skin value="2" name="purple (light)"/>
-                                    <skin value="3" name="green (dark)"/>
-                                    <skin value="4" name="stars (dark)"/>
-                                    <skin value="5" name="clouds (light)"/>
-                                    <skin value="6" name="old theme (dark)"/>
-                                    <skin value="7" name="fire (dark)"/>
-                                    <skin value="8" name="halloween (dark)"/>
-                                </xsl:variable>
+                                <xsl:variable name="skins" select="document('../xml/skins.xml')/am:skins"/>
                                 <xsl:for-each select="exsl:node-set($skins)/*">
                                     <xsl:sort select="@name" order="ascending"/>
-                                    <option value="{@value}">
-                                        <xsl:if test="$settings/skin = @value">
+                                    <option value="{@id}">
+                                        <xsl:if test="$settings/skin = @id">
                                             <xsl:attribute name="selected">selected</xsl:attribute>
                                         </xsl:if>
                                         <xsl:value-of select="@name"/>
+                                        <xsl:text> (</xsl:text>
+                                        <xsl:value-of select="@theme"/>
+                                        <xsl:text>)</xsl:text>
                                     </option>
                                 </xsl:for-each>
                             </select>

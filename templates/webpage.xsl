@@ -33,7 +33,7 @@
                     <xsl:for-each select="exsl:node-set($webSections)/*">
                         <a class="button" href="{am:makeUrl('Webpage', 'WebSection', @name)}">
                             <xsl:if test="$param/selected = @name">
-                                <xsl:attribute name="class">button marked_button</xsl:attribute>
+                                <xsl:attribute name="class">button marked-button</xsl:attribute>
                             </xsl:if>
                             <xsl:value-of select="@value"/>
                         </a>

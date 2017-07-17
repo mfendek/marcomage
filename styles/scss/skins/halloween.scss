@@ -1,0 +1,101 @@
+/*********************************************
+ * MArcomage CSS stylesheet - halloween skin *
+ *********************************************/
+
+.halloween-skin {
+  background-image: url('/img/skins/bg_halloween.jpg');
+
+  .skin-text {
+    background-color: $mostly-black-light;
+  }
+
+  .skin-label {
+    background-image: url('/img/skins/halloween_label.jpg');
+  }
+
+  .inner-navbar {
+    background-image: url('/img/skins/halloween_label.jpg');
+  }
+
+  .outer-navbar {
+    background-image: url('/img/skins/halloween_label.jpg');
+  }
+
+  hr {
+    border-color: $light-gray;
+  }
+
+  a:link {
+    color: $mostly-orange;
+  }
+
+  a:visited {
+    color: $strong-orange-brown;
+  }
+
+  .table-row:hover {
+    background-color: $dark-orange;
+
+    a:link,
+    a:visited {
+      color: inherit;
+    }
+  }
+
+  h2,
+  h3,
+  h4,
+  h5 {
+    color: $vivid-orange;
+    @include simple-shadow($black);
+  }
+
+  .button,
+  button,
+  .disabled-button {
+    background-color: $mostly-black-light;
+    border-color: $dark-gray;
+  }
+
+  .marked-button,
+  .interactive-menu button:hover,
+  .interactive-menu .button:hover {
+    background-color: $strong-orange-light;
+  }
+
+  .info {
+    @include simple-shadow($black);
+  }
+
+  .warning {
+    @include simple-shadow($black);
+  }
+
+  .error {
+    @include simple-shadow($black);
+  }
+
+  .info-label {
+    border-color:$soft-blue;
+    background-color: $mostly-black-light;
+  }
+
+  .token-counter {
+    border-color:$soft-blue;
+    background-color: $mostly-black-light;
+  }
+
+  .chat-board__message-box {
+    border-color:$soft-blue;
+    background-color: $mostly-black-light;
+  }
+
+  .card-flag,
+  .new-card {
+    background-color: $mostly-black-light;
+  }
+
+  .text-label {
+    background-color: $mostly-black-light;
+  }
+}

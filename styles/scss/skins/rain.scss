@@ -1,0 +1,73 @@
+/****************************************
+ * MArcomage CSS stylesheet - rain skin *
+ ****************************************/
+
+.rain-skin {
+  background-image: url('/img/skins/bg_gray.jpg');
+
+  .skin-text {
+    background-color: $pale-blue;
+  }
+
+  .skin-label {
+    background-image: url('/img/skins/rain.gif');
+  }
+
+  .inner-navbar {
+    background-image: url('/img/skins/rain.gif');
+  }
+
+  .outer-navbar {
+    background-image: url('/img/skins/rain.gif');
+  }
+
+  .table-row:hover {
+    background-color: $soft-blue;
+    color: $black;
+  }
+
+  h2,
+  h3,
+  h4,
+  h5 {
+    color: $soft-blue-dark;
+    @include simple-shadow($white);
+  }
+
+  .button,
+  button,
+  .disabled-button {
+    background-color: $soft-blue;
+    border-color: $soft-blue;
+  }
+
+  .marked-button,
+  .interactive-menu button:hover,
+  .interactive-menu .button:hover {
+    background-color: $strong-lime-green;
+  }
+
+  .info-label {
+    background-color: $pale-blue;
+    border-color: $soft-blue;
+  }
+
+  .token-counter {
+    background-color: $pale-blue;
+    border-color: $soft-blue;
+  }
+
+  .chat-board__message-box {
+    background-color: $pale-blue;
+    border-color: $soft-blue;
+  }
+
+  .card-flag,
+  .new-card {
+    background-color: $pale-blue;
+  }
+
+  .text-label {
+    background-color: $pale-blue;
+  }
+}

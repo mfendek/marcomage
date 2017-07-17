@@ -1,0 +1,72 @@
+/******************************************
+ * MArcomage CSS stylesheet - purple skin *
+ ******************************************/
+
+.purple-skin {
+  background-image: url('/img/skins/bg_blue.gif');
+
+  .skin-text {
+    background: url('/img/skins/blue_text.jpg') repeat;
+  }
+
+  .skin-label {
+    background-image: url('/img/skins/blue_label.gif');
+  }
+
+  .inner-navbar {
+    background-image: url('/img/skins/blue_label.gif');
+  }
+
+  .outer-navbar {
+    background-image: url('/img/skins/blue_label.gif');
+  }
+
+  .table-row:hover {
+    background-color: $very-pale-blue;
+  }
+
+  h2,
+  h3,
+  h4,
+  h5 {
+    color: $mostly-desaturated-dark-violet;
+    @include simple-shadow($white);
+  }
+
+  .button,
+  button,
+  .disabled-button {
+    background-color: $very-light-blue;
+    border-color: $very-pale-blue;
+  }
+
+  .marked-button,
+  .interactive-menu button:hover,
+  .interactive-menu .button:hover {
+    background-color: $strong-lime-green;
+  }
+
+  .info-label {
+    background: url('/img/skins/blue_text.jpg') repeat;
+    border-color: $very-light-blue;
+  }
+
+  .token-counter {
+    background: url('/img/skins/blue_text.jpg') repeat;
+    border-color: $very-light-blue;
+  }
+
+  .chat-board__message-box {
+    background: url('/img/skins/blue_text.jpg') repeat;
+    border-color: $very-light-blue;
+  }
+
+  .card-flag,
+  .new-card {
+    background: url('/img/skins/blue_text.jpg') repeat;
+  }
+
+  .text-label {
+    background: url('/img/skins/blue_text.jpg') repeat;
+  }
+}

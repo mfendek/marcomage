@@ -1,0 +1,151 @@
+/*************************************************
+ * MArcomage CSS stylesheet - skins - dark theme *
+ *************************************************/
+
+.dark-theme {
+  background-repeat: repeat;
+  color: $light-gray;
+
+  .skin-text {
+    color: $light-gray;
+  }
+
+  .skin_label {
+    background-repeat: repeat;
+    color: $light-gray;
+  }
+
+  .achievement,
+  .skin-label,
+  .skin-text {
+    border: 2px outset $light-gray;
+    border-radius: 6px;
+  }
+
+  .inner-navbar {
+    background-repeat: repeat;
+  }
+
+  .outer-navbar {
+    background-repeat: repeat;
+    border: 2px outset $light-gray;
+    border-radius: 6px;
+  }
+
+  .button,
+  button,
+  .disabled-button,
+  input,
+  textarea {
+    background-color: $very-light-gray;
+  }
+
+  .new-message {
+    color: $pure-red;
+  }
+
+  .unread-message {
+    color: $pure-orange;
+  }
+
+  .system-message {
+    color: $soft-blue;
+  }
+
+  button,
+  .button:link,
+  .button:visited {
+    color: $very-light-gray;
+  }
+
+  button[disabled] {
+    color: $dark-gray;
+  }
+
+  .info {
+    color: $pure-lime-green;
+  }
+
+  .warning {
+    color: $pure-yellow;
+  }
+
+  .error {
+    color: $pure-red;
+  }
+
+  .info-label {
+    color: $very-light-gray;
+
+    .opponent {
+      color: $very-light-pink;
+    }
+  }
+
+  .token-counter {
+    color: $very-light-gray;
+  }
+
+  .player-state {
+    color: $pure-lime-green;
+  }
+
+  .chat-board__message-box {
+    color: $very-light-gray;
+  }
+
+  .card-flag,
+  .new-card {
+    color: $very-light-gray;
+  }
+
+  .chat-heading-player {
+    color: $very-soft-cyan;
+  }
+
+  .chat-heading-opponent {
+    color: $very-soft-lime-green;
+  }
+
+  .chat-heading-system {
+    color: $pure-red;
+  }
+
+  .text-label {
+    border-color: $light-gray;
+    color: $light-gray;
+
+    .bricks-label {
+      color: $grayish-red;
+    }
+
+    .gems-label {
+      color: $pure-blue;
+    }
+
+    .recruits-label {
+      color: $grayish-lime-green;
+    }
+  }
+
+  .detail-value {
+    color: $pure-lime-green;
+  }
+
+  .exp-progress-bar {
+    background-color: $dark-gray;
+  }
+
+  blockquote > div {
+    border: thin solid $light-gray;
+  }
+
+  [role="dialog"].modal .modal-content {
+    background-color: $very-dark-gray;
+    color: $pure-light-gray;
+  }
+
+  [role="dialog"].modal button[name="close-modal"] {
+    color: $white;
+  }
+}

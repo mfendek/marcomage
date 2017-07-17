@@ -1,0 +1,168 @@
+/******************************************
+ * MArcomage CSS stylesheet - legacy skin *
+ ******************************************/
+
+.legacy-skin {
+  background-color: $black;
+  color: $white;
+
+  .skin-text {
+    background-color: $very-dark-desaturated-blue;
+    color: $white;
+  }
+
+  .skin-label {
+    background-image: url('/img/skins/old_label.jpg');
+    color: $white;
+  }
+
+  .skin-label,
+  .skin-text {
+    border: thin solid $pure-yellow;
+  }
+
+  .inner-navbar {
+    background-color: $black;
+    color: $pure-lime-green;
+  }
+
+  .outer-navbar {
+    background-image: url('/img/skins/old_label.jpg');
+  }
+
+  hr {
+    border-style: inset;
+    color: $pure-yellow;
+  }
+
+  a:link {
+    color: $pure-yellow;
+  }
+
+  a:visited {
+    color: $soft-magenta;
+  }
+
+  a.button:link,
+  a.button:visited {
+    color: $light-yellow;
+  }
+
+  .table-row:hover {
+    background-color: $mostly-dark-gray;
+    color: white;
+
+    a:link,
+    a:visited {
+      color: inherit;
+    }
+  }
+
+  h2,
+  h3,
+  h4,
+  h5 {
+    color: $light-yellow;
+  }
+
+  .button,
+  button {
+    background-color: $black;
+    border-color: $soft-blue;
+    color: $light-yellow;
+  }
+
+  .disabled-button {
+    background-color: $black;
+    border-color: $soft-blue;
+  }
+
+  button[disabled] {
+    color: $dark-gray;
+  }
+
+  .marked-button,
+  a.marked-button:link,
+  a.marked-button:visited,
+  .interactive-menu button:hover,
+  .interactive-menu .button:hover {
+    background-color: $pure-yellow;
+    color: $black;
+  }
+
+  .info-label {
+    background-color: $black;
+    border-color: $soft-blue;
+    color: $white;
+    font-weight: normal;
+  }
+
+  .token-counter {
+    background-color: $black;
+    border-color: $soft-blue;
+    color: $white;
+  }
+
+  .chat-board__message-box {
+    background-color: $very-dark-desaturated-blue;
+    border-color: $soft-blue;
+  }
+
+  .card-flag,
+  .new-card {
+    background-color: $very-dark-desaturated-blue;
+  }
+
+  .text-label {
+    background-color: $very-dark-desaturated-blue;
+  }
+
+  // legacy compatibility adjustments below
+  .forum {
+    .skin-text {
+      border-style: none;
+    }
+
+    .skin-label {
+      border: 3px ridge $soft-blue;
+    }
+
+    &__section-title {
+      color: $light-blue;
+    }
+
+    .responsive-table {
+      background-color: $mostly-dark-blue;
+      border: 3px ridge $soft-blue;
+
+      .table-row:first-child p {
+        color: $soft-orange;
+      }
+    }
+
+    button {
+      border: 1px outset $pure-lime-green;
+      padding: 0.4ex 1.2ex 0.4ex 1.2ex;
+    }
+  }
+
+  .game {
+    .card-flag {
+      background-color: $black;
+      border: ridge $white;
+      color: $pure-orange;
+      font-size: x-small;
+      margin: 1ex 0 1ex 0;
+      width: 88px;
+    }
+
+    select {
+      background-color: $black;
+      border: 2px outset $soft-blue;
+      color: $pure-yellow;
+      font-size: small;
+      text-shadow: none;
+      vertical-align: middle;
+    }
+  }
+}

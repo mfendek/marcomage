@@ -269,11 +269,11 @@ $(document).ready(function() {
             // update note button highlight
             // case 1: note is empty (remove highlight)
             if (gameNote === '') {
-                $('a#game-note').removeClass('marked_button');
+                $('a#game-note').removeClass('marked-button');
             }
             // case 2: note is not empty (add highlight if not present)
-            else if (!$('a#game-note').hasClass('marked_button')) {
-                $('a#game-note').addClass('marked_button');
+            else if (!$('a#game-note').hasClass('marked-button')) {
+                $('a#game-note').addClass('marked-button');
             }
 
             $('#game-note-dialog').modal('hide');
@@ -295,7 +295,7 @@ $(document).ready(function() {
             $('textarea[name="content"]').val('');
 
             // update note button highlight (remove highlight)
-            $('a#game-note').removeClass('marked_button');
+            $('a#game-note').removeClass('marked-button');
         });
 
         // hide note dialog
@@ -390,7 +390,7 @@ $(document).ready(function() {
         });
 
         // open chat automatically if there are new messages
-        let showChat = $('.game button.marked_button[name="show_chat"]');
+        let showChat = $('.game button.marked-button[name="show_chat"]');
         if (showChat.length === 1) {
             showChat.click();
         }

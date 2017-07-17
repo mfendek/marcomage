@@ -14,6 +14,7 @@
   &__board {
     background: no-repeat center center;
     background-size: cover;
+    border-radius: 6px;
     padding-bottom: 1ex;
     padding-top: 1ex;
 
@@ -330,6 +331,8 @@
 
   &__message-box {
     border-radius: 6px;
+    border-style: ridge;
+    border-width: medium;
     overflow: auto;
     margin-left: auto;
     margin-right: auto;

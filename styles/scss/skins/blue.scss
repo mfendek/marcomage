@@ -1,0 +1,102 @@
+/****************************************
+ * MArcomage CSS stylesheet - blue skin *
+ ****************************************/
+
+.blue-skin {
+  background-image: url('/img/skins/bg_dblue.jpg');
+
+  .skin-text {
+    background-color: $very-dark-grayish-blue;
+  }
+
+  .skin-label {
+    background-image: url('/img/skins/dblue_label.gif');
+  }
+
+  .inner-navbar {
+    background-image: url('/img/skins/dblue_label.gif');
+  }
+
+  .outer-navbar {
+    background-image: url('/img/skins/dblue_label.gif');
+  }
+
+  hr {
+    border-color: $light-gray;
+  }
+
+  a:link {
+    color: $soft-blue-light;
+  }
+
+  a:visited {
+    color: $soft-blue;
+  }
+
+  .table-row:hover {
+    background-color: $soft-blue;
+    color: $black;
+
+    a:link,
+    a:visited {
+      color: inherit;
+    }
+  }
+
+  h2,
+  h3,
+  h4,
+  h5 {
+    color: $soft-blue;
+    @include simple-shadow($black);
+  }
+
+  .button,
+  button,
+  .disabled-button {
+    background-color: $dark-grayish-blue;
+    border-color: $very-dark-blue;
+  }
+
+  .marked-button,
+  .interactive-menu button:hover,
+  .interactive-menu .button:hover {
+    background-color: $dark-lime-green;
+  }
+
+  .info {
+    @include simple-shadow($black);
+  }
+
+  .warning {
+    @include simple-shadow($black);
+  }
+
+  .error {
+    @include simple-shadow($black);
+  }
+
+  .info-label {
+    background-color: $very-dark-grayish-blue;
+    border-color: $soft-blue;
+  }
+
+  .token-counter {
+    background-color: $very-dark-grayish-blue;
+    border-color: $soft-blue;
+  }
+
+  .chat-board__message-box {
+    background-color: $very-dark-grayish-blue;
+    border-color: $soft-blue;
+  }
+
+  .card-flag,
+  .new-card {
+    background-color: $very-dark-grayish-blue;
+  }
+
+  .text-label {
+    background-color: $very-dark-grayish-blue;
+  }
+}

@@ -360,11 +360,11 @@ $(document).ready(function() {
             // update note button highlight
             // case 1: note is empty (remove highlight)
             if (deckNote === '') {
-                $('a#deck-note').removeClass('marked_button');
+                $('a#deck-note').removeClass('marked-button');
             }
             // case 2: note is not empty (add highlight if not present)
-            else if (!$('a#deck-note').hasClass('marked_button')) {
-                $('a#deck-note').addClass('marked_button');
+            else if (!$('a#deck-note').hasClass('marked-button')) {
+                $('a#deck-note').addClass('marked-button');
             }
 
             $('#deck-note-dialog').modal('hide');
@@ -386,7 +386,7 @@ $(document).ready(function() {
             $('textarea[name="content"]').val('');
 
             // update note button highlight (remove highlight)
-            $('a#deck-note').removeClass('marked_button');
+            $('a#deck-note').removeClass('marked-button');
         });
 
         // hide note dialog

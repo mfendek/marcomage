@@ -565,7 +565,7 @@
                 </div>
 
                 <!-- name -->
-                <h5 class="card__title"><xsl:value-of select="$card/name"/></h5>
+                <div class="card__title"><xsl:value-of select="$card/name"/></div>
 
                 <!-- keywords -->
                 <xsl:choose>

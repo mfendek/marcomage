@@ -46,13 +46,13 @@
                                         <p>Posts</p>
                                     </div>
                                     <div class="col-sm-3">
-                                        <p>Latest post</p>
+                                        <p>Last post</p>
                                     </div>
                                 </div>
 
                                 <!-- table body -->
                                 <xsl:for-each select="sections/*">
-                                    <div class="row table-row">
+                                    <div class="row">
                                         <div class="col-sm-12">
                                             <div class="skin-label">
                                                 <h5 class="forum__section-title">
@@ -216,7 +216,7 @@
                                     <p>Posts</p>
                                 </div>
                                 <div class="col-sm-3">
-                                    <p>Latest post</p>
+                                    <p>Last post</p>
                                 </div>
                             </div>
 
@@ -323,12 +323,12 @@
                             <p>Posts</p>
                         </div>
                         <div class="col-sm-3">
-                            <p>Latest post</p>
+                            <p>Last post</p>
                         </div>
                     </div>
 
                     <!-- table body -->
-                    <div class="row table-row">
+                    <div class="row">
                         <div class="col-sm-12">
                             <div class="skin-label">
                                 <div class="row">
@@ -506,7 +506,7 @@
                                             </button>
                                         </xsl:when>
                                         <xsl:otherwise>
-                                            <button class="button-icon marked_button" type="submit" name="thread_delete_confirm" title="Confirm delete">
+                                            <button class="button-icon marked-button" type="submit" name="thread_delete_confirm" title="Confirm delete">
                                                 <span class="glyphicon glyphicon-trash"/>
                                             </button>
                                         </xsl:otherwise>
@@ -595,7 +595,7 @@
                                             </button>
                                         </xsl:when>
                                         <xsl:otherwise>
-                                            <button class="button-icon marked_button" type="submit" name="delete_post_confirm" value="{post_id}" title="Confirm delete">
+                                            <button class="button-icon marked-button" type="submit" name="delete_post_confirm" value="{post_id}" title="Confirm delete">
                                                 <span class="glyphicon glyphicon-trash"/>
                                             </button>
                                         </xsl:otherwise>

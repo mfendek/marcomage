@@ -27,6 +27,7 @@
                 <xsl:otherwise>
                     <xsl:variable name="section_name" select="$param/section_name"/>
                     <xsl:variable name="current_section" select="am:lowercase($section_name)"/>
+                    <xsl:variable name="skin" select="document('../xml/skins.xml')/am:skins/am:skin[@id=$param/skin]"/>
                     <!-- HTML header -->
                     <head>
                         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -36,7 +37,6 @@
 
                         <script type="text/javascript" src="js/dist/main.js?v={$param/cc_version}"/>
                         <link rel="stylesheet" href="styles/css/main.css?v={$param/cc_version}" type="text/css" title="standard style"/>
-                        <link rel="stylesheet" href="styles/skins/skin{$param/skin}.css?v={$param/cc_version}" type="text/css" title="standard style"/>
                         <link rel="icon" href="img/favicon.png?v={$param/cc_version}" type="image/png"/>
                         <title>
                             <xsl:if test="$param/subsection != ''">
@@ -52,10 +52,10 @@
                             <xsl:text> - MArcomage</xsl:text>
                         </title>
                         <xsl:if test="$param/include_captcha = 'yes'">
-                            <script src='https://www.google.com/recaptcha/api.js'/>
+                            <script type="text/javascript" src='https://www.google.com/recaptcha/api.js'/>
                         </xsl:if>
                     </head>
-                    <body data-section="{$current_section}" data-tutorial="{$param/tutorial_active}">
+                    <body class="{$skin/@theme}-theme {$skin/@name}-skin" data-section="{$current_section}" data-tutorial="{$param/tutorial_active}">
                         <div class="container">
                             <form enctype="multipart/form-data" method="post">
 
@@ -325,7 +325,7 @@
                             <xsl:if test="$param/level &gt;= @level">
                                 <a class="button" href="{am:makeUrl(@name)}">
                                     <xsl:if test="$current_section = @name">
-                                        <xsl:attribute name="class">button marked_button</xsl:attribute>
+                                        <xsl:attribute name="class">button marked-button</xsl:attribute>
                                     </xsl:if>
                                     <xsl:value-of select="@name"/>
                                 </a>
@@ -346,7 +346,7 @@
                     <xsl:for-each select="exsl:node-set($sections)/*">
                         <a class="button button-icon" href="{am:makeUrl(@name)}" title="{@name}">
                             <xsl:if test="$current_section = @name">
-                                <xsl:attribute name="class">button button-icon marked_button</xsl:attribute>
+                                <xsl:attribute name="class">button button-icon marked-button</xsl:attribute>
                             </xsl:if>
                             <span class="glyphicon glyphicon-{@icon}"/>
                         </a>
@@ -446,7 +446,7 @@
                     <xsl:for-each select="exsl:node-set($sections)/*">
                         <a class="button button-icon" href="{am:makeUrl(@name)}" title="{@name}">
                             <xsl:if test="$param/section_name = @name">
-                                <xsl:attribute name="class">button button-icon marked_button</xsl:attribute>
+                                <xsl:attribute name="class">button button-icon marked-button</xsl:attribute>
                             </xsl:if>
                             <span class="glyphicon glyphicon-{@icon}"/>
                         </a>
@@ -457,7 +457,7 @@
                     <nav class="outer-navbar__sections-menu">
                         <button type="submit" name="registration" tabindex="4">
                             <xsl:if test="$param/current = 'Registration'">
-                                <xsl:attribute name="class">marked_button</xsl:attribute>
+                                <xsl:attribute name="class">marked-button</xsl:attribute>
                             </xsl:if>
                             <xsl:text>Register</xsl:text>
                         </button>
@@ -469,7 +469,7 @@
                         <xsl:for-each select="exsl:node-set($sections)/*">
                             <a class="button" href="{am:makeUrl(@name)}">
                                 <xsl:if test="$param/section_name = @name">
-                                    <xsl:attribute name="class">button marked_button</xsl:attribute>
+                                    <xsl:attribute name="class">button marked-button</xsl:attribute>
                                 </xsl:if>
                                 <xsl:value-of select="@name"/>
                             </a>

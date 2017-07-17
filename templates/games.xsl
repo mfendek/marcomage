@@ -731,20 +731,20 @@
                                 <p class="info-label game__state-info">
                                     <xsl:choose>
                                         <xsl:when test="$param/surrender = $param/opponent_name">
-                                            <span class="player">
+                                            <span class="player-state">
                                                 <xsl:value-of select="$param/opponent_name"/> wishes to surrender
                                             </span>
                                         </xsl:when>
                                         <xsl:when test="$param/surrender = $param/player_name">
-                                            <span class="opponent">You have requested to surrender</span>
+                                            <span class="opponent-state">You have requested to surrender</span>
                                         </xsl:when>
                                         <xsl:when test="$param/current = $param/player_name">
-                                            <span class="player">
+                                            <span class="player-state">
                                                 <xsl:text>It is your turn</xsl:text>
                                             </span>
                                         </xsl:when>
                                         <xsl:otherwise>
-                                            <span class="opponent">
+                                            <span class="opponent-state">
                                                 <xsl:text>It is </xsl:text>
                                                 <xsl:value-of select="$param/opponent_name"/>
                                                 <xsl:text>'s turn</xsl:text>
@@ -836,7 +836,7 @@
                             <!-- game note -->
                             <a class="button button-icon" id="game-note" href="{am:makeUrl('Games_note', 'current_game', $param/current_game)}" title="Note">
                                 <xsl:if test="$param/has_note = 'yes'">
-                                    <xsl:attribute name="class">button button-icon marked_button</xsl:attribute>
+                                    <xsl:attribute name="class">button button-icon marked-button</xsl:attribute>
                                 </xsl:if>
                                 <span class="glyphicon glyphicon-edit"/>
                             </a>
@@ -856,7 +856,7 @@
                                     <button class="button-icon" type="button" name="show_chat" title="Chat">
                                         <!-- highlight button in case there are new messages -->
                                         <xsl:if test="$param/new_chat_messages = 'yes'">
-                                            <xsl:attribute name="class">button-icon marked_button</xsl:attribute>
+                                            <xsl:attribute name="class">button-icon marked-button</xsl:attribute>
                                         </xsl:if>
                                         <span class="glyphicon glyphicon-comment"/>
                                     </button>
@@ -1177,7 +1177,7 @@
                                                                 </xsl:when>
                                                                 <!-- highlight new chat messages (never highlight own chat messages) -->
                                                                 <xsl:when test="am:dateDiff(created_at, $param/chat_notification) &lt; 0">
-                                                                    <xsl:attribute name="class">new_message</xsl:attribute>
+                                                                    <xsl:attribute name="class">new-message</xsl:attribute>
                                                                 </xsl:when>
                                                                 <xsl:when test="author = $param/opponent_name">
                                                                     <xsl:attribute name="class">chat-heading-opponent</xsl:attribute>

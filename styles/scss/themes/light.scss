@@ -1,0 +1,122 @@
+/******************************************
+ * MArcomage CSS stylesheet - light theme *
+ ******************************************/
+
+.light-theme {
+  background-repeat: repeat;
+
+  .skin-label {
+    background-repeat: repeat;
+  }
+
+  .achievement,
+  .skin-label,
+  .skin-text {
+    border: 2px outset $black;
+    border-radius: 6px;
+  }
+
+  .inner-navbar {
+    background-repeat: repeat;
+  }
+
+  .outer-navbar {
+    background-repeat: repeat;
+    border: 2px outset $black;
+    border-radius: 6px;
+  }
+
+  hr {
+    border-color: $black;
+  }
+
+  .new-message {
+    color: $pure-red;
+    @include simple-shadow($white);
+  }
+
+  .unread-message {
+    color: $pure-orange;
+    @include simple-shadow($white);
+  }
+
+  .system-message {
+    color: $soft-blue;
+    @include simple-shadow($white);
+  }
+
+  .button,
+  button,
+  .disabled-button {
+    @include simple-shadow($white);
+  }
+
+  button[disabled] {
+    color: $dark-gray;
+  }
+
+  .info {
+    color: $dark-lime-green;
+  }
+
+  .warning {
+    color: $dark-magenta;
+  }
+
+  .error {
+    color: $pure-red;
+  }
+
+  .info-label {
+    .opponent {
+      color: $very-light-pink;
+    }
+  }
+
+  .player-state {
+    color: $dark-lime-green;
+  }
+
+  .chat-heading-player {
+    color: $dark-lime-green;
+  }
+
+  .chat-heading-opponent {
+    color: $dark-magenta;
+  }
+
+  .chat-heading-system {
+    color: $pure-red;
+  }
+
+  .text-label {
+    border-color: $black;
+    color: $black;
+
+    .bricks-label {
+      color: $pure-red;
+    }
+
+    .gems-label {
+      color: $blue;
+    }
+
+    .recruits-label {
+      color: $dark-lime-green;
+    }
+  }
+
+  .detail-value {
+    color: $dark-lime-green;
+  }
+
+  .exp-progress-bar {
+    background-color: $very-light-gray;
+  }
+
+  blockquote > div {
+    background-color: $white;
+    border: thin solid $black;
+    color: $black;
+  }
+}

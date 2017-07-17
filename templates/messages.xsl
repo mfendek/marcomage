@@ -309,13 +309,13 @@
                                         <xsl:choose>
                                             <!-- TODO format time to seconds and independent of user timezone -->
                                             <xsl:when test="is_unread = 'yes' and am:dateDiff(created_at, $param/notification) &lt;= 0">
-                                                <xsl:attribute name="class">row table-row new_message</xsl:attribute>
+                                                <xsl:attribute name="class">row table-row new-message</xsl:attribute>
                                             </xsl:when>
                                             <xsl:when test="is_unread = 'yes'">
-                                                <xsl:attribute name="class">row table-row unread</xsl:attribute>
+                                                <xsl:attribute name="class">row table-row unread-message</xsl:attribute>
                                             </xsl:when>
                                             <xsl:when test="author = $param/system_name">
-                                                <xsl:attribute name="class">row table-row system_message</xsl:attribute>
+                                                <xsl:attribute name="class">row table-row system-message</xsl:attribute>
                                             </xsl:when>
                                         </xsl:choose>
                                     </xsl:if>
@@ -405,7 +405,7 @@
                             </button>
                         </xsl:when>
                         <xsl:otherwise>
-                            <button class="button-icon marked_button" type="submit" name="message_delete_confirm" value="{$param/message_id}" title="Confirm delete">
+                            <button class="button-icon marked-button" type="submit" name="message_delete_confirm" value="{$param/message_id}" title="Confirm delete">
                                 <span class="glyphicon glyphicon-trash"/>
                             </button>
                         </xsl:otherwise>

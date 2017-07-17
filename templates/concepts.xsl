@@ -353,7 +353,7 @@
                             </button>
                         </xsl:when>
                         <xsl:otherwise>
-                            <button class="button-icon marked_button" type="submit" name="delete_concept_confirm" title="Confirm delete">
+                            <button class="button-icon marked-button" type="submit" name="delete_concept_confirm" title="Confirm delete">
                                 <span class="glyphicon glyphicon-trash"/>
                             </button>
                         </xsl:otherwise>
