@@ -200,7 +200,7 @@ class View
             $section = $dic->currentSection();
         }
 
-        $data['main']['subsection'] = Encode::htmlEncode($subsectionName);
+        $data['main']['subsection'] = $subsectionName;
 
         return $this->renderTemplate($section, $data);
     }
