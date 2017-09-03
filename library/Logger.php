@@ -175,8 +175,8 @@ class Logger
             'msg' => $message,
             'created' => Util\Date::timeToStr(),
             'request_ip' => (!is_null($currentIp)) ? $currentIp : '',
-            'backend_ip' => (!is_null($server['SERVER_ADDR'])) ? $server['SERVER_ADDR'] : '',
-            'uri' => (!is_null($server['REQUEST_URI'])) ? $server['REQUEST_URI'] : '',
+            'backend_ip' => (array_key_exists('SERVER_ADDR', $server)) ? $server['SERVER_ADDR'] : '',
+            'uri' => (array_key_exists('REQUEST_URI', $server)) ? $server['REQUEST_URI'] : '',
         );
 
         // determine error logger config
