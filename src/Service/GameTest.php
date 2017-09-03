@@ -13,6 +13,12 @@ use Util\Random;
 class GameTest extends ServiceAbstract
 {
     /**
+     * player name is arbitrary for testing purposes
+     * @var string
+     */
+    private $testPlayerName = 'tester';
+
+    /**
      * Run all card tests
      * @param bool $testSummary if active returns summary of all test results instead stopping on first error
      * @param bool $hiddenCards enable/disable hidden cards mode
@@ -26,8 +32,7 @@ class GameTest extends ServiceAbstract
         $dbEntityGame = $this->dbEntity()->game();
         $serviceGameUseCard = $this->service()->gameUseCard();
 
-        // player name is arbitrary for testing purposes
-        $dummyPlayerName = 'tester';
+        $playerName = $this->testPlayerName;
 
         // prepare decks
         $starterDecks = $this->service()->deck()->starterDecks();
@@ -36,9 +41,9 @@ class GameTest extends ServiceAbstract
 
         // prepare game
         $gameModes = ($hiddenCards) ? ['HiddenCards'] : [];
-        $game = $dbEntityGame->createGame($dummyPlayerName, '', $deck, $gameModes);
+        $game = $dbEntityGame->createGame($playerName, '', $deck, $gameModes);
         $serviceGameUseCard->startGame($game, PlayerModel::SYSTEM_NAME, $aiDeck);
-        $game->setCurrent($dummyPlayerName);
+        $game->setCurrent($playerName);
 
         // backup initial state
         $game->checkpoint();
@@ -88,7 +93,7 @@ class GameTest extends ServiceAbstract
                 $myData->Gems+= $card['gems'];
                 $myData->Recruits+= $card['recruits'];
 
-                $previewData = $serviceGameUseCard->useCard($game, $dummyPlayerName, 'test', $cardPos, $mode);
+                $previewData = $serviceGameUseCard->useCard($game, $playerName, 'test', $cardPos, $mode);
                 $cardMessage = ($card['modes'] > 0) ? ' mode ' . $mode : '';
 
                 // flush card statistics and gained awards
@@ -229,7 +234,7 @@ class GameTest extends ServiceAbstract
                 $myData->Gems+= $card['gems'];
                 $myData->Recruits+= $card['recruits'];
 
-                $previewData = $serviceGameUseCard->useCard($game, $dummyPlayerName, 'test', $cardPos, $mode);
+                $previewData = $serviceGameUseCard->useCard($game, $playerName, 'test', $cardPos, $mode);
                 $cardMessage = ($card['modes'] > 0) ? ' mode ' . $mode : '';
 
                 // flush card statistics and gained awards
@@ -275,8 +280,7 @@ class GameTest extends ServiceAbstract
         $dbEntityGame = $this->dbEntity()->game();
         $serviceGameUseCard = $this->service()->gameUseCard();
 
-        // player name is arbitrary for testing purposes
-        $dummyPlayerName = 'tester';
+        $playerName = $this->testPlayerName;
 
         // prepare decks
         $starterDecks = $this->service()->deck()->starterDecks();
@@ -285,9 +289,9 @@ class GameTest extends ServiceAbstract
 
         // prepare game
         $gameModes = ($hiddenCards) ? ['HiddenCards'] : [];
-        $game = $dbEntityGame->createGame($dummyPlayerName, '', $deck, $gameModes);
+        $game = $dbEntityGame->createGame($playerName, '', $deck, $gameModes);
         $serviceGameUseCard->startGame($game, PlayerModel::SYSTEM_NAME, $aiDeck);
-        $game->setCurrent($dummyPlayerName);
+        $game->setCurrent($playerName);
 
         // backup initial state
         $game->checkpoint();
@@ -424,7 +428,7 @@ class GameTest extends ServiceAbstract
                 $myData->Gems+= $card['gems'];
                 $myData->Recruits+= $card['recruits'];
 
-                $previewData = $serviceGameUseCard->useCard($game, $dummyPlayerName, 'test', $cardPos, $mode);
+                $previewData = $serviceGameUseCard->useCard($game, $playerName, 'test', $cardPos, $mode);
                 $cardMessage = ($card['modes'] > 0) ? ' mode ' . $mode : '';
 
                 // flush card statistics and gained awards
@@ -457,5 +461,60 @@ class GameTest extends ServiceAbstract
             'errors' => $errors,
             'log' => $log,
         ];
+    }
+
+    /**
+     * @return \Db\Model\Game
+     */
+    public function runReplayDataCardEffect()
+    {
+        $dbEntityGame = $this->dbEntity()->game();
+        $dbEntityReplay = $this->dbEntity()->replay();
+        $serviceGameUseCard = $this->service()->gameUseCard();
+
+        $playerName = $this->testPlayerName;
+
+        // prepare decks
+        $starterDecks = $this->service()->deck()->starterDecks();
+        $deck = $starterDecks[Random::arrayMtRand($starterDecks)];
+        $aiDeck = $starterDecks[Random::arrayMtRand($starterDecks)];
+
+        // prepare game
+        $game = $dbEntityGame->createGame($playerName, '', $deck, []);
+        $serviceGameUseCard->startGame($game, PlayerModel::SYSTEM_NAME, $aiDeck);
+        $game->setCurrent(PlayerModel::SYSTEM_NAME);
+
+        $gameData = $game->getData();
+        $myData = $gameData[1];
+        $hisData = $gameData[2];
+
+        // add resources
+        $myData->Recruits+= 25;
+        $hisData->Bricks+= 25;
+
+        // create replay so we could have replay data lookup available
+        $replay = $dbEntityReplay->createReplay($game);
+
+        // Hidden traps
+        $hisData->Hand[1] = 296;
+
+        // play wall raising card
+        $serviceGameUseCard->useCard($game, PlayerModel::SYSTEM_NAME, 'play', 1, 0);
+        $replay->update($game);
+
+        // Pegasus
+        $myData->Hand[1] = 96;
+
+        // play a "play again" card
+        $serviceGameUseCard->useCard($game, $playerName, 'play', 1, 0);
+        $replay->update($game);
+
+        // Goblin saboteur
+        $myData->Hand[2] = 368;
+
+        // play a card that uses replay data lookup
+        $serviceGameUseCard->useCard($game, $playerName, 'play', 2, 0);
+
+        return $game;
     }
 }

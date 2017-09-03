@@ -48,4 +48,16 @@ class CardCodeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, count($result['errors']));
         $this->assertGreaterThan(0, count($result['log']));
     }
+
+    public function testReplayData()
+    {
+        $dic = Dic::getInstance();
+        $serviceGameTest = $dic->serviceFactory()->gameTest();
+
+        $game = $serviceGameTest->runReplayDataCardEffect();
+        $gameData = $game->getData();
+        $hisData = $gameData[2];
+
+        $this->assertEquals(23, $hisData->Wall);
+    }
 }
