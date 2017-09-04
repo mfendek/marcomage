@@ -380,7 +380,7 @@
         <div class="skin-text skin-text--plain-content top-level">
           <h3>
             <a href="{am:makeUrl('Cards_keywords')}">Keywords</a>
-            <xsl:text>&gt;</xsl:text>
+            <xsl:text> &gt; </xsl:text>
             <xsl:value-of select="$keyword/am:name"/>
           </h3>
 

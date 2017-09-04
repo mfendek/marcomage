@@ -656,7 +656,9 @@
               </xsl:for-each>
             </select>
 
-            <button type="submit" name="put_card">Place card</button>
+            <button class="button-icon" type="submit" name="put_card" title="Place card">
+              <span class="glyphicon glyphicon-hand-down"/>
+            </button>
 
             <!-- AI action selector -->
             <select name="ai_action" title="card action">
@@ -673,7 +675,9 @@
               </xsl:for-each>
             </select>
 
-            <button type="submit" name="custom_ai_move">Custom AI move</button>
+            <button class="button-icon" type="submit" name="custom_ai_move" title="Custom AI move">
+              <span class="glyphicon glyphicon-knight"/>
+            </button>
 
             <!-- changes selector -->
             <xsl:variable name="targetChanges">
@@ -702,11 +706,19 @@
             <!-- change value input -->
             <input type="text" name="target_value" maxlength="5" size="4" value="{$param/target_value}" title="new value"/>
 
-            <button type="submit" name="change_attribute">Change</button>
-            <button type="submit" name="change_game_mode">
+            <button class="button-icon" type="submit" name="change_attribute" title="Change attribute">
+              <span class="glyphicon glyphicon-pencil"/>
+            </button>
+            <button class="button-icon" type="submit" name="change_game_mode">
+              <xsl:attribute name="title">
+                <xsl:choose>
+                  <xsl:when test="$param/hidden_cards = 'yes'">Reveal cards</xsl:when>
+                  <xsl:otherwise>Hide cards</xsl:otherwise>
+                </xsl:choose>
+              </xsl:attribute>
               <xsl:choose>
-                <xsl:when test="$param/hidden_cards = 'yes'">Reveal cards</xsl:when>
-                <xsl:otherwise>Hide cards</xsl:otherwise>
+                <xsl:when test="$param/hidden_cards = 'yes'"><span class="glyphicon glyphicon-eye-open"/></xsl:when>
+                <xsl:otherwise><span class="glyphicon glyphicon-eye-close"/></xsl:otherwise>
               </xsl:choose>
             </button>
           </div>
