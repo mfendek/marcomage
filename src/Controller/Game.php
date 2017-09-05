@@ -9,6 +9,7 @@ use ArcomageException as Exception;
 use Db\Model\Player as PlayerModel;
 use Util\Date;
 use Util\Input;
+use Util\Random;
 
 class Game extends ControllerAbstract
 {
@@ -949,9 +950,8 @@ class Game extends ControllerAbstract
      */
     protected function quickGame()
     {
-        $request = $this->request();
-
         $player = $this->getCurrentPlayer();
+        $dbEntityDeck = $this->dbEntity()->deck();
 
         $this->result()->setCurrent('Games');
 
@@ -960,9 +960,17 @@ class Game extends ControllerAbstract
             throw new Exception('Access denied', Exception::WARNING);
         }
 
-        $this->assertParamsNonEmpty(['selected_deck']);
+        $result = $dbEntityDeck->listReadyDecks($player->getUsername());
+        if ($result->isError()) {
+            throw new Exception('Failed to list ready decks for player');
+        }
+        $decks = $result->data();
 
-        $deckId = $request['selected_deck'];
+        if (count($decks) == 0) {
+            throw new Exception('No ready decks found');
+        }
+
+        $deckId = $decks[Random::arrayMtRand($decks)]['deck_id'];
 
         $game = $this->service()->gameManagement()->startAiGame($player->getUsername(), $deckId, 'starter_deck', []);
 

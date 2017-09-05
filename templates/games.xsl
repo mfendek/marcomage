@@ -822,7 +822,9 @@
               <!-- execute move button -->
               <xsl:choose>
                 <xsl:when test="$param/ai_mode = 'yes' and not($isMyTurn) and $param/game_state = 'in progress'">
-                  <button type="submit" name="ai_move">Execute AI move</button>
+                  <button class="button-icon" type="submit" name="ai_move" title="Execute AI move">
+                    <span class="glyphicon glyphicon-pawn"/>
+                  </button>
                 </xsl:when>
                 <xsl:when test="$param/ai_mode = 'no' and not($isMyTurn) and $param/game_state = 'in progress' and $param/finish_move = 'yes'">
                   <button type="submit" name="finish_move">Execute opponent's move</button>

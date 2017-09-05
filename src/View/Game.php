@@ -256,7 +256,7 @@ class Game extends TemplateDataAbstract
         $config = $this->getDic()->config();
         $player = $this->getCurrentPlayer();
         $defEntityChallenge = $this->defEntity()->challenge();
-        $dbEntityChallenge = $this->dbEntity()->deck();
+        $dbEntityDeck = $this->dbEntity()->deck();
         $dbEntityGame = $this->dbEntity()->game();
         $dbEntitySetting = $this->dbEntity()->setting();
         $setting = $this->getCurrentSettings();
@@ -281,7 +281,7 @@ class Game extends TemplateDataAbstract
         $data['avatar_path'] = $config['upload_dir']['avatar'];
 
         // list player's ready decks
-        $result = $dbEntityChallenge->listReadyDecks($player->getUsername());
+        $result = $dbEntityDeck->listReadyDecks($player->getUsername());
         if ($result->isError()) {
             throw new Exception('Failed to list ready decks for player');
         }
