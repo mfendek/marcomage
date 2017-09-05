@@ -688,7 +688,7 @@
               </input>
               <span>
                 <xsl:attribute name="title">display cards without background images</xsl:attribute>
-                <xsl:text>Old card appearance</xsl:text>
+                <xsl:text>Hide card background image</xsl:text>
               </span>
             </p>
 
