@@ -121,7 +121,7 @@
                     <value id="2" section="Cards" desc="You are now able to access complete card database."/>
                     <value id="3" section="Replays" desc="You may now re-watch every finished game."/>
                     <value id="4" section="Concepts" desc="You may now publish card concepts."/>
-                    <value id="5" section="Statistics" desc="You may now access game statistics."/>
+                    <value id="5" section="" desc=""/>
                     <value id="6" section="" desc=""/>
                     <value id="7" section="" desc=""/>
                     <value id="8" section="" desc=""/>
@@ -340,7 +340,7 @@
             <value name="Players" level="0"/>
             <value name="Replays" level="3"/>
             <value name="Cards" level="2"/>
-            <value name="Concepts" level="5"/>
+            <value name="Concepts" level="4"/>
           </xsl:variable>
           <nav class="inner-navbar__menu-center">
             <xsl:for-each select="exsl:node-set($sections)/*">
