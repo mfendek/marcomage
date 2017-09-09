@@ -96,7 +96,7 @@
                       </div>
                       <div class="col-sm-2">
                         <p>
-                          <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', author)}">
+                          <a href="{am:makeUrl('Players_details', 'Profile', author)}">
                             <xsl:value-of select="author"/>
                           </a>
                         </p>
@@ -110,14 +110,16 @@
                         <xsl:choose>
                           <xsl:when test="$hasPosts">
                             <p>
-                              <xsl:if test="am:dateDiff(last_post, $param/notification) &lt; 0">
-                                <xsl:attribute name="class">new</xsl:attribute>
-                              </xsl:if>
                               <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'thread_current_page', am:max(last_page - 1, 0))}#latest">
-                                <xsl:copy-of select="am:dateTime(last_post, $param/timezone)"/>
+                                <span>
+                                  <xsl:if test="am:dateDiff(last_post, $param/notification) &lt; 0">
+                                    <xsl:attribute name="class">forum__new-item</xsl:attribute>
+                                  </xsl:if>
+                                  <xsl:copy-of select="am:dateTime(last_post, $param/timezone)"/>
+                                </span>
                               </a>
                               <xsl:text> by </xsl:text>
-                              <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', last_author)}">
+                              <a href="{am:makeUrl('Players_details', 'Profile', last_author)}">
                                 <xsl:value-of select="last_author"/>
                               </a>
                             </p>
@@ -249,7 +251,7 @@
                   </div>
                   <div class="col-sm-2">
                     <p>
-                      <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', author)}">
+                      <a href="{am:makeUrl('Players_details', 'Profile', author)}">
                         <xsl:value-of select="author"/>
                       </a>
                     </p>
@@ -263,14 +265,16 @@
                     <xsl:choose>
                       <xsl:when test="$hasPosts">
                         <p>
-                          <xsl:if test="am:dateDiff(last_post, $param/notification) &lt; 0">
-                            <xsl:attribute name="class">new</xsl:attribute>
-                          </xsl:if>
                           <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'thread_current_page', am:max(last_page - 1, 0))}#latest">
-                            <xsl:copy-of select="am:dateTime(last_post, $param/timezone)"/>
+                            <span>
+                              <xsl:if test="am:dateDiff(last_post, $param/notification) &lt; 0">
+                                <xsl:attribute name="class">forum__new-item</xsl:attribute>
+                              </xsl:if>
+                              <xsl:copy-of select="am:dateTime(last_post, $param/timezone)"/>
+                            </span>
                           </a>
                           <xsl:text> by </xsl:text>
-                          <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', last_author)}">
+                          <a href="{am:makeUrl('Players_details', 'Profile', last_author)}">
                             <xsl:value-of select="last_author"/>
                           </a>
                         </p>
@@ -286,7 +290,7 @@
           </div>
         </xsl:when>
         <xsl:otherwise>
-          <p class="information-line warning">No results matched selected criteria.</p>
+          <p class="information-line information-line--inner warning">No results matched selected criteria.</p>
         </xsl:otherwise>
       </xsl:choose>
 
@@ -390,7 +394,7 @@
               </div>
               <div class="col-sm-2">
                 <p>
-                  <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', author)}">
+                  <a href="{am:makeUrl('Players_details', 'Profile', author)}">
                     <xsl:value-of select="author"/>
                   </a>
                 </p>
@@ -404,14 +408,16 @@
                 <xsl:choose>
                   <xsl:when test="$hasPosts">
                     <p>
-                      <xsl:if test="am:dateDiff(last_post, $param/notification) &lt; 0">
-                        <xsl:attribute name="class">new</xsl:attribute>
-                      </xsl:if>
                       <a href="{am:makeUrl('Forum_thread', 'current_thread', thread_id, 'thread_current_page', am:max(last_page - 1, 0))}#latest">
-                        <xsl:copy-of select="am:dateTime(last_post, $param/timezone)"/>
+                        <span>
+                          <xsl:if test="am:dateDiff(last_post, $param/notification) &lt; 0">
+                            <xsl:attribute name="class">forum__new-item</xsl:attribute>
+                          </xsl:if>
+                          <xsl:copy-of select="am:dateTime(last_post, $param/timezone)"/>
+                        </span>
                       </a>
                       <xsl:text> by </xsl:text>
-                      <a class="hidden-link" href="{am:makeUrl('Players_details', 'Profile', last_author)}">
+                      <a href="{am:makeUrl('Players_details', 'Profile', last_author)}">
                         <xsl:value-of select="last_author"/>
                       </a>
                     </p>

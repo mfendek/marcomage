@@ -218,12 +218,12 @@
             <!-- end buttons and filters -->
           </div>
 
-          <xsl:if test="($param/messages_count = 0) and (($param/date_val != 'none') or ($param/name_val != 'none'))">
-            <p class="information-line warning">No messages matched selected criteria.</p>
+          <xsl:if test="($param/messages_count = 0) and (($param/date_val != 'none') or ($param/name_val != ''))">
+            <p class="information-line information-line--inner warning">No messages matched selected criteria.</p>
           </xsl:if>
 
-          <xsl:if test="($param/messages_count = 0) and ($param/date_val = 'none') and ($param/name_val = 'none')">
-            <p class="information-line info">You have no messages.</p>
+          <xsl:if test="($param/messages_count = 0) and ($param/date_val = 'none') and ($param/name_val = '')">
+            <p class="information-line information-line--inner info">You have no messages.</p>
           </xsl:if>
 
           <!-- begin messages table -->

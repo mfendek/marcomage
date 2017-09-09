@@ -225,7 +225,7 @@
         </div>
       </xsl:when>
       <xsl:otherwise>
-        <p class="information-line warning">There are no game replays.</p>
+        <p class="information-line information-line--inner warning">There are no game replays.</p>
       </xsl:otherwise>
     </xsl:choose>
 

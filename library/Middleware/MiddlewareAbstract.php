@@ -127,13 +127,10 @@ abstract class MiddlewareAbstract extends \ControllerAbstract
     protected function destroySession()
     {
         $cookies = $this->getDic()->cookies();
-
-        if (isset($cookies['username'])) {
-            $this->result()->setCookie('username', null, -1);
-        }
-
-        if (isset($cookies['session_id'])) {
-            $this->result()->setCookie('session_id', null, -1);
+        foreach (['username', 'session_id'] as $key) {
+            if (isset($cookies[$key])) {
+                $this->result()->setCookie($key, null, -1);
+            }
         }
 
         // demote player to guest

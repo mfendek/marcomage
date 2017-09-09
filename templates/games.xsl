@@ -162,7 +162,7 @@
             </div>
           </xsl:when>
           <xsl:otherwise>
-            <p class="information-line warning">You have no active games.</p>
+            <p class="information-line information-line--inner warning">You have no active games.</p>
           </xsl:otherwise>
         </xsl:choose>
         <!-- end active games list -->
@@ -176,10 +176,10 @@
         <!-- begin hosted games list -->
         <!-- warning messages -->
         <xsl:if test="$activeDecks = 0">
-          <p class="information-line warning">You need at least one ready deck to host/join a game.</p>
+          <p class="information-line information-line--inner warning">You need at least one ready deck to host/join a game.</p>
         </xsl:if>
         <xsl:if test="$param/free_slots = 0">
-          <p class="information-line warning">You cannot host/enter any more games.</p>
+          <p class="information-line information-line--inner warning">You cannot host/enter any more games.</p>
         </xsl:if>
 
         <xsl:choose>
@@ -319,7 +319,7 @@
                 </div>
               </xsl:when>
               <xsl:otherwise>
-                <p class="information-line warning">There are no hosted games.</p>
+                <p class="information-line information-line--inner warning">There are no hosted games.</p>
               </xsl:otherwise>
             </xsl:choose>
 
@@ -440,7 +440,7 @@
                 </div>
               </xsl:when>
               <xsl:otherwise>
-                <p class="information-line warning">There are no hosted games.</p>
+                <p class="information-line information-line--inner warning">You have no hosted games.</p>
               </xsl:otherwise>
             </xsl:choose>
 

@@ -18,11 +18,11 @@
     <xsl:variable name="list" select="$param/list"/>
 
     <xsl:if test="$param/is_logged_in = 'yes' and $param/active_decks = 0">
-      <p class="information-line warning">You need at least one ready deck to challenge other players.</p>
+      <p class="information-line information-line--inner warning">You need at least one ready deck to challenge other players.</p>
     </xsl:if>
 
     <xsl:if test="$param/free_slots = 0">
-      <p class="information-line warning">You cannot initiate any more games.</p>
+      <p class="information-line information-line--inner warning">You cannot initiate any more games.</p>
     </xsl:if>
 
     <xsl:choose>
@@ -671,7 +671,7 @@
           </xsl:when>
 
           <xsl:when test="$activeDecks = 0">
-            <p class="information-line warning">
+            <p class="information-line information-line--inner warning">
               You need at least one ready deck to challenge other players.
             </p>
           </xsl:when>

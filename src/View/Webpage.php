@@ -39,7 +39,10 @@ class Webpage extends TemplateDataAbstract
 
         // list the names of the files to display
         // (all files whose name matches up to the first space character)
-        $files = preg_grep('/^' . $selected . '( .*)?\.xml/i', scandir('templates/pages', 1));
+        $files = preg_grep(
+            '/^' . $selected . '( .*)?\.xml/i',
+            scandir('templates/pages', SCANDIR_SORT_DESCENDING)
+        );
 
         $setting = $this->getCurrentSettings();
 

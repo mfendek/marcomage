@@ -61,6 +61,11 @@ textarea {
   font-family: $font-family-arial;
   line-height: 20px;
   text-align: center;
+
+  &--inner {
+    margin-bottom: 1ex;
+    margin-top: 1ex;
+  }
 }
 
 // when no information is displayed, display blank line

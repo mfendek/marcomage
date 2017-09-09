@@ -49,12 +49,12 @@ class Player extends ServiceAbstract
     /**
      * Begin new session
      * @param \Db\Model\Player $player
-     * @param string $cookies cookies option
+     * @param string $cookiesEnabled ('yes', 'no', 'maybe')
      * @param int $sessionId [$session_id]
      * @throws Exception
      * @return array
      */
-    public function beginSession($player, $cookies, $sessionId = 0)
+    public function beginSession($player, $cookiesEnabled, $sessionId = 0)
     {
         // key => [value, timeout]
         $newCookies = array();
@@ -75,14 +75,14 @@ class Player extends ServiceAbstract
         $player->setLastActivity(Date::timeToStr());
 
         // try even if not sure
-        if ($cookies == 'yes' || $cookies == 'maybe') {
+        if ($cookiesEnabled == 'yes' || $cookiesEnabled == 'maybe') {
             $timeout = $now + self::COOKIE_TIMEOUT;
             $newCookies['username'] = [$player->getUsername(), $timeout];
             $newCookies['session_id'] = [$player->getSessionId(), $timeout];
         }
 
         // (yes -> 1, maybe -> 0, no -> 0)
-        $player->cookies = ($cookies == 'yes');
+        $player->cookies = ($cookiesEnabled == 'yes');
 
         // save player data
         if (!$player->save()) {
