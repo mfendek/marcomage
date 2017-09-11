@@ -160,7 +160,7 @@
   <keyword>
     <name>Burning</name>
     <basic_gain>3</basic_gain>
-    <bonus_gain>11</bonus_gain>
+    <bonus_gain>6</bonus_gain>
     <description>Fire blast - replace highest rarity non-Burning card from opponent's hand of the same or lower rarity as the played card with [card=248/].</description>
     <lore><![CDATA[
     <p>It is said that burning creatures are those who were blessed by the sun god himself. Others say, that they are devil's pawns destines to serve him for eternity. Element of fire is know to consume everything eventually, but despite that many creatures are attracted by its power regardless of the price they have to pay to wield it.</p>
@@ -198,15 +198,15 @@
     <name>Charge</name>
     <basic_gain>0</basic_gain>
     <bonus_gain>0</bonus_gain>
-    <description>When card has this keyword, it also has a number next to this keyword. When card is played and the opponent's wall (after the standard attack) is 0, he will receive additional damage equal to number next to charge, otherwise opponent loses random resources equal to number next to charge. If opponent has more resources of certain type compared to his other resources, they are more likely to be reduced.</description>
-    <lore><![CDATA[<p>Some creatures are able to attack with such force and speed that they are able to stomp their enemies to the ground without the need to fight them with regular weapons. Heavy fortifications are the only defenses that can hold them at bay, however even they need to be repaired after the battle to hold another attack.</p>]]></lore>
+    <description>When card has this keyword, it also has a number next to this keyword. When card is played and the opponent's wall (after the standard attack) is 0, he will receive additional damage equal to number next to charge, otherwise you gain random resources equal to half of the number next to charge keyword.</description>
+    <lore><![CDATA[<p>Some creatures are able to attack with such force and speed that they are able to stomp their enemies to the ground without the need to fight them with regular weapons. Heavy fortifications are the only defenses that can hold them at bay, without them the defenders are open to plundering by the aggressor.</p>]]></lore>
     <code><![CDATA[
     $charge_damage = $this->keywordValue($t->card()->getData('Keywords'), 'Charge');
     if ($t->hisData()->Wall <= 0) {
       $t->hisData()->addTower(-$charge_damage);
     }
     else {
-      $t->hisData()->addRandomResources(-$charge_damage);
+      $t->myData()->addRandomResources(round($charge_damage / 2));
     }
 ]]></code>
   </keyword>
