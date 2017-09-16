@@ -3,12 +3,21 @@
  **********************************************/
 
 @media only print {
-  .deck-options,
-  #menu-bar {
+  .filters,
+  .inner-navbar {
     display: none;
   }
 
   .container {
     width: 100%;
+  }
+
+  .deck {
+    &> [class*='col-'] {
+      float: none;
+      page-break-after: auto;
+      page-break-before: auto;
+      page-break-inside: avoid;
+    }
   }
 }
