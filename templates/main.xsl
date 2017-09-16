@@ -34,9 +34,9 @@
             <meta name="author" content="Mojmír Fendek, Viktor Štujber"/>
             <meta name="keywords" content="Arcomage, MArcomage, multiplayer, free, online, fantasy, card game, fantasy novels"/>
 
-            <script type="text/javascript" src="js/dist/main.js?v={$param/cc_version}"/>
-            <link rel="stylesheet" href="styles/css/main.css?v={$param/cc_version}" type="text/css" title="standard style"/>
             <link rel="icon" href="img/favicon.png?v={$param/cc_version}" type="image/png"/>
+            <link rel="stylesheet" href="styles/css/main.css?v={$param/cc_version}" type="text/css" title="standard style"/>
+            <script type="text/javascript" src="js/dist/main.js?v={$param/cc_version}"/>
             <title>
               <xsl:if test="$param/subsection != ''">
                 <xsl:value-of select="$param/subsection"/>
