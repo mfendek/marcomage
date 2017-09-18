@@ -1,0 +1,21 @@
+/******************************************************
+ * MArcomage CSS stylesheet - experience progress bar *
+ ******************************************************/
+
+// exp progress bar
+.exp-progress-bar {
+  border: thin solid $black;
+  margin: 0.5ex auto 0;
+  width: 100px;
+
+  &--large {
+    margin: 1ex 0;
+    width: 200px;
+  }
+
+  // exp progress bar - inner part
+  &> div {
+    background-color: $dark-lime-green;
+    height: 2ex;
+  }
+}

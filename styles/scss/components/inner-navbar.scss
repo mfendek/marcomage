@@ -40,22 +40,3 @@
     }
   }
 }
-
-// exp progress bar
-// TODO this is a global component, it should be moved to a proper place with different modifiers
-.exp-progress-bar {
-  border: thin solid $black;
-  margin: 0.5ex auto 0;
-  width: 100px;
-
-  &--large {
-    margin: 1ex 0;
-    width: 200px;
-  }
-
-  // exp progress bar - inner part
-  &> div {
-    background-color: $dark-lime-green;
-    height: 2ex;
-  }
-}

@@ -327,3 +327,26 @@ input[type="checkbox"] {
   border: thin solid;
   padding: 0.7ex;
 }
+
+// highlight currently looked up card name
+[data-card-lookup] {
+  border-radius: 4px;
+
+  &:hover {
+    background-color: $black-shade-lighter;
+    transition: background-color 600ms;
+  }
+}
+
+// card lookup (card reference display)
+.card-lookup-hint {
+  display: none;
+  left: 0;
+  position: absolute;
+  top: 0;
+
+  .card {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}

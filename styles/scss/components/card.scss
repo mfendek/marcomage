@@ -254,25 +254,7 @@
   }
 }
 
-// add extra margin when cards are displayed in the "history" part of the game section
-// TODO this belongs in game component
-.history .card {
-  margin: 1.5ex 0.5ex 0.7ex 0.5ex;
-}
-
-// highlight currently looked up card
-// TODO this is a generic component
-[data-card-lookup] {
-  border-radius: 4px;
-
-  &:hover {
-    background-color: $black-shade-lighter;
-    transition: background-color 600ms;
-  }
-}
-
 // hidden card layout
-// TODO this belongs in game component
 .hidden-card {
   background: $black url('/img/card/hidden_card.png') no-repeat;
   background-size: cover;
@@ -294,24 +276,9 @@
 }
 
 // keyword insignia layout
-// TODO this is a global component
 .keyword-insignia {
   border: thin solid $black-shade-light;
   border-radius: 50%;
   transform: scale(1.2, 1.2);
   vertical-align: middle;
-}
-
-// card lookup (card reference display)
-// TODO this is a generic component
-.card-lookup-hint {
-  display: none;
-  left: 0;
-  position: absolute;
-  top: 0;
-
-  .card {
-    margin-left: 0;
-    margin-right: 0;
-  }
 }
