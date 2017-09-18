@@ -302,7 +302,7 @@
                       </div>
                       <div class="col-sm-3">
                         <p>
-                          <xsl:copy-of select="am:date(game_action, $param/timezone)"/>
+                          <xsl:copy-of select="am:dateTime(game_action, $param/timezone)"/>
                         </p>
                       </div>
                       <div class="col-sm-2">
