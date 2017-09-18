@@ -36,7 +36,8 @@
 
   .button,
   button,
-  .disabled-button {
+  .disabled-button,
+  .toggle-dialog__label {
     background-color: $soft-blue;
     border-color: $soft-blue;
   }

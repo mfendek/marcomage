@@ -287,90 +287,183 @@
   <xsl:template match="section[. = 'Decks_edit']">
     <xsl:variable name="param" select="$params/deck_edit"/>
 
+    <h3><xsl:value-of select="$param/deck_name"/></h3>
+
     <div class="filters">
-      <xsl:choose>
-        <xsl:when test="$param/reset = 'no'">
-          <button class="button-icon" type="submit" name="reset_deck_prepare" title="Empty deck">
-            <span class="glyphicon glyphicon-trash"/>
-          </button>
-        </xsl:when>
-        <xsl:otherwise>
-          <button class="button-icon marked-button" type="submit" name="reset_deck_confirm" title="Confirm deck reset">
-            <span class="glyphicon glyphicon-trash"/>
-          </button>
-        </xsl:otherwise>
-      </xsl:choose>
+      <div class="toggle-dialog">
+        <input class="toggle-dialog__button" type="checkbox" name="toggle_filters" />
+        <span class="toggle-dialog__label">Filters</span>
+        <div class="skin-text toggle-dialog__body">
+          <xsl:copy-of select="am:cardFilters(
+            $param/keywords, $param/levels, $param/created_dates, $param/modified_dates,
+            $param/name_filter, $param/rarity_filter, $param/keyword_filter, $param/cost_filter,
+            $param/advanced_filter, $param/support_filter, $param/created_filter, $param/modified_filter,
+            $param/level_filter, $param/card_sort
+          )"/>
 
-      <input type="text" name="new_deck_name" value="{$param/deck_name}" maxlength="20"/>
-      <button class="button-icon" type="submit" name="rename_deck" title="Rename deck">
-        <span class="glyphicon glyphicon-pencil"/>
-      </button>
-
-      <input type="file" name="deck_data_file"/>
-      <button class="button-icon" type="submit" name="import_deck" title="Import deck">
-        <span class="glyphicon glyphicon-open-file"/>
-      </button>
-      <button class="button-icon" type="submit" name="export_deck" title="Export deck">
-        <span class="glyphicon glyphicon-save-file"/>
-      </button>
-
-      <button class="button-icon" type="button" name="print" title="Print">
-        <span class="glyphicon glyphicon-print"/>
-      </button>
-
-      <!-- share/unshare button -->
-      <xsl:if test="$param/player_level &gt;= $param/tutorial_end">
-        <xsl:choose>
-          <xsl:when test="$param/shared = 'yes'">
-            <button class="button-icon" type="submit" name="unshare_deck" title="Unshare deck">
-              <span class="glyphicon glyphicon-eye-close"/>
+          <div>
+            <button class="button-icon" type="submit" name="deck_apply_filters" title="Apply filters">
+              <span class="glyphicon glyphicon-filter"/>
             </button>
-          </xsl:when>
-          <xsl:otherwise>
-            <button class="button-icon" type="submit" name="share_deck" title="Share deck">
-              <span class="glyphicon glyphicon-eye-open"/>
-            </button>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:if>
+          </div>
+        </div>
+      </div>
 
-      <a class="button button-icon" id="deck-note"
-         href="{am:makeUrl('Decks_note', 'current_deck', $param/current_deck)}" title="Note">
-        <xsl:if test="$param/note != ''">
-          <xsl:attribute name="class">button button-icon marked-button</xsl:attribute>
-        </xsl:if>
-        <span class="glyphicon glyphicon-edit"/>
-      </a>
-    </div>
-    <div class="filters">
-      <div id="tokens-selection">
-        <xsl:for-each select="$param/tokens/*">
-          <xsl:variable name="token" select="."/>
+      <div class="toggle-dialog">
+        <input class="toggle-dialog__button" type="checkbox" name="toggle_tokens" />
+        <span class="toggle-dialog__label">Tokens</span>
+        <div id="tokens-selection" class="skin-text toggle-dialog__body">
+            <xsl:for-each select="$param/tokens/*">
+              <xsl:variable name="token" select="."/>
 
-          <select name="Token{position()}">
-            <option value="none">
-              <xsl:if test="$token = 'none'">
-                <xsl:attribute name="selected">selected</xsl:attribute>
-              </xsl:if>
-              <xsl:text>None</xsl:text>
-            </option>
-            <xsl:for-each select="$param/token_keywords/*">
-              <option value="{text()}">
-                <xsl:if test="$token = .">
-                  <xsl:attribute name="selected">selected</xsl:attribute>
-                </xsl:if>
-                <xsl:value-of select="text()"/>
-              </option>
+              <select name="Token{position()}">
+                <option value="none">
+                  <xsl:if test="$token = 'none'">
+                    <xsl:attribute name="selected">selected</xsl:attribute>
+                  </xsl:if>
+                  <xsl:text>None</xsl:text>
+                </option>
+                <xsl:for-each select="$param/token_keywords/*">
+                  <option value="{text()}">
+                    <xsl:if test="$token = .">
+                      <xsl:attribute name="selected">selected</xsl:attribute>
+                    </xsl:if>
+                    <xsl:value-of select="text()"/>
+                  </option>
+                </xsl:for-each>
+              </select>
             </xsl:for-each>
-          </select>
-        </xsl:for-each>
 
-        <button class="button-icon" type="submit" name="set_tokens" title="Save tokens">
-          <span class="glyphicon glyphicon-floppy-disk"/>
-        </button>
-        <button class="button-icon" type="submit" name="auto_tokens" title="Let AI assign tokens">
-          <span class="glyphicon glyphicon-hdd"/>
-        </button>
+          <div>
+            <button class="button-icon" type="submit" name="set_tokens" title="Save tokens">
+              <span class="glyphicon glyphicon-floppy-disk"/>
+            </button>
+            <button class="button-icon" type="submit" name="auto_tokens" title="Let AI assign tokens">
+              <span class="glyphicon glyphicon-hdd"/>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="toggle-dialog toggle-dialog--break">
+        <input class="toggle-dialog__button" type="checkbox" name="toggle_stats">
+          <xsl:if test="$param/toggle_stats = 'yes'">
+            <xsl:attribute name="checked">checked</xsl:attribute>
+          </xsl:if>
+        </input>
+        <span class="toggle-dialog__label">Stats</span>
+        <div class="skin-text toggle-dialog__body">
+          <div>
+            <xsl:text>Wins: </xsl:text>
+            <b><xsl:value-of select="$param/wins"/></b>
+          </div>
+          <div>
+            <xsl:text>Losses: </xsl:text>
+            <b><xsl:value-of select="$param/losses"/></b>
+          </div>
+          <div>
+            <xsl:text>Draws: </xsl:text>
+            <b><xsl:value-of select="$param/draws"/></b>
+          </div>
+
+          <div>
+            <xsl:choose>
+              <xsl:when test="$param/reset_stats = 'no'">
+                <button class="button-icon" type="submit" name="reset_stats_prepare" title="Reset deck statistics">
+                  <span class="glyphicon glyphicon-retweet"/>
+                </button>
+              </xsl:when>
+              <xsl:otherwise>
+                <button class="button-icon marked-button" type="submit" name="reset_stats_confirm"
+                        title="Confirm reset statistics">
+                  <span class="glyphicon glyphicon-retweet"/>
+                </button>
+              </xsl:otherwise>
+            </xsl:choose>
+          </div>
+        </div>
+      </div>
+
+      <div class="toggle-dialog">
+        <input class="toggle-dialog__button" type="checkbox" name="toggle_options" />
+        <span class="toggle-dialog__label">Options</span>
+        <div class="skin-text toggle-dialog__body">
+          <div>
+            <input type="file" name="deck_data_file"/>
+          </div>
+
+          <div>
+            <button class="button-icon" type="submit" name="import_deck" title="Import deck">
+              <span class="glyphicon glyphicon-open-file"/>
+            </button>
+            <button class="button-icon" type="submit" name="export_deck" title="Export deck">
+              <span class="glyphicon glyphicon-save-file"/>
+            </button>
+          </div>
+
+          <div>
+            <!-- share/unshare button -->
+            <xsl:if test="$param/player_level &gt;= $param/tutorial_end">
+              <xsl:choose>
+                <xsl:when test="$param/shared = 'yes'">
+                  <button class="button-icon" type="submit" name="unshare_deck" title="Unshare deck">
+                    <span class="glyphicon glyphicon-eye-close"/>
+                  </button>
+                </xsl:when>
+                <xsl:otherwise>
+                  <button class="button-icon" type="submit" name="share_deck" title="Share deck">
+                    <span class="glyphicon glyphicon-eye-open"/>
+                  </button>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:if>
+
+            <a class="button button-icon" id="deck-note"
+               href="{am:makeUrl('Decks_note', 'current_deck', $param/current_deck)}" title="Note">
+              <xsl:if test="$param/note != ''">
+                <xsl:attribute name="class">button button-icon marked-button</xsl:attribute>
+              </xsl:if>
+              <span class="glyphicon glyphicon-edit"/>
+            </a>
+
+            <button class="button-icon" type="button" name="print" title="Print">
+              <span class="glyphicon glyphicon-print"/>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="toggle-dialog toggle-dialog--break">
+        <input class="toggle-dialog__button" type="checkbox" name="toggle_edit">
+          <xsl:if test="$param/toggle_edit = 'yes'">
+            <xsl:attribute name="checked">checked</xsl:attribute>
+          </xsl:if>
+        </input>
+        <span class="toggle-dialog__label">Edit</span>
+        <div class="skin-text toggle-dialog__body">
+          <div>
+            <input type="text" name="new_deck_name" value="{$param/deck_name}" maxlength="20"/>
+          </div>
+
+          <div>
+            <button class="button-icon" type="submit" name="rename_deck" title="Rename deck">
+              <span class="glyphicon glyphicon-pencil"/>
+            </button>
+
+            <xsl:choose>
+              <xsl:when test="$param/reset = 'no'">
+                <button class="button-icon" type="submit" name="reset_deck_prepare" title="Empty deck">
+                  <span class="glyphicon glyphicon-trash"/>
+                </button>
+              </xsl:when>
+              <xsl:otherwise>
+                <button class="button-icon marked-button" type="submit" name="reset_deck_confirm" title="Confirm deck reset">
+                  <span class="glyphicon glyphicon-trash"/>
+                </button>
+              </xsl:otherwise>
+            </xsl:choose>
+          </div>
+        </div>
       </div>
 
       <div id="cost-per-turn" class="text-label" title="average cost per turn (bricks, gems, recruits)">
@@ -385,47 +478,6 @@
         </b>
       </div>
 
-      <p class="text-label">
-        <xsl:attribute name="title">deck statistics (wins / losses / draws)</xsl:attribute>
-        <b>
-          <xsl:value-of select="$param/wins"/>
-        </b>
-        <xsl:text> / </xsl:text>
-        <b>
-          <xsl:value-of select="$param/losses"/>
-        </b>
-        <xsl:text> / </xsl:text>
-        <b>
-          <xsl:value-of select="$param/draws"/>
-        </b>
-      </p>
-
-      <xsl:choose>
-        <xsl:when test="$param/reset_stats = 'no'">
-          <button class="button-icon" type="submit" name="reset_stats_prepare" title="Reset deck statistics">
-            <span class="glyphicon glyphicon-retweet"/>
-          </button>
-        </xsl:when>
-        <xsl:otherwise>
-          <button class="button-icon marked-button" type="submit" name="reset_stats_confirm"
-                  title="Confirm reset statistics">
-            <span class="glyphicon glyphicon-retweet"/>
-          </button>
-        </xsl:otherwise>
-      </xsl:choose>
-    </div>
-
-    <div class="filters">
-      <xsl:copy-of select="am:cardFilters(
-        $param/keywords, $param/levels, $param/created_dates, $param/modified_dates,
-        $param/name_filter, $param/rarity_filter, $param/keyword_filter, $param/cost_filter,
-        $param/advanced_filter, $param/support_filter, $param/created_filter, $param/modified_filter,
-        $param/level_filter, $param/card_sort
-      )"/>
-
-      <button class="button-icon" type="submit" name="deck_apply_filters" title="Apply filters">
-        <span class="glyphicon glyphicon-filter"/>
-      </button>
       <button class="button-icon" type="submit" name="card_pool_switch" title="show / hide card pool">
         <xsl:attribute name="class">
           <xsl:choose>

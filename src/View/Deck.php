@@ -69,6 +69,8 @@ class Deck extends TemplateDataAbstract
 
         $data['reset'] = (isset($input['reset_deck_prepare'])) ? 'yes' : 'no';
         $data['reset_stats'] = (isset($input['reset_stats_prepare'])) ? 'yes' : 'no';
+        $data['toggle_edit'] = (isset($input['toggle_edit_show']) && $input['toggle_edit_show']) ? 'yes' : 'no';
+        $data['toggle_stats'] = (isset($input['toggle_stats_show']) && $input['toggle_stats_show']) ? 'yes' : 'no';
 
         // load card display settings
         $setting = $this->getCurrentSettings();

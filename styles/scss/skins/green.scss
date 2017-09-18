@@ -64,7 +64,8 @@
 
   .button,
   button,
-  .disabled-button {
+  .disabled-button,
+  .toggle-dialog__label {
     background-color: $dark-lime-green;
     border-color: $very-dark-lime-green;
   }

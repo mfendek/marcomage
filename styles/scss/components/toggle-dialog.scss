@@ -1,0 +1,94 @@
+/********************************************
+ * MArcomage CSS stylesheet - toggle dialog *
+ ********************************************/
+
+.toggle-dialog {
+  display: inline-block;
+  font-family: $font-family-arial;
+  font-size: $font-size-small;
+  position: relative;
+  vertical-align: middle;
+
+  &--icon {
+    font-size: $font-size-large;
+
+    .toggle-dialog__body {
+      top: 33px;
+    }
+
+    .toggle-dialog__label {
+      padding: 0.2ex 0.6ex 0.2ex 0.6ex;
+    }
+  }
+
+  @media (max-width: $screen-xs-max) {
+    display: inline;
+
+    // specifies where to break inline-block item on small screens
+    &--break {
+      &:after {
+        content: '\A';
+        white-space: pre;
+      }
+    }
+  }
+
+  input[type="checkbox"] {
+    // override default
+    margin: 0;
+  }
+
+  &__button {
+    height: 100%;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+
+    &:active,
+    &:checked {
+      &+ .toggle-dialog__label {
+        border-style: inset;
+      }
+
+      &+ .toggle-dialog__label + .toggle-dialog__body {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+  }
+
+  &__label {
+    display: inline-block;
+    border: 2px outset $black;
+    border-radius: 6px;
+    color: $black;
+    padding: 0.4ex 1.2ex 0.4ex 1.2ex;
+
+    @media (max-width: $screen-xs-max) {
+      margin-bottom: 0.5ex;
+    }
+  }
+
+  &__body {
+    padding: 1ex;
+    left: 50%;
+    min-width: 100px;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 28px;
+    transition: opacity 250ms;
+    transform: translateX(-50%);
+    z-index: 1;
+
+    &> * {
+      margin-top: 1ex;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+  }
+}

@@ -306,7 +306,9 @@ class Deck extends ControllerAbstract
     protected function resetDeckPrepare()
     {
         // only symbolic functionality... rest is handled below
-        $this->result()->setCurrent('Decks_edit');
+        $this->result()
+            ->changeRequest('toggle_edit_show', true)
+            ->setCurrent('Decks_edit');
     }
 
     /**
@@ -350,7 +352,9 @@ class Deck extends ControllerAbstract
     protected function resetStatsPrepare()
     {
         // only symbolic functionality... rest is handled below
-        $this->result()->setCurrent('Decks_edit');
+        $this->result()
+            ->changeRequest('toggle_stats_show', true)
+            ->setCurrent('Decks_edit');
     }
 
     /**

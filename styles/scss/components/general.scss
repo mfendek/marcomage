@@ -269,7 +269,8 @@ input {
 
   button,
   .button,
-  .disabled-button {
+  .disabled-button,
+  .text-label {
     margin-left: 0.5ex;
 
     &:first-child {

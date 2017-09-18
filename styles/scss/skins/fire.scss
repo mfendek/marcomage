@@ -51,7 +51,8 @@
   }
 
   .button,
-  button {
+  button,
+  .toggle-dialog__label {
     background-color: $mostly-black;
     border-color: $dark-gray;
     color: $very-light-gray;

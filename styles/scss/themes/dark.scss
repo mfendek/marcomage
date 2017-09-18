@@ -54,7 +54,8 @@
 
   button,
   .button:link,
-  .button:visited {
+  .button:visited,
+  .toggle-dialog__label {
     color: $very-light-gray;
   }
 

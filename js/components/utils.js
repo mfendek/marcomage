@@ -305,5 +305,21 @@ export default function () {
 
       return false;
     });
+
+    $('.toggle-dialog__button').change(function () {
+      if (this.checked) {
+        let name = $(this).attr('name');
+        let checkboxes = $('.toggle-dialog__button');
+
+        // close all other opened dialogs
+        if (checkboxes.filter(':checked').length > 0) {
+          checkboxes.each(function () {
+            if (name !== $(this).attr('name')) {
+              $(this).prop('checked', false);
+            }
+          });
+        }
+      }
+    });
   });
 }

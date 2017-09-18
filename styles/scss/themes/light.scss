@@ -47,7 +47,8 @@
 
   .button,
   button,
-  .disabled-button {
+  .disabled-button,
+  .toggle-dialog__label {
     @include simple-shadow($white);
   }
 
