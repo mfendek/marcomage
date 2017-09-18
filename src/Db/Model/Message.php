@@ -10,7 +10,7 @@ class Message extends ModelAbstract
     /**
      * Maximum number of characters per message
      */
-    const MESSAGE_LENGTH = 1000;
+    const MESSAGE_LENGTH = 1500;
 
     /**
      * Maximum number of characters per challenge message

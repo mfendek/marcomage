@@ -867,10 +867,16 @@ class Game extends ControllerAbstract
 
         $this->service()->gameManagement()->joinGame($player->getUsername(), $deckId, $game);
 
-        $this->result()
-            ->changeRequest('current_game', $game->getGameId())
-            ->setInfo('You have joined ' . $game->getPlayer1() . "'s game")
-            ->setCurrent('Games_details');
+        $this->result()->setInfo('You have joined ' . $game->getPlayer1() . "'s game");
+
+        $score = $this->dbEntity()->score()->getScoreAsserted($player->getUsername());
+        $level = $score->getLevel();
+
+        if ($level < PlayerModel::TUTORIAL_END) {
+            $this->result()
+                ->changeRequest('current_game', $game->getGameId())
+                ->setCurrent('Games_details');
+        }
     }
 
     /**
