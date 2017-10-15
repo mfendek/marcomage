@@ -166,11 +166,15 @@
 
   &__castle-display {
     display: inline-block;
-    vertical-align: bottom;
 
     @media (max-width: $screen-sm-max) {
       display: none;
     }
+  }
+
+  &__castle-graphic {
+    align-items: flex-end;
+    display: flex;
   }
 
   &__tower-display {
@@ -199,6 +203,7 @@
   }
 
   &__card-log {
+    display: flex;
     margin-left: auto;
     margin-right: auto;
     overflow: auto;
@@ -212,7 +217,7 @@
   }
 
   &__card-log-separator {
-    border-right: thin solid $pure-yellow;
+    border-right: 2px solid $pure-yellow;
   }
 
   .info-label {

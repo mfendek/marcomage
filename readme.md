@@ -104,4 +104,5 @@ Configuration that is not present in the production config is inherited from bas
  * Air BnB - https://github.com/airbnb/javascript
  * BEM - http://getbem.com/naming/
  * Color Names - http://www.colorhexa.com/
+ * Flex box - https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  

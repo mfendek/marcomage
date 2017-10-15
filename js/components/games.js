@@ -332,6 +332,9 @@ export default function () {
         // scrolling must be done only after the dialog has been opened
         chatDialog.on('shown.bs.modal', function () {
           $('#chat-dialog').find('.scroll-max').delay(400).scrollTo('max');
+
+          // switch focus to chat area so user can start typing right away
+          $('textarea[name="chat_area"]').focus();
         });
 
         chatDialog.modal();

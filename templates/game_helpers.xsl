@@ -219,58 +219,50 @@
     </xsl:variable>
 
     <xsl:variable name="result">
-      <table>
-        <tr>
-          <!-- wall left of tower -->
-          <xsl:if test="$orientation = 'right'">
-            <td class="align-bottom">
-              <xsl:if test="$wall &gt; 0">
-                <div class="game__wall-display">
-                  <img src="img/game/wall_top.png" width="19" height="11" alt=""/>
-                  <div style="height: {270 * $wall div $maxWall}px;"/>
-                </div>
-              </xsl:if>
-            </td>
-          </xsl:if>
-          <!-- tower -->
-          <td class="align-bottom">
-            <div class="game__tower-display">
-              <img width="65" alt="">
-                <xsl:choose>
-                  <xsl:when test="$tower = $maxTower">
-                    <xsl:attribute name="src">
-                      <xsl:text>img/game/victory_top_</xsl:text>
-                      <xsl:value-of select="$color"/>
-                      <xsl:text>.png</xsl:text>
-                    </xsl:attribute>
-                    <xsl:attribute name="height">114</xsl:attribute>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:attribute name="src">
-                      <xsl:text>img/game/tower_top_</xsl:text>
-                      <xsl:value-of select="$color"/>
-                      <xsl:text>.png</xsl:text>
-                    </xsl:attribute>
-                    <xsl:attribute name="height">91</xsl:attribute>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </img>
-              <div style="height: {170 * $tower div $maxTower}px;"/>
+      <div class="game__castle-graphic">
+        <!-- wall left of tower -->
+        <xsl:if test="$orientation = 'right'">
+          <xsl:if test="$wall &gt; 0">
+            <div class="game__wall-display">
+              <img src="img/game/wall_top.png" width="19" height="11" alt=""/>
+              <div style="height: {270 * $wall div $maxWall}px;"/>
             </div>
-          </td>
-          <!-- wall right of tower -->
-          <xsl:if test="$orientation = 'left'">
-            <td class="align-bottom">
-              <xsl:if test="$wall &gt; 0">
-                <div class="game__wall-display">
-                  <img src="img/game/wall_top.png" width="19" height="11" alt=""/>
-                  <div style="height: {270 * $wall div $maxWall}px;"/>
-                </div>
-              </xsl:if>
-            </td>
           </xsl:if>
-        </tr>
-      </table>
+        </xsl:if>
+        <!-- tower -->
+        <div class="game__tower-display">
+          <img width="65" alt="">
+            <xsl:choose>
+              <xsl:when test="$tower = $maxTower">
+                <xsl:attribute name="src">
+                  <xsl:text>img/game/victory_top_</xsl:text>
+                  <xsl:value-of select="$color"/>
+                  <xsl:text>.png</xsl:text>
+                </xsl:attribute>
+                <xsl:attribute name="height">114</xsl:attribute>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:attribute name="src">
+                  <xsl:text>img/game/tower_top_</xsl:text>
+                  <xsl:value-of select="$color"/>
+                  <xsl:text>.png</xsl:text>
+                </xsl:attribute>
+                <xsl:attribute name="height">91</xsl:attribute>
+              </xsl:otherwise>
+            </xsl:choose>
+          </img>
+          <div style="height: {170 * $tower div $maxTower}px;"/>
+        </div>
+        <!-- wall right of tower -->
+        <xsl:if test="$orientation = 'left'">
+          <xsl:if test="$wall &gt; 0">
+            <div class="game__wall-display">
+              <img src="img/game/wall_top.png" width="19" height="11" alt=""/>
+              <div style="height: {270 * $wall div $maxWall}px;"/>
+            </div>
+          </xsl:if>
+        </xsl:if>
+      </div>
     </xsl:variable>
     <func:result select="exsl:node-set($result)"/>
   </func:function>
@@ -293,21 +285,17 @@
           <div class="game__card-list">
             <p class="info-label info-label--small">Discarded</p>
             <div class="game__card-log">
-              <table>
-                <tr class="align-top">
-                  <xsl:for-each select="$leftList/*">
-                    <td>
-                      <xsl:copy-of select="am:cardString(current(), $oldLook, $insignias, $foils)"/>
-                    </td>
-                  </xsl:for-each>
-                  <td class="game__card-log-separator"/>
-                  <xsl:for-each select="$rightList/*">
-                    <td>
-                      <xsl:copy-of select="am:cardString(current(), $oldLook, $insignias, $foils)"/>
-                    </td>
-                  </xsl:for-each>
-                </tr>
-              </table>
+              <xsl:for-each select="$leftList/*">
+                <div>
+                  <xsl:copy-of select="am:cardString(current(), $oldLook, $insignias, $foils)"/>
+                </div>
+              </xsl:for-each>
+              <div class="game__card-log-separator"/>
+              <xsl:for-each select="$rightList/*">
+                <div>
+                  <xsl:copy-of select="am:cardString(current(), $oldLook, $insignias, $foils)"/>
+                </div>
+              </xsl:for-each>
             </div>
           </div>
         </xsl:otherwise>
@@ -326,36 +314,32 @@
 
     <xsl:variable name="result">
       <div class="game__card-log">
-        <table>
-          <tr class="centered align-top">
-            <xsl:if test="count($cardList/*) &gt; 0">
-              <xsl:for-each select="$cardList/*">
-                <xsl:sort select="card_position" order="descending" data-type="number"/>
-                <td>
-                  <p>
-                    <xsl:choose>
-                      <xsl:when test="card_action = 'play'">
-                        <xsl:attribute name="class">card-flag card-flag--played</xsl:attribute>
-                        <xsl:text>played</xsl:text>
-                        <xsl:if test="card_mode != 0">
-                          <span>
-                            <xsl:text> mode </xsl:text>
-                            <xsl:value-of select="card_mode"/>
-                          </span>
-                        </xsl:if>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <xsl:attribute name="class">card-flag card-flag--discarded</xsl:attribute>
-                        <xsl:text>discarded</xsl:text>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </p>
-                  <xsl:copy-of select="am:cardString(card_data, $oldLook, $insignias, $foils)"/>
-                </td>
-              </xsl:for-each>
-            </xsl:if>
-          </tr>
-        </table>
+        <xsl:if test="count($cardList/*) &gt; 0">
+          <xsl:for-each select="$cardList/*">
+            <xsl:sort select="card_position" order="descending" data-type="number"/>
+            <div>
+              <p>
+                <xsl:choose>
+                  <xsl:when test="card_action = 'play'">
+                    <xsl:attribute name="class">card-flag card-flag--played</xsl:attribute>
+                    <xsl:text>played</xsl:text>
+                    <xsl:if test="card_mode != 0">
+                      <span>
+                        <xsl:text> mode </xsl:text>
+                        <xsl:value-of select="card_mode"/>
+                      </span>
+                    </xsl:if>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:attribute name="class">card-flag card-flag--discarded</xsl:attribute>
+                    <xsl:text>discarded</xsl:text>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </p>
+              <xsl:copy-of select="am:cardString(card_data, $oldLook, $insignias, $foils)"/>
+            </div>
+          </xsl:for-each>
+        </xsl:if>
       </div>
     </xsl:variable>
     <func:result select="exsl:node-set($result)"/>
