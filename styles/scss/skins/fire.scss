@@ -2,6 +2,9 @@
  * MArcomage CSS stylesheet - fire skin *
  ****************************************/
 
+@import "../mixins";
+@import "../variables";
+
 .fire-skin {
   background-image: url('/img/skins/bg_fire.jpg');
 

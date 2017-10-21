@@ -2,6 +2,9 @@
  * MArcomage CSS stylesheet - details form *
  *******************************************/
 
+@import "../variables";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables";
+
 .details-form {
   margin: 1ex auto;
   max-width: 50em;

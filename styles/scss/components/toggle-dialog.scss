@@ -2,6 +2,10 @@
  * MArcomage CSS stylesheet - toggle dialog *
  ********************************************/
 
+@import "../variables";
+@import "../typography";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables";
+
 .toggle-dialog {
   display: inline-block;
   font-family: $font-family-arial;

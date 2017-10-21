@@ -2,6 +2,9 @@
  * MArcomage CSS stylesheet - blue skin *
  ****************************************/
 
+@import "../mixins";
+@import "../variables";
+
 .blue-skin {
   background-image: url('/img/skins/bg_dblue.jpg');
 

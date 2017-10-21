@@ -2,6 +2,10 @@
  * MArcomage CSS stylesheet - error widget *
  *******************************************/
 
+@import "../mixins";
+@import "../variables";
+@import "../typography";
+
 .error-widget {
   padding-bottom: 5ex;
 

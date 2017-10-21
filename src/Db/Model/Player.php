@@ -17,7 +17,7 @@ class Player extends ModelAbstract
     /**
      * Number of players that are displayed per one page
      */
-    const PLAYERS_PER_PAGE = 50;
+    const PLAYERS_PER_PAGE = 30;
 
     /**
      * Maximum length of hobby description

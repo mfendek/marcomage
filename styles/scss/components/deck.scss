@@ -2,6 +2,10 @@
  * MArcomage CSS stylesheet - deck *
  ***********************************/
 
+@import "../mixins";
+@import "../variables";
+@import "../typography";
+
 .deck {
   .skin-label {
     margin-bottom: 1ex;

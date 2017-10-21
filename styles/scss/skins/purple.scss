@@ -2,6 +2,9 @@
  * MArcomage CSS stylesheet - purple skin *
  ******************************************/
 
+@import "../mixins";
+@import "../variables";
+
 .purple-skin {
   background-image: url('/img/skins/bg_blue.gif');
 

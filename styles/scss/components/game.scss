@@ -2,6 +2,10 @@
  * MArcomage CSS stylesheet - game *
  ***********************************/
 
+@import "../variables";
+@import "../typography";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables";
+
 .game {
   margin-bottom: 1ex;
   text-align: center;

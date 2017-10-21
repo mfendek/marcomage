@@ -2,6 +2,11 @@
  * MArcomage CSS stylesheet - general styles *
  *********************************************/
 
+@import "../mixins";
+@import "../variables";
+@import "../typography";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables";
+
 html {
   font-family: $font-family-times;
   margin: 0;

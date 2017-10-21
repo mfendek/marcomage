@@ -2,6 +2,9 @@
  * MArcomage CSS stylesheet - green skin *
  *****************************************/
 
+@import "../mixins";
+@import "../variables";
+
 .green-skin {
   background-image: url('/img/skins/bg_green.jpg');
 

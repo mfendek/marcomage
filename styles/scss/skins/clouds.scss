@@ -2,6 +2,9 @@
  * MArcomage CSS stylesheet - cloud skins *
  ******************************************/
 
+@import "../mixins";
+@import "../variables";
+
 .clouds-skin {
   background-image: url('/img/skins/bg_gray.jpg');
 

@@ -2,6 +2,8 @@
  * MArcomage CSS stylesheet - experience progress bar *
  ******************************************************/
 
+@import "../variables";
+
 // exp progress bar
 .exp-progress-bar {
   border: thin solid $black;

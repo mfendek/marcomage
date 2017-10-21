@@ -2,6 +2,9 @@
  * MArcomage CSS stylesheet - values list *
  ******************************************/
 
+@import "../variables";
+@import "../typography";
+
 .values-list {
   font-family: $font-family-arial;
   margin-bottom: 1ex;

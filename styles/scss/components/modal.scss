@@ -2,6 +2,9 @@
  * MArcomage CSS stylesheet - modal styles *
  *******************************************/
 
+@import "../variables";
+@import "../typography";
+
 [role="dialog"].modal {
   // modal screen center display
   .vertical-alignment-helper {

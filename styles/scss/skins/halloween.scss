@@ -2,6 +2,9 @@
  * MArcomage CSS stylesheet - halloween skin *
  *********************************************/
 
+@import "../mixins";
+@import "../variables";
+
 .halloween-skin {
   background-image: url('/img/skins/bg_halloween.jpg');
 

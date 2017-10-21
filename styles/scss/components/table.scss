@@ -2,6 +2,10 @@
  * MArcomage CSS stylesheet - table styles *
  *******************************************/
 
+@import "../variables";
+@import "../typography";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables";
+
 // standard table
 table {
   border-collapse: separate;
@@ -85,7 +89,7 @@ table {
   .table-row {
     transition: background-color 400ms;
 
-    // clickable row
+    // click-able row
     &--details {
       cursor: pointer;
     }

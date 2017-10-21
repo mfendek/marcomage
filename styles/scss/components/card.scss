@@ -2,6 +2,10 @@
  * MArcomage CSS stylesheet - card *
  ***********************************/
 
+@import "../mixins";
+@import "../variables";
+@import "../typography";
+
 // foil cards animations
 @keyframes card-background-foil-bricks {
   from {

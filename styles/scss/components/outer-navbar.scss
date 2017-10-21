@@ -2,6 +2,9 @@
  * MArcomage CSS stylesheet - outer navigation bar *
  ***************************************************/
 
+@import "../mixins";
+@import "../variables";
+
 .outer-navbar {
   padding: 1ex;
   text-align: center;

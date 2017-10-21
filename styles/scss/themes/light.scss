@@ -2,6 +2,9 @@
  * MArcomage CSS stylesheet - light theme *
  ******************************************/
 
+@import "../mixins";
+@import "../variables";
+
 .light-theme {
   background-repeat: repeat;
 
