@@ -210,7 +210,20 @@
         <div class="col-xs-6">Keywords</div>
         <div class="col-xs-6">
           <xsl:for-each select="$param/data/keywords_list/*">
-            <a href="{am:makeUrl('Cards_keyword_details', 'keyword', .)}">
+            <xsl:variable name="keywordName">
+              <xsl:choose>
+                <!-- case 1: keyword with value -->
+                <xsl:when test="contains(., ' ')">
+                  <xsl:value-of select="substring-before(., ' ')"/>
+                </xsl:when>
+                  <!-- case 2: keyword without value -->
+                <xsl:otherwise>
+                  <xsl:value-of select="."/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:variable>
+
+            <a href="{am:makeUrl('Cards_keyword_details', 'keyword', $keywordName)}">
               <xsl:value-of select="."/>
             </a>
           </xsl:for-each>

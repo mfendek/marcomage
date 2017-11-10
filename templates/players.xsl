@@ -792,76 +792,72 @@
         <xsl:variable name="columns" select="3"/>
         <xsl:for-each select="$param/data/*">
           <div class="col-md-4">
-            <p class="image-grid__heading">Tier
+            <h4 class="image-grid__heading">
+              <xsl:text>Tier </xsl:text>
               <xsl:value-of select="position()"/>
-            </p>
+            </h4>
 
-            <xsl:variable name="currentTier" select="current()"/>
-
-            <xsl:for-each select="current()/*[position() &lt;= floor(((count(current()/*) - 1) div $columns)) + 1]">
-              <div class="row">
-                <xsl:variable name="i" select="position()"/>
-                <xsl:for-each select="exsl:node-set($currentTier)/*[position() &gt;= (($i - 1)*$columns + 1) and position() &lt;= $i*$columns]">
-                  <div class="col-xs-4">
-                    <img class="achievement" height="100" width="100" alt="{name}">
-                      <xsl:choose>
-                        <!-- case 1: final achievement -->
-                        <xsl:when test="count = ''">
-                          <xsl:attribute name="src">
-                            <xsl:text>img/achievements/</xsl:text>
-                            <xsl:value-of select="am:fileName(name)"/>
-                            <xsl:if test="condition = 'yes'">_gained</xsl:if>
-                            <xsl:text>.png</xsl:text>
-                          </xsl:attribute>
-                          <xsl:attribute name="title">
-                            <xsl:value-of select="name"/>
-                            <xsl:text> - </xsl:text>
-                            <xsl:value-of select="desc"/>
-                            <xsl:text> (</xsl:text>
-                            <xsl:value-of select="reward"/>
-                            <xsl:text> gold reward)</xsl:text>
-                            <xsl:if test="condition = 'yes'">
-                              <xsl:text> achievement already gained</xsl:text>
-                            </xsl:if>
-                          </xsl:attribute>
-                        </xsl:when>
-                        <!-- case 2: regular achievement -->
-                        <xsl:otherwise>
-                          <xsl:attribute name="src">
-                            <xsl:text>img/achievements/</xsl:text>
-                            <xsl:value-of select="am:fileName(name)"/>
-                            <xsl:if test="count &gt;= condition">_gained</xsl:if>
-                            <xsl:text>.png</xsl:text>
-                          </xsl:attribute>
-                          <xsl:attribute name="title">
-                            <xsl:value-of select="name"/>
-                            <xsl:text> (</xsl:text>
-                            <xsl:value-of select="count"/>
-                            <xsl:text> / </xsl:text>
-                            <xsl:value-of select="condition"/>
-                            <xsl:text>) - </xsl:text>
-                            <xsl:value-of select="desc"/>
-                            <xsl:text> (</xsl:text>
-                            <xsl:value-of select="reward"/>
-                            <xsl:text> gold reward)</xsl:text>
-                            <xsl:if test="count &gt;= condition">
-                              <xsl:text> achievement already gained</xsl:text>
-                            </xsl:if>
-                          </xsl:attribute>
-                        </xsl:otherwise>
-                      </xsl:choose>
-                    </img>
-                    <p class="image-grid__item-title">
-                      <xsl:if test="(count = '' and condition = 'yes') or (count != '' and count &gt;= condition)">
-                        <!-- highlight gained achievement -->
-                        <xsl:attribute name="class">achievement-name info</xsl:attribute>
-                      </xsl:if>
-                      <xsl:value-of select="name"/>
-                    </p>
-                  </div>
-                </xsl:for-each>
-              </div>
-            </xsl:for-each>
+            <div class="image-grid__items">
+              <xsl:for-each select="exsl:node-set(current())/*">
+                <div class="image-grid__item">
+                  <img class="achievement" height="100" width="100" alt="{name}">
+                    <xsl:choose>
+                      <!-- case 1: final achievement -->
+                      <xsl:when test="count = ''">
+                        <xsl:attribute name="src">
+                          <xsl:text>img/achievements/</xsl:text>
+                          <xsl:value-of select="am:fileName(name)"/>
+                          <xsl:if test="condition = 'yes'">_gained</xsl:if>
+                          <xsl:text>.png</xsl:text>
+                        </xsl:attribute>
+                        <xsl:attribute name="title">
+                          <xsl:value-of select="name"/>
+                          <xsl:text> - </xsl:text>
+                          <xsl:value-of select="desc"/>
+                          <xsl:text> (</xsl:text>
+                          <xsl:value-of select="reward"/>
+                          <xsl:text> gold reward)</xsl:text>
+                          <xsl:if test="condition = 'yes'">
+                            <xsl:text> achievement already gained</xsl:text>
+                          </xsl:if>
+                        </xsl:attribute>
+                      </xsl:when>
+                      <!-- case 2: regular achievement -->
+                      <xsl:otherwise>
+                        <xsl:attribute name="src">
+                          <xsl:text>img/achievements/</xsl:text>
+                          <xsl:value-of select="am:fileName(name)"/>
+                          <xsl:if test="count &gt;= condition">_gained</xsl:if>
+                          <xsl:text>.png</xsl:text>
+                        </xsl:attribute>
+                        <xsl:attribute name="title">
+                          <xsl:value-of select="name"/>
+                          <xsl:text> (</xsl:text>
+                          <xsl:value-of select="count"/>
+                          <xsl:text> / </xsl:text>
+                          <xsl:value-of select="condition"/>
+                          <xsl:text>) - </xsl:text>
+                          <xsl:value-of select="desc"/>
+                          <xsl:text> (</xsl:text>
+                          <xsl:value-of select="reward"/>
+                          <xsl:text> gold reward)</xsl:text>
+                          <xsl:if test="count &gt;= condition">
+                            <xsl:text> achievement already gained</xsl:text>
+                          </xsl:if>
+                        </xsl:attribute>
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </img>
+                  <p class="image-grid__item-title">
+                    <xsl:if test="(count = '' and condition = 'yes') or (count != '' and count &gt;= condition)">
+                      <!-- highlight gained achievement -->
+                      <xsl:attribute name="class">image-grid__item-title info</xsl:attribute>
+                    </xsl:if>
+                    <xsl:value-of select="name"/>
+                  </p>
+                </div>
+              </xsl:for-each>
+            </div>
           </div>
         </xsl:for-each>
       </div>

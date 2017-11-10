@@ -995,14 +995,16 @@
             </div>
 
             <div class="game__player-info">
-              <!-- player name -->
-              <p class="token-counter game__player-name">
-                <xsl:value-of select="$param/player_name"/>
-                <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p1_country)}.gif"
+              <div class="game__avatar-area">
+                <!-- player name -->
+                <p class="token-counter game__player-name">
+                  <xsl:value-of select="$param/player_name"/>
+                  <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p1_country)}.gif"
                      alt="country flag" title="{$param/p1_country}"/>
-              </p>
+                </p>
 
-              <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$param/p1_avatar}" alt="avatar"/>
+                <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$param/p1_avatar}" alt="avatar"/>
+              </div>
 
               <!-- my tokens -->
               <div class="token-list">
@@ -1055,23 +1057,25 @@
             </div>
 
             <div class="game__player-info">
-              <!-- opponent's name -->
-              <p class="token-counter game__player-name game__player-name--opponent">
-                <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p2_country)}.gif"
+              <div class="game__avatar-area game__avatar-area--opponent">
+                <!-- opponent's name -->
+                <p class="token-counter game__player-name game__player-name--opponent">
+                  <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p2_country)}.gif"
                      alt="country flag" title="{$param/p2_country}"/>
 
-                <xsl:copy-of select="am:playerName($param/opponent_name, $param/ai_name, $param/system_name)"/>
+                  <xsl:copy-of select="am:playerName($param/opponent_name, $param/ai_name, $param/system_name)"/>
 
-                <xsl:if test="$param/opponent_is_online = 'yes'">
-                  <span class="icon-player-activity online" title="online"/>
-                </xsl:if>
-              </p>
+                  <xsl:if test="$param/opponent_is_online = 'yes'">
+                    <span class="icon-player-activity online" title="online"/>
+                  </xsl:if>
+                </p>
 
-              <xsl:variable name="avatarName" select="am:avatarFileName(
-                $param/p2_avatar, $param/opponent_name, $param/ai_name, $param/system_name
-              )"/>
+                <xsl:variable name="avatarName" select="am:avatarFileName(
+                  $param/p2_avatar, $param/opponent_name, $param/ai_name, $param/system_name
+                )"/>
 
-              <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+                <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+              </div>
 
               <!-- his tokens -->
               <div class="token-list">
@@ -1421,14 +1425,16 @@
             </div>
 
             <div class="game__player-info">
-              <!-- player name -->
-              <p class="token-counter game__player-name">
-                <xsl:value-of select="$param/player_name"/>
-                <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p1_country)}.gif"
+              <div class="game__avatar-area">
+                <!-- player name -->
+                <p class="token-counter game__player-name">
+                  <xsl:value-of select="$param/player_name"/>
+                  <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p1_country)}.gif"
                      alt="country flag" title="{$param/p1_country}"/>
-              </p>
+                </p>
 
-              <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$param/p1_avatar}" alt="avatar"/>
+                <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$param/p1_avatar}" alt="avatar"/>
+              </div>
 
               <!-- my tokens -->
               <div class="token-list">
@@ -1481,23 +1487,25 @@
             </div>
 
             <div class="game__player-info">
-              <!-- opponent's name -->
-              <p class="token-counter game__player-name game__player-name--opponent">
-                <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p2_country)}.gif"
+              <div class="game__avatar-area game__avatar-area--opponent">
+                <!-- opponent's name -->
+                <p class="token-counter game__player-name game__player-name--opponent">
+                  <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p2_country)}.gif"
                      alt="country flag" title="{$param/p2_country}"/>
 
-                <xsl:copy-of select="am:playerName($param/opponent_name, $param/ai_name, $param/system_name)"/>
+                  <xsl:copy-of select="am:playerName($param/opponent_name, $param/ai_name, $param/system_name)"/>
 
-                <xsl:if test="$param/opponent_is_online = 'yes'">
-                  <span class="icon-player-activity online" title="online"/>
-                </xsl:if>
-              </p>
+                  <xsl:if test="$param/opponent_is_online = 'yes'">
+                    <span class="icon-player-activity online" title="online"/>
+                  </xsl:if>
+                </p>
 
-              <xsl:variable name="avatarName" select="am:avatarFileName(
-                $param/p2_avatar, $param/opponent_name, $param/ai_name, $param/system_name
-              )"/>
+                <xsl:variable name="avatarName" select="am:avatarFileName(
+                  $param/p2_avatar, $param/opponent_name, $param/ai_name, $param/system_name
+                )"/>
 
-              <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+                <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+              </div>
 
               <!-- his tokens -->
               <div class="token-list">

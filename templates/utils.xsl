@@ -806,39 +806,34 @@
               </p>
               <div class="deck__cards">
                 <xsl:variable name="column" select="position()"/>
-                <xsl:variable name="cards" select="."/>
-                <!-- row counting hack -->
-                <xsl:for-each select="$cards/*[position() &lt;= 5]">
-                  <div class="row">
-                    <xsl:variable name="i" select="position()"/>
-                    <xsl:for-each select="$cards/*[position() &gt;= $i*3-2 and position() &lt;= $i*3]">
-                      <div class="col-xs-4">
-                        <xsl:if test="not($static)">
-                          <xsl:attribute name="id">slot_<xsl:value-of select="(($i - 1) * 3) + position() + 15 * ($column - 1)"/>
-                          </xsl:attribute>
-                        </xsl:if>
+                  <xsl:for-each select="./*">
+                    <div class="deck__card">
+                      <xsl:if test="not($static)">
+                        <xsl:attribute name="id">
+                          <xsl:text>slot_</xsl:text>
+                          <xsl:value-of select="position() + 15 * ($column - 1)"/>
+                        </xsl:attribute>
+                      </xsl:if>
 
-                        <xsl:if test="not($static) and id &gt; 0">
-                          <xsl:attribute name="data-remove-card">
-                            <xsl:value-of select="id"/>
-                          </xsl:attribute>
-                        </xsl:if>
+                      <xsl:if test="not($static) and id &gt; 0">
+                        <xsl:attribute name="data-remove-card">
+                          <xsl:value-of select="id"/>
+                        </xsl:attribute>
+                      </xsl:if>
 
-                        <xsl:copy-of select="am:cardString(current(), $oldLook, $insignias, $foils)"/>
+                      <xsl:copy-of select="am:cardString(current(), $oldLook, $insignias, $foils)"/>
 
-                        <xsl:if test="not($static) and id != 0">
-                          <noscript>
-                            <div>
-                              <button class="button-icon" type="submit" name="return_card" value="{id}" title="Return">
-                                <span class="glyphicon glyphicon-upload"/>
-                              </button>
-                            </div>
-                          </noscript>
-                        </xsl:if>
-                      </div>
-                    </xsl:for-each>
-                  </div>
-                </xsl:for-each>
+                      <xsl:if test="not($static) and id != 0">
+                        <noscript>
+                          <div>
+                            <button class="button-icon" type="submit" name="return_card" value="{id}" title="Return">
+                              <span class="glyphicon glyphicon-upload"/>
+                            </button>
+                          </div>
+                        </noscript>
+                      </xsl:if>
+                    </div>
+                  </xsl:for-each>
               </div>
             </div>
           </div>

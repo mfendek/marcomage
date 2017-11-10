@@ -472,18 +472,20 @@
             </div>
 
             <div class="game__player-info">
-              <!-- player1 name -->
-              <p class="token-counter game__player-name">
-                <xsl:copy-of select="am:playerName($param/player1, $param/ai_name, $param/system_name)"/>
-                <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p1_country)}.gif"
+              <div class="game__avatar-area">
+                <!-- player1 name -->
+                <p class="token-counter game__player-name">
+                  <xsl:copy-of select="am:playerName($param/player1, $param/ai_name, $param/system_name)"/>
+                  <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p1_country)}.gif"
                      alt="country flag" title="{$param/p1_country}"/>
-              </p>
+                </p>
 
-              <xsl:variable name="avatarName" select="am:avatarFileName(
-                $param/p1_avatar, $param/player1, $param/ai_name, $param/system_name
-              )"/>
+                <xsl:variable name="avatarName" select="am:avatarFileName(
+                  $param/p1_avatar, $param/player1, $param/ai_name, $param/system_name
+                )"/>
 
-              <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+                <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+              </div>
 
               <!-- player1 tokens -->
               <div class="token-list">
@@ -536,18 +538,20 @@
             </div>
 
             <div class="game__player-info">
-              <!-- player2 name -->
-              <p class="token-counter game__player-name game__player-name--opponent">
-                <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p2_country)}.gif"
+              <div class="game__avatar-area game__avatar-area--opponent">
+                <!-- player2 name -->
+                <p class="token-counter game__player-name game__player-name--opponent">
+                  <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p2_country)}.gif"
                      alt="country flag" title="{$param/p2_country}"/>
-                <xsl:copy-of select="am:playerName($param/player2, $param/ai_name, $param/system_name)"/>
-              </p>
+                  <xsl:copy-of select="am:playerName($param/player2, $param/ai_name, $param/system_name)"/>
+                </p>
 
-              <xsl:variable name="avatarName" select="am:avatarFileName(
-                $param/p2_avatar, $param/player2, $param/ai_name, $param/system_name
-              )"/>
+                <xsl:variable name="avatarName" select="am:avatarFileName(
+                  $param/p2_avatar, $param/player2, $param/ai_name, $param/system_name
+                )"/>
 
-              <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+                <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+              </div>
 
               <!-- player2 tokens -->
               <div class="token-list">
@@ -725,14 +729,16 @@
             </div>
 
             <div class="game__player-info">
-              <!-- player1 name -->
-              <p class="token-counter game__player-name">
-                <xsl:copy-of select="am:playerName($param/player1, $param/ai_name, $param/system_name)"/>
-                <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p1_country)}.gif"
+              <div class="game__avatar-area">
+                <!-- player1 name -->
+                <p class="token-counter game__player-name">
+                  <xsl:copy-of select="am:playerName($param/player1, $param/ai_name, $param/system_name)"/>
+                  <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p1_country)}.gif"
                      alt="country flag" title="{$param/p1_country}"/>
-              </p>
+                </p>
 
-              <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$param/p1_avatar}" alt="avatar"/>
+                <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$param/p1_avatar}" alt="avatar"/>
+              </div>
 
               <!-- player1 tokens -->
               <div class="token-list">
@@ -785,18 +791,20 @@
             </div>
 
             <div class="game__player-info">
-              <!-- player2 name -->
-              <p class="token-counter game__player-name game__player-name--opponent">
-                <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p2_country)}.gif"
+              <div class="game__avatar-area game__avatar-area--opponent">
+                <!-- player2 name -->
+                <p class="token-counter game__player-name game__player-name--opponent">
+                  <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName($param/p2_country)}.gif"
                      alt="country flag" title="{$param/p2_country}"/>
-                <xsl:copy-of select="am:playerName($param/player2, $param/ai_name, $param/system_name)"/>
-              </p>
+                  <xsl:copy-of select="am:playerName($param/player2, $param/ai_name, $param/system_name)"/>
+                </p>
 
-              <xsl:variable name="avatarName" select="am:avatarFileName(
-                $param/p2_avatar, $param/player2, $param/ai_name, $param/system_name
-              )"/>
+                <xsl:variable name="avatarName" select="am:avatarFileName(
+                  $param/p2_avatar, $param/player2, $param/ai_name, $param/system_name
+                )"/>
 
-              <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+                <img class="avatar-image" height="60" width="60" src="{$param/avatar_path}{$avatarName}" alt="avatar"/>
+              </div>
 
               <!-- player2 tokens -->
               <div class="token-list">

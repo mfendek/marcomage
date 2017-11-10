@@ -10,9 +10,21 @@
   text-align: center;
 
   &__heading {
-    font-family: $font-family-arial;
-    margin-bottom: 1ex;
+    margin-bottom: 2ex;
     margin-top: 1ex;
+  }
+
+  &__items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  &__item {
+    flex-grow: 0;
+    flex-shrink: 0;
+    margin-left: 0.5ex;
+    margin-right: 0.5ex;
   }
 
   &__item-title {
