@@ -86,7 +86,7 @@ Configuration that is not present in the production config is inherited from bas
  ## Production deployment
  
  * run `svn update`
- * run `composer install`
+ * run `composer install --no-dev`
  * run maintenance scripts (optional)
  
  ## Coding standards
