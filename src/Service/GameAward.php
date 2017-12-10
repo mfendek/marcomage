@@ -429,17 +429,26 @@ class GameAward extends ServiceAbstract
 
         $score = $this->dbEntity()->score()->getScoreAsserted($player->getUsername());
 
-        // update related score property
-        $before = $score->getData($award);
-        $after = $before + $amount;
-        $score->setData($award, $after);
-
         // check if player gained achievement of specified award
         $result = $defEntityAward->getAchievements($award);
         if ($result->isError()) {
             throw new Exception('Failed to list achievements for award');
         }
         $achievements = $result->data();
+
+        // find maximum value of the achievement counter
+        $maxAmount = 0;
+        foreach ($achievements as $achievementData) {
+            $maxAmount = max($maxAmount, $achievementData['condition']);
+        }
+
+        // update related score property
+        $before = $score->getData($award);
+        $after = $before + $amount;
+
+        // apply maximum to achievement counter
+        $after = min($after, $maxAmount);
+        $score->setData($award, $after);
 
         // find active achievement
         $achievement = false;

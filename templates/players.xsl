@@ -131,16 +131,13 @@
             </p>
           </div>
           <div class="col-sm-3">
-            <p>
+            <p class="cell-align-left">
               <a class="hidden-link" href="{am:makeUrl('Players_achievements', 'Profile', name)}">
                 <img class="icon-image" height="16" width="16" src="img/achievement.png" alt="{name}'s achievements"
                      title="{name}'s achievements"/>
               </a>
               <img class="icon-image" width="18" height="12" src="img/flags/{am:fileName(country)}.gif"
                    alt="country flag" title="{country}"/>
-              <a class="hidden-link details-link" href="{am:makeUrl('Players_details', 'Profile', name)}">
-                <xsl:value-of select="name"/>
-              </a>
 
               <!-- choose name color according to inactivity time -->
               <xsl:choose>
@@ -161,6 +158,10 @@
                   <span class="icon-player-activity online" title="online"/>
                 </xsl:otherwise>
               </xsl:choose>
+
+              <a class="hidden-link details-link" href="{am:makeUrl('Players_details', 'Profile', name)}">
+                <xsl:value-of select="name"/>
+              </a>
 
               <xsl:if test="rank != 'user'">
                 <!-- player rank -->
@@ -226,12 +227,12 @@
       <h3><xsl:value-of select="$param/player_name"/>'s details
       </h3>
       <div class="row details-form__image-header">
-        <div class="col-sm-4">
+        <div class="col-xs-4">
           <p>
             <img class="bordered-image" height="60" width="60" src="{$param/avatar_path}{$param/avatar}" alt="avatar"/>
           </p>
         </div>
-        <div class="col-sm-4">
+        <div class="col-xs-4">
           <p>
             <a class="hidden-link" href="{am:makeUrl('Players_achievements', 'Profile', $param/player_name)}">
               <img height="29" width="29" src="img/achievement_large.png"
@@ -239,7 +240,7 @@
             </a>
           </p>
         </div>
-        <div class="col-sm-4">
+        <div class="col-xs-4">
           <p>
             <img class="bordered-image" height="100" width="100" src="img/zodiac/{$param/sign}.jpg" alt="{$param/sign}" title="{$param/sign}"/>
           </p>

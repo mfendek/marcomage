@@ -56,7 +56,7 @@
         <!-- begin active games list -->
         <xsl:choose>
           <xsl:when test="count($list/*) &gt; 0">
-            <div class="responsive-table responsive-table--centered responsive-table--with-avatars-md table-sm skin-text inner-level">
+            <div class="responsive-table responsive-table--centered responsive-table--with-avatars-sm table-sm skin-text inner-level">
               <!-- table header -->
               <div class="row">
                 <div class="col-sm-1">
@@ -237,7 +237,7 @@
             <!-- free games list -->
             <xsl:choose>
               <xsl:when test="count($param/free_games/*) &gt; 0">
-                <div class="responsive-table responsive-table--centered responsive-table--with-avatars-md table-sm skin-text inner-level">
+                <div class="responsive-table responsive-table--centered responsive-table--with-avatars-sm table-sm skin-text inner-level">
                   <!-- table header -->
                   <div class="row">
                     <div class="col-sm-1">

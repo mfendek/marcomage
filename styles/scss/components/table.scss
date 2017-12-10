@@ -152,14 +152,33 @@ table {
     }
   }
 
+  &.table-sm {
+    @media (min-width: $screen-sm) {
+      .cell-align-left {
+        text-align: left;
+      }
+    }
+  }
+
+  &.table-md {
+    @media (min-width: $screen-md) {
+      .cell-align-left {
+        text-align: left;
+      }
+    }
+  }
+
   @media (min-width: $screen-sm) {
     &--with-avatars-sm {
       .table-row p {
         line-height: 60px;
       }
 
-      .table-row .button-icon {
-        line-height: initial;
+      .table-row {
+        button,
+        .button-icon {
+          line-height: initial;
+        }
       }
     }
   }
