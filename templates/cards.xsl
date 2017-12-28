@@ -216,7 +216,7 @@
                 <xsl:when test="contains(., ' ')">
                   <xsl:value-of select="substring-before(., ' ')"/>
                 </xsl:when>
-                  <!-- case 2: keyword without value -->
+                <!-- case 2: keyword without value -->
                 <xsl:otherwise>
                   <xsl:value-of select="."/>
                 </xsl:otherwise>
