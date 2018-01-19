@@ -395,7 +395,7 @@ class GameUseCard extends ServiceAbstract
         $targetData = $game->playerData($targetPlayer);
 
         // transfer resource
-        $stolen = min($amount, $sourceData->$resource);
+        $stolen = max(0, min($amount, $sourceData->$resource));
         $sourceData->$resource -= $stolen;
         $targetData->$resource += $stolen;
     }
