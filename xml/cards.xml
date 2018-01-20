@@ -2753,17 +2753,17 @@
       <recruits>5</recruits>
     </cost>
     <level>9</level>
-    <effect><![CDATA[If New<br />Summons [card=181/] or [card=182/]<br />else<br />Gain 18 random resources]]></effect>
+    <effect><![CDATA[If New<br />Summons [card=181/] or [card=182/]<br />else<br />Gain 16 random resources]]></effect>
     <code><![CDATA[
     if ($t->isMyNew($t->cardPos())) {
       $t->nextCard($t->drawCard([181, 182], $t->myData()->Hand, $t->cardPos(), 'drawCardList'));
     }
     else {
-      $t->myData()->addRandomResources(18);
+      $t->myData()->addRandomResources(16);
     }
 ]]></code>
     <created>2006-05-01</created>
-    <modified>2017-09-16</modified>
+    <modified>2018-01-20</modified>
   </card>
   <card id="184">
     <name>Lost city</name>
