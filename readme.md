@@ -67,6 +67,9 @@ Configuration that is not present in the production config is inherited from bas
  
  ## Development
  
+ Basic code sniffer can be setup via `squizlabs/php_codesniffer` library. It is also recommended to use the `.editorconfig`
+ for basic IDE project setup.
+ 
  ### Backend
  
  Run `composer install` to update backend libraries. In case you want to update existing libraries run `composer update`.
@@ -105,4 +108,6 @@ Configuration that is not present in the production config is inherited from bas
  * BEM - http://getbem.com/naming/
  * Color Names - http://www.colorhexa.com/
  * Flex box - https://css-tricks.com/snippets/css/a-guide-to-flexbox/
- 
+ * Basic code sniffer - https://github.com/squizlabs/PHP_CodeSniffer
+ * Advanced code sniffer - https://github.com/slevomat/coding-standard
+ * PHP Storm setup - https://confluence.jetbrains.com/display/PhpStorm/PHP+Code+Sniffer+in+PhpStorm#PHPCodeSnifferinPhpStorm-1.EnablePHPCodeSnifferintegrationinPhpStorm

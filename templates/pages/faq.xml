@@ -65,12 +65,13 @@
   <li>install WAMP server (for example in "C:\wamp")</li>
   <li>open "C:\wamp\www" directory' and right click on the empty space inside the directory to open context menu</li>
   <li>select "SVN checkout" option in the context menu, a new window will open</li>
-  <li>enter "https://arcomage.net/svn" into "URL of repository" input field, change "checkout directory" input field to "C:\wamp\www\arcomage"</li>
-  <li>click on the small WAMP server icon with left mouse button in the right bottom part of the screen. A WAMP server menu will appear. Move mouse over 'PHP', then 'PHP extensions'. If 'php_xsl' extension is not enabled (doesn't have a check) enable it by clicking on it with left mouse button.</li>
-  <li>start WAMP server, click on the small WAMP server icon in the right bottom part of the screen. Choose 'phpmyadmin' in the menu. Click on 'import'. Choose DB install script (located in 'arcomage/release/scripts/install_tables.sql') and execute it.</li>
-  <li>open 'release/config.php' with a text editor and change username value to 'root'</li>
+  <li>enter "https://arcomage.net/svn" into "URL of repository" input field, change "checkout directory" input field to "C:\wamp\www\arcomage", finish the installation</li>
+  <li>launch WAMP server, then look on Windows toolbar on the bottom of your environment screen, click on the small WAMP server icon with left mouse button in the right bottom part of the screen (you may need to click on the "show more" arrow button first). A WAMP server menu will appear. Move mouse over 'PHP', then 'PHP extensions'. If 'php_xsl' extension is not enabled (doesn't have a check) enable it by clicking on it with left mouse button.</li>
+  <li>same modus operandi, in WAMP server menu, choose 'phpmyadmin' in the menu. Click on 'import'. Choose DB install script (located in 'arcomage/release/scripts/install_tables.sql') and execute it.</li>
+  <li>open 'release/config.php' with a text editor and change username value to 'root', be sure of typing the single quotes around root word</li>
   <li>open a terminal and navigate into project root (to arcomage/release/ directory) and run composer install command</li>
   <li>open your web browser and enter "http://localhost/arcomage/release/" as url and press ENTER. You should now have your own MArcomage server running</li>
+  <li>setup a virtual host, see <a href="https://john-dugan.com/wamp-vhost-setup/">vhost documentation</a> for more details</li>
 </ol>
 
 <p>Windows 8 users may have encounter "403 forbidden error". In this case click on the small WAMP server icon in the right bottom part of the screen, then click on 'Apache' item in the menu list and finally 'httpd.cond'. Find 'listen 80' and change it to 'listen 0.0.0.0:80'. Save and restart WAMP.</p>
