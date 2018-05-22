@@ -13,7 +13,7 @@ Players may customize their profile and adjust the interface's appearance. The g
 1. checkout GIT repository from `https://github.com/mfendek/marcomage.git`
 2. run composer install in project directory
 3. run DB install script located in `scripts/install_tables.sql`
-4. point your virtual host to project directory (you need to choose a branch, `release` should be used by default)
+4. point your virtual host to project directory
 
 ## Configuration
 
