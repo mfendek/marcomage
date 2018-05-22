@@ -1,4 +1,6 @@
 .idea
+vendor
+node_modules
 logs/*
 !logs/readme.txt
 img/avatars/*
