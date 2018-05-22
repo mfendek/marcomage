@@ -10,14 +10,14 @@ Players may customize their profile and adjust the interface's appearance. The g
 
 ## Installation
 
-1. checkout SVN repository from `https://arcomage.net/svn/`
-2. run composer install in `release` directory
-3. run DB install script located in `release/scripts/install_tables.sql`
+1. checkout GIT repository from `https://github.com/mfendek/marcomage.git`
+2. run composer install in project directory
+3. run DB install script located in `scripts/install_tables.sql`
 4. point your virtual host to project directory (you need to choose a branch, `release` should be used by default)
 
 ## Configuration
 
-Base config file is located in `release/src/config.php` and is kept under version control. Production specific config is located in `release/src/config_production.php`.
+Base config file is located in `src/config.php` and is kept under version control. Production specific config is located in `src/config_production.php`.
 This file however is not part of the codebase. Base config file is merged with production config with the latter overriding the former.
 Configuration that is not present in the production config is inherited from base config file.
  
