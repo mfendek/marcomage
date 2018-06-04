@@ -1,6 +1,8 @@
-/************************************
- * MArcomage JavaScript - Body data *
- ************************************/
+/**
+ * MArcomage JavaScript - Body data
+ */
+
+import $ from 'jquery';
 
 export default function () {
   /**
@@ -20,7 +22,7 @@ export default function () {
     this.getData = function (field) {
       // data is not cached yet
       if (!this.cache[field]) {
-        let data = $('body').attr('data-' + field);
+        const data = $('body').attr('data-'.concat(field));
         this.cache[field] = (typeof data !== 'undefined') ? data : '';
       }
 

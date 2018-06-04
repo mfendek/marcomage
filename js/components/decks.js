@@ -1,6 +1,6 @@
-/****************************************
- * MArcomage JavaScript - Decks section *
- ****************************************/
+/**
+ * MArcomage JavaScript - Decks section
+ */
 
 import $ from 'jquery';
 
@@ -11,36 +11,36 @@ export default function () {
    * @returns {boolean}
    */
   function takeCard(cardId) {
-    let dic = $.dic;
-    let card = '#card_' + cardId;
-    let deckId = $('input[name="current_deck"]').val();
-    let api = dic.apiManager();
-    let notification = dic.notificationsManager();
+    const dic = $.dic;
+    const card = '#card_'.concat(cardId);
+    const deckId = $('input[name="current_deck"]').val();
+    const api = dic.apiManager();
+    const notification = dic.notificationsManager();
 
-    api.takeCard(deckId, cardId, function (result) {
+    api.takeCard(deckId, cardId, (result) => {
       // AJAX failed, display error message
       if (result.error) {
         notification.displayError(result.error);
         return;
       }
 
-      let slot = '#slot_' + result.slot;
-      let takenCard = result.taken_card;
+      const slot = '#slot_'.concat(result.slot);
+      const takenCard = result.taken_card;
 
       // move selected card to deck
       // disallow the card to be removed from the deck (prevent double clicks)
       $(card).removeAttr('data-take-card');
       $(card).unbind('click');
 
-      $(card).find('.card').animate({opacity: 0.6}, 'slow', function () {
+      $(card).find('.card').animate({ opacity: 0.6 }, 'slow', () => {
         $(slot).html(takenCard);
 
         // initialize hint tooltip for newly added card
         $(slot).find('[title]').tooltip({
           classes: {
-            'ui-tooltip': 'ui-corner-all ui-widget-shadow'
+            'ui-tooltip': 'ui-corner-all ui-widget-shadow',
           },
-          placement: 'auto bottom'
+          placement: 'auto bottom',
         });
 
         // mark card as taken
@@ -52,9 +52,9 @@ export default function () {
         // allow a card to be removed from deck
         $(slot).attr('data-remove-card', cardId);
         $(slot).click(function () {
-          let cardId = parseInt($(this).attr('data-remove-card'));
+          const slotCardId = parseInt($(this).attr('data-remove-card'), 10);
 
-          return removeCard(cardId);
+          return removeCard(slotCardId);
         });
       });
 
@@ -63,7 +63,7 @@ export default function () {
         let token;
 
         $('#tokens-selection').find('select').each(function (i) {
-          token = document.getElementsByName('Token' + (i + 1)).item(0);
+          token = document.getElementsByName('Token'.concat(i + 1)).item(0);
           $(this).find('option').each(function (j) {
             if ($(this).val() === result.tokens[i + 1]) {
               token.selectedIndex = j;
@@ -88,21 +88,21 @@ export default function () {
    * @returns {boolean}
    */
   function removeCard(cardId) {
-    let dic = $.dic;
-    let card = '#card_' + cardId;
-    let deckId = $('input[name="current_deck"]').val();
-    let api = dic.apiManager();
-    let notification = dic.notificationsManager();
+    const dic = $.dic;
+    const card = '#card_'.concat(cardId);
+    const deckId = $('input[name="current_deck"]').val();
+    const api = dic.apiManager();
+    const notification = dic.notificationsManager();
 
-    api.removeCard(deckId, cardId, function (result) {
+    api.removeCard(deckId, cardId, (result) => {
       // AJAX failed, display error message
       if (result.error) {
         notification.displayError(result.error);
         return;
       }
 
-      let slot = '#slot_' + result.slot;
-      let empty = result['slot_html'];
+      const slot = '#slot_'.concat(result.slot);
+      const empty = result.slot_html;
 
       // move selected card to card pool
 
@@ -120,15 +120,15 @@ export default function () {
       // allow a card to be removed from card pool
       $(card).attr('data-take-card', cardId);
       $(card).click(function () {
-        let cardId = parseInt($(this).attr('data-take-card'));
+        const slotCardId = parseInt($(this).attr('data-take-card'), 10);
 
-        return takeCard(cardId);
+        return takeCard(slotCardId);
       });
 
-      $(slot).fadeOut('slow', function () {
+      $(slot).fadeOut('slow', () => {
         $(slot).html(empty);
         $(slot).show();
-        $(card).find('.card').animate({opacity: 1}, 'slow');
+        $(card).find('.card').animate({ opacity: 1 }, 'slow');
       });
 
       // recalculate avg cost per turn
@@ -141,19 +141,19 @@ export default function () {
     return false;
   }
 
-  $(document).ready(function () {
-    let dic = $.dic;
+  $(document).ready(() => {
+    const dic = $.dic;
 
     if (!dic.bodyData().isSectionActive('decks')) {
       return;
     }
 
-    let api = dic.apiManager();
-    let notification = dic.notificationsManager();
+    const api = dic.apiManager();
+    const notification = dic.notificationsManager();
     let confirmed = false;
 
     // apply card filters by pressing ENTER key
-    $('input[name="name_filter"]').keypress(function (event) {
+    $('input[name="name_filter"]').keypress((event) => {
       if (event.keyCode === dic.KEY_ENTER) {
         event.preventDefault();
         $('button[name="deck_apply_filters"]').click();
@@ -165,17 +165,17 @@ export default function () {
 
     // show/hide card pool
     $('button[name="card_pool_switch"]').click(function () {
-      let cardPool = $('#card-pool');
-      let cardPoolSwitch = $(this);
-      let cardPoolIcon = $(this).find('span');
+      const cardPool = $('#card-pool');
+      const cardPoolSwitch = $(this);
+      const cardPoolIcon = $(this).find('span');
 
       // card pool is locked
       if (cardPoolLock) {
         return false;
       }
 
-      // show card pool
       if (cardPoolSwitch.hasClass('show-card-pool')) {
+        // show card pool
         // block switch button while animating
         cardPoolLock = true;
 
@@ -185,8 +185,8 @@ export default function () {
         cardPool.css('opacity', 0);
 
         // expand card pool
-        cardPool.animate({height: 'show'}, 'slow', function () {
-          $('#card-pool').animate({opacity: 1}, 'slow', function () {
+        cardPool.animate({ height: 'show' }, 'slow', () => {
+          $('#card-pool').animate({ opacity: 1 }, 'slow', () => {
             $('#card-pool').show();
 
             // update hidden data element
@@ -200,9 +200,8 @@ export default function () {
             cardPoolLock = false;
           });
         });
-      }
-      // hide card pool
-      else if (cardPoolSwitch.hasClass('hide-card-pool')) {
+      } else if (cardPoolSwitch.hasClass('hide-card-pool')) {
+        // hide card pool
         // block switch button while animating
         cardPoolLock = true;
 
@@ -210,8 +209,8 @@ export default function () {
         cardPool.show();
 
         // collapse card pool
-        cardPool.animate({opacity: 0}, 'slow', function () {
-          $('#card-pool').animate({height: 'hide'}, 'slow', function () {
+        cardPool.animate({ opacity: 0 }, 'slow', () => {
+          $('#card-pool').animate({ height: 'hide' }, 'slow', () => {
             $('#card-pool').hide();
 
             // update hidden data element
@@ -239,11 +238,11 @@ export default function () {
         return true;
       }
 
-      let triggerButton = $(this);
-      let message = 'All cards will be removed from the deck, all token counters will be reset and deck statistics will be reset as well. Are you sure you want to continue?';
+      const triggerButton = $(this);
+      const message = 'All cards will be removed from the deck, all token counters will be reset and deck statistics will be reset as well. Are you sure you want to continue?';
 
       // request confirmation
-      notification.displayConfirm('Action confirmation', message, function (result) {
+      notification.displayConfirm('Action confirmation', message, (result) => {
         if (result) {
           // pass confirmation
           confirmed = true;
@@ -263,11 +262,11 @@ export default function () {
         return true;
       }
 
-      let triggerButton = $(this);
-      let message = 'Deck statistics will be reset. Are you sure you want to continue?';
+      const triggerButton = $(this);
+      const message = 'Deck statistics will be reset. Are you sure you want to continue?';
 
       // request confirmation
-      notification.displayConfirm('Action confirmation', message, function (result) {
+      notification.displayConfirm('Action confirmation', message, (result) => {
         if (result) {
           // pass confirmation
           confirmed = true;
@@ -285,11 +284,11 @@ export default function () {
         return true;
       }
 
-      let triggerButton = $(this);
-      let message = 'Are you sure you want to share this deck to other players?';
+      const triggerButton = $(this);
+      const message = 'Are you sure you want to share this deck to other players?';
 
       // request confirmation
-      notification.displayConfirm('Action confirmation', message, function (result) {
+      notification.displayConfirm('Action confirmation', message, (result) => {
         if (result) {
           // pass confirmation
           confirmed = true;
@@ -308,17 +307,18 @@ export default function () {
       }
 
       // extract target deck name
-      let targetDeckId = $('select[name="selected_deck"]').val();
-      let targetDeck = $('select[name="selected_deck"] >  option[value="' + targetDeckId + '"]').text();
+      const targetDeckId = $('select[name="selected_deck"]').val();
+      const targetDeck = $('select[name="selected_deck"] >  option[value="'.concat(targetDeckId, '"]')).text();
 
       // extract source deck name
-      let sourceDeck = $(this).parent().parent().find('a.deck').text();
+      const sourceDeck = $(this).parent().parent().find('a.deck')
+        .text();
 
-      let triggerButton = $(this);
-      let message = 'Are you sure you want to import ' + sourceDeck + ' into ' + targetDeck + '?';
+      const triggerButton = $(this);
+      const message = 'Are you sure you want to import '.concat(sourceDeck, ' into ', targetDeck, '?');
 
       // request confirmation
-      notification.displayConfirm('Action confirmation', message, function (result) {
+      notification.displayConfirm('Action confirmation', message, (result) => {
         if (result) {
           // pass confirmation
           confirmed = true;
@@ -330,14 +330,14 @@ export default function () {
     });
 
     // open deck note
-    $('a#deck-note').click(function (event) {
+    $('a#deck-note').click((event) => {
       event.preventDefault();
       $('#deck-note-dialog').modal();
     });
 
     // save deck note button
-    $('button[name="deck-note-dialog-save"]').click(function () {
-      let deckNote = $('textarea[name="content"]').val();
+    $('button[name="deck-note-dialog-save"]').click(() => {
+      const deckNote = $('textarea[name="content"]').val();
 
       // check user input
       if (deckNote.length > 1000) {
@@ -345,9 +345,9 @@ export default function () {
         return;
       }
 
-      let deckId = $('input[name="current_deck"]').val();
+      const deckId = $('input[name="current_deck"]').val();
 
-      api.saveDeckNote(deckId, deckNote, function (result) {
+      api.saveDeckNote(deckId, deckNote, (result) => {
         // AJAX failed, display error message
         if (result.error) {
           notification.displayError(result.error);
@@ -355,12 +355,11 @@ export default function () {
         }
 
         // update note button highlight
-        // case 1: note is empty (remove highlight)
         if (deckNote === '') {
+          // case 1: note is empty (remove highlight)
           $('a#deck-note').removeClass('marked-button');
-        }
-        // case 2: note is not empty (add highlight if not present)
-        else if (!$('a#deck-note').hasClass('marked-button')) {
+        } else if (!$('a#deck-note').hasClass('marked-button')) {
+          // case 2: note is not empty (add highlight if not present)
           $('a#deck-note').addClass('marked-button');
         }
 
@@ -369,10 +368,10 @@ export default function () {
     });
 
     // clear deck note button
-    $('button[name="deck-note-dialog-clear"]').click(function () {
-      let deckId = $('input[name="current_deck"]').val();
+    $('button[name="deck-note-dialog-clear"]').click(() => {
+      const deckId = $('input[name="current_deck"]').val();
 
-      api.clearDeckNote(deckId, function (result) {
+      api.clearDeckNote(deckId, (result) => {
         // AJAX failed, display error message
         if (result.error) {
           notification.displayError(result.error);
@@ -391,8 +390,8 @@ export default function () {
     });
 
     // file upload
-    $('button[name="import_deck"]').click(function () {
-      let uploadedFile = $('input[name="deck_data_file"]');
+    $('button[name="import_deck"]').click(() => {
+      const uploadedFile = $('input[name="deck_data_file"]');
 
       // no file was selected
       if (uploadedFile.val() === '') {
@@ -400,18 +399,20 @@ export default function () {
         uploadedFile.click();
         return false;
       }
+
+      return true;
     });
 
     // take card from card pool
     $('[data-take-card]').click(function () {
-      let cardId = parseInt($(this).attr('data-take-card'));
+      const cardId = parseInt($(this).attr('data-take-card'), 10);
 
       return takeCard(cardId);
     });
 
     // remove card from deck
     $('[data-remove-card]').click(function () {
-      let cardId = parseInt($(this).attr('data-remove-card'));
+      const cardId = parseInt($(this).attr('data-remove-card'), 10);
 
       return removeCard(cardId);
     });

@@ -1,22 +1,22 @@
-/*******************************************
- * MArcomage JavaScript - Concepts section *
- *******************************************/
+/**
+ * MArcomage JavaScript - Concepts section
+ */
 
 import $ from 'jquery';
 
 export default function () {
-  $(document).ready(function () {
-    let dic = $.dic;
+  $(document).ready(() => {
+    const dic = $.dic;
 
     if (!dic.bodyData().isSectionActive('concepts')) {
       return;
     }
 
-    let notification = dic.notificationsManager();
+    const notification = dic.notificationsManager();
     let confirmed = false;
 
     // apply card filters by pressing ENTER key
-    $('input[name="card_name"]').keypress(function (event) {
+    $('input[name="card_name"]').keypress((event) => {
       if (event.keyCode === dic.KEY_ENTER) {
         event.preventDefault();
         $('button[name="concepts_apply_filters"]').click();
@@ -32,11 +32,11 @@ export default function () {
         return true;
       }
 
-      let triggerButton = $(this);
-      let message = 'Card concept data will be deleted. Are you sure you want to continue?';
+      const triggerButton = $(this);
+      const message = 'Card concept data will be deleted. Are you sure you want to continue?';
 
       // request confirmation
-      notification.displayConfirm('Action confirmation', message, function (result) {
+      notification.displayConfirm('Action confirmation', message, (result) => {
         if (result) {
           // pass confirmation
           confirmed = true;
@@ -48,8 +48,8 @@ export default function () {
     });
 
     // file upload
-    $('button[name="upload_concept_image"]').click(function () {
-      let uploadedFile = $('input[name="concept_image_file"]');
+    $('button[name="upload_concept_image"]').click(() => {
+      const uploadedFile = $('input[name="concept_image_file"]');
 
       // no file was selected
       if (uploadedFile.val() === '') {
@@ -57,6 +57,8 @@ export default function () {
         uploadedFile.click();
         return false;
       }
+
+      return true;
     });
   });
 }

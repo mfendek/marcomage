@@ -1,22 +1,22 @@
-/******************************************
- * MArcomage JavaScript - Players section *
- ******************************************/
+/**
+ * MArcomage JavaScript - Players section
+ */
 
 import $ from 'jquery';
 
 export default function () {
-  $(document).ready(function () {
-    let dic = $.dic;
+  $(document).ready(() => {
+    const dic = $.dic;
 
     if (!dic.bodyData().isSectionActive('players')) {
       return;
     }
 
-    let notification = dic.notificationsManager();
+    const notification = dic.notificationsManager();
     let confirmed = false;
 
     // apply player filters by pressing ENTER key
-    $('input[name="pname_filter"]').keypress(function (event) {
+    $('input[name="pname_filter"]').keypress((event) => {
       if (event.keyCode === dic.KEY_ENTER) {
         event.preventDefault();
         $('button[name="players_apply_filters"]').click();
@@ -30,10 +30,10 @@ export default function () {
         return true;
       }
 
-      let triggerButton = $(this);
+      const triggerButton = $(this);
 
       // request confirmation
-      notification.displayConfirm('Action confirmation', 'Do you really want to ' + $(this).html() + '?', function (result) {
+      notification.displayConfirm('Action confirmation', 'Do you really want to '.concat($(this).html(), '?'), (result) => {
         if (result) {
           // pass confirmation
           confirmed = true;

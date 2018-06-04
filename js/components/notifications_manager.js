@@ -1,6 +1,8 @@
-/************************************************
- * MArcomage JavaScript - Notifications manager *
- ************************************************/
+/**
+ * MArcomage JavaScript - Notifications manager
+ */
+
+import $ from 'jquery';
 
 export default function () {
   /**
@@ -13,7 +15,7 @@ export default function () {
      * @param {string}message
      */
     this.displayError = function (message) {
-      let error = $('#error-message');
+      const error = $('#error-message');
       error.find('.modal-body > p').text(message);
       error.modal();
     };
@@ -24,7 +26,7 @@ export default function () {
      * @param {string}message
      */
     this.displayInfo = function (heading, message) {
-      let info = $('#info-message');
+      const info = $('#info-message');
       info.find('.modal-title').text(heading);
       info.find('.modal-body').html(message);
       info.modal();
@@ -37,7 +39,7 @@ export default function () {
      * @param {function}callback
      */
     this.displayConfirm = function (heading, message, callback) {
-      let confirm = $('#confirm-message');
+      const confirm = $('#confirm-message');
       confirm.find('.modal-title').text(heading);
       confirm.find('.modal-body').html(message);
       confirm.modal();
@@ -49,7 +51,7 @@ export default function () {
       confirm.find('input[name="confirmed"]').val('');
 
       // ok button callback
-      confirm.find('button[name="confirm"]').click(function () {
+      confirm.find('button[name="confirm"]').click(() => {
         // store confirmed value for dismiss callback use
         confirm.find('input[name="confirmed"]').val('yes');
 
@@ -58,7 +60,7 @@ export default function () {
       });
 
       // dismiss dialog callback
-      confirm.on('hidden.bs.modal', function () {
+      confirm.on('hidden.bs.modal', () => {
         callback(confirm.find('input[name="confirmed"]').val() !== '');
       });
     };

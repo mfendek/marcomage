@@ -1,18 +1,18 @@
-/****************************************
- * MArcomage JavaScript - Cards section *
- ****************************************/
+/**
+ * MArcomage JavaScript - Cards section
+ */
 
 import $ from 'jquery';
 
 export default function () {
-  $(document).ready(function () {
-    let dic = $.dic;
+  $(document).ready(() => {
+    const dic = $.dic;
 
     if (!dic.bodyData().isSectionActive('cards')) {
       return;
     }
 
-    let notification = dic.notificationsManager();
+    const notification = dic.notificationsManager();
     let confirmed = false;
 
     // purchase foil card version
@@ -22,12 +22,12 @@ export default function () {
         return true;
       }
 
-      let triggerButton = $(this);
-      let message = $('#foil-version-purchase').text() + '?';
-      message = message.replace('version', 'version of ' + $('#foil-version-name').text()) + '?';
+      const triggerButton = $(this);
+      let message = $('#foil-version-purchase').text().concat('?');
+      message = message.replace('version', 'version of '.concat($('#foil-version-name').text())).concat('?');
 
       // request confirmation
-      notification.displayConfirm('Purchase confirmation', message, function (result) {
+      notification.displayConfirm('Purchase confirmation', message, (result) => {
         if (result) {
           // pass confirmation
           confirmed = true;
@@ -39,7 +39,7 @@ export default function () {
     });
 
     // apply card filters by pressing ENTER key
-    $('input[name="name_filter"]').keypress(function (event) {
+    $('input[name="name_filter"]').keypress((event) => {
       if (event.keyCode === dic.KEY_ENTER) {
         event.preventDefault();
         $('button[name="cards_apply_filters"]').click();

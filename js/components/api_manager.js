@@ -1,6 +1,8 @@
-/**************************************
- * MArcomage JavaScript - API manager *
- **************************************/
+/**
+ * MArcomage JavaScript - API manager
+ */
+
+import $ from 'jquery';
 
 export default function () {
   /**
@@ -9,12 +11,12 @@ export default function () {
    * @returns {*}
    */
   function getSessionData(name) {
-    let cookieValue = $.cookie(name);
+    const cookieValue = $.cookie(name);
     if (cookieValue !== null && cookieValue !== '') {
       return cookieValue;
     }
 
-    return $('input[name="' + name + '"][type="hidden"]').val();
+    return $('input[name="'.concat(name, '"][type="hidden"]')).val();
   }
 
   /**
@@ -30,22 +32,25 @@ export default function () {
      */
     this.executeCall = function (action, data, callback) {
       // add mandatory data
-      data['action'] = action;
+      const actionData = {
+        ...data,
+        action,
+      };
 
       // include session data if available
-      let username = getSessionData('username');
-      let sessionId = getSessionData('session_id');
+      const username = getSessionData('username');
+      const sessionId = getSessionData('session_id');
 
-      if (typeof(username) !== 'undefined') {
-        data['username'] = getSessionData('username');
+      if (typeof (username) !== 'undefined') {
+        actionData.username = getSessionData('username');
       }
 
-      if (typeof(sessionId) !== 'undefined') {
-        data['session_id'] = getSessionData('session_id');
+      if (typeof (sessionId) !== 'undefined') {
+        actionData.session_id = getSessionData('session_id');
       }
 
       // execute call
-      $.post('?m=ajax', data, callback);
+      $.post('?m=ajax', actionData, callback);
     };
 
     /**
@@ -57,7 +62,7 @@ export default function () {
     this.takeCard = function (deckId, cardId, callback) {
       this.executeCall('take_card', {
         deck_id: deckId,
-        card_id: cardId
+        card_id: cardId,
       }, callback);
     };
 
@@ -70,7 +75,7 @@ export default function () {
     this.removeCard = function (deckId, cardId, callback) {
       this.executeCall('remove_card', {
         deck_id: deckId,
-        card_id: cardId
+        card_id: cardId,
       }, callback);
     };
 
@@ -83,7 +88,7 @@ export default function () {
     this.saveDeckNote = function (deckId, note, callback) {
       this.executeCall('save_deck_note', {
         deck_id: deckId,
-        note: note
+        note,
       }, callback);
     };
 
@@ -94,7 +99,7 @@ export default function () {
      */
     this.clearDeckNote = function (deckId, callback) {
       this.executeCall('clear_deck_note', {
-        deck_id: deckId
+        deck_id: deckId,
       }, callback);
     };
 
@@ -108,8 +113,8 @@ export default function () {
     this.cardPreview = function (cardPos, mode, gameId, callback) {
       this.executeCall('preview_card', {
         cardpos: cardPos,
-        mode: mode,
-        game_id: gameId
+        mode,
+        game_id: gameId,
       }, callback);
     };
 
@@ -122,7 +127,7 @@ export default function () {
     this.saveGameNote = function (gameId, note, callback) {
       this.executeCall('save_game_note', {
         game_id: gameId,
-        note: note
+        note,
       }, callback);
     };
 
@@ -133,7 +138,7 @@ export default function () {
      */
     this.clearGameNote = function (gameId, callback) {
       this.executeCall('clear_game_note', {
-        game_id: gameId
+        game_id: gameId,
       }, callback);
     };
 
@@ -144,7 +149,7 @@ export default function () {
      */
     this.resetChatNotification = function (gameId, callback) {
       this.executeCall('reset_chat_notification', {
-        game_id: gameId
+        game_id: gameId,
       }, callback);
     };
 
@@ -157,7 +162,7 @@ export default function () {
     this.sendChatMessage = function (gameId, message, callback) {
       this.executeCall('send_chat_message', {
         game_id: gameId,
-        message: message
+        message,
       }, callback);
     };
 
@@ -168,7 +173,7 @@ export default function () {
      */
     this.lookupCard = function (cardId, callback) {
       this.executeCall('card_lookup', {
-        card_id: cardId
+        card_id: cardId,
       }, callback);
     };
 

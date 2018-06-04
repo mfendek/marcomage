@@ -1,22 +1,22 @@
-/****************************************
- * MArcomage JavaScript - Forum section *
- ****************************************/
+/**
+ * MArcomage JavaScript - Forum section
+ */
 
 import $ from 'jquery';
 
 export default function () {
-  $(document).ready(function () {
-    let dic = $.dic;
+  $(document).ready(() => {
+    const dic = $.dic;
 
     if (!dic.bodyData().isSectionActive('forum')) {
       return;
     }
 
-    let notification = dic.notificationsManager();
+    const notification = dic.notificationsManager();
     let confirmed = false;
 
     // executes forum search by pressing the ENTER key
-    $('input[name="phrase"]').keypress(function (event) {
+    $('input[name="phrase"]').keypress((event) => {
       if (event.keyCode === dic.KEY_ENTER) {
         event.preventDefault();
         $('button[name="forum_search"]').click();
@@ -32,11 +32,11 @@ export default function () {
         return true;
       }
 
-      let triggerButton = $(this);
-      let message = 'Current thread and all its posts will be deleted. Are you sure you want to continue?';
+      const triggerButton = $(this);
+      const message = 'Current thread and all its posts will be deleted. Are you sure you want to continue?';
 
       // request confirmation
-      notification.displayConfirm('Action confirmation', message, function (result) {
+      notification.displayConfirm('Action confirmation', message, (result) => {
         if (result) {
           // pass confirmation
           confirmed = true;
@@ -56,11 +56,11 @@ export default function () {
         return true;
       }
 
-      let triggerButton = $(this);
-      let message = 'Current post will be deleted. Are you sure you want to continue?';
+      const triggerButton = $(this);
+      const message = 'Current post will be deleted. Are you sure you want to continue?';
 
       // request confirmation
-      notification.displayConfirm('Action confirmation', message, function (result) {
+      notification.displayConfirm('Action confirmation', message, (result) => {
         if (result) {
           // pass confirmation
           confirmed = true;

@@ -1,6 +1,6 @@
-/********************************************
- * MArcomage JavaScript - support functions *
- ********************************************/
+/**
+ * MArcomage JavaScript - support functions
+ */
 
 import $ from 'jquery';
 
@@ -10,25 +10,26 @@ export default function () {
    */
   function refresh() {
     // do not use window.location.reload() because it may cause redundant POST request
-    // do not use direct assigning to window.location.href because each reload will be stored in browsing history
+    // do not use direct assigning to window.location.href
+    // because each reload will be stored in browsing history
     // do not use window.location.href as a source, because it may contain garbage
     window.location.replace($('.inner-navbar__menu-center > a.pushed').attr('href'));
   }
 
-  $(document).ready(function () {
-    let dic = $.dic;
-    let api = dic.apiManager();
-    let notification = dic.notificationsManager();
+  $(document).ready(() => {
+    const dic = $.dic;
+    const api = dic.apiManager();
+    const notification = dic.notificationsManager();
     let confirmed = false;
 
     // login box auto focus (ommited in case of registration)
-    let username = $('.outer-navbar__login-box input[name="username"]');
+    const username = $('.outer-navbar__login-box input[name="username"]');
     if (username.length > 0 && !dic.bodyData().isSectionActive('registration')) {
       // set focus on login name
       username.focus();
 
       // login name input handling
-      username.keypress(function (event) {
+      username.keypress((event) => {
         if (event.keyCode === dic.KEY_ENTER) {
           event.preventDefault();
 
@@ -40,7 +41,7 @@ export default function () {
       });
 
       // password input handling
-      $('input[name="password"]').keypress(function (event) {
+      $('input[name="password"]').keypress((event) => {
         if (event.keyCode === dic.KEY_ENTER) {
           event.preventDefault();
 
@@ -52,16 +53,18 @@ export default function () {
       });
 
       // check if both login inputs are filled
-      $('button[name="login"]').click(function () {
+      $('button[name="login"]').click(() => {
         if ($('input[name="username"]').val() === '' || $('input[name="password"]').val() === '') {
           notification.displayInfo('Mandatory input required', 'Please input your login name and password');
           return false;
         }
+
+        return true;
       });
     }
 
     // blocks ENTER key to prevent section redirects
-    $('input[type!="password"], input[name!="username"], input[name!="new_username"], select').keypress(function (event) {
+    $('input[type!="password"], input[name!="username"], input[name!="new_username"], select').keypress((event) => {
       if (event.keyCode === dic.KEY_ENTER) {
         event.preventDefault();
       }
@@ -69,10 +72,10 @@ export default function () {
 
     // BBcode buttons handling
     $('.bb-code-buttons > button').click(function () {
-      let bbCode = dic.bbCode();
+      const bbCode = dic.bbCode();
 
       // get target element name
-      let target = $(this).parent().attr('id');
+      const target = $(this).parent().attr('id');
       switch ($(this).attr('name')) {
         case 'bold':
           bbCode.addTags('[b]', '[/b]', target);
@@ -98,15 +101,17 @@ export default function () {
         case 'concept':
           bbCode.addTags('[concept]', '[/concept]', target);
           break;
+        default:
+          break;
       }
     });
 
     // element title tooltip
     $('[title]').tooltip({
       classes: {
-        'ui-tooltip': 'ui-corner-all ui-widget-shadow'
+        'ui-tooltip': 'ui-corner-all ui-widget-shadow',
       },
-      placement: 'auto bottom'
+      placement: 'auto bottom',
     });
 
     // process details row click
@@ -127,11 +132,11 @@ export default function () {
        * @param {Object} triggerElem
        * @param {string} data
        */
-      showCard: function (triggerElem, data) {
+      showCard(triggerElem, data) {
         // position the lookup display
-        let cardLookup = $('#card-lookup-hint');
-        let parentCard = (triggerElem.parents('.card').length > 0) ? triggerElem.parents('.card') : triggerElem;
-        let target = parentCard.offset();
+        const cardLookup = $('#card-lookup-hint');
+        const parentCard = (triggerElem.parents('.card').length > 0) ? triggerElem.parents('.card') : triggerElem;
+        const target = parentCard.offset();
 
         // default lookup position is below the card
         let topPosition = target.top + parentCard.outerHeight();
@@ -139,17 +144,18 @@ export default function () {
         // pass card html to lookup display
         cardLookup.html(data);
 
-        // in the case there is not enough space below the parent card, display the card lookup above
+        // in the case there is not enough space below the parent card
+        // display the card lookup above
         if (parentCard.offset().top + parentCard.outerHeight() >
-            ($(window).scrollTop() + $(window).height() - cardLookup.outerHeight())) {
+            (($(window).scrollTop() + $(window).height()) - cardLookup.outerHeight())) {
           topPosition = target.top - cardLookup.outerHeight();
         }
 
-        cardLookup.css({'top': topPosition, 'left': target.left});
+        cardLookup.css({ top: topPosition, left: target.left });
         cardLookup.fadeIn('fast');
       },
 
-      hideCard: function () {
+      hideCard() {
         cardLookupManager = this;
 
         $('#card-lookup-hint').fadeOut('fast');
@@ -159,23 +165,21 @@ export default function () {
        * @param {int}cardId
        * @param {object}trigger
        */
-      lookupCard: function (cardId, trigger) {
+      lookupCard(cardId, trigger) {
         cardLookupManager = this;
 
-        // case 1: card is already present a the cache
         if (cardLookupManager.cache[cardId]) {
+          // case 1: card is already present a the cache
           // display card
           cardLookupManager.showCard(trigger, cardLookupManager.cache[cardId]);
-        }
-        // case 2: card is not cached
-        else {
+        } else {
+          // case 2: card is not cached
           // store current card id to prevent conflicts based on delayed requests
-          let currentCard = cardId;
+          const currentCard = cardId;
 
-          api.lookupCard(cardId, function (result) {
+          api.lookupCard(cardId, (result) => {
             // AJAX failed, display error message
             if (result.error) {
-              console.log(result.error);
               return;
             }
 
@@ -195,30 +199,30 @@ export default function () {
        * @param {int}cardId
        * @param {object}trigger
        */
-      startLookup: function (cardId, trigger) {
+      startLookup(cardId, trigger) {
         cardLookupManager = this;
         cardLookupManager.currentLookUp = cardId;
 
         // delay the lookup render to prevent accidental triggers
-        setTimeout(function () {
+        setTimeout(() => {
           // proceed only if user has not changed focus to something else
           if (cardLookupManager.currentLookUp === cardId) {
             cardLookupManager.lookupCard(cardId, trigger);
           }
         }, 500);
-      }
+      },
     };
 
     // card lookup
     $('[data-card-lookup]').hover(function () {
       // extract card id
-      let lookupTrigger = $(this);
-      let cardId = parseInt(lookupTrigger.attr('data-card-lookup'));
+      const lookupTrigger = $(this);
+      const cardId = parseInt(lookupTrigger.attr('data-card-lookup'), 10);
 
       cardLookupManager.startLookup(cardId, lookupTrigger);
     }, function () {
-      let lookupTrigger = $(this);
-      let cardId = parseInt(lookupTrigger.attr('data-card-lookup'));
+      const lookupTrigger = $(this);
+      const cardId = parseInt(lookupTrigger.attr('data-card-lookup'), 10);
 
       // lookup has been replaced in the meantime
       if (cardLookupManager.currentLookUp !== cardId) {
@@ -232,12 +236,12 @@ export default function () {
     });
 
     // dismiss error message
-    $('button[name="error-message-dismiss"]').click(function () {
+    $('button[name="error-message-dismiss"]').click(() => {
       $('#error-message').modal('hide');
     });
 
     // dismiss info message
-    $('button[name="info-message-dismiss"]').click(function () {
+    $('button[name="info-message-dismiss"]').click(() => {
       $('#info-message').modal('hide');
     });
 
@@ -248,10 +252,10 @@ export default function () {
         return true;
       }
 
-      let triggerButton = $(this);
+      const triggerButton = $(this);
 
       // request confirmation
-      notification.displayConfirm('Action confirmation', 'Are you sure you want to start a discussion?', function (result) {
+      notification.displayConfirm('Action confirmation', 'Are you sure you want to start a discussion?', (result) => {
         if (result) {
           // pass confirmation
           confirmed = true;
@@ -263,8 +267,8 @@ export default function () {
     });
 
     // scroll to top of current page
-    $('button[name="back_to_top"]').click(function () {
-      $('html, body').animate({scrollTop: 0}, 'slow');
+    $('button[name="back_to_top"]').click(() => {
+      $('html, body').animate({ scrollTop: 0 }, 'slow');
 
       return false;
     });
@@ -273,7 +277,7 @@ export default function () {
     $('[data-timestamp]').each(function () {
       // extract timestamp
       let timestamp = $(this).attr('data-timestamp');
-      let format = $(this).attr('data-date-format');
+      const format = $(this).attr('data-date-format');
       timestamp = timestamp.split(' ');
 
       // extract date and time
@@ -283,9 +287,10 @@ export default function () {
       time = time.split(':');
 
       // determine UTC datetime
-      let datetime = new Date();
+      const datetime = new Date();
       datetime.setUTCFullYear(date[0]);
-      datetime.setUTCMonth(date[1] - 1, date[2]); // JavaScript month numbering starts from 0, not from 1
+      // JavaScript month numbering starts from 0, not from 1
+      datetime.setUTCMonth(date[1] - 1, date[2]);
       datetime.setUTCHours(time[0]);
       datetime.setUTCMinutes(time[1]);
       datetime.setUTCSeconds(time[2]);
@@ -293,8 +298,7 @@ export default function () {
       // format timestamp to local format and time zone
       if (format === 'date') {
         $(this).text(datetime.toLocaleDateString());
-      }
-      else if (format === 'date-time') {
+      } else if (format === 'date-time') {
         $(this).text(datetime.toLocaleString());
       }
     });
@@ -308,8 +312,8 @@ export default function () {
 
     $('.toggle-dialog__button').change(function () {
       if (this.checked) {
-        let name = $(this).attr('name');
-        let checkboxes = $('.toggle-dialog__button');
+        const name = $(this).attr('name');
+        const checkboxes = $('.toggle-dialog__button');
 
         // close all other opened dialogs
         if (checkboxes.filter(':checked').length > 0) {

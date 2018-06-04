@@ -1,6 +1,6 @@
-/*************************************************
- * MArcomage JavaScript - highlighting functions *
- *************************************************/
+/**
+ * MArcomage JavaScript - highlighting functions
+ */
 
 import $ from 'jquery';
 
@@ -27,46 +27,40 @@ export default function () {
   function highlightCards() {
     let playCard = $('.game button[name="play_card"]');
 
-    // case 1: single play card button mode is active
     if (playCard.length === 1 && playCard.val() === 0) {
-      // case 1: highlight playable cards
+      // case 1: single play card button mode is active
       if ($('.game__hand.my-hand .selected-card').length === 0) {
-        $('.game__hand.my-hand .suggested > .card').animate({opacity: 0.6}, 500, function () {
-          $(this).animate({opacity: 1}, 500);
+        // case 1: highlight playable cards
+        $('.game__hand.my-hand .suggested > .card').animate({ opacity: 0.6 }, 500, function () {
+          $(this).animate({ opacity: 1 }, 500);
         });
         window.setTimeout(highlightCards, 3000);
-      }
-      // case 2: highlight play button
-      else if (playCard.length === 1) {
+      } else if (playCard.length === 1) {
+        // case 2: highlight play button
         playCard.effect('highlight', {}, 1000);
         window.setTimeout(highlightCards, 3000);
       }
-    }
-    // case 2: multiple play card button mode is active
-    else if (playCard.length > 0) {
+    } else if (playCard.length > 0) {
+      // case 2: multiple play card button mode is active
       playCard = $('.game button.suggested');
       playCard.effect('highlight', {}, 1000);
       window.setTimeout(highlightCards, 3000);
-    }
-    // case 3: no play card button is available
-    else {
+    } else if ($('.game__hand.my-hand .selected-card').length === 0) {
+      // case 3: no play card button is available
       // case 1: highlight a card for discard action
-      if ($('.game__hand.my-hand .selected-card').length === 0) {
-        $('.game__hand.my-hand .suggested > .card').animate({opacity: 0.6}, 500, function () {
-          $(this).animate({opacity: 1}, 500);
-        });
-        window.setTimeout(highlightCards, 3000);
-      }
+      $('.game__hand.my-hand .suggested > .card').animate({ opacity: 0.6 }, 500, function () {
+        $(this).animate({ opacity: 1 }, 500);
+      });
+      window.setTimeout(highlightCards, 3000);
+    } else {
       // case 2: highlight discard button
-      else {
-        $('.game button[name="discard_card"]').effect('highlight', {}, 1000);
-        window.setTimeout(highlightCards, 3000);
-      }
+      $('.game button[name="discard_card"]').effect('highlight', {}, 1000);
+      window.setTimeout(highlightCards, 3000);
     }
   }
 
-  $(document).ready(function () {
-    let dic = $.dic;
+  $(document).ready(() => {
+    const dic = $.dic;
 
     if (!dic.bodyData().isTutorialActive()) {
       return;

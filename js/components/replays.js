@@ -1,6 +1,6 @@
-/******************************************
- * MArcomage JavaScript - Replays section *
- ******************************************/
+/**
+ * MArcomage JavaScript - Replays section
+ */
 
 import $ from 'jquery';
 
@@ -15,7 +15,7 @@ export default function () {
     $('button[name="slideshow-play"]').hide();
     $('button[name="slideshow-pause"]').show();
 
-    timer = window.setTimeout(function () {
+    timer = window.setTimeout(() => {
       window.location.href = $('a#next').attr('href');
     }, 5000);
   }
@@ -29,15 +29,15 @@ export default function () {
     window.clearTimeout(timer);
   }
 
-  $(document).ready(function () {
-    let dic = $.dic;
+  $(document).ready(() => {
+    const dic = $.dic;
 
     if (!dic.bodyData().isSectionActive('replays')) {
       return;
     }
 
     // apply replay filters by pressing ENTER key
-    $('input[name="player_filter"]').keypress(function (event) {
+    $('input[name="player_filter"]').keypress((event) => {
       if (event.keyCode === dic.KEY_ENTER) {
         event.preventDefault();
         $('button[name="replays_apply_filters"]').click();
@@ -50,12 +50,12 @@ export default function () {
     }
 
     // pause replay
-    $('button[name="slideshow-pause"]').click(function () {
+    $('button[name="slideshow-pause"]').click(() => {
       pauseReplay();
     });
 
     // resume replay
-    $('button[name="slideshow-play"]').click(function () {
+    $('button[name="slideshow-play"]').click(() => {
       resumeReplay();
     });
   });

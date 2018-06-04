@@ -1,25 +1,25 @@
-/***********************************************
- * MArcomage JavaScript - Registration section *
- ***********************************************/
+/**
+ * MArcomage JavaScript - Registration section
+ */
 
 import $ from 'jquery';
 
 export default function () {
-  $(document).ready(function () {
-    let dic = $.dic;
+  $(document).ready(() => {
+    const dic = $.dic;
 
     if (!dic.bodyData().isSectionActive('registration')) {
       return;
     }
 
-    let notification = dic.notificationsManager();
-    let newUsername = $('input[name="new_username"]');
+    const notification = dic.notificationsManager();
+    const newUsername = $('input[name="new_username"]');
 
     // set focus on login name
     newUsername.focus();
 
     // login name input handling
-    newUsername.keypress(function (event) {
+    newUsername.keypress((event) => {
       if (event.keyCode === dic.KEY_ENTER) {
         event.preventDefault();
 
@@ -31,7 +31,7 @@ export default function () {
     });
 
     // new password input handling
-    $('input[name="new_password"]').keypress(function (event) {
+    $('input[name="new_password"]').keypress((event) => {
       if (event.keyCode === dic.KEY_ENTER) {
         event.preventDefault();
 
@@ -43,7 +43,7 @@ export default function () {
     });
 
     // new password confirmation input handling
-    $('input[name="confirm_password"]').keypress(function (event) {
+    $('input[name="confirm_password"]').keypress((event) => {
       if (event.keyCode === dic.KEY_ENTER) {
         event.preventDefault();
 
@@ -55,12 +55,14 @@ export default function () {
     });
 
     // validate captcha before submission
-    $('button[name="register"]').click(function (event) {
+    $('button[name="register"]').click(() => {
       // validate only if CAPTCHA is present
       if ($('.g-recaptcha').length > 0 && $('#g-recaptcha-response').val() === '') {
         notification.displayInfo('Mandatory input is missing', 'Please fill out CAPTCHA');
         return false;
       }
+
+      return true;
     });
   });
 }

@@ -1,22 +1,22 @@
-/*******************************************
- * MArcomage JavaScript - Messages section *
- *******************************************/
+/**
+ * MArcomage JavaScript - Messages section
+ */
 
 import $ from 'jquery';
 
 export default function () {
-  $(document).ready(function () {
-    let dic = $.dic;
+  $(document).ready(() => {
+    const dic = $.dic;
 
     if (!dic.bodyData().isSectionActive('messages')) {
       return;
     }
 
-    let notification = dic.notificationsManager();
+    const notification = dic.notificationsManager();
     let confirmed = false;
 
     // apply message filters by pressing ENTER key
-    $('input[name="name_filter"]').keypress(function (event) {
+    $('input[name="name_filter"]').keypress((event) => {
       if (event.keyCode === dic.KEY_ENTER) {
         event.preventDefault();
         $('button[name="messages_apply_filters"]').click();
@@ -32,11 +32,11 @@ export default function () {
         return true;
       }
 
-      let triggerButton = $(this);
-      let message = 'Current message will be deleted. Are you sure you want to continue?';
+      const triggerButton = $(this);
+      const message = 'Current message will be deleted. Are you sure you want to continue?';
 
       // request confirmation
-      notification.displayConfirm('Action confirmation', message, function (result) {
+      notification.displayConfirm('Action confirmation', message, (result) => {
         if (result) {
           // pass confirmation
           confirmed = true;
@@ -60,11 +60,11 @@ export default function () {
         return true;
       }
 
-      let triggerButton = $(this);
-      let message = 'All selected messages will be deleted. Are you sure you want to continue?';
+      const triggerButton = $(this);
+      const message = 'All selected messages will be deleted. Are you sure you want to continue?';
 
       // request confirmation
-      notification.displayConfirm('Action confirmation', message, function (result) {
+      notification.displayConfirm('Action confirmation', message, (result) => {
         if (result) {
           // pass confirmation
           confirmed = true;
@@ -76,15 +76,14 @@ export default function () {
     });
 
     // select / deselect all messages button
-    $('button[name="select_all_messages"]').click(function () {
-      let checkboxes = $('input[type="checkbox"][name^="mass_delete_"]');
+    $('button[name="select_all_messages"]').click(() => {
+      const checkboxes = $('input[type="checkbox"][name^="mass_delete_"]');
 
-      // all checkboxes are checked - deselect all
       if (checkboxes.filter(':checked').length === checkboxes.length) {
+        // all checkboxes are checked - deselect all
         checkboxes.prop('checked', false);
-      }
-      // at least one checkbox is deselected - select all
-      else {
+      } else {
+        // at least one checkbox is deselected - select all
         checkboxes.prop('checked', true);
       }
     });

@@ -1,6 +1,6 @@
-/********************************************************
- * MArcomage JavaScript - Dependency injector container *
- ********************************************************/
+/**
+ * MArcomage JavaScript - Dependency injector container
+ */
 
 import $ from 'jquery';
 
@@ -22,13 +22,13 @@ export default function () {
          * @param name
          * @returns {object}
          */
-        getService: function (name) {
+        getService(name) {
           // lazy load
           if (!this.cache[name]) {
-            let object = {};
+            const object = {};
 
             // variable class name is processed by eval (class name is not user input)
-            eval('object = new ' + name + '();');
+            eval('object = new '.concat(name, '();'));
 
             this.cache[name] = object;
           }
@@ -41,30 +41,30 @@ export default function () {
         /**
          * @returns {ApiManager}
          */
-        apiManager: function () {
+        apiManager() {
           return this.getService('ApiManager');
         },
 
         /**
          * @returns {NotificationsManager}
          */
-        notificationsManager: function () {
+        notificationsManager() {
           return this.getService('NotificationsManager');
         },
 
         /**
          * @returns {BodyData}
          */
-        bodyData: function () {
+        bodyData() {
           return this.getService('BodyData');
         },
 
         /**
          * @returns {BBcode}
          */
-        bbCode: function () {
+        bbCode() {
           return this.getService('BBcode');
-        }
+        },
       };
     }
 

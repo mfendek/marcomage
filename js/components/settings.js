@@ -1,34 +1,34 @@
-/*******************************************
- * MArcomage JavaScript - Settings section *
- *******************************************/
+/**
+ * MArcomage JavaScript - Settings section
+ */
 
 import $ from 'jquery';
 
 export default function () {
-  $(document).ready(function () {
-    let dic = $.dic;
+  $(document).ready(() => {
+    const dic = $.dic;
 
     if (!dic.bodyData().isSectionActive('settings')) {
       return;
     }
 
-    let notification = dic.notificationsManager();
+    const notification = dic.notificationsManager();
     let confirmed = false;
 
     // purchase item (MArcomage shop)
     $('button[name="buy_item"]').click(function () {
-      let selected = $('select[name="selected_item"]').val();
+      const selected = $('select[name="selected_item"]').val();
 
       // action was already approved
       if (confirmed) {
         return true;
       }
 
-      let triggerButton = $(this);
-      let message = 'Do you really want to purchase ' + $('#' + selected + '_desc').text() + '?';
+      const triggerButton = $(this);
+      const message = 'Do you really want to purchase '.concat($('#'.concat(selected, '_desc')).text(), '?');
 
       // request confirmation
-      notification.displayConfirm('Purchase confirmation', message, function (result) {
+      notification.displayConfirm('Purchase confirmation', message, (result) => {
         if (result) {
           // pass confirmation
           confirmed = true;
@@ -46,10 +46,10 @@ export default function () {
         return true;
       }
 
-      let triggerButton = $(this);
+      const triggerButton = $(this);
 
       // request confirmation
-      notification.displayConfirm('Action confirmation', 'Do you really want to skip tutorial?', function (result) {
+      notification.displayConfirm('Action confirmation', 'Do you really want to skip tutorial?', (result) => {
         if (result) {
           // pass confirmation
           confirmed = true;
@@ -61,8 +61,8 @@ export default function () {
     });
 
     // file upload
-    $('button[name="upload_avatar_image"]').click(function () {
-      let uploadedFile = $('input[name="avatar_image_file"]');
+    $('button[name="upload_avatar_image"]').click(() => {
+      const uploadedFile = $('input[name="avatar_image_file"]');
 
       // no file was selected
       if (uploadedFile.val() === '') {
@@ -70,6 +70,8 @@ export default function () {
         uploadedFile.click();
         return false;
       }
+
+      return true;
     });
   });
 }
